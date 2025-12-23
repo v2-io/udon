@@ -1,0 +1,369 @@
+; ============================================================================
+; UDON Comprehensive Syntax Example
+; Exercises the full specification (excluding exotic number types)
+; ============================================================================
+
+; ----------------------------------------------------------------------------
+; MIXINS — Class-only elements define reusable traits
+; ----------------------------------------------------------------------------
+
+|.base-service
+  :version 1.0
+  :timeout 30
+  :retries 3
+
+|.logging
+  :log-level info
+  :log-format json
+
+|.cached
+  :cache-enabled true
+  :cache-ttl 3600
+
+; ----------------------------------------------------------------------------
+; CONFIGURATION — Data-centric usage
+; ----------------------------------------------------------------------------
+
+|config[app-config]
+  :name "My Application"
+  :debug false
+  :environment !{env.APP_ENV}
+
+  ; Database with structured credentials
+  |database[primary].base-service
+    :adapter postgres
+    :host db.example.com
+    :port 5432
+    :pool 10
+    :ssl
+
+    |credentials
+      :username !{env.DB_USER}
+      :password !{env.DB_PASS}
+
+  ; Cache inherits from multiple mixins
+  |cache[redis].base-service.logging.cached
+    :host cache.example.com
+    :port 6379
+
+  ; Feature flags demonstrate various value types
+  |features
+    :enabled-flags [dark-mode notifications beta-features]
+    :rate-limits [100 500 1000]
+    :mixed-example [42 true "hello" nil]
+    :empty-list []
+
+  ; Absent vs nil vs false demonstration
+  |nil-test
+    :flag-present           ; true (flag with no value)
+    :explicit-true true     ; true
+    :explicit-false false   ; false
+    :null-value null        ; nil (JSON style)
+    :nil-value nil          ; nil (Ruby style)
+    :tilde-value ~          ; nil (YAML style)
+    ; :absent-key is not here — it's absent, not nil
+
+; ----------------------------------------------------------------------------
+; SCHEMA — Using element suffixes for DSL semantics
+; ----------------------------------------------------------------------------
+
+|schema[user]
+  :description "User account schema"
+
+  |field[id]!
+    :type integer
+    :auto-increment
+
+  |field[email]!
+    :type string
+    :format email
+    :unique
+
+  |field[name]?
+    :type string
+    :max-length 100
+
+  |field[roles]*
+    :type string
+    :enum [admin user guest]
+
+  |field[primary-role]+
+    :type string
+
+  ; Suffix position variations
+  |field?[optional-with-id]
+    :type string
+
+  |field[another-id]? .searchable
+    :type string
+
+; ----------------------------------------------------------------------------
+; DOCUMENT — Prose-centric usage with Markdown
+; ----------------------------------------------------------------------------
+
+|article[welcome-guide]
+  :author Joseph Wecker
+  :date 2025-12-22
+  :tags [udon tutorial documentation]
+  :status published
+
+  |heading Welcome to UDON
+
+  UDON is a **unified notation** for data, documents, and configuration.
+  It combines the best of several worlds:
+
+  - The *readability* of Markdown for prose
+  - The *structure* of XML without closing tags
+  - The *simplicity* of YAML without the footguns
+  - The *precision* of JSON with better ergonomics
+
+  ## Why Another Format?
+
+  Existing formats force uncomfortable trade-offs:
+
+  1. **JSON** — Great for data, terrible for prose or comments
+  2. **YAML** — Readable but full of surprises (`Norway` → `false`)
+  3. **XML** — Verbose with mandatory closing tags
+  4. **Markdown** — Beautiful prose, no structured data
+
+  UDON says: *why choose?*
+
+  |blockquote
+    :source "Ancient Proverb"
+
+    The best notation is the one that gets out of your way
+    while keeping your data safe.
+
+  |section[getting-started]
+    :level 2
+
+    ### Your First UDON File
+
+    Here's what makes UDON special — you can explain things
+    in natural prose, then show structured examples:
+
+    !code :udon
+      |server
+        :host localhost
+        :port 8080
+
+    The `|` prefix marks structure. The `:` prefix marks attributes.
+    Everything else is just prose.
+
+    ### Escaping Special Characters
+
+    Sometimes you need literal prefix characters:
+
+    '|this is not an element — it's prose starting with a pipe
+    ':this is not an attribute — just text with a colon
+    ';this is not a comment — semicolons in prose
+    ''and this shows a literal apostrophe
+
+    Back to normal prose here.
+
+  |section[advanced-topics]
+    :level 2
+
+    ### Inline Elements
+
+    You can nest elements on a single line:
+
+    |div |span |strong Deeply nested! ; inline children nest rightward
+
+    ### Code Samples
+
+    Use `!code` for non-UDON content:
+
+    !code :elixir
+      defmodule Example do
+        def hello do
+          # This pipe is Elixir, not UDON
+          "world" |> String.upcase()
+        end
+      end
+
+    !code :sql
+      SELECT u.name, u.email
+      FROM users u
+      WHERE u.active = true
+        AND u.created_at > '2025-01-01'
+      ORDER BY u.name;
+
+; ----------------------------------------------------------------------------
+; TEMPLATE — Dynamic content with control flow
+; ----------------------------------------------------------------------------
+
+|template[page-layout]
+  :doctype html5
+
+  !include partials/head
+
+  |html :lang !{locale | default "en"}
+    |head
+      |meta :charset utf-8
+      |title !{page.title} — !{site.name}
+
+      !for stylesheet in stylesheets
+        |link :rel stylesheet :href !{stylesheet}
+
+      !if page.has_custom_css
+        |style
+          !{page.custom_css}
+
+    |body :class !{body_classes | join " "}
+
+      |header
+        !include partials/nav
+
+        !if announcements
+          |div.announcements
+            !for announcement in announcements
+              |div.announcement :class !{announcement.type}
+                !{announcement.message | escape}
+
+      |main[content]
+        !if user
+          |section.welcome
+            Welcome back, !{user.name | capitalize}!
+
+            !if user.is_admin
+              |div.admin-notice
+                You have !{pending_tasks | size} pending admin tasks.
+            !elif user.is_moderator
+              |div.mod-notice
+                Moderation queue: !{mod_queue | size} items
+            !else
+              Your last login: !{user.last_login | format "%B %d, %Y"}
+
+        !else
+          |section.guest
+            |p Welcome, guest!
+            |a :href /login Please sign in
+            |span or
+            |a :href /register create an account
+
+        !let featured = posts | where "featured" true | first
+          !if featured
+            |article.featured
+              |h2 !{featured.title}
+              !{featured.excerpt | truncate 200}
+
+        |section.posts
+          !for post in posts
+            |article :id post-!{post.id}
+              |h3 |a :href /posts/!{post.id} !{post.title}
+              |p.meta
+                By !{post.author.name} on !{post.date | format "%Y-%m-%d"}
+              |p !{post.excerpt}
+
+      !include partials/footer
+
+; ----------------------------------------------------------------------------
+; COMPLEX ATTRIBUTES — Structured values under attributes
+; ----------------------------------------------------------------------------
+
+|api-endpoint[create-user]
+  :method POST
+  :path /api/users
+  :auth required
+
+  :headers
+    |header :name Content-Type :value application/json
+    |header :name X-API-Version :value "2025-01"
+    |header :name Authorization :value Bearer !{token}
+
+  :request-body
+    |field[email] :type string :required
+    |field[password] :type string :required :min-length 8
+    |field[name] :type string
+
+  :responses
+    |response :status 201 :description "User created"
+    |response :status 400 :description "Validation error"
+    |response :status 409 :description "Email already exists"
+
+; ----------------------------------------------------------------------------
+; REFERENCES — Using ID references
+; ----------------------------------------------------------------------------
+
+|license[mit]
+  MIT License
+
+  Copyright (c) 2025 Joseph Wecker
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files...
+
+|license[apache-2]
+  Apache License, Version 2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License...
+
+|project[udon-parser]
+  :name "UDON Parser"
+  :version 0.7.0
+  :license @[mit]              ; Reference the mit license element
+  :homepage https://github.com/example/udon
+  :authors ["Joseph Wecker" "Contributors"]
+  :keywords [parser notation data documents]
+
+|project[udon-tools]
+  :name "UDON Tools"
+  :version 0.1.0
+  :license @[apache-2]         ; Different license reference
+  :dependencies
+    |dep :name udon-parser :version "~> 0.7"
+
+; ----------------------------------------------------------------------------
+; INLINE ELEMENTS AND EDGE CASES
+; ----------------------------------------------------------------------------
+
+|edge-cases
+
+  ; Empty element
+  |empty
+
+  ; Element with only classes
+  |.just-classes.another-class
+
+  ; Element with only ID
+  |[only-id]
+
+  ; Multiple inline with attributes
+  |outer :a 1 |middle :b 2 |inner :c 3 Content here
+
+  ; Lists with quoted strings containing spaces
+  |test-quotes
+    :simple [one two three]
+    :with-spaces ["hello world" "foo bar" simple]
+    :mixed-types [42 3.14 true null "string"]
+
+  ; Deeply nested structure
+  |level-1
+    |level-2
+      |level-3
+        |level-4
+          :deep true
+          Finally at the bottom!
+
+; ----------------------------------------------------------------------------
+; TRIPLE-BACKTICK ESCAPE (Rare — for edge cases only)
+; ----------------------------------------------------------------------------
+
+|raw-example
+  :description "Sometimes you need to break free of indentation"
+
+  Here's content that uses the rare triple-backtick escape ```
+This content ignores indentation rules entirely.
+    We can start wherever we want.
+  Go back to column 0.
+|this-pipe-is-literal-text-not-an-element
+:this-colon-too
+```
+
+  Back to normal UDON parsing now.
+
+; ============================================================================
+; End of comprehensive example
+; ============================================================================
