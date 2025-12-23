@@ -1,0 +1,725 @@
+|stylesheet :exclude-result-prefixes "doc stbl xtbl lxslt ptbl d" :version 1.0
+  |include :href ../common/table.xsl
+  ; ********************************************************************
+  ; 
+  ; This file is part of the XSL DocBook Stylesheet distribution.
+  ; See ../README or https://cdn.docbook.org/release/xsl/current/ for
+  ; copyright and other information.
+  ; 
+  ; ********************************************************************
+  |reference
+    |info |{title Formatting Object Table Reference} |{releaseinfo :role meta}
+    |partintro
+      |title Introduction
+      |para This is technical reference documentation for the FO table-processing templates in the DocBook XSL Stylesheets.
+      |para This is not intended to be user documentation. It is provided for developers writing customization layers for the stylesheets.
+  ; ====================================================================
+  |component :prefix xtbl :functions adjustColumnWidths
+  ; ====================================================================
+  |template :name make.table.content
+    |choose
+      |when :test "d:tgroup|d:mediaobject|d:graphic" |{call-template :name calsTable}
+      |otherwise |{apply-templates :select . :mode htmlTable}
+  ; ====================================================================
+  |template :name calsTable
+    |apply-templates :select "d:tgroup|d:mediaobject|d:graphic" :mode calsTable
+    |apply-templates :select "d:caption"
+  |template :match "d:tgroup" :mode calsTable
+    |variable :name keep.together |{call-template :name pi.dbfo_keep-together}
+    |table :use-attribute-sets table.table.properties
+      |if :test "$keep.together != ''" |{attribute :name keep-together.within-column |{value-of :select $keep.together}}
+      |call-template :name table.frame
+      |if :test "following-sibling::d:tgroup"
+        |attribute :name border-bottom-width 0pt
+        |attribute :name border-bottom-style none
+        |attribute :name padding-bottom 0pt
+        |attribute :name margin-bottom 0pt
+        |attribute :name space-after 0pt
+        |attribute :name space-after.minimum 0pt
+        |attribute :name space-after.optimum 0pt
+        |attribute :name space-after.maximum 0pt
+      |if :test "preceding-sibling::d:tgroup"
+        |attribute :name border-top-width 0pt
+        |attribute :name border-top-style none
+        |attribute :name padding-top 0pt
+        |attribute :name margin-top 0pt
+        |attribute :name space-before 0pt
+        |attribute :name space-before.minimum 0pt
+        |attribute :name space-before.optimum 0pt
+        |attribute :name space-before.maximum 0pt
+      |apply-templates :select .
+  |template :match "d:mediaobject|d:graphic" :mode calsTable |{apply-templates :select .}
+  ; ====================================================================
+  ; Placeholder template enables wrapping a fo:table in
+  ; another table for purposes of layout or applying
+  ; extensions such as XEP table-omit-initial-header to
+  ; create "continued" titles on page breaks.
+  |template :name table.layout |{param :name table.content :select NOTANODE} |{copy-of :select $table.content}
+  |template :name table.block
+    |param :name table.layout :select NOTANODE
+    |variable :name id |{call-template :name object.id}
+    |variable :name param.placement :select "substring-after(normalize-space(                    $formal.title.placement), concat(local-name(.), ' '))"
+    |variable :name placement
+      |choose
+        |when :test "contains($param.placement, ' ')" |{value-of :select "substring-before($param.placement, ' ')"}
+        |when :test "$param.placement = ''" before
+        |otherwise |{value-of :select $param.placement}
+    |variable :name keep.together |{call-template :name pi.dbfo_keep-together}
+    |choose
+      |when :test "self::d:table"
+        |block[{$id}] :use-attribute-sets table.properties
+          |if :test "$keep.together != ''" |{attribute :name keep-together.within-column |{value-of :select $keep.together}}
+          |if :test "$placement = 'before'" |{call-template :name formal.object.heading |{with-param :name placement :select $placement}}
+          |copy-of :select $table.layout
+          |call-template :name table.footnote.block
+          |if :test "$placement != 'before'" |{call-template :name formal.object.heading |{with-param :name placement :select $placement}}
+      |otherwise
+        |block[{$id}] :use-attribute-sets informaltable.properties
+          |if :test "$keep.together != ''" |{attribute :name keep-together.within-column |{value-of :select $keep.together}}
+          |copy-of :select $table.layout
+          |call-template :name table.footnote.block
+  ; Output a table's footnotes in a block
+  |template :name table.footnote.block
+    |if :test ".//d:footnote"
+      |block :keep-with-previous.within-column always |{apply-templates :select ".//d:footnote" :mode table.footnote.mode}
+  ; ====================================================================
+  |template :name table.container
+    |param :name table.block
+    |choose
+      |when :test "@orient='land' and                      $fop.extensions = 0"
+        |block-container :reference-orientation 90 :padding 6pt :use-attribute-sets list.block.spacing
+          |attribute :name width |{call-template :name table.width}
+          |block :start-indent 0pt :end-indent 0pt |{copy-of :select $table.block}
+      |when :test "@pgwide = 1" |{block :use-attribute-sets pgwide.properties |{copy-of :select $table.block}}
+      |otherwise |{copy-of :select $table.block}
+  ; ====================================================================
+  |template :name empty.table.cell
+    |param :name colnum :select 0
+    |variable :name rowsep
+      |choose
+        ; If this is the last row, rowsep never applies (except when
+        ; the ancestor tgroup has a following sibling tgroup)
+        |when :test "not(ancestor-or-self::d:row[1]/following-sibling::d:row                           or ancestor-or-self::d:thead/following-sibling::d:tbody                           or ancestor-or-self::d:tbody/preceding-sibling::d:tfoot)                           and not(ancestor::d:tgroup/following-sibling::d:tgroup)" |{value-of :select 0}
+        |otherwise
+          |call-template :name inherited.table.attribute
+            |with-param :name entry :select NOT-AN-ELEMENT-NAME
+            |with-param :name row :select "ancestor-or-self::d:row[1]"
+            |with-param :name colnum :select $colnum
+            |with-param :name attribute :select "'rowsep'"
+    |variable :name colsep
+      |choose
+        ; If this is the last column, colsep never applies.
+        |when :test "number($colnum) >= ancestor::d:tgroup/@cols" 0
+        |otherwise
+          |call-template :name inherited.table.attribute
+            |with-param :name entry :select NOT-AN-ELEMENT-NAME
+            |with-param :name row :select "ancestor-or-self::d:row[1]"
+            |with-param :name colnum :select $colnum
+            |with-param :name attribute :select "'colsep'"
+    |table-cell :text-align center :display-align center :use-attribute-sets table.cell.padding
+      |if :test "$xep.extensions != 0"
+        ; Suggested by RenderX to workaround a bug in their implementation
+        |attribute :name keep-together.within-column always
+      |if :test "$rowsep > 0" |{call-template :name border |{with-param :name side :select "'bottom'"}}
+      |if :test "$colsep > 0 and number($colnum) < ancestor::d:tgroup/@cols" |{call-template :name border |{with-param :name side :select "'end'"}}
+      ; fo:table-cell should not be empty
+      |block
+  ; ====================================================================
+  |template :name table.frame
+    |param :name frame
+      |choose
+        |when :test ../@frame |{value-of :select ../@frame}
+        |when :test "$default.table.frame != ''" |{value-of :select $default.table.frame}
+        |otherwise all
+    |choose
+      |when :test "$frame='all'"
+        |attribute :name border-start-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-end-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-top-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-bottom-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-start-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-end-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-top-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-bottom-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-start-color |{value-of :select $table.frame.border.color}
+        |attribute :name border-end-color |{value-of :select $table.frame.border.color}
+        |attribute :name border-top-color |{value-of :select $table.frame.border.color}
+        |attribute :name border-bottom-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='bottom'"
+        |attribute :name border-start-style none
+        |attribute :name border-end-style none
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-bottom-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-bottom-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='sides'"
+        |attribute :name border-start-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-end-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style none
+        |attribute :name border-start-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-end-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-start-color |{value-of :select $table.frame.border.color}
+        |attribute :name border-end-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='lhs'"
+        |attribute :name border-start-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-end-style none
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style none
+        |attribute :name border-start-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-start-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='rhs'"
+        |attribute :name border-end-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-end-style none
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style none
+        |attribute :name border-end-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-end-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='top'"
+        |attribute :name border-start-style none
+        |attribute :name border-end-style none
+        |attribute :name border-top-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-bottom-style none
+        |attribute :name border-top-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-top-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='topbot'"
+        |attribute :name border-start-style none
+        |attribute :name border-end-style none
+        |attribute :name border-top-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-bottom-style |{value-of :select $table.frame.border.style}
+        |attribute :name border-top-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-bottom-width |{value-of :select $table.frame.border.thickness}
+        |attribute :name border-top-color |{value-of :select $table.frame.border.color}
+        |attribute :name border-bottom-color |{value-of :select $table.frame.border.color}
+      |when :test "$frame='none'"
+        |attribute :name border-start-style none
+        |attribute :name border-end-style none
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style none
+      |otherwise
+        |message |{text Impossible frame on table:} |{value-of :select $frame}
+        |attribute :name border-start-style none
+        |attribute :name border-end-style none
+        |attribute :name border-top-style none
+        |attribute :name border-bottom-style none
+  ; ====================================================================
+  |template :name border
+    |param :name side :select "'start'"
+    |attribute :name border-{$side}-width |{value-of :select $table.cell.border.thickness}
+    |attribute :name border-{$side}-style |{value-of :select $table.cell.border.style}
+    |attribute :name border-{$side}-color |{value-of :select $table.cell.border.color}
+  ; ====================================================================
+  |template :match "d:tgroup" :name tgroup
+    |if :test "not(@cols) or @cols = '' or string(number(@cols)) = 'NaN'" |{message :terminate yes |{text Error: CALS tables must specify the number of columns.}}
+    |variable :name table.width |{call-template :name table.width}
+    |variable :name colspecs
+      |choose
+        |when :test "$use.extensions != 0                       and $tablecolumns.extension != 0" |{call-template :name generate.colgroup.raw |{with-param :name cols :select @cols}}
+        |otherwise |{call-template :name generate.colgroup |{with-param :name cols :select @cols}}
+    |variable :name prop-columns :select ".//d:colspec[contains(@colwidth, '*')]"
+    |if :test "count($prop-columns) != 0 or                 $fop.extensions != 0 or                 $fop1.extensions != 0" |{attribute :name table-layout fixed}
+    |attribute :name width |{value-of :select $table.width}
+    |choose
+      |when :test "$use.extensions != 0                     and $tablecolumns.extension != 0"
+        |choose
+          |when :test "function-available('stbl:adjustColumnWidths')" |{copy-of :select "stbl:adjustColumnWidths($colspecs)"}
+          |when :test "function-available('xtbl:adjustColumnWidths')" |{copy-of :select "xtbl:adjustColumnWidths($colspecs)"}
+          |when :test "function-available('ptbl:adjustColumnWidths')" |{copy-of :select "ptbl:adjustColumnWidths($colspecs)"}
+          |otherwise |{message :terminate yes |{text No adjustColumnWidths function available.}}
+      |otherwise |{copy-of :select $colspecs}
+    |apply-templates :select "d:thead"
+    |apply-templates :select "d:tfoot"
+    |apply-templates :select "d:tbody"
+  |template :match "d:colspec"
+  |template :name table.width
+    |variable :name numcols |{call-template :name widest-html-row |{with-param :name rows :select ".//d:tr"}}
+    |variable :name explicit.table.width
+      |choose
+        |when :test "self::d:entrytbl" |{call-template :name pi.dbfo_table-width}
+        |when :test "self::d:table or self::d:informaltable" |{call-template :name pi.dbfo_table-width}
+        |otherwise
+          ; * no dbfo@table-width PI as a child of this table, so check
+          ; * the parent of this table to see if the table has any
+          ; * sibling dbfo@table-width PIs (FIXME: 2007-07 MikeSmith: we
+          ; * should really instead be checking here just to see if the
+          ; * first preceding sibling of this table is a
+          ; * dbfo@table-width PI)
+          |call-template :name pi.dbfo_table-width |{with-param :name node :select ..}
+    |variable :name column.sum
+      |choose
+        ; CALS table
+        |when :test "d:tgroup/@cols"
+          ; change context to the first tgroup
+          |for-each :select "d:tgroup[1]"
+            |if :test "count(d:colspec) = @cols"
+              |for-each :select "d:colspec"
+                |if :test "position() != 1" |{text +}
+                |choose
+                  |when :test not(@colwidth) NOWIDTH
+                  |when :test "contains(@colwidth, '*')" NOWIDTH
+                  |otherwise |{value-of :select @colwidth}
+        |otherwise
+          ; HTML table
+          |if :test "count(d:col|d:colgroup/d:col) = $numcols"
+            |for-each :select "d:col|d:colgroup/d:col"
+              |if :test "position() != 1" |{text +}
+              |choose
+                |when :test not(@width) NOWIDTH
+                |when :test "contains(@width, '%')" NOWIDTH
+                |otherwise |{value-of :select @width}
+    |variable :name column.sum.width |{if :test "not(contains($column.sum, 'NOWIDTH'))" |{value-of :select $column.sum}}
+    |variable :name prop-columns :select ".//d:colspec[contains(@colwidth, '*')]"
+    |variable :name table.width
+      |choose
+        |when :test "$explicit.table.width != ''" |{value-of :select $explicit.table.width}
+        |when :test "$column.sum.width != ''" |{value-of :select $column.sum.width}
+        |when :test "$default.table.width = ''"
+          |choose
+            ; These processors don't support table-layout="auto"
+            |when :test "$fop.extensions != 0 or                           $fop1.extensions != 0" |{text 100%}
+            ; Proportional columns imply 100% width
+            |when :test "count($prop-columns) != 0" |{text 100%}
+            |otherwise |{text auto}
+        |otherwise |{value-of :select $default.table.width}
+    |value-of :select $table.width
+  |template :match "d:spanspec"
+  |template :match "d:thead"
+    |variable :name tgroup :select "parent::*"
+    |table-header :start-indent 0pt :end-indent 0pt
+      |choose
+        ; Use recursion if @morerows is used
+        |when :test "d:row/d:entry/@morerows|d:row/d:entrytbl/@morerows"
+          |apply-templates :select "d:row[1]"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'recurse'"
+        |otherwise
+          |apply-templates :select "d:row"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'loop'"
+  |template :match "d:tfoot"
+    |variable :name tgroup :select "parent::*"
+    |table-footer :start-indent 0pt :end-indent 0pt
+      |choose
+        ; Use recursion if @morerows is used
+        |when :test "d:row/d:entry/@morerows|d:row/d:entrytbl/@morerows"
+          |apply-templates :select "d:row[1]"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'recurse'"
+        |otherwise
+          |apply-templates :select "d:row"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'loop'"
+  |template :match "d:tbody"
+    |variable :name tgroup :select "parent::*"
+    |table-body :start-indent 0pt :end-indent 0pt
+      |choose
+        ; Use recursion if @morerows is used
+        |when :test "d:row/d:entry/@morerows|d:row/d:entrytbl/@morerows"
+          |apply-templates :select "d:row[1]"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'recurse'"
+        |otherwise
+          |apply-templates :select "d:row"
+            |with-param :name spans |{call-template :name blank.spans |{with-param :name cols :select ../@cols}}
+            |with-param :name browserows :select "'loop'"
+  |template :match "d:row"
+    |param :name spans
+    |param :name browserows
+    |choose
+      |when :test "contains($spans, '0')"
+        |call-template :name normal-row |{with-param :name spans :select $spans} |{with-param :name browserows :select $browserows}
+      |otherwise
+        ; <xsl:message>
+        ; <xsl:text>Ignoring row: </xsl:text>
+        ; <xsl:value-of select="$spans"/>
+        ; <xsl:text> = </xsl:text>
+        ; <xsl:call-template name="consume-row">
+        ; <xsl:with-param name="spans" select="$spans"/>
+        ; </xsl:call-template>
+        ; </xsl:message>
+        |if :test "normalize-space(.//text()) != ''" |{message Warning: overlapped row contains content!}
+        |table-row |{comment This row intentionally left blank} |{table-cell |{block}}
+        |if :test "$browserows = 'recurse'"
+          |apply-templates :select "following-sibling::d:row[1]"
+            |with-param :name spans |{call-template :name consume-row |{with-param :name spans :select $spans}}
+            |with-param :name browserows :select $browserows
+  |template :name normal-row
+    |param :name spans
+    |param :name browserows
+    |table-row
+      |call-template :name table.row.properties
+      |call-template :name anchor
+      |apply-templates :select "(d:entry|d:entrytbl)[1]" |{with-param :name spans :select $spans}
+    |if :test "$browserows = 'recurse'"
+      |if :test "following-sibling::d:row"
+        |variable :name nextspans
+          |apply-templates :select "(d:entry|d:entrytbl)[1]" :mode span |{with-param :name spans :select $spans}
+        |apply-templates :select "following-sibling::d:row[1]" |{with-param :name spans :select $nextspans} |{with-param :name browserows :select $browserows}
+  ; customize this template to add row properties
+  |template :name table.row.properties
+    |variable :name row-height |{if :test "processing-instruction('dbfo')" |{call-template :name pi.dbfo_row-height}}
+    |if :test "$row-height != ''" |{attribute :name block-progression-dimension |{value-of :select $row-height}}
+    |variable :name bgcolor |{call-template :name pi.dbfo_bgcolor}
+    |if :test "$bgcolor != ''" |{attribute :name background-color |{value-of :select $bgcolor}}
+    ; Keep header row with next row
+    |if :test "ancestor::d:thead" |{attribute :name keep-with-next.within-column always}
+  |template :match "d:entry|d:entrytbl" :name entry
+    |param :name col :select 1
+    |param :name spans
+    |variable :name row :select "parent::d:row"
+    |variable :name group :select "$row/parent::*[1]"
+    |variable :name frame :select "ancestor::d:tgroup/parent::*/@frame"
+    |variable :name empty.cell :select "count(node()) = 0"
+    |variable :name named.colnum |{call-template :name entry.colnum}
+    |variable :name entry.colnum
+      |choose
+        |when :test "$named.colnum > 0" |{value-of :select $named.colnum}
+        |otherwise |{value-of :select $col}
+    |variable :name entry.colspan
+      |choose |{when :test "@spanname or @namest" |{call-template :name calculate.colspan}} |{otherwise 1}
+    |variable :name following.spans
+      |call-template :name calculate.following.spans |{with-param :name colspan :select $entry.colspan} |{with-param :name spans :select $spans}
+    |variable :name rowsep
+      |choose
+        ; If this is the last row, rowsep never applies (except when
+        ; the ancestor tgroup has a following sibling tgroup)
+        |when :test "not(ancestor-or-self::d:row[1]/following-sibling::d:row                           or ancestor-or-self::d:thead/following-sibling::d:tbody                           or ancestor-or-self::d:tbody/preceding-sibling::d:tfoot)                           and not(ancestor::d:tgroup/following-sibling::d:tgroup)" |{value-of :select 0}
+        ; Check for morerows too
+        |when :test "(@morerows and count(ancestor-or-self::d:row[1]/                        following-sibling::d:row) = @morerows )                       and not (ancestor-or-self::d:thead/following-sibling::d:tbody                        or ancestor-or-self::d:tbody/preceding-sibling::d:tfoot)                        and not(ancestor::d:tgroup/following-sibling::d:tgroup)" |{value-of :select 0}
+        |otherwise
+          |call-template :name inherited.table.attribute
+            |with-param :name entry :select .
+            |with-param :name colnum :select $entry.colnum
+            |with-param :name attribute :select "'rowsep'"
+    ; <xsl:message><xsl:value-of select="."/>: <xsl:value-of select="$rowsep"/></xsl:message>
+    |variable :name colsep
+      |choose
+        ; If this is the last column, colsep never applies.
+        |when :test "$following.spans = ''" 0
+        |otherwise
+          |call-template :name inherited.table.attribute
+            |with-param :name entry :select .
+            |with-param :name colnum :select $entry.colnum
+            |with-param :name attribute :select "'colsep'"
+    |variable :name valign
+      |call-template :name inherited.table.attribute
+        |with-param :name entry :select .
+        |with-param :name colnum :select $entry.colnum
+        |with-param :name attribute :select "'valign'"
+    |variable :name align
+      |call-template :name inherited.table.attribute
+        |with-param :name entry :select .
+        |with-param :name colnum :select $entry.colnum
+        |with-param :name attribute :select "'align'"
+    |variable :name char
+      |call-template :name inherited.table.attribute
+        |with-param :name entry :select .
+        |with-param :name colnum :select $entry.colnum
+        |with-param :name attribute :select "'char'"
+    |variable :name charoff
+      |call-template :name inherited.table.attribute
+        |with-param :name entry :select .
+        |with-param :name colnum :select $entry.colnum
+        |with-param :name attribute :select "'charoff'"
+    |choose
+      |when :test "$spans != '' and not(starts-with($spans,'0:'))"
+        |call-template :name entry
+          |with-param :name col :select $col+1
+          |with-param :name spans :select "substring-after($spans,':')"
+      |when :test "number($entry.colnum) > $col"
+        |call-template :name empty.table.cell |{with-param :name colnum :select $col}
+        |call-template :name entry
+          |with-param :name col :select $col+1
+          |with-param :name spans :select "substring-after($spans,':')"
+      |otherwise
+        |variable :name cell.content
+          |block
+            |call-template :name table.cell.block.properties
+            ; are we missing any indexterms?
+            |if :test "not(preceding-sibling::d:entry)                         and not(parent::d:row/preceding-sibling::d:row)"
+              ; this is the first entry of the first row
+              |if :test "ancestor::d:thead or                           (ancestor::d:tbody                            and not(ancestor::d:tbody/preceding-sibling::d:thead                                    or ancestor::d:tbody/preceding-sibling::d:tbody))"
+                ; of the thead or the first tbody
+                |apply-templates :select "ancestor::d:tgroup/preceding-sibling::d:indexterm"
+            ; <xsl:text>(</xsl:text>
+            ; <xsl:value-of select="$rowsep"/>
+            ; <xsl:text>,</xsl:text>
+            ; <xsl:value-of select="$colsep"/>
+            ; <xsl:text>)</xsl:text>
+            |choose
+              |when :test $empty.cell |{text  }
+              |when :test "self::d:entrytbl"
+                |variable :name prop-columns :select ".//d:colspec[contains(@colwidth, '*')]"
+                |table :use-attribute-sets table.table.properties
+                  |if :test "count($prop-columns) != 0" |{attribute :name table-layout fixed}
+                  |call-template :name tgroup
+              |otherwise |{apply-templates}
+        |variable :name cell-orientation
+          |call-template :name pi.dbfo_orientation |{with-param :name node :select "ancestor-or-self::d:entry"}
+        |variable :name row-orientation
+          |call-template :name pi.dbfo_orientation |{with-param :name node :select "ancestor-or-self::d:row"}
+        |variable :name cell-width
+          |call-template :name pi.dbfo_rotated-width |{with-param :name node :select "ancestor-or-self::d:entry"}
+        |variable :name row-width
+          |call-template :name pi.dbfo_rotated-width |{with-param :name node :select "ancestor-or-self::d:row"}
+        |variable :name orientation
+          |choose
+            |when :test "$cell-orientation != ''" |{value-of :select $cell-orientation}
+            |otherwise |{value-of :select $row-orientation}
+        |variable :name rotated-width
+          |choose
+            |when :test "$cell-width != ''" |{value-of :select $cell-width}
+            |otherwise |{value-of :select $row-width}
+        |variable :name bgcolor |{call-template :name pi.dbfo_bgcolor |{with-param :name node :select "ancestor-or-self::d:entry"}}
+        |table-cell :use-attribute-sets table.cell.padding
+          |call-template :name table.cell.properties
+            |with-param :name bgcolor.pi :select $bgcolor
+            |with-param :name rowsep.inherit :select $rowsep
+            |with-param :name colsep.inherit :select $colsep
+            |with-param :name col :select $col
+            |with-param :name valign.inherit :select $valign
+            |with-param :name align.inherit :select $align
+            |with-param :name char.inherit :select $char
+          |call-template :name anchor
+          |if :test @morerows |{attribute :name number-rows-spanned |{value-of :select @morerows+1}}
+          |if :test "$entry.colspan > 1" |{attribute :name number-columns-spanned |{value-of :select $entry.colspan}}
+          ; <xsl:if test="@charoff">
+          ; <xsl:attribute name="charoff">
+          ; <xsl:value-of select="@charoff"/>
+          ; </xsl:attribute>
+          ; </xsl:if>
+          |choose
+            |when :test "$fop.extensions = 0                           and $orientation != ''"
+              |block-container :reference-orientation {$orientation}
+                |if :test "$rotated-width != ''" |{attribute :name width |{value-of :select $rotated-width}}
+                |copy-of :select $cell.content
+            |otherwise |{copy-of :select $cell.content}
+        |choose
+          |when :test "following-sibling::d:entry|following-sibling::d:entrytbl"
+            |apply-templates :select "(following-sibling::d:entry                                        |following-sibling::d:entrytbl)[1]"
+              |with-param :name col :select $col+$entry.colspan
+              |with-param :name spans :select $following.spans
+          |otherwise
+            |call-template :name finaltd
+              |with-param :name spans :select $following.spans
+              |with-param :name col :select $col+$entry.colspan
+  ; Expand this template to add properties to any fo:table-cell
+  |template :name table.cell.properties
+    |param :name bgcolor.pi :select "''"
+    |param :name rowsep.inherit :select 1
+    |param :name colsep.inherit :select 1
+    |param :name col :select 1
+    |param :name valign.inherit :select "''"
+    |param :name align.inherit :select "''"
+    |param :name char.inherit :select "''"
+    |choose
+      |when :test "ancestor::d:tgroup"
+        |if :test "$bgcolor.pi != ''" |{attribute :name background-color |{value-of :select $bgcolor.pi}}
+        |if :test "$rowsep.inherit > 0" |{call-template :name border |{with-param :name side :select "'bottom'"}}
+        |if :test "$colsep.inherit > 0 and                        $col < (ancestor::d:tgroup/@cols|ancestor::d:entrytbl/@cols)[last()]" |{call-template :name border |{with-param :name side :select "'end'"}}
+        |if :test "$valign.inherit != ''"
+          |attribute :name display-align
+            |choose
+              |when :test "$valign.inherit='top'" before
+              |when :test "$valign.inherit='middle'" center
+              |when :test "$valign.inherit='bottom'" after
+              |otherwise
+                |message |{text Unexpected valign value:} |{value-of :select $valign.inherit} |{text , center used.}
+                |text center
+        |choose
+          |when :test "$align.inherit = 'char' and $char.inherit != ''" |{attribute :name text-align |{value-of :select $char.inherit}}
+          |when :test "$align.inherit != ''" |{attribute :name text-align |{value-of :select $align.inherit}}
+      |otherwise
+        ; HTML table
+        |if :test "$bgcolor.pi != ''" |{attribute :name background-color |{value-of :select $bgcolor.pi}}
+        |if :test "$align.inherit != ''" |{attribute :name text-align |{value-of :select $align.inherit}}
+        |if :test "$valign.inherit != ''"
+          |attribute :name display-align
+            |choose
+              |when :test "$valign.inherit='top'" before
+              |when :test "$valign.inherit='middle'" center
+              |when :test "$valign.inherit='bottom'" after
+              |otherwise
+                |message |{text Unexpected valign value:} |{value-of :select $valign.inherit} |{text , center used.}
+                |text center
+        |call-template :name html.table.cell.rules
+  ; Expand this template to add properties to any cell's block
+  |template :name table.cell.block.properties
+    ; highlight this entry?
+    |choose
+      |when :test "ancestor::d:thead or ancestor::d:tfoot" |{attribute :name font-weight bold}
+      ; Make row headers bold too
+      |when :test "ancestor::d:tbody and                     (ancestor::d:table[@rowheader = 'firstcol'] or                     ancestor::d:informaltable[@rowheader = 'firstcol']) and                     ancestor-or-self::d:entry[1][count(preceding-sibling::d:entry) = 0]" |{attribute :name font-weight bold}
+  |template :match "d:entry|d:entrytbl" :name sentry :mode span
+    |param :name col :select 1
+    |param :name spans
+    |variable :name entry.colnum |{call-template :name entry.colnum}
+    |variable :name entry.colspan
+      |choose |{when :test "@spanname or @namest" |{call-template :name calculate.colspan}} |{otherwise 1}
+    |variable :name following.spans
+      |call-template :name calculate.following.spans |{with-param :name colspan :select $entry.colspan} |{with-param :name spans :select $spans}
+    |choose
+      |when :test "$spans != '' and not(starts-with($spans,'0:'))"
+        |value-of :select "substring-before($spans,':')-1"
+        |text ':
+        |call-template :name sentry
+          |with-param :name col :select $col+1
+          |with-param :name spans :select "substring-after($spans,':')"
+      |when :test "number($entry.colnum) > $col"
+        |text 0:
+        |call-template :name sentry
+          |with-param :name col :select "$col + 1"
+          |with-param :name spans :select "substring-after($spans,':')"
+      |otherwise
+        |call-template :name copy-string
+          |with-param :name count :select $entry.colspan
+          |with-param :name string |{choose |{when :test @morerows |{value-of :select @morerows}} |{otherwise 0}} |{text :}
+        |choose
+          |when :test "following-sibling::d:entry|following-sibling::d:entrytbl"
+            |apply-templates :select "(following-sibling::d:entry                                        |following-sibling::d:entrytbl)[1]" :mode span
+              |with-param :name col :select $col+$entry.colspan
+              |with-param :name spans :select $following.spans
+          |otherwise |{call-template :name sfinaltd |{with-param :name spans :select $following.spans}}
+  |template :name generate.colgroup.raw
+    |param :name cols :select 1
+    |param :name count :select 1
+    |choose
+      |when :test $count>$cols
+      |otherwise
+        |call-template :name generate.col.raw |{with-param :name countcol :select $count}
+        |call-template :name generate.colgroup.raw |{with-param :name cols :select $cols} |{with-param :name count :select $count+1}
+  |template :name generate.colgroup
+    |param :name cols :select 1
+    |param :name count :select 1
+    |choose
+      |when :test $count>$cols
+      |otherwise
+        |call-template :name generate.col |{with-param :name countcol :select $count}
+        |call-template :name generate.colgroup |{with-param :name cols :select $cols} |{with-param :name count :select $count+1}
+  |template :name generate.col.raw
+    ; generate the table-column for column countcol
+    |param :name countcol 1
+    |param :name colspecs :select "./d:colspec"
+    |param :name count 1
+    |param :name colnum 1
+    |choose
+      |when :test $count>count($colspecs) |{table-column :column-number {$countcol}}
+      |otherwise
+        |variable :name colspec :select $colspecs[$count=position()]
+        |variable :name colspec.colnum
+          |choose
+            |when :test $colspec/@colnum |{value-of :select $colspec/@colnum}
+            |otherwise |{value-of :select $colnum}
+        |variable :name colspec.colwidth
+          |choose
+            |when :test "normalize-space($colspec/@colwidth)='*'" 1*
+            |when :test $colspec/@colwidth |{value-of :select $colspec/@colwidth}
+            |otherwise 1*
+        |choose
+          |when :test $colspec.colnum=$countcol
+            |table-column :column-number {$countcol} |{attribute :name column-width |{value-of :select $colspec.colwidth}}
+          |otherwise
+            |call-template :name generate.col.raw
+              |with-param :name countcol :select $countcol
+              |with-param :name colspecs :select $colspecs
+              |with-param :name count :select $count+1
+              |with-param :name colnum
+                |choose
+                  |when :test $colspec/@colnum |{value-of :select "$colspec/@colnum + 1"}
+                  |otherwise |{value-of :select "$colnum + 1"}
+  |template :name generate.col
+    ; generate the table-column for column countcol
+    |param :name countcol 1
+    |param :name colspecs :select "./d:colspec"
+    |param :name count 1
+    |param :name colnum 1
+    |choose
+      |when :test $count>count($colspecs)
+        |table-column :column-number {$countcol}
+          |variable :name colwidth |{call-template :name calc.column.width}
+          |attribute :name column-width |{value-of :select $colwidth}
+      |otherwise
+        |variable :name colspec :select $colspecs[$count=position()]
+        |variable :name colspec.colnum
+          |choose
+            |when :test $colspec/@colnum |{value-of :select $colspec/@colnum}
+            |otherwise |{value-of :select $colnum}
+        |variable :name colspec.colwidth |{choose |{when :test $colspec/@colwidth |{value-of :select $colspec/@colwidth}} |{otherwise 1*}}
+        |choose
+          |when :test $colspec.colnum=$countcol
+            |table-column :column-number {$countcol}
+              |variable :name colwidth
+                |call-template :name calc.column.width |{with-param :name colwidth |{value-of :select $colspec.colwidth}}
+              |attribute :name column-width |{value-of :select $colwidth}
+          |otherwise
+            |call-template :name generate.col
+              |with-param :name countcol :select $countcol
+              |with-param :name colspecs :select $colspecs
+              |with-param :name count :select $count+1
+              |with-param :name colnum
+                |choose
+                  |when :test $colspec/@colnum |{value-of :select "$colspec/@colnum + 1"}
+                  |otherwise |{value-of :select "$colnum + 1"}
+  |template :name calc.column.width
+    |refpurpose Calculate an XSL FO table column width specification from a CALS table column width specification.
+    |refdescription
+      |para CALS expresses table column widths in the following basic forms:
+      |itemizedlist
+        |listitem |{para |{emphasis 99.99units} , a fixed length specifier.}
+        |listitem |{para |{emphasis 99.99} , a fixed length specifier without any units.}
+        |listitem |{para |{emphasis 99.99*} , a relative length specifier.}
+        |listitem |{para |{emphasis 99.99*+99.99units} , a combination of both.}
+      |para The CALS units are points (pt), picas (pi), centimeters (cm), millimeters (mm), and inches (in). These are the same units as XSL, except that XSL abbreviates picas "pc" instead of "pi". If a length specifier has no units, the CALS default unit (pt) is assumed.
+      |para Relative length specifiers are represented in XSL with the proportional-column-width() function.
+      |para Here are some examples:
+      |itemizedlist
+        |listitem |{para "36pt" becomes "36pt"}
+        |listitem |{para "3pi" becomes "3pc"}
+        |listitem |{para "36" becomes "36pt"}
+        |listitem |{para "3*" becomes "proportional-column-width(3)"}
+        |listitem |{para "3*+2pi" becomes "proportional-column-width(3)+2pc"}
+        |listitem |{para "1*+2" becomes "proportional-column-width(1)+2pt"}
+    |refparameter
+      |variablelist |{varlistentry |{term colwidth} |{listitem |{para The CALS column width specification.}}}
+    |refreturn |{para The XSL column width specification.}
+  |template :name calc.column.width
+    |param :name colwidth 1*
+    ; Ok, the colwidth could have any one of the following forms:
+    ; 1*       = proportional width
+    ; *       = same as 1*
+    ; 1unit       = 1.0 units wide
+    ; 1       = 1pt wide
+    ; 1*+1unit       = proportional width + some fixed width
+    ; 1*+1       = proportional width + some fixed width
+    ; If it has a proportional width, translate it to XSL
+    |if :test "contains($colwidth, '*')"
+      |text proportional-column-width(
+      |choose
+        |when :test "substring-before($colwidth, '*') != ''" |{value-of :select "substring-before($colwidth, '*')"}
+        |otherwise |{text 1.00}
+      |text )
+    ; Now grab the non-proportional part of the specification
+    |variable :name width-units
+      |choose
+        |when :test "contains($colwidth, '*')" |{value-of :select "normalize-space(substring-after($colwidth, '*'))"}
+        |otherwise |{value-of :select normalize-space($colwidth)}
+    ; Ok, now the width-units could have any one of the following forms:
+    ; = <empty string>
+    ; 1unit       = 1.0 units wide
+    ; 1       = 1pt wide
+    ; with an optional leading sign
+    ; Grab the width part by blanking out the units part and discarding
+    ; whitespace. It's not pretty, but it works.
+    |variable :name width :select "normalize-space(translate($width-units,                                          '+-0123456789.abcdefghijklmnopqrstuvwxyz',                                          '+-0123456789.'))"
+    ; Grab the units part by blanking out the width part and discarding
+    ; whitespace. It's not pretty, but it works.
+    |variable :name units :select "normalize-space(translate($width-units,                                          'abcdefghijklmnopqrstuvwxyz+-0123456789.',                                          'abcdefghijklmnopqrstuvwxyz'))"
+    ; Output the width
+    |value-of :select $width
+    ; Output the units, translated appropriately
+    |choose
+      |when :test "$units = 'pi'" pc
+      |when :test "$units = '' and $width != ''" pt
+      |otherwise |{value-of :select $units}
+  |template :match "d:table/d:caption" |{block :use-attribute-sets table.caption.properties |{apply-templates}}
+  ; ====================================================================

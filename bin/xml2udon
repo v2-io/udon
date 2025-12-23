@@ -1,0 +1,504 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# xml2udon - Convert XML/HTML to UDON notation
+#
+# Usage:
+#   xml2udon input.html           # Output to stdout
+#   xml2udon input.xml -o out.udon
+#   cat file.html | xml2udon      # Read from stdin
+#
+# Dependencies: nokogiri
+#   gem install nokogiri
+
+require 'nokogiri'
+require 'optparse'
+
+class XmlToUdon
+  INDENT = '  '
+
+  # Attributes that get special UDON treatment
+  IDENTITY_ATTR = 'id'
+  CLASS_ATTR = 'class'
+
+  def initialize(options = {})
+    @indent_size = options[:indent] || 2
+    @preserve_whitespace = options[:preserve_whitespace] || false
+    @include_comments = options.fetch(:comments, true)
+  end
+
+  def convert(input, format: :html)
+    doc = parse(input, format)
+    output = []
+
+    # For full HTML documents, start from the html element
+    # For fragments, process all root-level nodes
+    root = find_root(doc, format)
+
+    if root.is_a?(Array)
+      root.each { |node| convert_node(node, 0, output) }
+    else
+      convert_node(root, 0, output)
+    end
+
+    output.join("\n")
+  end
+
+  private
+
+  def parse(input, format)
+    case format
+    when :html
+      # Detect if this is a full document or fragment
+      if input =~ /<html[\s>]/i || input =~ /<!DOCTYPE/i
+        Nokogiri::HTML(input)
+      else
+        Nokogiri::HTML.fragment(input)
+      end
+    when :xml
+      Nokogiri::XML(input) { |config| config.noblanks unless @preserve_whitespace }
+    else
+      raise ArgumentError, "Unknown format: #{format}"
+    end
+  end
+
+  def find_root(doc, format)
+    case format
+    when :html
+      # For full HTML docs, find the html element
+      html = doc.at_css('html')
+      return html if html
+
+      # For fragments, return all children
+      doc.children.to_a
+    when :xml
+      # For XML, return the root element
+      doc.root || doc.children.to_a
+    end
+  end
+
+  def convert_node(node, depth, output)
+    case node.type
+    when Nokogiri::XML::Node::ELEMENT_NODE
+      convert_element(node, depth, output)
+    when Nokogiri::XML::Node::TEXT_NODE
+      convert_text(node, depth, output)
+    when Nokogiri::XML::Node::COMMENT_NODE
+      convert_comment(node, depth, output) if @include_comments
+    when Nokogiri::XML::Node::CDATA_SECTION_NODE
+      convert_cdata(node, depth, output)
+    when Nokogiri::XML::Node::DOCUMENT_NODE, Nokogiri::XML::Node::HTML_DOCUMENT_NODE
+      node.children.each { |child| convert_node(child, depth, output) }
+    end
+  end
+
+  def convert_element(node, depth, output)
+    indent = INDENT * depth
+    line = "#{indent}|#{node.name}"
+
+    # Extract id and class for special syntax
+    id_val = node[IDENTITY_ATTR]
+    class_val = node[CLASS_ATTR]
+    other_attrs = node.attributes.reject { |k, _| [IDENTITY_ATTR, CLASS_ATTR].include?(k) }
+
+    # Add [id] if present
+    line += "[#{id_val}]" if id_val && !id_val.empty?
+
+    # Add .class1.class2 if present
+    if class_val && !class_val.empty?
+      classes = class_val.split(/\s+/).reject(&:empty?)
+      classes.each { |c| line += ".#{sanitize_class(c)}" }
+    end
+
+    # Add remaining attributes as :key value
+    other_attrs.each do |name, attr|
+      line += " :#{name} #{format_attr_value(attr.value)}"
+    end
+
+    # Check if we can render children inline
+    inline_content = try_inline_children(node)
+
+    if inline_content
+      # Single line: element + inline content
+      line += " #{inline_content}" unless inline_content.empty?
+      output << line
+    elsif has_mixed_content?(node)
+      # Mixed content (text + elements) - render multi-line with embedded elements
+      output << line
+      convert_mixed_children(node, depth + 1, output)
+    else
+      output << line
+      # Process children on separate lines (pure element children)
+      node.children.each do |child|
+        convert_node(child, depth + 1, output)
+      end
+    end
+  end
+
+  # Check if node has mixed content (both text and element children)
+  def has_mixed_content?(node)
+    children = node.children.reject { |c| c.text? && c.text.strip.empty? }
+    has_text = children.any? { |c| c.text? && !c.text.strip.empty? }
+    has_elements = children.any? { |c| c.type == Nokogiri::XML::Node::ELEMENT_NODE }
+    has_text && has_elements
+  end
+
+  # Convert mixed content children, using embedded form for inline elements
+  def convert_mixed_children(node, depth, output)
+    indent = INDENT * depth
+    children = node.children
+
+    current_line = indent
+    line_has_content = false
+
+    children.each do |child|
+      case child.type
+      when Nokogiri::XML::Node::TEXT_NODE
+        text = child.text.gsub(/\s+/, ' ')
+        # Split into segments, preserving some whitespace structure
+        text.strip.split(/\n/).each_with_index do |segment, idx|
+          segment = segment.strip
+          next if segment.empty?
+
+          if line_has_content && current_line.length + segment.length + 1 > 90
+            output << current_line.rstrip
+            current_line = indent
+            line_has_content = false
+          end
+
+          if line_has_content
+            current_line += " " unless current_line.end_with?(' ')
+          end
+          current_line += escape_prose(segment)
+          line_has_content = true
+        end
+
+      when Nokogiri::XML::Node::ELEMENT_NODE
+        # Render element in embedded form
+        embedded = render_embedded_element(child)
+
+        if line_has_content && current_line.length + embedded.length + 1 > 90
+          output << current_line.rstrip
+          current_line = indent
+          line_has_content = false
+        end
+
+        if line_has_content
+          current_line += " " unless current_line.end_with?(' ')
+        end
+        current_line += embedded
+        line_has_content = true
+
+      when Nokogiri::XML::Node::COMMENT_NODE
+        if @include_comments
+          # Flush current line first
+          if line_has_content
+            output << current_line.rstrip
+            current_line = indent
+            line_has_content = false
+          end
+          convert_comment(child, depth, output)
+        end
+      end
+    end
+
+    # Flush any remaining content
+    if line_has_content
+      output << current_line.rstrip
+    end
+  end
+
+  # Try to render children as inline content
+  # Returns string if possible, nil if children need separate lines
+  def try_inline_children(node)
+    children = node.children.reject { |c| c.text? && c.text.strip.empty? }
+
+    return '' if children.empty?
+
+    # Case 1: Single text child - always inline
+    if children.size == 1 && children[0].text?
+      text = children[0].text.strip.gsub(/\s+/, ' ')
+      return nil if text.include?("\n") # Multi-line text needs separate lines
+      return escape_prose(text)
+    end
+
+    # Case 2: Mixed content or multiple elements - use embedded form |{...}
+    if simple_inline_content?(children)
+      parts = children.map { |c| render_inline_node(c, embedded: true) }.compact
+      combined = parts.join(' ')
+      return combined if combined.length < 100 # Reasonable line length
+    end
+
+    nil
+  end
+
+  # Check if children are simple enough for inline rendering
+  # With |{...} embedded form, we can now handle multiple element siblings
+  def simple_inline_content?(children)
+    children.all? do |child|
+      case child.type
+      when Nokogiri::XML::Node::TEXT_NODE
+        text = child.text.strip
+        !text.include?("\n") && text.length < 60
+      when Nokogiri::XML::Node::ELEMENT_NODE
+        # Element can have nested content, but keep it reasonable
+        grandchildren = child.children.reject { |c| c.text? && c.text.strip.empty? }
+        # Allow elements with text or simple nested elements
+        inline_depth_ok?(child, max_depth: 2) && child.attributes.size <= 3
+      else
+        false
+      end
+    end
+  end
+
+  # Check if element nesting depth is acceptable for inline rendering
+  def inline_depth_ok?(node, max_depth:, current_depth: 0)
+    return false if current_depth > max_depth
+
+    children = node.children.reject { |c| c.text? && c.text.strip.empty? }
+    children.all? do |child|
+      case child.type
+      when Nokogiri::XML::Node::TEXT_NODE
+        true
+      when Nokogiri::XML::Node::ELEMENT_NODE
+        inline_depth_ok?(child, max_depth: max_depth, current_depth: current_depth + 1)
+      else
+        false
+      end
+    end
+  end
+
+  # Render a node for inline output
+  def render_inline_node(node, embedded: false)
+    case node.type
+    when Nokogiri::XML::Node::TEXT_NODE
+      text = node.text.strip.gsub(/\s+/, ' ')
+      return nil if text.empty?
+      escape_prose_inline(text)
+    when Nokogiri::XML::Node::ELEMENT_NODE
+      render_inline_element(node, embedded: embedded)
+    end
+  end
+
+  def render_inline_element(node, embedded: false)
+    # Use |{...} for embedded form, |... for regular inline
+    if embedded
+      render_embedded_element(node)
+    else
+      render_regular_inline_element(node)
+    end
+  end
+
+  # Render element in embedded form: |{element content}
+  def render_embedded_element(node)
+    result = "|{#{node.name}"
+
+    id_val = node[IDENTITY_ATTR]
+    class_val = node[CLASS_ATTR]
+    other_attrs = node.attributes.reject { |k, _| [IDENTITY_ATTR, CLASS_ATTR].include?(k) }
+
+    result += "[#{id_val}]" if id_val && !id_val.empty?
+
+    if class_val && !class_val.empty?
+      classes = class_val.split(/\s+/).reject(&:empty?)
+      classes.each { |c| result += ".#{sanitize_class(c)}" }
+    end
+
+    other_attrs.each do |name, attr|
+      result += " :#{name} #{format_attr_value(attr.value)}"
+    end
+
+    # Render children inline (recursively using embedded form)
+    children = node.children.reject { |c| c.text? && c.text.strip.empty? }
+    unless children.empty?
+      child_parts = children.map { |c| render_inline_node(c, embedded: true) }.compact
+      result += " #{child_parts.join(' ')}" unless child_parts.empty?
+    end
+
+    result += "}"
+    result
+  end
+
+  # Render element in regular inline form: |element content
+  def render_regular_inline_element(node)
+    result = "|#{node.name}"
+
+    id_val = node[IDENTITY_ATTR]
+    class_val = node[CLASS_ATTR]
+    other_attrs = node.attributes.reject { |k, _| [IDENTITY_ATTR, CLASS_ATTR].include?(k) }
+
+    result += "[#{id_val}]" if id_val && !id_val.empty?
+
+    if class_val && !class_val.empty?
+      classes = class_val.split(/\s+/).reject(&:empty?)
+      classes.each { |c| result += ".#{sanitize_class(c)}" }
+    end
+
+    other_attrs.each do |name, attr|
+      result += " :#{name} #{format_attr_value(attr.value)}"
+    end
+
+    # Add text content
+    text_children = node.children.select(&:text?).map { |c| c.text.strip }.join(' ').strip
+    result += " #{escape_prose(text_children)}" unless text_children.empty?
+
+    result
+  end
+
+  def convert_text(node, depth, output)
+    text = node.text
+
+    # Normalize whitespace unless preserving
+    unless @preserve_whitespace
+      text = text.gsub(/\s+/, ' ')
+    end
+
+    text = text.strip
+    return if text.empty?
+
+    indent = INDENT * depth
+
+    # Handle multi-line text
+    lines = text.split("\n")
+    lines.each do |line|
+      line = line.strip
+      next if line.empty?
+
+      # Escape UDON special characters at line start
+      escaped = escape_prose(line)
+      output << "#{indent}#{escaped}"
+    end
+  end
+
+  def convert_comment(node, depth, output)
+    indent = INDENT * depth
+    text = node.text.strip
+
+    # Handle multi-line comments
+    lines = text.split("\n")
+    lines.each do |line|
+      output << "#{indent}; #{line.strip}"
+    end
+  end
+
+  def convert_cdata(node, depth, output)
+    indent = INDENT * depth
+    text = node.text
+
+    # Use triple-backtick for CDATA (preserves content exactly)
+    output << "#{indent}```"
+    text.each_line do |line|
+      output << line.chomp
+    end
+    output << "#{indent}```"
+  end
+
+  def format_attr_value(value)
+    return '""' if value.nil? || value.empty?
+
+    # Check if value needs quoting
+    needs_quotes = value.include?(' ') ||
+                   value.include?(':') ||
+                   value.include?('|') ||
+                   value.include?(';') ||
+                   value.include?('"') ||
+                   value.include?("'") ||
+                   value.start_with?('[') ||
+                   value.start_with?('!')
+
+    if needs_quotes
+      # Use double quotes, escape internal quotes
+      if value.include?('"') && !value.include?("'")
+        "'#{value}'"
+      else
+        "\"#{value.gsub('"', '\\"')}\""
+      end
+    else
+      value
+    end
+  end
+
+  def sanitize_class(class_name)
+    # UDON class names should be valid identifiers
+    # Replace invalid characters with hyphens
+    class_name.gsub(/[^a-zA-Z0-9_-]/, '-')
+  end
+
+  def escape_prose(text)
+    # Escape UDON special prefixes at line start
+    if text.start_with?('|', ':', '!', ';', "'")
+      "'" + text
+    else
+      text
+    end
+  end
+
+  # Escape text for inline/embedded context
+  # Need to handle } which closes embedded elements
+  def escape_prose_inline(text)
+    # For now, if text contains }, we may need to quote it
+    # But typically prose won't have unbalanced braces
+    text
+  end
+end
+
+# CLI interface
+if __FILE__ == $PROGRAM_NAME
+  options = {
+    format: :html,
+    output: nil,
+    comments: true,
+    preserve_whitespace: false
+  }
+
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: #{$PROGRAM_NAME} [options] [input_file]"
+    opts.separator ""
+    opts.separator "Convert XML/HTML to UDON notation"
+    opts.separator ""
+    opts.separator "Options:"
+
+    opts.on("-f", "--format FORMAT", [:html, :xml],
+            "Input format: html (default) or xml") do |f|
+      options[:format] = f
+    end
+
+    opts.on("-o", "--output FILE", "Output file (default: stdout)") do |f|
+      options[:output] = f
+    end
+
+    opts.on("--no-comments", "Exclude comments from output") do
+      options[:comments] = false
+    end
+
+    opts.on("-p", "--preserve-whitespace", "Preserve whitespace in text nodes") do
+      options[:preserve_whitespace] = true
+    end
+
+    opts.on("-h", "--help", "Show this help") do
+      puts opts
+      exit
+    end
+  end
+
+  parser.parse!
+
+  # Read input
+  input = if ARGV.empty?
+    $stdin.read
+  else
+    File.read(ARGV[0])
+  end
+
+  # Convert
+  converter = XmlToUdon.new(options)
+  result = converter.convert(input, format: options[:format])
+
+  # Output
+  if options[:output]
+    File.write(options[:output], result + "\n")
+    $stderr.puts "Written to #{options[:output]}"
+  else
+    puts result
+  end
+end

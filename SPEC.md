@@ -158,6 +158,48 @@ Multiple elements on one line nest rightward:
 |a |b |c        ; Equivalent to |a containing |b containing |c
 ```
 
+### Column-Aligned Siblings
+
+When a subsequent line places an element at the same column as a previous inline element, they become siblings (children of the same parent):
+
+```
+|table |tr |td A1
+           |td A2       ; same column as |td A1 → sibling (both children of |tr)
+       |tr |td B1       ; same column as first |tr → sibling (both children of |table)
+           |td B2
+  |caption Table 1      ; indented from |table → child of |table
+```
+
+The column position determines ancestry: an element becomes a child of whichever element "owns" that column based on the nesting established above it.
+
+### Embedded Elements
+
+For inline elements within prose, use the embedded form `|{...}`:
+
+```
+|p This paragraph has |{em emphasized text} and |{a :href /foo a link} inline.
+```
+
+The embedded element:
+- Starts with `|{`
+- Contains element name, optional id/classes, optional attributes, and content
+- Closes with `}`
+- Becomes a child of the containing element (sibling to surrounding text)
+
+Multiple embedded elements are siblings:
+
+```
+|nav |{a :href / Home} |{a :href /about About} |{a :href /contact Contact}
+```
+
+Embedded form is also useful for complex inline structures:
+
+```
+|p See |{a :href /doc the |{em official} documentation} for details.
+```
+
+Here `|{em official}` is nested inside `|{a ...}`.
+
 ---
 
 ## Prose Content
@@ -185,6 +227,16 @@ Any line not starting with a prefix is prose belonging to the parent:
 ```
 
 Since `;` is the comment delimiter, `#` has no special meaning in prose. Markdown flows naturally.
+
+Embedded elements can appear within prose using `|{...}`:
+
+```
+|article
+  :author Joseph
+
+  This paragraph contains |{em emphasized text} and
+  |{a :href /reference a reference link} inline with the prose.
+```
 
 ---
 
@@ -448,6 +500,13 @@ name          = LABEL ;
 id            = "[" LABEL "]" ;
 class         = "." LABEL ;
 suffix        = "?" | "!" | "*" | "+" ;
+inline_child  = element | embedded_element | inline_text ;
+inline_text   = { CHAR - NEWLINE - "|{" }+ ;
+
+; Embedded elements (for inline use in prose)
+embedded_element = "|{" [ name ] [ id ] { class }* { attribute }*
+                   { embedded_content }* "}" ;
+embedded_content = embedded_element | { CHAR - "|{" - "}" }+ ;
 
 ; Attributes with typed values
 attribute     = ":" LABEL [ value ] ;

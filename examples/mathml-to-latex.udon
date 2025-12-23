@@ -1,0 +1,2035 @@
+|stylesheet :version 1.0
+  ; Copyright (C) 2001, 2002 Vasil Yaroshevich
+  ; 
+  ; Modified Fabian Seoane 2007 for sympy
+  |output :method text :indent no :encoding UTF-8
+  ; ======================================================================
+  ; $id: mmltex.xsl, 2002/22/11 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  ; Note: variables colora (template color) and symbola (template startspace) only for Sablotron
+  |template :name startspace
+    |param :name symbol
+    |if :test "contains($symbol,' ')"
+      |variable :name symbola :select "concat(substring-before($symbol,' '),substring-after($symbol,' '))"
+      |call-template :name startspace |{with-param :name symbol :select $symbola}
+    |if :test "not(contains($symbol,' '))" |{value-of :select $symbol}
+  |strip-space :elements "m:*"
+  |template :match "m:math" |{text $} |{apply-templates} |{text $}
+  ; ======================================================================
+  ; $id: tokens.xsl, 2002/22/11 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  ; 4.4.1.1 cn
+  |template :match "m:cn" |{apply-templates}
+  |template :match "m:cn[@type='complex-cartesian']" |{apply-templates :select text()[1]} |{text +} |{apply-templates :select text()[2]} |{text i}
+  |template :match "m:cn[@type='rational']" |{apply-templates :select text()[1]} |{text /} |{apply-templates :select text()[2]}
+  |template :match "m:cn[@type='integer' and @base!=10]" |{apply-templates} |{text _{} |{value-of :select @base} |{text }}
+  |template :match "m:cn[@type='complex-polar']" |{apply-templates :select text()[1]} |{text e^{i} |{apply-templates :select text()[2]} |{text }}
+  |template :match "m:cn[@type='e-notation']" |{apply-templates :select text()[1]} |{text E} |{apply-templates :select text()[2]}
+  ; 4.4.1.1 ci 4.4.1.2 csymbol
+  |template :match "m:ci | m:csymbol"
+    |choose
+      |when :test string-length(normalize-space(text()))>1 |{text \mathrm{} |{apply-templates} |{text }}
+      |otherwise |{apply-templates}
+  ; 4.4.2.1 apply 4.4.2.2 reln
+  |template :match "m:apply | m:reln"
+    |apply-templates :select *[1]
+      ; <?
+      |with-param :name p :select 10
+    ; ?>
+    |text (
+    |for-each :select *[position()>1] |{apply-templates :select .} |{if :test not(position()=last()) |{text ,}}
+    |text )
+  ; 4.4.2.3 fn
+  |template :match "m:fn[m:apply[1]]"
+    ; for m:fn using default rule
+    |text (
+    |apply-templates
+    |text )
+  ; 4.4.2.4 interval
+  |template :match "m:interval[*[2]]"
+    |choose
+      |when :test "@closure='open' or @closure='open-closed'" |{text \left(}
+      |otherwise |{text \left[}
+    |apply-templates :select *[1]
+    |text ,
+    |apply-templates :select *[2]
+    |choose
+      |when :test "@closure='open' or @closure='closed-open'" |{text \right)}
+      |otherwise |{text \right]}
+  |template :match "m:interval" |{text \left\{} |{apply-templates} |{text \right\}}
+  ; 4.4.2.5 inverse
+  |template :match "m:apply[*[1][self::m:inverse]]" |{apply-templates :select *[2]} |{text ^{(-1)}}
+  ; 4.4.2.6 sep 4.4.2.7 condition
+  |template :match "m:sep | m:condition" |{apply-templates}
+  ; 4.4.2.9 lambda
+  |template :match "m:lambda"
+    |text \mathrm{lambda}\:
+    |apply-templates :select "m:bvar/*"
+    |text .\:
+    |apply-templates :select *[last()]
+  ; 4.4.2.10 compose
+  |template :match "m:apply[*[1][self::m:compose]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo \circ}
+  ; 4.4.2.11 ident
+  |template :match "m:ident" |{text \mathrm{id}}
+  ; 4.4.2.12 domain 4.4.2.13 codomain 4.4.2.14 image 4.4.3.21 arg 4.4.3.24 lcm
+  ; 4.4.5.9 grad 4.4.5.10 curl 4.4.9.4 median 4.4.9.5 mode
+  |template :match "m:domain | m:codomain | m:image | m:arg | m:lcm | m:grad |          m:curl | m:median | m:mode" |{text \mathop{\mathrm{} |{value-of :select local-name()} |{text }}}
+  ; 4.4.2.15 domainofapplication
+  |template :match "m:domainofapplication"
+  ; 4.4.2.16 piecewise
+  |template :match "m:piecewise"
+    |text \begin{cases}
+    |apply-templates :select "m:piece"
+    |apply-templates :select "m:otherwise"
+    |text \end{cases}
+  |template :match "m:piece"
+    |apply-templates :select *[1]
+    |text & \text{if $
+    |apply-templates :select *[2]
+    |text $}
+    |if :test "not(position()=last()) or ../m:otherwise" |{text \\}
+  |template :match "m:otherwise" |{apply-templates :select *[1]} |{text & \text{otherwise}}
+  ; 4.4.3.1 quotient
+  |template :match "m:apply[*[1][self::m:quotient]]"
+    |text \left\lfloor\frac{
+    |apply-templates :select *[2]
+    |text }{
+    |apply-templates :select *[3]
+    |text }\right\rfloor
+  ; 4.4.3.2 factorial
+  |template :match "m:apply[*[1][self::m:factorial]]" |{apply-templates :select *[2] |{with-param :name p :select 7}} |{text !}
+  ; 4.4.3.3 divide
+  |template :match "m:apply[*[1][self::m:divide]]"
+    |param :name p :select 0
+    |param :name this-p :select 3
+    |if :test "$this-p < $p" |{text \left(}
+    |text \frac{
+    |apply-templates :select *[2]
+    ; <xsl:with-param name="p" select="$this-p"/>
+    ; </xsl:apply-templates>
+    |text }{
+    |apply-templates :select *[3]
+    ; <xsl:with-param name="p" select="$this-p"/>
+    ; </xsl:apply-templates>
+    |text }
+    |if :test "$this-p < $p" |{text \right)}
+  ; 4.4.3.4 max min
+  |template :match "m:apply[*[1][self::m:max or self::m:min]]"
+    |text \
+    |value-of :select local-name(*[1])
+    |text \{
+    |choose
+      |when :test "m:condition" |{apply-templates :select *[last()]} |{text ,} |{apply-templates :select "m:condition/node()"}
+      |otherwise
+        |for-each :select "*[position() > 1]" |{apply-templates :select .} |{if :test "position() !=last()" |{text ,}}
+    |text \}
+  ; 4.4.3.5  minus
+  |template :match "m:apply[*[1][self::m:minus] and count(*)=2]" |{text -} |{apply-templates :select *[2] |{with-param :name p :select 5}}
+  |template :match "m:apply[*[1][self::m:minus] and count(*)>2]"
+    |param :name p :select 0
+    |call-template :name binary |{with-param :name mo -} |{with-param :name p :select $p} |{with-param :name this-p :select 2}
+  ; 4.4.3.6  plus
+  |template :match "m:apply[*[1][self::m:plus]]"
+    |param :name p :select 0
+    |if :test "$p > 2" |{text (}
+    |for-each :select *[position()>1]
+      |if :test "position() > 1"
+        |choose
+          |when :test "self::m:apply[*[1][self::m:times] and       *[2][self::m:apply/*[1][self::m:minus] or self::m:cn[not(m:sep) and       (number(.) < 0)]]]" -
+          |otherwise +
+      |choose
+        |when :test "self::m:apply[*[1][self::m:times] and       *[2][self::m:cn[not(m:sep) and (number(.) <0)]]]"
+          |value-of :select -(*[2])
+          |apply-templates :select . |{with-param :name first :select 2} |{with-param :name p :select 2}
+        |when :test "self::m:apply[*[1][self::m:times] and       *[2][self::m:apply/*[1][self::m:minus]]]"
+          |apply-templates :select ./*[2]/*[2]
+          |apply-templates :select . |{with-param :name first :select 2} |{with-param :name p :select 2}
+        |otherwise |{apply-templates :select . |{with-param :name p :select 2}}
+    |if :test "$p > 2" |{text )}
+  ; 4.4.3.7 power
+  |template :match "m:apply[*[1][self::m:power]]"
+    |apply-templates :select *[2] |{with-param :name p :select 5}
+    |text ^{
+    |apply-templates :select *[3] |{with-param :name p :select 5}
+    |text }
+  ; 4.4.3.8 remainder
+  |template :match "m:apply[*[1][self::m:rem]]"
+    |param :name p :select 0
+    |call-template :name binary |{with-param :name mo \mod} |{with-param :name p :select $p} |{with-param :name this-p :select 3}
+  ; 4.4.3.9  times
+  |template :match "m:apply[*[1][self::m:times]]" :name times
+    |param :name p :select 0
+    |param :name first :select 1
+    |if :test "$p > 3" |{text (}
+    |for-each :select *[position()>1]
+      |if :test "position() > 1"
+        |choose
+          |when :test "self::m:cn"
+            \times
+            ; times
+          |otherwise
+            ; invisible times
+      |if :test "position()>= $first" |{apply-templates :select . |{with-param :name p :select 3}}
+    |if :test "$p > 3" |{text )}
+  ; 4.4.3.10 root
+  |template :match "m:apply[*[1][self::m:root]]"
+    |text \sqrt
+    |if :test "m:degree!=2" |{text [} |{apply-templates :select "m:degree/*"} |{text ]}
+    |text {
+    |apply-templates :select "*[position()>1 and not(self::m:degree)]"
+    |text }
+  ; 4.4.3.11 gcd
+  |template :match "m:gcd" |{text \gcd}
+  ; 4.4.3.12 and
+  |template :match "m:apply[*[1][self::m:and]]"
+    |param :name p :select 0
+    |call-template :name infix
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo
+        \land
+        ; and
+  ; 4.4.3.13 or
+  |template :match "m:apply[*[1][self::m:or]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 3} |{with-param :name p :select $p} |{with-param :name mo \lor}
+  ; 4.4.3.14 xor
+  |template :match "m:apply[*[1][self::m:xor]]"
+    |param :name p :select 0
+    |call-template :name infix
+      |with-param :name this-p :select 3
+      |with-param :name p :select $p
+      |with-param :name mo \mathop{\mathrm{xor}}
+  ; 4.4.3.15 not
+  |template :match "m:apply[*[1][self::m:not]]" |{text \neg} |{apply-templates :select *[2] |{with-param :name p :select 7}}
+  ; 4.4.3.16 implies
+  |template :match "m:apply[*[1][self::m:implies]]"
+    |param :name p :select 0
+    |call-template :name binary
+      |with-param :name mo \implies
+      |with-param :name p :select $p
+      |with-param :name this-p :select 3
+  ; 4.4.3.17 forall 4.4.3.18 exists
+  |template :match "m:apply[*[1][self::m:forall or self::m:exists]]"
+    |text \
+    |value-of :select local-name(*[1])
+    |text
+    |apply-templates :select "m:bvar"
+    |if :test "m:condition" |{text ,} |{apply-templates :select "m:condition"}
+    |if :test "*[last()][local-name()!='condition'][local-name()!='bvar']" |{text \colon} |{apply-templates :select *[last()]}
+  ; 4.4.3.19 abs
+  |template :match "m:apply[*[1][self::m:abs]]" |{text \left|} |{apply-templates :select *[2]} |{text \right|}
+  ; 4.4.3.20 conjugate
+  |template :match "m:apply[*[1][self::m:conjugate]]" |{text \overline{} |{apply-templates :select *[2]} |{text }}
+  ; 4.4.3.22 real
+  |template :match "m:real" |{text \Re}
+  ; 4.4.3.23 imaginary
+  |template :match "m:imaginary" |{text \Im}
+  ; 4.4.3.25 floor
+  |template :match "m:apply[*[1][self::m:floor]]" |{text \left\lfloor} |{apply-templates :select *[2]} |{text \right\rfloor}
+  ; 4.4.3.25 ceiling
+  |template :match "m:apply[*[1][self::m:ceiling]]" |{text \left\lceil} |{apply-templates :select *[2]} |{text \right\rceil}
+  ; 4.4.4.1 eq
+  |template :match "m:apply[*[1][self::m:eq]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo =}
+  ; 4.4.4.2 neq
+  |template :match "m:apply[*[1][self::m:neq]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo \neq}
+  ; 4.4.4.3 gt
+  |template :match "m:apply[*[1][self::m:gt]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo >}
+  ; 4.4.4.4 lt
+  |template :match "m:apply[*[1][self::m:lt]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo <}
+  ; 4.4.4.5 geq
+  |template :match "m:apply[*[1][self::m:geq]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo \ge}
+  ; 4.4.4.6 leq
+  |template :match "m:apply[*[1][self::m:leq]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo \le}
+  ; 4.4.4.7 equivalent
+  |template :match "m:apply[*[1][self::m:equivalent]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 1} |{with-param :name p :select $p} |{with-param :name mo \equiv}
+  ; 4.4.4.8 approx
+  |template :match "m:apply[*[1][self::m:approx]]"
+    |param :name p :select 0
+    |call-template :name infix
+      |with-param :name this-p :select 1
+      |with-param :name p :select $p
+      |with-param :name mo \approx
+  ; 4.4.4.9 factorof
+  |template :match "m:apply[*[1][self::m:factorof]]"
+    |param :name p :select 0
+    |call-template :name binary |{with-param :name mo |} |{with-param :name p :select $p} |{with-param :name this-p :select 3}
+  ; 4.4.5.1 int
+  |template :match "m:apply[*[1][self::m:int]]"
+    |text \int
+    |if :test "m:lowlimit/*|m:interval/*[1]|m:condition/*" |{text _{} |{apply-templates :select "m:lowlimit/*|m:interval/*[1]|m:condition/*"} |{text }}
+    |if :test "m:uplimit/*|m:interval/*[2]" |{text ^{} |{apply-templates :select "m:uplimit/*|m:interval/*[2]"} |{text }}
+    |text
+    |apply-templates :select *[last()]
+    |text \,d
+    |apply-templates :select "m:bvar"
+  ; 4.4.5.2 diff
+  |template :match "m:apply[*[1][self::m:diff] and m:ci and count(*)=2]" :priority 2 |{apply-templates :select *[2]} |{text ^\prime}
+  |template :match "m:apply[*[1][self::m:diff]]" :priority 1
+    |text \frac{
+    |choose
+      |when :test "m:bvar/m:degree"
+        |text d^{
+        |apply-templates :select "m:bvar/m:degree/node()"
+        |text }
+        |apply-templates :select *[last()]
+        |text }{d
+        |apply-templates :select "m:bvar/node()"
+        |text ^{
+        |apply-templates :select "m:bvar/m:degree/node()"
+        |text }
+      |otherwise
+        |text d
+        |apply-templates :select *[last()]
+        |text }{d
+        |apply-templates :select "m:bvar"
+        |text }
+    |text }
+  ; 4.4.5.3 partialdiff
+  |template :match "m:apply[*[1][self::m:partialdiff] and m:list and m:ci and count(*)=3]" :priority 2
+    |text D_{
+    |for-each :select "m:list[1]/*" |{apply-templates :select .} |{if :test position()<last() |{text ,}}
+    |text }
+    |apply-templates :select *[3]
+  |template :match "m:apply[*[1][self::m:partialdiff]]" :priority 1
+    |text \frac{\partial^{
+    |choose
+      |when :test "m:degree" |{apply-templates :select "m:degree/node()"}
+      |when :test "m:bvar/m:degree[string(number(.))='NaN']"
+        |for-each :select "m:bvar/m:degree" |{apply-templates :select node()} |{if :test position()<last() |{text +}}
+        |if :test "count(m:bvar[not(m:degree)])>0" |{text +} |{value-of :select "count(m:bvar[not(m:degree)])"}
+      |otherwise |{value-of :select "sum(m:bvar/m:degree)+count(m:bvar[not(m:degree)])"}
+    |text }
+    |apply-templates :select *[last()]
+    |text }{
+    |for-each :select "m:bvar"
+      |text \partial
+      |apply-templates :select node()
+      |if :test "m:degree" |{text ^{} |{apply-templates :select "m:degree/node()"} |{text }}
+    |text }
+  ; 4.4.2.8 declare 4.4.5.4 lowlimit 4.4.5.5 uplimit 4.4.5.7 degree 4.4.9.5 momentabout
+  |template :match "m:declare | m:lowlimit | m:uplimit | m:degree | m:momentabout"
+  ; 4.4.5.6  bvar
+  |template :match "m:bvar" |{apply-templates} |{if :test "following-sibling::m:bvar" |{text ,}}
+  ; 4.4.5.8 divergence
+  |template :match "m:divergence" |{text \mathop{\mathrm{div}}}
+  ; 4.4.5.11 laplacian
+  |template :match "m:laplacian" |{text \nabla^2}
+  ; 4.4.6.1 set
+  |template :match "m:set" |{text \{} |{call-template :name set} |{text \}}
+  ; 4.4.6.2 list
+  |template :match "m:list" |{text \left[} |{call-template :name set} |{text \right]}
+  |template :name set
+    |choose
+      |when :test "m:condition"
+        |apply-templates :select "m:bvar/*[not(self::bvar or self::condition)]"
+        |text \colon
+        |apply-templates :select "m:condition/node()"
+      |otherwise |{for-each :select * |{apply-templates :select .} |{if :test position()!=last() |{text ,}}}
+  ; 4.4.6.3 union
+  |template :match "m:apply[*[1][self::m:union]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 2} |{with-param :name p :select $p} |{with-param :name mo \cup}
+  ; 4.4.6.4 intersect
+  |template :match "m:apply[*[1][self::m:intersect]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 3} |{with-param :name p :select $p} |{with-param :name mo \cap}
+  ; 4.4.6.5 in
+  |template :match "m:apply[*[1][self::m:in]]"
+    |param :name p :select 0
+    |call-template :name binary |{with-param :name mo \in} |{with-param :name p :select $p} |{with-param :name this-p :select 3}
+  ; 4.4.6.5 notin
+  |template :match "m:apply[*[1][self::m:notin]]"
+    |param :name p :select 0
+    |call-template :name binary |{with-param :name mo \notin} |{with-param :name p :select $p} |{with-param :name this-p :select 3}
+  ; 4.4.6.7 subset
+  |template :match "m:apply[*[1][self::m:subset]]"
+    |param :name p :select 0
+    |call-template :name infix
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo \subseteq
+  ; 4.4.6.8 prsubset
+  |template :match "m:apply[*[1][self::m:prsubset]]"
+    |param :name p :select 0
+    |call-template :name infix
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo \subset
+  ; 4.4.6.9 notsubset
+  |template :match "m:apply[*[1][self::m:notsubset]]"
+    |param :name p :select 0
+    |call-template :name binary
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo \nsubseteq
+  ; 4.4.6.10 notprsubset
+  |template :match "m:apply[*[1][self::m:notprsubset]]"
+    |param :name p :select 0
+    |call-template :name binary
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo \not\subset
+  ; 4.4.6.11 setdiff
+  |template :match "m:apply[*[1][self::m:setdiff]]"
+    |param :name p :select 0
+    |call-template :name binary
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo \setminus
+  ; 4.4.6.12 card
+  |template :match "m:apply[*[1][self::m:card]]" |{text |} |{apply-templates :select *[2]} |{text |}
+  ; 4.4.6.13 cartesianproduct 4.4.10.6 vectorproduct
+  |template :match "m:apply[*[1][self::m:cartesianproduct or self::m:vectorproduct]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 2} |{with-param :name p :select $p} |{with-param :name mo \times}
+  |template :match "m:apply[*[1][self::m:cartesianproduct][count(following-sibling::m:reals)=count(following-sibling::*)]]" :priority 2
+    |apply-templates :select *[2] |{with-param :name p :select 5}
+    |text ^{
+    |value-of :select count(*)-1
+    |text }
+  ; 4.4.7.1 sum
+  |template :match "m:apply[*[1][self::m:sum]]" |{text \sum} |{call-template :name series}
+  ; 4.4.7.2 product
+  |template :match "m:apply[*[1][self::m:product]]" |{text \prod} |{call-template :name series}
+  |template :name series
+    |if :test "m:lowlimit/*|m:interval/*[1]|m:condition/*"
+      |text _{
+      |if :test "not(m:condition)" |{apply-templates :select "m:bvar"} |{text =}
+      |apply-templates :select "m:lowlimit/*|m:interval/*[1]|m:condition/*"
+      |text }
+    |if :test "m:uplimit/*|m:interval/*[2]" |{text ^{} |{apply-templates :select "m:uplimit/*|m:interval/*[2]"} |{text }}
+    |text
+    |apply-templates :select *[last()]
+  ; 4.4.7.3 limit
+  |template :match "m:apply[*[1][self::m:limit]]"
+    |text \lim_{
+    |apply-templates :select "m:lowlimit|m:condition/*"
+    |text }
+    |apply-templates :select *[last()]
+  |template :match "m:apply[m:limit]/m:lowlimit" :priority 3 |{apply-templates :select "../m:bvar/node()"} |{text \to} |{apply-templates}
+  ; 4.4.7.4 tendsto
+  |template :match "m:apply[*[1][self::m:tendsto]]"
+    |param :name p
+    |call-template :name binary
+      |with-param :name this-p :select 2
+      |with-param :name p :select $p
+      |with-param :name mo
+        |choose
+          |when :test "@type='above'" \searrow
+          |when :test "@type='below'" \nearrow
+          |when :test "@type='two-sided'" \rightarrow
+          |otherwise \to
+  ; 4.4.8.1 common tringonometric functions 4.4.8.3 natural logarithm
+  |template :match "m:apply[*[1][  self::m:sin or   self::m:cos or  self::m:tan or  self::m:sec or  self::m:csc or   self::m:cot or  self::m:sinh or   self::m:cosh or  self::m:tanh or   self::m:coth or self::m:arcsin or  self::m:arccos or  self::m:arctan or  self::m:ln]]"
+    |text \
+    |value-of :select local-name(*[1])
+    |text
+    |apply-templates :select *[2] |{with-param :name p :select 7}
+  |template :match "m:sin | m:cos | m:tan | m:sec | m:csc |          m:cot | m:sinh | m:cosh | m:tanh | m:coth |          m:arcsin | m:arccos | m:arctan | m:ln" |{text \} |{value-of :select local-name(.)} |{text}
+  |template :match "m:apply[*[1][  self::m:sech or   self::m:csch or  self::m:arccosh or  self::m:arccot or  self::m:arccoth or  self::m:arccsc or  self::m:arccsch or self::m:arcsec or  self::m:arcsech or  self::m:arcsinh or self::m:arctanh]]"
+    |text \mathrm{
+    |value-of :select local-name(*[1])
+    |text \,}
+    |apply-templates :select *[2] |{with-param :name p :select 7}
+  |template :match "m:sech | m:csch | m:arccosh | m:arccot |          m:arccoth | m:arccsc |m:arccsch |m:arcsec |          m:arcsech | m:arcsinh | m:arctanh" |{text \mathrm{} |{value-of :select local-name(.)} |{text }}
+  ; 4.4.8.2 exp
+  |template :match "m:apply[*[1][self::m:exp]]" |{text e^{} |{apply-templates :select *[2]} |{text }}
+  ; 4.4.8.4 log
+  |template :match "m:apply[*[1][self::m:log]]" |{text \lg} |{apply-templates :select *[last()] |{with-param :name p :select 7}}
+  |template :match "m:apply[*[1][self::m:log] and m:logbase != 10]"
+    |text \log_{
+    |apply-templates :select "m:logbase/node()"
+    |text }
+    |apply-templates :select *[last()] |{with-param :name p :select 7}
+  ; 4.4.9.1 mean
+  |template :match "m:apply[*[1][self::m:mean]]"
+    |text \left\langle
+    |for-each :select *[position()>1] |{apply-templates :select .} |{if :test "position() !=last()" |{text ,}}
+    |text \right\rangle
+  ; 4.4.9.2 sdef
+  |template :match "m:sdev" |{text \sigma}
+  ; 4.4.9.3 variance
+  |template :match "m:apply[*[1][self::m:variance]]" |{text \sigma(} |{apply-templates :select *[2]} |{text )^2}
+  ; 4.4.9.5 moment
+  |template :match "m:apply[*[1][self::m:moment]]"
+    |text \left\langle
+    |apply-templates :select *[last()]
+    |text ^{
+    |apply-templates :select "m:degree/node()"
+    |text }\right\rangle
+    |if :test "m:momentabout" |{text _{} |{apply-templates :select "m:momentabout/node()"} |{text }}
+    |text
+  ; 4.4.10.1 vector
+  |template :match "m:vector"
+    |text \left(\begin{array}{c}
+    |for-each :select * |{apply-templates :select .} |{if :test position()!=last() |{text \\}}
+    |text \end{array}\right)
+  ; 4.4.10.2 matrix
+  |template :match "m:matrix" |{text \begin{pmatrix}} |{apply-templates} |{text \end{pmatrix}}
+  ; 4.4.10.3 matrixrow
+  |template :match "m:matrixrow"
+    |for-each :select * |{apply-templates :select .} |{if :test position()!=last() |{text &}}
+    |if :test position()!=last() |{text \\}
+  ; 4.4.10.4 determinant
+  |template :match "m:apply[*[1][self::m:determinant]]" |{text \det} |{apply-templates :select *[2] |{with-param :name p :select 7}}
+  |template :match "m:apply[*[1][self::m:determinant]][*[2][self::m:matrix]]" :priority 2 |{text \begin{vmatrix}} |{apply-templates :select "m:matrix/*"} |{text \end{vmatrix}}
+  ; 4.4.10.5 transpose
+  |template :match "m:apply[*[1][self::m:transpose]]" |{apply-templates :select *[2] |{with-param :name p :select 7}} |{text ^T}
+  ; 4.4.10.5 selector
+  |template :match "m:apply[*[1][self::m:selector]]"
+    |apply-templates :select *[2] |{with-param :name p :select 7}
+    |text _{
+    |for-each :select *[position()>2] |{apply-templates :select .} |{if :test "position() !=last()" |{text ,}}
+    |text }
+  ; 4.4.10.7 scalarproduct 4.4.10.8 outerproduct
+  |template :match "m:apply[*[1][self::m:scalarproduct or self::m:outerproduct]]"
+    |param :name p :select 0
+    |call-template :name infix |{with-param :name this-p :select 2} |{with-param :name p :select $p} |{with-param :name mo \dot}
+  ; 4.4.11.2 semantics
+  |template :match "m:semantics" |{apply-templates :select *[1]}
+  |template :match "m:semantics[m:annotation/@encoding='TeX']" |{apply-templates :select "m:annotation[@encoding='TeX']/node()"}
+  ; 4.4.12.1 integers
+  |template :match "m:integers" |{text \mathbb{Z}}
+  ; 4.4.12.2 reals
+  |template :match "m:reals" |{text \mathbb{R}}
+  ; 4.4.12.3 rationals
+  |template :match "m:rationals" |{text \mathbb{Q}}
+  ; 4.4.12.4 naturalnumbers
+  |template :match "m:naturalnumbers" |{text \mathbb{N}}
+  ; 4.4.12.5 complexes
+  |template :match "m:complexes" |{text \mathbb{C}}
+  ; 4.4.12.6 primes
+  |template :match "m:primes" |{text \mathbb{P}}
+  ; 4.4.12.7 exponentiale
+  |template :match "m:exponentiale" |{text e}
+  ; 4.4.12.8 imaginaryi
+  |template :match "m:imaginaryi" |{text i}
+  ; 4.4.12.9 notanumber
+  |template :match "m:notanumber" |{text NaN}
+  ; 4.4.12.10 true
+  |template :match "m:true" |{text \mbox{true}}
+  ; 4.4.12.11 false
+  |template :match "m:false" |{text \mbox{false}}
+  ; 4.4.12.12 emptyset
+  |template :match "m:emptyset" |{text \emptyset}
+  ; 4.4.12.13 pi
+  |template :match "m:pi" |{text \pi}
+  ; 4.4.12.14 eulergamma
+  |template :match "m:eulergamma" |{text \gamma}
+  ; 4.4.12.15 infinity
+  |template :match "m:infinity" |{text \infty}
+  ; ******************************
+  |template :name infix
+    |param :name mo
+    |param :name p :select 0
+    |param :name this-p :select 0
+    |if :test "$this-p < $p" |{text (}
+    |for-each :select *[position()>1]
+      |if :test "position() > 1" |{copy-of :select $mo}
+      |apply-templates :select . |{with-param :name p :select $this-p}
+    |if :test "$this-p < $p" |{text )}
+  |template :name binary
+    |param :name mo
+    |param :name p :select 0
+    |param :name this-p :select 0
+    |if :test "$this-p < $p" |{text (}
+    |apply-templates :select *[2] |{with-param :name p :select $this-p}
+    |value-of :select $mo
+    |apply-templates :select *[3] |{with-param :name p :select $this-p}
+    |if :test "$this-p < $p" |{text )}
+  ; ======================================================================
+  ; $id: entities.xsl, 2002/22/11 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  |template :name replaceEntities
+    |param :name content
+    |if :test string-length($content)>0
+      |choose
+        |when :test "starts-with($content,'ɛ')"
+          |value-of :select "'\varepsilon '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ɛ')"}
+        ; /varepsilon
+        ; ======================================================================
+        ; Unicode 3.2
+        ; Greek
+        ; Range: 0370-03FF
+        ; http://www.unicode.org/charts/PDF/U0370.pdf
+        ; ======================================================================
+        |when :test "starts-with($content,'Γ')"
+          |value-of :select "'\Gamma '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Γ')"}
+        ; /Gamma capital Gamma, Greek
+        |when :test "starts-with($content,'Δ')"
+          |value-of :select "'\Delta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Δ')"}
+        ; /Delta capital Delta, Greek
+        |when :test "starts-with($content,'Θ')"
+          |value-of :select "'\Theta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Θ')"}
+        ; /Theta capital Theta, Greek
+        |when :test "starts-with($content,'Λ')"
+          |value-of :select "'\Lambda '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Λ')"}
+        ; /Lambda capital Lambda, Greek
+        |when :test "starts-with($content,'Ξ')"
+          |value-of :select "'\Xi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Ξ')"}
+        ; /Xi capital Xi, Greek
+        |when :test "starts-with($content,'Π')"
+          |value-of :select "'\Pi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Π')"}
+        ; /Pi capital Pi, Greek
+        |when :test "starts-with($content,'Σ')"
+          |value-of :select "'\Sigma '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Σ')"}
+        ; /Sigma capital Sigma, Greek
+        |when :test "starts-with($content,'Φ')"
+          |value-of :select "'\Phi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Φ')"}
+        ; /Phi capital Phi, Greek
+        |when :test "starts-with($content,'Ψ')"
+          |value-of :select "'\Psi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Ψ')"}
+        ; /Psi capital Psi, Greek
+        |when :test "starts-with($content,'Ω')"
+          |value-of :select "'\Omega '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'Ω')"}
+        ; /Omega capital Omega, Greek
+        |when :test "starts-with($content,'α')"
+          |value-of :select "'\alpha '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'α')"}
+        ; /alpha small alpha, Greek
+        |when :test "starts-with($content,'β')"
+          |value-of :select "'\beta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'β')"}
+        ; /beta small beta, Greek
+        |when :test "starts-with($content,'γ')"
+          |value-of :select "'\gamma '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'γ')"}
+        ; /gamma small gamma, Greek
+        |when :test "starts-with($content,'δ')"
+          |value-of :select "'\delta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'δ')"}
+        ; /delta small delta, Greek
+        |when :test "starts-with($content,'ε')"
+          |value-of :select "'\epsilon '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ε')"}
+        ; /straightepsilon, small epsilon, Greek
+        |when :test "starts-with($content,'ζ')"
+          |value-of :select "'\zeta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ζ')"}
+        ; /zeta small zeta, Greek
+        |when :test "starts-with($content,'η')"
+          |value-of :select "'\eta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'η')"}
+        ; /eta small eta, Greek
+        |when :test "starts-with($content,'θ')"
+          |value-of :select "'\theta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'θ')"}
+        ; /theta straight theta, small theta, Greek
+        |when :test "starts-with($content,'ι')"
+          |value-of :select "'\iota '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ι')"}
+        ; /iota small iota, Greek
+        |when :test "starts-with($content,'κ')"
+          |value-of :select "'\kappa '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'κ')"}
+        ; /kappa small kappa, Greek
+        |when :test "starts-with($content,'λ')"
+          |value-of :select "'\lambda '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'λ')"}
+        ; /lambda small lambda, Greek
+        |when :test "starts-with($content,'μ')"
+          |value-of :select "'\mu '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'μ')"}
+        ; /mu small mu, Greek
+        |when :test "starts-with($content,'ν')"
+          |value-of :select "'\nu '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ν')"}
+        ; /nu small nu, Greek
+        |when :test "starts-with($content,'ξ')"
+          |value-of :select "'\xi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ξ')"}
+        ; /xi small xi, Greek
+        |when :test "starts-with($content,'π')"
+          |value-of :select "'\pi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'π')"}
+        ; /pi small pi, Greek
+        |when :test "starts-with($content,'ρ')"
+          |value-of :select "'\rho '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ρ')"}
+        ; /rho small rho, Greek
+        |when :test "starts-with($content,'ς')"
+          |value-of :select "'\varsigma '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ς')"}
+        ; /varsigma
+        |when :test "starts-with($content,'σ')"
+          |value-of :select "'\sigma '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'σ')"}
+        ; /sigma small sigma, Greek
+        |when :test "starts-with($content,'τ')"
+          |value-of :select "'\tau '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'τ')"}
+        ; /tau small tau, Greek
+        |when :test "starts-with($content,'υ')"
+          |value-of :select "'\upsilon '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'υ')"}
+        ; /upsilon small upsilon, Greek
+        |when :test "starts-with($content,'φ')"
+          |value-of :select "'\phi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'φ')"}
+        ; /straightphi - small phi, Greek
+        |when :test "starts-with($content,'χ')"
+          |value-of :select "'\chi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'χ')"}
+        ; /chi small chi, Greek
+        |when :test "starts-with($content,'ψ')"
+          |value-of :select "'\psi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ψ')"}
+        ; /psi small psi, Greek
+        |when :test "starts-with($content,'ω')"
+          |value-of :select "'\omega '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ω')"}
+        ; /omega small omega, Greek
+        |when :test "starts-with($content,'ϑ')"
+          |value-of :select "'\vartheta '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϑ')"}
+        ; /vartheta - curly or open theta
+        |when :test "starts-with($content,'ϒ')"
+          |value-of :select "'\Upsilon '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϒ')"}
+        ; /Upsilon capital Upsilon, Greek
+        |when :test "starts-with($content,'ϕ')"
+          |value-of :select "'\varphi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϕ')"}
+        ; /varphi - curly or open phi
+        |when :test "starts-with($content,'ϖ')"
+          |value-of :select "'\varpi '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϖ')"}
+        ; /varpi
+        |when :test "starts-with($content,'ϰ')"
+          |value-of :select "'\varkappa '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϰ')"}
+        ; /varkappa
+        |when :test "starts-with($content,'ϱ')"
+          |value-of :select "'\varrho '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ϱ')"}
+        ; /varrho
+        ; ======================================================================
+        |when :test "starts-with($content,'​')"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '​')"}
+        ; short form of  &InvisibleComma;
+        |when :test "starts-with($content,'…')"
+          |value-of :select "'\dots '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '…')"}
+        |when :test "starts-with($content,'′')"
+          |value-of :select "'\prime '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '′')"}
+        ; /prime prime or minute
+        |when :test "starts-with($content,'⁡')"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⁡')"}
+        ; ApplyFunction
+        |when :test "starts-with($content,'⁢')"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⁢')"}
+        ; InvisibleTimes
+        ; ======================================================================
+        ; Unicode 3.2
+        ; Letterlike Symbols
+        ; Range: 2100-214F
+        ; http://www.unicode.org/charts/PDF/U2100.pdf
+        ; ======================================================================
+        |when :test "starts-with($content,'ℏ︀')"
+          |value-of :select "'\hbar '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℏ︀')"}
+        ; /hbar - Planck's over 2pi
+        |when :test "starts-with($content,'ℏ')"
+          |value-of :select "'\hslash '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℏ')"}
+        ; /hslash - variant Planck's over 2pi
+        ; Required amssymb
+        |when :test "starts-with($content,'ℑ')"
+          |value-of :select "'\Im '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℑ')"}
+        ; /Im - imaginary
+        |when :test "starts-with($content,'ℓ')"
+          |value-of :select "'\ell '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℓ')"}
+        ; /ell - cursive small l
+        |when :test "starts-with($content,'℘')"
+          |value-of :select "'\wp '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '℘')"}
+        ; /wp - Weierstrass p
+        |when :test "starts-with($content,'ℜ')"
+          |value-of :select "'\Re '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℜ')"}
+        ; /Re - real
+        |when :test "starts-with($content,'℧')"
+          |value-of :select "'\mho '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '℧')"}
+        ; /mho - conductance
+        |when :test "starts-with($content,'ℵ')"
+          |value-of :select "'\aleph '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℵ')"}
+        ; /aleph aleph, Hebrew
+        |when :test "starts-with($content,'ℶ')"
+          |value-of :select "'\beth '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℶ')"}
+        ; /beth - beth, Hebrew
+        ; Required amssymb
+        |when :test "starts-with($content,'ℷ')"
+          |value-of :select "'\gimel '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℷ')"}
+        ; /gimel - gimel, Hebrew
+        ; Required amssymb
+        |when :test "starts-with($content,'ℸ')"
+          |value-of :select "'\daleth '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ℸ')"}
+        ; /daleth - daleth, Hebrew
+        ; Required amssymb
+        |when :test "starts-with($content,'ⅅ')"
+          |value-of :select "'D'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ⅅ')"}
+        ; D for use in differentials, e.g., within integrals
+        |when :test "starts-with($content,'ⅆ')"
+          |value-of :select "'d'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ⅆ')"}
+        ; d for use in differentials, e.g., within integrals
+        |when :test "starts-with($content,'ⅇ')"
+          |value-of :select "'e'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ⅇ')"}
+        ; e use for the exponential base of the natural logarithms
+        |when :test "starts-with($content,'ⅈ')"
+          |value-of :select "'i'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, 'ⅈ')"}
+        ; i for use as a square root of -1
+        ; ======================================================================
+        |when :test "starts-with($content,'→')"
+          |value-of :select "'\to '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '→')"}
+        ; /rightarrow /to A: =rightward arrow
+        ; ======================================================================
+        ; Unicode 3.2
+        ; Mathematical Operators
+        ; Range: 2200-22FF
+        ; http://www.unicode.org/charts/PDF/U2200.pdf
+        ; ======================================================================
+        |when :test "starts-with($content,'∀')"
+          |value-of :select "'\forall '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∀')"}
+        ; /forall for all
+        |when :test "starts-with($content,'∁')"
+          |value-of :select "'\complement '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∁')"}
+        ; /complement - complement sign
+        ; Required amssymb
+        |when :test "starts-with($content,'∂')"
+          |value-of :select "'\partial '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∂')"}
+        ; /partial partial differential
+        |when :test "starts-with($content,'∃')"
+          |value-of :select "'\exists '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∃')"}
+        ; /exists at least one exists
+        |when :test "starts-with($content,'∄')"
+          |value-of :select "'\nexists '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∄')"}
+        ; /nexists - negated exists
+        ; Required amssymb
+        |when :test "starts-with($content,'∅︀')"
+          |value-of :select "'\emptyset '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∅︀')"}
+        ; /emptyset - zero, slash
+        |when :test "starts-with($content,'∅')"
+          |value-of :select "'\varnothing '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∅')"}
+        ; /varnothing - circle, slash
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x02206;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02206;')"/></xsl:call-template></xsl:when>
+        |when :test "starts-with($content,'∇')"
+          |value-of :select "'\nabla '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∇')"}
+        ; /nabla del, Hamilton operator
+        |when :test "starts-with($content,'∈')"
+          |value-of :select "'\in '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∈')"}
+        ; /in R: set membership
+        |when :test "starts-with($content,'∉')"
+          |value-of :select "'\notin '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∉')"}
+        ; /notin N: negated set membership
+        |when :test "starts-with($content,'∋')"
+          |value-of :select "'\ni '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∋')"}
+        ; /ni /owns R: contains
+        |when :test "starts-with($content,'∌')"
+          |value-of :select "'\not\ni '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∌')"}
+        ; negated contains
+        |when :test "starts-with($content,'∏')"
+          |value-of :select "'\prod '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∏')"}
+        ; /prod L: product operator
+        |when :test "starts-with($content,'∐')"
+          |value-of :select "'\coprod '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∐')"}
+        ; /coprod L: coproduct operator
+        |when :test "starts-with($content,'∑')"
+          |value-of :select "'\sum '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∑')"}
+        ; /sum L: summation operator
+        |when :test "starts-with($content,'−')"
+          |value-of :select "'-'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '−')"}
+        ; B: minus sign
+        |when :test "starts-with($content,'∓')"
+          |value-of :select "'\mp '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∓')"}
+        ; /mp B: minus-or-plus sign
+        |when :test "starts-with($content,'∔')"
+          |value-of :select "'\dotplus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∔')"}
+        ; /dotplus B: plus sign, dot above
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x02215;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02215;')"/></xsl:call-template></xsl:when>
+        |when :test "starts-with($content,'∖')"
+          |value-of :select "'\setminus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∖')"}
+        ; /setminus B: reverse solidus
+        |when :test "starts-with($content,'∗')"
+          |value-of :select "'\ast '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∗')"}
+        ; low asterisk
+        |when :test "starts-with($content,'∘')"
+          |value-of :select "'\circ '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∘')"}
+        ; /circ B: composite function (small circle)
+        |when :test "starts-with($content,'∙')"
+          |value-of :select "'\bullet '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∙')"}
+        |when :test "starts-with($content,'√')"
+          |value-of :select "'\surd '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '√')"}
+        ; /surd radical
+        |when :test "starts-with($content,'∝')"
+          |value-of :select "'\propto '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∝')"}
+        ; /propto R: is proportional to
+        |when :test "starts-with($content,'∞')"
+          |value-of :select "'\infty '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∞')"}
+        ; /infty infinity
+        ; <xsl:when test="starts-with($content,'&#x0221F;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0221F;')"/></xsl:call-template></xsl:when>		right (90 degree) angle
+        |when :test "starts-with($content,'∠')"
+          |value-of :select "'\angle '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∠')"}
+        ; /angle - angle
+        |when :test "starts-with($content,'∡')"
+          |value-of :select "'\measuredangle '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∡')"}
+        ; /measuredangle - angle-measured
+        ; Required amssymb
+        |when :test "starts-with($content,'∢')"
+          |value-of :select "'\sphericalangle '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∢')"}
+        ; /sphericalangle angle-spherical
+        ; Required amssymb
+        |when :test "starts-with($content,'∣')"
+          |value-of :select "'\mid '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∣')"}
+        ; /mid R:
+        |when :test "starts-with($content,'∤︀')"
+          |value-of :select "'\nshortmid '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∤︀')"}
+        ; /nshortmid
+        ; Required amssymb
+        |when :test "starts-with($content,'∤')"
+          |value-of :select "'\nmid '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∤')"}
+        ; /nmid
+        ; Required amssymb
+        |when :test "starts-with($content,'∥')"
+          |value-of :select "'\parallel '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∥')"}
+        ; /parallel R: parallel
+        |when :test "starts-with($content,'∦︀')"
+          |value-of :select "'\nshortparallel '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∦︀')"}
+        ; /nshortparallel N: not short par
+        ; Required amssymb
+        |when :test "starts-with($content,'∦')"
+          |value-of :select "'\nparallel '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∦')"}
+        ; /nparallel N: not parallel
+        ; Required amssymb
+        |when :test "starts-with($content,'∧')"
+          |value-of :select "'\wedge '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∧')"}
+        ; /wedge /land B: logical and
+        |when :test "starts-with($content,'∨')"
+          |value-of :select "'\vee '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∨')"}
+        ; /vee /lor B: logical or
+        |when :test "starts-with($content,'∩')"
+          |value-of :select "'\cap '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∩')"}
+        ; /cap B: intersection
+        |when :test "starts-with($content,'∪')"
+          |value-of :select "'\cup '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∪')"}
+        ; /cup B: union or logical sum
+        |when :test "starts-with($content,'∫')"
+          |value-of :select "'\int '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∫')"}
+        ; /int L: integral operator
+        |when :test "starts-with($content,'∬')"
+          |value-of :select "'\iint '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∬')"}
+        ; double integral operator
+        ; Required amsmath
+        |when :test "starts-with($content,'∭')"
+          |value-of :select "'\iiint '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∭')"}
+        ; /iiint triple integral operator
+        ; Required amsmath
+        |when :test "starts-with($content,'∮')"
+          |value-of :select "'\oint '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∮')"}
+        ; /oint L: contour integral operator
+        ; <xsl:when test="starts-with($content,'&#x0222F;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0222F;')"/></xsl:call-template></xsl:when>
+        ; <xsl:when test="starts-with($content,'&#x02230;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02230;')"/></xsl:call-template></xsl:when>
+        ; <xsl:when test="starts-with($content,'&#x02231;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02231;')"/></xsl:call-template></xsl:when>
+        ; <xsl:when test="starts-with($content,'&#x02232;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02232;')"/></xsl:call-template></xsl:when>
+        ; <xsl:when test="starts-with($content,'&#x02233;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02233;')"/></xsl:call-template></xsl:when>
+        |when :test "starts-with($content,'∴')"
+          |value-of :select "'\therefore '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∴')"}
+        ; /therefore R: therefore
+        ; Required amssymb
+        |when :test "starts-with($content,'∵')"
+          |value-of :select "'\because '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∵')"}
+        ; /because R: because
+        ; Required amssymb
+        ; ?
+        |when :test "starts-with($content,'∶')"
+          |value-of :select "':'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∶')"}
+        ; /ratio
+        ; ?
+        |when :test "starts-with($content,'∷')"
+          |value-of :select "'\colon\colon '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∷')"}
+        ; /Colon, two colons
+        ; ?
+        |when :test "starts-with($content,'∸')"
+          |value-of :select "'\dot{-}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∸')"}
+        ; /dotminus B: minus sign, dot above
+        ; <xsl:when test="starts-with($content,'&#x02239;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02239;')"/></xsl:call-template></xsl:when>
+        ; <xsl:when test="starts-with($content,'&#x0223A;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0223A;')"/></xsl:call-template></xsl:when>		minus with four dots, geometric properties
+        ; <xsl:when test="starts-with($content,'&#x0223B;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0223B;')"/></xsl:call-template></xsl:when>		homothetic
+        |when :test "starts-with($content,'∼')"
+          |value-of :select "'\sim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∼')"}
+        ; /sim R: similar
+        |when :test "starts-with($content,'∽')"
+          |value-of :select "'\backsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '∽')"}
+        ; /backsim R: reverse similar
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x0223E;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0223E;')"/></xsl:call-template></xsl:when>		most positive
+        ; <xsl:when test="starts-with($content,'&#x0223F;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0223F;')"/></xsl:call-template></xsl:when>		ac current
+        |when :test "starts-with($content,'≀')"
+          |value-of :select "'\wr '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≀')"}
+        ; /wr B: wreath product
+        |when :test "starts-with($content,'≁')"
+          |value-of :select "'\nsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≁')"}
+        ; /nsim N: not similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≂')"
+          |value-of :select "'\eqsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≂')"}
+        ; /esim R: equals, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≃')"
+          |value-of :select "'\simeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≃')"}
+        ; /simeq R: similar, equals
+        |when :test "starts-with($content,'≄')"
+          |value-of :select "'\not\simeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≄')"}
+        ; /nsimeq N: not similar, equals
+        |when :test "starts-with($content,'≅')"
+          |value-of :select "'\cong '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≅')"}
+        ; /cong R: congruent with
+        ; <xsl:when test="starts-with($content,'&#x02246;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02246;')"/></xsl:call-template></xsl:when>		similar, not equals
+        |when :test "starts-with($content,'≇')"
+          |value-of :select "'\ncong '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≇')"}
+        ; /ncong N: not congruent with
+        ; Required amssymb
+        |when :test "starts-with($content,'≈')"
+          |value-of :select "'\approx '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≈')"}
+        ; /approx R: approximate
+        ; <xsl:when test="starts-with($content,'&#x02249;&#x00338;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02249;&#x00338;')"/></xsl:call-template></xsl:when>	not, vert, approximate
+        |when :test "starts-with($content,'≉')"
+          |value-of :select "'\not\approx '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≉')"}
+        ; /napprox N: not approximate
+        |when :test "starts-with($content,'≊')"
+          |value-of :select "'\approxeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≊')"}
+        ; /approxeq R: approximate, equals
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x0224B;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0224B;')"/></xsl:call-template></xsl:when>		approximately identical to
+        ; <xsl:when test="starts-with($content,'&#x0224C;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0224C;')"/></xsl:call-template></xsl:when>		/backcong R: reverse congruent
+        |when :test "starts-with($content,'≍')"
+          |value-of :select "'\asymp '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≍')"}
+        ; /asymp R: asymptotically equal to
+        |when :test "starts-with($content,'≎')"
+          |value-of :select "'\Bumpeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≎')"}
+        ; /Bumpeq R: bumpy equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≏')"
+          |value-of :select "'\bumpeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≏')"}
+        ; /bumpeq R: bumpy equals, equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≐')"
+          |value-of :select "'\doteq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≐')"}
+        ; /doteq R: equals, single dot above
+        |when :test "starts-with($content,'≑')"
+          |value-of :select "'\doteqdot '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≑')"}
+        ; /doteqdot /Doteq R: eq, even dots
+        ; Required amssymb
+        |when :test "starts-with($content,'≒')"
+          |value-of :select "'\fallingdotseq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≒')"}
+        ; /fallingdotseq R: eq, falling dots
+        ; Required amssymb
+        |when :test "starts-with($content,'≓')"
+          |value-of :select "'\risingdotseq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≓')"}
+        ; /risingdotseq R: eq, rising dots
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x02254;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02254;')"/></xsl:call-template></xsl:when>		/coloneq R: colon, equals
+        ; <xsl:when test="starts-with($content,'&#x02255;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02255;')"/></xsl:call-template></xsl:when>		/eqcolon R: equals, colon
+        |when :test "starts-with($content,'≖')"
+          |value-of :select "'\eqcirc '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≖')"}
+        ; /eqcirc R: circle on equals sign
+        ; Required amssymb
+        |when :test "starts-with($content,'≗')"
+          |value-of :select "'\circeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≗')"}
+        ; /circeq R: circle, equals
+        ; Required amssymb
+        ; ?
+        |when :test "starts-with($content,'≘')"
+          |value-of :select "'\stackrel{\frown}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≘')"}
+        ; ?
+        |when :test "starts-with($content,'≙')"
+          |value-of :select "'\stackrel{\wedge}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≙')"}
+        ; /wedgeq R: corresponds to (wedge, equals)
+        ; ?
+        |when :test "starts-with($content,'≚')"
+          |value-of :select "'\stackrel{\vee}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≚')"}
+        ; logical or, equals
+        ; ?
+        |when :test "starts-with($content,'≛')"
+          |value-of :select "'\stackrel{\star}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≛')"}
+        ; equal, asterisk above
+        |when :test "starts-with($content,'≜')"
+          |value-of :select "'\triangleq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≜')"}
+        ; /triangleq R: triangle, equals
+        ; Required amssymb
+        ; ?
+        |when :test "starts-with($content,'≝')"
+          |value-of :select "'\stackrel{\scriptscriptstyle\mathrm{def}}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≝')"}
+        ; ?
+        |when :test "starts-with($content,'≞')"
+          |value-of :select "'\stackrel{\scriptscriptstyle\mathrm{m}}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≞')"}
+        ; ?
+        |when :test "starts-with($content,'≟')"
+          |value-of :select "'\stackrel{?}{=}'"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≟')"}
+        ; /questeq R: equal with questionmark
+        ; <xsl:when test="starts-with($content,'&#x02260;&#x0FE00;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02260;&#x0FE00;')"/></xsl:call-template></xsl:when>	not equal, dot
+        |when :test "starts-with($content,'≠')"
+          |value-of :select "'\ne '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≠')"}
+        ; /ne /neq R: not equal
+        ; <xsl:when test="starts-with($content,'&#x02261;&#x020E5;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02261;&#x020E5;')"/></xsl:call-template></xsl:when>	reverse not equivalent
+        |when :test "starts-with($content,'≡')"
+          |value-of :select "'\equiv '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≡')"}
+        ; /equiv R: identical with
+        |when :test "starts-with($content,'≢')"
+          |value-of :select "'\not\equiv '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≢')"}
+        ; /nequiv N: not identical with
+        ; <xsl:when test="starts-with($content,'&#x02263;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x02263;')"/></xsl:call-template></xsl:when>
+        |when :test "starts-with($content,'≤')"
+          |value-of :select "'\le '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≤')"}
+        ; /leq /le R: less-than-or-equal
+        |when :test "starts-with($content,'≥')"
+          |value-of :select "'\ge '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≥')"}
+        ; /geq /ge R: greater-than-or-equal
+        |when :test "starts-with($content,'≦')"
+          |value-of :select "'\leqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≦')"}
+        ; /leqq R: less, double equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≧')"
+          |value-of :select "'\geqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≧')"}
+        ; /geqq R: greater, double equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≨')"
+          |value-of :select "'\lneqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≨')"}
+        ; /lneqq N: less, not double equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≩')"
+          |value-of :select "'\gneqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≩')"}
+        ; /gneqq N: greater, not dbl equals
+        ; Required amssymb
+        ; <xsl:when test="starts-with($content,'&#x0226A;&#x00338;&#x0FE00;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0226A;&#x00338;&#x0FE00;')"/></xsl:call-template></xsl:when>	not much less than, variant
+        ; <xsl:when test="starts-with($content,'&#x0226A;&#x00338;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0226A;&#x00338;')"/></xsl:call-template></xsl:when>	not, vert, much less than
+        |when :test "starts-with($content,'≪')"
+          |value-of :select "'\ll '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≪')"}
+        ; /ll R: double less-than sign
+        ; <xsl:when test="starts-with($content,'&#x0226B;&#x00338;&#x0FE00;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0226B;&#x00338;&#x0FE00;')"/></xsl:call-template></xsl:when>	not much greater than, variant
+        ; <xsl:when test="starts-with($content,'&#x0226B;&#x00338;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x0226B;&#x00338;')"/></xsl:call-template></xsl:when>	not, vert, much greater than
+        |when :test "starts-with($content,'≫')"
+          |value-of :select "'\gg '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≫')"}
+        ; /gg R: dbl greater-than sign
+        |when :test "starts-with($content,'≬')"
+          |value-of :select "'\between '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≬')"}
+        ; /between R: between
+        ; Required amssymb
+        |when :test "starts-with($content,'≭')"
+          |value-of :select "'\not\asymp '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≭')"}
+        |when :test "starts-with($content,'≮')"
+          |value-of :select "'\nless '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≮')"}
+        ; /nless N: not less-than
+        ; Required amssymb
+        |when :test "starts-with($content,'≯')"
+          |value-of :select "'\ngtr '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≯')"}
+        ; /ngtr N: not greater-than
+        ; Required amssymb
+        |when :test "starts-with($content,'≰⃥')"
+          |value-of :select "'\nleq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≰⃥')"}
+        ; /nleq N: not less-than-or-equal
+        ; Required amssymb
+        |when :test "starts-with($content,'≰')"
+          |value-of :select "'\nleqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≰')"}
+        ; /nleqq N: not less, dbl equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≱⃥')"
+          |value-of :select "'\ngeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≱⃥')"}
+        ; /ngeq N: not greater-than-or-equal
+        ; Required amssymb
+        |when :test "starts-with($content,'≱')"
+          |value-of :select "'\ngeqq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≱')"}
+        ; /ngeqq N: not greater, dbl equals
+        ; Required amssymb
+        |when :test "starts-with($content,'≲')"
+          |value-of :select "'\lesssim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≲')"}
+        ; /lesssim R: less, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≳')"
+          |value-of :select "'\gtrsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≳')"}
+        ; /gtrsim R: greater, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≴')"
+          |value-of :select "'\not\lesssim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≴')"}
+        ; not less, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≵')"
+          |value-of :select "'\not\gtrsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≵')"}
+        ; not greater, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≶')"
+          |value-of :select "'\lessgtr '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≶')"}
+        ; /lessgtr R: less, greater
+        ; Required amssymb
+        |when :test "starts-with($content,'≷')"
+          |value-of :select "'\gtrless '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≷')"}
+        ; /gtrless R: greater, less
+        ; Required amssymb
+        |when :test "starts-with($content,'≸')"
+          |value-of :select "'\not\lessgtr '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≸')"}
+        ; not less, greater
+        ; Required amssymb
+        |when :test "starts-with($content,'≹')"
+          |value-of :select "'\not\gtrless '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≹')"}
+        ; not greater, less
+        ; Required amssymb
+        |when :test "starts-with($content,'≺')"
+          |value-of :select "'\prec '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≺')"}
+        ; /prec R: precedes
+        |when :test "starts-with($content,'≻')"
+          |value-of :select "'\succ '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≻')"}
+        ; /succ R: succeeds
+        |when :test "starts-with($content,'≼')"
+          |value-of :select "'\preccurlyeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≼')"}
+        ; /preccurlyeq R: precedes, curly eq
+        ; Required amssymb
+        |when :test "starts-with($content,'≽')"
+          |value-of :select "'\succcurlyeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≽')"}
+        ; /succcurlyeq R: succeeds, curly eq
+        ; Required amssymb
+        |when :test "starts-with($content,'≾')"
+          |value-of :select "'\precsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≾')"}
+        ; /precsim R: precedes, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'≿')"
+          |value-of :select "'\succsim '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '≿')"}
+        ; /succsim R: succeeds, similar
+        ; Required amssymb
+        |when :test "starts-with($content,'⊀')"
+          |value-of :select "'\nprec '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊀')"}
+        ; /nprec N: not precedes
+        ; Required amssymb
+        |when :test "starts-with($content,'⊁')"
+          |value-of :select "'\nsucc '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊁')"}
+        ; /nsucc N: not succeeds
+        ; Required amssymb
+        |when :test "starts-with($content,'⊂')"
+          |value-of :select "'\subset '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊂')"}
+        ; /subset R: subset or is implied by
+        |when :test "starts-with($content,'⊃')"
+          |value-of :select "'\supset '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊃')"}
+        ; /supset R: superset or implies
+        |when :test "starts-with($content,'⊄')"
+          |value-of :select "'\not\subset '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊄')"}
+        ; not subset
+        |when :test "starts-with($content,'⊅')"
+          |value-of :select "'\not\supset '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊅')"}
+        ; not superset
+        |when :test "starts-with($content,'⊆')"
+          |value-of :select "'\subseteq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊆')"}
+        ; /subseteq R: subset, equals
+        |when :test "starts-with($content,'⊇')"
+          |value-of :select "'\supseteq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊇')"}
+        ; /supseteq R: superset, equals
+        |when :test "starts-with($content,'⊎')"
+          |value-of :select "'\uplus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊎')"}
+        ; /uplus B: plus sign in union
+        |when :test "starts-with($content,'⊓')"
+          |value-of :select "'\sqcap '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊓')"}
+        ; /sqcap B: square intersection
+        |when :test "starts-with($content,'⊔')"
+          |value-of :select "'\bigsqcup '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊔')"}
+        ; /sqcup B: square union
+        |when :test "starts-with($content,'⊕')"
+          |value-of :select "'\oplus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊕')"}
+        ; /oplus B: plus sign in circle
+        |when :test "starts-with($content,'⊖')"
+          |value-of :select "'\ominus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊖')"}
+        ; /ominus B: minus sign in circle
+        |when :test "starts-with($content,'⊗')"
+          |value-of :select "'\otimes '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊗')"}
+        ; /otimes B: multiply sign in circle
+        |when :test "starts-with($content,'⊘')"
+          |value-of :select "'\oslash '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊘')"}
+        ; /oslash B: solidus in circle
+        ; ?
+        |when :test "starts-with($content,'⊙')"
+          |value-of :select "'\odot '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊙')"}
+        ; /odot B: middle dot in circle
+        ; /bigodot L: circle dot operator
+        |when :test "starts-with($content,'⊟')"
+          |value-of :select "'\boxminus '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊟')"}
+        ; /boxminus B: minus sign in box
+        ; Required amssymb
+        |when :test "starts-with($content,'⊤')"
+          |value-of :select "'\top '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊤')"}
+        ; /top top
+        |when :test "starts-with($content,'⊥')"
+          |value-of :select "'\perp '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊥')"}
+        ; /perp R: perpendicular
+        ; /bot bottom
+        |when :test "starts-with($content,'⊦')"
+          |value-of :select "'\vdash '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊦')"}
+        ; /vdash R: vertical, dash
+        |when :test "starts-with($content,'⊧')"
+          |value-of :select "'\vDash '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊧')"}
+        ; /vDash R: vertical, dbl dash
+        ; Required amssymb
+        |when :test "starts-with($content,'⊨')"
+          |value-of :select "'\models '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊨')"}
+        ; /models R:
+        |when :test "starts-with($content,'⊪')"
+          |value-of :select "'\Vvdash '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⊪')"}
+        ; /Vvdash R: triple vertical, dash
+        ; Required amssymb
+        |when :test "starts-with($content,'⋀')"
+          |value-of :select "'\bigwedge '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋀')"}
+        ; /bigwedge L: logical or operator
+        |when :test "starts-with($content,'⋁')"
+          |value-of :select "'\bigvee '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋁')"}
+        ; /bigcap L: intersection operator
+        |when :test "starts-with($content,'⋂')"
+          |value-of :select "'\bigcap '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋂')"}
+        ; /bigvee L: logical and operator
+        |when :test "starts-with($content,'⋃')"
+          |value-of :select "'\bigcup '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋃')"}
+        ; /bigcup L: union operator
+        |when :test "starts-with($content,'⋄')"
+          |value-of :select "'\diamond '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋄')"}
+        ; /diamond B: open diamond
+        |when :test "starts-with($content,'⋅')"
+          |value-of :select "'\cdot '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋅')"}
+        ; /cdot B: small middle dot
+        |when :test "starts-with($content,'⋆')"
+          |value-of :select "'\star '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋆')"}
+        ; /star B: small star, filled
+        |when :test "starts-with($content,'⋇')"
+          |value-of :select "'\divideontimes '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋇')"}
+        ; /divideontimes B: division on times
+        ; Required amssymb
+        |when :test "starts-with($content,'⋈')"
+          |value-of :select "'\bowtie '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋈')"}
+        ; /bowtie R:
+        |when :test "starts-with($content,'⋍')"
+          |value-of :select "'\backsimeq '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋍')"}
+        ; /backsimeq R: reverse similar, eq
+        ; Required amssymb
+        |when :test "starts-with($content,'⋯')"
+          |value-of :select "'\cdots '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋯')"}
+        ; /cdots, three dots, centered
+        ; <xsl:when test="starts-with($content,'&#x022F0;')"><xsl:value-of select="' '" /><xsl:call-template name="replaceEntities"><xsl:with-param name="content" select="substring-after($content, '&#x022F0;')"/></xsl:call-template></xsl:when>		three dots, ascending
+        |when :test "starts-with($content,'⋱')"
+          |value-of :select "'\ddots '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '⋱')"}
+        ; /ddots, three dots, descending
+        ; ======================================================================
+        |when :test "starts-with($content,'□')"
+          |value-of :select "'\square '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '□')"}
+        ; /square, square
+        ; Required amssymb
+        |when :test "starts-with($content,'▪')"
+          |value-of :select "'\blacksquare '"
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '▪')"}
+        ; /blacksquare, square, filled
+        ; Required amssymb
+        |when :test "starts-with($content,\"'\")"
+          |value-of :select "\"\text{'}\""
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, \"'\")"}
+        ; \text required amslatex
+        |when :test 'starts-with($content,"(")'
+          |value-of :select '"\left("'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '(')"}
+        |when :test 'starts-with($content,")")'
+          |value-of :select '"\right)"'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, ')')"}
+        |when :test 'starts-with($content,"[")'
+          |value-of :select '"\left["'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '[')"}
+        |when :test 'starts-with($content,"]")'
+          |value-of :select '"\right]"'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, ']')"}
+        |when :test 'starts-with($content,"{")'
+          |value-of :select '"\left\{"'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '{')"}
+        |when :test 'starts-with($content,"}")'
+          |value-of :select '"\right\}"'
+          |call-template :name replaceEntities |{with-param :name content :select "substring-after($content, '}')"}
+        |otherwise
+          |value-of :select substring($content,1,1)
+          |call-template :name replaceEntities |{with-param :name content :select "substring($content, 2)"}
+  |template :name replaceMtextEntities
+    |param :name content
+    |choose
+      |when :test "contains($content,'   ')"
+        ; ThickSpace - space of width 5/18 em
+        |call-template :name replaceMtextEntities
+          |with-param :name content :select "concat(substring-before($content,'   '),'\hspace{0.28em}',substring-after($content,'   '))"
+      |when :test "contains($content,' ')"
+        ; ThinSpace - space of width 3/18 em
+        |call-template :name replaceMtextEntities
+          |with-param :name content :select "concat(substring-before($content,' '),'\hspace{0.17em}',substring-after($content,' '))"
+      |otherwise |{value-of :select normalize-space($content)}
+  ; ======================================================================
+  ; $id: tables.xsl, 2002/17/05 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  |template :match "m:mtd[@columnspan]"
+    |text \multicolumn{
+    |value-of :select @columnspan
+    |text }{c}{
+    |apply-templates
+    |text }
+    |if :test "count(following-sibling::*)>0" |{text &}
+  |template :match "m:mtd"
+    |if :test "@columnalign='right' or @columnalign='center'" |{text \hfill}
+    |apply-templates
+    |if :test "@columnalign='left' or @columnalign='center'" |{text \hfill}
+    |if :test "count(following-sibling::*)>0"
+      ; this test valid for Sablotron, another form - test="not(position()=last())".
+      ; Also for m:mtd[@columnspan] and m:mtr
+      |text &
+  |template :match "m:mtr" |{apply-templates} |{if :test "count(following-sibling::*)>0" |{text \\}}
+  |template :match "m:mtable"
+    |text \begin{array}{
+    |if :test "@frame='solid'" |{text |}
+    |variable :name numbercols :select "count(./m:mtr[1]/m:mtd[not(@columnspan)])+sum(./m:mtr[1]/m:mtd/@columnspan)"
+    |choose
+      |when :test @columnalign
+        |variable :name colalign |{call-template :name colalign |{with-param :name colalign :select @columnalign}}
+        |choose
+          |when :test "string-length($colalign) > $numbercols" |{value-of :select substring($colalign,1,$numbercols)}
+          |when :test "string-length($colalign) < $numbercols"
+            |value-of :select $colalign
+            |call-template :name generate-string
+              |with-param :name text :select substring($colalign,string-length($colalign))
+              |with-param :name count :select "$numbercols - string-length($colalign)"
+          |otherwise |{value-of :select $colalign}
+      |otherwise
+        |call-template :name generate-string |{with-param :name text :select "'c'"} |{with-param :name count :select $numbercols}
+    |if :test "@frame='solid'" |{text |}
+    |text }
+    |if :test "@frame='solid'" |{text \hline}
+    |apply-templates
+    |if :test "@frame='solid'" |{text \\ \hline}
+    |text \end{array}
+  |template :name colalign
+    |param :name colalign
+    |choose
+      |when :test "contains($colalign,' ')"
+        |value-of :select substring($colalign,1,1)
+        |call-template :name colalign |{with-param :name colalign :select "substring-after($colalign,' ')"}
+      |otherwise |{value-of :select substring($colalign,1,1)}
+  |template :name generate-string
+    ; template from XSLT Standard Library v1.1
+    |param :name text
+    |param :name count
+    |choose
+      |when :test "string-length($text) = 0 or $count <= 0"
+      |otherwise
+        |value-of :select $text
+        |call-template :name generate-string |{with-param :name text :select $text} |{with-param :name count :select "$count - 1"}
+  ; ======================================================================
+  ; $Id: scripts.xsl,v 1.1.1.1 2002/10/26 14:20:06 shade33 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  |template :match "m:munderover"
+    |variable :name base |{call-template :name startspace |{with-param :name symbol :select ./*[1]}}
+    |variable :name under |{call-template :name startspace |{with-param :name symbol :select ./*[2]}}
+    |variable :name over |{call-template :name startspace |{with-param :name symbol :select ./*[3]}}
+    |choose
+      |when :test "$over='¯'"
+        ; OverBar - over bar
+        |text \overline{
+        |call-template :name munder |{with-param :name base :select $base} |{with-param :name under :select $under}
+        |text }
+      |when :test "$over='︷'"
+        ; OverBrace - over brace
+        |text \overbrace{
+        |call-template :name munder |{with-param :name base :select $base} |{with-param :name under :select $under}
+        |text }
+      |when :test "$under='̲'"
+        ; UnderBar - combining low line
+        |text \underline{
+        |call-template :name mover
+          |with-param :name base :select $base
+          |with-param :name over :select $over
+          |with-param :name pos_over :select 3
+        |text }
+      |when :test "$under='︸'"
+        ; UnderBrace - under brace
+        |text \underbrace{
+        |call-template :name mover
+          |with-param :name base :select $base
+          |with-param :name over :select $over
+          |with-param :name pos_over :select 3
+        |text }
+      |when :test "translate($base,'∏∐⋂⋃⊔',       '∑∑∑∑∑')='∑'"
+        ; if $base is operator, such as
+        ; &#x02211;	/sum L: summation operator
+        ; &#x0220F;	/prod L: product operator
+        ; &#x02210;	/coprod L: coproduct operator
+        ; &#x022c2;	/bigcap
+        ; &#x022c3;	/bigcup
+        ; &#x02294;	/bigsqcup
+        |apply-templates :select ./*[1]
+        |text _{
+        |apply-templates :select ./*[2]
+        |text }^{
+        |apply-templates :select ./*[3]
+        |text }
+      |otherwise
+        |text \underset{
+        |apply-templates :select ./*[2]
+        |text }{\overset{
+        |apply-templates :select ./*[3]
+        |text }{
+        |apply-templates :select ./*[1]
+        |text }}
+  |template :match "m:mover"
+    |call-template :name mover
+      |with-param :name base |{call-template :name startspace |{with-param :name symbol :select ./*[1]}}
+      |with-param :name over |{call-template :name startspace |{with-param :name symbol :select ./*[2]}}
+  |template :match "m:munder"
+    |call-template :name munder
+      |with-param :name base |{call-template :name startspace |{with-param :name symbol :select ./*[1]}}
+      |with-param :name under |{call-template :name startspace |{with-param :name symbol :select ./*[2]}}
+  |template :name mover
+    |param :name base
+    |param :name over
+    |param :name pos_over :select 2
+    |choose
+      |when :test "$over='¯'"
+        ; OverBar - over bar
+        |text \overline{
+        |apply-templates :select ./*[1]
+        |text }
+      |when :test "$over='︷'"
+        ; OverBrace - over brace
+        |text \overbrace{
+        |apply-templates :select ./*[1]
+        |text }
+      |when :test "translate($base,'∏∐⋂⋃⊔',       '∑∑∑∑∑')='∑'"
+        ; if $base is operator, such as
+        ; &#x02211;	/sum L: summation operator
+        ; &#x0220F;	/prod L: product operator
+        ; &#x02210;	/coprod L: coproduct operator
+        ; &#x022c2;	/bigcap
+        ; &#x022c3;	/bigcup
+        ; &#x02294;	/bigsqcup
+        |apply-templates :select ./*[1]
+        |text ^{
+        |apply-templates :select ./*[$pos_over]
+        |text }
+      |otherwise
+        |text \stackrel{
+        |apply-templates :select ./*[$pos_over]
+        |text }{
+        |apply-templates :select ./*[1]
+        |text }
+        ; <xsl:text>\overset{</xsl:text>
+        ; <xsl:apply-templates select="./*[$pos_over]"/>
+        ; <xsl:text>}{</xsl:text>
+        ; <xsl:apply-templates select="./*[1]"/>
+        ; <xsl:text>}</xsl:text>
+  |template :name munder
+    |param :name base
+    |param :name under
+    |choose
+      |when :test "$under='̲'"
+        ; UnderBar - combining low line
+        |text \underline{
+        |apply-templates :select ./*[1]
+        |text }
+      |when :test "$under='︸'"
+        ; UnderBrace - under brace
+        |text \underbrace{
+        |apply-templates :select ./*[1]
+        |text }
+      |when :test "translate($base,'∏∐⋂⋃⊔',       '∑∑∑∑∑')='∑'"
+        ; if $base is operator, such as
+        ; &#x02211;	/sum L: summation operator
+        ; &#x0220F;	/prod L: product operator
+        ; &#x02210;	/coprod L: coproduct operator
+        ; &#x022c2;	/bigcap
+        ; &#x022c3;	/bigcup
+        ; &#x02294;	/bigsqcup
+        |apply-templates :select ./*[1]
+        |text _{
+        |apply-templates :select ./*[2]
+        |text }
+      |otherwise
+        |text \underset{
+        ; Required AmsMath package
+        |apply-templates :select ./*[2]
+        |text }{
+        |apply-templates :select ./*[1]
+        |text }
+  |template :match "m:msubsup"
+    |text {
+    |apply-templates :select ./*[1]
+    |text }_{
+    |apply-templates :select ./*[2]
+    |text }^{
+    |apply-templates :select ./*[3]
+    |text }
+  |template :match "m:msup" |{text {} |{apply-templates :select ./*[1]} |{text }^{} |{apply-templates :select ./*[2]} |{text }}
+  |template :match "m:msub" |{text {} |{apply-templates :select ./*[1]} |{text }_{} |{apply-templates :select ./*[2]} |{text }}
+  |template :match "m:mmultiscripts" :mode mprescripts
+    |for-each :select "m:mprescripts/following-sibling::*"
+      |if :test "position() mod 2 and local-name(.)!='none'" |{text {}_{} |{apply-templates :select .} |{text }}
+      |if :test "not(position() mod 2) and local-name(.)!='none'" |{text {}^{} |{apply-templates :select .} |{text }}
+    |apply-templates :select ./*[1]
+    |for-each :select "m:mprescripts/preceding-sibling::*[position()!=last()]"
+      |if :test "position()>2 and local-name(.)!='none'" |{text {}}
+      |if :test "position() mod 2 and local-name(.)!='none'" |{text _{} |{apply-templates :select .} |{text }}
+      |if :test "not(position() mod 2) and local-name(.)!='none'" |{text ^{} |{apply-templates :select .} |{text }}
+  |template :match "m:mmultiscripts"
+    |choose
+      |when :test "m:mprescripts" |{apply-templates :select . :mode mprescripts}
+      |otherwise
+        |apply-templates :select ./*[1]
+        |for-each :select *[position()>1]
+          |if :test "position()>2 and local-name(.)!='none'" |{text {}}
+          |if :test "position() mod 2 and local-name(.)!='none'" |{text _{} |{apply-templates :select .} |{text }}
+          |if :test "not(position() mod 2) and local-name(.)!='none'" |{text ^{} |{apply-templates :select .} |{text }}
+  ; ======================================================================
+  ; $id: glayout.xsl, 2002/17/05 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  |template :match "m:mfrac"
+    |choose
+      |when :test "@bevelled='true'"
+        ; <xsl:text>\raisebox{1ex}{</xsl:text>
+        ; <xsl:apply-templates select="./*[1]"/>
+        ; <xsl:text>}\!\left/ \!\raisebox{-1ex}{</xsl:text>
+        ; <xsl:apply-templates select="./*[2]"/>
+        ; <xsl:text>}\right.</xsl:text>
+      |when :test @linethickness
+        |text \genfrac{}{}{
+        |choose
+          |when :test number(@linethickness) |{value-of :select "@linethickness div 10"} |{text ex}
+          |when :test "@linethickness='thin'" |{text .05ex}
+          |when :test "@linethickness='medium'"
+          |when :test "@linethickness='thick'" |{text .2ex}
+          |otherwise |{value-of :select @linethickness}
+        |text }{}{
+      |otherwise |{text \frac{}
+    |if :test "@numalign='right'" |{text \hfill}
+    |apply-templates :select ./*[1]
+    |if :test "@numalign='left'" |{text \hfill}
+    |text }{
+    |if :test "@denomalign='right'" |{text \hfill}
+    |apply-templates :select ./*[2]
+    |if :test "@denomalign='left'" |{text \hfill}
+    |text }
+  |template :match "m:mroot"
+    |choose
+      |when :test count(./*)=2
+        |text \sqrt[
+        |apply-templates :select ./*[2]
+        |text ]{
+        |apply-templates :select ./*[1]
+        |text }
+      |otherwise
+        ; number of arguments is not 2 - code 25
+        |message exception 25:
+        |text \text{exception 25:}
+  |template :match "m:msqrt" |{text \sqrt{} |{apply-templates} |{text }}
+  |template :match "m:mfenced"
+    |choose
+      |when :test @open
+        |if :test "translate(@open,'{}[]()|','{{{{{{{')='{'" |{text \left}
+        |if :test "@open='{' or @open='}'" |{text \}
+        |value-of :select @open
+      |otherwise |{text \left(}
+    |choose
+      |when :test count(./*)>1
+        |variable :name symbol
+          |choose
+            |when :test @separators |{call-template :name startspace |{with-param :name symbol :select @separators}}
+            |otherwise ,
+        |for-each :select ./*
+          |apply-templates :select .
+          |if :test not(position()=last())
+            |choose
+              |when :test position()>string-length($symbol) |{value-of :select substring($symbol,string-length($symbol))}
+              |otherwise |{value-of :select substring($symbol,position(),1)}
+      |otherwise |{apply-templates}
+    |choose
+      |when :test @close
+        |if :test "translate(@open,'{}[]()|','{{{{{{{')='{'" |{text \right}
+        |if :test "@open='{' or @open='}'" |{text \}
+        |value-of :select @close
+      |otherwise |{text \right)}
+  |template :match "m:mphantom" |{text \phantom{} |{apply-templates} |{text }}
+  |template :match "m:menclose"
+    |choose
+      |when :test "@notation = 'actuarial'" |{text \overline{} |{apply-templates} |{text \hspace{.2em}|}}
+      |when :test "@notation = 'radical'" |{text \sqrt{} |{apply-templates} |{text }}
+      |otherwise |{text \overline{)} |{apply-templates} |{text }}
+  |template :match "m:mrow" |{apply-templates}
+  |template :match "m:mstyle"
+    |if :test @background
+      |text \colorbox[rgb]{
+      |call-template :name color |{with-param :name color :select @background}
+      |text }{$
+    |if :test @color
+      |text \textcolor[rgb]{
+      |call-template :name color |{with-param :name color :select @color}
+      |text }{
+    |apply-templates
+    |if :test @color |{text }}
+    |if :test @background |{text $}}
+  ; <xsl:template match="m:mstyle">
+  ; <xsl:if test="@displaystyle='true'">
+  ; <xsl:text>{\displaystyle</xsl:text>
+  ; </xsl:if>
+  ; <xsl:if test="@scriptlevel=2">
+  ; <xsl:text>{\scriptscriptstyle</xsl:text>
+  ; </xsl:if>
+  ; <xsl:apply-templates/>
+  ; <xsl:if test="@scriptlevel=2">
+  ; <xsl:text>}</xsl:text>
+  ; </xsl:if>
+  ; <xsl:if test="@displaystyle='true'">
+  ; <xsl:text>}</xsl:text>
+  ; </xsl:if>
+  ; </xsl:template>
+  |template :match "m:merror" |{apply-templates}
+  ; ======================================================================
+  ; $id: tokens.xsl, 2002/22/11 Exp $
+  ; This file is part of the XSLT MathML Library distribution.
+  ; See ./README or http://www.raleigh.ru/MathML/mmltex for
+  ; copyright and other information
+  ; ======================================================================
+  |template :match "m:mi|m:mn|m:mo|m:mtext|m:ms" |{call-template :name CommonTokenAtr}
+  |template :name mi
+    |choose
+      |when :test "string-length(normalize-space(.))>1 and not(@mathvariant)" |{text \mathrm{} |{apply-templates} |{text }}
+      |otherwise |{apply-templates}
+  |template :name mn |{apply-templates}
+  |template :name mo |{apply-templates}
+  |template :name mtext
+    |variable :name content |{call-template :name replaceMtextEntities |{with-param :name content :select .}}
+    |text \text{
+    |value-of :select $content
+    |text }
+  |template :match "m:mspace"
+    |text \phantom{\rule
+    |if :test @depth |{text [-} |{value-of :select @depth} |{text ]}
+    |text {
+    |if :test not(@width) |{text 0ex}
+    |value-of :select @width
+    |text }{
+    |if :test not(@height) |{text 0ex}
+    |value-of :select @height
+    |text }}
+  |template :name ms
+    |choose |{when :test @lquote |{value-of :select @lquote}} |{otherwise |{text "}}
+    |apply-templates
+    |choose |{when :test @rquote |{value-of :select @rquote}} |{otherwise |{text "}}
+  |template :name CommonTokenAtr
+    |if :test @mathbackground
+      |text \colorbox[rgb]{
+      |call-template :name color |{with-param :name color :select @mathbackground}
+      |text }{$
+    |if :test "@color or @mathcolor"
+      ; Note: @color is deprecated in MathML 2.0
+      |text \textcolor[rgb]{
+      |call-template :name color |{with-param :name color :select "@color|@mathcolor"}
+      |text }{
+    |if :test @mathvariant
+      |choose
+        |when :test "@mathvariant='normal'" |{text \mathrm{}
+        |when :test "@mathvariant='bold'" |{text \mathbf{}
+        |when :test "@mathvariant='italic'" |{text \mathit{}
+        |when :test "@mathvariant='bold-italic'"
+          ; Required definition
+          |text \mathbit{
+        |when :test "@mathvariant='double-struck'"
+          ; Required amsfonts
+          |text \mathbb{
+        |when :test "@mathvariant='bold-fraktur'"
+          ; Error
+          |text {
+        |when :test "@mathvariant='script'" |{text \mathcal{}
+        |when :test "@mathvariant='bold-script'"
+          ; Error
+          |text \mathsc{
+        |when :test "@mathvariant='fraktur'"
+          ; Required amsfonts
+          |text \mathfrak{
+        |when :test "@mathvariant='sans-serif'" |{text \mathsf{}
+        |when :test "@mathvariant='bold-sans-serif'"
+          ; Required definition
+          |text \mathbsf{
+        |when :test "@mathvariant='sans-serif-italic'"
+          ; Required definition
+          |text \mathsfit{
+        |when :test "@mathvariant='sans-serif-bold-italic'"
+          ; Error
+          |text \mathbsfit{
+        |when :test "@mathvariant='monospace'" |{text \mathtt{}
+        |otherwise |{text {}
+    |call-template :name selectTemplate
+    |if :test @mathvariant |{text }}
+    |if :test "@color or @mathcolor" |{text }}
+    |if :test @mathbackground |{text $}}
+  |template :name selectTemplate
+    ; <xsl:variable name="name" select="local-name()"/>
+    ; <xsl:call-template name="{$name}"/>
+    |choose
+      |when :test "local-name(.)='mi'" |{call-template :name mi}
+      |when :test "local-name(.)='mn'" |{call-template :name mn}
+      |when :test "local-name(.)='mo'" |{call-template :name mo}
+      |when :test "local-name(.)='mtext'" |{call-template :name mtext}
+      |when :test "local-name(.)='ms'" |{call-template :name ms}
+  |template :name color
+    ; NB: Variables colora and valueColor{n} only for Sablotron
+    |param :name color
+    |variable :name colora :select "translate($color,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+    |choose
+      |when :test "starts-with($colora,'#') and string-length($colora)=4"
+        |variable :name valueColor |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,2,1)}}
+        |value-of :select "$valueColor div 15"
+        |text ,
+        |variable :name valueColor1 |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,3,1)}}
+        |value-of :select "$valueColor1 div 15"
+        |text ,
+        |variable :name valueColor2 |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,4,1)}}
+        |value-of :select "$valueColor2 div 15"
+      |when :test "starts-with($colora,'#') and string-length($colora)=7"
+        |variable :name valueColor1 |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,2,1)}}
+        |variable :name valueColor2 |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,3,1)}}
+        |value-of :select "($valueColor1*16 + $valueColor2) div 255"
+        |text ,
+        |variable :name valueColor1a |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,4,1)}}
+        |variable :name valueColor2a |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,5,1)}}
+        |value-of :select "($valueColor1a*16 + $valueColor2a) div 255"
+        |text ,
+        |variable :name valueColor1b |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,6,1)}}
+        |variable :name valueColor2b |{call-template :name Hex2Decimal |{with-param :name arg :select substring($colora,7,1)}}
+        |value-of :select "($valueColor1b*16 + $valueColor2b) div 255"
+      ; ======================= if color specified as an html-color-name ==========================================
+      |when :test "$colora='aqua'" |{text 0,1,1}
+      |when :test "$colora='black'" |{text 0,0,0}
+      |when :test "$colora='blue'" |{text 0,0,1}
+      |when :test "$colora='fuchsia'" |{text 1,0,1}
+      |when :test "$colora='gray'" |{text .5,.5,.5}
+      |when :test "$colora='green'" |{text 0,.5,0}
+      |when :test "$colora='lime'" |{text 0,1,0}
+      |when :test "$colora='maroon'" |{text .5,0,0}
+      |when :test "$colora='navy'" |{text 0,0,.5}
+      |when :test "$colora='olive'" |{text .5,.5,0}
+      |when :test "$colora='purple'" |{text .5,0,.5}
+      |when :test "$colora='red'" |{text 1,0,0}
+      |when :test "$colora='silver'" |{text .75,.75,.75}
+      |when :test "$colora='teal'" |{text 0,.5,.5}
+      |when :test "$colora='white'" |{text 1,1,1}
+      |when :test "$colora='yellow'" |{text 1,1,0}
+      |otherwise |{message Exception at color template}
+  |template :name Hex2Decimal
+    |param :name arg
+    |choose
+      |when :test "$arg='f'" |{value-of :select 15}
+      |when :test "$arg='e'" |{value-of :select 14}
+      |when :test "$arg='d'" |{value-of :select 13}
+      |when :test "$arg='c'" |{value-of :select 12}
+      |when :test "$arg='b'" |{value-of :select 11}
+      |when :test "$arg='a'" |{value-of :select 10}
+      |when :test "translate($arg, '0123456789', '9999999999')='9'"
+        ; if $arg is number
+        |value-of :select $arg
+      |otherwise |{message Exception at Hex2Decimal template}
+  |template :match "m:*/text()" |{call-template :name replaceEntities |{with-param :name content :select normalize-space()}}

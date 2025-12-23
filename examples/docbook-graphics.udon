@@ -1,0 +1,757 @@
+|stylesheet :exclude-result-prefixes "xlink stext xtext lxslt simg ximg d" :extension-element-prefixes "stext xtext" :version 1.0
+  ; ********************************************************************
+  ; 
+  ; This file is part of the XSL DocBook Stylesheet distribution.
+  ; See ../README or https://cdn.docbook.org/release/xsl/current/ for
+  ; copyright and other information.
+  ; 
+  ; Contributors:
+  ; Colin Paul Adams, <colin@colina.demon.co.uk>
+  ; 
+  ; ********************************************************************
+  |component :prefix xtext :elements "d:insertfile"
+  |component :prefix ximg :functions "new getWidth getDepth"
+  ; ====================================================================
+  ; Graphic format tests for the HTML backend
+  |template :name is.graphic.format
+    |param :name format
+    |if :test "$format = 'SVG'                 or $format = 'PNG'                 or $format = 'JPG'                 or $format = 'JPEG'                 or $format = 'linespecific'                 or $format = 'GIF'                 or $format = 'GIF87a'                 or $format = 'GIF89a'                 or $format = 'BMP'" 1
+  |template :name is.graphic.extension
+    |param :name ext
+    |variable :name lcext :select "translate($ext,                                        'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                                        'abcdefghijklmnopqrstuvwxyz')"
+    |if :test "$lcext = 'svg'              or $lcext = 'png'              or $lcext = 'jpeg'              or $lcext = 'jpg'              or $lcext = 'avi'              or $lcext = 'mpg'              or $lcext = 'mp4'              or $lcext = 'mpeg'              or $lcext = 'qt'              or $lcext = 'gif'              or $lcext = 'acc'              or $lcext = 'mp1'              or $lcext = 'mp2'              or $lcext = 'mp3'              or $lcext = 'mp4'              or $lcext = 'm4v'              or $lcext = 'm4a'              or $lcext = 'wav'              or $lcext = 'ogv'              or $lcext = 'ogg'              or $lcext = 'webm'              or $lcext = 'webp'              or $lcext = 'bmp'" 1
+  ; ====================================================================
+  |template :match "d:screenshot"
+    |div
+      |apply-templates :select . :mode common.html.attributes
+      |call-template :name id.attribute
+      |call-template :name anchor
+      |apply-templates
+  |template :match "d:screenshot/d:title" |{call-template :name formal.object.heading |{with-param :name object :select ..}}
+  |template :match "d:screeninfo"
+  ; ====================================================================
+  |template :name process.image
+    ; When this template is called, the current node should be
+    ; a graphic, inlinegraphic, imagedata, or videodata. All
+    ; those elements have the same set of attributes, so we can
+    ; handle them all in one place.
+    |param :name tag :select "'img'"
+    |param :name alt
+    |param :name longdesc
+    ; The HTML img element only supports the notion of content-area
+    ; scaling; it doesn't support the distinction between a
+    ; content-area and a viewport-area, so we have to make some
+    ; compromises.
+    ; 
+    ; 1. If only the content-area is specified, everything is fine.
+    ; (If you ask for a three inch image, that's what you'll get.)
+    ; 
+    ; 2. If only the viewport-area is provided:
+    ; - If scalefit=1, treat it as both the content-area and
+    ; the viewport-area. (If you ask for an image in a five inch
+    ; area, we'll make the image five inches to fill that area.)
+    ; - If scalefit=0, ignore the viewport-area specification.
+    ; 
+    ; Note: this is not quite the right semantic and has the additional
+    ; problem that it can result in anamorphic scaling, which scalefit
+    ; should never cause.
+    ; 
+    ; 3. If both the content-area and the viewport-area is specified
+    ; on a graphic element, ignore the viewport-area.
+    ; (If you ask for a three inch image in a five inch area, we'll assume
+    ; it's better to give you a three inch image in an unspecified area
+    ; than a five inch image in a five inch area.
+    ; 
+    ; Relative units also cause problems. As a general rule, the stylesheets
+    ; are operating too early and too loosely coupled with the rendering engine
+    ; to know things like the current font size or the actual dimensions of
+    ; an image. Therefore:
+    ; 
+    ; 1. We use a fixed size for pixels, $pixels.per.inch
+    ; 
+    ; 2. We use a fixed size for "em"s, $points.per.em
+    ; 
+    ; Percentages are problematic. In the following discussion, we speak
+    ; of width and contentwidth, but the same issues apply to depth and
+    ; contentdepth
+    ; 
+    ; 1. A width of 50% means "half of the available space for the image."
+    ; That's fine. But note that in HTML, this is a dynamic property and
+    ; the image size will vary if the browser window is resized.
+    ; 
+    ; 2. A contentwidth of 50% means "half of the actual image width". But
+    ; the stylesheets have no way to assess the image's actual size. Treating
+    ; this as a width of 50% is one possibility, but it produces behavior
+    ; (dynamic scaling) that seems entirely out of character with the
+    ; meaning.
+    ; 
+    ; Instead, the stylesheets define a $nominal.image.width
+    ; and convert percentages to actual values based on that nominal size.
+    ; 
+    ; Scale can be problematic. Scale applies to the contentwidth, so
+    ; a scale of 50 when a contentwidth is not specified is analagous to a
+    ; width of 50%. (If a contentwidth is specified, the scaling factor can
+    ; be applied to that value and no problem exists.)
+    ; 
+    ; If scale is specified but contentwidth is not supplied, the
+    ; nominal.image.width is used to calculate a base size
+    ; for scaling.
+    ; 
+    ; Warning: as a consequence of these decisions, unless the aspect ratio
+    ; of your image happens to be exactly the same as (nominal width / nominal height),
+    ; specifying contentwidth="50%" and contentdepth="50%" is NOT going to
+    ; scale the way you expect (or really, the way it should).
+    ; 
+    ; Don't do that. In fact, a percentage value is not recommended for content
+    ; size at all. Use scale instead.
+    ; 
+    ; Finally, align and valign are troublesome. Horizontal alignment is now
+    ; supported by wrapping the image in a <div align="{@align}"> (in block
+    ; contexts!). I can't think of anything (practical) to do about vertical
+    ; alignment.
+    |variable :name width-units
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test @width |{call-template :name length-units |{with-param :name length :select @width}}
+        |when :test "not(@depth) and $default.image.width != ''" |{call-template :name length-units |{with-param :name length :select $default.image.width}}
+    |variable :name width
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test @width
+          |choose
+            |when :test "$width-units = '%'" |{value-of :select @width}
+            |otherwise |{call-template :name length-spec |{with-param :name length :select @width}}
+        |when :test "not(@depth) and $default.image.width != ''" |{value-of :select $default.image.width}
+    |variable :name scalefit
+      |choose
+        |when :test "$ignore.image.scaling != 0" 0
+        |when :test "@contentwidth or @contentdepth" 0
+        |when :test @scale 0
+        |when :test @scalefit |{value-of :select @scalefit}
+        |when :test "$width != '' or @depth" 1
+        |otherwise 0
+    |variable :name scale
+      |choose
+        |when :test "$ignore.image.scaling != 0" 1.0
+        |when :test "@contentwidth or @contentdepth" 1.0
+        |when :test @scale |{value-of :select "@scale div 100.0"}
+        |otherwise 1.0
+    |variable :name filename
+      |choose
+        |when :test "local-name(.) = 'graphic'                       or local-name(.) = 'inlinegraphic'"
+          ; handle legacy graphic and inlinegraphic by new template
+          |call-template :name mediaobject.filename |{with-param :name object :select .}
+        |otherwise
+          ; imagedata, videodata, audiodata
+          |call-template :name mediaobject.filename |{with-param :name object :select ..}
+    |variable :name img.src.path.pi |{call-template :name pi.dbhtml_img.src.path |{with-param :name node :select ..}}
+    ; is the file path relative and can be modified by img.src.path?
+    |variable :name is.relative
+      |choose
+        |when :test "$img.src.path != '' and                       $tag = 'img' and                       not(starts-with($filename, '/')) and                       not(starts-with($filename, 'file:/')) and                       not(contains($filename, '://'))" 1
+        |otherwise 0
+    |variable :name filename.for.graphicsize
+      |choose
+        |when :test "$img.src.path.pi != ''" |{value-of :select "concat($img.src.path.pi, $filename)"}
+        |when :test "$is.relative = 1 and                       $graphicsize.use.img.src.path != 0" |{value-of :select "concat($img.src.path, $filename)"}
+        |otherwise |{value-of :select $filename}
+    |variable :name realintrinsicwidth
+      ; This funny compound test works around a bug in XSLTC
+      |choose
+        |when :test "$use.extensions != 0 and $graphicsize.extension != 0                       and not(@format='SVG' or @format = 'svg')"
+          |choose
+            |when :test "function-available('simg:getWidth')"
+              |value-of :select "simg:getWidth(simg:new($filename.for.graphicsize),                                                 $nominal.image.width)"
+            |when :test "function-available('ximg:getWidth')"
+              |value-of :select "ximg:getWidth(ximg:new($filename.for.graphicsize),                                                 $nominal.image.width)"
+            |otherwise |{value-of :select 0}
+        |otherwise |{value-of :select 0}
+    |variable :name intrinsicwidth
+      |choose
+        |when :test "$realintrinsicwidth = 0" |{value-of :select $nominal.image.width}
+        |otherwise |{value-of :select $realintrinsicwidth}
+    |variable :name intrinsicdepth
+      ; This funny compound test works around a bug in XSLTC
+      |choose
+        |when :test "$use.extensions != 0 and $graphicsize.extension != 0                       and not(@format='SVG' or @format = 'svg')"
+          |choose
+            |when :test "function-available('simg:getDepth')"
+              |value-of :select "simg:getDepth(simg:new($filename.for.graphicsize),                                                 $nominal.image.depth)"
+            |when :test "function-available('ximg:getDepth')"
+              |value-of :select "ximg:getDepth(ximg:new($filename.for.graphicsize),                                                 $nominal.image.depth)"
+            |otherwise |{value-of :select $nominal.image.depth}
+        |otherwise |{value-of :select $nominal.image.depth}
+    |variable :name contentwidth
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test @contentwidth
+          |variable :name units |{call-template :name length-units |{with-param :name length :select @contentwidth}}
+          |choose
+            |when :test "$units = '%'"
+              |variable :name cmagnitude |{call-template :name length-magnitude |{with-param :name length :select @contentwidth}}
+              |value-of :select "$intrinsicwidth * $cmagnitude div 100.0"
+              |text px
+            |otherwise |{call-template :name length-spec |{with-param :name length :select @contentwidth}}
+        |otherwise |{value-of :select $intrinsicwidth} |{text px}
+    |variable :name scaled.contentwidth
+      |if :test "$contentwidth != ''"
+        |variable :name cwidth.in.points
+          |call-template :name length-in-points
+            |with-param :name length :select $contentwidth
+            |with-param :name pixels.per.inch :select $pixels.per.inch
+            |with-param :name em.size :select $points.per.em
+        |value-of :select "round($cwidth.in.points div 72.0 * $pixels.per.inch * $scale)"
+    |variable :name html.width
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test "$width-units = '%'" |{value-of :select $width}
+        |when :test "$width != ''"
+          |variable :name width.in.points
+            |call-template :name length-in-points
+              |with-param :name length :select $width
+              |with-param :name pixels.per.inch :select $pixels.per.inch
+              |with-param :name em.size :select $points.per.em
+          |value-of :select "round($width.in.points div 72.0 * $pixels.per.inch)"
+        |otherwise
+    |variable :name contentdepth
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test @contentdepth
+          |variable :name units |{call-template :name length-units |{with-param :name length :select @contentdepth}}
+          |choose
+            |when :test "$units = '%'"
+              |variable :name cmagnitude |{call-template :name length-magnitude |{with-param :name length :select @contentdepth}}
+              |value-of :select "$intrinsicdepth * $cmagnitude div 100.0"
+              |text px
+            |otherwise |{call-template :name length-spec |{with-param :name length :select @contentdepth}}
+        |otherwise |{value-of :select $intrinsicdepth} |{text px}
+    |variable :name scaled.contentdepth
+      |if :test "$contentdepth != ''"
+        |variable :name cdepth.in.points
+          |call-template :name length-in-points
+            |with-param :name length :select $contentdepth
+            |with-param :name pixels.per.inch :select $pixels.per.inch
+            |with-param :name em.size :select $points.per.em
+        |value-of :select "round($cdepth.in.points div 72.0 * $pixels.per.inch * $scale)"
+    |variable :name depth-units |{if :test @depth |{call-template :name length-units |{with-param :name length :select @depth}}}
+    |variable :name depth
+      |if :test @depth
+        |choose
+          |when :test "$depth-units = '%'" |{value-of :select @depth}
+          |otherwise |{call-template :name length-spec |{with-param :name length :select @depth}}
+    |variable :name html.depth
+      |choose
+        |when :test "$ignore.image.scaling != 0"
+        |when :test "$depth-units = '%'" |{value-of :select $depth}
+        |when :test "@depth and @depth != ''"
+          |variable :name depth.in.points
+            |call-template :name length-in-points
+              |with-param :name length :select $depth
+              |with-param :name pixels.per.inch :select $pixels.per.inch
+              |with-param :name em.size :select $points.per.em
+          |value-of :select "round($depth.in.points div 72.0 * $pixels.per.inch)"
+        |otherwise
+    |variable :name viewport
+      |choose
+        |when :test "$ignore.image.scaling != 0" 0
+        |when :test "local-name(.) = 'inlinegraphic'                       or ancestor::d:inlinemediaobject                       or ancestor::d:inlineequation" 0
+        |otherwise |{value-of :select $make.graphic.viewport}
+    ; <xsl:message>=====================================
+    ; scale: <xsl:value-of select="$scale"/>, <xsl:value-of select="$scalefit"/>
+    ; @contentwidth <xsl:value-of select="@contentwidth"/>
+    ; $contentwidth <xsl:value-of select="$contentwidth"/>
+    ; scaled.contentwidth: <xsl:value-of select="$scaled.contentwidth"/>
+    ; @width: <xsl:value-of select="@width"/>
+    ; width: <xsl:value-of select="$width"/>
+    ; html.width: <xsl:value-of select="$html.width"/>
+    ; @contentdepth <xsl:value-of select="@contentdepth"/>
+    ; $contentdepth <xsl:value-of select="$contentdepth"/>
+    ; scaled.contentdepth: <xsl:value-of select="$scaled.contentdepth"/>
+    ; @depth: <xsl:value-of select="@depth"/>
+    ; depth: <xsl:value-of select="$depth"/>
+    ; html.depth: <xsl:value-of select="$html.depth"/>
+    ; align: <xsl:value-of select="@align"/>
+    ; valign: <xsl:value-of select="@valign"/></xsl:message>
+    |variable :name scaled :select "@width|@depth|@contentwidth|@contentdepth                         |@scale|@scalefit"
+    |variable :name img
+      |choose
+        |when :test "@format = 'SVG' or @format = 'svg'"
+          |object :type image/svg+xml
+            |attribute :name data
+              |choose |{when :test "$is.relative = 1" |{value-of :select $img.src.path}}
+              |value-of :select $filename
+            |call-template :name process.image.attributes
+              ; xsl:with-param name="alt" select="$alt"/ there's no alt here
+              |with-param :name html.depth :select $html.depth
+              |with-param :name html.width :select $html.width
+              |with-param :name longdesc :select $longdesc
+              |with-param :name scale :select $scale
+              |with-param :name scalefit :select $scalefit
+              |with-param :name scaled.contentdepth :select $scaled.contentdepth
+              |with-param :name scaled.contentwidth :select $scaled.contentwidth
+              |with-param :name viewport :select $viewport
+            |if :test @align
+              |attribute :name align |{choose |{when :test "@align = 'center'" middle} |{otherwise |{value-of :select @align}}}
+            |if :test "$use.embed.for.svg != 0"
+              |embed :type image/svg+xml
+                |attribute :name src
+                  |choose |{when :test "$is.relative = 1" |{value-of :select $img.src.path}}
+                  |value-of :select $filename
+                |call-template :name process.image.attributes
+                  ; xsl:with-param name="alt" select="$alt"/ there's no alt here
+                  |with-param :name html.depth :select $html.depth
+                  |with-param :name html.width :select $html.width
+                  |with-param :name longdesc :select $longdesc
+                  |with-param :name scale :select $scale
+                  |with-param :name scalefit :select $scalefit
+                  |with-param :name scaled.contentdepth :select $scaled.contentdepth
+                  |with-param :name scaled.contentwidth :select $scaled.contentwidth
+                  |with-param :name viewport :select $viewport
+        |otherwise
+          |variable :name src
+            |choose |{when :test "$is.relative = 1" |{value-of :select $img.src.path}}
+            |value-of :select $filename
+          |variable :name imgcontents
+            |element :name {$tag}
+              |if :test "$tag = 'img' and ../../self::d:imageobjectco"
+                |variable :name mapname |{call-template :name object.id |{with-param :name object :select "../../d:areaspec"}}
+                |choose
+                  |when :test $scaled
+                    ; It might be possible to handle some scaling; needs
+                    ; more investigation
+                    |message |{text Warning: imagemaps not supported} |{text on scaled images}
+                  |otherwise |{attribute :name border 0} |{attribute :name usemap |{value-of :select "concat('#', $mapname)"}}
+              |attribute :name src |{value-of :select $src}
+              |if :test @align
+                |attribute :name align |{choose |{when :test "@align = 'center'" middle} |{otherwise |{value-of :select @align}}}
+              |call-template :name process.image.attributes
+                |with-param :name alt
+                  |choose
+                    |when :test "$alt != ''" |{copy-of :select $alt}
+                    |when :test "ancestor::d:inlinemediaobject"
+                    |when :test "ancestor::d:figure"
+                      |variable :name fig.title |{apply-templates :select "ancestor::d:figure/d:title/node()"}
+                      |value-of :select normalize-space($fig.title)
+                |with-param :name html.depth :select $html.depth
+                |with-param :name html.width :select $html.width
+                |with-param :name longdesc :select $longdesc
+                |with-param :name scale :select $scale
+                |with-param :name scalefit :select $scalefit
+                |with-param :name scaled.contentdepth :select $scaled.contentdepth
+                |with-param :name scaled.contentwidth :select $scaled.contentwidth
+                |with-param :name viewport :select $viewport
+          |choose
+            |when :test "$link.to.self.for.mediaobject = 0" |{copy-of :select $imgcontents}
+            |otherwise |{a :href {$src} |{copy-of :select $imgcontents}}
+    |variable :name bgcolor |{call-template :name pi.dbhtml_background-color |{with-param :name node :select ..}}
+    |variable :name use.viewport :select "$viewport != 0                         and ($html.width != ''                              or ($html.depth != '' and $depth-units != '%')                              or $bgcolor != ''                              or @valign)"
+    |choose
+      |when :test $use.viewport
+        |table :border {$table.border.off}
+          |if :test "$div.element != 'section'" |{attribute :name summary manufactured viewport for HTML img}
+          |if :test "$css.decoration != ''" |{attribute :name style cellpadding: 0; cellspacing: 0;}
+          |if :test "$html.width != ''" |{attribute :name width |{value-of :select $html.width}}
+          |tr
+            |if :test "$html.depth != '' and $depth-units != '%'"
+              ; don't do this for percentages because browsers get confused
+              |choose
+                |when :test "$css.decoration != 0" |{attribute :name style |{text height:} |{value-of :select $html.depth} |{text px}}
+                |otherwise |{attribute :name height |{value-of :select $html.depth}}
+            |td
+              |if :test "$bgcolor != ''"
+                |choose
+                  |when :test "$css.decoration != 0" |{attribute :name style |{text background-color:} |{value-of :select $bgcolor}}
+                  |otherwise |{attribute :name bgcolor |{value-of :select $bgcolor}}
+              |if :test @align |{attribute :name align |{value-of :select @align}}
+              |if :test @valign |{attribute :name valign |{value-of :select @valign}}
+              |copy-of :select $img
+      |otherwise |{copy-of :select $img}
+    |if :test "$tag = 'img' and ../../self::d:imageobjectco and not($scaled)"
+      |variable :name mapname |{call-template :name object.id |{with-param :name object :select "../../d:areaspec"}}
+      |map :name {$mapname}
+        |for-each :select "../../d:areaspec//d:area"
+          |variable :name units
+            |choose
+              |when :test "@units = 'other' and @otherunits" |{value-of :select @otherunits}
+              |when :test @units |{value-of :select @units}
+              ; areaspec|areaset/area
+              |when :test "../@units = 'other' and ../@otherunits" |{value-of :select ../@otherunits}
+              |when :test ../@units |{value-of :select ../@units}
+              ; areaspec/areaset/area
+              |when :test "../../@units = 'other' and ../../@otherunits" |{value-of :select ../@otherunits}
+              |when :test ../../@units |{value-of :select ../../@units}
+              |otherwise calspair
+          |choose
+            |when :test "$units = 'calspair' or                           $units = 'imagemap'"
+              |variable :name coords :select normalize-space(@coords)
+              |area :shape rect
+                |variable :name linkends
+                  |choose
+                    |when :test @linkends |{value-of :select normalize-space(@linkends)}
+                    |otherwise |{value-of :select normalize-space(../@linkends)}
+                |variable :name href
+                  |choose
+                    |when :test "@xlink:href" |{value-of :select "@xlink:href"}
+                    |otherwise |{value-of :select "../@xlink:href"}
+                |choose
+                  |when :test "$linkends != ''"
+                    |variable :name linkend
+                      |choose
+                        |when :test "contains($linkends, ' ')" |{value-of :select "substring-before($linkends, ' ')"}
+                        |otherwise |{value-of :select $linkends}
+                    |variable :name target :select "key('id', $linkend)[1]"
+                    |if :test $target
+                      |attribute :name href |{call-template :name href.target |{with-param :name object :select $target}}
+                  |when :test "$href != ''" |{attribute :name href |{value-of :select $href}}
+                |if :test "d:alt" |{attribute :name alt |{value-of :select "d:alt[1]"}}
+                |attribute :name coords
+                  |choose
+                    |when :test "$units = 'calspair'"
+                      |variable :name p1 :select "substring-before($coords, ' ')"
+                      |variable :name p2 :select "substring-after($coords, ' ')"
+                      |variable :name x1 :select "substring-before($p1,',')"
+                      |variable :name y1 :select "substring-after($p1,',')"
+                      |variable :name x2 :select "substring-before($p2,',')"
+                      |variable :name y2 :select "substring-after($p2,',')"
+                      |variable :name x1p :select "$x1 div 100.0"
+                      |variable :name y1p :select "$y1 div 100.0"
+                      |variable :name x2p :select "$x2 div 100.0"
+                      |variable :name y2p :select "$y2 div 100.0"
+                      ; <xsl:message>
+                      ; <xsl:text>units: </xsl:text>
+                      ; <xsl:value-of select="$units"/>
+                      ; <xsl:text> </xsl:text>
+                      ; <xsl:value-of select="$x1p"/><xsl:text>, </xsl:text>
+                      ; <xsl:value-of select="$y1p"/><xsl:text>, </xsl:text>
+                      ; <xsl:value-of select="$x2p"/><xsl:text>, </xsl:text>
+                      ; <xsl:value-of select="$y2p"/><xsl:text>, </xsl:text>
+                      ; </xsl:message>
+                      ; 
+                      ; <xsl:message>
+                      ; <xsl:text>      </xsl:text>
+                      ; <xsl:value-of select="$intrinsicwidth"/>
+                      ; <xsl:text>, </xsl:text>
+                      ; <xsl:value-of select="$intrinsicdepth"/>
+                      ; </xsl:message>
+                      ; 
+                      ; <xsl:message>
+                      ; <xsl:text>      </xsl:text>
+                      ; <xsl:value-of select="$units"/>
+                      ; <xsl:text> </xsl:text>
+                      ; <xsl:value-of
+                      ; select="round($x1p * $intrinsicwidth div 100.0)"/>
+                      ; <xsl:text>,</xsl:text>
+                      ; <xsl:value-of select="round($intrinsicdepth
+                      ; - ($y2p * $intrinsicdepth div 100.0))"/>
+                      ; <xsl:text>,</xsl:text>
+                      ; <xsl:value-of select="round($x2p *
+                      ; $intrinsicwidth div 100.0)"/>
+                      ; <xsl:text>,</xsl:text>
+                      ; <xsl:value-of select="round($intrinsicdepth
+                      ; - ($y1p * $intrinsicdepth div 100.0))"/>
+                      ; </xsl:message>
+                      |value-of :select "round($x1p * $intrinsicwidth div 100.0)"
+                      |text ,
+                      |value-of :select "round($intrinsicdepth                                         - ($y2p * $intrinsicdepth div 100.0))"
+                      |text ,
+                      |value-of :select "round($x2p * $intrinsicwidth div 100.0)"
+                      |text ,
+                      |value-of :select "round($intrinsicdepth                                       - ($y1p * $intrinsicdepth div 100.0))"
+                    |otherwise |{copy-of :select $coords}
+            |otherwise
+              |message |{text Warning: only calspair or} |{text otherunits='imagemap' supported} |{text in imageobjectco}
+  |template :name process.image.attributes
+    |param :name alt
+    |param :name html.width
+    |param :name html.depth
+    |param :name longdesc
+    |param :name scale
+    |param :name scalefit
+    |param :name scaled.contentdepth
+    |param :name scaled.contentwidth
+    |param :name viewport
+    |choose
+      |when :test "@contentwidth or @contentdepth"
+        ; ignore @width/@depth, @scale, and @scalefit if specified
+        |if :test "@contentwidth and $scaled.contentwidth != ''" |{attribute :name width |{value-of :select $scaled.contentwidth}}
+        |if :test "@contentdepth and $scaled.contentdepth != ''" |{attribute :name height |{value-of :select $scaled.contentdepth}}
+      |when :test "number($scale) != 1.0"
+        ; scaling is always uniform, so we only have to specify one dimension
+        ; ignore @scalefit if specified
+        |attribute :name width |{value-of :select $scaled.contentwidth}
+      |when :test "$scalefit != 0"
+        |choose
+          |when :test "contains($html.width, '%')"
+            |choose
+              |when :test "$viewport != 0"
+                ; The *viewport* will be scaled, so use 100% here!
+                |attribute :name width |{value-of :select "'100%'"}
+              |otherwise |{attribute :name width |{value-of :select $html.width}}
+          |when :test "contains($html.depth, '%')"
+            ; HTML doesn't deal with this case very well...do nothing
+          |when :test "$scaled.contentwidth != '' and $html.width != ''                         and $scaled.contentdepth != '' and $html.depth != ''"
+            ; scalefit should not be anamorphic; figure out which direction
+            ; has the limiting scale factor and scale in that direction
+            |choose
+              |when :test "$html.width div $scaled.contentwidth >                             $html.depth div $scaled.contentdepth" |{attribute :name height |{value-of :select $html.depth}}
+              |otherwise |{attribute :name width |{value-of :select $html.width}}
+          |when :test "$scaled.contentwidth != '' and $html.width != ''" |{attribute :name width |{value-of :select $html.width}}
+          |when :test "$scaled.contentdepth != '' and $html.depth != ''" |{attribute :name height |{value-of :select $html.depth}}
+    |if :test "$alt != ''" |{attribute :name alt |{value-of :select normalize-space($alt)}}
+    ; Turn off longdesc attribute since not supported by browsers
+    ; <xsl:if test="$longdesc != ''">
+    ; <xsl:attribute name="longdesc">
+    ; <xsl:value-of select="$longdesc"/>
+    ; </xsl:attribute>
+    ; </xsl:if>
+    |if :test "@align and $viewport = 0"
+      |attribute :name align |{choose |{when :test "@align = 'center'" middle} |{otherwise |{value-of :select @align}}}
+    |call-template :name extension.process.image.attributes
+  |template :name extension.process.image.attributes
+  ; ====================================================================
+  |template :match "d:graphic"
+    |choose
+      |when :test "parent::d:inlineequation"
+        |span
+          |call-template :name id.attribute
+          |call-template :name anchor
+          |call-template :name process.image
+      |otherwise
+        |div
+          |call-template :name id.attribute
+          |if :test @align |{attribute :name align |{value-of :select @align}}
+          |call-template :name anchor
+          |call-template :name process.image
+  |template :match "d:inlinegraphic"
+    |variable :name filename
+      |choose
+        |when :test @entityref |{value-of :select unparsed-entity-uri(@entityref)}
+        |otherwise |{apply-templates :select @fileref}
+    |call-template :name anchor
+    |choose
+      |when :test "@format='linespecific'"
+        |choose
+          |when :test "$use.extensions != '0'                         and $textinsert.extension != '0'"
+            |choose
+              |when :test "element-available('stext:insertfile')" |{insertfile :href {$filename} :encoding {$textdata.default.encoding}}
+              |when :test "element-available('xtext:insertfile')" |{insertfile :href {$filename}}
+              |otherwise |{message :terminate yes |{text No insertfile extension available.}}
+          |otherwise
+            |message :terminate yes
+              |text Cannot insert
+              |value-of :select $filename
+              |text . Check use.extensions and textinsert.extension parameters.
+      |otherwise |{call-template :name process.image}
+  ; ====================================================================
+  |template :match "d:mediaobject|d:mediaobjectco"
+    |variable :name olist :select "d:imageobject|d:imageobjectco                      |d:videoobject|d:audioobject                      |d:textobject"
+    |variable :name object.index
+      |call-template :name select.mediaobject.index |{with-param :name olist :select $olist} |{with-param :name count :select 1}
+    |variable :name object :select "$olist[position() = $object.index]"
+    |variable :name align |{value-of :select "$object/descendant::d:imagedata[@align][1]/@align"}
+    |div
+      |apply-templates :select . :mode common.html.attributes
+      |if :test "$align != '' " |{attribute :name align |{value-of :select $align}}
+      |call-template :name id.attribute
+      |call-template :name anchor
+      |apply-templates :select $object
+      |apply-templates :select "d:caption"
+  |template :match "d:inlinemediaobject"
+    |span
+      |apply-templates :select . :mode common.html.attributes
+      |call-template :name id.attribute
+      |call-template :name anchor
+      |call-template :name select.mediaobject
+  |template :match "d:programlisting/d:inlinemediaobject                      |d:screen/d:inlinemediaobject" :priority 2
+    ; the additional span causes problems in some cases
+    |call-template :name select.mediaobject
+  ; ====================================================================
+  |template :match "d:imageobjectco"
+    |call-template :name anchor
+    |choose
+      ; select one imageobject?
+      |when :test "$use.role.for.mediaobject != 0 and                     count(d:imageobject) > 1 and                     d:imageobject[@role]"
+        |variable :name olist :select "d:imageobject"
+        |variable :name object.index
+          |call-template :name select.mediaobject.index |{with-param :name olist :select $olist} |{with-param :name count :select 1}
+        |variable :name object :select "$olist[position() = $object.index]"
+        |apply-templates :select $object
+      |otherwise
+        ; otherwise process them all
+        |apply-templates :select "d:imageobject"
+    |apply-templates :select "d:calloutlist"
+  |template :match "d:imageobject" |{apply-templates :select "d:imagedata"}
+  |template :match "d:imagedata"
+    |variable :name filename |{call-template :name mediaobject.filename |{with-param :name object :select ..}}
+    |choose
+      ; Handle MathML and SVG markup in imagedata
+      |when :test "mml:*" |{apply-templates}
+      |when :test "svg:*" |{apply-templates}
+      |when :test "@format='linespecific'"
+        |choose
+          |when :test "$use.extensions != '0'                         and $textinsert.extension != '0'"
+            |choose
+              |when :test "element-available('stext:insertfile')" |{insertfile :href {$filename} :encoding {$textdata.default.encoding}}
+              |when :test "element-available('xtext:insertfile')" |{insertfile :href {$filename}}
+              |otherwise |{message :terminate yes |{text No insertfile extension available.}}
+          |otherwise
+            |a :type simple :show embed :actuate onLoad :href {$filename}
+      |otherwise
+        |variable :name longdesc.uri
+          |call-template :name longdesc.uri |{with-param :name mediaobject :select "ancestor::d:imageobject/parent::*"}
+        |variable :name phrases :select "ancestor::d:mediaobject/d:textobject[d:phrase]                             |ancestor::d:inlinemediaobject/d:textobject[d:phrase]                             |ancestor::d:mediaobjectco/d:textobject[d:phrase]"
+        |call-template :name process.image
+          |with-param :name alt
+            |choose
+              |when :test "ancestor::d:mediaobject/d:alt" |{apply-templates :select "ancestor::d:mediaobject/d:alt"}
+              |when :test "ancestor::d:inlinemediaobject/d:alt" |{apply-templates :select "ancestor::d:inlinemediaobject/d:alt"}
+              |otherwise |{apply-templates :select "$phrases[not(@role) or @role!='tex'][1]"}
+          |with-param :name longdesc
+            |call-template :name write.longdesc |{with-param :name mediaobject :select "ancestor::d:imageobject/parent::*"}
+        |if :test "$html.longdesc != 0 and $html.longdesc.link != 0                     and ancestor::d:imageobject/parent::*/d:textobject[not(d:phrase)]" |{call-template :name longdesc.link |{with-param :name longdesc.uri :select $longdesc.uri}}
+  ; ====================================================================
+  |template :name longdesc.uri
+    |param :name mediaobject :select .
+    |if :test $html.longdesc
+      |if :test "$mediaobject/d:textobject[not(d:phrase)]"
+        |variable :name dbhtml.dir |{call-template :name dbhtml-dir}
+        |variable :name filename
+          |call-template :name make-relative-filename
+            |with-param :name base.dir
+              |choose
+                |when :test "$dbhtml.dir != ''" |{value-of :select $dbhtml.dir}
+                |otherwise |{value-of :select $chunk.base.dir}
+            |with-param :name base.name
+              |choose
+                |when :test "                 $mediaobject/@*[local-name() = 'id']                 and not($use.id.as.filename = 0)"
+                  ; * if this mediaobject has an ID, then we use the
+                  ; * value of that ID as basename for the "longdesc"
+                  ; * file (that is, without prepending an "ld-" too it)
+                  |value-of :select "$mediaobject/@*[local-name() = 'id']"
+                  |value-of :select $html.ext
+                |otherwise
+                  ; * otherwise, if this mediaobject does not have an
+                  ; * ID, then we generate an ID...
+                  |variable :name image-id |{call-template :name object.id |{with-param :name object :select $mediaobject}}
+                  ; * ...and then we take that generated ID, prepend an
+                  ; * "ld-" to it, and use that as the basename for the file
+                  |value-of :select "concat('ld-',$image-id,$html.ext)"
+        |value-of :select $filename
+  |template :name write.longdesc
+    |param :name mediaobject :select .
+    |if :test "$html.longdesc != 0 and $mediaobject/d:textobject[not(d:phrase)]"
+      |variable :name filename |{call-template :name longdesc.uri |{with-param :name mediaobject :select $mediaobject}}
+      |value-of :select $filename
+      |call-template :name write.chunk
+        |with-param :name filename :select $filename
+        |with-param :name quiet :select $chunk.quietly
+        |with-param :name content
+          |call-template :name user.preroot
+          |html
+            |head
+              |call-template :name system.head.content
+              |call-template :name head.content |{with-param :name title :select "'Long Description'"}
+              |call-template :name user.head.content
+            |body
+              |call-template :name body.attributes
+              |for-each :select "$mediaobject/d:textobject[not(d:phrase)]" |{apply-templates :select ./*}
+          |value-of :select $chunk.append
+  |template :name longdesc.link
+    |param :name longdesc.uri :select "''"
+    |variable :name this.uri
+      |call-template :name make-relative-filename
+        |with-param :name base.dir :select $chunk.base.dir
+        |with-param :name base.name |{call-template :name href.target.uri}
+    |variable :name href.to
+      |call-template :name trim.common.uri.paths
+        |with-param :name uriA :select $longdesc.uri
+        |with-param :name uriB :select $this.uri
+        |with-param :name return :select "'A'"
+    |div.longdesc-link :align {$direction.align.end}
+      |br :style "clear: both"
+      |span.longdesc-link |{text [} |{a :href {$href.to} :target longdesc D} |{text ]}
+  ; ====================================================================
+  |template :match "d:inlinemediaobject/d:alt" |{apply-templates}
+  |template :match "d:mediaobject/d:alt" |{apply-templates}
+  |template :match "d:videoobject" |{apply-templates :select "d:videodata"}
+  |template :match "d:videodata"
+    |call-template :name process.image
+      |with-param :name tag :select "'embed'"
+      |with-param :name alt
+        |choose
+          |when :test "ancestor::d:mediaobject/d:alt" |{apply-templates :select "ancestor::d:mediaobject/d:alt"}
+          |otherwise |{apply-templates :select "(ancestor::d:mediaobject/d:textobject/d:phrase)[1]"}
+  ; ====================================================================
+  |template :match "d:audioobject" |{apply-templates :select "d:audiodata"}
+  |template :match "d:audiodata"
+    |call-template :name process.image
+      |with-param :name tag :select "'embed'"
+      |with-param :name alt
+        |choose
+          |when :test "ancestor::d:mediaobject/d:alt" |{apply-templates :select "ancestor::d:mediaobject/d:alt"}
+          |otherwise |{apply-templates :select "(ancestor::d:mediaobject/d:textobject/d:phrase)[1]"}
+  ; ====================================================================
+  |template :match "d:textobject" |{apply-templates}
+  |template :match "d:textdata"
+    |variable :name filename
+      |choose
+        |when :test @entityref |{value-of :select unparsed-entity-uri(@entityref)}
+        |otherwise |{apply-templates :select @fileref}
+    |variable :name encoding
+      |choose
+        |when :test @encoding |{value-of :select @encoding}
+        |otherwise |{value-of :select $textdata.default.encoding}
+    |choose
+      |when :test "$use.extensions != '0'                     and $textinsert.extension != '0'"
+        |choose
+          |when :test "element-available('stext:insertfile')" |{insertfile :href {$filename} :encoding {$encoding}}
+          |when :test "element-available('xtext:insertfile')" |{insertfile :href {$filename}}
+          |otherwise |{message :terminate yes |{text No insertfile extension available.}}
+      |otherwise
+        |message :terminate yes
+          |text Cannot insert
+          |value-of :select $filename
+          |text . Check use.extensions and textinsert.extension parameters.
+  ; ====================================================================
+  |template :match "d:caption"
+    |div
+      |apply-templates :select . :mode common.html.attributes
+      |call-template :name id.attribute
+      |if :test "@align = 'right' or @align = 'left' or @align='center'" |{attribute :name align |{value-of :select @align}}
+      |apply-templates
+  ; ====================================================================
+  ; "Support" for SVG
+  |template :match "svg:*" |{copy |{copy-of :select @*} |{apply-templates}}
+  ; The following works sometimes, but needs to take into account
+  ; 1. When there is no /*/@xml:base
+  ; 2. When the chunks are going somewhere else
+  ; <xsl:variable name="relpath">
+  ; <xsl:call-template name="relative-uri">
+  ; <xsl:with-param name="filename" select="@fileref"/>
+  ; </xsl:call-template>
+  ; </xsl:variable>
+  ; 
+  ; <xsl:choose>
+  ; <xsl:when test="/*/@xml:base
+  ; and starts-with($relpath,/*/@xml:base)">
+  ; <xsl:value-of select="substring-after($relpath,/*/@xml:base)"/>
+  ; </xsl:when>
+  ; <xsl:otherwise>
+  ; <xsl:value-of select="@fileref"/>
+  ; </xsl:otherwise>
+  ; </xsl:choose>
+  ; <xsl:value-of select="@fileref"/>
+  ; </xsl:when>
+  ; Resolve xml:base attributes
+  |template :match @fileref
+    ; need a check for absolute urls
+    |choose
+      |when :test "contains(., ':')"
+        ; it has a uri scheme so it is an absolute uri
+        |value-of :select .
+      |when :test "$keep.relative.image.uris != 0"
+        ; leave it alone
+        |value-of :select .
+      |otherwise
+        ; its a relative uri that needs xml:base processing
+        |call-template :name relative-uri
