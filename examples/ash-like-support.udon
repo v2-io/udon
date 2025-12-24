@@ -1,0 +1,107 @@
+; Ash-like UDON DSL — Support / Helpdesk
+
+|domain[support]
+  :app "Acme"
+  :version 0.5
+
+  |resource[agent]
+    :table agents
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[email].string :allow-nil false :unique true
+      |attr[name].string
+      |attr[role].atom :default agent
+      |attr[active].boolean :default true
+
+    |actions
+      |read[list]
+      |read[by-email] :get true
+        |filter :email == ^email
+
+  |resource[ticket]
+    :table tickets
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[subject].string :allow-nil false
+      |attr[body].text
+      |attr[priority].atom :default normal
+      |attr[status].atom :default open
+      |attr[requester-email].string :allow-nil false
+      |attr[assignee-id].uuid :allow-nil true
+      |attr[due-at].utc-datetime
+
+    |relationships
+      |belongs-to[assignee] :destination support.agent :source-attribute assignee-id :destination-attribute id
+      |has-many[comments] :destination support.comment :source-attribute id :destination-attribute ticket-id
+
+    |actions
+      |create[open]
+        :accept [subject body priority requester-email]
+        |validate :priority
+        |change :set-due-date
+
+        ; SLA timing (priority-dependent) is easier in code
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            priority = Ash.Changeset.get_attribute(changeset, :priority) || :normal
+            hours = case priority
+                    when :urgent then 4
+                    when :high then 24
+                    when :normal then 72
+                    else 168
+                    end
+            due_at = DateTime.add(DateTime.utc_now(), hours * 3600, :second)
+            Ash.Changeset.change_attribute(changeset, :due_at, due_at)
+          end
+
+      |update[assign]
+        :accept [assignee-id]
+        |authorize :agents-only
+
+      |update[close]
+        :accept []
+        |change :set-status-closed
+
+    |policies
+      |policy[agents-only]
+        :effect allow
+        |when :actor-role == :agent
+
+    |validations
+      |validation[priority]
+        :rule "priority in [:low, :normal, :high, :urgent]"
+
+  |resource[comment]
+    :table comments
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[ticket-id].uuid :allow-nil false
+      |attr[author-email].string :allow-nil false
+      |attr[body].text :allow-nil false
+      |attr[internal].boolean :default false
+
+    |relationships
+      |belongs-to[ticket] :destination support.ticket :source-attribute ticket-id :destination-attribute id
+
+    |actions
+      |create[post]
+        :accept [ticket-id author-email body internal]
+        |change :touch-ticket
+
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            ticket_id = Ash.Changeset.get_attribute(changeset, :ticket_id)
+            Support.Ticket
+            |> Ash.Query.filter(id == ^ticket_id)
+            |> Ash.update!(:touch)
+            changeset
+          end

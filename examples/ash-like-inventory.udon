@@ -1,0 +1,106 @@
+; Ash-like UDON DSL — Inventory
+
+|domain[inventory]
+  :app "Acme"
+  :version 0.2
+
+  |resource[product]
+    :table products
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[sku].string :allow-nil false :unique true
+      |attr[name].string :allow-nil false
+      |attr[category].string
+      |attr[status].atom :default active
+
+    |actions
+      |create[register]
+        :accept [sku name category]
+        |validate :sku-format
+
+      |read[by-sku]
+        :get true
+        |filter :sku == ^sku
+
+    |validations
+      |validation[sku-format]
+        :rule "sku =~ /^[A-Z0-9-]+$/"
+
+  |resource[warehouse]
+    :table warehouses
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[name].string :allow-nil false
+      |attr[region].string
+
+  |resource[stock]
+    :table stocks
+    :primary-key id
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[product-id].uuid :allow-nil false
+      |attr[warehouse-id].uuid :allow-nil false
+      |attr[on-hand].integer :default 0
+      |attr[reserved].integer :default 0
+
+    |relationships
+      |belongs-to[product] :destination inventory.product :source-attribute product-id :destination-attribute id
+      |belongs-to[warehouse] :destination inventory.warehouse :source-attribute warehouse-id :destination-attribute id
+
+    |actions
+      |update[adjust]
+        :accept [delta reason]
+        |validate :non-negative
+        |change :apply-adjustment
+
+        ; Escape hatch for concurrency-safe adjustment
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            delta = Ash.Changeset.get_argument(changeset, :delta)
+            on_hand = Ash.Changeset.get_attribute(changeset, :on_hand)
+            Ash.Changeset.change_attribute(changeset, :on_hand, on_hand + delta)
+          end
+
+    |validations
+      |validation[non-negative]
+        :rule "on_hand + ^delta >= 0"
+
+  |resource[stock-movement]
+    :table stock_movements
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[product-id].uuid :allow-nil false
+      |attr[warehouse-id].uuid :allow-nil false
+      |attr[delta].integer :allow-nil false
+      |attr[reason].string
+      |attr[occurred-at].utc-datetime
+
+    |relationships
+      |belongs-to[product] :destination inventory.product :source-attribute product-id :destination-attribute id
+      |belongs-to[warehouse] :destination inventory.warehouse :source-attribute warehouse-id :destination-attribute id
+
+    |actions
+      |create[record]
+        :accept [product-id warehouse-id delta reason]
+        |change :set-occurred-at
+
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            now = DateTime.utc_now()
+            Ash.Changeset.change_attribute(changeset, :occurred_at, now)
+          end
+
+    |policies
+      |policy[ops-only]
+        :effect allow
+        |when :actor-role == :ops

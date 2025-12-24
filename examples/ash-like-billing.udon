@@ -1,0 +1,126 @@
+; Ash-like UDON DSL — Billing
+
+|domain[billing]
+  :app "Acme"
+  :version 0.3
+
+  |resource[customer]
+    :table customers
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[email].string :allow-nil false :unique true
+      |attr[name].string
+      |attr[status].atom :default active
+
+    |relationships
+      |has-many[invoices] :destination billing.invoice :source-attribute id :destination-attribute customer-id
+      |has-many[subscriptions] :destination billing.subscription :source-attribute id :destination-attribute customer-id
+
+    |actions
+      |create[register]
+        :accept [email name]
+        |validate :email-format
+
+      |read[by-email]
+        :get true
+        |filter :email == ^email
+
+    |validations
+      |validation[email-format]
+        :rule "email =~ /@/"
+
+  |resource[invoice]
+    :table invoices
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[customer-id].uuid :allow-nil false
+      |attr[status].atom :default open
+      |attr[currency].string :default "USD"
+      |attr[issued-at].utc-datetime
+      |attr[due-at].utc-datetime
+
+    |relationships
+      |belongs-to[customer] :destination billing.customer :source-attribute customer-id :destination-attribute id
+      |has-many[lines] :destination billing.invoice-line :source-attribute id :destination-attribute invoice-id
+
+    |actions
+      |create[issue]
+        :accept [customer-id currency]
+        |change :set-issued-at
+        |change :set-due-date
+
+        ; Escape hatch for a non-trivial due-date rule
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            issued_at = DateTime.utc_now()
+            due_at = DateTime.add(issued_at, 30, :day)
+            changeset
+            |> Ash.Changeset.change_attribute(:issued_at, issued_at)
+            |> Ash.Changeset.change_attribute(:due_at, due_at)
+          end
+
+      |update[mark-paid]
+        :accept [paid-at]
+        |authorize :accounting-only
+
+    |policies
+      |policy[accounting-only]
+        :effect allow
+        |when :actor-role == :accountant
+
+    |calculations
+      |calc[total-amount].money
+        :expr "sum(lines.amount)"
+        :fallback !{raw:ex "Money.zero(:USD)"}
+
+  |resource[invoice-line]
+    :table invoice_lines
+    :primary-key id
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[invoice-id].uuid :allow-nil false
+      |attr[description].string
+      |attr[amount].money :allow-nil false
+
+    |relationships
+      |belongs-to[invoice] :destination billing.invoice :source-attribute invoice-id :destination-attribute id
+
+  |resource[subscription]
+    :table subscriptions
+    :primary-key id
+    :timestamps true
+
+    |attributes
+      |attr[id].uuid :generated true
+      |attr[customer-id].uuid :allow-nil false
+      |attr[plan].string :allow-nil false
+      |attr[status].atom :default active
+      |attr[renews-at].utc-datetime
+
+    |relationships
+      |belongs-to[customer] :destination billing.customer :source-attribute customer-id :destination-attribute id
+
+    |actions
+      |create[start]
+        :accept [customer-id plan]
+        |change :set-renewal-date
+
+        ; Escape hatch for plan-specific renewal logic
+        !raw:ex
+          def change(changeset, _opts, _ctx) do
+            plan = Ash.Changeset.get_attribute(changeset, :plan)
+            days = if plan == "annual", do: 365, else: 30
+            renews_at = DateTime.add(DateTime.utc_now(), days, :day)
+            Ash.Changeset.change_attribute(changeset, :renews_at, renews_at)
+          end
+
+      |update[cancel]
+        :accept []
+        |change :set-status-canceled

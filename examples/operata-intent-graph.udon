@@ -1,0 +1,118 @@
+; Operata intent graph — query DSL (conceptual)
+; This shows a UDON-first query layer with a minimal Ruby escape hatch.
+
+|domain[operata]
+  :store sqlite
+  :version 0.1
+
+  |resource[intent]
+    :description "A desired state or outcome"
+
+    |attributes
+      |attr[id].uuid8 :primary true
+      |attr[title].string :allow-nil false
+      |attr[kind].atom :default compound :one-of [compound primitive]
+      |attr[status].atom :default projected :one-of [projected active realized abandoned]
+      |attr[relationship].atom :default root :one-of [prepares decomposes supports root]
+      |attr[position].integer :default 0
+      |timestamps
+
+    |relationships
+      |belongs-to[parent] :destination operata.intent :allow-nil true
+      |has-many[children] :destination operata.intent :inverse-of parent
+
+    |graph
+      ; Edges are derived from parent/child and relationship
+      |edge[prepares]
+        :from child
+        :to parent
+        :when :relationship == prepares
+
+      |edge[decomposes]
+        :from child
+        :to parent
+        :when :relationship == decomposes
+
+      |edge[supports]
+        :from child
+        :to parent
+        :when :relationship == supports
+
+    |queries
+      |query[ready]
+        :description "Primitive intents whose preparatory children are realized"
+        :return [intent]
+
+        |where
+          :kind primitive
+          :status [projected active]
+
+        |graph-require
+          ; All preparing children must be realized
+          |all[preparations]
+            :edge prepares
+            :direction inbound
+            :predicate :status == realized
+
+      |query[blocked]
+        :description "Active intents with unmet preparatory children"
+        :return [intent]
+
+        |where
+          :status active
+
+        |graph-require
+          |any[unsatisfied]
+            :edge prepares
+            :direction inbound
+            :predicate :status != realized
+
+      |query[critical-path]
+        :description "Longest preparatory chain for an intent"
+        :return [intent depth]
+
+        |input
+          :intent-id
+
+        |graph-walk
+          :edge prepares
+          :direction inbound
+          :strategy depth-first
+
+        |aggregate
+          :metric max-depth
+          :group-by root
+
+        ; Escape hatch for a custom scoring heuristic
+        !raw:rb
+          def score_path(path)
+            # Prefer paths with many primitive steps and few abandoned nodes
+            primitive = path.count { |n| n.kind == :primitive }
+            abandoned = path.count { |n| n.status == :abandoned }
+            (primitive * 3) - (abandoned * 10) - path.length
+          end
+
+      |query[next-actions]
+        :description "Next actions ranked by readiness + context"
+        :return [intent score]
+
+        |pipeline
+          |from :ready
+          |join :by-owner "current_actor"
+          |score
+            :base 100
+            :subtract :age-days
+            :boost-if :relationship == prepares
+
+          |order
+            :score desc
+
+        ; Use host for complex context weighting
+        !raw:rb
+          def context_weight(intent, ctx)
+            w = 0
+            w += 15 if intent.relationship == :prepares
+            w += 10 if ctx[:focus_intent_id] && intent.parent_id == ctx[:focus_intent_id]
+            w -= 20 if intent.status == :active && ctx[:load] > 3
+            w
+          end

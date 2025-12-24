@@ -109,6 +109,7 @@ No sentence-boundary detection needed. No sliding windows. The author's intent a
 | [SPEC.md](SPEC.md) | Full specification (v0.7-draft) |
 | [analysis.md](analysis.md) | Design rationale, TST evaluation, and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
+| [examples/practices-gotchas.udon](examples/practices-gotchas.udon) | Practices and gotchas guide (in review) |
 
 ## Historical Repositories
 

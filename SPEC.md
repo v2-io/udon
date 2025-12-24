@@ -458,6 +458,12 @@ A class-only element (no element name) defines inheritable traits:
 
 Class usage inherits the mixin's attributes and children.
 
+Classes also serve as lightweight classification even when no mixin is defined.
+In that case, they are equivalent to a classification attribute
+(`:'$class' [class1 class2 ...]`) with no inherited traits. A class can be
+introduced later as a mixin, at which point existing uses gain the mixin's
+attributes and children.
+
 > **Note:** The precise behavior for inheriting child elements and prose content from mixins is not yet fully defined. Attribute inheritance (with override) is clear; subtree inheritance semantics are still being refined.
 
 ### Multiple Inheritance
@@ -718,6 +724,8 @@ Support callback/event mode for incremental processing:
 ---
 
 ## Examples
+
+For additional authoring guidance, see [examples/practices-gotchas.udon](examples/practices-gotchas.udon) (in review).
 
 ### Configuration
 
