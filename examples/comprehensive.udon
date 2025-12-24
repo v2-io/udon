@@ -124,12 +124,13 @@
   Existing formats force uncomfortable trade-offs. See the comparison
   in |{a :href #format-comparison Table 1} below:
 
-  |table[format-comparison] |tr |th Format    |th Prose |th Data |th Inline
-                            |tr |td JSON      |td poor  |td great |td none
-                            |tr |td YAML      |td poor  |td good  |td none
-                            |tr |td XML       |td ok    |td ok    |td verbose
-                            |tr |td Markdown  |td great |td poor  |td limited
-                            |tr.highlight |td |{strong UDON} |td great |td great |td |{strong natural}
+  |table[format-comparison]
+    |tr |{th Format} |{th Prose} |{th Data} |{th Inline}
+    |tr |{td JSON} |{td poor} |{td great} |{td none}
+    |tr |{td YAML} |{td poor} |{td good} |{td none}
+    |tr |{td XML} |{td ok} |{td ok} |{td verbose}
+    |tr |{td Markdown} |{td great} |{td poor} |{td limited}
+    |tr.highlight |{td |{strong UDON}} |{td great} |{td great} |{td |{strong natural}}
 
   As |{cite :author "Kay" :year 1993 Alan Kay} noted in his work on
   Smalltalk: |{q the best notation is one you don't notice}. UDON aims
@@ -456,10 +457,11 @@
 
   Current limits by tier:
 
-  |table[rate-limits] |tr |th Tier      |th Requests/min |th Burst
-                      |tr |td Free      |td |{n 60}      |td |{n 10}
-                      |tr |td Pro       |td |{n 600}     |td |{n 100}
-                      |tr |td Enterprise|td |{n 6000}    |td |{n 1000}
+  |table[rate-limits]
+    |tr |{th Tier} |{th Requests/min} |{th Burst}
+    |tr |{td Free} |{td |{n 60}} |{td |{n 10}}
+    |tr |{td Pro} |{td |{n 600}} |{td |{n 100}}
+    |tr |{td Enterprise} |{td |{n 6000}} |{td |{n 1000}}
 
   For higher limits, |{a :href /contact contact sales} or see the
   |{a :href /docs/enterprise Enterprise documentation}.
