@@ -317,11 +317,35 @@ The content follows normal indentation rules:
 - Not parsed as UDON (no `|`, `:`, `!`, `;` interpretation)
 - Dedented on output relative to the directive's indent level
 
-Inline raw content uses the interpolation syntax:
+Inline raw content uses LaTeX-style syntax—the directive name precedes the braces:
 
 ```
-|p The response was !{raw:json {"status": "ok", "count": 42}} as expected.
+|p The response was !raw:json{{"status": "ok", "count": 42}} as expected.
 ```
+
+**Inline raw requires balanced curly braces.** The parser finds the closing `}` by counting brace depth—no escape mechanism exists. For content with unbalanced braces, use block form:
+
+```
+; Works — braces are balanced (even nested)
+!raw:json{{"key": "value"}}
+!raw:regex{[a-z]{3,5}}
+
+; Fails — unbalanced brace
+!raw:text{missing close {here}
+
+; Solution — block form handles anything
+!raw:text
+  missing close {here
+```
+
+This distinguishes inline directives from Liquid interpolation:
+
+| Syntax | What it is | Example |
+|--------|------------|---------|
+| `!{expr}` | Liquid interpolation | `Hello, !{user.name}!` |
+| `!name{content}` | Inline directive | `!raw:sql{SELECT * FROM users}` |
+
+Inline directives are **indentation-insensitive**—scope is determined by brace-matching. For indentation-based structure, use block form.
 
 Note: Raw content cannot be an attribute value directly—attributes are typed scalars.
 
@@ -387,6 +411,84 @@ The `!` prefix enables evaluation and control flow. The specific dialect depends
 !{price | currency "USD"}
 ```
 
+### Expression Grammar
+
+UDON adopts Liquid's intentionally simple expression grammar. This simplicity is a feature—expressions are predictable and portable across host implementations.
+
+#### Operators
+
+| Category | Operators | Notes |
+|----------|-----------|-------|
+| Comparison | `==` `!=` `<>` `<` `>` `<=` `>=` | `<>` is synonym for `!=` |
+| Logical | `and` `or` | Right-to-left evaluation |
+| Membership | `contains` | Substring or collection membership |
+
+```
+!if age >= 18
+!if user.verified and user.subscribed
+!if tags contains "featured"
+```
+
+#### What Expressions Cannot Do
+
+These constraints are intentional, matching Liquid's design:
+
+- **No parentheses** — Cannot group or override precedence
+- **No arithmetic** — Use filters: `!{a | plus: b}` not `!{a + b}`
+- **No ternary operator** — Use `!if`/`!else` blocks
+- **No negation operator** — Use `!if value == false` or `!unless`
+
+#### Evaluation Order
+
+Logical operators evaluate **right-to-left** with no precedence between `and`/`or`. This is unusual—most languages give `and` higher precedence than `or`, or use left-to-right associativity. Liquid does neither.
+
+```
+!if a or b and c      ; Evaluates as: a or (b and c)
+!if a and b or c      ; Evaluates as: a and (b or c)
+```
+
+**When this matters:** The difference between right-to-left and standard precedence (`and` > `or`) only affects expressions mixing both operators:
+
+| Expression | Right-to-left (Liquid) | Standard precedence |
+|------------|------------------------|---------------------|
+| `false and true or true` | `false and (true or true)` → **false** | `(false and true) or true` → true |
+| `true and false or true` | `true and (false or true)` → **true** | `(true and false) or true` → true |
+| `false or true and false` | `false or (true and false)` → **false** | `false or (true and false)` → false |
+| `true or false and false` | `true or (false and false)` → **true** | `true or (false and false)` → true |
+
+The first row is the clearest case: standard precedence would yield `true`, but Liquid yields `false`.
+
+To express `(a or b) and c`, use nested conditionals:
+
+```
+!if c
+  !if a or b
+    Content here
+```
+
+#### Truthiness
+
+Only two values are falsy:
+
+| Value | Truthy? |
+|-------|---------|
+| `false` | No |
+| `nil` / `null` | No |
+| `""` (empty string) | **Yes** |
+| `0` | **Yes** |
+| `[]` (empty list) | **Yes** |
+| Everything else | **Yes** |
+
+To test for empty values, use explicit comparison:
+
+```
+!if title != ""           ; Check non-empty string
+!if items != empty        ; Check non-empty collection
+!if value != blank        ; Check defined and non-empty
+```
+
+The `empty` keyword tests if a defined value is empty. The `blank` keyword tests if a value is undefined OR empty.
+
 ### Control Flow
 
 ```
@@ -396,6 +498,9 @@ The `!` prefix enables evaluation and control flow. The specific dialect depends
   Alternative
 !else
   Fallback
+
+!unless condition        ; Negated conditional (equivalent to !if condition == false)
+  Content when false
 
 !for item in collection
   |card
@@ -425,7 +530,13 @@ The `!` prefix enables evaluation and control flow. The specific dialect depends
 {% endif %}
 ```
 
-The scope ends when indentation decreases.
+The scope ends when indentation decreases—no closing tags needed.
+
+### Inline Control Flow
+
+UDON does not currently support inline forms of control flow directives (`!if`, `!for`, etc.). These remain block-level only, using indentation to delimit scope.
+
+Syntax for inline control flow (e.g., `!if{cond}{then}{else}`) is under investigation but not yet specified. For now, use block form or express simple conditionals via host-specific expression syntax where available.
 
 ### Host-Specific Dialects
 
@@ -531,10 +642,18 @@ line          = indent ( element | attribute | dynamic | comment | prose ) ;
 
 indent        = { SPACE }* ;
 
+; Element recognition: "|" is only an element when followed by one of:
+;   - Unicode letter (\p{L}) — named element
+;   - "[" — anonymous element with id
+;   - "." — anonymous element with class
+;   - "{" — embedded element
+;   - "'" — quoted element name
+; Otherwise "|" is prose (preserves Markdown table compatibility)
+
 ; Elements with optional suffix modifiers
 element       = "|" [ name ] [ suffix ] [ id [ suffix ] ] { class }*
                 [ SPACE suffix ] { attribute }* { inline_child }* ;
-name          = LABEL ;
+name          = LABEL | quoted_label ;
 id            = "[" id_value "]" ;
 id_value      = typed_value | bare_string ;  ; Same as attribute values
 class         = "." LABEL ;
@@ -548,7 +667,7 @@ embedded_element = "|{" [ name ] [ id ] { class }* { attribute }*
 embedded_content = embedded_element | { CHAR - "|{" - "}" }+ ;
 
 ; Attributes with typed values
-attribute     = ":" LABEL [ value ] ;
+attribute     = ":" ( LABEL | quoted_label ) [ value ] ;
 value         = typed_value | block_value ;
 typed_value   = nil_value | bool_value | complex | rational | number
               | list_value | string_value ;
@@ -578,9 +697,12 @@ bare_string   = { CHAR - (SPACE ":") - (SPACE "|") - NEWLINE }+ ;
 block_value   = NEWLINE INDENT { line }+ DEDENT ;
 
 ; Dynamics
-dynamic       = "!" ( directive | interpolation ) ;
-directive     = LABEL { CHAR }* ;
-interpolation = "{" expression [ "|" filter { "|" filter }* ] "}" ;
+dynamic           = "!" ( interpolation | inline_directive | block_directive ) ;
+interpolation     = "{" expression [ "|" filter { "|" filter }* ] "}" ;
+inline_directive  = directive_name "{" directive_body "}" ;
+block_directive   = directive_name { CHAR }* ;  ; Body determined by indentation
+directive_name    = LABEL [ ":" LABEL ] ;  ; Optional namespace (e.g., raw:json)
+directive_body    = { CHAR - "{" - "}" | "{" directive_body "}" }* ;  ; Balanced braces
 
 ; Other
 comment       = ";" { CHAR }* ;
@@ -589,7 +711,9 @@ literal       = "'" CHAR ;
 freeform      = "```" { CHAR }* NEWLINE { any_line }* "```" ;
 
 ; Terminals
-LABEL         = /[a-zA-Z_][a-zA-Z0-9_-]*/ ;
+LABEL         = /[\p{L}_][\p{L}\p{N}_-]*/ ;  ; Unicode letters and numbers
+quoted_label  = "'" { CHAR_NOT_QUOTE | "\\'" }* "'" ;  ; Single-quoted with \' escape
+CHAR_NOT_QUOTE = CHAR - "'" - "\\" | "\\" CHAR ;
 DIGIT         = /[0-9]/ ;
 HEX           = /[0-9a-fA-F]/ ;
 OCT           = /[0-7]/ ;
