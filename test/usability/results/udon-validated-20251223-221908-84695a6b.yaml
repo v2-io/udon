@@ -1,0 +1,100 @@
+---
+id: udon-validated-20251223-221908-84695a6b
+task: 'Validated: recipe @ cheatsheet'
+test_type: validated
+context_lines: 53
+model: claude-sonnet-4-5-20250929
+prompt: |
+  ## Context
+
+  UDON is a notation for mixed content—prose with embedded structure.
+  Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  ; Like LaTeX: each |{ needs exactly one } — nesting doesn't double them
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Task
+
+  Write a UDON document for a simple pasta recipe with prep time, cook time, ingredients, and instructions.
+
+  Output UDON only. No explanation.
+response: "```udon\n|article.recipe[pasta-aglio-olio]\n  |header\n    |h1 Spaghetti
+  Aglio e Olio\n    |p.description A simple, classic Italian pasta with garlic and
+  olive oil.\n  \n  |section.recipe-meta\n    |dl\n      |div\n        |dt Prep Time\n
+  \       |dd 5 minutes\n      |div\n        |dt Cook Time\n        |dd 15 minutes\n
+  \     |div\n        |dt Servings\n        |dd 4\n  \n  |section.ingredients\n    |h2
+  Ingredients\n    |ul\n      |li 1 pound spaghetti\n      |li 1/2 cup extra virgin
+  olive oil\n      |li 6 cloves garlic, thinly sliced\n      |li 1/2 teaspoon red
+  pepper flakes\n      |li 1/4 cup fresh parsley, chopped\n      |li Salt to taste\n
+  \     |li 1/2 cup pasta water, reserved\n      |li Parmesan cheese, grated |{em
+  (optional)}\n  \n  |section.instructions\n    |h2 Instructions\n    |ol\n      |li\n
+  \       Bring a large pot of salted water to boil. Add spaghetti and cook according
+  to package directions until |{em al dente}.\n      |li\n        While pasta cooks,
+  heat olive oil in a large skillet over medium heat.\n      |li\n        Add sliced
+  garlic and red pepper flakes. Cook until garlic is golden and fragrant, about 2-3
+  minutes. |{strong Do not burn the garlic.}\n      |li\n        Reserve 1/2 cup pasta
+  water, then drain the spaghetti.\n      |li\n        Add drained pasta to the skillet
+  with garlic oil. Toss to combine.\n      |li\n        Add reserved pasta water gradually,
+  tossing until pasta is well coated and silky.\n      |li\n        Stir in chopped
+  parsley and season with salt to taste.\n      |li\n        Serve immediately with
+  grated Parmesan if desired.\n  \n  |section.tips\n    |h2 Tips\n    |ul\n      |li
+  Use high-quality olive oil for best flavor\n      |li Don't skip the pasta water—it
+  helps create a silky sauce\n      |li Adjust red pepper flakes to your heat preference\n```"
+success:
+notes:
+feedback: 'Score: 65/85 (76.5%)'
+created_at: '2025-12-24T05:19:08Z'

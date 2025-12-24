@@ -276,3 +276,552 @@ The design space feels constrained enough that there might only be
 2. **The "everything format" trap.** Trying to be good at data, documents, AND configuration means compromising on all three. JSON is simpler for data. Markdown is simpler for docs. TOML/YAML are simpler for config. The unified syntax advantage needs to be *much* stronger to justify the learning curve.
 
 3. **Inline syntax ambiguity.** Consider: `|p See |{a :href /docs the docs} for details.` vs regular prose: "See the docs for details." The cognitive overhead of parsing `|{...}` syntax while reading is non-trivial.
+
+---
+
+**ID:** udon-realistic-20251223-214520-bc46c178
+**Task:** Realistic: markdown_to_udon @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:45:20Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 148"}
+
+---
+
+**ID:** udon-realistic-20251223-214525-bdfd8cce
+**Task:** Realistic: markdown_to_udon @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:45:25Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 122"}
+
+---
+
+**ID:** udon-realistic-20251223-214529-0ba1f21d
+**Task:** Realistic: markdown_to_udon @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:45:29Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 124"}
+
+---
+
+**ID:** udon-realistic-20251223-214606-cb0abf9a
+**Task:** Realistic: structure_prose @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:46:06Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 107"}
+
+---
+
+**ID:** udon-realistic-20251223-214612-9e418e32
+**Task:** Realistic: structure_prose @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:46:12Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 54"}
+
+---
+
+**ID:** udon-realistic-20251223-214620-5d273d08
+**Task:** Realistic: structure_prose @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:46:20Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 68"}
+
+---
+
+**ID:** udon-realistic-20251223-214713-87452e37
+**Task:** Realistic: yaml_frontmatter @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:47:13Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 116"}
+
+---
+
+**ID:** udon-realistic-20251223-214718-861e04b8
+**Task:** Realistic: yaml_frontmatter @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:47:18Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 72"}
+
+---
+
+**ID:** udon-realistic-20251223-214723-0aa45463
+**Task:** Realistic: yaml_frontmatter @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:47:23Z
+
+Judge scores: {"error":"unexpected end of input, expected closing \" at line 5 column 291"}
+
+---
+
+**ID:** udon-realistic-20251223-214848-10f083a9
+**Task:** Realistic: yaml_frontmatter @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:48:48Z
+
+Judge scores: {"syntax":4,"structure":2,"flow":3,"completion":2}
+
+---
+
+**ID:** udon-realistic-20251223-214854-49137f0d
+**Task:** Realistic: yaml_frontmatter @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:48:54Z
+
+Judge scores: {"syntax":4,"structure":5,"flow":5,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214859-82cc293e
+**Task:** Realistic: yaml_frontmatter @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:48:59Z
+
+Judge scores: {"syntax":4,"structure":3,"flow":4,"completion":4}
+
+---
+
+**ID:** udon-realistic-20251223-214906-f05b45d4
+**Task:** Realistic: experiment_report @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:06Z
+
+Judge scores: {"syntax":2,"structure":3,"flow":2,"completion":3}
+
+---
+
+**ID:** udon-realistic-20251223-214912-e85d148c
+**Task:** Realistic: experiment_report @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:12Z
+
+Judge scores: {"syntax":4,"structure":4,"flow":4,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214919-173bb53f
+**Task:** Realistic: experiment_report @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:19Z
+
+Judge scores: {"syntax":2,"structure":2,"flow":2,"completion":3}
+
+---
+
+**ID:** udon-realistic-20251223-214924-5dbb8cc3
+**Task:** Realistic: yaml_config @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:24Z
+
+Judge scores: {"syntax":4,"structure":2,"flow":5,"completion":3}
+
+---
+
+**ID:** udon-realistic-20251223-214928-b99eea2e
+**Task:** Realistic: yaml_config @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:28Z
+
+Judge scores: {"syntax":5,"structure":5,"flow":5,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214936-fc00608e
+**Task:** Realistic: yaml_config @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:36Z
+
+Judge scores: {"syntax":5,"structure":5,"flow":5,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214942-61086d52
+**Task:** Realistic: conversation_log @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:42Z
+
+Judge scores: {"syntax":5,"structure":5,"flow":5,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214946-a0285d0d
+**Task:** Realistic: conversation_log @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:46Z
+
+Judge scores: {"syntax":5,"structure":5,"flow":4,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-214953-223f547e
+**Task:** Realistic: conversation_log @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:49:53Z
+
+Judge scores: {"syntax":4,"structure":4,"flow":4,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-215000-18adfb63
+**Task:** Realistic: recipe @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:50:00Z
+
+Judge scores: {"syntax":4,"structure":3,"flow":3,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-215007-0d8e3ffc
+**Task:** Realistic: recipe @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:50:07Z
+
+Judge scores: {"syntax":5,"structure":5,"flow":5,"completion":5}
+
+---
+
+**ID:** udon-realistic-20251223-215017-616979c5
+**Task:** Realistic: recipe @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T04:50:17Z
+
+Judge scores: {"syntax":4,"structure":3,"flow":3,"completion":5}
+
+---
+
+**ID:** udon-validated-20251223-221237-444d833a
+**Task:** Validated: yaml_frontmatter @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:37Z
+
+Score: 80/80 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221240-6a7c4539
+**Task:** Validated: yaml_frontmatter @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:40Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221241-466e2278
+**Task:** Validated: yaml_frontmatter @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:41Z
+
+Score: 80/80 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221245-693eac4c
+**Task:** Validated: experiment_report @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:45Z
+
+Score: 50/75 (66.7%)
+
+---
+
+**ID:** udon-validated-20251223-221247-532b601c
+**Task:** Validated: experiment_report @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:47Z
+
+Score: 60/75 (80.0%)
+
+---
+
+**ID:** udon-validated-20251223-221251-93b5694e
+**Task:** Validated: experiment_report @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:51Z
+
+Score: 75/75 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221253-2e36ac41
+**Task:** Validated: yaml_config @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:53Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221254-04d13689
+**Task:** Validated: yaml_config @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:54Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221255-ef786de1
+**Task:** Validated: yaml_config @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:55Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221257-314232be
+**Task:** Validated: conversation_log @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:57Z
+
+Score: 50/75 (66.7%)
+
+---
+
+**ID:** udon-validated-20251223-221259-666a578b
+**Task:** Validated: conversation_log @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:12:59Z
+
+Score: 70/75 (93.3%)
+
+---
+
+**ID:** udon-validated-20251223-221301-f9ecc103
+**Task:** Validated: conversation_log @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:13:01Z
+
+Score: 60/75 (80.0%)
+
+---
+
+**ID:** udon-validated-20251223-221305-990f4a9f
+**Task:** Validated: recipe @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:13:05Z
+
+Score: 80/85 (94.1%)
+
+---
+
+**ID:** udon-validated-20251223-221309-b7f70040
+**Task:** Validated: recipe @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:13:09Z
+
+Score: 75/85 (88.2%)
+
+---
+
+**ID:** udon-validated-20251223-221315-1e14f443
+**Task:** Validated: recipe @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:13:15Z
+
+Score: 78/85 (91.8%)
+
+---
+
+**ID:** udon-validated-20251223-221812-11ef0a0e
+**Task:** Validated: yaml_frontmatter @ cheatsheet
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:12Z
+
+Score: 50/80 (62.5%)
+
+---
+
+**ID:** udon-validated-20251223-221815-28da77a6
+**Task:** Validated: yaml_frontmatter @ minimal
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:15Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221819-a6f87d08
+**Task:** Validated: yaml_frontmatter @ comprehensive
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:19Z
+
+Score: 80/80 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221823-70fdbb08
+**Task:** Validated: experiment_report @ cheatsheet
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:23Z
+
+Score: 55/75 (73.3%)
+
+---
+
+**ID:** udon-validated-20251223-221829-08a8ec2c
+**Task:** Validated: experiment_report @ minimal
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:29Z
+
+Score: 70/75 (93.3%)
+
+---
+
+**ID:** udon-validated-20251223-221835-10a34737
+**Task:** Validated: experiment_report @ comprehensive
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:35Z
+
+Score: 65/75 (86.7%)
+
+---
+
+**ID:** udon-validated-20251223-221838-7d4732b0
+**Task:** Validated: yaml_config @ cheatsheet
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:38Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221841-a1243388
+**Task:** Validated: yaml_config @ minimal
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:41Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-221845-1184649f
+**Task:** Validated: yaml_config @ comprehensive
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:45Z
+
+Score: 70/80 (87.5%)
+
+---
+
+**ID:** udon-validated-20251223-221848-c993fd9f
+**Task:** Validated: conversation_log @ cheatsheet
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:48Z
+
+Score: 75/75 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221852-5d3457b7
+**Task:** Validated: conversation_log @ minimal
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:52Z
+
+Score: 75/75 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-221857-31c085a5
+**Task:** Validated: conversation_log @ comprehensive
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:18:57Z
+
+Score: 70/75 (93.3%)
+
+---
+
+**ID:** udon-validated-20251223-221908-84695a6b
+**Task:** Validated: recipe @ cheatsheet
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:19:08Z
+
+Score: 65/85 (76.5%)
+
+---
+
+**ID:** udon-validated-20251223-221918-27a6687b
+**Task:** Validated: recipe @ minimal
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:19:18Z
+
+Score: 80/85 (94.1%)
+
+---
+
+**ID:** udon-validated-20251223-221931-7193b594
+**Task:** Validated: recipe @ comprehensive
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T05:19:31Z
+
+Score: 70/85 (82.4%)
+
+---
+
+**ID:** udon-validated-20251223-223439-ce3329c1
+**Task:** Validated: yaml_frontmatter @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:39Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-223440-9de54fb2
+**Task:** Validated: yaml_frontmatter @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:40Z
+
+Score: 75/80 (93.8%)
+
+---
+
+**ID:** udon-validated-20251223-223442-befce0b8
+**Task:** Validated: yaml_frontmatter @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:42Z
+
+Score: 80/80 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-223446-693e064b
+**Task:** Validated: experiment_report @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:46Z
+
+Score: 65/75 (86.7%)
+
+---
+
+**ID:** udon-validated-20251223-223448-ab76ef2f
+**Task:** Validated: experiment_report @ minimal
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:48Z
+
+Score: 60/75 (80.0%)
+
+---
+
+**ID:** udon-validated-20251223-223451-47c479e4
+**Task:** Validated: experiment_report @ comprehensive
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:51Z
+
+Score: 75/75 (100.0%)
+
+---
+
+**ID:** udon-validated-20251223-223453-6efc7343
+**Task:** Validated: yaml_config @ cheatsheet
+**Model:** claude-haiku-4-5-20251001
+**Time:** 2025-12-24T05:34:53Z
+
+Score: 75/80 (93.8%)

@@ -1,0 +1,81 @@
+---
+id: udon-context_comparison-20251223-214147-58fffdff
+task: 'Context comparison: inline_heavy @ cheatsheet'
+test_type: context_comparison
+context_lines: 52
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  You're testing a notation called UDON. Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Task
+
+  Write a UDON paragraph (prose) about a scientific experiment. Embed inline elements for: the hypothesis, key measurements (with units as attributes), and a reference to another experiment.
+
+  Output only valid UDON. No explanation needed.
+response: |-
+  ```udon
+  |p
+    Our experiment tested the |{strong hypothesis} that |{em temperature increases reaction velocity}. We measured the |{span.measurement :unit celsius 25} initial temperature and |{span.measurement :unit seconds 120} reaction duration. The |{span.measurement :unit moles-per-liter 0.5} concentration remained constant throughout. Key findings aligned with our |{a :href @[baseline-study] previous baseline study}, confirming that catalytic efficiency improves significantly under controlled thermal conditions.
+  ```
+success:
+notes:
+feedback:
+created_at: '2025-12-24T04:41:47Z'

@@ -1,0 +1,106 @@
+---
+id: udon-validated-20251223-221305-990f4a9f
+task: 'Validated: recipe @ cheatsheet'
+test_type: validated
+context_lines: 53
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  UDON is a notation for mixed content—prose with embedded structure.
+  Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  ; Like LaTeX: each |{ needs exactly one } — nesting doesn't double them
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Task
+
+  Write a UDON document for a simple pasta recipe with prep time, cook time, ingredients, and instructions.
+
+  Output UDON only. No explanation.
+response: |-
+  ```udon
+  |recipe :name "Spaghetti Carbonara" :servings 4
+    |metadata
+      |prep-time :minutes 10
+      |cook-time :minutes 20
+      |total-time :minutes 30
+    |ingredients
+      |ingredient :item "Spaghetti" :amount 400 :unit g
+      |ingredient :item "Guanciale" :amount 200 :unit g
+      |ingredient :item "Eggs" :amount 4 :unit whole
+      |ingredient :item "Pecorino Romano" :amount 100 :unit g
+      |ingredient :item "Black pepper" :amount 2 :unit tsp
+      |ingredient :item "Salt" :amount 1 :unit tsp
+    |instructions
+      |step :number 1
+        Dice the guanciale and cook in a large pan over medium heat until |{strong crispy}, about 8 minutes. Remove and set aside.
+      |step :number 2
+        Bring a large pot of salted water to boil. Add spaghetti and cook until |{em al dente}, about 9-11 minutes.
+      |step :number 3
+        While pasta cooks, whisk together eggs, grated Pecorino Romano, and freshly ground black pepper in a bowl.
+      |step :number 4
+        Reserve 1 cup of pasta water. Drain spaghetti and add to the pan with guanciale over low heat.
+      |step :number 5
+        Remove from heat and quickly stir in the egg mixture, adding pasta water gradually until creamy.
+      |step :number 6
+        Serve immediately topped with additional cheese and black pepper.
+  ```
+success:
+notes:
+feedback: 'Score: 80/85 (94.1%)'
+created_at: '2025-12-24T05:13:05Z'

@@ -1,0 +1,103 @@
+---
+id: udon-realistic-20251223-214713-87452e37
+task: 'Realistic: yaml_frontmatter @ cheatsheet'
+test_type: realistic
+context_lines: 52
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  UDON is a notation for mixed content—prose with embedded structure.
+  Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Input
+
+  ```
+  ---
+  title: API Authentication Guide
+  version: 2.1.0
+  last_updated: 2025-01-15
+  author:
+    name: Alice Chen
+    email: alice@example.com
+  tags: [api, auth, security]
+  ---
+
+  ## Getting Started
+
+  All requests require a bearer token. Get one from the `/oauth/token` endpoint.
+
+  The token expires after 1 hour.
+  ```
+
+  ## Task
+
+  Convert this to UDON. The YAML frontmatter should become attributes on a document element. The prose stays as prose. Use :attr for metadata, not child elements.
+
+  Output UDON only. No explanation.
+response: "|document :title \"API Authentication Guide\" :version \"2.1.0\" :last_updated
+  \"2025-01-15\" :author-name \"Alice Chen\" :author-email \"alice@example.com\" :tags
+  [api auth security]\n  |h2 Getting Started\n  \n  All requests require a bearer
+  token. Get one from the |{code /oauth/token} endpoint.\n  \n  The token expires
+  after 1 hour."
+success:
+notes:
+feedback: 'Judge scores: {"error":"unexpected end of input, expected closing \" at
+  line 5 column 116"}'
+created_at: '2025-12-24T04:47:13Z'

@@ -25,6 +25,10 @@ require_relative "lib/usability_library"
 require_relative "lib/usability_tester"
 require_relative "lib/test_definitions"
 require_relative "lib/topic_enablement"
+require_relative "lib/context_comparison"
+require_relative "lib/realistic_tests"
+require_relative "lib/validated_tests"
+require_relative "../../lib/udon_validator"
 
 RESULTS_DIR = File.join(__dir__, "results")
 
@@ -46,8 +50,16 @@ def main
     run_stress(ARGV[1])
   when "enablement", "enable", "e"
     run_enablement(ARGV[1])
-  when "topics", "topic", "t"
+  when "topics", "topic"
     run_topic_enablement(ARGV[1]&.to_i || 5)
+  when "context", "ctx"
+    run_context_comparison(ARGV[1])
+  when "realistic", "real"
+    run_realistic_test(ARGV[1])
+  when "validated", "val", "v"
+    run_validated_test(ARGV[1])
+  when "revalidate", "reval"
+    revalidate_results(ARGV[1])
   when "converge", "conv", "c"
     run_convergence(ARGV[1]&.to_i || 5)
   when "results", "r"
@@ -457,6 +469,590 @@ def run_topic_test(topic:, prompt:, model:, test_type: :topic_enablement)
     feedback: feedback,
     elapsed: elapsed
   }
+end
+
+def run_context_comparison(task_key)
+  tasks = ContextComparison::TASKS
+
+  unless task_key
+    puts "Available tasks:"
+    tasks.each { |k, v| puts "  #{k}: #{v[0..60]}..." }
+    puts
+    puts "Usage: ./run context TASK"
+    puts "       ./run context all     # Run all tasks"
+    puts
+    puts "Tests same task with cheatsheet (52 lines), minimal (120 lines), comprehensive (452 lines)"
+    return
+  end
+
+  model = ENV["MODEL"] || "claude-haiku-4-5-20251001"
+  contexts_to_test = [:cheatsheet, :minimal, :comprehensive]
+
+  if task_key == "all"
+    task_list = tasks.keys
+  else
+    task_sym = task_key.to_sym
+    unless tasks[task_sym]
+      puts "Unknown task: #{task_key}"
+      puts "Available: #{tasks.keys.join(', ')}, all"
+      exit 1
+    end
+    task_list = [task_sym]
+  end
+
+  puts "=" * 70
+  puts "CONTEXT COMPARISON TEST"
+  puts "=" * 70
+  puts "Model: #{model}"
+  puts "Tasks: #{task_list.join(', ')}"
+  puts
+
+  all_results = {}
+
+  task_list.each do |task_sym|
+    task = tasks[task_sym]
+    puts "-" * 70
+    puts "TASK: #{task_sym}"
+    puts task
+    puts "-" * 70
+
+    task_results = {}
+
+    contexts_to_test.each do |ctx_level|
+      context = ContextComparison.load_context(ctx_level)
+      context_lines = context.lines.size
+
+      puts "\n[#{ctx_level}] (#{context_lines} lines)..."
+
+      prompt = ContextComparison.build_prompt(
+        task: task,
+        context: context,
+        context_level: ctx_level
+      )
+
+      start_time = Time.now
+      response = tester.send(:call_api, model, prompt)
+      elapsed = (Time.now - start_time).round(2)
+
+      # Score the output
+      scoring = ContextComparison.score_output(response, task_sym)
+
+      puts "  Time: #{elapsed}s | Score: #{scoring[:score]}/#{scoring[:max_score]} (#{scoring[:percentage]}%)"
+      puts "  Features: #{scoring[:features].select { |_, v| v == true }.keys.join(', ')}"
+      puts "  Errors: #{scoring[:errors].empty? ? 'none' : scoring[:errors].join(', ')}"
+
+      # Save result
+      id = library.add(
+        task: "Context comparison: #{task_sym} @ #{ctx_level}",
+        test_type: :context_comparison,
+        context_lines: context_lines,
+        model: model,
+        prompt: prompt,
+        response: response,
+        feedback: nil
+      )
+
+      task_results[ctx_level] = {
+        id: id,
+        response: response,
+        scoring: scoring,
+        elapsed: elapsed,
+        context_lines: context_lines
+      }
+
+      sleep 0.5
+    end
+
+    all_results[task_sym] = task_results
+
+    # Show comparison
+    puts "\n  COMPARISON:"
+    contexts_to_test.each do |ctx|
+      r = task_results[ctx]
+      puts "    #{ctx.to_s.ljust(15)} #{r[:context_lines].to_s.rjust(3)} lines → #{r[:scoring][:percentage]}% score"
+    end
+  end
+
+  # Summary
+  puts
+  puts "=" * 70
+  puts "SUMMARY"
+  puts "=" * 70
+  puts
+
+  puts format("%-15s %8s %8s %8s", "Task", "Cheat", "Minimal", "Compre")
+  puts "-" * 45
+
+  all_results.each do |task_sym, results|
+    scores = contexts_to_test.map { |c| "#{results[c][:scoring][:percentage]}%" }
+    puts format("%-15s %8s %8s %8s", task_sym, *scores)
+  end
+
+  # Find minimum viable context
+  puts
+  puts "MINIMUM VIABLE CONTEXT:"
+  all_results.each do |task_sym, results|
+    # Find smallest context with score >= 80%
+    viable = contexts_to_test.find { |c| results[c][:scoring][:percentage] >= 80 }
+    if viable
+      puts "  #{task_sym}: #{viable} (#{results[viable][:context_lines]} lines)"
+    else
+      best = contexts_to_test.max_by { |c| results[c][:scoring][:percentage] }
+      puts "  #{task_sym}: #{best} (best available: #{results[best][:scoring][:percentage]}%)"
+    end
+  end
+end
+
+def run_realistic_test(task_key)
+  tasks = RealisticTests::TASKS
+
+  unless task_key
+    puts "Available realistic tasks:"
+    tasks.each { |k, v| puts "  #{k}: #{v[:description]}" }
+    puts
+    puts "Usage: ./run realistic TASK"
+    puts "       ./run realistic all"
+    puts
+    puts "Uses LLM judge for evaluation (more accurate than regex)."
+    return
+  end
+
+  generator_model = ENV["MODEL"] || "claude-haiku-4-5-20251001"
+  judge_model = ENV["JUDGE"] || "claude-haiku-4-5-20251001"
+  contexts_to_test = [:cheatsheet, :minimal, :comprehensive]
+
+  if task_key == "all"
+    task_list = tasks.keys
+  else
+    task_sym = task_key.to_sym
+    unless tasks[task_sym]
+      puts "Unknown task: #{task_key}"
+      puts "Available: #{tasks.keys.join(', ')}, all"
+      exit 1
+    end
+    task_list = [task_sym]
+  end
+
+  puts "=" * 70
+  puts "REALISTIC UDON TESTS (LLM-judged)"
+  puts "=" * 70
+  puts "Generator: #{generator_model}"
+  puts "Judge: #{judge_model}"
+  puts "Tasks: #{task_list.join(', ')}"
+  puts
+
+  all_results = {}
+
+  task_list.each do |task_sym|
+    task = tasks[task_sym]
+    puts "-" * 70
+    puts "TASK: #{task_sym}"
+    puts task[:description]
+    puts "-" * 70
+
+    task_results = {}
+
+    contexts_to_test.each do |ctx_level|
+      context = RealisticTests.load_context(ctx_level)
+      context_lines = context.lines.size
+
+      puts "\n[#{ctx_level}] (#{context_lines} lines)..."
+
+      # Generate UDON
+      gen_prompt = RealisticTests.build_prompt(task_key: task_sym, context: context)
+
+      start_time = Time.now
+      output = tester.send(:call_api, generator_model, gen_prompt)
+      gen_elapsed = (Time.now - start_time).round(2)
+
+      puts "  Generated in #{gen_elapsed}s"
+
+      # Clean output (remove markdown code fences if present)
+      clean_output = output.gsub(/```udon\n?/, '').gsub(/```\n?/, '').strip
+
+      # Judge the output
+      judge_prompt = RealisticTests.judge_prompt(
+        task_key: task_sym,
+        context: context,
+        output: clean_output
+      )
+
+      judge_start = Time.now
+      judge_response = tester.send(:call_api, judge_model, judge_prompt)
+      judge_elapsed = (Time.now - judge_start).round(2)
+
+      # Parse judge response - extract numbers directly (more robust)
+      syntax = judge_response.match(/"syntax"\s*:\s*(\d)/)[1].to_i rescue nil
+      structure = judge_response.match(/"structure"\s*:\s*(\d)/)[1].to_i rescue nil
+      flow = judge_response.match(/"flow"\s*:\s*(\d)/)[1].to_i rescue nil
+      completion = judge_response.match(/"completion"\s*:\s*(\d)/)[1].to_i rescue nil
+      notes = judge_response.match(/"notes"\s*:\s*"([^"]+)/)[1] rescue nil
+
+      if [syntax, structure, flow, completion].compact.size == 4
+        scores = { "syntax" => syntax, "structure" => structure, "flow" => flow, "completion" => completion }
+        avg_score = (syntax + structure + flow + completion) / 4.0
+        avg_score = avg_score.round(1)
+        puts "  Judged in #{judge_elapsed}s"
+        puts "  Scores: syntax=#{syntax} structure=#{structure} flow=#{flow} completion=#{completion} → avg=#{avg_score}"
+        puts "  Notes: #{notes[0..80]}..." if notes
+      else
+        scores = { "error" => "Could not parse" }
+        avg_score = 0
+        puts "  Could not parse judge response"
+        puts "  Raw: #{judge_response[0..150]}..."
+      end
+
+      # Save result
+      id = library.add(
+        task: "Realistic: #{task_sym} @ #{ctx_level}",
+        test_type: :realistic,
+        context_lines: context_lines,
+        model: generator_model,
+        prompt: gen_prompt,
+        response: clean_output,
+        feedback: "Judge scores: #{scores.to_json}"
+      )
+
+      task_results[ctx_level] = {
+        id: id,
+        output: clean_output,
+        scores: scores,
+        avg_score: avg_score,
+        context_lines: context_lines
+      }
+
+      sleep 0.5
+    end
+
+    all_results[task_sym] = task_results
+
+    # Show comparison
+    puts "\n  COMPARISON:"
+    contexts_to_test.each do |ctx|
+      r = task_results[ctx]
+      puts "    #{ctx.to_s.ljust(15)} #{r[:context_lines].to_s.rjust(3)} lines → avg #{r[:avg_score]}/5"
+    end
+  end
+
+  # Summary
+  puts
+  puts "=" * 70
+  puts "SUMMARY (average scores, 1-5 scale)"
+  puts "=" * 70
+  puts
+
+  puts format("%-20s %10s %10s %10s", "Task", "Cheatsheet", "Minimal", "Comprehensive")
+  puts "-" * 55
+
+  all_results.each do |task_sym, results|
+    scores = contexts_to_test.map { |c| results[c][:avg_score].to_s }
+    puts format("%-20s %10s %10s %10s", task_sym, *scores)
+  end
+
+  # Show outputs for review
+  puts
+  puts "=" * 70
+  puts "SAMPLE OUTPUTS (cheatsheet context)"
+  puts "=" * 70
+
+  all_results.each do |task_sym, results|
+    puts
+    puts "--- #{task_sym} ---"
+    puts results[:cheatsheet][:output][0..500]
+    puts "..." if results[:cheatsheet][:output].length > 500
+  end
+end
+
+def run_validated_test(task_key)
+  tasks = ValidatedTests::TASKS
+
+  unless task_key
+    puts "Available tasks:"
+    tasks.each { |k, v| puts "  #{k}: #{v[:description]}" }
+    puts
+    puts "Usage: ./run validated TASK"
+    puts "       ./run validated all"
+    puts
+    puts "Uses deterministic validator scoring (no LLM judge)."
+    return
+  end
+
+  model = ENV["MODEL"] || "claude-haiku-4-5-20251001"
+  contexts_to_test = [:cheatsheet, :minimal, :comprehensive]
+
+  if task_key == "all"
+    task_list = tasks.keys
+  else
+    task_sym = task_key.to_sym
+    unless tasks[task_sym]
+      puts "Unknown task: #{task_key}"
+      puts "Available: #{tasks.keys.join(', ')}, all"
+      exit 1
+    end
+    task_list = [task_sym]
+  end
+
+  puts "=" * 70
+  puts "VALIDATED UDON TESTS (deterministic scoring)"
+  puts "=" * 70
+  puts "Generator: #{model}"
+  puts "Tasks: #{task_list.join(', ')}"
+  puts
+
+  all_results = {}
+
+  task_list.each do |task_sym|
+    task = tasks[task_sym]
+    puts "-" * 70
+    puts "TASK: #{task_sym}"
+    puts task[:description]
+    puts "-" * 70
+
+    task_results = {}
+
+    contexts_to_test.each do |ctx_level|
+      context = ValidatedTests.load_context(ctx_level)
+      context_lines = context.lines.size
+
+      puts "\n[#{ctx_level}] (#{context_lines} lines)..."
+
+      # Generate UDON
+      prompt = ValidatedTests.build_prompt(task_key: task_sym, context: context)
+
+      start_time = Time.now
+      output = tester.send(:call_api, model, prompt)
+      elapsed = (Time.now - start_time).round(2)
+
+      puts "  Generated in #{elapsed}s"
+
+      # Score with validator
+      scoring = ValidatedTests.score_output(output, task_sym)
+
+      puts "  Score: #{scoring[:score]}/#{scoring[:max_score]} (#{scoring[:percentage]}%)"
+      puts "  Valid: #{scoring[:valid]}"
+      puts "  Features: #{scoring[:features].first(8).join(', ')}#{scoring[:features].size > 8 ? '...' : ''}"
+
+      if scoring[:errors].any?
+        puts "  Errors: #{scoring[:errors].first(2).map { |e| e[:message] }.join('; ')}"
+      end
+      if scoring[:warnings].any?
+        puts "  Warnings: #{scoring[:warnings].size}"
+      end
+
+      # Save result
+      id = library.add(
+        task: "Validated: #{task_sym} @ #{ctx_level}",
+        test_type: :validated,
+        context_lines: context_lines,
+        model: model,
+        prompt: prompt,
+        response: output,
+        feedback: "Score: #{scoring[:score]}/#{scoring[:max_score]} (#{scoring[:percentage]}%)"
+      )
+
+      task_results[ctx_level] = {
+        id: id,
+        output: output,
+        scoring: scoring,
+        elapsed: elapsed,
+        context_lines: context_lines
+      }
+
+      sleep 0.3
+    end
+
+    all_results[task_sym] = task_results
+
+    # Show comparison
+    puts "\n  COMPARISON:"
+    contexts_to_test.each do |ctx|
+      r = task_results[ctx]
+      valid_mark = r[:scoring][:valid] ? "✓" : "✗"
+      puts "    #{ctx.to_s.ljust(15)} #{r[:context_lines].to_s.rjust(3)} lines → #{r[:scoring][:percentage].to_s.rjust(5)}% #{valid_mark}"
+    end
+  end
+
+  # Summary
+  puts
+  puts "=" * 70
+  puts "SUMMARY"
+  puts "=" * 70
+  puts
+
+  puts format("%-20s %12s %12s %12s", "Task", "Cheatsheet", "Minimal", "Comprehensive")
+  puts "-" * 60
+
+  all_results.each do |task_sym, results|
+    scores = contexts_to_test.map do |c|
+      r = results[c]
+      valid_mark = r[:scoring][:valid] ? "" : "!"
+      "#{r[:scoring][:percentage]}%#{valid_mark}"
+    end
+    puts format("%-20s %12s %12s %12s", task_sym, *scores)
+  end
+
+  # Winner analysis
+  puts
+  puts "MINIMUM VIABLE CONTEXT (first to reach 80%+ with valid syntax):"
+  all_results.each do |task_sym, results|
+    viable = contexts_to_test.find do |c|
+      r = results[c]
+      r[:scoring][:valid] && r[:scoring][:percentage] >= 80
+    end
+    if viable
+      r = results[viable]
+      puts "  #{task_sym}: #{viable} (#{r[:context_lines]} lines, #{r[:scoring][:percentage]}%)"
+    else
+      best = contexts_to_test.max_by { |c| results[c][:scoring][:percentage] }
+      r = results[best]
+      puts "  #{task_sym}: none reached 80% - best: #{best} (#{r[:scoring][:percentage]}%)"
+    end
+  end
+
+  # Show sample outputs
+  puts
+  puts "=" * 70
+  puts "SAMPLE OUTPUTS (cheatsheet)"
+  puts "=" * 70
+
+  all_results.each do |task_sym, results|
+    r = results[:cheatsheet]
+    puts
+    puts "--- #{task_sym} (#{r[:scoring][:percentage]}%) ---"
+    clean = r[:output].gsub(/```udon\n?/, '').gsub(/```\n?/, '').strip
+    puts clean.lines.first(12).join
+    puts "..." if clean.lines.size > 12
+  end
+end
+
+def revalidate_results(filter)
+  puts "=" * 70
+  puts "REVALIDATING PREVIOUS RESULTS"
+  puts "=" * 70
+  puts
+
+  # Load all results
+  results = library.list
+
+  # Filter if specified
+  if filter
+    results = results.select { |r| r["task"].downcase.include?(filter.downcase) }
+    puts "Filtered to #{results.size} results matching '#{filter}'"
+  else
+    puts "Revalidating all #{results.size} results"
+  end
+  puts
+
+  # Group by test type and context level
+  by_type = Hash.new { |h, k| h[k] = [] }
+
+  results.each do |r|
+    response = r["response"]
+    next unless response && !response.empty?
+
+    # Clean response
+    clean = response.gsub(/```udon\n?/, '').gsub(/```\n?/, '').strip
+    next if clean.empty?
+
+    # Validate
+    validation = UdonValidator.validate(clean)
+
+    by_type[r["test_type"]] << {
+      id: r["id"],
+      task: r["task"],
+      model: r["model"],
+      context_lines: r["context_lines"],
+      valid: validation.valid,
+      features: validation.features.to_a,
+      stats: validation.stats,
+      errors: validation.errors.size,
+      warnings: validation.warnings.size
+    }
+  end
+
+  # Summary by test type
+  by_type.each do |test_type, items|
+    puts "-" * 70
+    puts "TEST TYPE: #{test_type} (#{items.size} results)"
+    puts "-" * 70
+
+    valid_count = items.count { |i| i[:valid] }
+    puts "  Valid syntax: #{valid_count}/#{items.size} (#{(valid_count * 100.0 / items.size).round(1)}%)"
+
+    # Feature frequency
+    feature_counts = Hash.new(0)
+    items.each { |i| i[:features].each { |f| feature_counts[f] += 1 } }
+
+    puts "  Top features:"
+    feature_counts.sort_by { |_, v| -v }.first(8).each do |feat, count|
+      pct = (count * 100.0 / items.size).round(0)
+      puts "    #{feat}: #{count} (#{pct}%)"
+    end
+
+    # Show invalid ones
+    invalid = items.reject { |i| i[:valid] }
+    if invalid.any?
+      puts "  Invalid results:"
+      invalid.first(5).each do |i|
+        puts "    #{i[:id][0..30]}... (#{i[:errors]} errors)"
+      end
+    end
+
+    puts
+  end
+
+  # Context level analysis (for topic/realistic/context tests)
+  context_results = results.select { |r| r["task"].include?("@") }
+  if context_results.any?
+    puts "=" * 70
+    puts "CONTEXT LEVEL ANALYSIS"
+    puts "=" * 70
+    puts
+
+    by_context = Hash.new { |h, k| h[k] = { valid: 0, total: 0, features: Hash.new(0) } }
+
+    context_results.each do |r|
+      # Extract context level from task name (e.g., "... @ cheatsheet")
+      if r["task"] =~ /@\s*(\w+)/
+        ctx = $1.to_sym
+        clean = r["response"].gsub(/```udon\n?/, '').gsub(/```\n?/, '').strip
+        validation = UdonValidator.validate(clean)
+
+        by_context[ctx][:total] += 1
+        by_context[ctx][:valid] += 1 if validation.valid
+        validation.features.each { |f| by_context[ctx][:features][f] += 1 }
+      end
+    end
+
+    puts format("%-15s %8s %8s %8s", "Context", "Valid", "Total", "Rate")
+    puts "-" * 45
+    by_context.sort_by { |ctx, _| ctx.to_s }.each do |ctx, data|
+      rate = (data[:valid] * 100.0 / data[:total]).round(1)
+      puts format("%-15s %8d %8d %7.1f%%", ctx, data[:valid], data[:total], rate)
+    end
+
+    # Feature comparison across contexts
+    puts
+    puts "Feature presence by context:"
+    all_features = by_context.values.flat_map { |d| d[:features].keys }.uniq.sort
+
+    # Show features with interesting variation
+    interesting = all_features.select do |feat|
+      rates = by_context.map { |_, d| d[:total] > 0 ? d[:features][feat] * 100.0 / d[:total] : 0 }
+      rates.max - rates.min > 20  # More than 20% variation
+    end
+
+    if interesting.any?
+      puts format("%-25s %12s %12s %12s", "Feature", *by_context.keys.sort.map(&:to_s))
+      interesting.first(10).each do |feat|
+        rates = by_context.keys.sort.map do |ctx|
+          d = by_context[ctx]
+          d[:total] > 0 ? "#{(d[:features][feat] * 100.0 / d[:total]).round(0)}%" : "-"
+        end
+        puts format("%-25s %12s %12s %12s", feat, *rates)
+      end
+    end
+  end
 end
 
 def run_convergence(repeats)

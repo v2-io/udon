@@ -1,0 +1,116 @@
+---
+id: udon-context_comparison-20251223-214135-878c0bbe
+task: 'Context comparison: nested @ cheatsheet'
+test_type: context_comparison
+context_lines: 52
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  You're testing a notation called UDON. Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Task
+
+  Write UDON representing a company org chart: CEO with two VPs, each VP has 2-3 managers, each manager has a team. Include names and titles.
+
+  Output only valid UDON. No explanation needed.
+response: |-
+  ```udon
+  |org :name "TechCorp"
+    |person[ceo].executive
+      :name "Alice Johnson"
+      :title "Chief Executive Officer"
+      |person[vp-eng].executive
+        :name "Bob Chen"
+        :title "VP Engineering"
+        |person[mgr-backend]
+          :name "Carol Davis"
+          :title "Engineering Manager"
+          |person :name "David Kim" :title "Senior Backend Engineer"
+          |person :name "Emma Wilson" :title "Backend Engineer"
+          |person :name "Frank Lopez" :title "Backend Engineer"
+        |person[mgr-frontend]
+          :name "Grace Martinez"
+          :title "Engineering Manager"
+          |person :name "Henry Zhang" :title "Senior Frontend Engineer"
+          |person :name "Iris Johnson" :title "Frontend Engineer"
+        |person[mgr-infra]
+          :name "Jack Thompson"
+          :title "Infrastructure Manager"
+          |person :name "Karen Lee" :title "DevOps Engineer"
+          |person :name "Leo Wang" :title "Cloud Engineer"
+      |person[vp-product].executive
+        :name "Michelle Brown"
+        :title "VP Product"
+        |person[mgr-product]
+          :name "Nathan Garcia"
+          :title "Product Manager"
+          |person :name "Olivia Rodriguez" :title "Senior Product Analyst"
+          |person :name "Peter Nakamura" :title "Product Designer"
+          |person :name "Quinn O'Brien" :title "Product Analyst"
+        |person[mgr-design]
+          :name "Rachel Foster"
+          :title "Design Manager"
+          |person :name "Samuel White" :title "UX Designer"
+          |person :name "Tina Kumar" :title "UI Designer"
+  ```
+success:
+notes:
+feedback:
+created_at: '2025-12-24T04:41:35Z'

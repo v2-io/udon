@@ -57,6 +57,16 @@ Elements are the structural backbone:
 - `[id]` — Singular identity; referenceable, unique within scope
 - `.class` — Classification/traits; multiple allowed, stackable
 
+The `[id]` syntax is shorthand for an attribute:
+
+```
+|element[my-id]     →  |element :'$id' my-id
+|step[1]            →  |step :'$id' 1
+|item[abc-123]      →  |item :'$id' abc-123
+```
+
+The value inside brackets follows attribute value rules—all the same types are available (integers, strings, etc.).
+
 These are fundamental patterns:
 - **Identity**: What makes this thing THIS thing (singular)
 - **Classification**: What kinds of thing this is (plural, aspects)
@@ -497,7 +507,8 @@ indent        = { SPACE }* ;
 element       = "|" [ name ] [ suffix ] [ id [ suffix ] ] { class }*
                 [ SPACE suffix ] { attribute }* { inline_child }* ;
 name          = LABEL ;
-id            = "[" LABEL "]" ;
+id            = "[" id_value "]" ;
+id_value      = typed_value | bare_string ;  ; Same as attribute values
 class         = "." LABEL ;
 suffix        = "?" | "!" | "*" | "+" ;
 inline_child  = element | embedded_element | inline_text ;

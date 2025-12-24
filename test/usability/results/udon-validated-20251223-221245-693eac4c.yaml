@@ -1,0 +1,93 @@
+---
+id: udon-validated-20251223-221245-693eac4c
+task: 'Validated: experiment_report @ cheatsheet'
+test_type: validated
+context_lines: 53
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  UDON is a notation for mixed content—prose with embedded structure.
+  Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  ; Like LaTeX: each |{ needs exactly one } — nesting doesn't double them
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Input
+
+  ```
+  The experiment tested whether caffeine improves reaction time. We gave 50 participants either 200mg caffeine or placebo. Reaction time was measured using a simple button-press task. The caffeine group averaged 245ms (SD=32) compared to 289ms (SD=41) for placebo. The effect was statistically significant (p<0.001). However, 3 participants in the caffeine group reported jitteriness.
+  ```
+
+  ## Task
+
+  Convert this to UDON, marking up the key data points.
+
+  Output UDON only. No explanation.
+response: |-
+  ```udon
+  |article
+    |p The experiment tested whether caffeine improves reaction time. We gave |{strong 50 participants} either |{data-value 200mg :unit mg caffeine} or |{em placebo}. Reaction time was measured using a simple button-press task.
+
+    |p The caffeine group averaged |{data-metric :value 245 :unit ms 245ms} (|{data-stat :type sd :value 32 SD=32}) compared to |{data-metric :value 289 :unit ms 289ms} (|{data-stat :type sd :value 41 SD=41}) for placebo. The effect was statistically significant (|{data-stat :type p-value :value 0.001 p<0.001}).
+
+    |p However, |{strong 3 participants} in the caffeine group reported |{adverse-effect jitteriness}.
+  ```
+success:
+notes:
+feedback: 'Score: 50/75 (66.7%)'
+created_at: '2025-12-24T05:12:45Z'

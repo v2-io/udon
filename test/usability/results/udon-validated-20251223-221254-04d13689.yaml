@@ -1,0 +1,180 @@
+---
+id: udon-validated-20251223-221254-04d13689
+task: 'Validated: yaml_config @ minimal'
+test_type: validated
+context_lines: 122
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  UDON is a notation for mixed content—prose with embedded structure.
+  Here's a reference:
+
+  ```udon
+  ; UDON Minimal Reference — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  ; === CORE PATTERNS ===
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child content here
+  |element
+    |child
+    Prose content with |{em inline elements} and !{interpolation}.
+
+  ; Inline elements embed structure in prose:
+  |p Prose with |{em emphasis}, |{strong bold}, and |{a :href /doc links}.
+  |p Nested: |{strong This is |{em very} important}.
+  |p With attrs: |{a :href /x :title "Tooltip" click here}.
+
+  ; Rightward nesting vs inline siblings:
+  |a |b |c                        ; a > b > c (nesting)
+  |a :x 1 |b :y 2 |c Content      ; nesting with attrs at each level
+  |div |{a Link} |{b Text} |{c More}  ; div > (a, b, c) (siblings)
+
+  ; === ATTRIBUTES ===
+  ; Type comes from syntax, not value-sniffing (no "Norway problem")
+
+  |config
+    :string      "hello world"    ; string (quoted)
+    :unquoted    simple-value     ; string (unquoted)
+    :number      42               ; integer
+    :float       3.14             ; float
+    :bool        true             ; boolean (also: false)
+    :null        nil              ; nil (also: null, ~)
+    :flag                         ; true (no value = flag)
+    :list        [one two three "with spaces"]
+    :empty       []
+    :mixed       [42 true "hi" nil]
+
+    ; Structured attribute with children:
+    :headers
+      |header :name Content-Type :value application/json
+    :inline-val  |{limit :requests 100 :window 60s}
+
+  ; === ELEMENTS ===
+
+  ; Element variations:
+  |element-name[optional-id].class1.class2
+  |[id-only]                           ; no element name
+  |empty                               ; empty element
+
+  ; Class-only elements (mixins):
+  |.reusable :timeout 30
+  |.logging :level info
+  |service.reusable.logging :name mine ; multiple mixins
+
+  ; Element suffixes become quoted attributes:
+  |functional?             ; == |functional :'?' true
+  |field?[opt]             ; suffix before id
+  |children[clist]+        ; == |children[clist] :'+' true
+
+  ; === REFERENCES ===
+
+  |license[mit]
+    MIT License text here...
+
+  |project
+    :name "My Project"
+    :license @[mit]               ; @[id] inserts full element
+
+  |.db-defaults[base]
+    :adapter postgres
+    :pool 5
+
+  |database :[base] :name mydb    ; :[id] merges attributes
+
+  ; === DYNAMICS ===
+
+  |page :title !{page.title}
+
+    ; Conditionals:
+    !if user
+      Welcome, !{user.name | capitalize}!
+      !if user.admin
+        |admin-panel
+      !elif user.moderator
+        |mod-panel
+      !else
+        |user-panel
+    !else
+      |login-prompt
+
+    ; Iteration:
+    !for post in posts
+      |article :id post-!{post.id}
+        |h2 !{post.title}
+        |p !{post.excerpt | truncate 200}
+
+    ; Local binding:
+    !let featured = posts | where "featured" true | first
+      |featured !{featured.title}
+
+  ; Raw code blocks (not parsed as UDON):
+  !code :lang elixir
+    def hello do
+      "world" |> String.upcase()  # This pipe is Elixir
+    end
+
+  ; Include other files:
+  !include partials/header
+
+  ; === ESCAPING ===
+
+  ; Apostrophe escapes the next character:
+  '|not-an-element — prose starting with pipe
+  ':not-an-attribute — colon in text
+  ';not-a-comment — semicolon in prose
+  ''literal apostrophe
+
+  ; Triple backtick for raw blocks:
+  |example
+    Normal UDON here, then: ```
+  |this is literal, not an element
+  :this too
+  ``` Back to UDON.
+
+  ```
+
+  ## Input
+
+  ```
+  database:
+    host: db.example.com
+    port: 5432
+    pool: 10
+    ssl: true
+
+  cache:
+    host: redis.example.com
+    ttl: 3600
+
+  features:
+    - dark_mode
+    - notifications
+  ```
+
+  ## Task
+
+  Convert this to UDON.
+
+  Output UDON only. No explanation.
+response: |-
+  ```udon
+  |database
+    :host db.example.com
+    :port 5432
+    :pool 10
+    :ssl true
+
+  |cache
+    :host redis.example.com
+    :ttl 3600
+
+  |features
+    :list [dark_mode notifications]
+  ```
+success:
+notes:
+feedback: 'Score: 75/80 (93.8%)'
+created_at: '2025-12-24T05:12:54Z'

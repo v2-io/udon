@@ -58,6 +58,50 @@ These tiers coexist naturally:
 
 This layering makes UDON suitable as a **host for domain-specific languages**—Gherkin-like BDD for any domain, with prose flowing naturally alongside formal structure.
 
+### When to Use Attributes vs Child Elements
+
+A common question from XML/HTML: when should data be an `:attribute` vs a `|child` element?
+
+UDON provides clearer guidance than the traditional "attributes for metadata" rule:
+
+| Question | → `:attribute` | → `|child` |
+|----------|----------------|------------|
+| **Type** | Typed scalar (string, number, bool, list of scalars) | Untyped, arbitrary structure |
+| **Cardinality** | One per key (hash semantics) | Can repeat (sequence semantics) |
+| **Order** | Doesn't matter | Matters |
+
+```udon
+; Attributes: typed scalars, one per key
+|message :timestamp "2025-01-15" :role user :priority 3
+  Can you help with my account?
+
+; Children: structured, repeatable, ordered
+|author
+  |name Jane Doe
+  |affiliation
+    |org Acme Corp
+    |role Principal Engineer
+```
+
+The simplest test: **Can it be expressed as a typed scalar?** If yes, use `:attribute`. If it needs structure, repetition with order, or contains prose, use `|child` or inline content.
+
+> **Note:** The example documents in `examples/` don't yet fully illustrate this distinction. Improvements pending.
+
+### Self-Chunking for RAG/Embeddings
+
+A key insight: UDON documents **self-segment** for retrieval-augmented generation.
+
+Traditional text requires heuristic chunking (split on paragraphs? sentences? token windows?). UDON's structure *is* the chunking strategy:
+
+| Tier | Embedding Granularity |
+|------|----------------------|
+| Elements | Discrete semantic units |
+| Prose paragraphs | Natural language claims |
+| Inline elements | Annotated concepts |
+| Attributes | Property assertions |
+
+No sentence-boundary detection needed. No sliding windows. The author's intent about semantic boundaries is encoded in the structure itself.
+
 ## Documentation
 
 | Document | Description |

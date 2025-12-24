@@ -1,0 +1,97 @@
+---
+id: udon-context_comparison-20251223-214118-d2aa1262
+task: 'Context comparison: mixed_doc @ cheatsheet'
+test_type: context_comparison
+context_lines: 52
+model: claude-haiku-4-5-20251001
+prompt: |
+  ## Context
+
+  You're testing a notation called UDON. Here's a reference:
+
+  ```udon
+  ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
+
+  |element[id].class :attr value
+  |element[id].class :attr value Content on same line
+  |element[id].class :attr value |child Child's content
+  |element
+    |child
+    Prose with |{em inline elements} and !{interpolation}.
+
+  |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+  |a |b |c                          ; a > b > c
+  |a :x 1 |b :y 2 |c Text           ; nesting with attrs
+  |div |{a A} |{b B} |{c C}         ; siblings
+
+  |config :num 42 :str "quoted" :word unquoted :flag :nil nil
+    :list [a b "c d"] :empty [] :mixed [1 true "x" nil]
+    :inline |{x :a 1 content}
+    :structured
+      |nested :foo bar
+
+  |[id-only] |empty |.mixin-only
+  |.reusable :timeout 30
+  |service.reusable.another :name x ; multiple mixins
+  |functional?                      ; == |functional :'?' true
+  |field?[id]+                      ; suffix before/after id
+
+  |license[mit] MIT License...
+  |project :license @[mit]          ; @[id] inserts element
+  |db :[base] :override val         ; :[id] merges attributes
+
+  !if user
+    Welcome, !{user.name | capitalize}!
+    !if user.admin |admin-panel
+    !elif user.mod |mod-panel
+    !else |user-panel
+  !else |login
+
+  !for item in items
+    |item :id !{item.id} !{item.name}
+
+  !let x = items | first
+    |featured !{x.title}
+
+  !code :lang ruby
+    # not parsed as UDON
+  !include partials/header
+
+  '|escaped ':colon ';semicolon ''apostrophe
+
+  |raw ```
+  literal |pipes and :colons
+  ``` back to normal
+
+  ```
+
+  ## Task
+
+  Write a UDON document that's a short tutorial explaining how to use an API. Include prose explanation with inline code references, a structured endpoint definition, and a note about rate limits.
+
+  Output only valid UDON. No explanation needed.
+response: "```udon\n|div.tutorial\n  |h1 Getting Started with Our API\n  \n  |p\n
+  \   Welcome to the API tutorial. This guide will help you understand the basics.\n
+  \   Start by obtaining your |{code API key} from the dashboard.\n  \n  |section\n
+  \   |h2 Authentication\n    |p\n      All requests require the |{code Authorization}
+  header with your API key.\n      Use the format |{code \"Bearer YOUR_API_KEY\"}
+  for authentication.\n    \n    |code :lang bash\n      curl -H \"Authorization:
+  Bearer abc123...\" https://api.example.com/data\n  \n  |section\n    |h2 Example
+  Endpoint\n    \n    |endpoint.api-definition\n      :method GET\n      :path /api/v1/users/:id\n
+  \     :description Retrieve user information\n      |params\n        |param[id]
+  :type string :required true User identifier\n        |param[include] :type string
+  :required false Include related data\n      |response\n        |field[id] :type
+  integer User ID\n        |field[name] :type string User's full name\n        |field[email]
+  :type string User's email address\n  \n  |section.rate-limits\n    |h2 Important:
+  Rate Limits\n    |p\n      Please note that our API enforces strict rate limiting
+  to ensure fair usage.\n      Your account is limited to |{strong 1000 requests per
+  hour}.\n      Exceeding this limit will result in a |{code 429 Too Many Requests}
+  response.\n    \n    |note.warning\n      Rate limit headers are included in every
+  response as\n      |{code X-RateLimit-Remaining} and |{code X-RateLimit-Reset}.\n
+  \     Monitor these headers to avoid hitting the limit.\n  \n  |p.footer\n    For
+  more help, visit our |{a :href https://docs.example.com documentation}\n    or contact
+  support@example.com.\n```"
+success:
+notes:
+feedback:
+created_at: '2025-12-24T04:41:18Z'
