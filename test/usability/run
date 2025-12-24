@@ -370,31 +370,42 @@ def run_topic_enablement(count)
   comprehensive_path = File.join(__dir__, "..", "..", "examples", "comprehensive.udon")
   comprehensive_udon = File.read(comprehensive_path)
 
-  topics = TopicEnablement.random_topics(count)
+  # Allow specific topics via TOPICS env var (comma-separated)
+  if ENV["TOPICS"]
+    topics = ENV["TOPICS"].split(",").map(&:strip)
+  else
+    topics = TopicEnablement.random_topics(count)
+  end
   model = ENV["MODEL"] || UsabilityTester::SMART_MODEL
+
+  dsl_focus = ENV["DSL_FOCUS"] == "true"
+  test_type = dsl_focus ? :topic_dsl : :topic_enablement
 
   puts "=" * 60
   puts "TOPIC-SEEDED ENABLEMENT TESTS"
   puts "=" * 60
   puts "Model: #{model}"
-  puts "Running #{count} tests with random topics..."
+  puts "DSL Focus: #{dsl_focus}"
+  puts "Running #{topics.size} tests..."
   puts "Topics: #{topics.join(', ')}"
   puts
 
   topics.each_with_index do |topic, i|
     puts "-" * 60
-    puts "[#{i + 1}/#{count}] Topic: #{topic}"
+    puts "[#{i + 1}/#{topics.size}] Topic: #{topic}"
     puts "-" * 60
 
     prompt = TopicEnablement.build_prompt(
       comprehensive_udon: comprehensive_udon,
-      topic: topic
+      topic: topic,
+      dsl_focus: dsl_focus
     )
 
     result = run_topic_test(
       topic: topic,
       prompt: prompt,
-      model: model
+      model: model,
+      test_type: test_type
     )
 
     puts
@@ -416,7 +427,7 @@ def run_topic_enablement(count)
   puts "Results saved to test/usability/results/"
 end
 
-def run_topic_test(topic:, prompt:, model:)
+def run_topic_test(topic:, prompt:, model:, test_type: :topic_enablement)
   start_time = Time.now
 
   response = tester.send(:call_api, model, prompt)
@@ -428,9 +439,10 @@ def run_topic_test(topic:, prompt:, model:)
   response_clean, feedback = tester.send(:extract_feedback, response)
 
   # Save result
+  type_label = test_type == :topic_dsl ? "Topic DSL" : "Topic enablement"
   id = library.add(
-    task: "Topic enablement: #{topic}",
-    test_type: :topic_enablement,
+    task: "#{type_label}: #{topic}",
+    test_type: test_type,
     context_lines: 0, # comprehensive.udon is the context
     model: model,
     prompt: prompt,

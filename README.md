@@ -29,6 +29,35 @@ The project originated in 2011, paused, and is now being revived with the benefi
 
 Dynamics (`!if`, `!for`, `!{interpolation}`) leverage indentation to eliminate closing tags entirely.
 
+## Tiers of Voice
+
+UDON provides multiple layers of expression, each serving a different purpose:
+
+| Tier | Syntax | Purpose |
+|------|--------|---------|
+| **Prose** | Plain text | Human narrative, explanations, context |
+| **Comments** | `; ...` | Meta-notes, TODOs, maintainer context |
+| **Elements** | `\|element` | Structural containers, semantic units |
+| **Inline elements** | `\|{element ...}` | Embedded structure within prose |
+| **Attributes** | `:key value` | Metadata on elements |
+| **Dynamics** | `!if`, `!{...}` | Templating, logic, interpolation |
+
+These tiers coexist naturally:
+
+```
+|scenario[agent-recovery]
+  ; RL experiment from 2025-01-15
+
+  |given the pole at |{state :theta 0.15 slight tilt}
+  |when the agent |{select :action right :confidence 0.89}
+  |then expect |{reward 1.0} and recovery
+
+  Although to be fair, we had thrown a pebble at it—
+  see |{ref :experiment perturbation-study} for details.
+```
+
+This layering makes UDON suitable as a **host for domain-specific languages**—Gherkin-like BDD for any domain, with prose flowing naturally alongside formal structure.
+
 ## Documentation
 
 | Document | Description |

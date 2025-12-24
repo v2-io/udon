@@ -87,7 +87,19 @@ module TopicEnablement
     TOPICS.sample(n)
   end
 
-  def self.build_prompt(comprehensive_udon:, topic:)
+  def self.build_prompt(comprehensive_udon:, topic:, dsl_focus: false)
+    dsl_addition = if dsl_focus
+      <<~DSL
+
+        **Think especially in terms of novel DSLs that UDON could uniquely facilitate.**
+        UDON offers multiple "tiers of voice" (prose, elements, inline elements,
+        attributes, comments, templating) that could serve as a substrate for
+        domain-specific languages. What DSL might emerge for this domain?
+      DSL
+    else
+      ""
+    end
+
     <<~PROMPT
       ## Context
 
@@ -120,7 +132,7 @@ module TopicEnablement
       1. Does UDON's mixed prose+structure model offer anything useful here?
       2. Any surprising synergies you notice?
       3. Would practitioners in this area benefit, or is UDON irrelevant?
-
+      #{dsl_addition}
       Think freely. We're looking for genuine insight, not forced connections.
       If UDON is genuinely unhelpful for this domain, say so directly.
 
