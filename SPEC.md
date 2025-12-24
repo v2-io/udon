@@ -238,6 +238,18 @@ Any line not starting with a prefix is prose belonging to the parent:
 
 Since `;` is the comment delimiter, `#` has no special meaning in prose. Markdown flows naturally.
 
+**Prefer Markdown over inline UDON in prose.** When both could work, use Markdown:
+
+```
+; Preferred — familiar, readable
+This has `inline code` and **bold** text.
+
+; Avoid — over-engineered for simple formatting
+This has |{code inline code} and |{strong bold} text.
+```
+
+Reserve `|{...}` inline elements for cases where you need attributes or semantic structure that Markdown cannot express.
+
 Embedded elements can appear within prose using `|{...}`:
 
 ```
@@ -283,25 +295,35 @@ Only needed at positions where prefixes would otherwise trigger parsing.
 
 ## Code and Raw Content
 
-### Dialect Blocks (Idiomatic)
+### Raw Directives
 
-Use `!code` or similar directives for code samples and raw content:
+Use `!raw:lang` for code samples and raw (non-UDON) content:
 
 ```
 |example
-  !code :elixir
+  !raw:elixir
     def hello do
       IO.puts("world")
       |> this_pipe_is_elixir_not_udon()
     end
 ```
 
-The `:elixir` is a flag attribute (`:elixir true`).
+The `!raw:` prefix signals that the body is **not UDON**—it will be captured
+verbatim. The language tag after the colon (e.g., `elixir`, `sql`, `json`) is
+passed to the host for syntax highlighting, execution, or other processing.
 
 The content follows normal indentation rules:
 - Indented under the directive
 - Not parsed as UDON (no `|`, `:`, `!`, `;` interpretation)
 - Dedented on output relative to the directive's indent level
+
+Inline raw content uses the interpolation syntax:
+
+```
+|p The response was !{raw:json {"status": "ok", "count": 42}} as expected.
+```
+
+Note: Raw content cannot be an attribute value directly—attributes are typed scalars.
 
 This is the **idiomatic way** to include code samples, SQL, or any non-UDON content.
 
@@ -337,7 +359,7 @@ Use this **only** when:
 - Working with broken tooling that can't maintain indentation
 - The rare case where absolute positioning matters
 
-**Do not use triple-backticks as the default for code samples.** Use `!code` instead.
+**Do not use triple-backticks as the default for code samples.** Use `!raw:lang` instead.
 
 ---
 
@@ -738,7 +760,7 @@ Support callback/event mode for incremental processing:
 
     UDON unifies both with minimal syntax.
 
-  !code :udon
+  !raw:udon
     |example
       :this works
       And so does this prose.
