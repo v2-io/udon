@@ -1,0 +1,75 @@
+---
+id: udon-learning_curve-20251223-180042-730c924a
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 0
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Task
+
+  UDON is a notation format. Without seeing any examples, try to:
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  Write what seems natural. We're testing how intuitive the format is.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# A Morning Worth Savoring: Why Slow Coffee Matters\n\n**author:** Sarah
+  Chen  \n**date:** 2024-01-15\n\nThere's a particular kind of silence that fills
+  a kitchen at 6 AM—before the world demands anything of you, before your phone buzzes
+  with obligations. This is where I've learned to live, at least for twenty minutes
+  each morning, with a cup of coffee that took actual time to make. Not the rushed
+  kind where you pour hot water over grounds and immediately move on to the next task.
+  I'm talking about the deliberate kind, where you grind beans by hand, watch the
+  water temperature, listen to the pour. It sounds indulgent, maybe even pretentious,
+  but I've discovered it's less about the coffee and more about the permission you're
+  giving yourself to exist without productivity for a moment.\n\nThe irony is that
+  this small ritual has made me more effective throughout the day, not less. When
+  I start by forcing myself to slow down, to notice the sound of water hitting ceramic
+  and the smell of extraction happening in real time, something shifts in my brain.
+  The anxiety that usually greets the morning—that immediate tightness in my chest—simply
+  doesn't show up. I'm not claiming coffee has magical properties. What I am saying
+  is that the act of insisting on slowness, of choosing a process over a product,
+  has become my most important productivity tool. In a life designed for speed, sometimes
+  the most rebellious thing you can do is brew.\n\n---\n\n```I approached this task
+  with genuine uncertainty about what UDON's syntax should be, which is actually telling—the
+  format isn't immediately intuitive to me without examples. Here's what I did and
+  why:\n\n**What I guessed:**\n- Used `**key:** value` pairs for metadata (author,
+  date) assuming UDON might follow a colon-delimited pattern\n- Treated the title
+  as plain text at the top\n- Wrote body paragraphs as plain text blocks separated
+  by line breaks\n- Kept overall structure simple and readable\n\n**My concerns:**\n1.
+  **No context clues**: Without seeing examples, I defaulted to conventions I know
+  (Markdown, YAML-like syntax). A truly intuitive format might not require this guessing.\n2.
+  **Metadata placement**: I put it above the title, but maybe it belongs at the end?
+  Or embedded differently?\n3. **Paragraph demarcation**: I used blank lines, but
+  UDON might have explicit markers\n4. **Case sensitivity and spacing**: I assumed
+  `author:` should be lowercase, but that's a convention assumption\n\n**Honest assessment:**\nIf
+  UDON is meant to be intuitive without documentation, the fact that I *had* to make
+  assumptions suggests either:\n- The format needs stronger visual conventions, or\n-
+  Examples would be essential for actual usability\n\nI'd be curious whether my metadata
+  syntax matches UDON's intent, or if I've revealed gaps in intuitiveness.\n\n```"
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:00:42Z'
+...

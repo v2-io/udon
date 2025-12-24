@@ -1,0 +1,76 @@
+---
+id: udon-learning_curve-20251223-180120-70ba2011
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 11
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  ; UDON: | = element, : = attribute, |{...} = inline element
+
+  |paragraph
+    Regular prose can contain |{em emphasized text} and
+    |{a :href /about links} inline without breaking flow.
+
+    Structure and prose coexist:
+
+    |note
+      :type warning
+      This note has metadata AND prose content.
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  ```udon
+  |post
+    :title "The Case for Intentional Notation Design"
+    :author "Morgan Chen"
+    :date "2024-01-15"
+
+    |paragraph
+      Notation shapes thought. When we choose how to represent ideas—whether through symbols, syntax, or spatial arrangement—we're not merely picking a medium. We're encoding assumptions about what matters, what can be composed, and what deserves visual prominence. Most notations emerge accidentally, layered onto existing systems without deliberate consideration. UDON suggests a different approach: designing notation as a primary artifact, asking what relationships we want to make natural to express and what cognitive load we're willing to accept.
+
+    |paragraph
+      The real test isn't elegance in isolation. It's whether a notation lets practitioners think at the right level of abstraction for their domain. When |{em forced} to manage syntax details that don't map to domain concepts, cognitive resources drain away from actual problem-solving. But when notation vanishes—when the representation becomes transparent—something magical happens: the medium stops interfering. This is harder to achieve than it sounds. It requires resisting the temptation to make everything uniform, accepting that different relationships deserve different visual treatment, and testing ruthlessly with actual users, not just designers.
+  ```I notice UDON handles inline elements elegantly with `|{...}` syntax, but I have concerns:
+
+  1. **Attribute binding is unclear**: In my example, `:title`, `:author`, `:date` sit between the tag and content. This works for metadata, but the grammar feels ad-hoc. What determines whether an attribute "belongs to" an element versus appearing inline?
+
+  2. **Prose-first bias**: UDON seems optimized for documents where prose dominates. The distinction between `|paragraph` as a container versus prose-as-structure is fuzzy. Does every text block need wrapping, or are there implicit content rules?
+
+  3. **Nesting ambiguity**: The `:type` attribute on `|note` in your example—does this pattern scale to deeply nested structures? When do attributes become unwieldy compared to child elements?
+
+  4. **The real question**: Is UDON primarily for *humans writing* or for *machines parsing*? The design choices feel author-friendly, but I'd want to see how this scales to documents with complex schemas or how tooling would handle it.
+
+  The concept is genuinely interesting—especially the attempt to let structure and prose coexist naturally. But I'd want to see it stressed with harder cases before concluding it's better than alternatives.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:01:20Z'

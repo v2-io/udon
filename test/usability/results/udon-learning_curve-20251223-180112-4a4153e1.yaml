@@ -1,0 +1,98 @@
+---
+id: udon-learning_curve-20251223-180112-4a4153e1
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 10
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  ; | = element, : = attribute, plain text = prose (Markdown works)
+
+  |article
+    :author Joseph
+
+    This is **prose** that belongs to the article element.
+    Markdown formatting works naturally here.
+
+    |section
+      Nested elements can also contain prose.
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  ```udon
+  |blog-post
+    :title The Art of Slow Design
+    :author Sarah Chen
+    :date 2024-01-15
+
+    In a world obsessed with speed, there's something quietly radical about
+    designing slowly. We've been conditioned to equate rapid iteration with
+    progress, to ship first and ask questions later. But slowness isn't laziness—it's
+    a deliberate practice of asking better questions before building, of sitting
+    with constraints until they reveal hidden possibilities, of letting ideas
+    mature rather than forcing them to market. When we design slowly, we create
+    space for genuine insight. We notice details that speed would overlook. We
+    build relationships with problems instead of just applying pre-packaged
+    solutions to them.
+
+    The irony is that slow design often produces faster outcomes—faster to
+    understand, faster to learn from, faster to improve. A week spent clarifying
+    requirements saves months of rework. A conversation that lingers on a difficult
+    question often yields solutions that rushed brainstorming never reaches. This
+    isn't about rejecting deadlines or embracing procrastination. It's about being
+    intentional with our attention, about recognizing that the most valuable design
+    work happens in the spaces between decisions, where we reflect, question, and
+    let our thinking deepen.
+  ```
+
+  ---**Observations:**
+
+  The UDON syntax is clean and readable. The colon-prefix for attributes feels natural, and the pipe-indent nesting is unambiguous. The prose section reads well without special markers—it's intuitive that unmarked text belongs to the element.
+
+  **Concerns:**
+
+  1. **Date handling**: I chose `:date 2024-01-15` as a string, but UDON doesn't show whether there's a standard format or data type system. Should dates have a special syntax?
+
+  2. **Prose parsing ambiguity**: If someone writes a line starting with `:` or `|`, does it get interpreted as an attribute/element or as literal text? The reference example doesn't show edge cases. This could be a serious parsing problem.
+
+  3. **No closing tags**: I assumed elements close implicitly via indentation (Python-style). This works well for clarity but differs from XML traditions. If nesting depth becomes complex, indentation-based parsing might become fragile with copy-paste errors.
+
+  4. **Markdown within prose**: The reference says "Markdown formatting works naturally here" but doesn't specify how inline code, links, or other Markdown interact with UDON syntax. What if Markdown syntax conflicts with UDON?
+
+  5. **Element naming**: I invented `blog-post` somewhat arbitrarily. No schema is apparent. Are elements user-defined, or is there a standard vocabulary?
+
+  **Suggestion:**
+
+  Adding an escape sequence (like `\:` or `\|`) for literal text that looks like syntax would strengthen robustness. Also, a brief spec on what happens with leading whitespace in prose would help.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:01:12Z'

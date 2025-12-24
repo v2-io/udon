@@ -1,0 +1,117 @@
+---
+id: udon-invention-20251223-180621-0e596513
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-sonnet-4-5-20250929
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# My Notation Sketch\n\n## Syntax Summary\n\n```\n# Comments start with
+  hash\n\nelement_name key:value key2:value2    # Attributes after element name\n
+  \ Child content here...\n\n\"prose text\"                           # Quoted strings
+  for prose\nbare-text                              # Unquoted for single tokens\n\nnumber:
+  42, 3.14, -5                   # Numbers (int/float)\nboolean: true, false                   #
+  Booleans\nlist: [item1, item2, item3]           # Inline lists with brackets\n\n#id
+  .class1 .class2                    # ID (hash) and classes (dots) prefix elements\n\nMixed
+  content: prose and children together\n  Prose flows naturally\n  element\n    structured
+  data\n  More prose continues\n```\n\n## Concrete Example: A Blog Post with Mixed
+  Content\n\n```\narticle #post-123 .blog-entry .featured published:2024-01-15 author:alice\n\n
+  \ \"The Renaissance of Data Formats\"\n  \n  \"In recent years, we've seen an explosion
+  of data formats. Consider the statistics:\"\n  \n  stats .data-table\n    total-formats:
+  47\n    active-users: [json: 1200000, yaml: 450000, toml: 89000]\n    growth-rate:
+  23.5\n  \n  \"What this tells us is quite remarkable. As the table shows, JSON dominates
+  with\"\n  emphasis \"over a million users\"\n  \", but newer formats are growing
+  rapidly.\"\n  \n  section #methodology .detailed\n    title: \"Research Method\"\n
+  \   \n    \"We surveyed developers across three categories:\"\n    \n    list .ordered\n
+  \     \"Backend engineers (n=500)\"\n      \"Frontend developers (n=750)\"\n      \"DevOps
+  practitioners (n=300)\"\n    \n    \"Each participant rated formats on a scale from\"\n
+  \   range min:1 max:10 unit:points\n    \"based on usability.\"\n  \n  \"The results,
+  shown in\"\n  figure #fig1 .chart\n    caption: \"Format Preferences by Role\"\n
+  \   src: \"charts/preferences.svg\"\n    data: [backend: 8.2, frontend: 7.9, devops:
+  8.7]\n  \", indicate strong preferences vary by domain.\"\n  \n  blockquote author:\"Jane
+  Dev\" source:\"Modern Config Manifesto\"\n    \"The best format is the one that
+  gets out of your way\"\n    \"and lets you focus on the content, not the syntax.\"\n
+  \ \n  \"This philosophy guided our entire analysis.\"\n```\n\n## Design Rationale\n\n**Key
+  decisions:**\n\n1. **Prose as quoted strings**: Distinguishes text from structural
+  keywords while keeping it readable\n2. **Attributes as key:value after element name**:
+  Natural, inline, no extra punctuation needed\n3. **ID/class prefix (#/.)**:  Borrows
+  familiar HTML/CSS convention\n4. **Mixed content flows sequentially**: Prose and
+  elements are siblings at the same indentation level\n5. **Inline data for simple
+  cases**: `key: value` for attributes, `[...]` for lists keeps simple things simple\n6.
+  **No closing delimiters**: Indentation handles all nesting\n\n**Trade-offs I'm aware
+  of:**\n- Quoted prose might feel heavy for long documents (alternative: unquoted
+  prose as default, quotes only for values?)\n- Distinguishing element names from
+  prose text requires quotes, which adds noise\n- Multiple consecutive prose strings
+  might need implicit concatenation rules"
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  This exercise immediately revealed the central tension: making prose
+  feel natural while keeping structure unambiguous. My instinct was to
+  make prose quoted, but that feels backward for a document-first format.
+
+  Alternative I considered: Make UNQUOTED text the default (prose), and
+  require some sigil for structural elements (maybe `:element-name` or
+  `@element`?). This would read better for document-heavy content but
+  worse for data-heavy content.
+
+  The "mixed content" requirement is genuinely hard. HTML solves it by
+  making everything an element (<p>, <em>, etc.), but that violates the
+  "no closing tags" requirement. YAML/JSON punt on it entirely.
+
+  I'm curious whether your UDON solution uses:
+  - A sigil to distinguish elements from prose
+  - A context-dependent parser (prose mode vs structure mode)
+  - Some kind of explicit mode switching
+  - Or something else entirely
+
+  The design space feels constrained enough that there might only be
+  2-3 viable approaches. Looking forward to seeing what you chose.
+created_at: '2025-12-24T01:06:21Z'

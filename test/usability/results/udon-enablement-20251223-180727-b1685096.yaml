@@ -1,0 +1,172 @@
+---
+id: udon-enablement-20251223-180727-b1685096
+task: Enablement ideation
+test_type: enablement
+context_lines: 25
+model: claude-sonnet-4-5-20250929
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Overview
+
+  UDON (Universal Document & Object Notation) unifies data, documents,
+  and configuration in one syntax. The key insight: most real content
+  is **mixed**—prose with structured data woven throughout.
+
+  ```udon
+  |article[welcome].featured
+    :author Joseph
+    :date 2025-12-22
+
+    Welcome to the project. Here's what we're building:
+
+    |objective
+      :priority high
+      :status active
+
+      A notation that lets **prose and structure coexist** without
+      awkward boundaries. Notice how this paragraph belongs to the
+      objective element, with its metadata above.
+
+    The key insight is that |{em most documents} aren't pure data
+    OR pure prose—they're |{dfn :id mixed-content mixed content}
+    where structure appears |{em inline} when needed.
+
+    |requirements
+      |req[r1] :must Machine-parseable without ambiguity
+      |req[r2] :must Human-readable without tooling
+      |req[r3] :should Support Markdown conventions in prose
+
+    That requirements block was structured data, but it lives
+    naturally within the document flow.
+
+  ```
+
+  ## Task
+
+  We're interested in what UDON might **enable** for AI agents that was
+  previously difficult or unstable. Consider:
+
+  1. **What becomes easier?** Workflows fragile with JSON/YAML/XML
+  2. **What becomes possible?** New patterns that mixed notation enables
+  3. **Inner-loop stability** Where could UDON improve agent self-correction?
+  4. **Agent-to-agent communication** How might shared notation help?
+  5. **Human-agent collaboration** Documents both can read and modify?
+
+  Ideate freely. We value honest assessment—including skepticism if you
+  see limitations or think existing formats handle these cases well enough.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# What UDON Might Enable for AI Agents\n\n## 1. What Becomes Easier\n\n###
+  Instruction Documents with Embedded Examples\nCurrent pain point: When agents work
+  with instructions that include data examples, we often see JSON-in-YAML, escaped
+  JSON strings, or awkward CDATA sections.\n\n```udon\n|task[data-transform]\n  :model
+  gpt-4\n  :temperature 0.3\n  \n  Transform user records by extracting the domain
+  from email addresses.\n  \n  |example :type input\n    {\"name\": \"Alice\", \"email\":
+  \"alice@example.com\"}\n  \n  |example :type output\n    {\"name\": \"Alice\", \"email\":
+  \"alice@example.com\", \"domain\": \"example.com\"}\n  \n  |validation-rule\n    The
+  domain field must match the portion after @ in the email.\n```\n\nThis eliminates
+  escaping hell and makes it clearer what's instruction vs. data vs. validation logic.\n\n###
+  Progressive Refinement Logs\nAgents often maintain reasoning traces or edit histories.
+  Currently these are either:\n- Pure text (unstructured, hard to query)\n- Pure JSON
+  (verbose, poor for narrative reasoning)\n\n```udon\n|reasoning[attempt-3]\n  :timestamp
+  2025-12-22T14:23:11Z\n  :parent attempt-2\n  \n  Previous attempt failed because
+  I didn't account for null values.\n  Let me reconsider the edge cases:\n  \n  |edge-case[null-email]\n
+  \   :status identified\n    :severity high\n    \n    When email is null, domain
+  extraction should return null,\n    not throw an error.\n    \n  |proposed-fix\n
+  \   :line 42\n    :change \"Add null check before split operation\"\n```\n\nThe
+  mixed format naturally supports \"thinking in prose\" while maintaining queryable
+  structure.\n\n## 2. What Becomes Possible\n\n### Self-Modifying Documentation\nAn
+  agent could maintain a document that serves as both:\n- Human-readable guide\n-
+  Machine-queryable configuration\n- Self-reflective performance log\n\n```udon\n|agent-profile[code-reviewer]\n
+  \ :version 2.3.1\n  :last-updated 2025-12-22\n  \n  I review code changes for style
+  and bugs. Based on feedback,\n  I've learned to focus on these areas:\n  \n  |focus-area[error-handling]\n
+  \   :confidence 0.92\n    :learned-from [review-127, review-145, review-203]\n    \n
+  \   I tend to catch missing error handlers effectively. Recent\n    feedback from
+  @sarah suggests I should also verify error\n    messages are user-friendly, not
+  just present.\n    \n    |recent-miss[review-210]\n      :date 2025-12-20\n      Found
+  error handler but missed that it logged stack traces\n      to user-facing output.\n```\n\nThe
+  agent writes this in natural language for humans but can also query its own performance
+  patterns programmatically.\n\n### Collaborative Multi-Agent Workspaces\nMultiple
+  agents working on a shared task could maintain a living document that's part conversation,
+  part state machine:\n\n```udon\n|sprint[implement-auth]\n  :status in-progress\n
+  \ :agents [planner, coder, tester]\n  \n  |planner :spoke-at 2025-12-22T10:00:00Z\n
+  \   I've broken this into three tasks. Coder should start with\n    the token validation
+  endpoint.\n    \n    |task[token-validation] :assigned coder :priority 1\n      Implement
+  JWT validation with 1-hour expiry.\n  \n  |coder :spoke-at 2025-12-22T10:15:00Z\n
+  \   Implementation complete. Note: I used 2-hour expiry based on\n    the security
+  requirements doc section 4.2.\n    \n    |implementation\n      :file src/auth/token.py\n
+  \     :lines 45-78\n      :deviation \"Used 2hr expiry instead of 1hr per security
+  doc\"\n  \n  |tester :spoke-at 2025-12-22T10:30:00Z\n    :status blocked\n    \n
+  \   I need clarification—planner said 1hr, coder used 2hr, which\n    is correct?\n```\n\nThe
+  structure makes it parseable while the prose makes the reasoning transparent.\n\n##
+  3. Inner-Loop Stability\n\n### Self-Correction with Context Preservation\nA major
+  instability: agents lose context when self-correcting, leading to oscillation. UDON
+  could maintain correction history structurally:\n\n```udon\n|solution[query-optimizer]
+  :iteration 4\n  \n  Current approach: Use index on user_id and created_at columns.\n
+  \ \n  |correction-history\n    |iter[1] \n      Tried single index on user_id. Too
+  slow for date ranges.\n    \n    |iter[2]\n      Added separate index on created_at.
+  Didn't help—optimizer\n      chose wrong index.\n    \n    |iter[3]\n      Composite
+  index (user_id, created_at). Better but still\n      scanning too many rows due
+  to |{issue :ref iter3-issue \n      timezone conversion}.\n    \n    |iter[4] :current\n
+  \     Same composite index but with timezone normalization in\n      the application
+  layer instead of SQL.\n      \n  |constraint :violated-by [1, 2, 3]\n    :type performance\n
+  \   Response time must be under 100ms for 95th percentile.\n```\n\nThe agent can
+  check \"have I tried this before?\" and \"what constraints have I violated?\" without
+  losing the narrative thread.\n\n### Validation Rules as Prose\nInstead of schema
+  validators that produce cryptic errors:\n\n```udon\n|api-spec[create-user]\n  \n
+  \ |field[email]\n    :type string\n    :required true\n    \n    Must be a valid
+  email address. We're permissive about formats\n    (allow plus-addressing, subdomains,
+  etc.) but it must have\n    exactly one @ symbol with characters on both sides.\n
+  \   \n    |validate\n      :pattern ^[^@]+@[^@]+$\n      :error-message \"Email
+  must contain exactly one @ symbol\"\n    \n    |validate\n      :custom check_email_deliverable\n
+  \     When a user signs up, we verify the domain has MX records.\n      This prevents
+  typos like user@gmial.com.\n```\n\nAgents can generate better error messages and
+  understand *why* validation exists, not just that it does.\n\n## 4. Agent-to-Agent
+  Communication\n\n### Handoff Documents\nWhen one agent passes work to another, current
+  formats force a choice:\n- Structured (loses context and reasoning)\n- Unstructured
+  (loses queryability and type safety)\n\n```udon\n|handoff[feature-123]\n  :from
+  design-agent\n  :to implementation-agent\n  :timestamp 2025-12-22T15:00:00Z\n  \n
+  \ I've completed the UX design for the notification preferences\n  panel. Here's
+  what you need to know:\n  \n  |design-decision[grouping]\n    :rationale user-research-findings-2025-12\n
+  \   \n    Users wanted notifications grouped by urgency, not by type.\n    This
+  is counterintuitive but tested well.\n    \n  |component[NotificationPrefsPanel]\n
+  \   :figma-link https://...\n    :priority high\n    \n    The main component. Note
+  the urgency selector at the top—\n    this should filter the entire list below it,
+  not just\n    highlight items.\n    \n    |implementation-note\n      Previous developer
+  tried making this a pure CSS solution\n      but it broke keyboard navigation. Use
+  JS filter instead.\n      \n  |open-question\n    :needs-input-from product-manager\n
+  \   \n    Should \"mute all\" persist across sessions or reset on login?\n    Design
+  works either way but affects implementation complexity.\n```\n\nThe receiving agent
+  gets both machine-readable task structure and human-like context that would normally
+  be lost.\n\n### Protocol Negotiation\nAgents could describe their capabilities in
+  a format that's both machine-negotiable and human-auditable:\n\n```udon\n|agent-capability[image-processor-v2]\n
+  \ :endpoint https://api.example.com/image-proc\n  :version 2.1.0\n  \n  I can process
+  images in various ways. Here's what I support:\n  \n  |operation[resize]\n    :formats
+  [jpg, png, webp]\n    :max-dimension 4096\n    \n    Standard resizing with aspect
+  ratio preservation. I use\n    Lanczos resampling for quality.\n    \n    |param[width]
+  :type integer :required true\n    |param[height] :type integer :required true\n
+  \   |param[maintain-aspect] :"
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:07:27Z'
+...

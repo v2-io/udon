@@ -1,0 +1,107 @@
+---
+id: udon-learning_curve-20251223-180129-3c0b7319
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 25
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  |article[welcome].featured
+    :author Joseph
+    :date 2025-12-22
+
+    Welcome to the project. Here's what we're building:
+
+    |objective
+      :priority high
+      :status active
+
+      A notation that lets **prose and structure coexist** without
+      awkward boundaries. Notice how this paragraph belongs to the
+      objective element, with its metadata above.
+
+    The key insight is that |{em most documents} aren't pure data
+    OR pure prose—they're |{dfn :id mixed-content mixed content}
+    where structure appears |{em inline} when needed.
+
+    |requirements
+      |req[r1] :must Machine-parseable without ambiguity
+      |req[r2] :must Human-readable without tooling
+      |req[r3] :should Support Markdown conventions in prose
+
+    That requirements block was structured data, but it lives
+    naturally within the document flow.
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  ```udon
+  |article[getting-started].blog-post
+    :title Getting Started with UDON
+    :author Sarah Chen
+    :date 2025-12-23
+
+    I've spent the last week exploring UDON, and I keep coming back to
+    one observation: most notation systems force you to choose. Either
+    you get human-readable markup that can't express complex structure,
+    or you get a rigorous data format that reads like a configuration
+    file. UDON seems genuinely interested in refusing that choice.
+
+    The moment that clicked for me was realizing the |{em pipe symbol}
+    doesn't announce "now we're switching to code mode." It just says
+    "here's a labeled container, inline with everything else." A title
+    can be text. A date can be metadata. They don't need separate
+    sections or ceremony. You write your thoughts, drop in structure
+    where it matters, and keep going.
+
+  ```
+
+  ---**What worked:**
+  - The syntax is genuinely readable. Even without prior exposure, the structure is clear: `|article[id]` as a container, `:attribute value` for metadata, nested elements with indentation.
+  - Inline markup like `|{em text}` for emphasis feels natural enough—though it's heavier than `*text*`.
+  - The philosophy *is* interesting: refusing the false choice between prose and data.
+
+  **Concerns:**
+
+  1. **Escaping and edge cases**: What happens if I want a literal pipe symbol in prose? The reference doesn't clarify. This matters for readability claims.
+
+  2. **Learning curve is hidden**: The syntax *looks* simple until you need nesting, attribute syntax, inline vs. block containers. I'm unclear on rules (why `[welcome]` vs `:priority`? Why does `.featured` exist?). The reference example uses undocumented conventions.
+
+  3. **Markdown compatibility claim**: The reference mentions supporting Markdown conventions, but `|{em text}` isn't Markdown. I'm not sure what's actually compatible.
+
+  4. **Verbosity for simple cases**: For a basic blog post, UDON is reasonable. For a paragraph with three emphasized phrases, I suspect it becomes tedious compared to Markdown's `**text**`.
+
+  5. **What's the parsing model?**: Is whitespace significant only for block structure? Can containers nest arbitrarily? Are there reserved words? These aren't answered.
+
+  **Honest take:** This feels like a genuinely motivated design solving a real problem (mixing prose + structure). But "human-readable without tooling" requires more precision about what's actually allowed, because right now I'm inferring rules from examples. A specification would help—or this remains a neat sketch rather than a usable notation.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:01:29Z'

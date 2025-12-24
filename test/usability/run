@@ -1,0 +1,529 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# UDON Usability Testing Runner
+#
+# Hallway usability testing at scale for the UDON notation.
+# Uses naive AI agents to measure syntax obviousness.
+#
+# Usage:
+#   ./run                      # Show summary
+#   ./run invention            # Test: can agents invent UDON?
+#   ./run interpret SAMPLE     # Test: what do agents think UDON means?
+#   ./run translate FORMAT     # Test: can agents convert to UDON?
+#   ./run learning-curve       # Test: how much context needed?
+#   ./run stress CATEGORY      # Test: where does UDON break down?
+#   ./run converge [N]         # Test: do agents converge?
+#   ./run results              # Show detailed results
+#   ./run show ID              # Show one result in full
+#
+# Results are stored in test/usability/results/ and SHOULD be committed.
+#
+
+require_relative "lib/usability_library"
+require_relative "lib/usability_tester"
+require_relative "lib/test_definitions"
+
+RESULTS_DIR = File.join(__dir__, "results")
+
+def main
+  command = ARGV[0] || "summary"
+
+  case command
+  when "summary", "s"
+    show_summary
+  when "invention", "invent", "i"
+    run_invention
+  when "interpret", "int"
+    run_interpretation(ARGV[1])
+  when "translate", "trans", "t"
+    run_translation(ARGV[1], ARGV[2])
+  when "learning-curve", "lc"
+    run_learning_curve(ARGV[1])
+  when "stress", "st"
+    run_stress(ARGV[1])
+  when "enablement", "enable", "e"
+    run_enablement(ARGV[1])
+  when "converge", "conv", "c"
+    run_convergence(ARGV[1]&.to_i || 5)
+  when "results", "r"
+    show_results(ARGV[1]&.to_i || 20)
+  when "show"
+    show_one(ARGV[1])
+  when "feedback", "fb"
+    show_feedback
+  when "help", "-h", "--help"
+    show_help
+  else
+    puts "Unknown command: #{command}"
+    puts "Run './run help' for usage."
+    exit 1
+  end
+end
+
+def library
+  @library ||= UsabilityLibrary::Library.new(dir: RESULTS_DIR)
+end
+
+def tester
+  @tester ||= UsabilityTester::Tester.new(library: library)
+end
+
+# ========================================
+# COMMANDS
+# ========================================
+
+def show_summary
+  puts "=" * 60
+  puts "UDON USABILITY TEST RESULTS"
+  puts "=" * 60
+  puts
+
+  summary = library.summary
+
+  if summary[:total_tests].zero?
+    puts "No tests yet. Run:"
+    puts "  ./run invention     # Can agents invent UDON?"
+    puts "  ./run interpret     # Do agents understand UDON?"
+    puts "  ./run learning-curve  # How much context needed?"
+    return
+  end
+
+  puts "Total tests: #{summary[:total_tests]}"
+  puts
+
+  puts "By test type:"
+  summary[:by_type].each do |type, stats|
+    next if stats[:total].zero?
+
+    rate = stats[:success_rate] ? "#{stats[:success_rate]}%" : "not evaluated"
+    puts "  #{type}: #{stats[:total]} tests (#{stats[:evaluated]} evaluated, #{rate} success)"
+  end
+
+  puts
+  puts "By model:"
+  summary[:by_model].each { |model, count| puts "  #{model}: #{count}" }
+
+  puts
+  puts "Context line distribution:"
+  summary[:context_line_distribution].sort.each { |lines, count| puts "  #{lines} lines: #{count}" }
+end
+
+def run_invention
+  puts "=" * 60
+  puts "INVENTION TEST"
+  puts "=" * 60
+  puts
+  puts "Testing: Can naive agents invent UDON-like notation?"
+  puts "Given only design constraints, do they converge on similar syntax?"
+  puts
+
+  model = ENV["MODEL"] || UsabilityTester::DEFAULT_MODEL
+  variant = ARGV[1] || "full"
+
+  result = case variant
+           when "full", "f"
+             puts "Running full invention test (all constraints)..."
+             tester.test_invention_full(model: model)
+           when "minimal", "min", "m"
+             puts "Running minimal invention test (core constraints)..."
+             tester.test_invention_minimal(model: model)
+           else
+             puts "Unknown variant: #{variant}. Use 'full' or 'minimal'."
+             exit 1
+           end
+
+  puts
+  puts "=" * 60
+  puts "INVENTED NOTATION"
+  puts "=" * 60
+  puts result[:response]
+
+  puts
+  puts "-" * 60
+  puts "Result saved: #{result[:id]}"
+  puts "Run './run show #{result[:id][0..20]}' to see full details."
+end
+
+def run_interpretation(sample_key)
+  samples = TestDefinitions::INTERPRETATION_SAMPLES
+
+  unless sample_key
+    puts "Available samples:"
+    samples.each_key { |k| puts "  #{k}" }
+    puts
+    puts "Usage: ./run interpret SAMPLE"
+    return
+  end
+
+  sample = samples[sample_key.to_sym]
+  unless sample
+    puts "Unknown sample: #{sample_key}"
+    puts "Available: #{samples.keys.join(', ')}"
+    exit 1
+  end
+
+  puts "=" * 60
+  puts "INTERPRETATION TEST"
+  puts "=" * 60
+  puts
+  puts "Showing this UDON to a naive agent:"
+  puts "-" * 40
+  puts sample
+  puts "-" * 40
+  puts
+
+  result = tester.test_interpretation(syntax: sample)
+
+  puts
+  puts "=" * 60
+  puts "AGENT'S INTERPRETATION"
+  puts "=" * 60
+  puts result[:response]
+end
+
+def run_translation(format_key, context_level)
+  translations = TestDefinitions::TRANSLATIONS
+
+  unless format_key
+    puts "Available translations:"
+    translations.each { |k, v| puts "  #{k} (#{v[:format]})" }
+    puts
+    puts "Usage: ./run translate KEY [CONTEXT_LEVEL]"
+    puts "Context levels: none, prefixes_only, tiny_example, with_prose, fuller_example, comprehensive"
+    return
+  end
+
+  trans = translations[format_key.to_sym]
+  unless trans
+    puts "Unknown translation: #{format_key}"
+    puts "Available: #{translations.keys.join(', ')}"
+    exit 1
+  end
+
+  context = if context_level
+              TestDefinitions::CONTEXT[context_level.to_sym]
+            else
+              TestDefinitions::CONTEXT[:tiny_example]
+            end
+
+  puts "=" * 60
+  puts "TRANSLATION TEST"
+  puts "=" * 60
+  puts "Source format: #{trans[:format]}"
+  puts "Context: #{context_level || 'tiny_example'} (#{context&.lines&.size || 0} lines)"
+  puts
+  puts "Source:"
+  puts "-" * 40
+  puts trans[:source]
+  puts "-" * 40
+  puts
+
+  result = tester.test_translation(
+    source: trans[:source],
+    format: trans[:format],
+    context: context
+  )
+
+  puts
+  puts "=" * 60
+  puts "UDON TRANSLATION"
+  puts "=" * 60
+  puts result[:response]
+end
+
+def run_learning_curve(task_key)
+  tasks = TestDefinitions::TASKS
+
+  unless task_key
+    puts "Available tasks:"
+    tasks.each { |k, v| puts "  #{k}: #{v}" }
+    puts
+    puts "Usage: ./run learning-curve TASK"
+    return
+  end
+
+  task = tasks[task_key.to_sym]
+  unless task
+    puts "Unknown task: #{task_key}"
+    puts "Available: #{tasks.keys.join(', ')}"
+    exit 1
+  end
+
+  puts "=" * 60
+  puts "LEARNING CURVE TEST"
+  puts "=" * 60
+  puts "Task: #{task}"
+  puts "Testing with increasing context levels..."
+  puts
+
+  progression = TestDefinitions::CONTEXT_PROGRESSION.map do |level|
+    TestDefinitions::CONTEXT[level]
+  end
+
+  results = tester.test_learning_curve(
+    task: task,
+    context_progression: progression
+  )
+
+  puts
+  puts "=" * 60
+  puts "RESULTS BY CONTEXT LEVEL"
+  puts "=" * 60
+
+  TestDefinitions::CONTEXT_PROGRESSION.each_with_index do |level, i|
+    result = results[i]
+    context_lines = TestDefinitions::CONTEXT[level]&.lines&.size || 0
+    puts
+    puts "--- #{level} (#{context_lines} lines) ---"
+    puts result[:response][0..500]
+    puts "..." if result[:response].length > 500
+  end
+
+  puts
+  puts "Review results manually and mark success with:"
+  puts "  (Evaluation not yet automated - check responses above)"
+end
+
+def run_stress(category)
+  stress = TestDefinitions::STRESS
+
+  unless category
+    puts "Available stress categories:"
+    stress.each { |k, v| puts "  #{k}: #{v.size} scenarios" }
+    puts
+    puts "Usage: ./run stress CATEGORY"
+    return
+  end
+
+  scenarios = stress[category.to_sym]
+  unless scenarios
+    puts "Unknown category: #{category}"
+    puts "Available: #{stress.keys.join(', ')}"
+    exit 1
+  end
+
+  puts "=" * 60
+  puts "STRESS TEST: #{category}"
+  puts "=" * 60
+  puts
+
+  context = TestDefinitions::CONTEXT[:comprehensive]
+
+  scenarios.each_with_index do |scenario, i|
+    puts "[#{i + 1}/#{scenarios.size}] #{scenario}"
+
+    result = tester.test_stress(scenario: scenario, context: context)
+
+    puts
+    puts result[:response][0..400]
+    puts "..." if result[:response].length > 400
+    puts
+    puts "-" * 40
+
+    sleep 0.5
+  end
+end
+
+def run_enablement(context_level)
+  context_level ||= "mixed_content"
+  context = TestDefinitions::CONTEXT[context_level.to_sym]
+
+  unless context
+    puts "Unknown context level: #{context_level}"
+    puts "Available: #{TestDefinitions::CONTEXT.keys.join(', ')}"
+    exit 1
+  end
+
+  puts "=" * 60
+  puts "ENABLEMENT / IDEATION TEST"
+  puts "=" * 60
+  puts "Context: #{context_level} (#{context.lines.size} lines)"
+  puts
+  puts "Asking: What does UDON enable that was hard before?"
+  puts
+
+  model = ENV["MODEL"] || UsabilityTester::SMART_MODEL
+  result = tester.test_enablement(context: context, model: model)
+
+  puts
+  puts "=" * 60
+  puts "IDEATION RESPONSE"
+  puts "=" * 60
+  puts result[:response]
+
+  if result[:feedback]
+    puts
+    puts "-" * 60
+    puts "AGENT FEEDBACK"
+    puts "-" * 60
+    puts result[:feedback]
+  end
+end
+
+def run_convergence(repeats)
+  puts "=" * 60
+  puts "CONVERGENCE TEST"
+  puts "=" * 60
+  puts "Running invention test #{repeats} times to measure consistency..."
+  puts
+
+  tester.convergence_test(test_type: :invention, repeats: repeats)
+
+  analysis = library.convergence_analysis(test_type: :invention)
+
+  puts
+  puts "=" * 60
+  puts "CONVERGENCE ANALYSIS"
+  puts "=" * 60
+  puts "Attempts: #{analysis[:attempts]}"
+  puts "Convergence score: #{analysis[:convergence_score]}%"
+  puts
+  puts "Pattern frequency:"
+  analysis[:patterns].each do |pattern, count|
+    pct = (count.to_f / analysis[:attempts] * 100).round(1)
+    puts "  #{pattern}: #{count} (#{pct}%)"
+  end
+end
+
+def show_results(limit)
+  results = library.list.last(limit)
+
+  if results.empty?
+    puts "No results yet."
+    return
+  end
+
+  puts format("%-36s %-15s %-6s %s", "ID", "Type", "Lines", "Task")
+  puts "-" * 80
+
+  results.each do |r|
+    task_preview = r["task"].length > 30 ? "#{r['task'][0..27]}..." : r["task"]
+    puts format("%-36s %-15s %-6d %s",
+                r["id"], r["test_type"], r["context_lines"], task_preview)
+  end
+end
+
+def show_one(id)
+  unless id
+    puts "Usage: ./run show ID"
+    return
+  end
+
+  result = library.get(id)
+
+  if result.nil?
+    puts "No result matching '#{id}'"
+    return
+  end
+
+  if result.is_a?(Array)
+    puts "Multiple matches:"
+    result.each { |r| puts "  #{r['id']}" }
+    puts "\nBe more specific."
+    return
+  end
+
+  puts "=" * 60
+  puts "USABILITY TEST RESULT"
+  puts "=" * 60
+  puts
+  puts "ID:            #{result['id']}"
+  puts "Task:          #{result['task']}"
+  puts "Test Type:     #{result['test_type']}"
+  puts "Context Lines: #{result['context_lines']}"
+  puts "Model:         #{result['model']}"
+  puts "Success:       #{result['success'].nil? ? '(not evaluated)' : result['success']}"
+  puts "Created:       #{result['created_at']}"
+  puts
+
+  puts "-" * 60
+  puts "PROMPT:"
+  puts "-" * 60
+  puts result["prompt"]
+  puts
+
+  puts "-" * 60
+  puts "RESPONSE:"
+  puts "-" * 60
+  puts result["response"]
+
+  if result["feedback"]
+    puts
+    puts "-" * 60
+    puts "AGENT FEEDBACK:"
+    puts "-" * 60
+    puts result["feedback"]
+  end
+end
+
+def show_feedback
+  feedback = library.all_feedback
+
+  if feedback.empty?
+    puts "No feedback collected yet."
+    return
+  end
+
+  puts "=" * 60
+  puts "AGENT FEEDBACK (#{feedback.size} entries)"
+  puts "=" * 60
+
+  feedback.each do |entry|
+    puts
+    puts "-" * 60
+    puts "Task: #{entry['task']}"
+    puts "Model: #{entry['model']}"
+    puts
+    puts entry["feedback"]
+  end
+end
+
+def show_help
+  puts <<~HELP
+    UDON Usability Testing
+
+    Hallway usability testing at scale for the UDON notation.
+    Uses naive AI agents to measure syntax obviousness.
+
+    See ETHICS.md for principles governing these agent interactions.
+
+    COMMANDS:
+
+      ./run                      Show summary of results
+      ./run invention [full|minimal]
+                                 Test: can agents design similar notation?
+      ./run interpret SAMPLE     Test: what do agents think UDON means?
+      ./run translate KEY [CTX]  Test: can agents convert to UDON?
+      ./run learning-curve TASK  Test: how much context is needed?
+      ./run stress CATEGORY      Test: where does UDON break down?
+      ./run enablement [CTX]     Test: what does UDON enable for agents?
+      ./run converge [N]         Test: do agents converge on similar syntax?
+      ./run results [N]          Show last N results
+      ./run show ID              Show full details of one result
+      ./run feedback             Show all agent feedback
+
+    ENVIRONMENT:
+
+      MODEL=...                  Override default model
+
+    EXAMPLES:
+
+      ./run invention            Run full invention test
+      ./run interpret basic_element
+      ./run translate json_simple tiny_example
+      ./run learning-curve simple_config
+      ./run stress escaping
+      ./run enablement mixed_content
+      ./run converge 5
+
+    RESULTS:
+
+      Results are stored in test/usability/results/ as YAML files.
+      These are PAID-FOR ARTIFACTS and should be committed to git.
+
+  HELP
+end
+
+main

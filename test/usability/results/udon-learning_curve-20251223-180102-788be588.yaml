@@ -1,0 +1,76 @@
+---
+id: udon-learning_curve-20251223-180102-788be588
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 6
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  ; UDON: | = element, : = attribute, indentation = hierarchy
+  |person
+    :name Alice
+    :age 30
+    |address
+      :city Portland
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  # UDON Blog Post Example
+
+  ```udon
+  |blog_post
+    :title The Future of Notation Design
+    :author Sarah Chen
+    :date 2024-01-15
+    |paragraph
+      :content Notation systems shape how we think about and communicate complex ideas. Throughout history, from mathematical symbols to programming languages, the right notation has unlocked entire fields of inquiry. UDON presents an interesting minimalist approach—using simple visual hierarchy and punctuation to represent nested structures. What strikes me most is the constraint itself: by limiting syntax to pipes, colons, and indentation, the designer forces clarity. There's no syntactic sugar to hide behind, no multiple ways to express the same concept. This echoes the philosophy behind successful notations like YAML and S-expressions, though UDON strips even further.
+    |paragraph
+      :content However, minimalism in notation design creates a tension worth examining. UDON's reliance on indentation echoes Python's approach, which means whitespace becomes semantically critical—a feature that some find elegant and others find fragile. The notation also doesn't appear to accommodate mixed content (text with embedded structure), attributes with complex values, or sequences as first-class citizens. Whether these are limitations or features depends entirely on the problem domain. The real question for notation design isn't whether a system is minimal, but whether it's minimal *for its intended purpose*. A notation optimized for configuration files has different needs than one for narrative documents. UDON's future depends less on its elegance and more on discovering—or creating—the domain where its constraints become superpowers.
+  ```
+
+  ---I should note some observations about using UDON for this task:
+
+  **Strengths demonstrated:**
+  - The hierarchical structure (blog_post → paragraphs) maps naturally to the content's logical organization
+  - Attributes cleanly separate metadata from content
+  - Very readable; the structure is immediately apparent
+
+  **Friction points I encountered:**
+  - Long text values feel awkward in attribute position (`:content "..."` is verbose)
+  - No clear affordance for ordering sequences—are two paragraphs ordered by document position, or do we need a sequence notation?
+  - The notation doesn't distinguish between "this is metadata about the structure" vs. "this is the substance of the content." Blog paragraphs are arguably substance, not metadata, so forcing them into element hierarchies feels slightly off
+
+  **Honest assessment:**
+  UDON works fine here, but doesn't feel specifically *designed* for this task. It's doing okay at configuration/data, but documents are a different beast. This isn't a weakness of UDON necessarily—it's a reminder that no notation is universal, and that's fine.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:01:02Z'

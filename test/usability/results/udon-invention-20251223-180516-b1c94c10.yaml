@@ -1,0 +1,179 @@
+---
+id: udon-invention-20251223-180516-b1c94c10
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-opus-4-5-20251101
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  # Notation Design Sketch
+
+  ## Syntax Summary
+
+  | Syntax | Meaning |
+  |--------|---------|
+  | `@element` | Element/tag declaration |
+  | `#id` | Unique identifier (follows element) |
+  | `.class` | Classification (follows element, multiple allowed) |
+  | `key=value` | Attribute (follows element on same line) |
+  | `[value]` | Inline data literal (number, bool, list, object) |
+  | `>` | Inline text content follows on same line |
+  | `|` | Text block marker (preserves formatting) |
+  | `--` | Comment (to end of line) |
+  | Indentation | Hierarchy (2 spaces per level) |
+  | Bare text | Prose content (within element scope) |
+
+  **Value typing:**
+  - Numbers: bare digits `42`, `3.14`
+  - Booleans: `true`, `false`
+  - Strings: `"quoted"` or bare (when unambiguous)
+  - Lists: `[a, b, c]`
+  - Objects: `{key: value, key2: value2}`
+
+  ## Document Example: Mixed Content
+
+  ```
+  -- A blog post demonstrating mixed content
+  @article #post-2024-03 .featured .technical
+    @meta
+      author = "Jane Chen"
+      published = [2024-03-15]
+      tags = [notation, design, research]
+      draft = [false]
+
+    @title > Why Notation Design Matters
+
+    @section #intro
+      The history of data formats is one of
+      repeated fragmentation. We have JSON for APIs,
+      YAML for config, Markdown for prose, and HTML
+      for documents. But real content is messier.
+
+      Consider this simple requirement from
+      @cite author="Kay" year=[1993] > The Early History of Smalltalk
+      where he argues that
+      @em > the best notation is one you don't notice.
+
+    @section #examples .code-heavy
+      @h2 > Embedding Data in Prose
+
+      Here's a practical scenario: documenting an API endpoint
+      that returns user data:
+
+      @endpoint path="/users/{id}" method="GET"
+        @param name="id" type="integer" required=[true]
+          > The unique user identifier
+
+        @returns status=[200]
+          @schema
+            {id: integer, name: string, roles: [string]}
+
+      The response includes a @field > roles
+      array, which can contain values like
+      @code > ["admin", "editor"]
+      for privileged accounts.
+
+    @section #comparison
+      @h2 > Performance Characteristics
+
+      We measured parsing speed across [10000] documents:
+
+      @table #benchmarks
+        @row .header
+          @cell > Format
+          @cell > Parse (ms)
+          @cell > Memory (KB)
+        @row
+          @cell > JSON
+          @cell > [12.4]
+          @cell > [847]
+        @row
+          @cell > This notation
+          @cell > [15.1]
+          @cell > [612]
+
+      As shown in @ref #benchmarks > Table 1, the memory
+      overhead is [27.7]% lower despite the richer structure.
+
+    @aside .note
+      |This notation is experimental.
+      |Feedback welcome at the repository.
+  ```
+
+  ## Key Design Decisions
+
+  1. **`@` prefix for elements**: Visually distinct from prose, impossible to confuse with content
+  2. **`>` for inline content**: Clearly separates element declaration from text, allows prose to flow
+  3. **`[brackets]` for typed values**: Numbers/bools/structures are explicitly data, not strings
+  4. **Bare text in scope**: Prose paragraphs don't need markers—just type naturally under parent
+  5. **Single-line vs block**: `>` for inline, `|` for multiline preserves intent without closing tags
+
+  ```
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  The hardest tension I encountered: making prose "natural" while keeping
+  structure unambiguous. My `>` marker feels slightly noisy but necessary—
+  without it, you can't tell if `@em important` means "em element with
+  attribute 'important'" or "em element containing text 'important'".
+
+  I'm skeptical that any notation fully solves mixed content elegantly.
+  The fundamental problem: you need *some* way to distinguish "this is
+  structure" from "this is text", and every choice has costs.
+
+  Alternative I considered: treating unrecognized words as text by default,
+  only `@known-elements` as structure. But this requires a schema, which
+  breaks the goal of general-purpose notation.
+
+  I'd be curious whether your UDON solution found a cleaner answer to the
+  prose/structure boundary problem.
+  ```
+created_at: '2025-12-24T01:05:16Z'

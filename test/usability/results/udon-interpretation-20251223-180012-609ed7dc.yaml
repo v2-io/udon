@@ -1,0 +1,81 @@
+---
+id: udon-interpretation-20251223-180012-609ed7dc
+task: 'Interpret: |p This has |{em emphasis} and |{a :href /foo a link} inline....'
+test_type: interpretation
+context_lines: 1
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Task
+
+  You're seeing a notation called UDON for the first time. Based only on
+  what you see below, explain what you think each part means.
+
+  ```udon
+  |p This has |{em emphasis} and |{a :href /foo a link} inline.
+
+  ```
+
+  For each syntactic element you notice (special characters, indentation
+  patterns, etc.), explain:
+  1. What you think it means
+  2. Your confidence (certain / likely / guessing)
+  3. Any ambiguity or confusion
+
+  Be honest about uncertainty. If something is unclear, that's useful data.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# Analysis of UDON Notation\n\n## Syntactic Elements\n\n### `|p`\n**What
+  I think it means:** A block-level element tag, specifically a paragraph. The pipe
+  character `|` appears to be the tag delimiter, and `p` is the tag name.\n\n**Confidence:**
+  Likely\n\n**Ambiguity:** Is `|p` opening a paragraph that continues until the next
+  `|` tag, or does the newline terminate it? The example doesn't clarify.\n\n---\n\n###
+  `|{em emphasis}`\n**What I think it means:** An inline element with tag name `em`
+  (emphasis), containing the text \"emphasis\". The braces `{}` wrap the tag name
+  and/or its content.\n\n**Confidence:** Likely\n\n**Ambiguity:** The structure is
+  ambiguous. Does `|{em emphasis}` mean:\n- Tag: `em`, content: `emphasis`? \n- Or
+  is the content outside the braces?\nThe positioning suggests content is inside the
+  braces, but this breaks from the `|p` pattern.\n\n---\n\n### `|{a :href /foo a link}`\n**What
+  I think it means:** An inline `a` (anchor) tag with an attribute `:href` set to
+  `/foo`, and content \"a link\".\n\n**Confidence:** Likely for the tag/attribute
+  structure; guessing on syntax\n\n**Ambiguity:** \n- What does `:href` notation mean?
+  Is `:` a prefix for all attributes, or specific to certain ones?\n- How are attributes
+  distinguished from content? Is `/foo` the attribute value, and \"a link\" the content,
+  or something else?\n- Why does this inline element use `{}` while `|p` doesn't?\n\n---\n\n##
+  Overall Structure Questions\n\n1. **Tag syntax inconsistency:** `|p` vs `|{em ...}`
+  — why different patterns?\n2. **Content boundaries:** How do you know where an element's
+  content ends?\n3. **Whitespace significance:** Does the space after `|p` matter?\n4.
+  **Nesting:** How would you nest `|p` inside another element, or vice versa?\n\n---\n\n```This
+  notation feels like it's trying to balance readability with expressiveness, \nbut
+  the mixing of `|tag` and `|{tag ...}` syntax creates cognitive friction. \n\nThe
+  colon prefix for attributes (`:href`) is distinctive but unexplained—is this \na
+  general convention, or specific to certain contexts?\n\nThe biggest issue: **I can't
+  confidently predict how a more complex example would work.** \nFor instance, would
+  nested tags use more pipes? Would there be closing tags? \nThe single example is
+  too minimal to reverse-engineer the full grammar.\n\nIf this is human-readable markup
+  you're designing, consider: can I tell where \nelements begin and end without external
+  documentation? Currently, no.\n```"
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:00:12Z'
+...

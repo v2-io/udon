@@ -1,0 +1,100 @@
+---
+id: udon-learning_curve-20251223-180053-59fc2b85
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 4
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  |  = element (with optional [id] and .class)
+  :  = attribute
+  ;  = comment
+  Indentation = hierarchy, plain text = prose
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  # UDON Blog Post
+
+  ```udon
+  | article.blog-post
+    | header
+      | h1 #post-title
+        The Future of Notation: Why Simplicity Wins
+      | .meta
+        : author = "Sarah Chen"
+        : date = "2024-01-15"
+        ; Author and publication metadata
+
+    | section.content
+      | p
+        For decades, we've treated notation design as an afterthought—a
+        necessary evil rather than a first-class design problem. We inherit
+        complexity from legacy systems, layer new features atop old
+        syntaxes, and wonder why our tools feel clunky. But there's a
+        growing recognition that notation matters profoundly. The symbols
+        we use to externalize thought shape what we can think. A notation
+        that requires three keystrokes where one would suffice doesn't just
+        slow us down; it subtly discourages certain kinds of expression.
+        UDON's approach—using visual hierarchy and a handful of consistent
+        punctuation marks—suggests a different path. By constraining the
+        syntax, we're forced to think harder about what's truly essential.
+
+      | p
+        The real test isn't elegance on paper; it's whether people actually
+        adopt it. And adoption hinges on reducing friction at every step.
+        Does the notation map intuitively to how people already think about
+        structure? Can a newcomer infer the rules without memorizing a
+        reference manual? UDON makes some bold choices here: indentation
+        for hierarchy is powerful but risky in plaintext environments; the
+        attribute syntax using colons is clean but competes with a thousand
+        other conventions. These aren't flaws—they're trade-offs. The real
+        question is whether they were made deliberately, with full
+        understanding of what's gained and lost.
+
+  ```
+
+  ---**Honest observations:**
+
+  1. **The notation works, but with friction.** Using `| p` for each paragraph feels verbose when indentation alone could signal containment. The attribute syntax `: author = "value"` is clean in isolation, but I'd want to see how it scales with multiple attributes or namespaced data.
+
+  2. **Hierarchy ambiguity.** Does indentation imply both DOM structure AND semantic grouping? A blog post logically groups title + metadata, but in UDON it's not visually obvious whether that grouping matters or is just convenient. This could be clarified.
+
+  3. **Prose handling is underspecified.** I've assumed plain text inside elements becomes content, but what happens with mixed content (text + nested elements)? How does escaping work? The spec as given doesn't address this clearly.
+
+  4. **Comments feel orphaned.** The `; comment` syntax works, but there's no guidance on whether comments attach to the following line, the previous line, or stand alone. Practical notations need to resolve this.
+
+  5. **A strength worth highlighting:** The three-symbol constraint (`|`, `:`, `;`) is genuinely elegant and memorable. This is the kind of minimalism that could reduce cognitive load.
+
+  **Constructive skepticism:** Before declaring victory on simplicity, test UDON against messy real-world data—nested loops, conditional logic, or rich metadata. Simplicity often breaks when it meets reality's complexity.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:00:53Z'

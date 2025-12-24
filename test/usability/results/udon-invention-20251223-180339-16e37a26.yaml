@@ -1,0 +1,146 @@
+---
+id: udon-invention-20251223-180339-16e37a26
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# My UDON Alternative: \"AXON\"\n\n## 1. Syntax Summary\n\n```\nBASIC STRUCTURE:\n
+  \ identifier [attributes] content\n  \nATTRIBUTES (on same line, in square brackets):\n
+  \ [key=value key2=value2]\n  Special: [#id] for identity, [.class1.class2] for classes\n
+  \ Values: bare words, \"quoted strings\", numbers, true/false\n  \nTYPED VALUES:\n
+  \ Bare word or quoted string → string\n  123, 3.14 → number\n  true, false → boolean\n
+  \ [item1, item2] → list (inline)\n  \nINDENTATION:\n  Child content indented under
+  parent\n  Prose text has no prefix (unadorned)\n  \nPROSE FLOW:\n  Regular text
+  flows naturally; structural breaks marked minimally\n  \nCOMMENTS:\n  // single
+  line\n  /* multi-line */\n```\n\n## 2. Example Document\n\n```\narticle [#main-post
+  .featured]\n  \n  meta\n    title \"Understanding Databases\"\n    author \"Jane
+  Smith\"\n    published 2024-01-15\n    tags [sql, nosql, distributed]\n  \n  section
+  [.intro]\n    \n    This article explores modern database architectures and why\n
+  \   choosing the right one matters for your application. We'll cover\n    three
+  main categories and their trade-offs.\n    \n    note [.callout .warning]\n      Pay
+  special attention to the consistency section below—\n      it's where many teams
+  make costly mistakes.\n  \n  section [#consistency .technical]\n    \n    h2 ACID
+  vs BASE Guarantees\n    \n    Most traditional databases follow ACID principles:\n
+  \   \n    definition [.term]\n      strong \"Atomicity\"\n      : All or nothing—a
+  transaction succeeds completely or fails entirely.\n    \n    definition [.term]\n
+  \     strong \"Consistency\"\n      : The database moves from one valid state to
+  another.\n    \n    definition [.term]\n      strong \"Isolation\"\n      : Concurrent
+  transactions don't interfere.\n    \n    definition [.term]\n      strong \"Durability\"\n
+  \     : Once committed, data persists despite failures.\n    \n    Newer distributed
+  systems often relax these for performance,\n    adopting BASE (Basically Available,
+  Soft state, Eventually consistent).\n    This trade-off is fundamental and irreversible—choose
+  wisely.\n    \n    comparison-table [.data]\n      \n      row [.header]\n        cell
+  \"Property\"\n        cell \"ACID\"\n        cell \"BASE\"\n      \n      row\n
+  \       cell \"Immediate Consistency\"\n        cell true\n        cell false\n
+  \     \n      row\n        cell \"Availability\"\n        cell high\n        cell
+  very_high\n      \n      row\n        cell \"Partition Tolerance\"\n        cell
+  limited\n        cell robust\n  \n  section [#recommendations]\n    \n    h2 Practical
+  Guidance\n    \n    For most business applications, start with traditional ACID
+  databases.\n    The mental model is simpler, the ecosystem is mature, and premature\n
+  \   optimization toward distributed systems introduces unnecessary complexity.\n
+  \   \n    checklist\n      item [.checked] Evaluate current scale and projected
+  growth\n      item Measure actual bottlenecks before optimizing\n      item [.uncertain]
+  Consider operational overhead of distributed systems\n    \n    sidebar [.highlight]\n
+  \     p Distributed databases excel at:\n      ul [scale=horizontal, items=3]\n
+  \       li Geographic distribution\n        li Extreme write throughput\n        li
+  Multi-region failover\n  \n  footer\n    p \"Published by {author} on {published}\"\n
+  \   license [type=cc-by-4.0] This work is licensed under Creative Commons.\n```\n\n---\n\n##
+  3. Design Rationale\n\n**Strengths of this approach:**\n\n- **Minimal punctuation**:
+  No `=` soup, no `{}` nesting verbosity. Attributes use `[]` (borrowing from Markdown)
+  which feels lighter than XML attributes.\n- **Mixed content is native**: Prose text
+  needs no wrapper; it just *is*. Structural elements are equally at home.\n- **Indentation
+  as hierarchy**: Clean visual structure; no closing noise.\n- **Attributes are readable**:
+  `[#id .class .class2 key=value]` reads like HTML class syntax people already know.\n-
+  **Type inference**: Distinguishes `123` (number), `\"123\"` (string), `true` (boolean)
+  without explicit wrappers.\n\n**Weaknesses/Tensions:**\n\n- **Parser ambiguity**:
+  When does a bare word become prose vs. an element name? In my example, `h2` and
+  `p` are elements, but `This article explores...` is prose. The rule would need to
+  be: text on its own line = prose; word followed by `[...]` or indentation = element.\n-
+  **Lists inline vs. hierarchical**: `[item1, item2]` works for simple lists, but
+  a complex list needs the hierarchical form. This duality might confuse.\n- **No
+  explicit \"end\" makes whitespace fragile**: Like Python/YAML, indentation errors
+  are silent disasters. A misplaced space breaks structure invisibly.\n- **Attribute
+  order**: I've ordered `[#id .classes key=value]` but there's no strong justification.
+  Consistency matters more than order.\n- **Empty elements ambiguous**: Is `element`
+  a self-closing element or prose? Context matters: if it has no children and no attributes,
+  it's probably meant as prose. If it's a known tag, it's an element.\n\n---"
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  # Key Observations
+
+  **1. Mixed content is genuinely hard.** The moment you want prose + structure, traditional notations (JSON, YAML, XML) all struggle. Your goal #5 is the real constraint that shapes everything else. Most notation designs nail data OR documents, but not both. This suggests that if UDON solves this well, it's genuinely novel.
+
+  **2. Indentation-based structure has real costs.** It's easy to read but fragile to write and parse. Invisible whitespace bugs are severe. Consider: does UDON have explicit error messages for indentation mismatches, or do they silently create wrong structure? This is more critical than it seems.
+
+  **3. Attributes syntax is underspecified in my sketch.** I used `[key=value]` but didn't think through:
+     - Quoted strings in attributes: `[title="My \"Book\""]`?
+     - Complex values: `[config={nested: true}]`?
+     - Ordering: does order matter? Should it?
+
+     These details matter more than they look.
+
+  **4. The "identifier is optional" problem.** In `meta` and `article`, I'm assuming those are tag names. But in pure data context, is `{key: value}` represented as `key value`? Or `object [key=value]`? The notation needs to handle data without forcing semantic element names.
+
+  **5. Mixed content changes parsing priority.** In XML/HTML, everything is recursively structured. In my sketch, prose is "ambient"—it exists unless explicitly marked. This flips the parsing model. UDON would need clear rules: "Anything not recognized as an element name/syntax is prose by default"? Or "Prose is explicit and marked somehow"? The choice cascades through design.
+
+  **6. Lists need rethinking.** Inline lists `[a, b, c]` are easy. Hierarchical lists (like in my example) have unclear syntax. Are items just indented children? Named `item` children? Unnamed? If unnamed, how do you distinguish "arbitrary indented content" from "list items"?
+
+  # Questions for UDON Designers
+
+  - How do you handle **deeply nested attributes**? E.g., `function [params={x: int, y: int}, returns=bool]`?
+  - Does **prose have access to interpolation/templating**? (I used `{author}`, `{published}` in my footer—is that in scope?)
+  - How do you **visually distinguish** an element with no children from prose that happens to be a single word?
+  - What's the **error handling story**? Indentation is fragile; how do parsers report problems helpfully?
+
+  These aren't criticisms—just boundaries that clarify the design space.
+created_at: '2025-12-24T01:03:39Z'

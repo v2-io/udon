@@ -1,0 +1,113 @@
+---
+id: udon-learning_curve-20251223-180138-93209954
+task: 'Learning curve: Write a blog post with title, author, date, and two paragraphs'
+test_type: learning_curve
+context_lines: 28
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## UDON Reference
+
+  ```udon
+  ; UDON Quick Reference
+  ; | = element, : = attribute, ; = comment, |{} = inline element
+  ; [id] = unique identity, .class = classification (stackable)
+  ; Indentation = hierarchy, plain text = prose (Markdown works)
+
+  |article[welcome].featured.pinned
+    :author Joseph
+    :date 2025-12-22
+    :tags [intro tutorial udon]
+
+    Welcome to **UDON**. This prose belongs to the article.
+
+    The magic: |{em structured data} and prose |{strong coexist}.
+    Links work too: see |{a :href #mixed-content mixed content}.
+
+    |section[overview]
+      :priority 1
+
+      |definition-list
+        |term UDON
+        |def Universal Document & Object Notation
+
+      UDON unifies data, documents, and configuration because
+      most real content is |{em mixed}—not purely one or the other.
+
+    |code :lang ruby
+      # Code blocks preserve content literally
+      puts "Hello, world!"
+
+  ```
+
+  ## Task
+
+  Write a blog post with title, author, date, and two paragraphs
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: |-
+  ```udon
+  |article[first-impressions].blog
+    :title Learning to Read UDON
+    :author Alex Chen
+    :date 2025-01-15
+
+    When I first encountered UDON, I was skeptical. Another notation
+    system? The world doesn't need more markup languages. But after
+    spending a few hours with it, I found myself genuinely intrigued
+    by its core premise: that most real-world content doesn't fit
+    neatly into "data" or "document" boxes. A recipe is both. A
+    product listing is both. Even a résumé blurs these boundaries.
+    UDON's syntax feels natural because it doesn't force you to
+    choose—you nest structured elements where you need them, write
+    prose where it matters, and the notation gets out of your way.
+
+    The learning curve is gentle. Attributes and IDs are familiar
+    concepts, classes stack intuitively, and the inline element
+    syntax—|{em like this}—fits into prose without breaking the
+    reading experience. What struck me most was the small design
+    choice to use indentation for hierarchy rather than requiring
+    explicit closing tags. It reads like an outline, which is how
+    humans naturally think about structure anyway. I'm not ready to
+    abandon XML or YAML, but for documents that live in that murky
+    middle ground between data and prose, UDON might actually solve
+    a real problem.
+
+  ```**What works:** The notation is genuinely readable. I didn't need to reference the spec constantly. The `|{em inline}` syntax is clever—it's visible enough to parse, but unobtrusive enough to integrate into sentences.
+
+  **Concerns:**
+
+  1. **Whitespace sensitivity is dangerous.** Indentation-based hierarchy has burned Python users before. What happens with copy-paste errors? What about mixed tabs/spaces? The spec doesn't address this.
+
+  2. **Ambiguity around prose parsing.** When does text get treated as Markdown? The reference shows `**bold**` and `|{strong}` both exist—which takes precedence? Can I nest Markdown inside attributes?
+
+  3. **No escape mechanism specified.** What if I need a literal pipe character? A colon in an attribute value?
+
+  4. **Identity vs. classification confusion.** Why `[id]` syntax for unique identity when CSS already taught people `#id`? This is a missed opportunity for familiarity.
+
+  5. **Scaling question:** How do real-world documents with deep nesting or hundreds of elements feel? The example is clean, but I'd want to see UDON in pain cases.
+
+  **Suggestion:** Consider a formal grammar (EBNF or similar) rather than just reference examples. Notation design lives or dies on edge cases, and those need explicit rules.
+success:
+notes:
+feedback:
+created_at: '2025-12-24T01:01:38Z'

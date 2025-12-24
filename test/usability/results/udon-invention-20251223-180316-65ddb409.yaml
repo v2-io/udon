@@ -1,0 +1,156 @@
+---
+id: udon-invention-20251223-180316-65ddb409
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# Notation Design: FLUX\n\n## Syntax Summary\n\n```\nelement-name\n  key:
+  value                    # key-value pairs (attributes/config)\n  @id: unique-id
+  \              # special @ prefix for identity\n  .class-name                   #
+  dot prefix for classification (multiple ok)\n  | text content               # pipe
+  prefix for text/prose nodes\n  > nested-element             # > prefix for child
+  elements (optional, for clarity)\n\nvalue types:\n  string        → unquoted text
+  or \"quoted\"\n  number        → 42, 3.14, -100\n  boolean       → true, false\n
+  \ null          → null\n  list          → [item, item, item]\n  reference     →
+  @other-id (links to elements by id)\n  \n# comment       # hash for comments\n```\n\n**Key
+  principles:**\n- Indentation creates hierarchy; no closing tags\n- Element declaration
+  on its own line\n- Attributes (key: value) are indented children but syntactically
+  distinct\n- Text content marked with `|` to disambiguate from attributes\n- `@id`
+  and `.class` are special attribute-like syntaxes for common metadata\n- Mixed content:
+  prose and elements are peers in the tree\n\n---\n\n## Example: Blog Post with Mixed
+  Content\n\n```\narticle\n  @id: post-2024-01\n  .featured\n  .essay\n  title: \"Why
+  Notation Matters\"\n  author: \"Sam Chen\"\n  published: 2024-01-15\n  \n  | The
+  way we write shapes how we think. For centuries, we've used\n  | different notations
+  for different purposes—JSON for data, HTML for\n  | documents, YAML for configuration.
+  But the real world isn't so clean.\n\n  section\n    @id: intro\n    heading: \"The
+  Problem\"\n    \n    | Most documents are hybrids. Consider a product review:\n
+  \   \n    review\n      @id: review-customer-42\n      .highlight\n      rating:
+  5\n      reviewer: \"Alice\"\n      verified-purchase: true\n      \n      | This
+  widget changed my life! I've been using it for\n      | three months and haven't
+  looked back. My only complaint\n      | is the instruction manual could be clearer.\n
+  \     \n      pros: [lightweight, intuitive, durable]\n      cons: [manual, packaging,
+  price]\n      \n      tip\n        | Pro tip: Store in a cool, dry place for best
+  results.\n    \n    | As you can see, we need both the structured metadata (rating,\n
+  \   | reviewer) and flowing prose in the same space. Neither pure JSON\n    | nor
+  pure Markdown quite fits.\n\n  section\n    @id: comparison\n    heading: \"A Comparison\"\n
+  \   \n    | Here's how other formats struggle:\n    \n    table\n      @id: formats-table\n
+  \     headers: [Format, Data, Docs, Config, Mixed]\n      rows:\n        - [JSON,
+  ✓, ✗, ⚠, ✗]\n        - [XML, ✓, ◐, ◐, ◐]\n        - [YAML, ✓, ✗, ✓, ✗]\n        -
+  [Markdown, ✗, ✓, ✗, ✓]\n        - [FLUX, ✓, ✓, ✓, ✓]\n    \n    | The table above
+  shows why a unified notation matters.\n\n  footer\n    related-posts: [@post-2024-02,
+  @post-2023-12]\n    tags: [notation, design, philosophy]\n    | Next: Read about
+  \"Data Structures as Metaphor\"\n```\n\n---\n\n## Design Rationale\n\n**Why this
+  approach:**\n\n1. **Unification**: Single syntax handles structured data (the table),
+  configuration (author metadata), and prose (multi-line text). They coexist naturally
+  without requiring separate blocks or escaping.\n\n2. **Readability**: No angle brackets,
+  minimal punctuation. The `|` prefix is immediately recognizable as \"text content\"
+  and distinguishes from attributes. Indentation does all structural work.\n\n3. **Mixed
+  content as first-class**: The critical insight—elements can have *sibling* text
+  nodes and child elements at the same level. In the review, prose and structured
+  fields aren't separated; they flow together.\n\n4. **Types are syntactically clear**:\n
+  \  - `rating: 5` → number\n   - `verified-purchase: true` → boolean\n   - `pros:
+  [lightweight, intuitive]` → list\n   - `| text here` → string content\n   - `related-posts:
+  [@post-id]` → references\n\n5. **Attributes shine**: Special cases (`@id`, `.class`)
+  are short and readable; general attributes use `key: value` syntax without needing
+  separate attribute sections.\n\n6. **No closing tags**: Indentation alone defines
+  scope. Lighter, less visual noise.\n\n---"
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  # Observations
+
+  **Potential issues I'd flag:**
+
+  1. **Ambiguity risk**: If I write a bare word on a line, is it an element or a malformed attribute? Parser needs clear rules. Does `foo` without `:` or content declare an empty element, or is it an error?
+
+  2. **Attributes vs. elements**: In my example, `title: "Why Notation Matters"` looks like an attribute, but `section` looks like an element. They're syntactically identical (indented children). The distinction feels implicit rather than explicit. Is that acceptable? It might be—readers infer from context—but it's worth questioning.
+
+  3. **Text node priority**: I put prose first in some elements, attributes below. But could you mix them freely?
+     ```
+     review
+       | Some text
+       rating: 5
+       | More text
+       pros: [...]
+     ```
+     This looks like it should work but might confuse parsing. Need clear rules on ordering.
+
+  4. **Whitespace sensitivity**: Like Python/YAML, this is indentation-dependent. Copy-paste errors become syntax errors. Worth the cost for readability? Probably, but flag it.
+
+  5. **Missing: escaping and edge cases**. How do you represent a literal pipe `|` at the start of a line? How do you nest quotes? I didn't sketch this.
+
+  6. **List syntax**: Using `[item, item]` feels JSON-like. Given the rest is indent-based, should lists also be indent-based?
+     ```
+     pros:
+       - lightweight
+       - intuitive
+     ```
+     This might feel more consistent.
+
+  # Broader thoughts
+
+  - **The mixed content problem is real and underexplored.** Most notation designs punt on it. YAML has the `|` literal scalar, but it's clunky for interleaving prose and structure. HTML's approach (mixed content model) works but requires closing tags. Your design space here is genuinely interesting.
+
+  - **Unified notation is harder than it looks.** There are real tensions: configuration usually has shallow, wide structures; documents are deep and varied; data needs type clarity but documents care more about readability. No single syntax will feel equally natural for all three. Trade-offs are inevitable.
+
+  - **Identity/classification (@ and .) is well-chosen.** These are common needs and deserve first-class syntax.
+
+  - **I'd want to see how this handles:**
+    - Deeply nested data structures (deeply nested objects/arrays)
+    - Large prose passages
+    - Edge cases (empty elements, null values, numeric keys)
+    - Error messages (is the syntax forgiving or strict?)
+
+  ---
+
+  I'm curious whether your UDON design converges on similar choices or diverges. The pipe-for-prose idea feels like a natural solution, but there might be better alternatives I haven't considered.
+created_at: '2025-12-24T01:03:16Z'

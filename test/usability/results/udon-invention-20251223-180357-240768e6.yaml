@@ -1,0 +1,129 @@
+---
+id: udon-invention-20251223-180357-240768e6
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# Notation Design: BLOC (Block-oriented Language for Content)\n\n## Syntax
+  Summary\n\n```\nBASIC STRUCTURE\n  key: value                    # Simple key-value
+  (colon separates)\n  key value                     # Also valid (whitespace separator)\n
+  \ \nTYPES (prefix indicators)\n  key: 42                       # Number (no quotes
+  needed)\n  key: true/false              # Boolean\n  key: \"string with spaces\"
+  \   # String (quoted when ambiguous)\n  key: [item1, item2, item3]   # List (inline
+  or multiline)\n  \nINDENTATION\n  parent:\n    child: value               # Hierarchy
+  via indent (2-4 spaces)\n    sibling: value\n    \nATTRIBUTES & IDENTITY\n  [id=main
+  class=card featured]  # Metadata bracket before content\n  [id=main] heading: Introduction\n
+  \ \nPROSE BLOCKS\n  | This is prose content      # Pipe prefix allows freeform text\n
+  \ | Multiple lines naturally   # Preserves structure\n  | Can contain {inline: refs}\n
+  \ \nELEMENTS (structural blocks)\n  element:                      # Named block,
+  no closing tag\n    content here\n    or nested structure\n    \nCOMMENTS\n  # This
+  is a comment\n  \nMIXED EXAMPLE COMING BELOW\n```\n\n## Example Document\n\n```\n#
+  Blog Post with Mixed Content\n\n[id=post-001 class=article featured]\ntitle: \"Why
+  Indentation Matters\"\nauthor: Sarah Chen\npublished: 2024-01-15\ntags: [notation,
+  design, readability]\n\n# Introduction section\nintroduction:\n  | Most markup languages
+  force you to choose: either you get\n  | structure (XML, JSON) or readability (Markdown).
+  We wanted\n  | a middle path where prose and data coexist naturally.\n  \n  premise:
+  \"Good notation reduces cognitive load\"\n\n# Main content with embedded structured
+  data\ncontent:\n  | Before diving in, let me clarify what we mean by \"unified.\"\n
+  \ \n  definition:\n    [id=def-unified]\n    term: Unified notation\n    | A system
+  that handles three domains equally well:\n    \n    domains:\n      - name: Data\n
+  \       example: [\"array\", \"of\", \"items\"]\n        complexity: low\n      -
+  name: Documents  \n        example: \"Prose with structure\"\n        complexity:
+  high\n      - name: Config\n        example: {nested: {key: value}}\n        complexity:
+  medium\n    \n  | Now consider this: most real documents aren't pure content\n  |
+  or pure structure. A technical manual has prose paragraphs,\n  | but also tables,
+  code snippets, and metadata. A config file\n  | might need commented examples. A
+  data feed needs descriptions.\n  \n  challenge:\n    [class=callout important]\n
+  \   title: \"The Mixed Content Problem\"\n    severity: critical\n    | Existing
+  notations handle one well, break on the others.\n    \n    comparison:\n      JSON:\n
+  \       strength: \"Unambiguous, parseable, typed\"\n        weakness: \"Unreadable
+  for prose, verbose\"\n      Markdown:\n        strength: \"Readable, natural flow\"\n
+  \       weakness: \"Weak structure, no typing, hard to embed data\"\n      YAML:\n
+  \       strength: \"Readable config, simple syntax\"\n        weakness: \"Ambiguous
+  edge cases, struggling with mixed content\"\n\n# Metadata section\nmetadata:\n  version:
+  1.2\n  status: draft\n  revisions: 3\n  [id=readers]\n  target_audience: [designers,
+  language-creators, \"tool builders\"]\n\n|\n| This closing paragraph would appear
+  naturally in the flow,\n| without needing special markers. The notation gets out
+  of\n| your way and lets content breathe while preserving structure.\n|\n```\n\n---"
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  # Observations
+
+  1. **The core tension**: Indentation-based hierarchy is elegant but fragile at scale. Python solved this with code (where nesting is limited); documents can nest arbitrarily. I worried about:
+     - Mixing indentation for prose vs. structure
+     - Copy-paste errors with whitespace
+     - Editor ambiguity (when should indent increase?)
+
+  2. **Attributes are awkward**: My `[id=... class=...]` syntax borrows HTML brackets but feels clunky. The colon-based key-value pairs are cleaner. I'd want to see how UDON handles this—there might be a more elegant approach.
+
+  3. **Mixed content is genuinely hard**: I added the `|` prefix for prose because without it, the parser can't tell if:
+     ```
+     This is text:
+       or a key-value pair?
+     ```
+     Some marker felt necessary, but it adds visual noise. Did UDON solve this differently?
+
+  4. **Type inference trade-offs**: I made types implicit (unquoted numbers, bareword booleans) but this creates ambiguity. `key: true` vs `key: "true"` vs `key: true:` (value of true pointing to nested structure?) gets murky fast.
+
+  5. **Closing tag removal is deceptive**: No closing tags helps readability, but you pay for it with indentation-dependent parsing. It's a choice, not a free lunch—real question is whether the tradeoff is worth it for your use case.
+
+  6. **Comments are underdeveloped**: I put them at line level (`#`), but structured documents often need inline or block-level comments. Config files especially need "comment above the thing being configured."
+
+  # Questions I'd want to explore with UDON:
+
+  - How do you handle mixed prose/structure without a prefix marker?
+  - What's your rule for when something is prose vs. a key?
+  - Can you nest lists inside prose paragraphs, or do they require their own blocks?
+  - How do you disambiguate `key: value` (data) from `key: Prose text here`?
+  - Did you choose a different way to express attributes/metadata?
+created_at: '2025-12-24T01:03:57Z'

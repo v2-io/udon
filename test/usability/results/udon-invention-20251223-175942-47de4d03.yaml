@@ -1,0 +1,161 @@
+---
+id: udon-invention-20251223-175942-47de4d03
+task: 'Invent notation: all constraints'
+test_type: invention
+context_lines: 0
+model: claude-haiku-4-5-20251001
+prompt: |+
+  ## Context
+
+  You're participating in notation design research. This is a one-shot
+  interaction—you won't receive a reply, but your response will be
+  reviewed by humans. Please prioritize honesty over any attempt to
+  please; skepticism and criticism are valuable.
+
+
+  ## Background
+
+  We've designed a notation called UDON for unified data/document/config
+  representation. Before showing it to you, we'd value your independent
+  thinking on the design space.
+
+  ## Task
+
+  Given these design goals, sketch what notation you would create:
+
+  1. **Unified**: Handles data (like JSON), documents (like HTML), and configuration (like YAML) in one coherent syntax
+  2. **Human-readable**: Easy to read and write by hand, minimal punctuation noise
+  3. **Hierarchy via indentation**: Structure from whitespace, like Python/YAML
+  4. **No closing tags**: Unlike XML/HTML
+  5. **Mixed content**: Prose text and structural elements coexist naturally—this is critical; most real documents are neither pure data nor pure prose
+  6. **Typed values**: Numbers, booleans, strings, lists syntactically distinguishable
+  7. **Attributes**: Elements can have key-value metadata
+  8. **Identity and classification**: Unique IDs and multiple classes (like HTML id/class)
+  9. **Comments**: Non-parsed notes
+
+  Show your notation with:
+  1. A brief syntax summary (what characters mean what)
+  2. A document example showing **mixed content**—prose with structured data embedded naturally throughout (not just frontmatter)
+
+  Be concrete. We'll compare your approach to ours to understand if the design space naturally converges or if there are better alternatives we missed.
+
+  ---
+
+  ## Feedback (Optional)
+
+  After your main response, you're welcome to share any additional
+  thoughts: observations, concerns, suggestions, or anything else
+  you find relevant. If you do, please use this format:
+
+  ```
+  # FEEDBACK:
+  # Your thoughts here...
+  ```
+
+response: "# My Design: PRISM\n\n## Syntax Summary\n\n```\nELEMENT-NAME [#id .class1
+  .class2] (attr1=value1, attr2=value2)\n  Indented content goes here, line by line\n
+  \ \n  NESTED-ELEMENT\n    More content\n    \n  | Pipe prefix = literal prose, preserves
+  newlines\n  | This text is treated as content, not parsed for structure\n  \n  [literal
+  string with @special syntax]\n  {123, \"quoted\", true, false, null} = list syntax\n
+  \ \n// Double-slash = comments (full line only)\n```\n\n**Key principles:**\n- **Indentation**
+  defines nesting; no closing tags\n- **Capitalized names** = structural elements;
+  lowercase = primitive values\n- **Attributes** in parens use `key=value` pairs (values
+  unquoted if alphanumeric)\n- **Prose** prefixed with `|` escapes structural parsing;
+  can span multiple lines\n- **Lists/data** use `{...}` for dense notation, or indented
+  sequences\n- **IDs and classes** in brackets after element name: `#id` for unique
+  ID, `.class` for multiple classifications\n- **Types** inferred: unquoted alphanumeric
+  = symbol/ID, quoted = string, digits = number, `true/false/null` = boolean\n\n---\n\n##
+  Example Document: Conference Talk Registration\n\n```\nARTICLE #talk-2024-ai [.featured
+  .research]\n  \n  HEADER (date=2024-11-15, speaker=Dr. Chen)\n    TITLE\n      Why
+  Large Language Models Still Confuse Recursion\n    \n    SUBTITLE\n      A practical
+  guide to debugging transformer attention\n    \n    META (venue=Main Hall, capacity=200)\n
+  \ \n  | This talk explores one of the persistent challenges in modern\n  | machine
+  learning: how neural networks handle self-referential\n  | computation. Dr. Chen
+  will walk through three real debugging cases.\n  \n  SECTION #outline [.toc]\n    HEADING
+  (level=2)\n      Outline\n    \n    LIST (ordered=true)\n      ITEM: Recursion in
+  transformer architectures\n      ITEM: Attention head behavior under self-loops\n
+  \     ITEM: Practical fixes and their trade-offs\n  \n  SECTION [.main-content]\n
+  \   HEADING (level=2)\n      The Core Problem\n    \n    | Modern transformers excel
+  at parallel computation, but recursion\n    | requires sequential dependencies.
+  When you embed a call to the same\n    | attention head within itself—even implicitly
+  through gradient flow—\n    | you hit a theoretical wall.\n    \n    ASIDE #example-1
+  (type=code-block)\n      HIGHLIGHT (language=python)\n        | def recursive_attention(self,
+  query, depth=0):\n        |   if depth > 3: return query\n        |   attn = self.attention(query)\n
+  \       |   return self.recursive_attention(attn, depth+1)\n    \n    | The above
+  pattern fails because:\n    \n    LIST\n      ITEM\n        | The attention mechanism
+  isn't designed for sequential \n        | dependency tracking\n      \n      ITEM\n
+  \       SPAN [.technical]: Gradient flow becomes intractable\n        | beyond a
+  shallow depth\n      \n      ITEM (severity=critical)\n        | Numerical instability
+  accumulates across recursive calls\n  \n  SECTION [.results]\n    HEADING (level=2)\n
+  \     Empirical Findings\n    \n    TABLE #perf-table (cols=3)\n      ROW (header=true)\n
+  \       CELL: Approach\n        CELL: Avg. Depth\n        CELL: Accuracy\n      \n
+  \     ROW\n        CELL: Naive Recursion\n        CELL: {1.2}\n        CELL: {0.43}\n
+  \     \n      ROW\n        CELL: Unrolled Loop\n        CELL: {4.8}\n        CELL:
+  {0.89}\n      \n      ROW (highlight=true)\n        CELL: Iterative Attention\n
+  \       CELL: {5.1}\n        CELL: {0.91}\n    \n    | The unrolled approach trades
+  computational clarity for reliability.\n    | However, the iterative variant—shown
+  highlighted—achieves superior\n    | performance without sacrificing interpretability.\n
+  \ \n  SECTION [.recommendations]\n    HEADING (level=2)\n      Recommendations\n
+  \   \n    CHECKLIST\n      ITEM (completed=true)\n        | Always use explicit
+  loop counters instead of relying on\n        | implicit recursion depth\n      \n
+  \     ITEM (completed=false)\n        SPAN (priority=high): Monitor gradient norms\n
+  \       | at each iteration to catch divergence early\n      \n      ITEM\n        |
+  Consider attention-specific architectural patterns like\n        | masked self-attention
+  with cached states\n  \n  FOOTER (role=metadata)\n    BIO #speaker-bio (person=Dr.
+  Chen)\n      | Dr. Sarah Chen is a researcher at the Institute for AI \n      |
+  Safety. Her work focuses on interpretability and failure modes\n      | in deep
+  learning systems.\n    \n    LINKS\n      LINK (rel=slides, href=\"http://example.com/talk-slides.pdf\")\n
+  \     LINK (rel=code, href=\"http://example.com/recursive-attention-repo\")\n    \n
+  \   METADATA\n      TAGS: {machine-learning, transformers, interpretability, debugging}\n
+  \     LANGUAGE: en\n      LICENSE: cc-by-4.0\n```\n\n---\n\n# Observations & Concerns\n\n```"
+success:
+notes:
+feedback: |-
+  **FEEDBACK:**
+  # What I like about this approach:
+
+  1. **Indentation feels natural** for both data and documents. Python-like syntax
+     is familiar to developers; non-developers find it readable.
+
+  2. **Mixed content works naturally** because `|` prose blocks can sit alongside
+     structured elements. No awkward frontmatter separation. The document reads
+     coherently.
+
+  3. **Attributes in parens** are lighter than angle brackets, reducing punctuation
+     noise while remaining visually distinct from element names.
+
+  4. **No closing tags** but indentation makes nesting unambiguous—solves XML's
+     verbosity without YAML's ambiguity at scale.
+
+  # Concerns & tradeoffs:
+
+  1. **Ambiguity with unquoted values**: How do you distinguish between
+     `name=foo` (the symbol "foo") vs. `name="foo"` (the string "foo")?
+     I punted by saying "alphanumeric = symbol" but this needs stricter rules.
+
+  2. **Attribute syntax proliferation**: I used both `()` for attributes and
+     `[]` for ID/class. This mirrors HTML but feels inconsistent—should attributes
+     and ID/class use the same delimiter?
+
+  3. **Lists are awkward**: I showed `{1.2, 0.43}` but indented children work
+     better for readability. Should there be one canonical list syntax or both?
+
+  4. **Whitespace fragility**: Indentation-based parsing is brittle with copy-paste
+     and display contexts (emails, forums, converted docs). YAML has this problem;
+     did you solve it in UDON?
+
+  5. **Comments only at line level**: I disallowed inline comments (`//` mid-line)
+     to simplify parsing. Is that acceptable, or do you need inline comments?
+
+  6. **Element names**: Should they be keywords (predefined) or user-definable?
+     I treated them as user-definable, but real parsers might want a schema.
+
+  # Questions for UDON:
+
+  - How does UDON handle **mixed content** at the character level? (My `|` prefix
+    feels ad-hoc.)
+  - Does UDON have a **schema layer**, or is it schema-free like JSON?
+  - How are **numeric types** (int vs. float vs. decimal) distinguished?
+  - Can attributes themselves contain structured data (nested objects), or only scalars?
+  ```
+created_at: '2025-12-24T00:59:42Z'
