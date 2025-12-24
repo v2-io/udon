@@ -24,6 +24,7 @@
 require_relative "lib/usability_library"
 require_relative "lib/usability_tester"
 require_relative "lib/test_definitions"
+require_relative "lib/topic_enablement"
 
 RESULTS_DIR = File.join(__dir__, "results")
 
@@ -45,6 +46,8 @@ def main
     run_stress(ARGV[1])
   when "enablement", "enable", "e"
     run_enablement(ARGV[1])
+  when "topics", "topic", "t"
+    run_topic_enablement(ARGV[1]&.to_i || 5)
   when "converge", "conv", "c"
     run_convergence(ARGV[1]&.to_i || 5)
   when "results", "r"
@@ -362,6 +365,88 @@ def run_enablement(context_level)
   end
 end
 
+def run_topic_enablement(count)
+  # Load comprehensive.udon
+  comprehensive_path = File.join(__dir__, "..", "..", "examples", "comprehensive.udon")
+  comprehensive_udon = File.read(comprehensive_path)
+
+  topics = TopicEnablement.random_topics(count)
+  model = ENV["MODEL"] || UsabilityTester::SMART_MODEL
+
+  puts "=" * 60
+  puts "TOPIC-SEEDED ENABLEMENT TESTS"
+  puts "=" * 60
+  puts "Model: #{model}"
+  puts "Running #{count} tests with random topics..."
+  puts "Topics: #{topics.join(', ')}"
+  puts
+
+  topics.each_with_index do |topic, i|
+    puts "-" * 60
+    puts "[#{i + 1}/#{count}] Topic: #{topic}"
+    puts "-" * 60
+
+    prompt = TopicEnablement.build_prompt(
+      comprehensive_udon: comprehensive_udon,
+      topic: topic
+    )
+
+    result = run_topic_test(
+      topic: topic,
+      prompt: prompt,
+      model: model
+    )
+
+    puts
+    puts result[:response]
+
+    if result[:feedback]
+      puts
+      puts "FEEDBACK:"
+      puts result[:feedback]
+    end
+
+    puts
+    sleep 1 # Rate limiting
+  end
+
+  puts "=" * 60
+  puts "COMPLETE"
+  puts "=" * 60
+  puts "Results saved to test/usability/results/"
+end
+
+def run_topic_test(topic:, prompt:, model:)
+  start_time = Time.now
+
+  response = tester.send(:call_api, model, prompt)
+  elapsed = (Time.now - start_time).round(2)
+
+  puts "  Response time: #{elapsed}s"
+
+  # Extract feedback
+  response_clean, feedback = tester.send(:extract_feedback, response)
+
+  # Save result
+  id = library.add(
+    task: "Topic enablement: #{topic}",
+    test_type: :topic_enablement,
+    context_lines: 0, # comprehensive.udon is the context
+    model: model,
+    prompt: prompt,
+    response: response_clean,
+    feedback: feedback
+  )
+
+  {
+    id: id,
+    topic: topic,
+    response: response_clean,
+    feedback: feedback,
+    elapsed: elapsed
+  }
+end
+
 def run_convergence(repeats)
   puts "=" * 60
   puts "CONVERGENCE TEST"
@@ -499,6 +584,7 @@ def show_help
       ./run learning-curve TASK  Test: how much context is needed?
       ./run stress CATEGORY      Test: where does UDON break down?
       ./run enablement [CTX]     Test: what does UDON enable for agents?
+      ./run topics [N]           Test: random topic synergies (default 5)
       ./run converge [N]         Test: do agents converge on similar syntax?
       ./run results [N]          Show last N results
       ./run show ID              Show full details of one result
