@@ -255,3 +255,24 @@ I'm curious whether your UDON solution uses:
 
 The design space feels constrained enough that there might only be
 2-3 viable approaches. Looking forward to seeing what you chose.
+
+---
+
+**ID:** udon-topic_enablement-20251223-191006-d1802bd1
+**Task:** Topic enablement: Cognitive load
+**Model:** claude-sonnet-4-5-20250929
+**Time:** 2025-12-24T02:10:06Z
+
+**FEEDBACK:**
+# What I Appreciate:
+- The **mixed content model** is genuinely thoughtful. Documents *are* often hybrid.
+- **Inline elements** `|{em like this}` are more readable than XML/HTML for prose-heavy content.
+- The **progressive disclosure** of complexity in the spec itself (flags, mixins, references) shows careful design.
+
+# Skepticisms:
+
+1. **Adoption barrier is brutal.** Every format needs tooling (editors, linters, renderers). UDON's complexity means significant investment before payoff. Markdown won, despite limitations, because it's trivial to parse and render.
+
+2. **The "everything format" trap.** Trying to be good at data, documents, AND configuration means compromising on all three. JSON is simpler for data. Markdown is simpler for docs. TOML/YAML are simpler for config. The unified syntax advantage needs to be *much* stronger to justify the learning curve.
+
+3. **Inline syntax ambiguity.** Consider: `|p See |{a :href /docs the docs} for details.` vs regular prose: "See the docs for details." The cognitive overhead of parsing `|{...}` syntax while reading is non-trivial.
