@@ -265,7 +265,6 @@ impl<'a> Parser<'a> {
         }
 
         // TODO: Parse suffix after classes
-        // TODO: Parse attributes
 
         self.emit(Event::ElementStart {
             name,
@@ -275,7 +274,86 @@ impl<'a> Parser<'a> {
             span: Span::new(start_pos, self.pos),
         });
 
+        // Parse inline attributes (:key value)
+        self.parse_inline_attributes();
+
         true
+    }
+
+    /// Parse inline attributes after element identity.
+    /// Attributes: :key value :another-key another-value
+    fn parse_inline_attributes(&mut self) {
+        loop {
+            // Skip whitespace
+            while let Some(b' ') | Some(b'\t') = self.peek() {
+                self.advance();
+            }
+
+            // Check for attribute
+            if self.peek() != Some(b':') {
+                break;
+            }
+            self.advance(); // Skip :
+
+            // Parse attribute key
+            let key = match self.scan_label() {
+                Some(k) => k,
+                None => break, // Invalid attribute
+            };
+
+            // Skip whitespace before value
+            while let Some(b' ') | Some(b'\t') = self.peek() {
+                self.advance();
+            }
+
+            // Check what follows
+            let value = match self.peek() {
+                None | Some(b'\n') | Some(b';') => None, // Flag attribute
+                Some(b':') => None, // Next attribute (flag)
+                Some(b'|') => None, // Inline element (flag)
+                Some(b'"') => {
+                    // Quoted string
+                    self.advance(); // Skip opening quote
+                    let start = self.pos;
+                    while let Some(b) = self.peek() {
+                        if b == b'"' {
+                            break;
+                        }
+                        if b == b'\\' {
+                            self.advance(); // Skip escape
+                        }
+                        self.advance();
+                    }
+                    let value_slice = &self.input[start..self.pos];
+                    if self.peek() == Some(b'"') {
+                        self.advance(); // Skip closing quote
+                    }
+                    Some(crate::Value::QuotedString(value_slice))
+                }
+                _ => {
+                    // Unquoted value - collect until space, :, |, ;, or newline
+                    let start = self.pos;
+                    while let Some(b) = self.peek() {
+                        match b {
+                            b' ' | b'\t' | b':' | b'|' | b';' | b'\n' => break,
+                            _ => self.advance(),
+                        }
+                    }
+                    let value_slice = &self.input[start..self.pos];
+                    if value_slice.is_empty() {
+                        None
+                    } else {
+                        Some(crate::Value::String(value_slice))
+                    }
+                }
+            };
+
+            self.emit(Event::Attribute {
+                key,
+                value,
+                span: Span::new(self.pos, self.pos), // TODO: proper span
+            });
+        }
     }
 
     /// Parse a complete element line after seeing '|' and confirming it's an element.

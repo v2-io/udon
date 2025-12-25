@@ -59,7 +59,10 @@ impl From<Event<'_>> for EventKind {
             Event::ElementEnd { .. } => EventKind::ElementEnd,
             Event::Attribute { key, value, .. } => EventKind::Attribute {
                 key: key.to_vec(),
-                value: value.and_then(|v| v.as_bytes().map(|b| b.to_vec())),
+                value: value.and_then(|v| match v {
+                    udon_core::Value::String(s) | udon_core::Value::QuotedString(s) => Some(s.to_vec()),
+                    _ => None,
+                }),
             },
             Event::DirectiveStart { name, is_raw, .. } => EventKind::DirectiveStart {
                 name: name.to_vec(),
@@ -305,7 +308,6 @@ mod attributes {
     use super::*;
 
     #[test]
-    #[ignore = "attributes not yet implemented"]
     fn simple_attribute() {
         let events = parse(b"|div :class container\n");
         assert_eq!(
@@ -326,7 +328,6 @@ mod attributes {
     }
 
     #[test]
-    #[ignore = "attributes not yet implemented"]
     fn flag_attribute() {
         let events = parse(b"|button :disabled\n");
         assert_eq!(
@@ -347,7 +348,6 @@ mod attributes {
     }
 
     #[test]
-    #[ignore = "attributes not yet implemented"]
     fn quoted_string_value() {
         let events = parse(b"|div :title \"Hello World\"\n");
         assert_eq!(
