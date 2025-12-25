@@ -592,20 +592,45 @@ For unknown element names, attribute keys, directive names—suggest similar val
 
 ### Phase 2.1: Core Parser Completion (1-2 weeks)
 
-**Goal:** Implement remaining SPEC.md features in udon-core.
+**Goal:** Implement ALL features from SPEC.md. Cross-referenced with spec sections.
 
-1. **Indented attributes** (`:key value` on own line)
-2. **Element suffixes** (`?`, `!`, `*`, `+`)
-3. **Embedded elements** (`|{...}`)
-4. **Inline element nesting** (`|a |b |c`)
-5. **Escape prefix** (`'` at line start)
-6. **Directives** (`!name`, `!raw:lang`)
-7. **Interpolation** (`!{expr}`)
-8. **Freeform blocks** (triple backtick)
-9. **ID references** (`@[id]`)
-10. **Attribute merging** (`:[id]`)
+**Note:** `udon.machine` is from the old C implementation and may not match current SPEC.md. Use SPEC.md as the authoritative source, not the .machine file.
 
-**Deliverable:** All tests in SPEC.md passing.
+#### Elements & Identity (SPEC lines 43-105)
+1. **Element suffixes** (`?`, `!`, `*`, `+`) — expand to `:'?' true` etc.
+2. **Suffix positioning** — after name, after id, space-separated at end
+3. **Anonymous elements** — `|[id]` or `|.class` with no name
+
+#### Attributes (SPEC lines 107-143)
+4. **Indented attributes** — `:key value` on indented line after element
+5. **Complex attribute values** — attribute followed by newline+indent = structured value
+6. **Inline lists** — `[a b c]`, `["quoted" items]`
+7. **Value type parsing** — integers, floats, rationals, complex, booleans, nil (SPEC lines 726-821)
+
+#### Hierarchy (SPEC lines 145-211)
+8. **Inline children** — `|a |b |c` nests rightward
+9. **Column-aligned siblings** — subsequent line at same column = sibling
+10. **Embedded elements** — `|{name attrs content}` for inline in prose
+
+#### Escape & Raw (SPEC lines 277-387)
+11. **Escape prefix** — `'` prevents interpretation of next char
+12. **Raw directives** — `!raw:lang` block form, `!raw:lang{content}` inline
+13. **Freeform blocks** — triple-backtick for indent-insensitive content
+
+#### Dynamics (SPEC lines 389-549)
+14. **Interpolation** — `!{expr}`, `!{expr | filter1 | filter2}`
+15. **Block directives** — `!if`, `!elif`, `!else`, `!unless`, `!for`, `!let`, `!include`
+16. **Inline directives** — `!name{content}` with balanced braces
+
+#### References (SPEC lines 551-633)
+17. **Class mixins** — `|.defaults` defines, `|element.defaults` inherits
+18. **ID references** — `@[id]` inserts element, `:[id]` merges attributes
+
+#### Other
+19. **Comments** — `;` at line start or inline
+20. **Prose content** — anything not prefixed belongs to parent
+
+**Deliverable:** All SPEC.md examples parse correctly. Comprehensive test suite.
 
 ### Phase 2.2: Tree Builder (1 week)
 
@@ -697,23 +722,33 @@ These are deferred to Phase 3:
 
 ### Performance Targets
 
+**Note on metrics:** MB/s is misleading when comparing formats with different verbosity (XML is ~50% larger than UDON for same content). Use **nodes/second** or **time to parse equivalent content** for fair comparisons.
+
 | Metric | Target | Stretch |
 |--------|--------|---------|
-| Streaming throughput | 500 MB/s | 1 GB/s |
-| Tree parse (Rust) | 300 MB/s | 500 MB/s |
-| Tree parse (Ruby, lazy) | 200 MB/s | 300 MB/s |
-| Tree parse (Ruby, full traversal) | 100 MB/s | 150 MB/s |
+| Streaming (Rust) | 2M nodes/sec | 5M nodes/sec |
+| Tree parse (Rust) | 1M nodes/sec | 2M nodes/sec |
+| Tree parse (Ruby, lazy access) | 500K nodes/sec | 1M nodes/sec |
+| Tree parse (Ruby, full traversal) | 200K nodes/sec | 500K nodes/sec |
 | Memory (streaming, 1GB file) | <10 MB | <5 MB |
 | Memory (tree, 100MB file) | <300 MB | <200 MB |
 
 ### Comparison Targets
 
+Benchmarks must use **semantically equivalent documents** and measure **time to parse + traverse same content**.
+
 | Parser | Our Target |
 |--------|------------|
-| Nokogiri (XML) | Beat by 2x on tree traversal |
-| YAML (Psych) | Beat by 5x |
+| Nokogiri (XML) | 2x faster on tree traversal |
+| YAML (Psych) | 5x faster |
 | JSON (Oj) | Match or beat |
 | tree-sitter | Match streaming throughput |
+
+**Benchmark methodology:**
+- Generate equivalent content in UDON, XML, YAML, JSON
+- Parse + traverse entire structure (count nodes, sum text bytes)
+- Report: time (µs), nodes/second, memory peak
+- Do NOT report MB/s (penalizes concise formats)
 
 ### Quality Targets
 
