@@ -703,6 +703,76 @@ For unknown element names, attribute keys, directive names—suggest similar val
 
 **Deliverable:** Published benchmarks, optimization guide.
 
+### Phase 2.8: WASM Bindings (1 week)
+
+**Goal:** Browser and edge runtime support via WebAssembly.
+
+WASM forces clean memory semantics—no GC, no refcounting, just arenas and handles.
+This validates that our architecture generalizes beyond Ruby's runtime model.
+
+1. **wasm-bindgen integration** in new `udon-wasm` crate
+2. **Same APIs as Ruby:**
+   - `Udon.parse(input)` → tree with lazy access
+   - `Udon.parseStreaming(input)` → event iterator
+3. **Memory management:**
+   - Arena-allocated tree lives in WASM linear memory
+   - JavaScript receives handles, not copies
+   - Explicit `document.free()` to release memory
+4. **Test suite via Node.js:**
+   - `wasm-pack test --node`
+   - Same test cases as Ruby
+5. **Browser bundle:**
+   - `wasm-pack build --target web`
+   - ESM module for `<script type="module">`
+
+**Deliverable:** `@anthropic/udon` npm package (or similar), works in Node.js and browsers.
+
+### Phase 2.9: Python Bindings via PyO3 (1 week)
+
+**Goal:** Python bindings mirroring the Ruby gem API.
+
+Python's refcounting and GIL present different challenges than Ruby's GC.
+This validates our FFI layer works across multiple managed runtimes.
+
+1. **New `udon-python` repo** with PyO3 structure:
+   ```
+   udon-python/
+   ├── src/lib.rs        # PyO3 bindings
+   ├── udon/__init__.py  # Python interface
+   ├── pyproject.toml    # maturin build config
+   └── tests/
+   ```
+
+2. **Same APIs as Ruby:**
+   ```python
+   import udon
+
+   # Tree API with lazy access
+   doc = udon.parse(input)
+   for child in doc.root.children:
+       print(child.name, child.text_content)
+
+   # Streaming API
+   for event in udon.parse_streaming(input):
+       if event.type == "element_start":
+           print(event.name)
+   ```
+
+3. **PyO3 patterns:**
+   - `#[pyclass]` for Document, Node
+   - `#[pymethods]` for lazy property access
+   - GIL-aware memory management
+
+4. **Build via maturin:**
+   ```bash
+   maturin develop  # Dev install
+   maturin build    # Wheel
+   ```
+
+5. **pytest test suite** — same test cases as Ruby
+
+**Deliverable:** `udon` package on PyPI, works with Python 3.9+.
+
 ---
 
 ## Part 5: What We're NOT Doing in Phase 2
@@ -713,8 +783,7 @@ These are deferred to Phase 3:
 2. **Markdown parsing** — Needs spec decisions first
 3. **Liquid directives** — Needs design work
 4. **Dialects** — Needs spec work
-5. **WASM bindings** — Nice to have, not critical
-6. **Python/Go/Swift bindings** — After Ruby is solid
+5. **Go/Swift/Java bindings** — After Python proves the pattern
 
 ---
 
