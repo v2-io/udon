@@ -275,13 +275,28 @@ pub struct UdonEvent {
 }
 
 /// Opaque parser handle.
+///
+/// Uses a single-slot design: only one FFI event struct exists,
+/// and it gets overwritten on each `next()` call. This avoids
+/// the overhead of converting all events upfront.
 pub struct UdonParser {
     /// Owned copy of input (events reference this).
-    /// Not directly read, but must stay alive for event pointers.
+    /// SAFETY: Must stay alive as long as `events` exists.
     #[allow(dead_code)]
     input: Vec<u8>,
-    /// Parsed events
-    events: Vec<UdonEvent>,
+
+    /// Parsed Rust events (reference input via 'static lie).
+    /// SAFETY: These contain references to `input`. The 'static lifetime
+    /// is a lie, but is sound because:
+    /// 1. input is owned by this struct
+    /// 2. events are never exposed outside this struct
+    /// 3. input is only freed when the struct is freed (after events)
+    events: Vec<Event<'static>>,
+
+    /// Single FFI event slot - reused on each next() call.
+    /// The returned pointer is only valid until the next next() call.
+    current: UdonEvent,
+
     /// Current position in events
     pos: usize,
 }
@@ -296,7 +311,7 @@ pub extern "C" fn udon_parser_new(input: *const u8, len: usize) -> *mut UdonPars
         return ptr::null_mut();
     }
 
-    // Copy input
+    // Copy input into owned buffer
     let input_slice = if len == 0 {
         &[]
     } else {
@@ -304,22 +319,29 @@ pub extern "C" fn udon_parser_new(input: *const u8, len: usize) -> *mut UdonPars
     };
     let owned_input = input_slice.to_vec();
 
-    // Parse
+    // Parse - events will reference owned_input
     let mut parser = Parser::new(&owned_input);
     let rust_events = parser.parse();
 
-    // Convert events to FFI format
-    // We need to be careful: the Rust events reference owned_input,
-    // but we're about to move owned_input into the struct.
-    // The pointers will remain valid because Vec doesn't reallocate on move.
-    let ffi_events: Vec<UdonEvent> = rust_events
-        .iter()
-        .map(|e| convert_event(e))
-        .collect();
+    // SAFETY: Transmute the lifetime from 'a (tied to owned_input) to 'static.
+    // This is sound because:
+    // 1. owned_input is moved into the struct and lives as long as the struct
+    // 2. events are never exposed outside the struct (we convert on demand)
+    // 3. The struct is only freed via udon_parser_free, which drops in correct order
+    let events: Vec<Event<'static>> = unsafe { std::mem::transmute(rust_events) };
+
+    // Create zeroed FFI event for the single slot
+    let current = UdonEvent {
+        event_type: UdonEventType::Text,
+        data: UdonEventData {
+            span: UdonSpan { start: 0, end: 0 },
+        },
+    };
 
     let parser = Box::new(UdonParser {
         input: owned_input,
-        events: ffi_events,
+        events,
+        current,
         pos: 0,
     });
 
@@ -328,8 +350,8 @@ pub extern "C" fn udon_parser_new(input: *const u8, len: usize) -> *mut UdonPars
 
 /// Get the next event, or NULL if no more events.
 ///
-/// The returned pointer is valid until `udon_parser_free` is called.
-/// Do not free the returned pointer.
+/// The returned pointer is valid until the next call to `udon_parser_next`
+/// or until `udon_parser_free` is called. Do not free the returned pointer.
 #[no_mangle]
 pub extern "C" fn udon_parser_next(parser: *mut UdonParser) -> *const UdonEvent {
     if parser.is_null() {
@@ -342,9 +364,12 @@ pub extern "C" fn udon_parser_next(parser: *mut UdonParser) -> *const UdonEvent 
         return ptr::null();
     }
 
-    let event = &parser.events[parser.pos];
+    // Convert just this one event into the single slot
+    let rust_event = &parser.events[parser.pos];
+    parser.current = convert_event(rust_event);
     parser.pos += 1;
-    event as *const UdonEvent
+
+    &parser.current as *const UdonEvent
 }
 
 /// Reset the parser to the beginning.
