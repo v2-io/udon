@@ -25,8 +25,9 @@
 //! udon_parser_free(p);
 //! ```
 
-use std::ffi::c_char;
+use std::ffi::{c_char, CString};
 use std::ptr;
+use serde::Serialize;
 use udon_core::{Event, Parser, Span, Value};
 
 /// Event types matching the Rust Event enum.
@@ -624,6 +625,251 @@ fn convert_event(event: &Event<'_>) -> UdonEvent {
                     },
                 },
             }
+        }
+    }
+}
+
+// ========== Batch JSON Interface ==========
+//
+// For scripting languages where per-event FFI calls are expensive,
+// this returns all events as a single JSON string.
+
+/// JSON-serializable event for batch output.
+#[derive(Serialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
+enum JsonEvent {
+    ElementStart {
+        name: Option<String>,
+        id: Option<JsonValue>,
+        classes: Vec<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        suffix: Option<char>,
+        span: [u32; 2],
+    },
+    ElementEnd {
+        span: [u32; 2],
+    },
+    Attribute {
+        key: String,
+        value: Option<JsonValue>,
+        span: [u32; 2],
+    },
+    Text {
+        content: String,
+        span: [u32; 2],
+    },
+    Comment {
+        content: String,
+        span: [u32; 2],
+    },
+    Error {
+        message: String,
+        span: [u32; 2],
+    },
+    // Add others as needed
+    #[serde(rename = "embedded_start")]
+    EmbeddedStart {
+        name: Option<String>,
+        id: Option<JsonValue>,
+        classes: Vec<String>,
+        span: [u32; 2],
+    },
+    #[serde(rename = "embedded_end")]
+    EmbeddedEnd { span: [u32; 2] },
+    #[serde(rename = "directive_start")]
+    DirectiveStart {
+        name: String,
+        namespace: Option<String>,
+        is_raw: bool,
+        span: [u32; 2],
+    },
+    #[serde(rename = "directive_end")]
+    DirectiveEnd { span: [u32; 2] },
+    #[serde(rename = "inline_directive")]
+    InlineDirective {
+        name: String,
+        namespace: Option<String>,
+        is_raw: bool,
+        content: String,
+        span: [u32; 2],
+    },
+    Interpolation {
+        expression: String,
+        span: [u32; 2],
+    },
+    #[serde(rename = "raw_content")]
+    RawContent {
+        content: String,
+        span: [u32; 2],
+    },
+    #[serde(rename = "id_reference")]
+    IdReference {
+        id: String,
+        span: [u32; 2],
+    },
+    #[serde(rename = "attribute_merge")]
+    AttributeMerge {
+        id: String,
+        span: [u32; 2],
+    },
+    #[serde(rename = "freeform_start")]
+    FreeformStart { span: [u32; 2] },
+    #[serde(rename = "freeform_end")]
+    FreeformEnd { span: [u32; 2] },
+}
+
+/// JSON-serializable value.
+#[derive(Serialize)]
+#[serde(untagged)]
+enum JsonValue {
+    Null,
+    Bool(bool),
+    Int(i64),
+    Float(f64),
+    String(String),
+}
+
+fn bytes_to_string(bytes: &[u8]) -> String {
+    String::from_utf8_lossy(bytes).into_owned()
+}
+
+fn value_to_json(v: &Value<'_>) -> JsonValue {
+    match v {
+        Value::Nil => JsonValue::Null,
+        Value::Bool(b) => JsonValue::Bool(*b),
+        Value::Integer(i) => JsonValue::Int(*i),
+        Value::Float(f) => JsonValue::Float(*f),
+        Value::String(s) | Value::QuotedString(s) => JsonValue::String(bytes_to_string(s)),
+        Value::Rational { numerator, denominator } => {
+            JsonValue::String(format!("{}/{}", numerator, denominator))
+        }
+        Value::Complex { real, imag } => {
+            JsonValue::String(format!("{}+{}i", real, imag))
+        }
+        Value::List(_) => JsonValue::String("[list]".to_string()),
+    }
+}
+
+fn event_to_json(event: &Event<'_>) -> JsonEvent {
+    match event {
+        Event::ElementStart { name, id, classes, suffix, span } => JsonEvent::ElementStart {
+            name: name.map(bytes_to_string),
+            id: id.as_ref().map(value_to_json),
+            classes: classes.iter().map(|c| bytes_to_string(c)).collect(),
+            suffix: *suffix,
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::ElementEnd { span } => JsonEvent::ElementEnd {
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::Attribute { key, value, span } => JsonEvent::Attribute {
+            key: bytes_to_string(key),
+            value: value.as_ref().map(value_to_json),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::Text { content, span } => JsonEvent::Text {
+            content: bytes_to_string(content),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::Comment { content, span } => JsonEvent::Comment {
+            content: bytes_to_string(content),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::Error { message, span } => JsonEvent::Error {
+            message: message.to_string(),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::EmbeddedStart { name, id, classes, span } => JsonEvent::EmbeddedStart {
+            name: name.map(bytes_to_string),
+            id: id.as_ref().map(value_to_json),
+            classes: classes.iter().map(|c| bytes_to_string(c)).collect(),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::EmbeddedEnd { span } => JsonEvent::EmbeddedEnd {
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::DirectiveStart { name, namespace, is_raw, span } => JsonEvent::DirectiveStart {
+            name: bytes_to_string(name),
+            namespace: namespace.map(bytes_to_string),
+            is_raw: *is_raw,
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::DirectiveEnd { span } => JsonEvent::DirectiveEnd {
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::InlineDirective { name, namespace, is_raw, content, span } => JsonEvent::InlineDirective {
+            name: bytes_to_string(name),
+            namespace: namespace.map(bytes_to_string),
+            is_raw: *is_raw,
+            content: bytes_to_string(content),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::Interpolation { expression, span } => JsonEvent::Interpolation {
+            expression: bytes_to_string(expression),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::RawContent { content, span } => JsonEvent::RawContent {
+            content: bytes_to_string(content),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::IdReference { id, span } => JsonEvent::IdReference {
+            id: bytes_to_string(id),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::AttributeMerge { id, span } => JsonEvent::AttributeMerge {
+            id: bytes_to_string(id),
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::FreeformStart { span } => JsonEvent::FreeformStart {
+            span: [span.start as u32, span.end as u32],
+        },
+        Event::FreeformEnd { span } => JsonEvent::FreeformEnd {
+            span: [span.start as u32, span.end as u32],
+        },
+    }
+}
+
+/// Parse UDON and return all events as a JSON string.
+///
+/// This is much faster than iterating with `udon_parser_next` for scripting
+/// languages, as it avoids per-event FFI call overhead.
+///
+/// Returns a null-terminated JSON string. Caller must free with `udon_free_string`.
+/// Returns NULL on error.
+#[no_mangle]
+pub extern "C" fn udon_parse_json(input: *const u8, len: usize) -> *mut c_char {
+    if input.is_null() && len > 0 {
+        return ptr::null_mut();
+    }
+
+    let input_slice = if len == 0 {
+        &[]
+    } else {
+        unsafe { std::slice::from_raw_parts(input, len) }
+    };
+
+    let mut parser = Parser::new(input_slice);
+    let events = parser.parse();
+
+    let json_events: Vec<JsonEvent> = events.iter().map(event_to_json).collect();
+
+    match serde_json::to_string(&json_events) {
+        Ok(json) => {
+            match CString::new(json) {
+                Ok(cstr) => cstr.into_raw(),
+                Err(_) => ptr::null_mut(),
+            }
+        }
+        Err(_) => ptr::null_mut(),
+    }
+}
+
+/// Free a string returned by `udon_parse_json`.
+#[no_mangle]
+pub extern "C" fn udon_free_string(s: *mut c_char) {
+    if !s.is_null() {
+        unsafe {
+            drop(CString::from_raw(s));
         }
     }
 }

@@ -157,8 +157,15 @@ configs.each do |config|
 
   results = []
 
-  # Benchmark UDON
-  udon_result = run_benchmark("UDON (Rust FFI)", config[:iters]) do
+  # Benchmark UDON (batch JSON - recommended)
+  udon_batch_result = run_benchmark("UDON (batch)", config[:iters]) do
+    Udon.parse_fast(udon_doc)
+  end
+  udon_batch_result[:bytes] = udon_doc.bytesize
+  results << udon_batch_result
+
+  # Benchmark UDON (streaming - for comparison)
+  udon_result = run_benchmark("UDON (streaming)", config[:iters]) do
     Udon.parse(udon_doc)
   end
   udon_result[:bytes] = udon_doc.bytesize

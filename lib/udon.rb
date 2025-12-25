@@ -282,6 +282,10 @@ module Udon
   attach_function :udon_parser_free, [:pointer], :void
   attach_function :udon_version, [], :string
 
+  # Batch JSON interface (much faster for scripting languages)
+  attach_function :udon_parse_json, [:pointer, :size_t], :pointer
+  attach_function :udon_free_string, [:pointer], :void
+
   # High-level API
 
   # Parse a UDON string and return an array of event hashes.
@@ -333,6 +337,34 @@ module Udon
   # Get library version
   def self.version
     udon_version
+  end
+
+  # Parse using batch JSON interface (faster, single FFI call).
+  # Returns array of event hashes with symbolized keys.
+  def self.parse_fast(input)
+    require 'json'
+
+    input = input.encode('UTF-8') if input.respond_to?(:encode)
+    input_bytes = input.b
+
+    buf = FFI::MemoryPointer.from_string(input_bytes)
+    json_ptr = udon_parse_json(buf, input_bytes.bytesize)
+
+    raise "Failed to parse" if json_ptr.null?
+
+    begin
+      json_str = json_ptr.read_string
+      events = JSON.parse(json_str, symbolize_names: true)
+      # Convert span arrays to hashes for consistency with parse()
+      events.each do |e|
+        if e[:span].is_a?(Array)
+          e[:span] = { start: e[:span][0], end: e[:span][1] }
+        end
+      end
+      events
+    ensure
+      udon_free_string(json_ptr)
+    end
   end
 end
 
