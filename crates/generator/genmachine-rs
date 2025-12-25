@@ -123,9 +123,14 @@ class MachineParser
 
       case elem[:tag]
       when 'c'
-        chars = elem[:id].gsub('<L>', '[').gsub('<R>', ']').gsub('<P>', '|')
-                         .gsub('\\t', "\t").gsub('\\n', "\n")
-        current_case = { chars: chars.chars, substate: nil, commands: [] }
+        chars_str = elem[:id].gsub('<L>', '[').gsub('<R>', ']').gsub('<P>', '|')
+                              .gsub('\\t', "\t").gsub('\\n', "\n")
+        # Check for special character class (all uppercase with underscores)
+        if chars_str =~ /^[A-Z_]+$/
+          current_case = { chars: [chars_str], is_special: true, substate: nil, commands: [] }
+        else
+          current_case = { chars: chars_str.chars.to_a, is_special: false, substate: nil, commands: [] }
+        end
         state[:cases] << current_case
         i += 1
       when 'default'
@@ -180,6 +185,12 @@ class MachineParser
             current_case[:commands] << { type: :emit, event: event }
           end
           i += 1
+        elsif elem[:tag] =~ /^call:(\w+)$/i
+          # Call a helper method (tag is call:method_name)
+          if current_case
+            current_case[:commands] << { type: :call, method: $1 }
+          end
+          i += 1
         elsif elem[:tag] == ''
           # Check if rest contains commands
           rest = elem[:rest].strip
@@ -194,6 +205,16 @@ class MachineParser
           elsif rest == 'return'
             if current_case
               current_case[:commands] << { type: :return }
+            end
+          elsif rest =~ /^CALL:(\w+)$/i
+            # Call a helper method (in rest)
+            if current_case
+              current_case[:commands] << { type: :call, method: $1 }
+            end
+          elsif rest =~ /^IF_ELEMENT$/i
+            # Conditional: if parse_element() succeeds
+            if current_case
+              current_case[:commands] << { type: :if_element }
             end
           end
           i += 1
@@ -283,6 +304,10 @@ class RustGenerator
 
     if case_obj[:chars].nil?
       code << "#{indent}_ => {"
+    elsif case_obj[:is_special]
+      # Special character class like LETTER or ELEMENT_START
+      match_expr = generate_special_match(case_obj[:chars][0])
+      code << "#{indent}#{match_expr} => {"
     else
       chars = case_obj[:chars].map { |c| format_char(c) }.join(" | ")
       code << "#{indent}#{chars} => {"
@@ -313,6 +338,24 @@ class RustGenerator
     end
   end
 
+  # Check if a case uses a special character class
+  def is_special_class?(chars)
+    return false unless chars.is_a?(Array) && chars.size == 1
+    chars[0] =~ /^[A-Z_]+$/  # All uppercase = special class
+  end
+
+  # Generate match arm for special character class
+  def generate_special_match(class_name)
+    case class_name
+    when 'LETTER'
+      "b if self.is_label_start(b)"
+    when 'ELEMENT_START'
+      "b if self.is_element_start_byte(b)"
+    else
+      "_ /* unknown class: #{class_name} */"
+    end
+  end
+
   def generate_command(cmd, func, state, all_state_names)
     return nil if cmd.nil?
 
@@ -336,6 +379,12 @@ class RustGenerator
       "return;"
     when :mark
       "self.mark();"
+    when :call
+      method = cmd[:method]
+      "self.#{method}();"
+    when :if_element
+      # Special: try to parse element, handle success/failure
+      "if self.parse_element() { self.parse_element_content(); self.emit(Event::ElementEnd { span: Span::new(self.pos, self.pos) }); }"
     when :emit
       event = cmd[:event]
       case event.downcase
@@ -343,6 +392,8 @@ class RustGenerator
         "self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });"
       when 'text'
         "self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });"
+      when 'elementend'
+        "self.emit(Event::ElementEnd { span: Span::new(self.pos, self.pos) });"
       else
         "// TODO: emit #{event}"
       end

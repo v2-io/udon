@@ -1,7 +1,15 @@
 |parser udon
 
-; Minimal bootstrap parser for pipeline testing.
-; Just handles: comments, newlines, and text.
+; UDON Bootstrap Parser
+; Handles: comments, text, prose, and basic elements
+;
+; Element recognition: | is only element when followed by:
+;   - Unicode letter (\p{L}) — named element
+;   - "[" — anonymous element with id
+;   - "." — anonymous element with class
+;   - "{" — embedded element
+;   - "'" — quoted element name
+; Otherwise | is prose.
 
 |entry-point /line
 
@@ -10,15 +18,38 @@
     |eof                                                |return
     |c[\n]    |.newline  | ->                           |>> :main
     |c[;]     |.comment  | -> | MARK                    |>> :comment
+    |c[<P>]   |.pipe     | MARK | ->                    |>> :after_pipe
     |default  |.text     | MARK                         |>> :text
 
-  |state[:comment]
-    |eof                                                |return
-    |c[\n]    |.done     | emit(Comment)               |>> :main.newline
+  ; After seeing |, check if it's an element or prose
+  ; Note: MARK was set BEFORE the |, so text_with_pipe will include it
+  |state[:after_pipe]
+    |eof                                                |>> :text_with_pipe
+    |c[\n]    |.newline                                 |>> :text_with_pipe
+    |c[ \t]   |.space                                   |>> :text_with_pipe
+    |c[-]     |.dash                                    |>> :text_with_pipe
+    |c[<P>]   |.pipe                                    |>> :text_with_pipe
+    ; Element starters: letter, [, ., {, '
+    |c[ELEMENT_START] |.element | CALL:parse_element_line |>> :main
+    |default  |.prose                                   |>> :text_with_pipe
+
+  ; Text that started with | (not an element)
+  |state[:text_with_pipe]
+    |eof                  | emit(Text)                  |return
+    |c[\n]    |.done     | emit(Text) | ->              |>> :main
+    |c[;]     |.comment  | emit(Text) | -> | MARK       |>> :comment
     |default  |.collect  | ->                           |>>
 
+  ; Regular text
   |state[:text]
     |eof                  | emit(Text)                  |return
-    |c[\n]    |.done     | emit(Text)                  |>> :main.newline
-    |c[;]     |.comment  | emit(Text) | -> | MARK      |>> :comment
+    |c[\n]    |.done     | emit(Text) | ->              |>> :main
+    |c[;]     |.comment  | emit(Text) | -> | MARK       |>> :comment
+    |c[<P>]   |.pipe     | emit(Text) | ->              |>> :after_pipe
+    |default  |.collect  | ->                           |>>
+
+  ; Comment: ; to end of line
+  |state[:comment]
+    |eof                                                |return
+    |c[\n]    |.done     | emit(Comment) | ->           |>> :main
     |default  |.collect  | ->                           |>>

@@ -152,7 +152,6 @@ mod elements {
     use super::*;
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn simple_element() {
         let events = parse(b"|div\n");
         assert_eq!(
@@ -254,7 +253,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn element_with_inline_content() {
         let events = parse(b"|div Hello world\n");
         assert_eq!(
@@ -272,7 +270,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn nested_elements_rightward() {
         // |a |b |c means a > b > c
         let events = parse(b"|a |b |c\n");
