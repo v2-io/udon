@@ -1,0 +1,24 @@
+|parser udon
+
+; Minimal bootstrap parser for pipeline testing.
+; Just handles: comments, newlines, and text.
+
+|entry-point /line
+
+|function[line]
+  |state[:main]
+    |eof                                                |return
+    |c[\n]    |.newline  | ->                           |>> :main
+    |c[;]     |.comment  | -> | MARK                    |>> :comment
+    |default  |.text     | MARK                         |>> :text
+
+  |state[:comment]
+    |eof                                                |return
+    |c[\n]    |.done     | emit(Comment)               |>> :main.newline
+    |default  |.collect  | ->                           |>>
+
+  |state[:text]
+    |eof                  | emit(Text)                  |return
+    |c[\n]    |.done     | emit(Text)                  |>> :main.newline
+    |c[;]     |.comment  | emit(Text)                  |>> :comment
+    |default  |.collect  | ->                           |>>
