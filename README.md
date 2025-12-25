@@ -107,9 +107,24 @@ No sentence-boundary detection needed. No sliding windows. The author's intent a
 | Document | Description |
 |----------|-------------|
 | [SPEC.md](SPEC.md) | Full specification (v0.7-draft) |
+| [implementation-phase-2.md](implementation-phase-2.md) | Development roadmap for parser implementation |
 | [analysis.md](analysis.md) | Design rationale, TST evaluation, and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
-| [examples/practices-gotchas.udon](examples/practices-gotchas.udon) | Practices and gotchas guide (in review) |
+
+## Implementation
+
+The parser is implemented in Rust with language bindings:
+
+| Repository | Description |
+|------------|-------------|
+| `~/src/libudon` | Rust core parser + C FFI |
+| `~/src/udon-ruby` | Ruby gem with native extension |
+
+See [implementation-phase-2.md](implementation-phase-2.md) for the complete roadmap including:
+- Streaming parser with ring buffer
+- Arena-allocated tree structure
+- Lazy Ruby object projection
+- World-class error messages
 
 ## Historical Repositories
 
@@ -137,4 +152,12 @@ The original work is preserved in reference repositories:
 
 ## Status
 
-Revival in progress. See [analysis.md](analysis.md) for resolved design decisions and next steps.
+Active development. Phase 2 implementation in progress—see [implementation-phase-2.md](implementation-phase-2.md) for the complete roadmap.
+
+Current state:
+- SPEC.md complete (v0.7-draft)
+- Rust parser bootstrap working (~30% of spec)
+- Ruby gem compiles and runs tests
+- Benchmarking infrastructure in place
+
+Next: Complete parser implementation, streaming architecture, tree API.

@@ -6,8 +6,19 @@ separate repos:
 - **libudon** (`~/src/libudon`): Rust parser core + C FFI
 - **udon-ruby** (`~/src/udon-ruby`): Ruby gem with native extension
 
+## Implementation Plan
+
+**See `implementation-phase-2.md` in this repo for the comprehensive roadmap.**
+
+Phase 2 goals:
+- Complete parser implementation (all SPEC.md features)
+- True streaming with ring buffer architecture
+- Arena-allocated tree with lazy Ruby projection
+- World-class error messages
+
 This repo contains:
 - **SPEC.md** - The authoritative specification
+- **implementation-phase-2.md** - Development roadmap
 - **examples/** - Test fixtures and demonstrations
 - **test/** - Benchmarks comparing UDON to YAML/XML
 - **lib/** - Thin wrapper that loads the udon gem
