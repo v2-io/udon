@@ -17,9 +17,18 @@
   |state[:main]
     |eof                                                |return
     |c[\n]    |.newline  | ->                           |>> :main
+    |c[']     |.escape   | ->                           |>> :escaped
     |c[;]     |.comment  | -> | MARK                    |>> :comment
     |c[<P>]   |.pipe     | MARK | ->                    |>> :after_pipe
     |default  |.text     | MARK                         |>> :text
+
+  ; Escape prefix: ' prevents special char interpretation
+  ; After ', the next char is literal (part of prose)
+  |state[:escaped]
+    |eof                                                |return
+    |c[\n]    |.newline  | ->                           |>> :main
+    |c[']     |.apos     | MARK | ->                    |>> :text
+    |default  |.literal  | MARK | ->                    |>> :text
 
   ; After seeing |, check if it's an element or prose
   ; Note: MARK was set BEFORE the |, so text_with_pipe will include it

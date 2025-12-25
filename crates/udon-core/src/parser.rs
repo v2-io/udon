@@ -427,7 +427,7 @@ impl<'a> Parser<'a> {
 
     fn parse_line(&mut self) {
         #[derive(Clone, Copy)]
-        enum State { SMain, SAfterPipe, STextWithPipe, SText, SComment }
+        enum State { SMain, SEscaped, SAfterPipe, STextWithPipe, SText, SComment }
 
         let mut state = State::SMain;
         loop {
@@ -442,6 +442,10 @@ impl<'a> Parser<'a> {
                             self.advance();
                             state = State::SMain;
                         }
+                        b'\'' => {
+                            self.advance();
+                            state = State::SEscaped;
+                        }
                         b';' => {
                             self.advance();
                             self.mark();
@@ -454,6 +458,24 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                             self.mark();
+                            state = State::SText;
+                        }
+                    }
+                }
+                State::SEscaped => {
+                    match self.peek().unwrap() {
+                        b'\n' => {
+                            self.advance();
+                            state = State::SMain;
+                        }
+                        b'\'' => {
+                            self.mark();
+                            self.advance();
+                            state = State::SText;
+                        }
+                        _ => {
+                            self.mark();
+                            self.advance();
                             state = State::SText;
                         }
                     }

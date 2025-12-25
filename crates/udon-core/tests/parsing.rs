@@ -438,7 +438,6 @@ mod escapes {
     use super::*;
 
     #[test]
-    #[ignore = "escapes not yet implemented"]
     fn escaped_pipe() {
         // '| should be literal pipe, not element
         let events = parse(b"'|not-an-element\n");
@@ -446,21 +445,18 @@ mod escapes {
     }
 
     #[test]
-    #[ignore = "escapes not yet implemented"]
     fn escaped_colon() {
         let events = parse(b"':not-an-attribute\n");
         assert_eq!(events, vec![EventKind::Text(b":not-an-attribute".to_vec())]);
     }
 
     #[test]
-    #[ignore = "escapes not yet implemented"]
     fn escaped_semicolon() {
         let events = parse(b"';not-a-comment\n");
         assert_eq!(events, vec![EventKind::Text(b";not-a-comment".to_vec())]);
     }
 
     #[test]
-    #[ignore = "escapes not yet implemented"]
     fn escaped_apostrophe() {
         let events = parse(b"''literal apostrophe\n");
         assert_eq!(events, vec![EventKind::Text(b"'literal apostrophe".to_vec())]);
