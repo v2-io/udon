@@ -227,13 +227,50 @@ impl<'a> Parser<'a> {
             None
         };
 
-        // TODO: Parse [id], .class, suffix, attributes
-        // For now, just emit a simple element
+        // TODO: Parse suffix after name (?, !, *, +)
+
+        // Parse [id] if present
+        let id = if self.peek() == Some(b'[') {
+            self.advance(); // Skip [
+            let id_start = self.pos;
+            // Collect until ]
+            while let Some(b) = self.peek() {
+                if b == b']' {
+                    break;
+                }
+                self.advance();
+            }
+            let id_slice = &self.input[id_start..self.pos];
+            if self.peek() == Some(b']') {
+                self.advance(); // Skip ]
+            }
+            if id_slice.is_empty() {
+                None
+            } else {
+                Some(crate::Value::String(id_slice))
+            }
+        } else {
+            None
+        };
+
+        // TODO: Parse suffix after id
+
+        // Parse .class (multiple allowed)
+        let mut classes = vec![];
+        while self.peek() == Some(b'.') {
+            self.advance(); // Skip .
+            if let Some(class_name) = self.scan_label() {
+                classes.push(class_name);
+            }
+        }
+
+        // TODO: Parse suffix after classes
+        // TODO: Parse attributes
 
         self.emit(Event::ElementStart {
             name,
-            id: None,
-            classes: vec![],
+            id,
+            classes,
             suffix: None,
             span: Span::new(start_pos, self.pos),
         });

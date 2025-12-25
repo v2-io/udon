@@ -50,7 +50,10 @@ impl From<Event<'_>> for EventKind {
             Event::Comment { content, .. } => EventKind::Comment(content.to_vec()),
             Event::ElementStart { name, id, classes, .. } => EventKind::ElementStart {
                 name: name.map(|n| n.to_vec()),
-                id: id.and_then(|v| v.as_bytes().map(|b| b.to_vec())),
+                id: id.and_then(|v| match v {
+                    udon_core::Value::String(s) | udon_core::Value::QuotedString(s) => Some(s.to_vec()),
+                    _ => None,
+                }),
                 classes: classes.iter().map(|c| c.to_vec()).collect(),
             },
             Event::ElementEnd { .. } => EventKind::ElementEnd,
@@ -168,7 +171,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn element_with_id() {
         let events = parse(b"|div[main]\n");
         assert_eq!(
@@ -185,7 +187,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn element_with_classes() {
         let events = parse(b"|div.container.wide\n");
         assert_eq!(
@@ -202,7 +203,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn element_with_id_and_classes() {
         let events = parse(b"|div[main].container.wide\n");
         assert_eq!(
@@ -219,7 +219,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn anonymous_element_with_id() {
         let events = parse(b"|[only-id]\n");
         assert_eq!(
@@ -236,7 +235,6 @@ mod elements {
     }
 
     #[test]
-    #[ignore = "elements not yet implemented"]
     fn class_only_element() {
         let events = parse(b"|.mixin.another\n");
         assert_eq!(
