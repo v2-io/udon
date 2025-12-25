@@ -286,16 +286,88 @@ class RustGenerator
   def generate_state(func, state, state_enum, all_state_names)
     code = []
     code << "                State::#{state_enum} => {"
-    code << "                    match self.peek().unwrap() {"
 
-    # Generate cases
-    state[:cases].each do |case_obj|
-      code << generate_case(case_obj, func, state, all_state_names)
+    # Check for optimized fast-scan states
+    if state[:name] == 'text' || state[:name] == 'text_with_pipe'
+      code << generate_fast_text_state(state, all_state_names)
+    elsif state[:name] == 'comment'
+      code << generate_fast_comment_state(state, all_state_names)
+    else
+      code << "                    match self.peek().unwrap() {"
+      # Generate cases
+      state[:cases].each do |case_obj|
+        code << generate_case(case_obj, func, state, all_state_names)
+      end
+      code << "                    }"
     end
 
-    code << "                    }"
     code << "                }"
     code.join("\n")
+  end
+
+  # Optimized text state: fast scan to \n, |, or ;
+  def generate_fast_text_state(state, all_state_names)
+    <<~RUST.lines.map { |l| "                    #{l.rstrip}" }.join("\n")
+      // Fast scan: skip to next special character
+      let scan_start = self.pos;
+      match self.scan_to3(b'\\n', b'|', b';') {
+          Some(b'\\n') => {
+              if self.pos > self.mark_start {
+                  self.column += (self.pos - scan_start) as u32;
+                  self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+              }
+              self.advance();
+              state = State::SLineStart;
+          }
+          Some(b'|') => {
+              if self.pos > self.mark_start {
+                  self.column += (self.pos - scan_start) as u32;
+                  self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+              }
+              self.advance();
+              state = State::SAfterPipe;
+          }
+          Some(b';') => {
+              if self.pos > self.mark_start {
+                  self.column += (self.pos - scan_start) as u32;
+                  self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+              }
+              self.advance();
+              self.mark();
+              state = State::SComment;
+          }
+          None => {
+              // EOF
+              if self.pos > self.mark_start {
+                  self.column += (self.pos - scan_start) as u32;
+                  self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+              }
+              return;
+          }
+          _ => {}
+      }
+    RUST
+  end
+
+  # Optimized comment state: fast scan to \n
+  def generate_fast_comment_state(state, all_state_names)
+    <<~RUST.lines.map { |l| "                    #{l.rstrip}" }.join("\n")
+      // Fast scan: skip to newline
+      let scan_start = self.pos;
+      if self.scan_to(b'\\n').is_some() {
+          self.column += (self.pos - scan_start) as u32;
+          self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
+          self.advance();
+          state = State::SLineStart;
+      } else {
+          // EOF - emit remaining comment
+          self.column += (self.pos - scan_start) as u32;
+          if self.pos > self.mark_start {
+              self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
+          }
+          return;
+      }
+    RUST
   end
 
   def generate_case(case_obj, func, state, all_state_names)

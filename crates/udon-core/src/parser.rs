@@ -5,6 +5,7 @@
 
 use crate::event::Event;
 use crate::span::Span;
+use memchr::{memchr, memchr3};
 
 /// Stack entry for tracking element hierarchy.
 #[derive(Debug, Clone, Copy)]
@@ -40,6 +41,11 @@ impl<'a> Parser<'a> {
     /// Create a new parser for the given input.
     #[inline]
     pub fn new(input: &'a [u8]) -> Self {
+        // Pre-allocate based on input size heuristic:
+        // ~1 event per 50 bytes is a reasonable estimate
+        let event_capacity = (input.len() / 50).max(16);
+        let stack_capacity = 16; // Typical nesting depth
+
         Self {
             input,
             pos: 0,
@@ -47,8 +53,8 @@ impl<'a> Parser<'a> {
             column: 1,
             line_start: 0,
             mark_start: 0,
-            element_stack: Vec::new(),
-            events: Vec::new(),
+            element_stack: Vec::with_capacity(stack_capacity),
+            events: Vec::with_capacity(event_capacity),
         }
     }
 
@@ -163,6 +169,34 @@ impl<'a> Parser<'a> {
     #[inline]
     fn emit(&mut self, event: Event<'a>) {
         self.events.push(event);
+    }
+
+    // ========== Fast Scanning (memchr-accelerated) ==========
+
+    /// Scan forward until we hit one of the target bytes or EOF.
+    /// Updates position but NOT line/column (caller must handle).
+    /// Returns the byte found, or None if EOF.
+    #[inline]
+    fn scan_to(&mut self, needle: u8) -> Option<u8> {
+        if let Some(offset) = memchr(needle, &self.input[self.pos..]) {
+            self.pos += offset;
+            Some(needle)
+        } else {
+            self.pos = self.input.len();
+            None
+        }
+    }
+
+    /// Scan forward until we hit one of three target bytes or EOF.
+    #[inline]
+    fn scan_to3(&mut self, a: u8, b: u8, c: u8) -> Option<u8> {
+        if let Some(offset) = memchr3(a, b, c, &self.input[self.pos..]) {
+            self.pos += offset;
+            Some(self.input[self.pos])
+        } else {
+            self.pos = self.input.len();
+            None
+        }
     }
 
     // ========== Hand-written Helpers ==========
@@ -611,56 +645,100 @@ impl<'a> Parser<'a> {
                     }
                 }
                 State::STextWithPipe => {
-                    match self.peek().unwrap() {
-                        b'\n' => {
-                            self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    // Fast scan: skip to next special character
+                    let scan_start = self.pos;
+                    match self.scan_to3(b'\n', b'|', b';') {
+                        Some(b'\n') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
                             self.advance();
                             state = State::SLineStart;
                         }
-                        b';' => {
-                            self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
-                            self.advance();
-                            self.mark();
-                            state = State::SComment;
-                        }
-                        _ => {
-                            self.advance();
-                        }
-                    }
-                }
-                State::SText => {
-                    match self.peek().unwrap() {
-                        b'\n' => {
-                            self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
-                            self.advance();
-                            state = State::SLineStart;
-                        }
-                        b';' => {
-                            self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
-                            self.advance();
-                            self.mark();
-                            state = State::SComment;
-                        }
-                        b'|' => {
-                            self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                        Some(b'|') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
                             self.advance();
                             state = State::SAfterPipe;
                         }
-                        _ => {
+                        Some(b';') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
                             self.advance();
+                            self.mark();
+                            state = State::SComment;
                         }
+                        None => {
+                            // EOF
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
+                            return;
+                        }
+                        _ => {}
                     }
                 }
-                State::SComment => {
-                    match self.peek().unwrap() {
-                        b'\n' => {
-                            self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
+                State::SText => {
+                    // Fast scan: skip to next special character
+                    let scan_start = self.pos;
+                    match self.scan_to3(b'\n', b'|', b';') {
+                        Some(b'\n') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
                             self.advance();
                             state = State::SLineStart;
                         }
-                        _ => {
+                        Some(b'|') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
                             self.advance();
+                            state = State::SAfterPipe;
                         }
+                        Some(b';') => {
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
+                            self.advance();
+                            self.mark();
+                            state = State::SComment;
+                        }
+                        None => {
+                            // EOF
+                            if self.pos > self.mark_start {
+                                self.column += (self.pos - scan_start) as u32;
+                                self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            }
+                            return;
+                        }
+                        _ => {}
+                    }
+                }
+                State::SComment => {
+                    // Fast scan: skip to newline
+                    let scan_start = self.pos;
+                    if self.scan_to(b'\n').is_some() {
+                        self.column += (self.pos - scan_start) as u32;
+                        self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
+                        self.advance();
+                        state = State::SLineStart;
+                    } else {
+                        // EOF - emit remaining comment
+                        self.column += (self.pos - scan_start) as u32;
+                        if self.pos > self.mark_start {
+                            self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
+                        }
+                        return;
                     }
                 }
             }
