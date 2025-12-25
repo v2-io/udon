@@ -12,3 +12,7 @@ description = "UDON parser - Universal Document & Object Notation"
 [workspace.dependencies]
 unicode-xid = "0.2"
 memchr = "2.7"
+
+# Dev dependencies
+criterion = "0.5"
+pretty_assertions = "1.4"

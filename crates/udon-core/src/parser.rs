@@ -147,6 +147,8 @@ impl<'a> Parser<'a> {
                         }
                         b';' => {
                             self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
+                            self.advance();
+                            self.mark();
                             state = State::SComment;
                         }
                         _ => {

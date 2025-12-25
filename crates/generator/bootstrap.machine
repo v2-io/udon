@@ -20,5 +20,5 @@
   |state[:text]
     |eof                  | emit(Text)                  |return
     |c[\n]    |.done     | emit(Text)                  |>> :main.newline
-    |c[;]     |.comment  | emit(Text)                  |>> :comment
+    |c[;]     |.comment  | emit(Text) | -> | MARK      |>> :comment
     |default  |.collect  | ->                           |>>

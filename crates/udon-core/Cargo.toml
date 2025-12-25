@@ -10,6 +10,14 @@ description = "Core UDON parser - streaming event-based parser"
 unicode-xid = { workspace = true }
 memchr = { workspace = true }
 
+[dev-dependencies]
+criterion = { workspace = true }
+pretty_assertions = { workspace = true }
+
 [features]
 default = ["std"]
 std = []
+
+[[bench]]
+name = "parse"
+harness = false
