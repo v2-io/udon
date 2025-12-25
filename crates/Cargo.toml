@@ -1,0 +1,14 @@
+[workspace]
+members = ["udon-core"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Joseph Wecker"]
+description = "UDON parser - Universal Document & Object Notation"
+
+[workspace.dependencies]
+unicode-xid = "0.2"
+memchr = "2.7"
