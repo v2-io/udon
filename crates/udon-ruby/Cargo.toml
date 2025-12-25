@@ -1,0 +1,21 @@
+[package]
+name = "udon-ruby"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Native Ruby extension for the UDON parser"
+
+[lib]
+crate-type = ["cdylib"]
+name = "udon_ruby"
+
+[dependencies]
+udon-core = { path = "../udon-core" }
+
+[dependencies.magnus]
+version = "0.8"
+
+[dependencies.rb-sys]
+version = "0.9"
+features = ["stable-api-compiled-fallback"]
