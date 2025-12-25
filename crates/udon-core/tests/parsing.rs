@@ -471,7 +471,6 @@ mod indentation {
     use super::*;
 
     #[test]
-    #[ignore = "indentation not yet implemented"]
     fn child_by_indent() {
         let events = parse(b"|parent\n  |child\n");
         assert_eq!(
@@ -494,7 +493,6 @@ mod indentation {
     }
 
     #[test]
-    #[ignore = "indentation not yet implemented"]
     fn sibling_by_same_indent() {
         let events = parse(b"|parent\n  |child1\n  |child2\n");
         assert_eq!(
@@ -523,10 +521,9 @@ mod indentation {
     }
 
     #[test]
-    #[ignore = "indentation not yet implemented"]
     fn dedent_closes_multiple() {
         let events = parse(
-            b"|a\n  |b\n    |c\n|d\n", // d is sibling of a, closes both b and c
+            b"|a\n  |b\n    |c\n|d\n", // d is sibling of a, closes both c, b, and a
         );
         assert_eq!(
             events,
@@ -557,6 +554,76 @@ mod indentation {
                 EventKind::ElementEnd, // d
             ]
         );
+    }
+
+    #[test]
+    fn inline_then_indented_prose() {
+        // |first |second Some prose
+        //   This prose is child of |first, sibling of |second
+        let events = parse(b"|first |second Some prose\n  This prose\n");
+        assert_eq!(
+            events,
+            vec![
+                EventKind::ElementStart {
+                    name: Some(b"first".to_vec()),
+                    id: None,
+                    classes: vec![],
+                },
+                EventKind::ElementStart {
+                    name: Some(b"second".to_vec()),
+                    id: None,
+                    classes: vec![],
+                },
+                EventKind::Text(b"Some prose".to_vec()),
+                EventKind::ElementEnd, // second (closed by dedent to col 2)
+                EventKind::Text(b"This prose".to_vec()),
+                EventKind::ElementEnd, // first
+            ]
+        );
+    }
+
+    #[test]
+    fn inline_triple_with_dedent() {
+        // |first |second |third  Inner text
+        //                This prose is inside |second, after |third closed
+        //        This prose is inside |first, sibling of |second
+        // This is sibling of |first
+        let input = b"|first |second |third Inner\n               After third\n       Inside first\nSibling of first\n";
+        let events = parse(input);
+        assert_eq!(
+            events,
+            vec![
+                EventKind::ElementStart {
+                    name: Some(b"first".to_vec()),
+                    id: None,
+                    classes: vec![],
+                },
+                EventKind::ElementStart {
+                    name: Some(b"second".to_vec()),
+                    id: None,
+                    classes: vec![],
+                },
+                EventKind::ElementStart {
+                    name: Some(b"third".to_vec()),
+                    id: None,
+                    classes: vec![],
+                },
+                EventKind::Text(b"Inner".to_vec()),
+                EventKind::ElementEnd, // third (col 15 <= 15)
+                EventKind::Text(b"After third".to_vec()),
+                EventKind::ElementEnd, // second (col 7 <= 7)
+                EventKind::Text(b"Inside first".to_vec()),
+                EventKind::ElementEnd, // first (col 0 <= 0)
+                EventKind::Text(b"Sibling of first".to_vec()),
+            ]
+        );
+    }
+
+    #[test]
+    fn tab_causes_error() {
+        let events = parse(b"|div\n\t|child\n");
+        // Should have an error event for the tab
+        assert!(events.iter().any(|e| matches!(e, EventKind::Error(_))));
     }
 }
 

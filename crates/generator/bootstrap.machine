@@ -14,9 +14,25 @@
 |entry-point /line
 
 |function[line]
+  ; Entry point - handle first line
   |state[:main]
     |eof                                                |return
-    |c[\n]    |.newline  | ->                           |>> :main
+    |c[\n]    |.newline  | ->                           |>> :line_start
+    |c[']     |.escape   | ->                           |>> :escaped
+    |c[;]     |.comment  | -> | MARK                    |>> :comment
+    |c[<P>]   |.pipe     | MARK | ->                    |>> :after_pipe
+    |default  |.text     | MARK                         |>> :text
+
+  ; Start of a new line - handle indentation
+  |state[:line_start]
+    |eof                                                |return
+    |c[\n]    |.blank    | ->                           |>> :line_start
+    |default  |.indent   | CALL:handle_line_start       |>> :line_content
+
+  ; After handling indentation, dispatch on content
+  |state[:line_content]
+    |eof                                                |return
+    |c[\n]    |.newline  | ->                           |>> :line_start
     |c[']     |.escape   | ->                           |>> :escaped
     |c[;]     |.comment  | -> | MARK                    |>> :comment
     |c[<P>]   |.pipe     | MARK | ->                    |>> :after_pipe
@@ -45,14 +61,14 @@
   ; Text that started with | (not an element)
   |state[:text_with_pipe]
     |eof                  | emit(Text)                  |return
-    |c[\n]    |.done     | emit(Text) | ->              |>> :main
+    |c[\n]    |.done     | emit(Text) | ->              |>> :line_start
     |c[;]     |.comment  | emit(Text) | -> | MARK       |>> :comment
     |default  |.collect  | ->                           |>>
 
   ; Regular text
   |state[:text]
     |eof                  | emit(Text)                  |return
-    |c[\n]    |.done     | emit(Text) | ->              |>> :main
+    |c[\n]    |.done     | emit(Text) | ->              |>> :line_start
     |c[;]     |.comment  | emit(Text) | -> | MARK       |>> :comment
     |c[<P>]   |.pipe     | emit(Text) | ->              |>> :after_pipe
     |default  |.collect  | ->                           |>>
@@ -60,5 +76,5 @@
   ; Comment: ; to end of line
   |state[:comment]
     |eof                                                |return
-    |c[\n]    |.done     | emit(Comment) | ->           |>> :main
+    |c[\n]    |.done     | emit(Comment) | ->           |>> :line_start
     |default  |.collect  | ->                           |>>

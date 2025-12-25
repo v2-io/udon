@@ -6,6 +6,15 @@
 use crate::event::Event;
 use crate::span::Span;
 
+/// Stack entry for tracking element hierarchy.
+#[derive(Debug, Clone, Copy)]
+struct StackEntry {
+    /// Column where the element started (0-indexed)
+    base_column: u16,
+    /// Byte offset where element started (for ElementEnd span)
+    span_start: u32,
+}
+
 /// Parser state for streaming UDON parsing.
 ///
 /// The lifetime `'a` refers to the source buffer - all parsed content
@@ -19,6 +28,9 @@ pub struct Parser<'a> {
 
     /// Accumulator start position (for MARK/TERM pattern)
     mark_start: usize,
+
+    /// Element stack for indent/dedent tracking
+    element_stack: Vec<StackEntry>,
 
     /// Pending events to return
     events: Vec<Event<'a>>,
@@ -35,14 +47,70 @@ impl<'a> Parser<'a> {
             column: 1,
             line_start: 0,
             mark_start: 0,
+            element_stack: Vec::new(),
             events: Vec::new(),
+        }
+    }
+
+    /// Flush remaining elements at end of input.
+    fn flush_stack(&mut self) {
+        while let Some(entry) = self.element_stack.pop() {
+            self.emit(Event::ElementEnd {
+                span: Span::new(entry.span_start as usize, self.pos),
+            });
         }
     }
 
     /// Parse the entire input and return all events.
     pub fn parse(&mut self) -> Vec<Event<'a>> {
         self.parse_line();
+        self.flush_stack();
         std::mem::take(&mut self.events)
+    }
+
+    /// Handle start of a new line - count indent and pop stack as needed.
+    /// Returns the column where content starts, or None if we hit EOF/error.
+    fn handle_line_start(&mut self) -> Option<u16> {
+        // Count leading spaces (error on tab)
+        while let Some(b) = self.peek() {
+            match b {
+                b' ' => self.advance(),
+                b'\t' => {
+                    self.emit(Event::Error {
+                        message: "Tabs are not allowed in UDON indentation",
+                        span: Span::new(self.pos, self.pos + 1),
+                    });
+                    self.advance();
+                    // Continue parsing despite error
+                }
+                _ => break,
+            }
+        }
+
+        // Get the column where actual content starts
+        let content_column = (self.column - 1) as u16; // 0-indexed
+
+        // Pop stack while content_column <= top.base_column
+        while let Some(entry) = self.element_stack.last().copied() {
+            if content_column <= entry.base_column {
+                self.element_stack.pop();
+                self.emit(Event::ElementEnd {
+                    span: Span::new(entry.span_start as usize, self.pos),
+                });
+            } else {
+                break;
+            }
+        }
+
+        Some(content_column)
+    }
+
+    /// Push an element onto the stack with its column position.
+    fn push_element(&mut self, column: u16) {
+        self.element_stack.push(StackEntry {
+            base_column: column,
+            span_start: self.pos as u32,
+        });
     }
 
     /// Check if we've reached end of input.
@@ -214,6 +282,9 @@ impl<'a> Parser<'a> {
             return false;
         }
 
+        // Record the column where this element starts (the | was already consumed)
+        // So the element's column is current_column - 1 (where the | was)
+        let element_column = if self.column > 1 { (self.column - 2) as u16 } else { 0 };
         let start_pos = self.pos;
 
         // Parse element name (optional for anonymous elements)
@@ -265,6 +336,9 @@ impl<'a> Parser<'a> {
         }
 
         // TODO: Parse suffix after classes
+
+        // Push this element onto the stack for indent tracking
+        self.push_element(element_column);
 
         self.emit(Event::ElementStart {
             name,
@@ -357,13 +431,12 @@ impl<'a> Parser<'a> {
     }
 
     /// Parse a complete element line after seeing '|' and confirming it's an element.
-    /// This handles the element name, any content, and emits ElementEnd.
+    /// This handles the element name and any inline content.
+    /// ElementEnd is NOT emitted here - the indent/dedent stack handles it.
     fn parse_element_line(&mut self) {
         if self.parse_element() {
             self.parse_element_content();
-            self.emit(Event::ElementEnd {
-                span: Span::new(self.pos, self.pos),
-            });
+            // ElementEnd is handled by the stack when we see dedent or EOF
         }
     }
 
@@ -397,11 +470,7 @@ impl<'a> Parser<'a> {
                     self.advance(); // Skip |
                     if self.parse_element() {
                         self.parse_element_content();
-                        // Emit ElementEnd for this nested element
-                        self.emit(Event::ElementEnd {
-                            span: Span::new(self.pos, self.pos),
-                        });
-                        // After nested element returns, continue collecting
+                        // ElementEnd is handled by the stack (no emit here)
                         self.mark();
                     } else {
                         // Not an element, continue as text
@@ -427,7 +496,7 @@ impl<'a> Parser<'a> {
 
     fn parse_line(&mut self) {
         #[derive(Clone, Copy)]
-        enum State { SMain, SEscaped, SAfterPipe, STextWithPipe, SText, SComment }
+        enum State { SMain, SLineStart, SLineContent, SEscaped, SAfterPipe, STextWithPipe, SText, SComment }
 
         let mut state = State::SMain;
         loop {
@@ -440,7 +509,45 @@ impl<'a> Parser<'a> {
                     match self.peek().unwrap() {
                         b'\n' => {
                             self.advance();
-                            state = State::SMain;
+                            state = State::SLineStart;
+                        }
+                        b'\'' => {
+                            self.advance();
+                            state = State::SEscaped;
+                        }
+                        b';' => {
+                            self.advance();
+                            self.mark();
+                            state = State::SComment;
+                        }
+                        b'|' => {
+                            self.mark();
+                            self.advance();
+                            state = State::SAfterPipe;
+                        }
+                        _ => {
+                            self.mark();
+                            state = State::SText;
+                        }
+                    }
+                }
+                State::SLineStart => {
+                    match self.peek().unwrap() {
+                        b'\n' => {
+                            self.advance();
+                            state = State::SLineStart;
+                        }
+                        _ => {
+                            self.handle_line_start();
+                            state = State::SLineContent;
+                        }
+                    }
+                }
+                State::SLineContent => {
+                    match self.peek().unwrap() {
+                        b'\n' => {
+                            self.advance();
+                            state = State::SLineStart;
                         }
                         b'\'' => {
                             self.advance();
@@ -508,7 +615,7 @@ impl<'a> Parser<'a> {
                         b'\n' => {
                             self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
                             self.advance();
-                            state = State::SMain;
+                            state = State::SLineStart;
                         }
                         b';' => {
                             self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
@@ -526,7 +633,7 @@ impl<'a> Parser<'a> {
                         b'\n' => {
                             self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
                             self.advance();
-                            state = State::SMain;
+                            state = State::SLineStart;
                         }
                         b';' => {
                             self.emit(Event::Text { content: self.term(), span: self.span_from_mark() });
@@ -549,7 +656,7 @@ impl<'a> Parser<'a> {
                         b'\n' => {
                             self.emit(Event::Comment { content: self.term(), span: self.span_from_mark() });
                             self.advance();
-                            state = State::SMain;
+                            state = State::SLineStart;
                         }
                         _ => {
                             self.advance();
