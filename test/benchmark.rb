@@ -3,6 +3,9 @@
 
 # Performance comparison: UDON vs YAML vs XML
 #
+# This benchmark includes realistic "usage" - traversing the entire parsed
+# structure to ensure we're measuring apples-to-apples.
+#
 # Run: ruby test/benchmark.rb
 
 require_relative '../lib/udon'
@@ -84,6 +87,123 @@ def generate_xml_recursive(depth, breadth, text_size, level)
   lines.join("\n")
 end
 
+# ========== AST Traversal Functions ==========
+# These ensure we're measuring realistic usage, not just parsing
+
+# Traverse UDON events and count nodes/text bytes
+def traverse_udon_events(events)
+  node_count = 0
+  text_bytes = 0
+
+  events.each do |event|
+    case event[:type]
+    when :element_start, :embedded_start
+      node_count += 1
+      # Access all fields to simulate real usage
+      _ = event[:name]
+      _ = event[:id]
+      _ = event[:classes]&.each { |c| c.length }
+    when :attribute
+      _ = event[:key]
+      _ = event[:value]
+    when :text, :comment, :raw_content
+      content = event[:content]
+      text_bytes += content.bytesize if content
+    end
+    # Access span on every event
+    _ = event[:span][:start]
+    _ = event[:span][:end]
+  end
+
+  [node_count, text_bytes]
+end
+
+# Traverse YAML data structure recursively
+def traverse_yaml(data)
+  node_count = 0
+  text_bytes = 0
+
+  case data
+  when Array
+    data.each do |item|
+      nc, tb = traverse_yaml(item)
+      node_count += nc
+      text_bytes += tb
+    end
+  when Hash
+    node_count += 1
+    data.each do |key, value|
+      text_bytes += key.to_s.bytesize
+      nc, tb = traverse_yaml(value)
+      node_count += nc
+      text_bytes += tb
+    end
+  when String
+    text_bytes += data.bytesize
+  end
+
+  [node_count, text_bytes]
+end
+
+# Traverse Nokogiri DOM
+def traverse_nokogiri(node)
+  node_count = 0
+  text_bytes = 0
+
+  case node
+  when Nokogiri::XML::Element
+    node_count += 1
+    # Access attributes
+    node.attributes.each do |name, attr|
+      _ = name
+      _ = attr.value
+    end
+    # Traverse children
+    node.children.each do |child|
+      nc, tb = traverse_nokogiri(child)
+      node_count += nc
+      text_bytes += tb
+    end
+  when Nokogiri::XML::Text
+    text_bytes += node.content.bytesize
+  when Nokogiri::XML::Document
+    node.children.each do |child|
+      nc, tb = traverse_nokogiri(child)
+      node_count += nc
+      text_bytes += tb
+    end
+  end
+
+  [node_count, text_bytes]
+end
+
+# Traverse REXML DOM
+def traverse_rexml(node)
+  node_count = 0
+  text_bytes = 0
+
+  case node
+  when REXML::Element
+    node_count += 1
+    node.attributes.each { |name, value| _ = name; _ = value }
+    node.children.each do |child|
+      nc, tb = traverse_rexml(child)
+      node_count += nc
+      text_bytes += tb
+    end
+  when REXML::Text
+    text_bytes += node.value.bytesize
+  when REXML::Document
+    node.children.each do |child|
+      nc, tb = traverse_rexml(child)
+      node_count += nc
+      text_bytes += tb
+    end
+  end
+
+  [node_count, text_bytes]
+end
+
 # Benchmark function
 def run_benchmark(name, iterations, &block)
   # Warmup
@@ -131,8 +251,10 @@ puts "=" * 70
 puts "UDON Parser Performance Benchmark"
 puts "=" * 70
 puts
+puts "All benchmarks include full AST traversal to measure realistic usage."
+puts
 
-# Test configurations: [depth, breadth, text_size, iterations]
+# Test configurations
 configs = [
   { name: "Small",  depth: 2, breadth: 3,  text: 20,  iters: 100 },
   { name: "Medium", depth: 3, breadth: 5,  text: 50,  iters: 50 },
@@ -157,30 +279,26 @@ configs.each do |config|
 
   results = []
 
-  # Benchmark UDON (batch JSON - recommended)
-  udon_batch_result = run_benchmark("UDON (batch)", config[:iters]) do
-    Udon.parse_fast(udon_doc)
-  end
-  udon_batch_result[:bytes] = udon_doc.bytesize
-  results << udon_batch_result
-
-  # Benchmark UDON (streaming - for comparison)
-  udon_result = run_benchmark("UDON (streaming)", config[:iters]) do
-    Udon.parse(udon_doc)
+  # Benchmark UDON (native extension)
+  udon_result = run_benchmark("UDON (native)", config[:iters]) do
+    events = Udon.parse(udon_doc)
+    traverse_udon_events(events)
   end
   udon_result[:bytes] = udon_doc.bytesize
   results << udon_result
 
   # Benchmark YAML (Psych - C extension)
   yaml_result = run_benchmark("YAML (Psych)", config[:iters]) do
-    YAML.safe_load(yaml_doc)
+    data = YAML.safe_load(yaml_doc)
+    traverse_yaml(data)
   end
   yaml_result[:bytes] = yaml_doc.bytesize
   results << yaml_result
 
   # Benchmark XML (REXML - pure Ruby)
   rexml_result = run_benchmark("XML (REXML)", [config[:iters], 10].min) do
-    REXML::Document.new(xml_doc)
+    doc = REXML::Document.new(xml_doc)
+    traverse_rexml(doc)
   end
   rexml_result[:bytes] = xml_doc.bytesize
   results << rexml_result
@@ -188,14 +306,15 @@ configs.each do |config|
   # Benchmark XML (Nokogiri - C extension) if available
   if HAS_NOKOGIRI
     noko_result = run_benchmark("XML (Nokogiri)", config[:iters]) do
-      Nokogiri::XML(xml_doc)
+      doc = Nokogiri::XML(xml_doc)
+      traverse_nokogiri(doc)
     end
     noko_result[:bytes] = xml_doc.bytesize
     results << noko_result
   end
 
   # Print results
-  puts "Results (#{config[:iters]} iterations):"
+  puts "Results (#{config[:iters]} iterations, parse + full traversal):"
   puts
 
   # Find fastest for comparison
@@ -223,12 +342,16 @@ if File.exist?(comprehensive_path)
   puts "File size: #{content.bytesize} bytes"
   puts
 
-  result = run_benchmark("UDON parse", 100) do
-    Udon.parse(content)
+  result = run_benchmark("UDON parse + traverse", 100) do
+    events = Udon.parse(content)
+    traverse_udon_events(events)
   end
 
   events = Udon.parse(content)
+  node_count, text_bytes = traverse_udon_events(events)
+
   puts "Events: #{events.size}"
+  puts "Nodes: #{node_count}, Text bytes: #{text_bytes}"
   puts "Time: #{format_time(result[:avg])} avg (#{format_time(result[:min])} min, #{format_time(result[:max])} max)"
   puts "Rate: #{format_rate(content.bytesize, result[:avg])}"
   puts
@@ -238,6 +361,6 @@ puts "=" * 70
 puts "Summary"
 puts "=" * 70
 puts
-puts "UDON parsing via Rust FFI is competitive with production parsers."
-puts "The event-based design enables streaming and low memory usage."
+puts "All benchmarks include parsing + full AST/event traversal."
+puts "This measures realistic usage, not just parsing speed."
 puts
