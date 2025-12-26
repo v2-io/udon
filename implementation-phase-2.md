@@ -1,5 +1,81 @@
 # UDON Implementation Phase 2: Toward the Ideal
 
+## Critical Architecture Insight (Added After Multiple Agent Sessions)
+
+**The streaming event model is the foundation, not a feature.**
+
+Previous agents repeatedly fell into a trap: treating genmachine as a state machine that accumulates data, then emits bundled events. This is backwards. The correct mental model:
+
+### What genmachine Actually Is
+
+Genmachine is a **recursive descent parser expressed in tabular form**. Each "function" is a grammar rule. States within the function handle cases. Function calls (`/element(...)`) are recursion. It's the same parsing approach used in production at massive scale (e.g., RTMP ingest at Twitch).
+
+**The state machine emits events as it parses. There is no accumulation.**
+
+### The Helper Function Anti-Pattern
+
+When agents don't think naturally in recursive-descent-table terms, they instinctively create "helper functions" like:
+- `parse_element_identity()` - accumulates name, id, classes, suffix, then emits one big ElementStart
+- `parse_indented_attribute()` - accumulates key/value, then emits
+
+This defeats the entire architecture:
+1. It moves logic outside the state machine (harder to maintain, verify, optimize)
+2. It accumulates state that should be streamed
+3. It prevents true streaming (can't emit until accumulation is done)
+4. It makes the ring buffer architecture impossible
+
+**Every piece of UDON syntax can be expressed in the state machine DSL.** If you think you need a helper function, you haven't understood the grammar or the DSL well enough yet.
+
+### Grammar Serves Streaming, Not Vice Versa
+
+This approach evolved from earlier work with PEG grammars for streaming protocols (like RTMP). PEGs are powerful at lookahead, but that lookahead has a cost. The realization: with careful grammar design, you can eliminate the need for lookahead entirely and gain orders of magnitude in speed.
+
+**If parsing some construct seems to require accumulation or lookahead, that's a red flag that the grammar needs adjustment, not the parser.**
+
+When you encounter:
+- "I need to collect N tokens before I know what to emit"
+- "The meaning of X depends on seeing Y later"
+- "I can't emit until the closing delimiter because..."
+
+STOP. Bring it up for discussion. The grammar may need tweaking. UDON's syntax was designed to flow through a streaming parser—if it's not flowing, either the grammar has a flaw or we're misunderstanding something.
+
+### The Correct Event Model (SAX-style)
+
+For array values like `[a b c]`:
+```
+ArrayStart
+StringValue("a")
+StringValue("b")
+StringValue("c")
+ArrayEnd
+```
+
+For element identity like `|foo[myid].bar.baz?`:
+```
+ElementStart { name: "foo" }
+Attribute { key: "$id", value: ... }  ; from [myid]
+Attribute { key: "$class", value: "bar" }
+Attribute { key: "$class", value: "baz" }
+Attribute { key: "?", value: true }
+```
+
+Each syntactic piece emits immediately. No accumulation. The consumer (tree builder or user code) handles grouping.
+
+### Correct Priority Order
+
+The document below has the phases in the wrong order. The correct order is:
+
+1. **Fix genmachine and event model** - streaming events as the primitive
+2. **Express full grammar in DSL** - no helper functions
+3. **Add ring buffer infrastructure** - true streaming
+4. **Test streaming API** - Ruby gem consuming events
+5. **Build tree layer ON TOP of events** - tree builder is an event consumer
+6. **Lazy Ruby projection** - only then
+
+Building a tree first and then "streaming" from it is backwards. You can't stream from something you've already accumulated.
+
+---
+
 ## Current State (Honest Assessment)
 
 We have the **worst of three worlds**:
@@ -590,9 +666,49 @@ For unknown element names, attribute keys, directive names—suggest similar val
 
 ## Part 4: Implementation Roadmap
 
-### Phase 2.1: Core Parser Completion (1-2 weeks)
+### ⚠️ CORRECTED ORDER (See "Critical Architecture Insight" above)
 
-**Goal:** Implement ALL features from SPEC.md. Cross-referenced with spec sections.
+The phases below were written in the wrong order. The streaming event model must come FIRST because it's the foundation. Here's the corrected sequence:
+
+### Phase 2.0: Fix Event Model and Parser Generator (FIRST)
+
+**Goal:** Establish streaming events as the primitive. Remove accumulation anti-patterns.
+
+1. **Redesign Event enum for SAX-style streaming:**
+   - `ElementStart { name }` — just the name, span
+   - `ElementEnd`
+   - `AttributeKey { key }` — followed by value event(s)
+   - `ArrayStart` / `ArrayEnd`
+   - Scalar values: `StringValue`, `IntValue`, `BoolValue`, etc.
+   - No `Vec<>` or accumulated fields in any event
+
+2. **Remove helper functions from parser template:**
+   - Delete `parse_element_identity()` — express in DSL
+   - Delete `parse_indented_attribute()` — express in DSL
+   - Delete `parse_list_value()` — express in DSL
+   - Keep only truly generic utilities (unicode XID checking)
+
+3. **Express element identity in genmachine DSL:**
+   - See `|` → enter element function
+   - See letter → scan label, emit `ElementStart { name }`
+   - See `[` → enter id-value parsing, emit `Attribute { key: "$id" }` + value events
+   - See `.` → scan label, emit `Attribute { key: "$class", value }`
+   - See `?!*+` → emit `Attribute { key: "<char>", value: true }`
+   - Each piece emits immediately, no accumulation
+
+4. **Express value parsing in genmachine DSL:**
+   - `[` → emit `ArrayStart`, enter array-value state
+   - Scan values, emit each immediately
+   - `]` → emit `ArrayEnd`, return
+   - Strings, integers, etc. all emit immediately
+
+5. **Update tests to expect streaming event sequence**
+
+**Deliverable:** Parser emits streaming events. No accumulation in parser. All logic in DSL.
+
+### Phase 2.1: Core Parser Completion (AFTER 2.0)
+
+**Goal:** Implement ALL features from SPEC.md using the corrected streaming architecture.
 
 **Note:** `udon.machine` is from the old C implementation and may not match current SPEC.md. Use SPEC.md as the authoritative source, not the .machine file.
 
@@ -779,7 +895,7 @@ This validates our FFI layer works across multiple managed runtimes.
 
 These are deferred to Phase 3:
 
-1. **Generator/genmachine polish** — Works well enough for now
+1. ~~**Generator/genmachine polish** — Works well enough for now~~ **CORRECTION:** Genmachine fixes ARE Phase 2.0. The generator must produce a proper streaming parser. This is foundational, not polish.
 2. **Markdown parsing** — Needs spec decisions first
 3. **Liquid directives** — Needs design work
 4. **Dialects** — Needs spec work
@@ -834,7 +950,7 @@ Benchmarks must use **semantically equivalent documents** and measure **time to 
 1. **Should streaming and tree share the same core parser?**
    - Option A: Single parser, two consumers (event sink vs tree builder)
    - Option B: Separate optimized paths
-   - Leaning: Option A for maintainability
+   - **RESOLVED: Option A.** The streaming parser is the foundation. The tree builder is just an event consumer. This is not a choice—it's the architecture. You cannot build a tree first and then "stream" from it.
 
 2. **Should Ruby tree nodes cache FFI results?**
    - Option A: Always call FFI (simpler, less memory)
