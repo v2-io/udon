@@ -434,11 +434,24 @@ All dynamic inline forms use `!{...}` with immediate disambiguation:
 |--------|------|-------------|
 | `!{{expr}}` | Interpolation | Double-brace for value interpolation |
 | `!{raw:kind ...}` | Raw directive | Content is opaque, brace-counted |
-| `!{directive ...}` | Directive | Content is parsed (can contain `\|{...}`, `;{...}`) |
+| `!{directive ...}` | Directive | Content is parsed as UDON (can contain `\|{...}`, `;{...}`) |
 
 The second character after `!{` determines the form:
 - `{` → interpolation (`!{{...}}`)
-- Otherwise → directive name follows
+- `raw:` prefix → raw directive (brace-counted, no UDON parsing)
+- Otherwise → directive with full UDON parsing inside
+
+**Parser implementation note:** The parser uses a `raw` flag to distinguish raw
+vs non-raw directives. For `!{raw:json ...}`, the directive name is `json` with
+`raw=true`. For `!{include ...}`, the name is `include` with `raw=false`.
+
+Non-raw inline directives support nested UDON:
+```
+!{include |{em emphasized} content}    ; Nested elements parsed
+```
+
+*Note: This may change in future to prefer filter-based includes like
+`!{{'file.un' | include}}` instead.*
 
 ### Interpolation
 
@@ -453,6 +466,9 @@ Double-brace syntax for interpolating values:
 
 The double-brace `!{{...}}` is familiar to Liquid/Jinja/Handlebars users and provides immediate parser disambiguation—no lookahead required.
 
+**Empty interpolation** (`!{{}}`) is valid—the parser emits an Interpolation
+event with empty expression content. The host decides how to handle it.
+
 ### Filters
 
 ```
@@ -463,6 +479,39 @@ The double-brace `!{{...}}` is familiar to Liquid/Jinja/Handlebars users and pro
 !{{items | first}}
 !{{price | currency "USD"}}
 ```
+
+### Interpolation in Typed Contexts
+
+Interpolation can appear in attribute values (including element IDs), where
+values normally have specific types (integer, float, string, etc.).
+
+#### Wholly Interpolated Values
+
+When an attribute value is entirely an interpolation, the parser emits it as
+an interpolation event. The resulting type is **unparsed**—the host must
+evaluate the expression to determine the actual type:
+
+```
+|div[!{{dynamic_id}}]           ; ID is unparsed interpolation
+|link :href !{{computed_url}}   ; href is unparsed interpolation
+```
+
+#### Concatenated Values (Multi-Part)
+
+When interpolation is mixed with literal content, the value becomes a
+**multi-part string**. All non-interpolation parts are treated as string
+segments, even if they started parsing as numbers:
+
+```
+|div[prefix_!{{id}}_suffix]     ; String "prefix_" + interp + string "_suffix"
+|link :path !{{base}}/.config   ; Interp + string "/.config"
+|item[283!{{more}}]             ; String "283" + interp (not integer!)
+```
+
+**Parser implementation note:** Multi-part values emit as a sequence:
+`ArrayStart`, then alternating `StringValue`/`Interpolation` events, then
+`ArrayEnd`. If parsing began as a numeric type and hits interpolation, emit
+accumulated content as `StringValue` instead.
 
 ### Expression Grammar
 
@@ -565,6 +614,15 @@ The `empty` keyword tests if a defined value is empty. The `blank` keyword tests
 
 !include partials/header
 ```
+
+**Parser implementation note:** Block directives use the same `raw` flag as
+inline directives. The parser does not enumerate specific directive names—any
+name is accepted. The only distinction is `raw:` prefix:
+
+- `!raw:lang` — Raw block: content is prose-like (no UDON parsing), collected
+  until dedent. The language tag (`lang`) is the directive name with `raw=true`.
+- `!if`, `!for`, etc. — Normal block: rest of line is the "statement", then
+  normal UDON children content until dedent. Name is `if`/`for` with `raw=false`.
 
 ### Key Insight: Indentation Eliminates Closing Tags
 
