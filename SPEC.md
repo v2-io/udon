@@ -210,6 +210,40 @@ Embedded form is also useful for complex inline structures:
 
 Here `|{em official}` is nested inside `|{a ...}`.
 
+### Bracket Mode Rules
+
+**Once in bracket mode, stay in bracket mode.** Inside `|{...}`, you cannot use inline element syntax (`|element`). All nested elements must also use embedded form:
+
+```
+; Correct — nested embedded elements
+|ul |{li |{a Home} | }|{li |{a About}}
+
+; INVALID — mixing inline and embedded
+|ul |{li |a Home}     ; ✗ can't use |a inside |{...}
+```
+
+Embedded elements can span multiple lines—indentation inside is ignored, and the closing `}` ends the element:
+
+```
+|p This has |{a :href /docs
+   a link that spans
+   multiple lines} and continues.
+```
+
+### Unified Inline Syntax
+
+All prefix characters support a bracket-delimited inline form:
+
+| Syntax | Description |
+|--------|-------------|
+| `\|{element ...}` | Embedded element |
+| `!{{expr}}` | Interpolation (double-brace) |
+| `!{directive ...}` | Inline directive |
+| `;{comment}` | Inline comment |
+| `'\|{...}` or `\\|{...}` | Escaped (literal text) |
+
+This symmetry enables rich inline content while keeping the parser fast—the character immediately after the prefix determines the parse mode with no lookahead.
+
 ---
 
 ## Prose Content
@@ -272,7 +306,15 @@ Semicolon starts a comment (Rebol/Lisp style):
 |element :attr value  ; Inline comment after content
 ```
 
-Comments are stripped by the parser.
+For inline comments within prose, use `;{...}`:
+
+```
+|p This has ;{TODO: fix wording} some text that continues.
+```
+
+The inline comment uses brace-counting to find its end—nested `{}` pairs are allowed as long as they're balanced. For comments with unbalanced braces, use line-comment form instead.
+
+**Parser behavior:** Comments are emitted as events, not discarded. The consuming layer decides whether to keep or strip them. This enables use cases like documentation extraction, TODO tracking, or comment-aware transformations.
 
 ---
 
@@ -317,35 +359,28 @@ The content follows normal indentation rules:
 - Not parsed as UDON (no `|`, `:`, `!`, `;` interpretation)
 - Dedented on output relative to the directive's indent level
 
-Inline raw content uses LaTeX-style syntax—the directive name precedes the braces:
+### Inline Raw Content
+
+For inline raw content, use `!{raw:kind ...}`:
 
 ```
-|p The response was !raw:json{{"status": "ok", "count": 42}} as expected.
+|p The response was !{raw:json {"status": "ok", "count": 42}} as expected.
 ```
 
-**Inline raw requires balanced curly braces.** The parser finds the closing `}` by counting brace depth—no escape mechanism exists. For content with unbalanced braces, use block form:
+**Inline raw uses brace-counting.** The parser finds the closing `}` by counting brace depth. Nested `{}` pairs are fine as long as they're balanced:
 
 ```
 ; Works — braces are balanced (even nested)
-!raw:json{{"key": "value"}}
-!raw:regex{[a-z]{3,5}}
+!{raw:json {"key": "value"}}
+!{raw:regex [a-z]{3,5}}
 
 ; Fails — unbalanced brace
-!raw:text{missing close {here}
+!{raw:text missing close {}
 
-; Solution — block form handles anything
+; Solution — use block form for unbalanced braces
 !raw:text
   missing close {here
 ```
-
-This distinguishes inline directives from Liquid interpolation:
-
-| Syntax | What it is | Example |
-|--------|------------|---------|
-| `!{expr}` | Liquid interpolation | `Hello, !{user.name}!` |
-| `!name{content}` | Inline directive | `!raw:sql{SELECT * FROM users}` |
-
-Inline directives are **indentation-insensitive**—scope is determined by brace-matching. For indentation-based structure, use block form.
 
 Note: Raw content cannot be an attribute value directly—attributes are typed scalars.
 
@@ -391,24 +426,42 @@ Use this **only** when:
 
 The `!` prefix enables evaluation and control flow. The specific dialect depends on the host environment, with Liquid-style primitives as a common baseline.
 
+### Inline Forms
+
+All dynamic inline forms use `!{...}` with immediate disambiguation:
+
+| Syntax | Form | Description |
+|--------|------|-------------|
+| `!{{expr}}` | Interpolation | Double-brace for value interpolation |
+| `!{raw:kind ...}` | Raw directive | Content is opaque, brace-counted |
+| `!{directive ...}` | Directive | Content is parsed (can contain `\|{...}`, `;{...}`) |
+
+The second character after `!{` determines the form:
+- `{` → interpolation (`!{{...}}`)
+- Otherwise → directive name follows
+
 ### Interpolation
+
+Double-brace syntax for interpolating values:
 
 ```
 |greeting
-  Hello, !{user.name}!
+  Hello, !{{user.name}}!
 
-|link :href !{base_url}/users/!{user.id}
+|link :href !{{base_url}}/users/!{{user.id}}
 ```
+
+The double-brace `!{{...}}` is familiar to Liquid/Jinja/Handlebars users and provides immediate parser disambiguation—no lookahead required.
 
 ### Filters
 
 ```
-!{value | filter1 | filter2 arg}
+!{{value | filter1 | filter2 arg}}
 
-!{name | capitalize}
-!{date | format "%Y-%m-%d"}
-!{items | first}
-!{price | currency "USD"}
+!{{name | capitalize}}
+!{{date | format "%Y-%m-%d"}}
+!{{items | first}}
+!{{price | currency "USD"}}
 ```
 
 ### Expression Grammar
@@ -434,7 +487,7 @@ UDON adopts Liquid's intentionally simple expression grammar. This simplicity is
 These constraints are intentional, matching Liquid's design:
 
 - **No parentheses** — Cannot group or override precedence
-- **No arithmetic** — Use filters: `!{a | plus: b}` not `!{a + b}`
+- **No arithmetic** — Use filters: `!{{a | plus: b}}` not `!{{a + b}}`
 - **No ternary operator** — Use `!if`/`!else` blocks
 - **No negation operator** — Use `!if value == false` or `!unless`
 
@@ -504,8 +557,8 @@ The `empty` keyword tests if a defined value is empty. The `blank` keyword tests
 
 !for item in collection
   |card
-    :title !{item.name}
-    !{item.description}
+    :title !{{item.name}}
+    !{{item.description}}
 
 !let local_var = expression
   Content using local_var
@@ -542,9 +595,9 @@ Syntax for inline control flow (e.g., `!if{cond}{then}{else}`) is under investig
 
 The `!` prefix is intentionally extensible. Hosts may provide:
 
-- **Elixir**: `!{@assigns.user}`, EEx-style
-- **Python**: `!{context['user']}`, Jinja-style
-- **JavaScript**: `!{props.user}`, JSX-style
+- **Elixir**: `!{{@assigns.user}}`, EEx-style
+- **Python**: `!{{context['user']}}`, Jinja-style
+- **JavaScript**: `!{{props.user}}`, JSX-style
 
 The parser preserves `!` expressions for host evaluation.
 
@@ -696,16 +749,20 @@ quoted_string = '"' { CHAR }* '"' | "'" { CHAR }* "'" ;
 bare_string   = { CHAR - (SPACE ":") - (SPACE "|") - NEWLINE }+ ;
 block_value   = NEWLINE INDENT { line }+ DEDENT ;
 
-; Dynamics
-dynamic           = "!" ( interpolation | inline_directive | block_directive ) ;
-interpolation     = "{" expression [ "|" filter { "|" filter }* ] "}" ;
-inline_directive  = directive_name "{" directive_body "}" ;
+; Dynamics — all inline forms use !{...}
+dynamic           = "!" ( interpolation | inline_dynamic | block_directive ) ;
+interpolation     = "{{" expression [ "|" filter { "|" filter }* ] "}}" ;  ; Double-brace
+inline_dynamic    = "{" directive_name directive_body "}" ;
 block_directive   = directive_name { CHAR }* ;  ; Body determined by indentation
 directive_name    = LABEL [ ":" LABEL ] ;  ; Optional namespace (e.g., raw:json)
 directive_body    = { CHAR - "{" - "}" | "{" directive_body "}" }* ;  ; Balanced braces
 
+; Comments
+comment           = ";" ( inline_comment | line_comment ) ;
+line_comment      = { CHAR }* ;
+inline_comment    = "{" { CHAR - "{" - "}" | "{" inline_comment "}" }* "}" ;  ; Brace-counted
+
 ; Other
-comment       = ";" { CHAR }* ;
 prose         = { CHAR }+ ;
 literal       = "'" CHAR ;
 freeform      = "```" { CHAR }* NEWLINE { any_line }* "```" ;
@@ -860,8 +917,8 @@ For additional authoring guidance, see [examples/practices-gotchas.udon](example
   :pool 10
 
   |credentials
-    :username !{env.DB_USER}
-    :password !{env.DB_PASS}
+    :username !{{env.DB_USER}}
+    :password !{{env.DB_PASS}}
 
 |cache.redis
   :host cache.example.com
@@ -904,22 +961,22 @@ For additional authoring guidance, see [examples/practices-gotchas.udon](example
 ; Page layout with dynamics
 !include partials/doctype
 
-|html :lang !{locale}
+|html :lang !{{locale}}
   |head
-    |title !{page.title} — !{site.name}
+    |title !{{page.title}} — !{{site.name}}
     !for stylesheet in stylesheets
-      |link :rel stylesheet :href !{stylesheet}
+      |link :rel stylesheet :href !{{stylesheet}}
 
   |body
     !include partials/nav
 
     |main
       !if user
-        Welcome back, !{user.name | capitalize}!
+        Welcome back, !{{user.name | capitalize}}!
       !else
         |a :href /login Please sign in
 
-      !{content}
+      !{{content}}
 
     !include partials/footer
 ```

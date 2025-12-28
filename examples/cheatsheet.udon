@@ -5,9 +5,10 @@
 |element[id].class :attr value |child Child's content
 |element
   |child
-  Prose with |{em inline elements} and !{interpolation}.
+  Prose with |{em inline elements} and !{{interpolation}}.
 
 |p With |{strong bold}, |{a :href /x link}, and |{em |{strong nested}}.
+|p Inline comment: text ;{hidden or emitted} continues.
 ; Like LaTeX: each |{ needs exactly one } — nesting doesn't double them
 |a |b |c                          ; a > b > c
 |a :x 1 |b :y 2 |c Text           ; nesting with attrs
@@ -30,17 +31,17 @@
 |db :[base] :override val         ; :[id] merges attributes
 
 !if user
-  Welcome, !{user.name | capitalize}!
+  Welcome, !{{user.name | capitalize}}!
   !if user.admin |admin-panel
   !elif user.mod |mod-panel
   !else |user-panel
 !else |login
 
 !for item in items
-  |item :id !{item.id} !{item.name}
+  |item :id !{{item.id}} !{{item.name}}
 
 !let x = items | first
-  |featured !{x.title}
+  |featured !{{x.title}}
 
 !raw:ruby
   # not parsed as UDON

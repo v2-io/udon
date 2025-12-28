@@ -7,12 +7,13 @@
 |element[id].class :attr value |child Child content here
 |element
   |child
-  Prose content with |{em inline elements} and !{interpolation}.
+  Prose content with |{em inline elements} and !{{interpolation}}.
 
 ; Inline elements embed structure in prose:
 |p Prose with |{em emphasis}, |{strong bold}, and |{a :href /doc links}.
 |p Nested: |{strong This is |{em very} important}.
 |p With attrs: |{a :href /x :title "Tooltip" click here}.
+|p Inline comments: text ;{comment stripped or passed through} more text.
 
 ; Rightward nesting vs inline siblings:
 |a |b |c                        ; a > b > c (nesting)
@@ -73,11 +74,11 @@
 
 ; === DYNAMICS ===
 
-|page :title !{page.title}
+|page :title !{{page.title}}
 
   ; Conditionals:
   !if user
-    Welcome, !{user.name | capitalize}!
+    Welcome, !{{user.name | capitalize}}!
     !if user.admin
       |admin-panel
     !elif user.moderator
@@ -89,13 +90,13 @@
 
   ; Iteration:
   !for post in posts
-    |article :id post-!{post.id}
-      |h2 !{post.title}
-      |p !{post.excerpt | truncate 200}
+    |article :id post-!{{post.id}}
+      |h2 !{{post.title}}
+      |p !{{post.excerpt | truncate 200}}
 
   ; Local binding:
   !let featured = posts | where "featured" true | first
-    |featured !{featured.title}
+    |featured !{{featured.title}}
 
 ; Raw code blocks (not parsed as UDON):
 !raw:elixir

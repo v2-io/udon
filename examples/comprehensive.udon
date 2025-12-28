@@ -25,7 +25,7 @@
 |config[app-config]
   :name        "My Application"
   :debug       false
-  :environment !{env.APP_ENV}
+  :environment !{{env.APP_ENV}}
 
   ; Database with structured credentials
   |database[primary].base-service
@@ -36,8 +36,8 @@
     :ssl
 
     |credentials
-      :username !{env.DB_USER}
-      :password !{env.DB_PASS}
+      :username !{{env.DB_USER}}
+      :password !{{env.DB_PASS}}
 
   ; Cache inherits from multiple mixins
   |cache[redis].base-service.logging.cached
@@ -91,7 +91,7 @@
   UDON is a **unified notation** for data, documents, and configuration.
   The key insight: most real content is |{em mixed}—not purely data
   |{em or} purely prose, but |{dfn :id mixed-content mixed content} where
-  structure appears |{ul inline} exactly where it's needed.
+  structure appears |{ul inline} exactly where it's needed. ;{TODO: improve this wording}
 
   Consider this paragraph: it contains |{abbr :title "Application Programming Interface" API}
   references, |{a :href #getting-started internal links}, and even
@@ -200,17 +200,17 @@
 
   !include partials/head
 
-  |html :lang !{locale | default "en"}
+  |html :lang !{{locale | default "en"}}
     |head
       |meta :charset utf-8
-      |title !{page.title} — !{site.name}
+      |title !{{page.title}} — !{{site.name}}
 
       !for stylesheet in stylesheets
-        |link :rel stylesheet :href !{stylesheet}
+        |link :rel stylesheet :href !{{stylesheet}}
 
-      !if page.has_custom_css |style !{page.custom_css}
+      !if page.has_custom_css |style !{{page.custom_css}}
 
-    |body :class !{body_classes | join " "}
+    |body :class !{{body_classes | join " "}}
 
       |header
         !include partials/nav
@@ -218,19 +218,19 @@
         !if announcements
           |div.announcements
             !for announcement in announcements
-              |div.announcement :class !{announcement.type}
-                !{announcement.message | escape}
+              |div.announcement :class !{{announcement.type}}
+                !{{announcement.message | escape}}
 
       |main[content]
         !if user
           |section.welcome
-            Welcome back, !{user.name | capitalize}!
+            Welcome back, !{{user.name | capitalize}}!
 
             !if user.is_admin
-              |div.admin-notice You have !{pending_tasks | size} pending admin tasks.
+              |div.admin-notice You have !{{pending_tasks | size}} pending admin tasks.
             !elif user.is_moderator
-              |div.mod-notice Moderation queue: !{mod_queue | size} items
-            !else Your last login: !{user.last_login | format "%B %d, %Y"}
+              |div.mod-notice Moderation queue: !{{mod_queue | size}} items
+            !else Your last login: !{{user.last_login | format "%B %d, %Y"}}
 
         !else
           |section.guest
@@ -242,16 +242,16 @@
         !let featured = posts | where "featured" true | first
           !if featured
             |article.featured
-              |h2 !{featured.title}
-              !{featured.excerpt | truncate 200}
+              |h2 !{{featured.title}}
+              !{{featured.excerpt | truncate 200}}
 
         |section.posts
           !for post in posts
-            |article :id post-!{post.id}
-              |h3 |a :href /posts/!{post.id} !{post.title}
+            |article :id post-!{{post.id}}
+              |h3 |a :href /posts/!{{post.id}} !{{post.title}}
               |p.meta
-                By !{post.author.name} on !{post.date | format "%Y-%m-%d"}
-              |p !{post.excerpt}
+                By !{{post.author.name}} on !{{post.date | format "%Y-%m-%d"}}
+              |p !{{post.excerpt}}
 
       !include partials/footer
 
@@ -267,7 +267,7 @@
   :headers
     |header :name Content-Type :value application/json
     |header :name X-API-Version :value "2025-01"
-    |header :name Authorization :value Bearer !{token}
+    |header :name Authorization :value Bearer !{{token}}
 
   :request-body
     |field[email] :type string :required
@@ -340,6 +340,10 @@
   |p With attributes: |{a :href /foo :title "Link title" click here} works.
   |p Nested: |{strong This is |{em very} important} stuff.
   |p Complex: See |{a :href /doc the |{em official} |{code API} docs} for details.
+
+  ; --- Inline comments (;{...}) ---
+  |p This text has ;{an inline comment here} that the parser emits but renderers may strip.
+  |p Inline comments use ;{brace-counting so {nested} braces are fine} as long as balanced.
 
   ; --- Structural variations ---
   |empty                               ; Empty element
