@@ -62,7 +62,7 @@ content layer without escaping.
 The question for any embedded notation isn't "UDON vs X"—it's "does wrapping X
 in UDON's structure add clarity?" Sometimes yes: you need metadata, context,
 hierarchy around it. Sometimes no: the notation is already optimal for its
-narrow purpose. You only escape to `!raw:` when there are actual syntactic
+narrow purpose. You only escape to `!::` when there are actual syntactic
 collisions.
 
 This is liberating. UDON isn't demanding that everything become elements and

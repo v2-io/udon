@@ -47,7 +47,7 @@
         |change :set-due-date
 
         ; SLA timing (priority-dependent) is easier in code
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             priority = Ash.Changeset.get_attribute(changeset, :priority) || :normal
             hours = case priority
@@ -97,7 +97,7 @@
         :accept [ticket-id author-email body internal]
         |change :touch-ticket
 
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             ticket_id = Ash.Changeset.get_attribute(changeset, :ticket_id)
             Support.Ticket

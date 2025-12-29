@@ -730,11 +730,11 @@ The phases below were written in the wrong order. The streaming event model must
 
 #### Escape & Raw (SPEC lines 277-387)
 11. **Escape prefix** — `'` prevents interpretation of next char
-12. **Raw directives** — `!raw:lang` block form, `!raw:lang{content}` inline
+12. **Raw directives** — `!:lang:` block form, `!{:lang: content}` inline
 13. **Freeform blocks** — triple-backtick for indent-insensitive content
 
 #### Dynamics (SPEC lines 389-549)
-14. **Interpolation** — `!{expr}`, `!{expr | filter1 | filter2}`
+14. **Interpolation** — `!{{expr}}`, `!{{expr | filter1 | filter2}}`
 15. **Block directives** — `!if`, `!elif`, `!else`, `!unless`, `!for`, `!let`, `!include`
 16. **Inline directives** — `!name{content}` with balanced braces
 

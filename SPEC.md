@@ -339,20 +339,20 @@ Only needed at positions where prefixes would otherwise trigger parsing.
 
 ### Raw Directives
 
-Use `!raw:lang` for code samples and raw (non-UDON) content:
+Use `!:lang:` for code samples and raw (non-UDON) content:
 
 ```
 |example
-  !raw:elixir
+  !:elixir:
     def hello do
       IO.puts("world")
       |> this_pipe_is_elixir_not_udon()
     end
 ```
 
-The `!raw:` prefix signals that the body is **not UDON**—it will be captured
-verbatim. The language tag after the colon (e.g., `elixir`, `sql`, `json`) is
-passed to the host for syntax highlighting, execution, or other processing.
+The `!:label:` syntax (colon-wrapped label) signals that the body is **not UDON**—it
+will be captured verbatim. The label (e.g., `elixir`, `sql`, `json`) is passed to
+the host for syntax highlighting, execution, or other processing.
 
 The content follows normal indentation rules:
 - Indented under the directive
@@ -361,24 +361,24 @@ The content follows normal indentation rules:
 
 ### Inline Raw Content
 
-For inline raw content, use `!{raw:kind ...}`:
+For inline raw content, use `!{:kind: ...}`:
 
 ```
-|p The response was !{raw:json {"status": "ok", "count": 42}} as expected.
+|p The response was !{:json: {"status": "ok", "count": 42}} as expected.
 ```
 
 **Inline raw uses brace-counting.** The parser finds the closing `}` by counting brace depth. Nested `{}` pairs are fine as long as they're balanced:
 
 ```
 ; Works — braces are balanced (even nested)
-!{raw:json {"key": "value"}}
-!{raw:regex [a-z]{3,5}}
+!{:json: {"key": "value"}}
+!{:regex: [a-z]{3,5}}
 
 ; Fails — unbalanced brace
-!{raw:text missing close {}
+!{:text: missing close {}
 
 ; Solution — use block form for unbalanced braces
-!raw:text
+!:text:
   missing close {here
 ```
 
@@ -418,7 +418,7 @@ Use this **only** when:
 - Working with broken tooling that can't maintain indentation
 - The rare case where absolute positioning matters
 
-**Do not use triple-backticks as the default for code samples.** Use `!raw:lang` instead.
+**Do not use triple-backticks as the default for code samples.** Use `!:lang:` instead.
 
 ---
 
@@ -433,16 +433,16 @@ All dynamic inline forms use `!{...}` with immediate disambiguation:
 | Syntax | Form | Description |
 |--------|------|-------------|
 | `!{{expr}}` | Interpolation | Double-brace for value interpolation |
-| `!{raw:kind ...}` | Raw directive | Content is opaque, brace-counted |
+| `!{:kind: ...}` | Raw directive | Content is opaque, brace-counted |
 | `!{directive ...}` | Directive | Content is parsed as UDON (can contain `\|{...}`, `;{...}`) |
 
 The second character after `!{` determines the form:
 - `{` → interpolation (`!{{...}}`)
-- `raw:` prefix → raw directive (brace-counted, no UDON parsing)
+- `:` → raw directive with colon-wrapped label (brace-counted, no UDON parsing)
 - Otherwise → directive with full UDON parsing inside
 
 **Parser implementation note:** The parser uses a `raw` flag to distinguish raw
-vs non-raw directives. For `!{raw:json ...}`, the directive name is `json` with
+vs non-raw directives. For `!{:json: ...}`, the directive name is `json` with
 `raw=true`. For `!{include ...}`, the name is `include` with `raw=false`.
 
 Non-raw inline directives support nested UDON:
@@ -481,6 +481,11 @@ event with empty expression content. The host decides how to handle it.
 ```
 
 ### Interpolation in Typed Contexts
+
+> **Implementation Status:** Interpolation in attribute values and element IDs
+> is not yet implemented in the parser. Currently, `!{{...}}` syntax in these
+> contexts is passed through as literal string content. This section describes
+> the intended future behavior.
 
 Interpolation can appear in attribute values (including element IDs), where
 values normally have specific types (integer, float, string, etc.).
@@ -617,10 +622,10 @@ The `empty` keyword tests if a defined value is empty. The `blank` keyword tests
 
 **Parser implementation note:** Block directives use the same `raw` flag as
 inline directives. The parser does not enumerate specific directive names—any
-name is accepted. The only distinction is `raw:` prefix:
+name is accepted. The only distinction is colon-wrapped syntax:
 
-- `!raw:lang` — Raw block: content is prose-like (no UDON parsing), collected
-  until dedent. The language tag (`lang`) is the directive name with `raw=true`.
+- `!:lang:` — Raw block: content is prose-like (no UDON parsing), collected
+  until dedent. The label (`lang`) is the directive name with `raw=true`.
 - `!if`, `!for`, etc. — Normal block: rest of line is the "statement", then
   normal UDON children content until dedent. Name is `if`/`for` with `raw=false`.
 
@@ -1007,7 +1012,7 @@ For additional authoring guidance, see [examples/practices-gotchas.udon](example
 
     UDON unifies both with minimal syntax.
 
-  !raw:udon
+  !:udon:
     |example
       :this works
       And so does this prose.

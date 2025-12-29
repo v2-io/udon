@@ -61,7 +61,7 @@
         |change :apply-adjustment
 
         ; Escape hatch for concurrency-safe adjustment
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             delta = Ash.Changeset.get_argument(changeset, :delta)
             on_hand = Ash.Changeset.get_attribute(changeset, :on_hand)
@@ -94,7 +94,7 @@
         :accept [product-id warehouse-id delta reason]
         |change :set-occurred-at
 
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             now = DateTime.utc_now()
             Ash.Changeset.change_attribute(changeset, :occurred_at, now)

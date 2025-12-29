@@ -84,7 +84,7 @@
           :group-by root
 
         ; Escape hatch for a custom scoring heuristic
-        !raw:rb
+        !:rb:
           def score_path(path)
             # Prefer paths with many primitive steps and few abandoned nodes
             primitive = path.count { |n| n.kind == :primitive }
@@ -108,7 +108,7 @@
             :score desc
 
         ; Use host for complex context weighting
-        !raw:rb
+        !:rb:
           def context_weight(intent, ctx)
             w = 0
             w += 15 if intent.relationship == :prepares

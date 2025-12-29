@@ -43,7 +43,7 @@
 !let x = items | first
   |featured !{{x.title}}
 
-!raw:ruby
+!:ruby:
   # not parsed as UDON
 !include partials/header
 

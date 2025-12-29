@@ -16,7 +16,7 @@
       Prefer Markdown for simple emphasis and code. Reserve inline elements
       for semantics or attributes that Markdown cannot express.
 
-      !raw:udon
+      !:udon:
         ; Preferred
         |p This has **bold** and `inline code`.
 
@@ -27,7 +27,7 @@
       Use attributes for typed scalars and children for structure, order,
       repetition, or prose.
 
-      !raw:udon
+      !:udon:
         ; Attributes: typed scalars, one per key
         |message :timestamp "2025-01-15" :priority 3
           Body text here
@@ -40,7 +40,7 @@
     |tip[explicit-strings]
       Quote values when you need them to be strings, not booleans or numbers.
 
-      !raw:udon
+      !:udon:
         |config
           :enabled true     ; boolean
           :enabled "true"   ; string
@@ -48,18 +48,18 @@
           :port "8080"      ; string
 
     |tip[raw-content]
-      Prefer !raw:lang for code blocks. Reserve triple-backticks for rare
+      Prefer !:lang: for code blocks. Reserve triple-backticks for rare
       cases where indentation cannot be controlled.
 
-      !raw:udon
+      !:udon:
         |example
-          !raw:sql
+          !:sql:
             SELECT * FROM users WHERE active = true;
 
     |tip[ids-are-typed]
       IDs are typed values. Quote IDs if the leading zeros or formatting matter.
 
-      !raw:udon
+      !:udon:
         |step[1]       ; integer ID
         |step["01"]   ; string ID, preserves leading zero
 
@@ -70,7 +70,7 @@
       Attributes must come before children and prose. Do not scatter attributes
       throughout a block.
 
-      !raw:udon
+      !:udon:
         ; Valid
         |item :id 1 :status "open"
           Content
@@ -85,7 +85,7 @@
       rightward nesting on one line, align siblings carefully or expand to
       explicit blocks.
 
-      !raw:udon
+      !:udon:
         ; Rightward nesting (a > b > c)
         |a |b |c
 
@@ -108,13 +108,13 @@
       Inline elements are siblings of surrounding text, not part of it. This is
       usually what you want, but it affects downstream renderers.
 
-      !raw:udon
+      !:udon:
         |p Hello, |{em world}!  ; "Hello," text and |em are siblings
 
     |gotcha[flags-and-nil]
       A missing attribute, a flag, and nil are distinct.
 
-      !raw:udon
+      !:udon:
         |config
           :debug         ; true (flag present)
           :verbose false ; false
@@ -124,7 +124,7 @@
     |gotcha[escape-prefix]
       The apostrophe escapes only the next character at a prefix position.
 
-      !raw:udon
+      !:udon:
         '|not-an-element
         ':not-an-attribute
         ';not-a-comment
@@ -135,7 +135,7 @@
       evolving. For now, treat mixins as attribute-only unless your host
       defines subtree inheritance explicitly.
 
-      !raw:udon
+      !:udon:
         |.defaults
           :timeout 30
 

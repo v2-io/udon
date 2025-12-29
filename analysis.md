@@ -834,7 +834,7 @@ UDON dynamics complete a clean orthogonal design:
 |--------|--------|----------|
 | `\|` | Structure | `\|element`, `\|div`, `\|heading` |
 | `:` | Attributes | `:href url`, `:class foo` |
-| `!` | Dynamics | `!if`, `!for`, `!{expr}` |
+| `!` | Dynamics | `!if`, `!for`, `!{{expr}}` |
 | `#` | Comments | `# this is ignored` |
 
 Four concerns, four prefixes, no overlap.
@@ -845,8 +845,8 @@ Four concerns, four prefixes, no overlap.
 
 | Directive | Purpose | Syntax |
 |-----------|---------|--------|
-| `!{expr}` | Inline interpolation | `Hello, !{user.name}` |
-| `!{expr \| filter}` | Filter chain | `!{date \| relative \| upcase}` |
+| `!{{expr}}` | Inline interpolation | `Hello, !{{user.name}}` |
+| `!{{expr \| filter}}` | Filter chain | `!{{date \| relative \| upcase}}` |
 | `!if` / `!elif` / `!else` | Conditionals | `!if logged_in` |
 | `!for x in xs` | Iteration | `!for item in items` |
 | `!include` | Partial inclusion | `!include partials/header` |
@@ -930,7 +930,7 @@ The test: if you need more than `!if`, `!for`, `!let`, and filters, put it in th
 Filters transform values in a pipeline:
 
 ```
-!{value | filter1 | filter2 arg | filter3}
+!{{value | filter1 | filter2 arg | filter3}}
 ```
 
 **Standard filters (Liquid-inspired):**
@@ -965,7 +965,7 @@ Host Language (Elixir/Python/etc.)
 UDON Template
     │
     ├── !if / !for / !let (control flow)
-    ├── !{expr | filter} (interpolation)
+    ├── !{{expr | filter}} (interpolation)
     ├── |elements (structure)
     │
     ▼

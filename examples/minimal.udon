@@ -99,7 +99,7 @@
     |featured !{{featured.title}}
 
 ; Raw code blocks (not parsed as UDON):
-!raw:elixir
+!:elixir:
   def hello do
     "world" |> String.upcase()  # This pipe is Elixir
   end

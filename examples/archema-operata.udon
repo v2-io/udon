@@ -99,7 +99,7 @@
         |change :set-kind compound
 
       ; Escapes for time and argument plumbing
-      !raw:rb
+      !:rb:
         def change_claim(changeset)
           changeset
             .put_change(:claimed_by, changeset.arguments[:claimer])
@@ -115,7 +115,7 @@
 
     |queries
       ; Higher-level query helpers live in Ruby
-      !raw:rb
+      !:rb:
         def self.ready
           query
             .filter(kind: :primitive, status: %i[projected active])
@@ -160,7 +160,7 @@
         |change :set-propagate false
 
       ; Recording helper uses time and defaults
-      !raw:rb
+      !:rb:
         def self.record!(intent_id:, outcome:, delta: :as_expected, learnings: nil, recorded_by: nil, propagate: false)
           create!(
             intent_id: intent_id,
@@ -206,7 +206,7 @@
         |change :set-current false
 
       ; Escape for conditional argument handling
-      !raw:rb
+      !:rb:
         def refocus(changeset)
           cs = changeset.put_change(:declared_at, Time.now.utc)
           cs = cs.put_change(:focus_effort_id, changeset.arguments[:focus_effort_id]) if changeset.arguments[:focus_effort_id]
@@ -220,7 +220,7 @@
       |belongs-to[focus-intent] :destination operata.intent :allow-nil true
 
     |queries
-      !raw:rb
+      !:rb:
         def self.current_for(name)
           query.filter(name: name, current: true).sort(:declared_at, :desc).first
         end

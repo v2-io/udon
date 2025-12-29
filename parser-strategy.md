@@ -16,7 +16,7 @@ is deferred to host language implementations.
 │                                                             │
 │  Responsibilities:                                          │
 │    - Structural parsing: |elements, :attrs, prose, |{...}  │
-│    - Directive recognition: !name, !raw:name               │
+│    - Directive recognition: !name, !:name:               │
 │    - Streaming via ring buffer / pull-based batching       │
 │                                                             │
 │  Does NOT handle:                                           │
@@ -51,7 +51,7 @@ The parser's only directive-level knowledge is body mode:
 | Syntax | Body | Parser Behavior |
 |--------|------|-----------------|
 | `!foo` | UDON | Parse body recursively as UDON |
-| `!raw:foo` | Raw | Capture body verbatim, tag with "foo" |
+| `!:foo:` | Raw | Capture body verbatim, tag with "foo" |
 
 That's it. No dialect registry. No special cases in the parser.
 
@@ -64,11 +64,11 @@ That's it. No dialect registry. No special cases in the parser.
 !warning :severity high     ; UDON body — unknown directive, still parses
   Do |{em not} run in prod.
 
-!raw:sql                    ; Raw body — captured verbatim
+!:sql:                    ; Raw body — captured verbatim
   SELECT * FROM users
   WHERE active = true
 
-!raw:json {"status": "ok"}  ; Raw body — inline form
+!:json: {"status": "ok"}  ; Raw body — inline form
 ```
 
 ### Event Output
@@ -81,7 +81,7 @@ enum Event {
 }
 ```
 
-For `!raw:sql`, the parser emits:
+For `!:sql:`, the parser emits:
 - `DirectiveStart { name: "sql", is_raw: true, ... }`
 - `RawContent { text: "SELECT * FROM users\n..." }`
 - `DirectiveEnd`
@@ -155,7 +155,7 @@ Parser events
 │    !if, !elif, !else, !for, !let, !{...}                   │
 │      → Route to native Liquid                               │
 │                                                             │
-│    !raw:X                                                   │
+│    !:X:                                                   │
 │      → Pass raw content to consumer (syntax highlight,      │
 │        execute, embed — host decides)                       │
 │                                                             │
@@ -168,7 +168,7 @@ Parser events
 Consumer/Renderer
 ```
 
-Custom directives that aren't Liquid and aren't `!raw:` just flow through as
+Custom directives that aren't Liquid and aren't `!::` just flow through as
 **semantic markers** — labeled UDON subtrees that the final consumer interprets.
 
 ---
@@ -301,7 +301,7 @@ wasm-bindgen / wasm-pack (for JS ergonomics)
 
 ## Summary
 
-1. **Parser is simple**: Knows UDON structure + `!raw:` = raw body. That's all.
+1. **Parser is simple**: Knows UDON structure + `!::` = raw body. That's all.
 2. **Liquid is host-native**: Each language uses its own Liquid implementation.
 3. **Custom directives pass through**: Semantic markers for consumers to interpret.
 4. **One Rust codebase, two targets**: cdylib + WASM covers ~80% of ecosystem.

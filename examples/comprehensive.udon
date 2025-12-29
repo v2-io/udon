@@ -131,7 +131,7 @@
     prose while embedding |{code :lang udon |server :host localhost}
     inline, or break out to a full example:
 
-    !raw:udon
+    !:udon:
       |server
         :host localhost
         :port 8080
@@ -174,9 +174,9 @@
 
     ### Code Samples
 
-    Use `!raw:lang` for non-UDON content:
+    Use `!:lang:` for non-UDON content:
 
-    !raw:elixir
+    !:elixir:
       defmodule Example do
         def hello do
           # This pipe is Elixir, not UDON
@@ -184,7 +184,7 @@
         end
       end
 
-    !raw:sql
+    !:sql:
       SELECT u.name, u.email
       FROM users u
       WHERE u.active = true

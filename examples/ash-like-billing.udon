@@ -56,7 +56,7 @@
         |change :set-due-date
 
         ; Escape hatch for a non-trivial due-date rule
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             issued_at = DateTime.utc_now()
             due_at = DateTime.add(issued_at, 30, :day)
@@ -77,7 +77,7 @@
     |calculations
       |calc[total-amount].money
         :expr "sum(lines.amount)"
-        :fallback !{raw:ex "Money.zero(:USD)"}
+        :fallback !{:ex: "Money.zero(:USD)"}
 
   |resource[invoice-line]
     :table invoice_lines
@@ -113,7 +113,7 @@
         |change :set-renewal-date
 
         ; Escape hatch for plan-specific renewal logic
-        !raw:ex
+        !:ex:
           def change(changeset, _opts, _ctx) do
             plan = Ash.Changeset.get_attribute(changeset, :plan)
             days = if plan == "annual", do: 365, else: 30

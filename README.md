@@ -19,7 +19,7 @@ UDON is what you get when "Markdown with YAML frontmatter" grows up—structure 
   - The **structure** of XML without closing tags
   - The **simplicity** of YAML without the footguns
 
-  !raw:elixir
+  !:elixir:
     defmodule Hello do
       def world, do: IO.puts("Hello from UDON")
     end
