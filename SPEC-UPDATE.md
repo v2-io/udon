@@ -145,7 +145,7 @@ Different contexts have different terminator sets for bare (unquoted) values:
 - Context (block vs embedded) doesn't affect array terminators
 - `}` before `]` is malformed (unspecified behavior)
 
-## Summary: Bare Value Terminators
+## Summary: Bare String Terminators
 
 | Context | Terminators | Space? | Notes |
 |---------|-------------|--------|-------|
@@ -162,17 +162,17 @@ Parser functions should use this terminology consistently:
 |----------|----------|---------|
 | `inline_attr` | `sameline_attr` | Attr on element line |
 | `block_attr` | `block_attr` | Attr on own line (unchanged) |
-| `bare_value` | `bare_value_block` | Block attr values |
-| `bare_value_inline` | `bare_value_sameline` | Sameline attr values |
-| (new) | `bare_value_embedded` | Embedded attr values |
-| (new) | `bare_value_array` | Array item values |
+| `bare_string` | `bare_string_block` | Block attr values |
+| `bare_string_inline` | `bare_string_sameline` | Sameline attr values |
+| (new) | `bare_string_embedded` | Embedded attr values |
+| (new) | `bare_string_array` | Array item values |
 | `inline_text` | `sameline_text` | Text on element line |
 | `embedded` | `embedded` | `\|{...}` (unchanged) |
 
 ## Open Questions
 
 1. **Quoted strings in arrays:** Do they follow same rules?
-   Currently: quotes handled before bare_value dispatch
+   Currently: quotes handled before bare_string dispatch
 
 ## Escape Sequences for Semicolons
 

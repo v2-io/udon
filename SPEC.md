@@ -38,6 +38,17 @@ One escape prefix:
 
 Anything else is **prose content** belonging to the parent element.
 
+## Positional Contexts
+
+The parser operates in different contexts that affect parsing behavior:
+
+| Term | Meaning | Example |
+|------|---------|---------|
+| **block** | On its own indented line | `:key value` as child of element |
+| **sameline** | On the element definition line | `|el :key value Content` |
+| **inline** | Embedded in prose/text flow | `|{em text}`, `;{comment}`, `!{dir}` |
+| **embedded** | Inside `|{...}` delimiters | Synonym for inline element context |
+
 ---
 
 ## Elements
@@ -106,16 +117,23 @@ UDON performs the expansion; the meaning is DSL-defined:
 
 ### Attributes
 
-Inline key-value pairs:
+Attributes are key-value pairs:
 
 ```
 |element :key value :another-key another value
 ```
 
-Attribute values run until:
-- End of line, or
-- Space followed by `:` (next attribute), or
-- Space followed by `|` (inline child element)
+Attributes can appear in two contexts:
+- **Sameline**: on the element definition line
+- **Block**: on their own indented line
+
+Attribute values are context-sensitive:
+- **Block** values run to end of line; ` ;` starts a comment
+- **Sameline** values are space-delimited; quote for spaces
+- **Embedded** values are space-delimited; `}` also terminates the value
+
+When an attribute has no value (followed immediately by `:`, newline, or a
+context terminator), it is treated as boolean true.
 
 ### Inline Lists
 
@@ -141,6 +159,15 @@ When an attribute needs structured content, use indentation:
 ```
 
 Attribute followed by newline+indent = structured value.
+
+### Bare String Terminators
+
+| Context | Terminators | Space? | Notes |
+|---------|-------------|--------|-------|
+| Block attr | `\n`, ` ;` | In value | Comment needs ` ;` |
+| Sameline attr | `\n`, `SPACE` | Terminates | Quote for spaces |
+| Embedded attr | `\n`, `SPACE`, `}` | Terminates | Don't consume `}` |
+| Array item | `\n`, `SPACE`, `]` | Terminates | Don't consume `]` |
 
 ---
 
@@ -195,6 +222,9 @@ The embedded element:
 - Contains element name, optional id/classes, optional attributes, and content
 - Closes with `}`
 - Becomes a child of the containing element (sibling to surrounding text)
+
+Inline elements are embedded elements; this spec uses "inline" for prose
+placement and "embedded" for the `|{...}` form.
 
 Multiple embedded elements are siblings:
 
@@ -270,6 +300,10 @@ Any line not starting with a prefix is prose belonging to the parent:
   Back to prose in the article.
 ```
 
+Block prose sets an indent-column for continuation and preserves literal
+semicolons. Sameline prose does not set an indent-column and treats `;` as a
+comment start.
+
 Since `;` is the comment delimiter, `#` has no special meaning in prose. Markdown flows naturally.
 
 **Prefer Markdown over inline UDON in prose.** When both could work, use Markdown:
@@ -298,13 +332,16 @@ Embedded elements can appear within prose using `|{...}`:
 
 ## Comments
 
-Semicolon starts a comment (Rebol/Lisp style):
+Semicolon starts a comment depending on context:
 
-```
-; This entire line is a comment
-
-|element :attr value  ; Inline comment after content
-```
+| Context | `;` Behavior | Example |
+|---------|--------------|---------|
+| Document root | Line comment | `; file header comment` |
+| Block prose | **Literal** (not comment) | `use x; do y` |
+| Sameline prose | Line comment | `|p text ; comment` |
+| Block attr line | Line comment (after values) | `:key value ; comment` |
+| Sameline attrs | Line comment (after values) | `|el :k v ; comment` |
+| Inline/embedded | `;{...}` only | `|{em text ;{note}}` |
 
 For inline comments within prose, use `;{...}`:
 
@@ -332,6 +369,12 @@ Apostrophe prevents interpretation of the next character:
 Only needed at positions where prefixes would otherwise trigger parsing.
 
 **Note:** Inside quoted strings (`"..."` or `'...'`), the escape prefix has no special meaning—quoted strings handle their own escaping per their delimiter rules.
+
+### Semicolon Escapes
+
+- Block prose: `;` is literal (no escape needed)
+- Block attr values: quote the value to include `;`
+- Sameline/embedded: use backslash to escape a literal `;`
 
 ---
 
@@ -755,6 +798,9 @@ Reference elements by identity:
 document      = { line }* ;
 
 line          = indent ( element | attribute | dynamic | comment | prose ) ;
+
+; NOTE: Comment and bare-string termination are context-sensitive
+; (block vs sameline vs embedded).
 
 indent        = { SPACE }* ;
 
