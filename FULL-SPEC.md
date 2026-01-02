@@ -108,19 +108,19 @@ block-marker character (`|`, `;`, `:`, `!`, or `'`) **always** triggers an
 escape. The apostrophe is consumed and the following character is output
 literally (not parsed as a marker).
 
-**Simple rule:** `'` + one of `|;:!'` → escape, always. No further lookahead.
+**Simple rule:** `'` + one of `|;:!'` -> escape, always. No further lookahead.
 
 ```
-'|element    →  "|element"     ; escaped pipe, output as prose
-';comment    →  ";comment"     ; escaped semicolon
-':attr       →  ":attr"        ; escaped colon
-'!directive  →  "!directive"   ; escaped bang
-''more       →  "'more"        ; escaped apostrophe
+'|element    ->  "|element"     ; escaped pipe, output as prose
+';comment    ->  ";comment"     ; escaped semicolon
+':attr       ->  ":attr"        ; escaped colon
+'!directive  ->  "!directive"   ; escaped bang
+''more       ->  "'more"        ; escaped apostrophe
 
-'hello       →  "'hello"       ; NOT an escape (h is not a marker)
+'hello       ->  "'hello"       ; NOT an escape (h is not a marker)
 ```
 
-If `'` is followed by a non-marker character, it is **not** an escape—the
+If `'` is followed by a non-marker character, it is **not** an escape--the
 apostrophe is preserved as normal prose content.
 
 **Alternate:** Backslash (`\`) also works as a block-level escape before the
@@ -141,7 +141,7 @@ Backslash escapes a literal semicolon in **sameline** or **embedded** contexts
 Block prose does not need escapes for `;` (semicolons are literal there).
 
 **Note:** Inside quoted strings (`"..."` or `'...'`), escape prefixes have no
-special meaning—quoted strings handle their own escaping per their delimiter
+special meaning--quoted strings handle their own escaping per their delimiter
 rules.
 
 ---
@@ -236,6 +236,14 @@ Attribute values are context-sensitive:
 
 When an attribute has no value (followed immediately by `:`, newline, or a
 context terminator), it is treated as boolean true.
+
+**Empty/missing values:** The parser emits `BoolTrue` for attributes without a
+value:
+
+```udon
+|button :disabled :type submit
+; disabled -> BoolTrue, type -> "submit"
+```
 
 ### Inline Lists
 
@@ -448,6 +456,57 @@ Inline comments use brace-counting to find their end--nested `{}` pairs are
 allowed as long as they are balanced. For comments with unbalanced braces, use
 line-comment form instead.
 
+### Comments and Indentation
+
+Comments participate in the indent/dedent hierarchy, even though they produce
+no structural output beyond comment events.
+
+#### Block Comments
+
+A line starting with `;` is a block comment. It **triggers indent/dedent
+behavior**:
+
+```udon
+|parent
+  |child
+   ; this comment is INSIDE |child (one space further right)
+  ; this comment is SIBLING of |child (same column = sibling!)
+    |grandchild
+; this comment closes |grandchild, |child, AND |parent (column 0)
+|sibling
+```
+
+The comment at column 0 causes three ElementEnd events before `|sibling` is
+parsed.
+
+```udon
+|element
+  Some prose content
+   ; comment inside |element - one column past the prose base
+  More prose content
+```
+
+#### Inline Comments
+
+`;{...}` is an inline comment--the only way to comment within prose:
+
+```udon
+|p This is some text ;{TODO: improve this} and more text.
+```
+
+If a consumer strips comments, the output text would be:
+`This is some text and more text.`
+
+#### Escaping Semicolons
+
+To output a literal `;` at line start, use the escape prefix:
+
+```udon
+'; This line starts with a semicolon in the output
+```
+
+Output: `; This line starts with a semicolon in the output`
+
 ---
 
 ## Semicolon Escapes (Sameline / Embedded)
@@ -498,11 +557,36 @@ The parser uses the following rule for nesting:
 A consistent indent increment (typically 2 spaces) is recommended for readability,
 but is not a parser rule.
 
+Once you choose an indent level for siblings, maintain it:
+
+```udon
+; Good - consistent alignment
+|one |two |three
+     |better
+     |better
+
+; Good - consistent alignment
+|one |two |three
+  |also-good
+  |also-good
+
+; Poor form - inconsistent (warn or error)
+|one |two |three
+     |alpha       ; chose column 5
+  |beta           ; but then used column 2
+```
+
+Both positions are technically valid siblings of `|two`, but mixing them is
+confusing.
+
 ### The Column Rules
 
 1. **Greater column = child** (push onto stack)
 2. **Same column = sibling** (pop current, push as child of parent)
 3. **Lesser column = dedent** (pop until column > top's base_column)
+
+**To be INSIDE an element, you must be at column > element's column.**
+**Same column == sibling instead of child.**
 
 ### The Rule Visualized
 
@@ -602,6 +686,16 @@ Equivalent to:
                 |d
 ```
 
+Now placing `|e` on line 2 is just normal Python-style indent reasoning:
+- Same column as `|beta` -> sibling of `|beta`
+- Between `|beta` and `|c` -> child of `|beta`, sibling of `|c`
+- Same column as `|c` -> sibling of `|c`
+- And so on...
+
+The inline notation is just a compact way to write the vertical form. The
+column positions are real and determine hierarchy exactly as if each element
+had its own line.
+
 ### Child of Inline Element (Special Case)
 
 ```
@@ -630,6 +724,12 @@ Equivalent to:
 |one |two |three
   |alpha
      |beta      ; child of |alpha, NOT related to |two at all
+```
+
+From `|beta`'s perspective, the world looks like:
+```
+|alpha
+   |beta
 ```
 
 When `|alpha` appeared, it popped `|two` and `|three` off the stack. They're
@@ -682,6 +782,244 @@ The prose at column 0 triggers:
 - 0 <= three's column? Pop three
 - 0 <= two's column? Pop two
 - 0 <= one (0)? Pop one
+
+Three or four ElementEnd events fire in sequence.
+
+---
+
+## Implementation (Non-Normative)
+
+The stack entry needs only:
+```rust
+struct StackEntry {
+    base_column: u16,  // Column where element started (where | was)
+    span_start: u32,   // For ElementEnd event
+}
+```
+
+The algorithm:
+```rust
+fn handle_new_element(&mut self, column: u16) {
+    // Pop while new column <= top's base column
+    while let Some(entry) = self.stack.last() {
+        if column <= entry.base_column {
+            self.emit(Event::ElementEnd { ... });
+            self.stack.pop();
+        } else {
+            break;
+        }
+    }
+    // Push new element as child of current top
+    self.stack.push(StackEntry { base_column: column, ... });
+    self.emit(Event::ElementStart { ... });
+}
+```
+
+No special cases. No inline column tracking arrays. The stack handles everything
+naturally because inline elements are pushed with their actual column positions.
+
+---
+
+## Automatic Prose Dedentation
+
+UDON automatically strips leading whitespace from prose content based on its
+context within elements. This enables readable source formatting while
+producing clean output.
+
+### The Rule
+
+1. **Inline content** (same line as element) does NOT establish content_base
+2. **First indented line** (line 2) establishes `content_base_column` - user chooses
+3. **Subsequent lines at >= content_base**: no warning, extra spaces preserved in output
+4. **Subsequent lines at < content_base** (but still within element):
+   - Emit warning about inconsistent indentation
+   - Update content_base to this new (lesser) column
+   - Continue as content of same element
+
+**Valid range for indented content:** between parent's `|`+1 (exclusive) and
+any inline child's `|` (inclusive).
+
+### Inline Content Freedom
+
+The user chooses how to indent line 2. All of these are valid with no warnings:
+
+```udon
+|element-bigger Here is the first line of stuff
+  and here is the second
+  and third
+ this would warn                                  ; col 1 < col 2, WARNING
+and this would be a sibling of |element instead.  ; col 0 = element's col, DEDENT
+```
+
+```udon
+|element-bigger Here's the first line
+                and here's an equally acceptable form
+```
+
+```udon
+|element-bigger Here's another first line
+       This is also just as acceptable
+```
+
+### With Nested Inline Elements
+
+```udon
+|element-bigger Here's some child text |another-element
+                                       |child-of-bigger
+               ; ^ sibling to another-element, child of element-bigger
+             |also-child-of-bigger     ; WARNING - less indent than line 2
+```
+
+```udon
+|element-bigger and some child text |and-another inner text here
+                              This is also a direct child of element-bigger,
+                                  just in a very unconventional spot.
+                              ; ^ no warning, but extra leading spaces in output for this line
+```
+
+### Basic Example
+
+```udon
+|section **The great indent**
+  This content is all inner-content of |section,
+  and will continue to be inner-content of |section
+  until the parser detects a dedent.
+```
+
+**Output text:**
+```
+**The great indent**
+This content is all inner-content of |section,
+and will continue to be inner-content of |section
+until the parser detects a dedent.
+```
+
+The inline content (`**The great indent**`) has no leading space. The indented
+lines have their 2-space indent stripped.
+
+### Inline Content with Continuation
+
+```udon
+|later-part This stuff is inner to |later-part
+            and, with a slightly different formatting
+            preference-- is indented quite a ways.
+```
+
+**Output text:**
+```
+This stuff is inner to |later-part
+and, with a slightly different formatting
+preference-- is indented quite a ways.
+```
+
+The continuation lines are aligned with "This" (column 12). All 12 leading
+spaces are stripped.
+
+### Valid Indentation Range
+
+For prose after inline elements, valid columns are between the parent's `|`
+(exclusive) and the inline child's `|` (inclusive):
+
+```udon
+|the-parent |on-line-child
+            |sibling    ; column 12, same as on-line-child = sibling
+                        ; one more column right = child of on-line-child
+
+|the-parent |on-line-child
+     |sibling           ; column 5, unorthodox but same semantic as above
+```
+
+### Inconsistent Indentation (Warnings)
+
+```udon
+|the-parent |on-line-child
+      first-line-of-prose...   ; col 6, establishes content_base = 6
+   but what about this???      ; col 3 < 6, WARNING, content_base = 3
+   ^ this is the new reference ; col 3, no warning
+   also not a new warning      ; col 3, no warning
+       four extra spaces       ; col 7 > 3, no warning, OUTPUT: "    four extra spaces"
+  new warning here             ; col 2 < 3, WARNING, content_base = 2
+```
+
+**Output text:**
+```
+first-line-of-prose...
+but what about this???
+^ this is the new reference
+also not a new warning
+    four extra spaces
+new warning here
+```
+
+The first line was stripped of 6 spaces. When content_base dropped to 3,
+subsequent lines were stripped of only 3 spaces. The "four extra spaces" line
+preserves 4 spaces because 7 - 3 = 4.
+
+### Streaming Behavior
+
+Prose dedentation happens per-line as content is parsed:
+- Each line is stripped of `content_base_column` spaces and emitted immediately
+- If a line has fewer leading spaces than content_base, warn and update content_base
+- Earlier lines may have been "over-stripped" compared to later lines
+- This is intentional: the warning signals the inconsistency to the user
+
+### Exception: Freeform Blocks
+
+Triple-backtick (freeform) blocks preserve exact whitespace - no automatic
+dedentation:
+
+```udon
+|code
+  ```
+  def foo():
+      return 1
+  ```
+```
+
+The content inside the backticks is preserved exactly as written.
+
+### Implementation
+
+The stack entry expands to:
+```rust
+struct StackEntry {
+    base_column: u16,           // Column where | was (for hierarchy)
+    content_base_column: u16,   // Column where indented prose starts (for dedenting)
+    content_base_set: bool,     // Whether content_base has been established (by line 2+)
+    span_start: u32,            // For ElementEnd event
+}
+```
+
+**Inline content** (same line as element) is emitted directly without setting
+content_base:
+```rust
+fn emit_inline_content(&mut self, content: &[u8]) {
+    // Inline content doesn't establish content_base
+    // Just emit it directly
+    self.emit(Event::Text { content, ... });
+}
+```
+
+**Indented prose** (line 2+) establishes and uses content_base:
+```rust
+fn emit_indented_prose(&mut self, line: &[u8], line_column: u16) {
+    let entry = self.stack.last_mut().unwrap();
+
+    if !entry.content_base_set {
+        // First indented line establishes the base (user's choice)
+        entry.content_base_column = line_column;
+        entry.content_base_set = true;
+    } else if line_column < entry.content_base_column {
+        // Line 3+: inconsistent dedent - warn and update
+        self.warn("Inconsistent indentation");
+        entry.content_base_column = line_column;
+    }
+
+    // Strip content_base_column spaces from line
+    let stripped = &line[entry.content_base_column as usize..];
+    self.emit(Event::Text { content: stripped, ... });
+}
+```
 
 ---
 
@@ -1167,7 +1505,7 @@ sniffing.
 | Rational pattern | Rational | `1/3r`, `22/7r` |
 | Complex pattern | Complex | `3+4i`, `5i` |
 | `true`, `false` | Boolean | (lowercase only) |
-| `null`, `nil`, `~` | Nil | (all equivalent) |
+| `null`, `nil` | Nil | (both equivalent) |
 | `[...]` | List | `[1 2 3]`, `[a b c]` |
 | `:key` (no value) | Boolean `true` | Flag/presence semantics |
 | Anything else | String | Unquoted text |
@@ -1201,12 +1539,11 @@ Lowercase only. `TRUE`, `True`, `FALSE` are strings.
 
 ### Nil
 
-Three equivalent spellings:
+Two equivalent spellings:
 
 ```
 :value null
 :value nil
-:value ~
 ```
 
 ### Strings
@@ -1303,6 +1640,36 @@ Parser functions should use this terminology consistently:
 | (new) | `bare_string_array` | Array item values |
 | `inline_text` | `sameline_text` | Text on element line |
 | `embedded` | `embedded` | `|{...}` (unchanged) |
+
+---
+
+## Test Cases (Non-Normative)
+
+The examples in this document should be converted to unit tests. Key scenarios:
+
+1. **Hierarchy tests** (from \"Hierarchy\" section):
+   - Inline nesting equivalence
+   - Sibling after inline elements
+   - Column alignment = sibling
+   - Child of inline element
+   - Multi-line progression
+   - Complex many-inline-elements
+   - Closing multiple levels
+
+2. **Prose dedentation tests** (from \"Automatic Prose Dedentation\" section):
+   - Inline content freedom (multiple valid indent choices)
+   - Nested inline elements with indented siblings
+   - Inconsistent indentation warnings
+   - Extra spaces preserved in output
+   - Blank lines passed through
+   - Freeform blocks preserve whitespace
+
+3. **Comment tests** (from \"Comments and Indentation\" section):
+   - Block comments trigger indent/dedent
+   - Block comment at column 0 closes nested elements
+   - Block comment within element stays within element
+   - Inline comments `;{...}` stripped from output
+   - Escaped semicolon `';` outputs literal semicolon
 
 ---
 
