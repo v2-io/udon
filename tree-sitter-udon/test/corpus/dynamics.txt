@@ -1,0 +1,110 @@
+================================================================================
+Simple interpolation
+================================================================================
+
+|greeting
+  Hello, !{{user.name}}!
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (block
+      (prose
+        (prose_text)
+        (interpolation
+          (expression))
+        (prose_text)))))
+
+================================================================================
+Interpolation with filter
+================================================================================
+
+|display
+  Value: !{{amount | currency "USD"}}
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (block
+      (prose
+        (prose_text)
+        (interpolation
+          (expression)
+          (filter
+            (identifier)
+            (filter_args)))))))
+
+================================================================================
+Block directive - if
+================================================================================
+
+!if logged_in
+  |greeting Welcome back!
+
+--------------------------------------------------------------------------------
+
+(document
+  (block_directive
+    (directive_name)
+    (directive_args)
+    (block
+      (element
+        (element_name
+          (identifier))
+        (sameline_content
+          (sameline_text))))))
+
+================================================================================
+Block directive - for loop
+================================================================================
+
+!for item in items
+  |card
+    :title item.name
+
+--------------------------------------------------------------------------------
+
+(document
+  (block_directive
+    (directive_name
+      (identifier))
+    (directive_args))
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (block_bare_string)))
+
+================================================================================
+Conditional with else
+================================================================================
+
+!if admin
+  |admin-panel
+!else
+  |user-panel
+
+--------------------------------------------------------------------------------
+
+(document
+  (block_directive
+    (directive_name
+      (identifier))
+    (directive_args))
+  (element
+    (element_name
+      (identifier)))
+  (block_directive
+    (directive_name
+      (identifier)))
+  (element
+    (element_name
+      (identifier))))

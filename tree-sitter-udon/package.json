@@ -1,0 +1,40 @@
+{
+  "name": "tree-sitter-udon",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for UDON (Universal Document & Object Notation)",
+  "main": "bindings/node",
+  "keywords": [
+    "tree-sitter",
+    "parser",
+    "udon"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josephwecker/tree-sitter-udon"
+  },
+  "author": "Joseph Wecker",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.18.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.22.0"
+  },
+  "scripts": {
+    "build": "tree-sitter generate && node-gyp rebuild",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.udon",
+      "injection-regex": "^udon$",
+      "file-types": [
+        "udon",
+        "un"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+================================================================================
+Block attribute with string value
+================================================================================
+
+|config
+  :name myapp
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (block_bare_string)))
+
+================================================================================
+Block attribute with integer
+================================================================================
+
+|config
+  :port 8080
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (number)))
+
+================================================================================
+Block attribute with float
+================================================================================
+
+|config
+  :ratio 3.14
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (number)))
+
+================================================================================
+Block attribute with boolean
+================================================================================
+
+|config
+  :enabled true
+  :debug false
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (boolean))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (boolean)))
+
+================================================================================
+Block attribute with nil
+================================================================================
+
+|config
+  :value null
+  :other nil
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (nil_value))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (nil_value)))
+
+================================================================================
+Block attribute with quoted string
+================================================================================
+
+|config
+  :message "Hello, World!"
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (block_bare_string)))
+
+================================================================================
+Block attribute with list
+================================================================================
+
+|config
+  :ports [8080 8443 9000]
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (block_bare_string)))
+
+================================================================================
+Sameline attributes
+================================================================================
+
+|link :href /home :class nav-link
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (sameline_attribute
+      (attribute_key
+        (identifier))
+      (sameline_bare_string))
+    (sameline_attribute
+      (attribute_key
+        (identifier))
+      (sameline_bare_string))))
+
+================================================================================
+Boolean flag attribute (no value)
+================================================================================
+
+|button :disabled :type submit
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (sameline_attribute
+      (attribute_key
+        (identifier)))
+    (sameline_attribute
+      (attribute_key
+        (identifier))
+      (sameline_bare_string))))
+
+================================================================================
+Hex integer
+================================================================================
+
+|color
+  :value 0xFF00FF
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (number)))
+
+================================================================================
+Octal integer
+================================================================================
+
+|file
+  :mode 0o755
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (number)))
+
+================================================================================
+Binary integer
+================================================================================
+
+|flags
+  :mask 0b1010
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier)))
+  (block_attribute
+    (attribute_key
+      (identifier))
+    (number)))

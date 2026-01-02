@@ -1,0 +1,81 @@
+================================================================================
+Embedded element in prose
+================================================================================
+
+|p Click |{a :href /home here} to continue.
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (sameline_content
+      (sameline_text)
+      (embedded_element
+        (element_name
+          (identifier))
+        (embedded_attribute
+          (attribute_key
+            (identifier))
+          (embedded_bare_string))
+        (embedded_content
+          (embedded_text)))
+      (sameline_text))))
+
+================================================================================
+Multiple embedded elements
+================================================================================
+
+|nav |{a Home} |{a About} |{a Contact}
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (sameline_content
+      (embedded_element
+        (embedded_content
+          (embedded_text)
+          (embedded_text)))
+      (embedded_element
+        (embedded_content
+          (embedded_text)
+          (embedded_text)))
+      (embedded_element
+        (embedded_content
+          (embedded_text)
+          (embedded_text))))))
+
+================================================================================
+Nested embedded elements
+================================================================================
+
+|p See |{a :href /doc the |{em official} docs}.
+
+--------------------------------------------------------------------------------
+
+(document
+  (element
+    (element_name
+      (identifier))
+    (sameline_content
+      (sameline_text)
+      (embedded_element
+        (element_name
+          (identifier))
+        (embedded_attribute
+          (attribute_key
+            (identifier))
+          (embedded_bare_string))
+        (embedded_content
+          (embedded_text)
+          (embedded_element
+            (element_name
+              (identifier))
+            (embedded_content
+              (embedded_text)))
+          (embedded_text)))
+      (sameline_text))))
