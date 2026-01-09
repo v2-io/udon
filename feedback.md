@@ -129,3 +129,270 @@
   The main risk is complexity creep — the dynamics section is already substantial, and the escape rules have two forms. The core (elements, attributes, prose, comments, hierarchy) is clean. I'd be tempted to ship that core first and let dynamics be an optional extension.
 
   One suggestion: The spec would benefit from a 10-line "UDON in 30 seconds" that shows the core concepts without the edge cases. Something a developer could glance at and immediately write valid UDON.
+
+
+---
+
+
+⏺ These are juicy questions. Let me engage genuinely rather than hedging.
+
+  @[id] vs |[id]
+
+  I prefer |[id]. The argument for eliminating @:
+
+  - Keeps sigil count at 4 (the current set is elegant and complete)
+  - |[id] has natural semantics: element-marker + identity-only = "the element with this identity"
+  - |{[id]} for inline references is consistent with |{element} syntax
+  - You already have :[id] for attribute-merging, so the system becomes:
+    - |[id] → insert the element
+    - :[id] → merge its attributes
+
+  The semantic gap is: @ has cultural resonance ("at", "mention", "reference"). But I don't think that's worth a 5th sigil. The | prefix already means "structural thing"—a reference is still a structural thing.
+
+  My vote: drop @, use |[id].
+
+  ---
+  Dual escaping (' vs \)
+
+  I'd unify on \.
+
+  The split feels like over-engineering. Yes, '|element looks nice at line start, but:
+
+  - One mechanism to learn > two
+  - \ is universally understood
+  - The context distinction (block vs sameline) is already clear from position
+
+  The only case where ' is arguably better: prose containing contractions at line start ("'Twas the night..."). But that's rare enough to escape explicitly.
+
+  My vote: \ everywhere, deprecate '.
+
+  ---
+  Floating attributes (:{ })
+
+  I'd avoid this.
+
+  The question "what does it attach to?" is unresolvable without new concepts (preceding sibling? nearest ancestor? magical floating scope?).
+
+  If you need metadata on prose, wrap it:
+  |{quote :src http://... :page 219 "Just like the other guy said." -- Fred}
+
+  Or even simpler—the inline element syntax already handles this:
+  "Just like the other guy said." -- Fred |{cite :src http://... :page 219}
+
+  The second form treats the citation as sibling content, which is semantically accurate (it's adjacent metadata, not wrapping the quote).
+
+  My vote: no floating attributes. Existing inline elements suffice.
+
+  ---
+  Hard return with \<newline>
+
+  Yes, I like this.
+
+  It's familiar from various Markdown flavors, visually explicit, and doesn't conflict with other escape sequences.
+
+  The alternative (|br or |{br}) is heavy for something so common in poetry, addresses, lyrics, etc.
+
+  One question: should \<newline> preserve the line break but continue the same "paragraph unit," or is it purely a rendering hint? I'd lean toward: it's a hard break in output, but doesn't start a new text node. Consumers can decide whether that matters.
+
+  My vote: support \<newline> for hard breaks.
+
+  ---
+  Markdown flavor
+
+  This is where I want to think outside the box: consider Djot seriously.
+
+  CommonMark is the safe choice, but Djot was designed by John MacFarlane specifically to fix Markdown's parsing ambiguities. UDON already values unambiguous parsing—Djot aligns with that philosophy.
+
+  Djot advantages:
+  - Unambiguous grammar (no "try this, backtrack, try that")
+  - Cleaner syntax for edge cases
+  - Still feels like Markdown to users
+  - Active development with clear spec
+
+  The risk: Djot is less known. But UDON itself is new—bundling a less-known-but-better prose syntax isn't much additional ask.
+
+  Practical suggestion: define a "UDON prose" subset that's intentionally small:
+
+  | Feature       | Syntax      | Notes                    |
+  |---------------|-------------|--------------------------|
+  | Emphasis      | *text*      | Single asterisk only     |
+  | Strong        | **text**    | Double asterisk only     |
+  | Code          | `code`      | Backticks                |
+  | Links         | [text](url) | Standard                 |
+  | Images        | ![alt](url) | Standard                 |
+  | Strikethrough | ~~text~~    | Useful enough to include |
+
+  Omit from base spec: tables (use UDON elements), footnotes (host-defined), task lists (host-defined), math (host-defined).
+
+  This keeps the core simple while allowing hosts to extend.
+
+  My vote: Djot-inspired minimal subset, explicitly enumerated, host-extensible.
+
+  ---
+  Query/path syntax
+
+  CSS selectors, adapted for UDON.
+
+  The familiarity argument is strong—millions of developers know CSS selectors. And the concepts map beautifully:
+
+  | CSS        | UDON           |
+  |------------|----------------|
+  | #id        | [id] identity  |
+  | .class     | .class (same!) |
+  | element    | element        |
+  | [attr]     | :attr          |
+  | [attr=val] | :attr=val      |
+
+  A UDON query might look like:
+  article[intro] > section.featured :date         ; attribute of section
+  article section p                               ; descendant
+  article > section > p                           ; direct children
+  *:author                                        ; any element with :author
+  section:nth-child(2)                            ; positional
+
+  One twist: I'd use :attr instead of [attr] for attribute selectors, since : is already UDON's attribute sigil. This avoids confusion with [id] identity syntax.
+
+  section:nth-child(1):date>2024-01-01            ; first section with date > ...
+
+  My vote: CSS-selector core with UDON adaptations (:attr for attributes).
+
+  ---
+  Schema language
+
+  This is the most interesting one. I think the answer is UDON itself, using the suffix modifiers as cardinality.
+
+  The spec already defines ?, !, *, + as suffixes that expand to attributes. In a schema context, these become cardinality:
+
+  |schema[article-schema]
+    |article
+      :author! string           ; required, type string
+      :date? date               ; optional, type date
+      :tags? [string]           ; optional, list of strings
+
+      |heading!                 ; exactly one required
+        _text+                  ; one or more text nodes
+
+      |section*                 ; zero or more
+        |p+                     ; one or more paragraphs
+        |figure?                ; optional
+          :src! uri
+          :alt! string
+          :caption? string
+
+  The _text is a thought—a way to constrain text content. Or maybe just prose presence:
+
+  |section*
+    :prose? true               ; may contain prose
+    |p+
+
+  Types could reference other schemas:
+  |type[email]
+    :base string
+    :pattern "^[^@]+@[^@]+$"
+
+  |type[user-role]
+    :enum [admin editor viewer]
+
+  |user
+    :email! @[email]
+    :role! @[user-role]
+
+  The key insight: the schema IS a valid UDON document. You can parse it with the same parser. The schema-specific semantics (cardinality, type checking) are a layer on top.
+
+  This is similar to how Relax NG Compact Syntax works—the schema looks like the documents it describes.
+
+  My vote: UDON-native schema using suffixes for cardinality, with type references via @[id]... or |[id] if we drop @.
+
+  ---
+  Follow-up question for you
+
+  On the |[id] reference syntax: should it be valid to write |[id].class to reference an element AND apply additional classes? Or is a reference purely a reference—no modification at point of use?
+
+  ; Option A: reference is immutable
+  |[header]                    ; insert header as-is
+
+  ; Option B: reference can be augmented
+  |[header].highlighted        ; insert header with added class
+  |[base-config] :override 42  ; reference with local override
+
+  Option B is more powerful but muddies the semantics. Option A is cleaner but less flexible. What's your instinct?
+
+
+---
+
+⏺ Let me think about this from actual agent experience - what do I find hard, what creates friction, what would make generation more reliable...
+
+  1. Uncertainty marking
+
+  Agents often have varying confidence across a document. Right now I'd use comments, but a first-class form might be valuable:
+
+  |field[account_status].enum
+    :values [active suspended terminated]
+    :default active ;? or should new accounts start as pending_verification?
+
+  |field[retention_days]?.integer
+    :min 30 ;?? complete guess - needs domain expert
+
+  A ;? or ;?? form that explicitly signals "agent uncertainty - human review needed here" could survive into tooling (linters that find all uncertainty markers, review workflows that surface them).
+
+  2. Prose-first drafting with gradual formalization
+
+  Agents naturally explain before specifying. UDON already allows:
+
+  |field[email]
+    The user's primary email, used for auth and notifications.
+    Should be required, unique, validated as email format.
+
+  But there's no signal that the prose is the spec (not yet formalized) vs prose alongside the spec. Something like:
+
+  |field[email].draft
+    The user's primary email, used for auth and notifications.
+    Should be required, unique, validated as email format.
+
+  Where .draft (or ? in a different position) signals "this element's prose IS the specification, structure TBD." Tooling could track formalization progress.
+
+  3. Inline schema hints
+
+  When generating, I'm often uncertain what attributes are valid for a given element. If resource definitions could carry their own meta-schema:
+
+  |resource[User]
+    :schema archema/resource/v1  ; now I know what's valid here
+
+  Or even inline:
+
+  |field :accepts [type format min max default unique]
+
+  This is probably over-engineering, but the core need is real: agents benefit from knowing constraints while generating, not just at validation time.
+
+  4. Explicit "to be determined" values
+
+  Beyond nil (intentionally empty) - a value that means "this needs to be filled in":
+
+  |field[retention_policy].enum
+    :values ???          ; TBD - awaiting legal review
+    :default active
+
+  ??? or tbd as a first-class value type that tooling can find and track.
+
+  5. Canonical forms guidance
+
+  When multiple syntaxes work, agents benefit from knowing the preferred form. Not in the spec itself, but perhaps in a companion "authoring guide":
+
+  PREFERRED: |field[name]?.string
+  VALID BUT AVOID: |field[name] |{string} :optional true
+
+  Reduces decision fatigue, makes agent output more consistent and reviewable.
+
+  6. Resumption anchors
+
+  For very long documents or multi-turn generation, explicit "you can resume from here" markers:
+
+  |resource[User]
+    |#checkpoint fields-complete
+
+    ; ... actions below ...
+
+  An agent asked to "continue from where you left off" has an unambiguous anchor.
+
+  ---
+  The deepest one is probably uncertainty marking. It acknowledges that agent-generated content exists on a confidence spectrum, and that's information worth preserving rather than hiding. A ;? comment that means "I wrote this but I'm not sure" turns agent limitations into useful metadata for human review.
