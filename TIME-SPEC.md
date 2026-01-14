@@ -267,6 +267,9 @@ ISO 8601 allows `24:00:00` for end-of-day midnight. UDON recognizes this:
 :opens 00:00:00                  ; start of day
 ```
 
+The parser emits `hour: 24` literally, preserving the semantic distinction between
+"end of Jan 3" and "start of Jan 4". Hosts may normalize if desired.
+
 ### Negative Durations
 
 ISO 8601 doesn't define negative durations. In UDON, use relative time syntax:
@@ -275,6 +278,101 @@ ISO 8601 doesn't define negative durations. In UDON, use relative time syntax:
 :adjustment -P1D                 ; 1 day in the past (relative)
 ; NOT: P-1D                      ; invalid
 ```
+
+---
+
+## Validation and Warnings
+
+This section documents strictness decisions for temporal parsing. The parser
+follows ISO 8601 strictly where practical, with warnings for common mistakes.
+
+### Leading Zeros Required
+
+ISO 8601 requires leading zeros in dates and times. Values without leading zeros
+are not recognized as temporal types:
+
+```udon
+:date 2025-01-03                 ; Date (valid)
+:date 2025-1-3                   ; WARNING: missing leading zeros -> bare string
+:time 09:30                      ; Time (valid)
+:time 9:30                       ; WARNING: missing leading zero -> bare string
+```
+
+**Behavior:** Warn, then parse as bare string (not a temporal value).
+
+### Week Durations Cannot Mix with Other Components
+
+ISO 8601 prohibits combining weeks with other date/time components:
+
+```udon
+:span P2W                        ; Duration: 2 weeks (valid)
+:span P1W2D                      ; INVALID: weeks + days
+:span P2WT4H                     ; INVALID: weeks + hours
+```
+
+**Behavior:** Warn and reject (parse as bare string).
+
+### Fractional Values Only on Smallest Unit
+
+ISO 8601 allows decimal fractions only on the smallest (rightmost) component:
+
+```udon
+:duration PT1.5H                 ; Duration: 1.5 hours (valid)
+:duration PT1H30M                ; Duration: 1h 30m (valid)
+:duration PT1.5H30M              ; INVALID: fractional H followed by M
+:duration P1.5DT2H               ; INVALID: fractional D followed by T...H
+```
+
+**Behavior:** Warn and reject (parse as bare string).
+
+### Negative Zero Offset
+
+Some systems produce `-00:00` for UTC. UDON accepts this as equivalent to
+`Z` or `+00:00`:
+
+```udon
+:timestamp 2025-01-03T14:30:00-00:00   ; Accepted as UTC (no warning)
+:timestamp 2025-01-03T14:30:00Z        ; Canonical UTC
+:timestamp 2025-01-03T14:30:00+00:00   ; Also UTC
+```
+
+**Behavior:** Accept silently as UTC.
+
+### Fractional Seconds Precision
+
+The parser preserves all provided fractional second digits (up to implementation
+limits). Hosts receive the full precision and decide their internal representation:
+
+```udon
+:timestamp 14:30:00.123456789012       ; All digits preserved
+```
+
+**Behavior:** Preserve all digits. Hosts may warn if precision exceeds their
+capability, but the parser does not truncate or reject.
+
+### Empty Duration Components
+
+A duration must have at least one component after `P` (or after `T` for time-only):
+
+```udon
+:duration P1D                    ; Valid
+:duration PT30S                  ; Valid
+:duration P                      ; INVALID: no components -> bare string "P"
+:duration PT                     ; INVALID: T but no time components -> bare string "PT"
+```
+
+**Behavior:** No warning (unambiguous non-match). Parse as bare string.
+
+### Warning Summary
+
+| Condition | Warning? | Result |
+|-----------|----------|--------|
+| Missing leading zeros | Yes | Bare string |
+| Weeks mixed with other components | Yes | Bare string |
+| Fractional on non-smallest unit | Yes | Bare string |
+| Negative zero offset (`-00:00`) | No | Accept as UTC |
+| Excess fractional second digits | No (host may) | Preserve all |
+| Empty duration (`P`, `PT`) | No | Bare string |
 
 ---
 
@@ -331,31 +429,57 @@ ISO 8601 doesn't define negative durations. In UDON, use relative time syntax:
 
 ## Parser Events
 
-The parser emits typed events for temporal values:
+The parser emits **typed events with raw string content**:
 
 ```rust
-enum TemporalValue {
-    Date { year: u16, month: u8, day: Option<u8> },
-    Time { hour: u8, minute: u8, second: u8, nanos: u32 },
-    DateTime { date: Date, time: Time, offset: Option<Offset> },
-    Duration { years: u32, months: u32, days: u32,
-               hours: u32, minutes: u32, seconds: u32, nanos: u32 },
-    RelativeTime { direction: Direction, duration: Duration },
-}
-
-enum Offset {
-    Utc,
-    Fixed { hours: i8, minutes: u8 },
-}
-
-enum Direction {
-    Past,    // -
-    Future,  // +
-}
+// Parser output - type tag with original string
+Date { content: "2025-01-03", span: 0..10 }
+Time { content: "14:30:00.123", span: 0..12 }
+DateTime { content: "2025-01-03T14:30:00Z", span: 0..20 }
+Duration { content: "PT1H30M", span: 0..7 }
+RelativeTime { content: "+30d", span: 0..4 }
 ```
 
-Hosts convert these to their preferred datetime representations (chrono,
-time, jiff, NaiveDateTime, etc.).
+### Why Raw Strings, Not Parsed Components?
+
+The parser validates patterns character-by-character without lookahead. Consider:
+
+```
+2026-03-24T03:12:4.993290109288-says-what
+```
+
+This looks like a DateTime until we reach the invalid ending. Without lookahead,
+we don't know whether something is a valid temporal value until we've validated
+the **entire pattern**. If we emitted sub-events (Year, Month, Day...) as we
+parsed, invalid inputs would leave orphaned partial events.
+
+The solution: validate the full pattern through the state machine, emit a single
+typed event only on successful completion. If validation fails at any point,
+fall through to BareValue.
+
+### What the Parser Provides
+
+1. **Type discrimination**: "This is a Duration, not a bare string"
+2. **Pattern validation**: The string conforms to the expected format
+3. **Original representation**: Preserved exactly (e.g., `24:00:00` vs `00:00:00`)
+
+### Host Responsibility
+
+Hosts parse the validated string into native types. This is straightforward
+because the parser has already determined the type:
+
+```ruby
+# Ruby example
+case event
+when :Duration
+  parse_iso_duration(content)  # We know it's valid ISO 8601
+when :Date
+  Date.parse(content)          # We know it's YYYY-MM-DD or YYYY-MM
+end
+```
+
+Hosts convert to their preferred datetime representations (chrono, time, jiff,
+DateTime, Time, etc.).
 
 ---
 
