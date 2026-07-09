@@ -1,0 +1,3 @@
+[submodule "tools/descent"]
+	path = tools/descent
+	url = https://github.com/v2-io/descent.git
