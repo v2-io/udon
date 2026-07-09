@@ -151,9 +151,9 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 
 | Document | Description |
 |----------|-------------|
-| [FULL-SPEC.md](FULL-SPEC.md) | Full specification (v0.7-draft) |
+| [FULL-SPEC.md](spec/FULL-SPEC.md) | Full specification (v0.7-draft) |
 | [implementation-phase-2.md](implementation-phase-2.md) | Development roadmap for parser implementation |
-| [analysis.md](analysis.md) | Design rationale, TST evaluation, and historical context |
+| [analysis.md](notes/analysis.md) | Design rationale, TST evaluation, and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
 
 ## Implementation

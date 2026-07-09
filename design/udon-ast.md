@@ -206,7 +206,7 @@ Scalar = String       # "quoted" or bare fallback
        | RelativeTime # +30d, -1h (offset from reference point, typically "now")
 ```
 
-See [TIME-SPEC.md](TIME-SPEC.md) for full temporal value syntax and recognition
+See [TIME-SPEC.md](../spec/TIME-SPEC.md) for full temporal value syntax and recognition
 rules.
 
 **Complex attribute values** can be full subtrees:
