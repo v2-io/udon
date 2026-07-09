@@ -134,6 +134,17 @@ parallel track — S1/S2/S3 can start **today**, independent of everything.
 
 ### Phase R — Restructure (the umbrella move) — *do first, ~1 day*
 
+> **Executed 2026-07-09.** R2 ratified as **absorb** (norms evidence in §2
+> settled it). R1 ✓ (all four repos tagged `pre-umbrella-2026-07`) · R3 ✓
+> (descent pinned at `07d09fc`) · R4 ✓ (subtree merge, 115 libudon commits
+> now ancestors of HEAD, tests green from `core/`, regenerate-parser prefers
+> the submodule) · R5 ✓ (udon-ruby submoduled `update=none`; v2-io/libudon
+> and v2-io/udon-ruby archived on GitHub with pointer READMEs) · R6 ✓
+> (21 root docs → spec/design/notes, links swept) · R7 ✓ (README + CLAUDE
+> rewritten for the umbrella). **R8 open** — crates.io reservation needs
+> Joseph's cargo login. `cover-2.udon` (8.5 MB) deliberately left pending a
+> prune/LFS decision.
+
 Everything else references paths; move the ground before building on it.
 
 | # | Step | Notes |

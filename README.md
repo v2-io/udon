@@ -151,25 +151,29 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 
 | Document | Description |
 |----------|-------------|
-| [FULL-SPEC.md](spec/FULL-SPEC.md) | Full specification (v0.7-draft) |
-| [implementation-phase-2.md](implementation-phase-2.md) | Development roadmap for parser implementation |
-| [analysis.md](notes/analysis.md) | Design rationale, TST evaluation, and historical context |
+| [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md) | The estate review: verified state, defects, open decisions |
+| [REBOOT-PLAN.md](REBOOT-PLAN.md) | Prioritized plan: phases, backlog, spikes |
+| [spec/FULL-SPEC.md](spec/FULL-SPEC.md) | Full specification (v0.7-draft) |
+| [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
+| [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
 
 ## Implementation
 
-The parser is implemented in Rust with language bindings:
+This repo became the umbrella on 2026-07-09 (see REBOOT-PLAN.md Phase R):
 
-| Repository | Description |
-|------------|-------------|
-| `~/src/libudon` | Rust core parser + C FFI |
-| `~/src/udon-ruby` | Ruby gem with native extension |
+| Location | Description |
+|----------|-------------|
+| [core/](core/) | Rust workspace: `udon-core` parser + arena tree + fixtures (absorbed from the archived v2-io/libudon, full history) |
+| [tools/descent](tools/descent) | Parser-generator submodule (independent repo + gem) |
+| [_archive/udon-ruby](_archive/) | Frozen Ruby binding (archived; submodule, not auto-initialized) |
 
-See [implementation-phase-2.md](implementation-phase-2.md) for the complete roadmap including:
-- Streaming parser with ring buffer
-- Arena-allocated tree structure
-- Lazy Ruby object projection
-- World-class error messages
+```bash
+cd core && cargo test --workspace     # build + test the reference parser
+```
+
+Rust consumers: `udon-core = { git = "https://github.com/v2-io/udon" }`
+(crates.io publication pending — see REBOOT-PLAN.md R8).
 
 ## Historical Repositories
 
@@ -197,12 +201,16 @@ The original work is preserved in reference repositories:
 
 ## Status
 
-Active development. Phase 2 implementation in progress—see [implementation-phase-2.md](implementation-phase-2.md) for the complete roadmap.
+**Rebooted July 2026** — see [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md)
+(the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
 
 Current state:
-- FULL-SPEC.md complete (v0.7-draft); see REVIEW-JULY-2026.md for current state + reboot plan
-- Rust parser bootstrap working (~30% of spec)
-- Ruby gem compiles and runs tests
-- Benchmarking infrastructure in place
+- spec/FULL-SPEC.md v0.7-draft, with known spec↔impl divergences catalogued
+  (review §2 genealogy)
+- Rust parser: event stream + arena tree, green test suite, ~1.3 GiB/s
+- Twelve verified defects queued (review §4); nine syntax decisions open
+  (review §7-F)
+- First consumers: agentic-systems (ASF process maps) and vivarium
 
-Next: Complete parser implementation, streaming architecture, tree API.
+Next: Phase 0 hygiene → valve decisions → the utilities crate
+(`udon-cli`: fmt, lint, skeleton, paths, conversions).

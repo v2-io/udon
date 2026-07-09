@@ -23,6 +23,12 @@ and defects 9–12 discovered live). Claims marked **[verified]** were
 established by running code or reading primary sources this week; unmarked
 judgments are exactly that.
 
+*Path note (2026-07-09): this document predates the Phase-R umbrella
+restructure. Read `~/src/libudon` as `core/`, root spec/design docs as
+`spec/`/`design/`/`notes/`, and the standalone repos as archived — see
+REBOOT-PLAN.md Phase R. Body left unrewritten: the paths were true when the
+evidence was gathered.*
+
 ---
 
 ## 1. Why now
