@@ -11,13 +11,13 @@ separate repos:
 **See `implementation-phase-2.md` in this repo for the comprehensive roadmap.**
 
 Phase 2 goals:
-- Complete parser implementation (all SPEC.md features)
+- Complete parser implementation (all FULL-SPEC.md features)
 - True streaming with ring buffer architecture
 - Arena-allocated tree with lazy Ruby projection
 - World-class error messages
 
 This repo contains:
-- **SPEC.md** - The authoritative specification
+- **FULL-SPEC.md** - The authoritative specification
 - **implementation-phase-2.md** - Development roadmap
 - **examples/** - Test fixtures and demonstrations
 - **test/** - Benchmarks comparing UDON to YAML/XML
@@ -28,13 +28,13 @@ This repo contains:
 **WHEN YOU ENCOUNTER AMBIGUITY, STOP AND DISCUSS.**
 
 Do NOT:
-- Invent syntax rules that aren't in SPEC.md
+- Invent syntax rules that aren't in FULL-SPEC.md
 - Assume the "obvious" interpretation is correct
 - Silently make design decisions to unblock yourself
 
 DO:
 - Ask Joseph for clarification
-- Note where SPEC.md is silent or contradictory
+- Note where FULL-SPEC.md is silent or contradictory
 - Propose alternatives and discuss trade-offs
 - Document decisions made in conversation
 
@@ -45,7 +45,7 @@ help discover where the spec needs refinement.
 
 ```
 udon/
-├── SPEC.md              # Authoritative specification
+├── FULL-SPEC.md         # Authoritative specification
 ├── README.md            # Overview and examples
 ├── examples/            # Test fixtures
 │   ├── comprehensive.udon
@@ -87,11 +87,13 @@ cd ~/src/udon && ruby test/benchmark.rb
 
 ## Ground Truth
 
-**SPEC.md is the authoritative specification.** The archived Ruby validator
+**FULL-SPEC.md is the authoritative specification.** (SPEC.md was archived
+to `_archive/` in Jan 2026.) For current cross-repo state, defects, and open
+decisions, see **REVIEW-JULY-2026.md**. The archived Ruby validator
 in `_archive/` is NOT authoritative - it predates the current spec.
 
 ## When Stuck
 
-1. Re-read SPEC.md section for the construct in question
+1. Re-read the FULL-SPEC.md section for the construct in question
 2. Check examples/ for existing usage patterns
 3. **Ask Joseph** - ambiguity is valuable information, not a blocker

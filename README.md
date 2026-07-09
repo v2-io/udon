@@ -151,7 +151,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 
 | Document | Description |
 |----------|-------------|
-| [SPEC.md](SPEC.md) | Full specification (v0.7-draft) |
+| [FULL-SPEC.md](FULL-SPEC.md) | Full specification (v0.7-draft) |
 | [implementation-phase-2.md](implementation-phase-2.md) | Development roadmap for parser implementation |
 | [analysis.md](analysis.md) | Design rationale, TST evaluation, and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
@@ -200,7 +200,7 @@ The original work is preserved in reference repositories:
 Active development. Phase 2 implementation in progress—see [implementation-phase-2.md](implementation-phase-2.md) for the complete roadmap.
 
 Current state:
-- SPEC.md complete (v0.7-draft)
+- FULL-SPEC.md complete (v0.7-draft); see REVIEW-JULY-2026.md for current state + reboot plan
 - Rust parser bootstrap working (~30% of spec)
 - Ruby gem compiles and runs tests
 - Benchmarking infrastructure in place
