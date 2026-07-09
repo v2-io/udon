@@ -79,6 +79,39 @@ commits the pointer, and CI that fails when the umbrella's pin is behind the
 submodule's main. (Agents forget `git submodule update`; make the harness
 remember.)
 
+### Rust-ecosystem norms (the deciding question — verified 2026-07-09)
+
+Crates published from subdirectories of broader-scoped repos is **thoroughly
+typical — arguably the dominant pattern** for single-reference-implementation
+projects. Verified via crates.io `repository` metadata:
+
+| Published crate | Registered repository |
+|---|---|
+| `grep-searcher` | `BurntSushi/ripgrep/tree/master/crates/searcher` — a crate whose registered home *is a subdirectory* of an application repo |
+| `cranelift-codegen` | `bytecodealliance/wasmtime` — a whole compiler backend inside a broader project |
+| `tokio-util` | `tokio-rs/tokio` — workspace siblings |
+| `tree-sitter` | `tree-sitter/tree-sitter` — the closest udon analogy: multi-language umbrella (C lib + CLI + docs + bindings) publishing its Rust crate from a subdir |
+| `naga` | `gfx-rs/wgpu` — **was its own repo, absorbed into wgpu with history**: the exact operation R4 proposes, performed by a flagship project |
+
+Publishing mechanics from a workspace subdir are what the standard release
+tooling is built for: `cargo publish -p udon-core` from a tag-triggered
+GitHub workflow; **release-plz** (workspace-aware release PRs + auto-publish
+of changed crates) or **cargo-release** if we want automation; the monorepo
+tag convention is `udon-core-v0.10.0` (per-crate tags, tokio-style). Crates
+version independently within the workspace; `cargo package` includes only
+the crate directory, so per-crate `readme`/`license` use workspace
+inheritance (standard).
+
+Honest caveats: (a) git-dependency consumers clone the whole umbrella —
+udon carries an 8.5 MB example file (`cover-2.udon`) and ~2 MB of eval
+results, worth pruning/LFS-ing at R6 for pre-crates.io git-dep ergonomics
+(irrelevant once published); (b) one shared issue tracker for
+language-vs-crate concerns — fine at this scale; (c) the countervailing
+norm — spec repos kept separate from implementations (CommonMark, TOML) —
+applies to mature **multi-implementation standards**, which UDON may become
+someday but is not in this phase. The single-reference-impl phase is
+exactly when tree-sitter/ripgrep-style consolidation is normal.
+
 ## 3. Naming & registry facts (checked 2026-07-09)
 
 - **crates.io `udon` is squatted by a stranger** — a dormant 2021 audio
