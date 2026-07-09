@@ -14,7 +14,7 @@ The tree builder (when implemented) will be just another event consumer.
 
 ## Current Status
 
-**Branch:** `phase-3-genmachine-rewrite`
+**Branch:** `main` (updated 2026-07-08; see `~/src/udon/REVIEW-JULY-2026.md` for current state)
 
 ### What Works
 
@@ -61,7 +61,7 @@ The tree builder (when implemented) will be just another event consumer.
 
 - [ ] **Fixture coverage** - Many fixtures have empty events, need SPEC-based expectations
 - [ ] **Variation test edge cases** - Some edge cases with indentation variations
-- [ ] **value.rs evaluation** - Post-hoc classification may be redundant now
+- [x] **value.rs evaluation** — moot: value.rs was deleted with the Tree API commit (a6d23e7)
 
 ## Phase 3: Build Forward (IN PROGRESS)
 
@@ -94,7 +94,7 @@ All core grammar features implemented:
 
 - [x] Removed `udon-core/src/values_parser.rs` (obsolete)
 - [x] Removed `udon-core/benches/values.rs` (used values_parser.rs)
-- [ ] Evaluate `udon-core/src/value.rs` (post-hoc classification may be redundant)
+- [x] Evaluate `udon-core/src/value.rs` — moot, deleted in a6d23e7
 
 ## Fixture Status
 
