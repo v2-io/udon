@@ -1,0 +1,66 @@
+---
+# Comments and text at document root
+# NOTE: Comment is now BRACKET type - emits CommentStart/Text/CommentEnd
+
+- id: empty_input
+  desc: Empty input produces no events
+  udon: ''
+  events: []
+
+- id: single_comment
+  desc: Single line comment
+  udon: "; this is a comment\n"
+  events:
+    - CommentStart
+    - [Text, " this is a comment"]
+    - CommentEnd
+
+- id: multiple_comments
+  desc: Multiple consecutive comments
+  udon: |
+    ; first
+    ; second
+    ; third
+  events:
+    - CommentStart
+    - [Text, " first"]
+    - CommentEnd
+    - CommentStart
+    - [Text, " second"]
+    - CommentEnd
+    - CommentStart
+    - [Text, " third"]
+    - CommentEnd
+
+- id: simple_text
+  desc: Simple text line (prose at root)
+  udon: "Hello world\n"
+  events:
+    - [Text, "Hello world"]
+
+- id: text_with_semicolon
+  desc: Prose text with semicolon is literal (not comment)
+  # `;` mid-line in prose is LITERAL - only `;` at line start or in sameline context triggers comment
+  udon: "Some text ; not a comment\n"
+  events:
+    - [Text, "Some text ; not a comment"]
+
+- id: blank_lines
+  desc: Blank lines produce no events
+  udon: "\n\n\n"
+  events: []
+
+- id: mixed_content
+  desc: Comments and text interspersed
+  udon: |
+    ; Comment
+    Text line
+    ; Another comment
+  events:
+    - CommentStart
+    - [Text, " Comment"]
+    - CommentEnd
+    - [Text, "Text line"]
+    - CommentStart
+    - [Text, " Another comment"]
+    - CommentEnd

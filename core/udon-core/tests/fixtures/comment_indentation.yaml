@@ -1,0 +1,107 @@
+---
+# Comment indentation tests - block comments respect element hierarchy
+# NOTE: Comment is now BRACKET type - emits CommentStart/Text/CommentEnd
+
+- id: block_comment_inside_element
+  desc: Block comment indented under child becomes child content
+  udon: "|parent\n  |child\n   ; inside child\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - CommentStart
+    - [Text, " inside child"]
+    - CommentEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: block_comment_as_sibling
+  desc: Block comment at same indent as child is sibling of child
+  udon: "|parent\n  |child\n  ; sibling comment\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - ElementEnd
+    - CommentStart
+    - [Text, " sibling comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: block_comment_closes_multiple_levels
+  desc: Dedented comment closes all nested elements
+  udon: "|parent\n  |child\n    |grandchild\n; closes all\n|sibling\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - ElementStart
+    - [Name, "grandchild"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - CommentStart
+    - [Text, " closes all"]
+    - CommentEnd
+    - ElementStart
+    - [Name, "sibling"]
+    - ElementEnd
+
+# Per SPEC 491-498: inline comments are emitted as events
+- id: inline_comment_stripped_from_output
+  desc: Inline brace comment in text
+  udon: "|p This is text ;{TODO} and more."
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This is text "]
+    - CommentStart
+    - [Text, "TODO"]
+    - CommentEnd
+    - [Text, " and more."]
+    - ElementEnd
+
+- id: inline_comment_at_end_of_line
+  desc: Inline brace comment at end of line
+  udon: "|p Some text ;{comment at end}"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Some text "]
+    - CommentStart
+    - [Text, "comment at end"]
+    - CommentEnd
+    - ElementEnd
+
+# Per EBNF 205: braces inside comment body are balanced, ;{ is literal
+- id: nested_inline_comment
+  desc: Nested braces in inline comment (not nested comment)
+  udon: "|p Text ;{outer {inner} outer} more."
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Text "]
+    - CommentStart
+    - [Text, "outer {inner} outer"]
+    - CommentEnd
+    - [Text, " more."]
+    - ElementEnd
+
+# Per SPEC 502-508: '; at line start outputs literal semicolon
+- id: escaped_semicolon_at_line_start
+  desc: Escaped semicolon at line start
+  udon: "'; This starts with semicolon"
+  events:
+    - [Text, "; This starts with semicolon"]
+
+- id: escaped_semicolon_in_element
+  desc: Escaped semicolon in element prose
+  udon: "|p\n  '; literal semicolon\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "; literal semicolon"]
+    - ElementEnd

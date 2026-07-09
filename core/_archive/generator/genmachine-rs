@@ -1,0 +1,1261 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+# genmachine-rs: Generate Rust parser from .machine DSL
+#
+# Full port of the original C genmachine to emit Rust.
+# The DSL is parsed column-by-column (pipe-separated).
+#
+# Key features:
+# - Variables with arithmetic (lvl=0, lvl+=1)
+# - Conditionals (if[cond] ... endif)
+# - Advance-to patterns (->[chars])
+# - MARK/TERM for string accumulation
+# - emit() for event emission
+#
+# Usage: ./genmachine-rs [--trace] udon.machine > udon-core/src/parser.rs
+
+require 'liquid'
+
+INDENTS = 4
+
+# Global trace mode - when true, generates trace statements
+$trace_mode = false
+
+# Current line number being parsed (for tracking in AST nodes)
+$current_lineno = 0
+
+# Generate a trace statement for debugging
+def trace_stmt(lineno, context, indent = "")
+  return "" unless $trace_mode
+  "#{indent}eprintln!(\"TRACE L{}: {}\", #{lineno}, #{context.inspect});\n"
+end
+
+def dent(i)
+  ' ' * i * INDENTS
+end
+
+# ============================================================================
+# DSL AST Classes
+# ============================================================================
+
+class GMGenericChild
+  attr_accessor :parent, :name, :body, :lineno
+
+  def initialize(parent, name)
+    @parent = parent
+    @name = name
+    @body = []
+    @lineno = $current_lineno || 0
+  end
+
+  def gm
+    return self if self.is_a?(GM)
+    p = @parent
+    p = p.parent while p && !p.is_a?(GM)
+    p
+  end
+
+  def gmf
+    return self if self.is_a?(GMFunction)
+    p = @parent
+    p = p.parent while p && !p.is_a?(GMFunction)
+    p
+  end
+
+  def gms
+    return self if self.is_a?(GMState)
+    p = @parent
+    p = p.parent while p && !p.is_a?(GMState)
+    p
+  end
+
+  def check_basic_commands(c, &src)
+    matched = false
+    is_done = false
+    new_c = c
+
+    case c[0]
+    when ''
+      cmd_str = c[2].strip
+      unless cmd_str.empty?
+        @body << GMCommand.new(self, cmd_str)
+      end
+      new_c = yield
+      matched = true
+    when /^emit\(/i
+      # Handle emit(EventType) as a command
+      @body << GMCommand.new(self, c[0])
+      new_c = yield
+      matched = true
+    when '>>'
+      if c[2].strip.empty?
+        # Self-loop - stay in current state
+      else
+        loc = gm.parse_location(c[2])
+        if loc[:function]
+          # Call function using DSL format - GMCommand will parse it
+          args = loc[:args] ? loc[:args].join(", ") : ""
+          @body << GMCommand.new(self, "/#{loc[:function]}(#{args})")
+          # If there's also a state after the function call, transition to it
+          if loc[:state]
+            state_enum = "State::S#{loc[:state].split('_').map(&:capitalize).join}"
+            @body << GMCommand.new(self, "state = #{state_enum}")
+          end
+        elsif loc[:state]
+          state_enum = "State::S#{loc[:state].split('_').map(&:capitalize).join}"
+          @body << GMCommand.new(self, "state = #{state_enum}")
+        end
+      end
+      new_c = yield
+      matched = true
+      is_done = true
+    when 'err'
+      msg = c[2].gsub('"', '\\"')
+      @body << GMCommand.new(self, %{self.emit(Event::Error { message: "#{msg}", span: Span::new(self.pos, self.pos) })})
+      @body << GMCommand.new(self, "return")
+      new_c = yield
+      matched = true
+      is_done = true
+    when 'return'
+      ret_val = c[2].strip
+      if ret_val.empty? || ret_val == 'S'
+        @body << GMCommand.new(self, "return")
+      else
+        @body << GMCommand.new(self, "return #{ret_val}")
+      end
+      new_c = yield
+      matched = true
+      is_done = true
+    when 'if'
+      cond = GMConditional.new(self, c[1])
+      @body << cond
+      new_c = cond.parse(&src)
+      matched = true
+    end
+
+    [matched, new_c, is_done]
+  end
+end
+
+class GM < GMGenericChild
+  attr_accessor :enums, :structs, :epoints, :listy
+
+  def initialize
+    super(nil, '')
+    @enums = []
+    @structs = []
+    @epoints = []
+    @listy = ['LIST', 'STRING']
+    @entry_point = nil
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      case c[0]
+      when 'parser'
+        @name = c[2].strip.downcase
+        c = yield
+      when 'entry-point'
+        @entry_point = parse_location(c[2].strip)
+        c = yield
+      when 'function'
+        fname, ftype = c[1].split(':')
+        params_str = c[2]  # e.g., ":elem_col :content_base"
+        f = GMFunction.new(self, fname, ftype, params_str)
+        @body << f
+        c = f.parse(&src)
+      when 'enum'
+        e = GMEnum.new(self, c[1])
+        @enums << e
+        c = e.parse(&src)
+      when 'struct'
+        s = GMStruct.new(self, c[1])
+        @structs << s
+        c = s.parse(&src)
+      else
+        c = yield rescue break
+      end
+    end
+  end
+
+  def parse_location(loc)
+    parts = loc.split(/(?=\/|:|\.)/)
+    result = {}
+    parts.each do |part|
+      case part[0]
+      when '/'
+        # Handle /func(arg1, arg2) syntax
+        # Note: part may have trailing space before next location component
+        clean_part = part.strip
+        if clean_part =~ /^\/([^(]+)\(([^)]*)\)$/
+          # Capture immediately - gsub resets $1/$2!
+          func_name = $1
+          args_str = $2 || ""
+          result[:function] = func_name.gsub('-', '_')
+          result[:args] = args_str.empty? ? [] : args_str.split(',').map(&:strip)
+        else
+          result[:function] = clean_part[1..-1].gsub('-', '_')
+        end
+      when ':'
+        result[:state] = part[1..-1].gsub('-', '_').gsub(':', '')
+      when '.'
+        result[:substate] = part[1..-1]
+      else
+        result[:state] = part.gsub('-', '_')
+      end
+    end
+    @epoints << result if result[:function]
+    result
+  end
+
+  def entry_function
+    @entry_point ? @entry_point[:function] : 'line'
+  end
+
+  def output_functions
+    @body.select { |b| b.is_a?(GMFunction) }.map(&:to_rust)
+  end
+
+  def output_enums
+    @enums.map(&:to_rust)
+  end
+
+  def output_structs
+    @structs.map(&:to_rust)
+  end
+end
+
+class GMEnum < GMGenericChild
+  def parse(&src)
+    c = yield
+    loop do
+      break if %w[struct enum function parser entry-point].include?(c[0])
+      @body << c[0].strip
+      c = yield
+    end
+    c
+  end
+
+  def to_rust
+    variants = @body.map { |v| "    #{v.split(/(?=[A-Z])/).map(&:capitalize).join}," }.join("\n")
+    <<~RUST
+      #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+      pub enum #{@name} {
+      #{variants}
+      }
+    RUST
+  end
+end
+
+class GMStruct < GMGenericChild
+  def initialize(parent, name)
+    super(parent, name)
+    parts = name.split('<').map(&:strip)
+    @name = parts[0]
+    @struct_parent = parts[1]
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      break if %w[struct enum function parser entry-point].include?(c[0])
+      field_name = c[0].strip
+      field_type = c[2].strip
+      @body << [field_name, rust_type(field_type)]
+      c = yield
+    end
+    c
+  end
+
+  def rust_type(t)
+    case t
+    when 'Z+' then 'u64'
+    when 'STRING' then "&'a [u8]"
+    when 'LIST' then "Vec<#{gm.name.capitalize}Node<'a>>"
+    when 'DICT' then "std::collections::HashMap<&'a [u8], Value<'a>>"
+    else "#{t}<'a>"
+    end
+  end
+
+  def to_rust
+    fields = @body.map { |name, typ| "    pub #{name}: #{typ}," }.join("\n")
+    <<~RUST
+      #[derive(Debug, Clone)]
+      pub struct #{@name}<'a> {
+      #{fields}
+      }
+    RUST
+  end
+end
+
+class GMFunction < GMGenericChild
+  attr_accessor :ftype, :locals, :expected, :implemented, :eof_handler, :init_commands, :params
+
+  def initialize(parent, name, return_type, params_str = nil)
+    super(parent, name.gsub('-', '_'))
+    @ftype = return_type
+    @locals = {}           # Variable name => type
+    @params = []           # Parameter names (without leading :)
+    @init_commands = []    # Commands to run at function start
+    @expected = {}
+    @implemented = {}
+    @eof_handler = nil
+    @has_states = false
+
+    # Parse parameters from string like ":col :parent_col"
+    if params_str && !params_str.empty?
+      params_str.scan(/:(\w+)/).each do |match|
+        @params << match[0]
+      end
+    end
+  end
+
+  def register_local(name, init_value = nil)
+    return if @locals[name]
+    @locals[name] = init_value
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      break if %w[enum struct function].include?(c[0])
+
+      case c[0]
+      when 'eof'
+        @eof_handler = GMEOF.new(self)
+        c = @eof_handler.parse(&src)
+      when 'var'
+        # Variable declaration: |var[name] = value
+        var_name = c[1]
+        init_val = c[2].strip.sub(/^=\s*/, '')
+        register_local(var_name, init_val)
+        c = yield
+      when 'state'
+        state_name = c[1].gsub('-', '_').gsub(':', '')
+        # Check for inline init commands after state name
+        rest = c[2].strip
+        st = GMState.new(self, state_name, !@has_states)
+        @has_states = true
+
+        # Parse inline commands on the state line
+        if rest && !rest.empty?
+          # Could be things like "| S.node_type=ROOT | inl = 0"
+          rest.split('|').each do |cmd|
+            cmd = cmd.strip
+            next if cmd.empty?
+            st.inline_init << GMCommand.new(st, cmd)
+          end
+        end
+
+        @body << st
+        @implemented[state_name] = true
+        c = st.parse(&src)
+      when ''
+        # Function-level command (initialization)
+        cmd_str = c[2].strip
+        unless cmd_str.empty?
+          # Check if it's a variable init
+          if cmd_str =~ /^(\w+)\s*=\s*(.+)$/
+            var_name = $1
+            init_val = $2
+            register_local(var_name, init_val)
+            @init_commands << GMCommand.new(self, cmd_str)
+          else
+            @init_commands << GMCommand.new(self, cmd_str)
+          end
+        end
+        c = yield
+      else
+        c = yield
+      end
+    end
+    c
+  end
+
+  def validate_eof_handlers!
+    states = @body.select { |b| b.is_a?(GMState) }
+    missing_eof = []
+
+    states.each do |state|
+      # Check if state has match cases (patterns that could leave us stuck at EOF)
+      match_cases = state.body.select { |obj| obj.is_a?(GMCase) }
+      next if match_cases.empty?  # No patterns = no EOF concern
+
+      # Check if state has explicit EOF handler
+      has_eof = state.instance_variable_get(:@local_eof)&.body&.any?
+      next if has_eof
+
+      # Check if function has a global EOF handler that would catch this
+      next if @eof_handler
+
+      # This state could loop forever at EOF
+      missing_eof << state.name
+    end
+
+    unless missing_eof.empty?
+      $stderr.puts "\n" + "=" * 70
+      $stderr.puts "ERROR: States without EOF handlers (will cause infinite loops!):"
+      $stderr.puts "=" * 70
+      missing_eof.each { |name| $stderr.puts "  - #{@name}:#{name}" }
+      $stderr.puts "=" * 70
+      $stderr.puts "Add |eof handler to each state, or add function-level |eof handler."
+      $stderr.puts ""
+      exit 1
+    end
+  end
+
+  def to_rust
+    validate_eof_handlers!
+
+    code = []
+
+    # Generate function signature with parameters
+    if @params.any?
+      param_list = @params.map { |p| "#{p}: i32" }.join(", ")
+      code << "    fn parse_#{@name}(&mut self, #{param_list}) {"
+    else
+      code << "    fn parse_#{@name}(&mut self) {"
+    end
+
+    # Generate local variable declarations
+    @locals.each do |name, init_val|
+      rust_init = map_value(init_val)
+      code << "        let mut #{name}: i32 = #{rust_init};"
+    end
+    code << "" if @locals.any?
+
+    # Generate init commands (non-variable ones)
+    @init_commands.each do |cmd|
+      next if cmd.name =~ /^\w+\s*=/ # Skip var inits, already handled
+      code << "        #{cmd.to_rust}"
+    end
+
+    # Generate state enum if we have states
+    states = @body.select { |b| b.is_a?(GMState) }
+    if states.any?
+      state_names = states.map { |s| "S#{s.name.split('_').map(&:capitalize).join}" }
+      code << "        #[derive(Clone, Copy)]"
+      code << "        enum State { #{state_names.join(', ')} }"
+      code << ""
+      code << "        let mut state = State::#{state_names.first};"
+      code << "        loop {"
+      # Only add function-level EOF check if there's an explicit handler
+      # Otherwise, let each state handle EOF with its own handler
+      if @eof_handler
+        code << "            if self.eof() {"
+        @eof_handler.body.each { |cmd| code << "                #{cmd.to_rust}" }
+        code << "            }"
+        code << ""
+      end
+      code << "            match state {"
+
+      states.each_with_index do |state, idx|
+        code << state.to_rust(state_names, idx)
+      end
+
+      code << "            }"
+      code << "        }"
+    else
+      @body.each { |b| code << "        #{b.to_rust}" if b.is_a?(GMCommand) }
+    end
+
+    code << "    }"
+    code.join("\n")
+  end
+
+  def map_value(val)
+    return "0" if val.nil?
+    val = val.strip
+
+    # Handle parameter references like :elem_col
+    if val =~ /^:(\w+)$/
+      return $1  # Just the parameter name
+    end
+
+    # Map special values
+    val.gsub(/\bCOL\b/, '(self.column as i32)')
+       .gsub(/\bACTUAL_COL\b/, 'self.current_column()')
+       .gsub(/\bLINE\b/, '(self.line as i32)')
+       .gsub(/:(\w+)/, '\1')  # Also handle :param in expressions
+  end
+end
+
+class GMEOF < GMGenericChild
+  def initialize(parent)
+    super(parent, 'eof')
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      # Stop if we hit the next major construct
+      break if %w[enum struct function state c default eof].include?(c[0])
+
+      if c[0] == '.'
+        # Substate marker - skip it and continue
+        c = yield
+      else
+        res, c, is_done = check_basic_commands(c, &src)
+        break if is_done && res
+        c = yield unless res
+      end
+    end
+    c
+  end
+
+  def to_rust
+    code = []
+    code << "if self.eof() {"
+    @body.each do |cmd|
+      rust = cmd.to_rust
+      code << "    #{rust}" unless rust.nil? || rust.empty?
+    end
+    code << "}"
+    code.join("\n")
+  end
+end
+
+class GMState < GMGenericChild
+  attr_accessor :is_first, :inline_init
+
+  def initialize(parent, name, is_first)
+    super(parent, name)
+    @is_first = is_first
+    @inline_init = []
+    @local_eof = nil
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      break if %w[enum struct function state].include?(c[0])
+
+      case c[0]
+      when 'c'
+        cstmt = GMCase.new(self, c[1])
+        @body << cstmt
+        c = cstmt.parse(&src)
+      when 'default'
+        dstmt = GMCase.new(self, nil)
+        @body << dstmt
+        c = dstmt.parse(&src)
+      when 'eof'
+        @local_eof = GMEOF.new(self)
+        c = @local_eof.parse(&src)
+      else
+        res, c, is_done = check_basic_commands(c, &src)
+        break if is_done && res
+        c = yield unless res
+      end
+    end
+    c
+  end
+
+  def to_rust(state_names, idx)
+    state_enum = state_names[idx]
+    func_name = gmf&.name || "?"
+    code = []
+    code << "                State::#{state_enum} => {"
+
+    # Trace statement for entering state
+    if $trace_mode
+      code << "                    eprintln!(\"TRACE L#{@lineno}: #{func_name}/#{@name} pos={} peek={:?}\", self.pos, self.peek());"
+    end
+
+    # Check if inline_init contains a SCAN command (SCAN-first optimization)
+    scan_first_cmd = nil
+    other_init = []
+    @inline_init.each do |cmd|
+      if cmd.instance_variable_get(:@type) == :scan
+        scan_first_cmd = cmd
+      else
+        other_init << cmd
+      end
+    end
+
+    # Output non-SCAN init commands
+    other_init.each do |cmd|
+      code << "                    #{cmd.to_rust}"
+    end
+
+    # Separate conditionals from match cases
+    # Conditionals (|if[...]) go before the match block
+    conditionals = @body.select { |obj| obj.is_a?(GMConditional) }
+    match_cases = @body.select { |obj| obj.is_a?(GMCase) }
+
+    # Output conditionals first (as prefix guards)
+    conditionals.each do |cond|
+      code << "                    #{cond.to_rust(state_names)}"
+    end
+
+    if match_cases.any?
+      if scan_first_cmd
+        # SCAN-first mode: match directly on scan return value
+        # This eliminates per-character overhead for content-heavy states
+        code << "                    // SCAN-first: bulk scan and match result"
+        code << "                    match #{scan_first_cmd.to_rust} {"
+        # Output non-default cases wrapped in Some()
+        match_cases.reject(&:is_default).each do |case_obj|
+          code << case_obj.to_rust_scan_first(state_names)
+        end
+        # None case = EOF
+        code << "                        None => {"
+        if @local_eof && @local_eof.body.any?
+          @local_eof.body.each do |cmd|
+            rust = cmd.to_rust
+            code << "                            #{rust}" if rust && !rust.empty?
+          end
+        else
+          code << "                            return;"
+        end
+        code << "                        }"
+        code << "                        _ => {} // Other bytes not possible after SCAN"
+        code << "                    }"
+      else
+        # Fused eof+peek: single match eliminates redundant bounds check
+        code << "                    match self.peek() {"
+        code << "                        None => {"
+        if @local_eof && @local_eof.body.any?
+          @local_eof.body.each do |cmd|
+            rust = cmd.to_rust
+            code << "                            #{rust}" if rust && !rust.empty?
+          end
+        else
+          code << "                            return;"
+        end
+        code << "                        }"
+        code << "                        Some(b) => {"
+        code << "                            match b {"
+        match_cases.each do |case_obj|
+          code << case_obj.to_rust(state_names)
+        end
+        code << "                            }"
+        code << "                        }"
+        code << "                    }"
+      end
+    end
+
+    code << "                }"
+    code.join("\n")
+  end
+
+end
+
+class GMCase < GMGenericChild
+  attr_accessor :chars, :is_default, :substate
+
+  def initialize(parent, chars_str)
+    super(parent, chars_str)
+    @is_default = chars_str.nil?
+    @substate = nil
+    @special_class = nil
+    @chars = nil
+
+    unless @is_default
+      # Parse character class
+      processed = chars_str
+        .gsub('<L>', "\x01LEFT_BRACKET\x01")
+        .gsub('<R>', "\x01RIGHT_BRACKET\x01")
+        .gsub('<LB>', "\x01LEFT_BRACE\x01")
+        .gsub('<RB>', "\x01RIGHT_BRACE\x01")
+        .gsub('<P>', "\x01PIPE\x01")
+        .gsub('<BS>', "\x01BACKSLASH\x01")
+        .gsub('\\\\', "\x01BACKSLASH\x01")
+        .gsub('\\t', "\t")
+        .gsub('\\n', "\n")
+
+      # Check for special named classes (all uppercase)
+      if processed =~ /^[A-Z_]+$/
+        @special_class = processed
+      else
+        # Restore special chars
+        processed = processed
+          .gsub("\x01LEFT_BRACKET\x01", '[')
+          .gsub("\x01RIGHT_BRACKET\x01", ']')
+          .gsub("\x01LEFT_BRACE\x01", '{')
+          .gsub("\x01RIGHT_BRACE\x01", '}')
+          .gsub("\x01PIPE\x01", '|')
+          .gsub("\x01BACKSLASH\x01", '\\')
+        @chars = processed.chars
+      end
+    end
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      break if %w[enum struct function state c default].include?(c[0])
+
+      if c[0] == '.'
+        @substate = c[2]
+        gmf.implemented["#{gms.name}__#{@substate}"] = true if gmf && gms
+        c = yield
+      else
+        res, c, is_done = check_basic_commands(c, &src)
+        break if is_done && res
+        c = yield unless res
+      end
+    end
+    c
+  end
+
+  def to_rust(state_names)
+    code = []
+    indent = "                        "
+
+    # Generate match arm
+    if @is_default
+      code << "#{indent}_ => {"
+    elsif @special_class
+      match_expr = case @special_class
+      when 'LETTER' then 'b if self.is_label_start(b)'
+      when 'LABEL_CONT' then 'b if self.is_label_continue(b)'
+      when 'ELEMENT_START' then 'b if self.is_element_start_byte(b)'
+      else "_ /* unknown: #{@special_class} */"
+      end
+      code << "#{indent}#{match_expr} => {"
+    elsif @chars && !@chars.empty?
+      chars = @chars.map { |c| format_char(c) }.join(' | ')
+      code << "#{indent}#{chars} => {"
+    else
+      return "#{indent}// WARNING: empty pattern for #{@name.inspect}"
+    end
+
+    # Trace statement for case match
+    if $trace_mode
+      state_name = gms&.name || "?"
+      case_label = @substate || (@is_default ? "default" : @chars&.join || "?")
+      code << "#{indent}    eprintln!(\"TRACE L#{@lineno}: #{state_name}.#{case_label} mark={}\", self.mark_pos);"
+    end
+
+    # Generate body
+    @body.each do |cmd|
+      rust = cmd.to_rust
+      code << "#{indent}    #{rust}" unless rust.nil? || rust.empty?
+    end
+
+    # Default placeholder if empty
+    if @body.empty?
+      code << "#{indent}    // #{@substate || 'unhandled'}"
+    end
+
+    code << "#{indent}}"
+    code.join("\n")
+  end
+
+  # Generate match arm for SCAN-first mode (wraps pattern in Some())
+  def to_rust_scan_first(state_names)
+    code = []
+    indent = "                        "
+
+    # Generate match arm with Some() wrapper
+    if @is_default
+      return "" # Default case not needed in SCAN-first
+    elsif @special_class
+      # Special classes not supported in SCAN-first mode
+      return "#{indent}// WARNING: special class #{@special_class} not supported in SCAN-first"
+    elsif @chars && !@chars.empty?
+      chars = @chars.map { |c| "Some(#{format_char(c)})" }.join(' | ')
+      code << "#{indent}#{chars} => {"
+    else
+      return "#{indent}// WARNING: empty pattern for #{@name.inspect}"
+    end
+
+    # Trace statement for SCAN-first case match
+    if $trace_mode
+      state_name = gms&.name || "?"
+      case_label = @substate || @chars&.join || "?"
+      code << "#{indent}    eprintln!(\"TRACE L#{@lineno}: #{state_name}.#{case_label} (SCAN) mark={} pos={}\", self.mark_pos, self.pos);"
+    end
+
+    # Generate body
+    @body.each do |cmd|
+      rust = cmd.to_rust
+      code << "#{indent}    #{rust}" unless rust.nil? || rust.empty?
+    end
+
+    # Default placeholder if empty
+    if @body.empty?
+      code << "#{indent}    // #{@substate || 'unhandled'}"
+    end
+
+    code << "#{indent}}"
+    code.join("\n")
+  end
+
+  def format_char(c)
+    case c
+    when "\n" then "b'\\n'"
+    when "\t" then "b'\\t'"
+    when "'" then "b'\\''"
+    when "\\" then "b'\\\\'"
+    when "[" then "b'['"
+    when "]" then "b']'"
+    when "|" then "b'|'"
+    when "@" then "b'@'"
+    when "`" then "b'`'"
+    when "{" then "b'{'"
+    when "}" then "b'}'"
+    else "b'#{c}'"
+    end
+  end
+end
+
+class GMCommand < GMGenericChild
+  def initialize(parent, cmd)
+    super(parent, cmd.strip)
+    @raw_cmd = cmd.strip
+    parse_command
+  end
+
+  def parse_command
+    cmd = @raw_cmd
+
+    # Handle MARK
+    if cmd =~ /\bMARK\b/
+      @type = :mark
+      return
+    end
+
+    # Handle TERM
+    if cmd =~ /\bTERM\b/
+      @type = :term
+      return
+    end
+
+    # Handle function call /name or /name(args)
+    if cmd =~ /^\/(\w+)(?:\(([^)]*)\))?/
+      @type = :call
+      func_name = $1
+      args_str = $2
+      @call_target = func_name.gsub('-', '_')
+      @call_args = args_str ? args_str.split(',').map(&:strip) : []
+      return
+    end
+
+    # Handle advance-to pattern: ->[chars] or ->[\n]
+    if cmd =~ /^->\s*\[([^\]]+)\]$/
+      @type = :advance_to
+      @advance_chars = $1.gsub('\\n', "\n").gsub('\\t', "\t")
+      return
+    end
+
+    # Handle simple advance ->
+    if cmd =~ /^\s*->\s*$/
+      @type = :advance
+      return
+    end
+
+    # Handle emit(EventType) or emit(Error:message)
+    if cmd =~ /emit\(([^)]+)\)/i
+      @type = :emit
+      @event_type = $1
+      return
+    end
+
+    # Handle CALL:method
+    if cmd =~ /CALL:(\w+)/i
+      @type = :call_method
+      @method_name = $1
+      return
+    end
+
+    # Handle SCAN(chars) - SIMD-accelerated scanning until any of the specified characters
+    # Uses parentheses to avoid confusion with DSL's [] id syntax
+    # Examples:
+    #   SCAN(\n)     - scan until newline (uses memchr)
+    #   SCAN(\n;)    - scan until newline or semicolon (uses memchr2)
+    #   SCAN(\n;<P>) - scan until newline, semicolon, or pipe (uses memchr3)
+    # Returns the found character or None if EOF
+    if cmd =~ /SCAN\(([^)]+)\)/i
+      @type = :scan
+      # Parse the character set, handling escapes
+      @scan_chars = $1
+        .gsub('\\n', "\n")
+        .gsub('\\t', "\t")
+        .gsub('<P>', '|')
+        .gsub('<BS>', '\\')
+        .gsub('<L>', '[')
+        .gsub('<R>', ']')
+        .gsub('<LB>', '{')
+        .gsub('<RB>', '}')
+        .chars
+      return
+    end
+
+    # Handle += and -=
+    if cmd =~ /^(\w+)\s*\+=\s*(.+)$/
+      @type = :add_assign
+      @lhs = $1
+      @rhs = $2
+      return
+    end
+
+    if cmd =~ /^(\w+)\s*-=\s*(.+)$/
+      @type = :sub_assign
+      @lhs = $1
+      @rhs = $2
+      return
+    end
+
+    # Handle simple assignment (but not +=/-=)
+    if cmd =~ /^(\w+)\s*=\s*(.+)$/ && !cmd.include?('+=') && !cmd.include?('-=')
+      @type = :assign
+      @lhs = $1
+      @rhs = $2
+      return
+    end
+
+    # Handle return statement
+    if cmd =~ /^return\b(.*)$/
+      @type = :return
+      @return_value = $1.strip
+      return
+    end
+
+    # Default: raw command
+    @type = :raw
+  end
+
+  def to_rust
+    case @type
+    when :mark
+      "self.mark();"
+    when :term
+      "self.term();"
+    when :advance
+      "self.advance();"
+    when :advance_to
+      # Generate advance-to loop
+      chars = @advance_chars.chars.map { |c| format_char_literal(c) }
+      if chars.size == 1
+        "while self.peek() != Some(#{chars[0]}) && !self.eof() { self.advance(); }"
+      else
+        conds = chars.map { |c| "self.peek() != Some(#{c})" }.join(" && ")
+        "while #{conds} && !self.eof() { self.advance(); }"
+      end
+    when :emit
+      emit_rust(@event_type)
+    when :call_method
+      "self.#{@method_name}();"
+    when :scan
+      # Generate call to template's scan_toN methods
+      # These return Option<u8> - the found byte or None for EOF
+      chars = @scan_chars.map { |c| format_char_literal(c) }
+      case chars.size
+      when 1
+        "self.scan_to1(#{chars[0]})"
+      when 2
+        "self.scan_to2(#{chars[0]}, #{chars[1]})"
+      when 3
+        "self.scan_to3(#{chars[0]}, #{chars[1]}, #{chars[2]})"
+      when 4
+        "self.scan_to4(#{chars[0]}, #{chars[1]}, #{chars[2]}, #{chars[3]})"
+      else
+        "None // SCAN with #{chars.size} chars not supported (max 4)"
+      end
+    when :call
+      args = @call_args ? @call_args.map { |a| map_value(a) }.join(", ") : ""
+      "self.parse_#{@call_target}(#{args});"
+    when :add_assign
+      "#{@lhs} += #{map_value(@rhs)};"
+    when :sub_assign
+      "#{@lhs} -= #{map_value(@rhs)};"
+    when :assign
+      "#{@lhs} = #{map_value(@rhs)};"
+    when :return
+      if @return_value && !@return_value.empty?
+        "return #{@return_value};"
+      else
+        "return;"
+      end
+    when :raw
+      nil  # Don't emit unknown commands
+    else
+      nil
+    end
+  end
+
+  def format_char_literal(c)
+    case c
+    when "\n" then "b'\\n'"
+    when "\t" then "b'\\t'"
+    when "'" then "b'\\''"
+    when "\\" then "b'\\\\'"
+    else "b'#{c}'"
+    end
+  end
+
+  def map_value(val)
+    return "0" if val.nil?
+    val = val.strip
+    val.gsub(/\bCOL\b/, '(self.column as i32)')
+       .gsub(/\bACTUAL_COL\b/, 'self.current_column()')
+       .gsub(/\bLINE\b/, '(self.line as i32)')
+  end
+
+  def emit_rust(event_type)
+    # Handle Error:message format - convert to ParseErrorCode enum
+    if event_type =~ /^error:(.+)$/i
+      # Convert snake_case error name to PascalCase enum variant
+      error_name = $1.split('_').map(&:capitalize).join
+      return %{self.emit(StreamingEvent::Error { code: ParseErrorCode::#{error_name}, span: self.span_from_mark() });}
+    end
+
+    # Handle Attribute:$key format (for identity desugaring)
+    if event_type =~ /^attribute:(.+)$/i
+      key = $1
+      # For special keys like $id, $class, we create a ChunkSlice pointing to static data
+      # This is a bit hacky - we'd need a way to emit static strings
+      return %{self.emit_special_attribute("#{key}");}
+    end
+
+    # Note: We extract self.term() into a local variable before emit() because
+    # term() now takes &mut self (for cross-chunk token handling), and we can't
+    # have two mutable borrows (emit also takes &mut self).
+    case event_type.downcase
+    # Content events
+    when 'comment'
+      "{ let content = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::Comment { content, span }); }"
+    when 'text'
+      "{ let content = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::Text { content, span }); }"
+    when 'dedentedtext'
+      # Child prose with content_base tracking - requires content_base local variable
+      "self.emit_dedented_text(&mut content_base);"
+    when 'rawcontent'
+      "{ let content = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::RawContent { content, span }); }"
+    when 'freeformraw'
+      # Freeform blocks: emit content excluding the 2 closing backticks we've advanced past
+      # At emit time, pos is at third backtick, but we've advanced past first two
+      # So we need to subtract 2 from end position
+      "{ let content = self.term_adjusted(-2); let span = self.span_from_mark(); self.emit(StreamingEvent::RawContent { content, span }); }"
+
+    # Structure events
+    when 'elementstart'
+      "{ let name = Some(self.term()); let span = self.span_from_mark(); self.emit(StreamingEvent::ElementStart { name, span }); }"
+    when 'elementstartanon'
+      "self.emit(StreamingEvent::ElementStart { name: None, span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'elementend'
+      "self.emit(StreamingEvent::ElementEnd { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'embeddedstart'
+      "{ let name = Some(self.term()); let span = self.span_from_mark(); self.emit(StreamingEvent::EmbeddedStart { name, span }); }"
+    when 'embeddedstartanon'
+      "self.emit(StreamingEvent::EmbeddedStart { name: None, span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'embeddedend'
+      "self.emit(StreamingEvent::EmbeddedEnd { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+
+    # Attribute events
+    when 'attribute'
+      "{ let key = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::Attribute { key, span }); }"
+
+    # Value events
+    when 'arraystart'
+      "self.emit(StreamingEvent::ArrayStart { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'arrayend'
+      "self.emit(StreamingEvent::ArrayEnd { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'nilvalue'
+      "{ let span = self.span_from_mark(); self.emit(StreamingEvent::NilValue { span }); }"
+    when 'boolvalue:true'
+      "{ let span = self.span_from_mark(); self.emit(StreamingEvent::BoolValue { value: true, span }); }"
+    when 'boolvalue:false'
+      "{ let span = self.span_from_mark(); self.emit(StreamingEvent::BoolValue { value: false, span }); }"
+    when 'stringvalue'
+      "{ let value = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::StringValue { value, span }); }"
+    when 'quotedstringvalue'
+      "{ let value = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::QuotedStringValue { value, span }); }"
+    # Integer/Float/etc. require parsing the term - use emit_typed_value helper
+    when 'typedvalue'
+      "self.emit_typed_value();"
+
+    # Reference events
+    when 'idreference'
+      "{ let id = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::IdReference { id, span }); }"
+    when 'attributemerge'
+      "{ let id = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::AttributeMerge { id, span }); }"
+
+    # Directive events
+    when 'directivestart'
+      "{ let name = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::DirectiveStart { name, raw: false, span }); }"
+    when 'directivestartraw'
+      "{ let name = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::DirectiveStart { name, raw: true, span }); }"
+    when 'directivestatement'
+      "{ let content = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::DirectiveStatement { content, span }); }"
+    when 'directivebody'
+      "{ let content = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::DirectiveBody { content, span }); }"
+    when 'directiveend'
+      "self.emit(StreamingEvent::DirectiveEnd { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'interpolation'
+      "{ let expression = self.term(); let span = self.span_from_mark(); self.emit(StreamingEvent::Interpolation { expression, span }); }"
+
+    # Block events
+    when 'freeformstart'
+      "self.emit(StreamingEvent::FreeformStart { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+    when 'freeformend'
+      "self.emit(StreamingEvent::FreeformEnd { span: Span::new(self.global_offset as usize, self.global_offset as usize) });"
+
+    else
+      "// TODO: emit #{event_type}"
+    end
+  end
+end
+
+class GMConditional < GMGenericChild
+  def initialize(parent, condition)
+    super(parent, condition)
+    @clauses = []
+    @current_condition = condition
+    @current_body = []
+  end
+
+  def parse(&src)
+    c = yield
+    loop do
+      case c[0]
+      when 'elsif'
+        @clauses << [@current_condition, @current_body.dup]
+        @current_body = []
+        @current_condition = c[1]
+        c = yield
+      when 'else'
+        @clauses << [@current_condition, @current_body.dup]
+        @current_body = []
+        @current_condition = nil
+        c = yield
+      when 'endif'
+        @clauses << [@current_condition, @current_body]
+        c = yield
+        return c
+      else
+        res, c, is_done = check_basic_commands(c, &src)
+        if res
+          @current_body.concat(@body)
+          @body = []
+        end
+        if is_done
+          # Finalize current clause before returning
+          @clauses << [@current_condition, @current_body.dup]
+          return c
+        end
+        c = yield unless res
+      end
+    end
+  end
+
+  def to_rust(_state_names = nil)
+    code = []
+    @clauses.each_with_index do |(cond, body), idx|
+      cond_rust = cond ? map_condition(cond) : nil
+
+      if idx == 0
+        code << "if #{cond_rust} {"
+      elsif cond_rust
+        code << "} else if #{cond_rust} {"
+      else
+        code << "} else {"
+      end
+
+      body.each { |cmd| code << "    #{cmd.to_rust}" }
+    end
+    code << "}"
+    code.join("\n")
+  end
+
+  def map_condition(cond)
+    cond
+      .gsub(/\bCOL\b/, '(self.column as i32)')
+      .gsub(/\bACTUAL_COL\b/, 'self.current_column()')
+      .gsub(/\bipar\b/, 'indent_parent')
+      .gsub(/\bibase\b/, 'indent_base')
+      .gsub(/\binl\b/, 'is_inline')
+      .gsub(/:(\w+)/, '\1')  # Map :param to param
+      .gsub(/!(\w)/, '!\1')  # Keep negation
+      .gsub(/==/, ' == ')
+      .gsub(/<=/, ' <= ')
+      .gsub(/>=/, ' >= ')
+      .gsub(/!=/, ' != ')
+  end
+end
+
+# ============================================================================
+# Main
+# ============================================================================
+
+# Parse command line arguments
+args = ARGV.dup
+if args.include?('--trace')
+  $trace_mode = true
+  args.delete('--trace')
+end
+
+if args.empty?
+  puts "Usage: #{$0} [--trace] <machine-file>"
+  exit 1
+end
+
+machine_file = args[0]
+
+# Parse the machine file with line number tracking
+content = File.read(machine_file)
+raw_lines = content.lines
+
+# Build a mapping from character offset to line number
+char_to_line = {}
+offset = 0
+raw_lines.each_with_index do |line, idx|
+  line.length.times do |i|
+    char_to_line[offset + i] = idx + 1  # 1-based line numbers
+  end
+  offset += line.length
+end
+
+# Keep lines starting with | but filter out comment-only lines
+lines = raw_lines.reject { |l| l.strip.start_with?(';') }
+joined = lines.join('')
+
+# Split on | and track positions
+parts = []
+part_linenos = []
+current_pos = 0
+joined.split('|').each do |part|
+  next if part.strip.empty?
+  # Find this part's position in the original content
+  found_pos = content.index(part, current_pos) || current_pos
+  lineno = char_to_line[found_pos] || 1
+  parts << part.rstrip
+  part_linenos << lineno
+  current_pos = found_pos + part.length
+end
+
+i = -1
+gm = GM.new
+gm.parse do
+  i += 1
+  break if i >= parts.size
+  c = parts[i]
+  $current_lineno = part_linenos[i] || 0
+  next if c =~ /^\s*$/ || c.strip.start_with?(';')
+
+  tag = c[/^(\.|[^ \[]+)/]&.strip&.downcase || ''
+  id = c[/\[([^\]]*)\]/, 1] || ''
+  rest = c.gsub(/^(\.|[^ \[]+)/, '').gsub(/\[[^\]]*\]/, '').strip
+
+  [tag, id, rest]
+end
+
+# Load and render template
+template_path = File.join(__dir__, 'templates/parser.rs.liquid')
+template = Liquid::Template.parse(File.read(template_path))
+
+output = template.render(
+  'parser' => gm.name,
+  'entry_function' => gm.entry_function,
+  'functions' => gm.output_functions.join("\n\n"),
+  'enums' => gm.output_enums.join("\n"),
+  'structs' => gm.output_structs.join("\n"),
+  'machine_file' => machine_file || 'unknown',
+  'trace_mode' => $trace_mode
+)
+
+puts output

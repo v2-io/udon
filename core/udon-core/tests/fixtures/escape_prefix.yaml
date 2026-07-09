@@ -1,0 +1,18 @@
+---
+# Escape prefix tests - single quote prevents interpretation
+# The quote is consumed but not included in output
+
+- id: escaped_pipe
+  desc: Escaped pipe becomes prose (not element)
+  udon: "'|not-element"
+  events:
+    - [Text, "|not-element"]
+
+- id: escaped_colon
+  desc: Escaped colon in element becomes prose (not attribute)
+  udon: "|foo\n  ':not-attr\n"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Text, ":not-attr"]
+    - ElementEnd

@@ -1,0 +1,1901 @@
+|parser udon
+
+; UDON Parser - Full Grammar via DSL
+;
+; Uses recursive function calls for element nesting:
+;   /element(ACTUAL_COL) - call pushes element, return pops + emits ElementEnd
+;
+; CALLs only for:
+;   - parse_element_identity: complex unicode label parsing
+;   - parse_indented_attribute: typed value parsing
+
+|entry-point /document
+
+;==============================================================================
+; ROOT DOCUMENT - Fully Generated
+;==============================================================================
+|function[document]
+  |state[:start]
+    |eof                                                |return
+    |c[\n]      |.newline     | ->               |>> :start
+    |c[ ]       |.space       | ->              |>> :start
+    |c[\t]      |.tab         | -> | emit(Error:no_tabs) |>> :skip_line
+    |c[']       |.escape      | ->                      |>> :escaped
+    |c[;]       |.comment     | -> | MARK               |>> :block_comment
+    |c[<P>]     |.pipe        |                            |>> /element(ACTUAL_COL) :start
+    |c[`]       |.backtick    | ->                      |>> :maybe_freeform
+    |c[!]       |.directive   |                            |>> /directive(ACTUAL_COL) :start_dispatch
+    |default    |.text        | MARK                    |>> :prose
+
+  |state[:escaped]
+    ; Line started with ' - rest is literal, no special chars
+    |eof                       | emit(Text)             |return
+    |c[\n]      |.done        | emit(Text)      |>> :start
+    |default    |.first       | MARK                    |>> :escaped_text
+
+  |state[:escaped_text] SCAN(\n)
+    ; Collect escaped text - no special char handling (| ; ! are literal)
+    ; SCAN-first: bulk scan to newline before checking
+    |eof                       | emit(Text)             |return
+    |c[\n]      |.done        | emit(Text)      |>> :start
+
+  |state[:prose] SCAN(\n;<P>)
+    ; SCAN-first: bulk scan to newline, semicolon, or pipe before checking
+    |eof                       | emit(Text)             |return
+    |c[\n]      |.done        | emit(Text)      |>> :start
+    |c[;]       |.semi        | emit(Text) | ->         |>> :check_inline_comment
+    |c[<P>]     |.pipe        | emit(Text)              |>> /element(ACTUAL_COL) :start
+
+  |state[:check_inline_comment]
+    ; After ; in prose - is it ;{...} or rest-of-line comment?
+    |eof                       |                        |return
+    |c[{]       |.inline      | -> | MARK               |>> :inline_comment
+    |default    |.block       | MARK                    |>> :line_comment
+
+  |state[:inline_comment]
+    ; ;{...} inline comment - emit Comment event, consumer decides to keep/strip
+    ; SPEC.md: Parser emits comments, consumer decides
+    |eof                       | emit(Error:unclosed_comment) |return
+    |c[}]       |.close       | emit(Comment) | ->      |>> :prose
+    |c[{]       |.nest        | ->                      |>> :inline_comment_nested
+    |default    |.collect     | ->                      |>>
+
+  |state[:inline_comment_nested]
+    ; Nested braces in inline comment - brace-counted
+    |eof                       | emit(Error:unclosed_comment) |return
+    |c[}]       |.close       | ->                      |>> :inline_comment
+    |c[{]       |.deeper      | ->                      |>> :inline_comment_nested2
+    |default    |.collect     | ->                      |>>
+
+  |state[:inline_comment_nested2]
+    |eof                       | emit(Error:unclosed_comment) |return
+    |c[}]       |.unnest      | ->                      |>> :inline_comment_nested
+    |c[{]       |.deeper      | ->                      |>> :inline_comment_nested3
+    |default    |.collect     | ->                      |>>
+
+  |state[:inline_comment_nested3]
+    |eof                       | emit(Error:unclosed_comment) |return
+    |c[}]       |.unnest      | ->                      |>> :inline_comment_nested2
+    |default    |.collect     | ->                      |>>
+
+  |state[:line_comment] SCAN(\n)
+    ; Rest of line after ; (not ;{)
+    ; SCAN-first: bulk scan to newline before checking
+    |eof                       | emit(Comment)          |return
+    |c[\n]      |.done        | emit(Comment)   |>> :start
+
+  |state[:block_comment] SCAN(\n)
+    ; Full line comment starting with ;
+    ; SCAN-first: bulk scan to newline before checking
+    |eof                       | emit(Comment)          |return
+    |c[\n]      |.done        | emit(Comment)   |>> :start
+
+  |state[:maybe_freeform]
+    ; Saw one ` - check for ```
+    |eof                       | emit(Text)             |return
+    |c[`]       |.second      | ->                      |>> :maybe_freeform2
+    |default    |.not         | MARK                    |>> :prose
+
+  |state[:maybe_freeform2]
+    ; Saw `` - check for third
+    |eof                       | emit(Text)             |return
+    |c[`]       |.third       | ->                      |>> :freeform_start
+    |default    |.not         | MARK                    |>> :prose
+
+  |state[:freeform_start]
+    ; Just after opening ``` - skip leading newline if present, then MARK
+    ; SPEC: "Content after ``` on the same line is part of the freeform block"
+    ; So if ``` is followed by newline, content starts on next line
+    |eof                       | emit(Error:unclosed_freeform) |return
+    |c[\n]      |.newline     | -> | MARK              |>> :freeform
+    |default    |.content     | MARK                    |>> :freeform
+
+  |state[:freeform]
+    ; Inside ``` block - preserve exact whitespace
+    ; Content is from MARK (after opening ```) to first closing backtick
+    |eof                       | emit(Error:unclosed_freeform) |return
+    |c[`]       |.maybe_end   | ->                      |>> :freeform_end1
+    |default    |.collect     | ->                      |>>
+
+  |state[:freeform_end1]
+    ; After first closing ` - check for second
+    |eof                       | emit(Error:unclosed_freeform) |return
+    |c[`]       |.second      | ->                      |>> :freeform_end2
+    |default    |.not         | ->                      |>> :freeform
+
+  |state[:freeform_end2]
+    ; After second closing ` - check for third
+    ; When we emit, pos is at third backtick, but we've already advanced past first two
+    ; so content from MARK to (pos-2) is what we want. Use FreeformRaw for adjusted bounds.
+    |eof                       | emit(Error:unclosed_freeform) |return
+    |c[`]       |.close       | emit(FreeformRaw) | -> |>> :start
+    |default    |.not         | ->                      |>> :freeform
+
+  |state[:start_dispatch]
+    ; Dispatch after directive/element returns - re-evaluate current character
+    ; Handles continuation after dedent from nested constructs
+    |eof                                                          |return
+    |c[\n]      |.newline     | ->                                |>> :start
+    |c[ ]       |.space       | ->                                |>> :start
+    |c[\t]      |.tab         | -> | emit(Error:no_tabs)          |>> :skip_line
+    |c[']       |.escape      | ->                                |>> :escaped
+    |c[;]       |.comment     | -> | MARK                         |>> :block_comment
+    |c[<P>]     |.pipe        |                                   |>> /element(ACTUAL_COL) :start
+    |c[`]       |.backtick    | ->                                |>> :maybe_freeform
+    |c[!]       |.directive   |                                   |>> /directive(ACTUAL_COL) :start_dispatch
+    |default    |.text        | MARK                              |>> :prose
+
+  |state[:skip_line]
+    ; Error recovery - skip to next line
+    |eof                                                |return
+    |c[\n]      |.done                           |>> :start
+    |default    |.skip        | ->                      |>>
+
+;==============================================================================
+; ELEMENT FUNCTION
+; SPEC.md:43-105, 645-662
+;
+; Called when we see | at some column. The element function handles:
+;   1. Identity parsing (name, [id], .class, suffix)
+;   2. Inline content (text, nested elements)
+;   3. Indented children (via dedent detection)
+;
+; Entering = implicit stack push
+; Returning = implicit stack pop + ElementEnd event
+;==============================================================================
+|function[element] :elem_col
+  |var[content_base] = -1
+
+  ;============================================================================
+  ; ELEMENT IDENTITY PARSING
+  ; SPEC.md:654 - element = "|" [ name ] [ suffix ] [ id [ suffix ] ] { class }*
+  ;                         [ SPACE suffix ] { attribute }* { inline_child }*
+  ;
+  ; Key insight: Each piece of identity syntax desugars to attributes:
+  ;   [id]     → :'$id' value      (SPEC.md:60-68)
+  ;   .class   → :'$class' name    (SPEC.md:572-576)
+  ;   ?!*+     → :'<char>' true    (SPEC.md:74-88)
+  ;
+  ; Events are emitted immediately as each piece is parsed - no accumulation.
+  ;============================================================================
+
+  |state[:identity]
+    ; SPEC.md:645-651 - Element recognition rules
+    ; "|" is element when followed by: letter, [, ., {, ', or suffix
+    ; Otherwise "|" is prose (Markdown table compatibility)
+    ;
+    ; Function may be called AT the pipe or AFTER it. If at pipe, skip it.
+    ; This allows callers to pass ACTUAL_COL before advancing (for correct elem_col).
+    ;
+    ; Examples:
+    ;   |foo     → ElementStart("foo")
+    ;   |[id]    → ElementStartAnon, Attribute("$id"), StringValue("id")
+    ;   |.class  → ElementStartAnon, Attribute("$class"), StringValue("class")
+    ;   |?       → ElementStartAnon, Attribute("?"), BoolValue(true)
+    ;   |'name'  → ElementStart("name")
+    ;   |{em}    → Embedded element (brace-delimited)
+    |c[<P>]       |.pipe     | ->                                |>>
+    |eof                     | emit(ElementStartAnon) | emit(ElementEnd) |return
+    |c[LETTER]    |.name     | MARK                              |>> :id_name
+    |c[<L>]       |.bracket  | ->                                |>> :id_anon_bracket
+    |c[{]         |.embedded | ->                                |>> :embed_identity
+    |c[.]         |.dot      | emit(ElementStartAnon) | ->       |>> :id_class_start
+    |c[?]         |.q        | emit(ElementStartAnon) | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :id_check_more
+    |c[!]         |.bang     | emit(ElementStartAnon) | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :id_check_more
+    |c[*]         |.star     | emit(ElementStartAnon) | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :id_check_more
+    |c[+]         |.plus     | emit(ElementStartAnon) | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :id_check_more
+    |c[']         |.quote    | ->                                |>> :id_quoted_name
+    |default      |.anon     | emit(ElementStartAnon)            |>> :after_identity
+
+  ;============================================================================
+  ; EMBEDDED ELEMENT PARSING - |{name ...}
+  ; SPEC.md:185-232 - Embedded elements are brace-delimited, not indent-delimited
+  ;
+  ; Key rules:
+  ; - Starts with |{ and ends with }
+  ; - Identity is same as regular elements (name, id, classes, attrs)
+  ; - Content is brace-counted (nested {} allowed if balanced)
+  ; - Bracket mode stays bracket mode: nested elements use |{...} not |element
+  ;============================================================================
+
+  |state[:embed_identity]
+    ; Inside |{ - parse element identity
+    ; Uses EmbeddedStart/EmbeddedEnd instead of ElementStart/ElementEnd
+    ; Examples:
+    ;   |{em text}       → EmbeddedStart("em"), Text("text"), EmbeddedEnd
+    ;   |{a :href /}     → EmbeddedStart("a"), Attr("href"), Str("/"), EmbeddedEnd
+    ;   |{.class text}   → EmbeddedStartAnon, Attr("$class"), Str("class"), ...
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[LETTER]    |.name     | MARK                              |>> :embed_name
+    |c[<L>]       |.bracket  | ->                                |>> :embed_anon_bracket
+    |c[.]         |.dot      | emit(EmbeddedStartAnon) | ->      |>> :embed_class_start
+    |c[ \t]       |.space    | emit(EmbeddedStartAnon)           |>> :embed_after_identity
+    |c[}]         |.empty    | emit(EmbeddedStartAnon) | emit(EmbeddedEnd) | -> |return
+    |default      |.anon     | emit(EmbeddedStartAnon) | MARK    |>> :embed_content
+
+  |state[:embed_name]
+    ; Collecting embedded element name
+    ; SPEC.md:89-98 - Suffix chars (?!*+) are attributes with bool true value
+    |eof                     | emit(EmbeddedStart) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[LABEL_CONT]|.cont     | ->                                |>>
+    |c[<L>]       |.bracket  | emit(EmbeddedStart) | ->          |>> :embed_bracket_start
+    |c[.]         |.dot      | emit(EmbeddedStart) | ->          |>> :embed_class_start
+    |c[:]         |.attr     | emit(EmbeddedStart) | ->          |>> :embed_attr_key
+    |c[?]         |.q        | emit(EmbeddedStart) | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :embed_after_name_suffix
+    |c[!]         |.bang     | emit(EmbeddedStart) | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :embed_after_name_suffix
+    |c[*]         |.star     | emit(EmbeddedStart) | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :embed_after_name_suffix
+    |c[+]         |.plus     | emit(EmbeddedStart) | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :embed_after_name_suffix
+    |c[ \t]       |.space    | emit(EmbeddedStart)               |>> :embed_after_identity
+    |c[}]         |.close    | emit(EmbeddedStart) | emit(EmbeddedEnd) | -> |return
+    |default      |.content  | emit(EmbeddedStart) | MARK        |>> :embed_content
+
+  |state[:embed_after_name_suffix]
+    ; After name+suffix, check for more suffixes, [id], .class, or content
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>>
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>>
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>>
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>>
+    |c[<L>]       |.bracket  | ->                                |>> :embed_bracket_start
+    |c[.]         |.dot      | ->                                |>> :embed_class_start
+    |c[:]         |.attr     | ->                                |>> :embed_attr_key
+    |c[ \t]       |.space    |                                   |>> :embed_after_identity
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_anon_bracket]
+    ; Anonymous embedded element starting with [
+    |eof                     | emit(EmbeddedStartAnon) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[<R>]       |.empty    | emit(EmbeddedStartAnon)           |>> :embed_after_bracket
+    |default      |.value    | emit(EmbeddedStartAnon) | emit(Attribute:$id) | MARK |>> :embed_bracket_value
+
+  |state[:embed_bracket_start]
+    ; [id] in embedded element
+    |eof                     | emit(Error:unclosed_bracket) | emit(EmbeddedEnd) |return
+    |c[<R>]       |.empty    | ->                                |>> :embed_after_bracket
+    |default      |.value    | emit(Attribute:$id) | MARK        |>> :embed_bracket_value
+
+  |state[:embed_bracket_value] SCAN(<R>)
+    ; Collecting id value
+    |eof                     | emit(Error:unclosed_bracket) | emit(EmbeddedEnd) |return
+    |c[<R>]       |.close    | emit(StringValue) | ->            |>> :embed_after_bracket
+
+  |state[:embed_after_bracket]
+    ; After [id] in embedded element
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[.]         |.dot      | ->                                |>> :embed_class_start
+    |c[:]         |.attr     | ->                                |>> :embed_attr_key
+    |c[ \t]       |.space    | ->                                |>> :embed_after_identity
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_class_start]
+    ; .class in embedded element
+    |eof                     | emit(Error:expected_class_name) | emit(EmbeddedEnd) |return
+    |c[LETTER]    |.name     | emit(Attribute:$class) | MARK     |>> :embed_class_name
+    |c[']         |.quote    | emit(Attribute:$class) | ->       |>> :embed_class_quoted
+    |default      |.err      | emit(Error:expected_class_name)   |>> :embed_after_identity
+
+  |state[:embed_class_name]
+    ; Collecting class name
+    |eof                     | emit(StringValue) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[LABEL_CONT]|.cont     | ->                                |>>
+    |c[.]         |.more     | emit(StringValue) | ->            |>> :embed_class_start
+    |c[:]         |.attr     | emit(StringValue) | ->            |>> :embed_attr_key
+    |c[ \t]       |.space    | emit(StringValue)                 |>> :embed_after_identity
+    |c[}]         |.close    | emit(StringValue) | emit(EmbeddedEnd) | -> |return
+    |default      |.content  | emit(StringValue) | MARK          |>> :embed_content
+
+  |state[:embed_class_quoted]
+    ; Quoted class name in embedded element
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :embed_class_check
+    |default      |.content  | MARK                              |>> :embed_class_quoted_content
+
+  |state[:embed_class_quoted_content] SCAN('<BS>)
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |c[']         |.close    | emit(QuotedStringValue) | ->      |>> :embed_class_check
+    |c[<BS>]      |.escape   | ->                                |>> :embed_class_quoted_esc
+
+  |state[:embed_class_quoted_esc]
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |default      |.char     | ->                                |>> :embed_class_quoted_content
+
+  |state[:embed_class_check]
+    ; After class in embedded element
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[.]         |.more     | ->                                |>> :embed_class_start
+    |c[:]         |.attr     | ->                                |>> :embed_attr_key
+    |c[ \t]       |.space    | ->                                |>> :embed_after_identity
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_after_identity]
+    ; After identity, looking for attrs or content
+    ; No content text yet, so no emit(Text) when seeing |
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[ \t]       |.space    | ->                                |>>
+    |c[:]         |.attr     | ->                                |>> :embed_attr_key
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |c[<P>]       |.nested   | ->                                |>> :embed_check_nested
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_attr_key]
+    ; Attribute key in embedded element
+    |eof                     | emit(Error:expected_attr_key) | emit(EmbeddedEnd) |return
+    |c[LETTER]    |.name     | MARK                              |>> :embed_attr_key_scan
+    |c[']         |.quoted   | ->                                |>> :embed_attr_key_quoted
+    |default      |.err      | emit(Error:expected_attr_key)     |>> :embed_after_identity
+
+  |state[:embed_attr_key_scan]
+    ; Scanning attribute key
+    |eof                     | emit(Attribute) | emit(BoolValue:true) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[LABEL_CONT]|.cont     | ->                                |>>
+    |c[ \t]       |.space    | emit(Attribute)                   |>> :embed_attr_value
+    |c[}]         |.flag     | emit(Attribute) | emit(BoolValue:true) | emit(EmbeddedEnd) | -> |return
+    |c[:]         |.next     | emit(Attribute) | emit(BoolValue:true) | -> |>> :embed_attr_key
+    |default      |.value    | emit(Attribute)                   |>> :embed_attr_value
+
+  |state[:embed_attr_key_quoted]
+    ; Quoted attribute key
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |c[']         |.empty    | MARK | emit(Attribute) | ->       |>> :embed_attr_value
+    |default      |.content  | MARK                              |>> :embed_attr_key_quoted_content
+
+  |state[:embed_attr_key_quoted_content]
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |c[']         |.close    | emit(Attribute)                   |>> :embed_attr_value
+    |c[<BS>]      |.escape   | ->                                |>> :embed_attr_key_quoted_esc
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_attr_key_quoted_esc]
+    |eof                     | emit(Error:unclosed_quote) | emit(EmbeddedEnd) |return
+    |default      |.char     | ->                                |>> :embed_attr_key_quoted_content
+
+  |state[:embed_attr_value]
+    ; Attribute value in embedded element
+    ; No content text yet at this point, so no emit(Text) when seeing |
+    |eof                     | emit(BoolValue:true) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[ \t]       |.space    | ->                                |>>
+    |c[:]         |.flag     | emit(BoolValue:true) | ->         |>> :embed_attr_key
+    |c[}]         |.flag     | emit(BoolValue:true) | emit(EmbeddedEnd) | -> |return
+    |c[<P>]       |.pipe     | emit(BoolValue:true) | ->         |>> :embed_check_nested
+    |c["]         |.dquote   | ->                                |>> :embed_attr_dquote
+    |c[']         |.squote   | ->                                |>> :embed_attr_squote
+    |c[<L>]       |.array    | emit(ArrayStart) | ->             |>> /array :embed_attr_after_value
+    |default      |.bare     | MARK                              |>> :embed_attr_bare
+
+  |state[:embed_attr_dquote]
+    ; Double-quoted attribute value
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |c["]         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :embed_attr_after_value
+    |default      |.content  | MARK                              |>> :embed_attr_dquote_content
+
+  |state[:embed_attr_dquote_content] SCAN("<BS>)
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |c["]         |.close    | emit(QuotedStringValue) | ->      |>> :embed_attr_after_value
+    |c[<BS>]      |.escape   | ->                                |>> :embed_attr_dquote_esc
+
+  |state[:embed_attr_dquote_esc]
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |default      |.char     | ->                                |>> :embed_attr_dquote_content
+
+  |state[:embed_attr_squote]
+    ; Single-quoted attribute value
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :embed_attr_after_value
+    |default      |.content  | MARK                              |>> :embed_attr_squote_content
+
+  |state[:embed_attr_squote_content] SCAN('<BS>)
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |c[']         |.close    | emit(QuotedStringValue) | ->      |>> :embed_attr_after_value
+    |c[<BS>]      |.escape   | ->                                |>> :embed_attr_squote_esc
+
+  |state[:embed_attr_squote_esc]
+    |eof                     | emit(Error:unclosed_string) | emit(EmbeddedEnd) |return
+    |default      |.char     | ->                                |>> :embed_attr_squote_content
+
+  |state[:embed_attr_bare]
+    ; Bare attribute value - collect until space, }, or :
+    ; No content text yet after value, so no emit(Text) when seeing |
+    |eof                     | emit(TypedValue) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[ \t]       |.done     | emit(TypedValue)                  |>> :embed_attr_after_value
+    |c[}]         |.done     | emit(TypedValue) | emit(EmbeddedEnd) | -> |return
+    |c[:]         |.next     | emit(TypedValue) | ->             |>> :embed_attr_key
+    |c[<P>]       |.pipe     | emit(TypedValue) | ->             |>> :embed_check_nested
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_attr_after_value]
+    ; After attribute value - no content text yet, so no emit(Text) when seeing |
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[ \t]       |.space    | ->                                |>>
+    |c[:]         |.attr     | ->                                |>> :embed_attr_key
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |c[<P>]       |.nested   | ->                                |>> :embed_check_nested
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_check_nested]
+    ; After | in embedded content - check for nested |{
+    ; Must call /element to properly nest the stack
+    ; If NOT followed by {, the | is literal text (per SPEC.md:645-651)
+    |eof                     | CALL:emit_pipe_text | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[{]         |.nested   |                                   |>> /element(ACTUAL_COL) :embed_after_nested
+    |default      |.prose    | CALL:emit_pipe_text | MARK        |>> :embed_content
+
+  |state[:embed_after_nested]
+    ; After nested element returns, continue with embedded content
+    ; Spaces between elements are preserved (user controls spacing)
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |c[<P>]       |.pipe     | ->                                |>> :embed_check_nested
+    |c[;]         |.semi     | ->                                |>> :embed_comment_check
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_content] SCAN(<RB><LB><P>;)
+    ; Content inside embedded element - brace-counted
+    ; SPEC.md:213-223 - Bracket mode stays bracket mode
+    ; SCAN-first: bulk scan to }, {, |, or ;
+    |eof                     | emit(Text) | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.close    | emit(Text) | emit(EmbeddedEnd) | -> |return
+    |c[{]         |.nest     | ->                                |>> :embed_content_nested
+    |c[<P>]       |.pipe     | emit(Text) | ->                   |>> :embed_check_nested
+    |c[;]         |.semi     | emit(Text) | ->                   |>> :embed_comment_check
+
+  |state[:embed_content_nested]
+    ; Nested braces in embedded content
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.unnest   | ->                                |>> :embed_content
+    |c[{]         |.deeper   | ->                                |>> :embed_content_nested2
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_content_nested2]
+    ; Two levels deep in braces
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.unnest   | ->                                |>> :embed_content_nested
+    |c[{]         |.deeper   | ->                                |>> :embed_content_nested3
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_content_nested3]
+    ; Three levels deep
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.unnest   | ->                                |>> :embed_content_nested2
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_comment_check]
+    ; Check for ;{ inline comment in embedded content
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[{]         |.inline   | -> | MARK                        |>> :embed_inline_comment
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:embed_inline_comment]
+    ; Inline comment inside embedded element - emit Comment event
+    |eof                     | emit(Error:unclosed_comment) | emit(EmbeddedEnd) |return
+    |c[}]         |.close    | emit(Comment) | ->               |>> :embed_content_after_comment
+    |c[{]         |.nest     | ->                                |>> :embed_inline_comment_nested
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_inline_comment_nested]
+    |eof                     | emit(Error:unclosed_comment) | emit(EmbeddedEnd) |return
+    |c[}]         |.unnest   | ->                                |>> :embed_inline_comment
+    |default      |.collect  | ->                                |>>
+
+  |state[:embed_content_after_comment]
+    ; After inline comment in embedded content - no content text yet
+    |eof                     | emit(Error:unclosed) | emit(EmbeddedEnd) |return
+    |c[}]         |.close    | emit(EmbeddedEnd) | ->            |return
+    |c[<P>]       |.pipe     | ->                                |>> :embed_check_nested
+    |default      |.content  | MARK                              |>> :embed_content
+
+  |state[:id_name]
+    ; SPEC.md:656 - name = LABEL | quoted_label
+    ; LABEL = /[\p{L}_][\p{L}\p{N}_-]*/
+    ;
+    ; Example: |foo-bar → scans "foo-bar", emits ElementStart("foo-bar")
+    |eof           |.done    | emit(ElementStart)                |>> :after_identity
+    |c[LABEL_CONT] |.cont    | ->                                |>>
+    |default       |.done    | emit(ElementStart)                |>> :id_after_name
+
+  |state[:id_after_name]
+    ; After element name - check for suffix, [id], or .class
+    ; SPEC.md:89-98 - Suffix allowed positions
+    ;
+    ; Examples:
+    ;   |foo?      → ..., Attribute("?"), BoolValue(true)
+    ;   |foo[id]   → ..., Attribute("$id"), StringValue("id")
+    ;   |foo.bar   → ..., Attribute("$class"), StringValue("bar")
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :id_check_bracket
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :id_check_bracket
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :id_check_bracket
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :id_check_bracket
+    |c[<L>]       |.bracket  | ->                                |>> :id_bracket_start
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_check_bracket]
+    ; After name+suffix - can have more suffixes, [id], or .class
+    ; Example: |foo?[id] → suffix already emitted, now parse [id]
+    ; Example: |foo?! → multiple suffixes directly adjacent
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>>
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>>
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>>
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>>
+    |c[<L>]       |.bracket  | ->                                |>> :id_bracket_start
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_bracket_start]
+    ; SPEC.md:60-68 - [id] syntax desugars to :'$id' value
+    ; Called after ElementStart already emitted
+    ;
+    ; Example: |foo[myid] → Attribute("$id"), StringValue("myid")
+    |eof                     | emit(Error:unclosed_bracket)      |>> :after_identity
+    |c[<R>]       |.empty    | ->                                |>> :id_after_bracket
+    |default      |.value    | emit(Attribute:$id) | MARK        |>> :id_bracket_value
+
+  |state[:id_anon_bracket]
+    ; Anonymous element starting with [
+    ; Must emit ElementStartAnon before the $id attribute
+    ;
+    ; Example: |[myid] → ElementStartAnon, Attribute("$id"), StringValue("myid")
+    |eof                     | emit(ElementStartAnon) | emit(Error:unclosed_bracket) |>> :after_identity
+    |c[<R>]       |.empty    | emit(ElementStartAnon)            |>> :id_after_bracket
+    |default      |.value    | emit(ElementStartAnon) | emit(Attribute:$id) | MARK |>> :id_bracket_value
+
+  |state[:id_bracket_value] SCAN(<R>)
+    ; SPEC.md:657-658 - id_value = typed_value | bare_string
+    ; SCAN-first: bulk scan to closing bracket
+    ;
+    ; Example: |foo[123] → StringValue("123") (consumer may parse as int)
+    |eof                     | emit(Error:unclosed_bracket)      |>> :after_identity
+    |c[<R>]       |.close    | emit(StringValue) | ->            |>> :id_after_bracket
+
+  |state[:id_after_bracket]
+    ; After [id] - check for suffix or .class
+    ; SPEC.md:95 - |name[id]? is valid (suffix after id)
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :id_check_class
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :id_check_class
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :id_check_class
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :id_check_class
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_check_class]
+    ; After [id]+suffix - can have more suffixes, .class, or space .class
+    ; Example: |foo[id]?.bar → class after suffix
+    ; Example: |foo[id]? .bar → space then class
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>>
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>>
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>>
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>>
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |c[ ]         |.space    | ->                                |>> :id_space_class_or_suffix
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_space_class_or_suffix]
+    ; After [id]+suffix and space - check for .class or suffix
+    ; Example: |foo[id]? .cls → class
+    ; Example: |foo[id]? ? → another suffix (unusual but valid)
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |c[ ]         |.more     | ->                                |>>
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_class_start]
+    ; SPEC.md:572-576 - Classes desugar to :'$class' [names...]
+    ; Each .class emits: Attribute("$class"), StringValue("classname")
+    ;
+    ; Example: |foo.bar → Attribute("$class"), StringValue("bar")
+    ; Example: |foo.'odd name' → Attribute("$class"), QuotedStringValue("odd name")
+    |eof                     | emit(Error:expected_class_name)   |>> :after_identity
+    |c[LETTER]    |.name     | emit(Attribute:$class) | MARK     |>> :id_class_name
+    |c[']         |.quote    | emit(Attribute:$class) | ->       |>> :id_class_quoted
+    |default      |.err      | emit(Error:expected_class_name)   |>> :after_identity
+
+  |state[:id_class_name]
+    ; SPEC.md:659 - class = "." LABEL
+    ; Scanning class name until non-LABEL char
+    |eof           |.done    | emit(StringValue)                 |>> :after_identity
+    |c[LABEL_CONT] |.cont    | ->                                |>>
+    |default       |.done    | emit(StringValue)                 |>> :id_class_check_more
+
+  |state[:id_class_check_more]
+    ; After class name - check for more .class or space+suffix
+    ; SPEC.md:100-105 - suffix directly on class is RESERVED (not allowed)
+    ;
+    ; Example: |foo.bar.baz → multiple classes, each emits separately
+    ; Example: |foo.bar ? → space-separated suffix (allowed)
+    |eof                                                        |>> :after_identity
+    |c[.]         |.more     | ->                                |>> :id_class_start
+    |c[ ]         |.space    | ->                                |>> :id_space_suffix
+    |default      |.done     |                                   |>> :after_identity
+
+  |state[:id_space_suffix]
+    ; SPEC.md:97 - |name[id].class ? (space-separated suffix at end)
+    ; Only suffix chars valid here, otherwise back to content parsing
+    |eof                                                        |>> :after_identity
+    |c[?]         |.q        | emit(Attribute:?) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[!]         |.bang     | emit(Attribute:!) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[*]         |.star     | emit(Attribute:*) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[+]         |.plus     | emit(Attribute:+) | emit(BoolValue:true) | -> |>> :after_identity
+    |c[ ]         |.more     | ->                                |>>
+    |default      |.nosuffix |                                   |>> :after_identity
+
+  |state[:id_quoted_name]
+    ; Quoted element name: |'has spaces'
+    ; After opening ' consumed - now at content
+    |eof                     | emit(ElementStart) | emit(Error:unclosed_quote) |>> :after_identity
+    |c[']         |.empty    | MARK | emit(ElementStart) | ->     |>> :id_after_name
+    |default      |.content  | MARK                               |>> :id_quoted_name_content
+
+  |state[:id_quoted_name_content] SCAN('<BS>)
+    ; Inside quoted name - collect until closing quote
+    ; SCAN-first: bulk scan to quote or escape
+    ; On error, still emit ElementStart (with partial name) to maintain balance
+    |eof                     | emit(ElementStart) | emit(Error:unclosed_quote) |>> :after_identity
+    |c[']         |.close    | emit(ElementStart) | ->           |>> :id_after_name
+    |c[<BS>]      |.escape   | ->                                |>> :id_quoted_name_escape
+
+  |state[:id_quoted_name_escape]
+    ; After backslash - next char is literal
+    ; On error, still emit ElementStart to maintain balance
+    |eof                     | emit(ElementStart) | emit(Error:unclosed_quote) |>> :after_identity
+    |default      |.char     | ->                                |>> :id_quoted_name_content
+
+  |state[:id_class_quoted]
+    ; Quoted class name: |foo.'has spaces'
+    ; After opening ' consumed - now at content
+    |eof                     | emit(Error:unclosed_quote)        |>> :after_identity
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :id_class_check_more
+    |default      |.content  | MARK                               |>> :id_class_quoted_content
+
+  |state[:id_class_quoted_content] SCAN('<BS>)
+    ; Inside quoted class name
+    ; SCAN-first: bulk scan to quote or escape
+    |eof                     | emit(Error:unclosed_quote)        |>> :after_identity
+    |c[']         |.close    | emit(QuotedStringValue) | ->      |>> :id_class_check_more
+    |c[<BS>]      |.escape   | ->                                |>> :id_class_quoted_escape
+
+  |state[:id_class_quoted_escape]
+    ; After backslash in quoted class
+    |eof                     | emit(Error:unclosed_quote)        |>> :after_identity
+    |default      |.char     | ->                                |>> :id_class_quoted_content
+
+  |state[:id_check_more]
+    ; After suffix on anonymous element - can still have [id] or .class
+    ; Example: |?[id] → suffix emitted, now parse id
+    |eof                                                        |>> :after_identity
+    |c[<L>]       |.bracket  | ->                                |>> :id_bracket_start
+    |c[.]         |.dot      | ->                                |>> :id_class_start
+    |default      |.done     |                                   |>> :after_identity
+
+  ;============================================================================
+  ; AFTER IDENTITY - Inline content and transition to children
+  ;============================================================================
+
+  |state[:after_identity]
+    |eof                                   | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[ \t]     |.space    | ->                        |>> :inline_content
+    |c[;]       |.comment  | ->                                |>> :elem_comment_check
+    |c[:]       |.attr     | ->                                |>> :inline_attr_key
+    |c[<P>]     |.pipe     | ->                                |>> :inline_check_pipe
+    |c[!]       |.bang     | ->                                |>> :inline_directive
+    |default    |.text     | MARK                              |>> :inline_text
+
+  |state[:inline_content]
+    ; Inline content after element identity
+    ; Note: Spaces are included in text (not skipped) because after embedded elements
+    ; return, leading spaces should be preserved as text content.
+    ;
+    ; DEDENT CHECK: When a child element returns after crossing a newline,
+    ; we may need to close this element too if the new content is at a lower column.
+    |eof                   | emit(ElementEnd)                  |return
+    |if[ACTUAL_COL <= elem_col]            | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[;]       |.comment  | ->                                |>> :elem_comment_check
+    |c[:]       |.attr     | ->                                |>> :inline_attr_key
+    |c[<P>]     |.pipe     | ->                                |>> :inline_check_pipe
+    |c[!]       |.bang     | ->                                |>> :inline_directive
+    |default    |.text     | MARK                              |>> :inline_text
+
+  |state[:inline_text] SCAN(\n;<P>!)
+    ; SCAN-first: bulk scan to newline, semicolon, pipe, or bang (for interpolation)
+    |eof                   | emit(Text) | emit(ElementEnd)     |return
+    |c[\n]      |.done     | emit(Text) | ->            |>> :children
+    |c[;]       |.semi     | emit(Text) | ->                   |>> :elem_comment_check
+    |c[<P>]     |.pipe     | emit(Text) | ->                   |>> :inline_check_pipe
+    |c[!]       |.bang     | emit(Text) | ->                   |>> :inline_directive
+
+  ;----------------------------------------------------------------------------
+  ; INLINE DIRECTIVES - !{{...}} interpolation in inline content
+  ;----------------------------------------------------------------------------
+
+  |state[:inline_directive]
+    ; After ! in inline content - we've already advanced past the !
+    ; If next char is {, start interpolation/directive
+    ; If not (or EOF), the ! was literal text - emit it and continue
+    |eof                   | CALL:emit_bang_text | emit(ElementEnd) |return
+    |c[{]       |.brace    | ->                                |>> :inline_dir_brace
+    |default    |.literal  | CALL:emit_bang_text | MARK        |>> :inline_text
+
+  |state[:inline_dir_brace]
+    ; After !{ in inline - check for:
+    ;   !{{  → interpolation
+    ;   !{:  → inline raw (!{:label:content})
+    ;   !{x  → inline directive (!{name body})
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[{]       |.interp   | -> | MARK                         |>> :inline_interp
+    |c[:]       |.raw      | -> | MARK                         |>> :inline_raw_label
+    |c[LETTER]  |.inline   | MARK                              |>> :inline_inline_dir_name
+    |default    |.err      | emit(Error:incomplete_directive)  |>> :inline_text
+
+  ;--- Inline raw in element: !{:label:content} ---
+
+  |state[:inline_raw_label]
+    ; Collecting label until second :
+    ; Example: !{:json:...} → label is "json"
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[:]       |.end      | emit(DirectiveStartRaw) | ->      |>> :inline_raw_content
+    |c[LABEL_CONT] |.cont  | ->                                |>>
+    |default    |.err      | emit(Error:invalid_label)         |>> :inline_text
+
+  |state[:inline_raw_content]
+    ; Raw content until closing } - brace-counted
+    ; Empty body case: closing } with no content
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(DirectiveEnd) | -> | MARK   |>> :inline_text
+    |default    |.start    | MARK                              |>> :inline_raw_body
+
+  |state[:inline_raw_body]
+    ; Collecting inline raw body - brace-counted
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(DirectiveBody) | emit(DirectiveEnd) | -> | MARK |>> :inline_text
+    |c[{]       |.nest     | ->                                |>> :inline_raw_n1
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_raw_n1]
+    ; Nested braces - depth 1
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_raw_body
+    |c[{]       |.deeper   | ->                                |>> :inline_raw_n2
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_raw_n2]
+    ; Nested braces - depth 2
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_raw_n1
+    |c[{]       |.deeper   | ->                                |>> :inline_raw_n3
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_raw_n3]
+    ; Nested braces - depth 3
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_raw_n2
+    |default    |.collect  | ->                                |>>
+
+  ;--- Interpolation in element inline content ---
+
+  |state[:inline_interp] SCAN(<RB><LB>)
+    ; !{{...}} interpolation with brace-counting in inline context
+    ; SCAN-first: bulk scan to } or {
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(Interpolation)               |>> :inline_interp_close
+    |c[{]       |.nest     | ->                                |>> :inline_interp_nested
+
+  |state[:inline_interp_close]
+    ; After first } - we're AT it. Need to advance past it and check for second }.
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.first    | ->                                |>> :inline_interp_close2
+    |c[{]       |.nest     | ->                                |>> :inline_interp
+    |default    |.more     | ->                                |>> :inline_interp
+
+  |state[:inline_interp_close2]
+    ; After advancing past first } - now check for second }
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.done     | ->                                |>> :inline_after_interp
+    |c[{]       |.nest     | ->                                |>> :inline_interp
+    |default    |.more     | ->                                |>> :inline_interp
+
+  |state[:inline_interp_nested]
+    ; Nested braces in interpolation
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_interp
+    |c[{]       |.deeper   | ->                                |>> :inline_interp_nested2
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_interp_nested2]
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_interp_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_after_interp]
+    ; After interpolation closes - continue inline content
+    ; Handle ! specially to avoid empty text before checking for {{
+    ; Note: `:` is NOT treated as attribute here since we're mid-content
+    |eof                   | emit(ElementEnd)                  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[;]       |.comment  | ->                                |>> :elem_comment_check
+    |c[<P>]     |.pipe     | ->                                |>> :inline_check_pipe
+    |c[!]       |.bang     | ->                                |>> :inline_directive
+    |default    |.text     | MARK                              |>> :inline_text
+
+  |state[:inline_inline_dir_name]
+    ; !{name...} inline directive in inline context
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[LABEL_CONT]|.cont   | ->                                |>>
+    |c[:]       |.ns       | emit(DirectiveName)               |>> :inline_inline_dir_ns
+    |c[ \t]     |.body     | emit(DirectiveName)               |>> :inline_inline_dir_body
+    |c[}]       |.noarg    | emit(DirectiveName) | emit(DirectiveEnd) |>> :inline_after_interp
+    |default    |.err      | emit(Error:incomplete_directive)  |>> :inline_text
+
+  |state[:inline_inline_dir_ns]
+    ; After : in directive name - namespace separator
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[LETTER]  |.kind     | MARK                              |>> :inline_inline_dir_kind
+    |default    |.err      | emit(Error:incomplete_directive)  |>> :inline_text
+
+  |state[:inline_inline_dir_kind]
+    ; Collecting kind after namespace
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[LABEL_CONT]|.cont   | ->                                |>>
+    |c[ \t]     |.body     | emit(DirectiveKind)               |>> :inline_inline_dir_body
+    |c[}]       |.noarg    | emit(DirectiveKind) | emit(DirectiveEnd) |>> :inline_after_interp
+    |default    |.err      | emit(Error:incomplete_directive)  |>> :inline_text
+
+  |state[:inline_inline_dir_body]
+    ; !{name body...} - content with brace-counting
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(DirectiveBody) | emit(DirectiveEnd) |>> :inline_after_interp
+    |c[{]       |.nest     | ->                                |>> :inline_inline_dir_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_inline_dir_nested]
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_inline_dir_body
+    |c[{]       |.deeper   | ->                                |>> :inline_inline_dir_nested2
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_inline_dir_nested2]
+    |eof                   | emit(Error:unclosed) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :inline_inline_dir_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:inline_check_pipe]
+    ; After | in inline content - check if this starts an element
+    ; SPEC.md:645-651: | is element when followed by letter, [, ., {, ', or suffix (?!*+)
+    ; Otherwise the | is literal text (Markdown table compatibility, prose separators)
+    |eof                   | CALL:emit_pipe_text | emit(ElementEnd)  |return
+    ; After inline child element returns, use :inline_after_element which:
+    ; - Treats spaces as start of inline text (for embedded elements like |{em emphasis} here)
+    ; - Treats non-space chars as child content (for dedent cases like |child\n  prose)
+    |c[{]       |.embedded |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[LETTER]  |.name     |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[<L>]     |.bracket  |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[.]       |.class    |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[?]       |.q        |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[!]       |.bang     |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[*]       |.star     |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[+]       |.plus     |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |c[']       |.quote    |                                    |>> /element(ACTUAL_COL) :inline_after_element
+    |default    |.text     | CALL:emit_pipe_text | MARK         |>> :inline_text
+
+  |state[:inline_after_element]
+    ; Continuation after inline child element returns
+    ; Key insight: Embedded elements like |{em text} return on same line and need
+    ; space preservation. But |child elements may return after dedent across newline
+    ; and need to check column for parent element closure.
+    ;
+    ; Solution: Spaces and punctuation go to inline_text (same-line continuation).
+    ; Other chars go to children_content (dedent case - new line of child prose).
+    ; Note: ! is inline text here, not directive, since inline ! only starts directive
+    ; when followed by { for interpolation, which inline_text handles via inline_check_bang.
+    |eof                   | emit(ElementEnd)                  |return
+    |if[ACTUAL_COL <= elem_col]            | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[;]       |.comment  | ->                                |>> :elem_comment_check
+    |c[:]       |.attr     | ->                                |>> :inline_attr_key
+    |c[<P>]     |.pipe     | ->                                |>> :inline_check_pipe
+    |c[ \t]     |.space    | MARK                              |>> :inline_text
+    |c[!]       |.bang     | ->                                |>> :inline_directive
+    |c[?.,)}\]>]|.punct    | MARK                              |>> :inline_text
+    |default    |.other    |                                   |>> :children_content
+
+  |state[:elem_comment_check]
+    |eof                   | emit(ElementEnd)                  |return
+    |c[{]       |.inline   | -> | MARK                         |>> :elem_inline_comment
+    |default    |.line     | MARK                              |>> :elem_line_comment
+
+  |state[:elem_inline_comment]
+    ; ;{...} inline comment in element context - emit Comment event
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(Comment) | ->                |>> :inline_content
+    |c[{]       |.nest     | ->                                |>> :elem_inline_comment_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:elem_inline_comment_nested]
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :elem_inline_comment
+    |c[{]       |.deeper   | ->                                |>> :elem_inline_comment_nested2
+    |default    |.collect  | ->                                |>>
+
+  |state[:elem_inline_comment_nested2]
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :elem_inline_comment_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:elem_line_comment] SCAN(\n)
+    ; SCAN-first: bulk scan to newline
+    |eof                   | emit(Comment) | emit(ElementEnd)  |return
+    |c[\n]      |.done     | emit(Comment) | ->         |>> :children
+
+  ;============================================================================
+  ; INLINE ATTRIBUTE PARSING - Inline attributes on same line as element
+  ; Same as indented attributes but returns to :inline_content instead of :children
+  ;============================================================================
+
+  |state[:inline_attr_key]
+    ; Parse inline attribute key (LABEL or quoted)
+    ; Example: |div :foo-bar value → Attribute("foo-bar"), then value
+    ; Also handles :[id] for attribute merge
+    |eof                     | emit(Error:expected_attr_key) | emit(ElementEnd) |return
+    |c[LETTER]    |.name    | MARK                              |>> :inline_attr_key_scan
+    |c[']         |.quoted  | ->                                |>> :inline_attr_key_quoted
+    |c[<L>]       |.merge   | -> | MARK                         |>> :inline_attr_merge
+    |default      |.err     | emit(Error:expected_attr_key)     |>> :inline_content
+
+  |state[:inline_attr_merge]
+    ; Parsing id inside :[...] for attribute merge
+    |eof                     | emit(Error:unclosed_ref) | emit(ElementEnd) |return
+    |c[<R>]      |.close    | emit(AttributeMerge) | ->         |>> :inline_attr_after_merge
+    |default     |.collect  | ->                                |>>
+
+  |state[:inline_attr_after_merge]
+    ; After :[id] merge - continue with more attributes or content
+    |eof                     |                                  |>> :inline_content
+    |c[\n]       |.newline  |                           |>> :children
+    |c[;]        |.comment  |                                   |>> :elem_comment_check
+    |c[:]        |.attr     | ->                                |>> :inline_attr_key
+    |c[ \t]      |.space    | ->                                |>>
+    |c[<P>]      |.pipe     |                                   |>> /element(ACTUAL_COL) :children_after_element
+    |default     |.text     | MARK                              |>> :inline_text
+
+  |state[:inline_attr_key_scan]
+    ; Scanning inline attribute key label
+    |eof           |.done   | emit(Attribute)                   |>> :inline_attr_ws
+    |c[LABEL_CONT] |.cont   | ->                                |>>
+    |default       |.done   | emit(Attribute)                   |>> :inline_attr_ws
+
+  |state[:inline_attr_key_quoted]
+    ; Quoted inline attribute key: :'odd key'
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |c[']         |.empty   | MARK | emit(Attribute) | ->       |>> :inline_attr_ws
+    |default      |.content | MARK                              |>> :inline_attr_key_quoted_content
+
+  |state[:inline_attr_key_quoted_content]
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |c[']         |.close   | emit(Attribute) | ->              |>> :inline_attr_ws
+    |c[\\]        |.escape  | ->                                |>> :inline_attr_key_quoted_esc
+    |default      |.collect | ->                                |>>
+
+  |state[:inline_attr_key_quoted_esc]
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |default      |.char    | ->                                |>> :inline_attr_key_quoted_content
+
+  |state[:inline_attr_ws]
+    ; Skip whitespace before value
+    |eof                                                        |>> :inline_attr_value
+    |c[ \t]       |.space   | ->                                |>>
+    |default      |.done    |                                   |>> :inline_attr_value
+
+  |state[:inline_attr_value]
+    ; Dispatch on value type for inline attributes
+    ; Flag attribute (no value) → emit BoolValue(true)
+    |eof                      | emit(BoolValue:true)            |>> :inline_content
+    |c[\n]        |.flag     | emit(BoolValue:true)      |>> :children
+    |c[;]         |.flag     | emit(BoolValue:true)             |>> :elem_comment_check
+    |c[:]         |.flag     | emit(BoolValue:true) | ->        |>> :inline_attr_key
+    |c[<L>]       |.array    | emit(ArrayStart) | ->            |>> /array :inline_attr_after_value
+    |c["]         |.dquote   | ->                               |>> :inline_attr_dquote
+    |c[']         |.squote   | ->                               |>> :inline_attr_squote
+    |default      |.bare     | MARK                             |>> :inline_attr_bare
+
+  |state[:inline_attr_dquote]
+    ; Double-quoted string value in inline attribute
+    |eof                      | emit(Error:unclosed_string) | emit(ElementEnd) |return
+    |c["]         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :inline_attr_after_value
+    |default      |.content  | MARK                             |>> :inline_attr_dquote_content
+
+  |state[:inline_attr_dquote_content] SCAN("<BS>)
+    ; SCAN-first: bulk scan to quote or escape
+    |eof                      | emit(Error:unclosed_string)     |>> :inline_content
+    |c["]         |.close    | emit(QuotedStringValue) | ->     |>> :inline_attr_after_value
+    |c[<BS>]      |.escape   | ->                               |>> :inline_attr_dquote_esc
+
+  |state[:inline_attr_dquote_esc]
+    |eof                      | emit(Error:unclosed_string)     |>> :inline_content
+    |default      |.char     | ->                               |>> :inline_attr_dquote_content
+
+  |state[:inline_attr_squote]
+    ; Single-quoted string value in inline attribute
+    |eof                      | emit(Error:unclosed_string) | emit(ElementEnd) |return
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :inline_attr_after_value
+    |default      |.content  | MARK                             |>> :inline_attr_squote_content
+
+  |state[:inline_attr_squote_content] SCAN('<BS>)
+    ; SCAN-first: bulk scan to quote or escape
+    |eof                      | emit(Error:unclosed_string)     |>> :inline_content
+    |c[']         |.close    | emit(QuotedStringValue) | ->     |>> :inline_attr_after_value
+    |c[<BS>]      |.escape   | ->                               |>> :inline_attr_squote_esc
+
+  |state[:inline_attr_squote_esc]
+    |eof                      | emit(Error:unclosed_string)     |>> :inline_content
+    |default      |.char     | ->                               |>> :inline_attr_squote_content
+
+  |state[:inline_attr_bare]
+    ; Bare (unquoted) value for inline attribute
+    ; Collect until space, newline, semicolon, colon, or pipe
+    |eof                      | emit(TypedValue)                |>> :inline_content
+    |c[\n]        |.done     | emit(TypedValue)          |>> :children
+    |c[ \t]       |.done     | emit(TypedValue)                 |>> :inline_attr_after_value
+    |c[;]         |.done     | emit(TypedValue)                 |>> :elem_comment_check
+    |c[:]         |.done     | emit(TypedValue)                 |>> :inline_attr_key
+    |c[<P>]       |.done     | emit(TypedValue)                 |>> /element(ACTUAL_COL) :children_after_element
+    |default      |.collect  | ->                               |>>
+
+  |state[:inline_attr_after_value]
+    ; After quoted/array value - continue inline content
+    |eof                      |                                 |>> :inline_content
+    |c[\n]        |.done                                 |>> :children
+    |c[;]         |.comment  |                                  |>> :elem_comment_check
+    |c[:]         |.attr     | ->                               |>> :inline_attr_key
+    |c[ \t]       |.space    | ->                               |>>
+    |c[<P>]       |.pipe     |                                  |>> /element(ACTUAL_COL) :children_after_element
+    |default      |.text     | MARK                             |>> :inline_text
+
+  ;----------------------------------------------------------------------------
+  ; CHILDREN - indented content after element
+  ; Split into whitespace counting and content handling for correct dedent check
+  ;----------------------------------------------------------------------------
+  |state[:children]
+    |eof                                   | emit(ElementEnd)  |return
+    |c[\n]      |.blank    | ->                         |>> :children
+    |c[ ]       |.space    | ->                        |>> :children
+    |c[\t]      |.tab      | -> | emit(Error:no_tabs)          |>> :skip_child
+    |default               |                                   |>> :children_content
+
+  |state[:children_content]
+    ; DEDENT CHECK: use actual column from line_start
+    |eof                                   | emit(ElementEnd)  |return
+    |if[ACTUAL_COL <= elem_col]            | emit(ElementEnd)  |return
+    ; Still inside this element - handle actual content
+    |c[']       |.escape   | ->                                |>> :child_escaped
+    |c[;]       |.comment  | ->                                |>> :child_comment_start
+    |c[<P>]     |.element  |                                   |>> /element(ACTUAL_COL) :children_after_element
+    |c[:]       |.attr     | ->                                |>> :attr_key
+    |c[@]       |.idref    | ->                                |>> :child_id_ref
+    |c[`]       |.backtick | ->                                |>> :child_freeform_check
+    |c[!]       |.directive|                                   |>> /directive(ACTUAL_COL) :children_after_directive
+    |default    |.prose    | MARK                              |>> :child_prose
+
+  |state[:children_after_element]
+    ; After child element returns - child already consumed this line's whitespace
+    ; We're at the first non-whitespace char (or newline).
+    |eof                                   | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[ ]       |.space    | ->                         |>> :children_count_ws
+    |c[\t]      |.tab      | -> | emit(Error:no_tabs)          |>> :skip_child
+    |default                                            |>> :children_content
+
+  |state[:children_after_directive]
+    ; After child directive returns - check for dedent or continuation
+    ; NOTE: Inline directives (like !{{...}}) return mid-line. Use child_prose_cont
+    ; which emits Text (not DedentedText) to avoid column-based space prepending.
+    |eof                                   | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[\t]      |.tab      | -> | emit(Error:no_tabs)          |>> :skip_child
+    |if[ACTUAL_COL <= elem_col]            | emit(ElementEnd)  |return
+    |default               | MARK                              |>> :child_prose_cont
+
+  |state[:children_count_ws]
+    ; Counting whitespace after seeing first space in :children_after_element
+    |eof                                   | emit(ElementEnd)  |return
+    |c[\n]      |.newline  | ->                         |>> :children
+    |c[ ]       |.space    | ->                        |>> :children_count_ws
+    |c[\t]      |.tab      | -> | emit(Error:no_tabs)          |>> :skip_child
+    |default               |                                   |>> :children_content
+
+  |state[:child_escaped]
+    |eof                   | emit(Text) | emit(ElementEnd)     |return
+    |c[\n]      |.done     | emit(Text) | ->            |>> :children
+    |default    |.first    | MARK                              |>> :child_escaped_text
+
+  |state[:child_escaped_text] SCAN(\n)
+    ; Collect escaped text - no special char handling (| ; ! are literal)
+    ; SCAN-first: bulk scan to newline
+    ; Still uses DedentedText for content_base tracking
+    |eof                   | emit(DedentedText) | emit(ElementEnd)     |return
+    |c[\n]      |.done     | emit(DedentedText) | ->            |>> :children
+
+  |state[:child_prose] SCAN(\n;<P>!)
+    ; SCAN-first: bulk scan to newline, semicolon, pipe, or bang (for directive)
+    ; Uses DedentedText for automatic content_base tracking and space preservation
+    |eof                   | emit(DedentedText) | emit(ElementEnd)     |return
+    |c[\n]      |.done     | emit(DedentedText) | ->            |>> :children
+    |c[;]       |.semi     | emit(DedentedText) | ->                   |>> :child_comment_check
+    |c[<P>]     |.pipe     | emit(DedentedText)                        |>> /element(ACTUAL_COL) :children_after_element
+    |c[!]       |.bang     | emit(DedentedText)                        |>> /directive(ACTUAL_COL) :children_after_directive
+
+  |state[:child_prose_cont] SCAN(\n;<P>!)
+    ; Prose continuation after inline directive (e.g., !{{...}})
+    ; Uses emit(Text) NOT emit(DedentedText) because we're continuing mid-line
+    ; and don't want column-based space prepending
+    |eof                   | emit(Text) | emit(ElementEnd)              |return
+    |c[\n]      |.done     | emit(Text) | ->                     |>> :children
+    |c[;]       |.semi     | emit(Text) | ->                            |>> :child_comment_check
+    |c[<P>]     |.pipe     | emit(Text)                                 |>> /element(ACTUAL_COL) :children_after_element
+    |c[!]       |.bang     | emit(Text)                                 |>> /directive(ACTUAL_COL) :children_after_directive
+
+  ;----------------------------------------------------------------------------
+  ; ID REFERENCES - @[id] to insert entire element
+  ;----------------------------------------------------------------------------
+
+  |state[:child_id_ref]
+    ; After @ - expect [ to start id reference
+    |eof                   | emit(Text) | emit(ElementEnd)     |return
+    |c[<L>]     |.bracket  | -> | MARK                         |>> :child_id_ref_value
+    |default    |.not      | MARK                              |>> :child_prose
+
+  |state[:child_id_ref_value]
+    ; Parsing id inside @[...]
+    |eof                   | emit(Error:unclosed_ref) | emit(ElementEnd) |return
+    |c[<R>]     |.close    | emit(IdReference) | ->            |>> :children
+    |default    |.collect  | ->                                |>>
+
+  |state[:child_comment_start]
+    ; After ; at child content line start - check for inline or block comment
+    |eof                   | emit(ElementEnd)                  |return
+    |c[{]       |.inline   | -> | MARK                         |>> :child_inline_comment
+    |default    |.line     | MARK                              |>> :child_block_comment
+
+  |state[:child_comment_check]
+    ; After ; in middle of child prose - check for inline or line comment
+    |eof                   | emit(ElementEnd)                  |return
+    |c[{]       |.inline   | -> | MARK                         |>> :child_inline_comment
+    |default    |.line     | MARK                              |>> :child_line_comment
+
+  |state[:child_inline_comment]
+    ; ;{...} inline comment - emit Comment event
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.close    | emit(Comment) | ->                |>> :child_prose_after_comment
+    |c[{]       |.nest     | ->                                |>> :child_inline_comment_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:child_inline_comment_nested]
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :child_inline_comment
+    |c[{]       |.deeper   | ->                                |>> :child_inline_comment_nested2
+    |default    |.collect  | ->                                |>>
+
+  |state[:child_inline_comment_nested2]
+    |eof                   | emit(Error:unclosed_comment) | emit(ElementEnd) |return
+    |c[}]       |.unnest   | ->                                |>> :child_inline_comment_nested
+    |default    |.collect  | ->                                |>>
+
+  |state[:child_prose_after_comment]
+    ; After inline comment, continue prose
+    ; Note: pipe case uses DedentedText because content before pipe is child prose
+    |eof                   | emit(ElementEnd)                  |return
+    |c[\n]      |.done     | ->                         |>> :children
+    |c[;]       |.semi     | ->                                |>> :child_comment_check
+    |c[<P>]     |.pipe     | emit(DedentedText)                        |>> /element(ACTUAL_COL) :children_after_element
+    |default    |.prose    | MARK                              |>> :child_prose
+
+  |state[:child_line_comment] SCAN(\n)
+    ; SCAN-first: bulk scan to newline
+    |eof                   | emit(Comment) | emit(ElementEnd)  |return
+    |c[\n]      |.done     | emit(Comment) | ->         |>> :children
+
+  |state[:child_block_comment] SCAN(\n)
+    ; SCAN-first: bulk scan to newline
+    |eof                   | emit(Comment) | emit(ElementEnd)  |return
+    |c[\n]      |.done     | emit(Comment) | ->         |>> :children
+
+  |state[:child_freeform_check]
+    |eof                   | emit(Text) | emit(ElementEnd)     |return
+    |c[`]       |.second   | ->                                |>> :child_freeform_check2
+    |default    |.not      | MARK                              |>> :child_prose
+
+  |state[:child_freeform_check2]
+    |eof                   | emit(Text) | emit(ElementEnd)     |return
+    |c[`]       |.third    | ->                                |>> :child_freeform_start
+    |default    |.not      | MARK                              |>> :child_prose
+
+  |state[:child_freeform_start]
+    ; Just after opening ``` in child context - skip leading newline if present
+    |eof                   | emit(Error:unclosed_freeform) | emit(ElementEnd) |return
+    |c[\n]      |.newline  | -> | MARK                         |>> :child_freeform
+    |default    |.content  | MARK                              |>> :child_freeform
+
+  |state[:child_freeform]
+    ; Inside ``` block within element - preserve exact whitespace
+    |eof                   | emit(Error:unclosed_freeform) | emit(ElementEnd) |return
+    |c[`]       |.maybe    | ->                                |>> :child_freeform_end1
+    |default    |.collect  | ->                                |>>
+
+  |state[:child_freeform_end1]
+    |eof                   | emit(Error:unclosed_freeform) | emit(ElementEnd) |return
+    |c[`]       |.second   | ->                                |>> :child_freeform_end2
+    |default    |.not      | ->                                |>> :child_freeform
+
+  |state[:child_freeform_end2]
+    ; Use FreeformRaw to exclude the 2 closing backticks we've advanced past
+    |eof                   | emit(Error:unclosed_freeform) | emit(ElementEnd) |return
+    |c[`]       |.close    | emit(FreeformRaw) | ->      |>> :children
+    |default    |.not      | ->                                |>> :child_freeform
+
+  |state[:skip_child]
+    |eof                   | emit(ElementEnd)                  |return
+    |c[\n]      |.done     | ->                         |>> :children
+    |default    |.skip     | ->                                |>>
+
+  ;============================================================================
+  ; ATTRIBUTE PARSING - Indented attributes `:key value`
+  ; SPEC.md:670 - attribute = ":" ( LABEL | quoted_label ) [ value ]
+  ;
+  ; Called after `:` consumed. Emits:
+  ;   Attribute { key } followed by value event(s)
+  ;
+  ; Value types:
+  ;   - Missing/newline/semicolon → BoolValue(true) (flag attribute)
+  ;   - [...]  → ArrayStart, values..., ArrayEnd
+  ;   - "..."  → QuotedStringValue
+  ;   - '...'  → QuotedStringValue
+  ;   - other  → typed value (int/float/bool/nil/string)
+  ;============================================================================
+
+  |state[:attr_key]
+    ; SPEC.md:670 - Parse attribute key (LABEL or quoted)
+    ; Example: :foo-bar value → Attribute("foo-bar"), then value
+    ; Also handles :[id] for attribute merge
+    |eof                     | emit(Error:expected_attr_key) | emit(ElementEnd) |return
+    |c[LETTER]    |.name    | MARK                              |>> :attr_key_scan
+    |c[']         |.quoted  | ->                                |>> :attr_key_quoted
+    |c[<L>]       |.merge   | -> | MARK                         |>> :attr_merge
+    |default      |.err     | emit(Error:expected_attr_key)     |>> :children
+
+  |state[:attr_merge]
+    ; Parsing id inside :[...] for attribute merge (indented context)
+    |eof                     | emit(Error:unclosed_ref) | emit(ElementEnd) |return
+    |c[<R>]      |.close    | emit(AttributeMerge) | ->         |>> :attr_after_merge
+    |default     |.collect  | ->                                |>>
+
+  |state[:attr_after_merge]
+    ; After :[id] merge in indented context - continue on same line or next line
+    |eof                     | emit(ElementEnd)                 |return
+    |c[\n]       |.newline  | ->                         |>> :children
+    |c[;]        |.comment  | -> | MARK                         |>> :child_block_comment
+    |c[:]        |.attr     | ->                                |>> :attr_key
+    |c[ \t]      |.space    | ->                                |>>
+    |default     |.text     | MARK                              |>> :child_prose
+
+  |state[:attr_key_scan]
+    ; Scanning attribute key label
+    |eof           |.done   | emit(Attribute)                   |>> :attr_ws
+    |c[LABEL_CONT] |.cont   | ->                                |>>
+    |default       |.done   | emit(Attribute)                   |>> :attr_ws
+
+  |state[:attr_key_quoted]
+    ; Quoted attribute key: :'odd key'
+    ; After opening ' consumed - now at content
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |c[']         |.empty   | MARK | emit(Attribute) | ->       |>> :attr_ws
+    |default      |.content | MARK                              |>> :attr_key_quoted_content
+
+  |state[:attr_key_quoted_content]
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |c[']         |.close   | emit(Attribute)                   |>> :attr_ws
+    |c[\\]        |.escape  | ->                                |>> :attr_key_quoted_esc
+    |default      |.collect | ->                                |>>
+
+  |state[:attr_key_quoted_esc]
+    |eof                     | emit(Error:unclosed_quote) | emit(ElementEnd) |return
+    |default      |.char    | ->                                |>> :attr_key_quoted_content
+
+  |state[:attr_ws]
+    ; Skip whitespace before value
+    |eof                                                        |>> :attr_value
+    |c[ \t]       |.space   | ->                                |>>
+    |default      |.done    |                                   |>> :attr_value
+
+  |state[:attr_value]
+    ; SPEC.md:671-680 - Dispatch on value type
+    ; Flag attribute (no value) → emit BoolValue(true)
+    |eof                      | emit(BoolValue:true)            |>> :children
+    |c[\n]        |.flag     | emit(BoolValue:true)      |>> :children
+    |c[;]         |.flag     | emit(BoolValue:true)             |>> :attr_comment
+    |c[<L>]       |.array    | emit(ArrayStart) | ->            |>> /array :attr_after_value
+    |c["]         |.dquote   | ->                               |>> :attr_dquote
+    |c[']         |.squote   | ->                               |>> :attr_squote
+    |default      |.bare     | MARK                             |>> :attr_bare
+
+  |state[:attr_comment]
+    ; Comment after flag attribute - rest of line is comment
+    |eof                      |                                 |>> :children
+    |c[\n]        |.done                                 |>> :children
+    |default      |.skip     | ->                               |>>
+
+  |state[:attr_dquote]
+    ; Double-quoted string value: :key "value"
+    ; After opening " consumed - now at content
+    ; Example: :msg "hello world" → QuotedStringValue("hello world")
+    |eof                      | emit(Error:unclosed_string) | emit(ElementEnd) |return
+    |c["]         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :attr_after_value
+    |default      |.content  | MARK                             |>> :attr_dquote_content
+
+  |state[:attr_dquote_content] SCAN("<BS>)
+    ; SCAN-first: bulk scan to quote or escape
+    |eof                      | emit(Error:unclosed_string)     |>> :children
+    |c["]         |.close    | emit(QuotedStringValue) | ->     |>> :attr_after_value
+    |c[<BS>]      |.escape   | ->                               |>> :attr_dquote_esc
+
+  |state[:attr_dquote_esc]
+    |eof                      | emit(Error:unclosed_string)     |>> :children
+    |default      |.char     | ->                               |>> :attr_dquote_content
+
+  |state[:attr_squote]
+    ; Single-quoted string value: :key 'value'
+    ; After opening ' consumed - now at content
+    |eof                      | emit(Error:unclosed_string) | emit(ElementEnd) |return
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :attr_after_value
+    |default      |.content  | MARK                             |>> :attr_squote_content
+
+  |state[:attr_squote_content] SCAN('<BS>)
+    ; SCAN-first: bulk scan to quote or escape
+    |eof                      | emit(Error:unclosed_string)     |>> :children
+    |c[']         |.close    | emit(QuotedStringValue) | ->     |>> :attr_after_value
+    |c[<BS>]      |.escape   | ->                               |>> :attr_squote_esc
+
+  |state[:attr_squote_esc]
+    |eof                      | emit(Error:unclosed_string)     |>> :children
+    |default      |.char     | ->                               |>> :attr_squote_content
+
+  |state[:attr_bare] SCAN(\n;)
+    ; Bare (unquoted) value - collect until ; or newline
+    ; SCAN-first: bulk scan to newline or semicolon
+    ; Type determined by content: true/false/null/nil/~/number/string
+    ; Example: :count 42 → TypedValue(emits IntegerValue or StringValue)
+    |eof                      | emit(TypedValue)                |>> :children
+    |c[\n]        |.done     | emit(TypedValue)          |>> :children
+    |c[;]         |.done     | emit(TypedValue)                 |>> :attr_comment
+
+  |state[:attr_after_value]
+    ; After quoted value - skip to end of attribute
+    |eof                      |                                 |>> :children
+    |c[\n]        |.done                                 |>> :children
+    |c[;]         |.comment  |                                  |>> :attr_comment
+    |c[ \t]       |.space    | ->                               |>>
+    |default      |.extra    | emit(Error:unexpected_after_value) |>> :attr_skip_line
+
+  |state[:attr_skip_line]
+    ; Error recovery - skip to newline
+    |eof                      |                                 |>> :children
+    |c[\n]        |.done                                 |>> :children
+    |default      |.skip     | ->                               |>>
+
+;==============================================================================
+; ARRAY FUNCTION - [value value ...]
+; SPEC.md:696-700 - list = "[" { value }* "]"
+;
+; Proper recursive descent: /array is called after seeing [, returns after ].
+; Nested [ calls /array recursively - the call stack handles depth naturally.
+;==============================================================================
+|function[array]
+
+  |state[:values]
+    ; Inside array - looking for values or ]
+    ; Example: [a b c] → StringValue(a), StringValue(b), StringValue(c), ArrayEnd
+    |eof                     | emit(Error:unclosed_array)       |return
+    |c[ \t]       |.space    | ->                               |>>
+    |c[\n]        |.newline  | ->                               |>>
+    |c[<R>]       |.close    | emit(ArrayEnd) | ->              |return
+    |c["]         |.dquote   | ->                               |>> :dquote
+    |c[']         |.squote   | ->                               |>> :squote
+    |c[<L>]       |.nested   | emit(ArrayStart) | ->            |>> /array :values
+    |default      |.bare     | MARK                             |>> :bare
+
+  |state[:dquote]
+    ; Double-quoted string in array
+    ; After opening " consumed - now at content
+    |eof                      | emit(Error:unclosed_string)     |return
+    |c["]         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :values
+    |default      |.content  | MARK                             |>> :dquote_content
+
+  |state[:dquote_content] SCAN("<BS>)
+    ; SCAN-first: bulk scan to " or backslash
+    |eof                      | emit(Error:unclosed_string)     |return
+    |c["]         |.close    | emit(QuotedStringValue) | ->     |>> :values
+    |c[\\]        |.escape   | ->                               |>> :dquote_esc
+
+  |state[:dquote_esc]
+    |eof                      | emit(Error:unclosed_string)     |return
+    |default      |.char     | ->                               |>> :dquote_content
+
+  |state[:squote]
+    ; Single-quoted string in array
+    ; After opening ' consumed - now at content
+    |eof                      | emit(Error:unclosed_string)     |return
+    |c[']         |.empty    | MARK | emit(QuotedStringValue) | -> |>> :values
+    |default      |.content  | MARK                             |>> :squote_content
+
+  |state[:squote_content] SCAN('<BS>)
+    ; SCAN-first: bulk scan to ' or backslash
+    |eof                      | emit(Error:unclosed_string)     |return
+    |c[']         |.close    | emit(QuotedStringValue) | ->     |>> :values
+    |c[\\]        |.escape   | ->                               |>> :squote_esc
+
+  |state[:squote_esc]
+    |eof                      | emit(Error:unclosed_string)     |return
+    |default      |.char     | ->                               |>> :squote_content
+
+  |state[:bare]
+    ; Bare value in array - collect until whitespace or ]
+    |eof                      | emit(TypedValue) | emit(Error:unclosed_array) |return
+    |c[ \t\n]     |.done     | emit(TypedValue)                 |>> :values
+    |c[<R>]       |.done     | emit(TypedValue) | emit(ArrayEnd) | -> |return
+    |default      |.collect  | ->                               |>>
+
+;==============================================================================
+; DIRECTIVE FUNCTION - Block and Inline Form Directives
+; SPEC.md:433-441 - Unified inline syntax, SPEC.md:619-625 - Block directives
+;
+; Called when we're AT the ! character. Handles two forms:
+;
+;   INLINE FORM: !{{expr}}, !{name body}
+;     - Brace-delimited (can span multiple lines via brace-counting)
+;     - Content ends at closing brace, no indentation-based children
+;     - Events: Interpolation / DirectiveName, DirectiveBody, DirectiveEnd
+;
+;   BLOCK FORM: !name [stmt]
+;     - Statement terminated by newline
+;     - Has indented children until dedent to dir_col
+;     - Events: DirectiveStart, [DirectiveStatement], DirectiveEnd
+;
+; dir_col = column of the ! character (passed by caller as ACTUAL_COL)
+;==============================================================================
+|function[directive] :dir_col
+  |var[content_base] = -1
+
+  |state[:start]
+    ; AT the ! character - advance past it
+    |c[!]       |.bang         | ->                               |>> :dispatch
+    |eof                       | emit(Error:incomplete_directive) |return
+    |default                   | emit(Error:incomplete_directive) |return
+
+  |state[:dispatch]
+    ; After ! - dispatch based on next char:
+    ;   !:  → raw block directive (!:label: content)
+    ;   !{  → inline form (interpolation or inline directive)
+    ;   !x  → block directive (!name statement)
+    ;   else → literal ! as text
+    |eof                       | CALL:emit_bang_text              |return
+    |c[:]       |.raw          | -> | MARK                        |>> :raw_label
+    |c[{]       |.inline       | ->                               |>> :inline_brace
+    |c[LETTER]  |.block        | MARK                             |>> :block_name
+    |default    |.literal      | CALL:emit_bang_text              |return
+
+  ;============================================================================
+  ; RAW BLOCK DIRECTIVE - !:label: content
+  ; Syntax: !:label: followed by optional inline content, then indented children.
+  ; Uses content_base for automatic dedentation like prose.
+  ; Content is emitted as Text events; consumers know it's raw via DirectiveStart.raw=true
+  ;============================================================================
+
+  |state[:raw_label]
+    ; Collecting raw directive label until second :
+    ; Example: !:json: ...  →  label is "json"
+    |eof                       | emit(Error:incomplete_directive) |return
+    |c[:]       |.end          | emit(DirectiveStartRaw) | ->     |>> :raw_after_label
+    |c[LABEL_CONT] |.cont      | ->                               |>>
+    |default    |.err          | emit(Error:invalid_label)        |>> :block_skip_line
+
+  |state[:raw_after_label]
+    ; Just after second : - check for inline content or newline
+    |eof                       | emit(DirectiveEnd)               |return
+    |c[\n]      |.newline      | ->                               |>> :raw_children
+    |c[ \t]     |.ws           | ->                               |>> :raw_inline_ws
+    |default    |.content      | MARK                             |>> :raw_inline_content
+
+  |state[:raw_inline_ws]
+    ; Skip whitespace after !:label: before inline content
+    |eof                       | emit(DirectiveEnd)               |return
+    |c[\n]      |.newline      | ->                               |>> :raw_children
+    |c[ \t]     |.skip         | ->                               |>>
+    |default    |.content      | MARK                             |>> :raw_inline_content
+
+  |state[:raw_inline_content] SCAN(\n)
+    ; Inline content on same line as !:label: (no dedentation applied)
+    ; This is raw content before any indented children
+    |eof                       | emit(Text) | emit(DirectiveEnd)  |return
+    |c[\n]      |.done         | emit(Text) | ->                  |>> :raw_children
+
+  ;--- Raw block children - indented content with dedentation ---
+
+  |state[:raw_children]
+    ; Start of line in raw block - blank, whitespace, or content
+    |eof                       | emit(DirectiveEnd)               |return
+    |c[\n]      |.blank        | ->                               |>>
+    |c[ ]       |.space        | ->                               |>> :raw_children_ws
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :raw_skip_line
+    |default    |.content      |                                  |>> :raw_children_content
+
+  |state[:raw_children_ws]
+    ; Counting whitespace at start of line
+    |eof                       | emit(DirectiveEnd)               |return
+    |c[\n]      |.blank        | ->                               |>> :raw_children
+    |c[ ]       |.space        | ->                               |>>
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :raw_skip_line
+    |default    |.content      |                                  |>> :raw_children_content
+
+  |state[:raw_children_content]
+    ; Column check, then collect raw line content
+    |eof                       | emit(DirectiveEnd)               |return
+    |if[ACTUAL_COL <= dir_col] | emit(DirectiveEnd)               |return
+    |default                   | MARK                             |>> :raw_line
+
+  |state[:raw_line] SCAN(\n)
+    ; Collect raw content line - uses DedentedText for content_base tracking
+    |eof                       | emit(DedentedText) | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | emit(DedentedText) | ->          |>> :raw_children
+
+  |state[:raw_skip_line] SCAN(\n)
+    ; Error recovery - skip to next line
+    |eof                       | emit(DirectiveEnd)               |return
+    |c[\n]      |.done         | ->                               |>> :raw_children
+
+  ;============================================================================
+  ; INLINE FORM DIRECTIVES - !{{expr}}, !{name body}, and !{:label:content}
+  ; Brace-delimited (can span multiple lines via brace-counting).
+  ; No indentation-based children - content ends at closing brace.
+  ;============================================================================
+
+  |state[:inline_brace]
+    ; After !{ - dispatch based on next char:
+    ;   !{{  → interpolation
+    ;   !{:  → inline raw (!{:label:content})
+    ;   !{x  → inline directive (!{name body})
+    |eof                       | emit(Error:unclosed) |return
+    |c[{]       |.interp       | -> | MARK                        |>> :inline_interp
+    |c[:]       |.raw          | -> | MARK                        |>> :inline_raw_label
+    |c[LETTER]  |.name         | MARK                             |>> :inline_name
+    |default    |.err          | emit(Error:incomplete_directive) |return
+
+  ;--- Inline raw: !{:label:content} ---
+
+  |state[:inline_raw_label]
+    ; Collecting label until second :
+    ; Example: !{:json:...} → label is "json"
+    |eof                       | emit(Error:unclosed) |return
+    |c[:]       |.end          | emit(DirectiveStartRaw) | ->     |>> :inline_raw_content
+    |c[LABEL_CONT] |.cont      | ->                               |>>
+    |default    |.err          | emit(Error:invalid_label)        |>> :inline_skip
+
+  |state[:inline_raw_content]
+    ; Raw content until closing } - brace-counted
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.close        | emit(DirectiveBody) | emit(DirectiveEnd) |return
+    |default    |.start        | MARK                             |>> :inline_raw_body
+
+  |state[:inline_raw_body]
+    ; Collecting inline raw body - brace-counted
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.close        | emit(DirectiveBody) | emit(DirectiveEnd) |return
+    |c[{]       |.nest         | ->                               |>> :inline_raw_n1
+    |default    |.collect      | ->                               |>>
+
+  |state[:inline_raw_n1]
+    ; Nested braces - depth 1
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_raw_body
+    |c[{]       |.deeper       | ->                               |>> :inline_raw_n2
+    |default    |.collect      | ->                               |>>
+
+  |state[:inline_raw_n2]
+    ; Nested braces - depth 2
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_raw_n1
+    |c[{]       |.deeper       | ->                               |>> :inline_raw_n3
+    |default    |.collect      | ->                               |>>
+
+  |state[:inline_raw_n3]
+    ; Nested braces - depth 3
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_raw_n2
+    |default    |.collect      | ->                               |>>
+
+  ;--- Inline interpolation: !{{expr}} ---
+
+  |state[:inline_interp] SCAN(<RB><LB>)
+    ; Inside interpolation - brace-counting
+    ; SCAN-first: bulk scan to } or {
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.close        | emit(Interpolation)              |>> :inline_interp_close
+    |c[{]       |.nest         | ->                               |>> :inline_interp_n1
+
+  |state[:inline_interp_close]
+    ; After first } in interpolation - advance and check for second
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.second       | ->                               |>> :inline_interp_close2
+    |c[{]       |.nest         | ->                               |>> :inline_interp
+    |default    |.more         | ->                               |>> :inline_interp
+
+  |state[:inline_interp_close2]
+    ; After second } - check for third to close
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.done         | ->                               |return
+    |c[{]       |.nest         | ->                               |>> :inline_interp
+    |default    |.more         | ->                               |>> :inline_interp
+
+  |state[:inline_interp_n1]
+    ; Nested braces in interpolation - depth 1
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_interp
+    |c[{]       |.deeper       | ->                               |>> :inline_interp_n2
+    |default    |.collect      | ->                               |>>
+
+  |state[:inline_interp_n2]
+    ; Nested braces - depth 2
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_interp_n1
+    |c[{]       |.deeper       | ->                               |>> :inline_interp_n3
+    |default    |.collect      | ->                               |>>
+
+  |state[:inline_interp_n3]
+    ; Nested braces - depth 3
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_interp_n2
+    |default    |.collect      | ->                               |>>
+
+  ;--- Inline directive: !{name body} ---
+
+  |state[:inline_name]
+    ; Collecting inline directive name
+    |eof                       | emit(Error:unclosed) |return
+    |c[LABEL_CONT] |.cont      | ->                               |>>
+    |c[:]       |.ns           | emit(DirectiveName)              |>> :inline_ns
+    |c[ \t]     |.space        | emit(DirectiveName)              |>> :inline_body_start
+    |c[}]       |.noarg        | emit(DirectiveName) | emit(DirectiveEnd) |return
+    |default    |.err          | emit(Error:incomplete_directive) |>> :inline_skip
+
+  |state[:inline_ns]
+    ; After : in inline directive name - namespace (e.g., raw:json)
+    |eof                       | emit(Error:unclosed) |return
+    |c[LETTER]  |.kind         | MARK                             |>> :inline_kind
+    |default    |.err          | emit(Error:incomplete_directive) |>> :inline_skip
+
+  |state[:inline_kind]
+    ; Collecting kind after namespace
+    |eof                       | emit(Error:unclosed) |return
+    |c[LABEL_CONT] |.cont      | ->                               |>>
+    |c[ \t]     |.space        | emit(DirectiveKind)              |>> :inline_body_start
+    |c[}]       |.noarg        | emit(DirectiveKind) | emit(DirectiveEnd) |return
+    |default    |.err          | emit(Error:incomplete_directive) |>> :inline_skip
+
+  |state[:inline_body_start]
+    ; After name/kind, skip whitespace before body
+    |eof                       | emit(Error:unclosed) |return
+    |c[ \t]     |.skip         | ->                               |>>
+    |c[}]       |.close        | emit(DirectiveEnd)               |return
+    |default    |.content      | MARK                             |>> :inline_body
+
+  |state[:inline_body] SCAN(<RB><LB>)
+    ; Inline directive body - brace-counted
+    ; SCAN-first: bulk scan to } or {
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.close        | emit(DirectiveBody) | emit(DirectiveEnd) |return
+    |c[{]       |.nest         | ->                               |>> :inline_body_n1
+
+  |state[:inline_body_n1] SCAN(<RB><LB>)
+    ; Nested braces in body - depth 1
+    ; SCAN-first: bulk scan to } or {
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_body
+    |c[{]       |.deeper       | ->                               |>> :inline_body_n2
+
+  |state[:inline_body_n2] SCAN(<RB><LB>)
+    ; Nested braces - depth 2
+    ; SCAN-first: bulk scan to } or {
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_body_n1
+    |c[{]       |.deeper       | ->                               |>> :inline_body_n3
+
+  |state[:inline_body_n3] SCAN(<RB>)
+    ; Nested braces - depth 3 (deepest - just scan for })
+    ; SCAN-first: bulk scan to }
+    |eof                       | emit(Error:unclosed) |return
+    |c[}]       |.unnest       | ->                               |>> :inline_body_n2
+
+  |state[:inline_skip]
+    ; Error recovery - skip to closing brace
+    |eof                       |                                  |return
+    |c[}]       |.close        |                                  |return
+    |default    |.skip         | ->                               |>>
+
+  ;============================================================================
+  ; BLOCK DIRECTIVE PATH - !name [statement]
+  ; Has indented children. Uses dir_col for column-relative dedent detection.
+  ;============================================================================
+
+  |state[:block_name]
+    ; Collecting block directive name
+    ; raw: prefix detection happens in :block_check_raw
+    |eof                       | emit(DirectiveStart) | emit(DirectiveEnd) |return
+    |c[\n]      |.noargs       | emit(DirectiveStart) | ->        |>> :block_children
+    |c[:]       |.colon        | ->                               |>> :block_check_raw
+    |c[ \t]     |.space        | emit(DirectiveStart) | ->        |>> :block_statement
+    |c[LABEL_CONT] |.cont      | ->                               |>>
+    |default    |.done         | emit(DirectiveStart)             |>> :block_statement
+
+  |state[:block_check_raw]
+    ; After : in directive name - could be namespace or raw: prefix
+    ; For now, continue collecting (raw: detection TODO)
+    |eof                       | emit(DirectiveStart) | emit(DirectiveEnd) |return
+    |c[\n]      |.block        | emit(DirectiveStart) | ->        |>> :block_children
+    |c[ \t]     |.space        | emit(DirectiveStart) | ->        |>> :block_statement
+    |c[LABEL_CONT] |.cont      | ->                               |>> :block_name
+    |default    |.done         | emit(DirectiveStart)             |>> :block_statement
+
+  |state[:block_statement]
+    ; After space following directive name - skip leading ws, collect statement
+    |eof                       | emit(DirectiveEnd) |return
+    |c[ \t]     |.skip         | ->                               |>>
+    |c[\n]      |.empty        | ->                               |>> :block_children
+    |default    |.start        | MARK                             |>> :block_statement_content
+
+  |state[:block_statement_content] SCAN(\n)
+    ; Collect statement until newline
+    |eof                       | emit(DirectiveStatement) | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | emit(DirectiveStatement) | ->    |>> :block_children
+
+  ;--- Block directive children - column-relative dedent ---
+
+  |state[:block_children]
+    ; Start of line in block directive children
+    ; Blank lines stay in directive; whitespace triggers counting; other goes to content
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.blank        | ->                               |>>
+    |c[ ]       |.space        | ->                               |>> :block_children_ws
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :block_skip_line
+    |default    |.content      |                                  |>> :block_children_content
+
+  |state[:block_children_ws]
+    ; Counting whitespace - transitions to content after counting
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.blank        | ->                               |>> :block_children
+    |c[ ]       |.space        | ->                               |>>
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :block_skip_line
+    |default    |.content      |                                  |>> :block_children_content
+
+  |state[:block_children_content]
+    ; Dispatch child content - check column for dedent first
+    |eof                       | emit(DirectiveEnd) |return
+    |if[ACTUAL_COL <= dir_col] | emit(DirectiveEnd)               |return
+    |c[']       |.escape       | ->                               |>> :block_child_escaped
+    |c[;]       |.comment      | -> | MARK                        |>> :block_child_comment
+    |c[<P>]     |.pipe         |                                  |>> /element(ACTUAL_COL) :block_after_element
+    |c[!]       |.directive    |                                  |>> /directive(ACTUAL_COL) :block_after_directive
+    |c[:]       |.attr         | ->                               |>> :block_child_attr
+    |default    |.prose        | MARK                             |>> :block_child_prose
+
+  |state[:block_after_element]
+    ; After child element returns - check for dedent or continuation
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.newline      | ->                               |>> :block_children
+    |c[ ]       |.space        | ->                               |>> :block_children_ws
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :block_skip_line
+    |if[ACTUAL_COL <= dir_col] | emit(DirectiveEnd)               |return
+    |default    |.more         |                                  |>> :block_children_content
+
+  |state[:block_after_directive]
+    ; After nested directive returns
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.newline      | ->                               |>> :block_children
+    |c[ ]       |.space        | ->                               |>> :block_children_ws
+    |c[\t]      |.tab          | -> | emit(Error:no_tabs)         |>> :block_skip_line
+    |if[ACTUAL_COL <= dir_col] | emit(DirectiveEnd)               |return
+    |default    |.more         |                                  |>> :block_children_content
+
+  |state[:block_child_escaped]
+    ; Escaped line in directive child (starts with ')
+    |eof                       | emit(Text) | emit(DirectiveEnd)  |return
+    |c[\n]      |.done         | emit(Text) | ->                  |>> :block_children
+    |default    |.first        | MARK                             |>> :block_child_escaped_text
+
+  |state[:block_child_escaped_text] SCAN(\n)
+    |eof                       | emit(Text) | emit(DirectiveEnd)  |return
+    |c[\n]      |.done         | emit(Text) | ->                  |>> :block_children
+
+  |state[:block_child_comment] SCAN(\n)
+    ; Line comment in directive child
+    |eof                       | emit(Comment) | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | emit(Comment) | ->               |>> :block_children
+
+  |state[:block_child_prose] SCAN(\n;<P>!)
+    ; Prose content in directive child
+    |eof                       | emit(DedentedText) | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | emit(DedentedText) | ->          |>> :block_children
+    |c[;]       |.semi         | emit(DedentedText) | ->          |>> :block_child_comment_check
+    |c[<P>]     |.pipe         | emit(DedentedText)               |>> /element(ACTUAL_COL) :block_after_element
+    |c[!]       |.bang         | emit(DedentedText)               |>> /directive(ACTUAL_COL) :block_after_directive
+
+  |state[:block_child_comment_check]
+    ; After ; in prose - inline or line comment?
+    |eof                       | emit(DirectiveEnd) |return
+    |c[{]       |.inline       | -> | MARK                        |>> :block_inline_comment
+    |default    |.line         | MARK                             |>> :block_child_comment
+
+  |state[:block_inline_comment]
+    ; ;{...} inline comment - brace-counted
+    |eof                       | emit(Error:unclosed_comment) | emit(DirectiveEnd) |return
+    |c[}]       |.close        | emit(Comment) | ->               |>> :block_prose_after_comment
+    |c[{]       |.nest         | ->                               |>> :block_inline_comment_n1
+    |default    |.collect      | ->                               |>>
+
+  |state[:block_inline_comment_n1]
+    |eof                       | emit(Error:unclosed_comment) | emit(DirectiveEnd) |return
+    |c[}]       |.unnest       | ->                               |>> :block_inline_comment
+    |c[{]       |.deeper       | ->                               |>> :block_inline_comment_n2
+    |default    |.collect      | ->                               |>>
+
+  |state[:block_inline_comment_n2]
+    |eof                       | emit(Error:unclosed_comment) | emit(DirectiveEnd) |return
+    |c[}]       |.unnest       | ->                               |>> :block_inline_comment_n1
+    |default    |.collect      | ->                               |>>
+
+  |state[:block_prose_after_comment]
+    ; After inline comment in prose
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | ->                               |>> :block_children
+    |c[;]       |.semi         | ->                               |>> :block_child_comment_check
+    |c[<P>]     |.pipe         |                                  |>> /element(ACTUAL_COL) :block_after_element
+    |c[!]       |.bang         |                                  |>> /directive(ACTUAL_COL) :block_after_directive
+    |default    |.prose        | MARK                             |>> :block_child_prose
+
+  |state[:block_child_attr]
+    ; Attribute in directive child - for now, just collect as prose
+    ; TODO: proper attribute parsing for directives (like !let :name value)
+    |eof                       | emit(DirectiveEnd) |return
+    |default    |.prose        | MARK                             |>> :block_child_prose
+
+  |state[:block_skip_line]
+    ; Error recovery - skip to next line
+    |eof                       | emit(DirectiveEnd) |return
+    |c[\n]      |.done         | ->                               |>> :block_children
+    |default    |.skip         | ->                               |>>

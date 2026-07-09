@@ -1,0 +1,502 @@
+---
+# Embedded elements - FULL-SPEC.md lines 1026-1076
+#
+# Key rules from SPEC:
+# - SPEC 1035-1038: |{ starts, } ends (brace-balanced), contains name/attrs/content
+# - SPEC 1043-1047: Multiple embedded elements are siblings
+# - SPEC 1049-1053: Nested embedded elements supported
+# - SPEC 1057-1067: Inside |{...}, only |{...} form allowed, not |element
+# - SPEC 1069-1076: Can span multiple lines, indentation inside ignored
+#
+# Behavior notes:
+# - Space after } is consumed before next token (implementation consistent)
+# - Empty Text "" events occur at content boundaries (implementation artifact)
+# - Interpolation in attr values not yet implemented (known limitation)
+
+- id: basic_embedded_element
+  desc: basic embedded element
+  udon: "|p This has |{em emphasis} here"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This has "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "emphasis"]
+    - EmbeddedEnd
+    - [Text, " here"]
+    - ElementEnd
+- id: embedded_with_attributes
+  desc: embedded with attributes
+  udon: "|p Click |{a :href /foo here}!\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Click "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/foo"]
+    - [Text, "here"]
+    - EmbeddedEnd
+    - [Text, "!"]
+    - ElementEnd
+- id: nested_embedded_elements
+  desc: nested embedded elements
+  udon: "|p See |{a :href /doc the |{em official} docs}.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "See "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/doc"]
+    - [Text, "the "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "official"]
+    - EmbeddedEnd
+    - [Text, " docs"]
+    - EmbeddedEnd
+    - [Text, "."]
+    - ElementEnd
+
+- id: multiple_embedded_siblings
+  desc: multiple embedded siblings
+  # Note: space between embedded elements is consumed, not emitted as Text
+  udon: "|nav |{a Home} |{a About}\n"
+  events:
+    - ElementStart
+    - [Name, "nav"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "About"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: embedded_anonymous_element
+  desc: embedded anonymous element (class only, no name)
+  udon: "|p Some |{.highlight important} text\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Some "]
+    - EmbeddedStart
+    - [Attr, "class"]
+    - [BareValue, "highlight"]
+    - [Text, "important"]
+    - EmbeddedEnd
+    - [Text, " text"]
+    - ElementEnd
+
+- id: embedded_with_id
+  desc: embedded with bracket id
+  udon: "|p Some |{span[myid] text} here\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Some "]
+    - EmbeddedStart
+    - [Name, "span"]
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - [Text, " here"]
+    - ElementEnd
+
+- id: embedded_with_id_and_class
+  desc: embedded with both id and class
+  udon: "|p |{span[id].highlight text}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "span"]
+    - [Attr, "id"]
+    - [BareValue, "id"]
+    - [Attr, "class"]
+    - [BareValue, "highlight"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: embedded_with_suffix
+  desc: embedded with ? suffix modifier
+  udon: "|form |{field? optional}\n"
+  events:
+    - ElementStart
+    - [Name, "form"]
+    - EmbeddedStart
+    - [Name, "field"]
+    - [Attr, "?"]
+    - BoolTrue
+    - [Text, "optional"]
+    - EmbeddedEnd
+    - ElementEnd
+- id: embedded_with_interpolation
+  desc: embedded with interpolation in content
+  # Note: empty Text "" before and after interpolation (content boundaries)
+  udon: "|p Hello |{em !{{user.name}}}!\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Hello "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, ""]
+    - [Interpolation, "user.name"]
+    - [Text, ""]
+    - EmbeddedEnd
+    - [Text, "!"]
+    - ElementEnd
+
+- id: embedded_with_interpolation_and_text
+  desc: embedded with interpolation in attr value
+  # BUG: Interpolation in attr values not implemented (SPEC 904-910)
+  # Parser treats !{{...}} as literal text in attr context, braces get mangled
+  udon: "|p |{a :href !{{base_url}} click here}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "!{{base_url"]
+    - EmbeddedEnd
+    - [Text, "} click here}"]
+    - ElementEnd
+
+- id: deeply_nested_embedded
+  desc: three levels of embedded nesting
+  # Note: empty Text "" events at content start and after each nested close
+  udon: "|p |{a |{b |{c deep}}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "b"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "c"]
+    - [Text, "deep"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: complex_nested_with_attributes
+  desc: nested embedded with classes, id, and attributes
+  udon: "|p |{div.outer |{span[id].inner :data val text}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "div"]
+    - [Attr, "class"]
+    - [BareValue, "outer"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "span"]
+    - [Attr, "id"]
+    - [BareValue, "id"]
+    - [Attr, "class"]
+    - [BareValue, "inner"]
+    - [Attr, "data"]
+    - [BareValue, "val"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: embedded_empty
+  desc: empty embedded element (no name or content)
+  udon: "|p before |{} after\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "before "]
+    - EmbeddedStart
+    - EmbeddedEnd
+    - [Text, " after"]
+    - ElementEnd
+- id: embedded_with_braces_in_content
+  desc: embedded with braces in content
+  # The `}` after the quoted string closes the embedded element, not text content.
+  # Braces inside the quoted string don't affect brace-balancing.
+  udon: '|p |{code "func() { return 1; }"}'
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "code"]
+    - [Text, ""]
+    - [StringValue, "func() { return 1; }"]
+    - [Text, ""]
+    - EmbeddedEnd
+    - ElementEnd
+- id: embedded_adjacent
+  desc: embedded adjacent
+  udon: "|p |{a one}|{b two}"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "one"]
+    - EmbeddedEnd
+    - EmbeddedStart
+    - [Name, "b"]
+    - [Text, "two"]
+    - EmbeddedEnd
+    - ElementEnd
+# Error test - embedded element not closed with }
+- id: unclosed_embedded_element_error
+  desc: unclosed embedded element error
+  udon: "|p This has |{em unclosed"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This has "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "unclosed"]
+    - [Error, "UnclosedText"]
+    - EmbeddedEnd
+    - ElementEnd
+
+# Error test - outer embedded not closed (inner is closed)
+- id: unclosed_nested_embedded_error
+  desc: unclosed nested embedded error
+  udon: "|p |{a |{b text}"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "b"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - [Error, "UnclosedText"]
+    - EmbeddedEnd
+    - ElementEnd
+- id: mismatched_braces_error
+  desc: "extra } after embedded is just text"
+  # The first } closes embedded, second } is text content
+  udon: "|p |{a text}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - [Text, "}"]
+    - ElementEnd
+
+- id: nav_with_pipe_separators
+  desc: "pipe with spaces is text, not element (per SPEC 157-159)"
+  # Space after } is consumed, then "| " captured as text
+  udon: "|nav |{a Home} | |{a About} | |{a Help}\n"
+  events:
+    - ElementStart
+    - [Name, "nav"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - [Text, "| "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "About"]
+    - EmbeddedEnd
+    - [Text, " | "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Help"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: dense_nav_embedded_list
+  desc: densely packed nested embedded elements
+  # Space before |{a consumed; space after } consumed; "| " remains as text
+  udon: "|ul |{li |{a Home} | }|{li |{a About} | }|{li |{a Exit}}\n"
+  events:
+    - ElementStart
+    - [Name, "ul"]
+    - EmbeddedStart
+    - [Name, "li"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - [Text, "| "]
+    - EmbeddedEnd
+    - EmbeddedStart
+    - [Name, "li"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "About"]
+    - EmbeddedEnd
+    - [Text, "| "]
+    - EmbeddedEnd
+    - EmbeddedStart
+    - [Name, "li"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Exit"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: breadcrumb_with_separators
+  desc: embedded elements with > separators as text
+  # Note: space after } consumed, so "> " not " > "
+  udon: "|nav.breadcrumb |{a Home} > |{a Products} > |{a Widget}\n"
+  events:
+    - ElementStart
+    - [Name, "nav"]
+    - [Attr, "class"]
+    - [BareValue, "breadcrumb"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - [Text, "> "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Products"]
+    - EmbeddedEnd
+    - [Text, " > "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Widget"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: inline_formatting_mixed
+  desc: mixed embedded elements with text between
+  udon: "|p Click |{a :href /here here} or press |{kbd Ctrl}+|{kbd C} to copy.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Click "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/here"]
+    - [Text, "here"]
+    - EmbeddedEnd
+    - [Text, " or press "]
+    - EmbeddedStart
+    - [Name, "kbd"]
+    - [Text, "Ctrl"]
+    - EmbeddedEnd
+    - [Text, "+"]
+    - EmbeddedStart
+    - [Name, "kbd"]
+    - [Text, "C"]
+    - EmbeddedEnd
+    - [Text, " to copy."]
+    - ElementEnd
+
+- id: table_cell_with_embedded
+  desc: inline elements with embedded content
+  # After embedded, space consumed, then inline |td parsed
+  udon: "|table |tr |td |{strong Name} |td |{em Value}\n"
+  events:
+    - ElementStart
+    - [Name, "table"]
+    - ElementStart
+    - [Name, "tr"]
+    - ElementStart
+    - [Name, "td"]
+    - EmbeddedStart
+    - [Name, "strong"]
+    - [Text, "Name"]
+    - EmbeddedEnd
+    - ElementStart
+    - [Name, "td"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "Value"]
+    - EmbeddedEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: embedded_with_interpolation_and_pipes
+  desc: "embedded with inline directive !{...} (not interpolation)"
+  # Note: empty Text "" before and after directive (content boundaries)
+  udon: "|p Status: |{span.status !{status}} | Updated: |{time !{updated_at}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Status: "]
+    - EmbeddedStart
+    - [Name, "span"]
+    - [Attr, "class"]
+    - [BareValue, "status"]
+    - [Text, ""]
+    - DirectiveStart
+    - [Name, "status"]
+    - DirectiveEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - [Text, " | Updated: "]
+    - EmbeddedStart
+    - [Name, "time"]
+    - [Text, ""]
+    - DirectiveStart
+    - [Name, "updated_at"]
+    - DirectiveEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: deeply_nested_with_text_between
+  desc: deeply nested embedded with text interspersed
+  udon: "|div |{p Start |{em |{strong deep}} middle |{code end}} after\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - EmbeddedStart
+    - [Name, "p"]
+    - [Text, "Start "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, ""]
+    - EmbeddedStart
+    - [Name, "strong"]
+    - [Text, "deep"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - [Text, " middle "]
+    - EmbeddedStart
+    - [Name, "code"]
+    - [Text, "end"]
+    - EmbeddedEnd
+    - [Text, ""]
+    - EmbeddedEnd
+    - [Text, "after"]
+    - ElementEnd

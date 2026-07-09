@@ -1,0 +1,91 @@
+---
+# Suffix position tests - per SPEC lines 200-215
+# Suffix can appear before [id] and .class - identity continues
+
+- id: suffix_after_name
+  desc: Suffix immediately after name
+  udon: "|field?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "?"]
+    - BoolTrue
+    - ElementEnd
+
+# Per SPEC 204: |name?[id] - suffix before id is valid, identity continues
+- id: suffix_after_name_before_id
+  desc: Suffix after name, then id bracket
+  udon: "|field?[myid]\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "?"]
+    - BoolTrue
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - ElementEnd
+
+- id: suffix_after_id
+  desc: Suffix after id bracket
+  udon: "|field[myid]?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - [Attr, "?"]
+    - BoolTrue
+    - ElementEnd
+
+# Per SPEC 207: |name[id]? .class - space before class makes it text
+- id: suffix_after_id_space_before_class
+  desc: Suffix after id, space makes dot-class text
+  udon: "|field[myid]? .cls\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - [Attr, "?"]
+    - BoolTrue
+    - [Text, ".cls"]
+    - ElementEnd
+
+# Per SPEC 208: |name[id].class ? - space before suffix makes it text
+- id: suffix_space_separated_at_end
+  desc: Space before suffix makes it text content
+  udon: "|field[myid].cls ?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - [Attr, "class"]
+    - [BareValue, "cls"]
+    - [Text, "?"]
+    - ElementEnd
+
+# Suffix after class (per SPEC 214-215 this is reserved but currently accepted)
+- id: suffix_after_class
+  desc: Suffix after class (works, though SPEC reserves for future)
+  udon: "|field.cls?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "class"]
+    - [BareValue, "cls"]
+    - [Attr, "?"]
+    - BoolTrue
+    - ElementEnd
+
+# Only ONE suffix is parsed; subsequent suffix chars become text
+- id: multiple_suffixes
+  desc: Only first suffix parsed, second becomes text
+  udon: "|field?!\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "?"]
+    - BoolTrue
+    - [Text, "!"]
+    - ElementEnd

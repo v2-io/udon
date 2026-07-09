@@ -1,0 +1,252 @@
+# Inline element nesting tests - FULL-SPEC.md lines 543-768
+#
+# Tests rightward nesting behavior where column position determines parent/child relationships.
+# Inline elements on a single line are treated as if on separate lines at their column positions.
+#
+# Key rules from SPEC:
+# - SPEC 553: "pop while new_column <= stack_top.base_column"
+# - SPEC 584-586: Greater column = child, Same column = sibling, Lesser = dedent
+# - SPEC 674: Inline elements are exactly as if they were on separate lines at those columns
+# - SPEC 719-737: "You only care about the previous line's stack state" - popped elements are gone
+#
+# Each test cites specific SPEC line numbers in comments.
+
+---
+- id: inline_nesting_basic
+  desc: inline nesting basic
+  # Elements on same line nest rightward: one > two > three
+  udon: "|one |two |three"
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: inline_equivalence_to_vertical
+  desc: inline equivalence to vertical
+  # Vertical nesting with increasing indent is equivalent to inline nesting
+  udon: |-
+    |one
+         |two
+              |three
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: inline_equivalence_minimal_indent
+  desc: inline equivalence minimal indent
+  udon: |-
+    |one
+      |two
+        |three
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: sibling_after_inline_elements
+  desc: sibling after inline elements
+  # |alpha at col 2: pop three (2<=10), pop two (2<=5), push alpha as child of one
+  # Per SPEC 645-657: alpha is "sibling of |two -- child of |one"
+  udon: |-
+    |one |two |three
+      |alpha
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes
+    - ElementEnd        # two closes (BEFORE alpha opens)
+    - ElementStart      # alpha opens as child of one
+    - [Name, "alpha"]
+    - ElementEnd        # alpha closes
+    - ElementEnd        # one closes
+
+- id: column_alignment_is_sibling
+  desc: column alignment is sibling
+  # |alpha at col 5 (same as |two): pop three (5<=10), pop two (5<=5), push alpha
+  # Per SPEC 659-670: alpha is "sibling of |two, child of |one"
+  udon: |-
+    |one |two |three
+         |alpha
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes
+    - ElementEnd        # two closes (same column = sibling)
+    - ElementStart      # alpha opens as child of one
+    - [Name, "alpha"]
+    - ElementEnd        # alpha closes
+    - ElementEnd        # one closes
+
+- id: child_of_inline_element_between_columns
+  desc: child of inline element between columns
+  # |alpha at col 8: pop three (8<=10), 8>5 so stop, push alpha as child of two
+  # alpha is sibling of three, both children of two
+  udon: |-
+    |one |two |three
+            |alpha
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes
+    - ElementStart      # alpha opens as child of two (sibling of three)
+    - [Name, "alpha"]
+    - ElementEnd        # alpha closes
+    - ElementEnd        # two closes
+    - ElementEnd        # one closes
+
+- id: child_of_inline_at_same_column_as_next
+  desc: child of inline at same column as next
+  # |alpha at col 10 (same as |three): pop three (10<=10), 10>5 so stop
+  # alpha is sibling of three, both children of two
+  udon: |-
+    |one |two |three
+              |alpha
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes (same column = sibling)
+    - ElementStart      # alpha opens as sibling of three
+    - [Name, "alpha"]
+    - ElementEnd        # alpha closes
+    - ElementEnd        # two closes
+    - ElementEnd        # one closes
+
+- id: multi_line_progression
+  desc: multi line progression
+  # Per SPEC 711-717: alpha is "child of |two", beta is "sibling of |two (child of |one)"
+  # alpha at col 7: pop three, push alpha as child of two
+  # beta at col 5: pop alpha, pop two, push beta as child of one
+  udon: |-
+    |one |two |three
+           |alpha
+         |beta
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes
+    - ElementStart      # alpha opens (child of two)
+    - [Name, "alpha"]
+    - ElementEnd        # alpha closes
+    - ElementEnd        # two closes (BEFORE beta opens)
+    - ElementStart      # beta opens (child of one, sibling of two)
+    - [Name, "beta"]
+    - ElementEnd        # beta closes
+    - ElementEnd        # one closes
+
+- id: stack_state_after_dedent
+  desc: stack state after dedent
+  # Per SPEC 719-737 "The Critical Insight":
+  # alpha at col 2: pop three, pop two, push alpha as child of one
+  # beta at col 5: 5 > 2, so beta is child of alpha (not related to two at all)
+  udon: |-
+    |one |two |three
+      |alpha
+         |beta
+  events:
+    - ElementStart
+    - [Name, "one"]
+    - ElementStart
+    - [Name, "two"]
+    - ElementStart
+    - [Name, "three"]
+    - ElementEnd        # three closes
+    - ElementEnd        # two closes (BEFORE alpha opens)
+    - ElementStart      # alpha opens (child of one)
+    - [Name, "alpha"]
+    - ElementStart      # beta opens (child of alpha)
+    - [Name, "beta"]
+    - ElementEnd        # beta closes
+    - ElementEnd        # alpha closes
+    - ElementEnd        # one closes
+
+- id: many_inline_elements
+  desc: many inline elements
+  # Per SPEC 743-768: child-of-c at col 9, child-of-a at col 3
+  # child-of-c: pop g,f,e,d (all <= 9), push as child of c
+  # child-of-a: pop child-of-c,c,b (all <= 3), push as child of a
+  udon: |-
+    |a |b |c |d |e |f |g
+             |child-of-c
+       |child-of-a
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - ElementStart
+    - [Name, "d"]
+    - ElementStart
+    - [Name, "e"]
+    - ElementStart
+    - [Name, "f"]
+    - ElementStart
+    - [Name, "g"]
+    - ElementEnd        # g closes
+    - ElementEnd        # f closes
+    - ElementEnd        # e closes
+    - ElementEnd        # d closes (col 9, same as child-of-c)
+    - ElementStart      # child-of-c opens (child of c)
+    - [Name, "child-of-c"]
+    - ElementEnd        # child-of-c closes
+    - ElementEnd        # c closes
+    - ElementEnd        # b closes (col 3, same as child-of-a)
+    - ElementStart      # child-of-a opens (child of a)
+    - [Name, "child-of-a"]
+    - ElementEnd        # child-of-a closes
+    - ElementEnd        # a closes
+
+- id: inline_with_text_content
+  desc: inline with text content
+  udon: "|a |b |c text for c"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - [Text, "text for c"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd

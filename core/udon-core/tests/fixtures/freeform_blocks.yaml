@@ -1,0 +1,42 @@
+---
+# Freeform block tests - triple backticks create raw/literal blocks
+# Freeform preserves exact whitespace, no dedentation
+# Content is emitted as Text events, line by line
+
+- id: basic_freeform_block
+  desc: Basic freeform block at document root
+  udon: "```\nfreeform content\n```"
+  events:
+    - FreeformStart
+    - [Text, "freeform content"]
+    - FreeformEnd
+
+# Freeform preserves special characters - not interpreted
+- id: freeform_preserves_pipes
+  desc: Pipes in freeform are not interpreted as elements
+  udon: "```\n|not-an-element\n|another\n```"
+  events:
+    - FreeformStart
+    - [Text, "|not-an-element"]
+    - [Text, "|another"]
+    - FreeformEnd
+
+# Freeform blocks work inside elements too
+- id: freeform_inside_element
+  desc: Freeform inside element preserves content
+  udon: "|code\n  ```\n  raw content\n  ```\n"
+  events:
+    - ElementStart
+    - [Name, "code"]
+    - FreeformStart
+    - [Text, "  raw content"]
+    - FreeformEnd
+    - ElementEnd
+
+- id: unclosed_freeform_error
+  desc: Unclosed freeform produces error at EOF (content preserved)
+  udon: "```\nunclosed"
+  events:
+    - FreeformStart
+    - [Text, "unclosed"]
+    - [Error, "UnclosedFreeform"]

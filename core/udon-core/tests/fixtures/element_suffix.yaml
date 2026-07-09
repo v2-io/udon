@@ -1,0 +1,69 @@
+---
+# Element suffix tests - suffixes ?!*+ become Attr+BoolTrue
+# Per SPEC 200-215: suffix can appear before [id] and .class
+# Identity continues after suffix (no space) - see suffix_positions.yaml
+
+- id: element_with_question
+  desc: Question mark suffix
+  udon: "|foo?"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: element_with_bang
+  desc: Bang/exclamation suffix
+  udon: "|foo!"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "!"]
+    - BoolTrue
+    - ElementEnd
+
+- id: element_with_star
+  desc: Star/asterisk suffix
+  udon: "|foo*"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "*"]
+    - BoolTrue
+    - ElementEnd
+
+- id: element_with_plus
+  desc: Plus suffix
+  udon: "|foo+"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "+"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_after_id
+  desc: Suffix can appear after id bracket
+  udon: "|foo[id]?"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "id"]
+    - [BareValue, "id"]
+    - [Attr, "?"]
+    - BoolTrue
+    - ElementEnd
+
+# Space before suffix means it's TEXT content, not a suffix!
+# This matches SPEC - after identity parsing, space leads to content
+- id: suffix_space_separated
+  desc: Space before suffix makes it text content
+  udon: "|foo.bar ?"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "class"]
+    - [BareValue, "bar"]
+    - [Text, "?"]
+    - ElementEnd

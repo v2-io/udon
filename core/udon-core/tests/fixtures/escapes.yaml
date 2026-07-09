@@ -1,0 +1,29 @@
+# Escape sequence tests
+# From old parsing.rs escapes module
+# Apostrophe (') prevents interpretation of the next character
+
+- id: escaped_pipe
+  desc: Escaped pipe renders as literal pipe
+  udon: "'|not-an-element\n"
+  events:
+    - [Text, "|not-an-element"]
+
+- id: escaped_colon
+  desc: Escaped colon renders as literal colon
+  udon: "':not-an-attribute\n"
+  events:
+    - [Text, ":not-an-attribute"]
+
+# Per FULL-SPEC.md lines 104-124: '+ marker char escapes the marker.
+# The entire rest of the line becomes prose text.
+- id: escaped_semicolon
+  desc: Escaped semicolon renders as literal semicolon plus rest of line
+  udon: "';not-a-comment\n"
+  events:
+    - [Text, ";not-a-comment"]
+
+- id: escaped_apostrophe
+  desc: Escaped apostrophe renders as literal apostrophe
+  udon: "''literal-apostrophe\n"
+  events:
+    - [Text, "'literal-apostrophe"]

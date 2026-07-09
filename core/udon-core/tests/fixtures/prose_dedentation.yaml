@@ -1,0 +1,204 @@
+# Prose dedentation tests
+# Tests that prose content is correctly captured with proper indentation handling
+
+---
+- id: basic_dedentation_uniform_indent
+  desc: basic dedentation uniform indent
+  udon: |-
+    |section **The great indent**
+      This content line 1
+      This content line 2
+  events:
+    - ElementStart
+    - [Name, "section"]
+    - [Text, "**The great indent**"]
+    - [Text, "This content line 1"]
+    - [Text, "This content line 2"]
+    - ElementEnd
+
+- id: inline_content_not_stripped
+  desc: inline content not stripped
+  udon: "|p Hello world"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Hello world"]
+    - ElementEnd
+
+- id: content_base_established_by_first_indented_line
+  desc: content base established by first indented line
+  udon: |-
+    |element
+      first line
+      second line
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first line"]
+    - [Text, "second line"]
+    - ElementEnd
+
+- id: large_content_base_user_choice
+  desc: large content base user choice
+  udon: |-
+    |element
+            first line
+            second line
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first line"]
+    - [Text, "second line"]
+    - ElementEnd
+
+- id: content_base_aligned_with_inline_content
+  desc: content base aligned with inline content
+  udon: |-
+    |later-part This stuff is here
+                and continues here
+                and here too
+  events:
+    - ElementStart
+    - [Name, "later-part"]
+    - [Text, "This stuff is here"]
+    - [Text, "and continues here"]
+    - [Text, "and here too"]
+    - ElementEnd
+
+- id: extra_spaces_preserved_beyond_content_base
+  desc: extra spaces preserved beyond content base
+  # Per SPEC 833: "Subsequent lines at >= content_base: extra spaces preserved in output"
+  # first line at col 6 establishes content_base=6
+  # extra spaces at col 8, so 8-6=2 leading spaces preserved
+  udon: |-
+    |element
+      first line
+        extra spaces
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first line"]
+    - [Text, "  extra spaces"]
+    - ElementEnd
+
+- id: warning_on_lesser_indent
+  desc: warning on lesser indent
+  # Per SPEC 834-837: lines at < content_base emit warning, update content_base
+  # first line at col 6 establishes content_base=6
+  # less indent at col 3: WARNING, content_base=3
+  # now at base at col 3: no warning (at new base)
+  udon: |-
+    |element
+          first line
+       less indent
+       now at base
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first line"]
+    - [Warning, "Inconsistent indentation"]
+    - [Text, "less indent"]
+    - [Text, "now at base"]
+    - ElementEnd
+
+- id: multiple_warnings_decreasing_indent
+  desc: multiple warnings decreasing indent
+  # Per SPEC 932-942: each decrease emits warning
+  # first at col 6: content_base=6
+  # second at col 3: WARNING, content_base=3
+  # third at col 2: WARNING, content_base=2
+  udon: |-
+    |element
+          first
+       second
+      third
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first"]
+    - [Warning, "Inconsistent indentation"]
+    - [Text, "second"]
+    - [Warning, "Inconsistent indentation"]
+    - [Text, "third"]
+    - ElementEnd
+
+- id: inline_content_does_not_set_content_base
+  desc: inline content does not set content base
+  udon: |-
+    |element Here is inline
+      first indented
+      second line
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "Here is inline"]
+    - [Text, "first indented"]
+    - [Text, "second line"]
+    - ElementEnd
+
+- id: nested_elements_independent_content_base
+  desc: nested elements independent content base
+  udon: |-
+    |outer
+      |inner
+        prose for inner
+      prose for outer
+  events:
+    - ElementStart
+    - [Name, "outer"]
+    - ElementStart
+    - [Name, "inner"]
+    - [Text, "prose for inner"]
+    - ElementEnd
+    - [Text, "prose for outer"]
+    - ElementEnd
+
+- id: inline_element_then_indented_prose
+  desc: inline element then indented prose
+  udon: |-
+    |first |second Some prose
+      This is first's prose
+  events:
+    - ElementStart
+    - [Name, "first"]
+    - ElementStart
+    - [Name, "second"]
+    - [Text, "Some prose"]
+    - ElementEnd
+    - [Text, "This is first's prose"]
+    - ElementEnd
+
+- id: blank_lines_passed_through
+  desc: blank lines passed through
+  # Blank lines emit BlankLine event
+  udon: |-
+    |element
+      first paragraph
+
+      second paragraph
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "first paragraph"]
+    - BlankLine
+    - [Text, "second paragraph"]
+    - ElementEnd
+
+- id: freeform_block_no_dedentation
+  desc: freeform block no dedentation
+  # Per SPEC: freeform blocks preserve exact whitespace, no dedentation
+  # ``` closes when found at start of line after any whitespace
+  udon: |-
+    |code
+      ```
+      def foo():
+          return 1
+      ```
+  events:
+    - ElementStart
+    - [Name, "code"]
+    - FreeformStart
+    - [Text, "  def foo():"]
+    - [Text, "      return 1"]
+    - FreeformEnd
+    - ElementEnd

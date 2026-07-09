@@ -1,0 +1,76 @@
+---
+# Element recognition tests - what makes |... an element vs prose
+# Per grammar: LETTER, ', [, ., ?, !, *, + start element
+# Everything else (space, number, hyphen, etc.) → prose
+
+- id: pipe_followed_by_letter_is_element
+  desc: Pipe + letter = element
+  udon: "|div"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - ElementEnd
+
+- id: pipe_followed_by_bracket_is_anonymous_with_id
+  desc: Pipe + bracket = anonymous element with id
+  udon: "|[myid]"
+  events:
+    - ElementStart
+    - [Attr, "id"]
+    - [BareValue, "myid"]
+    - ElementEnd
+
+- id: pipe_followed_by_dot_is_anonymous_with_class
+  desc: Pipe + dot = anonymous element with class
+  udon: "|.myclass"
+  events:
+    - ElementStart
+    - [Attr, "class"]
+    - [BareValue, "myclass"]
+    - ElementEnd
+
+- id: pipe_followed_by_brace_is_embedded
+  desc: Pipe + brace starts embedded element in content
+  udon: "|p |{em emphasized}"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "emphasized"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: pipe_followed_by_quote_is_quoted_name
+  desc: Pipe + quote = element with quoted name
+  udon: "|'my element'"
+  events:
+    - ElementStart
+    - [Name, "my element"]
+    - ElementEnd
+
+# IMPORTANT: pipe+space is PROSE, not an anonymous element!
+# This is by design - allows markdown tables, etc.
+- id: pipe_followed_by_space_is_prose
+  desc: Pipe + space = prose (NOT anonymous element)
+  udon: "| content"
+  events:
+    - [Text, "| content"]
+
+- id: pipe_in_markdown_table_is_prose
+  desc: Markdown table syntax is prose
+  udon: "| Header | Header |"
+  events:
+    - [Text, "| Header | Header |"]
+
+- id: pipe_followed_by_number_is_prose
+  desc: Pipe + number = prose
+  udon: "|123"
+  events:
+    - [Text, "|123"]
+
+- id: pipe_followed_by_hyphen_is_prose
+  desc: Pipe + hyphen = prose
+  udon: "|- list item"
+  events:
+    - [Text, "|- list item"]
