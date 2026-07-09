@@ -1,3 +1,7 @@
 [submodule "tools/descent"]
 	path = tools/descent
 	url = https://github.com/v2-io/descent.git
+[submodule "_archive/udon-ruby"]
+	path = _archive/udon-ruby
+	url = https://github.com/v2-io/udon-ruby.git
+	update = none
