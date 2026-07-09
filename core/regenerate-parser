@@ -17,6 +17,12 @@ GENERATOR_DIR="$SCRIPT_DIR/generator"
 OUTPUT_FILE="$SCRIPT_DIR/udon-core/src/parser.rs"
 
 # Default descent location - check common places
+# Prefer the umbrella's pinned submodule (../tools/descent); fall back to a
+# sibling checkout; DESCENT_DIR env always wins.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -z "${DESCENT_DIR:-}" ] && [ -f "$SCRIPT_DIR/../tools/descent/descent.gemspec" ]; then
+  DESCENT_DIR="$SCRIPT_DIR/../tools/descent"
+fi
 DESCENT_DIR="${DESCENT_DIR:-$HOME/src/descent}"
 
 # Colors for output (if terminal supports it)
