@@ -317,6 +317,9 @@ preserved in item 7 because it is itself instructive.)*
 | 10 | **Sameline fences broken on the spec's own example**: `\|element … \`\`\`` leaves the backticks as literal text, closes the element at EOL, dumps the intended freeform lines to root as prose — and a later fence line then opens a freeform that errors at EOF. Spec says fences "need not be at line start"; impl only recognizes line-initial fences. | parser vs FULL-SPEC | **[verified by probe]** |
 | 11 | **Fence closing-indent rule diverges from spec** — in the impl's favor: spec says a closer at "opening indent *or less*" closes (a more-indented closer should not); the impl closes on a more-indented closer too, which is friendlier to markdown muscle-memory (fences in list items, sloppy pastes). Also **beyond spec**: `\`\`\`python` emits `Name("python")` — markdown-style info strings are captured by the impl but unmentioned by the spec (and then dropped by tree.rs, see defect #4's `Raw.lang`). Decide, then spec it (open decision 8). | parser vs FULL-SPEC | **[verified by probe]** |
 | 12 | **Line-initial `:` with non-name content eats the colon**: `:-) ok` in prose parses to `Text("-) ok")` — the `:` silently vanishes from content. Failed attr-parse should fall back to *intact* prose (as `\| maybe` does via the pipe guard). | parser / `udon.desc` | **[verified by probe]** |
+| 13 | **Dots break bare array items**: `[a.b]` → `BareValue("a")` + `Error(UnclosedArray)`; `[a b]`, `[1.5 2.5]`, `["a.md"]` all fine. Filenames — the most natural array content — cannot be written bare. Found 2026-07-11 by the first consumer-registry scan: a live vivarium document (`doc/PROCESS.udon:160`, `:files [...]`) was silently broken. | `values.desc` bare-array path | **[verified by probe]** |
+| 14 | **Multi-word fence info strings silently truncated**: ` ```rust ignore ` emits only `Name("rust")` — the remainder vanishes from the event stream. | parser vs CommonMark shape | **[verified by probe, found by S2c spike]** |
+| 15 | **Blank lines inside freeform blocks are dropped** — ` ``` a\n\nb ``` ` emits two Text events, no BlankLine. Freeform's whole contract is exact preservation; this is a round-trip blocker. | parser freeform path | **[verified by probe, found by S2c spike]** |
 
 Adjacent hygiene findings **[verified]**: the fixture conformance suite
 (`canonical.rs:230 test_all_fixtures`) runs only under `cargo test --
@@ -522,7 +525,11 @@ brainstorm are marked ⊕.
 3. **StreamingParser fate** — descent explicit-stack backend vs honest
    deletion.
 4. **Markdown subset** — adopt a Djot-inspired enumeration (renderer
-   conformance definition).
+   conformance definition). Scoped by `design/markdown-layers.md` (the
+   four-layer law, 2026-07-11): this decision owns Layer 1 only; the
+   doc-schema vocabulary (Layer 2), md-conversion degradation policy
+   (Layer 3), and renderer targets (Layer 4) are separate sub-decisions
+   D4b–D4d.
 5. **Escape unification** — `\` everywhere, `'` deprecated? (feedback.md's
    vote.)
 6. **Reference augmentation** — is `|[header].highlighted` legal? (Posed in
