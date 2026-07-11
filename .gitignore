@@ -1,2 +1,4 @@
 .obsidian/
 .obsidian.vimrc
+__pycache__/
+*.pyc

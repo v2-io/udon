@@ -11,8 +11,9 @@ hand-translated prototype covering all four crux mechanisms is event-identical
 to the recursive form across **273 chunking configurations (every chunk size
 1..=len over 16 documents), 0 failures**, including the exact chunk-boundary
 case that breaks the shipped StreamingParser (REVIEW §4 defect 1). Prototype:
-`scratchpad/s5-explicit-stack/proto.rs` (session scratch; ~700 lines, single
-`rustc` file — copy into the repo if it should persist).
+`notes/spikes/explicit-stack-proto-2026-07.rs` (single-file `rustc` program;
+`rustc -O explicit-stack-proto-2026-07.rs && ./explicit-stack-proto-2026-07`
+reproduces the run).
 
 ---
 
