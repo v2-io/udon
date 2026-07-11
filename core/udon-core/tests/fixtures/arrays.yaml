@@ -274,3 +274,58 @@
     - ArrayEnd
     - ArrayEnd
     - ElementEnd
+
+# Defect #13 (REVIEW-JULY-2026 §4): dots must not break bare array items.
+# Array item terminators are newline / space / `]` only — filenames and
+# version strings are natural bare array content.
+
+- id: array_bare_items_with_dots
+  desc: Dotted bare items (filenames) terminate on space and close bracket
+  udon: "|el :files [a.md b.md]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "files"]
+    - ArrayStart
+    - [BareValue, "a.md"]
+    - [BareValue, "b.md"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_bare_dotted_item_tight_close
+  desc: Dotted bare item immediately followed by close bracket
+  udon: "|el :x [a.b]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [BareValue, "a.b"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_bare_version_strings
+  desc: Multi-dot bare items (version strings) parse as bare values
+  udon: "|el :v [1.2.3 v2.0]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "v"]
+    - ArrayStart
+    - [BareValue, "1.2.3"]
+    - [BareValue, "v2.0"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_quoted_filenames
+  desc: Quoted filenames in arrays (control case)
+  udon: "|el :files [\"a.md\" \"b.md\"]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "files"]
+    - ArrayStart
+    - [StringValue, "a.md"]
+    - [StringValue, "b.md"]
+    - ArrayEnd
+    - ElementEnd

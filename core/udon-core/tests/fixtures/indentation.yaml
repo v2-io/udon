@@ -70,3 +70,33 @@
     - ElementEnd
     - ElementEnd
     - ElementEnd
+
+# Defect #6 (REVIEW-JULY-2026 §4): columns count characters, not bytes.
+# 'é' is 2 bytes / 1 char; with byte-counted columns the sameline child |b
+# sits one column further right than it visually does, so "      c"
+# (6 spaces) would dedent out of it. Char-correct columns make c a child
+# of b, matching the ASCII-name control below.
+
+- id: multibyte_name_column_tracking
+  desc: Sameline child element after multibyte chars gets char-correct column
+  udon: "|aé |b\n      c\n"
+  events:
+    - ElementStart
+    - [Name, "aé"]
+    - ElementStart
+    - [Name, "b"]
+    - [Text, "c"]
+    - ElementEnd
+    - ElementEnd
+
+- id: ascii_name_column_tracking_control
+  desc: ASCII control for multibyte_name_column_tracking (same shape)
+  udon: "|aX |b\n      c\n"
+  events:
+    - ElementStart
+    - [Name, "aX"]
+    - ElementStart
+    - [Name, "b"]
+    - [Text, "c"]
+    - ElementEnd
+    - ElementEnd
