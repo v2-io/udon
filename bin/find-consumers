@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# find-consumers — scan for live .udon documents outside this repo.
+#
+# Usage:
+#   bin/find-consumers            # inventory + decision-exposure profile
+#   bin/find-consumers --check    # also parse each (needs core/ built:
+#                                 #   cd core && cargo build --release --examples)
+#
+# Pairs with CONSUMERS.md (the curated registry). When a syntax decision
+# lands or a parser change ships, run this, diff against the registry table,
+# and notify/migrate. See CONSUMERS.md "Notification triggers".
+
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+PARSER="$REPO_DIR/core/target/release/examples/stdin_parse"
+CHECK="${1:-}"
+
+# Scan roots: archema-io explicitly (primary consumer program), then a
+# depth-limited sweep of ~/src for strays. Excludes this repo and _ref.
+FILES=$( {
+  find "$HOME/src/archema-io" -name '*.udon' -not -path '*/.git/*' 2>/dev/null
+  find "$HOME/src" -maxdepth 4 -name '*.udon' \
+    -not -path "$REPO_DIR/*" \
+    -not -path "$HOME/src/_ref/*" \
+    -not -path "$HOME/src/archema-io/*" \
+    -not -path '*/.git/*' -not -path '*/node_modules/*' -not -path '*/target/*' 2>/dev/null
+} | sort -u )
+
+[ -z "$FILES" ] && { echo "No consumer .udon files found."; exit 0; }
+
+printf '%s\n' "$FILES" | while read -r f; do
+  rel="${f/#$HOME\/src\//}"
+  lines=$(wc -l < "$f" | tr -d ' ')
+  keys=$(grep -coE '\|[a-zA-Z-]+\[[^]]+\]' "$f" || true)
+  refs=$(grep -coE '@\[|@[a-z]+\[' "$f" || true)
+  sfx=$(grep -coE '\][?!*+]' "$f" || true)
+  dates=$(grep -coE ':[a-z-]+ +20[0-9]{2}-[0-9]{2}' "$f" || true)
+  durs=$(grep -coE ':[a-z-]+ +[0-9]+(\.[0-9]+)?(s|m|h|d|w|y|mo)\b' "$f" || true)
+  inline=$(grep -co '|{' "$f" || true)
+  fences=$(grep -co '```' "$f" || true)
+  echo "$rel  (${lines}L)  keys=$keys refs=$refs suffix=$sfx dates=$dates durations=$durs inline=$inline fences=$fences"
+  if [ "$CHECK" = "--check" ]; then
+    if [ ! -x "$PARSER" ]; then
+      echo "  --check: parser not built (cd core && cargo build --release --examples)"; exit 1
+    fi
+    errs=$("$PARSER" < "$f" 2>&1 >/dev/null | grep -cE 'EVENT: (Error|Warning)' || true)
+    panics=$("$PARSER" < "$f" 2>&1 >/dev/null | grep -c 'panicked' || true)
+    echo "  parse: errors+warnings=$errs panics=$panics"
+  fi
+done
+
+echo
+echo "Registry: $REPO_DIR/CONSUMERS.md (update the table if this differs)"
