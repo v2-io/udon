@@ -227,7 +227,7 @@ fn test_temporal() {
 
 // Integration test: run all fixtures
 #[test]
-#[ignore] // Run with --ignored for full suite
+
 fn test_all_fixtures() {
     let all_fixtures = [
         "elements", "values", "indentation", "attributes", "comments", "escapes",

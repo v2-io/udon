@@ -7339,7 +7339,7 @@ impl StreamEvent {
 ///
 /// # Example
 ///
-/// ```ignore
+/// ```text
 /// let mut parser = StreamingParser::new();
 /// loop {
 ///     match parser.parse(chunk, |event| handle(event)) {

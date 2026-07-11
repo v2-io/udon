@@ -1,0 +1,47 @@
+# UDON umbrella CI — build, full conformance, and the regeneration DRIFT GATE.
+#
+# The drift gate is the mechanical form of the spec-impl sync discipline
+# (REVIEW §7-B): parser.rs must always equal what the pinned generator
+# produces from the committed grammars. A red gate means someone hand-edited
+# generated code, or changed .desc without regenerating, or the descent pin
+# moved without a regen — the exact silent-divergence failure mode the July
+# 2026 review §2 genealogy documents.
+
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-drift-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true # tools/descent needed for the drift gate
+                            # (_archive/udon-ruby is update=none — not fetched)
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            core/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('core/Cargo.toml') }}
+
+      - name: Build + full test suite (fixtures are default-on)
+        working-directory: core
+        run: cargo test --workspace
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Drift gate — regenerate parser, require byte-identity
+        run: |
+          gem install liquid -v '~> 5.0' --no-document
+          cd core && ./regenerate-parser
+          cd .. && git diff --exit-code core/udon-core/src/parser.rs \
+            || { echo '::error::parser.rs drifted from generator/*.desc + pinned descent — regenerate and commit, or explain'; exit 1; }

@@ -133,13 +133,23 @@ generate_parser() {
         info "Running descent..."
     fi
 
-    # Run descent on the combined file
-    if (cd "$DESCENT_DIR" && bundle exec exe/descent $descent_args "$tmp_file") > "$OUTPUT_FILE" 2>/dev/null; then
+    # Invoke the descent library directly (the exe/devex wrapper is broken
+    # under Ruby 4.0) and write ATOMICALLY: generate to a temp file, move into
+    # place only on success. The previous `> "$OUTPUT_FILE"` redirect truncated
+    # parser.rs before descent even ran — a failed run destroyed the parser.
+    local out_tmp trace_flag
+    out_tmp=$(mktemp "${TMPDIR:-/tmp}/udon-parser.XXXXXX.rs")
+    trace_flag="false"; [[ "$trace_mode" == "true" ]] && trace_flag="true"
+    if (cd "$DESCENT_DIR" && ruby -I lib -e '
+        require "descent"
+        code = Descent.generate(ARGV[0], target: :rust, trace: ARGV[2] == "true")
+        File.write(ARGV[1], code.gsub(/\n{3,}/, "\n\n"))
+      ' "$tmp_file" "$out_tmp" "$trace_flag"); then
+        mv "$out_tmp" "$OUTPUT_FILE"
         success "Generated $OUTPUT_FILE"
     else
-        error "descent failed"
-        # Show actual error
-        (cd "$DESCENT_DIR" && bundle exec exe/descent $descent_args "$tmp_file") 2>&1 | head -20 || true
+        rm -f "$out_tmp"
+        error "descent failed (parser.rs left untouched)"
         return 1
     fi
 }
