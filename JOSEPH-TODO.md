@@ -9,11 +9,14 @@ your ratify.
 ## Big three (each ~10–15 min: read brief, ratify/adjust)
 
 1. **Identity syntax** — [decisions/identity-syntax-brief.md](decisions/identity-syntax-brief.md)
-   ⭢ **Adopt the brief's bundle**: `@` = inert typed pointer only
-   (transclusion moves to tooling), `key`/`traits` as AST fields, bare `?`.
-   *Because:* it keeps udon-paths and the schema layer verbatim, the
-   drop-`@` alternative (`|[id]`) is provably ambiguous against the existing
-   mixin idiom, and the live corpus already writes exactly this way.
+   **D1a RATIFIED 2026-07-11** (`@` = inert typed pointer; ambiguity-erroring
+   shorthand) → see decisions/DECIDED.md. Remaining sub-calls:
+   ⭢ **1b**: `key`/`traits` as AST fields — *dissolves `$id`-vs-`id`;
+   tree.rs already models identity as a field.* ⭢ **1c**: bare `?` suffix —
+   *matches live ASF usage.* Plus one rider from ratification: confirm the
+   **key-scope enforcement layer** rec (Document-layer errors on duplicate
+   `(type,key)` definitions; event layer stays stateless) — DECIDED.md has
+   the reasoning.
 
 2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
    ⭢ **Adopt Option B** (temporal as default-on std dialect over the
