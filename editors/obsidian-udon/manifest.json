@@ -1,0 +1,9 @@
+{
+  "id": "udon",
+  "name": "UDON",
+  "version": "0.1.0",
+  "minAppVersion": "1.1.0",
+  "description": "View and edit .udon files (Universal Document & Object Notation): correct indentation behavior, safeset syntax highlighting, indent-based folding.",
+  "author": "Joseph Wecker",
+  "isDesktopOnly": false
+}

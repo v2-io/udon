@@ -1,0 +1,87 @@
+/* UDON view: editor shell */
+.udon-view {
+  padding: 0;
+}
+.udon-editor {
+  height: 100%;
+}
+.udon-editor .cm-editor {
+  height: 100%;
+  font-family: var(--font-monospace);
+  font-size: var(--font-text-size, 16px);
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+.udon-editor .cm-scroller {
+  font-family: var(--font-monospace);
+  line-height: var(--line-height-normal, 1.5);
+  padding: var(--size-4-4) var(--size-4-2);
+}
+.udon-editor .cm-content {
+  caret-color: var(--caret-color, var(--text-normal));
+}
+.udon-editor .cm-activeLine {
+  background: var(--background-secondary);
+}
+.udon-editor .cm-selectionBackground,
+.udon-editor .cm-content ::selection {
+  background: var(--text-selection) !important;
+}
+.udon-editor .cm-foldGutter {
+  width: 1em;
+  color: var(--text-faint);
+}
+.udon-editor .cm-foldPlaceholder {
+  background: var(--background-modifier-hover);
+  border: none;
+  color: var(--text-muted);
+  border-radius: var(--radius-s);
+  padding: 0 4px;
+  margin: 0 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Token colors. Plumbing recedes; discriminators stand out.          */
+/* All colors come from Obsidian theme variables (light/dark safe).   */
+/* ------------------------------------------------------------------ */
+
+/* sigils & delimiters: | : [ ] . !{{ }} -- recede */
+.udon-editor .udon-sigil { color: var(--text-faint); }
+
+/* element name -- the structural discriminator */
+.udon-editor .udon-element { color: var(--code-tag, var(--color-red)); font-weight: 600; }
+
+/* [id] -- singular identity */
+.udon-editor .udon-id { color: var(--code-important, var(--color-orange)); }
+
+/* .class / traits */
+.udon-editor .udon-class { color: var(--code-property, var(--color-cyan)); font-style: italic; }
+
+/* suffix modifiers ? ! * + */
+.udon-editor .udon-suffix { color: var(--code-important, var(--color-orange)); font-weight: 600; }
+
+/* :attr keys */
+.udon-editor .udon-attr { color: var(--code-property, var(--color-cyan)); }
+
+/* comments -- ; line, ;{...} inline */
+.udon-editor .udon-comment { color: var(--code-comment, var(--text-faint)); font-style: italic; }
+
+/* quoted strings */
+.udon-editor .udon-string { color: var(--code-string, var(--color-green)); }
+
+/* numbers and true/false/null/nil */
+.udon-editor .udon-number { color: var(--code-value, var(--color-purple)); }
+.udon-editor .udon-constant { color: var(--code-keyword, var(--color-purple)); }
+
+/* !directives (if/for/include/...) */
+.udon-editor .udon-directive { color: var(--code-keyword, var(--color-pink)); font-weight: 600; }
+
+/* !:lang: raw labels and ``` fences */
+.udon-editor .udon-raw-label { color: var(--code-function, var(--color-yellow)); }
+.udon-editor .udon-fence { color: var(--text-faint); }
+
+/* !{{ interpolation }} body */
+.udon-editor .udon-interp { color: var(--code-function, var(--color-yellow)); }
+
+/* ' escapes ('| ': '; '! '') */
+.udon-editor .udon-escape { color: var(--code-important, var(--color-orange)); }

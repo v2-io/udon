@@ -1,0 +1,284 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "UDON",
+  "scopeName": "source.udon",
+  "fileTypes": ["udon"],
+  "firstLineMatch": "^;\\s*[Uu][Dd][Oo][Nn]\\b",
+  "patterns": [
+    { "include": "#comment-line" },
+    { "include": "#block-escape" },
+    { "include": "#raw-block" },
+    { "include": "#freeform" },
+    { "include": "#element-line" },
+    { "include": "#attr-line-typed" },
+    { "include": "#attr-line" },
+    { "include": "#directive-line" },
+    { "include": "#inline-forms" }
+  ],
+  "repository": {
+
+    "comment-line": {
+      "comment": "Line-initial `;` is a block comment (FULL-SPEC 'Comments and Indentation'). Semicolons INSIDE block prose are literal and are deliberately not matched anywhere else.",
+      "match": "^[ ]*(;).*$",
+      "name": "comment.line.semicolon.udon",
+      "captures": { "1": { "name": "punctuation.definition.comment.udon" } }
+    },
+
+    "block-escape": {
+      "comment": "`'` (or `\\`) escapes exactly one block marker at line start: '| '; ': '! '' (FULL-SPEC 'Block-Level Escape'). `'hello` is NOT an escape.",
+      "match": "^[ ]*(['\\\\][|;:!'])",
+      "captures": { "1": { "name": "constant.character.escape.udon" } }
+    },
+
+    "raw-block": {
+      "comment": "`!:lang:` raw directive: body is NOT UDON; continues while lines are blank or indented past the directive.",
+      "begin": "^([ ]*)(!:)([A-Za-z][\\w-]*)(:)[ ]*$",
+      "while": "^(?:\\1[ ]+\\S|[ \\t]*$)",
+      "beginCaptures": {
+        "2": { "name": "punctuation.definition.directive.raw.udon" },
+        "3": { "name": "entity.name.function.raw-language.udon" },
+        "4": { "name": "punctuation.definition.directive.raw.udon" }
+      },
+      "contentName": "markup.raw.block.udon"
+    },
+
+    "freeform": {
+      "comment": "Triple-backtick freeform block: indentation-insensitive verbatim region. May open mid-line (spec: 'need not be at line start').",
+      "begin": "(```)",
+      "end": "(```)",
+      "beginCaptures": { "1": { "name": "punctuation.definition.raw.fence.udon" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.raw.fence.udon" } },
+      "contentName": "markup.raw.block.fenced.udon"
+    },
+
+    "element-line": {
+      "comment": "A line whose first non-space char opens an element: `|` followed by letter, [, ., {, or ' (element recognition rule). Sameline context: attrs, inline forms, whitespace-preceded ; comments.",
+      "begin": "^[ ]*(?=\\|[A-Za-z\\[.{'])",
+      "end": "$",
+      "patterns": [{ "include": "#structure-tokens" }]
+    },
+
+    "attr-line-typed": {
+      "comment": "Block attribute line whose entire value is a single typed token (quoted / number / bool / nil / list / interpolation). Bare multi-word values fall through to #attr-line and stay uncolored -- under-highlight rather than guess.",
+      "match": "^[ ]*(:)('[^']*'|\"[^\"]*\"|[A-Za-z_$][\\w.$-]*)(?:[ ]+(?:(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')|(-?(?:0[xX][0-9A-Fa-f][0-9A-Fa-f_]*|0[oO][0-7][0-7_]*|0[bB][01][01_]*|[0-9][0-9_]*(?:\\.[0-9][0-9_]*)?(?:[eE][+-]?[0-9]+)?(?:/[0-9][0-9_]*r)?))|(true|false|null|nil)|(\\[[^\\]]*\\])|(!\\{\\{.*?\\}\\})))?[ ]*(;.*)?$",
+      "captures": {
+        "1": { "name": "punctuation.definition.attribute.udon" },
+        "2": { "name": "entity.other.attribute-name.udon" },
+        "3": { "name": "string.quoted.udon" },
+        "4": { "name": "constant.numeric.udon" },
+        "5": { "name": "constant.language.udon" },
+        "6": { "patterns": [{ "include": "#list-value" }] },
+        "7": { "patterns": [{ "include": "#interpolation" }] },
+        "8": { "name": "comment.line.semicolon.udon" }
+      }
+    },
+
+    "attr-line": {
+      "comment": "Block attribute line, bare value case: color the key, leave the value plain (it is one string to end-of-line), still recognize ` ;` comments and interpolations.",
+      "begin": "^[ ]*(:)('[^']*'|\"[^\"]*\"|[A-Za-z_$][\\w.$-]*)",
+      "end": "$",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.attribute.udon" },
+        "2": { "name": "entity.other.attribute-name.udon" }
+      },
+      "patterns": [
+        { "match": "(?<=[ \\t])(;)(?!\\{).*$", "name": "comment.line.semicolon.udon" },
+        { "include": "#inline-forms" },
+        { "include": "#freeform" }
+      ]
+    },
+
+    "directive-line": {
+      "comment": "`!name` block directive (control flow etc.). Args stay mostly plain; sameline elements, strings, interpolations, and comments are recognized.",
+      "begin": "^[ ]*(!)(?=[A-Za-z])([A-Za-z][\\w-]*)",
+      "end": "$",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.directive.udon" },
+        "2": { "name": "keyword.control.directive.udon" }
+      },
+      "patterns": [{ "include": "#structure-tokens" }]
+    },
+
+    "structure-tokens": {
+      "patterns": [
+        { "include": "#sameline-comment" },
+        { "include": "#inline-forms" },
+        { "include": "#element-identity" },
+        { "include": "#sameline-attr" },
+        { "include": "#freeform" }
+      ]
+    },
+
+    "sameline-comment": {
+      "comment": "In sameline (structure-line) context only, a whitespace-preceded `;` starts a comment. Never matched in prose or block-prose lines.",
+      "match": "(?:(?<=[ \\t]))(;)(?!\\{).*$",
+      "name": "comment.line.semicolon.udon",
+      "captures": { "1": { "name": "punctuation.definition.comment.udon" } }
+    },
+
+    "element-identity": {
+      "comment": "|name?[id].class1.class2? -- pipe must be line-initial or whitespace-preceded, and followed by letter/[/./' (never colors Markdown table pipes).",
+      "match": "(?:^|(?<=[ \\t]))(\\|)(?!\\{)(?=[A-Za-z\\[.'])([A-Za-z][\\w-]*|'[^']*')?([?*+!])?(?:(\\[)([^\\]\\n]*)(\\]))?([?*+!])?((?:\\.[\\w-]+)+)?([?*+!])?",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.udon" },
+        "2": { "name": "entity.name.tag.udon" },
+        "3": { "name": "keyword.operator.suffix.udon" },
+        "4": { "name": "punctuation.definition.id.begin.udon" },
+        "5": { "name": "entity.other.attribute-name.id.udon" },
+        "6": { "name": "punctuation.definition.id.end.udon" },
+        "7": { "name": "keyword.operator.suffix.udon" },
+        "8": {
+          "patterns": [
+            {
+              "match": "(\\.)([\\w-]+)",
+              "captures": {
+                "1": { "name": "punctuation.definition.class.udon" },
+                "2": { "name": "entity.other.attribute-name.class.udon" }
+              }
+            }
+          ]
+        },
+        "9": { "name": "keyword.operator.suffix.udon" }
+      }
+    },
+
+    "sameline-attr": {
+      "comment": "Sameline `:key value` -- values are space-delimited, so a single following token can be typed exactly. Bare values stay plain.",
+      "match": "(?:^|(?<=[ \\t]))(:)('[^']*'|\"[^\"]*\"|[A-Za-z_$][\\w.$-]*)(?:[ ]+(?:(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')|(-?(?:0[xX][0-9A-Fa-f][0-9A-Fa-f_]*|0[oO][0-7][0-7_]*|0[bB][01][01_]*|[0-9][0-9_]*(?:\\.[0-9][0-9_]*)?(?:[eE][+-]?[0-9]+)?(?:/[0-9][0-9_]*r)?)(?=[ \\t]|$|\\}))|(?:(true|false|null|nil)(?=[ \\t]|$|\\}))|(\\[[^\\]]*\\])))?",
+      "captures": {
+        "1": { "name": "punctuation.definition.attribute.udon" },
+        "2": { "name": "entity.other.attribute-name.udon" },
+        "3": { "name": "string.quoted.udon" },
+        "4": { "name": "constant.numeric.udon" },
+        "5": { "name": "constant.language.udon" },
+        "6": { "patterns": [{ "include": "#list-value" }] }
+      }
+    },
+
+    "list-value": {
+      "comment": "[a b \"c d\" 1 true] -- items typed independently; bare items stay plain.",
+      "begin": "(\\[)",
+      "end": "(\\])",
+      "beginCaptures": { "1": { "name": "punctuation.definition.list.begin.udon" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.list.end.udon" } },
+      "patterns": [
+        { "match": "\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*'", "name": "string.quoted.udon" },
+        { "match": "(?:(?<=[\\[ ]))(-?(?:0[xX][0-9A-Fa-f][0-9A-Fa-f_]*|0[oO][0-7][0-7_]*|0[bB][01][01_]*|[0-9][0-9_]*(?:\\.[0-9][0-9_]*)?(?:[eE][+-]?[0-9]+)?(?:/[0-9][0-9_]*r)?))(?=[ \\]])", "name": "constant.numeric.udon" },
+        { "match": "(?:(?<=[\\[ ]))(true|false|null|nil)(?=[ \\]])", "name": "constant.language.udon" }
+      ]
+    },
+
+    "inline-forms": {
+      "comment": "The four inline forms usable inside prose: |{element}, ;{comment}, !{{interpolation}}, !{directive} / !{:kind: raw}.",
+      "patterns": [
+        { "include": "#embedded-element" },
+        { "include": "#inline-comment" },
+        { "include": "#interpolation" },
+        { "include": "#inline-raw" },
+        { "include": "#inline-directive" }
+      ]
+    },
+
+    "embedded-element": {
+      "begin": "(\\|\\{)([A-Za-z][\\w-]*|'[^']*')?",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.embedded.udon" },
+        "2": { "name": "entity.name.tag.udon" }
+      },
+      "endCaptures": { "1": { "name": "punctuation.definition.tag.embedded.udon" } },
+      "patterns": [
+        { "match": "\\G[?*+]", "name": "keyword.operator.suffix.udon" },
+        {
+          "match": "\\G(\\[)([^\\]}]*)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.id.begin.udon" },
+            "2": { "name": "entity.other.attribute-name.id.udon" },
+            "3": { "name": "punctuation.definition.id.end.udon" }
+          }
+        },
+        {
+          "match": "\\G(\\.)([\\w-]+)",
+          "captures": {
+            "1": { "name": "punctuation.definition.class.udon" },
+            "2": { "name": "entity.other.attribute-name.class.udon" }
+          }
+        },
+        { "include": "#sameline-attr" },
+        { "include": "#inline-forms" },
+        { "include": "#brace-balance" }
+      ]
+    },
+
+    "inline-comment": {
+      "comment": ";{...} -- the only comment form inside prose. Brace-counted.",
+      "begin": "(;\\{)",
+      "end": "(\\})",
+      "name": "comment.block.udon",
+      "beginCaptures": { "1": { "name": "punctuation.definition.comment.udon" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.comment.udon" } },
+      "patterns": [{ "include": "#comment-brace-balance" }]
+    },
+
+    "comment-brace-balance": {
+      "begin": "\\{",
+      "end": "\\}",
+      "name": "comment.block.udon",
+      "patterns": [{ "include": "#comment-brace-balance" }]
+    },
+
+    "interpolation": {
+      "comment": "!{{expr | filter args}} -- Liquid-style.",
+      "begin": "(!\\{\\{)",
+      "end": "(\\}\\})",
+      "name": "meta.interpolation.udon",
+      "beginCaptures": { "1": { "name": "punctuation.section.interpolation.begin.udon" } },
+      "endCaptures": { "1": { "name": "punctuation.section.interpolation.end.udon" } },
+      "patterns": [
+        { "match": "\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*'", "name": "string.quoted.udon" },
+        { "match": "(\\|)[ ]*([A-Za-z][\\w-]*)", "captures": {
+            "1": { "name": "punctuation.separator.filter.udon" },
+            "2": { "name": "support.function.filter.udon" }
+        } },
+        { "match": "[^|}\"']+", "name": "variable.other.interpolation.udon" }
+      ]
+    },
+
+    "inline-raw": {
+      "comment": "!{:kind: opaque payload} -- brace-counted, payload not UDON.",
+      "begin": "(!\\{)(:)([A-Za-z][\\w-]*)(:)",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.directive.udon" },
+        "2": { "name": "punctuation.definition.directive.raw.udon" },
+        "3": { "name": "entity.name.function.raw-language.udon" },
+        "4": { "name": "punctuation.definition.directive.raw.udon" }
+      },
+      "endCaptures": { "1": { "name": "punctuation.definition.directive.udon" } },
+      "contentName": "markup.raw.inline.udon",
+      "patterns": [{ "include": "#brace-balance" }]
+    },
+
+    "inline-directive": {
+      "comment": "!{directive body} -- body may contain nested UDON inline forms.",
+      "begin": "(!\\{)(?!\\{)([A-Za-z][\\w-]*)?",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.directive.udon" },
+        "2": { "name": "keyword.control.directive.udon" }
+      },
+      "endCaptures": { "1": { "name": "punctuation.definition.directive.udon" } },
+      "patterns": [
+        { "include": "#inline-forms" },
+        { "include": "#brace-balance" }
+      ]
+    },
+
+    "brace-balance": {
+      "comment": "Transparent balanced-brace region so an inner literal { } does not close the enclosing inline form early.",
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [{ "include": "#brace-balance" }]
+    }
+  }
+}
