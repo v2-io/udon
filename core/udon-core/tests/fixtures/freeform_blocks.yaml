@@ -40,3 +40,47 @@
     - FreeformStart
     - [Text, "unclosed"]
     - [Error, "UnclosedFreeform"]
+
+# Defect #15 (REVIEW-JULY-2026 §4): freeform preserves blank lines exactly.
+# A blank line is a BlankLine event; a whitespace-only line is content
+# (Text) — exact preservation is freeform's whole contract.
+
+- id: freeform_blank_line_preserved
+  desc: Blank line inside freeform emits BlankLine (round-trip contract)
+  udon: "```\na\n\nb\n```"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - BlankLine
+    - [Text, "b"]
+    - FreeformEnd
+
+- id: freeform_multiple_blank_lines_preserved
+  desc: Consecutive blank lines inside freeform each emit BlankLine
+  udon: "```\na\n\n\nb\n```"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - BlankLine
+    - BlankLine
+    - [Text, "b"]
+    - FreeformEnd
+
+- id: freeform_whitespace_only_line_preserved
+  desc: Whitespace-only line inside freeform is exact content, not merged
+  udon: "```\na\n   \nb\n```"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - [Text, "   "]
+    - [Text, "b"]
+    - FreeformEnd
+
+- id: freeform_leading_blank_line
+  desc: Freeform starting with a blank line preserves it
+  udon: "```\n\na\n```"
+  events:
+    - FreeformStart
+    - BlankLine
+    - [Text, "a"]
+    - FreeformEnd

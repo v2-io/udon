@@ -246,3 +246,65 @@
     - [Integer, "0b1010"]
     - ElementEnd
 
+
+# Defect #12, data-loss half (REVIEW-JULY-2026 §4): a line-initial `:` that
+# cannot start an attribute (no name-start character follows) falls back to
+# INTACT prose — the colon must not be silently eaten. (Which constructs
+# promote to structure remains open decision 9; these only pin the
+# no-data-loss fallback.)
+
+- id: colon_non_name_falls_back_to_intact_prose
+  desc: Line-initial colon before non-name content is prose, colon preserved
+  udon: "|el\n  :-) ok\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":-) ok"]
+    - ElementEnd
+
+- id: bare_colon_line_is_prose
+  desc: A lone colon on its own line is prose, not a vanished attr
+  udon: "|el\n  :\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":"]
+    - ElementEnd
+
+- id: colon_non_name_at_document_root
+  desc: Line-initial colon fallback also applies at document root
+  udon: ":-) ok\n"
+  root_only: true
+  events:
+    - [Text, ":-) ok"]
+
+- id: colon_non_name_inside_directive
+  desc: Line-initial colon fallback inside directive children
+  udon: "!if cond\n  :-) ok\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "cond"]
+    - [Text, ":-) ok"]
+    - DirectiveEnd
+
+- id: colon_non_name_sameline_falls_back_intact
+  desc: Sameline colon before non-name content is text, colon preserved
+  udon: "|el :-) yes\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":-) yes"]
+    - ElementEnd
+
+- id: colon_non_name_embedded_falls_back_intact
+  desc: Embedded-element colon before non-name content is content, colon preserved
+  udon: "|p |{a :-) x}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, ":-) x"]
+    - EmbeddedEnd
+    - ElementEnd
