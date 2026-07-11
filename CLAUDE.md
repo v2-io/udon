@@ -82,6 +82,12 @@ table with git-dated evidence rather than picking a side silently. The
 `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 
+## Conventions
+
+- **File naming**: `<name>.<schema/type>.udon` (e.g. `udon.desc.udon`) —
+  designator is application-level semantics for now; migrate as we go.
+  See design/file-naming.md.
+
 ## Related
 
 - `tools/descent` — the generator (independent repo v2-io/descent; gem
