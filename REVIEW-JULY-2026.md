@@ -320,6 +320,7 @@ preserved in item 7 because it is itself instructive.)*
 | 13 | **Dots break bare array items**: `[a.b]` → `BareValue("a")` + `Error(UnclosedArray)`; `[a b]`, `[1.5 2.5]`, `["a.md"]` all fine. Filenames — the most natural array content — cannot be written bare. Found 2026-07-11 by the first consumer-registry scan: a live vivarium document (`doc/PROCESS.udon:160`, `:files [...]`) was silently broken. | `values.desc` bare-array path | **[verified by probe]** |
 | 14 | **Multi-word fence info strings silently truncated**: ` ```rust ignore ` emits only `Name("rust")` — the remainder vanishes from the event stream. | parser vs CommonMark shape | **[verified by probe, found by S2c spike]** |
 | 15 | **Blank lines inside freeform blocks are dropped** — ` ``` a\n\nb ``` ` emits two Text events, no BlankLine. Freeform's whole contract is exact preservation; this is a round-trip blocker. | parser freeform path | **[verified by probe, found by S2c spike]** |
+| 16 | **Prose span offsets wrong on backtick/quote-initial lines** (start off by 1–2 bytes; content intact) — corrupts any span-based edit. Related probe finds: `![`/`!(` emit a phantom empty directive and eat the `!` (no letter-guard exists, contra decision 9's first draft); `@[` promotes to Reference inside prose; whitespace-only lines emit empty Text events. | parser | **[verified by probe, found by S3 spike]** |
 
 Adjacent hygiene findings **[verified]**: the fixture conformance suite
 (`canonical.rs:230 test_all_fixtures`) runs only under `cargo test --
@@ -548,10 +549,17 @@ brainstorm are marked ⊕.
    the existence proof that promotion hazards are grammar problems, not
    user problems (Joseph's framing, verified). Decide tightened guards for
    `:` (require name-start; fix the colon-eating of defect #12; with #9
-   fixed, attr-after-prose becomes loud), `;` (comment only when followed
-   by space/`{`/EOL would rescue `;-)` — check corpus idiom first), and
-   `!` (letter-guard exists de facto but `!important` remains unavoidable —
-   accept residual risk, rely on linter).
+   fixed, attr-after-prose becomes loud), `;`, and `!`. **Measured (S3
+   spike, 2026-07-11)**: CommonMark corpus survival is 89.7% byte-faithful
+   today with zero silent text mutations; a real `!` letter-guard (none
+   exists today — `![`/`!(` emit a phantom directive, contra this
+   decision's first draft) lifts it to 93.0%, rescuing every markdown
+   image line. Reflow collisions on 10.6 MB of real prose: 0.6–1.2 per
+   10k wrapped lines, 0.3–0.7 residual with all guards. Guard ranking by
+   purchase: defect #12 colon-fix first, `!` letter-guard second; the `;`
+   guard's motivating idiom is empirically absent (zero `;-)` in the
+   corpus) — decide it on aesthetics. Residual is UDON-quoting-UDON plus
+   math notation (`|E|`) — linter territory, no cheap guard.
 
 ## 8. Reboot sequencing (sketch, not a plan)
 
