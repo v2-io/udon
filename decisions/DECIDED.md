@@ -12,6 +12,16 @@ meaning — **inert typed pointer**: `@element[key]` explicit, `@[key]`
 shorthand that **errors when ambiguous**. Transclusion/insertion is not a
 parser semantic; resolution is tooling-layer.
 
+**Ratified refinement (Joseph, same day):** the decision gives a
+*distinctly different form* — in documents, `@` refers to an existing
+defined element and `|` (by elimination) is **always defining**, never
+selecting/re-opening. Consequences: (1) duplicate `(type,key)` definitions
+are definition *collisions* — the Document-layer error is now entailed,
+not merely recommended (no TOML-table-style re-open-and-merge reading
+exists); (2) the path DSL's `|` *selects* — spec must state the
+document-vs-path occurrence-semantics firewall explicitly ("document `|`
+defines; path `|` matches").
+
 **Explicitly still open from the same brief:** D1b (`key`/`traits` as AST
 fields) and D1c (bare `?` suffix naming) — Joseph inclined but not yet
 ratified.
