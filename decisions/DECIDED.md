@@ -305,6 +305,16 @@ is simply an instance of it, not a special case.
   already-ratified `;` context-sensitivity. Every other marker (elements,
   attrs, directives, references, fences) obeys the identical rule.
 
+**Refinement (Joseph's confirming example, 2026-07-11):** recognition is
+**head/scan-position only**. `|a |b hey there ```ruby` is **not** a fence —
+the token `hey` after `|b ` commits the line to prose, ending scan position,
+so the later triple-backtick is literal text. One asymmetry to note (so the
+`;`-parallel isn't over-read): `;` additionally has a *sameline-trailing*
+comment role (`|p text ; comment`) — a `;`-specific rule, NOT part of the
+head-position special-start set. Fences and the other markers have only the
+head-position role. Once a fence *does* open at head position, freeform
+capture runs to the closer — no marker interaction inside the body.
+
 **Consequence:** the D8 sameline fence shorthand is **promoted proposed →
 RATIFIED** — treating a fence as a special-start makes it recognized in
 sameline-condensed position automatically; *not* doing so would make fences
