@@ -2,6 +2,8 @@
 
 *Analysis prepared December 2025, examining a 2011 project through the lens of Temporal Software Theory*
 
+> **Historical.** Reference and mixin semantics described below predate the 2026-07-11 ratifications — see `decisions/DECIDED.md` (D1a: `@` is an inert pointer, never insertion; D-ATTR-1: attributes stack) and `spec/AUTHORITY.md`.
+
 ## What UDON Is
 
 **UDON = Universal Document & Object Notation**
