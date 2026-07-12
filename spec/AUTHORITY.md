@@ -63,6 +63,8 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 | ALL temporal (dates/times/durations/shorthand) | 5 dialects, **`<…>`-only** | **Ratified** D2-ET-ext: no bare form; unbracketed temporal-looking text = plain string |
 | Temporal *validation* (reject `P1W2D` etc.) | 5 dialect-owned module | Rides decision 2; not parser-core |
 | Cardinality/type restriction (e.g. single `$key`) | 4 schema | Principle ratified via D-AUTH-1 worked instance |
+| Fence open/close/body (any-indent `\`\`\``; rest-of-open-line→body; exact capture) | 1 spec | **Ratified** D8; column sets parent (departs Markdown); info-strings + #14 subsumed |
+| Sameline fence shorthand (`\|a \|b \`\`\``) | 1 spec | **Proposed** D8 (leaning yes); element-scan-position only — prose backticks untouched |
 | Markdown prose subset | 1 spec names it; 4/5 select | Decision 4 pending; Layer 1 of design/markdown-layers.md |
 | Doc-schema vocabulary (`\|h1`…) | 4 schema | Layer 2; D4b pending |
 | Rendering/conversion policy | 3 host / tooling | Layers 3–4 |

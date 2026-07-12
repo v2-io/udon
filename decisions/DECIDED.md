@@ -232,3 +232,54 @@ moot in bare context. The recognition logic moves; it isn't lost.
 **Decision 2 now effectively CLOSED.** Remaining low-stakes: temporal in the
 *default* dispatch set (host; leaning yes) + the two label-ladder forks
 (dialect-first; parallel aliases).
+
+---
+
+## D8 — Fences / freeform blocks (2026-07-11)
+
+**Ratified (Joseph) — the core rule** (supersedes the decision-8 brief's
+(a)/(b1)/(c); unifies them into one rule):
+- **Open**: any line whose first non-space content is ` ``` ` opens a
+  freeform block. Its indent (the `` ` `` column) follows the indent stack
+  and sets the block's structural parent — a deliberate departure from most
+  Markdown (fences need *not* be column-1), *required* because the column is
+  how UDON knows which element parents the block. **Everything after ` ``` `
+  on the opening line is captured as the start of the body** — so
+  language/info-strings come free, no separate info-string grammar (retires
+  spike-defect #14, multi-word truncation, by construction).
+- **Close**: any line whose first non-space content is ` ``` ` closes it
+  (the "any-line-closes" rule — unifies with (a)). Should be followed by a
+  newline; trailing whitespace before that newline may be silently ignored.
+- **Indent**: set by the opener; same-indent closer *recommended* (not
+  required) so a reader mid-long-block can recover the parent's column.
+- **Body capture = exact, no dedent** (consistent with "freeform breaks out
+  of indentation entirely"). **Documented side-effect (Joseph):** content
+  and closer indentation is *part of the result* — you cannot casually
+  indent for aesthetics without it landing in the body. (spike-defect #15,
+  blank-lines-dropped, is an impl bug to fix under this rule.)
+
+**Proposed — Joseph leaning toward, NOT yet final — sameline fence shorthand:**
+In sameline element-scan position (after `|element`, scanning for the next
+reserved indicator `|`/`:`/`!`/`;` and **not yet in free-text/prose mode**),
+` ``` ` is *also* recognized as a fence opener — same semantics as a
+line-start fence, child of the current innermost inline element:
+
+```
+|a |b ```rust        ≡ (structurally)   |a
+  some rust                                 |b
+```                                            ```rust ...
+
+```
+This **supersedes the brief's "drop sameline fences" rec** — and *resolves*
+the brief's collision worry: recognition is element-scan-position **only**,
+so prose backticks (`` `code` ``, Markdown) are untouched (in free-text mode
+` ``` ` is not a fence opener). The two forms are *structurally* equivalent
+(freeform child of `|b`); body bytes differ because different whitespace is
+typed (exact-capture).
+
+**Authority:** fence syntax + open/close/body-capture = **spec-forced**
+(authority 1).
+
+**Open micro-edge for confirmation:** the closing fence line is the
+*terminator* — its own leading whitespace is consumed (not body); the body
+ends at the newline preceding the closer. ⭢ confirm this boundary reading.
