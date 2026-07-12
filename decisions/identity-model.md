@@ -1,8 +1,8 @@
-# The Identity Model — model (C), ratification-ready
+# The Identity Model — model (C) — **RATIFIED 2026-07-11 (D1-FINAL)**
 
 Consolidates every key/trait/identity decision into one place, and drafts
-the piece that was still missing: the **recommended host-view API**. Feeds
-the FULL-SPEC edit. Status per section marked. (Full history: DECIDED.md.)
+the piece that was still missing: the **recommended host-view API**. **Ratified in full by Joseph 2026-07-11** (D1-FINAL) — closes decision 1.
+Feeds the FULL-SPEC edit. (Full history: DECIDED.md.)
 
 ## 1. Substrate — spec-forced (authority 1)
 
@@ -87,6 +87,7 @@ The spec forces the *menus*; the parser/host pick within them:
 | **View exposure + names** | 3 host | recommend §2 defaults; host may rename/alias per idiom |
 | **key multiplicity surface** | 3 host | multi-key permitted (stacking); a `first_key` convenience is optional |
 | **Designated-attr hiding in `attributes`** | 3 host | recommend yes (that's what makes View B "distinct") |
+| **Single-stacked value: scalar or 1-list?** | 3 host | recommend `.attr` scalar/last + `.attr_all` list; `traits` pinned always-list |
 
 ## 4. Schema decisions — authority 4
 

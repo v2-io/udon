@@ -421,3 +421,38 @@ stacked attribute presents as scalar or 1-element list (`:x v` → `v` vs
 `["v"]`) is the **attrs() API surface** call — a host/impl decision. Traits
 is the ratified always-list exception; the general default is likely
 `.attr` (scalar/last) + `.attr_all` (list).
+
+---
+
+## D1-FINAL — Identity model ratified in full (2026-07-11) — DECISION 1 CLOSED
+
+**Ratified (Joseph): `decisions/identity-model.md` in its entirety.** The
+package:
+- **Model (C)**: `element = name + ordered attributes + children`;
+  identity / traits / suffixes are **views**, not model.
+- **Total desugaring (invariant)**: `[k]`→`$key`, `.t`→stacked `$traits`,
+  `?`/`!`/`*`/`+`→`$?`… into **specially-designated** (not reserved)
+  `$`-attributes (any `$`-name stays a legal ordinary attribute).
+- **Wire names**: `$key` / `$traits` / `$?` — single family, no aliases.
+  `$traits` (not `$trait`); the **`traits` view is always a list**.
+- **Multi-key aliases** via stacking (spec permits; schema constrains
+  cardinality).
+- **Key-scope enforcement**: duplicate `(element-name, $key)` **definition**
+  → Document-layer error by default (policy-configurable, D-ATTR-3);
+  event/streaming layer stateless.
+- **Recommended host views** (authority 3, *not forced*): `all_attributes`
+  (flat/raw, incl. designated) + distinct `{key, traits, attributes}`
+  (attributes = non-designated).
+- **Parser/host knobs — durably specified (§3), ratified**: deref flag +
+  mode-default (D-ATTR-2); duplicate-policy enum (D-ATTR-3); view
+  exposure/naming; key-multiplicity surface; designated-attr hiding;
+  single-stacked scalar-vs-list = **host call with recommended default**
+  (`.attr` scalar/last + `.attr_all` list; traits always-list).
+- **Schema** (authority 4): cardinality, type-restriction, required/optional,
+  vocabularies.
+- **No canonical-form question** (UDON mandates none; `udon fmt` optional).
+
+**Executable next:** identity spec-edit (~1 page) + the U4 impl (typed-key
+fix defect #2, the `Attr("id")`→`$key` event correction, view accessors, the
+Document-layer duplicate check). Decision 1 — the hardest, most-contested
+surface — is closed.

@@ -59,12 +59,12 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 |---|---|---|
 | Attribute value stacking, order-preserved | 1 spec | **Ratified** D-ATTR-1; uniform, incl. `$`-names |
 | Stacking ⊥ array-literals (two multiplicity axes) | 1 spec | Ratified w/ D-AUTH-1; flattening is consumer/schema |
-| Sugar desugarings (`[k]`→`$key`-style, `.t`, suffixes) | 1 spec | Model (C) pending formal ratify; total-desugaring into **specially-designated** (not reserved) `$`-attrs; `traits` view always-list |
+| Sugar desugarings (`[k]`→`$key`-style, `.t`, suffixes) | 1 spec | **Ratified** D1-FINAL; model (C), total-desugaring into **specially-designated** (not reserved) `$`-attrs; `traits` view always-list |
 | `\|` defines / `@` refers partition | 1 spec | **Ratified** D1a |
 | `$`-names: ordinary, no proscription | 1 spec | **Ratified** D1b-partial |
 | Duplicate `(type,key)` policy menu + default=error | 1 spec (menu) + 2 parser (knob) | **Ratified** D-ATTR-3: `error\|allow-if-identical\|first-wins\|last-wins\|keep-all` + `warn` |
 | Reference dereferencing | 2 parser (flag) + 3 host (defaults) | **Ratified** D-ATTR-2; core events never deref |
-| Multi-valued `$key` (identity aliases) | 1 spec permits; 4 schema constrains | Rec pending ratify |
+| Multi-valued `$key` (identity aliases) | 1 spec permits; 4 schema constrains | **Ratified** D1-FINAL (stacked aliases; cardinality = schema) |
 | `<…>` explicit-typing envelope | 1 spec (envelope) + 5 dialects (labels) | **Ratified** D2-ET; `>`-terminated, `<type:…>`/`<dialect:type:…>` ladder |
 | Unlabeled `<…>` dispatch | 1 spec (semantics) | **Ratified** D2-ET: declared dialects in declared order, first-claim-wins, all-decline → error |
 | Set of implicitly-declared (default-active) dialects | 2 parser + 3 host | **Ratified** D2-ET (new authority row); temporal-as-implicit leaning-yes, open |
