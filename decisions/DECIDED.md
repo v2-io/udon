@@ -468,9 +468,16 @@ head-position markers split into two kinds, not one guarded set.
   `;` (comment), `@` (reference): **interleave freely with content** (they
   can appear after text), and are disambiguated by a **character-guard** at
   head position — a letter / name-start after the sigil = marker; space or
-  non-name = prose. **`!` gets the `|` guard** (Joseph: "essentially the same
-  behavior as `|`"); this fixes `![img]`/`!=`/`!(` → prose while keeping
-  `!if`, `!:lang:`, `!{…}`. (Directive syntax stays — dialect-defined
+  non-name = prose. **`!` is char-guarded like `|`** (Joseph: "essentially
+  the same behavior as `|`") **but with its own follow-set**: `!` marks when
+  followed by an **identifier-char** (`!if` block directive) **OR `:`**
+  (`!:lang:` raw code block — Joseph's nuance; a *pure* letter-guard would
+  have **broken** `!:lang:`) **OR `{`** (`!{{interp}}` / `!{…}` inline forms
+  — confirmed by probe). So `![img]`/`!=`/`!(`/`! ` → prose; `!if`/`!:sql:`/
+  `!{{x}}` → marker. (For contrast, `|`'s follow-set is letter/`[`/`.`/`{`/`'`
+  — both char-guarded, different sets.) Minor defect noted: `!{directive x}`
+  at head currently double-emits `DirectiveStart` + orphan `}` — a bug to
+  fix, not a guard question. (Directive syntax stays — dialect-defined
   templating still needs it; the earlier "templating is a dialect" decision
   removed the *evaluator*, not the head-position directive syntax.)
 - **The attribute marker** — `:` — is **phase-restricted, not
