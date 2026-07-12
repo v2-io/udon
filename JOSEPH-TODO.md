@@ -1,69 +1,52 @@
 # JOSEPH-TODO — the valve
 
-Only what still blocks on Joseph. Decided items are removed (full record in
-**decisions/DECIDED.md**). Each open item carries the coordinator's
-recommendation (⭢) with one-line reasoning — inputs, not defaults. Prune on
-decision. Last pruned: 2026-07-11.
+Only what still needs Joseph. Decided items removed (history: DECIDED.md).
+Prune on decision. Last pruned: 2026-07-11.
 
-## Closed since inception → decisions/DECIDED.md
-D1a (+refinement) · D1b-partial · D-ATTR-1/2/3 · D-AUTH-1 · D2 / D2-ET /
-D2-ET-ext (value-dialects + `<…>` typing, **decision 2 closed**) · D8 /
-D8-unify (+refinements, **fences closed** but for one micro-edge below) ·
-LEX-1 (head position) · ARCH-1 (bounded lookahead) · D4 (libdescent riders)
-· R8 (crates.io reserved) · libdescent Phase-1 merged · **D1-FINAL
-(identity model — decision 1 CLOSED)**.
+**Bottom line:** *nothing blocks the next real work* — the spec-edit
+reconciliation can proceed now on the already-ratified batch (FULL-SPEC-TODO
+§A). The items below would be good to fold in while it happens; most are
+rubber-stamps.
+
+## Closed → decisions/DECIDED.md
+D1a · D1b-partial · D1-terms · **D1-FINAL (identity, decision 1)** · D-ATTR-1/2/3
+· D-AUTH-1 (reframed) · D2 / D2-ET / D2-ET-ext (**typing + value-dialects,
+decision 2**) · D8 / D8-unify (**fences**) · D9 (sigil markers) · **D-ESCAPE
+(remove `'` as escape)** · LEX-1 · ARCH-1 · D4 · R8 · libdescent Phase-1 ·
+META-1 (+ AUTHORITY→FULL-SPEC-TODO rename).
 
 ---
 
-## 1 — Batchable syntax decisions (one sitting)
-- **Decision 9 — sigil guards** → mostly **RATIFIED (D9)**: `!`=`\|`
-  char-guard adopted; `:` = phase-restricted (enforce defect #9, an impl
-  fix, not a new decision). Residual: `;` guard ⭢ **skip** (cosmetic, zero
-  corpus incidence) — a rubber-stamp.
-- **Decision 3 — StreamingParser fate.** ⭢ delete the façade now; build the
-  explicit-stack backend when a streaming consumer is concrete (ARCH-1
-  confirms the hard part already works at 1-byte chunks).
-- **Decision 5 — escapes.** Strongly leaning **remove `'` as escape**
-  (→ `\`-only; drops `'` from the head-position set). Sub-call: does
-  `'`-as-string-delimiter also go? Migration: scan live `'`-escape usage first.
-- **Decision 4 — markdown subset.** ⭢ adopt a Djot-inspired Layer-1
-  enumeration (design/markdown-layers.md scopes it).
-- **Decision 6 — reference augmentation** (`|[header].highlighted`). ⭢ no,
-  references immutable (keeps ReferenceIndex trivial; augmentation is tooling).
-- **Decision 7 — BlankLine/Warning events.** ⭢ spec them (load-bearing for
-  round-trip + diagnostics).
-- **Multi-attr block lines** (accepted-with-Warning today). ⭢ legalize —
-  the cheatsheet teaches the idiom.
-- **Fence closer micro-edge.** ⭢ closer's leading whitespace is terminator,
-  not body; body ends at the newline before the closer.
+## Genuine judgment calls (no confident rubber-stamp — your read)
+1. **Decision 3 — StreamingParser fate.** Delete the broken façade now, or
+   keep it until the explicit-stack backend exists? (⭢ delete; but it removes
+   shipped API, so it's your call. S5 made the rebuild a known ~2–3 wk job.)
+2. **`'` string-delimiter** — `'` is removed as an *escape* (D-ESCAPE ✓); does
+   `'`-as-*string-delimiter* (`'foo'`) *also* go, or stay? Genuinely open.
+3. **T1 — suffix-on-class** (`.class?`): FULL-SPEC reserves it "for future
+   use"; FULL-SPEC-supplement shows it *valid*. They contradict — **allow** or
+   keep **reserved**? Pick one.
+4. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
+   inheritance was never spec'd; ash-like examples lean on them; stacking +
+   schema-defaults may subsume most uses.
 
-## 2 — From the authority-compliance audit (decisions/authority-compliance-audit.md)
-- **T1 — Reserved suffix-on-class**: FULL-SPEC reserves `.class?` while the
-  supplement shows it valid — the two contradict today. ⭢ reserving
-  unallocated *syntax* is legitimate authority-1 (not proscription); resolve
-  the contradiction either way.
-- **T3 — Dynamics expression grammar**: the core-minimalism framing puts
-  `!`-eval host-owned, FULL-SPEC specs Liquid grammar in core. ⭢ menu/knob reframe:
-  core specs the syntax envelope; Liquid moves to a baseline-dialect doc.
+## Rubber-stamps (clear rec — one "go", or flag exceptions)
+- **Decision 9 `;` guard** ⭢ skip (zero corpus incidence).
+- **Decision 4 — markdown subset** ⭢ Djot-inspired Layer-1 enumeration.
+- **Decision 6 — reference augmentation** (`|[header].highlighted`) ⭢ no,
+  references immutable.
+- **Decision 7 — BlankLine/Warning events** ⭢ spec them.
+- **Multi-attr block lines** ⭢ legalize (drop the warning; the cheatsheet
+  teaches it).
+- **Fence closer micro-edge** ⭢ closer's leading whitespace is terminator,
+  body ends at the newline before it.
+- **T3 — dynamics grammar** ⭢ menu/knob: envelope syntax in core, Liquid
+  expression grammar → a baseline-dialect companion doc.
 
-## 3 — Mechanical
-- **Obsidian first-load smoke test** (~30 s): copy `editors/obsidian-udon/`
-  into a vault's `.obsidian/plugins/udon/`, enable, open a `.udon` file.
-  You're the first live load; everything else was verified headlessly.
+## Physical (only you can)
+- **Obsidian first-load smoke test** (~30 s): `editors/obsidian-udon/` →
+  vault `.obsidian/plugins/udon/`, enable, open a `.udon` file.
 
-## Discussion-shaped (a conversation, not a ratify)
-- **Mixins: rethink or drop entirely.** The `:[base]`-merge question is
-  withdrawn pending this. Inputs: subtree inheritance was never defined; the
-  ash-like examples lean on mixins; stacking + schema-defaults may subsume
-  most mixin use cases.
-
-## Not yet ripe (parked)
-- **Optional formatter** (`udon fmt`, IF ever built — *not required*):
-  a convenience like gofmt. **UDON mandates no canonical form** —
-  equivalent spellings (sugar vs longhand) coexist by design. Its one
-  load-bearing justification is mitigating column-alignment *edit*-
-  fragility (review §7); if built it has style options, not a canonical
-  form. Fully deferred; nothing owes it. (`.desc`-grammar cleanup is a
-  separate, libdescent-side question — in that project's proposals
-  ledger, not here.)
+## Parked (NOT waiting on you)
+- Optional `udon fmt` — IF ever built; UDON mandates no canonical form.
 - Filename-designator ↔ pragma binding — when the schema layer lands.
