@@ -53,6 +53,7 @@ FULL-SPEC (a short "What the core decides, and what it leaves open" section).
 | Multi-`$key` aliases via stacking (schema constrains cardinality) | D1-FINAL | Identity |
 | **Remove `'` as a head-position escape** (→ `\` only). Confirmed 2026-07-11. Sub-call open: does `'`-as-string-delimiter also go? Migration: scan live `'`-escape usage first | D-ESCAPE | Prefixes / Block-Level Escape (§104) |
 | §0 core-minimalism framing (above) | D-AUTH-1 (reframed), D2-ET, D2-ET-ext | new short section |
+| **Suffix chars in trait values**: extend the bare trait-value char class to include `* ! ? +` (`.foo?` = trait "foo?"); resolves the reserved-suffix contradiction by **allowing**. Element-level suffix after a trait uses the space form (`.trait ?`) | D-TRAIT-SUFFIX (T1) | FULL-SPEC:214 (drop "reserved") + Element Suffixes; grammar trait char-class |
 | **Fences** — *mix of change + re-affirmation* (reconciled vs Joseph's paragraph 2026-07-11): CHANGES — closer = **any-indent** ``` closes (FULL-SPEC:1179 says opening-indent-*or-less*); opener is **not** a fence after prose (FULL-SPEC:1160/1164 allow ``` after any content — **:1164 example must be rewritten**); closer must be **followed by newline** (trailing ws ignored, not in spec). **Closer-whitespace asymmetry**: the closer's LEFT/leading indent is part of the body output (not trimmed — **spec-prose caution for authors**, not a parser Warning event); only the RIGHT/trailing ws (after ` ``` `) is silently trimmed. RE-AFFIRMED (already correct): indentation→parent (:1159), content-after-``` = body (:1161), recommend closer at opening indent (:1178). Sameline fence works in *scan position* (`\|a \|b \`\`\``), NOT after prose. | D8, D8-unify | FULL-SPEC §Triple-Backtick (1154–1189) — rewrite closer rule + :1164 example |
 
 ## B. ALREADY in FULL-SPEC — impl violates it (NOT spec changes; these are DEFECTS)
@@ -75,6 +76,5 @@ impl enforcement, not spec text.*
 
 ## Still genuinely open (not yet ratified → JOSEPH-TODO)
 Markdown subset (decision 4) · reference augmentation (6) · BlankLine/Warning
-event spec-status (7) · multi-attr-block-line legalization · the two
-authority-compliance tensions (T1 reserved-suffix contradiction, T3 dynamics
-grammar) · mixins (rethink/drop).
+event spec-status (7) · multi-attr-block-line legalization · the T3
+authority-compliance tension (dynamics grammar) · mixins (rethink/drop).

@@ -583,3 +583,30 @@ prose. This drops `'` from the head-position marker set (FULL-SPEC's Prefixes
 is a head-position role; string-quote is a value-context role — separable.)
 **Migration:** scan live consumers for `'`-escape usage
 (`bin/find-consumers`) before removal.
+
+---
+
+## D-TRAIT-SUFFIX (T1 resolved) — suffix chars allowed in bare trait values (2026-07-12)
+
+**Ratified (Joseph): ALLOW `.trait?` / `.trait!` / `.trait*` / `.trait+`
+immediately.** Add `* ! ? +` to the allowed identifier characters **in a bare
+trait value** — so a trait may contain them without single-quote delimiting:
+`.foo?` = the trait `"foo?"`, `.a+b` = trait `"a+b"`, etc.
+
+- **Resolves the FULL-SPEC:214 "reserved for class-level modifiers"
+  contradiction by allowing it.** There are no "class modifiers" — *classes
+  are traits now*, and the character is simply part of the trait string. (No
+  special modifier semantics.)
+- **Disambiguation from the element-level suffix** (`|name?` → `$?`): a
+  suffix-char *within/after a `.trait`* (no space) is part of the trait value;
+  an *element-level* suffix after a trait uses the space-separated form
+  (`.trait ?`, already in FULL-SPEC:207), or precedes the trait (`|name?.trait`).
+  Positional, no loss of expressiveness — verified by cases:
+  - `|foo.bar?` → traits `["bar?"]`
+  - `|foo.bar ?` → traits `["bar"]`, `$?`=true
+  - `|foo?.bar` → `$?`=true, traits `["bar"]`
+- **Impl (small, ready):** extend the trait-value character class in the
+  grammar (`core/generator/*.desc`, trait parse) to include `*!?+`;
+  regenerate via `descent-core`; run the suite + drift gate.
+- Reinforces the **class → trait** terminology rename (FULL-SPEC still says
+  "class" in places).

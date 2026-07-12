@@ -13,17 +13,14 @@ D1a · D1b-partial · D1-terms · **D1-FINAL (identity, decision 1)** · D-ATTR-
 · D-AUTH-1 (reframed) · D2 / D2-ET / D2-ET-ext (**typing + value-dialects,
 decision 2**) · D8 / D8-unify (**fences**) · D9 (sigil markers) · **D-ESCAPE
 (remove `'` as escape)** · LEX-1 · ARCH-1 · D4 · R8 · libdescent Phase-1 ·
-META-1 (+ AUTHORITY→FULL-SPEC-TODO rename).
+META-1 (+ AUTHORITY→FULL-SPEC-TODO rename) · **D-TRAIT-SUFFIX (T1: allow `.trait?`)**.
 
 ---
 
 ## Genuine judgment calls (no confident rubber-stamp — your read)
 1. **`'` string-delimiter** — `'` is removed as an *escape* (D-ESCAPE ✓); does
    `'`-as-*string-delimiter* (`'foo'`) *also* go, or stay? Genuinely open.
-2. **T1 — suffix-on-class** (`.class?`): FULL-SPEC reserves it "for future
-   use"; FULL-SPEC-supplement shows it *valid*. They contradict — **allow** or
-   keep **reserved**? Pick one.
-3. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
+2. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
    inheritance was never spec'd; ash-like examples lean on them; stacking +
    schema-defaults may subsume most uses.
 
