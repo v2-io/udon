@@ -136,3 +136,23 @@ Joseph is considering rethinking or **dropping mixins entirely**. The
 mixin-append-under-stacking question is withdrawn unanswered; moved to
 JOSEPH-TODO as its own discussion. (Note: mixin subtree-inheritance was
 already flagged under-defined in FULL-SPEC — the rethink has a clean slate.)
+
+---
+
+## D4 — libdescent riders (2026-07-11)
+
+**Ratified (Joseph), all three:** (a) **byte-identity retired** — udon's
+suite + the front-end differential become the standing contract;
+diff_generate demoted to on-demand; the improvements ledger is now
+executable. (b) **Generator swap approved with sequencing** — merge+push
+first, one dual-generator CI cycle, then Ruby leaves the drift gate
+(remains available on-demand as historical oracle). (c) **Grammar aliases
+approved and EXTENDED**: beyond `SC`/`EX`/`BT`/`TAB`, longhand descriptive
+named aliases are allowed for all special characters — `<tab>`,
+`<right-square-bracket>`, `<any-newline>`, etc. — authoring agents choose;
+vocabulary lives in descent-rs; semantic-class names (e.g. `<any-newline>`
+covering \n and \r\n) are part of the design space. Validation by the
+new toolchain: Joseph assesses the probability of libdescent being less
+principled/stable than the Ruby version as very low, and the instruments
+agree. Branch merge review delegated to coordinator, instruments-based,
+exceptions-only reporting.
