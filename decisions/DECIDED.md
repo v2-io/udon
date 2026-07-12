@@ -284,12 +284,14 @@ typed (exact-capture).
 coordinator note that said the opposite):** body capture runs verbatim up to
 the closer's ` ``` `. Therefore:
 - **LEFT of the closer** (its leading indent) **IS part of the fenced body
-  output** — *not* auto-trimmed. Side-effect to **warn** about: indenting the
-  closing fence for readability injects that whitespace into the output.
+  output** — *not* auto-trimmed. This is a **spec-prose caution for authors**
+  (a documented gotcha: indenting the closer for readability injects that
+  whitespace into the output) — **NOT** a parser `Warning` event; the parser
+  captures it silently.
 - **RIGHT of the closer** (whitespace after ` ``` `, before the newline) **is
   silently trimmed.**
 (Consistent with exact-capture / no-dedent, FULL-SPEC:966. The asymmetry is
-not in FULL-SPEC — an addition to write in, with the author warning.)
+not in FULL-SPEC — an addition to write in, with the author-facing spec caution — no runtime Warning.)
 
 ---
 
