@@ -40,3 +40,25 @@ ratified.
   irrelevant to definition-time uniqueness; `@[key]` ambiguity-error is the
   separate reference-time check. Both checks live at Document layer.
 - Un-ban `@` references in vivarium's PROCESS norms once spec text lands.
+
+---
+
+## D1b-partial — `$`-names are ordinary names, no proscription (2026-07-11)
+
+**Ratified (Joseph):** `$*` are perfectly reasonable attribute names — the
+syntactic sugar (`[key]`, `.traits`, suffixes) just happens to *pair with
+some of them*. Model: Ruby symbols / Erlang quoted atoms — because single
+quotes are required for anything beyond common constructs, **convention and
+convenience pull away from collisions, not proscription**. No reserved
+namespace, no fencing, no warnings on "unassigned" `$`-names (there is no
+such category). Longhand `:'$key' x` ≡ sugar `[x]` by definition (the
+generator-equivalence requirement, now definitional).
+
+**Edge pushed to spec deltas:** sugar + longhand for the same name on one
+element is an instance of the *general* duplicate-attribute rule — no
+identity-specific law needed.
+
+**Still open in the D1 bundle:** formal (C)-model ratification; wire names
+(converging `$key`/`$traits` single-family — Joseph's acceptability range +
+coordinator lean agree); D1c suffix family (`$?` et al. under the inverted
+premise); attrs() API surface; fmt normalization (parked).

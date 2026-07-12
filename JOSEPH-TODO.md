@@ -28,8 +28,7 @@ your ratify.
    **Five sub-calls yours**: wire names (⭢ updated: **`$key`/`$traits`,
    single family, no aliases** — unifies wire/API/docs vocabulary; zero
    migration; retires the id-connotation debate as moot);
-   unassigned-`$` policy (⭢ legal-and-inert — your generator case entails
-   it); D1c suffixes reopened with premise inverted (⭢ `$?` family);
+   ~~unassigned-`$` policy~~ **RATIFIED**: no proscription — `$*` are ordinary names, sugar merely pairs with some (DECIDED.md D1b-partial); D1c suffixes reopened with premise inverted (⭢ `$?` family);
    attrs() API surface; fmt normalization (⭢ park for fmt charter).
 
 ## Review-shaped
