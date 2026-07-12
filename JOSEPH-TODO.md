@@ -84,6 +84,15 @@ your ratify.
      *the cheatsheet teaches the idiom; warning on what the onboarding
      artifact models punishes learners for learning.*
 
+## Discussion-shaped (not a ratify — a conversation)
+
+10. **Mixins: rethink or drop entirely** (Joseph, 2026-07-11). The
+    `:[base]`-merge-under-stacking question is withdrawn pending this.
+    Inputs when ready: subtree inheritance was never defined (FULL-SPEC
+    admits it); the ash-like examples use mixins heavily; stacking +
+    schema may subsume most mixin use cases (a trait + schema-level
+    defaults ≈ a mixin without the merge machinery).
+
 ## Not yet ripe (parked, no action)
 
 - fmt policy calls (row-leading pipes in .desc tables; alignment

@@ -98,3 +98,41 @@ never; AST: available opt-in). Hosts choose. (Consistent with D1a.)
   vote.
 - Conversion mapping for multi-valued attrs (Layer 3): parked with
   converters.
+
+---
+
+## D-ATTR-3 — Unified duplicate-definition policy (2026-07-11)
+
+**Ratified (Joseph):** duplicate `(type,key)` handling collapses to one
+Document-layer policy enum: **`error | allow-if-identical | first-wins |
+last-wins | keep-all`**, plus an orthogonal **`warn`** modifier addable to
+the non-error choices. Default: `error` (per D1a's entailment).
+Equivalence for `allow-if-identical` = tree-equality modulo spans.
+Spec forces the *menu* and the default; parser/Document layer exposes the
+knob.
+
+## D-AUTH-1 — The decision-authority table (2026-07-11)
+
+**Ratified (Joseph, confirmed w/ coordinator refinements):** every semantic
+behavior is owned by exactly one of:
+**[forced-by-spec · parser/parser-type · host-lang · schema · dialects]**.
+Worked instance: stacking + list-typing of ANY attribute (incl. `$key`) is
+forced-by-spec core; *disallowing* (e.g., array-valued or multi-valued
+`$key`) is SCHEMA's job. Refinements recorded:
+- **Menu vs knob**: spec frequently forces the option-space + default
+  (e.g., D-ATTR-3's enum) while parser/host picks within it — both columns
+  can appear on one behavior, at different altitudes.
+- **Dialects vs schema boundary**: dialects own what values *mean/type*
+  (recognition/typing, e.g. temporal@1); schema owns what's *allowed*
+  (constraints, cardinality, vocabularies). The pragma is the *binder*
+  that attaches documents to both — a mechanism, not a sixth authority.
+- **Stacking ⊥ array-values** (spec delta): `:x [1 2]` + `:x [3]` stacks
+  to two values, the first an array — stacking and list-literals are
+  orthogonal multiplicity mechanisms; consumers/schema decide flattening.
+
+## Mixins — PULLED from queue (2026-07-11)
+
+Joseph is considering rethinking or **dropping mixins entirely**. The
+mixin-append-under-stacking question is withdrawn unanswered; moved to
+JOSEPH-TODO as its own discussion. (Note: mixin subtree-inheritance was
+already flagged under-defined in FULL-SPEC — the rethink has a clean slate.)
