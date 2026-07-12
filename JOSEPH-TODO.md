@@ -126,6 +126,5 @@ your ratify.
 
 - fmt policy calls (row-leading pipes in .desc tables; alignment
   normalization) — when `udon fmt` exists.
-- descent-Rust crate name — when publishing nears.
 - Filename-designator ↔ pragma binding — when the schema layer lands
   (design/file-naming.md records the deliberate deferral).
