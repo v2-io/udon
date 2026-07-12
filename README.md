@@ -67,11 +67,11 @@ UDON provides clearer guidance than the traditional "attributes for metadata" ru
 | Question | → `:attribute` | → `|child` |
 |----------|----------------|------------|
 | **Type** | Typed scalar (string, number, bool, list of scalars) | Untyped, arbitrary structure |
-| **Cardinality** | One per key (hash semantics) | Can repeat (sequence semantics) |
-| **Order** | Doesn't matter | Matters |
+| **Cardinality** | Usually one per key; same-key assignments **stack** (all values kept, in order) — schemas constrain cardinality | Can repeat (sequence semantics) |
+| **Order** | Assignment order preserved; rarely semantic | Matters |
 
 ```udon
-; Attributes: typed scalars, one per key
+; Attributes: typed scalars (same-key assignments stack; schemas may constrain)
 |message :timestamp "2025-01-15" :role user :priority 3
   Can you help with my account?
 
