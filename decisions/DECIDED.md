@@ -62,3 +62,39 @@ identity-specific law needed.
 (converging `$key`/`$traits` single-family — Joseph's acceptability range +
 coordinator lean agree); D1c suffix family (`$?` et al. under the inverted
 premise); attrs() API surface; fmt normalization (parked).
+
+---
+
+## D-ATTR-1 — Attribute value stacking (2026-07-11)
+
+**Ratified (Joseph):** same-key attribute assignment STACKS — required
+standard behavior, assignment order guaranteed preserved. Uniform rule for
+all attributes (`:'$trait'` style and ordinary alike); entailed by the
+sugar model (`.a.b` = two `$trait` assignments) and generalized without
+special cases. Consequences blessed with it: the event stream (every Attr
+occurrence, in order) is the semantic truth; tree API needs
+first-vs-all accessor definition; README's "one per key (hash semantics)"
+row is superseded (spec delta).
+
+## D-ATTR-2 — Reference dereferencing (2026-07-11)
+
+**Ratified (Joseph, shape):** deref is never a core-event behavior; a
+parser/Document-layer flag, with mode-appropriate defaults (streaming:
+never; AST: available opt-in). Hosts choose. (Consistent with D1a.)
+
+**Open with coordinator recs (Joseph to ratify):**
+- Duplicate (type,key): default ERROR per D1a entailment; Document builder
+  accepts policy `error|first-wins|last-wins|keep-all` (append-stream/log
+  use cases are legitimate).
+- Equivalent-body duplicates: still error by default, diagnostically
+  distinguished ("identical" vs "conflicting"; tree-equality modulo spans);
+  `allow-if-identical` as a policy value.
+- Multiple `$key` values: uniform stacking — keys are an ordered identity
+  list; index registers all; uniqueness per (type, each-value); schema
+  layer constrains cardinality (proscription lives in schema, not core);
+  sugar stays single-bracket, multi-key via longhand.
+- Mixin `:[base]` merge under stacking: APPEND (override becomes a read
+  discipline) — real spec change from CSS-cascade text, needs explicit
+  vote.
+- Conversion mapping for multi-valued attrs (Layer 3): parked with
+  converters.
