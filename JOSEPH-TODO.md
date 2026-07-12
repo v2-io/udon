@@ -1,6 +1,6 @@
 # JOSEPH-TODO — the valve
 
-Only what still needs Joseph. Decided items removed (history: DECIDED.md).
+Only what still needs Joseph. Decided items removed (history: DECIDED.bak.md).
 Prune on decision. Last pruned: 2026-07-11.
 
 **Bottom line:** *nothing blocks the next real work* — the spec-edit
@@ -8,7 +8,7 @@ reconciliation can proceed now on the already-ratified batch (FULL-SPEC-TODO
 §A). The items below would be good to fold in while it happens; most are
 rubber-stamps.
 
-## Closed → decisions/DECIDED.md
+## Closed → decisions/DECIDED.bak.md
 D1a · D1b-partial · D1-terms · **D1-FINAL (identity, decision 1)** · D-ATTR-1/2/3
 · D-AUTH-1 (reframed) · D2 / D2-ET / D2-ET-ext (**typing + value-dialects,
 decision 2**) · D8 / D8-unify (**fences**) · D9 (sigil markers) · **D-ESCAPE

@@ -1,80 +1,143 @@
-# FULL-SPEC-TODO — ratified decisions not yet integrated into FULL-SPEC
+# FULL-SPEC-TODO — the worklist to bring FULL-SPEC current
 
-**This is a staging queue — NOT the spec, NOT normative.** The *rules* live in
-`FULL-SPEC.md`; the *history* lives in `decisions/DECIDED.md`; this file lists
-what still needs writing **into** FULL-SPEC, and how. When an item lands in
-the spec, delete it here.
+A plain punch-list of the real edits not yet applied to **`FULL-SPEC.md`**
+(which is the spec), plus the parser-impl work each edit implies. Check an item
+off when it lands *in FULL-SPEC* (or in the parser, for impl items).
 
-*(Renamed from `AUTHORITY.md` on 2026-07-11 — it was being mistaken for the
-spec itself, and had drifted into re-explaining grammar rules in denser prose
-than FULL-SPEC. See DECIDED.md META-1. There is no "decision-routing
-authority": there is no group of owners to route between — only **the core,
-and what the core deliberately leaves to consumers.**)*
+> **Discipline, learned the hard way (see the .bak files' META-1):** read the
+> FULL-SPEC section before editing it. Several items below are the spec *already
+> being right* while the impl (or a since-archived brief) was wrong — those are
+> tagged `[defect]` (impl fix, no spec change) or `[reconcile]` (spec text
+> disagrees with itself), not `[change]`.
+
+*Rebuilt 2026-07-12 from a clean read of FULL-SPEC + Joseph's actual decisions.
+The dense predecessor ledgers are archived at `decisions/DECIDED.bak.md` and
+`spec/FULL-SPEC-TODO.bak.md` — reference only (e.g. the core-vs-host-vs-schema-
+vs-parser-vs-dialect ownership discussion lives there), **not** authoritative.*
+
+Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editing.
 
 ---
 
-## 0. The framing to write into the spec (core minimalism)
+## Still Joseph's to decide (small)
 
-Not "five authorities" — one boundary: **the core is deliberately small.**
+- [ ] **`:[id]` attribute-merge** (:1479–1489) — keep it or drop it? It's a
+      *second* dereference form living alongside `@`, never actually
+      adjudicated. If kept, it needs the same inert / deref-is-a-knob treatment
+      as `@`. *(This was the one call you expected to make.)*
+- [ ] **`'` as a string delimiter** — removing `'` as an *escape* is decided;
+      does `'foo'`-as-a-string (:143, :1502) also go, or stay?
+- [ ] **Mixins** (:1414–1448, "Class as Mixin") — rethink or drop. Blocks the
+      class→trait rename of that section; subtree inheritance was never defined.
 
-- **Core (FULL-SPEC forces it):** the sigils and head-position recognition,
-  the core scalar types, stacking + order preservation, define(`|`)/refer
-  (`@`), the `<…>` envelope *syntax*, the event vocabulary. Every conformant
-  parser implements these identically.
-- **What the core deliberately does NOT decide (left to consumers):**
-  - **projection** — how a *host* turns a validated string into a native
-    value (Date → chrono/Time/jiff/…). Host's call.
-  - **constraint** — what is allowed/required (cardinality, no array-valued
-    `$key`, vocabularies). A **schema**'s job. *Proscription lives here,
-    never in core.*
-  - **exotic typing** — what non-core bare patterns mean. A **dialect**'s
-    job (recognition/typing, e.g. `temporal@1`) — not constraint.
-- **Menu vs knob** — the core may fix an option-*space* + default while a
-  consumer picks within it (duplicate-key policy: core forces
-  `error|first-wins|…`; a parser/host chooses). A consumer may never invent
-  options outside the menu.
-- **Dialects ≠ schema** — meaning/typing vs allowed/required; never trade jobs.
-- The **pragma** (future) binds a document to its schema + dialects.
+## Identity: `id`→`key`, `class`/`classes`→`traits`  `[change + impl]`
 
-This §0 is genuinely new conceptual material and *should* be written into
-FULL-SPEC (a short "What the core decides, and what it leaves open" section).
+- [ ] Rename the *vocabulary* everywhere: `id`→`key`, `class`/`classes`→`traits`
+      (surface syntax `[…]` and `.x` is unchanged — only the names change).
+- [ ] State the desugaring once: `[k]`→`$key`, `.a.b`→stacked `$traits`,
+      suffixes `?!*+`→`$?`/`$!`/`$*`/`$+`.  `[reconcile]` the spec's own
+      inconsistency — :173 desugars `[id]`→`:'$id'` (with `$`) but :190–193
+      desugar suffixes→`:'?'` (no `$`). Unify on `$`-prefixed names.
+- [ ] `$` is an ordinary name char — **specially-designated, not reserved**. No
+      `$id`/`$class` aliases: only `$key`, `$traits`, `$!`/`$+`/`$?`/`$*`. Any
+      other `$name` is a legal attribute (quoting friction, not proscription,
+      deters collisions).
+- [ ] `|` **defines**, `@` **refers** — rewrite the "`@[id]` inserts the entire
+      element" text (:1461–1489). `@` is an **inert typed pointer**; whether a
+      host expands/transcludes it is a deref knob, never core. `@[key]` errors
+      when ambiguous.
+- [ ] Duplicate `(element, key)` **definition** → Document-layer error, policy
+      `error | allow-if-identical | first-wins | last-wins | keep-all` (+`warn`).
+      Event/streaming layer never checks it.
 
-## A. New material to WRITE INTO FULL-SPEC (genuine changes/additions)
+## Attributes  `[change]`
 
-| Item | Ref | Target spec area |
-|---|---|---|
-| `<…>` explicit-typing envelope; `<type:…>`/`<dialect:type:…>` ladder; unlabeled dispatch = declared dialects in declared order, first-claim, all-decline → error | D2-ET | new "Explicit typing" §, near Value Types |
-| Bare typing = **frozen core scalars only**; all dialect types (incl. all temporal, ISO dates included) require `<…>`; accretion structurally impossible | D2-ET-ext | Value Types; TIME-SPEC recast as `temporal@1` dialect |
-| Identity model (C): total sugar-desugaring into **specially-designated** (not reserved) `$key`/`$traits`/`$?`; `$`-names ordinary; recommended host views (`all_attributes`; `key`/`traits`/`attributes`); parser/host knobs; `traits` always-list | D1-FINAL, D1b-partial, D1-terms | Identity & Classification; new "Host views (recommended)" § |
-| `\|` **defines**, `@` **refers** (inert typed pointer; `@[key]` errors if ambiguous); duplicate `(type,key)` **definition** → Document-layer error (policy-configurable) | D1a | Implicit References (rewrite the `@[id]`-inserts text); Elements |
-| Attribute value **stacking**, order-preserved, uniform; stacking ⊥ array-literals (two multiplicity axes) | D-ATTR-1 | Attributes |
-| Duplicate-key policy **menu** `error\|allow-if-identical\|first-wins\|last-wins\|keep-all` + `warn` (default error) | D-ATTR-3 | Attributes / consumer notes |
-| Dereference = never core; parser flag + host default per mode | D-ATTR-2 | Implicit References / consumer notes |
-| Multi-`$key` aliases via stacking (schema constrains cardinality) | D1-FINAL | Identity |
-| **Remove `'` as a head-position escape** (→ `\` only). Confirmed 2026-07-11. Sub-call open: does `'`-as-string-delimiter also go? Migration: scan live `'`-escape usage first | D-ESCAPE | Prefixes / Block-Level Escape (§104) |
-| §0 core-minimalism framing (above) | D-AUTH-1 (reframed), D2-ET, D2-ET-ext | new short section |
-| **Suffix chars in trait values**: extend the bare trait-value char class to include `* ! ? +` (`.foo?` = trait "foo?"); resolves the reserved-suffix contradiction by **allowing**. Element-level suffix after a trait uses the space form (`.trait ?`) | D-TRAIT-SUFFIX (T1) | FULL-SPEC:214 (drop "reserved") + Element Suffixes; grammar trait char-class |
-| **Fences** — *mix of change + re-affirmation* (reconciled vs Joseph's paragraph 2026-07-11): CHANGES — closer = **any-indent** ``` closes (FULL-SPEC:1179 says opening-indent-*or-less*); opener is **not** a fence after prose (FULL-SPEC:1160/1164 allow ``` after any content — **:1164 example must be rewritten**); closer must be **followed by newline** (trailing ws ignored, not in spec). **Closer-whitespace asymmetry**: the closer's LEFT/leading indent is part of the body output (not trimmed — **spec-prose caution for authors**, not a parser Warning event); only the RIGHT/trailing ws (after ` ``` `) is silently trimmed. RE-AFFIRMED (already correct): indentation→parent (:1159), content-after-``` = body (:1161), recommend closer at opening indent (:1178). Sameline fence works in *scan position* (`\|a \|b \`\`\``), NOT after prose. | D8, D8-unify | FULL-SPEC §Triple-Backtick (1154–1189) — rewrite closer rule + :1164 example |
+- [ ] Same-key attribute values **stack**, order preserved — uniform for all
+      attributes (`$traits` is just the common case). Ensure the spec teaches
+      stacking, not "one per key / hash semantics".
+- [ ] Stacking ⊥ array-literals: `:x [1 2]` then `:x [3]` = two stacked values,
+      the first an array. Two independent multiplicity axes; say so once.
+- [ ] Bare trait values may contain `* ! ? +` (`.foo?` = trait `"foo?"`, no
+      quotes). Drop the "Reserved (suffix on class)" block (:211–216).
+      *(D-TRAIT-SUFFIX, 2026-07-12; element-level end-suffix uses the space form
+      `.trait ?` already at :208.)*
 
-## B. ALREADY in FULL-SPEC — impl violates it (NOT spec changes; these are DEFECTS)
+## Explicit typing `<…>`  `[change — net-new section]`
 
-*These felt like "decisions" only because we were reading the broken
-implementation, not the spec. The spec already settles them; the work is
-impl enforcement, not spec text.*
+- [ ] Add the `<…>` typing envelope: `<type:…>` / `<dialect:type:…>`; an
+      unlabeled `<…>` is offered to the declared dialects in declared order,
+      first-claim-wins, all-decline → error. FULL-SPEC has **no** mention of it
+      today — this is a new section near Value Types.
+- [ ] Bare typing = **frozen core scalars only** (int / float / bool / nil /
+      string / list). Every dialect type — **including all temporal and ISO
+      dates** — requires `<…>`. Recast TIME-SPEC as the `temporal@1` dialect.
+      *(This is what makes accretion structurally impossible.)*
 
-| "Decision" | Spec already says it | Reality |
-|---|---|---|
-| `:` is an attribute only before children/text (`:one for the ages` after prose = text) | **FULL-SPEC:1591–1598** "Attributes must precede child content" | impl doesn't enforce → **defect #9** |
+## Fences / freeform  `[change + reconcile]`  (:1154–1189)
 
-## C. Gap-fills — FULL-SPEC silent, needs new (small) text
+- [ ] Opener is **not** a fence after prose — only in head/scan position.
+      Rewrite :1160 ("need not be at line start / can follow other content")
+      and the :1164 example, which shows a prose-position opener (wrong).
+- [ ] Closer = **any-indent** line starting ` ``` `, and must be followed by a
+      newline (trailing whitespace before it silently ignored). Replaces :1179
+      ("opening indent or less").
+- [ ] Rest of the opening line → body (info-strings come free; retires the
+      multi-word-lang truncation, defect #14).
+- [ ] **Spec-prose caution** (not a parser Warning event): the leading
+      whitespace of an *indented* closer IS part of the body output; only the
+      whitespace to the *right* of the closer is silently trimmed.
+- [ ] Keep — already correct: indent→parent (:1159), content-after-``` = body
+      (:1161), recommend closer at opening indent (:1178).
 
-| Gap | Ref | Note |
-|---|---|---|
-| `:`/`;`/`!` head-position recognition predicates | D9 | FULL-SPEC gives only `\|`'s (line 157). `!` = identifier/`:` (`!{…}` is prose-level inline, per FULL-SPEC:1126); `;` guard = skip (S3: zero incidence); `:` = the phase rule above |
-| "Head position" as a named term | LEX-1 | a *name for* the existing block/sameline model (§32), not a new mechanism — introduce it in Positional Contexts |
-| Bounded-lookahead invariant (≤~3 chars, no deep backtrack) | ARCH-1 | non-normative design-rationale appendix |
+## Head position + recognition  `[gap-fill]`
 
-## Still genuinely open (not yet ratified → JOSEPH-TODO)
-Markdown subset (decision 4) · reference augmentation (6) · BlankLine/Warning
-event spec-status (7) · multi-attr-block-line legalization · the T3
-authority-compliance tension (dynamics grammar) · mixins (rethink/drop).
+- [ ] Name **"head position"** as a first-class lexicon term in Positional
+      Contexts (:32) — the state where prose-vs-block is still undetermined
+      (block-line-start and sameline-condensed scan are its two faces).
+- [ ] Give `:`, `;`, `!` their recognition predicates — FULL-SPEC only writes
+      `|`'s (:157). `!` is structural before an identifier or `:` (`!if`,
+      `!:lang:`); `!{…}` is **prose-level**, not structural. `;` guard = skip
+      (zero corpus incidence).
+- [ ] `!` letter-guard: `!` + non-(identifier/`:`) → prose (fixes `![img]`,
+      `!=`, `!(`). `[change]`
+- [ ] Non-normative appendix: bounded lookahead (≤ ~3 chars, single-level, no
+      deep backtrack) — why descent fits and PEG isn't needed.
+
+## Escapes  `[change]`
+
+- [ ] Remove `'` as a head-position escape → `\` only. Rewrite :96–129,
+      :500–508, :426–428; drop `'` from the `|` follow-set (:158). Scan live
+      `'`-escape usage before flipping. *(String-delimiter role is a separate
+      open call — see top.)*
+
+## Core-minimalism framing  `[change — short new section]`
+
+- [ ] One short section: the core is deliberately small; it fixes syntax + core
+      semantics and leaves **projection** (host), **constraint** (schema), and
+      **exotic typing** (dialect) to consumers; it may fix an option-*space*
+      while a consumer picks within it (menu-vs-knob). Distill from the .bak;
+      do **not** rebuild the five-authority routing table (that was the drift).
+
+## Parser impl (beyond the plain desugaring)
+
+- [ ] Wire-names are `$key`/`$traits`/`$?…`, no aliases.
+- [ ] `traits` is **always an array** (`[]`, `["a"]`, `["a","b"]`) — the one
+      identity special-case beyond desugaring.
+- [ ] Fix the `:id` hijack: a bare `:id foo` currently sets identity; it must be
+      an ordinary attribute. Emit `$key` (not `Attr("id")`).  `[defect]`
+- [ ] Enforce `:`-attributes-before-children (:1591–1598 already spec's it).
+      `[defect #9]`
+- [ ] Document-layer duplicate-`(element,key)` check per the policy above.
+- [ ] Head-position `!{{value}}` currently wraps in a block Directive — should
+      surface as prose + Interpolation.  `[defect]`
+- [ ] Stacking accessors: `attr` (scalar / last) + `attr_all` (list).
+
+## Rubber-stamps (recommendations; one "go" clears the batch)
+
+- [ ] markdown subset → Djot-ish Layer-1 enumeration
+- [ ] reference augmentation → no (references immutable)
+- [ ] BlankLine / Warning events → spec them
+- [ ] multi-attr block lines → legalize (drop the warning; the cheatsheet
+      teaches it)
+- [ ] dynamics / Liquid expression grammar → a baseline-dialect companion doc,
+      not core

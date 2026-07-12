@@ -12,9 +12,11 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **decisions/DECIDED.md** — the ratification log (what was decided, when,
-   why). **spec/FULL-SPEC-TODO.md** — ratified items not yet written into
-   FULL-SPEC. Neither is the spec; FULL-SPEC.md is.
+3. **spec/FULL-SPEC-TODO.md** — the plain worklist of edits not yet applied to
+   FULL-SPEC (rebuilt 2026-07-12). The dense predecessor ledgers are archived
+   at **decisions/DECIDED.bak.md** + **spec/FULL-SPEC-TODO.bak.md** (reference
+   only — e.g. the core/host/schema/dialect ownership discussion). Neither the
+   worklist nor the archives is the spec; FULL-SPEC.md is.
 4. **spec/FULL-SPEC.md** — the authoritative language specification
    (v0.7-draft, with known divergences catalogued in the review's §2
    genealogy table).
