@@ -497,3 +497,33 @@ head-position markers split into two kinds, not one guarded set.
 comments, refs) is content that interleaves. So `:` being phase-restricted
 isn't an ad-hoc guard — it's that structural truth. Decision 9 becomes:
 adopt the `!` letter-guard (done), enforce defect #9 for `:` (impl), skip `;`.
+
+**Clarification (Joseph, 2026-07-11, verified) — the `:` phase-restriction
+is PER-ELEMENT**, not per-document. Each element opens a *fresh* attribute
+phase; `:` is an attribute while *that element* has no children/text yet,
+and prose after. Opening a new child/sibling element resets the phase.
+Content markers interleave freely at head position — worked & verified:
+
+- **Ex1** (`|` interleaves; per-element phase):
+  ```
+  |p
+    hello there
+    |a :src http://google.com THE BEAST
+    , how are you doing?
+  ```
+  → `p`: [Text "hello there", **Element a** (`:src` is a's attr — a's phase
+  is fresh though p has content), Text ", how are you doing?"]. Mixed
+  content: the element sits inline in the prose flow, prose resumes as its
+  sibling.
+
+- **Ex2** (`!` directives interleave):
+  ```
+  |p
+    good
+    !if beastlike == true
+      enough
+    !else um, ok
+    enough for now...
+  ```
+  → `p`: [Text "good", Directive if(body Text "enough"), Directive else(Text
+  "um, ok"), Text "enough for now..."].

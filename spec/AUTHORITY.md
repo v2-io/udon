@@ -42,8 +42,9 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 - **Content-markers vs the attribute-marker** (D9): at head position,
   `|`/`!`/` ``` `/`;`/`@` are *content markers* — they interleave with content
   and disambiguate by character-guard (letter/name-start = marker, else
-  prose; `!` = `|`). `:` is *phase-restricted* — an attribute only before any
-  child/text (attributes-before-children); after content it is prose. The
+  prose; `!` = `|`). `:` is *phase-restricted, per-element* — an attribute only before that
+  element's own children/text (attributes-before-children); prose after; a
+  new element resets the phase. The
   attribute-marker rule is a structural truth (metadata precedes content),
   not a lookahead.
 - **One special-start set, recognized at *head position*, one rule**
