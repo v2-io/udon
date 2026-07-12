@@ -27,7 +27,7 @@
 |field?[id]+                      ; suffix before/after id
 
 |license[mit] MIT License...
-|project :license @[mit]          ; @[id] inserts element
+|project :license @[mit]          ; @[id] refers to element (inert; tools resolve)
 |db :[base] :override val         ; :[id] merges attributes
 
 !if user
