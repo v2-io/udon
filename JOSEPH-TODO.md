@@ -14,7 +14,11 @@ LEX-1 (head position) · ARCH-1 (bounded lookahead) · D4 (libdescent riders)
 
 ---
 
-## 1 — Identity: formal close of the data-model bundle (decision 1)
+## 1 — Identity: formal close (decision 1) → [decisions/identity-model.md](decisions/identity-model.md)
+The whole bundle is now consolidated + drafted in identity-model.md
+(substrate, recommended host views incl. the `all_attributes` + `key`/
+`traits`/`attributes` split, parser/schema knobs). One "ratify
+identity-model.md" closes all of:
 D1a and `$`-no-proscription are ratified; this closes the rest. One
 ratification does it all:
 - **(C) views-over-reserved-attrs model** — ⭢ ratify (the supplement's rec;
