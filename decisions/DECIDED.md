@@ -190,3 +190,45 @@ forms only; `<…>` = full dialect range incl. risky shorthand** — preserves
 least-surprise in both directions (bare `2026-07-11` types; bare `5m`
 doesn't; `<5m>` does). Decouples "temporal is active" (host) from "which of
 its forms are bare-recognized" (spec-forced recognizer set).
+
+---
+
+## D2-ET-ext — Temporal is bracket-only; the core/dialect line becomes visible (2026-07-11)
+
+**Ratified (Joseph, leaning *past* the coordinator rec):** ALL temporal
+values require the `<…>` envelope — **including ISO date/time/datetime
+forms**. There is **no bare temporal recognition at all**. Unbracketed
+`2026-07-11`, `14:30`, `P1Y`, `5m` are **plain text** (bare string), unless
+they happen to match a frozen **core** scalar (`2026` stays an Integer).
+
+**The principle:** bare-value syntactic typing is limited to the frozen
+**core scalar set** (int / float / rational / complex / bool / nil / string
+/ array — authority 1). **Dialects never bare-recognize; dialect-typed
+values always wear `<…>`.** The envelope is thus the *syntactically visible
+boundary* between core (authority 1) and dialect (authority 5): bare =
+core-scalar-or-string, always; `<…>` = you have left core.
+
+**Accretion: permanently closed.** A new dialect (temporal now, anything
+later) can never retype an existing bare value — dialects don't touch bare
+space. The bare-value grammar is frozen at the core scalars and never grows.
+
+**Three non-sniffing ways to type a date:**
+1. `<2026-07-07>` — inline explicit (unlabeled → default-dialect dispatch)
+2. `<date:2026-07-07>` — inline explicit, labeled
+3. `:created 2026-07-07` + schema `created: date` — typing by *declaration*;
+   host projects the string (authority 4+3, not core).
+
+**Migration reframed** (corrects the spike's "zero migration"): the 29 live
+bare dates become **plain strings** — non-breaking today (nothing consumes
+them as typed Dates yet), lazily upgradable (bracket, or declare schema).
+Strings-until-typed, not broken.
+
+**Implementation implication (execution, not ratified here):** bare temporal
+recognition in `core/generator/values.desc` (the Jan-9/13 work) relocates
+OUT of bare-value parsing into the `<…>` dialect processor — a substantial
+core-parser simplification; defect #3 (bare temporal validation) becomes
+moot in bare context. The recognition logic moves; it isn't lost.
+
+**Decision 2 now effectively CLOSED.** Remaining low-stakes: temporal in the
+*default* dispatch set (host; leaning yes) + the two label-ladder forks
+(dialect-first; parallel aliases).

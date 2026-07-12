@@ -31,7 +31,7 @@ your ratify.
    ~~unassigned-`$` policy~~ **RATIFIED**: no proscription — `$*` are ordinary names, sugar merely pairs with some (DECIDED.md D1b-partial); D1c suffixes reopened with premise inverted (⭢ `$?` family);
    attrs() API surface; fmt normalization (⭢ park for fmt charter).
 
-2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
+2. **Value-dialects / temporal** — ✅ **CLOSED 2026-07-11** (D2/D2-ET/D2-ET-ext in DECIDED.md; residual host-lean only) — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
    **+ explicit-typing spike done** → [decisions/explicit-typing-brief.md](decisions/explicit-typing-brief.md)
    (your gating question). Result: adopt `<…>` explicit-typing envelope
    (`<u64:0xf902>`, `<time:interval:…>`) — **measured zero collisions** across

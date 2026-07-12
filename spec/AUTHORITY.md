@@ -39,6 +39,10 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 - **Dialects ≠ schema**: meaning/typing vs allowed/required. A value can
   be typed by a dialect and forbidden by a schema; the two never trade
   jobs.
+- **The `<…>` envelope is the visible core/dialect boundary** (D2-ET-ext):
+  bare value = core scalar or string, always; dialect typing *always* wears
+  `<…>`. No bare value is ever dialect-typed — so adding a dialect can never
+  retype an existing document. Accretion is structurally impossible.
 
 ## The behavior table (living; grows with DECIDED.md)
 
@@ -55,8 +59,8 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 | `<…>` explicit-typing envelope | 1 spec (envelope) + 5 dialects (labels) | **Ratified** D2-ET; `>`-terminated, `<type:…>`/`<dialect:type:…>` ladder |
 | Unlabeled `<…>` dispatch | 1 spec (semantics) | **Ratified** D2-ET: declared dialects in declared order, first-claim-wins, all-decline → error |
 | Set of implicitly-declared (default-active) dialects | 2 parser + 3 host | **Ratified** D2-ET (new authority row); temporal-as-implicit leaning-yes, open |
-| Bare-pattern value typing (temporal, …) | 5 dialects; **bare-recognizer set** 1 spec | Bare = unambiguous forms (dates/datetime); shorthand via `<…>` — rec pending final ratify |
-| Shorthand durations (`5m`/`+30d`) | via `<…>` envelope | **Ratified** D2-ET: kept, not evicted; bare-recognition is the open residual |
+| Bare value typing = frozen **core scalars only** | 1 spec | **Ratified** D2-ET-ext: int/float/rational/complex/bool/nil/string/array; nothing else bare-types |
+| ALL temporal (dates/times/durations/shorthand) | 5 dialects, **`<…>`-only** | **Ratified** D2-ET-ext: no bare form; unbracketed temporal-looking text = plain string |
 | Temporal *validation* (reject `P1W2D` etc.) | 5 dialect-owned module | Rides decision 2; not parser-core |
 | Cardinality/type restriction (e.g. single `$key`) | 4 schema | Principle ratified via D-AUTH-1 worked instance |
 | Markdown prose subset | 1 spec names it; 4/5 select | Decision 4 pending; Layer 1 of design/markdown-layers.md |
