@@ -315,6 +315,27 @@ head-position special-start set. Fences and the other markers have only the
 head-position role. Once a fence *does* open at head position, freeform
 capture runs to the closer — no marker interaction inside the body.
 
+**Refinement 2 (Joseph, 2026-07-11) — recognition is a per-marker predicate,
+not the lead char.** "Block-mode?" is decided by a short lookahead predicate
+per marker, a few characters, not the first character alone:
+- `|` is a marker only if followed by a letter / `[` / `.` / `{` / `'` — `|`
+  + space is prose (the established pipe guard; Markdown-table safe).
+- **triple**-backtick opens a fence; one or two backticks do not (→ prose /
+  Markdown inline code).
+- `:` `!` `;` `@` each carry their own marker-vs-prose predicate — **these
+  ARE decision 9 (sigil guards)**: the guards *are* the predicates. (The
+  colon-eating fix, defect #12, is one such predicate landing wrong today.)
+So D8-unify and decision 9 are one mechanism from two sides.
+
+**Escape member pending decision 5 (Joseph strongly leaning REMOVE `'`):**
+the set currently lists `'` (block escape); Joseph is now "pretty sure" `'`
+goes as an escape (→ `\`-only). That drops `'` from the head-position set — a
+line starting `'` becomes plain prose. Open sub-distinction: `'`-as-escape
+(head position) vs `'`-as-**string-delimiter** (`'foo'`, value context) — the
+removal Joseph named is the escape role; whether the string-quote role also
+goes is a separate call. Migration check before removal: scan live consumers
+for `'`-escape usage (`bin/find-consumers`).
+
 **Consequence:** the D8 sameline fence shorthand is **promoted proposed →
 RATIFIED** — treating a fence as a special-start makes it recognized in
 sameline-condensed position automatically; *not* doing so would make fences

@@ -93,9 +93,7 @@ your ratify.
    - Markdown subset — ⭢ adopt a Djot-inspired enumeration as Layer 1;
      *naming the subset is cheap and renderer conformance is undefined
      without it (the layer taxonomy already scopes it).*
-   - Escape unification — ⭢ `\` everywhere, `'` accepted-with-lint-warning
-     through 1.0; *one mechanism is teachable, and feedback.md's own vote
-     already went this way — but `'` is in live docs, so deprecate gently.*
+   - Escape unification — Joseph strongly leaning **remove `'` as escape** (→ `\`-only; strengthens the earlier deprecate-gently lean). Drops `'` from the D8-unify special-start set. Sub-call: does `'`-as-string-delimiter also go? Migration: scan live `'`-escape usage first.
    - Reference augmentation (`|[header].highlighted`) — ⭢ no (references
      immutable); *augmentation is tooling-layer work, and immutability keeps
      the ReferenceIndex semantics trivial.*
