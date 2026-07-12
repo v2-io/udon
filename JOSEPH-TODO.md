@@ -10,13 +10,16 @@ your ratify.
 
 1. **Identity syntax** — [decisions/identity-syntax-brief.md](decisions/identity-syntax-brief.md)
    **D1a RATIFIED 2026-07-11** (`@` = inert typed pointer; ambiguity-erroring
-   shorthand) → see decisions/DECIDED.md. Remaining sub-calls:
-   ⭢ **1b**: `key`/`traits` as AST fields — *dissolves `$id`-vs-`id`;
-   tree.rs already models identity as a field.* ⭢ **1c**: bare `?` suffix —
-   *matches live ASF usage.* Plus one rider from ratification: confirm the
-   **key-scope enforcement layer** rec (Document-layer errors on duplicate
-   `(type,key)` definitions; event layer stays stateless) — DECIDED.md has
-   the reasoning.
+   shorthand) → see decisions/DECIDED.md.
+   **1b/1c RETURNED FOR STUDY 2026-07-11** — Joseph: the fields-model rec
+   wasn't thoroughly studied; the sugar model's deliberate-collision
+   affordance (a naive db→udon generator emitting `:'$id' 3890` ≡
+   hand-written `|asdf[3890]`) was never weighed, nor was a
+   views-over-reserved-attrs hybrid. Supplement in progress →
+   decisions/identity-data-model-supplement.md (3 models × 8 invariants,
+   incl. the D1a entailments and the mixin/paths/fmt interactions).
+   Still riding: the key-scope enforcement-layer confirm (now partly
+   entailed by D1a's |-always-defines refinement).
 
 2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
    ⭢ **Adopt Option B** (temporal as default-on std dialect over the
