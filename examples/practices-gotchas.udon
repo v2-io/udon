@@ -28,7 +28,7 @@
       repetition, or prose.
 
       !:udon:
-        ; Attributes: typed scalars, one per key
+        ; Attributes: typed scalars (same-key assignments stack, in order)
         |message :timestamp "2025-01-15" :priority 3
           Body text here
 
