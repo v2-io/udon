@@ -283,3 +283,32 @@ typed (exact-capture).
 **Open micro-edge for confirmation:** the closing fence line is the
 *terminator* — its own leading whitespace is consumed (not body); the body
 ends at the newline preceding the closer. ⭢ confirm this boundary reading.
+
+---
+
+## D8-unify — Block-mode special starts: one set, two positions, one rule (2026-07-11)
+
+**Ratified (Joseph) — a unification, not a new feature.** UDON has exactly
+one recognition rule for structural markers; the D8 sameline fence shorthand
+is simply an instance of it, not a special case.
+
+- One set of **block-mode special starts**: `|` `:` `!` `;` `@` triple-backtick
+  and the escape `'` (the grammar's `:dispatch` set — see udon.desc).
+- Recognized **identically in two positions**: *block* (line start, after
+  indentation) and *sameline-condensed* (scanning after an element for the
+  next token). Same set both places — sameline scanning is not a reduced or
+  special variant.
+- In **free-text / prose mode** the same characters are literal (subject to
+  Markdown meaning + escape rules).
+- **Comments are the worked exemplar**: `;` distinctly starts a comment in
+  block/sameline position and is plain prose in free-text — the
+  already-ratified `;` context-sensitivity. Every other marker (elements,
+  attrs, directives, references, fences) obeys the identical rule.
+
+**Consequence:** the D8 sameline fence shorthand is **promoted proposed →
+RATIFIED** — treating a fence as a special-start makes it recognized in
+sameline-condensed position automatically; *not* doing so would make fences
+the lone inconsistent exception. The parser's `.desc` `:dispatch` state
+already encodes this set; the spec states the unification **once** and each
+construct inherits recognition (shrinks both the spec prose and the mental
+model). Authority: spec-forced (authority 1); a structural principle.

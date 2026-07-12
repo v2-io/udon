@@ -46,7 +46,7 @@ your ratify.
    vs later (⭢ parallel for now). *Pairs with a `!{:kind:}`-in-value repair —
    a live site is broken today (ash-like-billing.udon:80).*
 
-3. **Fence semantics** — ⚑ **core rule RATIFIED** (D8: any-line-closes, rest-of-line→body, exact-capture, column-sets-parent). Open: sameline-shorthand final call (leaning yes) + closer-boundary micro-edge. Original brief: [decisions/fence-semantics-brief.md](decisions/fence-semantics-brief.md)
+3. **Fence semantics** — ⚑ **core rule RATIFIED** (D8: any-line-closes, rest-of-line→body, exact-capture, column-sets-parent). Sameline shorthand now **ratified** (D8-unify: fences are a special-start, same rule as comments). Open: only the closer-boundary micro-edge. Original brief: [decisions/fence-semantics-brief.md](decisions/fence-semantics-brief.md)
    ⭢ **Adopt the brief's bundle**: any-line-closes, drop sameline fences,
    CommonMark info strings, fence-promotion-in-prose ratified as deliberate.
    *Because:* it's the one coherent CommonMark-shaped story; migration cost
