@@ -284,7 +284,8 @@
 ; ----------------------------------------------------------------------------
 
 ; Two forms of ID reference:
-;   @[id] — Insert entire element (structure + content)
+;   @[id] — Inert reference to the element (a typed pointer; resolution,
+;           if any, is tooling-layer — the parser never inserts)
 ;   :[id] — Merge only attributes from that element
 
 |license[mit]
@@ -301,11 +302,11 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License...
 
-; @[id] — Full element insertion
+; @[id] — Element reference (inert pointer; tools may resolve)
 |project[udon-parser]
   :name "UDON Parser"
   :version 0.7.0
-  :license @[mit]              ; Inserts the full |license[mit] element here
+  :license @[mit]              ; Refers to |license[mit]; tooling resolves
   :homepage https://github.com/example/udon
   :authors ["Joseph Wecker" "Contributors"]
   :keywords [parser notation data documents]
