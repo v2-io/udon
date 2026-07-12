@@ -12,7 +12,9 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **spec/FULL-SPEC.md** — the authoritative language specification
+3. **spec/AUTHORITY.md** + **decisions/DECIDED.md** — who owns which
+   semantics, and what's been ratified; behaviors move only through these.
+4. **spec/FULL-SPEC.md** — the authoritative language specification
    (v0.7-draft, with known divergences catalogued in the review's §2
    genealogy table).
 

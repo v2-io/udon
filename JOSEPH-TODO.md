@@ -99,6 +99,20 @@ your ratify.
      *the cheatsheet teaches the idiom; warning on what the onboarding
      artifact models punishes learners for learning.*
 
+## From the authority-compliance audit (decisions/authority-compliance-audit.md)
+
+11. **T1 — Reserved suffix-on-class**: FULL-SPEC reserves `.class?` syntax
+    "for future use" while FULL-SPEC-supplement shows it as *valid* — the
+    two spec files contradict each other today. Call: is syntax-space
+    reservation legitimate authority-1 grammar management, or proscription?
+    ⭢ *Legitimate — reserving unallocated syntax ≠ fencing names; but the
+    supplement contradiction must be resolved whichever way.*
+12. **T3 — Dynamics expression grammar**: AUTHORITY says `!`-evaluation is
+    host-owned, yet FULL-SPEC normatively specs Liquid operators/truthiness
+    in core. ⭢ *Reframe as menu/knob: core specs the SYNTAX envelope
+    (what parses to an inert directive/expr node); the Liquid grammar
+    moves to a "baseline dialect" companion doc hosts may adopt.*
+
 ## Discussion-shaped (not a ratify — a conversation)
 
 10. **Mixins: rethink or drop entirely** (Joseph, 2026-07-11). The
