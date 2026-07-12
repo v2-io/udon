@@ -39,7 +39,10 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 - **Dialects ≠ schema**: meaning/typing vs allowed/required. A value can
   be typed by a dialect and forbidden by a schema; the two never trade
   jobs.
-- **One special-start set, two positions, one rule** (D8-unify): the markers
+- **One special-start set, recognized at *head position*, one rule**
+  (D8-unify + LEX-1): *head position* is the state — spanning block-line-start
+  and sameline-condensed scan — where prose-vs-block is still undetermined.
+  The markers
   `|` `:` `!` `;` `@` triple-backtick `'` are recognized identically at
   block-line-start and in sameline-condensed scan, and are literal in
   free-text (modulo Markdown/escapes). Comments are the exemplar. Each

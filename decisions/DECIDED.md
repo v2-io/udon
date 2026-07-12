@@ -343,3 +343,30 @@ the lone inconsistent exception. The parser's `.desc` `:dispatch` state
 already encodes this set; the spec states the unification **once** and each
 construct inherits recognition (shrinks both the spec prose and the mental
 model). Authority: spec-forced (authority 1); a structural principle.
+
+---
+
+## LEX-1 — "Head position": a prominent, first-class lexicon term (2026-07-11)
+
+**Ratified (Joseph):** *head position* is a load-bearing spec term and must be
+prominent in the lexicon, not implicit.
+
+**Definition:** the parser state — at a line's **head** (after indentation)
+OR in **sameline-condensed scanning** (immediately after an element, before
+any prose has begun on that line) — where it is **still undetermined whether
+the next token is block-structural or prose**. The D8-unify special-start
+predicates fire *exactly and only* here; the first token that fails all of
+them commits the line to prose (free-text mode) and ends head position.
+
+- **Spans both block (line-start) and sameline positions** — it is the
+  meta-state *over* them, not a third sibling context.
+- **This is the concept that unifies three rules into one**: D8-unify
+  (special-start recognition), decision 9 (sigil guards = the per-marker
+  predicates), and `;`/comment context-sensitivity are all "what happens at
+  head position." State the rule once, at head position.
+- **Canonical term** — supersedes the ad-hoc "block mode / scan position /
+  sameline-condensed scan" phrasings used in prior entries.
+- **Spec placement (flagged for the FULL-SPEC edit):** must appear
+  prominently in the "Positional Contexts (Vocabulary)" table alongside
+  block / sameline / inline / embedded — arguably *before* them, since it is
+  the state in which the others are chosen.
