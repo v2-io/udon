@@ -53,6 +53,7 @@ FULL-SPEC (a short "What the core decides, and what it leaves open" section).
 | Multi-`$key` aliases via stacking (schema constrains cardinality) | D1-FINAL | Identity |
 | **Remove `'` as a head-position escape** (→ `\` only). Confirmed 2026-07-11. Sub-call open: does `'`-as-string-delimiter also go? Migration: scan live `'`-escape usage first | D-ESCAPE | Prefixes / Block-Level Escape (§104) |
 | §0 core-minimalism framing (above) | D-AUTH-1 (reframed), D2-ET, D2-ET-ext | new short section |
+| **Fences** — *mix of change + re-affirmation* (reconciled vs Joseph's paragraph 2026-07-11): CHANGES — closer = **any-indent** ``` closes (FULL-SPEC:1179 says opening-indent-*or-less*); opener is **not** a fence after prose (FULL-SPEC:1160/1164 allow ``` after any content — **:1164 example must be rewritten**); closer must be **followed by newline** (trailing ws ignored, not in spec). RE-AFFIRMED (already correct): indentation→parent (:1159), content-after-``` = body (:1161), recommend closer at opening indent (:1178). Sameline fence works in *scan position* (`\|a \|b \`\`\``), NOT after prose. | D8, D8-unify | FULL-SPEC §Triple-Backtick (1154–1189) — rewrite closer rule + :1164 example |
 
 ## B. ALREADY in FULL-SPEC — impl violates it (NOT spec changes; these are DEFECTS)
 
@@ -63,7 +64,6 @@ impl enforcement, not spec text.*
 | "Decision" | Spec already says it | Reality |
 |---|---|---|
 | `:` is an attribute only before children/text (`:one for the ages` after prose = text) | **FULL-SPEC:1591–1598** "Attributes must precede child content" | impl doesn't enforce → **defect #9** |
-| Fence: indentation → parent; need-not-be-line-start; content-after-``` = body; **sameline fences valid** | **FULL-SPEC:1158–1164** (shows a sameline fence) | impl broke sameline → **defect #10**. The fence brief's "drop sameline" *contradicted the spec* |
 
 ## C. Gap-fills — FULL-SPEC silent, needs new (small) text
 

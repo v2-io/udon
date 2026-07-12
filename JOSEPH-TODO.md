@@ -18,15 +18,12 @@ META-1 (+ AUTHORITY→FULL-SPEC-TODO rename).
 ---
 
 ## Genuine judgment calls (no confident rubber-stamp — your read)
-1. **Decision 3 — StreamingParser fate.** Delete the broken façade now, or
-   keep it until the explicit-stack backend exists? (⭢ delete; but it removes
-   shipped API, so it's your call. S5 made the rebuild a known ~2–3 wk job.)
-2. **`'` string-delimiter** — `'` is removed as an *escape* (D-ESCAPE ✓); does
+1. **`'` string-delimiter** — `'` is removed as an *escape* (D-ESCAPE ✓); does
    `'`-as-*string-delimiter* (`'foo'`) *also* go, or stay? Genuinely open.
-3. **T1 — suffix-on-class** (`.class?`): FULL-SPEC reserves it "for future
+2. **T1 — suffix-on-class** (`.class?`): FULL-SPEC reserves it "for future
    use"; FULL-SPEC-supplement shows it *valid*. They contradict — **allow** or
    keep **reserved**? Pick one.
-4. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
+3. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
    inheritance was never spec'd; ash-like examples lean on them; stacking +
    schema-defaults may subsume most uses.
 
@@ -42,6 +39,12 @@ META-1 (+ AUTHORITY→FULL-SPEC-TODO rename).
   body ends at the newline before it.
 - **T3 — dynamics grammar** ⭢ menu/knob: envelope syntax in core, Liquid
   expression grammar → a baseline-dialect companion doc.
+
+## Not a decision — queued WORK (was mis-filed as a judgment call)
+- **Explicit-stack streaming backend** in `descent-core` — build it (the
+  whole point of the descent→Rust rewrite; S5 proved it; vivarium wants it).
+  Replaces the broken `StreamingParser` façade (defect #1). ~2–3 wk. Only
+  question is priority vs the spec-edit — scheduling, not design.
 
 ## Physical (only you can)
 - **Obsidian first-load smoke test** (~30 s): `editors/obsidian-udon/` →
