@@ -400,3 +400,24 @@ them commits the line to prose (free-text mode) and ends head position.
   the reified state must include the pending-lookahead buffer. (S5 already
   demonstrated this works at 1-byte chunks — so the requirement is met, not
   merely stated.)
+
+---
+
+## D1-terms — "specially-designated" (not reserved); `$traits`; traits always-list (2026-07-11)
+
+**Ratified (Joseph):**
+- **Terminology**: the `$`-attributes the sugar desugars into
+  (`$key`/`$traits`/`$?`…) are **specially-designated**, *not reserved* —
+  consistent with D1b-partial (no reserved namespace; any `$`-name is a legal
+  ordinary attribute). "Reserved" is banned as the term (it implies fencing
+  we don't do). Corrected across identity-model.md / AUTHORITY.md.
+- **`$traits`** is the trait designation (over `$trait`); each `.t` adds a
+  stacked value.
+- **The `traits` view is always a list** — `[]` / `["a"]` / `["a","b"]`,
+  regardless of count — for app-dev simplicity (matches udon-ast).
+
+**Flagged impl nuance (general case):** whether an ordinary *single-valued*
+stacked attribute presents as scalar or 1-element list (`:x v` → `v` vs
+`["v"]`) is the **attrs() API surface** call — a host/impl decision. Traits
+is the ratified always-list exception; the general default is likely
+`.attr` (scalar/last) + `.attr_all` (list).

@@ -59,7 +59,7 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 |---|---|---|
 | Attribute value stacking, order-preserved | 1 spec | **Ratified** D-ATTR-1; uniform, incl. `$`-names |
 | Stacking ⊥ array-literals (two multiplicity axes) | 1 spec | Ratified w/ D-AUTH-1; flattening is consumer/schema |
-| Sugar desugarings (`[k]`→`$key`-style, `.t`, suffixes) | 1 spec | Model (C) pending formal ratify; total-desugaring invariant |
+| Sugar desugarings (`[k]`→`$key`-style, `.t`, suffixes) | 1 spec | Model (C) pending formal ratify; total-desugaring into **specially-designated** (not reserved) `$`-attrs; `traits` view always-list |
 | `\|` defines / `@` refers partition | 1 spec | **Ratified** D1a |
 | `$`-names: ordinary, no proscription | 1 spec | **Ratified** D1b-partial |
 | Duplicate `(type,key)` policy menu + default=error | 1 spec (menu) + 2 parser (knob) | **Ratified** D-ATTR-3: `error\|allow-if-identical\|first-wins\|last-wins\|keep-all` + `warn` |

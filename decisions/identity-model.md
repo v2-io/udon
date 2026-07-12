@@ -12,7 +12,12 @@ are **views**, not model. (This is what makes model (C) (C), and it's the
 sentence whose absence let tree.rs's convenience fields get mistaken for the
 model in the first place.)
 
-**Sugar → reserved attributes (total desugaring, an invariant):**
+**Sugar → specially-designated attributes (total desugaring, an invariant):**
+
+*Terminology (per D1b-partial): `$key`/`$traits`/`$?`… are **specially-
+designated**, NOT reserved — any `$`-name is a legal ordinary attribute; the
+sugar simply targets these particular names. "Reserved" is the wrong word
+because nothing is fenced off.*
 
 | Sugar | Desugars to | Notes |
 |---|---|---|
@@ -33,9 +38,17 @@ model in the first place.)
   configurable (D-ATTR-3: `error|allow-if-identical|first-wins|last-wins|
   keep-all` + `warn`). Event/streaming layer never checks (stays stateless).
 
-*(Open micro-call: reserved trait name `$traits` (stacked, matches the
-`traits` accessor + wire-name lean) vs `$trait` (singular per value). ⭢
-`$traits`.)*
+**Trait designation: `$traits`** (RATIFIED — Joseph). Each `.t` adds a value
+to the stacked `$traits`. **The `traits` view is *always a list*** — `[]`,
+`["a"]`, `["a","b"]` — even for a single trait (app-dev simplicity; matches
+udon-ast's "traits always an array"). This is the *specific, ratified* answer
+for traits to the general question below.
+
+*(Impl nuance, general case — the attrs() API surface call: for an ordinary
+stacked attribute, does a **single** value present as a scalar or a
+one-element list? `:x v` → `v` or `["v"]`? Traits is pinned always-list;
+the general rule stays a host/impl decision — likely `.attr` scalar-or-last,
+`.attr_all` list.)*
 
 ## 2. Recommended host views — authority 3 (recommended, NOT forced)
 
@@ -45,7 +58,7 @@ views, both derivable from the substrate; a host may expose one, both, or
 its own:
 
 **View A — flat/raw: `all_attributes`** *(chosen default name)*
-- Every attribute in document order, **including** the reserved `$`-set.
+- Every attribute in document order, **including** the specially-designated `$`-set.
 - The round-trip / tooling / "I want exactly what's there" view.
 - *(candidates were `bare_`/`all_`/`full_attributes`; `all_attributes` is
   clearest — "bare" collides with bare-value/unquoted, "full" is vague.)*
@@ -54,14 +67,14 @@ its own:
 `attributes`
 - `key` → value(s) of `$key` (scalar in the common single-key case; the
   ordered list when aliased).
-- `traits` → values of `$traits`, **always a list** (`[]` when none).
-- `attributes` → the **non-reserved** attributes only (the `$`-set pulled
-  out).
+- `traits` → values of `$traits`, **always a list** (`[]`/`["a"]`/`["a","b"]`; ratified).
+- `attributes` → the **non-designated** attributes only (i.e. not the
+  sugar-targeted `$`-names).
 - suffixes → surfaced as the host prefers (booleans/flags off `$?` etc.).
 
 Precedent: this is the DOM split (`.attributes` all-vs `.id`/`.classList`
 distinct), made explicit and clean — `all_attributes` = raw everything,
-`attributes` = user attrs, `key`/`traits` = the reserved ones named.
+`attributes` = user attrs, `key`/`traits` = the specially-designated ones named.
 
 ## 3. Parser / host decisions (the knobs to expose) — authority 2 + 3
 
@@ -73,7 +86,7 @@ The spec forces the *menus*; the parser/host pick within them:
 | **Duplicate `(type,key)` policy** | 1 spec menu + 2 parser knob | `error` (default) `\|allow-if-identical\|first-wins\|last-wins\|keep-all`, `+warn` (D-ATTR-3) |
 | **View exposure + names** | 3 host | recommend §2 defaults; host may rename/alias per idiom |
 | **key multiplicity surface** | 3 host | multi-key permitted (stacking); a `first_key` convenience is optional |
-| **Reserved-attr hiding in `attributes`** | 3 host | recommend yes (that's what makes View B "distinct") |
+| **Designated-attr hiding in `attributes`** | 3 host | recommend yes (that's what makes View B "distinct") |
 
 ## 4. Schema decisions — authority 4
 
