@@ -100,10 +100,11 @@ schema rule; core happily stacks and list-types any attribute" (D-AUTH-1).*
 One "ratify identity-model.md" collapses: the (C) model + total-desugaring
 invariant, wire names (`$key`/`$traits`/`$?`), D1c suffixes, multi-key
 aliases, the key-scope enforcement layer, and the view/API recommendation.
-Remaining genuinely-deferred: the general single-stacked-value scalar-vs-
-list surface (attrs() API, §1). *(There is no canonical-form question:
-UDON mandates none — sugar and longhand coexist by design; an optional
-`udon fmt`, if ever built, would offer a display preference, not a
-required form.)* Then the identity spec-edit (~1 page) and
+**Nothing is genuinely open** beyond that one ratification. The
+single-stacked-value scalar-vs-list surface (§1) is *not* deferred — it is
+**assigned to the host** (authority 3) with a recommended default; assigning
+to an authority *is* closing it, spec-side. No canonical-form question
+exists (UDON mandates none; a `udon fmt` is optional and offers a display
+preference, never a required form). Then the identity spec-edit (~1 page) and
 the U4 impl (typed-key fix + the `Attr("id")`→`$key` event correction + view
 accessors) are executable.
