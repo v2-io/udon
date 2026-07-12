@@ -71,6 +71,9 @@ identity-model.md" closes all of:
   most mixin use cases.
 
 ## Not yet ripe (parked)
-- fmt policy (row-leading pipes in `.desc` tables; alignment normalization) —
-  when `udon fmt` exists.
+- **fmt charter** (when `udon fmt` exists): the canonical-spelling policy for
+  every case with >1 equivalent spelling — sugar `[k]`/`.a.b`/`?` vs longhand
+  `:'$key'`/`:'$traits'`/`:'$?'`; attribute order; `.desc` row-leading pipes;
+  alignment. All pure presentation, zero semantic effect — which is why it
+  parks until the formatter exists.
 - Filename-designator ↔ pragma binding — when the schema layer lands.

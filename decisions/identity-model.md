@@ -100,7 +100,7 @@ schema rule; core happily stacks and list-types any attribute" (D-AUTH-1).*
 One "ratify identity-model.md" collapses: the (C) model + total-desugaring
 invariant, wire names (`$key`/`$traits`/`$?`), D1c suffixes, multi-key
 aliases, the key-scope enforcement layer, and the view/API recommendation.
-Remaining genuinely-deferred: the `$traits`-vs-`$trait` micro-call (§1) and
-fmt normalization (fmt charter). Then the identity spec-edit (~1 page) and
+Remaining genuinely-deferred: only fmt normalization (→ fmt charter) and
+the general single-stacked-value scalar-vs-list surface (attrs() API, §1). Then the identity spec-edit (~1 page) and
 the U4 impl (typed-key fix + the `Attr("id")`→`$key` event correction + view
 accessors) are executable.
