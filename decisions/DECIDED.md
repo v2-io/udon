@@ -456,3 +456,37 @@ package:
 fix defect #2, the `Attr("id")`→`$key` event correction, view accessors, the
 Document-layer duplicate check). Decision 1 — the hardest, most-contested
 surface — is closed.
+
+---
+
+## D9 — Head-position markers: content-markers (char-guard) vs the attribute-marker (phase-restricted) (2026-07-11)
+
+**Ratified (Joseph), and it resolves decision 9 (sigil guards):** the
+head-position markers split into two kinds, not one guarded set.
+
+- **Content markers** — `|` (element), `!` (directive), ` ``` ` (fence),
+  `;` (comment), `@` (reference): **interleave freely with content** (they
+  can appear after text), and are disambiguated by a **character-guard** at
+  head position — a letter / name-start after the sigil = marker; space or
+  non-name = prose. **`!` gets the `|` guard** (Joseph: "essentially the same
+  behavior as `|`"); this fixes `![img]`/`!=`/`!(` → prose while keeping
+  `!if`, `!:lang:`, `!{…}`. (Directive syntax stays — dialect-defined
+  templating still needs it; the earlier "templating is a dialect" decision
+  removed the *evaluator*, not the head-position directive syntax.)
+- **The attribute marker** — `:` — is **phase-restricted, not
+  char-guarded**: an attribute *only while the element has no children/text
+  yet* (attributes-before-children). Once content starts, `:` at head is
+  prose. **Verified live:** `:one for the ages` after a text line currently
+  mis-parses as `Attr('one')` — this is **defect #9**, and *enforcing #9 is
+  implementing the `:` rule* (one fix, not two). The name-start char-guard
+  within the attribute phase is defect #12 (already fixed).
+- **`;` guard:** ⭢ **skip** — zero corpus incidence (S3); cosmetic only.
+- **Indentation:** markers are at head position only at the content-head
+  column; a line indented *past* content-base is prose continuation
+  regardless of its first char (verified).
+
+**Why this is the deep version:** attributes are element *header* metadata
+(they precede content); everything else (elements, directives, fences,
+comments, refs) is content that interleaves. So `:` being phase-restricted
+isn't an ad-hoc guard — it's that structural truth. Decision 9 becomes:
+adopt the `!` letter-guard (done), enforce defect #9 for `:` (impl), skip `;`.

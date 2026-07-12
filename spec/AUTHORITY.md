@@ -39,6 +39,13 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 - **Dialects ≠ schema**: meaning/typing vs allowed/required. A value can
   be typed by a dialect and forbidden by a schema; the two never trade
   jobs.
+- **Content-markers vs the attribute-marker** (D9): at head position,
+  `|`/`!`/` ``` `/`;`/`@` are *content markers* — they interleave with content
+  and disambiguate by character-guard (letter/name-start = marker, else
+  prose; `!` = `|`). `:` is *phase-restricted* — an attribute only before any
+  child/text (attributes-before-children); after content it is prose. The
+  attribute-marker rule is a structural truth (metadata precedes content),
+  not a lookahead.
 - **One special-start set, recognized at *head position*, one rule**
   (D8-unify + LEX-1): *head position* is the state — spanning block-line-start
   and sameline-condensed scan — where prose-vs-block is still undetermined.
@@ -72,6 +79,7 @@ choose the default-active set. (Ratified 2026-07-11, D2-ET.)
 | ALL temporal (dates/times/durations/shorthand) | 5 dialects, **`<…>`-only** | **Ratified** D2-ET-ext: no bare form; unbracketed temporal-looking text = plain string |
 | Temporal *validation* (reject `P1W2D` etc.) | 5 dialect-owned module | Rides decision 2; not parser-core |
 | Cardinality/type restriction (e.g. single `$key`) | 4 schema | Principle ratified via D-AUTH-1 worked instance |
+| Head-position guards: content-markers (`\|`/`!`/etc.) char-guard vs `:` phase-restricted | 1 spec | **Ratified** D9; `!`=`\|` letter-guard; `:` = attrs-before-children (defect #9 enforcement); `;` skip |
 | Fence open/close/body (any-indent `\`\`\``; rest-of-open-line→body; exact capture) | 1 spec | **Ratified** D8; column sets parent (departs Markdown); info-strings + #14 subsumed |
 | Sameline fence shorthand (`\|a \|b \`\`\``) | 1 spec | **Ratified** D8-unify; fence is a member of the special-start set — recognized in sameline-condensed position like every marker; prose backticks untouched |
 | Markdown prose subset | 1 spec names it; 4/5 select | Decision 4 pending; Layer 1 of design/markdown-layers.md |

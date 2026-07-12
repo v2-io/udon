@@ -16,9 +16,10 @@ LEX-1 (head position) · ARCH-1 (bounded lookahead) · D4 (libdescent riders)
 ---
 
 ## 1 — Batchable syntax decisions (one sitting)
-- **Decision 9 — sigil guards** = the head-position predicates (D8-unify
-  ref-2). ⭢ adopt the `!` letter-guard (+3.3pts CommonMark survival), skip
-  the `;` guard (zero corpus incidence); colon data-loss already fixed.
+- **Decision 9 — sigil guards** → mostly **RATIFIED (D9)**: `!`=`\|`
+  char-guard adopted; `:` = phase-restricted (enforce defect #9, an impl
+  fix, not a new decision). Residual: `;` guard ⭢ **skip** (cosmetic, zero
+  corpus incidence) — a rubber-stamp.
 - **Decision 3 — StreamingParser fate.** ⭢ delete the façade now; build the
   explicit-stack backend when a streaming consumer is concrete (ARCH-1
   confirms the hard part already works at 1-byte chunks).
