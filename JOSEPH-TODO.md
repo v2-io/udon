@@ -31,6 +31,21 @@ your ratify.
    ~~unassigned-`$` policy~~ **RATIFIED**: no proscription — `$*` are ordinary names, sugar merely pairs with some (DECIDED.md D1b-partial); D1c suffixes reopened with premise inverted (⭢ `$?` family);
    attrs() API surface; fmt normalization (⭢ park for fmt charter).
 
+2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
+   ⭢ **Adopt Option B** (temporal as default-on std dialect over the
+   recognition/typing split); sub-calls: keep shorthand durations,
+   grandfather rational/complex/hex into the frozen core.
+   *Because:* the 29 live bare dates make opt-in silently destructive, and
+   the recognition/typing split means the surface grammar never has to move
+   again — accretion solved permanently, defect #3 becomes one module.
+
+3. **Fence semantics** — [decisions/fence-semantics-brief.md](decisions/fence-semantics-brief.md)
+   ⭢ **Adopt the brief's bundle**: any-line-closes, drop sameline fences,
+   CommonMark info strings, fence-promotion-in-prose ratified as deliberate.
+   *Because:* it's the one coherent CommonMark-shaped story; migration cost
+   is exactly zero (no live consumer uses fences) and sameline fences never
+   worked anyway — dropping spec text, not behavior.
+
 ## Review-shaped
 
 4. **libdescent branch review → merge + push** — `~/src/descent` branch
