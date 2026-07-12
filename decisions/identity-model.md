@@ -100,7 +100,10 @@ schema rule; core happily stacks and list-types any attribute" (D-AUTH-1).*
 One "ratify identity-model.md" collapses: the (C) model + total-desugaring
 invariant, wire names (`$key`/`$traits`/`$?`), D1c suffixes, multi-key
 aliases, the key-scope enforcement layer, and the view/API recommendation.
-Remaining genuinely-deferred: only fmt normalization (→ fmt charter) and
-the general single-stacked-value scalar-vs-list surface (attrs() API, §1). Then the identity spec-edit (~1 page) and
+Remaining genuinely-deferred: the general single-stacked-value scalar-vs-
+list surface (attrs() API, §1). *(There is no canonical-form question:
+UDON mandates none — sugar and longhand coexist by design; an optional
+`udon fmt`, if ever built, would offer a display preference, not a
+required form.)* Then the identity spec-edit (~1 page) and
 the U4 impl (typed-key fix + the `Attr("id")`→`$key` event correction + view
 accessors) are executable.

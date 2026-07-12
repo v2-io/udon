@@ -71,9 +71,12 @@ identity-model.md" closes all of:
   most mixin use cases.
 
 ## Not yet ripe (parked)
-- **fmt charter** (when `udon fmt` exists): the canonical-spelling policy for
-  every case with >1 equivalent spelling — sugar `[k]`/`.a.b`/`?` vs longhand
-  `:'$key'`/`:'$traits'`/`:'$?'`; attribute order; `.desc` row-leading pipes;
-  alignment. All pure presentation, zero semantic effect — which is why it
-  parks until the formatter exists.
+- **Optional formatter** (`udon fmt`, IF ever built — *not required*):
+  a convenience like gofmt. **UDON mandates no canonical form** —
+  equivalent spellings (sugar vs longhand) coexist by design. Its one
+  load-bearing justification is mitigating column-alignment *edit*-
+  fragility (review §7); if built it has style options, not a canonical
+  form. Fully deferred; nothing owes it. (`.desc`-grammar cleanup is a
+  separate, libdescent-side question — in that project's proposals
+  ledger, not here.)
 - Filename-designator ↔ pragma binding — when the schema layer lands.
