@@ -156,3 +156,37 @@ new toolchain: Joseph assesses the probability of libdescent being less
 principled/stable than the Ruby version as very low, and the instruments
 agree. Branch merge review delegated to coordinator, instruments-based,
 exceptions-only reporting.
+
+---
+
+## D2-ET — Explicit typing envelope + dialect dispatch (2026-07-11, partial)
+
+**Ratified (Joseph):**
+- **`<…>` explicit-typing envelope adopted** (spike: zero measured collisions
+  across 35k lines). Attribute-value position; `>` terminates. Labels ladder
+  `<type:…>` / `<dialect:type:…>`.
+- **D4c non-collision confirmed**: the descent `<SQ>`/`<tab>`-style aliases
+  live in `.desc` **bracket-key** position, never in an attribute *value* —
+  different syntactic slot, no conflict (as it was before, so nothing regresses).
+- **Shorthand is NOT evicted** — *reverses the spike's evict-to-explicit-only
+  rec.* Bracketing keeps shorthand first-class: `<5m>`, `<30s>`, `<+30d>`
+  remain writable, just inside the envelope.
+- **Unlabeled `<content>` dispatch semantics**: the declared dialects attempt
+  recognition **in declared order; first to claim wins; if all decline →
+  error.** (This is the unlabeled-dispatch rule; spec-forced semantics.)
+- **NEW authority**: the *set of implicitly-declared (default-active)
+  dialects* is a host / host+parser decision (authorities 2+3), **not**
+  spec-forced. Added to AUTHORITY.md.
+
+**Open (correctly a host question — Joseph leaning YES):** is **temporal**
+implicitly-declared (active without an explicit dialect declaration)? This is
+an udon-core/host call, not an udon-syntax call.
+
+**Residual the coordinator surfaces for a crisp answer:** bare (un-bracketed)
+recognition scope when a dialect is active — does bare `5m` type, or is the
+envelope required for the ambiguous-shorthand subset while *bare* recognition
+stays limited to unambiguous forms (dates/datetime)? ⭢ **bare = unambiguous
+forms only; `<…>` = full dialect range incl. risky shorthand** — preserves
+least-surprise in both directions (bare `2026-07-11` types; bare `5m`
+doesn't; `<5m>` does). Decouples "temporal is active" (host) from "which of
+its forms are bare-recognized" (spec-forced recognizer set).

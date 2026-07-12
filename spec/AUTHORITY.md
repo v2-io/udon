@@ -19,6 +19,12 @@ looks right*.
 **The pragma** (future) is the *binder* attaching a document to its schema
 and dialects — a mechanism, not a sixth authority.
 
+**Implicitly-declared dialects** — the *set of dialects active without an
+explicit declaration* (e.g. whether temporal is on by default) is owned by
+authorities **2 (parser/parser-type) + 3 (host)**, not spec-forced. The
+spec forces the envelope syntax and the dispatch *semantics*; the host/parser
+choose the default-active set. (Ratified 2026-07-11, D2-ET.)
+
 ## Structural principles
 
 - **Menu vs knob**: the spec frequently forces an option-*space* and its
@@ -46,7 +52,11 @@ and dialects — a mechanism, not a sixth authority.
 | Duplicate `(type,key)` policy menu + default=error | 1 spec (menu) + 2 parser (knob) | **Ratified** D-ATTR-3: `error\|allow-if-identical\|first-wins\|last-wins\|keep-all` + `warn` |
 | Reference dereferencing | 2 parser (flag) + 3 host (defaults) | **Ratified** D-ATTR-2; core events never deref |
 | Multi-valued `$key` (identity aliases) | 1 spec permits; 4 schema constrains | Rec pending ratify |
-| Bare-pattern value typing (temporal, …) | 5 dialects | Decision 2 pending (Option B rec) |
+| `<…>` explicit-typing envelope | 1 spec (envelope) + 5 dialects (labels) | **Ratified** D2-ET; `>`-terminated, `<type:…>`/`<dialect:type:…>` ladder |
+| Unlabeled `<…>` dispatch | 1 spec (semantics) | **Ratified** D2-ET: declared dialects in declared order, first-claim-wins, all-decline → error |
+| Set of implicitly-declared (default-active) dialects | 2 parser + 3 host | **Ratified** D2-ET (new authority row); temporal-as-implicit leaning-yes, open |
+| Bare-pattern value typing (temporal, …) | 5 dialects; **bare-recognizer set** 1 spec | Bare = unambiguous forms (dates/datetime); shorthand via `<…>` — rec pending final ratify |
+| Shorthand durations (`5m`/`+30d`) | via `<…>` envelope | **Ratified** D2-ET: kept, not evicted; bare-recognition is the open residual |
 | Temporal *validation* (reject `P1W2D` etc.) | 5 dialect-owned module | Rides decision 2; not parser-core |
 | Cardinality/type restriction (e.g. single `$key`) | 4 schema | Principle ratified via D-AUTH-1 worked instance |
 | Markdown prose subset | 1 spec names it; 4/5 select | Decision 4 pending; Layer 1 of design/markdown-layers.md |
