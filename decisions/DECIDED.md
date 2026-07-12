@@ -468,16 +468,19 @@ head-position markers split into two kinds, not one guarded set.
   `;` (comment), `@` (reference): **interleave freely with content** (they
   can appear after text), and are disambiguated by a **character-guard** at
   head position — a letter / name-start after the sigil = marker; space or
-  non-name = prose. **`!` is char-guarded like `|`** (Joseph: "essentially
-  the same behavior as `|`") **but with its own follow-set**: `!` marks when
-  followed by an **identifier-char** (`!if` block directive) **OR `:`**
-  (`!:lang:` raw code block — Joseph's nuance; a *pure* letter-guard would
-  have **broken** `!:lang:`) **OR `{`** (`!{{interp}}` / `!{…}` inline forms
-  — confirmed by probe). So `![img]`/`!=`/`!(`/`! ` → prose; `!if`/`!:sql:`/
-  `!{{x}}` → marker. (For contrast, `|`'s follow-set is letter/`[`/`.`/`{`/`'`
-  — both char-guarded, different sets.) Minor defect noted: `!{directive x}`
-  at head currently double-emits `DirectiveStart` + orphan `}` — a bug to
-  fix, not a guard question. (Directive syntax stays — dialect-defined
+  non-name = prose. **`!` structural (head-position block-directive)
+  follow-set: identifier-char OR `:`** — `!if`/`!for` (identifier), `!:lang:`
+  (colon, raw code block — Joseph's nuance; a *pure* letter-guard would have
+  **broken** `!:lang:`). `![img]`/`!=`/`!(`/`! ` → prose. **`!{…}` is NOT
+  structural** (correction — I over-added `{`; Joseph): it is an **inline
+  interpolation / inline-directive at PROSE level**, and may be the very
+  first thing in a prose line — `!{` at head → *prose* (containing the inline
+  construct), not a block directive. (Level distinction: `|{…}` embedded
+  elements ARE structural, but `!{…}`/`;{…}` are prose-level annotations —
+  the brace-form is not uniformly structural.) **Defect to fix**: the current
+  parser wraps a head-position `!{{value}}` in a block `DirectiveStart/End`
+  (treats it structural) — it should surface as prose + `Interpolation`.
+  (Directive syntax stays — dialect-defined
   templating still needs it; the earlier "templating is a dialect" decision
   removed the *evaluator*, not the head-position directive syntax.)
 - **The attribute marker** — `:` — is **phase-restricted, not
