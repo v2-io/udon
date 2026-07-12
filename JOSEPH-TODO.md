@@ -42,8 +42,8 @@ LEX-1 (head position) · ARCH-1 (bounded lookahead) · D4 (libdescent riders)
   supplement shows it valid — the two contradict today. ⭢ reserving
   unallocated *syntax* is legitimate authority-1 (not proscription); resolve
   the contradiction either way.
-- **T3 — Dynamics expression grammar**: AUTHORITY says `!`-eval is
-  host-owned, FULL-SPEC specs Liquid grammar in core. ⭢ menu/knob reframe:
+- **T3 — Dynamics expression grammar**: the core-minimalism framing puts
+  `!`-eval host-owned, FULL-SPEC specs Liquid grammar in core. ⭢ menu/knob reframe:
   core specs the syntax envelope; Liquid moves to a baseline-dialect doc.
 
 ## 3 — Mechanical

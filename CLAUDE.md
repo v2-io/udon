@@ -12,8 +12,9 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **spec/AUTHORITY.md** + **decisions/DECIDED.md** — who owns which
-   semantics, and what's been ratified; behaviors move only through these.
+3. **decisions/DECIDED.md** — the ratification log (what was decided, when,
+   why). **spec/FULL-SPEC-TODO.md** — ratified items not yet written into
+   FULL-SPEC. Neither is the spec; FULL-SPEC.md is.
 4. **spec/FULL-SPEC.md** — the authoritative language specification
    (v0.7-draft, with known divergences catalogued in the review's §2
    genealogy table).
@@ -79,8 +80,8 @@ touches one, it's blocked on the valve, not on you. Say so.
 per-feature genealogy (review §2): several implementation behaviors are the
 later deliberate decision awaiting spec backport (fence rules), and several
 spec'd features were never implemented (sameline fences, typed bracket-IDs,
-attr ordering). For any NEW divergence you find, add it to the genealogy
-table with git-dated evidence rather than picking a side silently. The
+attr ordering). For any NEW divergence you find, add it to DECIDED.md / FULL-SPEC-TODO.md with git-dated evidence rather
+than picking a side silently. The
 `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 

@@ -557,6 +557,20 @@ drifting artifact.** Fix — the spec-edit is a **reconciliation**, not a
 transcription: map every DECIDED entry to its FULL-SPEC section; use the
 spec's existing vocabulary; classify each as (a) *changes* the spec,
 (b) *restates* the spec (defer to the spec's clearer prose — delete the
-coordinator restatement), (c) coordinator-jargon to drop. **AUTHORITY.md
-slims to the ownership map**; the actual RULES live in the readable spec.
+coordinator restatement), (c) coordinator-jargon to drop. **AUTHORITY.md is renamed
+FULL-SPEC-TODO.md** (a staging queue, not normative); the RULES live in the
+readable spec. (Done 2026-07-11.)
 **Standing discipline: ground in FULL-SPEC before adjudicating grammar.**
+
+---
+
+## D-ESCAPE — Remove `'` as a head-position escape (2026-07-11)
+
+**Ratified (Joseph):** the apostrophe `'` is **removed as a block/head-position
+escape** — `\` becomes the sole escape. A line starting `'` becomes plain
+prose. This drops `'` from the head-position marker set (FULL-SPEC's Prefixes
++ Block-Level Escape §104-129 need editing). **Open sub-call:** does
+`'`-as-*string-delimiter* (`'foo'`) also go, or only the escape role? (Escape
+is a head-position role; string-quote is a value-context role — separable.)
+**Migration:** scan live consumers for `'`-escape usage
+(`bin/find-consumers`) before removal.
