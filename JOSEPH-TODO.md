@@ -19,8 +19,6 @@ The whole bundle is now consolidated + drafted in identity-model.md
 (substrate, recommended host views incl. the `all_attributes` + `key`/
 `traits`/`attributes` split, parser/schema knobs). One "ratify
 identity-model.md" closes all of:
-D1a and `$`-no-proscription are ratified; this closes the rest. One
-ratification does it all:
 - **(C) views-over-reserved-attrs model** — ⭢ ratify (the supplement's rec;
   you independently restated it as the substrate/view split).
 - **Wire names** — ⭢ `$key`/`$traits`, single family, no aliases (unifies
