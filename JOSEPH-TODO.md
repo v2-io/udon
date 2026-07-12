@@ -20,7 +20,14 @@ your ratify.
    FOUNDING model (Dec 23); fields was Jan-14 latest-thinking never tested
    against addressing; current impl is an accidental third (bare `:id`
    HIJACKS identity today; `:'$id'` inert — the inverse of spec).
-   **Five sub-calls now yours**: wire names (⭢ `$id`/`$class`);
+   **Joseph input 2026-07-11 (pre-supplement, independent)**: happy with
+   `$key`/`$traits` as the canonical sugar with NO second family reserved
+   (or vice-versa — acceptability range, not yet ratified); endorses
+   parser/API freedom to expose/qualify `$`-attrs distinctly — which is
+   model (C)'s substrate/view split stated independently.
+   **Five sub-calls yours**: wire names (⭢ updated: **`$key`/`$traits`,
+   single family, no aliases** — unifies wire/API/docs vocabulary; zero
+   migration; retires the id-connotation debate as moot);
    unassigned-`$` policy (⭢ legal-and-inert — your generator case entails
    it); D1c suffixes reopened with premise inverted (⭢ `$?` family);
    attrs() API surface; fmt normalization (⭢ park for fmt charter).
