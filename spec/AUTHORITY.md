@@ -1,0 +1,59 @@
+# UDON Decision Authority — who owns which semantics
+
+**Spec-level, normative.** Ratified 2026-07-11 (decisions/DECIDED.md
+D-AUTH-1). Every semantic behavior in the UDON ecosystem is owned by
+exactly one of five authorities; a tool, spec section, or document that
+assigns a behavior to the wrong authority is *wrong even if its output
+looks right*.
+
+## The five authorities
+
+| Authority | Owns | Character |
+|---|---|---|
+| **1. Spec (forced)** | Core syntax + semantics every conformant parser must implement identically: sugar desugarings, stacking, order preservation, syntactic typing of core scalars, the define(`|`)/refer(`@`) partition, event vocabulary | Non-negotiable; conformance-corpus enforced |
+| **2. Parser / parser-type** | Mode- and layer-dependent knobs *within spec-forced menus*: duplicate-definition policy, deref availability, buffer/limit tuning, error-recovery depth | Streaming vs Document layers legitimately differ |
+| **3. Host language** | Value projection (Date → chrono/Time/…), coercion targets, dynamics-dialect evaluation (`!` semantics), API idiom | Begins where events/tree end |
+| **4. Schema** | Constraint and proscription: cardinality (single-`$key`), type restriction (no array-valued `$key`), required/optional, element vocabularies, validation | **Proscription lives here, never in core** |
+| **5. Dialects** | What bare-value patterns *mean/type* (e.g. `temporal@1`), markdown subset selection, future value grammars | Recognition/typing, not constraint |
+
+**The pragma** (future) is the *binder* attaching a document to its schema
+and dialects — a mechanism, not a sixth authority.
+
+## Structural principles
+
+- **Menu vs knob**: the spec frequently forces an option-*space* and its
+  default while authority 2 or 3 picks within it. Both may appear on one
+  behavior at different altitudes; neither may invent options outside the
+  menu.
+- **Core preserves; schema constrains; tooling resolves; convention
+  deters.** Core semantics never destroy information (stacking not
+  overwriting; inert references not transclusion) and never proscribe
+  (no reserved-name fencing — quoting friction and convention deter
+  collisions).
+- **Dialects ≠ schema**: meaning/typing vs allowed/required. A value can
+  be typed by a dialect and forbidden by a schema; the two never trade
+  jobs.
+
+## The behavior table (living; grows with DECIDED.md)
+
+| Behavior | Owner | Status / notes |
+|---|---|---|
+| Attribute value stacking, order-preserved | 1 spec | **Ratified** D-ATTR-1; uniform, incl. `$`-names |
+| Stacking ⊥ array-literals (two multiplicity axes) | 1 spec | Ratified w/ D-AUTH-1; flattening is consumer/schema |
+| Sugar desugarings (`[k]`→`$key`-style, `.t`, suffixes) | 1 spec | Model (C) pending formal ratify; total-desugaring invariant |
+| `\|` defines / `@` refers partition | 1 spec | **Ratified** D1a |
+| `$`-names: ordinary, no proscription | 1 spec | **Ratified** D1b-partial |
+| Duplicate `(type,key)` policy menu + default=error | 1 spec (menu) + 2 parser (knob) | **Ratified** D-ATTR-3: `error\|allow-if-identical\|first-wins\|last-wins\|keep-all` + `warn` |
+| Reference dereferencing | 2 parser (flag) + 3 host (defaults) | **Ratified** D-ATTR-2; core events never deref |
+| Multi-valued `$key` (identity aliases) | 1 spec permits; 4 schema constrains | Rec pending ratify |
+| Bare-pattern value typing (temporal, …) | 5 dialects | Decision 2 pending (Option B rec) |
+| Temporal *validation* (reject `P1W2D` etc.) | 5 dialect-owned module | Rides decision 2; not parser-core |
+| Cardinality/type restriction (e.g. single `$key`) | 4 schema | Principle ratified via D-AUTH-1 worked instance |
+| Markdown prose subset | 1 spec names it; 4/5 select | Decision 4 pending; Layer 1 of design/markdown-layers.md |
+| Doc-schema vocabulary (`\|h1`…) | 4 schema | Layer 2; D4b pending |
+| Rendering/conversion policy | 3 host / tooling | Layers 3–4 |
+| Dynamics (`!`) evaluation | 3 host | Ratified long-standing (templating decision) |
+| Mixins | — | **Under rethink/possible removal** (JOSEPH-TODO 10) |
+
+Maintenance rule: when DECIDED.md gains an entry, this table gains or
+updates a row in the same commit.
