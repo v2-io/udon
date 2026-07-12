@@ -530,3 +530,33 @@ Content markers interleave freely at head position — worked & verified:
   ```
   → `p`: [Text "good", Directive if(body Text "enough"), Directive else(Text
   "um, ok"), Text "enough for now..."].
+
+---
+
+## META-1 — Coordinator adjudicated ahead of the grammar; reconcile at spec-edit (2026-07-11)
+
+**Joseph flagged (correct): these decisions were adjudicated without FULL-SPEC
+in front of the coordinator, and AUTHORITY's prose drifted denser than
+FULL-SPEC's.** Grounded and verified this session:
+- FULL-SPEC:87 already states *"four prefixes at line start (after
+  indentation)… anything else is prose"* — the "special-start set / head
+  position" (D8-unify / LEX-1) is a re-naming of existing spec vocabulary
+  (block / sameline positional contexts, §32). Reconcile to the spec's terms;
+  "head position" may still earn a place, but as a *name for* the existing
+  model, not a replacement.
+- FULL-SPEC:1158–1164 already specifies D8's fence rules (indentation →
+  parent; need-not-be-line-start; content-after-``` = body; **sameline fence
+  shown valid at :1164**). D8 re-derived the spec. The fence *brief's* "drop
+  sameline fences" **contradicted FULL-SPEC:1164** and went uncaught (spec
+  wasn't open); D8-unify correctly re-aligns with the spec.
+- FULL-SPEC:1104–1152 already has `!:lang:` (structural) vs `!{…}` (inline /
+  prose-level); the coordinator's `!{` over-reach contradicted it.
+
+**This is the review's §2 genealogy failure with the COORDINATOR as the
+drifting artifact.** Fix — the spec-edit is a **reconciliation**, not a
+transcription: map every DECIDED entry to its FULL-SPEC section; use the
+spec's existing vocabulary; classify each as (a) *changes* the spec,
+(b) *restates* the spec (defer to the spec's clearer prose — delete the
+coordinator restatement), (c) coordinator-jargon to drop. **AUTHORITY.md
+slims to the ownership map**; the actual RULES live in the readable spec.
+**Standing discipline: ground in FULL-SPEC before adjudicating grammar.**
