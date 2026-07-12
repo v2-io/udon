@@ -32,12 +32,19 @@ your ratify.
    attrs() API surface; fmt normalization (⭢ park for fmt charter).
 
 2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
-   ⭢ **Adopt Option B** (temporal as default-on std dialect over the
-   recognition/typing split); sub-calls: keep shorthand durations,
-   grandfather rational/complex/hex into the frozen core.
-   *Because:* the 29 live bare dates make opt-in silently destructive, and
-   the recognition/typing split means the surface grammar never has to move
-   again — accretion solved permanently, defect #3 becomes one module.
+   **+ explicit-typing spike done** → [decisions/explicit-typing-brief.md](decisions/explicit-typing-brief.md)
+   (your gating question). Result: adopt `<…>` explicit-typing envelope
+   (`<u64:0xf902>`, `<time:interval:…>`) — **measured zero collisions** across
+   35k lines; label vocab = dialects, envelope = spec-forced, unknown-label
+   pass-through. This **reshapes decision 2**: implicit recognizer freezes to
+   {Date, YearMonth, ISO DateTime, ISO Duration}, ambiguous shorthand
+   (`5m`/`30s`/`+30d`) evicts to explicit-only `<…>` — *retires the brief's
+   weakest open sub-call*; 29 live dates need zero migration.
+   ⭢ **Adopt Option B + the `<…>` envelope + shorthand-eviction** as one
+   bundle. Two forks left: (i) one-colon label = type-or-dialect (⭢ dialect
+   always first segment); (ii) unify descent `<SQ>` aliases under `<…>` now
+   vs later (⭢ parallel for now). *Pairs with a `!{:kind:}`-in-value repair —
+   a live site is broken today (ash-like-billing.udon:80).*
 
 3. **Fence semantics** — [decisions/fence-semantics-brief.md](decisions/fence-semantics-brief.md)
    ⭢ **Adopt the brief's bundle**: any-line-closes, drop sameline fences,
