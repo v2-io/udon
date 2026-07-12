@@ -35,8 +35,6 @@ META-1 (+ AUTHORITY→FULL-SPEC-TODO rename).
 - **Decision 7 — BlankLine/Warning events** ⭢ spec them.
 - **Multi-attr block lines** ⭢ legalize (drop the warning; the cheatsheet
   teaches it).
-- **Fence closer micro-edge** ⭢ closer's leading whitespace is terminator,
-  body ends at the newline before it.
 - **T3 — dynamics grammar** ⭢ menu/knob: envelope syntax in core, Liquid
   expression grammar → a baseline-dialect companion doc.
 

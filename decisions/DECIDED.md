@@ -280,9 +280,16 @@ typed (exact-capture).
 **Authority:** fence syntax + open/close/body-capture = **spec-forced**
 (authority 1).
 
-**Open micro-edge for confirmation:** the closing fence line is the
-*terminator* — its own leading whitespace is consumed (not body); the body
-ends at the newline preceding the closer. ⭢ confirm this boundary reading.
+**Closer whitespace asymmetry (RATIFIED — Joseph; corrects an earlier wrong
+coordinator note that said the opposite):** body capture runs verbatim up to
+the closer's ` ``` `. Therefore:
+- **LEFT of the closer** (its leading indent) **IS part of the fenced body
+  output** — *not* auto-trimmed. Side-effect to **warn** about: indenting the
+  closing fence for readability injects that whitespace into the output.
+- **RIGHT of the closer** (whitespace after ` ``` `, before the newline) **is
+  silently trimmed.**
+(Consistent with exact-capture / no-dedent, FULL-SPEC:966. The asymmetry is
+not in FULL-SPEC — an addition to write in, with the author warning.)
 
 ---
 
