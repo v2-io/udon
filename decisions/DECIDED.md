@@ -370,3 +370,33 @@ them commits the line to prose (free-text mode) and ends head position.
   prominently in the "Positional Contexts (Vocabulary)" table alongside
   block / sameline / inline / embedded — arguably *before* them, since it is
   the state in which the others are chosen.
+
+---
+
+## ARCH-1 — Bounded lookahead is a grammar invariant; pending-lookahead is suspendable state (2026-07-11)
+
+**Observation (Joseph), recorded as a durable design invariant.**
+
+- **UDON is deliberately bounded-lookahead.** Disambiguating head position
+  (and every marker predicate) rarely needs more than ~2–3 characters, and
+  never multi-level backtracking. This is *why* the state-machine / descent
+  approach is the right tool — and why PEG (packrat, unbounded
+  backtracking/memoization) is unnecessary. **Constraint on all future
+  syntax:** new constructs must stay within bounded lookahead, single-level.
+  A syntax that needed deep backtracking would force abandoning descent.
+  - **Health check — every decision this session passes:** special-start
+    predicates (`|`+1, triple-backtick=3, `@[`=2, `!{`/`!:`=2), the `<…>`
+    typing envelope (`<`=1, scan to `>`), define/refer — all ≤3 chars,
+    single-level. We have not designed ourselves out of the architecture.
+
+- **Streaming consequence.** When a chunk boundary lands *mid-disambiguation*
+  — a head-position marker seen, its disambiguating follower not yet arrived
+  — those bytes are held in **suspendable parser state**, not emitted:
+  ElementStart-vs-Text cannot be emitted until disambiguated. This is exactly
+  the suspendable-state class the **S5 explicit-stack prototype already
+  validated** (the escape-across-boundary `pending_skip` and
+  `TERM(-1)`-into-carry-buffer cases); head-position lookahead generalizes it.
+  **Requirement on decision 3 (StreamingParser / explicit-stack backend):**
+  the reified state must include the pending-lookahead buffer. (S5 already
+  demonstrated this works at 1-byte chunks — so the requirement is met, not
+  merely stated.)
