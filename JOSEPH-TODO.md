@@ -11,30 +11,19 @@ your ratify.
 1. **Identity syntax** — [decisions/identity-syntax-brief.md](decisions/identity-syntax-brief.md)
    **D1a RATIFIED 2026-07-11** (`@` = inert typed pointer; ambiguity-erroring
    shorthand) → see decisions/DECIDED.md.
-   **1b/1c RETURNED FOR STUDY 2026-07-11** — Joseph: the fields-model rec
-   wasn't thoroughly studied; the sugar model's deliberate-collision
-   affordance (a naive db→udon generator emitting `:'$id' 3890` ≡
-   hand-written `|asdf[3890]`) was never weighed, nor was a
-   views-over-reserved-attrs hybrid. Supplement in progress →
-   decisions/identity-data-model-supplement.md (3 models × 8 invariants,
-   incl. the D1a entailments and the mixin/paths/fmt interactions).
-   Still riding: the key-scope enforcement-layer confirm (now partly
-   entailed by D1a's |-always-defines refinement).
-
-2. **Value-dialects / temporal** — [decisions/value-dialects-brief.md](decisions/value-dialects-brief.md)
-   ⭢ **Adopt Option B** (temporal as default-on std dialect over the
-   recognition/typing split); sub-calls: keep shorthand durations,
-   grandfather rational/complex/hex into the frozen core.
-   *Because:* the 29 live bare dates make opt-in silently destructive, and
-   the recognition/typing split means the surface grammar never has to move
-   again — accretion solved permanently, defect #3 becomes one module.
-
-3. **Fence semantics** — [decisions/fence-semantics-brief.md](decisions/fence-semantics-brief.md)
-   ⭢ **Adopt the brief's bundle**: any-line-closes, drop sameline fences,
-   CommonMark info strings, fence-promotion-in-prose ratified as deliberate.
-   *Because:* it's the one coherent CommonMark-shaped story; migration cost
-   is exactly zero (no live consumer uses fences) and sameline fences never
-   worked anyway — dropping spec text, not behavior.
+   **1b/1c restudied** → [decisions/identity-data-model-supplement.md](decisions/identity-data-model-supplement.md).
+   Result: fields model **(B) dominated — drop** (longhand-keyed elements
+   become unaddressable by paths/@; duplicate pks uncaught, silently);
+   ⭢ **(C) views-over-reserved-attrs, weakly over (A)** — same substrate,
+   but stating the total-desugaring invariant is what prevents the
+   fields-mistaken-for-model error recurring. Genealogy: sugar is the
+   FOUNDING model (Dec 23); fields was Jan-14 latest-thinking never tested
+   against addressing; current impl is an accidental third (bare `:id`
+   HIJACKS identity today; `:'$id'` inert — the inverse of spec).
+   **Five sub-calls now yours**: wire names (⭢ `$id`/`$class`);
+   unassigned-`$` policy (⭢ legal-and-inert — your generator case entails
+   it); D1c suffixes reopened with premise inverted (⭢ `$?` family);
+   attrs() API surface; fmt normalization (⭢ park for fmt charter).
 
 ## Review-shaped
 
