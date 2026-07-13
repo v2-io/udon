@@ -18,11 +18,14 @@ META-1 (+ AUTHORITY→FULL-SPEC-TODO rename) · **D-TRAIT-SUFFIX (T1: allow `.tr
 ---
 
 ## Genuine judgment calls (no confident rubber-stamp — your read)
-1. **`'` string-delimiter** — `'` is removed as an *escape* (D-ESCAPE ✓); does
-   `'`-as-*string-delimiter* (`'foo'`) *also* go, or stay? Genuinely open.
-2. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
+1. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
    inheritance was never spec'd; ash-like examples lean on them; stacking +
    schema-defaults may subsume most uses.
+
+*(Resolved 2026-07-13: `'` as a string / identifier delimiter — **kept, no
+change**. Only the head-position **escape** role was ever removed (D-ESCAPE);
+the delimiter-removal was an agent-surfaced corollary nobody asked for. `'` and
+`"` remain interchangeable string/name/key delimiters.)*
 
 ## Rubber-stamps (clear rec — one "go", or flag exceptions)
 - **Decision 9 `;` guard** ⭢ skip (zero corpus incidence).

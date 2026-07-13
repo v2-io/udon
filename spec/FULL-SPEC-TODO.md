@@ -25,8 +25,6 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
       *second* dereference form living alongside `@`, never actually
       adjudicated. If kept, it needs the same inert / deref-is-a-knob treatment
       as `@`. *(This was the one call you expected to make.)*
-- [ ] **`'` as a string delimiter** — removing `'` as an *escape* is decided;
-      does `'foo'`-as-a-string (:143, :1502) also go, or stay?
 - [ ] **Mixins** (:1414–1448, "Class as Mixin") — rethink or drop. Blocks the
       class→trait rename of that section; subtree inheritance was never defined.
 
