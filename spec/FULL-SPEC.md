@@ -161,59 +161,99 @@ one of: a letter, `[`, `.`, `{`, or `'`. Otherwise `|` is treated as prose
 ### Identity and Classification
 
 ```
-|element[id].class1.class2
+|element[key].trait1.trait2
 ```
 
-- `[id]` -- Singular identity; referenceable, unique within scope
-- `.class` -- Classification/traits; multiple allowed, stackable
+- `[key]` -- **Identity**: what makes this element *this* element. Unique
+  within its element type, referenceable via `@`.
+- `.trait` -- **Classification**: what *kinds* of thing it is. Plural,
+  stackable, order-preserved.
 
-The `[id]` syntax is shorthand for an attribute:
+**These are sugar.** An element is nothing but a **name + ordered attributes +
+children**; there are no separate identity, trait, or suffix fields in the
+model. `[key]`, `.trait`, and the suffixes below all *desugar* into ordinary
+attributes whose names are specially designated:
 
-```
-|element[my-id]     ->  |element :'$id' my-id
-|step[1]            ->  |step :'$id' 1
-|item[abc-123]      ->  |item :'$id' abc-123
-```
+| You write | Desugars to |
+|-----------|-------------|
+| `\|el[k]` | `\|el :'$key' k` |
+| `\|el.a.b` | `\|el :'$traits' a :'$traits' b` |
+| `\|el?` | `\|el :'$?' true` |
 
-The value inside brackets follows attribute value rules--all the same types are
-available (integers, strings, etc.).
+The value inside `[...]` follows the normal attribute-value rules -- every type
+is available: `[1]` is the integer `1`, `["01"]` the string `"01"`,
+`[abc-123]` the string `abc-123`.
 
-These are fundamental patterns:
-- **Identity**: What makes this thing THIS thing (singular)
-- **Classification**: What kinds of thing this is (plural, aspects)
+**Specially-designated, not reserved.** `$key`, `$traits`, and the suffix names
+are ordinary attribute names that the sugar happens to target -- nothing is
+fenced off. *Any* `$`-name is a legal attribute; because `$` is not a bare-name
+character, writing one longhand takes quotes (`:'$key' ...`), and that friction
+-- convention, not proscription -- is what keeps sugar and hand-written
+attributes from colliding (the Ruby-symbol / Erlang-atom pattern). So a
+generator that only knows how to emit attributes can write `:'$key' 3890` and
+have it *be* an identity, indistinguishable from the hand-authored `|el[3890]`.
+
+**Traits stack.** Each `.trait` appends to `$traits`, order preserved -- two
+traits are two `$traits` attributes, not one list value (same-name attribute
+values stack; order is kept). Classification doubles as lightweight typing even
+when no behavior is attached to it.
 
 ### Element Suffixes
 
-Elements can have suffix modifiers (`?`, `!`, `*`, `+`) that expand to attributes:
+Elements may carry suffix flags (`?`, `!`, `*`, `+`) that desugar to
+specially-designated boolean attributes:
 
 ```
-|field[name]?      ->  |field[name] :'?' true
-|field[name]!      ->  |field[name] :'!' true
-|field[name]*      ->  |field[name] :'*' true
-|field[name]+      ->  |field[name] :'+' true
+|field[name]?      ->  |field[name] :'$?' true
+|field[name]!      ->  |field[name] :'$!' true
+|field[name]*      ->  |field[name] :'$*' true
+|field[name]+      ->  |field[name] :'$+' true
 ```
 
-UDON performs the expansion; the meaning is DSL-defined:
-- Schema DSL might interpret `?` as optional, `!` as required
-- Grammar DSL might interpret `?` as 0-or-1, `*` as 0+, `+` as 1+
+UDON performs only the expansion; the *meaning* is defined by the consuming
+schema or dialect:
+- a schema might read `?` as optional, `!` as required
+- a grammar might read `?` as 0-or-1, `*` as 0-or-more, `+` as 1-or-more
 
-**Allowed positions** (suffix attaches to element identity):
-
-```
-|name?                   ; After element name
-|name?[id]               ; After name, before id
-|name?[id].class         ; After name, before id and classes
-|name[id]?               ; After id
-|name[id]? .class        ; After id, space before classes
-|name[id].class ?        ; Space-separated at end
-```
-
-**Reserved** (suffix on class -- for future use):
+**Suffix positions** (a suffix binds to the element identity):
 
 ```
-|name[id].class?         ; NOT allowed -- reserved for class-level modifiers
-|name[id].class!         ; NOT allowed
+|name?                   ; after the name
+|name?[key]              ; after name, before key
+|name?[key].trait        ; after name, before key and traits
+|name[key]?              ; after key
+|name[key]? .trait       ; after key, space before traits
+|name[key].trait ?       ; space-separated at the end
 ```
+
+**Suffix characters inside a trait are part of the trait.** `* ! ? +` are legal
+in a bare trait value, so `.foo?` is simply the trait `"foo?"` -- no quoting
+needed. This is why an element-level suffix *after* a trait uses the
+space-separated form or precedes the trait: a suffix character touching a
+`.trait` is consumed by the trait.
+
+```
+|el.bar?         ; traits: ["bar?"]
+|el.bar ?        ; traits: ["bar"], $? = true
+|el?.bar         ; $? = true, traits: ["bar"]
+```
+
+### Host Views (Recommended)
+
+The wire form carries the specially-designated attributes as-is. Like Markdown,
+YAML, or Liquid parsers, each host picks its own surface idiom -- but the spec
+**recommends** a default shape so switching hosts feels familiar. Both views
+derive from the same substrate:
+
+- **`all_attributes`** -- every attribute in document order, *including* the
+  `$`-designated ones. The round-trip / "exactly what's there" view.
+- **`key` / `traits` / `attributes`** -- the ergonomic split: `key` is the
+  value(s) of `$key`; `traits` is the values of `$traits`, **always a list**
+  (`[]`, `["a"]`, `["a", "b"]` -- even for a single trait); `attributes` is
+  every *non*-designated attribute. Suffix flags surface off `$?` and friends.
+
+`traits`-always-a-list is the one normalization a host applies beyond the plain
+desugaring; everything else is a straight read of the attribute stream.
 
 ---
 
