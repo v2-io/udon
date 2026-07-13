@@ -105,10 +105,16 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 
 ## Escapes  `[change]`
 
-- [ ] Remove `'` as a head-position escape → `\` only. Rewrite :96–129,
-      :500–508, :426–428; drop `'` from the `|` follow-set (:158). Scan live
-      `'`-escape usage before flipping. *(String-delimiter role is a separate
-      open call — see top.)*
+- [ ] Remove `'` as a head-position **escape** → `\` becomes the sole escape
+      (block + sameline/embedded; `\` already works at block level today, just
+      marked "discouraged alternate" at :126–129 — invert that). Rewrite the
+      "One escape prefix" table (:96–100), Block-Level Escape (:104–129), and
+      the semicolon-escape examples (:426–428, :500–508). A line starting `'`
+      then a marker becomes plain prose. Scan live `'`-escape usage first.
+      **Does NOT touch** `'` in the `|` follow-set (:158) or `'...'` strings /
+      names / keys (:143) — those are the string-delimiter role (kept). *(Earlier
+      draft wrongly bundled the follow-set drop into this item; that would have
+      broken quoted element names `|'name'`.)*
 
 ## Core-minimalism framing  `[change — short new section]`
 
