@@ -14,7 +14,7 @@ a submodule.
    The *what, in what order*.
 3. **spec/FULL-SPEC-TODO.md** — the plain worklist of edits not yet applied to
    FULL-SPEC (rebuilt 2026-07-12). The dense predecessor ledgers are archived
-   at **decisions/DECIDED.bak.md** + **spec/FULL-SPEC-TODO.bak.md** (reference
+   at **_archive/DECIDED.bak.md** + **_archive/FULL-SPEC-TODO.bak.md** (reference
    only — e.g. the core/host/schema/dialect ownership discussion). Neither the
    worklist nor the archives is the spec; FULL-SPEC.md is.
 4. **spec/FULL-SPEC.md** — the authoritative language specification

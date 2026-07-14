@@ -2,7 +2,7 @@
 
 The predecessor session's working briefs, supplements, and audit that fed the
 decisions now integrated into **`spec/FULL-SPEC.md`** (authoritative) and
-recorded in **`../DECIDED.bak.md`** (the frozen history ledger). Kept for
+recorded in **`../../_archive/DECIDED.bak.md`** (the frozen history ledger). Kept for
 provenance only — **not authoritative, not current.**
 
 - `identity-syntax-brief.md`, `identity-data-model-supplement.md`,

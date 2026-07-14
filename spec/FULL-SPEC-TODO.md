@@ -12,4 +12,4 @@ carry their own status banners.
 ## Open
 
 *(nothing — FULL-SPEC is current with all ratified decisions as of 2026-07-14.
-History lives in git; decisions in `decisions/DECIDED.bak.md`.)*
+History lives in git; decisions in `_archive/DECIDED.bak.md`.)*

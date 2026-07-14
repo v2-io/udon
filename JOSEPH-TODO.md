@@ -1,7 +1,7 @@
 # JOSEPH-TODO — the valve
 
 Only what still needs Joseph. Prune on decision. History → git +
-`decisions/DECIDED.bak.md`. Last pruned: 2026-07-14.
+`_archive/DECIDED.bak.md`. Last pruned: 2026-07-14.
 
 ## Needs you
 
