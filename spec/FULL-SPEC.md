@@ -246,7 +246,7 @@ the character is prose. `|`'s guard is above. The rest:
 
 Every guard is a few characters of bounded lookahead (see Bounded Lookahead).
 
-### Identity and Classification
+### Identity (Keys) and Classification (Traits)
 
 ```
 |element[key].trait1.trait2
