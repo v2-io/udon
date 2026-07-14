@@ -109,7 +109,7 @@ safe from being read as structure.
   :author Alice                    ; block attribute
   :date 2024-12-31                 ; block attribute
 
-|section :id intro :class lead     ; sameline attributes
+|section :name intro :role lead    ; sameline attributes
   This is block prose that can span
   multiple lines with consistent indentation.
 
@@ -467,7 +467,7 @@ Terminators: `\n` or ` ;` (space followed by semicolon)
 
 ```udon
 |el :key1 value1 :key2 value2 ; comment
-|el :url https://x.com :class foo
+|el :url https://x.com :role foo
 ```
 
 Terminators: `\n` or `SPACE`
@@ -480,7 +480,7 @@ Terminators: `\n` or `SPACE`
 #### Embedded Attribute Values
 
 ```udon
-|p Click |{a :href /home :class link here} now.
+|p Click |{a :href /home :title Home here} now.
 ```
 
 Terminators: `\n`, `SPACE`, or `}`
@@ -1210,7 +1210,7 @@ For inline elements within prose, use the embedded form `|{...}`:
 
 The embedded element:
 - Starts with `|{`
-- Contains element name, optional id/classes, optional attributes, and content
+- Contains element name, optional key/traits, optional attributes, and content
 - Content terminates at `}` (brace-balanced)
 - Becomes a child of the containing element (sibling to surrounding text)
 
@@ -1520,7 +1520,7 @@ the value:
 ```
 :when  <2026-07-11>            ; a date -- temporal dialect, not bare
 :dur   <5m>                    ; a duration; shorthand stays writable in-envelope
-:id    <u64:0xf902>            ; type-labelled
+:size  <u64:0xf902>            ; type-labelled
 :span  <temporal:interval:...> ; dialect + type
 ```
 
@@ -1625,7 +1625,7 @@ These are distinct:
 ### Attributes Before Children
 
 ```
-|element[id].class :attr1 value1 :attr2 value2
+|element[key].trait :attr1 value1 :attr2 value2
   children here
 ```
 
