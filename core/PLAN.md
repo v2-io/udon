@@ -112,6 +112,15 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
 - [ ] **Regenerate** parser + update fixtures/tests (SPEC-based expectations,
       never traced from parser output).
 
+**Known benign warning (2026-07-14):** `cargo build` emits two `unreachable
+pattern` warnings at `parser.rs:4070` — the ISO-duration arm peels off
+`b'p'|b'P'` first, then a catch-all letter alternation redundantly re-lists
+them. Correctness is unaffected (`P…` routes to duration correctly). It lives in
+the **bare-temporal** duration path (`values.desc`, `IsoDurStart`), which is
+slated for removal when bare temporal → string / moves to a `<…>` dialect — so
+gutting that path clears the warning for free; don't hand-touch the held grammar
+just for this.
+
 ### Test-first worklist (from the 2026-07-14 test-suite audit)
 
 **Fixtures to UPDATE when the parser flips** (they encode the old model — rewrite
