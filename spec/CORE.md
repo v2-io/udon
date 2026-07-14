@@ -160,7 +160,7 @@ Four special characters at line start (after indentation):
 
 | Prefix | Purpose |
 |--------|---------|
-| `\` | Literal -- prevents interpretation of a marker |
+| `\` | At head position, forces the rest of the line to prose (see Escape) |
 
 Anything else is **prose content** belonging to the parent element.
 
@@ -168,48 +168,88 @@ The four prefixes above are the structural-content markers; two further markers
 are also recognized at head position: `@` (a reference to a defined element) and
 triple-backtick (a freeform block). See Head Position.
 
-### Block-Level Escape (`\`)
+### Escape (`\`) -- Forcing Prose
 
-At block level (line start after indentation), a backslash followed by a
-block-marker character (`|`, `;`, `:`, `!`, or `\`) triggers an escape: the
-backslash is consumed and the following character is output literally (not
-parsed as a marker).
+A backslash at **head position** -- the start of a line's intended column (after
+indentation), or in the sameline scan through elements and attributes before
+prose begins (see Head Position) -- is **consumed** and forces the rest of the
+physical line to prose, read verbatim as full text. Whatever the first character
+*would* have been (`|`, `:`, `!`, `;`, `@`, a triple-backtick fence, or nothing
+special), a head-position `\` makes the line prose. There is no set of
+"escapable" characters to memorize; the escape is defined by *position*.
 
-**Simple rule:** `\` + one of `|;:!\` -> escape, always. No further lookahead.
+````
+\|element            ->  |element            ; would-be element -> prose
+\:not-an-attr        ->  :not-an-attr        ; would-be attribute -> prose
+\@name see this      ->  @name see this      ; would-be reference -> prose
+\```not a fence      ->  ```not a fence      ; would-be fence -> prose
+\![img](pic.jpg)     ->  ![img](pic.jpg)     ; never special -- harmless
+\\path\to            ->  \path\to            ; literal leading backslash (below)
+````
 
-```
-\|element    ->  "|element"     ; escaped pipe, output as prose
-\;comment    ->  ";comment"     ; escaped semicolon
-\:attr       ->  ":attr"        ; escaped colon
-\!directive  ->  "!directive"   ; escaped bang
-\\more       ->  "\more"        ; escaped backslash
-
-\hello       ->  "\hello"       ; NOT an escape (h is not a marker)
-```
-
-If `\` is followed by a non-marker character it is **not** an escape -- the
-backslash is preserved as normal prose content.
-
-Backslash is the escape in **every** context (block, sameline, embedded) --
-which is why it is the one escape prefix. `'` is **not** an escape: a line
-beginning `'|`... is plain prose that starts with an apostrophe. (`'` remains a
-string / name / key delimiter -- see Value Types.)
-
-### Sameline/Embedded Escape (`\`)
-
-Backslash escapes a literal semicolon in **sameline** or **embedded** contexts
-(where `;` would otherwise start a comment):
+**Sameline, too.** Head position runs through elements and attributes, so a `\`
+reached before any prose has begun forces the remainder to prose on the current
+element:
 
 ```
-|el :key value\;more text ; this part is a comment
-|{em text\;more}
+|element |another :val [234 19] \ how wonderful ; it is
 ```
 
-Block prose does not need escapes for `;` (semicolons are literal there).
+`another` gets `:val [234 19]`, then child prose ` how wonderful ; it is` -- the
+leading space is kept (the `\` consumes only itself) and the `;` is literal, not
+a comment.
 
-**Note:** Inside quoted strings (`"..."` or `'...'`), escape prefixes have no
-special meaning--quoted strings handle their own escaping per their delimiter
-rules.
+**Everywhere else, `\` is passed through untouched.** A `\` that is *not* at head
+position -- once prose has begun, mid-value, or trailing -- is an ordinary
+character; UDON emits it literally and leaves any escape-sequence meaning (`\n`,
+`\t`, a trailing `\` as a line-join, ...) to the host/app layer:
+
+```
+|p Windows path C:\Users\me    ->  prose "Windows path C:\Users\me"  ; \U \m untouched
+|p wrap this line \            ->  prose "wrap this line \"          ; trailing \ to host
+|a hello \world                ->  "hello" begins prose, "\world"    ; literal
+```
+
+A **literal leading backslash doubles**: the first `\` forces prose and is
+consumed, the second is already prose and passes through -- `\\` -> `\`
+universally (even `\\hello` -> `\hello`).
+
+**The consumed `\` takes up no column.** Being the line's first non-space
+character, a head-position `\` also sets the prose block's content-base: the text
+after it backs up one column into the `\`'s position, and that column becomes the
+current indent level (see Automatic Prose Dedentation). This gives a clean way to
+indent a whole prose block with its interior spacing intact -- and only the
+**first** line needs the `\`; it anchors the base, and the rest follows the
+ordinary dedentation rules:
+
+```
+|the-element |another
+   \     Here all of this is output with the lines indented,
+         even though this more-indented line needs no marker -- cleaner --
+      here too, with a smaller indent (still past the base column);
+  this line dedents past the base: a Warning fires and the base resets to it.
+```
+
+**Warning -- a leading `\` that is not actually at head position.** If a `\`
+begins a line's content but sits *deeper* than an already-established prose
+content-base, the whitespace before it is already prose, so the `\` is **not** at
+head position: it is passed through literally, and a Warning fires (it looks like
+a force-prose escape but is not one).
+
+```
+|element
+  \  start some prose      ->  "  start some prose"    ; \ at head pos -> forces prose
+    \some more prose        ->  "  \some more prose"    ; \ past the base -> literal + Warning
+```
+
+(The precise column bookkeeping -- the consumed `\` taking up no column for
+indent-level and subsequent head-position purposes -- is a grammar-level detail
+to settle when the parser catches up.)
+
+`'` is **not** an escape -- a line beginning `'|`... is prose starting with an
+apostrophe (`'` remains a string / name / key delimiter, see Value Types). Inside
+quoted strings (`"..."` / `'...'`), `\` follows the string's own escaping, not
+this rule.
 
 ---
 
@@ -641,7 +681,7 @@ comment content until dedent.
 ```
 ; This would be a comment
   this is still part of the comment
-\; But this line is output as text (escaped semicolon).
+\; But this line is output as text (leading \ forces prose).
 ```
 
 ### Why Block Prose Differs
@@ -716,7 +756,8 @@ If a consumer strips comments, the output text would be:
 
 #### Escaping Semicolons
 
-To output a literal `;` at line start, use the escape prefix:
+To output a literal `;` at line start, lead the line with `\` -- at head
+position it forces the line to prose (see Escape):
 
 ```udon
 \; This line starts with a semicolon in the output
@@ -726,29 +767,25 @@ Output: `; This line starts with a semicolon in the output`
 
 ---
 
-## Semicolon Escapes (Sameline / Embedded)
+## Literal Semicolons
 
-Different contexts use different escape mechanisms for literal `;`:
+A `;` starts a comment only in specific positions (see Comments); everywhere
+else it is already literal, so most literal semicolons need no escape at all:
 
-| Context | Escape Method | Example |
-|---------|---------------|---------|
-| Block prose | N/A (`;` is literal) | `code; more code` |
-| Block attr value | Quote the value | `:sql 'SELECT *; DROP'` |
-| Sameline attr/prose | Backslash | `|el :k val\;ue ; comment` |
-| Embedded | Backslash | `|{em text\;more}` |
+| Context | Literal `;` |
+|---------|-------------|
+| Block prose | Already literal (`code; more code`) |
+| Block attr value | Already literal, or quote (`:sql 'SELECT; DROP'`) |
+| Sameline attr/prose | Literal when not preceded by a space; a ` ;` starts a comment, so quote (`:k "a; b"`) or force the whole tail to prose with a head-position `\` (see Escape) |
+| Embedded `\|{...}` | Bare `;` is literal -- only `;{` opens an inline comment |
 
-Rationale:
-- Block prose preserves literal content (code, etc.) - no escape needed
-- Block attr values support quoting naturally (same as spaces)
-- Sameline/embedded use backslash (consistent with other escapes)
-
-Backslash escapes are supported but discouraged for general authoring; prefer
-block prose or quoted values when possible.
-
-Examples:
+There is no separate `\;` escape: a `\` that is not at head position is passed
+through literally (see Escape). A literal `;` comes from position (no preceding
+space, block prose, or embedded) or from quoting; a whole prose tail that must
+carry would-be markers is forced to prose with a head-position `\`.
 
 ```
-|el :key and-this\;-is-ok this is prose ; and this is a comment
+|el :key and-this;-is-ok this is prose ; and this is a comment
   this is also prose ; but this is not a comment
 
 !:c:
@@ -1304,14 +1341,14 @@ All prefix characters support a bracket-delimited inline form:
 | `!{{expr}}` | Interpolation (double-brace) |
 | `!{directive ...}` | Inline directive |
 | `;{comment}` | Inline comment |
-| `\|{...}` | Escaped (literal text) |
 
 The character immediately after the prefix determines the parse mode with no
 lookahead.
 
-**Note:** Backslash (`\`) is the escape in every context -- block, sameline,
-and embedded -- for literal semicolons and `\|{...}` / `\!{...}` literals.
-(`'` is not an escape; it is a string / name / key delimiter.)
+**Note:** `\` at head position forces the whole line to prose (see Escape); a
+`\` anywhere else -- including mid-prose -- is passed through literally, so the
+inline forms above have no `\`-escape. (`'` is not an escape; it is a string /
+name / key delimiter.)
 
 ---
 
@@ -1796,7 +1833,8 @@ The examples in this document should be converted to unit tests. Key scenarios:
    - Block comment at column 0 closes nested elements
    - Block comment within element stays within element
    - Inline comments `;{...}` stripped from output
-   - Escaped semicolon `\;` outputs literal semicolon
+   - Head-position `\` forces prose (a leading `\;` outputs a literal `;`)
+   - A `\` past an established prose base is literal and warns (not head position)
 
 ---
 

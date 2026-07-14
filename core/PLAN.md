@@ -87,8 +87,29 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
 - [ ] **Accessors** (tree / udon-utl): `attr` (scalar/last) + `attr_all` (list);
       `traits` view always a list.
 - [ ] **Streaming rebuild** (defect #1): explicit-stack backend in descent-core.
-- [ ] **`'`→`\` escape**: `'` is no longer a head-position escape (grammar still
-      lists it; see CORE "Block-Level Escape").
+- [ ] **Escape model rewrite (2026-07-14): `\` head-position force-prose.** CORE
+      "Escape (`\`)" replaced the old marker-list escape with one positional rule.
+      The grammar is on the *old* model and non-compliant in several ways:
+      - Escape delimiter is `'` (apostrophe) via `:check_apos` (`udon.desc:98–104`),
+        not `\`. `'` is now an ordinary prose char; `\` is the escape.
+      - `\` at **head position** (line-start *and* the sameline scan before prose)
+        is consumed and forces the rest of the line to verbatim prose. The
+        dispatch has no `\` arm today (`udon.desc:73–81`), so a leading `\` is
+        currently just prose.
+      - The consumed `\` takes up **no column**: it anchors the prose block's
+        content-base at its column (only the first line needs it) and the text
+        after backs up one column. Interacts with Automatic Prose Dedentation.
+      - `\` **not** at head position (prose begun, mid-value, trailing) is passed
+        through literally — no `\;` escape, no `\|{` escape. Retire `check_apos`
+        and all sameline/embedded `\;` handling.
+      - **New Warning:** a leading `\` sitting *deeper* than an established prose
+        content-base is mid-prose → passed through literally + Warning.
+      See CORE "Escape (`\`)", "Literal Semicolons", "Unified Inline Syntax".
+- [ ] **Reference divergences (found 2026-07-14):** (a) `@` at block-line-start
+      makes a reference only on `@[` (`udon.desc:92–94`); CORE:236 also allows
+      `@element[key]` / `@ident`. (b) The grammar still carries the `:[id]`
+      attribute-merge (`udon.desc:497`, `attr_reference`) that CORE removed
+      (merge is now a host resolution mode, "References and Mixins"). Parser lags.
 - [ ] **multi-attr block-line Warning** (decided 2026-07-14: keep EOL semantics,
       warn): emit a Warning when a block value contains a stranded ` :word ` that
       looks like an intended second attribute. The value still runs to EOL; see
