@@ -16,14 +16,16 @@ carry their own status banners.
       undercuts CORE-as-sole-source-of-truth and it has already caused confusion
       (cited as if corroborating CORE). Decide: delete / reduce to a pointer /
       keep. Deferred by Joseph for a deliberate call.
-- [ ] **Literal inline-form openers mid-prose** (consequence of the 2026-07-14
-      escape rewrite). With mid-prose `\` now passed through, there is no escape
-      for a *literal* `|{` / `!{` / `;{` **inside flowing prose or an embedded
-      `|{...}`** (the old `\|{` / `\;` did this). CORE is currently silent (a
-      freeform fence gives verbatim UDON-syntax for block cases, but not inline).
-      Decide: accept the gap (fence-only) / add a narrow inline escape / other.
-      Bare `;` and no-preceding-space `;` are already literal, so this is a rare
-      case — but a real capability regression from the old model.
+- [ ] **Finalize the inline-form escape** (from the 2026-07-14 escape rewrite).
+      **Requirement (Joseph, firm):** the inline forms we support now —
+      especially inline directives `!{…}`, plus `|{…}`, `!{{…}}`, `;{…}` — MUST be
+      escapable. Candidate mechanism: a mid-prose `\` before an opener (`|{` /
+      `!{` / `;{`) is consumed and makes it literal; a `\` before ordinary text
+      stays literal (so `C:\Users` is untouched). This is one uniform inline rule
+      (not the old per-context `\;` mess), but it *is* a second `\` behavior
+      beside head-position force-prose — **watch the complexity**; Joseph flagged
+      that if the escape story starts feeling too complicated we rethink the
+      whole approach. Not yet ratified.
 
 *(Otherwise CORE is current with all ratified decisions as of 2026-07-14.
 History lives in git; decisions in `_archive/DECIDED.bak.md`.)*

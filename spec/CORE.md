@@ -199,10 +199,10 @@ element:
 leading space is kept (the `\` consumes only itself) and the `;` is literal, not
 a comment.
 
-**Everywhere else, `\` is passed through untouched.** A `\` that is *not* at head
-position -- once prose has begun, mid-value, or trailing -- is an ordinary
-character; UDON emits it literally and leaves any escape-sequence meaning (`\n`,
-`\t`, a trailing `\` as a line-join, ...) to the host/app layer:
+**Elsewhere, `\` is passed through.** A `\` that is *not* at head position --
+once prose has begun, mid-value, or trailing -- is emitted literally, with any
+escape-sequence reading (`\n`, `\t`, a trailing `\` as a line-join, ...) left to
+the host/app layer:
 
 ```
 |p Windows path C:\Users\me    ->  prose "Windows path C:\Users\me"  ; \U \m untouched
@@ -1345,10 +1345,11 @@ All prefix characters support a bracket-delimited inline form:
 The character immediately after the prefix determines the parse mode with no
 lookahead.
 
-**Note:** `\` at head position forces the whole line to prose (see Escape); a
-`\` anywhere else -- including mid-prose -- is passed through literally, so the
-inline forms above have no `\`-escape. (`'` is not an escape; it is a string /
-name / key delimiter.)
+**Note:** `\` at head position forces the whole line to prose (see Escape).
+These inline forms **must** be escapable -- a mid-prose `\` before an opener
+(`|{`, `!{`, `;{`) makes it literal -- but the exact rule is still being
+finalized (see CORE-TODO). (`'` is not an escape; it is a string / name / key
+delimiter.)
 
 ---
 
