@@ -31,23 +31,25 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 
 ## Status of this integration pass (2026-07-13)
 
-**Landed in FULL-SPEC** (committed to main): identity model + desugaring +
-specially-designated `$`-names + suffix-chars-in-traits + Host Views + Anonymous
-Elements; References & Mixins (`@` inert, `:[id]` removed, mixins experimental)
-+ Duplicate Definitions; Attribute Stacking (+ ⊥ array-literals);
-Core-minimalism framing; Escapes (`'` → `\`); Freeform fences; Head Position
-(lexicon term + two faces) + Marker Recognition guards (`!`/`@`/`:`/`;`) +
-Bounded-Lookahead appendix.
+**The spec-text pass is COMPLETE.** Landed in FULL-SPEC (committed to main):
+identity model + desugaring + specially-designated `$`-names + suffix-chars-in-
+traits + Host Views + Anonymous Elements; References & Mixins (`@` inert, `:[id]`
+removed, mixins experimental) + Duplicate Definitions + reference immutability;
+Attribute Stacking (+ ⊥ array-literals); Core-minimalism framing; Escapes
+(`'` → `\`); Freeform fences; Head Position + Marker Recognition guards
+(`!`/`@`/`:`/`;`) + Bounded-Lookahead appendix; Explicit typing `<…>` (+
+bare-scalar rule); BlankLine/Warning events; terminology sweep (`id`→`key`,
+`class`→`traits`). Extractions done: Dynamics → `spec/DYNAMICS.md`; Markdown →
+`spec/MARKDOWN.md` (draft/unratified). EBNF trailing note on `spec/FULL-EBNF.md`.
 
-**Remaining spec-text (this pass):** Explicit typing `<…>` (+ bare-scalar rule;
-TIME-SPEC noted, rewrite deferred); rubber-stamps (reference-augmentation = no,
-BlankLine/Warning, multi-attr legalize); then the terminology sweep (`id`→`key`,
-`class`→`traits` in the remaining prose/examples).
-
-**Extractions — own companion specs (2026-07-13 decisions):** Dynamics/Liquid →
-baseline-dialect doc; Markdown → its own spec (udon-as-markdown /
-markdown-passed-through / markdown-parsed); Temporal → TIME-SPEC recast as
-`temporal@1` (deferred).
+**Remaining (deferred, NOT this pass):**
+- **Companion-spec detail:** TIME-SPEC → `temporal@1` recast; `MARKDOWN.md`
+  enumerations (Layer-1 subset, Layer-2 `doc` vocab); `DYNAMICS.md` is content-
+  complete (a moved verbatim section — could be tidied later).
+- **One flag for Joseph:** "multi-attr block lines → legalize" had no FULL-SPEC
+  text to change (block values run to end-of-line, so `:a 1 :b 2` on a block
+  line makes `:a` = "1 :b 2"). It looks like a parser-warning / cheatsheet item,
+  not a spec edit — confirm intent.
 
 **Deferred to Tier-2 (parser/grammar, not this pass):** `:id` hijack fix,
 `:`-attrs-before-children enforcement, Document-layer duplicate check,
