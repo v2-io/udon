@@ -35,13 +35,14 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 specially-designated `$`-names + suffix-chars-in-traits + Host Views + Anonymous
 Elements; References & Mixins (`@` inert, `:[id]` removed, mixins experimental)
 + Duplicate Definitions; Attribute Stacking (+ ⊥ array-literals);
-Core-minimalism framing; Escapes (`'` → `\`); Freeform fences.
+Core-minimalism framing; Escapes (`'` → `\`); Freeform fences; Head Position
+(lexicon term + two faces) + Marker Recognition guards (`!`/`@`/`:`/`;`) +
+Bounded-Lookahead appendix.
 
 **Remaining spec-text (this pass):** Explicit typing `<…>` (+ bare-scalar rule;
-TIME-SPEC noted, rewrite deferred); Head-position term + `:`/`;`/`!` recognition
-predicates + `!` guard + bounded-lookahead appendix; rubber-stamps
-(reference-augmentation = no, BlankLine/Warning, multi-attr legalize); then the
-terminology sweep (`id`→`key`, `class`→`traits` in the remaining prose/examples).
+TIME-SPEC noted, rewrite deferred); rubber-stamps (reference-augmentation = no,
+BlankLine/Warning, multi-attr legalize); then the terminology sweep (`id`→`key`,
+`class`→`traits` in the remaining prose/examples).
 
 **Extractions — own companion specs (2026-07-13 decisions):** Dynamics/Liquid →
 baseline-dialect doc; Markdown → its own spec (udon-as-markdown /

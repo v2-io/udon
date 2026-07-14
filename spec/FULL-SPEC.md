@@ -1700,6 +1700,41 @@ sniffing.
 | `:key` (no value) | Boolean `true` | Flag/presence semantics |
 | Anything else | String | Unquoted text |
 
+### Explicit Typing (`<...>`)
+
+The types above are the **frozen core scalar set** -- recognized *bare*, from
+their syntax alone. This set is closed: nothing is ever added to bare
+recognition. Every other -- every **dialect** -- type is written inside an
+explicit **`<...>` envelope** in attribute-value position, where `>` terminates
+the value:
+
+```
+:when  <2026-07-11>            ; a date -- temporal dialect, not bare
+:dur   <5m>                    ; a duration; shorthand stays writable in-envelope
+:id    <u64:0xf902>            ; type-labelled
+:span  <temporal:interval:...> ; dialect + type
+```
+
+**Label ladder.** The envelope may be unlabelled (`<...>`), type-labelled
+(`<type:...>`), or dialect-and-type-labelled (`<dialect:type:...>`) -- least to
+most specific.
+
+**Unlabelled dispatch.** An unlabelled `<content>` is offered to the document's
+declared dialects **in declared order; the first to claim it wins; if all
+decline, it is an error.** No sniffing race. *Which* dialects are active by
+default is a host/parser choice (see The Core, and What It Leaves Open), not
+spec-forced.
+
+This envelope is the **visible boundary between core and dialect**: bare means a
+frozen core scalar (or a string); `<...>` means a dialect resolves it. Because
+dialects never touch bare space, adding a dialect can never silently retype an
+existing document -- accretion is structurally impossible.
+
+**Temporal** is the first standard dialect: *all* temporal values -- dates,
+times, datetimes, durations, offsets, ISO forms included -- require the
+envelope, and a bare `2026-07-11` is simply the string `"2026-07-11"`. See the
+`temporal@1` companion spec (the former TIME-SPEC).
+
 ### Numbers
 
 Numeric literals follow Ruby conventions: integers, floats, scientific notation
