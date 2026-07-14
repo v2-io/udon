@@ -17,12 +17,13 @@ attribute stacking, head-position, and the rest (see git history +
 
 ## Remaining FULL-SPEC spec-text
 
-Two tiny pre-existing gaps, never part of the decision batch:
+One tiny pre-existing gap, never part of the decision batch:
 
-- [ ] Open Question: do quoted strings in arrays follow the same rules as other
-      typed values? (FULL-SPEC "Open Questions".)
 - [ ] `}` before `]` in an array is "malformed (unspecified behavior)" — specify
-      or leave.
+      or leave. (Lean: define as an error — unclosed array.)
+
+*(Resolved 2026-07-14: quoted strings in arrays — a closing `"` ends the item, so
+`["x"y]` = two items; documented as a nuance in FULL-SPEC "Array Item Values".)*
 
 *Everything else once queued here has landed in FULL-SPEC. Parser catch-up is in
 `core/PLAN.md`; companion-spec recasts are tracked by their in-file banners.*

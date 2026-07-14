@@ -509,6 +509,11 @@ Terminators: `\n`, `SPACE`, or `]`
 - Context (block vs embedded) doesn't affect array terminators
 - `}` before `]` is malformed (unspecified behavior)
 
+**Quoted-item nuance** (a consequence of the terminator rules, not a separate
+rule): a quoted string's closing `"` ends its item, so a character immediately
+after it -- with no separating space -- begins the next item. Thus `["x"y]` and
+`["x""y"]` each yield two items (`["x", "y"]`), the same as `["x" y]`.
+
 ### Bare String Terminators (Summary)
 
 These rules apply to **unquoted values** (bare strings, numbers, booleans, nil).
@@ -1711,13 +1716,6 @@ The examples in this document should be converted to unit tests. Key scenarios:
    - Block comment within element stays within element
    - Inline comments `;{...}` stripped from output
    - Escaped semicolon `\;` outputs literal semicolon
-
----
-
-## Open Questions
-
-1. **Quoted strings in arrays:** Do they follow the same rules as other typed
-   values? Currently: quotes handled before bare_string dispatch.
 
 ---
 
