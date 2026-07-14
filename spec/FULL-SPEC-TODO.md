@@ -17,13 +17,19 @@ attribute stacking, head-position, and the rest (see git history +
 
 ## Remaining FULL-SPEC spec-text
 
-**None.** All known spec-text gaps are closed (2026-07-14) — FULL-SPEC has zero
-open spec-text items.
+Two spec-precision follow-ups surfaced by the 2026-07-14 EBNF audit (the spec
+*works*; its prose is just looser than the descent grammar — source the exact
+rule from `core/generator/*.desc`):
 
-*Closed 2026-07-14 (both documented as consequences-of-the-rules in "Array Item
-Values"): quoted strings in arrays (a closing `"` ends the item, so `["x"y]` =
-two items); and `}`-before-`]` (`}` is a literal inside `[...]`; an array with no
-`]` is an `UnclosedArray` error).*
+- [ ] Bare-name / bare-trait **character class** — precisely defined in the
+      descent grammar (a Unicode-identifier set); the spec only uses bare names
+      by example. Research and back-fill the exact rule.
+- [ ] **Numeric-literal grammar** — the "Numbers" section says "Ruby conventions"
+      by example; the descent grammar has exact productions. Back-fill.
+
+*Closed 2026-07-14: the `<…>` recognition rule (bare `<` in attribute-value
+position opens the envelope; quote for a literal — added to "Explicit Typing");
+quoted-strings-in-arrays and `}`-before-`]` (documented in "Array Item Values").*
 
 *Everything else once queued here has landed in FULL-SPEC. Parser catch-up is in
 `core/PLAN.md`; companion-spec recasts are tracked by their in-file banners.*

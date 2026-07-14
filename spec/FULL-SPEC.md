@@ -1538,6 +1538,12 @@ the value:
 :span  <temporal:interval:...> ; dialect + type
 ```
 
+**Recognition.** In attribute-value position, a bare value that begins with `<`
+opens the envelope; the matching `>` terminates it. To write a *literal* string
+value that begins with `<`, quote it (`:x "<not a type>"`). Outside bare
+attribute-value position -- in prose, or inside quotes -- `<` has no special
+meaning.
+
 **Label ladder.** The envelope may be unlabelled (`<...>`), type-labelled
 (`<type:...>`), or dialect-and-type-labelled (`<dialect:type:...>`) -- least to
 most specific.

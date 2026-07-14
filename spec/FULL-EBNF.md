@@ -1,254 +1,718 @@
 # UDON Formal Grammar (EBNF)
 
-**Extracted from FULL-SPEC.md**
-*Version 0.7-draft -- December 2025*
+**Derived from FULL-SPEC.md (authoritative). Fresh draft 2026-07-14, pending
+review — regenerate when FULL-SPEC changes.**
 
-> ⚠️ **This grammar TRAILS the spec — it is not authoritative.** As of
-> 2026-07-13 it is *not* kept in sync with the active FULL-SPEC.md rewrite.
-> **`FULL-SPEC.md`, in conjunction with the remaining items in
-> `FULL-SPEC-TODO.md`, is authoritative.** This EBNF still reflects the
-> Dec-2025 draft (`id`/`class` not `key`/`traits`, `:[id]` merge, `'` as an
-> escape, no `<…>` typing, the old fence rules) and will be regenerated once the
-> spec rewrite settles. Do not treat it as current.
+This is an EBNF-style formal grammar for UDON, derived from the current
+`FULL-SPEC.md` (v0.7-draft). It is a *reading aid*, not a parseable grammar:
+UDON is indentation-sensitive and operates in position-dependent modes (head
+position, sameline scan, block, embedded), and a context-free EBNF cannot
+capture those modes. Every place the grammar cannot pin down the real rule is
+flagged with a `(* NOTE: ... *)` comment. Those notes are the load-bearing
+part — they mark exactly where the grammar is an approximation.
 
-This is the formal grammar for UDON in EBNF-style notation.
+**This grammar is illustration only — it cannot produce a parser.** UDON's real,
+authoritative grammar is the indentation-sensitive, mode-based state machine in
+`core/generator/*.desc`, from which the parser is generated. Two rules below are
+*precisely* defined in that descent grammar but only approximated here, and
+should be back-filled from it:
+
+- `(* TODO: bare-name / bare-trait character class -- a Unicode-identifier set,`
+  `exactly defined in core/generator/*.desc; the spec prose and this EBNF only`
+  `approximate it. Research and back-fill the exact rule. *)`
+- `(* TODO: numeric-literal grammar -- the spec says "Ruby conventions" by`
+  `example; core/generator/*.desc has the exact productions. Back-fill from it. *)`
 
 ---
 
-## Notes on Context Sensitivity
+## 0. Reading Guide — What EBNF Cannot Express Here
 
-- Prefix interpretation depends on position (block vs sameline vs embedded).
-- Bare-string termination varies by context; see bare_string_* rules and notes.
-- INDENT/DEDENT are produced by indentation tracking.
-- Freeform fences close on the first ``` at opening indent or less.
+UDON's parser is a bounded-lookahead state machine (FULL-SPEC "Bounded
+Lookahead"). Three cross-cutting behaviors sit *outside* the grammar and govern
+almost every production below:
+
+```ebnf
+(* NOTE: HEAD POSITION is a parser state, not a grammar nonterminal. It is
+   re-entered at the start of every line (at a structural column) and runs
+   along an element line through elements AND attributes ("sameline scan").
+   Markers |  :  !  ;  @  and triple-backtick are recognized ONLY in head
+   position, each by a short GUARD (a few chars of lookahead). The instant a
+   guard fails -- typically when the first prose word arrives -- the line
+   COMMITS TO PROSE for the rest of that line, and those same characters become
+   literal text. No context-free production can express "recognized only until
+   the first prose word." Wherever a rule below shows a marker, read it as
+   "recognized in head position, subject to its guard." *)
+
+(* NOTE: INDENTATION / COLUMNS drive all parent-child nesting via the
+   authoritative rule "pop while new_column <= stack_top.base_column"
+   (FULL-SPEC "Hierarchy"). Inline elements on one line (|a |b |c) nest exactly
+   as if written on separate lines at their | columns. This grammar shows
+   nesting structurally but cannot enforce the column arithmetic; there are no
+   real INDENT/DEDENT tokens in the byte stream -- they are computed from
+   leading-space counts. Treat INDENT/DEDENT below as pseudo-terminals emitted
+   by the indentation tracker. *)
+
+(* NOTE: PROSE DEDENTATION (content_base_column, warnings on inconsistent
+   indent) is a per-line output transformation (FULL-SPEC "Automatic Prose
+   Dedentation"), not a syntactic rule. It affects emitted Text content, not
+   the grammar. Omitted from the productions; see the spec section. *)
+```
 
 ---
 
-## Document Structure
+## 1. Document
 
 ```ebnf
-document      = { line }* ;
+document      = { line } ;
 
-line          = indent ( element
-                       | block_attribute
-                       | block_dynamic
-                       | line_comment
-                       | block_escape
-                       | freeform
-                       | block_prose ) ;
+(* A "line" is dispatched by what appears at head position after indentation.
+   Which alternative fires is decided by the marker guards, not by unbounded
+   lookahead. *)
+line          = indent line_body NEWLINE ;
 
-indent        = { SPACE }* ;
+line_body     = element_line
+              | block_attribute      (* only while element has no children yet *)
+              | block_directive
+              | interpolation        (* !{{...}} / !{...} may also open a line *)
+              | line_comment
+              | freeform_open
+              | block_escape
+              | block_prose
+              | blank ;
+
+indent        = { SPACE } ;   (* spaces only; tabs are an error -- FULL-SPEC "Strict Whitespace" *)
+blank         = ;             (* empty line -> BlankLine event *)
+
+(* NOTE: The dispatch above is guard-driven and phase-sensitive, not a clean
+   disjunction. A ":" is a block_attribute ONLY before any child/text has
+   appeared under the element (see block_attribute); afterward a line-initial
+   ":" is prose. A "|", "!", "@", ";", or triple-backtick that FAILS its guard
+   falls through to block_prose. EBNF alternation cannot encode this ordering
+   or the "attributes before children" phase gate. *)
 ```
 
-## Elements
+---
+
+## 2. Head-Position Markers and Their Guards
 
 ```ebnf
-; Element recognition: "|" is only an element when followed by one of:
-;   - Unicode letter (\p{L}) -- named element
-;   - "[" -- anonymous element with id
-;   - "." -- anonymous element with class
-;   - "{" -- embedded element
-;   - "'" -- quoted element name
-; Otherwise "|" is prose (preserves Markdown table compatibility)
+(* Recognized only at head position (line start at a structural column, or in
+   sameline scan before prose begins). Each has a guard; guard failure => prose
+   for the rest of the line. FULL-SPEC "Marker Recognition". *)
 
-; Elements with optional suffix modifiers
-element       = "|" [ name ] [ suffix ] [ id [ suffix ] ] { class }*
-                [ SPACE suffix ] { sameline_attribute }* { inline_child }* ;
-name          = LABEL | quoted_label ;
-id            = "[" id_value "]" ;
-id_value      = bracket_scalar ;
-class         = "." LABEL ;
-suffix        = "?" | "!" | "*" | "+" ;
+(* "|" element -- guard: next char is a letter, "[", ".", "{", or "'".
+   Any other following char => "|" is literal prose (Markdown-table safety). *)
+element_marker_guard   = "|" ( LETTER | "[" | "." | "{" | "'" ) ;
 
-inline_child  = element | embedded_element | inline_dynamic_token | inline_comment | inline_text ;
-inline_text   = { inline_char }+ ;
-inline_char   = inline_escape | ( CHAR - NEWLINE - "|{" - ";" ) ;
-inline_escape = "\\;" | "\\|{" ;
+(* ":" attribute -- NOT char-guarded but PHASE-restricted: ":" is an attribute
+   only while the element has no child content yet; once text/child appears a
+   line-initial ":" is prose. A ":" not followed by a name is also prose. *)
+attribute_marker_guard = ":" name_start ;
+
+(* "!" directive -- guard: next char is an identifier char or ":".
+   So "![", "!=", "!(" are prose. *)
+directive_marker_guard = "!" ( ident_char | ":" ) ;
+
+(* "@" reference -- guard: next char is "[" or an identifier char. *)
+reference_marker_guard = "@" ( "[" | ident_char ) ;
+
+(* ";" comment -- recognized per the Comments table: line comment at document
+   root / sameline / after attribute values; LITERAL in block prose. *)
+comment_marker_guard   = ";" ;
+
+(* triple-backtick freeform -- opens at any head position (line start, or
+   sameline scan after elements AND attributes), NOT once prose has begun. *)
+freeform_marker_guard  = "```" ;
+
+(* NOTE: These "guard" productions describe LOOKAHEAD PREDICATES, not consumed
+   input. They are written as if the guard char is part of the token, but the
+   guard is really a test that decides whether the marker is structure or
+   prose. The phase restriction on ":" and the "before prose begins" condition
+   on all sameline markers are pure parser state, invisible to EBNF. *)
 ```
 
-## Embedded Elements
+---
+
+## 3. Elements
 
 ```ebnf
-; Embedded elements (for inline use in prose)
-embedded_element = "|{" [ name ] [ suffix ] [ id [ suffix ] ] { class }*
-                   [ SPACE suffix ] { embedded_attribute }* { embedded_content }* "}" ;
-embedded_content = embedded_element | inline_dynamic_token | inline_comment | embedded_text ;
-embedded_text    = { embedded_char }+ ;
-embedded_char    = embedded_escape | ( ANY_CHAR - "|{" - "}" - ";" ) ;
-embedded_escape  = "\\;" | "\\|{" ;
+(* An element is: name(opt) + identity/trait/suffix sugar + attributes +
+   children. Identity, traits, and suffixes are SUGAR desugaring to
+   $-designated attributes ($key, $traits, $?, $!, $*, $+) -- FULL-SPEC
+   "Identity and Classification". The grammar shows surface syntax only. *)
+
+element_line  = "|" element_head { SPACE sameline_attribute }
+                                  [ sameline_tail ] ;
+
+(* element_head is the run of name / key / traits / suffixes with NO spaces
+   between them (except the space-separated trailing suffix form). *)
+element_head  = ( name element_sugar
+                | element_sugar_required ) ;
+
+name          = bare_name | quoted_name ;
+
+(* Anonymous element: no name -- "|" is followed directly by key, trait, or
+   suffix. FULL-SPEC "Anonymous Elements". element_sugar_required = at least
+   one of key/trait/suffix must be present when the name is absent. *)
+element_sugar_required = key trait_suffix_tail
+                       | trait trait_suffix_tail
+                       | suffix { suffix } ;
+
+element_sugar = [ suffix { suffix } ] [ key ] { trait }
+                [ SPACE suffix { suffix } ] ;
+
+trait_suffix_tail = { trait } [ SPACE suffix { suffix } ] ;
+
+key           = "[" attr_value_bracket "]" ;   (* identity: $key *)
+trait         = "." trait_value ;                (* classification: $traits, stacks *)
+suffix        = "?" | "!" | "*" | "+" ;          (* $? $! $* $+ = true *)
+
+(* NOTE: SUFFIX POSITIONING is ambiguous in EBNF. A suffix binds to the element
+   identity and may appear after the name, after the key, or space-separated at
+   the very end (FULL-SPEC "Suffix positions"). Crucially, "* ! ? +" are LEGAL
+   BARE TRAIT CHARACTERS, so ".foo?" is the trait "foo?" (no suffix), while
+   ".foo ?" (space) is trait "foo" plus a $? suffix. The grammar above lists
+   the positions but cannot mechanically resolve "does this trailing ? belong
+   to the trait or to the element" without the maximal-munch rule "a suffix
+   char touching a .trait is consumed by the trait." Read trait_value as
+   greedy over ?!*+. *)
+
+(* NOTE: The value inside "[...]" follows normal attribute-value rules -- every
+   scalar type is available ([1] = int 1, ["01"] = string "01", [abc-123] =
+   string). It is NOT a restricted identifier. See attr_value_bracket. *)
+
+(* NOTE: WHERE ATTRIBUTES END AND CHILDREN BEGIN is the "attributes before
+   children" phase gate (FULL-SPEC "Design Principles"), enforced by parser
+   state, not grammar. Sameline attributes must precede sameline prose/inline
+   children; block attributes must precede any child element or prose line. *)
 ```
 
-## Attributes
+### 3.1 Sameline tail (prose + inline children on the element line)
 
 ```ebnf
-; Attributes by context
-block_attribute    = ":" ( LABEL | quoted_label ) [ block_attr_value ] ;
-sameline_attribute = ":" ( LABEL | quoted_label ) [ sameline_attr_value ] ;
-embedded_attribute = ":" ( LABEL | quoted_label ) [ embedded_attr_value ] ;
+(* After the element head and its sameline attributes, the rest of the line is
+   sameline content: prose words and inline (embedded) children, interleaved.
+   The FIRST prose word ends the sameline scan (head position). Inline elements
+   here use the |{...} embedded form OR bare |name inline nesting. *)
+sameline_tail = { sameline_token } [ SPACE line_comment ] ;
 
-block_attr_value    = block_scalar | block_value ;
-sameline_attr_value = sameline_scalar ;
-embedded_attr_value = embedded_scalar ;
+sameline_token = embedded_element
+               | inline_element          (* |name ... continues nesting *)
+               | interpolation
+               | inline_comment          (* ;{...} *)
+               | inline_raw              (* !{:kind: ...} *)
+               | sameline_prose_word ;
 
-block_scalar    = nil_value | bool_value | complex | rational | number
-                | list_value | string_value_block
-                | interpolation_token | interpolated_string_block ;
+(* NOTE: "|name" appearing later on a line is an INLINE ELEMENT that nests by
+   column (|a |b |c). But once the first PROSE word has been emitted, a later
+   "|" is literal (head position has ended for the line). The grammar shows
+   inline_element as freely interleavable; the real constraint is "only while
+   still in sameline scan / head position." Inline nesting columns are computed
+   from the | positions -- see the INDENTATION note. *)
 
-sameline_scalar = nil_value | bool_value | complex | rational | number
-                | list_value | string_value_sameline
-                | interpolation_token | interpolated_string_sameline ;
-
-embedded_scalar = nil_value | bool_value | complex | rational | number
-                | list_value | string_value_embedded
-                | interpolation_token | interpolated_string_embedded ;
-
-bracket_scalar  = nil_value | bool_value | complex | rational | number
-                | list_value | string_value_bracket
-                | interpolation_token | interpolated_string_bracket ;
+inline_element = "|" element_head { SPACE sameline_attribute } ;
 ```
 
-## Numbers
+---
+
+## 4. Attributes
 
 ```ebnf
-; Numbers
+(* Key-value pairs. Same-key values STACK (accumulate as an ordered list, in
+   source order) -- last-wins is NOT how UDON behaves (FULL-SPEC "Attribute
+   Stacking"). A value-less attribute is boolean true. *)
+
+block_attribute    = ":" attr_name [ SPACE block_attr_value ]
+                                    [ SPACE line_comment ] ;
+sameline_attribute = ":" attr_name [ SPACE sameline_attr_value ] ;
+embedded_attribute = ":" attr_name [ SPACE embedded_attr_value ] ;
+
+attr_name          = bare_name | quoted_name ;
+(* $-designated names ($key etc.) are ordinary names but need quoting because
+   "$" is not a bare-name char: :'$key' value. FULL-SPEC "Specially-designated,
+   not reserved." *)
+
+(* NOTE: BLOCK vs SAMELINE is a positional distinction (own indented line vs
+   on the element line), decided by the parser's context -- not derivable from
+   the ":" token alone. The three attribute productions differ ONLY in how
+   their bare value terminates (below); the grammar cannot say which one
+   applies without knowing the position. *)
+
+(* NOTE: A value-less attribute (":disabled") emits BoolTrue. "No value" means
+   the ":" name is immediately followed by a context terminator (newline, next
+   ":", "}", "]", or -- sameline -- a space then next marker). Expressing
+   "followed immediately by a terminator" requires negative lookahead not
+   available in plain EBNF. *)
+```
+
+### 4.1 Attribute value terminators (context-dependent)
+
+```ebnf
+(* The SAME bare value grammar terminates differently by context -- FULL-SPEC
+   "Value Terminator Rules" / "Bare String Terminators". Terminators are NOT
+   consumed. *)
+
+block_attr_value    = typed_value | scalar_value_block ;
+sameline_attr_value = typed_value | scalar_value_sameline ;
+embedded_attr_value = typed_value | scalar_value_embedded ;
+attr_value_bracket  = typed_value | scalar_value_bracket ;   (* inside |name[...] *)
+
+(* Bare (unquoted) string terminators by context:
+     block     : NEWLINE or " ;"  (space+semicolon); bare spaces allowed IN value
+     sameline  : NEWLINE or SPACE
+     embedded  : NEWLINE, SPACE, or "}"   ("}" not consumed)
+     array item: NEWLINE, SPACE, or "]"   ("]" not consumed; "}" is LITERAL) *)
+
+(* NOTE: BLOCK VALUE RUNS TO END OF LINE. Therefore a block line holds ONE
+   attribute: ":a 2 :b 3" makes :a = the string "2 :b 3", NOT two attributes
+   (FULL-SPEC). A stranded " :name " inside a block value emits a WARNING but is
+   still taken to end-of-line. EBNF cannot express "greedy to newline except a
+   space-semicolon starts a comment." *)
+
+(* NOTE: The "space + semicolon" block terminator (" ;") means a ";" WITHOUT a
+   preceding space is part of the value (":url http://x/a?q=1;s=2"). This
+   two-character lookahead terminator is not naturally expressible; scalar_value_block
+   below is an approximation. *)
+```
+
+### 4.2 Complex (structured) attribute values
+
+```ebnf
+(* An attribute followed by newline + deeper indent takes a STRUCTURED value:
+   child elements / prose become the value. FULL-SPEC "Complex Attribute
+   Values". *)
+block_attribute_structured = ":" attr_name NEWLINE INDENT { line } DEDENT ;
+
+(* NOTE: Whether ":headers" is a bare value or a structured value depends
+   entirely on whether the NEXT line is indented deeper -- a purely
+   indentation-driven decision the grammar cannot make locally. *)
+```
+
+### 4.3 Inline lists
+
+```ebnf
+(* Square-bracket list values. Space-delimited; quote items with spaces. *)
+inline_list   = "[" { SPACE } { list_item { SPACE } } "]" ;
+list_item     = typed_value | scalar_value_array ;
+
+(* NOTE: QUOTED-ITEM NUANCE (FULL-SPEC): a quoted string's closing quote ENDS
+   its item, so a char immediately after it (no space) begins the NEXT item.
+   ["x"y] and ["x""y"] each yield two items, same as ["x" y]. This "quote-ends-
+   item" behavior means whitespace is not the only item separator; it is a
+   consequence of the terminator rules that EBNF sequencing does not show. *)
+
+(* NOTE: "}" is NOT a list terminator: inside [...] a "}" is literal; the list
+   closes only on "]" (missing "]" => UnclosedArray error). A "}" meant to
+   close an embedded |{...} must come AFTER the array's "]". *)
+```
+
+---
+
+## 5. Value Types
+
+```ebnf
+(* BARE recognition is the FROZEN CORE SCALAR SET -- recognized from syntax
+   alone (FULL-SPEC "Value Types"). This set is closed; nothing is added to
+   bare recognition. Everything else goes through the <...> envelope (section
+   5.2). "Anything else" bare = string. *)
+
+scalar_value_block    = nil | boolean | complex | rational | number
+                      | inline_list | reference | string_bare_block | quoted_string ;
+scalar_value_sameline = nil | boolean | complex | rational | number
+                      | inline_list | reference | string_bare_sameline | quoted_string ;
+scalar_value_embedded = nil | boolean | complex | rational | number
+                      | inline_list | reference | string_bare_embedded | quoted_string ;
+scalar_value_array    = nil | boolean | complex | rational | number
+                      | inline_list | reference | string_bare_array | quoted_string ;
+scalar_value_bracket  = nil | boolean | complex | rational | number
+                      | inline_list | reference | string_bare_bracket | quoted_string ;
+
+(* NOTE: TYPE DISPATCH IS SYNTACTIC AND ORDERED-BY-SPECIFICITY, not a free
+   disjunction. "42" is Integer, "true" is Boolean, but "TRUE"/"True"/"42x" are
+   Strings. The alternatives above must be tried most-specific-first with the
+   bare-string fallback LAST; EBNF "|" does not imply that precedence. *)
+
+(* --- frozen core scalars --- *)
+
+nil           = "null" | "nil" ;
+boolean       = "true" | "false" ;   (* lowercase only; TRUE/True are strings *)
+
 number        = float | integer ;
-integer       = [ "-" ] ( dec_int | hex_int | oct_int | bin_int ) ;
-dec_int       = [ "0d" ] DIGIT { DIGIT | "_" }* ;
-hex_int       = "0x" HEX { HEX | "_" }* ;
-oct_int       = "0o" OCT { OCT | "_" }* ;
-bin_int       = "0b" BIN { BIN | "_" }* ;
-float         = [ "-" ] DIGIT { DIGIT | "_" }* "." DIGIT { DIGIT | "_" }* [ exponent ] ;
-exponent      = ( "e" | "E" ) [ "+" | "-" ] DIGIT { DIGIT }* ;
-rational      = [ "-" ] DIGIT { DIGIT }* "/" DIGIT { DIGIT }* "r" ;
-complex       = ( number | "" ) ( "+" | "-" ) number "i" | number "i" ;
+integer       = [ "-" ] ( dec_int | hex_int | oct_int | bin_int | plain_int ) ;
+plain_int     = DIGIT { DIGIT | "_" } ;   (* leading zeros stripped: 0755 = 755 decimal *)
+dec_int       = "0d" DIGIT { DIGIT | "_" } ;
+hex_int       = "0x" HEX  { HEX  | "_" } ;
+oct_int       = "0o" OCT  { OCT  | "_" } ;
+bin_int       = "0b" BIN  { BIN  | "_" } ;
+float         = [ "-" ] DIGIT { DIGIT | "_" } "." DIGIT { DIGIT | "_" } [ exponent ]
+              | [ "-" ] DIGIT { DIGIT | "_" } exponent ;
+exponent      = ( "e" | "E" ) [ "+" | "-" ] DIGIT { DIGIT } ;
+rational      = [ "-" ] DIGIT { DIGIT } "/" DIGIT { DIGIT } "r" ;
+complex       = [ number ] ( "+" | "-" ) unsigned_number "i"
+              | unsigned_number "i" ;
+
+(* NOTE: Numeric literals "follow Ruby conventions" (FULL-SPEC "Numbers"); the
+   exact bare-number regexes (underscore placement, complex "a+bi" vs "bi",
+   rational sign rules) are given by EXAMPLE in the spec, not a closed grammar.
+   These productions are a faithful-but-inferred reconstruction, NOT verbatim
+   spec text. Where bare recognition is ambiguous, the fallback is String. *)
+
+(* --- strings --- *)
+
+quoted_string = '"' { dq_char } '"'
+              | "'" { sq_char } "'" ;
+dq_char       = escaped_char | ( CHAR - '"' ) ;
+sq_char       = escaped_char | ( CHAR - "'" ) ;
+escaped_char  = "\" ANY_CHAR ;
+(* Inside quoted strings, escape prefixes have no special meaning beyond the
+   delimiter's own escaping -- FULL-SPEC "Note" under Sameline/Embedded Escape. *)
+
+string_bare_block    = { CHAR - NEWLINE }        (* stops at " ;" -- see 4.1 note *) ;
+string_bare_sameline = { CHAR - NEWLINE - SPACE } ;
+string_bare_embedded = { CHAR - NEWLINE - SPACE - "}" } ;
+string_bare_array    = { CHAR - NEWLINE - SPACE - "]" } ;
+string_bare_bracket  = { CHAR - NEWLINE - SPACE - "]" } ;
 ```
 
-## Collections
+### 5.1 Names / keys / traits
 
 ```ebnf
-; Collections
-list_value    = "[" { list_item }* "]" ;
-list_item     = array_scalar ;
+bare_name     = name_start { name_char } ;
+name_start    = LETTER ;
+name_char     = LETTER | DIGIT | "_" | "-" ;
+ident_char    = LETTER | DIGIT | "_" | "-" ;
+quoted_name   = "'" { sq_char } "'" | '"' { dq_char } '"' ;
 
-array_scalar  = nil_value | bool_value | complex | rational | number
-              | list_value | string_value_array
-              | interpolation_token | interpolated_string_array ;
+trait_value   = bare_trait | quoted_name ;
+bare_trait    = { CHAR - SPACE - NEWLINE - "." - "[" - ":" } ;  (* greedy over ?!*+ *)
+
+(* NOTE: BARE-NAME / BARE-TRAIT character classes are not spelled out
+   explicitly in FULL-SPEC. Inferred from examples: names start with a letter
+   and use letters/digits/_/-; "$" is explicitly NOT a bare-name char (so
+   $-names need quotes). trait_value is broader (it absorbs ?!*+ per the suffix
+   note in section 3) -- the precise boundary set is an INFERENCE, flagged. *)
 ```
 
-## Strings
+### 5.2 Explicit typing envelope `<...>`
 
 ```ebnf
-; Strings
-string_value_block    = quoted_string | bare_string_block ;
-string_value_sameline = quoted_string | bare_string_sameline ;
-string_value_embedded = quoted_string | bare_string_embedded ;
-string_value_array    = quoted_string | bare_string_array ;
-string_value_bracket  = quoted_string | bare_string_bracket ;
+(* Every NON-core (dialect) type is written inside a <...> envelope in
+   attribute-value position, where ">" terminates the value. FULL-SPEC
+   "Explicit Typing". *)
+typed_value   = "<" envelope_body ">" ;
 
-; NOTE: Block bare strings terminate at NEWLINE or " ;" (space + semicolon).
-; Sameline/embedded terminate at SPACE; embedded and array also terminate at
-; "}" and "]" respectively. Closing tokens are not consumed.
+envelope_body = unlabelled_body
+              | type_label ":" unlabelled_body
+              | dialect_label ":" type_label ":" unlabelled_body ;
 
-bare_string_block    = { CHAR - NEWLINE }+ ;
-bare_string_sameline = { CHAR - NEWLINE - SPACE }+ ;
-bare_string_embedded = { CHAR - NEWLINE - SPACE - "}" }+ ;
-bare_string_array    = { CHAR - NEWLINE - SPACE - "]" }+ ;
-bare_string_bracket  = { CHAR - NEWLINE - SPACE - "]" }+ ;
+unlabelled_body = { CHAR - ">" } ;   (* ">" ends the value *)
+type_label      = ident_char { ident_char } ;
+dialect_label   = ident_char { ident_char } ;
 
-interpolated_string_block    = [ bare_string_part_block ] interpolation_token
-                               { bare_string_part_block interpolation_token }*
-                               [ bare_string_part_block ] ;
-interpolated_string_sameline = [ bare_string_part_sameline ] interpolation_token
-                               { bare_string_part_sameline interpolation_token }*
-                               [ bare_string_part_sameline ] ;
-interpolated_string_embedded = [ bare_string_part_embedded ] interpolation_token
-                               { bare_string_part_embedded interpolation_token }*
-                               [ bare_string_part_embedded ] ;
-interpolated_string_array    = [ bare_string_part_array ] interpolation_token
-                               { bare_string_part_array interpolation_token }*
-                               [ bare_string_part_array ] ;
-interpolated_string_bracket  = [ bare_string_part_bracket ] interpolation_token
-                               { bare_string_part_bracket interpolation_token }*
-                               [ bare_string_part_bracket ] ;
+(* NOTE: LABEL LADDER -- <...> unlabelled | <type:...> | <dialect:type:...>,
+   least to most specific. But the label vs body boundary is a DIALECT concern:
+   the core only guarantees "<" opens, ">" closes, and the value's INTERNAL
+   ":" structure is passed through. "envelope_body" cannot be disambiguated by
+   the core grammar because durations like <5m> and <2026-07-11> have no colons
+   yet are unlabelled, while <temporal:interval:...> has meaningful colons. The
+   split shown is illustrative; the core does not parse inside the envelope. *)
 
-bare_string_part_block    = { CHAR - NEWLINE }* ;
-bare_string_part_sameline = { CHAR - NEWLINE - SPACE }* ;
-bare_string_part_embedded = { CHAR - NEWLINE - SPACE - "}" }* ;
-bare_string_part_array    = { CHAR - NEWLINE - SPACE - "]" }* ;
-bare_string_part_bracket  = { CHAR - NEWLINE - SPACE - "]" }* ;
+(* NOTE: UNLABELLED DISPATCH -- an unlabelled <content> is offered to declared
+   dialects in declared order; first to claim wins; all-decline is an error.
+   This is a HOST/runtime resolution, entirely outside the grammar. The core
+   recognizes only the envelope SYNTAX. *)
 
-quoted_string = '"' { CHAR_NOT_DQUOTE }* '"'
-              | "'" { CHAR_NOT_SQUOTE }* "'" ;
-
-block_value   = NEWLINE INDENT { line }+ DEDENT ;
+(* NOTE: Does "<" open an envelope ONLY in attribute-value position? FULL-SPEC
+   says the envelope lives "in attribute-value position." A bare "<" in prose
+   or a value-less context is presumably literal; the spec does not give an
+   explicit guard for "<" the way it does for | : ! @ ;. Flagged as
+   spec-underspecified. *)
 ```
 
-## Dynamics
+---
+
+## 6. References
 
 ```ebnf
-; Dynamics
-block_dynamic      = "!" ( interpolation | inline_dynamic | block_directive ) ;
-block_directive    = raw_block_directive | normal_block_directive ;
-normal_block_directive = directive_name { CHAR }* ;  ; Body determined by indentation
-raw_block_directive    = ":" directive_name ":" ;
+(* "@" refers to a defined element by identity. INERT at core level: the parser
+   emits a reference and does not resolve it. FULL-SPEC "References". *)
+reference     = "@" [ ref_element_name ] key ;   (* @[key] or @element[key] *)
+ref_element_name = bare_name | quoted_name ;
 
-inline_dynamic_token = "!" ( interpolation | inline_dynamic ) ;
-inline_dynamic       = "{" ( inline_raw | inline_directive ) "}" ;
-inline_raw           = ":" directive_name ":" raw_body ;
-inline_directive     = directive_name directive_body ;
+(* NOTE: "@[key]" is shorthand that ERRORS if the key is ambiguous across
+   element types; "@element[key]" is explicit. That error is a resolution-time
+   (host) concern, not a parse rule. A reference is NOT augmentable -- there is
+   no "@[mit].trait"; the grammar reflects this by not allowing a trait tail. *)
 
-interpolation_token = "!" interpolation ;
-interpolation     = "{{" expression [ "|" filter { "|" filter }* ] "}}" ;
-directive_name    = LABEL [ ":" LABEL ] ;
-directive_body    = { ANY_CHAR - "{" - "}" | "{" directive_body "}" }* ;
-raw_body          = { ANY_CHAR - "{" - "}" | "{" raw_body "}" }* ;
+(* NOTE: "@" is a head-position marker (guard: followed by "[" or ident) AND
+   appears in attribute-value position (":license @[mit]"). The grammar lists
+   reference under both scalar_value_* and as a line-level marker; the spec
+   shows it primarily as a value. Its full set of legal positions is only
+   partially pinned down. *)
 ```
 
-## Comments
+---
+
+## 7. Embedded / Inline Elements `|{...}`
 
 ```ebnf
-; Comments
-line_comment     = ";" { CHAR }* ;
-inline_comment   = ";{" inline_comment_body "}" ;
-inline_comment_body = { ANY_CHAR - "{" - "}" | "{" inline_comment_body "}" }* ;
-; NOTE: A line comment may be followed by indented continuation lines, which
-; are treated as comment content until dedent.
+(* Inline elements in prose. "|{" opens; content terminates at brace-balanced
+   "}". Once in bracket mode, STAY in bracket mode -- nested elements must also
+   use |{...}, never bare |name. FULL-SPEC "Inline and Embedded Elements". *)
+embedded_element = "|{" element_head { SPACE embedded_attribute }
+                        { embedded_content } "}" ;
+
+embedded_content = embedded_element
+                 | interpolation
+                 | inline_comment          (* ;{...} *)
+                 | inline_raw              (* !{:kind: ...} *)
+                 | embedded_text ;
+embedded_text    = { embedded_char } ;
+embedded_char    = "\;" | "\|{" | ( ANY_CHAR - "}" - "|{" - ";" ) ;
+
+(* NOTE: Embedded content terminates at the BRACE-BALANCED "}". Nested "|{...}"
+   pairs count toward balance. EBNF recursion shows the nesting but the real
+   parser uses brace-counting; multi-line embedded content is allowed and
+   INTERNAL INDENTATION IS IGNORED (FULL-SPEC), which the grammar cannot show. *)
+
+(* NOTE: "Once in bracket mode, stay in bracket mode" -- a bare "|name" inside
+   |{...} is INVALID. The grammar enforces this by only offering
+   embedded_element (not inline_element) inside embedded_content, but the spec
+   states it as a mode rule; there is no separate token that distinguishes the
+   two forms other than the "{". *)
 ```
 
-## Other
+---
+
+## 8. Dynamics `!` — Directives, Interpolation, Raw
 
 ```ebnf
-; Other
-block_prose   = { prose_segment }+ ;
-prose_segment = embedded_element | inline_dynamic_token | inline_comment | prose_text ;
-prose_text    = { prose_char }+ ;
-prose_char    = CHAR ;
+(* The "!" prefix marks DYNAMICS. The core recognizes SYNTAX and emits events;
+   the LANGUAGE inside (expressions, !if/!for/!let, filters, truthiness) is a
+   host DIALECT (DYNAMICS.md), NOT core. FULL-SPEC "Dynamics". *)
 
-; Block-level escapes (line start only): escape one marker character
-block_escape  = block_escape_prefix block_marker { CHAR }* ;
-block_escape_prefix = "'" | "\\" ;
-block_marker  = "|" | ";" | ":" | "!" | "'" ;
+(* --- block directive (head position) --- *)
+block_directive = raw_block_directive | named_block_directive ;
 
-; Freeform: opening fence may appear after other content on the same line
-freeform      = [ freeform_prefix ] "```" { CHAR }* NEWLINE { any_line }* "```" ;
-freeform_prefix = { CHAR - NEWLINE }* ;  ; parsed as normal content before the fence
-any_line      = { CHAR }* NEWLINE ;
+named_block_directive = "!" directive_name { SPACE CHAR } ;  (* body parsed as UDON, by indent *)
+directive_name  = ident_char { ident_char } ;
+
+(* --- raw block: body captured verbatim, NOT parsed as UDON --- *)
+raw_block_directive = "!:" lang_label ":" ;   (* body is indented lines, verbatim *)
+lang_label      = { CHAR - ":" - NEWLINE } ;
+
+(* NOTE: RAW BLOCK BODY (!:lang:) is everything indented under the directive,
+   captured verbatim with no |:!; interpretation and dedented relative to the
+   directive. The body extent is INDENTATION-DELIMITED, not bracket- or
+   token-delimited -- unexpressible in EBNF. *)
+
+(* --- interpolation: expression unparsed, host evaluates --- *)
+interpolation   = "!{{" expr_text "}}" ;
+expr_text       = { balanced_brace_text } ;
+
+(* --- inline directive: UDON-parsed body --- *)
+inline_directive = "!{" directive_name { SPACE } inline_dir_body "}" ;
+inline_dir_body  = { balanced_brace_text } ;
+
+(* --- inline raw: verbatim, brace-counted --- *)
+inline_raw      = "!{:" kind_label ":" { SPACE } raw_brace_body "}" ;
+kind_label      = { CHAR - ":" } ;
+raw_brace_body  = { balanced_brace_text } ;   (* nested {} allowed if balanced *)
+
+balanced_brace_text = ( ANY_CHAR - "{" - "}" ) | "{" { balanced_brace_text } "}" ;
+
+(* NOTE: "!" guard: marks only when followed by an identifier char OR ":".
+   So "![img]", "!=", "!(" are PROSE. "!{...}" is a PROSE-LEVEL inline form
+   (interpolation or inline directive), NOT a head-position block directive --
+   the "{" after "!" routes to the inline forms above. *)
+
+(* NOTE: INTERPOLATION and RAW bodies are UNPARSED / VERBATIM. "!{{expr}}"
+   double-brace = interpolation; "!{...}" single-brace = inline directive;
+   "!{:kind: ...}" = inline raw. The parser distinguishes them by the char(s)
+   after "!{" ("{" => interpolation, ":" => raw, else directive) with no
+   lookahead -- FULL-SPEC "Unified Inline Syntax". Brace-counting finds the
+   close; an unbalanced brace is an error (use block form instead). EBNF cannot
+   express "count braces to find the end." *)
+
+(* NOTE: The internal grammar of expr_text / directive bodies (operators,
+   filters "expr | filter", control flow) is DELIBERATELY NOT CORE -- it lives
+   in DYNAMICS.md. Shown here as opaque balanced-brace text. *)
 ```
 
-## Terminals
+---
+
+## 9. Comments
 
 ```ebnf
-; Terminals
-LABEL          = /[\p{L}][\p{L}\p{N}_-]*/ ;
-quoted_label   = "'" { CHAR_NOT_SQUOTE }* "'" ;
-CHAR_NOT_SQUOTE = CHAR - "'" - "\\" | "\\" ANY_CHAR ;
-CHAR_NOT_DQUOTE = CHAR - '"' - "\\" | "\\" ANY_CHAR ;
-DIGIT          = /[0-9]/ ;
-HEX            = /[0-9a-fA-F]/ ;
-OCT            = /[0-7]/ ;
-BIN            = /[01]/ ;
-SPACE          = " " ;
-NEWLINE        = "\n" | "\r\n" ;
-CHAR           = any character except NEWLINE ;
-ANY_CHAR       = any character ;
+(* ";" starts a comment depending on CONTEXT (Comments table):
+     document root     -> line comment
+     block prose       -> LITERAL (not a comment)
+     sameline prose    -> line comment
+     block attr line   -> line comment (after values)
+     sameline attrs    -> line comment (after values)
+     inline/embedded   -> ";{...}" only
+   Comments are emitted as EVENTS, not discarded. *)
+
+line_comment    = ";" { CHAR } ;
+inline_comment  = ";{" { balanced_brace_text } "}" ;   (* brace-counted end *)
+
+(* NOTE: ";" is LITERAL in block prose but a comment start in sameline prose --
+   the same character, disambiguated purely by block-vs-sameline context. EBNF
+   cannot select the context. A block-attr / sameline value comment needs a
+   preceding space (" ;") in block context; sameline just needs ";" after the
+   value. *)
+
+(* NOTE: LINE-COMMENT CONTINUATION -- a line comment followed by a MORE-INDENTED
+   non-prefix line is treated as comment content until dedent (FULL-SPEC
+   "Comments"). And block comments participate in indent/dedent (a ";" at
+   column 0 can close several elements). Both are indentation behaviors outside
+   the grammar. *)
 ```
+
+---
+
+## 10. Freeform (Triple-Backtick) Blocks
+
+```ebnf
+(* Triple-backticks break out of indentation sensitivity entirely: body
+   captured EXACTLY, no prose dedentation, no marker interpretation. FULL-SPEC
+   "Triple-Backtick Escape". *)
+freeform_open   = "```" { CHAR - NEWLINE } NEWLINE    (* rest-of-line = start of body; info string free *)
+                  freeform_body
+                  freeform_close ;
+freeform_body   = { ANY_CHAR } ;                       (* verbatim, any indentation *)
+freeform_close  = { SPACE } "```" { SPACE } NEWLINE ;  (* first non-space content is ``` *)
+
+(* NOTE: OPENING position -- a fence opens at ANY HEAD POSITION: a line start
+   (at a structural column) OR in sameline scan after elements AND attributes,
+   BEFORE prose begins. "|a |b :k v " + ``` opens a fence. Two non-fences:
+   (1) after prose has begun on the line ("|a |b but now" + ``` => literal
+   backticks); (2) backticks indented DEEPER than the current prose's column
+   (they sit inside that prose). None of these positional conditions are
+   expressible in EBNF. *)
+
+(* NOTE: The backticks' indentation sets the block's STRUCTURAL PARENT (child of
+   whoever owns that column) -- so fences are not column-1-only. Everything
+   after the backticks on the opening line is the body's first content (free
+   info string). *)
+
+(* NOTE: CLOSING -- a line whose FIRST NON-SPACE content is triple-backticks
+   closes the block, at ANY indentation, and MUST be followed by a newline
+   (trailing whitespace before it ignored). CAUTION from spec: indenting the
+   closer means its leading whitespace is already part of the captured body
+   (body runs to the newline BEFORE the closer); only whitespace to the RIGHT
+   of the closing backticks is trimmed. The "first-non-space-is-```" close
+   condition and the whitespace-capture rule are not expressible in EBNF. *)
+
+(* NOTE: Prefer "!:lang:" (raw directive) over freeform for code samples; use
+   freeform only for assembling files without indent control. Guidance, not
+   grammar. *)
+```
+
+---
+
+## 11. Escapes
+
+```ebnf
+(* "\" is the SOLE escape, in EVERY context (block, sameline, embedded).
+   "'" is NOT an escape -- it is a string/name/key delimiter. FULL-SPEC
+   "Block-Level Escape" / "Unified Inline Syntax". *)
+
+(* Block level (line start): "\" + one of | ; : ! \  => escape, always, no
+   further lookahead. "\" + non-marker => literal backslash (NOT an escape). *)
+block_escape    = "\" block_marker { CHAR } ;
+block_marker    = "|" | ";" | ":" | "!" | "\" ;
+
+(* Sameline / embedded: "\" escapes a literal ";" (and "\|{" / "\!{" literals)
+   where ";" would otherwise start a comment. *)
+(* inline escapes appear inline as: "\;"  "\|{"  "\!{"  -- see embedded_char. *)
+
+(* NOTE: "\hello" is NOT an escape (h is not a marker) -- the backslash is
+   preserved as prose. This "escape only before a marker char" rule is a
+   one-char lookahead the grammar approximates with block_marker. *)
+
+(* NOTE: Inside quoted strings, "\" follows the DELIMITER's own escaping rules,
+   not the block-marker rule (see escaped_char in section 5). *)
+```
+
+---
+
+## 12. Prose
+
+```ebnf
+(* Any line/segment not starting with a recognized marker is PROSE belonging to
+   the parent. The parser treats prose as OPAQUE TEXT -- it does not interpret
+   the Markdown inside (that is the MARKDOWN.md companion spec, above the
+   parse). *)
+block_prose     = { prose_segment } ;
+prose_segment   = embedded_element
+                | interpolation
+                | inline_comment
+                | inline_raw
+                | prose_text ;
+prose_text      = { CHAR } ;   (* opaque; ";" is LITERAL in block prose *)
+
+(* NOTE: BLOCK prose sets an indent-column for continuation and preserves
+   literal ";". SAMELINE prose does not set an indent-column and treats ";" as
+   a comment. The only structures recognized WITHIN prose are the inline
+   bracket forms (|{...}, !{{...}}, !{...}, ;{...}, !{:...:...}); a bare "|" or
+   ";" mid-prose is literal because head position has ended. Distinguishing
+   block from sameline prose is a parser-state matter, not grammar. *)
+```
+
+---
+
+## 13. Terminals
+
+```ebnf
+LETTER    = ? Unicode letter (\p{L}) ? ;
+DIGIT     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+HEX       = DIGIT | "a" | "b" | "c" | "d" | "e" | "f"
+                  | "A" | "B" | "C" | "D" | "E" | "F" ;
+OCT       = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" ;
+BIN       = "0" | "1" ;
+SPACE     = " " ;               (* spaces only; TAB is an error *)
+NEWLINE   = "\n" | "\r\n" ;
+CHAR      = ? any character except NEWLINE ? ;
+ANY_CHAR  = ? any character, including NEWLINE ? ;
+
+unsigned_number = float | ( DIGIT { DIGIT | "_" } ) ;
+
+(* Pseudo-terminals emitted by the indentation tracker, NOT present in the
+   byte stream: *)
+INDENT    = ? increase in leading-space column ? ;
+DEDENT    = ? decrease in leading-space column ? ;
+
+(* NOTE: LETTER uses the Unicode letter class per the Dec-2025 EBNF and
+   FULL-SPEC's "letter" language; FULL-SPEC does not restate the exact code
+   point class in the current draft, so \p{L} is carried forward as an
+   inference. *)
+```
+
+---
+
+## 14. Summary of Imprecision Flags
+
+The `(* NOTE *)` comments above mark every place this grammar is an
+approximation. Grouped:
+
+- **Parser-state, not grammar:** head position & marker guards (§0, §2); the
+  "commit to prose after first word" rule (§0, §3.1, §12); the "attributes
+  before children" phase gate on `:` (§1, §3, §4); block-vs-sameline selection
+  for attributes, comments, and prose (§4, §9, §12).
+- **Indentation-driven, not grammar:** all nesting / column arithmetic (§0);
+  bare-vs-structured attribute values (§4.2); raw-block body extent (§8);
+  freeform open/close positions and whitespace capture (§10); line-comment
+  continuation and block-comment dedent (§9); prose dedentation (§0).
+- **Lookahead/counting the grammar can't express:** value-less attribute
+  detection (§4); block value's `" ;"` two-char terminator (§4.1); quote-ends-
+  item in lists (§4.3); brace-counted ends for embedded / interpolation / raw /
+  inline-comment (§7, §8, §9).
+- **Deliberately-out-of-core (dialect/host):** `<...>` envelope-body internal
+  structure and unlabelled dispatch (§5.2); reference resolution & ambiguity
+  error (§6); the `!` dynamics language — expressions, filters, control flow
+  (§8).
+- **Inferred, not verbatim in current FULL-SPEC:** bare-name / bare-trait
+  character classes (§5.1); the exact numeric literal grammar ("Ruby
+  conventions", by example) (§5); `\p{L}` for LETTER (§13); whether `<` has a
+  head-position-style guard outside attribute-value position (§5.2).
