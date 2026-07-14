@@ -93,8 +93,30 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
       warn): emit a Warning when a block value contains a stranded ` :word ` that
       looks like an intended second attribute. The value still runs to EOL; see
       FULL-SPEC "Block Attribute Values".
+- [ ] **Trait-suffix chars (D-TRAIT-SUFFIX)** — `*!?+` are legal *bare trait*
+      characters, so `.foo?` = the trait `"foo?"` (not trait `foo` + suffix), and
+      `.foo ?` (space) = trait `foo` + `$?`. Parser currently splits the suffix
+      off in both cases. Maximal-munch on the trait; see FULL-SPEC "Element
+      Suffixes". *(Was missing from this list — found by the 2026-07-14
+      examples-vs-parser audit; spec is correct, parser lags.)*
+- [ ] **`<…>` explicit-typing envelope** — recognize `<…>` in attribute-value
+      position (`>` terminates), the label ladder (`<type:…>` / `<dialect:type:…>`),
+      unlabelled dialect dispatch, and route to dialects. Bare temporal → string.
+      Zero fixtures today (biggest test hole). See FULL-SPEC "Explicit Typing".
 - [ ] **Regenerate** parser + update fixtures/tests (SPEC-based expectations,
       never traced from parser output).
+
+### Test-first worklist (from the 2026-07-14 test-suite audit)
+
+**Fixtures to UPDATE when the parser flips** (they encode the old model — rewrite
+expectations to the spec, not to parser output):
+- `temporal.yaml` (~40 cases) + `canonical.rs::fuzz_temporal_values` + `elements.yaml:226` — bare temporal now emits String/`BareValue`, not Date/Time/Duration.
+- `escapes.yaml`, `escape_prefix.yaml`, `literal_escape.yaml`, `spans.rs` (escaped-prefix tests) — `'`→`\`: rewrite `'|`/`':`/`';`/`''`/`'!` to `\|`/`\:`/`\;`/`\\`/`\!`; a bare `'|…` line is now prose *with* the apostrophe.
+- `references.yaml` — `:[id]` merge removed; mixin fixtures are non-core now.
+- The `id`/`class` → `$key`/`$traits` rename (~60 expectations across element_*/attributes/embedded/etc.) — flips with the wire-name item above.
+
+**NEW fixtures needed** (green-field — new affordances with ~no coverage):
+`<…>` typing (all forms + dispatch); attribute stacking (`:x 1 :x 2`→`[1,2]`; `:x [1 2] :x [3]`); `@`-inert (explicit form, value-position, ambiguous-key error); duplicate-definition policy enum; head-position edges (re-entry after prose, scan-through-attributes, indented-past-prose=prose); `:`-after-content=prose (defect #9); fence head/scan (sameline-after-attrs opener, after-prose=literal, deeper-than-prose=literal, any-indent closer + newline, indented-closer-whitespace-in-body); `\`-escape block forms + `\hello`=literal; multi-attr block-line Warning; array quote-ends-item + `}`-literal-in-`[…]` + UnclosedArray; typed bracket keys (`[1]`→Integer, `["01"]`→String).
 
 ## Phase 3: Build Forward (IN PROGRESS)
 
