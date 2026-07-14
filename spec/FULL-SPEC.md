@@ -24,8 +24,10 @@ Key properties:
 - Streamable, incremental parsing
 - Syntactic typing (not sniffing)
 
-**Parser behavior note:** Comments are emitted as events by the main parser.
-What consumers do with them (AST inclusion, filtering, etc.) is up to the host.
+**Parser behavior note:** Comments, blank lines (a `BlankLine` event), and
+recoverable anomalies (a `Warning` event -- e.g. inconsistent indentation) are
+all emitted as events by the main parser, alongside the structural ones. What
+consumers do with them (AST inclusion, filtering, etc.) is up to the host.
 
 ---
 
@@ -1424,7 +1426,9 @@ emits the events above; it need not implement any particular dialect.
 ```
 
 `@element[key]` is the explicit form; `@[key]` is shorthand that **errors** if
-the key is ambiguous across element types.
+the key is ambiguous across element types. A reference is not augmentable --
+`@[mit]` points, unchanged; there is no `@[mit].trait` decoration. To vary the
+target, define a new element.
 
 **A reference is inert at the core level** -- the parser emits a reference, it
 does not resolve it. *How* a consumer resolves `@` is a parser/host decision --
