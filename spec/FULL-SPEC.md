@@ -95,7 +95,7 @@ of every line**, and it has two faces:
 At head position, and *only* there, the special-start markers are recognized:
 `|` (element), `:` (attribute), `!` (directive), `;` (comment), `@` (reference),
 and triple-backtick (freeform). Each is recognized by a short **guard** -- a few characters
-of lookahead (see Element Recognition, the `!` guard, and the marker sections).
+of lookahead (see Marker Recognition, the `!` guard, and the marker sections).
 The instant a guard fails -- typically when the first prose word arrives -- the
 line **commits to prose** *for that line*: head position ends, and any later
 occurrence of those characters on it is literal text. This one state is what
@@ -107,7 +107,7 @@ safe from being read as structure.
 ```udon
 |article
   :author Alice                    ; block attribute
-  :date 2024-12-31                 ; block attribute
+  :date 2024-12-31                 ; block attr (bare = string; temporal is moving to a `<…>` dialect)
 
 |section :name intro :role lead    ; sameline attributes
   This is block prose that can span
@@ -1744,7 +1744,7 @@ Two consequences:
 
 ## Implementation Notes (Non-Normative)
 
-- Interpolation in attribute values and element IDs is not yet implemented in
+- Interpolation in attribute values and element keys is not yet implemented in
   the parser; intended behavior is described in the DYNAMICS.md companion spec.
 - Raw directives and freeform blocks are parsed as specified, but host behavior
   (highlighting, execution, etc.) is host-defined.
