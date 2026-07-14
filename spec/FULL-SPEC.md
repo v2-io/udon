@@ -544,6 +544,11 @@ comment start.
 Since `;` is the comment delimiter, `#` has no special meaning in prose.
 Markdown flows naturally.
 
+The parser treats prose as **opaque text** -- it does not interpret the Markdown
+inside it. Which Markdown subset conformant renderers honor, how UDON serves as
+a Markdown-equivalent schema, and conversion / rendering are all *above the
+parse* and specified separately in the `MARKDOWN.md` companion spec (draft).
+
 **Prefer Markdown over inline UDON in prose.** When both could work, use Markdown:
 
 ```

@@ -1,5 +1,8 @@
 # The Markdown Layers — four things that must never be conflated
 
+> **Promoted to `spec/MARKDOWN.md`** (draft, 2026-07-13). That companion spec is
+> the forward home; this note is the working draft it grew from.
+
 *Captured 2026-07-11 from Joseph's framing ("there's going to be a need for
 us to lay down the law as far as the distinction between…"). This note IS
 the law's first draft; decision 4 (REVIEW §7-F) owns only Layer 1 and needs
