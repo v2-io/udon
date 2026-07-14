@@ -2,6 +2,7 @@
 
 **Universal Document & Object Notation**
 *Version 0.7-draft -- December 2025*
+*File: `spec/CORE.md` (formerly `spec/FULL-SPEC.md`, renamed 2026-07-14). The sole source of truth.*
 
 This document merges and supersedes:
 - SPEC.md

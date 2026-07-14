@@ -5,7 +5,7 @@
 > and policies (the Layer-1 subset, the Layer-2 `doc` vocabulary, the conversion
 > and rendering decisions) are provisional and **To Be Specified**.
 
-**A companion spec to FULL-SPEC.md.** UDON touches Markdown in four distinct
+**A companion spec to CORE.md.** UDON touches Markdown in four distinct
 ways. Tools, spec text, and conversations keep sliding between them; each has a
 different owner, different conformance requirements, and different failure
 modes. This document lays down the distinctions and says which layer owns what.
@@ -17,7 +17,7 @@ Layer-2 `doc` vocabulary -- are the remaining work.*
 ## The law
 
 1. **The core parser knows none of this.** Prose is opaque text; `|h1` is just
-   an element. All four layers sit *above* the parse -- FULL-SPEC neither
+   an element. All four layers sit *above* the parse -- CORE neither
    defines nor depends on any of them.
 2. **Each layer has one owner:** Layer 1 is a spec decision (a named subset);
    Layer 2 is a schema; Layer 3 is tooling over Layers 1+2; Layer 4 is

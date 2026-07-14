@@ -22,7 +22,7 @@ Last updated: 2025-01-14
 
 | Source | Description | Status |
 |--------|-------------|--------|
-| **FULL-SPEC.md** | Authoritative specification | Current |
+| **CORE.md** | Authoritative specification | Current |
 | **libudon** | Rust parser (descent-generated) | Current defacto |
 | **udon-ruby** | Ruby gem with native extension | Behind libudon |
 | **udon-*.md** | Design documents (ast, paths, agentic) | Ahead of spec |
@@ -33,7 +33,7 @@ Last updated: 2025-01-14
 
 ## Core Features
 
-| Feature                    | FULL-SPEC | libudon | udon-ruby | descent example | Notes |
+| Feature                    | CORE | libudon | udon-ruby | descent example | Notes |
 | -------------------------- | --------- | ------- | --------- | --------------- | ----- |
 | Elements `\|name`          | ✅         | ✅       | ✅         | ✅               |       |
 | Keys `[key]`               | ✅         | ✅       | ✅         | ✅               |       |
@@ -56,7 +56,7 @@ Last updated: 2025-01-14
 
 ## Value Types
 
-| Type                    | FULL-SPEC | libudon | udon-ruby | descent example | Notes                      |
+| Type                    | CORE | libudon | udon-ruby | descent example | Notes                      |
 | ----------------------- | --------- | ------- | --------- | --------------- | -------------------------- |
 | Integer                 | ✅         | ✅       | ✅         | ✅               |                            |
 | Float                   | ✅         | ✅       | ✅         | ✅               |                            |
@@ -78,7 +78,7 @@ Last updated: 2025-01-14
 
 ## References
 
-| Feature | FULL-SPEC | libudon | udon-ast.md | feedback.md | Notes |
+| Feature | CORE | libudon | udon-ast.md | feedback.md | Notes |
 |---------|-----------|---------|-------------|-------------|-------|
 | Reference syntax | `@[id]` | `@[id]` | `@element[key]`, `@[key]` | ⚠️ `\|[id]` proposed | feedback.md proposes dropping `@` |
 | Block reference | `@[id]` | ✅ | ✅ | 📝 `\|[id]` | Insert element by id |
@@ -93,17 +93,17 @@ Last updated: 2025-01-14
 
 | Source | Bracket `[x]` expands to |
 |--------|--------------------------|
-| **FULL-SPEC.md** | `:'$id' x` (quoted attribute name) |
+| **CORE.md** | `:'$id' x` (quoted attribute name) |
 | **libudon parser** | `Attr($id)` then value |
 | **udon-ast.md** | Uses `key` terminology |
 
-**Observation:** FULL-SPEC uses `$id`, AST doc uses `key`. These might be synonyms or might need reconciliation. The `$` prefix suggests a reserved/special attribute.
+**Observation:** CORE uses `$id`, AST doc uses `key`. These might be synonyms or might need reconciliation. The `$` prefix suggests a reserved/special attribute.
 
 ---
 
 ## Escape Mechanisms
 
-| Context | FULL-SPEC | libudon | feedback.md |
+| Context | CORE | libudon | feedback.md |
 |---------|-----------|---------|-------------|
 | Block-level escape | `'` preferred, `\` alternate | `'` only | 📝 Unify on `\` |
 | Sameline escape | `\` | `\` (in strings) | ✅ |
@@ -117,7 +117,7 @@ Last updated: 2025-01-14
 
 ## Additional Features
 
-| Feature | FULL-SPEC | libudon | feedback.md | udon-*.md |
+| Feature | CORE | libudon | feedback.md | udon-*.md |
 |---------|-----------|---------|-------------|-----------|
 | BlankLine events | ❌ | ✅ | ❌ | ❌ |
 | Warning events | ✅ (inconsistent indent) | ✅ | ❌ | ❌ |
@@ -130,7 +130,7 @@ Last updated: 2025-01-14
 
 ## Terminology Differences
 
-| Concept | FULL-SPEC | udon-ast.md | Notes |
+| Concept | CORE | udon-ast.md | Notes |
 |---------|-----------|-------------|-------|
 | Bracket content | `id` | `key` | AST uses "key" consistently |
 | Element identity | `id` | `key` | "key is singular, traits are plural" |
@@ -164,7 +164,7 @@ Last updated: 2025-01-14
 - Missing: Date, Time, DateTime, Duration, RelativeTime types
 - Missing: BlankLine type
 
-### Spec (FULL-SPEC.md) decisions needed:
+### Spec (CORE.md) decisions needed:
 1. `@[id]` vs `|[id]` for references
 2. `$id` vs `key` terminology
 3. `\<newline>` for hard breaks

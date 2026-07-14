@@ -1,14 +1,14 @@
 # UDON Temporal Values Specification
 
-**Draft extension to FULL-SPEC.md**
+**Draft extension to CORE.md**
 
 > ⚠️ **Out of date -- moving to a `temporal@1` dialect (2026-07-13).** Temporal
-> is becoming a **dialect**, not core recognition. FULL-SPEC now requires all
+> is becoming a **dialect**, not core recognition. CORE now requires all
 > temporal values inside the `<...>` typing envelope -- they are no longer
 > bare-recognized (a bare `2026-07-11` is just the string `"2026-07-11"`). This
 > document still describes the *old bare-recognition* model, so **it is out of
-> date and waiting to be fixed**: it contradicts FULL-SPEC until recast as
-> `temporal@1`. FULL-SPEC's "Explicit Typing (`<...>`)" section is authoritative
+> date and waiting to be fixed**: it contradicts CORE until recast as
+> `temporal@1`. CORE's "Explicit Typing (`<...>`)" section is authoritative
 > on *where* temporal values live; the *value grammar* here (what a valid date /
 > time / duration looks like *inside* the envelope) stays useful pending the
 > recast.

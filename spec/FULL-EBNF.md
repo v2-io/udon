@@ -1,10 +1,10 @@
 # UDON Formal Grammar (EBNF)
 
-**Derived from FULL-SPEC.md (authoritative). Fresh draft 2026-07-14, pending
-review — regenerate when FULL-SPEC changes.**
+**Derived from CORE.md (authoritative). Fresh draft 2026-07-14, pending
+review — regenerate when CORE changes.**
 
 This is an EBNF-style formal grammar for UDON, derived from the current
-`FULL-SPEC.md` (v0.7-draft). It is a *reading aid*, not a parseable grammar:
+`CORE.md` (v0.7-draft). It is a *reading aid*, not a parseable grammar:
 UDON is indentation-sensitive and operates in position-dependent modes (head
 position, sameline scan, block, embedded), and a context-free EBNF cannot
 capture those modes. Every place the grammar cannot pin down the real rule is
@@ -30,7 +30,7 @@ remaining known parser-vs-spec gaps flagged inline:
 
 ## 0. Reading Guide — What EBNF Cannot Express Here
 
-UDON's parser is a bounded-lookahead state machine (FULL-SPEC "Bounded
+UDON's parser is a bounded-lookahead state machine (CORE "Bounded
 Lookahead"). Three cross-cutting behaviors sit *outside* the grammar and govern
 almost every production below:
 
@@ -48,7 +48,7 @@ almost every production below:
 
 (* NOTE: INDENTATION / COLUMNS drive all parent-child nesting via the
    authoritative rule "pop while new_column <= stack_top.base_column"
-   (FULL-SPEC "Hierarchy"). Inline elements on one line (|a |b |c) nest exactly
+   (CORE "Hierarchy"). Inline elements on one line (|a |b |c) nest exactly
    as if written on separate lines at their | columns. This grammar shows
    nesting structurally but cannot enforce the column arithmetic; there are no
    real INDENT/DEDENT tokens in the byte stream -- they are computed from
@@ -56,7 +56,7 @@ almost every production below:
    by the indentation tracker. *)
 
 (* NOTE: PROSE DEDENTATION (content_base_column, warnings on inconsistent
-   indent) is a per-line output transformation (FULL-SPEC "Automatic Prose
+   indent) is a per-line output transformation (CORE "Automatic Prose
    Dedentation"), not a syntactic rule. It affects emitted Text content, not
    the grammar. Omitted from the productions; see the spec section. *)
 ```
@@ -83,7 +83,7 @@ line_body     = element_line
               | block_prose
               | blank ;
 
-indent        = { SPACE } ;   (* spaces only; tabs are an error -- FULL-SPEC "Strict Whitespace" *)
+indent        = { SPACE } ;   (* spaces only; tabs are an error -- CORE "Strict Whitespace" *)
 blank         = ;             (* empty line -> BlankLine event *)
 
 (* NOTE: The dispatch above is guard-driven and phase-sensitive, not a clean
@@ -101,7 +101,7 @@ blank         = ;             (* empty line -> BlankLine event *)
 ```ebnf
 (* Recognized only at head position (line start at a structural column, or in
    sameline scan before prose begins). Each has a guard; guard failure => prose
-   for the rest of the line. FULL-SPEC "Marker Recognition". *)
+   for the rest of the line. CORE "Marker Recognition". *)
 
 (* "|" element -- guard: next char is a letter, "[", ".", "{", or "'".
    Any other following char => "|" is literal prose (Markdown-table safety). *)
@@ -141,7 +141,7 @@ freeform_marker_guard  = "```" ;
 ```ebnf
 (* An element is: name(opt) + identity/trait/suffix sugar + attributes +
    children. Identity, traits, and suffixes are SUGAR desugaring to
-   $-designated attributes ($key, $traits, $?, $!, $*, $+) -- FULL-SPEC
+   $-designated attributes ($key, $traits, $?, $!, $*, $+) -- CORE
    "Identity and Classification". The grammar shows surface syntax only. *)
 
 element_line  = "|" element_head { SPACE sameline_attribute }
@@ -155,7 +155,7 @@ element_head  = ( name element_sugar
 name          = bare_name | quoted_name ;
 
 (* Anonymous element: no name -- "|" is followed directly by key, trait, or
-   suffix. FULL-SPEC "Anonymous Elements". element_sugar_required = at least
+   suffix. CORE "Anonymous Elements". element_sugar_required = at least
    one of key/trait/suffix must be present when the name is absent. *)
 element_sugar_required = key trait_suffix_tail
                        | trait trait_suffix_tail
@@ -172,7 +172,7 @@ suffix        = "?" | "!" | "*" | "+" ;          (* $? $! $* $+ = true *)
 
 (* NOTE: SUFFIX POSITIONING is ambiguous in EBNF. A suffix binds to the element
    identity and may appear after the name, after the key, or space-separated at
-   the very end (FULL-SPEC "Suffix positions"). Crucially, "* ! ? +" are LEGAL
+   the very end (CORE "Suffix positions"). Crucially, "* ! ? +" are LEGAL
    BARE TRAIT CHARACTERS, so ".foo?" is the trait "foo?" (no suffix), while
    ".foo ?" (space) is trait "foo" plus a $? suffix. The grammar above lists
    the positions but cannot mechanically resolve "does this trailing ? belong
@@ -185,7 +185,7 @@ suffix        = "?" | "!" | "*" | "+" ;          (* $? $! $* $+ = true *)
    string). It is NOT a restricted identifier. See attr_value_bracket. *)
 
 (* NOTE: WHERE ATTRIBUTES END AND CHILDREN BEGIN is the "attributes before
-   children" phase gate (FULL-SPEC "Design Principles"), enforced by parser
+   children" phase gate (CORE "Design Principles"), enforced by parser
    state, not grammar. Sameline attributes must precede sameline prose/inline
    children; block attributes must precede any child element or prose line. *)
 ```
@@ -222,7 +222,7 @@ inline_element = "|" element_head { SPACE sameline_attribute } ;
 
 ```ebnf
 (* Key-value pairs. Same-key values STACK (accumulate as an ordered list, in
-   source order) -- last-wins is NOT how UDON behaves (FULL-SPEC "Attribute
+   source order) -- last-wins is NOT how UDON behaves (CORE "Attribute
    Stacking"). A value-less attribute is boolean true. *)
 
 block_attribute    = ":" attr_name [ SPACE block_attr_value ]
@@ -232,7 +232,7 @@ embedded_attribute = ":" attr_name [ SPACE embedded_attr_value ] ;
 
 attr_name          = bare_name | quoted_name ;
 (* $-designated names ($key etc.) are ordinary names but need quoting because
-   "$" is not a bare-name char: :'$key' value. FULL-SPEC "Specially-designated,
+   "$" is not a bare-name char: :'$key' value. CORE "Specially-designated,
    not reserved." *)
 
 (* NOTE: BLOCK vs SAMELINE is a positional distinction (own indented line vs
@@ -251,7 +251,7 @@ attr_name          = bare_name | quoted_name ;
 ### 4.1 Attribute value terminators (context-dependent)
 
 ```ebnf
-(* The SAME bare value grammar terminates differently by context -- FULL-SPEC
+(* The SAME bare value grammar terminates differently by context -- CORE
    "Value Terminator Rules" / "Bare String Terminators". Terminators are NOT
    consumed. *)
 
@@ -268,7 +268,7 @@ attr_value_bracket  = typed_value | scalar_value_bracket ;   (* inside |name[...
 
 (* NOTE: BLOCK VALUE RUNS TO END OF LINE. Therefore a block line holds ONE
    attribute: ":a 2 :b 3" makes :a = the string "2 :b 3", NOT two attributes
-   (FULL-SPEC). A stranded " :name " inside a block value emits a WARNING but is
+   (CORE). A stranded " :name " inside a block value emits a WARNING but is
    still taken to end-of-line. EBNF cannot express "greedy to newline except a
    space-semicolon starts a comment." *)
 
@@ -282,7 +282,7 @@ attr_value_bracket  = typed_value | scalar_value_bracket ;   (* inside |name[...
 
 ```ebnf
 (* An attribute followed by newline + deeper indent takes a STRUCTURED value:
-   child elements / prose become the value. FULL-SPEC "Complex Attribute
+   child elements / prose become the value. CORE "Complex Attribute
    Values". *)
 block_attribute_structured = ":" attr_name NEWLINE INDENT { line } DEDENT ;
 
@@ -298,7 +298,7 @@ block_attribute_structured = ":" attr_name NEWLINE INDENT { line } DEDENT ;
 inline_list   = "[" { SPACE } { list_item { SPACE } } "]" ;
 list_item     = typed_value | scalar_value_array ;
 
-(* NOTE: QUOTED-ITEM NUANCE (FULL-SPEC): a quoted string's closing quote ENDS
+(* NOTE: QUOTED-ITEM NUANCE (CORE): a quoted string's closing quote ENDS
    its item, so a char immediately after it (no space) begins the NEXT item.
    ["x"y] and ["x""y"] each yield two items, same as ["x" y]. This "quote-ends-
    item" behavior means whitespace is not the only item separator; it is a
@@ -315,7 +315,7 @@ list_item     = typed_value | scalar_value_array ;
 
 ```ebnf
 (* BARE recognition is the FROZEN CORE SCALAR SET -- recognized from syntax
-   alone (FULL-SPEC "Value Types"). This set is closed; nothing is added to
+   alone (CORE "Value Types"). This set is closed; nothing is added to
    bare recognition. Everything else goes through the <...> envelope (section
    5.2). "Anything else" bare = string. *)
 
@@ -360,7 +360,7 @@ real_part     = unsigned_number ;
    a decimal digit stays decimal (num_zero -> num_dec), so 0755 = 755; octal
    needs the 0o prefix. The "r" on a rational and the "i" on a complex are
    MANDATORY -- drop either and the token falls back to String.
-   TWO PARSER-VS-SPEC GAPS: (1) explicit-decimal "0d" is in FULL-SPEC's intent
+   TWO PARSER-VS-SPEC GAPS: (1) explicit-decimal "0d" is in CORE's intent
    but num_zero has no "d" branch, so bare 0d... currently parses as String
    (Tier-2 catch-up). (2) For an UNSIGNED real, the grammar forms a complex only
    with "+" (3+4i); a bare "3-4i" is diverted into the date probe and falls back
@@ -375,7 +375,7 @@ dq_char       = escaped_char | ( CHAR - '"' ) ;
 sq_char       = escaped_char | ( CHAR - "'" ) ;
 escaped_char  = "\" ANY_CHAR ;
 (* Inside quoted strings, escape prefixes have no special meaning beyond the
-   delimiter's own escaping -- FULL-SPEC "Note" under Sameline/Embedded Escape. *)
+   delimiter's own escaping -- CORE "Note" under Sameline/Embedded Escape. *)
 
 string_bare_block    = { CHAR - NEWLINE }        (* stops at " ;" -- see 4.1 note *) ;
 string_bare_sameline = { CHAR - NEWLINE - SPACE } ;
@@ -402,7 +402,7 @@ trait_char    = XID_CONT | "-" | "*" | "!" | "?" | "+" ;   (* absorbs the suffix
    core/generator/udon.desc: name-start = XLBL_START = Unicode XID_Start;
    name-continue = XLBL_CONT = XID_Continue + "-" (functions `name`,
    `class_name`). "$" is NOT an XID char, so $-designated names need quotes.
-   PARSER-VS-SPEC GAP: the trait's extra "* ! ? +" chars (FULL-SPEC "Element
+   PARSER-VS-SPEC GAP: the trait's extra "* ! ? +" chars (CORE "Element
    Suffixes": ".foo?" is trait "foo?") are SPEC INTENT only -- the reference
    `class_name` accepts XLBL_CONT alone, so today ".foo?" parses as trait "foo"
    plus a $? element suffix. Tier-2 parser catch-up; trait_char shows intent. *)
@@ -412,7 +412,7 @@ trait_char    = XID_CONT | "-" | "*" | "!" | "?" | "+" ;   (* absorbs the suffix
 
 ```ebnf
 (* Every NON-core (dialect) type is written inside a <...> envelope in
-   attribute-value position, where ">" terminates the value. FULL-SPEC
+   attribute-value position, where ">" terminates the value. CORE
    "Explicit Typing". *)
 typed_value   = "<" envelope_body ">" ;
 
@@ -437,7 +437,7 @@ dialect_label   = ident_char { ident_char } ;
    This is a HOST/runtime resolution, entirely outside the grammar. The core
    recognizes only the envelope SYNTAX. *)
 
-(* NOTE: Does "<" open an envelope ONLY in attribute-value position? FULL-SPEC
+(* NOTE: Does "<" open an envelope ONLY in attribute-value position? CORE
    says the envelope lives "in attribute-value position." A bare "<" in prose
    or a value-less context is presumably literal; the spec does not give an
    explicit guard for "<" the way it does for | : ! @ ;. Flagged as
@@ -450,7 +450,7 @@ dialect_label   = ident_char { ident_char } ;
 
 ```ebnf
 (* "@" refers to a defined element by identity. INERT at core level: the parser
-   emits a reference and does not resolve it. FULL-SPEC "References". *)
+   emits a reference and does not resolve it. CORE "References". *)
 reference     = "@" [ ref_element_name ] key ;   (* @[key] or @element[key] *)
 ref_element_name = bare_name | quoted_name ;
 
@@ -473,7 +473,7 @@ ref_element_name = bare_name | quoted_name ;
 ```ebnf
 (* Inline elements in prose. "|{" opens; content terminates at brace-balanced
    "}". Once in bracket mode, STAY in bracket mode -- nested elements must also
-   use |{...}, never bare |name. FULL-SPEC "Inline and Embedded Elements". *)
+   use |{...}, never bare |name. CORE "Inline and Embedded Elements". *)
 embedded_element = "|{" element_head { SPACE embedded_attribute }
                         { embedded_content } "}" ;
 
@@ -488,7 +488,7 @@ embedded_char    = "\;" | "\|{" | ( ANY_CHAR - "}" - "|{" - ";" ) ;
 (* NOTE: Embedded content terminates at the BRACE-BALANCED "}". Nested "|{...}"
    pairs count toward balance. EBNF recursion shows the nesting but the real
    parser uses brace-counting; multi-line embedded content is allowed and
-   INTERNAL INDENTATION IS IGNORED (FULL-SPEC), which the grammar cannot show. *)
+   INTERNAL INDENTATION IS IGNORED (CORE), which the grammar cannot show. *)
 
 (* NOTE: "Once in bracket mode, stay in bracket mode" -- a bare "|name" inside
    |{...} is INVALID. The grammar enforces this by only offering
@@ -504,7 +504,7 @@ embedded_char    = "\;" | "\|{" | ( ANY_CHAR - "}" - "|{" - ";" ) ;
 ```ebnf
 (* The "!" prefix marks DYNAMICS. The core recognizes SYNTAX and emits events;
    the LANGUAGE inside (expressions, !if/!for/!let, filters, truthiness) is a
-   host DIALECT (DYNAMICS.md), NOT core. FULL-SPEC "Dynamics". *)
+   host DIALECT (DYNAMICS.md), NOT core. CORE "Dynamics". *)
 
 (* --- block directive (head position) --- *)
 block_directive = raw_block_directive | named_block_directive ;
@@ -545,7 +545,7 @@ balanced_brace_text = ( ANY_CHAR - "{" - "}" ) | "{" { balanced_brace_text } "}"
    double-brace = interpolation; "!{...}" single-brace = inline directive;
    "!{:kind: ...}" = inline raw. The parser distinguishes them by the char(s)
    after "!{" ("{" => interpolation, ":" => raw, else directive) with no
-   lookahead -- FULL-SPEC "Unified Inline Syntax". Brace-counting finds the
+   lookahead -- CORE "Unified Inline Syntax". Brace-counting finds the
    close; an unbalanced brace is an error (use block form instead). EBNF cannot
    express "count braces to find the end." *)
 
@@ -578,7 +578,7 @@ inline_comment  = ";{" { balanced_brace_text } "}" ;   (* brace-counted end *)
    value. *)
 
 (* NOTE: LINE-COMMENT CONTINUATION -- a line comment followed by a MORE-INDENTED
-   non-prefix line is treated as comment content until dedent (FULL-SPEC
+   non-prefix line is treated as comment content until dedent (CORE
    "Comments"). And block comments participate in indent/dedent (a ";" at
    column 0 can close several elements). Both are indentation behaviors outside
    the grammar. *)
@@ -590,7 +590,7 @@ inline_comment  = ";{" { balanced_brace_text } "}" ;   (* brace-counted end *)
 
 ```ebnf
 (* Triple-backticks break out of indentation sensitivity entirely: body
-   captured EXACTLY, no prose dedentation, no marker interpretation. FULL-SPEC
+   captured EXACTLY, no prose dedentation, no marker interpretation. CORE
    "Triple-Backtick Escape". *)
 freeform_open   = "```" { CHAR - NEWLINE } NEWLINE    (* rest-of-line = start of body; info string free *)
                   freeform_body
@@ -630,7 +630,7 @@ freeform_close  = { SPACE } "```" { SPACE } NEWLINE ;  (* first non-space conten
 
 ```ebnf
 (* "\" is the SOLE escape, in EVERY context (block, sameline, embedded).
-   "'" is NOT an escape -- it is a string/name/key delimiter. FULL-SPEC
+   "'" is NOT an escape -- it is a string/name/key delimiter. CORE
    "Block-Level Escape" / "Unified Inline Syntax". *)
 
 (* Block level (line start): "\" + one of | ; : ! \  => escape, always, no
@@ -701,7 +701,7 @@ INDENT    = ? increase in leading-space column ? ;
 DEDENT    = ? decrease in leading-space column ? ;
 
 (* NOTE: LETTER uses the Unicode letter class per the Dec-2025 EBNF and
-   FULL-SPEC's "letter" language; FULL-SPEC does not restate the exact code
+   CORE's "letter" language; CORE does not restate the exact code
    point class in the current draft, so \p{L} is carried forward as an
    inference. *)
 ```
@@ -735,6 +735,6 @@ approximation. Grouped:
   flagged inline: explicit-decimal `0d` (spec intent, no `d` branch in
   `num_zero`) and the trait suffix chars `* ! ? +` (spec intent, `class_name`
   accepts `XLBL_CONT` only).
-- **Inferred, not verbatim in current FULL-SPEC:** `\p{L}` for LETTER (§13);
+- **Inferred, not verbatim in current CORE:** `\p{L}` for LETTER (§13);
   whether `<` has a head-position-style guard outside attribute-value position
   (§5.2).

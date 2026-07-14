@@ -10,7 +10,7 @@ wrong color teaches a wrong parse.
 All three implementations were validated against `examples/cheatsheet.udon`
 and `examples/comprehensive.udon` (the Obsidian tokenizer and the TextMate
 grammar via automated token dumps; the vim syntax via headless `vim -es`
-synID dumps). Spec of record: `spec/FULL-SPEC.md` v0.7-draft.
+synID dumps). Spec of record: `spec/CORE.md` v0.7-draft.
 
 ## Contents
 
@@ -165,7 +165,7 @@ with `PackageDev`. (Deferred: a native `.sublime-syntax` port.)
 ### Notes / limitations
 
 - Block-attribute lines with **multiple** attributes (`:a 1 :b 2` on one
-  line) color only the first key: FULL-SPEC says block values run to end of
+  line) color only the first key: CORE says block values run to end of
   line, while `examples/cheatsheet.udon` line 18 uses several attrs per
   block line — the spec and the cheatsheet disagree here, so the grammar
   refuses to guess. (Flagged as a spec ambiguity; sameline attrs on

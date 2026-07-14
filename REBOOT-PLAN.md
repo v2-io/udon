@@ -20,8 +20,8 @@ udon/                          # THE repo: spec, core, tools, history
 ├── CLAUDE.md                  # umbrella agent guide
 ├── REVIEW-JULY-2026.md        # the estate review (evidence layer)
 ├── REBOOT-PLAN.md             # this file (action layer)
-├── spec/                      # FULL-SPEC.md, TIME-SPEC.md, FULL-EBNF.md,
-│                              #   FULL-SPEC-supplement.md
+├── spec/                      # CORE.md, TIME-SPEC.md, FULL-EBNF.md,
+│                              #   CORE-supplement.md
 │                              #   → eventual home of the FUSED literate source
 ├── design/                    # udon-ast.md, udon-paths.md, udon-agentic.md,
 │                              #   udon-schema-exploration.md, udon-guarantees.md

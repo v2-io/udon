@@ -20,7 +20,7 @@
  *      spans through MarkdownRenderer can be added beside it without
  *      touching the tokenizer.
  *
- * Highlighting fidelity notes (spec: spec/FULL-SPEC.md, v0.7-draft):
+ * Highlighting fidelity notes (spec: spec/CORE.md, v0.7-draft):
  *   - `;` is context-sensitive. It is colored as a comment ONLY where the
  *     spec says it is one: line-initial (block comment), or preceded by
  *     whitespace on a structure line (element/attr/directive sameline

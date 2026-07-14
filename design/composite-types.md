@@ -2,7 +2,7 @@
 
 *Direction, not ratified — captured 2026-07-14 from Joseph. This is where the
 `<…>` typing envelope is headed "when we get there"; recorded so the idea isn't
-lost. Nothing here is in FULL-SPEC yet.*
+lost. Nothing here is in CORE yet.*
 
 ## The problem it solves
 

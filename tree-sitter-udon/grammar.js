@@ -4,7 +4,7 @@
  * This grammar is designed for syntax highlighting, not full structural parsing.
  * It uses Python-style indent tracking rather than UDON's precise column semantics.
  *
- * Based on FULL-SPEC.md v0.7-draft (December 2025)
+ * Based on CORE.md v0.7-draft (December 2025)
  */
 
 // Precedence levels

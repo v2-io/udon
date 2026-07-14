@@ -1,10 +1,10 @@
-# FULL-SPEC-TODO — spec-text edits pending for FULL-SPEC.md
+# CORE-TODO — spec-text edits pending for CORE.md
 
-**Scope: only edits to `FULL-SPEC.md` itself.** Parser / grammar work lives in
+**Scope: only edits to `CORE.md` itself.** Parser / grammar work lives in
 `core/PLAN.md`; the companion specs (`DYNAMICS.md`, `MARKDOWN.md`, `TIME-SPEC.md`)
 carry their own status banners.
 
-> *Discipline (META-1): read the FULL-SPEC section before editing or advising on
+> *Discipline (META-1): read the CORE section before editing or advising on
 > it, and re-grep line numbers — they drift.*
 
 ---

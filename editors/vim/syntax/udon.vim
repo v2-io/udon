@@ -1,5 +1,5 @@
 " Vim syntax file for UDON (Universal Document & Object Notation)
-" Spec: spec/FULL-SPEC.md v0.7-draft (December 2025)
+" Spec: spec/CORE.md v0.7-draft (December 2025)
 "
 " Safeset highlighting: only constructs whose parse is unambiguous from local
 " context get color. Under-highlight rather than mis-highlight.

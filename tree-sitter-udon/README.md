@@ -111,7 +111,7 @@ tree-sitter-udon/
 
 ## Related
 
-- [UDON Specification](../FULL-SPEC.md)
+- [UDON Specification](../spec/CORE.md)
 - [libudon](https://github.com/josephwecker/libudon) - Rust parser core
 - [udon-ruby](https://github.com/josephwecker/udon-ruby) - Ruby gem
 

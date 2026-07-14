@@ -12,19 +12,19 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **spec/FULL-SPEC-TODO.md** — the plain worklist of edits not yet applied to
-   FULL-SPEC (rebuilt 2026-07-12). The dense predecessor ledgers are archived
+3. **spec/CORE-TODO.md** — the plain worklist of edits not yet applied to
+   CORE (rebuilt 2026-07-12). The dense predecessor ledgers are archived
    at **_archive/DECIDED.bak.md** + **_archive/FULL-SPEC-TODO.bak.md** (reference
    only — e.g. the core/host/schema/dialect ownership discussion). Neither the
-   worklist nor the archives is the spec; FULL-SPEC.md is.
-4. **spec/FULL-SPEC.md** — the authoritative language specification
+   worklist nor the archives is the spec; CORE.md is.
+4. **spec/CORE.md** — the authoritative language specification
    (v0.7-draft, with known divergences catalogued in the review's §2
    genealogy table).
 
 ## Layout
 
 ```
-spec/               Ratified layer: FULL-SPEC.md, TIME-SPEC.md, FULL-EBNF.md
+spec/               Ratified layer: CORE.md, TIME-SPEC.md, FULL-EBNF.md
                     (future home of the fused literate source — CTQ-E)
 design/             Ahead-of-spec layer: udon-ast, udon-paths, udon-agentic,
                     schema + guarantees explorations
@@ -63,7 +63,7 @@ cargo test --workspace -- --ignored       # FULL fixture conformance suite
 **WHEN YOU ENCOUNTER AMBIGUITY, STOP AND DISCUSS.**
 
 Do NOT:
-- Invent syntax rules that aren't in spec/FULL-SPEC.md
+- Invent syntax rules that aren't in spec/CORE.md
 - Assume the "obvious" interpretation is correct
 - Silently make design decisions to unblock yourself
 
@@ -78,14 +78,14 @@ touches one, it's blocked on the valve, not on you. Say so.
 
 ## Ground Truth
 
-**spec/FULL-SPEC.md is the authoritative specification.** As of 2026-07-13 it
+**spec/CORE.md is the authoritative specification.** As of 2026-07-13 it
 reflects the ratified decisions (identity `key`/`traits`, `<…>` typing, fences,
 escapes, `@`-inert, etc.); the companion specs (`DYNAMICS.md`, `MARKDOWN.md`,
 `TIME-SPEC.md`) each carry their own status banner. The remaining known
 divergences are **Tier-2 parser** — the spec is *ahead of the parser* (typed
 bracket-IDs, the `:id` hijack, `:`-attrs-before-children, wire-names) — all
-tracked in `spec/FULL-SPEC-TODO.md`. For any NEW divergence you find, add it to
-`FULL-SPEC-TODO.md` with git-dated evidence rather than picking a side silently.
+tracked in `spec/CORE-TODO.md`. For any NEW divergence you find, add it to
+`CORE-TODO.md` with git-dated evidence rather than picking a side silently.
 The `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 
@@ -107,7 +107,7 @@ corpus (`test/usability/`) is evidence, not spec.
 
 ## When Stuck
 
-1. Re-read the spec/FULL-SPEC.md section for the construct in question
+1. Re-read the spec/CORE.md section for the construct in question
 2. Check examples/ and core/udon-core/tests/fixtures/ for usage patterns
 3. Check the review's genealogy table — your "bug" may be a known divergence
 4. **Ask Joseph** — ambiguity is valuable information, not a blocker
