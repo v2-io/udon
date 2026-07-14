@@ -463,6 +463,13 @@ Terminators: `\n` or ` ;` (space followed by semicolon)
 - `;` preceded by space starts comment
 - `;` without preceding space is part of value
 
+Because the value runs to end-of-line, a *block* line holds **one** attribute:
+`:bttr 2 :cttr 3` makes `:bttr` = the string `"2 :cttr 3"`, not two attributes.
+For multiple attributes, use the element (sameline) line (`|el :a 1 :b 2`) or
+separate block lines. A stranded ` :name ` inside a block value (looking like an
+intended second attribute) triggers a **Warning** -- the value is still taken to
+end-of-line; the warning just flags the likely mistake.
+
 #### Sameline Attribute Values
 
 ```udon

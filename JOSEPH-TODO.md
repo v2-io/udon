@@ -8,10 +8,6 @@ decision from you — it's tracked in `spec/FULL-SPEC-TODO.md`.
 
 ## Genuinely needs you
 
-- **Confirm "multi-attr block lines."** The old worklist said "legalize (drop the
-  warning)", but block attribute values run to end-of-line, so `:a 1 :b 2` on a
-  *block* line makes `:a` = `"1 :b 2"`. There is no spec text to change; it reads
-  as a parser-warning / cheatsheet matter. What did you intend?
 - **Obsidian first-load smoke test** (~30 s, only you can): load
   `editors/obsidian-udon/` into a vault, enable, open a `.udon` file.
 - **Optional:** two tiny pre-existing FULL-SPEC gaps (quoted-strings-in-arrays;
@@ -27,5 +23,6 @@ decision from you — it's tracked in `spec/FULL-SPEC-TODO.md`.
 All decisions live in FULL-SPEC (authoritative) + git history; the archived
 ledger is `decisions/DECIDED.bak.md`, the predecessor briefs in
 `decisions/_superseded/`. This session resolved `:[id]` (dropped), mixins
-(non-core / experimental), the `'`-string-delimiter (kept), and completed the
-full spec-text integration.
+(non-core / experimental), the `'`-string-delimiter (kept), multi-attr block
+lines (keep EOL semantics + Warning on stranded `:word`), and completed the full
+spec-text integration.

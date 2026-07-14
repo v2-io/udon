@@ -89,9 +89,10 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
 - [ ] **Streaming rebuild** (defect #1): explicit-stack backend in descent-core.
 - [ ] **`'`→`\` escape**: `'` is no longer a head-position escape (grammar still
       lists it; see FULL-SPEC "Block-Level Escape").
-- [ ] **multi-attr block lines**: block value runs to EOL, so `:a 1 :b 2` makes
-      `:a` = "1 :b 2" — correct but surprising; optional lint/Warning when a
-      block value contains a stranded ` :word ` (pending Joseph's call).
+- [ ] **multi-attr block-line Warning** (decided 2026-07-14: keep EOL semantics,
+      warn): emit a Warning when a block value contains a stranded ` :word ` that
+      looks like an intended second attribute. The value still runs to EOL; see
+      FULL-SPEC "Block Attribute Values".
 - [ ] **Regenerate** parser + update fixtures/tests (SPEC-based expectations,
       never traced from parser output).
 
