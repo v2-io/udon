@@ -7,7 +7,7 @@ UDON is what you get when "Markdown with YAML frontmatter" grows up—structure 
 ```
 |article[intro].featured
   :author Joseph Wecker
-  :date 2025-12-22
+  :date 2025-12-22  ; bare date is a string; temporal is moving to a <…> dialect
   :tags [udon notation design]
 
   |heading Welcome to UDON

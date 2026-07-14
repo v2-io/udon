@@ -1,8 +1,8 @@
 ; UDON — "|" element, ":" attribute, ";" comment, "!" dynamic
 
-|element[id].class :attr value
-|element[id].class :attr value Content on same line
-|element[id].class :attr value |child Child's content
+|element[key].trait :attr value
+|element[key].trait :attr value Content on same line
+|element[key].trait :attr value |child Child's content
 |element
   |child
   Prose with |{em inline elements} and !{{interpolation}}.
@@ -24,11 +24,10 @@
 |.reusable :timeout 30
 |service.reusable.another :name x ; multiple mixins
 |functional?                      ; == |functional :'?' true
-|field?[id]+                      ; suffix before/after id
+|field?[key]+                     ; suffix before/after key
 
 |license[mit] MIT License...
-|project :license @[mit]          ; @[id] refers to element (inert; tools resolve)
-|db :[base] :override val         ; :[id] merges attributes
+|project :license @[mit]          ; @[key] refers to element (inert; tools resolve)
 
 !if user
   Welcome, !{{user.name | capitalize}}!
@@ -47,7 +46,7 @@
   # not parsed as UDON
 !include partials/header
 
-'|escaped ':colon ';semicolon ''apostrophe
+\|escaped \:colon \;semicolon \\backslash
 
 |raw ```
 literal |pipes and :colons

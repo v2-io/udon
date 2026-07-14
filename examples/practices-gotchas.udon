@@ -4,7 +4,7 @@
 |guide[practices-gotchas]
   :title "UDON Practices & Gotchas"
   :version 0.1
-  :date 2025-12-24
+  :date 2025-12-24  ; bare date is a string; temporal is moving to a <…> dialect
 
   UDON is most readable when you lean on prose and keep structure explicit.
   This guide highlights practical patterns and the most common surprises.
@@ -122,13 +122,14 @@
           ; :cache is absent
 
     |gotcha[escape-prefix]
-      The apostrophe escapes only the next character at a prefix position.
+      A backslash escapes the next character at a prefix position. `\` is the
+      sole escape now — a head-position apostrophe is no longer an escape.
 
       !:udon:
-        '|not-an-element
-        ':not-an-attribute
-        ';not-a-comment
-        ''literal apostrophe
+        \|not-an-element
+        \:not-an-attribute
+        \;not-a-comment
+        \\literal backslash
 
     |gotcha[mixins-scope]
       Mixins are powerful, but child/prose inheritance semantics are still

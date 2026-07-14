@@ -25,8 +25,8 @@
  *     spec says it is one: line-initial (block comment), or preceded by
  *     whitespace on a structure line (element/attr/directive sameline
  *     context). Semicolons inside block prose are literal and stay plain.
- *   - `'` escapes only at line start and only before one of  | ; : ! '
- *     (spec "Block-Level Escape"). `'hello` is prose, not an escape.
+ *   - `\` escapes only at line start and only before one of  | ; : ! \
+ *     (spec "Block-Level Escape"). `\hello` is prose, not an escape.
  *   - `|` opens an element only when followed by letter, `[`, `.`, `{`, or
  *     `'` (spec "Element recognition rule") -- and, in this safeset, only at
  *     line start or after whitespace on a structure line. A pipe inside a
@@ -152,8 +152,8 @@ function tokenizeLine(text, push) {
     return;
   }
 
-  // Block-level escape: ' (or \) followed by a marker char, at line start.
-  if ((c0 === "'" || c0 === '\\') && rest.length > 1 && "|;:!'".includes(rest[1])) {
+  // Block-level escape: \ followed by a marker char, at line start.
+  if (c0 === '\\' && rest.length > 1 && "|;:!\\".includes(rest[1])) {
     push(indent, indent + 2, 'udon-escape');
     scanProse(text, indent + 2, push);
     return;

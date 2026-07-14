@@ -83,5 +83,5 @@
 /* !{{ interpolation }} body */
 .udon-editor .udon-interp { color: var(--code-function, var(--color-yellow)); }
 
-/* ' escapes ('| ': '; '! '') */
+/* \ escapes (\| \: \; \! \\) */
 .udon-editor .udon-escape { color: var(--code-important, var(--color-orange)); }

@@ -31,7 +31,7 @@ context-sensitivity in prose that these grammars are careful about.
 What gets highlighted (only where the parse is locally unambiguous):
 
 - The four sigils in their block positions: `|element`, `:attr`, `;comment`,
-  `!directive` — plus element identity parts `[id]`, `.trait`, and the
+  `!directive` — plus element identity parts `[key]`, `.trait`, and the
   suffix modifiers `? ! * +`.
 - Inline forms in prose: `|{element ...}`, `;{comment}`,
   `!{{interpolation | filters}}`, `!{directive ...}`, `!{:kind: raw}`.
@@ -40,7 +40,7 @@ What gets highlighted (only where the parse is locally unambiguous):
   `[list]`). Bare-string values stay plain — they are just strings.
 - `!:lang:` raw blocks and ``` freeform blocks: bodies rendered plain
   (no UDON interpretation — which is exactly what the parser does).
-- Line-initial `'`-escapes (`'| ': '; '! ''`) as escape marks.
+- Line-initial `\`-escapes (`\| \: \; \! \\`) as escape marks.
 
 The two subtle cases, handled deliberately:
 
@@ -49,8 +49,8 @@ The two subtle cases, handled deliberately:
   whitespace-preceded on a structure line (element/attr/directive sameline
   context). Semicolons inside block prose are literal and stay plain;
   `;{...}` is the only comment form recognized inside prose.
-- **`'` escape**: only line-initial and only before one of `|;:!'`.
-  `'hello` is prose, not an escape.
+- **`\` escape**: only line-initial and only before one of `|;:!\`.
+  `\hello` is prose, not an escape.
 
 Also deliberate: a `|` inside a prose line is never colored (Markdown tables
 survive), and `|` opens an element only when followed by letter/`[`/`.`/

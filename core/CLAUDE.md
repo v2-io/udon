@@ -23,7 +23,7 @@ Key changes from old architecture:
 
 The UDON specification lives in a single authoritative file:
 
-- **~/src/udon/FULL-SPEC.md** - Complete unified specification
+- **~/src/udon/spec/FULL-SPEC.md** - Complete unified specification
 
 **If you don't have this file in your context, stop and read it now.**
 Every session should start by confirming you understand the current spec.
@@ -241,7 +241,7 @@ should make it more obvious what UDON does.
 
 | Prefix | Domain | Example |
 |--------|--------|---------|
-| `\|` | Structure | `\|div`, `\|[id]`, `\|.class` |
+| `\|` | Structure | `\|div`, `\|[key]`, `\|.trait` |
 | `:` | Attributes | `:key value` |
 | `!` | Dynamics | `!if cond`, `!{{expr}}` |
 | `;` | Comments | `; comment` |

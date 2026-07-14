@@ -2,9 +2,9 @@
 
 ; === CORE PATTERNS ===
 
-|element[id].class :attr value
-|element[id].class :attr value Content on same line
-|element[id].class :attr value |child Child content here
+|element[key].trait :attr value
+|element[key].trait :attr value Content on same line
+|element[key].trait :attr value |child Child content here
 |element
   |child
   Prose content with |{em inline elements} and !{{interpolation}}.
@@ -43,7 +43,7 @@
 ; === ELEMENTS ===
 
 ; Element variations:
-|element-name[optional-id].class1.class2
+|element-name[optional-key].trait1.trait2
 |[id-only]                           ; no element name
 |empty                               ; empty element
 
@@ -64,13 +64,7 @@
 
 |project
   :name "My Project"
-  :license @[mit]               ; @[id] inserts full element
-
-|.db-defaults[base]
-  :adapter postgres
-  :pool 5
-
-|database :[base] :name mydb    ; :[id] merges attributes
+  :license @[mit]               ; @[key] refers to element (inert; tools resolve)
 
 ; === DYNAMICS ===
 
@@ -109,11 +103,11 @@
 
 ; === ESCAPING ===
 
-; Apostrophe escapes the next character:
-'|not-an-element — prose starting with pipe
-':not-an-attribute — colon in text
-';not-a-comment — semicolon in prose
-''literal apostrophe
+; Backslash escapes the next character:
+\|not-an-element — prose starting with pipe
+\:not-an-attribute — colon in text
+\;not-a-comment — semicolon in prose
+\\literal backslash
 
 ; Triple backtick for raw blocks:
 |example

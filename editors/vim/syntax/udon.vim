@@ -41,8 +41,8 @@ syn region udonFreeform matchgroup=udonFence
 syn match udonComment /^\s*;.*$/ contains=udonTodo
 syn keyword udonTodo TODO FIXME XXX NOTE contained
 
-" Block-level escape: ' or \ followed by a marker char, at line start only.
-syn match udonEscape /^\s*['\\][|;:!']/
+" Block-level escape: \ followed by a marker char, at line start only.
+syn match udonEscape /^\s*\\[|;:!\\]/
 
 " ---------------------------------------------------------------------------
 " Inline forms (usable in prose and on structure lines)
