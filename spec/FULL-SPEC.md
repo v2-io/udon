@@ -238,6 +238,23 @@ space-separated form or precedes the trait: a suffix character touching a
 |el?.bar         ; $? = true, traits: ["bar"]
 ```
 
+### Anonymous Elements
+
+An element's **name is optional.** A pipe may be followed directly by a key, a
+trait, or a suffix, producing an element with no name:
+
+```
+|[k]                      ; anonymous, key k
+|.some-trait              ; anonymous, trait "some-trait"
+|.some-trait :adapter pg  ; ...and carrying attributes
+|?                        ; anonymous, just a suffix flag
+```
+
+An anonymous element is an ordinary element in every respect -- it simply has
+no name, and carries whatever key, traits, attributes, and children it is
+given. No special meaning attaches to namelessness at the core level; a
+consumer may give one (see Mixins).
+
 ### Host Views (Recommended)
 
 The wire form carries the specially-designated attributes as-is. Like Markdown,
@@ -1449,47 +1466,11 @@ The `!` prefix is intentionally extensible. Hosts may provide:
 
 ---
 
-## Implicit References
+## References and Mixins
 
-### Class as Mixin
+### References (`@`)
 
-A class-only element (no element name) defines inheritable traits:
-
-```
-|.defaults
-  :adapter postgres
-  :host localhost
-  :pool 5
-
-|database[production].defaults
-  :database prod_db
-  :pool 20  ; Override
-```
-
-Classes also serve as lightweight classification even when no mixin is defined.
-
-**Note:** The precise behavior for inheriting child elements and prose content
-from mixins is not yet fully defined. Attribute inheritance (with override) is
-clear; subtree inheritance semantics are still being refined.
-
-### Multiple Inheritance
-
-```
-|.logging
-  :log-level info
-
-|.caching
-  :cache-ttl 3600
-
-|service[api].defaults.logging.caching
-  :name api-server
-```
-
-Left-to-right application; later values override earlier (CSS cascade).
-
-### ID Reference
-
-Reference elements by identity:
+`@` refers to an element defined elsewhere, by identity:
 
 ```
 |license[mit]
@@ -1498,35 +1479,47 @@ Reference elements by identity:
 
 |project
   :name MyProject
-  :license @[mit]    ; Reference by ID
+  :license @[mit]    ; refer to the element keyed "mit"
 ```
 
-**Two forms:**
+`@element[key]` is the explicit form; `@[key]` is shorthand that **errors** if
+the key is ambiguous across element types.
 
-`@[id]` -- Insert the entire element (structure and content):
+**A reference is inert at the core level** -- the parser emits a reference, it
+does not resolve it. *How* a consumer resolves `@` is a parser/host decision --
+the same recognize-in-core / resolve-in-consumer posture used throughout UDON.
+Resolution modes a host may offer:
+
+- **transclude** -- insert the referenced element's structure and content
+- **merge attributes** -- fold in only the referenced element's attributes
+- **leave inert** -- keep it as a pointer (the streaming / default behavior)
+
+The earlier `:[id]` attribute-merge syntax is **removed**: "merge that element's
+attributes" is just the *merge* resolution mode above, chosen by the consumer --
+not a second core syntax.
+
+### Mixins (experimental -- a parser/host behavior, not core)
+
+We are experimenting with letting an anonymous, trait-only element act as a
+**mixin**: attaching its trait to another element makes that element inherit
+the mixin's attributes.
 
 ```
-|template[header]
-  |nav
-    |a :href / Home
-    |a :href /about About
-
-|page
-  @[header]          ; Inserts the full |nav structure here
-  |main ...
-```
-
-`:[id]` -- Merge only attributes from that element:
-
-```
-|.db-defaults[base-db]
+|.defaults
   :adapter postgres
   :host localhost
-  :pool 5
 
-|database :[base-db] :database myapp_prod :pool 20
-; Equivalent to: |database :adapter postgres :host localhost :pool 5 :database myapp_prod :pool 20
+|database[prod].defaults
+  :database prod_db     ; a mixin-aware host also gives it adapter, host
 ```
+
+Like reference resolution, **this is a parser/host decision -- not required by
+core UDON.** The core sees only what is written (see Anonymous Elements): an
+anonymous element carrying a trait and some attributes, and another element
+that carries the same trait. Whether a consumer reads a matching trait as
+inheritance -- and how it resolves overrides, multiple mixins, or child/prose
+inheritance -- is entirely up to that consumer. A parser that does no mixin
+resolution is still fully conformant.
 
 ---
 

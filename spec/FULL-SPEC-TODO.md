@@ -19,14 +19,15 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 
 ---
 
-## Still Joseph's to decide (small)
+## Open decisions
 
-- [ ] **`:[id]` attribute-merge** (:1479–1489) — keep it or drop it? It's a
-      *second* dereference form living alongside `@`, never actually
-      adjudicated. If kept, it needs the same inert / deref-is-a-knob treatment
-      as `@`. *(This was the one call you expected to make.)*
-- [ ] **Mixins** (:1414–1448, "Class as Mixin") — rethink or drop. Blocks the
-      class→trait rename of that section; subtree inheritance was never defined.
+**None** — all resolved (2026-07-13):
+- `:[id]` attribute-merge → **removed**; "merge that element's attributes" is
+  now just the *merge* resolution mode of `@` (parser/host-defined). ✅ spec.
+- Mixins → **not core**; documented as an *experimental parser/host behavior*,
+  alongside a new Anonymous Elements section. ✅ spec.
+- `'` as a string / name / key delimiter → **kept** (only the head-position
+  *escape* role is being removed).
 
 ## Identity: `id`→`key`, `class`/`classes`→`traits`  `[change + impl]`
 
@@ -40,10 +41,11 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
       `$id`/`$class` aliases: only `$key`, `$traits`, `$!`/`$+`/`$?`/`$*`. Any
       other `$name` is a legal attribute (quoting friction, not proscription,
       deters collisions).
-- [ ] `|` **defines**, `@` **refers** — rewrite the "`@[id]` inserts the entire
-      element" text (:1461–1489). `@` is an **inert typed pointer**; whether a
-      host expands/transcludes it is a deref knob, never core. `@[key]` errors
-      when ambiguous.
+- [x] `|` **defines**, `@` **refers** — **landed**: References & Mixins section
+      reframes `@` as an inert pointer (transclude / merge-attributes /
+      leave-inert are host resolution modes; `@[key]` errors if ambiguous), adds
+      Anonymous Elements, documents Mixins as experimental/non-core, and removes
+      `:[id]`.
 - [ ] Duplicate `(element, key)` **definition** → Document-layer error, policy
       `error | allow-if-identical | first-wins | last-wins | keep-all` (+`warn`).
       Event/streaming layer never checks it.
