@@ -11,5 +11,11 @@ carry their own status banners.
 
 ## Open
 
-*(nothing — FULL-SPEC is current with all ratified decisions as of 2026-07-14.
+- [ ] **Adjudicate `FULL-EBNF.md`'s fate** (raised 2026-07-14). It is a derived,
+      perpetually-lagging illustrative grammar; a second grammar artifact
+      undercuts CORE-as-sole-source-of-truth and it has already caused confusion
+      (cited as if corroborating CORE). Decide: delete / reduce to a pointer /
+      keep. Deferred by Joseph for a deliberate call.
+
+*(Otherwise CORE is current with all ratified decisions as of 2026-07-14.
 History lives in git; decisions in `_archive/DECIDED.bak.md`.)*
