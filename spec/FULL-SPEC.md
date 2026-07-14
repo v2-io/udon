@@ -73,6 +73,32 @@ The parser operates in different contexts that affect parsing behavior:
 | **sameline** | On the element definition line | `|el :key value Content` |
 | **inline** | Embedded in prose/text flow | `|{em text}`, `;{comment}`, `!{dir}` |
 | **embedded** | Inside `|{...}` delimiters | Synonym for inline element context |
+| **head** | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `\|` `:` `!` `;` `@` and fences are recognized |
+
+### Head Position
+
+**Head position** is the state in which the parser has not yet decided whether
+what comes next is a structural marker or prose. It is **re-entered at the start
+of every line**, and it has two faces:
+
+- **block-line start** -- the beginning of a line, at a structural column. This
+  is head position on *every* line, including lines that follow prose lines
+  (`|a`'s child `|b`, a fence, and a prose line can freely interleave). A line
+  indented *deeper* than the current prose's column, though, is inside that
+  prose -- not head position.
+- **sameline scan** -- the run along an element line through elements *and
+  attributes* (`|a |b :k v ...`), still looking for the next marker. Elements
+  and attributes keep the scan open; the first *prose* word ends it.
+
+At head position, and *only* there, the special-start markers are recognized:
+`|` (element), `:` (attribute), `!` (directive), `;` (comment), `@` (reference),
+and triple-backtick (freeform). Each is recognized by a short **guard** -- a few characters
+of lookahead (see Element Recognition, the `!` guard, and the marker sections).
+The instant a guard fails -- typically when the first prose word arrives -- the
+line **commits to prose** *for that line*: head position ends, and any later
+occurrence of those characters on it is literal text. This one state is what
+keeps Markdown tables, `:-)`, a mid-prose `!`, and after-prose backticks all
+safe from being read as structure.
 
 ### Block vs Sameline
 
@@ -134,6 +160,10 @@ Four special characters at line start (after indentation):
 | `\` | Literal -- prevents interpretation of a marker |
 
 Anything else is **prose content** belonging to the parent element.
+
+The four prefixes above are the structural-content markers; two further markers
+are also recognized at head position: `@` (a reference to a defined element) and
+triple-backtick (a freeform block). See Head Position.
 
 ### Block-Level Escape (`\`)
 
@@ -1273,37 +1303,39 @@ Raw content cannot be an attribute value directly--attributes are typed scalars.
 Triple-backticks break out of indentation sensitivity entirely: the body is
 captured exactly -- no prose dedentation, no marker interpretation.
 
-**Opening.** Triple-backticks open a freeform block when they appear in **head
-or scan position** -- at the start of a line (after indentation), or while
-scanning an element line *before any prose has begun*. They are **not** a fence
-once prose has started on the line.
+**Opening.** Triple-backticks open a freeform block at **any head position** --
+the start of any line (at a structural column), or in sameline scan after
+elements and attributes, before prose begins (see Head Position). They are
+**not** a fence once prose has begun on the line.
 
 - The backticks' indentation sets the block's structural parent (a child of
   whatever owns that column) -- which is why fences are not column-1-only.
 - Everything after the backticks on the opening line begins the body, so an
-  info string (`rust`, `rust ignore`) comes for free -- there is no separate
-  info-string rule.
+  info string (`rust`, `rust ignore`) comes for free -- no separate info-string
+  rule.
+
+Because head position is re-entered every line, a fence interleaves freely with
+prose and child lines -- here it begins at a line start (head position) even
+though prose lines preceded it:
 
 ```
-|code
-  ```
-  def foo():
-      return 1
-  ```
+|a
+  here is prose
+  |b a child element
+  and more prose
+  ```text and the fence begins
+  still inside the fence
+  ``` ; fence ends
 ```
 
-Scan-position (sameline) form -- the backticks are still being scanned after
-`|b`, so this opens a block and the rest of the line begins its body:
+In sameline scan a fence may follow elements *and* attributes -- attributes keep
+the scan open, so `|a |b :k v ` followed by triple-backticks opens a fence whose
+body starts after the backticks.
 
-```
-|a |b ```rust
-  some rust, captured verbatim
-```
-```
-
-After prose, though, triple-backticks are literal text, not a fence: once the
-first prose word commits the line, later backticks are just characters in the
-output -- there is no sameline fence *after* prose has begun.
+Two cases are **not** fences: (1) after prose has begun on the line -- in
+`|a |b but now` + backticks, `but` is prose, so the backticks are literal; and
+(2) backticks indented *deeper* than the current prose's column -- they sit
+inside that prose, not at head position.
 
 **Closing.** A line whose first non-space content is triple-backticks closes the
 block, at **any** indentation, and must be followed by a newline (trailing
