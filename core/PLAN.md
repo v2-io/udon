@@ -63,6 +63,38 @@ The tree builder (when implemented) will be just another event consumer.
 - [ ] **Variation test edge cases** - Some edge cases with indentation variations
 - [x] **value.rs evaluation** — moot: value.rs was deleted with the Tree API commit (a6d23e7)
 
+## Spec Alignment — catch up to FULL-SPEC (2026-07-13)
+
+FULL-SPEC.md was brought current with the ratified decisions on 2026-07-13
+(identity `key`/`traits`, `<…>` typing, fences, escapes, `@`-inert, etc.). The
+**spec is now ahead of the parser**; these are the parser/grammar changes that
+close the gap. Spec-text is done (in FULL-SPEC); this is the *impl* worklist.
+Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
+
+- [ ] **Wire-names:** grammar emits `$key`/`$traits`/`$?…` (the `$id`/`$class`
+      symbols in `udon.desc`), no `id`/`class` aliases.
+- [ ] **`:id`/`:class` hijack** (defect #4 residual): a bare `:id foo` must be an
+      ordinary attribute; `tree.rs` should intercept `$key`/`$traits`, not
+      `"id"`/`"class"`, and independent of value type.
+- [ ] **Typed bracket/key values** (defect #2): `[01]`→int, `["01"]`→string
+      (route bracket content through the typed-value path, not raw capture).
+- [ ] **`:`-attributes-before-children** enforcement (defect #9): a `:` after
+      content has begun is prose, not an attribute.
+- [ ] **Document-layer duplicate-`(element,key)` check** + policy enum
+      (`error | allow-if-identical | first-wins | last-wins | keep-all`, +warn).
+- [ ] **Head-position `!{{value}}`** wraps in a block Directive; should surface
+      as prose + Interpolation.
+- [ ] **Accessors** (tree / udon-utl): `attr` (scalar/last) + `attr_all` (list);
+      `traits` view always a list.
+- [ ] **Streaming rebuild** (defect #1): explicit-stack backend in descent-core.
+- [ ] **`'`→`\` escape**: `'` is no longer a head-position escape (grammar still
+      lists it; see FULL-SPEC "Block-Level Escape").
+- [ ] **multi-attr block lines**: block value runs to EOL, so `:a 1 :b 2` makes
+      `:a` = "1 :b 2" — correct but surprising; optional lint/Warning when a
+      block value contains a stranded ` :word ` (pending Joseph's call).
+- [ ] **Regenerate** parser + update fixtures/tests (SPEC-based expectations,
+      never traced from parser output).
+
 ## Phase 3: Build Forward (IN PROGRESS)
 
 ### 3.1 Test Infrastructure ✓
