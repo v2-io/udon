@@ -29,6 +29,29 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 - `'` as a string / name / key delimiter → **kept** (only the head-position
   *escape* role is being removed).
 
+## Status of this integration pass (2026-07-13)
+
+**Landed in FULL-SPEC** (committed to main): identity model + desugaring +
+specially-designated `$`-names + suffix-chars-in-traits + Host Views + Anonymous
+Elements; References & Mixins (`@` inert, `:[id]` removed, mixins experimental)
++ Duplicate Definitions; Attribute Stacking (+ ⊥ array-literals);
+Core-minimalism framing; Escapes (`'` → `\`); Freeform fences.
+
+**Remaining spec-text (this pass):** Explicit typing `<…>` (+ bare-scalar rule;
+TIME-SPEC noted, rewrite deferred); Head-position term + `:`/`;`/`!` recognition
+predicates + `!` guard + bounded-lookahead appendix; rubber-stamps
+(reference-augmentation = no, BlankLine/Warning, multi-attr legalize); then the
+terminology sweep (`id`→`key`, `class`→`traits` in the remaining prose/examples).
+
+**Extractions — own companion specs (2026-07-13 decisions):** Dynamics/Liquid →
+baseline-dialect doc; Markdown → its own spec (udon-as-markdown /
+markdown-passed-through / markdown-parsed); Temporal → TIME-SPEC recast as
+`temporal@1` (deferred).
+
+**Deferred to Tier-2 (parser/grammar, not this pass):** `:id` hijack fix,
+`:`-attrs-before-children enforcement, Document-layer duplicate check,
+head-position `!{{}}` defect, wire-names, stacking/traits accessors.
+
 ## Identity: `id`→`key`, `class`/`classes`→`traits`  `[change + impl]`
 
 - [ ] Rename the *vocabulary* everywhere: `id`→`key`, `class`/`classes`→`traits`
