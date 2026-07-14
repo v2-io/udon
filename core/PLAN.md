@@ -99,6 +99,12 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
       off in both cases. Maximal-munch on the trait; see FULL-SPEC "Element
       Suffixes". *(Was missing from this list — found by the 2026-07-14
       examples-vs-parser audit; spec is correct, parser lags.)*
+- [ ] **`0d` / `0D` explicit-decimal prefix** (ratified 2026-07-14) — add a
+      `d`/`D` arm to `num_zero` in `values.desc` so `0d42` parses as the integer
+      `42` (currently falls back to String). Sibling to the existing
+      `0x`/`0o`/`0b` prefixes; the "natural written form" rationale is in
+      FULL-SPEC "Numbers". *(Rational/complex bare-vs-dialect is NOT here — it's
+      an open design fork, not a parser task; see `design/composite-types.md`.)*
 - [ ] **`<…>` explicit-typing envelope** — recognize `<…>` in attribute-value
       position (`>` terminates), the label ladder (`<type:…>` / `<dialect:type:…>`),
       unlabelled dialect dispatch, and route to dialects. Bare temporal → string.

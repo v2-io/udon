@@ -286,6 +286,22 @@ traits are two `$traits` attributes, not one list value (same-name attribute
 values stack; order is kept). Classification doubles as lightweight typing even
 when no behavior is attached to it.
 
+**Bare-name characters.** A bare element name -- and a bare `.trait` value -- is
+a Unicode identifier. The first character must carry the Unicode **`XID_Start`**
+property (ASCII `A`-`Z` / `a`-`z` plus the corresponding non-ASCII
+identifier-start letters; digits, `_`, and `-` are *excluded* from this first
+position). Each following character must carry **`XID_Continue`** *or* be a
+hyphen `-` -- so digits, `_`, `-`, and identifier-continue marks may extend a
+name, and kebab-case is first-class (`|my-element`). Any character outside that
+set -- a space, `.`, `[`, `:`, `$`, other punctuation -- ends the bare name; to
+put such a character *in* a name or trait, single-quote it (`|'weird name'`,
+`.'ns.kind'`). A bare `.trait` additionally absorbs the suffix characters
+`* ! ? +` (see Element Suffixes), so a trait's continue-set is `XID_Continue`
+plus `-` plus `* ! ? +`. *(Reference grammar: `XLBL_START` = Unicode
+`XID_Start`, `XLBL_CONT` = `XID_Continue` + `-`; see `core/generator/udon.desc`
+-- `parse_element_identity`, `name`, `class_name` -- and
+`tools/descent/characters.md`.)*
+
 ### Element Suffixes
 
 Elements may carry suffix flags (`?`, `!`, `*`, `+`) that desugar to
@@ -1566,20 +1582,56 @@ envelope, and a bare `2026-07-11` is simply the string `"2026-07-11"`. See the
 
 ### Numbers
 
-Numeric literals follow Ruby conventions: integers, floats, scientific notation
-(`1e10`), hex (`0x`), octal (`0o`), binary (`0b`), explicit decimal (`0d`),
-rationals (`1/3r`), and complex (`3+4i`). Underscores allowed for readability
-(`1_000_000`).
+Two numeric types are recognized *bare*, from syntax alone: **integer** and
+**float**. An optional leading `+` or `-` signs either, and `_` may be
+interleaved between digits of any base for readability (`1_000_000`, `0xFF_FF`)
+with no effect on the value. Base prefixes and scientific notation exist so a
+literal can mirror its *natural written form* -- the author never has to
+translate a value into a different base or notation to write it down.
+
+**Integers** come in four bases, each an explicit `0`-prefix qualifier:
+
+| Base | Prefix | Digit set | Example |
+|------|--------|-----------|---------|
+| Decimal | *(none)* or `0d` / `0D` | `0`-`9` | `42`, `1_000_000`, `0d42` |
+| Hexadecimal | `0x` / `0X` | `0`-`9` `a`-`f` `A`-`F` | `0xFF` |
+| Octal | `0o` / `0O` | `0`-`7` | `0o755` |
+| Binary | `0b` / `0B` | `0` `1` | `0b1010` |
+
+A leading `0` *followed by more decimal digits* is decimal, not octal --
+`0755` is `755`. The explicit `0d` prefix (`0d42`) is the unambiguous way to
+*say* "decimal" when it matters.
+
+**Floats** are decimal numbers that carry a fractional part (`.` then digits),
+an exponent (`e`/`E`, optional `+`/`-`, then digits), or both: `3.14`, `1e10`,
+`1.5e-3`. A decimal token with neither a `.` nor an exponent is an integer.
 
 ```
-42          1_000_000       ; Integers
-3.14        1.5e-3          ; Floats
-0xFF        0o755   0b1010  ; Hex, octal, binary
-1/3r        3+4i            ; Rational, complex
+42          1_000_000   0d42   ; Integers (decimal, incl. explicit 0d)
+0xFF        0o755       0b1010 ; Hex, octal, binary
+3.14        1e10        1.5e-3 ; Floats
 ```
 
-**Note:** Plain `0755` is decimal `755` (leading zeros stripped, no implicit
-octal). Use `0o755` for octal.
+*(Reference grammar: `core/generator/values.desc` -- `num_dec` / `num_hex` /
+`num_oct` / `num_bin`, leading-zero-is-decimal in `num_zero`, floats
+`num_float_frac` / `num_float_exp`. `0d` is a small pending grammar addition, a
+`d`/`D` arm in `num_zero`.)*
+
+**Rational and complex are provisional.** The grammar today also recognizes bare
+`1/3r` / `22/7r` (rational) and `5i` / `3+4i` (complex). At the moment their
+status is **parser-decided** -- the grammar recognizes them, and that is where
+the decision sits until the dialect layer lands, at which point it gets nailed
+down. Both are **current candidates** to move out of the bare core into a
+**standard-types `<...>` dialect** (e.g. `<r: 1 3>`, `<i: 3 4>`), where
+composition and nesting are clean and operator-free.
+
+The two are not symmetric. A **rational** is inherently *compositional* -- two
+literals over a bar -- and there is a **lean toward the dialect** for exactly
+that reason. A **complex** could easily go either way and has **no current
+lean**: bare `5i` is just a single number with a suffix (like `0d` or the `e`
+of scientific notation), which has a real claim to staying a literal; it is only
+the composed `3+4i` (real + imaginary) that pulls toward the envelope. Treat
+both as **not yet frozen**. See `design/composite-types.md`.
 
 ### Booleans
 

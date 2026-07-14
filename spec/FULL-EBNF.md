@@ -13,15 +13,18 @@ part — they mark exactly where the grammar is an approximation.
 
 **This grammar is illustration only — it cannot produce a parser.** UDON's real,
 authoritative grammar is the indentation-sensitive, mode-based state machine in
-`core/generator/*.desc`, from which the parser is generated. Two rules below are
-*precisely* defined in that descent grammar but only approximated here, and
-should be back-filled from it:
+`core/generator/*.desc`, from which the parser is generated. Two rules below were
+*precisely* defined in that descent grammar and only approximated here; both have
+now been back-filled from it (§5 numbers, §5.1 names/traits), with the
+remaining known parser-vs-spec gaps flagged inline:
 
-- `(* TODO: bare-name / bare-trait character class -- a Unicode-identifier set,`
-  `exactly defined in core/generator/*.desc; the spec prose and this EBNF only`
-  `approximate it. Research and back-fill the exact rule. *)`
-- `(* TODO: numeric-literal grammar -- the spec says "Ruby conventions" by`
-  `example; core/generator/*.desc has the exact productions. Back-fill from it. *)`
+- Bare-name / bare-trait character class: back-filled to the Unicode
+  identifier set (`XID_Start` / `XID_Continue` + `-`) that
+  `core/generator/udon.desc` (`parse_element_identity` / `name` / `class_name`)
+  and `tools/descent/characters.md` define. See §5.1.
+- Numeric-literal grammar: back-filled from `core/generator/values.desc`
+  (`num_dec` / `num_hex` / `num_oct` / `num_bin` / `num_float_*` /
+  `num_rational_denom` / `num_complex_*`). See the number productions.
 
 ---
 
@@ -338,24 +341,31 @@ nil           = "null" | "nil" ;
 boolean       = "true" | "false" ;   (* lowercase only; TRUE/True are strings *)
 
 number        = float | integer ;
-integer       = [ "-" ] ( dec_int | hex_int | oct_int | bin_int | plain_int ) ;
-plain_int     = DIGIT { DIGIT | "_" } ;   (* leading zeros stripped: 0755 = 755 decimal *)
-dec_int       = "0d" DIGIT { DIGIT | "_" } ;
-hex_int       = "0x" HEX  { HEX  | "_" } ;
-oct_int       = "0o" OCT  { OCT  | "_" } ;
-bin_int       = "0b" BIN  { BIN  | "_" } ;
-float         = [ "-" ] DIGIT { DIGIT | "_" } "." DIGIT { DIGIT | "_" } [ exponent ]
-              | [ "-" ] DIGIT { DIGIT | "_" } exponent ;
-exponent      = ( "e" | "E" ) [ "+" | "-" ] DIGIT { DIGIT } ;
-rational      = [ "-" ] DIGIT { DIGIT } "/" DIGIT { DIGIT } "r" ;
-complex       = [ number ] ( "+" | "-" ) unsigned_number "i"
-              | unsigned_number "i" ;
+integer       = [ sign ] ( hex_int | oct_int | bin_int | plain_int ) ;
+sign          = "+" | "-" ;
+plain_int     = DIGIT { DIGIT | "_" } ;   (* leading zeros stay decimal: 0755 = 755 *)
+hex_int       = ( "0x" | "0X" ) HEX { HEX | "_" } ;
+oct_int       = ( "0o" | "0O" ) OCT { OCT | "_" } ;
+bin_int       = ( "0b" | "0B" ) BIN { BIN | "_" } ;
+float         = [ sign ] DIGIT { DIGIT | "_" } "." DIGIT { DIGIT | "_" } [ exponent ]
+              | [ sign ] DIGIT { DIGIT | "_" } exponent ;
+exponent      = ( "e" | "E" ) [ sign ] DIGIT { DIGIT | "_" } ;
+rational      = [ sign ] DIGIT { DIGIT | "_" } "/" DIGIT { DIGIT | "_" } "r" ;
+complex       = [ real_part sign ] unsigned_number "i" ;
+real_part     = unsigned_number ;
 
-(* NOTE: Numeric literals "follow Ruby conventions" (FULL-SPEC "Numbers"); the
-   exact bare-number regexes (underscore placement, complex "a+bi" vs "bi",
-   rational sign rules) are given by EXAMPLE in the spec, not a closed grammar.
-   These productions are a faithful-but-inferred reconstruction, NOT verbatim
-   spec text. Where bare recognition is ambiguous, the fallback is String. *)
+(* NOTE: Back-filled from core/generator/values.desc (num_dec / num_hex /
+   num_oct / num_bin / num_float_frac / num_float_exp / num_rational_denom /
+   num_complex_*). "_" may appear between digits of any base. A "0" followed by
+   a decimal digit stays decimal (num_zero -> num_dec), so 0755 = 755; octal
+   needs the 0o prefix. The "r" on a rational and the "i" on a complex are
+   MANDATORY -- drop either and the token falls back to String.
+   TWO PARSER-VS-SPEC GAPS: (1) explicit-decimal "0d" is in FULL-SPEC's intent
+   but num_zero has no "d" branch, so bare 0d... currently parses as String
+   (Tier-2 catch-up). (2) For an UNSIGNED real, the grammar forms a complex only
+   with "+" (3+4i); a bare "3-4i" is diverted into the date probe and falls back
+   to String -- only a SIGNED real (via rel_num_dec) accepts a "-" imaginary
+   sign. The [ real_part sign ] above is thus an approximation of that quirk. *)
 
 (* --- strings --- *)
 
@@ -378,19 +388,24 @@ string_bare_bracket  = { CHAR - NEWLINE - SPACE - "]" } ;
 
 ```ebnf
 bare_name     = name_start { name_char } ;
-name_start    = LETTER ;
-name_char     = LETTER | DIGIT | "_" | "-" ;
-ident_char    = LETTER | DIGIT | "_" | "-" ;
+name_start    = XID_START ;                       (* Unicode XID_Start; no digit / "_" / "-" *)
+name_char     = XID_CONT | "-" ;                  (* XID_Continue plus hyphen (kebab-case) *)
+ident_char    = XID_CONT | "-" ;
 quoted_name   = "'" { sq_char } "'" | '"' { dq_char } '"' ;
 
 trait_value   = bare_trait | quoted_name ;
-bare_trait    = { CHAR - SPACE - NEWLINE - "." - "[" - ":" } ;  (* greedy over ?!*+ *)
+bare_trait    = trait_start { trait_char } ;
+trait_start   = XID_START ;
+trait_char    = XID_CONT | "-" | "*" | "!" | "?" | "+" ;   (* absorbs the suffix chars *)
 
-(* NOTE: BARE-NAME / BARE-TRAIT character classes are not spelled out
-   explicitly in FULL-SPEC. Inferred from examples: names start with a letter
-   and use letters/digits/_/-; "$" is explicitly NOT a bare-name char (so
-   $-names need quotes). trait_value is broader (it absorbs ?!*+ per the suffix
-   note in section 3) -- the precise boundary set is an INFERENCE, flagged. *)
+(* NOTE: BARE-NAME / BARE-TRAIT classes back-filled from
+   core/generator/udon.desc: name-start = XLBL_START = Unicode XID_Start;
+   name-continue = XLBL_CONT = XID_Continue + "-" (functions `name`,
+   `class_name`). "$" is NOT an XID char, so $-designated names need quotes.
+   PARSER-VS-SPEC GAP: the trait's extra "* ! ? +" chars (FULL-SPEC "Element
+   Suffixes": ".foo?" is trait "foo?") are SPEC INTENT only -- the reference
+   `class_name` accepts XLBL_CONT alone, so today ".foo?" parses as trait "foo"
+   plus a $? element suffix. Tier-2 parser catch-up; trait_char shows intent. *)
 ```
 
 ### 5.2 Explicit typing envelope `<...>`
@@ -666,6 +681,8 @@ prose_text      = { CHAR } ;   (* opaque; ";" is LITERAL in block prose *)
 
 ```ebnf
 LETTER    = ? Unicode letter (\p{L}) ? ;
+XID_START = ? Unicode codepoint with the XID_Start property ? ;   (* bare-name start *)
+XID_CONT  = ? Unicode codepoint with the XID_Continue property ? ; (* bare-name continue *)
 DIGIT     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 HEX       = DIGIT | "a" | "b" | "c" | "d" | "e" | "f"
                   | "A" | "B" | "C" | "D" | "E" | "F" ;
@@ -712,7 +729,12 @@ approximation. Grouped:
   structure and unlabelled dispatch (§5.2); reference resolution & ambiguity
   error (§6); the `!` dynamics language — expressions, filters, control flow
   (§8).
-- **Inferred, not verbatim in current FULL-SPEC:** bare-name / bare-trait
-  character classes (§5.1); the exact numeric literal grammar ("Ruby
-  conventions", by example) (§5); `\p{L}` for LETTER (§13); whether `<` has a
-  head-position-style guard outside attribute-value position (§5.2).
+- **Back-filled from the descent grammar (`core/generator/*.desc`), now exact:**
+  bare-name / bare-trait character classes (§5.1, `udon.desc`); the numeric
+  literal grammar (§5, `values.desc`). Two Tier-2 parser-vs-spec gaps remain
+  flagged inline: explicit-decimal `0d` (spec intent, no `d` branch in
+  `num_zero`) and the trait suffix chars `* ! ? +` (spec intent, `class_name`
+  accepts `XLBL_CONT` only).
+- **Inferred, not verbatim in current FULL-SPEC:** `\p{L}` for LETTER (§13);
+  whether `<` has a head-position-style guard outside attribute-value position
+  (§5.2).
