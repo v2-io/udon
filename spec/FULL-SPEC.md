@@ -29,6 +29,40 @@ What consumers do with them (AST inclusion, filtering, etc.) is up to the host.
 
 ---
 
+## The Core, and What It Leaves Open
+
+UDON's core is deliberately small. It fixes the **syntax** and the **core
+semantics** every conformant parser must implement identically: the sigils and
+head-position recognition, the core scalar types, attribute stacking and order
+preservation, `|` (define) / `@` (refer), the `<...>` typing-envelope *syntax*,
+and the event vocabulary. Everything else it **deliberately leaves to the
+consumer**:
+
+- **Projection** -- how a *host* turns a validated string into a native value
+  (a date string into a `Date`, etc.). The host's call.
+- **Constraint** -- what is *allowed* or *required* (cardinality, vocabularies,
+  "no array-valued `$key`"). A **schema**'s job. Proscription lives here, never
+  in the core.
+- **Exotic typing** -- what non-core value patterns *mean*. A **dialect**'s job
+  (recognition and typing, e.g. `temporal@1`) -- distinct from constraint.
+
+Two boundaries keep this honest:
+
+- **Menu vs. knob.** The core may fix an option-*space* and a default while a
+  consumer picks within it (the duplicate-definition policy fixes
+  `error | first-wins | ...` and defaults to `error`; a builder chooses). A
+  consumer may never invent an option outside the menu.
+- **Dialects are not schemas.** A dialect says what a value *means / types*; a
+  schema says what is *allowed*. They never trade jobs. A future **pragma**
+  binds a document to its dialects and schema.
+
+This is why temporal typing, the `!` dynamics language, and the prose Markdown
+subset each live in their own companion specs, not here: the core recognizes
+their *syntax* (the `<...>` envelope, the `!` prefix, prose), but what they
+*mean* is a dialect or host concern layered on top.
+
+---
+
 ## Positional Contexts (Vocabulary)
 
 The parser operates in different contexts that affect parsing behavior:
@@ -97,36 +131,36 @@ Four special characters at line start (after indentation):
 
 | Prefix | Purpose |
 |--------|---------|
-| `'` | Literal -- prevents interpretation of a *block-level* marker |
+| `\` | Literal -- prevents interpretation of a marker |
 
 Anything else is **prose content** belonging to the parent element.
 
-### Block-Level Escape (`'`)
+### Block-Level Escape (`\`)
 
-At block level (line start after indentation), apostrophe followed by a
-block-marker character (`|`, `;`, `:`, `!`, or `'`) **always** triggers an
-escape. The apostrophe is consumed and the following character is output
-literally (not parsed as a marker).
+At block level (line start after indentation), a backslash followed by a
+block-marker character (`|`, `;`, `:`, `!`, or `\`) triggers an escape: the
+backslash is consumed and the following character is output literally (not
+parsed as a marker).
 
-**Simple rule:** `'` + one of `|;:!'` -> escape, always. No further lookahead.
+**Simple rule:** `\` + one of `|;:!\` -> escape, always. No further lookahead.
 
 ```
-'|element    ->  "|element"     ; escaped pipe, output as prose
-';comment    ->  ";comment"     ; escaped semicolon
-':attr       ->  ":attr"        ; escaped colon
-'!directive  ->  "!directive"   ; escaped bang
-''more       ->  "'more"        ; escaped apostrophe
+\|element    ->  "|element"     ; escaped pipe, output as prose
+\;comment    ->  ";comment"     ; escaped semicolon
+\:attr       ->  ":attr"        ; escaped colon
+\!directive  ->  "!directive"   ; escaped bang
+\\more       ->  "\more"        ; escaped backslash
 
-'hello       ->  "'hello"       ; NOT an escape (h is not a marker)
+\hello       ->  "\hello"       ; NOT an escape (h is not a marker)
 ```
 
-If `'` is followed by a non-marker character, it is **not** an escape--the
-apostrophe is preserved as normal prose content.
+If `\` is followed by a non-marker character it is **not** an escape -- the
+backslash is preserved as normal prose content.
 
-**Alternate:** Backslash (`\`) also works as a block-level escape before the
-same marker characters. However, apostrophe is the *preferred* and *documented*
-form for block-level escapes. Backslash is supported for consistency with
-sameline/embedded contexts but should not be promoted in tutorials or examples.
+Backslash is the escape in **every** context (block, sameline, embedded) --
+which is why it is the one escape prefix. `'` is **not** an escape: a line
+beginning `'|`... is plain prose that starts with an apostrophe. (`'` remains a
+string / name / key delimiter -- see Value Types.)
 
 ### Sameline/Embedded Escape (`\`)
 
@@ -508,8 +542,7 @@ comment content until dedent.
 ```
 ; This would be a comment
   this is still part of the comment
-'; But this is output as text.
-\; This could output as text too.
+\; But this line is output as text (escaped semicolon).
 ```
 
 ### Why Block Prose Differs
@@ -587,7 +620,7 @@ If a consumer strips comments, the output text would be:
 To output a literal `;` at line start, use the escape prefix:
 
 ```udon
-'; This line starts with a semicolon in the output
+\; This line starts with a semicolon in the output
 ```
 
 Output: `; This line starts with a semicolon in the output`
@@ -1172,15 +1205,14 @@ All prefix characters support a bracket-delimited inline form:
 | `!{{expr}}` | Interpolation (double-brace) |
 | `!{directive ...}` | Inline directive |
 | `;{comment}` | Inline comment |
-| `'|{...}` or `\|{...}` | Escaped (literal text) |
+| `\|{...}` | Escaped (literal text) |
 
 The character immediately after the prefix determines the parse mode with no
 lookahead.
 
-**Note:** Apostrophe escaping applies to block-level markers (line start after
-indentation). Within prose/sameline contexts, backslash escapes are supported
-for literal semicolons and `\|{...}` literals, but are discouraged for general
-use.
+**Note:** Backslash (`\`) is the escape in every context -- block, sameline,
+and embedded -- for literal semicolons and `\|{...}` / `\!{...}` literals.
+(`'` is not an escape; it is a string / name / key delimiter.)
 
 ---
 
@@ -1751,7 +1783,7 @@ The examples in this document should be converted to unit tests. Key scenarios:
    - Block comment at column 0 closes nested elements
    - Block comment within element stays within element
    - Inline comments `;{...}` stripped from output
-   - Escaped semicolon `';` outputs literal semicolon
+   - Escaped semicolon `\;` outputs literal semicolon
 
 ---
 
