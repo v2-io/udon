@@ -507,7 +507,9 @@ Terminators: `\n`, `SPACE`, or `]`
 - Space separates array items
 - `]` closes array (not consumed)
 - Context (block vs embedded) doesn't affect array terminators
-- `}` before `]` is malformed (unspecified behavior)
+- `}` is **not** a terminator: inside `[...]` it is a literal character; the
+  array closes only on `]` (with no `]`, it ends as an `UnclosedArray` error). A
+  `}` meant to close an embedded `|{...}` must come *after* the array's `]`.
 
 **Quoted-item nuance** (a consequence of the terminator rules, not a separate
 rule): a quoted string's closing `"` ends its item, so a character immediately

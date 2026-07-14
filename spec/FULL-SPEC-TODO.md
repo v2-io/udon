@@ -17,13 +17,13 @@ attribute stacking, head-position, and the rest (see git history +
 
 ## Remaining FULL-SPEC spec-text
 
-One tiny pre-existing gap, never part of the decision batch:
+**None.** All known spec-text gaps are closed (2026-07-14) — FULL-SPEC has zero
+open spec-text items.
 
-- [ ] `}` before `]` in an array is "malformed (unspecified behavior)" — specify
-      or leave. (Lean: define as an error — unclosed array.)
-
-*(Resolved 2026-07-14: quoted strings in arrays — a closing `"` ends the item, so
-`["x"y]` = two items; documented as a nuance in FULL-SPEC "Array Item Values".)*
+*Closed 2026-07-14 (both documented as consequences-of-the-rules in "Array Item
+Values"): quoted strings in arrays (a closing `"` ends the item, so `["x"y]` =
+two items); and `}`-before-`]` (`}` is a literal inside `[...]`; an array with no
+`]` is an `UnclosedArray` error).*
 
 *Everything else once queued here has landed in FULL-SPEC. Parser catch-up is in
 `core/PLAN.md`; companion-spec recasts are tracked by their in-file banners.*

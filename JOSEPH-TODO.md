@@ -10,8 +10,6 @@ decision from you — it's tracked in `spec/FULL-SPEC-TODO.md`.
 
 - **Obsidian first-load smoke test** (~30 s, only you can): load
   `editors/obsidian-udon/` into a vault, enable, open a `.udon` file.
-- **Optional:** two tiny pre-existing FULL-SPEC gaps (quoted-strings-in-arrays;
-  `}`-before-`]`) — close now or leave.
 
 ## Parked (NOT waiting on you)
 
