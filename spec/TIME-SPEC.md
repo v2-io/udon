@@ -2,6 +2,16 @@
 
 **Draft extension to FULL-SPEC.md**
 
+> ⚠️ **Being recast (2026-07-13) — partially contradicts FULL-SPEC as written.**
+> FULL-SPEC now requires **all temporal values to be written inside the `<...>`
+> typing envelope**; they are *no longer bare-recognized* (a bare `2026-07-11`
+> is the string `"2026-07-11"`). This document still describes the old
+> bare-recognition model, so it contradicts FULL-SPEC until recast as the
+> **`temporal@1`** dialect. FULL-SPEC's "Explicit Typing (`<...>`)" section is
+> authoritative on *where* temporal values live; the *value grammar* here (what
+> a valid date / time / duration looks like *inside* the envelope) stays useful
+> pending the recast.
+
 This document specifies syntactic recognition of date, time, datetime, duration,
 and relative time values in UDON.
 
