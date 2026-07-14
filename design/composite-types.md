@@ -58,11 +58,10 @@ shape — `<point: 3 4>`, `<interval: <t: …> <t: …>>`, `<matrix: <row: 1 2> 
 - Whether the bare rational/complex core types survive at all, or whether *all*
   rational / complex / composite numerics move into a `numeric@1` dialect,
   leaving bare = int / float / bool / nil / string / list. (The pending
-  "bare-vs-dialect for rational/complex" fork.) These two are **not
-  symmetric**: rationals have a **lean toward the dialect** (inherently two
-  literals over a bar); complex has **no lean and could go either way** --
-  bare `5i` is a single number with a suffix (literal-like), and only the
-  composed `3+4i` pulls toward the envelope. Until the dialect layer lands the
-  status is simply parser-decided.
+  "bare-vs-dialect for rational/complex" fork.) Rationals lean toward the
+  dialect (inherently two literals over a bar); complex has no lean and could
+  go either way -- bare `5i` is a single number with a suffix (literal-like),
+  and only the composed `3+4i` pulls toward the envelope. Until the dialect
+  layer lands the status is simply parser-decided.
 - Interaction with the label ladder (`<type:…>` / `<dialect:type:…>`): is `r` a
   type within a default numeric dialect, or its own thing?

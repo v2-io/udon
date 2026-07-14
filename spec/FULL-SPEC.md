@@ -1625,13 +1625,12 @@ down. Both are **current candidates** to move out of the bare core into a
 **standard-types `<...>` dialect** (e.g. `<r: 1 3>`, `<i: 3 4>`), where
 composition and nesting are clean and operator-free.
 
-The two are not symmetric. A **rational** is inherently *compositional* -- two
-literals over a bar -- and there is a **lean toward the dialect** for exactly
-that reason. A **complex** could easily go either way and has **no current
-lean**: bare `5i` is just a single number with a suffix (like `0d` or the `e`
-of scientific notation), which has a real claim to staying a literal; it is only
-the composed `3+4i` (real + imaginary) that pulls toward the envelope. Treat
-both as **not yet frozen**. See `design/composite-types.md`.
+A rational is inherently compositional -- two literals over a bar -- so it leans
+toward the dialect. A complex has no such lean and could go either way: bare `5i`
+is a single number with a suffix (like `0d` or the `e` of scientific notation)
+and has a real claim to staying a literal; only the composed `3+4i` (real +
+imaginary) pulls toward the envelope. Treat both as not yet frozen. See
+`design/composite-types.md`.
 
 ### Booleans
 
