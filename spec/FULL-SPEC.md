@@ -1560,6 +1560,18 @@ value that begins with `<`, quote it (`:x "<not a type>"`). Outside bare
 attribute-value position -- in prose, or inside quotes -- `<` has no special
 meaning.
 
+**Nesting (forward note, deliberately under-specified).** Typed values will
+eventually nest -- a composite whose components are themselves typed, e.g.
+`<r: <i: 3 -7> 0d83.23>` (a rational of a complex numerator and a decimal
+denominator). When they do, "the matching `>`" is depth-counted -- a
+`<>`-balanced span, like the brace-balancing already used for `|{...}` and
+`;{...}` -- and there is an implied bracket-stack. *Who* routes the inner typed
+values is left open on purpose: it may be an implicit dialect stack that the
+active dialect drives, rather than the core grammar consuming and handing off.
+This note fixes only that nesting is anticipated and stays `<>`-balanced; it does
+not specify the routing, which is likely a dialect concern to settle when
+dialects are fleshed out. See `design/composite-types.md`.
+
 **Label ladder.** The envelope may be unlabelled (`<...>`), type-labelled
 (`<type:...>`), or dialect-and-type-labelled (`<dialect:type:...>`) -- least to
 most specific.
