@@ -1,53 +1,31 @@
 # JOSEPH-TODO — the valve
 
-Only what still needs Joseph. Decided items removed (history: DECIDED.bak.md).
-Prune on decision. Last pruned: 2026-07-11.
+Only what still needs Joseph. Prune on decision. Last pruned: 2026-07-13.
 
-**Bottom line:** *nothing blocks the next real work* — the spec-edit
-reconciliation can proceed now on the already-ratified batch (FULL-SPEC-TODO
-§A). The items below would be good to fold in while it happens; most are
-rubber-stamps.
+**Nothing blocks the work.** The ratified decisions are integrated into
+FULL-SPEC; the remaining work (Tier-2 parser, companion-spec recasts) needs no
+decision from you — it's tracked in `spec/FULL-SPEC-TODO.md`.
 
-## Closed → decisions/DECIDED.bak.md
-D1a · D1b-partial · D1-terms · **D1-FINAL (identity, decision 1)** · D-ATTR-1/2/3
-· D-AUTH-1 (reframed) · D2 / D2-ET / D2-ET-ext (**typing + value-dialects,
-decision 2**) · D8 / D8-unify (**fences**) · D9 (sigil markers) · **D-ESCAPE
-(remove `'` as escape)** · LEX-1 · ARCH-1 · D4 · R8 · libdescent Phase-1 ·
-META-1 (+ AUTHORITY→FULL-SPEC-TODO rename) · **D-TRAIT-SUFFIX (T1: allow `.trait?`)**.
+## Genuinely needs you
 
----
-
-## Genuine judgment calls (no confident rubber-stamp — your read)
-1. **Mixins — rethink or drop?** A conversation, not a stamp. Inputs: subtree
-   inheritance was never spec'd; ash-like examples lean on them; stacking +
-   schema-defaults may subsume most uses.
-
-*(Resolved 2026-07-13: `'` as a string / identifier delimiter — **kept, no
-change**. Only the head-position **escape** role was ever removed (D-ESCAPE);
-the delimiter-removal was an agent-surfaced corollary nobody asked for. `'` and
-`"` remain interchangeable string/name/key delimiters.)*
-
-## Rubber-stamps (clear rec — one "go", or flag exceptions)
-- **Decision 9 `;` guard** ⭢ skip (zero corpus incidence).
-- **Decision 4 — markdown subset** ⭢ Djot-inspired Layer-1 enumeration.
-- **Decision 6 — reference augmentation** (`|[header].highlighted`) ⭢ no,
-  references immutable.
-- **Decision 7 — BlankLine/Warning events** ⭢ spec them.
-- **Multi-attr block lines** ⭢ legalize (drop the warning; the cheatsheet
-  teaches it).
-- **T3 — dynamics grammar** ⭢ menu/knob: envelope syntax in core, Liquid
-  expression grammar → a baseline-dialect companion doc.
-
-## Not a decision — queued WORK (was mis-filed as a judgment call)
-- **Explicit-stack streaming backend** in `descent-core` — build it (the
-  whole point of the descent→Rust rewrite; S5 proved it; vivarium wants it).
-  Replaces the broken `StreamingParser` façade (defect #1). ~2–3 wk. Only
-  question is priority vs the spec-edit — scheduling, not design.
-
-## Physical (only you can)
-- **Obsidian first-load smoke test** (~30 s): `editors/obsidian-udon/` →
-  vault `.obsidian/plugins/udon/`, enable, open a `.udon` file.
+- **Confirm "multi-attr block lines."** The old worklist said "legalize (drop the
+  warning)", but block attribute values run to end-of-line, so `:a 1 :b 2` on a
+  *block* line makes `:a` = `"1 :b 2"`. There is no spec text to change; it reads
+  as a parser-warning / cheatsheet matter. What did you intend?
+- **Obsidian first-load smoke test** (~30 s, only you can): load
+  `editors/obsidian-udon/` into a vault, enable, open a `.udon` file.
+- **Optional:** two tiny pre-existing FULL-SPEC gaps (quoted-strings-in-arrays;
+  `}`-before-`]`) — close now or leave.
 
 ## Parked (NOT waiting on you)
+
 - Optional `udon fmt` — IF ever built; UDON mandates no canonical form.
 - Filename-designator ↔ pragma binding — when the schema layer lands.
+
+## History
+
+All decisions live in FULL-SPEC (authoritative) + git history; the archived
+ledger is `decisions/DECIDED.bak.md`, the predecessor briefs in
+`decisions/_superseded/`. This session resolved `:[id]` (dropped), mixins
+(non-core / experimental), the `'`-string-delimiter (kept), and completed the
+full spec-text integration.

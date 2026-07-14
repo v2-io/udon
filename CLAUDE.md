@@ -78,13 +78,15 @@ touches one, it's blocked on the valve, not on you. Say so.
 
 ## Ground Truth
 
-**spec/FULL-SPEC.md is the authoritative specification**, *modulo* the
-per-feature genealogy (review §2): several implementation behaviors are the
-later deliberate decision awaiting spec backport (fence rules), and several
-spec'd features were never implemented (sameline fences, typed bracket-IDs,
-attr ordering). For any NEW divergence you find, add it to DECIDED.md / FULL-SPEC-TODO.md with git-dated evidence rather
-than picking a side silently. The
-`_archive/` Ruby validator is NOT authoritative. The December usability
+**spec/FULL-SPEC.md is the authoritative specification.** As of 2026-07-13 it
+reflects the ratified decisions (identity `key`/`traits`, `<…>` typing, fences,
+escapes, `@`-inert, etc.); the companion specs (`DYNAMICS.md`, `MARKDOWN.md`,
+`TIME-SPEC.md`) each carry their own status banner. The remaining known
+divergences are **Tier-2 parser** — the spec is *ahead of the parser* (typed
+bracket-IDs, the `:id` hijack, `:`-attrs-before-children, wire-names) — all
+tracked in `spec/FULL-SPEC-TODO.md`. For any NEW divergence you find, add it to
+`FULL-SPEC-TODO.md` with git-dated evidence rather than picking a side silently.
+The `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 
 ## Conventions
