@@ -1531,8 +1531,8 @@ sniffing.
 | `"..."` or `'...'` | String | `"hello"`, `'world'` |
 | Integer patterns | Integer | `42`, `1_000_000`, `0xFF`, `0o755`, `0b1010` |
 | Decimal patterns | Float | `3.14`, `1_000.5`, `1.5e-3` |
-| Rational pattern | Rational | `1/3r`, `22/7r` |
-| Complex pattern | Complex | `3+4i`, `5i` |
+| Rational pattern | Rational *(provisional -- see Numbers)* | `1/3r`, `22/7r` |
+| Complex pattern | Complex *(provisional -- see Numbers)* | `3+4i`, `5i` |
 | `true`, `false` | Boolean | (lowercase only) |
 | `null`, `nil` | Nil | (both equivalent) |
 | `[...]` | List | `[1 2 3]`, `[a b c]` |
