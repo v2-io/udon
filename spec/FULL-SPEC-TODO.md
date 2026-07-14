@@ -127,8 +127,10 @@ Line numbers below are FULL-SPEC.md at the time of writing; re-grep before editi
 ## Parser impl (beyond the plain desugaring)
 
 - [ ] Wire-names are `$key`/`$traits`/`$?…`, no aliases.
-- [ ] `traits` is **always an array** (`[]`, `["a"]`, `["a","b"]`) — the one
-      identity special-case beyond desugaring.
+- [ ] `traits` **view** is always a list (`[]`, `["a"]`, `["a","b"]`) — a
+      tree/accessor normalization (the event stream just emits N `$traits`
+      attrs), not a parser-event behavior. The one *fixed* view rule; lives at
+      the tree layer / udon-utl, with the stacking accessors below.
 - [ ] Fix the `:id` hijack: a bare `:id foo` currently sets identity; it must be
       an ordinary attribute. Emit `$key` (not `Attr("id")`).  `[defect]`
 - [ ] Enforce `:`-attributes-before-children (:1591–1598 already spec's it).
