@@ -17,19 +17,27 @@ attribute stacking, head-position, and the rest (see git history +
 
 ## Remaining FULL-SPEC spec-text
 
-Two spec-precision follow-ups surfaced by the 2026-07-14 EBNF audit (the spec
-*works*; its prose is just looser than the descent grammar — source the exact
-rule from `core/generator/*.desc`):
+*(none currently open — see closed list below)*
 
-- [ ] Bare-name / bare-trait **character class** — precisely defined in the
-      descent grammar (a Unicode-identifier set); the spec only uses bare names
-      by example. Research and back-fill the exact rule.
-- [ ] **Numeric-literal grammar** — the "Numbers" section says "Ruby conventions"
-      by example; the descent grammar has exact productions. Back-fill.
+*Closed 2026-07-14:*
+- *Bare-name / bare-trait **character class** — back-filled to the Unicode
+  identifier set (`XID_Start` / `XID_Continue` + `-`) from `core/generator/
+  udon.desc`; "Bare-name characters" paragraph in "Identity … and Classification"
+  (`d844a72`).*
+- ***Numeric-literal grammar** — "Numbers" rewritten from "Ruby conventions"-by-
+  example to explicit int (four bases, incl. `0d`) + float productions sourced
+  from `values.desc`; rational/complex marked provisional (`d844a72`).*
+- *The `<…>` recognition rule (bare `<` in attribute-value position opens the
+  envelope; quote for a literal — "Explicit Typing"); quoted-strings-in-arrays
+  and `}`-before-`]` ("Array Item Values").*
 
-*Closed 2026-07-14: the `<…>` recognition rule (bare `<` in attribute-value
-position opens the envelope; quote for a literal — added to "Explicit Typing");
-quoted-strings-in-arrays and `}`-before-`]` (documented in "Array Item Values").*
-
-*Everything else once queued here has landed in FULL-SPEC. Parser catch-up is in
+*Everything once queued here has landed in FULL-SPEC. Parser catch-up is in
 `core/PLAN.md`; companion-spec recasts are tracked by their in-file banners.*
+
+**One design note deliberately parked** (not spec-text yet, awaiting Joseph's
+call — raised 2026-07-14): a type-nesting / bracket-stack caveat for "Explicit
+Typing". Today that section says "`>` terminates the value"; composite nesting
+(`<r: <i: 3 -7> 0d83.23>`) will need `<>`-balance (the *matching* `>`), with
+routing left open (possibly dialect-driven). Direction captured in
+`design/composite-types.md`; add to FULL-SPEC only when the dialect layer is in
+view.
