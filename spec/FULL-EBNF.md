@@ -3,6 +3,14 @@
 **Extracted from FULL-SPEC.md**
 *Version 0.7-draft -- December 2025*
 
+> ⚠️ **This grammar TRAILS the spec — it is not authoritative.** As of
+> 2026-07-13 it is *not* kept in sync with the active FULL-SPEC.md rewrite.
+> **`FULL-SPEC.md`, in conjunction with the remaining items in
+> `FULL-SPEC-TODO.md`, is authoritative.** This EBNF still reflects the
+> Dec-2025 draft (`id`/`class` not `key`/`traits`, `:[id]` merge, `'` as an
+> escape, no `<…>` typing, the old fence rules) and will be regenerated once the
+> spec rewrite settles. Do not treat it as current.
+
 This is the formal grammar for UDON in EBNF-style notation.
 
 ---

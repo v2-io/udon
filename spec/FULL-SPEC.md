@@ -313,6 +313,34 @@ Square brackets for list values:
 - Space-delimited within brackets
 - Quoted strings for values with spaces: `["hello world" foo bar]`
 
+### Attribute Stacking
+
+When the same attribute key appears more than once on an element, the values
+**stack** -- they accumulate as an ordered list of assignments, in source
+order. Stacking is the uniform rule for *every* attribute; last-wins /
+"one per key" is **not** how UDON attributes behave.
+
+```
+|el :x 1 :x 2        ; x = [1, 2]  (both kept, in order)
+```
+
+The event stream is the truth: each `:key` occurrence emits its own `Attr`, in
+order. This is also what makes the trait sugar work -- `.a.b` desugars to two
+`$traits` assignments (see Identity and Classification).
+
+**Stacking and list values are orthogonal** -- two different multiplicity axes.
+A list literal `[...]` is *one* value that happens to be a list; stacking is
+*multiple* assignments of the same key. They compose:
+
+```
+|el :x [1 2] :x [3]   ; x = [[1, 2], [3]] -- two stacked values, the first a list
+```
+
+A host may offer a single-value accessor (scalar / last) beside a list
+accessor (all values); the `traits` view is always a list (see Host Views).
+What is *allowed* -- e.g. forbidding a multi-valued `$key` -- is a schema
+concern, never core: the core stacks and list-types any attribute uniformly.
+
 ### Complex Attribute Values
 
 When an attribute needs structured content, use indentation:
@@ -1497,6 +1525,27 @@ Resolution modes a host may offer:
 The earlier `:[id]` attribute-merge syntax is **removed**: "merge that element's
 attributes" is just the *merge* resolution mode above, chosen by the consumer --
 not a second core syntax.
+
+### Duplicate Definitions
+
+Because `|` always *defines*, two elements of the same type sharing a key
+(`|user[1]` written twice) is a **duplicate definition** -- never a re-open or
+merge. Uniqueness is over `(element-type, key)`.
+
+This is a **Document-layer** concern, never a core parse rule: the streaming
+parser is stateless and cannot track document-wide keys. When a document is
+assembled, the default is to **error** on a duplicate `(element-type, key)`.
+The Document builder exposes a policy, so append-oriented sources (event logs,
+concatenated generator output) may choose otherwise:
+
+```
+error | allow-if-identical | first-wins | last-wins | keep-all
+```
+
+plus an optional `warn`. `allow-if-identical` compares by tree-equality
+(ignoring spans). The event/streaming layer never checks this, and
+`@`-references play no part in it -- uniqueness is a property of *definitions*,
+not references.
 
 ### Mixins (experimental -- a parser/host behavior, not core)
 
