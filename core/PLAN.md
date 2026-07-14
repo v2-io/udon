@@ -1,5 +1,12 @@
 # libudon Development Plan
 
+> [!warning] **STALE — needs a ground-up rebuild (Joseph, 2026-07-14).**
+> This plan predates the umbrella restructure and the 2026-07 CORE spec work;
+> assume it is out of date in many more ways than are flagged inline. Do **not**
+> treat it as an authoritative worklist. When parser work resumes, rebuild and
+> re-evaluate this file from scratch against `../spec/CORE.md` (the sole source
+> of truth) — the "Spec Alignment" divergences below are breadcrumbs, not a plan.
+
 Parser implementation using descent (~/src/descent/).
 
 ## Architecture
@@ -99,9 +106,10 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
       - The consumed `\` takes up **no column**: it anchors the prose block's
         content-base at its column (only the first line needs it) and the text
         after backs up one column. Interacts with Automatic Prose Dedentation.
-      - `\` **not** at head position (prose begun, mid-value, trailing) is passed
-        through literally — no `\;` escape, no `\|{` escape. Retire `check_apos`
-        and all sameline/embedded `\;` handling.
+      - In prose flow, `\` escapes an inline opener `|{` / `!{` / `;{` (consumed →
+        literal opener; `!{` covers interpolation/directive/raw). A `\` before
+        ordinary text is literal (pass-through, so `C:\Users` is untouched).
+        Retire `check_apos` and the old per-context `\;` handling.
       - **New Warning:** a leading `\` sitting *deeper* than an established prose
         content-base is mid-prose → passed through literally + Warning.
       See CORE "Escape (`\`)", "Literal Semicolons", "Unified Inline Syntax".
