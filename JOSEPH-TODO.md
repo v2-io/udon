@@ -8,8 +8,13 @@ decision from you — it's tracked in `spec/FULL-SPEC-TODO.md`.
 
 ## Genuinely needs you
 
-- **Obsidian first-load smoke test** (~30 s, only you can): load
-  `editors/obsidian-udon/` into a vault, enable, open a `.udon` file.
+- **Numeric literals — two open calls** (active discussion, from the Ruby-vs-UDON
+  comparison): (a) support bare `3-4i` negative-imaginary (recommended — natural
+  now that bare temporal is gone); (b) rational form — keep `1/3r` only, as a
+  documented Ruby *divergence* (recommended), vs. also adding Ruby's `Nr` suffix.
+  `0d` explicit-decimal is decided (**add**). These gate committing the back-fill
+  agent's char-class + Numbers edits, currently **uncommitted** on
+  FULL-SPEC / FULL-EBNF.
 
 ## Parked (NOT waiting on you)
 
@@ -23,4 +28,5 @@ ledger is `decisions/DECIDED.bak.md`, the predecessor briefs in
 `decisions/_superseded/`. This session resolved `:[id]` (dropped), mixins
 (non-core / experimental), the `'`-string-delimiter (kept), multi-attr block
 lines (keep EOL semantics + Warning on stranded `:word`), and completed the full
-spec-text integration.
+spec-text integration. Obsidian plugin installed into the shared config and
+smoke-tested (works) — its own feedback lives in `editors/obsidian-udon/TODO.md`.
