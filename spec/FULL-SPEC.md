@@ -297,10 +297,19 @@ set -- a space, `.`, `[`, `:`, `$`, other punctuation -- ends the bare name; to
 put such a character *in* a name or trait, single-quote it (`|'weird name'`,
 `.'ns.kind'`). A bare `.trait` additionally absorbs the suffix characters
 `* ! ? +` (see Element Suffixes), so a trait's continue-set is `XID_Continue`
-plus `-` plus `* ! ? +`. *(Reference grammar: `XLBL_START` = Unicode
-`XID_Start`, `XLBL_CONT` = `XID_Continue` + `-`; see `core/generator/udon.desc`
--- `parse_element_identity`, `name`, `class_name` -- and
-`tools/descent/characters.md`.)*
+plus `-` plus `* ! ? +`.
+
+What the core fixes is the *rule* -- a bare name is a Unicode identifier (UAX #31
+`XID_Start` to start, `XID_Continue` or `-` to continue). *Which Unicode version*
+those properties resolve against is a **parser / host-language decision**, not a
+core one: the core says "Unicode identifier," and the host's Unicode support
+(the reference parser tracks the `unicode-xid` crate's version) pins the exact
+codepoint set. This is the same core-vs-host split drawn in The Core, and What It
+Leaves Open.
+
+*(Reference grammar: `XLBL_START` = Unicode `XID_Start`, `XLBL_CONT` =
+`XID_Continue` + `-`; see `core/generator/udon.desc` -- `parse_element_identity`,
+`name`, `class_name` -- and `tools/descent/characters.md`.)*
 
 ### Element Suffixes
 
