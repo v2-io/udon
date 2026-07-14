@@ -1270,32 +1270,54 @@ Raw content cannot be an attribute value directly--attributes are typed scalars.
 
 ### Triple-Backtick Escape (Freeform)
 
-Triple-backticks break out of indentation sensitivity entirely.
+Triple-backticks break out of indentation sensitivity entirely: the body is
+captured exactly -- no prose dedentation, no marker interpretation.
 
-**Opening backticks:**
-- The indentation of ``` determines the block's structural parent
-- Need not be at line start -- can follow other content
-- Content after ``` on the same line is part of the freeform block
+**Opening.** Triple-backticks open a freeform block when they appear in **head
+or scan position** -- at the start of a line (after indentation), or while
+scanning an element line *before any prose has begun*. They are **not** a fence
+once prose has started on the line.
+
+- The backticks' indentation sets the block's structural parent (a child of
+  whatever owns that column) -- which is why fences are not column-1-only.
+- Everything after the backticks on the opening line begins the body, so an
+  info string (`rust`, `rust ignore`) comes for free -- there is no separate
+  info-string rule.
 
 ```
-|element and here we go with ```
-freestyling it!
-no indent rules in here
+|code
+  ```
+  def foo():
+      return 1
+  ```
 ```
 
-|parent
-  |child
-    some content then ``` and now we're free
-anything goes
-back at column 0
-    ``` ; closing ideally matches but not required
+Scan-position (sameline) form -- the backticks are still being scanned after
+`|b`, so this opens a block and the rest of the line begins its body:
+
+```
+|a |b ```rust
+  some rust, captured verbatim
+```
 ```
 
-**Closing backticks:**
-- Should match opening indent (preferred)
-- Not strictly required -- first ``` at opening indent or less closes the block
+After prose, though, triple-backticks are literal text, not a fence: once the
+first prose word commits the line, later backticks are just characters in the
+output -- there is no sameline fence *after* prose has begun.
 
-Use this **only** when:
+**Closing.** A line whose first non-space content is triple-backticks closes the
+block, at **any** indentation, and must be followed by a newline (trailing
+whitespace before that newline is ignored). Putting the closer at the opening
+indent is **recommended** -- so a reader mid-long-block can recover the parent's
+column -- but not required.
+
+> **Caution.** Indenting the closing backticks means their leading whitespace is
+> part of the captured body: the body runs to the newline *before* the closer,
+> so that indentation was already body. Only whitespace to the *right* of the
+> closing backticks is silently trimmed. Put the closer at column 0 if you do
+> not want its indent in the output.
+
+Use freeform **only** when:
 - Assembling files from multiple sources without indent control
 - Working with broken tooling that can't maintain indentation
 - The rare case where absolute positioning matters
