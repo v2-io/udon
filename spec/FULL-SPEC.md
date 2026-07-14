@@ -222,6 +222,28 @@ Elements are the structural backbone:
 one of: a letter, `[`, `.`, `{`, or `'`. Otherwise `|` is treated as prose
 (preserves Markdown table compatibility).
 
+### Marker Recognition
+
+At head position each marker is recognized by a short guard; if the guard fails,
+the character is prose. `|`'s guard is above. The rest:
+
+- **`!`** (directive) marks when followed by an **identifier character or `:`**
+  -- `!if`, `!for`, `!:lang:`. So `![img]`, `!=`, `!(` are prose. (`!{...}` is a
+  *prose-level* inline form -- interpolation or inline directive -- not a
+  head-position block directive.)
+- **`@`** (reference) marks when followed by `[` or an identifier -- `@[key]`,
+  `@element[key]`. What a consumer *does* with the reference is its choice (see
+  References and Mixins).
+- **`:`** (attribute) is **phase-restricted** rather than char-guarded: a `:` is
+  an attribute only while the element has no child content yet; once any text or
+  child element has appeared, a line-initial `:` is prose (see Attributes Before
+  Children). A `:` not followed by a name also falls back to prose intact.
+- **`;`** (comment) marks per the Comments table (line comment at root /
+  sameline / after attribute values; literal in block prose).
+- **triple-backtick** (freeform) -- see Triple-Backtick Escape.
+
+Every guard is a few characters of bounded lookahead (see Bounded Lookahead).
+
 ### Identity and Classification
 
 ```
@@ -1845,6 +1867,27 @@ The examples in this document should be converted to unit tests. Key scenarios:
 
 1. **Quoted strings in arrays:** Do they follow the same rules as other typed
    values? Currently: quotes handled before bare_string dispatch.
+
+---
+
+## Bounded Lookahead (Non-Normative)
+
+UDON is deliberately a **bounded-lookahead** grammar. Every head-position guard
+resolves with a few characters of lookahead (typically 2-3 -- `|` plus the next
+character, three backticks, and so on), single-level, with no deep
+backtracking. This is a constraint on the *language*, not merely a property of
+one parser: new syntax should stay inside it.
+
+Two consequences:
+
+- **It is why a recursive-descent state machine (descent) fits, and a PEG is
+  not needed.** Deep backtracking or unbounded lookahead would force a different
+  strategy; keeping the bound small keeps the parser simple and fast.
+- **Pending lookahead is suspendable state.** When streaming, a chunk boundary
+  can land mid-guard -- a `|` whose next byte has not arrived yet. Those
+  un-emitted bytes are held in the parser's saved state and resolved when the
+  next chunk arrives; nothing is emitted until the guard decides. This is what
+  lets the same small machine parse a whole document or a byte-at-a-time stream.
 
 ---
 
