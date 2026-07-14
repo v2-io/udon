@@ -23,14 +23,14 @@ Key changes from old architecture:
 
 The UDON specification lives in a single authoritative file:
 
-- **~/src/udon/spec/FULL-SPEC.md** - Complete unified specification
+- **~/src/udon/spec/CORE.md** - Complete unified specification
 
 **If you don't have this file in your context, stop and read it now.**
 Every session should start by confirming you understand the current spec.
 This is the ONLY authoritative source for syntax rules.
 
 Note: The older `SPEC.md`, `SPEC-INDENTS.md`, and `SPEC-UPDATE.md` files are
-deprecated and superseded by FULL-SPEC.md.
+deprecated and superseded by CORE.md.
 
 Do NOT use:
 - `_archive/` files (old architecture, outdated)
@@ -187,7 +187,7 @@ Better to pause and ask than to guess wrong.
 This is an anti-pattern that cements bugs as expected behavior. It has happened
 multiple times and results in work being reverted. The correct workflow:
 
-1. Read FULL-SPEC.md for the feature being tested
+1. Read CORE.md for the feature being tested
 2. Write fixture expectations based on what the SPEC says should happen
 3. Run tests - they WILL fail if parser doesn't match spec
 4. Fix the PARSER to match the spec
@@ -202,7 +202,7 @@ Do not "just see what the parser does." The spec is ground truth.
 ### Workflow for Implementing Features
 
 1. Find fixtures with empty events - these need implementation
-2. **Read FULL-SPEC.md** - understand what SHOULD happen per spec
+2. **Read CORE.md** - understand what SHOULD happen per spec
 3. **Write fixture expectations** - based on spec, not parser output
 4. Run tests - expect failures
 5. Edit `generator/*.desc` - fix the grammar to match spec
@@ -258,5 +258,5 @@ should make it more obvious what UDON does.
 ## Related Repositories
 
 - `~/src/descent` - Parser generator (Ruby gem, active development)
-- `~/src/udon` - Specification (FULL-SPEC.md is authoritative)
+- `~/src/udon` - Specification (CORE.md is authoritative)
 - `~/src/udon-ruby` - Ruby gem (needs FFI update)

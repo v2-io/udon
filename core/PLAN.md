@@ -63,12 +63,12 @@ The tree builder (when implemented) will be just another event consumer.
 - [ ] **Variation test edge cases** - Some edge cases with indentation variations
 - [x] **value.rs evaluation** — moot: value.rs was deleted with the Tree API commit (a6d23e7)
 
-## Spec Alignment — catch up to FULL-SPEC (2026-07-13)
+## Spec Alignment — catch up to CORE (2026-07-13)
 
-FULL-SPEC.md was brought current with the ratified decisions on 2026-07-13
+CORE.md was brought current with the ratified decisions on 2026-07-13
 (identity `key`/`traits`, `<…>` typing, fences, escapes, `@`-inert, etc.). The
 **spec is now ahead of the parser**; these are the parser/grammar changes that
-close the gap. Spec-text is done (in FULL-SPEC); this is the *impl* worklist.
+close the gap. Spec-text is done (in CORE); this is the *impl* worklist.
 Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
 
 - [ ] **Wire-names:** grammar emits `$key`/`$traits`/`$?…` (the `$id`/`$class`
@@ -88,27 +88,27 @@ Defect numbers reference `~/src/udon/REVIEW-JULY-2026.md` §4.
       `traits` view always a list.
 - [ ] **Streaming rebuild** (defect #1): explicit-stack backend in descent-core.
 - [ ] **`'`→`\` escape**: `'` is no longer a head-position escape (grammar still
-      lists it; see FULL-SPEC "Block-Level Escape").
+      lists it; see CORE "Block-Level Escape").
 - [ ] **multi-attr block-line Warning** (decided 2026-07-14: keep EOL semantics,
       warn): emit a Warning when a block value contains a stranded ` :word ` that
       looks like an intended second attribute. The value still runs to EOL; see
-      FULL-SPEC "Block Attribute Values".
+      CORE "Block Attribute Values".
 - [ ] **Trait-suffix chars (D-TRAIT-SUFFIX)** — `*!?+` are legal *bare trait*
       characters, so `.foo?` = the trait `"foo?"` (not trait `foo` + suffix), and
       `.foo ?` (space) = trait `foo` + `$?`. Parser currently splits the suffix
-      off in both cases. Maximal-munch on the trait; see FULL-SPEC "Element
+      off in both cases. Maximal-munch on the trait; see CORE "Element
       Suffixes". *(Was missing from this list — found by the 2026-07-14
       examples-vs-parser audit; spec is correct, parser lags.)*
 - [ ] **`0d` / `0D` explicit-decimal prefix** (ratified 2026-07-14) — add a
       `d`/`D` arm to `num_zero` in `values.desc` so `0d42` parses as the integer
       `42` (currently falls back to String). Sibling to the existing
       `0x`/`0o`/`0b` prefixes; the "natural written form" rationale is in
-      FULL-SPEC "Numbers". *(Rational/complex bare-vs-dialect is NOT here — it's
+      CORE "Numbers". *(Rational/complex bare-vs-dialect is NOT here — it's
       an open design fork, not a parser task; see `design/composite-types.md`.)*
 - [ ] **`<…>` explicit-typing envelope** — recognize `<…>` in attribute-value
       position (`>` terminates), the label ladder (`<type:…>` / `<dialect:type:…>`),
       unlabelled dialect dispatch, and route to dialects. Bare temporal → string.
-      Zero fixtures today (biggest test hole). See FULL-SPEC "Explicit Typing".
+      Zero fixtures today (biggest test hole). See CORE "Explicit Typing".
 - [ ] **Regenerate** parser + update fixtures/tests (SPEC-based expectations,
       never traced from parser output).
 
@@ -176,7 +176,7 @@ This anti-pattern has happened multiple times and cements bugs as expected behav
 Work will be reverted if fixtures are filled this way.
 
 **Correct workflow:**
-1. Read FULL-SPEC.md for the feature
+1. Read CORE.md for the feature
 2. Write fixture expectations based on SPEC
 3. Run tests - they WILL fail
 4. Fix the PARSER to match SPEC
@@ -318,7 +318,7 @@ Build arena-allocated tree from events:
 ## Reference
 
 - `~/src/descent/CLAUDE.md` - descent usage guide
-- `~/src/udon/FULL-SPEC.md` - **Authoritative UDON specification**
+- `~/src/udon/spec/CORE.md` - **Authoritative UDON specification**
 - `~/src/udon/FULL-EBNF.md` - Extracted EBNF
 - `~/src/udon/implementation-phase-2.md` - Ideal streaming architecture
 - `~/src/udon/parser-strategy.md` - Multi-language strategy
