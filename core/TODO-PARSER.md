@@ -17,13 +17,11 @@ root `TODO-META.md` — not here.)
 - [ ] **Streaming AST** — *landed 2026-07-15* (`udon-core/src/stream_tree.rs`):
       `TreeStream` — push events in, completed root-level subtrees ship as
       owned `Document`s the moment they close (CORE "Streaming Parse") —
-      plus the `StreamingTreeParser` byte-feeding convenience. **Bounded by
-      the streaming-resumption defect** (review #1, `TODO-CORE-PARSING`):
-      today's line-oriented `StreamingParser` restarts per feed, so
-      arbitrary feed boundaries mis-nest; `TreeStream` itself is
-      source-agnostic and plugs into the resumable parser unchanged when it
-      lands. **Remaining:** re-test with arbitrary boundaries once the
-      explicit-stack backend exists.
+      plus the `StreamingTreeParser` byte-feeding convenience. *Updated same day:* the
+      explicit-stack backend landed — `StreamingTreeParser` now rides
+      `PushdownParser` and is correct at ANY feed boundary (byte-at-a-time
+      tested; review defect #1 resolved). **Remaining:** nothing here; see
+      CORE-PARSING for the old-façade retirement.
 - [ ] **Parser API decisions** — surface shape for consumers.
       *(discuss w/ Joseph where the API is user-facing)* Decisions taken
       provisionally in the work above, for review: scalar `attr()` = LAST

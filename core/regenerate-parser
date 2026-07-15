@@ -120,6 +120,20 @@ generate_parser() {
         error "descent-rs failed (parser.rs left untouched)"
         return 1
     fi
+
+    # Pushdown (explicit-stack, resumable) sibling — same grammar, same
+    # atomic-write discipline. No trace variant (v1 limit).
+    local pd_out pd_tmp
+    pd_out="$SCRIPT_DIR/udon-core/src/parser_pd.rs"
+    pd_tmp=$(mktemp "${TMPDIR:-/tmp}/udon-parser-pd.XXXXXX.rs")
+    if "$descent_rs" generate "$tmp_file" --backend pushdown > "$pd_tmp"; then
+        mv "$pd_tmp" "$pd_out"
+        success "Generated $pd_out"
+    else
+        rm -f "$pd_tmp"
+        error "descent-rs pushdown backend failed (parser_pd.rs left untouched)"
+        return 1
+    fi
 }
 
 # Build with cargo

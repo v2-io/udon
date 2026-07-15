@@ -1,11 +1,10 @@
 //! Streaming AST tests.
 //!
 //! `TreeStream` (events in → completed root-level subtrees out) is tested
-//! against the one-shot parser's event stream — the correct event source we
-//! have today — including delivery timing. `StreamingTreeParser` is tested
-//! within its documented envelope: feeds carrying whole top-level
-//! constructs (see stream_tree module docs re: review defect #1 for why
-//! arbitrary boundaries wait on the resumable parser).
+//! against the one-shot parser's event stream, including delivery timing.
+//! `StreamingTreeParser` rides the pushdown (explicit-stack) parser, so it
+//! is additionally tested at arbitrary feed boundaries — byte-at-a-time
+//! included, the exact case that broke the retired line-oriented streamer.
 
 use udon_core::stream_tree::{StreamingTreeParser, TreeStream};
 use udon_core::tree::Document;
@@ -43,8 +42,6 @@ fn subtrees_arrive_as_they_close() {
 #[test]
 fn streamed_subtrees_match_one_shot() {
     let mut stp = StreamingTreeParser::new();
-    // Feed in two chunks, each carrying whole top-level constructs
-    // (split at a root-level boundary).
     let split = DOC.windows(2).position(|w| w == b"\n;").unwrap() + 1;
     let mut docs = stp.feed(&DOC[..split]);
     docs.extend(stp.feed(&DOC[split..]));
@@ -55,6 +52,26 @@ fn streamed_subtrees_match_one_shot() {
 
     // Structural equivalence with the one-shot tree, subtree by subtree
     // (compared by shape — arena NodeIds differ between documents).
+    let one_shot = Document::parse(DOC).unwrap();
+    let expected: Vec<String> = one_shot.root().children().map(|c| shape(&c)).collect();
+    let streamed: Vec<String> =
+        docs.iter().map(|d| shape(&d.root().first_child().unwrap())).collect();
+    assert_eq!(streamed, expected);
+}
+
+#[test]
+fn byte_at_a_time_feeding_is_exact() {
+    // The resumable parser makes arbitrary boundaries safe — including one
+    // byte per feed across nested structure (review defect #1's case).
+    let mut stp = StreamingTreeParser::new();
+    let mut docs = Vec::new();
+    for b in DOC {
+        docs.extend(stp.feed(&[*b]));
+    }
+    let (rest, errors) = stp.finish();
+    docs.extend(rest);
+    assert!(errors.is_empty(), "{errors:?}");
+
     let one_shot = Document::parse(DOC).unwrap();
     let expected: Vec<String> = one_shot.root().children().map(|c| shape(&c)).collect();
     let streamed: Vec<String> =

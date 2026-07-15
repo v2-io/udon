@@ -10,14 +10,11 @@
 //!   the subtree closes. It is source-agnostic on purpose — when the
 //!   resumable (explicit-stack) parser lands in descent, it plugs in here
 //!   unchanged.
-//! - [`StreamingTreeParser`] is the byte-feeding convenience over today's
-//!   line-oriented [`StreamingParser`]. **Caveat (review defect #1 /
-//!   `TODO-CORE-PARSING` "streaming resumption"):** the current
-//!   `StreamingParser` starts a fresh inner parse per feed, so structure
-//!   that spans feed boundaries mis-nests. It is correct when each `feed()`
-//!   carries whole top-level constructs (e.g. one event-log entry per feed
-//!   — the append-oriented case CORE names); arbitrary-boundary correctness
-//!   arrives with the resumable parser, not with more code here.
+//! - [`StreamingTreeParser`] is the byte-feeding convenience over the
+//!   pushdown (explicit-stack) parser — resumable at ANY byte boundary
+//!   (review defect #1 resolved at the generator level; see
+//!   `tests/pushdown_differential.rs` for the fixtures-times-chunk-sizes
+//!   proof). Feed bytes however they arrive; subtrees ship as they close.
 //!
 //! Subtree granularity: one completed root-level node per shipment — an
 //! element with its whole subtree, a directive, a comment, a prose line.
@@ -27,7 +24,8 @@
 
 use std::borrow::Cow;
 
-use crate::parser::{Event, ParseResult, StreamEvent, StreamingParser};
+use crate::parser::{Event, StreamEvent};
+use crate::parser_pd::PushdownParser;
 use crate::tree::{describe_code, Document, ParseError, TreeBuilder};
 
 /// Convert an owned [`StreamEvent`] into an owned-lifetime [`Event`] so the
@@ -184,10 +182,10 @@ impl TreeStream {
     }
 }
 
-/// Byte-feeding streaming tree over the line-oriented [`StreamingParser`].
-/// Read the module docs for the feed-boundary caveat before relying on it.
+/// Byte-feeding streaming tree over the pushdown (explicit-stack) parser:
+/// resumable at any byte boundary, so feed chunks exactly as they arrive.
 pub struct StreamingTreeParser {
-    parser: StreamingParser,
+    parser: PushdownParser,
     tree: TreeStream,
 }
 
@@ -199,21 +197,13 @@ impl Default for StreamingTreeParser {
 
 impl StreamingTreeParser {
     pub fn new() -> Self {
-        StreamingTreeParser { parser: StreamingParser::new(), tree: TreeStream::new() }
-    }
-
-    /// See [`StreamingParser::with_max_buffer`].
-    pub fn with_max_buffer(max_buffer: usize) -> Self {
-        StreamingTreeParser {
-            parser: StreamingParser::with_max_buffer(max_buffer),
-            tree: TreeStream::new(),
-        }
+        StreamingTreeParser { parser: PushdownParser::new(), tree: TreeStream::new() }
     }
 
     /// Feed a chunk of bytes; returns the subtrees completed by this chunk.
     pub fn feed(&mut self, chunk: &[u8]) -> Vec<Document<'static>> {
         let tree = &mut self.tree;
-        let _ = self.parser.parse(chunk, |ev| tree.push_stream_event(ev));
+        self.parser.push_chunk(chunk, &mut |ev| tree.push_stream_event(ev));
         tree.take_completed()
     }
 
@@ -222,10 +212,11 @@ impl StreamingTreeParser {
         self.tree.take_errors()
     }
 
-    /// Flush any buffered partial line and close out the stream.
+    /// Close the stream (remaining structure runs its EOF behavior) and
+    /// return the final subtrees and errors.
     pub fn finish(mut self) -> (Vec<Document<'static>>, Vec<ParseError>) {
         let tree = &mut self.tree;
-        self.parser.finish(|ev| tree.push_stream_event(ev));
+        self.parser.finish(&mut |ev| tree.push_stream_event(ev));
         self.tree.finish()
     }
 }

@@ -6,9 +6,18 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
-- [ ] **Streaming resumption** — an explicit call-stack passed around so the state
-      machine is resumable across chunk boundaries (descent explicit-stack
-      backend; review defect #1).
+- [ ] **Retire the line-oriented `StreamingParser` façade.** Review defect #1
+      is RESOLVED at the generator level (2026-07-15): descent's pushdown
+      backend (`--backend pushdown`) emits `parser_pd.rs`, resumable at any
+      byte boundary, proven by `tests/pushdown_differential.rs` (all fixtures
+      × chunk sizes vs single-shot, spans included); `StreamingTreeParser`
+      rides it. Remaining: the old `StreamingParser` in `parser.rs` is now a
+      façade with no consumers except `tests/boundaries.rs` — rework those
+      tests onto `PushdownParser` (they get strictly stronger) and drop the
+      `streaming` template section (keeping the shared `StreamEvent` /
+      `ParseResult` types the pushdown module imports). Also pending:
+      pushdown perf benchmark, and `--trace` plumbing for the pushdown
+      backend (v1 limits).
 - [ ] **Grammar cleanup (stylistic / organizational)** — DRY the ~21
       near-identical number states in `values.desc`; parameterize
       `double_quoted`/`single_quoted`. Behavior-neutral; not fixture-driven.
