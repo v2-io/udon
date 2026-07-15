@@ -94,8 +94,18 @@
         `escape.yaml::escape_past_base_is_literal_with_warning` (flips
         RED→GREEN), close the CORE-PARSING item into the ledger, add one
         CORE sentence when the warning table is written.
-      - **Inline raw `!{:kind: …}` details** — deferred by Joseph
-        (2026-07-15); discuss later.
+      - **Inline raw `!{:kind: …}` details — DEFERRED past 0.8 entirely**
+        (Joseph, 2026-07-15): much easier to answer once dialects, schemas,
+        and especially the templating dialect are nailed down. Until then,
+        what the fixtures encode is **current compliant behavior, to be
+        nailed down better soon** — the single space after the label's
+        closing `:` is a separator (not content), and the inline form
+        carries the block form's `Raw` marker event
+        (`dynamics_syntax.yaml::inline_raw_json` / `inline_raw_regex_braces`
+        hold both RED against the pre-0.8 parser's leading-space capture).
+        When CORE's Dynamics section is next touched, add this sentence
+        there verbatim so compliance-testers know the contract is
+        provisional-but-binding for 0.8.
       - **RATIFIED (Joseph, 2026-07-15): comment continuation is uniform.**
         Everything deeper than the comment's column is comment TEXT (inert,
         never parsed) until a line at or dedented from it — the prefix
@@ -135,10 +145,6 @@
         the uniform Head-Position reading (deeper = prose;
         `comments.yaml::comment_deeper_than_prose_base_is_prose`); the
         Comments example needs updating or an exception carved.
-      - *(the deferred inline-raw item above carries the details: space
-        after the label's closing `:` — separator or content; whether the
-        inline form carries the block form's `Raw` marker event. Fixtures
-        currently encode: separator; yes.)*
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
