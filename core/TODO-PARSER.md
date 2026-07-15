@@ -7,11 +7,11 @@ root `TODO-META.md` — not here.)
 
 ## Open
 
-- [ ] **Pull appropriate (AST / consumer-layer) tasks from `PLAN.md` into here**
-      (the Phase-5 tree builder, streaming, etc.) — deprecating any subsumed by
-      the v0.8 compliance work (see `../TODO-META.md` bootstrap).
 - [ ] **Tree / AST builder** — `Document`/`Node`, arena allocation, navigation
       (parent / children / siblings), selectors, string interning.
 - [ ] **Streaming AST** — the incremental tree as events arrive.
 - [ ] **Parser API decisions** — surface shape for consumers.
       *(discuss w/ Joseph where the API is user-facing)*
+- [ ] **[later] Language bindings** — Ruby (FFI over the streaming API, lazy
+      tree projection), WASM, Python (PyO3), C ABI shared library. Predicated
+      on a stable, compliant parser API.

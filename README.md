@@ -256,7 +256,9 @@ inline, not in a separate valve.
 | **PUBLISHING** (`TODO-PUBLISHING.md`) | README, release, crates.io | — | — |
 
 The current `core-v…` tag mirrors `spec/CORE-VERSION` and the SPEC-CORE target
-above — they move together. Migration in progress: `core/PLAN.md`, the retired
-`JOSEPH-TODO`, and the `design/` notes are draining into these lanes (each has a
-"pull from X" task; delete X when empty). `REVIEW-JULY-2026.md` and
-`REBOOT-PLAN.md` remain the historical *why* and phase plan.
+above — they move together. Migration in progress: the `design/` notes,
+`REVIEW-JULY-2026.md` §4/§7-F, and the `REBOOT-PLAN.md` backlog are still
+draining into these lanes (see the `TODO-META.md` bootstrap task; delete a
+source when empty — `core/PLAN.md` and the retired `JOSEPH-TODO` are already
+drained and deleted). `REVIEW-JULY-2026.md` and `REBOOT-PLAN.md` remain the
+historical *why* and phase plan.

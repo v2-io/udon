@@ -7,7 +7,7 @@ that crate lands; at root for now.* Predicated on a compliant parser.
 ## Open
 
 - [ ] **Accessors** — `attr` (scalar/last) + `attr_all` (list); `traits` view
-      always a list; host views. (Pull the accessors item from `core/PLAN.md`.)
+      always a list; host views.
 - [ ] **Conversion** — `udon2md` / `md2udon` over the real parsed tree (Layer 3;
       degradation policy per `spec/MARKDOWN.md`).
 - [ ] **`udon fmt`** — optional; UDON mandates no canonical form, so only if we
