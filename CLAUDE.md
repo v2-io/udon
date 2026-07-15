@@ -56,8 +56,11 @@ against a tagged CORE version (event-level by default; AST-level where a
 core-syntax property is easier to assert there). Once that keystone lands
 (`TODO-META.md` [P0]), the parser lanes hold only residuals and decompositions.
 
-Each area keeps its own **co-located** TODO list. Nothing needing Joseph sits in
-a separate valve — such items carry `*(discuss w/ Joseph)*` inline, in context.
+Each area keeps its own **co-located** TODO list, holding only **open** items:
+when an item closes, delete it (its record lives in git) — don't accumulate a
+"done" section, and a lane with nothing open should read empty. Nothing needing
+Joseph sits in a separate valve — such items carry `*(discuss w/ Joseph)*`
+inline, in context.
 
 | Lane | Covers | Location |
 |------|--------|----------|
@@ -124,6 +127,24 @@ parser*; parser catch-up is **measured** by the versioned compliance fixtures
 — with git-dated evidence rather than picking a side silently.
 The `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
+
+**When the parser or descent grammar diverges from CORE, the implementation is
+wrong or lagging — the behavior is never "settled" by the code.** The `.desc`
+grammar and generated `parser.rs` are *never* authoritative. A divergence has
+three possible resolutions, and which applies is a spec-reasoning call
+(Joseph's), not inferred from what the code does: (a) the grammar holds
+better-developed thinking to **backport** into CORE (rare); (b) the impl is buggy
+or built to an older spec and gets **fixed** to CORE (common); or (c) the full
+picture prompts CORE to **evolve** to something new, leaving the impl
+non-compliant in a fresh way. When you surface a divergence, give the factual
+three-way picture — exactly what the grammar does, what the parser does, and what
+CORE says (including where CORE says different things in different places) — **not
+a verdict**.
+
+**Read the primary source at the point you rely on it.** Re-open the actual CORE
+section or `.desc` rule before acting on it; memory of an earlier read, a
+secondary artifact (`FULL-EBNF.md`, fixtures, older notes), or a summary is not
+the source. This is the single most-reproduced mistake in this repo's history.
 
 ## Conventions
 
