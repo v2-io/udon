@@ -13,6 +13,15 @@ use common::{load_fixtures_by_name, run_test, run_with_variations, Gen};
 
 /// Run canonical tests for a fixture file
 fn run_fixture(name: &str) {
+    let failures = collect_fixture_failures(name);
+    if !failures.is_empty() {
+        panic!("\n{} tests failed:\n  {}", failures.len(), failures.join("\n  "));
+    }
+}
+
+/// Run a fixture file's cases, returning failure labels instead of panicking,
+/// so a multi-file gate can report the whole picture in one run.
+fn collect_fixture_failures(name: &str) -> Vec<String> {
     let cases = load_fixtures_by_name(name);
     let mut gen = Gen::from_env_or_random();
     let mut failures = Vec::new();
@@ -47,18 +56,19 @@ fn run_fixture(name: &str) {
     }
 
     if !failures.is_empty() {
-        panic!(
-            "\n{} tests failed:\n  {}\n\nSeed: {} (set UDON_TEST_SEED={} to reproduce)",
+        eprintln!(
+            "{}: {} of {} cases failed (seed {}; set UDON_TEST_SEED={} to reproduce)",
+            name,
             failures.len(),
-            failures.join("\n  "),
+            cases.len(),
             gen.seed,
             gen.seed
         );
     }
-
     if todo_count > 0 {
         eprintln!("  {} - {} tests ({} TODO with empty events)", name, cases.len(), todo_count);
     }
+    failures
 }
 
 // === v0.8 compliance-fixture group ===
@@ -79,8 +89,21 @@ fn v0_8_compliance_group() {
         "v0.8 compliance-fixture group is empty: {:?}",
         common::active_group_dir()
     );
+    let mut failures = Vec::new();
+    let mut total = 0usize;
     for name in &names {
-        run_fixture(name);
+        let cases = common::load_fixtures_by_name(name);
+        total += cases.len();
+        failures.extend(collect_fixture_failures(name));
+    }
+    if !failures.is_empty() {
+        panic!(
+            "\nv0.8 compliance: {} of {} canonical+variation checks failed across {} files:\n  {}",
+            failures.len(),
+            total,
+            names.len(),
+            failures.join("\n  ")
+        );
     }
 }
 

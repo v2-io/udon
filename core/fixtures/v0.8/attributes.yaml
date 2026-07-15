@@ -1,0 +1,230 @@
+# Attributes: contexts, terminators, stacking, flags (CORE "Attributes",
+# "Value Terminator Rules", "Attribute Stacking", "Bare String Terminators").
+
+# ---------------------------------------------------------------------------
+# Block vs sameline values
+# ---------------------------------------------------------------------------
+
+- id: block_value_runs_to_eol
+  desc: block attribute values run to end of line, spaces unquoted
+  udon: "|el\n  :author Alice Smith\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "author"]
+    - [BareValue, "Alice Smith"]
+    - ElementEnd
+
+- id: sameline_value_space_delimited
+  desc: sameline values are space-delimited; the next word is prose
+  udon: "|el :author Alice Smith\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "author"]
+    - [BareValue, "Alice"]
+    - [Text, "Smith"]
+    - ElementEnd
+
+- id: sameline_quoted_value_with_spaces
+  desc: quote a sameline value to include spaces
+  udon: "|el :author \"Alice Smith\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "author"]
+    - [StringValue, "Alice Smith"]
+    - ElementEnd
+
+- id: multiple_sameline_attrs
+  desc: colon after space starts the next attribute
+  udon: "|el :key1 value1 :key2 value2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key1"]
+    - [BareValue, "value1"]
+    - [Attr, "key2"]
+    - [BareValue, "value2"]
+    - ElementEnd
+
+# Block value semicolon rules (CORE "Block Attribute Values")
+
+- id: block_value_url_semicolon_kept
+  desc: a semicolon without preceding space is part of the value
+  udon: "|el\n  :url https://example.com/path?q=1;s=2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "url"]
+    - [BareValue, "https://example.com/path?q=1;s=2"]
+    - ElementEnd
+
+- id: block_value_space_semicolon_is_comment
+  desc: space-semicolon terminates the value and starts a comment
+  udon: "|el\n  :note this has a semicolon too ; but THIS is a comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [BareValue, "this has a semicolon too"]
+    - CommentStart
+    - [Text, " but THIS is a comment"]
+    - CommentEnd
+    - ElementEnd
+
+# One attribute per block line; a stranded ` :name ` warns (decided 2026-07-14)
+
+- id: block_line_holds_one_attribute
+  desc: a block value swallows what looks like a second attribute, with a Warning
+  udon: "|el\n  :bttr 2 :cttr 3\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "bttr"]
+    - [Warning, "Possible second attribute in block value"]
+    - [BareValue, "2 :cttr 3"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Missing value = boolean true (CORE "Attributes")
+# ---------------------------------------------------------------------------
+
+- id: flag_attr_sameline
+  desc: attribute followed immediately by another attribute is boolean true
+  udon: "|button :disabled :type submit\n"
+  events:
+    - ElementStart
+    - [Name, "button"]
+    - [Attr, "disabled"]
+    - BoolTrue
+    - [Attr, "type"]
+    - [BareValue, "submit"]
+    - ElementEnd
+
+- id: flag_attr_at_eol
+  desc: attribute followed by newline is boolean true
+  udon: "|config\n  :debug\n"
+  events:
+    - ElementStart
+    - [Name, "config"]
+    - [Attr, "debug"]
+    - BoolTrue
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Attribute stacking — the uniform rule (CORE "Attribute Stacking")
+# ---------------------------------------------------------------------------
+
+- id: same_key_stacks
+  desc: repeated keys each emit their own Attr, in source order (never last-wins)
+  udon: "|el :x 1 :x 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Integer, "1"]
+    - [Attr, "x"]
+    - [Integer, "2"]
+    - ElementEnd
+
+- id: stacking_and_lists_compose
+  desc: stacking and list values are orthogonal multiplicity axes
+  udon: "|el :x [1 2] :x [3]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - [Attr, "x"]
+    - ArrayStart
+    - [Integer, "3"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: stacking_across_block_lines
+  desc: stacking applies across separate block attribute lines
+  udon: "|el\n  :tag a\n  :tag b\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "tag"]
+    - [BareValue, "a"]
+    - [Attr, "tag"]
+    - [BareValue, "b"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Embedded attribute values: `}` also terminates, unconsumed
+# (CORE "Embedded Attribute Values")
+# ---------------------------------------------------------------------------
+
+- id: embedded_value_terminated_by_brace
+  desc: a closing brace ends an embedded attribute value and still closes the element
+  udon: "|p go |{a :href /home} now\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "go "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - EmbeddedEnd
+    - [Text, " now"]
+    - ElementEnd
+
+- id: embedded_flag_attr_before_brace
+  desc: an embedded attribute with no value before the brace is boolean true
+  udon: "|p x |{input :required} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "input"]
+    - [Attr, "required"]
+    - BoolTrue
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Complex attribute values: attribute + newline + indent = structured value
+# (CORE "Complex Attribute Values")
+# ---------------------------------------------------------------------------
+
+- id: structured_attribute_value
+  desc: an attribute followed by an indented block takes elements as its value
+  udon: "|api\n  :headers\n    |header :name a :value b\n"
+  events:
+    - ElementStart
+    - [Name, "api"]
+    - [Attr, "headers"]
+    - ElementStart
+    - [Name, "header"]
+    - [Attr, "name"]
+    - [BareValue, "a"]
+    - [Attr, "value"]
+    - [BareValue, "b"]
+    - ElementEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Attributes before children (CORE "Design Principles"); the prose-side
+# behavior of a late `:` is covered in markers.yaml (colon_after_*).
+# ---------------------------------------------------------------------------
+
+- id: attrs_then_children
+  desc: attributes precede child content
+  udon: "|element :attr1 value1\n  child prose here\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Attr, "attr1"]
+    - [BareValue, "value1"]
+    - [Text, "child prose here"]
+    - ElementEnd

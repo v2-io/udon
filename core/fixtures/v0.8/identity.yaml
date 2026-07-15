@@ -1,0 +1,330 @@
+# Element identity, classification, suffixes, anonymity (CORE "Elements":
+# "Identity (Keys) and Classification (Traits)", "Element Suffixes",
+# "Anonymous Elements", bare-name rules).
+#
+# The v0.8 identity model: [key] / .trait / suffixes are SUGAR that desugars
+# to ordinary attributes with specially-designated names ($key, $traits, $?,
+# $!, $*, $+). Wire-names `id`/`class` are retired. Bracket values follow the
+# normal attribute-value typing rules.
+
+# ---------------------------------------------------------------------------
+# [key] desugars to :'$key'
+# ---------------------------------------------------------------------------
+
+- id: key_bare_string
+  desc: bare key desugars to a $key attribute (string value)
+  udon: "|foo[myid]\n"
+  events:
+    - ElementStart
+    - [Name, "foo"]
+    - [Attr, "$key"]
+    - [BareValue, "myid"]
+    - ElementEnd
+
+- id: key_typed_integer
+  desc: bracket values are typed by the normal value rules — integer
+  udon: "|item[1]\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - [Integer, "1"]
+    - ElementEnd
+
+- id: key_typed_quoted_string
+  desc: bracket values are typed by the normal value rules — quoted string keeps leading zero
+  udon: "|item[\"01\"]\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - [StringValue, "01"]
+    - ElementEnd
+
+- id: key_bare_hyphenated
+  desc: a bare key with digits and hyphens is a string
+  udon: "|item[abc-123]\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - [BareValue, "abc-123"]
+    - ElementEnd
+
+- id: key_longhand_equivalent
+  desc: writing the designated attribute longhand is the same element (sugar targets ordinary attrs)
+  udon: "|el :'$key' 3890\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [Integer, "3890"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# .trait desugars to :'$traits' — stacking, order preserved
+# ---------------------------------------------------------------------------
+
+- id: single_trait
+  desc: one trait is one $traits attribute
+  udon: "|el.featured\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "featured"]
+    - ElementEnd
+
+- id: two_traits_stack_in_order
+  desc: two traits are two $traits attributes in source order, not one list
+  udon: "|el.a.b\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "a"]
+    - [Attr, "$traits"]
+    - [BareValue, "b"]
+    - ElementEnd
+
+- id: key_and_traits_combined
+  desc: key then traits, all as designated attributes in order
+  udon: "|article[intro].featured.draft\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Attr, "$key"]
+    - [BareValue, "intro"]
+    - [Attr, "$traits"]
+    - [BareValue, "featured"]
+    - [Attr, "$traits"]
+    - [BareValue, "draft"]
+    - ElementEnd
+
+- id: quoted_trait_value
+  desc: a trait needing characters outside the bare set is single-quoted
+  udon: "|el.'ns.kind'\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [StringValue, "ns.kind"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Suffixes desugar to designated boolean attributes
+# ---------------------------------------------------------------------------
+
+- id: suffix_question
+  desc: question suffix desugars to $? true
+  udon: "|field?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_bang
+  desc: bang suffix desugars to $! true
+  udon: "|field[name]!\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$key"]
+    - [BareValue, "name"]
+    - [Attr, "$!"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_star
+  desc: star suffix desugars to $* true
+  udon: "|field[name]*\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$key"]
+    - [BareValue, "name"]
+    - [Attr, "$*"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_plus
+  desc: plus suffix desugars to $+ true
+  udon: "|field[name]+\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$key"]
+    - [BareValue, "name"]
+    - [Attr, "$+"]
+    - BoolTrue
+    - ElementEnd
+
+# Suffix positions (CORE "Suffix positions": binds to the element identity)
+
+- id: suffix_after_name_before_key
+  desc: suffix may sit between name and key
+  udon: "|name?[key]\n"
+  events:
+    - ElementStart
+    - [Name, "name"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "$key"]
+    - [BareValue, "key"]
+    - ElementEnd
+
+- id: suffix_after_name_before_key_and_trait
+  desc: suffix may precede both key and traits
+  udon: "|name?[key].trait\n"
+  events:
+    - ElementStart
+    - [Name, "name"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "$key"]
+    - [BareValue, "key"]
+    - [Attr, "$traits"]
+    - [BareValue, "trait"]
+    - ElementEnd
+
+- id: suffix_space_separated_at_end
+  desc: a space-separated suffix at the end still binds to the element
+  udon: "|name[key].trait ?\n"
+  events:
+    - ElementStart
+    - [Name, "name"]
+    - [Attr, "$key"]
+    - [BareValue, "key"]
+    - [Attr, "$traits"]
+    - [BareValue, "trait"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Suffix characters inside a trait are part of the trait (D-TRAIT-SUFFIX):
+# a bare trait's continue-set is XID_Continue + `-` + `* ! ? +`
+# ---------------------------------------------------------------------------
+
+- id: trait_absorbs_suffix_char
+  desc: a suffix character touching a trait is consumed by the trait
+  udon: "|el.bar?\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "bar?"]
+    - ElementEnd
+
+- id: trait_then_spaced_suffix
+  desc: a space separates the trait from an element-level suffix
+  udon: "|el.bar ?\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "bar"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_before_trait
+  desc: an element-level suffix may precede the trait
+  udon: "|el?.bar\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "$traits"]
+    - [BareValue, "bar"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Anonymous elements: name is optional (CORE "Anonymous Elements")
+# ---------------------------------------------------------------------------
+
+- id: anonymous_with_key
+  desc: anonymous element with only a key
+  udon: "|[k]\n"
+  events:
+    - ElementStart
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - ElementEnd
+
+- id: anonymous_with_trait_and_attrs
+  desc: anonymous element with a trait and ordinary attributes
+  udon: "|.some-trait :adapter pg\n"
+  events:
+    - ElementStart
+    - [Attr, "$traits"]
+    - [BareValue, "some-trait"]
+    - [Attr, "adapter"]
+    - [BareValue, "pg"]
+    - ElementEnd
+
+- id: anonymous_suffix_only
+  desc: anonymous element carrying only a suffix flag
+  udon: "|?\n"
+  events:
+    - ElementStart
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Bare-name character class: XID_Start to start; XID_Continue or `-` to
+# continue (digits, `_`, `-` excluded from first position)
+# ---------------------------------------------------------------------------
+
+- id: kebab_case_name
+  desc: kebab-case names are first-class
+  udon: "|my-element\n"
+  events:
+    - ElementStart
+    - [Name, "my-element"]
+    - ElementEnd
+
+- id: name_with_digits_and_underscore
+  desc: digits and underscore may continue a name
+  udon: "|h1_x\n"
+  events:
+    - ElementStart
+    - [Name, "h1_x"]
+    - ElementEnd
+
+- id: non_ascii_identifier_name
+  desc: non-ASCII identifier-start letters begin a bare name (Unicode identifier rule)
+  udon: "|café\n"
+  events:
+    - ElementStart
+    - [Name, "café"]
+    - ElementEnd
+
+- id: underscore_start_is_prose
+  desc: underscore cannot start a bare name, so the pipe guard fails to prose
+  udon: "|_private\n"
+  events:
+    - [Text, "|_private"]
+
+- id: quoted_name_with_space
+  desc: quoting puts otherwise-illegal characters in a name
+  udon: "|'weird name' :k v\n"
+  events:
+    - ElementStart
+    - [Name, "weird name"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - ElementEnd
+
+- id: dollar_ends_bare_name
+  desc: a character outside the continue set ends the bare name (prose fallback here)
+  udon: "|el$rest\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "$rest"]
+    - ElementEnd

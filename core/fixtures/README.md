@@ -7,7 +7,7 @@ concern independent of the Rust harness.
 ```
 core/fixtures/
 ├── v0.8/              ← ACTIVE compliance-fixture group (the harness runs this)
-│   └── smoke.yaml     ← trivial placeholder; real cases land in the rebuild
+│   └── *.yaml         ← ~226 spec-derived cases, one file per CORE area
 └── legacy-pre-0.8/    ← FROZEN. Not run. Reference + mining source.
 ```
 
@@ -25,11 +25,25 @@ constant.
 
 ### Expected state right now
 
-`v0.8/` holds a single smoke case with `events: []`, which runs the parser for
-panics but asserts no output. The suite is therefore **green-trivial** today.
-As real 0.8 cases (with filled-in `events:`) land, the suite is **expected to
-go RED** against the still-pre-0.8 parser until the parser itself is rebuilt.
-That RED is the correct, honest signal — not a regression to chase.
+`v0.8/` was populated 2026-07-15 with ~226 cases derived directly from
+`spec/CORE.md` v0.8.0-alpha.1 (one file per spec area; every expectation
+written from the spec text, never traced from parser output). The suite is
+**RED against the still-pre-0.8 parser** — roughly 90 cases fail, concentrated
+exactly where 0.8 changed the model (escape, identity `$key`/`$traits`,
+`<…>` typing, `@`-references, `0d`, bare-temporal-as-string). That RED is the
+correct, honest signal — not a regression to chase; parser catch-up burns it
+down. Run the gate with:
+
+```bash
+cargo test -p udon-core --test canonical v0_8_compliance_group
+```
+
+Where CORE is silent on an event-level detail, the case carries a `⚠` comment
+naming the reading it encodes, and the silence is filed in
+`spec/TODO-SPEC-CORE.md` (see "Silences found while authoring the v0.8
+fixtures") — those readings are proposals awaiting Joseph's ratification, and
+the affected cases (notably the whole proposed `TypedValue` vocabulary in
+`typing_envelope.yaml`) may be edited when he rules.
 
 ## legacy-pre-0.8/ is frozen
 

@@ -1,0 +1,276 @@
+# Marker recognition — head-position guards (CORE "Positional Contexts",
+# "Marker Recognition", "Elements > Element recognition rule").
+#
+# Expectations derived from spec/CORE.md v0.8.0-alpha.1, NEVER from parser
+# output. Each case cites the CORE rule it exercises.
+#
+# Event-shape conventions carried over from the legacy group where CORE does
+# not dictate them: Text per line without trailing newline; comments as
+# CommentStart/[Text]/CommentEnd; directives as DirectiveStart/[Name]/...
+
+# ---------------------------------------------------------------------------
+# `|` guard: element only when followed by a letter, `[`, `.`, `{`, or `'`
+# (CORE "Element recognition rule")
+# ---------------------------------------------------------------------------
+
+- id: pipe_letter_is_element
+  desc: pipe followed by letter is an element
+  udon: "|div\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - ElementEnd
+
+- id: pipe_digit_is_prose
+  desc: pipe followed by a digit is prose (digit is not a letter)
+  udon: "|1 not an element\n"
+  events:
+    - [Text, "|1 not an element"]
+
+- id: pipe_dash_is_prose
+  desc: markdown table delimiter row is prose
+  udon: "|-\n"
+  events:
+    - [Text, "|-"]
+
+- id: pipe_space_is_prose
+  desc: pipe followed by space is prose (markdown table row)
+  udon: "| a | b |\n"
+  events:
+    - [Text, "| a | b |"]
+
+- id: bare_pipe_is_prose
+  desc: a lone pipe at end of line is prose
+  udon: "|\n"
+  events:
+    - [Text, "|"]
+
+- id: pipe_equals_is_prose
+  desc: pipe followed by punctuation outside the guard set is prose
+  udon: "|= cell\n"
+  events:
+    - [Text, "|= cell"]
+
+- id: pipe_bracket_is_anonymous_element
+  desc: pipe followed by [ opens an anonymous element with a key
+  udon: "|[k]\n"
+  events:
+    - ElementStart
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - ElementEnd
+
+- id: pipe_dot_is_anonymous_element
+  desc: pipe followed by . opens an anonymous element with a trait
+  udon: "|.some-trait\n"
+  events:
+    - ElementStart
+    - [Attr, "$traits"]
+    - [BareValue, "some-trait"]
+    - ElementEnd
+
+- id: pipe_quote_is_quoted_name_element
+  desc: pipe followed by ' opens an element with a quoted name
+  udon: "|'weird name'\n"
+  events:
+    - ElementStart
+    - [Name, "weird name"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# `!` guard: directive only when followed by an identifier character or `:`
+# (CORE "Marker Recognition")
+# ---------------------------------------------------------------------------
+
+- id: bang_identifier_is_directive
+  desc: bang followed by an identifier is a directive
+  udon: "!if logged_in\n  |p hi\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "logged_in"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hi"]
+    - ElementEnd
+    - DirectiveEnd
+
+- id: bang_image_syntax_is_prose
+  desc: markdown image syntax is prose (guard fails on `[`)
+  udon: "![img](pic.jpg)\n"
+  events:
+    - [Text, "![img](pic.jpg)"]
+
+- id: bang_equals_is_prose
+  desc: bang followed by `=` is prose
+  udon: "!= not a directive\n"
+  events:
+    - [Text, "!= not a directive"]
+
+- id: bang_paren_is_prose
+  desc: bang followed by `(` is prose
+  udon: "!(x)\n"
+  events:
+    - [Text, "!(x)"]
+
+- id: bare_bang_is_prose
+  desc: a lone bang is prose
+  udon: "!\n"
+  events:
+    - [Text, "!"]
+
+# `!{...}` at head position is a *prose-level* inline form, not a block
+# directive (CORE "Marker Recognition"; parser previously wrapped this in a
+# block Directive — that was pre-0.8 behavior).
+- id: bang_brace_interpolation_is_prose_level
+  desc: head-position interpolation is a prose-level inline form, no Directive wrapper
+  udon: "!{{greeting}}\n"
+  events:
+    - [Interpolation, "greeting"]
+
+# ---------------------------------------------------------------------------
+# `@` guard: reference only when followed by `[` or an identifier
+# (CORE "Marker Recognition", "References")
+# ---------------------------------------------------------------------------
+
+- id: at_bracket_is_reference
+  desc: at followed by [ is a shorthand reference
+  udon: "@[key]\n"
+  events:
+    - [Reference, "key"]
+
+- id: at_space_is_prose
+  desc: at followed by space is prose
+  udon: "@ not a reference\n"
+  events:
+    - [Text, "@ not a reference"]
+
+- id: at_punctuation_is_prose
+  desc: at followed by punctuation is prose
+  udon: "@! nope\n"
+  events:
+    - [Text, "@! nope"]
+
+- id: email_mid_prose_is_prose
+  desc: an @ mid-prose is never a reference (head position only)
+  udon: "mail me at a@b.example\n"
+  events:
+    - [Text, "mail me at a@b.example"]
+
+# ---------------------------------------------------------------------------
+# `:` phase restriction: attribute only while the element has no child
+# content yet (CORE "Marker Recognition", "Attributes Before Children")
+# ---------------------------------------------------------------------------
+
+- id: colon_before_content_is_attribute
+  desc: line-initial colon before any child content is an attribute
+  udon: "|a\n  :k v\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - ElementEnd
+
+- id: colon_after_prose_is_prose
+  desc: once prose has appeared, a line-initial colon is prose
+  udon: "|a\n  :k v\n  some prose\n  :later x\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - [Text, "some prose"]
+    - [Text, ":later x"]
+    - ElementEnd
+
+- id: colon_after_child_element_is_prose
+  desc: once a child element has appeared, a line-initial colon is prose
+  udon: "|a\n  |child\n  :later x\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "child"]
+    - ElementEnd
+    - [Text, ":later x"]
+    - ElementEnd
+
+- id: colon_no_name_is_prose
+  desc: a colon not followed by a name falls back to prose intact
+  udon: "|a\n  :-) smiley\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, ":-) smiley"]
+    - ElementEnd
+
+- id: colon_space_is_prose
+  desc: colon followed by space falls back to prose intact
+  udon: "|a\n  : not an attr\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, ": not an attr"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Prose commitment: once a line commits to prose, all markers on it are
+# literal; head position returns on the next line (CORE "Head Position")
+# ---------------------------------------------------------------------------
+
+# ⚠ CORE contradiction filed in spec/TODO-SPEC-CORE.md: "Head Position" says
+# every marker character is literal once the line commits to prose, but the
+# Comments table says ` ;` in sameline prose starts a comment (and the |li
+# example depends on that). The `;` is therefore excluded from this case;
+# comments.yaml::sameline_prose_comment encodes the table reading.
+- id: prose_commit_markers_literal
+  desc: after the first prose word, later markers on the line are literal
+  udon: "|p a | b :-) ! ``` all literal\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a | b :-) ! ``` all literal"]
+    - ElementEnd
+
+- id: head_reentry_after_prose_line
+  desc: head position is re-entered at the start of every line, including after prose
+  udon: "|a\n  some prose\n  |b\n  more prose\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "some prose"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - [Text, "more prose"]
+    - ElementEnd
+
+- id: deeper_than_prose_marker_is_literal
+  desc: a line indented deeper than the prose content-base is inside the prose, markers literal
+  udon: "|a\n  prose base\n    |not-an-element\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "prose base"]
+    - [Text, "  |not-an-element"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Sameline scan: head position persists through elements and attributes;
+# the first prose word ends it for that line (CORE "Head Position")
+# ---------------------------------------------------------------------------
+
+- id: sameline_scan_through_elements_and_attrs
+  desc: elements and attributes keep the sameline scan open; first prose word ends it
+  udon: "|a |b :k v word :notattr\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - [Text, "word :notattr"]
+    - ElementEnd
+    - ElementEnd

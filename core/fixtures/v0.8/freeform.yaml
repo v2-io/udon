@@ -1,0 +1,148 @@
+# Freeform blocks — triple-backtick fences (CORE "Triple-Backtick Escape").
+# The body is captured exactly: no dedentation, no marker interpretation.
+# Fences open at ANY head position; they are not a fence once prose has
+# begun. Note the 0.8 change: everything after the opening backticks begins
+# the BODY — an info string is just the body's first content, there is no
+# separate info-string rule (the pre-0.8 parser captured it as a Name).
+
+- id: freeform_at_root
+  desc: basic fence at document root
+  udon: "```\nfreeform content\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "freeform content"]
+    - FreeformEnd
+
+- id: freeform_markers_inert
+  desc: markers inside the fence are not interpreted
+  udon: "```\n|not-an-element\n:not-an-attr\n; not a comment\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "|not-an-element"]
+    - [Text, ":not-an-attr"]
+    - [Text, "; not a comment"]
+    - FreeformEnd
+
+- id: freeform_exact_whitespace
+  desc: no automatic dedentation inside the fence
+  udon: "|code\n  ```\n  def foo():\n      return 1\n  ```\n"
+  events:
+    - ElementStart
+    - [Name, "code"]
+    - FreeformStart
+    - [Text, "  def foo():"]
+    - [Text, "      return 1"]
+    - FreeformEnd
+    - ElementEnd
+
+- id: freeform_info_string_is_body
+  desc: content after the opening backticks begins the body (no info-string rule)
+  udon: "```rust ignore\nfn main() {}\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "rust ignore"]
+    - [Text, "fn main() {}"]
+    - FreeformEnd
+
+- id: freeform_after_prose_lines
+  desc: head position is re-entered every line, so a fence follows prose freely
+  udon: "|a\n  here is prose\n  |b a child\n  and more prose\n  ```\n  in the fence\n  ```\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "here is prose"]
+    - ElementStart
+    - [Name, "b"]
+    - [Text, "a child"]
+    - ElementEnd
+    - [Text, "and more prose"]
+    - FreeformStart
+    - [Text, "  in the fence"]
+    - FreeformEnd
+    - ElementEnd
+
+- id: freeform_sameline_after_attrs
+  desc: attributes keep the sameline scan open, so a fence may follow them
+  udon: "|a |b :k v ```\nbody line\n```\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - FreeformStart
+    - [Text, "body line"]
+    - FreeformEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: backticks_after_prose_are_literal
+  desc: once prose has begun on the line, backticks are literal
+  udon: "|a but now ``` is literal\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "but now ``` is literal"]
+    - ElementEnd
+
+- id: backticks_deeper_than_prose_are_literal
+  desc: backticks indented past the prose base sit inside the prose
+  udon: "|a\n  prose base\n    ```\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "prose base"]
+    - [Text, "  ```"]
+    - ElementEnd
+
+- id: freeform_closer_any_indent
+  desc: the closer works at any indentation; its own leading whitespace was already body
+  udon: "|code\n  ```\n  line one\n```\n"
+  events:
+    - ElementStart
+    - [Name, "code"]
+    - FreeformStart
+    - [Text, "  line one"]
+    - FreeformEnd
+    - ElementEnd
+
+- id: freeform_closer_trailing_whitespace_ignored
+  desc: whitespace to the right of the closing backticks is trimmed
+  udon: "```\nbody\n```   \n"
+  events:
+    - FreeformStart
+    - [Text, "body"]
+    - FreeformEnd
+
+- id: freeform_blank_lines_preserved
+  desc: blank lines inside the fence emit BlankLine (round-trip contract)
+  udon: "```\na\n\nb\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - BlankLine
+    - [Text, "b"]
+    - FreeformEnd
+
+- id: freeform_unclosed_error
+  desc: unclosed fence errors at EOF, content preserved
+  udon: "```\nunclosed"
+  events:
+    - FreeformStart
+    - [Text, "unclosed"]
+    - [Error, "UnclosedFreeform"]
+
+- id: freeform_sets_structural_parent
+  desc: the fence's indentation sets its structural parent
+  udon: "|a\n  |b\n  ```\n  fence is sibling of b, child of a\n  ```\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - FreeformStart
+    - [Text, "  fence is sibling of b, child of a"]
+    - FreeformEnd
+    - ElementEnd

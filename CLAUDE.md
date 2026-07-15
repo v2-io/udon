@@ -57,12 +57,19 @@ belong in the human README.
 ## Working in core/ (the Rust workspace)
 
 ```bash
-cd core && cargo test --workspace          # 38+ tests; keep green
-cargo test --workspace -- --ignored       # FULL fixture conformance suite
-                                           # (making this default-on is H2)
+cd core && cargo test --workspace          # unit + streaming tests green;
+                                           # v0_8_compliance_group is RED by
+                                           # construction until the parser
+                                           # catches up to CORE 0.8 (~89 of
+                                           # ~227 cases as of 2026-07-15)
+cargo test -p udon-core --test canonical v0_8_compliance_group
+                                           # the compliance gate by itself
 ./regenerate-parser                        # regenerates parser.rs from
                                            # generator/*.desc via tools/descent
 ```
+
+Compliance RED is the honest, intended signal — burn it down by fixing the
+grammar to CORE, never by editing fixture expectations toward parser output.
 
 - `core/udon-core/src/parser.rs` is **generated — do not hand-edit**. Change
   `core/generator/*.desc` and regenerate. The generator is the pinned

@@ -1,0 +1,126 @@
+# Inline / embedded elements |{...} (CORE "Inline and Embedded Elements",
+# "Bracket Mode Rules", "Inline Elements (Context Reminder)").
+
+- id: basic_embedded
+  desc: embedded element inside prose
+  udon: "|p This has |{em emphasis} here\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This has "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "emphasis"]
+    - EmbeddedEnd
+    - [Text, " here"]
+    - ElementEnd
+
+- id: embedded_with_attrs_and_content
+  desc: identity and sameline attribute rules apply inside |{...}
+  udon: "|p Click |{a :href /home here} to continue.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Click "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - [Text, "here"]
+    - EmbeddedEnd
+    - [Text, " to continue."]
+    - ElementEnd
+
+- id: embedded_with_identity
+  desc: key and trait sugar work on embedded elements
+  udon: "|p see |{ref[r1].external target}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "see "]
+    - EmbeddedStart
+    - [Name, "ref"]
+    - [Attr, "$key"]
+    - [BareValue, "r1"]
+    - [Attr, "$traits"]
+    - [BareValue, "external"]
+    - [Text, "target"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: multiple_embedded_are_siblings
+  desc: consecutive embedded elements are siblings
+  udon: "|nav |{a :href / Home} |{a :href /about About}\n"
+  events:
+    - ElementStart
+    - [Name, "nav"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - [Text, " "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/about"]
+    - [Text, "About"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: nested_embedded
+  desc: embedded elements nest inside embedded content
+  udon: "|p See |{a :href /doc the |{em official} documentation} for details.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "See "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/doc"]
+    - [Text, "the "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "official"]
+    - EmbeddedEnd
+    - [Text, " documentation"]
+    - EmbeddedEnd
+    - [Text, " for details."]
+    - ElementEnd
+
+# ⚠ CORE fixes that embedded elements span lines with indentation ignored,
+# but not how the lines are delivered (one Text per line, as everywhere
+# else? joined?). Encoded per-line here; flagged in spec/TODO-SPEC-CORE.md.
+- id: embedded_multiline
+  desc: embedded elements span lines; indentation inside is ignored
+  udon: "|p This has |{a :href /docs\n   a link that spans\n   multiple lines} and continues.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This has "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/docs"]
+    - [Text, "a link that spans"]
+    - [Text, "multiple lines"]
+    - EmbeddedEnd
+    - [Text, " and continues."]
+    - ElementEnd
+
+- id: embedded_anonymous_trait
+  desc: anonymous embedded element with a trait
+  udon: "|p tag |{.warn heads up} end\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "tag "]
+    - EmbeddedStart
+    - [Attr, "$traits"]
+    - [BareValue, "warn"]
+    - [Text, "heads up"]
+    - EmbeddedEnd
+    - [Text, " end"]
+    - ElementEnd

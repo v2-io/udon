@@ -1,0 +1,112 @@
+# Explicit typing envelope `<...>` (CORE "Explicit Typing (`<...>`)").
+#
+# ⚠ EVENT VOCABULARY PROPOSED, NOT RATIFIED *(discuss w/ Joseph)*.
+# CORE fixes the envelope *syntax* (opens on `<` in bare attribute-value
+# position, terminates on the `<>`-balanced matching `>`) but does not name
+# the event it emits. These cases propose a single content-carrying event:
+#
+#     [TypedValue, "<everything between the outer < and >, verbatim>"]
+#
+# i.e. the label ladder (`type:`, `dialect:type:`) and any nested envelopes
+# stay inside the one raw payload, and all routing/dispatch is left to the
+# dialect layer — matching CORE's recognize-in-core / resolve-in-consumer
+# posture and its deliberate under-specification of nested routing.
+# If a different event shape is ratified, only the event names here change;
+# the inputs and boundaries asserted are CORE-fixed either way.
+
+- id: envelope_unlabelled
+  desc: bare value beginning with < opens the envelope
+  udon: "|el :when <2026-07-11>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [TypedValue, "2026-07-11"]
+    - ElementEnd
+
+- id: envelope_shorthand_duration
+  desc: shorthand stays writable inside the envelope
+  udon: "|el :dur <5m>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "dur"]
+    - [TypedValue, "5m"]
+    - ElementEnd
+
+- id: envelope_type_labelled
+  desc: type-labelled envelope
+  udon: "|el :size <u64:0xf902>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "size"]
+    - [TypedValue, "u64:0xf902"]
+    - ElementEnd
+
+- id: envelope_dialect_and_type_labelled
+  desc: dialect-and-type-labelled envelope
+  udon: "|el :span <temporal:interval:2026-01/2026-06>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "span"]
+    - [TypedValue, "temporal:interval:2026-01/2026-06"]
+    - ElementEnd
+
+- id: envelope_nested_balanced
+  desc: nesting is angle-bracket-balanced; the payload is captured whole
+  udon: "|el :q <r: <i: 3 -7> 0d83.23>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "q"]
+    - [TypedValue, "r: <i: 3 -7> 0d83.23"]
+    - ElementEnd
+
+- id: envelope_quoted_literal_stays_string
+  desc: a quoted value beginning with < is a plain string, not an envelope
+  udon: "|el :x \"<not a type>\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [StringValue, "<not a type>"]
+    - ElementEnd
+
+- id: angle_in_prose_not_special
+  desc: outside bare attribute-value position, < has no special meaning
+  udon: "|p a < b and <tag> stay prose\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a < b and <tag> stay prose"]
+    - ElementEnd
+
+- id: envelope_in_sameline_position
+  desc: envelope works in sameline attribute-value position, > terminates
+  udon: "|el :when <2026-07-11> :n 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [TypedValue, "2026-07-11"]
+    - [Attr, "n"]
+    - [Integer, "1"]
+    - ElementEnd
+
+# ⚠ CORE says "in attribute-value position"; whether an *array item* is such
+# a position is not stated explicitly. Filed in spec/TODO-SPEC-CORE.md; this
+# case encodes the uniform reading (array items follow the same value rules).
+- id: envelope_as_array_item
+  desc: an array item beginning with < opens the envelope (bare value position)
+  udon: "|el :xs [<5m> 3]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [TypedValue, "5m"]
+    - [Integer, "3"]
+    - ArrayEnd
+    - ElementEnd

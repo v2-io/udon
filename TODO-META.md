@@ -15,14 +15,19 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       - Build the **0.8.0 compliance-fixture group** in `core/fixtures/v0.8/`.
         *Bundling done 2026-07-14* — legacy set aside (`core/fixtures/legacy-pre-0.8/`,
         tag `grammar-v0.7`), v0.8 group live, harness rewired to discover it
-        dynamically. **Remaining:** encode CORE exhaustively (edge / degenerate /
-        combination cases), mining legacy for still-valid regressions, segregating
-        temporal/dialect. This is the big, workflow-shaped rebuild.
-        *Scan/index done 2026-07-15:* `notes/fixture-rebuild-index-2026-07-15.md`
-        — 146 CORE requirements w/ fixture sketches + harness contract +
-        expected-RED map (unverified secondary artifact; re-derive from CORE at
-        authoring time). Still missing there: legacy per-file quarry verdicts
-        and a coverage-critic pass.
+        dynamically. *First full authoring pass done 2026-07-15:* ~227 cases
+        across 15 files, every expectation derived from a complete read of
+        `spec/CORE.md` + companions (never traced from the parser); gate runs
+        RED at ~89 failures, concentrated in the 0.8-changed areas — the
+        intended signal. **Remaining:** Joseph rules on the fixture-flagged
+        spec silences (`spec/TODO-SPEC-CORE.md`, "Silences found while
+        authoring" — notably the proposed `TypedValue` event and the sameline
+        `;` contradiction); mine `legacy-pre-0.8/` for still-valid regression
+        cases not re-derived here (esp. `indentation_edge_cases`,
+        `prose_dedentation` depth, `element_names` charset torture cases);
+        keep densifying edge/combination coverage as parser work exposes
+        gaps. (The interim scan artifact `notes/fixture-rebuild-index-*` was
+        used for a coverage cross-check and deleted.)
       - Stand up the **unified compliance gate** — event-level fixtures by default
         (easiest place to reason about/fix the descent grammar), AST-level only
         where a core-syntax property is genuinely easier to assert there.

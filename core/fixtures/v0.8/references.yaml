@@ -1,0 +1,88 @@
+# References `@` (CORE "References and Mixins", "Marker Recognition").
+# A reference is INERT at the core level: the parser emits it, never resolves
+# it. The old `:[id]` attribute-merge syntax is REMOVED in 0.8 (merge is a
+# host resolution mode, not core syntax).
+#
+# ⚠ Reference event CONTENT convention *(discuss w/ Joseph)*: legacy encoded
+# `@[key]` as [Reference, "key"] (brackets stripped). CORE doesn't fix the
+# payload. Proposed here: the payload is the raw text after `@` — so the
+# explicit form keeps its shape ("license[mit]") and the shorthand keeps its
+# brackets ("[mit]") — one uniform rule, no information loss. This CHANGES
+# the legacy shorthand payload.
+
+- id: reference_shorthand_block
+  desc: shorthand key reference on its own line
+  udon: "|page\n  @[header]\n"
+  events:
+    - ElementStart
+    - [Name, "page"]
+    - [Reference, "[header]"]
+    - ElementEnd
+
+- id: reference_explicit_form
+  desc: explicit element-and-key reference
+  udon: "|project\n  @license[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "project"]
+    - [Reference, "license[mit]"]
+    - ElementEnd
+
+- id: reference_bare_identifier
+  desc: an @ followed by an identifier is a reference (guard rule)
+  udon: "|doc\n  @footer\n"
+  events:
+    - ElementStart
+    - [Name, "doc"]
+    - [Reference, "footer"]
+    - ElementEnd
+
+- id: reference_as_attribute_value
+  desc: a reference in attribute-value position
+  udon: "|project :license @[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "project"]
+    - [Attr, "license"]
+    - [Reference, "[mit]"]
+    - ElementEnd
+
+- id: reference_is_inert
+  desc: defining and referring — the parser emits both, resolves nothing
+  udon: "|license[mit]\n  MIT License\n|project\n  :license @[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "license"]
+    - [Attr, "$key"]
+    - [BareValue, "mit"]
+    - [Text, "MIT License"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "project"]
+    - [Attr, "license"]
+    - [Reference, "[mit]"]
+    - ElementEnd
+
+# ⚠ CORE says a reference is not augmentable ("no @[mit].trait decoration")
+# but not what a written `.trait` tail *parses as* (prose? error?). Encoded
+# as prose-continuation here; filed in spec/TODO-SPEC-CORE.md.
+- id: reference_not_augmentable
+  desc: a reference takes no trait decoration — the trailing .trait is prose
+  udon: "|p\n  @[mit].trait\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Reference, "[mit]"]
+    - [Text, ".trait"]
+    - ElementEnd
+
+# The old attribute-merge `:[id]` is gone: a line-initial `:[` has no name,
+# so it falls back to prose intact (CORE Marker Recognition).
+- id: colon_bracket_merge_removed
+  desc: the removed :[id] merge syntax is now just prose fallback
+  udon: "|db\n  :[base-db]\n"
+  events:
+    - ElementStart
+    - [Name, "db"]
+    - [Text, ":[base-db]"]
+    - ElementEnd
