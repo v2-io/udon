@@ -12,13 +12,14 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **Tracking & Workflow** (below) — the map of co-located TODO lanes and how
-   work propagates. Core spec-text edits live in `spec/TODO-SPEC-CORE.md`. The
+3. **README → How the work is organized** (imported below) — the map of
+   co-located TODO lanes, per-area compliance, and how work propagates. Core
+   spec-text edits live in `spec/TODO-SPEC-CORE.md`. The
    dense predecessor ledgers are archived at **_archive/DECIDED.bak.md** +
    **_archive/FULL-SPEC-TODO.bak.md** (reference only — e.g. the
    core/host/schema/dialect ownership discussion). Neither is the spec; CORE.md is.
 4. **spec/CORE.md** — the authoritative language specification
-   (v0.8.0-rc.1, with known divergences catalogued in the review's §2
+   (v0.8.0-alpha.1, with known divergences catalogued in the review's §2
    genealogy table).
 
 ## Layout
@@ -45,40 +46,13 @@ _archive/           Superseded: old spec pieces, udon-ruby (submodule,
 
 ## Tracking & Workflow
 
-Work is layered, and changes propagate **spec → event-parser → AST /
-streaming-AST → aux · utils · human-ux · agent-ux → publishing**. Load-bearing
-rule: **you cannot work in a lane without its upstream layer in hand** — no
-parser work without the whole spec; no utils without a compliant parser.
+@README.md
 
-Compliance is *measured*, not tracked: `spec/CORE.md` is **semver'd**, and each
-version has a **compliance-fixture group**; a unified gate proves the parser
-against a tagged CORE version (event-level by default; AST-level where a
-core-syntax property is easier to assert there). Once that keystone lands
-(`TODO-META.md` [P0]), the parser lanes hold only residuals and decompositions.
-
-Each area keeps its own **co-located** TODO list, holding only **open** items:
-when an item closes, delete it (its record lives in git) — don't accumulate a
-"done" section, and a lane with nothing open should read empty. Nothing needing
-Joseph sits in a separate valve — such items carry `*(discuss w/ Joseph)*`
-inline, in context.
-
-| Lane | Covers | Location |
-|------|--------|----------|
-| **TODO-META** | Tracking system; compliance-versioning keystone; dogfood | `TODO-META.md` |
-| **TODO-SPEC-CORE** | Open edits to the core spec | `spec/TODO-SPEC-CORE.md` |
-| **TODO-SPEC-OTHER** | Companion specs — dialects, markdown, temporal, composite types | `spec/TODO-SPEC-OTHER.md` |
-| **TODO-AUX** | Aux syntaxes — schema, paths, patch (lexical/parser, non-dialect) | `spec/TODO-AUX.md` |
-| **TODO-CORE-PARSING** | Event parser + descent grammar; cleanup; streaming; pending descent items | `core/TODO-CORE-PARSING.md` |
-| **TODO-PARSER** | AST one-shot + streaming-AST parsers + API | `core/TODO-PARSER.md` |
-| **TODO-HUMAN-UX** | Obsidian, syntax highlighting, editors | `editors/TODO-HUMAN-UX.md` |
-| **TODO-UTILS** | `udon-utl` — accessors, conversion, fmt, guarantees | `TODO-UTILS.md` |
-| **TODO-AGENT-UX** | Cheat-sheets, empirical usability harness | `TODO-AGENT-UX.md` |
-| **TODO-PUBLISHING** | README, release, crates.io, outward docs | `TODO-PUBLISHING.md` |
-
-**Migration in progress:** the old `core/PLAN.md`, `JOSEPH-TODO.md` (retired),
-and the `design/` notes are draining into these lanes — each carries a "pull from
-X" task; delete X when empty. `REVIEW-JULY-2026.md` and `REBOOT-PLAN.md` remain
-the historical *why* and phase plan.
+The README's **How the work is organized** section is the canonical front door —
+the propagation order, the layer-prerequisite rule, the per-area
+compliance/target table, and the versioning ladder — imported above so this file
+and the README can't drift. What follows is agent-specific guidance that doesn't
+belong in the human README.
 
 ## Working in core/ (the Rust workspace)
 

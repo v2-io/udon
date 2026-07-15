@@ -8,7 +8,8 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
 
 - [ ] **[P0] Semantic spec-versioning + per-version compliance-fixture groups —
       principled.** *Versioning spine established 2026-07-14:* `spec/CHANGELOG.md`
-      (Keep-a-Changelog + SemVer); `CORE.md` is now **0.8.0-rc.1**; the model is
+      (Keep-a-Changelog + SemVer); `CORE.md` is now **0.8.0-alpha.1** (maturity
+      ladder: alpha → beta → rc → final, gate = compliance-passes); the model is
       CommonMark's — the spec is the versioned contract and impls declare which
       version they pass. **Remaining:**
       - Build the **0.8.0 compliance-fixture group** — retire the old fixtures,

@@ -4,7 +4,7 @@
 review — regenerate when CORE changes.**
 
 This is an EBNF-style formal grammar for UDON, derived from the current
-`CORE.md` (v0.8.0-rc.1). It is a *reading aid*, not a parseable grammar:
+`CORE.md` (v0.8.0-alpha.1). It is a *reading aid*, not a parseable grammar:
 UDON is indentation-sensitive and operates in position-dependent modes (head
 position, sameline scan, block, embedded), and a context-free EBNF cannot
 capture those modes. Every place the grammar cannot pin down the real rule is

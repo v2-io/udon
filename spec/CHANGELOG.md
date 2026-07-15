@@ -17,10 +17,12 @@ bumps may break).
 
 ## [Unreleased]
 
-## [0.8.0-rc.1] — 2026-07-14
+## [0.8.0-alpha.1] — 2026-07-14
 
-First release candidate of the **rebooted** spec (descent-rewrite era). The spec
-is ratified and frozen for review; **no implementation is compliant yet** — the
+First **alpha** of the rebooted spec (descent-rewrite era). Ratified in this
+form but still evolving — `-alpha` promotes to `-beta` when feature-complete,
+`-rc` when frozen for validation, and `0.8.0` final when a parser passes the
+compliance group. **No implementation is compliant yet** — the
 descent grammar and generated parser are still on the pre-reboot model, so the
 compliance gate is RED *by construction* until they catch up. `0.8.0` is
 finalized once a parser passes the 0.8.0 compliance-fixture group.

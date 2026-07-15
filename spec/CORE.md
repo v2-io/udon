@@ -1,7 +1,7 @@
 # UDON Full Specification
 
 **Universal Document & Object Notation**
-*Version 0.8.0-rc.1 -- 2026-07 · rebooted lineage, see [CHANGELOG](CHANGELOG.md)*
+*Version 0.8.0-alpha.1 -- 2026-07 · rebooted lineage, see [CHANGELOG](CHANGELOG.md)*
 *File: `spec/CORE.md` (formerly `spec/FULL-SPEC.md`, renamed 2026-07-14). The sole source of truth.*
 
 This document merges and supersedes:

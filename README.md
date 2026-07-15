@@ -153,7 +153,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 |----------|-------------|
 | [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md) | The estate review: verified state, defects, open decisions |
 | [REBOOT-PLAN.md](REBOOT-PLAN.md) | Prioritized plan: phases, backlog, spikes |
-| [spec/CORE.md](spec/CORE.md) | Full specification (v0.8.0-rc.1) |
+| [spec/CORE.md](spec/CORE.md) | Full specification (v0.8.0-alpha.1) |
 | [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
 | [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
@@ -205,7 +205,7 @@ The original work is preserved in reference repositories:
 (the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
 
 Current state:
-- spec/CORE.md v0.8.0-rc.1, with known spec↔impl divergences catalogued
+- spec/CORE.md v0.8.0-alpha.1, with known spec↔impl divergences catalogued
   (review §2 genealogy)
 - Rust parser: event stream + arena tree, green test suite, ~1.3 GiB/s
 - Twelve verified defects queued (review §4); nine syntax decisions open
@@ -217,13 +217,39 @@ Next: Phase 0 hygiene → valve decisions → the utilities crate
 
 ## How the work is organized
 
-Work is layered and propagates **spec → event-parser → AST → utilities →
-human/agent tooling → publishing** — you can't work a layer without the one above
-it in hand (no parser without the whole spec). Compliance is *measured* against a
-semver'd `spec/CORE.md` via per-version compliance-fixture groups, not maintained
-as a worklist.
+Work is layered, and changes propagate **spec → event-parser → AST /
+streaming-AST → aux · utils · human-ux · agent-ux → publishing**. Load-bearing
+rule: **you can't work a layer without the one above it in hand** — no parser
+work without the whole spec; no utils without a compliant parser.
 
-Each area keeps a co-located `TODO-*.md`; the full lane map and the agent
-workflow live in [CLAUDE.md](CLAUDE.md) under **Tracking & Workflow**. Items that
-need Joseph are marked `*(discuss w/ Joseph)*` inline, not queued in a separate
-valve.
+**Compliance is measured, not tracked.** `spec/CORE.md` is semver'd (canonical
+version in [`spec/CORE-VERSION`](spec/CORE-VERSION)); each version has a frozen
+**compliance-fixture group**, and an implementation is "compliant with core-vX"
+iff it passes that group. Maturity ladder: `-alpha` (evolving) → `-beta`
+(feature-complete) → `-rc` (frozen, validating) → `X.Y.Z` (a parser passes; tag
+`core-vX.Y.Z`). Every component versions **independently** with a prefixed tag
+(`core-v…`, `udon-core-v…`, `temporal-v…`) and declares which upstream it obeys
+as a range — so `core-v…` never implies the whole stack.
+
+Each area keeps a **co-located** `TODO-*.md` holding only **open** items (closed
+→ git, no "done" section). Items needing Joseph are marked `*(discuss w/ Joseph)*`
+inline, not in a separate valve.
+
+| Area (→ TODO) | Covers | Complies now | Core target |
+|---|---|---|---|
+| **META** (`TODO-META.md`) | tracking system; compliance-versioning keystone | — | — |
+| **SPEC-CORE** (`spec/TODO-SPEC-CORE.md`) | the core spec `CORE.md` | *is the contract* | **`0.8.0-alpha.1`** |
+| **SPEC-OTHER** (`spec/TODO-SPEC-OTHER.md`) | dialects, markdown, temporal, composite | — none yet | `core ^0.8` |
+| **AUX** (`spec/TODO-AUX.md`) | schema, paths, patch | — none yet | `core ^0.8` |
+| **CORE-PARSING** (`core/TODO-CORE-PARSING.md`) | event parser + descent grammar | pre-0.8 (pre-reboot) | `core ^0.8` |
+| **PARSER** (`core/TODO-PARSER.md`) | AST one-shot + streaming-AST | — none yet | `core ^0.8` |
+| **HUMAN-UX** (`editors/TODO-HUMAN-UX.md`) | Obsidian, syntax highlighting | pre-0.8 (old spec) | `core ^0.8` |
+| **UTILS** (`TODO-UTILS.md`) | `udon-utl` — accessors, conversion, `fmt` | — none yet | parser → `core ^0.8` |
+| **AGENT-UX** (`TODO-AGENT-UX.md`) | cheat-sheets, empirical harness | pre-0.8 (old models+spec) | `core ^0.8` |
+| **PUBLISHING** (`TODO-PUBLISHING.md`) | README, release, crates.io | — | — |
+
+The current `core-v…` tag mirrors `spec/CORE-VERSION` and the SPEC-CORE target
+above — they move together. Migration in progress: `core/PLAN.md`, the retired
+`JOSEPH-TODO`, and the `design/` notes are draining into these lanes (each has a
+"pull from X" task; delete X when empty). `REVIEW-JULY-2026.md` and
+`REBOOT-PLAN.md` remain the historical *why* and phase plan.
