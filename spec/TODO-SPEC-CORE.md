@@ -52,6 +52,16 @@
         block value"` — strings need ratifying (or Warning codes).
       - **Warning ordering** — whether a block-value Warning precedes or
         follows the value event (`attributes.yaml::block_line_holds_one_attribute`).
+      - **Comment continuation vs. prefix lines — OPEN QUESTION (Joseph,
+        2026-07-15).** CORE currently says continuation takes a deeper line
+        only if it "does not start with a prefix" — which forbids the
+        Sass/Haml block-comment-out idiom (a `;` at the right indent
+        silencing a whole nested block, elements included). Candidate
+        rule: EVERYTHING deeper than the comment's column is comment
+        content until dedent, uniformly. Interacts with: the composite
+        (prose, base-column comment, deeper `|element` line — currently
+        untested either way), and the comment-return column-loss behavior
+        in the parser. Awaiting Joseph's ruling; nothing written to CORE.
       - **Value-position `;` framing** — the ratified *sameline comment*
         lexeme (2026-07-15) requires whitespace on both sides in sameline
         PROSE. The after-attribute-value positions (block ` ;` terminator,
