@@ -6,6 +6,12 @@ they pass (see `../CLAUDE.md` → Tracking & Workflow). Each released version ha
 frozen **compliance-fixture group**; an implementation is "compliant with vX.Y.Z"
 iff it passes that group.
 
+The **operable source of truth** for the current version is
+[`CORE-VERSION`](CORE-VERSION) (one line, machine-readable) — the `CORE.md`
+header, this changelog's top entry, `udon-core`'s `CORE_COMPLIANCE` marker, the
+compliance gate, and the `core-vX.Y.Z` git tag all derive from or are checked
+against it (a CI drift-check enforces agreement — to be wired).
+
 Format: [Keep a Changelog]. Versioning: [Semantic Versioning] (pre-1.0, so minor
 bumps may break).
 

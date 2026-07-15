@@ -19,6 +19,8 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
         where a core-syntax property is genuinely easier to assert there.
       - `udon-core` declares *targeting core-v0.8.0* (a `CORE_COMPLIANCE` marker) →
         gate RED until green; finalize + tag `core-v0.8.0` when a parser passes.
+      - **Wire the drift-check**: CI asserts the `CORE.md` header and
+        `CHANGELOG.md` top entry match the operable source `spec/CORE-VERSION`.
       Once this exists, `TODO-CORE-PARSING` and `TODO-PARSER` hold only residuals
       and decompositions, not the spec-behavior worklist.
 - [ ] **[later] Dogfood:** once this version is all the way through core and the
