@@ -774,9 +774,13 @@ parsed.
 ```udon
 |element
   Some prose content
-   ; comment inside |element - one column past the prose base
+  ; comment inside |element - AT the prose base (head position)
   More prose content
 ```
+
+A `;` *deeper* than the prose base is inside the prose — literal, like any
+other marker there (see Head Position; ratified 2026-07-15). Comments
+interleave with prose at the base column; `;{...}` annotates within it.
 
 #### Inline Comments
 

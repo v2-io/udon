@@ -175,6 +175,24 @@
     - [Text, "More prose content"]
     - ElementEnd
 
+# The composite ruled on 2026-07-15: a comment at the prose base closes at a
+# prefix-bearing deeper line (continuation excludes prefixes), and that line
+# re-enters the element's PERSISTENT content_base — deeper than base, so it
+# and everything under it is prose. |another-element never becomes an element.
+- id: comment_then_deeper_prefix_line_is_prose
+  desc: comment closed by a deeper prefix line, which is itself prose (past base)
+  udon: "|element\n  some prose to begin with\n  ; Start the comment\n    |another-element\n       and its prose\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "some prose to begin with"]
+    - CommentStart
+    - [Text, " Start the comment"]
+    - CommentEnd
+    - [Text, "  |another-element"]
+    - [Text, "     and its prose"]
+    - ElementEnd
+
 - id: comment_same_column_is_sibling
   desc: a comment at a child's column is that child's sibling (child closed)
   udon: "|parent\n  |child\n  ; sibling of child\n"

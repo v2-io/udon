@@ -46,6 +46,15 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       structurally cannot provide. Needs a small generated accessor on
       `PushdownParser` (frame → (function, salient params)) plus an API
       shape decision *(discuss w/ Joseph — he's keen)*.
+- [ ] **Comment-return column loss** — `line_comment`'s continuation check
+      consumes a deeper line's indentation before discovering a prefix ends
+      the comment, so the element loop can't see the line was past the prose
+      base: `|x` after a comment wrongly becomes an element instead of prose
+      (fixture `comments.yaml::comment_then_deeper_prefix_line_is_prose`,
+      RED — the composite ruled 2026-07-15). Same defect family as the
+      fixed post-block-child column loss. Restoring the consumed spaces
+      into the prose needs a dynamic-count PREPEND — likely a small descent
+      feature (log it there when picked up).
 - [ ] **Grammar cleanup (stylistic / organizational)** — DRY the ~21
       near-identical number states in `values.desc`; parameterize
       `double_quoted`/`single_quoted`. Behavior-neutral; not fixture-driven.
