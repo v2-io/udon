@@ -528,7 +528,7 @@ impl<'a> Parser<'a> {
     {
         let mut col: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Line, Dispatch, CheckAttr, CheckBang, CheckAt, CheckFreeform, CheckFreeform2, CheckPipe,  }
+        enum State { Line, Eol, Dispatch, CheckAttr, CheckBang, CheckAt, CheckFreeform, CheckFreeform2, CheckPipe,  }
         let mut state = State::Line;
         loop {
             match state {
@@ -539,6 +539,7 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b'\n') => {
                     self.advance();
+                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     continue;
                         }
                         Some(b' ') => {
@@ -549,6 +550,23 @@ impl<'a> Parser<'a> {
                         Some(b'\t') => {
                     on_event(Event::Error { code: ParseErrorCode::NoTabs, span: self.span() });
                     self.scan_to1(b'\n');
+                    state = State::Line;
+                    continue;
+                        }
+                        _ => {
+                    col = self.col() - 1;
+                    state = State::Dispatch;
+                    continue;
+                        }
+                    }
+                }
+                State::Eol => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.advance();
                     state = State::Line;
                     continue;
                         }
@@ -598,12 +616,12 @@ impl<'a> Parser<'a> {
                         Some(b'\\') => {
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b"", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -615,12 +633,12 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
                     self.parse_block_attr(on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b":", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -643,12 +661,12 @@ impl<'a> Parser<'a> {
                         Some(b'{') => {
                     self.advance();
                     self.parse_sameline_directive(on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b"!", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -660,12 +678,12 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'[' => {
                     self.parse_block_ref(on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b"@", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -682,7 +700,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b"`", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -700,7 +718,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose_backticks(col, -1, on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -718,12 +736,12 @@ impl<'a> Parser<'a> {
                         Some(b'{') => {
                     self.advance();
                     self.parse_embedded(on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b"|", on_event);
-                    state = State::Line;
+                    state = State::Eol;
                     continue;
                         }
                     }
@@ -986,7 +1004,7 @@ impl<'a> Parser<'a> {
         let mut content_base: i32 = -1;
         let mut col: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, CheckSamelinePipe, CheckSamelineElemCol, CheckSamelineSemi, CheckSamelineBang, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ChildDispatchDo, ChildCheckBang, ChildCheckAt, ChildCheckAttr, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -1039,6 +1057,11 @@ impl<'a> Parser<'a> {
                     self.advance();
                     continue;
                         }
+                        Some(b'`') => {
+                    self.advance();
+                    state = State::SamelineFf1;
+                    continue;
+                        }
                         Some(b'?') => {
                     self.advance();
                     state = State::SpacedSuffixQ;
@@ -1082,6 +1105,43 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"", on_event);
+                    state = State::AfterContent;
+                    continue;
+                        }
+                    }
+                }
+                State::SamelineFf1 => {
+                    if self.eof() {
+                        on_event(Event::ElementEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'`') => {
+                    self.advance();
+                    state = State::SamelineFf2;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_sameline_text(elem_col, b"`", on_event);
+                    state = State::AfterContent;
+                    continue;
+                        }
+                    }
+                }
+                State::SamelineFf2 => {
+                    if self.eof() {
+                        on_event(Event::ElementEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'`') => {
+                    self.advance();
+                    self.parse_freeform(on_event);
+                    state = State::AfterContent;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_sameline_text(elem_col, b"``", on_event);
                     state = State::AfterContent;
                     continue;
                         }
@@ -1206,7 +1266,25 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_element(self.col() - 1, elem_col, on_event);
-                    state = State::PostChild;
+                    state = State::PostBlockChild;
+                    continue;
+                        }
+                    }
+                }
+                State::PostBlockChild => {
+                    if self.eof() {
+                    on_event(Event::ElementEnd { span: self.span() });
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.advance();
+                    state = State::Children;
+                    continue;
+                        }
+                        _ => {
+                    col = self.col() - 1;
+                    state = State::CheckChild;
                     continue;
                         }
                     }
@@ -1483,29 +1561,6 @@ impl<'a> Parser<'a> {
                         return;
                     }
                     match self.peek() {
-                        _ if content_base < 0 => {
-                    content_base = col;
-                    state = State::ChildDispatchDo;
-                    continue;
-                        }
-                        _ if col < content_base => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
-                    content_base = col;
-                    state = State::ChildDispatchDo;
-                    continue;
-                        }
-                        _ => {
-                    state = State::ChildDispatchDo;
-                    continue;
-                        }
-                    }
-                }
-                State::ChildDispatchDo => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
                         Some(b'|') => {
                     self.advance();
                     state = State::ChildPipe;
@@ -1539,8 +1594,30 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
+                    state = State::VerbatimBase;
+                    continue;
+                        }
+                        _ => {
+                    state = State::ProseBase;
+                    continue;
+                        }
+                    }
+                }
+                State::ProseBase => {
+                    if self.eof() {
+                        on_event(Event::ElementEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        _ if content_base < 0 => {
+                    content_base = col;
+                    state = State::DoProse;
+                    continue;
+                        }
+                        _ if col < content_base => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
+                    content_base = col;
+                    state = State::DoProse;
                     continue;
                         }
                         _ => {
@@ -1548,6 +1625,34 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                     }
+                }
+                State::VerbatimBase => {
+                    if self.eof() {
+                        on_event(Event::ElementEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        _ if content_base < 0 => {
+                    content_base = col;
+                    state = State::DoVerbatim;
+                    continue;
+                        }
+                        _ if col < content_base => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
+                    content_base = col;
+                    state = State::DoVerbatim;
+                    continue;
+                        }
+                        _ => {
+                    state = State::DoVerbatim;
+                    continue;
+                        }
+                    }
+                }
+                State::DoVerbatim => {
+                    self.parse_verbatim_text(on_event);
+                    state = State::AfterContent;
+                    continue;
                 }
                 State::ChildCheckBang => {
                     if self.eof() {
@@ -2551,11 +2656,11 @@ impl<'a> Parser<'a> {
         let start_span = self.span();
         on_event(Event::FreeformStart { span: start_span.clone() });
         #[derive(Clone, Copy)]
-        enum State { Lang, LineStart, Content, Line, MaybeEnd1, MaybeEnd2,  }
-        let mut state = State::Lang;
+        enum State { Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose,  }
+        let mut state = State::Opening;
         loop {
             match state {
-                State::Lang => {
+                State::Opening => {
                     if self.eof() {
                         on_event(Event::Error { code: ParseErrorCode::UnclosedFreeform, span: self.span() });
                         return;
@@ -2566,14 +2671,12 @@ impl<'a> Parser<'a> {
                     state = State::LineStart;
                     continue;
                         }
-                        Some(b) if Self::is_xlbl_start(b) => {
-                    self.parse_name(on_event);
-                    self.scan_to1(b'\n');
-                    self.advance();
-                    state = State::LineStart;
-                    continue;
-                        }
                         _ => {
+                    self.mark();
+                    self.scan_to1(b'\n');
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.advance();
                     state = State::LineStart;
                     continue;
                         }
@@ -2658,6 +2761,27 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'`') => {
+                    self.advance();
+                    state = State::PostClose;
+                    continue;
+                        }
+                        _ => {
+                    state = State::Line;
+                    continue;
+                        }
+                    }
+                }
+                State::PostClose => {
+                    if self.eof() {
+                    on_event(Event::FreeformEnd { span: self.span() });
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b' ' | b'\t') => {
+                    self.advance();
+                    continue;
+                        }
+                        Some(b'\n') => {
                     self.advance();
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
@@ -3749,9 +3873,10 @@ impl<'a> Parser<'a> {
     {
         let start_span = self.span();
         on_event(Event::DirectiveStart { span: start_span.clone() });
+        let mut raw_base: i32 = -1;
         let mut col: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Dispatch, RawKind, RawColon, RawEol, RawContent, RawCheck, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, ChildPipe,  }
+        enum State { Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, ChildPipe,  }
         let mut state = State::Dispatch;
         loop {
             match state {
@@ -3841,8 +3966,9 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b' ') => {
-                    col = self.parse_count_indent(on_event);
-                    state = State::RawCheck;
+                    self.advance();
+                    col = 1;
+                    state = State::RawWs;
                     continue;
                         }
                         _ => {
@@ -3851,7 +3977,33 @@ impl<'a> Parser<'a> {
                         }
                     }
                 }
-                State::RawCheck => {
+                State::RawWs => {
+                    if self.eof() {
+                        on_event(Event::DirectiveEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        _ if raw_base >= 0 && col >= raw_base => {
+                    state = State::RawAtBase;
+                    continue;
+                        }
+                        Some(b' ') => {
+                    self.advance();
+                    col += 1;
+                    continue;
+                        }
+                        Some(b'\n') => {
+                    self.advance();
+                    state = State::RawContent;
+                    continue;
+                        }
+                        _ => {
+                    state = State::RawCheckbase;
+                    continue;
+                        }
+                    }
+                }
+                State::RawCheckbase => {
                     if self.eof() {
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
@@ -3861,12 +4013,23 @@ impl<'a> Parser<'a> {
                     on_event(Event::DirectiveEnd { span: self.span() });
                     return;
                         }
+                        _ if raw_base < 0 => {
+                    raw_base = col;
+                    self.mark();
+                    state = State::RawLine;
+                    continue;
+                        }
                         _ => {
                     self.mark();
                     state = State::RawLine;
                     continue;
                         }
                     }
+                }
+                State::RawAtBase => {
+                    self.mark();
+                    state = State::RawLine;
+                    continue;
                 }
                 State::RawLine => {
                     match self.scan_to1(b'\n') {

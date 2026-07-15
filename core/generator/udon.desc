@@ -64,11 +64,20 @@
 |entry-point /document
 
 |function[document]
+  ; :line is a FRESH line start: a bare newline here is a blank line and
+  ; emits BlankLine (CORE parser-behavior note). Constructs that stop at
+  ; their own terminating newline route through :eol so that newline is
+  ; consumed silently first.
   |state[:line]
-    |c['\n']                  | ->                               |>>
+    |c['\n']                  | -> | BlankLine                   |>>
     |c[' ']                   | col = /count_indent              |>> :dispatch
     |c['\t']                  | /error(NoTabs) | ->['\n']       |>> :line
     |default                  | col = COL - 1                    |>> :dispatch  ; use actual column
+
+  |state[:eol]
+    |eof                      |                                  |return
+    |c['\n']                  | ->                               |>> :line
+    |default                  | col = COL - 1                    |>> :dispatch  ; construct returned mid-line
 
   |state[:dispatch]
     |c['|']                   | ->                               |>> :check_pipe
@@ -77,16 +86,16 @@
     |c[';']                   | -> | /line_comment               |>> :line
     |c['@']                   | ->                               |>> :check_at
     |c['`']                   | ->                               |>> :check_freeform
-    |c[<BS>]                  | -> | /verbatim_text              |>> :line
-    |default                  | /prose(col, -1, <>)              |>> :line
+    |c[<BS>]                  | -> | /verbatim_text              |>> :eol
+    |default                  | /prose(col, -1, <>)              |>> :eol
 
   ; Line-initial attr must be followed by a name start, quoted name, or
   ; reference bracket. Anything else falls back to INTACT prose — the
   ; colon is restored, never eaten (defect #12 data-loss half; the
   ; promotion boundary itself is open decision 9).
   |state[:check_attr]
-    |c[<XLBL_START SQ>]       | /block_attr                      |>> :line
-    |default                  | /prose(col, -1, ':')             |>> :line
+    |c[<XLBL_START SQ>]       | /block_attr                      |>> :eol
+    |default                  | /prose(col, -1, ':')             |>> :eol
 
   ; `!` guard (CORE Marker Recognition): directive only when followed by an
   ; identifier or ':' (raw). `!{` at head position is the PROSE-LEVEL inline
@@ -95,27 +104,27 @@
   |state[:check_bang]
     |c[':']                   | /block_directive(col)            |>> :line
     |c[XLBL_START]            | /block_directive(col)            |>> :line
-    |c['{']                   | -> | /sameline_directive         |>> :line
-    |default                  | /prose(col, -1, '!')             |>> :line
+    |c['{']                   | -> | /sameline_directive         |>> :eol
+    |default                  | /prose(col, -1, '!')             |>> :eol
 
   ; `@` guard (CORE Marker Recognition): reference when followed by `[` or an
   ; identifier; otherwise prose. The payload is the raw text after `@`.
   |state[:check_at]
-    |c[<L XLBL_START>]        | /block_ref                       |>> :line
-    |default                  | /prose(col, -1, '@')             |>> :line
+    |c[<L XLBL_START>]        | /block_ref                       |>> :eol
+    |default                  | /prose(col, -1, '@')             |>> :eol
 
   |state[:check_freeform]
     |c['`']                   | ->                               |>> :check_freeform2
-    |default                  | /prose(col, -1, '`')             |>> :line
+    |default                  | /prose(col, -1, '`')             |>> :eol
 
   |state[:check_freeform2]
     |c['`']                   | -> | /freeform                   |>> :line
-    |default                  | /prose_backticks(col, -1)        |>> :line
+    |default                  | /prose_backticks(col, -1)        |>> :eol
 
   |state[:check_pipe]
     |c[<XLBL_START SQ '[' '.?!*+'>]  | /element(col, -1)               |>> :line
-    |c['{']                   | -> | /embedded                   |>> :line
-    |default                  | /prose(col, -1, '|')             |>> :line
+    |c['{']                   | -> | /embedded                   |>> :eol
+    |default                  | /prose(col, -1, '|')             |>> :eol
 
 
 ; ============================================================================
@@ -213,6 +222,7 @@
   |state[:pre_content]
     |c['\n']                  | ->                               |>> :children
     |c[' \t']                 | ->                               |>>
+    |c['`']                   | ->                               |>> :sameline_ff1
     |c['?']                   | ->                               |>> :spaced_suffix_q
     |c['*']                   | ->                               |>> :spaced_suffix_s
     |c['+']                   | ->                               |>> :spaced_suffix_p
@@ -222,6 +232,16 @@
     |c['!']                   | ->                               |>> :check_sameline_bang
     |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
     |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+
+  ; Sameline fence: attributes keep the scan open, so triple-backticks after
+  ; elements/attributes open a freeform block (CORE "Triple-Backtick
+  ; Escape"). Fewer than three backticks fall back to sameline text.
+  |state[:sameline_ff1]
+    |c['`']                   | ->                               |>> :sameline_ff2
+    |default                  | /sameline_text(:elem_col, '`')   |>> :after_content
+  |state[:sameline_ff2]
+    |c['`']                   | -> | /freeform                   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '``')  |>> :after_content
 
   ; Space-separated element-level suffix (CORE "Suffix positions":
   ; `|name[key].trait ?`): the suffix char must stand alone — followed by
@@ -256,7 +276,15 @@
   ; Per SPEC: "pop while new_column <= stack_top.base_column"
   |state[:check_sameline_elem_col]
     |if[COL - 1 <= :elem_col]                                     |return
-    |                       | /element(COL - 1, :elem_col)        |>> :post_child
+    |                       | /element(COL - 1, :elem_col)        |>> :post_block_child
+
+  ; A block child element consumed its own lines and returned positioned at
+  ; the first character of a fresh (dedented) line — run it through the
+  ; ordinary children column bookkeeping.
+  |state[:post_block_child]
+    |eof                      |                                  |return
+    |c['\n']                  | ->                               |>> :children
+    |default                  | col = COL - 1                    |>> :check_child
 
   |state[:check_sameline_semi]
     |c['{']                   | -> | /brace_comment              |>> :post_sameline_inline
@@ -333,21 +361,34 @@
 
   ; First child content (content_base not yet set) or lines with less indent than content_base
   ; content_base tracks the first child's column for consistency warnings
+  ; First child content (content_base not yet set) or lines with less indent
+  ; than content_base. content_base is a PROSE concept (CORE "Automatic
+  ; Prose Dedentation"): only prose lines — and the head-position `\`,
+  ; which anchors the base (CORE "Escape") — set it or warn against it.
+  ; Child elements, fences, comments, and directives at other columns are
+  ; ordinary structure (CORE's own table example mixes columns silently).
   |state[:child_dispatch]
-    ; Set content_base if first child, or warn if col < content_base (inconsistent)
-    |if[content_base < 0]     | content_base = col               |>> :child_dispatch_do
-    |if[col < content_base]   | Warning(Inconsistent indentation) | content_base = col |>> :child_dispatch_do
-    |default                  |                                  |>> :child_dispatch_do
-
-  |state[:child_dispatch_do]
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
     |c['!']                   | ->                               |>> :child_check_bang
     |c[';']                   | -> | /line_comment               |>> :after_content
     |c['@']                   | ->                               |>> :child_check_at
     |c['`']                   | ->                               |>> :child_check_freeform
-    |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
+    |c[<BS>]                  | ->                               |>> :verbatim_base
+    |default                  |                                  |>> :prose_base
+
+  |state[:prose_base]
+    |if[content_base < 0]     | content_base = col               |>> :do_prose
+    |if[col < content_base]   | Warning(Inconsistent indentation) | content_base = col |>> :do_prose
     |default                  |                                  |>> :do_prose
+
+  |state[:verbatim_base]
+    |if[content_base < 0]     | content_base = col               |>> :do_verbatim
+    |if[col < content_base]   | Warning(Inconsistent indentation) | content_base = col |>> :do_verbatim
+    |default                  |                                  |>> :do_verbatim
+
+  |state[:do_verbatim]
+    | /verbatim_text                                             |>> :after_content
 
   ; `!` guard in element children (see document :check_bang)
   |state[:child_check_bang]
@@ -657,10 +698,12 @@
 ; Preserves exact whitespace - no dedentation
 ; Closing ``` detected when line starts with optional whitespace then ```
 |function[freeform:Freeform]
-  |state[:lang]
+  ; Opening line: everything after the backticks begins the body (CORE
+  ; "Triple-Backtick Escape" — an info string is just the body's first
+  ; content; there is no separate info-string rule).
+  |state[:opening]
     |c['\n']                  | ->                               |>> :line_start
-    |c[XLBL_START]            | /name | ->['\n'] | ->            |>> :line_start
-    |default                  |                                  |>> :line_start
+    |default                  | MARK | ->['\n'] | TERM | Text(USE_MARK) | -> |>> :line_start
 
   ; Start of each content line - MARK immediately, then check content
   ; Blank lines are content: freeform's contract is exact preservation
@@ -687,8 +730,16 @@
     |default                  |                                  |>> :line  ; only one `, continue
 
   |state[:maybe_end2]
-    |c['`']                   | ->                               |return  ; found ```, done
+    |c['`']                   | ->                               |>> :post_close
     |default                  |                                  |>> :line  ; only ``, continue
+
+  ; A closer must be followed by a newline; whitespace to the right of the
+  ; backticks is ignored (CORE). Anything else means the line is body.
+  |state[:post_close]
+    |eof                      |                                  |return
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | ->                               |return
+    |default                  |                                  |>> :line
 
 
 ; text - block-level prose content (manual emit control, no :Text auto-emit)
@@ -998,7 +1049,7 @@
 ; ============================================================================
 
 ; Block directive - !name or !:lang: for raw, or !{...} inline at document level
-|function[block_directive:Directive]  :line_col
+|function[block_directive:Directive]  :line_col  | raw_base = -1
   |state[:dispatch]
     |c[':']                   | ->                               |>> :raw_kind
     |c[XLBL_START]                | /name                            |>> :after_name
@@ -1018,15 +1069,27 @@
     |c[' \t']                 | ->                               |>>
     |default                  | ->                               |>>  ; consume rest of line
 
-  ; Raw content - capture everything at greater indent
+  ; Raw content — captured at greater indent, dedented relative to the
+  ; FIRST content line's column (raw_base); deeper lines keep their extra
+  ; indent as content (CORE "Raw Directives": relative indent preserved).
   |state[:raw_content]
     |c['\n']                  | ->                               |>>
-    |c[' ']                   | col = /count_indent              |>> :raw_check
+    |c[' ']                   | -> | col = 1                     |>> :raw_ws
     |default                  |                                  |return  ; non-indented, done
 
-  |state[:raw_check]
+  |state[:raw_ws]
+    |if[raw_base >= 0 && col >= raw_base]                        |>> :raw_at_base
+    |c[' ']                   | -> | col += 1                    |>>
+    |c['\n']                  | ->                               |>> :raw_content  ; ws-only line
+    |default                  |                                  |>> :raw_checkbase
+
+  |state[:raw_checkbase]
     |if[col <= :line_col]                                         |return  ; dedent
-    |default                  | MARK                             |>> :raw_line
+    |if[raw_base < 0]         | raw_base = col | MARK            |>> :raw_line
+    |default                  | MARK                             |>> :raw_line  ; shallower than base: capture as-is
+
+  |state[:raw_at_base]
+    |default                  | MARK                             |>> :raw_line  ; extra spaces beyond base are content
 
   |state[:raw_line]
     |eof                      | TERM | RawContent(USE_MARK)      |return

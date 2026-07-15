@@ -1038,13 +1038,17 @@ mod tests {
     }
 
     #[test]
-    fn test_freeform_lang_and_content() {
+    fn test_freeform_opening_remainder_is_body() {
+        // CORE 0.8: everything after the opening backticks begins the BODY —
+        // there is no info-string rule at the parse level, so `lang` stays
+        // None and "python" is simply the first content line. Whether a
+        // consumer reads a first-line word as a language tag is its choice.
         let doc = Document::parse(b"```python\nx = 1\ny = 2\n```\n").unwrap();
         let raw = doc.root().first_child().unwrap();
         match raw.kind() {
             NodeKind::Raw { lang, content } => {
-                assert_eq!(lang.as_deref(), Some("python"));
-                assert_eq!(content.as_ref(), "x = 1\ny = 2");
+                assert_eq!(lang.as_deref(), None);
+                assert_eq!(content.as_ref(), "python\nx = 1\ny = 2");
             }
             other => panic!("expected Raw, got {:?}", other),
         }
