@@ -61,25 +61,43 @@
       - **Prose between embedded siblings** — a single space between two
         `|{…}` forms: fixtures keep it as `Text " "` (round-trip fidelity);
         the legacy parser consumed it.
-      - **Warning payloads** — the harness exact-matches Warning content;
-        fixtures reuse legacy `"Inconsistent indentation"` and coin
-        `"Escape not at head position"` / `"Possible second attribute in
-        block value"` — strings need ratifying (or Warning codes).
-      - **Warning ordering** — whether a block-value Warning precedes or
-        follows the value event (`attributes.yaml::block_line_holds_one_attribute`).
+      - **RATIFIED (Joseph, 2026-07-15): warnings get working CODES, not
+        ratified strings.** CORE gains a table of warning codes with
+        descriptions — e.g. `warn:InconsistentIndentation`,
+        `warn:NoDialects` — and states that the actual warning TEXT, and
+        whether a given warning is emitted in given circumstances, is a
+        parser/host decision (menu-vs-knob: spec fixes the code
+        vocabulary; hosts pick voice and verbosity). Execution deferred:
+        the CORE table; Warning events carrying codes (harness/fixtures
+        match codes, ending string-brittleness); fold the layer ledger
+        from the warning-placement guideline in as a non-normative column.
+        Initial inventory: InconsistentIndentation; NoDialects;
+        EscapeNotAtHeadPosition (pending); CommentMissingFollowingSpace
+        (optional advisory, see `;`-framing ruling); the attribute-model
+        advisories (BooleanConventionMismatch, MarkerInTextValue,
+        DistantBlockBinding) when that model lands. The stranded-attr
+        warning died with the attribute model. Warning ORDERING relative
+        to value events becomes moot for retired warnings; specify
+        per-code in the table where it matters.
+      - **Inline raw `!{:kind: …}` details** — deferred by Joseph
+        (2026-07-15); discuss later.
       - **RATIFIED (Joseph, 2026-07-15): comment continuation is uniform.**
         Everything deeper than the comment's column is comment TEXT (inert,
         never parsed) until a line at or dedented from it — the prefix
         exclusion was unfounded overspecification; block-comment-out is a
         primary use case. In CORE Comments; grammar simplified; fixtures pin
         the composite and the block-comment-out case.
-      - **Value-position `;` framing** — the ratified *sameline comment*
-        lexeme (2026-07-15) requires whitespace on both sides in sameline
-        PROSE. The after-attribute-value positions (block ` ;` terminator,
-        sameline post-value `;`) still require only the space-before.
-        Decide whether the lexeme applies uniformly there too (`:note a ;x`
-        would then keep " ;x" in the value — more robust for URLs; costs a
-        peek state per typed-value terminator). *(discuss w/ Joseph)*
+      - **RATIFIED (Joseph, 2026-07-15): `;` framing by context.** The
+        both-sides ' ; ' frame is enforced ONLY where it earns its keep:
+        sameline (including attribute-rooted lines) AND unquoted prose/text
+        already started — i.e., exactly the emoticon territory. Everywhere
+        else in scan position (post-value, post-attr, pre-prose) the
+        ordinary space-preceded `;` opens a comment, no following-space
+        requirement (precedent: YAML and POSIX shell force preceding-only;
+        only MySQL's `--` forces following; nobody forces both). Matches
+        current parser behavior — execution is CORE wording only. A
+        missing-following-space advisory may exist as a warn-code per the
+        warning-code ruling below; emission is host's choice.
       - **RATIFIED (Joseph, 2026-07-15): sameline `;` vs prose-commit.** "Head
         Position" says that once a line commits to prose, *any* later marker
         character on it is literal; the Comments table (and the
@@ -102,10 +120,10 @@
         the uniform Head-Position reading (deeper = prose;
         `comments.yaml::comment_deeper_than_prose_base_is_prose`); the
         Comments example needs updating or an exception carved.
-      - **Inline raw `!{:kind: …}` details** — whether the single space after
-        the label's closing `:` is separator or content, and whether the
-        inline form carries the same `Raw` marker event as the block form
-        (fixtures: separator; yes).
+      - *(the deferred inline-raw item above carries the details: space
+        after the label's closing `:` — separator or content; whether the
+        inline form carries the block form's `Raw` marker event. Fixtures
+        currently encode: separator; yes.)*
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
