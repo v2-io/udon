@@ -60,10 +60,16 @@ pub enum NodeKind<'a> {
     Document,
 
     /// Element node: `|element` or `|{embedded}`.
+    ///
+    /// The substrate is CORE's wire truth: `attrs` holds EVERY attribute in
+    /// document order, including the specially-designated ones the identity
+    /// sugar desugars to (`$key`, `$traits`, `$?`, ...). The ergonomic
+    /// key/traits/attributes views on `ElementView` derive from it (CORE
+    /// "Host Views (Recommended)") — nothing is consumed or reordered, so
+    /// `all_attributes` round-trips.
     Element {
+        /// Empty string for anonymous elements (`|[k]`, `|.trait`).
         name: Cow<'a, str>,
-        id: Option<Cow<'a, str>>,
-        classes: Vec<Cow<'a, str>>,
         attrs: Vec<Attribute<'a>>,
         /// True for embedded elements `|{...}`.
         embedded: bool,
@@ -130,6 +136,17 @@ pub enum Value<'a> {
 // with CORE 0.8: bare temporal is a string; temporal typing returns via the
 // <...> envelope + temporal@1 dialect (grammar logic preserved in
 // generator/temporal-value.desc.setaside).
+
+impl<'a> Value<'a> {
+    /// The value's string content, when it is string-like (quoted or bare).
+    /// Numeric / boolean / nil / array values return None — use the variant.
+    pub fn as_str(&self) -> Option<&str> {
+        match self {
+            Value::String(s) | Value::Bare(s) => Some(s.as_ref()),
+            _ => None,
+        }
+    }
+}
 
 // ============================================================================
 // Document
@@ -203,7 +220,7 @@ impl std::error::Error for ParseErrors {}
 
 /// Human-readable message for an error code, e.g. `UnclosedArray` ->
 /// "unclosed array". Derived from the code name so new codes stay covered.
-fn describe_code(code: &ParseErrorCode) -> String {
+pub(crate) fn describe_code(code: &ParseErrorCode) -> String {
     let name = format!("{:?}", code);
     let mut out = String::with_capacity(name.len() + 4);
     for (i, ch) in name.chars().enumerate() {
@@ -431,27 +448,65 @@ impl<'doc, 'a: 'doc> ElementView<'doc, 'a> {
         }
     }
 
-    /// Get the element ID, if any.
-    pub fn id(&self) -> Option<&str> {
-        if let NodeKind::Element { id, .. } = self.node.kind() {
-            id.as_ref().map(|s| s.as_ref())
-        } else {
-            None
-        }
+    /// True for anonymous elements (`|[k]`, `|.trait` — CORE "Anonymous
+    /// Elements": the name is optional; namelessness has no core meaning).
+    pub fn is_anonymous(&self) -> bool {
+        self.name().is_empty()
     }
 
-    /// Get the element classes.
-    pub fn classes(&self) -> &[Cow<'a, str>] {
-        if let NodeKind::Element { classes, .. } = self.node.kind() {
-            classes
+    fn raw_attrs(&self) -> &'doc [Attribute<'a>] {
+        if let NodeKind::Element { attrs, .. } = &self.node.doc.node_data(self.node.id).kind {
+            attrs.as_slice()
         } else {
             &[]
         }
     }
 
-    /// Check if the element has a specific class.
-    pub fn has_class(&self, class: &str) -> bool {
-        self.classes().iter().any(|c| c.as_ref() == class)
+    // ---- Host views (CORE "Host Views (Recommended)") ----
+    //
+    // Both views derive from the same substrate: `all_attributes` is the
+    // round-trip / exactly-what's-there read; key/traits/attributes is the
+    // ergonomic split. `traits()` always returns a list — the one
+    // normalization CORE allows beyond the plain desugaring.
+
+    /// Every attribute in document order, INCLUDING the `$`-designated
+    /// ones (`$key`, `$traits`, suffix flags). The round-trip view.
+    pub fn all_attributes(&self) -> impl Iterator<Item = (&str, &Value<'a>)> {
+        self.raw_attrs().iter().map(|a| (a.name.as_ref(), &a.value))
+    }
+
+    /// Every NON-designated attribute in document order (the ergonomic
+    /// split's `attributes` view).
+    pub fn attributes(&self) -> impl Iterator<Item = (&str, &Value<'a>)> {
+        self.raw_attrs()
+            .iter()
+            .filter(|a| !a.name.starts_with('$'))
+            .map(|a| (a.name.as_ref(), &a.value))
+    }
+
+    /// The element's key — the value of `$key` (`|el[k]` sugar). Scalar
+    /// accessor: the LAST assignment wins when stacked (a multi-valued
+    /// `$key` is a schema violation, not a core one); use
+    /// `attr_all("$key")` for all of them.
+    pub fn key(&self) -> Option<&Value<'a>> {
+        self.attr("$key")
+    }
+
+    /// The element's traits — the values of `$traits` (`.trait` sugar),
+    /// ALWAYS a list (`[]`, one, or many), in document order.
+    pub fn traits(&self) -> Vec<&Value<'a>> {
+        self.attr_all("$traits")
+    }
+
+    /// Check for a trait by its string value.
+    pub fn has_trait(&self, name: &str) -> bool {
+        self.traits().iter().any(|v| v.as_str() == Some(name))
+    }
+
+    /// Check for a suffix flag by its designated name (`"$?"`, `"$!"`,
+    /// `"$*"`, `"$+"` — CORE "Element Suffixes").
+    pub fn has_flag(&self, flag: &str) -> bool {
+        matches!(self.attr(flag), Some(Value::BoolTrue))
     }
 
     /// Check if this is an embedded element (`|{...}`).
@@ -463,23 +518,24 @@ impl<'doc, 'a: 'doc> ElementView<'doc, 'a> {
         }
     }
 
-    /// Get an attribute value by name.
+    /// Get an attribute value by name — the scalar accessor: attributes
+    /// stack (CORE "Attribute Stacking"), and the LAST assignment is
+    /// returned. Use `attr_all` for every stacked value.
     pub fn attr(&self, name: &str) -> Option<&Value<'a>> {
-        if let NodeKind::Element { attrs, .. } = self.node.kind() {
-            attrs.iter().find(|a| a.name.as_ref() == name).map(|a| &a.value)
-        } else {
-            None
-        }
+        self.raw_attrs()
+            .iter()
+            .rev()
+            .find(|a| a.name.as_ref() == name)
+            .map(|a| &a.value)
     }
 
-    /// Iterate over all attributes.
-    pub fn attrs(&self) -> impl Iterator<Item = (&str, &Value<'a>)> {
-        let attrs = if let NodeKind::Element { attrs, .. } = self.node.kind() {
-            attrs.as_slice()
-        } else {
-            &[]
-        };
-        attrs.iter().map(|a| (a.name.as_ref(), &a.value))
+    /// Every stacked value for an attribute name, in document order.
+    pub fn attr_all(&self, name: &str) -> Vec<&Value<'a>> {
+        self.raw_attrs()
+            .iter()
+            .filter(|a| a.name.as_ref() == name)
+            .map(|a| &a.value)
+            .collect()
     }
 
     /// Iterate over child nodes.
@@ -492,8 +548,8 @@ impl<'doc, 'a> std::fmt::Debug for ElementView<'doc, 'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("ElementView")
             .field("name", &self.name())
-            .field("id", &self.id())
-            .field("classes", &self.classes())
+            .field("key", &self.key())
+            .field("traits", &self.traits())
             .finish()
     }
 }
@@ -503,7 +559,10 @@ impl<'doc, 'a> std::fmt::Debug for ElementView<'doc, 'a> {
 // ============================================================================
 
 /// Builds a document tree from parser events.
-struct TreeBuilder<'a> {
+///
+/// `pub(crate)` so the streaming AST (`stream_tree`) can drive it one event
+/// at a time; the public one-shot surface stays `Document::parse`.
+pub(crate) struct TreeBuilder<'a> {
     nodes: Vec<NodeData<'a>>,
     /// Stack of open node IDs.
     stack: Vec<NodeId>,
@@ -517,7 +576,7 @@ struct TreeBuilder<'a> {
 }
 
 impl<'a> TreeBuilder<'a> {
-    fn new() -> Self {
+    pub(crate) fn new() -> Self {
         // Create root document node
         let root = NodeData {
             parent: None,
@@ -587,7 +646,7 @@ impl<'a> TreeBuilder<'a> {
         true
     }
 
-    fn handle_event(&mut self, event: Event<'a>) {
+    pub(crate) fn handle_event(&mut self, event: Event<'a>) {
         use Event::*;
 
         match event {
@@ -595,8 +654,6 @@ impl<'a> TreeBuilder<'a> {
             ElementStart { span } => {
                 let id = self.push_node(NodeKind::Element {
                     name: Cow::Borrowed(""),
-                    id: None,
-                    classes: Vec::new(),
                     attrs: Vec::new(),
                     embedded: false,
                 }, &span);
@@ -610,8 +667,6 @@ impl<'a> TreeBuilder<'a> {
             EmbeddedStart { span } => {
                 let id = self.push_node(NodeKind::Element {
                     name: Cow::Borrowed(""),
-                    id: None,
-                    classes: Vec::new(),
                     attrs: Vec::new(),
                     embedded: true,
                 }, &span);
@@ -644,25 +699,13 @@ impl<'a> TreeBuilder<'a> {
 
             // ---- Values ----
             StringValue { content, .. } => {
-                let s = bytes_to_cow(&content);
-                if self.intercept_identity(&s) {
-                    return;
-                }
-                self.add_value(Value::String(s));
+                self.add_value(Value::String(bytes_to_cow(&content)));
             }
             BareValue { content, .. } => {
-                let s = bytes_to_cow(&content);
-                if self.intercept_identity(&s) {
-                    return;
-                }
-                self.add_value(Value::Bare(s));
+                self.add_value(Value::Bare(bytes_to_cow(&content)));
             }
             Integer { content, .. } => {
-                let s = bytes_to_cow(&content);
-                if self.intercept_identity(&s) {
-                    return;
-                }
-                self.add_value(Value::Integer(s));
+                self.add_value(Value::Integer(bytes_to_cow(&content)));
             }
             Float { content, .. } => {
                 self.add_value(Value::Float(bytes_to_cow(&content)));
@@ -818,32 +861,6 @@ impl<'a> TreeBuilder<'a> {
         self.append_line_content(id, line);
     }
 
-    /// Route the designated identity attributes ($key / $traits — CORE
-    /// "Identity") into the element's key/trait fields instead of the
-    /// ordinary attribute list. Applies whatever the value's scalar type
-    /// (defect #4 residual: the old code matched wire-names "id"/"class"
-    /// and only BareValue). Returns true when the value was consumed.
-    fn intercept_identity(&mut self, s: &Cow<'a, str>) -> bool {
-        let Some(attr_name) = &self.current_attr else { return false };
-        if attr_name == "$key" {
-            let current = self.current();
-            if let NodeKind::Element { id, .. } = &mut self.nodes[current.index()].kind {
-                *id = Some(s.clone());
-            }
-            self.current_attr = None;
-            true
-        } else if attr_name == "$traits" {
-            let current = self.current();
-            if let NodeKind::Element { classes, .. } = &mut self.nodes[current.index()].kind {
-                classes.push(s.clone());
-            }
-            self.current_attr = None;
-            true
-        } else {
-            false
-        }
-    }
-
     fn add_value(&mut self, value: Value<'a>) {
         // If we're in an array context, add to the array
         if let Some(arr) = self.array_stack.last_mut() {
@@ -863,7 +880,7 @@ impl<'a> TreeBuilder<'a> {
         }
     }
 
-    fn finish(mut self, input_len: usize) -> Document<'a> {
+    pub(crate) fn finish(mut self, input_len: usize) -> Document<'a> {
         self.nodes[0].span = Span::new(0, input_len);
         Document {
             nodes: self.nodes,
@@ -931,10 +948,10 @@ mod tests {
         let el = doc.root().first_child().unwrap().as_element().unwrap();
 
         assert_eq!(el.name(), "div");
-        assert_eq!(el.id(), Some("myid"));
-        assert_eq!(el.classes().len(), 2);
-        assert!(el.has_class("class1"));
-        assert!(el.has_class("class2"));
+        assert_eq!(el.key().and_then(|v| v.as_str()), Some("myid"));
+        assert_eq!(el.traits().len(), 2);
+        assert!(el.has_trait("class1"));
+        assert!(el.has_trait("class2"));
     }
 
     #[test]

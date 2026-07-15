@@ -57,7 +57,8 @@ belong in the human README.
 ## Working in core/ (the Rust workspace)
 
 ```bash
-cd core && cargo test --workspace          # unit + streaming tests green;
+cd core && cargo test --workspace --no-fail-fast
+                                           # unit + streaming tests green;
                                            # v0_8_compliance_group stays RED
                                            # until the grammar fully catches
                                            # up to CORE 0.8 (it reports the

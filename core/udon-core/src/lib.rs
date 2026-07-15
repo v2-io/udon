@@ -34,8 +34,10 @@
 
 pub mod parser;
 pub mod span;
+pub mod stream_tree;
 pub mod tree;
 
 pub use parser::*;
 pub use span::{Location, Span};
+pub use stream_tree::{StreamingTreeParser, TreeStream};
 pub use tree::{Document, Node, NodeKind, Value, Attribute, ElementView};

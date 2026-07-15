@@ -29,13 +29,13 @@ fn main() {
     for node in doc.root().children() {
         if let Some(el) = node.as_element() {
             println!("Element: {}", el.name());
-            if let Some(id) = el.id() {
-                println!("  id: {}", id);
+            if let Some(key) = el.key() {
+                println!("  key: {:?}", key);
             }
-            if !el.classes().is_empty() {
-                println!("  classes: {:?}", el.classes());
+            if !el.traits().is_empty() {
+                println!("  traits: {:?}", el.traits());
             }
-            for (name, value) in el.attrs() {
+            for (name, value) in el.attributes() {
                 println!("  :{} = {:?}", name, value);
             }
             println!();
@@ -50,13 +50,17 @@ fn print_node(node: &udon_core::tree::Node, depth: usize) {
         NodeKind::Document => {
             println!("{}Document", indent);
         }
-        NodeKind::Element { name, id, classes, embedded, .. } => {
+        NodeKind::Element { name, embedded, .. } => {
             let mut desc = format!("{}", name);
-            if let Some(id) = id {
-                desc.push_str(&format!("[{}]", id));
-            }
-            for class in classes {
-                desc.push_str(&format!(".{}", class));
+            if let Some(el) = node.as_element() {
+                if let Some(key) = el.key().and_then(|v| v.as_str()) {
+                    desc.push_str(&format!("[{}]", key));
+                }
+                for t in el.traits() {
+                    if let Some(t) = t.as_str() {
+                        desc.push_str(&format!(".{}", t));
+                    }
+                }
             }
             if *embedded {
                 println!("{}|{{{}}}", indent, desc);
