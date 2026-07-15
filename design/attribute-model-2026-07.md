@@ -361,6 +361,49 @@ convention reading was the lean.)
 
 ---
 
+### 7.5 ASIDE — still under consideration: trading implicit booleans for semantic `?`
+
+Joseph, closing the session: the implicit valueless-=-true flag is **the one
+piece still revisable in his mind**. The pressure point is sameline reading:
+after a valueless `:label`, the next thing on the line attaches to the
+*parent element* (the preserved sibling-scan) — and for some compositions
+("where the reference attaches to after `:label` on sameline") the
+boolean-plus-attach-to-parent reading is the *more surprising* one. If that
+ambiguity proves too costly in practice, the trade on the table:
+
+**`?` becomes semantic, and plain attributes always take a value:**
+
+```
+:some-bool? true
+:some-bool? false
+:some-bool? nil                ; or whatever nil-for-bools ends up being
+:some-bool? :more-attributes   ; defaults to true — scan continues
+:some-bool? |etc               ; defaults to true — |etc per line-rooting
+:some-bool [anything else]     ; no '?': the next value-shaped thing BINDS
+                               ; as its value — reference, element, etc.,
+                               ; EVEN on a normal element-rooted sameline
+```
+
+What it buys: the needs-no-value information moves into the declaration
+itself, where the reader sees it — so sameline node/reference binding to
+plain attributes becomes unambiguous *without* the block-deeper-only
+restriction, and every valueless plain attribute becomes a loud error
+instead of a silent flag. Self-documenting by construction.
+
+What it costs: `?` stops being convention (§7 reverses from
+convention-plus-advisory to core semantics); valueless plain attributes go
+from meaning-true to error (migration + verbosity for config-flag styles);
+and sameline binding becomes conditional on the attribute's spelling —
+`:label |child` gives child to *label*, `:label? |child` gives child to
+*el* — one more thing spelled per-site rather than per-rule. Attrs WITH
+values are unaffected either way (the ratified fence-after-`:k v` case is
+untouched), and the `$?`-suffix desugar already emits explicit `true`, so
+identity sugar is immune.
+
+Status: **under consideration, not leaning** — the convention-only design
+(§7) stands unless real-world ambiguity bites. Whichever way this lands,
+it's a small, well-contained diff against the rest of the model.
+
 ## 8. Typed values live on the map side — the recorded rationale
 
 `<…>` is legal in attribute values and array items, and meaningless in
@@ -489,6 +532,8 @@ This guideline belongs in `core/CLAUDE.md` when the model lands.
 9. §6.5 backward-binding across blank lines *(Joseph- please look at this
    above)*.
 10. §6.5 block directives as node values — deferred pending DYNAMICS.
+11. §7.5 implicit booleans vs semantic `?` — under consideration; revisit
+    once the model has real-world mileage.
 
 ---
 
