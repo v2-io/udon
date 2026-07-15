@@ -8,6 +8,11 @@ composite/standard types. (Core-spec edits live in `TODO-SPEC-CORE.md`.)
 - [ ] **Temporal → `temporal@1` dialect** — recast `TIME-SPEC.md` from the old
       bare-recognition model to a `<…>`-enveloped dialect (its banner flags this).
       The value grammar stays; "where temporal lives" is now the envelope.
+      *Grammar side done 2026-07-15:* bare temporal recognition carved out of
+      `core/generator/values.desc` (bare temporal now falls back to string,
+      per CORE); the working recognition state machines are preserved
+      verbatim in `core/generator/temporal-value.desc.setaside` for this
+      dialect to re-home.
 - [ ] **Markdown subset & layers** — ratify `MARKDOWN.md` (draft): the Layer-1
       named subset (D4a), the Layer-2 `doc` vocabulary (D4b), conversion
       degradation (D4c), renderer targets (D4d). *(discuss w/ Joseph)*

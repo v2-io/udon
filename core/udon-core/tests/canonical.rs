@@ -127,10 +127,17 @@ fn smoke_test() {
     );
 }
 
-/// Fuzz test for temporal values - generates random temporal values and parses them
+/// Fuzz: temporal-SHAPED inputs must fall back cleanly to plain values.
+///
+/// CORE 0.8 removed bare temporal recognition (a bare 2026-07-11 is a
+/// string; temporal returns via the <...> envelope / temporal@1 dialect).
+/// The generator still produces the full zoo of temporal shapes — dates,
+/// times, datetimes, ISO + shorthand durations, signed relatives — and the
+/// invariant is now: every one parses without error into SOME value event
+/// (BareValue / Integer / Float), never a hole or a crash.
 /// Run with UDON_FUZZ_COUNT=N to control iteration count (default 1000)
 #[test]
-fn fuzz_temporal_values() {
+fn fuzz_temporal_shapes_fall_back_to_values() {
     use udon_core::Parser;
 
     let count: usize = std::env::var("UDON_FUZZ_COUNT")
@@ -176,15 +183,15 @@ fn fuzz_temporal_values() {
             ));
         }
 
-        // Should have a temporal type event (Date, Time, DateTime, Duration, RelativeTime)
-        // or Integer/Float for edge cases
-        let has_temporal = events.iter().any(|e| {
-            e.contains("Date") || e.contains("Time") || e.contains("Duration")
-                || e.contains("Integer") || e.contains("Float")
+        // Every shape must land as SOME plain value (string or numeric) —
+        // no temporal events exist anymore, and nothing may vanish.
+        let has_value = events.iter().any(|e| {
+            e.contains("BareValue") || e.contains("Integer") || e.contains("Float")
+                || e.contains("StringValue")
         });
-        if !has_temporal {
+        if !has_value {
             errors.push(format!(
-                "#{}: Input {:?} has no temporal/numeric event: {:?}",
+                "#{}: Input {:?} produced no value event: {:?}",
                 i, temporal_str, events
             ));
         }

@@ -124,17 +124,12 @@ pub enum Value<'a> {
     Nil,
     /// Array of values.
     Array(Vec<Value<'a>>),
-    /// Date: YYYY-MM-DD or YYYY-MM.
-    Date(Cow<'a, str>),
-    /// Time: HH:MM:SS or HH:MM with optional fractional seconds.
-    Time(Cow<'a, str>),
-    /// DateTime: Date T Time with optional offset.
-    DateTime(Cow<'a, str>),
-    /// Duration: ISO (P...) or shorthand (30s, 5m, 1h).
-    Duration(Cow<'a, str>),
-    /// Relative time: +/- followed by duration.
-    RelativeTime(Cow<'a, str>),
 }
+
+// Temporal variants (Date/Time/DateTime/Duration/RelativeTime) were removed
+// with CORE 0.8: bare temporal is a string; temporal typing returns via the
+// <...> envelope + temporal@1 dialect (grammar logic preserved in
+// generator/temporal-value.desc.setaside).
 
 // ============================================================================
 // Document
@@ -684,21 +679,6 @@ impl<'a> TreeBuilder<'a> {
             }
             Complex { content, .. } => {
                 self.add_value(Value::Complex(bytes_to_cow(&content)));
-            }
-            Date { content, .. } => {
-                self.add_value(Value::Date(bytes_to_cow(&content)));
-            }
-            Time { content, .. } => {
-                self.add_value(Value::Time(bytes_to_cow(&content)));
-            }
-            DateTime { content, .. } => {
-                self.add_value(Value::DateTime(bytes_to_cow(&content)));
-            }
-            Duration { content, .. } => {
-                self.add_value(Value::Duration(bytes_to_cow(&content)));
-            }
-            RelativeTime { content, .. } => {
-                self.add_value(Value::RelativeTime(bytes_to_cow(&content)));
             }
             BoolTrue { .. } => {
                 self.add_value(Value::BoolTrue);

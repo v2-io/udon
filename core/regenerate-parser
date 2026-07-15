@@ -133,24 +133,44 @@ generate_parser() {
         info "Running descent..."
     fi
 
-    # Invoke the descent library directly (the exe/devex wrapper is broken
-    # under Ruby 4.0) and write ATOMICALLY: generate to a temp file, move into
-    # place only on success. The previous `> "$OUTPUT_FILE"` redirect truncated
-    # parser.rs before descent even ran — a failed run destroyed the parser.
-    local out_tmp trace_flag
+    # Generate through descent-rs (the Rust rewrite — Ruby exited the descent
+    # toolchain 2026-07; the Ruby path below is a legacy oracle kept only as
+    # fallback). Write ATOMICALLY: generate to a temp file, move into place
+    # only on success — a truncate-first redirect once destroyed parser.rs.
+    local out_tmp trace_flag descent_rs
     out_tmp=$(mktemp "${TMPDIR:-/tmp}/udon-parser.XXXXXX.rs")
-    trace_flag="false"; [[ "$trace_mode" == "true" ]] && trace_flag="true"
-    if (cd "$DESCENT_DIR" && ruby -I lib -e '
-        require "descent"
-        code = Descent.generate(ARGV[0], target: :rust, trace: ARGV[2] == "true")
-        File.write(ARGV[1], code.gsub(/\n{3,}/, "\n\n"))
-      ' "$tmp_file" "$out_tmp" "$trace_flag"); then
-        mv "$out_tmp" "$OUTPUT_FILE"
-        success "Generated $OUTPUT_FILE"
+    trace_flag=""; [[ "$trace_mode" == "true" ]] && trace_flag="--trace"
+    descent_rs="$DESCENT_DIR/rust/target/release/descent-rs"
+    if [[ ! -x "$descent_rs" ]]; then
+        info "Building descent-rs (first run)..."
+        (cd "$DESCENT_DIR/rust" && cargo build --release -p descent-cli) || {
+            warn "descent-rs build failed; falling back to the legacy Ruby oracle"
+            descent_rs=""
+        }
+    fi
+    if [[ -n "$descent_rs" && -x "$descent_rs" ]]; then
+        if "$descent_rs" generate "$tmp_file" $trace_flag > "$out_tmp"; then
+            mv "$out_tmp" "$OUTPUT_FILE"
+            success "Generated $OUTPUT_FILE (descent-rs)"
+        else
+            rm -f "$out_tmp"
+            error "descent-rs failed (parser.rs left untouched)"
+            return 1
+        fi
     else
-        rm -f "$out_tmp"
-        error "descent failed (parser.rs left untouched)"
-        return 1
+        local ruby_trace="false"; [[ "$trace_mode" == "true" ]] && ruby_trace="true"
+        if (cd "$DESCENT_DIR" && ruby -I lib -e '
+            require "descent"
+            code = Descent.generate(ARGV[0], target: :rust, trace: ARGV[2] == "true")
+            File.write(ARGV[1], code.gsub(/\n{3,}/, "\n\n"))
+          ' "$tmp_file" "$out_tmp" "$ruby_trace"); then
+            mv "$out_tmp" "$OUTPUT_FILE"
+            success "Generated $OUTPUT_FILE (legacy Ruby oracle)"
+        else
+            rm -f "$out_tmp"
+            error "descent failed (parser.rs left untouched)"
+            return 1
+        fi
     fi
 }
 
