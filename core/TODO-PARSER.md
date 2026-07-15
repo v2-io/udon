@@ -8,7 +8,8 @@ root `TODO-META.md` — not here.)
 ## Open
 
 - [ ] **Pull appropriate (AST / consumer-layer) tasks from `PLAN.md` into here**
-      (the Phase-5 tree builder, streaming, etc.).
+      (the Phase-5 tree builder, streaming, etc.) — deprecating any subsumed by
+      the v0.8 compliance work (see `../TODO-META.md` bootstrap).
 - [ ] **Tree / AST builder** — `Document`/`Node`, arena allocation, navigation
       (parent / children / siblings), selectors, string interning.
 - [ ] **Streaming AST** — the incremental tree as events arrive.

@@ -6,8 +6,11 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
-- [ ] **Pull appropriate (event-parser / descent-grammar) tasks from `PLAN.md`
-      into here.** When PLAN is fully drained across the parser lanes, delete it.
+- [ ] **Pull the *residual* (event-parser / descent-grammar) tasks from `PLAN.md`
+      into here — and deprecate the rest.** Spec-behavior parser items are v0.8
+      compliance *fixtures*, not tasks here (see `../TODO-META.md` bootstrap);
+      only genuine residuals survive (grammar cleanup, streaming, descent items).
+      When PLAN is fully drained across the parser lanes, delete it.
 - [ ] **Streaming resumption** — an explicit call-stack passed around so the state
       machine is resumable across chunk boundaries (descent explicit-stack
       backend; review defect #1).

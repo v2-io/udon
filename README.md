@@ -204,16 +204,23 @@ The original work is preserved in reference repositories:
 **Rebooted July 2026** — see [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md)
 (the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
 
-Current state:
-- spec/CORE.md v0.8.0-alpha.1, with known spec↔impl divergences catalogued
-  (review §2 genealogy)
-- Rust parser: event stream + arena tree, green test suite, ~1.3 GiB/s
-- Twelve verified defects queued (review §4); nine syntax decisions open
-  (review §7-F)
-- First consumers: agentic-systems (ASF process maps) and vivarium
+Current state (2026-07-14):
+- **CORE `v0.8.0-alpha.1`** — the rebooted spec, ratified this cycle (escape
+  unification, `<…>` typing, numbers/`0d`, identity `key`/`traits`, `@`-inert).
+  Canonical version: `spec/CORE-VERSION`.
+- **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
+  (frozen, the rebuild's mining source); pre-0.8 grammar →
+  `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`. The
+  parser and grammar still build the pre-0.8 model.
+- **Compliance is RED by construction.** `core/fixtures/v0.8/` is the live
+  compliance group (one smoke case today); it goes RED as real cases land against
+  the still-pre-0.8 parser. Nothing complies with `core-0.8.0` yet — that is the
+  honest, intended state.
+- First consumers: agentic-systems (ASF process maps) and vivarium.
 
-Next: Phase 0 hygiene → valve decisions → the utilities crate
-(`udon-cli`: fmt, lint, skeleton, paths, conversions).
+Next: the exhaustive **v0.8 fixture rebuild** (`TODO-META` [P0]) — recapitulate
+CORE into the compliance group (mining legacy for still-valid regressions), then
+bring the grammar/parser to green.
 
 ## How the work is organized
 
