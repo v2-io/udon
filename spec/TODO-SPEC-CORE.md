@@ -56,6 +56,10 @@
         comment. Both can't hold. Fixtures encode the Comments-table reading
         (`comments.yaml::sameline_prose_comment`); "Head Position" likely
         needs an "except ` ;`" carve-out or the table needs changing.
+      - **Text granularity at prose escapes** — `\|{` in prose emits split
+        Text events ("see " + "|{em x}"), like an inline element splitting
+        prose; CORE doesn't fix Text granularity. Ratify or specify
+        (`escape.yaml`, prose-flow section).
       - **Inline raw `!{:kind: …}` details** — whether the single space after
         the label's closing `:` is separator or content, and whether the
         inline form carries the same `Raw` marker event as the block form

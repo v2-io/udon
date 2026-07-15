@@ -95,6 +95,10 @@
 # ---------------------------------------------------------------------------
 # In prose flow: `\` escapes exactly the inline openers `|{`, `!{`, `;{`
 # ---------------------------------------------------------------------------
+# ⚠ Text granularity: the escape splits the Text event at the escape point
+# ("see " + "|{em x}"), the same way an inline element splits surrounding
+# prose. CORE does not fix Text granularity; concatenation is identical
+# either way. Filed in spec/TODO-SPEC-CORE.md.
 
 - id: escape_inline_element_opener
   desc: backslash before an inline element opener makes it literal
@@ -102,7 +106,8 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "see |{em x}"]
+    - [Text, "see "]
+    - [Text, "|{em x}"]
     - ElementEnd
 
 - id: escape_inline_bang_opener
@@ -111,7 +116,8 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "price !{cost}"]
+    - [Text, "price "]
+    - [Text, "!{cost}"]
     - ElementEnd
 
 - id: escape_inline_interpolation_opener
@@ -120,7 +126,8 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "show !{{expr}}"]
+    - [Text, "show "]
+    - [Text, "!{{expr}}"]
     - ElementEnd
 
 - id: escape_inline_comment_opener
@@ -129,7 +136,8 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "wink ;{x}"]
+    - [Text, "wink "]
+    - [Text, ";{x}"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
