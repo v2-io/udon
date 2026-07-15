@@ -73,7 +73,7 @@
   |state[:dispatch]
     |c['|']                   | ->                               |>> :check_pipe
     |c[':']                   | ->                               |>> :check_attr
-    |c['!']                   | -> | /block_directive(col)       |>> :line
+    |c['!']                   | ->                               |>> :check_bang
     |c[';']                   | -> | /line_comment               |>> :line
     |c['@']                   | ->                               |>> :check_at
     |c['`']                   | ->                               |>> :check_freeform
@@ -85,12 +85,23 @@
   ; colon is restored, never eaten (defect #12 data-loss half; the
   ; promotion boundary itself is open decision 9).
   |state[:check_attr]
-    |c[<XLBL_START SQ '['>]   | /block_attr                      |>> :line
+    |c[<XLBL_START SQ>]       | /block_attr                      |>> :line
     |default                  | /prose(col, -1, ':')             |>> :line
 
-  ; Block-level reference: @[id] inserts element by id (SPEC 1473-1476)
+  ; `!` guard (CORE Marker Recognition): directive only when followed by an
+  ; identifier or ':' (raw). `!{` at head position is the PROSE-LEVEL inline
+  ; form (interpolation / inline directive), NOT a block-Directive wrapper.
+  ; Everything else (![img], !=, bare !) is prose with the '!' restored.
+  |state[:check_bang]
+    |c[':']                   | /block_directive(col)            |>> :line
+    |c[XLBL_START]            | /block_directive(col)            |>> :line
+    |c['{']                   | -> | /sameline_directive         |>> :line
+    |default                  | /prose(col, -1, '!')             |>> :line
+
+  ; `@` guard (CORE Marker Recognition): reference when followed by `[` or an
+  ; identifier; otherwise prose. The payload is the raw text after `@`.
   |state[:check_at]
-    |c['[']                   | -> | /block_reference            |>> :line
+    |c[<L XLBL_START>]        | /block_ref                       |>> :line
     |default                  | /prose(col, -1, '@')             |>> :line
 
   |state[:check_freeform]
@@ -202,6 +213,9 @@
   |state[:pre_content]
     |c['\n']                  | ->                               |>> :children
     |c[' \t']                 | ->                               |>>
+    |c['?']                   | ->                               |>> :spaced_suffix_q
+    |c['*']                   | ->                               |>> :spaced_suffix_s
+    |c['+']                   | ->                               |>> :spaced_suffix_p
     |c[':']                   | ->                               |>> :check_sameline_attr
     |c['|']                   | ->                               |>> :check_sameline_pipe
     |c[';']                   | ->                               |>> :check_sameline_semi
@@ -209,11 +223,28 @@
     |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
     |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
 
+  ; Space-separated element-level suffix (CORE "Suffix positions":
+  ; `|name[key].trait ?`): the suffix char must stand alone — followed by
+  ; whitespace or end-of-line. Otherwise it is prose (restored via PREPEND).
+  ; Only ? * + take this path; a spaced '!' keeps its dynamics meaning.
+  |state[:spaced_suffix_q]
+    |eof                      | Attr($?) | BoolTrue              |return
+    |c[' \t\n']               | Attr($?) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('?') | /sameline_text(:elem_col, <>) |>> :after_content
+  |state[:spaced_suffix_s]
+    |eof                      | Attr($*) | BoolTrue              |return
+    |c[' \t\n']               | Attr($*) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('*') | /sameline_text(:elem_col, <>) |>> :after_content
+  |state[:spaced_suffix_p]
+    |eof                      | Attr($+) | BoolTrue              |return
+    |c[' \t\n']               | Attr($+) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('+') | /sameline_text(:elem_col, <>) |>> :after_content
+
   ; Sameline attr guard: a ':' not followed by a name start / quoted name /
   ; reference bracket is not an attr — fall back to intact text with the
   ; ':' restored (defect #12 data-loss half).
   |state[:check_sameline_attr]
-    |c[<XLBL_START SQ '['>]   | /sameline_attr                   |>> :pre_content
+    |c[<XLBL_START SQ>]       | /sameline_attr                   |>> :pre_content
     |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
 
   |state[:check_sameline_pipe]
@@ -286,7 +317,7 @@
     |c['\n']                  | -> | BlankLine                   |>> :after_newline  ; whitespace-only to content_base
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
-    |c['!']                   | -> | /block_directive(col)       |>> :after_content
+    |c['!']                   | ->                               |>> :child_check_bang
     |c[';']                   | -> | /line_comment               |>> :after_content
     |c['@']                   | ->                               |>> :child_check_at
     |c['`']                   | ->                               |>> :child_check_freeform
@@ -311,22 +342,29 @@
   |state[:child_dispatch_do]
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
-    |c['!']                   | -> | /block_directive(col)       |>> :after_content
+    |c['!']                   | ->                               |>> :child_check_bang
     |c[';']                   | -> | /line_comment               |>> :after_content
     |c['@']                   | ->                               |>> :child_check_at
     |c['`']                   | ->                               |>> :child_check_freeform
     |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
     |default                  |                                  |>> :do_prose
 
-  ; Block-level reference in element: @[id]
+  ; `!` guard in element children (see document :check_bang)
+  |state[:child_check_bang]
+    |c[':']                   | /block_directive(col)            |>> :after_content
+    |c[XLBL_START]            | /block_directive(col)            |>> :after_content
+    |c['{']                   | -> | /sameline_directive         |>> :after_content
+    |default                  | /prose(col, :elem_col, '!')      |>> :after_content
+
+  ; `@` guard in element children (see document :check_at)
   |state[:child_check_at]
-    |c['[']                   | -> | /block_reference            |>> :after_content
+    |c[<L XLBL_START>]        | /block_ref                       |>> :after_content
     |default                  | /prose(col, :elem_col, '@')      |>> :after_content
 
   ; Line-initial attr guard (see document :check_attr): failed attr parse
   ; falls back to intact prose with the ':' restored (defect #12).
   |state[:child_check_attr]
-    |c[<XLBL_START SQ '['>]   | /block_attr                      |>> :after_content
+    |c[<XLBL_START SQ>]       | /block_attr                      |>> :after_content
     |default                  | /prose(col, :elem_col, ':')      |>> :after_content
 
   |state[:do_prose]
@@ -386,9 +424,12 @@
     | /skip_single_quoted | TERM | ->                            |return
 
 
+; A bare trait's continue-set is XID_Continue + '-' PLUS the suffix chars
+; * ! ? + (CORE "Element Suffixes": a suffix char touching a trait is part
+; of the trait — `.foo?` is the trait "foo?").
 |function[class_name:BareValue]  | MARK
   |state[:main]
-    |c[XLBL_CONT]             | ->                               |>>
+    |c[<XLBL_CONT '?!*+'>]    | ->                               |>>
     |default                  | TERM                             |return
 
 
@@ -412,7 +453,6 @@
 
 |function[block_attr]
   |state[:key]
-    |c['[']                   | -> | /attr_reference              |return  ; :[id] reference
     |c[XLBL_START]            | /attr_key                        |>> :value_start
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
 
@@ -429,7 +469,6 @@
 
 |function[sameline_attr]
   |state[:key]
-    |c['[']                   | -> | /attr_reference              |return  ; :[id] reference
     |c[XLBL_START]            | /attr_key                        |>> :value_start
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
 
@@ -441,7 +480,6 @@
 
 |function[sameline_attr_embedded]
   |state[:key]
-    |c['[']                   | -> | /attr_reference              |return  ; :[id] reference
     |c[XLBL_START]            | /attr_key                        |>> :value_start
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
 
@@ -465,19 +503,18 @@
 ; ============================================================================
 ; References
 ; ============================================================================
-;
-; Two reference forms (SPEC 1450-1488):
-;   @[id] - Block-level: insert entire element structure
-;   :[id] - Attribute position: merge attributes from referenced element
 
-; Block-level reference: @[id] inserts element by id
-; Called after @[ consumed
-|function[block_reference:Reference]  | MARK | ->[']'] | TERM | ->
-
-
-; Attribute merge reference: :[id] merges attributes
-; Called after :[ consumed
-|function[attr_reference:Reference]  | MARK | ->[']'] | TERM | ->
+; Reference (CORE "References", `@`-inert): called with the `@` consumed and
+; the current char passing the guard (`[` or identifier start). The payload
+; is the RAW TEXT after `@` — `@[mit]` -> "[mit]", `@license[mit]` ->
+; "license[mit]" — one uniform rule, no information loss (payload
+; convention proposed in spec/TODO-SPEC-CORE.md). The old `:[id]`
+; attribute-merge form is REMOVED (merge is a host resolution mode).
+|function[block_ref:Reference]  | MARK
+  |state[:main]
+    |c['[']                   | ->[']'] | -> | TERM              |return
+    |c[XLBL_CONT]             | ->                               |>>
+    |default                  | TERM                             |return
 
 
 ; ============================================================================
@@ -906,7 +943,7 @@
   ; Embedded attr guard: failed attr parse falls back to intact content
   ; with the ':' restored (defect #12 data-loss half).
   |state[:check_attr]
-    |c[<XLBL_START SQ '['>]   | /sameline_attr_embedded          |>> :pre_content
+    |c[<XLBL_START SQ>]       | /sameline_attr_embedded          |>> :pre_content
     |default                  | PREPEND(':') | /embed_content    |return
 
 
@@ -964,9 +1001,8 @@
 |function[block_directive:Directive]  :line_col
   |state[:dispatch]
     |c[':']                   | ->                               |>> :raw_kind
-    |c['{']                   | -> | /sameline_directive            |return  ; !{...} inline form
     |c[XLBL_START]                | /name                            |>> :after_name
-    |default                  |                                  |return  ; malformed
+    |default                  |                                  |return  ; unreachable (callers guard)
 
   ; Raw block !:lang: - parse kind name
   |state[:raw_kind]
@@ -1021,15 +1057,22 @@
   |state[:child_dispatch]
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
-    |c['!']                   | -> | /block_directive(col)       |>> :children
+    |c['!']                   | ->                               |>> :dchild_check_bang
     |c[';']                   | -> | /line_comment               |>> :children
     |c[<BS>]                  | -> | /verbatim_text              |>> :children
     |default                  | /prose(col, :line_col, <>)       |>> :children
 
+  ; `!` guard in directive children (see document :check_bang)
+  |state[:dchild_check_bang]
+    |c[':']                   | /block_directive(col)            |>> :children
+    |c[XLBL_START]            | /block_directive(col)            |>> :children
+    |c['{']                   | -> | /sameline_directive         |>> :children
+    |default                  | /prose(col, :line_col, '!')      |>> :children
+
   ; Line-initial attr guard (see document :check_attr): failed attr parse
   ; falls back to intact prose with the ':' restored (defect #12).
   |state[:child_check_attr]
-    |c[<XLBL_START SQ '['>]   | /block_attr                      |>> :children
+    |c[<XLBL_START SQ>]       | /block_attr                      |>> :children
     |default                  | /prose(col, :line_col, ':')      |>> :children
 
   |state[:child_pipe]

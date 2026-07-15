@@ -21,6 +21,34 @@ fn collect_events(input: &[u8]) -> Vec<Event<'_>> {
     events
 }
 
+/// Collapse same-line adjacent Text events (harness convention, ratified
+/// 2026-07-15): the parser makes NO guarantee that a Text event carries a
+/// complete text run — escapes (and, later, chunk boundaries) may split one
+/// line's prose into several Texts. Fixtures therefore express text
+/// maximally collapsed per line, and the harness folds consecutive Text
+/// events together whenever the source between their spans contains no
+/// newline. Across lines the boundary is real (each Text is one line's
+/// content, newline excluded), so those never merge.
+fn collapse_adjacent_text<'a>(events: Vec<Event<'a>>, input: &[u8]) -> Vec<Event<'a>> {
+    let mut out: Vec<Event<'_>> = Vec::with_capacity(events.len());
+    for e in events {
+        if let (Some(Event::Text { content: prev_c, span: prev_s }), Event::Text { content, span }) =
+            (out.last_mut(), &e)
+        {
+            let gap = &input[prev_s.end.min(span.start)..span.start.max(prev_s.end)];
+            if !gap.contains(&b'\n') {
+                let mut merged = prev_c.to_vec();
+                merged.extend_from_slice(content);
+                *prev_c = std::borrow::Cow::Owned(merged);
+                prev_s.end = span.end;
+                continue;
+            }
+        }
+        out.push(e);
+    }
+    out
+}
+
 /// Format event for comparison (simplified, no spans)
 fn format_event(event: &Event) -> String {
     match event {
@@ -73,7 +101,7 @@ fn format_expected(event: &ExpectedEvent) -> String {
 /// but still run the parser to check for panics/errors.
 pub fn run_test(case: &TestCase) -> TestResult {
     let input = case.udon.as_bytes();
-    let events = collect_events(input);
+    let events = collapse_adjacent_text(collect_events(input), input);
 
     let actual: Vec<String> = events.iter().map(format_event).collect();
     let expected: Vec<String> = case.events.iter().map(format_expected).collect();
@@ -200,7 +228,7 @@ pub fn run_with_variations(case: &TestCase, gen: &mut Gen) -> TestResult {
     }
 
     // Parse and collect events
-    let events = collect_events(&input);
+    let events = collapse_adjacent_text(collect_events(&input), &input);
     let actual: Vec<String> = events.iter().map(format_event).collect();
     let expected: Vec<String> = case.events.iter().map(format_expected).collect();
 

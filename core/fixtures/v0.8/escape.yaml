@@ -95,10 +95,10 @@
 # ---------------------------------------------------------------------------
 # In prose flow: `\` escapes exactly the inline openers `|{`, `!{`, `;{`
 # ---------------------------------------------------------------------------
-# ⚠ Text granularity: the escape splits the Text event at the escape point
-# ("see " + "|{em x}"), the same way an inline element splits surrounding
-# prose. CORE does not fix Text granularity; concatenation is identical
-# either way. Filed in spec/TODO-SPEC-CORE.md.
+# Text events carry NO completeness guarantee (ratified 2026-07-15): an
+# escape (or a chunk boundary) may split a line's prose into several Texts.
+# The harness collapses same-line adjacent Texts before comparing, so these
+# fixtures express text maximally collapsed, independent of emission rhythm.
 
 - id: escape_inline_element_opener
   desc: backslash before an inline element opener makes it literal
@@ -106,8 +106,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "see "]
-    - [Text, "|{em x}"]
+    - [Text, "see |{em x}"]
     - ElementEnd
 
 - id: escape_inline_bang_opener
@@ -116,8 +115,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "price "]
-    - [Text, "!{cost}"]
+    - [Text, "price !{cost}"]
     - ElementEnd
 
 - id: escape_inline_interpolation_opener
@@ -126,8 +124,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "show "]
-    - [Text, "!{{expr}}"]
+    - [Text, "show !{{expr}}"]
     - ElementEnd
 
 - id: escape_inline_comment_opener
@@ -136,8 +133,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "wink "]
-    - [Text, ";{x}"]
+    - [Text, "wink ;{x}"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------

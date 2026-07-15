@@ -56,10 +56,13 @@
         comment. Both can't hold. Fixtures encode the Comments-table reading
         (`comments.yaml::sameline_prose_comment`); "Head Position" likely
         needs an "except ` ;`" carve-out or the table needs changing.
-      - **Text granularity at prose escapes** — `\|{` in prose emits split
-        Text events ("see " + "|{em x}"), like an inline element splitting
-        prose; CORE doesn't fix Text granularity. Ratify or specify
-        (`escape.yaml`, prose-flow section).
+      - **Text granularity** — RATIFIED (Joseph, 2026-07-15): a Text event
+        carries NO guarantee of being a complete text run; escapes and
+        (later) chunk boundaries may split one line's prose into several
+        Texts, and consumers concatenate. **Remaining: write this into
+        CORE's parser-behavior notes.** The fixture harness now collapses
+        same-line adjacent Texts (span-gap contains no newline) so fixtures
+        are rhythm-independent (`harness.rs::collapse_adjacent_text`).
       - **Inline raw `!{:kind: …}` details** — whether the single space after
         the label's closing `:` is separator or content, and whether the
         inline form carries the same `Raw` marker event as the block form

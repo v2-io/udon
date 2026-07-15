@@ -68,14 +68,19 @@
     |LETTER                   | ->                               |>> :accumulate
     |default                  | ->                               |>>
 
-  ; === Reference @[name] ===
+  ; === Reference in value position (CORE "References") ===
+  ; Guard: `@` + `[` or identifier. Payload is the raw text after `@`
+  ; (brackets included) — same convention as /block_ref in udon.desc.
   |state[:maybe_ref]
-    |c[<L>]                   | -> | MARK                        |>> :reference
+    |c[<L>]                   | MARK | ->[']'] | -> | TERM | Reference(USE_MARK) |return
+    |c[XLBL_START]            | MARK | ->                        |>> :ref_ident
     |default                  |                                  |>> :string
 
-  |state[:reference]
-    |c[<R>]                   | TERM | Reference(USE_MARK) | ->  |return
-    |default                  | ->                               |>>
+  |state[:ref_ident]
+    |eof                      | TERM | Reference(USE_MARK)       |return
+    |c[XLBL_CONT]             | ->                               |>>
+    |c[<L>]                   | ->[']'] | -> | TERM | Reference(USE_MARK) |return
+    |default                  | TERM | Reference(USE_MARK)       |return
 
   |state[:check_space]
     |if[space_term == 0]     | ->                               |>> :block_space
