@@ -95,5 +95,20 @@
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
 
+---
+
+## Design notes feeding future rulings
+
+- **[The Attribute Model — hash & array, edges & nodes](../design/attribute-model-2026-07.md)**
+  *(2026-07-15, provisional — converged brainstorm, Joseph + Claude).* The
+  full reconception of attribute values: one value per declaration (scalar,
+  node — no anonymous wrapper — or greedy text block); first-character
+  typing commitment; uniform line scan (supersedes stranded-attr Warning +
+  run-to-EOL when ratified); the `?` flag convention; identifier charset
+  expansion (`/`, `?!*+` in keys); the map-side rationale for `<…>`; the
+  warning-placement guideline. Open forks are collected in its §13, with
+  *(Joseph- please look at this)* markers inline. **Ratify from that
+  document; do not re-derive here.**
+
 *(Otherwise CORE is current with all ratified decisions as of 2026-07-14.
 History lives in git; decisions in `_archive/DECIDED.bak.md`.)*
