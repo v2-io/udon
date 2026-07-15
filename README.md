@@ -153,7 +153,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 |----------|-------------|
 | [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md) | The estate review: verified state, defects, open decisions |
 | [REBOOT-PLAN.md](REBOOT-PLAN.md) | Prioritized plan: phases, backlog, spikes |
-| [spec/CORE.md](spec/CORE.md) | Full specification (v0.7-draft) |
+| [spec/CORE.md](spec/CORE.md) | Full specification (v0.8.0-rc.1) |
 | [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
 | [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
@@ -205,7 +205,7 @@ The original work is preserved in reference repositories:
 (the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
 
 Current state:
-- spec/CORE.md v0.7-draft, with known spec↔impl divergences catalogued
+- spec/CORE.md v0.8.0-rc.1, with known spec↔impl divergences catalogued
   (review §2 genealogy)
 - Rust parser: event stream + arena tree, green test suite, ~1.3 GiB/s
 - Twelve verified defects queued (review §4); nine syntax decisions open

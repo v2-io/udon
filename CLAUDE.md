@@ -18,7 +18,7 @@ a submodule.
    **_archive/FULL-SPEC-TODO.bak.md** (reference only — e.g. the
    core/host/schema/dialect ownership discussion). Neither is the spec; CORE.md is.
 4. **spec/CORE.md** — the authoritative language specification
-   (v0.7-draft, with known divergences catalogued in the review's §2
+   (v0.8.0-rc.1, with known divergences catalogued in the review's §2
    genealogy table).
 
 ## Layout

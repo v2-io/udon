@@ -10,7 +10,7 @@ wrong color teaches a wrong parse.
 All three implementations were validated against `examples/cheatsheet.udon`
 and `examples/comprehensive.udon` (the Obsidian tokenizer and the TextMate
 grammar via automated token dumps; the vim syntax via headless `vim -es`
-synID dumps). Spec of record: `spec/CORE.md` v0.7-draft.
+synID dumps). Spec of record: `spec/CORE.md` v0.8.0-rc.1.
 
 ## Contents
 
