@@ -6,6 +6,10 @@ mod loader;
 mod harness;
 mod generators;
 
-pub use loader::{TestCase, ExpectedEvent, load_fixtures_by_name};
+// Re-exports are consumed unevenly across the several integration-test crates
+// that share this module (canonical / boundaries / spans), so some are unused
+// per-crate — that is expected, not dead code.
+#[allow(unused_imports)]
+pub use loader::{TestCase, ExpectedEvent, load_fixtures_by_name, active_fixture_names, active_group_dir};
 pub use harness::{run_test, run_with_variations};
 pub use generators::Gen;

@@ -61,185 +61,25 @@ fn run_fixture(name: &str) {
     }
 }
 
-// === Core fixtures (fully specified) ===
+// === v0.8 compliance-fixture group ===
+//
+// The harness runs the ACTIVE version-scoped group (core/fixtures/v0.8/),
+// discovered dynamically. The legacy pre-0.8 corpus (core/fixtures/legacy-pre-0.8/)
+// is frozen and NOT run — see core/fixtures/README.md.
+//
+// The group currently holds only a smoke placeholder, so this is green-trivial.
+// As real 0.8 cases land they will go RED against the still-pre-0.8 parser
+// until the parser is rebuilt; that RED is the intended, honest state.
 
 #[test]
-fn test_elements() {
-    run_fixture("elements");
-}
-
-#[test]
-fn test_values() {
-    run_fixture("values");
-}
-
-#[test]
-fn test_indentation() {
-    run_fixture("indentation");
-}
-
-#[test]
-fn test_attributes() {
-    run_fixture("attributes");
-}
-
-#[test]
-fn test_comments() {
-    run_fixture("comments");
-}
-
-#[test]
-fn test_escapes() {
-    run_fixture("escapes");
-}
-
-// === Fixtures needing events filled in ===
-
-#[test]
-fn test_arrays() {
-    run_fixture("arrays");
-}
-
-#[test]
-fn test_dynamics() {
-    run_fixture("dynamics");
-}
-
-#[test]
-fn test_embedded_elements() {
-    run_fixture("embedded_elements");
-}
-
-#[test]
-fn test_inline_element_nesting() {
-    run_fixture("inline_element_nesting");
-}
-
-#[test]
-fn test_references() {
-    run_fixture("references");
-}
-
-#[test]
-fn test_freeform_blocks() {
-    run_fixture("freeform_blocks");
-}
-
-#[test]
-fn test_inline_comments() {
-    run_fixture("inline_comments");
-}
-
-#[test]
-fn test_inline_attributes() {
-    run_fixture("inline_attributes");
-}
-
-#[test]
-fn test_value_types() {
-    run_fixture("value_types");
-}
-
-#[test]
-fn test_element_names() {
-    run_fixture("element_names");
-}
-
-#[test]
-fn test_element_id() {
-    run_fixture("element_id");
-}
-
-#[test]
-fn test_element_class() {
-    run_fixture("element_class");
-}
-
-#[test]
-fn test_element_suffix() {
-    run_fixture("element_suffix");
-}
-
-#[test]
-fn test_element_combined() {
-    run_fixture("element_combined");
-}
-
-#[test]
-fn test_element_recognition() {
-    run_fixture("element_recognition");
-}
-
-#[test]
-fn test_text() {
-    run_fixture("text");
-}
-
-#[test]
-fn test_prose_dedentation() {
-    run_fixture("prose_dedentation");
-}
-
-#[test]
-fn test_indentation_hierarchy() {
-    run_fixture("indentation_hierarchy");
-}
-
-#[test]
-fn test_indentation_edge_cases() {
-    run_fixture("indentation_edge_cases");
-}
-
-#[test]
-fn test_comment_indentation() {
-    run_fixture("comment_indentation");
-}
-
-#[test]
-fn test_comments_and_text() {
-    run_fixture("comments_and_text");
-}
-
-#[test]
-fn test_suffix_positions() {
-    run_fixture("suffix_positions");
-}
-
-#[test]
-fn test_error_cases() {
-    run_fixture("error_cases");
-}
-
-#[test]
-fn test_escape_prefix() {
-    run_fixture("escape_prefix");
-}
-
-#[test]
-fn test_literal_escape() {
-    run_fixture("literal_escape");
-}
-
-#[test]
-fn test_temporal() {
-    run_fixture("temporal");
-}
-
-// Integration test: run all fixtures
-#[test]
-
-fn test_all_fixtures() {
-    let all_fixtures = [
-        "elements", "values", "indentation", "attributes", "comments", "escapes",
-        "arrays", "dynamics", "embedded_elements", "inline_element_nesting",
-        "references", "freeform_blocks", "inline_comments", "inline_attributes",
-        "value_types", "element_names", "element_id", "element_class",
-        "element_suffix", "element_combined", "element_recognition", "text",
-        "prose_dedentation", "indentation_hierarchy", "indentation_edge_cases",
-        "comment_indentation", "comments_and_text", "suffix_positions",
-        "error_cases", "escape_prefix", "literal_escape", "temporal",
-    ];
-    for name in &all_fixtures {
+fn v0_8_compliance_group() {
+    let names = common::active_fixture_names();
+    assert!(
+        !names.is_empty(),
+        "v0.8 compliance-fixture group is empty: {:?}",
+        common::active_group_dir()
+    );
+    for name in &names {
         run_fixture(name);
     }
 }

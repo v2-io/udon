@@ -294,9 +294,10 @@ fn no_premature_hex_emission() {
 #[test]
 fn stochastic_eof_on_fixtures() {
     let mut gen = Gen::from_env_or_random();
-    let fixture_names = ["elements", "values", "indentation"];
+    // Run over the active v0.8 compliance group (legacy fixtures are not run).
+    let fixture_names = common::active_fixture_names();
 
-    for name in fixture_names {
+    for name in &fixture_names {
         let cases = load_fixtures_by_name(name);
 
         for case in cases {
