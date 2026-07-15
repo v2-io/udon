@@ -67,18 +67,33 @@
         `warn:NoDialects` — and states that the actual warning TEXT, and
         whether a given warning is emitted in given circumstances, is a
         parser/host decision (menu-vs-knob: spec fixes the code
-        vocabulary; hosts pick voice and verbosity). Execution deferred:
-        the CORE table; Warning events carrying codes (harness/fixtures
-        match codes, ending string-brittleness); fold the layer ledger
-        from the warning-placement guideline in as a non-normative column.
-        Initial inventory: InconsistentIndentation; NoDialects;
-        EscapeNotAtHeadPosition (pending); CommentMissingFollowingSpace
-        (optional advisory, see `;`-framing ruling); the attribute-model
-        advisories (BooleanConventionMismatch, MarkerInTextValue,
-        DistantBlockBinding) when that model lands. The stranded-attr
-        warning died with the attribute model. Warning ORDERING relative
-        to value events becomes moot for retired warnings; specify
-        per-code in the table where it matters.
+        vocabulary; hosts pick voice and verbosity). **Naming convention
+        (Claude's pick, per Joseph 2026-07-15 — his examples were
+        illustrative)**: PascalCase condition-names mirroring
+        `ParseErrorCode` exactly, so the Rust side is one `WarningCode`
+        enum with no translation layer; the spec table lists Code /
+        Description / typical layer (non-normative, from the
+        warning-placement guideline) — emission circumstances always
+        host's. Execution deferred: the CORE table; Warning events carry
+        codes (harness/fixtures match codes, ending string-brittleness).
+        Initial inventory: `InconsistentIndentation`; `NoDialectsLoaded`;
+        `EscapeOutsideHeadPosition` (AST layer — see below);
+        `CommentMissingFollowingSpace` (optional advisory, `;`-framing
+        ruling); attribute-model advisories when that model lands:
+        `UnmarkedBooleanFlag`, `ValuedBooleanKey`, `MarkerInTextValue`,
+        `DistantAttributeBlock`. The stranded-attr warning died with the
+        attribute model; ordering-vs-value-event questions get specified
+        per-code in the table only where a code survives that cares.
+      - **RATIFIED (Joseph, 2026-07-15): past-base `\` warning is
+        AST-layer.** The event parser's inner loop exists to pull bytes
+        without inspecting them (SCAN/memchr); a per-line
+        leading-whitespace peek for a rare stylistic slip doesn't belong
+        there. The literal-passthrough BEHAVIOR stays event-level (already
+        conformant); `EscapeOutsideHeadPosition` moves to the AST warning
+        ledger. Execution: drop the Warning from
+        `escape.yaml::escape_past_base_is_literal_with_warning` (flips
+        RED→GREEN), close the CORE-PARSING item into the ledger, add one
+        CORE sentence when the warning table is written.
       - **Inline raw `!{:kind: …}` details** — deferred by Joseph
         (2026-07-15); discuss later.
       - **RATIFIED (Joseph, 2026-07-15): comment continuation is uniform.**
