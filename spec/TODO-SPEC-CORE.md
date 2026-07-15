@@ -29,11 +29,26 @@
       - **`<…>` in array items** — "attribute-value position": does an array
         item count? Fixtures + grammar say yes (uniform value rules);
         ratify in CORE's wording.
-      - **Reference event payload** — proposed: the raw text after `@`
-        (`@[mit]` → `"[mit]"`, `@license[mit]` → `"license[mit]"`); legacy
-        stripped brackets from the shorthand (`references.yaml`).
-      - **`@[mit].trait` parse behavior** — CORE forbids augmentation but not
-        what a written tail parses as; fixtures encode prose-continuation.
+      - **RATIFIED (Joseph, 2026-07-15): references are selector tuples**
+        `(element, key, traits)` — provisional until a path syntax replaces
+        the whole thing wholesale. `@[mit]` → `(null, 'mit', [])`;
+        `@licence` → `('licence', null, [])`; `@licence[mit]` →
+        `('licence', 'mit', [])`; `@.realized` → `(null, null,
+        ['realized'])`. Traits are SELECTION criteria, not augmentation —
+        "not augmentable" survives with sharpened meaning; matching
+        multiplicity is consumer-side; inertness untouched. Notably absent
+        by design: suffixes, attributes, predicates, nesting.
+        **Supersedes** the raw-string payload convention currently
+        implemented AND the `@[mit].trait`-is-prose fixture reading (that
+        form is now a legal selector). **Execution deferred**; proposed
+        event encoding when taken: reuse the element-identity machinery —
+        `ReferenceStart` / `Name` / `Attr "$key"`+value / `Attr
+        "$traits"`+value / `ReferenceEnd` — giving typed keys, quoted
+        names/traits, and trait stacking for free, symmetric with
+        definition-side identity. Fixtures to update: `references.yaml`
+        (all payloads), `markers.yaml::at_bracket_is_reference`,
+        `values.desc`/`udon.desc` reference functions, tree.rs
+        `NodeKind::Reference` → structured fields.
       - **Structured attribute values** — event shape for "attribute +
         newline + indent = structured value" (fixtures: `Attr` with no value
         event, children follow — indistinguishable from element children in
