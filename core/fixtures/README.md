@@ -25,14 +25,11 @@ constant.
 
 ### Expected state right now
 
-`v0.8/` was populated 2026-07-15 with ~226 cases derived directly from
+`v0.8/` was populated 2026-07-15 with ~230 cases derived directly from
 `spec/CORE.md` v0.8.0-alpha.1 (one file per spec area; every expectation
-written from the spec text, never traced from parser output). The suite is
-**RED against the still-pre-0.8 parser** — roughly 90 cases fail, concentrated
-exactly where 0.8 changed the model (escape, identity `$key`/`$traits`,
-`<…>` typing, `@`-references, `0d`, bare-temporal-as-string). That RED is the
-correct, honest signal — not a regression to chase; parser catch-up burns it
-down. Run the gate with:
+written from the spec text, never traced from parser output). The grammar
+burn-down is underway — RED is the honest work-remaining signal, and the
+gate prints the live per-file counts:
 
 ```bash
 cargo test -p udon-core --test canonical v0_8_compliance_group

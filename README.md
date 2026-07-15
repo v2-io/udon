@@ -212,15 +212,19 @@ Current state (2026-07-14):
   (frozen, the rebuild's mining source); pre-0.8 grammar →
   `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`. The
   parser and grammar still build the pre-0.8 model.
-- **Compliance is RED by construction.** `core/fixtures/v0.8/` is the live
-  compliance group (one smoke case today); it goes RED as real cases land against
-  the still-pre-0.8 parser. Nothing complies with `core-0.8.0` yet — that is the
-  honest, intended state.
+- **Compliance burn-down underway.** `core/fixtures/v0.8/` holds ~230
+  spec-derived cases (authored 2026-07-15) and the grammar is being brought to
+  green against them — temporal carved out to a set-aside dialect grammar, the
+  `\` escape model, `$key`/`$traits` identity, marker guards, `@`-inert
+  references, and the `<…>` interim (warn + pass-through) already landed. For
+  the live count run the gate:
+  `cd core && cargo test -p udon-core --test canonical v0_8_compliance_group`.
+  Nothing is tagged `core-v0.8.0` until the gate is fully green.
 - First consumers: agentic-systems (ASF process maps) and vivarium.
 
-Next: the exhaustive **v0.8 fixture rebuild** (`TODO-META` [P0]) — recapitulate
-CORE into the compliance group (mining legacy for still-valid regressions), then
-bring the grammar/parser to green.
+Next: finish the grammar burn-down (remaining RED is itemized between
+`spec/TODO-SPEC-CORE.md` — rulings — and ordinary grammar work), then tag
+`core-v0.8.0` and stand up the drift-check (`TODO-META` [P0]).
 
 ## How the work is organized
 

@@ -22,4 +22,8 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       children loop that the current prose routing doesn't have.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
-      follow up rather than work around or forget. *(none logged yet)*
+      follow up rather than work around or forget. Logged in descent's
+      TODO.md 2026-07-15: parameterized inline-emit payloads
+      (`TypeName(:param)`) — would collapse the duplicated `check_bs_*` and
+      `spaced_suffix_*` state ladders in `udon.desc` to single
+      parameterized states.

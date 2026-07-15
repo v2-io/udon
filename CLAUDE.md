@@ -58,10 +58,10 @@ belong in the human README.
 
 ```bash
 cd core && cargo test --workspace          # unit + streaming tests green;
-                                           # v0_8_compliance_group is RED by
-                                           # construction until the parser
-                                           # catches up to CORE 0.8 (~89 of
-                                           # ~227 cases as of 2026-07-15)
+                                           # v0_8_compliance_group stays RED
+                                           # until the grammar fully catches
+                                           # up to CORE 0.8 (it reports the
+                                           # live per-file burn-down count)
 cargo test -p udon-core --test canonical v0_8_compliance_group
                                            # the compliance gate by itself
 ./regenerate-parser                        # regenerates parser.rs from
