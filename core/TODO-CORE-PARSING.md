@@ -20,10 +20,24 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       recursive ~1.25 GiB/s; pushdown ~470-480 MiB/s at EVERY chunk size
       (whole / 64k / 4k / 256B — suspension itself is nearly free). The
       ~2.6x gap is dominated by v1's owned Vec<u8> event payloads + frame
-      trampoline, so: recursive stays the single-shot default; a
-      borrow-from-buffer `Event<'chunk>` emission mode is the obvious
-      future lever if streaming throughput ever matters. Still pending:
-      `--trace` plumbing for the pushdown backend.
+      trampoline (see the [future] emission-mode item below); recursive
+      stays the single-shot default. Still pending: `--trace` plumbing for
+      the pushdown backend.
+- [ ] **[future] Borrow-from-buffer pushdown emission** — close the
+      streaming-throughput gap when a consumer actually needs it. v1 emits
+      owned `Vec<u8>` per content event (one allocation each); since the
+      accumulation buffer already retains everything from the active mark
+      onward, most events could borrow `Event<'buf>` slices, owning only
+      content that a drain would invalidate (the same rule `Cow` already
+      expresses) — delivery contract: "consume before the next
+      push_chunk". Measured basis (2026-07-15, `benches/pushdown.rs`,
+      1 MiB doc): recursive zero-copy 1.25 GiB/s; pushdown-owned ~470-480
+      MiB/s at every chunk size (whole → 256 B; suspension itself costs
+      ~3%). Expectation: since parsing itself sustains 1.25 GiB/s and the
+      gap is allocation-dominated, borrowed emission should land in the
+      0.9-1.2 GiB/s range; the residual is trampoline dispatch. Only worth
+      building against a real streaming consumer with a throughput need —
+      the correctness story is complete without it.
 - [ ] **Agent-facing parse diagnostics (the inspectable-stack dividend).**
       The pushdown machine's reified stack can report, at any suspension or
       error: the open element path (names/keys/columns), depths, and the
