@@ -322,6 +322,16 @@ impl<'a> Parser<'a> {
         self.column as i32
     }
 
+    /// Previous byte (0 at start of input).
+    #[inline(always)]
+    fn prev(&self) -> u8 {
+        if self.pos > 0 {
+            self.input[self.pos - 1]
+        } else {
+            0
+        }
+    }
+
     // ========== Unicode Identifier Classes ==========
     // Requires `unicode-xid` crate for full Unicode support.
     // These is_* methods work with the byte-at-a-time matching pattern.
@@ -3043,7 +3053,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline,  }
+        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline,  }
         let mut state = State::Entry;
         loop {
             match state {
@@ -3066,7 +3076,6 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b';') => {
-                    self.advance();
                     state = State::CheckSemi;
                     continue;
                         }
@@ -3134,6 +3143,57 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSemi => {
                     if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b' ' => {
+                    self.advance();
+                    state = State::SemiSpaced;
+                    continue;
+                        }
+                        _ => {
+                    self.advance();
+                    state = State::SemiGlued;
+                    continue;
+                        }
+                    }
+                }
+                State::SemiSpaced => {
+                    if self.eof() {
+                    self.set_term(-1);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.parse_line_comment_content(on_event);
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.set_term(-1);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.parse_line_comment_content(on_event);
+                    return;
+                        }
+                        Some(b' ') => {
+                    self.set_term(-1);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.parse_line_comment_content(on_event);
+                    return;
+                        }
+                        Some(b'{') => {
+                    self.set_term(-1);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.advance();
+                    self.parse_brace_comment(on_event);
+                    state = State::AfterInline;
+                    continue;
+                        }
+                        _ => {
+                    state = State::Main;
+                    continue;
+                        }
+                    }
+                }
+                State::SemiGlued => {
+                    if self.eof() {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -3148,10 +3208,8 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ => {
-                    self.set_term(-1);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.parse_line_comment_content(on_event);
-                    return;
+                    state = State::Main;
+                    continue;
                         }
                     }
                 }

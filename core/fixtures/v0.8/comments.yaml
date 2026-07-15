@@ -28,8 +28,10 @@
   events:
     - [Text, "use x; do y"]
 
+# Sameline comments (ratified 2026-07-15): a `;` after prose opens a
+# comment ONLY when whitespace-framed — space before, space or EOL after.
 - id: sameline_prose_comment
-  desc: sameline prose — space-semicolon starts a comment
+  desc: sameline prose — a whitespace-framed semicolon starts a comment
   udon: "|li Item one ; TODO expand\n"
   events:
     - ElementStart
@@ -37,6 +39,35 @@
     - [Text, "Item one "]
     - CommentStart
     - [Text, " TODO expand"]
+    - CommentEnd
+    - ElementEnd
+
+- id: sameline_semi_no_space_after_is_literal
+  desc: no space after the semicolon — not a sameline comment
+  udon: "|li Item one ;still prose\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "Item one ;still prose"]
+    - ElementEnd
+
+- id: sameline_semi_no_space_before_is_literal
+  desc: no space before the semicolon — not a sameline comment
+  udon: "|li ratio 1;2 done\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "ratio 1;2 done"]
+    - ElementEnd
+
+- id: sameline_trailing_semi_is_empty_comment
+  desc: end-of-line is a valid after-boundary — trailing framed ; opens an empty comment
+  udon: "|li trailing wins ;\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "trailing wins "]
+    - CommentStart
     - CommentEnd
     - ElementEnd
 

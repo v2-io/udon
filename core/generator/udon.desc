@@ -822,7 +822,7 @@
     |eof                      | TERM | Text(USE_MARK)            |return
     |c['\n']                  | TERM | Text(USE_MARK)            |return
     |c['|']                   | ->                               |>> :check_pipe
-    |c[';']                   | ->                               |>> :check_semi
+    |c[';']                   |                                  |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
     |c[<BS>]                  | ->                               |>> :check_bs
     |default                  | ->                               |>>
@@ -838,10 +838,25 @@
     |if[COL - 1 <= :elem_col] | TERM(-1) | Text(USE_MARK)         |return
     |                        | TERM(-1) | Text(USE_MARK) | /element(COL - 1, :elem_col) |>> :after_inline
 
+  ; Sameline comment (CORE "Sameline Comments", ratified 2026-07-15): a `;`
+  ; opens a comment after prose ONLY when whitespace-framed — space before,
+  ; space or end-of-line after. `;{` (inline comment) needs no frame.
+  ; Routed here WITHOUT consuming, so PREV is the char before the `;`.
   |state[:check_semi]
-    |eof                      | TERM | Text(USE_MARK)            |return  ; include ; in text
+    |if[PREV == ' ']          | ->                               |>> :semi_spaced
+    |default                  | ->                               |>> :semi_glued
+
+  |state[:semi_spaced]
+    |eof                      | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
+    |c['\n']                  | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
+    |c[' ']                   | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment |>> :after_inline
-    |default                  | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
+    |default                  |                                  |>> :main  ; ";x" — unframed, literal
+
+  |state[:semi_glued]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; literal ;
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment |>> :after_inline
+    |default                  |                                  |>> :main  ; literal ;
 
   |state[:check_bang]
     |eof                      | TERM | Text(USE_MARK)            |return  ; include ! in text

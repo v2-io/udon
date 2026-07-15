@@ -52,13 +52,21 @@
         block value"` — strings need ratifying (or Warning codes).
       - **Warning ordering** — whether a block-value Warning precedes or
         follows the value event (`attributes.yaml::block_line_holds_one_attribute`).
-      - **Sameline `;` vs prose-commit — internal contradiction.** "Head
+      - **Value-position `;` framing** — the ratified *sameline comment*
+        lexeme (2026-07-15) requires whitespace on both sides in sameline
+        PROSE. The after-attribute-value positions (block ` ;` terminator,
+        sameline post-value `;`) still require only the space-before.
+        Decide whether the lexeme applies uniformly there too (`:note a ;x`
+        would then keep " ;x" in the value — more robust for URLs; costs a
+        peek state per typed-value terminator). *(discuss w/ Joseph)*
+      - **RATIFIED (Joseph, 2026-07-15): sameline `;` vs prose-commit.** "Head
         Position" says that once a line commits to prose, *any* later marker
         character on it is literal; the Comments table (and the
         `|li Item one ; TODO` example) says ` ;` in sameline prose starts a
-        comment. Both can't hold. Fixtures encode the Comments-table reading
-        (`comments.yaml::sameline_prose_comment`); "Head Position" likely
-        needs an "except ` ;`" carve-out or the table needs changing.
+        comment. RESOLVED: the carve-out was a forgotten practical decision;
+        now a named lexeme — *sameline comments*, whitespace-framed (space
+        before; space or EOL after) — written into CORE Head Position +
+        Comments. Grammar + fixtures follow.
       - **Text granularity** — RATIFIED (Joseph, 2026-07-15): a Text event
         carries NO guarantee of being a complete text run; escapes and
         (later) chunk boundaries may split one line's prose into several

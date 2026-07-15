@@ -99,9 +99,14 @@ and triple-backtick (freeform). Each is recognized by a short **guard** -- a few
 of lookahead (see Marker Recognition, the `!` guard, and the marker sections).
 The instant a guard fails -- typically when the first prose word arrives -- the
 line **commits to prose** *for that line*: head position ends, and any later
-occurrence of those characters on it is literal text. This one state is what
-keeps Markdown tables, `:-)`, a mid-prose `!`, and after-prose backticks all
-safe from being read as structure.
+occurrence of those characters on it is literal text -- **with one exception**:
+a **sameline comment** (see Comments) may follow prose. A `;` framed by
+whitespace on both sides (space before; space or end-of-line after) opens a
+line comment even after the line has committed to prose; any other `;` is
+literal. This one state, plus that single named carve-out, is what keeps
+Markdown tables, `:-)`, a mid-prose `!`, and after-prose backticks all safe
+from being read as structure while `|li Item one ; TODO` still reads
+naturally.
 
 ### Block vs Sameline
 
@@ -677,7 +682,7 @@ Semicolon starts a comment depending on context:
 |---------|--------------|---------|
 | Document root | Line comment | `; file header comment` |
 | Block prose | **Literal** (not comment) | `use x; do y` |
-| Sameline prose | Line comment | `|p text ; comment` |
+| Sameline prose | **Sameline comment** (whitespace-framed only) | `|p text ; comment` |
 | Block attr line | Line comment (after values) | `:key value ; comment` |
 | Sameline attrs | Line comment (after values) | `|el :k v ; comment` |
 | Inline/embedded | `;{...}` only | `|{em text ;{note}}` |
@@ -696,6 +701,23 @@ comment content until dedent.
   this is still part of the comment
 \; But this line is output as text (leading \ forces prose).
 ```
+
+### Sameline Comments
+
+A **sameline comment** is its own lexical form: a `;` with **whitespace on
+both sides** -- a space before it, and a space or end-of-line after it. It is
+the one marker allowed after a line has committed to prose (the carve-out
+named in Head Position). The frame is the condition:
+
+```
+|li Item one ; TODO expand    ; " ; " framed both sides -> comment
+|li Item one ;still prose     ; no space after -> the ";still" is literal
+|li ratio 1;2 done            ; no space before -> literal
+|li trailing wins ;           ; EOL is a valid after-boundary -> empty comment
+```
+
+An unframed `;` in sameline prose is simply prose. (`;{...}` is a different
+lexeme -- the inline comment -- and needs no whitespace frame.)
 
 ### Why Block Prose Differs
 
@@ -789,7 +811,8 @@ else it is already literal, so most literal semicolons need no escape at all:
 |---------|-------------|
 | Block prose | Already literal (`code; more code`) |
 | Block attr value | Already literal, or quote (`:sql 'SELECT; DROP'`) |
-| Sameline attr/prose | Literal when not preceded by a space; a ` ;` starts a comment, so quote (`:k "a; b"`) or force the whole tail to prose with a head-position `\` (see Escape) |
+| Sameline prose | Literal unless whitespace-framed (a *sameline comment* needs a space before AND a space/EOL after); `a;b` and `a ;b` are literal |
+| Sameline attr values | Literal when not preceded by a space; a ` ;` after the value starts a comment, so quote (`:k "a; b"`) or force the whole tail to prose with a head-position `\` (see Escape) |
 | Embedded `\|{...}` | Bare `;` is literal -- only `;{` opens an inline comment |
 
 There is no separate `\;` escape: a `\` that is not at head position is passed
