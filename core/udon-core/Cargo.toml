@@ -35,3 +35,7 @@ harness = false
 [[bench]]
 name = "compare"
 harness = false
+
+[[bench]]
+name = "pushdown"
+harness = false
