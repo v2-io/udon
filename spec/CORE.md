@@ -1619,6 +1619,15 @@ value that begins with `<`, quote it (`:x "<not a type>"`). Outside bare
 attribute-value position -- in prose, or inside quotes -- `<` has no special
 meaning.
 
+**Interim behavior -- no dialects yet (this version).** The dialect layer is
+not built. Until it lands, a conformant parser still recognizes the envelope
+(the `<>`-balanced span, terminating the value at the matching `>`) but emits
+a **Warning** that no dialects are loaded and passes the value through as a
+plain string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the
+string `"<5m>"` plus the warning). Nothing is lost or silently retyped;
+when dialects land, the same document parses to typed values and the warning
+disappears.
+
 **Nesting (forward note, deliberately under-specified).** Typed values will
 eventually nest -- a composite whose components are themselves typed, e.g.
 `<r: <i: 3 -7> 0d83.23>` (a rational of a complex numerator and a decimal

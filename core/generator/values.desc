@@ -55,18 +55,35 @@
 ; typed_value parses a bare (unquoted) value with context-aware termination.
 ; Void function - emits polymorphic types (Integer, Float, BoolTrue, etc.)
 ; All emits are explicit inline; no auto-emit on return.
-|function[typed_value]  :space_term :bracket  | MARK
+|function[typed_value]  :space_term :bracket  | MARK | depth = 0
   |state[:main]
     |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[' ']                   |                                  |>> :check_space
     |c[:bracket]              | BareValue(USE_MARK)              |return
+    |c['<']                   | -> | depth += 1                  |>> :envelope
     |c['@']                   | ->                               |>> :maybe_ref
     |c['0']                   | ->                               |>> :num_zero
     |c['123456789']           |                                  |>> :num_dec
     |c['+-']                  | ->                               |>> :num_sign
     |LETTER                   | ->                               |>> :accumulate
     |default                  | ->                               |>>
+
+  ; === Explicit-typing envelope <...> (CORE "Explicit Typing") ===
+  ; INTERIM (ratified 2026-07-15, in CORE): the dialect layer doesn't exist
+  ; yet, so the envelope is recognized (<>-balanced, terminates the value at
+  ; the matching >) but emits a Warning and passes through as a plain
+  ; string — the full <...> lexical form, so nothing is lost. When dialects
+  ; land, this is where they take over.
+  |state[:envelope]
+    |eof                      | Warning(No dialects loaded) | BareValue(USE_MARK) |return
+    |c['<']                   | -> | depth += 1                  |>>
+    |c['>']                   | -> | depth -= 1                  |>> :env_check
+    |default                  | ->                               |>>
+
+  |state[:env_check]
+    |if[depth == 0]           | TERM | Warning(No dialects loaded) | BareValue(USE_MARK) |return
+    |default                  |                                  |>> :envelope
 
   ; === Reference in value position (CORE "References") ===
   ; Guard: `@` + `[` or identifier. Payload is the raw text after `@`

@@ -17,6 +17,12 @@ bumps may break).
 
 ## [Unreleased]
 
+### Added
+- **`<…>` interim behavior** (2026-07-15): until the dialect layer exists, a
+  conformant parser recognizes the envelope (`<>`-balanced, value-terminating)
+  but emits a Warning that no dialects are loaded and passes the value through
+  as the plain string `"<…>"` — nothing lost, nothing silently retyped.
+
 ## [0.8.0-alpha.1] — 2026-07-14
 
 First **alpha** of the rebooted spec (descent-rewrite era). Ratified in this

@@ -4353,9 +4353,10 @@ impl<'a> Parser<'a> {
     where
         F: FnMut(Event<'a>),
     {
+        let mut depth: i32 = 0;
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, MaybeRef, RefIdent, CheckSpace, BlockSpace, Accumulate, AccumSpace, AccumBlock, NumSign, NumZero, NumZeroSpace, NumZeroBlock, NumDec, NumDecSpace, NumDecBlock, NumHex, NumHexSpace, NumHexBlock, NumOct, NumOctSpace, NumOctBlock, NumBin, NumBinSpace, NumBinBlock, NumFloatFrac, NumFloatFracSpace, NumFloatFracBlock, NumFloatExp, NumFloatExpSpace, NumFloatExpBlock, NumFloatExpDigits, NumFloatExpDSpace, NumFloatExpDBlock, NumRationalDenom, NumRationalSpace, NumRationalBlock, NumComplexSign, NumComplexImag, NumComplexImagSpace, NumComplexImagBlock, NumComplexImagFrac, NumComplexImagFracSpace, NumComplexImagFracBlock, NumComplexImagExp, NumComplexImagExpSpace, NumComplexImagExpBlock, NumComplexImagExpD, NumComplexImagExpDSpace, NumComplexImagExpDBlock, String, StringSpace, StringBlock,  }
+        enum State { Main, Envelope, EnvCheck, MaybeRef, RefIdent, CheckSpace, BlockSpace, Accumulate, AccumSpace, AccumBlock, NumSign, NumZero, NumZeroSpace, NumZeroBlock, NumDec, NumDecSpace, NumDecBlock, NumHex, NumHexSpace, NumHexBlock, NumOct, NumOctSpace, NumOctBlock, NumBin, NumBinSpace, NumBinBlock, NumFloatFrac, NumFloatFracSpace, NumFloatFracBlock, NumFloatExp, NumFloatExpSpace, NumFloatExpBlock, NumFloatExpDigits, NumFloatExpDSpace, NumFloatExpDBlock, NumRationalDenom, NumRationalSpace, NumRationalBlock, NumComplexSign, NumComplexImag, NumComplexImagSpace, NumComplexImagBlock, NumComplexImagFrac, NumComplexImagFracSpace, NumComplexImagFracBlock, NumComplexImagExp, NumComplexImagExpSpace, NumComplexImagExpBlock, NumComplexImagExpD, NumComplexImagExpDSpace, NumComplexImagExpDBlock, String, StringSpace, StringBlock,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -4376,6 +4377,12 @@ impl<'a> Parser<'a> {
                         Some(b) if b == bracket => {
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return;
+                        }
+                        Some(b'<') => {
+                    self.advance();
+                    depth += 1;
+                    state = State::Envelope;
+                    continue;
                         }
                         Some(b'@') => {
                     self.advance();
@@ -4403,6 +4410,47 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.advance();
+                    continue;
+                        }
+                    }
+                }
+                State::Envelope => {
+                    match self.scan_to3(b'\n', b'<', b'>') {
+                        Some(b'<') => {
+                    self.advance();
+                    depth += 1;
+                    continue;
+                        }
+                        Some(b'>') => {
+                    self.advance();
+                    depth -= 1;
+                    state = State::EnvCheck;
+                    continue;
+                        }
+                        Some(b'\n') => {
+                            self.advance();
+                        }
+                        None => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"No dialects loaded"), span: self.span() });
+                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => unreachable!("scan_to only returns target chars"),
+                    }
+                }
+                State::EnvCheck => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if depth == 0 => {
+                    self.set_term(0);
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"No dialects loaded"), span: self.span() });
+                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => {
+                    state = State::Envelope;
                     continue;
                         }
                     }

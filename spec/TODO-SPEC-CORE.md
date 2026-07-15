@@ -20,12 +20,15 @@
       is encoded in `core/fixtures/v0.8/` under one stated reading, flagged
       with a `⚠` comment at the case; CORE should either ratify that reading
       or correct it (then the fixture follows CORE). *(discuss w/ Joseph)*
-      - **`<…>` event shape** — CORE fixes the envelope syntax but not the
-        event it emits; fixtures propose one `[TypedValue, "<raw payload>"]`
-        event, labels and nesting left inside the payload
-        (`typing_envelope.yaml`).
+      - **`<…>` interim behavior** — RATIFIED (Joseph, 2026-07-15) and now
+        in CORE "Explicit Typing": until dialects exist, the envelope is
+        recognized (`<>`-balanced, terminates the value) but emits
+        `Warning "No dialects loaded"` and passes through as the plain
+        string `"<…>"`. The dialect-era event shape is decided when
+        dialects land (`typing_envelope.yaml` follows the interim).
       - **`<…>` in array items** — "attribute-value position": does an array
-        item count? Fixtures say yes (uniform value rules).
+        item count? Fixtures + grammar say yes (uniform value rules);
+        ratify in CORE's wording.
       - **Reference event payload** — proposed: the raw text after `@`
         (`@[mit]` → `"[mit]"`, `@license[mit]` → `"license[mit]"`); legacy
         stripped brackets from the shorthand (`references.yaml`).

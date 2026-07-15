@@ -1,18 +1,11 @@
 # Explicit typing envelope `<...>` (CORE "Explicit Typing (`<...>`)").
 #
-# ⚠ EVENT VOCABULARY PROPOSED, NOT RATIFIED *(discuss w/ Joseph)*.
-# CORE fixes the envelope *syntax* (opens on `<` in bare attribute-value
-# position, terminates on the `<>`-balanced matching `>`) but does not name
-# the event it emits. These cases propose a single content-carrying event:
-#
-#     [TypedValue, "<everything between the outer < and >, verbatim>"]
-#
-# i.e. the label ladder (`type:`, `dialect:type:`) and any nested envelopes
-# stay inside the one raw payload, and all routing/dispatch is left to the
-# dialect layer — matching CORE's recognize-in-core / resolve-in-consumer
-# posture and its deliberate under-specification of nested routing.
-# If a different event shape is ratified, only the event names here change;
-# the inputs and boundaries asserted are CORE-fixed either way.
+# INTERIM BEHAVIOR (ratified 2026-07-15, now in CORE "Explicit Typing"):
+# no dialects exist yet, so the envelope is recognized — <>-balanced, and it
+# terminates the value at the matching > — but the parser emits a Warning
+# ("No dialects loaded") and passes the value through as a plain string:
+# the full <...> lexical form, untouched. When the dialect layer lands,
+# these cases change to the dialect-era event shape.
 
 - id: envelope_unlabelled
   desc: bare value beginning with < opens the envelope
@@ -21,7 +14,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [TypedValue, "2026-07-11"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<2026-07-11>"]
     - ElementEnd
 
 - id: envelope_shorthand_duration
@@ -31,7 +25,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "dur"]
-    - [TypedValue, "5m"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<5m>"]
     - ElementEnd
 
 - id: envelope_type_labelled
@@ -41,7 +36,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "size"]
-    - [TypedValue, "u64:0xf902"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<u64:0xf902>"]
     - ElementEnd
 
 - id: envelope_dialect_and_type_labelled
@@ -51,7 +47,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "span"]
-    - [TypedValue, "temporal:interval:2026-01/2026-06"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<temporal:interval:2026-01/2026-06>"]
     - ElementEnd
 
 - id: envelope_nested_balanced
@@ -61,7 +58,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "q"]
-    - [TypedValue, "r: <i: 3 -7> 0d83.23"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<r: <i: 3 -7> 0d83.23>"]
     - ElementEnd
 
 - id: envelope_quoted_literal_stays_string
@@ -90,7 +88,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [TypedValue, "2026-07-11"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<2026-07-11>"]
     - [Attr, "n"]
     - [Integer, "1"]
     - ElementEnd
@@ -106,7 +105,8 @@
     - [Name, "el"]
     - [Attr, "xs"]
     - ArrayStart
-    - [TypedValue, "5m"]
+    - [Warning, "No dialects loaded"]
+    - [BareValue, "<5m>"]
     - [Integer, "3"]
     - ArrayEnd
     - ElementEnd
