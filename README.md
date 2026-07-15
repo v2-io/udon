@@ -214,3 +214,16 @@ Current state:
 
 Next: Phase 0 hygiene → valve decisions → the utilities crate
 (`udon-cli`: fmt, lint, skeleton, paths, conversions).
+
+## How the work is organized
+
+Work is layered and propagates **spec → event-parser → AST → utilities →
+human/agent tooling → publishing** — you can't work a layer without the one above
+it in hand (no parser without the whole spec). Compliance is *measured* against a
+semver'd `spec/CORE.md` via per-version compliance-fixture groups, not maintained
+as a worklist.
+
+Each area keeps a co-located `TODO-*.md`; the full lane map and the agent
+workflow live in [CLAUDE.md](CLAUDE.md) under **Tracking & Workflow**. Items that
+need Joseph are marked `*(discuss w/ Joseph)*` inline, not queued in a separate
+valve.

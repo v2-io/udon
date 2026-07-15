@@ -12,11 +12,11 @@ a submodule.
    broken, open decisions, evidence. The *why*.
 2. **REBOOT-PLAN.md** — the prioritized plan: phases, backlog, spike track.
    The *what, in what order*.
-3. **spec/CORE-TODO.md** — the plain worklist of edits not yet applied to
-   CORE (rebuilt 2026-07-12). The dense predecessor ledgers are archived
-   at **_archive/DECIDED.bak.md** + **_archive/FULL-SPEC-TODO.bak.md** (reference
-   only — e.g. the core/host/schema/dialect ownership discussion). Neither the
-   worklist nor the archives is the spec; CORE.md is.
+3. **Tracking & Workflow** (below) — the map of co-located TODO lanes and how
+   work propagates. Core spec-text edits live in `spec/TODO-SPEC-CORE.md`. The
+   dense predecessor ledgers are archived at **_archive/DECIDED.bak.md** +
+   **_archive/FULL-SPEC-TODO.bak.md** (reference only — e.g. the
+   core/host/schema/dialect ownership discussion). Neither is the spec; CORE.md is.
 4. **spec/CORE.md** — the authoritative language specification
    (v0.7-draft, with known divergences catalogued in the review's §2
    genealogy table).
@@ -26,8 +26,9 @@ a submodule.
 ```
 spec/               Ratified layer: CORE.md, TIME-SPEC.md, FULL-EBNF.md
                     (future home of the fused literate source — CTQ-E)
-design/             Ahead-of-spec layer: udon-ast, udon-paths, udon-agentic,
-                    schema + guarantees explorations
+design/             Ahead-of-spec exploration (udon-ast, udon-paths, udon-
+                    agentic, schema + guarantees). Partly SUPERSEDED by CORE,
+                    no sync process, rich in future ideas — see design/README.md.
 notes/              Working analyses, historical planning, feedback
 core/               Rust workspace (absorbed libudon, full history):
                     udon-core (parser + tree + fixtures), generator/*.desc,
@@ -41,6 +42,40 @@ docs/               Early agent-protocol brainstorms (Dec 2025)
 _archive/           Superseded: old spec pieces, udon-ruby (submodule,
                     update=none — init only if you need it)
 ```
+
+## Tracking & Workflow
+
+Work is layered, and changes propagate **spec → event-parser → AST /
+streaming-AST → aux · utils · human-ux · agent-ux → publishing**. Load-bearing
+rule: **you cannot work in a lane without its upstream layer in hand** — no
+parser work without the whole spec; no utils without a compliant parser.
+
+Compliance is *measured*, not tracked: `spec/CORE.md` is **semver'd**, and each
+version has a **compliance-fixture group**; a unified gate proves the parser
+against a tagged CORE version (event-level by default; AST-level where a
+core-syntax property is easier to assert there). Once that keystone lands
+(`TODO-META.md` [P0]), the parser lanes hold only residuals and decompositions.
+
+Each area keeps its own **co-located** TODO list. Nothing needing Joseph sits in
+a separate valve — such items carry `*(discuss w/ Joseph)*` inline, in context.
+
+| Lane | Covers | Location |
+|------|--------|----------|
+| **TODO-META** | Tracking system; compliance-versioning keystone; dogfood | `TODO-META.md` |
+| **TODO-SPEC-CORE** | Open edits to the core spec | `spec/TODO-SPEC-CORE.md` |
+| **TODO-SPEC-OTHER** | Companion specs — dialects, markdown, temporal, composite types | `spec/TODO-SPEC-OTHER.md` |
+| **TODO-AUX** | Aux syntaxes — schema, paths, patch (lexical/parser, non-dialect) | `spec/TODO-AUX.md` |
+| **TODO-CORE-PARSING** | Event parser + descent grammar; cleanup; streaming; pending descent items | `core/TODO-CORE-PARSING.md` |
+| **TODO-PARSER** | AST one-shot + streaming-AST parsers + API | `core/TODO-PARSER.md` |
+| **TODO-HUMAN-UX** | Obsidian, syntax highlighting, editors | `editors/TODO-HUMAN-UX.md` |
+| **TODO-UTILS** | `udon-utl` — accessors, conversion, fmt, guarantees | `TODO-UTILS.md` |
+| **TODO-AGENT-UX** | Cheat-sheets, empirical usability harness | `TODO-AGENT-UX.md` |
+| **TODO-PUBLISHING** | README, release, crates.io, outward docs | `TODO-PUBLISHING.md` |
+
+**Migration in progress:** the old `core/PLAN.md`, `JOSEPH-TODO.md` (retired),
+and the `design/` notes are draining into these lanes — each carries a "pull from
+X" task; delete X when empty. `REVIEW-JULY-2026.md` and `REBOOT-PLAN.md` remain
+the historical *why* and phase plan.
 
 ## Working in core/ (the Rust workspace)
 
@@ -81,11 +116,12 @@ touches one, it's blocked on the valve, not on you. Say so.
 **spec/CORE.md is the authoritative specification.** As of 2026-07-13 it
 reflects the ratified decisions (identity `key`/`traits`, `<…>` typing, fences,
 escapes, `@`-inert, etc.); the companion specs (`DYNAMICS.md`, `MARKDOWN.md`,
-`TIME-SPEC.md`) each carry their own status banner. The remaining known
-divergences are **Tier-2 parser** — the spec is *ahead of the parser* (typed
-bracket-IDs, the `:id` hijack, `:`-attrs-before-children, wire-names) — all
-tracked in `spec/CORE-TODO.md`. For any NEW divergence you find, add it to
-`CORE-TODO.md` with git-dated evidence rather than picking a side silently.
+`TIME-SPEC.md`) each carry their own status banner. The spec is *ahead of the
+parser*; parser catch-up is **measured** by the versioned compliance fixtures
+(see Tracking & Workflow) with its residual tracked in
+`core/TODO-CORE-PARSING.md`. For a NEW *spec-text* gap, add it to
+`spec/TODO-SPEC-CORE.md`; for a NEW *parser* divergence, `core/TODO-CORE-PARSING.md`
+— with git-dated evidence rather than picking a side silently.
 The `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 
