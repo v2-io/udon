@@ -175,6 +175,36 @@
     - [Text, "More prose content"]
     - ElementEnd
 
+# Uniform continuation (ratified 2026-07-15): every line deeper than the
+# comment's column is comment TEXT — markers included, nothing parsed —
+# until a line at or dedented from it. Block-comment-out is a primary use.
+- id: comment_swallows_deeper_block
+  desc: a comment at the right indent comments out a whole nested block
+  udon: "|element\n  some prose to begin with\n  ; Start the comment\n    |another-element\n       and its prose\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "some prose to begin with"]
+    - CommentStart
+    - [Text, " Start the comment"]
+    - [Text, "|another-element"]
+    - [Text, "   and its prose"]
+    - CommentEnd
+    - ElementEnd
+
+- id: comment_block_out_at_root
+  desc: root-level block-comment-out; same-column line ends the comment
+  udon: "; silence this\n  |broken :attr\n  :stray x\n|live\n"
+  events:
+    - CommentStart
+    - [Text, " silence this"]
+    - [Text, "|broken :attr"]
+    - [Text, ":stray x"]
+    - CommentEnd
+    - ElementStart
+    - [Name, "live"]
+    - ElementEnd
+
 - id: comment_same_column_is_sibling
   desc: a comment at a child's column is that child's sibling (child closed)
   udon: "|parent\n  |child\n  ; sibling of child\n"

@@ -5148,10 +5148,6 @@ impl PushdownParser {
                                     on_event(StreamEvent::CommentEnd { span: self.gspan() });
                                     continue 'run;
                                 }
-                                Some(b'|' | b':' | b'!' | b';') => {
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
                                 _ if f.content_base < 0 => {
                                     f.content_base = f.col;
                                     self.mark();
@@ -5170,23 +5166,10 @@ impl PushdownParser {
                             }
                         }
                         LineCommentSt::AtContentBase => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|' | b':' | b'!' | b';') => {
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = LineCommentSt::ContContent;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                            }
+                            self.mark();
+                            f.st = LineCommentSt::ContContent;
+                            self.stack.push(Frame::LineComment(f));
+                            continue 'run;
                         }
                         LineCommentSt::ContContent => {
                             if self.pos >= self.buf.len() {

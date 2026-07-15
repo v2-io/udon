@@ -932,10 +932,11 @@
     |c[' ']                   | -> | col += 1                    |>>
     |default                  |                                  |>> :check_continuation
 
-  ; Finished counting (hit non-space) - check if valid continuation
+  ; Finished counting (hit non-space) - check if valid continuation.
+  ; UNIFORM (ratified 2026-07-15): every deeper line is comment text —
+  ; markers included; only dedent-or-same-column ends the comment.
   |state[:check_continuation]
     |if[col <= comment_col]                                      |return  ; dedent or same col
-    |c['|:!;']                |                                  |return  ; prefix ends comment
     ; col > comment_col: this is a continuation line
     ; If content_base not set, first continuation sets it
     |if[content_base < 0]     | content_base = col | MARK        |>> :cont_line
@@ -944,7 +945,6 @@
 
   ; Reached content_base while counting - MARK here, extra spaces are content
   |state[:at_content_base]
-    |c['|:!;']                |                                  |return  ; prefix ends comment
     |default                  | MARK                             |>> :cont_content
 
   ; Consume extra spaces (beyond content_base) as content

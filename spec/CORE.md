@@ -692,9 +692,13 @@ consuming layer decides whether to keep or strip them.
 This enables use cases like documentation extraction, TODO tracking, or
 comment-aware transformations.
 
-Line comments may be continued by indentation: if a line comment is followed by
-a more-indented line that does not start with a prefix, that line is treated as
-comment content until dedent.
+Line comments may be continued by indentation: **every** more-indented line --
+markers and structure included, nothing excepted -- is comment text until a
+line at or dedented from the comment's column (ratified 2026-07-15). Comment
+content is inert: the parser never interprets it, only carries it. This is
+what makes a `;` at the right column comment out an entire block without
+touching its lines -- including the primary case of silencing structure that
+is itself causing parse errors or warnings.
 
 ```
 ; This would be a comment

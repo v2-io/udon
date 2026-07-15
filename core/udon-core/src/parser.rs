@@ -3445,10 +3445,6 @@ impl<'a> Parser<'a> {
                     on_event(Event::CommentEnd { span: self.span() });
                     return;
                         }
-                        Some(b'|' | b':' | b'!' | b';') => {
-                    on_event(Event::CommentEnd { span: self.span() });
-                    return;
-                        }
                         _ if content_base < 0 => {
                     content_base = col;
                     self.mark();
@@ -3465,21 +3461,9 @@ impl<'a> Parser<'a> {
                     }
                 }
                 State::AtContentBase => {
-                    if self.eof() {
-                        on_event(Event::CommentEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|' | b':' | b'!' | b';') => {
-                    on_event(Event::CommentEnd { span: self.span() });
-                    return;
-                        }
-                        _ => {
                     self.mark();
                     state = State::ContContent;
                     continue;
-                        }
-                    }
                 }
                 State::ContContent => {
                     if self.eof() {
