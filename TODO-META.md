@@ -52,3 +52,14 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       tasks are the hands; this is the rule they follow.
 - [ ] **[later] Dogfood:** once this version is all the way through core and the
       parser is compliant, rewrite these TODO files as UDON.
+- [ ] **[later] Consider UDON for the test fixtures themselves** (today:
+      YAML in `core/fixtures/`). The dogfooding appeal is obvious — the
+      compliance corpus written in the language it certifies. (Parenthetical
+      worth weighing before committing: udon-within-udon means the fixture
+      *reader* is itself a parser whose compliance must be tracked
+      distinctly from the *target* parser under test — a broken parser
+      could misread the very fixtures that would catch it, so the loader
+      would need pinning to a known-good parser build or a bootstrap story.
+      That may add more complexity than it's worth; decide with eyes open,
+      possibly only after `core-v0.8.0` is green and tagged so a trusted
+      reader exists.)
