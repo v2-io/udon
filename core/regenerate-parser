@@ -41,62 +41,26 @@ success() { echo -e "${GREEN}==>${NC} $*"; }
 warn() { echo -e "${YELLOW}warning:${NC} $*"; }
 error() { echo -e "${RED}error:${NC} $*" >&2; }
 
-# Check if descent is available
+# Check if descent is available (the Rust workspace is the toolchain)
 check_descent() {
-    if [[ ! -d "$DESCENT_DIR" ]]; then
-        error "descent not found at $DESCENT_DIR"
+    if [[ ! -d "$DESCENT_DIR/rust" ]]; then
+        error "descent (rust workspace) not found at $DESCENT_DIR/rust"
         echo ""
-        echo "Please either:"
-        echo "  1. Clone descent to ~/src/descent"
-        echo "  2. Set DESCENT_DIR environment variable to its location"
-        echo ""
-        echo "  git clone https://github.com/josephwecker/descent.git ~/src/descent"
-        echo "  cd ~/src/descent && bundle install"
+        echo "From the umbrella repo:  git submodule update --init tools/descent"
+        echo "Or set DESCENT_DIR to a descent checkout."
         return 1
     fi
-
-    if [[ ! -f "$DESCENT_DIR/exe/descent" ]]; then
-        error "descent executable not found at $DESCENT_DIR/exe/descent"
-        return 1
-    fi
-
     return 0
 }
 
-# Update descent to latest and show version
-update_descent() {
-    info "Updating descent..."
-
-    # Pull latest if it's a git repo
-    if [[ -d "$DESCENT_DIR/.git" ]]; then
-        if ! (cd "$DESCENT_DIR" && git pull --ff-only 2>/dev/null); then
-            warn "Could not fast-forward descent (local changes?), using current version"
-        fi
-    fi
-
-    # Update bundle
-    if ! (cd "$DESCENT_DIR" && bundle install --quiet 2>/dev/null); then
-        warn "bundle install had issues, continuing anyway"
-    fi
-
-    # Get version info
-    local version
-    if [[ -f "$DESCENT_DIR/lib/descent/version.rb" ]]; then
-        version=$(grep -o 'VERSION = "[^"]*"' "$DESCENT_DIR/lib/descent/version.rb" 2>/dev/null | cut -d'"' -f2 || echo "unknown")
-    else
-        version="unknown"
-    fi
-
-    # Get git info if available
+# Show which descent we're generating with
+describe_descent() {
     local git_info=""
-    if [[ -d "$DESCENT_DIR/.git" ]]; then
+    if [[ -e "$DESCENT_DIR/.git" ]]; then
         git_info=$(cd "$DESCENT_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "")
-        if [[ -n "$git_info" ]]; then
-            git_info=" (${git_info})"
-        fi
+        [[ -n "$git_info" ]] && git_info=" @ ${git_info}"
     fi
-
-    success "descent v${version}${git_info} at $DESCENT_DIR"
+    success "descent${git_info} at $DESCENT_DIR"
 }
 
 # Generate the parser
@@ -133,10 +97,9 @@ generate_parser() {
         info "Running descent..."
     fi
 
-    # Generate through descent-rs (the Rust rewrite — Ruby exited the descent
-    # toolchain 2026-07; the Ruby path below is a legacy oracle kept only as
-    # fallback). Write ATOMICALLY: generate to a temp file, move into place
-    # only on success — a truncate-first redirect once destroyed parser.rs.
+    # Generate through descent-rs. Write ATOMICALLY: generate to a temp
+    # file, move into place only on success — a truncate-first redirect once
+    # destroyed parser.rs.
     local out_tmp trace_flag descent_rs
     out_tmp=$(mktemp "${TMPDIR:-/tmp}/udon-parser.XXXXXX.rs")
     trace_flag=""; [[ "$trace_mode" == "true" ]] && trace_flag="--trace"
@@ -144,33 +107,18 @@ generate_parser() {
     if [[ ! -x "$descent_rs" ]]; then
         info "Building descent-rs (first run)..."
         (cd "$DESCENT_DIR/rust" && cargo build --release -p descent-cli) || {
-            warn "descent-rs build failed; falling back to the legacy Ruby oracle"
-            descent_rs=""
+            rm -f "$out_tmp"
+            error "descent-rs build failed"
+            return 1
         }
     fi
-    if [[ -n "$descent_rs" && -x "$descent_rs" ]]; then
-        if "$descent_rs" generate "$tmp_file" $trace_flag > "$out_tmp"; then
-            mv "$out_tmp" "$OUTPUT_FILE"
-            success "Generated $OUTPUT_FILE (descent-rs)"
-        else
-            rm -f "$out_tmp"
-            error "descent-rs failed (parser.rs left untouched)"
-            return 1
-        fi
+    if "$descent_rs" generate "$tmp_file" $trace_flag > "$out_tmp"; then
+        mv "$out_tmp" "$OUTPUT_FILE"
+        success "Generated $OUTPUT_FILE"
     else
-        local ruby_trace="false"; [[ "$trace_mode" == "true" ]] && ruby_trace="true"
-        if (cd "$DESCENT_DIR" && ruby -I lib -e '
-            require "descent"
-            code = Descent.generate(ARGV[0], target: :rust, trace: ARGV[2] == "true")
-            File.write(ARGV[1], code.gsub(/\n{3,}/, "\n\n"))
-          ' "$tmp_file" "$out_tmp" "$ruby_trace"); then
-            mv "$out_tmp" "$OUTPUT_FILE"
-            success "Generated $OUTPUT_FILE (legacy Ruby oracle)"
-        else
-            rm -f "$out_tmp"
-            error "descent failed (parser.rs left untouched)"
-            return 1
-        fi
+        rm -f "$out_tmp"
+        error "descent-rs failed (parser.rs left untouched)"
+        return 1
     fi
 }
 
@@ -225,7 +173,7 @@ main() {
         exit 0
     fi
 
-    update_descent
+    describe_descent
 
     if ! generate_parser "$trace"; then
         exit 1
