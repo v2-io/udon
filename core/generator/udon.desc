@@ -71,7 +71,7 @@
   |state[:line]
     |c['\n']                  | -> | BlankLine                   |>>
     |c[' ']                   | col = /count_indent              |>> :dispatch
-    |c['\t']                  | /error(NoTabs) | ->['\n']       |>> :line
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :line
     |default                  | col = COL - 1                    |>> :dispatch  ; use actual column
 
   |state[:eol]
@@ -208,7 +208,7 @@
 ; Element (block form - indent-based children)
 ; ============================================================================
 
-|function[element:Element]  :elem_col :parent_col  | content_base = -1
+|function[element:Element]  :elem_col :parent_col  | content_base = -1 | content_seen = 0
 
   |state[:identity]
     | /parse_element_identity(<>)                                |>> :post_identity
@@ -216,8 +216,8 @@
   |state[:post_identity]
     |c['\n']                  | ->                               |>> :children
     |c[' \t']                 | ->                               |>> :pre_content
-    |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
-    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
 
   |state[:pre_content]
     |c['\n']                  | ->                               |>> :children
@@ -230,8 +230,8 @@
     |c['|']                   | ->                               |>> :check_sameline_pipe
     |c[';']                   | ->                               |>> :check_sameline_semi
     |c['!']                   | ->                               |>> :check_sameline_bang
-    |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
-    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
 
   ; Sameline fence: attributes keep the scan open, so triple-backticks after
   ; elements/attributes open a freeform block (CORE "Triple-Backtick
@@ -268,9 +268,9 @@
     |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
 
   |state[:check_sameline_pipe]
-    |c['{']                   | -> | /embedded                   |>> :post_child
-    |c[<XLBL_START SQ '[' '.?!*+'>]  |                               |>> :check_sameline_elem_col
-    |default                  | /sameline_text(:elem_col, '|')   |>> :after_content
+    |c['{']                   | -> | content_seen = 1 | /embedded |>> :post_child
+    |c[<XLBL_START SQ '[' '.?!*+'>]  | content_seen = 1              |>> :check_sameline_elem_col
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, '|') |>> :after_content
 
   ; Check if new element's column requires closing current element first (sibling detection)
   ; Per SPEC: "pop while new_column <= stack_top.base_column"
@@ -300,9 +300,11 @@
     |eof                      |                                  |return
     |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
 
+  ; After a sameline embedded child: whitespace before further content is
+  ; PROSE (round-trip fidelity — "|nav |{a} |{b}" keeps the separating
+  ; space as Text), so it routes through sameline_text like any other tail.
   |state[:post_child]
     |c['\n']                  | ->                               |>> :children
-    |c[' \t']                 | ->                               |>>
     |c['|']                   |                                  |>> :check_post_pipe_col
     |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
 
@@ -318,7 +320,7 @@
   |state[:children]
     |c['\n']                  | -> | BlankLine                   |>> :after_newline
     |c[' ']                   | -> | col = 1                     |>> :children_ws
-    |c['\t']                  | /error(NoTabs) | ->['\n']       |>>
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
     |default                  | col = COL - 1                    |>> :check_child
 
   ; After consuming newline, check if next line is blank/whitespace-only
@@ -326,7 +328,7 @@
     |eof                      |                                  |return
     |c['\n']                  | -> | BlankLine                   |>>  ; blank line (empty)
     |c[' ']                   | -> | col = 1                     |>> :children_ws
-    |c['\t']                  | /error(NoTabs) | ->['\n']       |>> :children
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :children
     |default                  | col = COL - 1                    |>> :check_child
 
   ; Count spaces, but stop at content_base if set (to preserve extra spaces as content)
@@ -351,7 +353,7 @@
     |c['`']                   | ->                               |>> :child_check_freeform
     |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
     ; For default content (includes space), extra spaces beyond content_base are preserved
-    |default                  | /prose(col, :elem_col, <>)       |>> :after_content
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
 
   |state[:check_child]
     |if[col <= :elem_col]                                        |return  ; dedent
@@ -388,7 +390,7 @@
     |default                  |                                  |>> :do_verbatim
 
   |state[:do_verbatim]
-    | /verbatim_text                                             |>> :after_content
+    |default                  | content_seen = 1 | /verbatim_text |>> :after_content
 
   ; `!` guard in element children (see document :check_bang)
   |state[:child_check_bang]
@@ -404,12 +406,15 @@
 
   ; Line-initial attr guard (see document :check_attr): failed attr parse
   ; falls back to intact prose with the ':' restored (defect #12).
+  ; Phase restriction (CORE "Attributes Before Children"): once any text or
+  ; child element has appeared, a line-initial ':' is prose.
   |state[:child_check_attr]
+    |if[content_seen == 1]    | /prose(col, :elem_col, ':')      |>> :after_content
     |c[<XLBL_START SQ>]       | /block_attr                      |>> :after_content
     |default                  | /prose(col, :elem_col, ':')      |>> :after_content
 
   |state[:do_prose]
-    | /prose(col, :elem_col, <>)                                 |>> :after_content
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
 
   ; Prose handlers go to :after_content to consume trailing \n
   |state[:child_check_freeform]
@@ -417,13 +422,13 @@
     |default                  | /prose(col, :elem_col, '`')      |>> :after_content
 
   |state[:child_check_freeform2]
-    |c['`']                   | -> | /freeform                   |>> :after_content
-    |default                  | /prose_backticks(col, :elem_col) |>> :after_content
+    |c['`']                   | -> | content_seen = 1 | /freeform |>> :after_content
+    |default                  | content_seen = 1 | /prose_backticks(col, :elem_col) |>> :after_content
 
   |state[:child_pipe]
-    |c['{']                   | -> | /embedded                   |>> :after_child
-    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :elem_col)         |>> :after_child
-    |default                  | /prose(col, :elem_col, '|')      |>> :after_content
+    |c['{']                   | -> | content_seen = 1 | /embedded |>> :after_child
+    |c[<XLBL_START SQ '[' '.?!*+'>] | content_seen = 1 | /element(col, :elem_col) |>> :after_child
+    |default                  | content_seen = 1 | /prose(col, :elem_col, '|') |>> :after_content
 
   ; After child element/embedded returns - always re-check column for potential dedent
   |state[:after_child]
@@ -436,7 +441,7 @@
     |c['\n']                  | ->                               |>> :after_newline
     |eof                      |                                  |return
     |c[' ']                   | -> | col = 1                     |>> :children_ws
-    |c['\t']                  | /error(NoTabs) | ->['\n']       |>>
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
     |default                  | col = COL - 1                    |>> :check_child
 
 
@@ -988,7 +993,15 @@
   |state[:pre_content]
     |c['}']                  | ->                               |return
     |c[' \t']                 | ->                               |>>
+    |c['\n']                  | ->                               |>> :pre_content_ml
     |c[':']                   | ->                               |>> :check_attr
+    |default                  | /embed_content                   |return
+
+  ; Newline directly after identity/attributes: skip continuation
+  ; indentation (ignored inside |{...}) without emitting an empty Text.
+  |state[:pre_content_ml]
+    |c[' \t\n']               | ->                               |>>
+    |c['}']                  | ->                               |return
     |default                  | /embed_content                   |return
 
   ; Embedded attr guard: failed attr parse falls back to intact content
@@ -1004,6 +1017,7 @@
 |function[embed_content:Text]  | MARK
   |state[:main]
     |c['}']                  | TERM | ->                        |return
+    |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :ml_ws
     |c['|']                   | TERM | ->                        |>> :check_pipe
     |c[';']                   | TERM | ->                        |>> :check_semi
     |c['!']                   | TERM | ->                        |>> :check_bang
@@ -1013,19 +1027,21 @@
     |default                  | ->                               |>>
 
   |state[:check_pipe]
-    ; Inside embedded, only |{...} allowed - emit accumulated text first
+    ; Inside embedded, only |{...} allowed - emit accumulated text first.
+    ; A bare marker is literal: emit the accumulated slice too (the harness
+    ; Text-collapse rejoins it), then continue with the marker restored.
     |c['{']                   | Text(USE_MARK) | -> | /embedded | MARK |>> :main
-    |default                  | MARK | PREPEND('|')              |>> :main
+    |default                  | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
 
   |state[:check_semi]
     ; Brace comment - emit accumulated text first
     |c['{']                   | Text(USE_MARK) | -> | /brace_comment | MARK |>> :main
-    |default                  | MARK | PREPEND(';')              |>> :main
+    |default                  | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
 
   |state[:check_bang]
     ; Inline directive - emit accumulated text first
     |c['{']                   | Text(USE_MARK) | -> | /sameline_directive | MARK |>> :main
-    |default                  | MARK | PREPEND('!')              |>> :main
+    |default                  | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
 
   ; `\` escaping an inline opener inside |{...} (see text's :check_bs)
   |state[:check_bs]
@@ -1042,6 +1058,13 @@
   |state[:check_bs_semi]
     |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
     |default                  |                                  |>> :main
+
+  ; Embedded elements span lines; indentation inside is ignored (CORE
+  ; "Bracket Mode Rules") — content is delivered per line, continuation
+  ; indentation skipped.
+  |state[:ml_ws]
+    |c[' \t']                 | ->                               |>>
+    |default                  | MARK                             |>> :main
 
 
 ; ============================================================================
@@ -1110,7 +1133,7 @@
   |state[:children]
     |c['\n']                  | ->                               |>>
     |c[' ']                   | col = /count_indent              |>> :check_child
-    |c['\t']                  | /error(NoTabs) | ->['\n']       |>>
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
     |default                  | col = COL - 1                    |>> :check_child
 
   |state[:check_child]
@@ -1201,6 +1224,9 @@
     |c[' \t']                 | ->                               |>> :args
     |default                  | /skip_brace_balanced             |return
 
+  ; The body of a non-raw inline directive is UDON (CORE "Dynamics": can
+  ; contain |{...}, ;{...}, nested !{...}) — same content language as an
+  ; embedded element, so it reuses /embed_content (which consumes the }).
   |state[:args]
     |c['}']                  | ->                               |return
-    |default                  | /skip_brace_balanced             |return  ; TODO: parse args properly
+    |default                  | /embed_content                   |return

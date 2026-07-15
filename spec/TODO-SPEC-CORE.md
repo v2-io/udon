@@ -66,6 +66,13 @@
         CORE's parser-behavior notes.** The fixture harness now collapses
         same-line adjacent Texts (span-gap contains no newline) so fixtures
         are rhythm-independent (`harness.rs::collapse_adjacent_text`).
+      - **Comment-past-prose-base — internal contradiction.** "Comments and
+        Indentation" shows `;` one column past the prose base parsing as a
+        comment inside the element; "Head Position" says a line deeper than
+        the prose base is inside the prose, markers literal. Fixtures encode
+        the uniform Head-Position reading (deeper = prose;
+        `comments.yaml::comment_deeper_than_prose_base_is_prose`); the
+        Comments example needs updating or an exception carved.
       - **Inline raw `!{:kind: …}` details** — whether the single space after
         the label's closing `:` is separator or content, and whether the
         inline form carries the same `Raw` marker event as the block form

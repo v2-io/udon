@@ -115,15 +115,31 @@
     - [Name, "sibling"]
     - ElementEnd
 
-- id: comment_inside_element
-  desc: a comment deeper than the element stays inside it
-  udon: "|element\n  Some prose content\n   ; comment one column past the prose base\n  More prose content\n"
+# ⚠ CORE contradiction filed in spec/TODO-SPEC-CORE.md: "Comments and
+# Indentation" shows a `;` one column PAST the prose base still parsing as a
+# comment, while "Head Position" says a line deeper than the prose base is
+# inside the prose (markers literal). Encoded here per the uniform
+# Head-Position reading (deeper = prose) pending Joseph's ruling.
+- id: comment_deeper_than_prose_base_is_prose
+  desc: a semicolon line deeper than the prose base is inside the prose
+  udon: "|element\n  Some prose content\n   ; one column past the prose base\n  More prose content\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "Some prose content"]
+    - [Text, " ; one column past the prose base"]
+    - [Text, "More prose content"]
+    - ElementEnd
+
+- id: comment_at_prose_base_is_comment
+  desc: a semicolon line AT the prose base is head position — a comment
+  udon: "|element\n  Some prose content\n  ; a comment at the base\n  More prose content\n"
   events:
     - ElementStart
     - [Name, "element"]
     - [Text, "Some prose content"]
     - CommentStart
-    - [Text, " comment one column past the prose base"]
+    - [Text, " a comment at the base"]
     - CommentEnd
     - [Text, "More prose content"]
     - ElementEnd

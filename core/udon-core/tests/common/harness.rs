@@ -32,6 +32,11 @@ fn collect_events(input: &[u8]) -> Vec<Event<'_>> {
 fn collapse_adjacent_text<'a>(events: Vec<Event<'a>>, input: &[u8]) -> Vec<Event<'a>> {
     let mut out: Vec<Event<'_>> = Vec::with_capacity(events.len());
     for e in events {
+        // A zero-length Text carries no information (blank lines are
+        // BlankLine events, never Text "") — drop it, same convention.
+        if matches!(&e, Event::Text { content, .. } if content.is_empty()) {
+            continue;
+        }
         if let (Some(Event::Text { content: prev_c, span: prev_s }), Event::Text { content, span }) =
             (out.last_mut(), &e)
         {
