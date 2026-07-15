@@ -169,7 +169,7 @@
 
   |state[:bracket]
     |c[']']                   | ->                               |>> :post_bracket
-    |default                  | Attr($id) | /value_bracket       |>> :bracket_close
+    |default                  | Attr($key) | /value(1, ']')       |>> :bracket_close
 
   |state[:bracket_close]
     |c[']']                   | ->                               |>> :post_bracket
@@ -183,8 +183,8 @@
 
   |state[:class]
     |c['.']                   | ->                               |>>
-    |c[XLBL_START]            | Attr($class) | /class_name       |>> :post_class
-    |c[<SQ>]                  | Attr($class) | -> | /quoted_class |>> :post_class
+    |c[XLBL_START]            | Attr($traits) | /class_name       |>> :post_class
+    |c[<SQ>]                  | Attr($traits) | -> | /quoted_class |>> :post_class
     |default                  |                                  |return  ; no more classes
 
   |state[:post_class]
@@ -420,10 +420,10 @@
 
 |function[suffix]
   |state[:main]
-    |c['?']                   | Attr(?) | BoolTrue | ->          |return
-    |c['!']                   | Attr(!) | BoolTrue | ->          |return
-    |c['*']                   | Attr(*) | BoolTrue | ->          |return
-    |c['+']                   | Attr(+) | BoolTrue | ->          |return
+    |c['?']                   | Attr($?) | BoolTrue | ->          |return
+    |c['!']                   | Attr($!) | BoolTrue | ->          |return
+    |c['*']                   | Attr($*) | BoolTrue | ->          |return
+    |c['+']                   | Attr($+) | BoolTrue | ->          |return
     |default                  |                                  |return
 
 
@@ -511,13 +511,9 @@
     |c['[']                   | /array                           |return  ; array owns its delimiter
     |default                  | MARK | /typed_value(:space_term, :bracket) |return
 
-; Bracket ID value - IDs are always BareValue (no type detection)
-; Space or ] terminates
-|function[value_bracket:BareValue]  | MARK
-  |state[:main]
-    |c[']']                   | TERM                             |return
-    |c[' ']                   | TERM                             |return
-    |default                  | ->                               |>>
+; (value_bracket removed 2026-07-15: [key] values now route through the
+; typed /value path — CORE "Identity": every type is available in brackets,
+; [1] is the integer 1, ["01"] the string "01".)
 
 ; Quoted string parsing - separate functions for each quote type
 ; (parameterized version had scan optimization issues with :quote)

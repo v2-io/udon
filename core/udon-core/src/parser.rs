@@ -923,8 +923,8 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"id"), span: self.span() });
-                    self.parse_value_bracket(on_event);
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$key"), span: self.span() });
+                    self.parse_value(1, b']', on_event);
                     state = State::BracketClose;
                     continue;
                         }
@@ -977,13 +977,13 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"class"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$traits"), span: self.span() });
                     self.parse_class_name(on_event);
                     state = State::PostClass;
                     continue;
                         }
                         Some(b'\'') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"class"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$traits"), span: self.span() });
                     self.advance();
                     self.parse_quoted_class(on_event);
                     state = State::PostClass;
@@ -1809,25 +1809,25 @@ impl<'a> Parser<'a> {
             }
             match self.peek() {
                 Some(b'?') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"?"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$?"), span: self.span() });
                     on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     self.advance();
                     return;
                 }
                 Some(b'!') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"!"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$!"), span: self.span() });
                     on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     self.advance();
                     return;
                 }
                 Some(b'*') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"*"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$*"), span: self.span() });
                     on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     self.advance();
                     return;
                 }
                 Some(b'+') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"+"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$+"), span: self.span() });
                     on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     self.advance();
                     return;
@@ -2129,36 +2129,6 @@ impl<'a> Parser<'a> {
                     self.parse_typed_value(space_term, bracket, on_event);
                     return;
                 }
-            }
-        }
-    }
-
-    /// Parse value_bracket -> BareValue
-    fn parse_value_bracket<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(Event<'a>),
-    {
-        self.mark();
-        loop {
-            match self.scan_to3(b'\n', b']', b' ') {
-                Some(b']') => {
-                    self.set_term(0);
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return;
-                }
-                Some(b' ') => {
-                    self.set_term(0);
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return;
-                }
-                Some(b'\n') => {
-                    self.advance();
-                }
-                None => {
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return;
-                }
-                _ => unreachable!("scan_to only returns target chars"),
             }
         }
     }

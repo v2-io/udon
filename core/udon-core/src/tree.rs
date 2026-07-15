@@ -644,32 +644,25 @@ impl<'a> TreeBuilder<'a> {
 
             // ---- Values ----
             StringValue { content, .. } => {
-                self.add_value(Value::String(bytes_to_cow(&content)));
+                let s = bytes_to_cow(&content);
+                if self.intercept_identity(&s) {
+                    return;
+                }
+                self.add_value(Value::String(s));
             }
             BareValue { content, .. } => {
                 let s = bytes_to_cow(&content);
-                // Check if this is for id or class
-                if let Some(attr_name) = &self.current_attr {
-                    if attr_name == "id" {
-                        let current = self.current();
-                        if let NodeKind::Element { id, .. } = &mut self.nodes[current.index()].kind {
-                            *id = Some(s.clone());
-                        }
-                        self.current_attr = None;
-                        return;
-                    } else if attr_name == "class" {
-                        let current = self.current();
-                        if let NodeKind::Element { classes, .. } = &mut self.nodes[current.index()].kind {
-                            classes.push(s.clone());
-                        }
-                        self.current_attr = None;
-                        return;
-                    }
+                if self.intercept_identity(&s) {
+                    return;
                 }
                 self.add_value(Value::Bare(s));
             }
             Integer { content, .. } => {
-                self.add_value(Value::Integer(bytes_to_cow(&content)));
+                let s = bytes_to_cow(&content);
+                if self.intercept_identity(&s) {
+                    return;
+                }
+                self.add_value(Value::Integer(s));
             }
             Float { content, .. } => {
                 self.add_value(Value::Float(bytes_to_cow(&content)));
@@ -823,6 +816,32 @@ impl<'a> TreeBuilder<'a> {
         }, &span);
         let line = bytes_to_cow(&content);
         self.append_line_content(id, line);
+    }
+
+    /// Route the designated identity attributes ($key / $traits — CORE
+    /// "Identity") into the element's key/trait fields instead of the
+    /// ordinary attribute list. Applies whatever the value's scalar type
+    /// (defect #4 residual: the old code matched wire-names "id"/"class"
+    /// and only BareValue). Returns true when the value was consumed.
+    fn intercept_identity(&mut self, s: &Cow<'a, str>) -> bool {
+        let Some(attr_name) = &self.current_attr else { return false };
+        if attr_name == "$key" {
+            let current = self.current();
+            if let NodeKind::Element { id, .. } = &mut self.nodes[current.index()].kind {
+                *id = Some(s.clone());
+            }
+            self.current_attr = None;
+            true
+        } else if attr_name == "$traits" {
+            let current = self.current();
+            if let NodeKind::Element { classes, .. } = &mut self.nodes[current.index()].kind {
+                classes.push(s.clone());
+            }
+            self.current_attr = None;
+            true
+        } else {
+            false
+        }
     }
 
     fn add_value(&mut self, value: Value<'a>) {
