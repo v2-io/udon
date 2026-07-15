@@ -1813,7 +1813,7 @@ impl<'a> Parser<'a> {
         }
     }
 
-    /// Parse quoted_class -> BareValue
+    /// Parse quoted_class -> StringValue
     fn parse_quoted_class<F>(&mut self, on_event: &mut F)
     where
         F: FnMut(Event<'a>),
@@ -1821,13 +1821,13 @@ impl<'a> Parser<'a> {
         self.mark();
         loop {
             if self.eof() {
-                on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
                 return;
             }
                     self.parse_skip_single_quoted(on_event);
                     self.set_term(0);
                     self.advance();
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
                     return;
         }
     }

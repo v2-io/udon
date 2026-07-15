@@ -433,7 +433,7 @@
     |default                  | TERM                             |return
 
 
-|function[quoted_class:BareValue]  | MARK
+|function[quoted_class:StringValue]  | MARK
   |state[:main]
     | /skip_single_quoted | TERM | ->                            |return
 
