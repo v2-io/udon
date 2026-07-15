@@ -195,13 +195,14 @@ only at a line at-or-shallower-than the attribute's column. The alternative
 (blank line terminates the value) makes multi-paragraph descriptions
 impossible, which defeats a primary use.
 
-*(Joseph- please look at this)* — **what opens a node vs. what is text**:
-proposal — only `|element` as the first deeper thing opens a node value;
-*everything* else (prose, and also fences, `!` directives, `@` references)
-is text, markers literal. Uniform and simple. The tempting exception —  a
-```` ``` ```` fence as a "verbatim value" — is already covered by text
-values plus the `\` escape, and carving it in would reopen the
-which-markers-count question we just closed twice for comments.
+**What opens a node vs. what is text** *(superseded 2026-07-15, same
+session — Joseph's later iteration replaces the narrower proposal that
+stood here)*: the opener set is **`|element`, `!:lang:` raw blocks, and
+```` ``` ```` fences** — each yielding exactly one node value (raw and
+freeform are already nodes, `NodeKind::Raw`, so this widens nothing; see
+§6.5). `@references` and `!{{interpolations}}` are value forms in their own
+right (§6.5). Plain prose as the first deeper thing → text value, markers
+literal from there on.
 
 ### 5.2 The value-position escape
 
@@ -279,6 +280,60 @@ the document is still non-conformant). Alternative is to skip it; parsers
 that recover-and-continue have served us well tonight.
 
 ---
+
+### 6.5 The closed value taxonomy (added late in the session)
+
+Joseph's realization while reviewing: **references belong as attribute
+values** — semantically an attribute-value reference is the natural home,
+because a reference is a *value-pointer to an existing element*, not a
+definition; the parent labels what the pointer is *to it*, and the consumer
+needn't overload/route/duck-type children. (Already implemented and
+fixture-covered: `reference_as_attribute_value`.) With raw blocks and
+fences admitted as node values, the taxonomy closes:
+
+> **A value is: a scalar, a reference, an interpolation, or exactly one
+> node (element / raw / freeform), or a text block.**
+
+```
+|element :one 123
+  :two @other[xyz]        ; reference value — the practical form
+  :three !:normal: ...    ; raw-node value (body = the deeper block)
+  :four ```also-valid     ; freeform-node value (opening-line remainder = body)
+```
+
+The one interaction, resolved by line-rooting (§4) and *preserving* a
+ratified behavior: block-requiring value forms (node/raw/fence) bind to
+the attribute **only on attribute-rooted lines**. On element-rooted lines
+the existing sameline meanings stand — `|a |b :k v ``` ` opens a fence as
+b's *child* (ratified fixture `freeform_sameline_after_attrs`), and
+elements after attrs are the element's children. "Attaches differently if
+started with an attribute."
+
+*(Joseph- please look at this)* — should a **block `!directive`**
+(`:content !if x …`) also be a legal node value? Logically consistent
+(directives are nodes) but semantically odd as a *value* before the
+dynamics dialect is real. Proposal: defer — exclude block directives from
+the opener set for now; revisit with DYNAMICS.
+
+**Blank lines are block-level decoration** (Joseph, same iteration):
+between attribute declarations they are pure decoration — a flag "never
+tries to turn into text"; the flag-vs-block decision skips blank lines.
+An explicitly empty text value is spellable as a deeper lone `\` — which
+correctly trips the `?`-convention advisory when used under `:attr?`
+(the convention catching exactly what it should).
+
+*(Joseph- please look at this)* — blank-skipping means a deeper block
+several blank lines below a flag attribute still **binds backward** as its
+value (`:a?` + two blank lines + deeper prose → a's text value). Proposal:
+accept — it's the same rule as elements' deferred children, and an
+AST-layer advisory ("distant block bound to attribute") can flag the
+weird-distance cases if they bite in practice.
+
+**Leading blank lines before an element's first prose**: current model
+already answers this — they emit `BlankLine` events (round-trip fidelity
+preserved, consumer's choice per the parser-behavior note) and the text
+content begins at the first content line. Trimmed-by-default, recoverable.
+Recommendation: keep; nothing to change.
 
 ## 7. Flags and the `?` convention
 
@@ -419,7 +474,8 @@ This guideline belongs in `core/CLAUDE.md` when the model lands.
 
 1. §3 asymmetry (`true story` text vs `7 apples` error) — bless knowingly.
 2. §5.1 blank lines in text values *(Joseph- please look at this above)*.
-3. §5.1 node-vs-text opener set *(Joseph- please look at this above)*.
+3. §5.1 opener set — superseded by §6.5's closed taxonomy; residual:
+   block directives as values (deferred, see §6.5).
 4. §5.2 value-position escape — confirm the fourth escape position + its
    greedy-block behavior.
 5. §6 second-element recovery shape *(Joseph- please look at this above)*.
@@ -430,6 +486,9 @@ This guideline belongs in `core/CLAUDE.md` when the model lands.
 8. Sameline `:a` valueless at end of an element line followed by `|child` —
    flag + el's child (falls out of §4/§6, but deserves an explicit example
    in CORE because it's the composition people will worry about).
+9. §6.5 backward-binding across blank lines *(Joseph- please look at this
+   above)*.
+10. §6.5 block directives as node values — deferred pending DYNAMICS.
 
 ---
 
