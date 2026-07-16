@@ -19,8 +19,17 @@ composite/standard types. (Core-spec edits live in `TODO-SPEC-CORE.md`.)
 - [ ] **Dialect architecture** — confirm the `<…>` dialect model, default-on
       profiles, unlabelled dispatch. Mostly settled in CORE "Explicit Typing";
       track remaining dialect-level decisions here.
+- [ ] **Pragma** — the in-document declaration binding a document to its
+      dialects + schema + expected host-interpreter version, with a reserved
+      core-version slot. Nothing exists yet; tiny surface, future-proofs
+      everything — a source-of-truth substrate must survive its own
+      evolution. (Filename-designator ↔ pragma binding is tracked in
+      `TODO-SPEC-CORE.md`.) *(routed from the archived review's CTQ,
+      2026-07-16; discuss w/ Joseph)*
 - [ ] **Composite / standard numeric types** — the rational & complex
       bare-vs-dialect fork; nested `<…>` constructors. Direction in
       `../design/composite-types.md`. *(discuss w/ Joseph)*
-- [ ] Pull remaining dialect / markdown / fence / guard open decisions from
-      `../REVIEW-JULY-2026.md` §7-F and the `../design/` notes into here.
+- [ ] Pull remaining dialect / markdown open decisions from the `../design/`
+      notes into here. (The archived review's §7-F decision list is fully
+      accounted for: eight of nine resolved in CORE 0.8/0.9; the ninth — the
+      Markdown subset — is the MARKDOWN.md item above.)

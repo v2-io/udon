@@ -41,7 +41,8 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       and decompositions, not the spec-behavior worklist.
 - [ ] **Bootstrap: drain the legacy tracking into the lanes, deprecating the
       subsumed.** Triage every open item in the old places — the `design/`
-      notes, `REVIEW-JULY-2026.md` §4/§7-F, the `REBOOT-PLAN.md` backlog
+      notes, `_archive/REVIEW-JULY-2026.md` §4/§7-F *(drained 2026-07-16)*,
+      the `_archive/REBOOT-PLAN.md` backlog *(drained 2026-07-16)*
       (§4 Phases 1–3 + spike track) — and route each to its lane.
       (`core/PLAN.md` drained and deleted; the Dec-2025 `docs/` brainstorms
       moved into `design/` as AGENT-UX mining sources.)
@@ -52,6 +53,17 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       items, perf, bindings, utilities, still-open spec decisions. Delete each
       source when fully drained. The per-lane "pull from X"
       tasks are the hands; this is the rule they follow.
+- [ ] **[later] Literate fusion — the fused ground truth (CTQ-E).** Spec
+      prose, descent grammar, and compliance fixtures extracted from ONE
+      source — which, since `.desc` is already UDON-shaped, can itself be a
+      UDON document — so spec↔grammar↔fixture changes are atomic in a single
+      commit. Upgraded from aspiration to IN by Joseph (2026-07-08) after
+      reconciling five divergent opinions by hand (spec prose, grammar,
+      generated parser, fixtures, live probes) cost a review cycle for one
+      fence question. Pilot on a single feature first (fences was the
+      proposed pilot); gated on grammar congealment. Test blocks can drop to
+      `!:rust:` doctests where the fixture DSL falls short (Joseph).
+      *(routed from the archived review/reboot plan, 2026-07-16)*
 - [ ] **[later] Dogfood:** once this version is all the way through core and the
       parser is compliant, rewrite these TODO files as UDON.
 - [ ] **[later] Consider UDON for the test fixtures themselves** (today:

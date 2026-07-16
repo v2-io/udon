@@ -111,6 +111,30 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       column counting into the memchr scan (would speed BOTH backends);
       drain-policy tuning; boundary-state hop reduction in the value
       scanner (grammar-level); SCAN-coverage audit of the 0.9 states.
+- [ ] **CommonMark non-conflict as a measured gate** — run the CommonMark
+      spec examples through the parser as prose bodies and assert survival.
+      The July measurement (pre-0.9 guards): 89.7% byte-faithful with zero
+      silent text mutations, 93.0% with a `!` letter-guard — the 0.9 Marker
+      Recognition guards now exist, so re-measure and pin it as a standing
+      corpus test; residual is UDON-quoting-UDON and math notation (`|E|`),
+      which is linter territory. *(routed from the archived review's CTQ,
+      2026-07-16)*
+- [ ] **Whole-grammar fuzzing / no-panic guarantee** — "any byte sequence →
+      events or Error events, never a crash" is a statable, testable
+      guarantee the byte-based core makes cheap. Historically only the
+      temporal recognizer was fuzzed, and that recognizer left bare
+      recognition in 0.8. *(routed from the archived review's CTQ,
+      2026-07-16)*
+- [ ] **Interpolation coverage audit** — CORE "Implementation Notes" still
+      says interpolation in attribute values / element keys is not
+      implemented, but the 0.9 grammar routes value-position `!{{…}}`
+      through /interpolation and `[key]` through the typed /value path (so
+      the note may be stale). Verify against fixtures, correct the CORE
+      note, and pin what is genuinely still open — notably mixed
+      literal+interpolation multi-part values, where DYNAMICS.md's old
+      `ArrayStart`/segments sketch contradicts the ratified 0.9 flat wire
+      (only literal `[…]` arrays on the wire). *(multi-part wire shape:
+      discuss w/ Joseph)*
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
@@ -127,9 +151,13 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         ~15 number states in `30-udon.values.descent.udon` each repeat the same four
         terminator rows; merging digit classes is not an alternative
         (per-base validation: `0o9` must fall to BareValue).
-      - named INT constants — would let the attr/value return-code
-        vocabulary (documented at `/block_attr` in `20-udon.attributes.descent.udon`)
-        read symbolically.
+      - **generator-verified determinism** — descent verifying that every
+        state's transitions cover disjoint byte classes, making the grammar
+        its own determinism proof; also the real fix for warning-free
+        generated output (the `unreachable_patterns` warnings are precisely
+        overlap the generator failed to reject). The single
+        highest-leverage descent feature for the "checkably deterministic
+        core" goal. *(routed from the archived review's CTQ, 2026-07-16)*
       *Resolved 2026-07-16:* saved-state re-emittable captures landed in
       descent (`SAVE(slot)` / `TypeName(USE_SAVED(slot))`, both backends —
       see descent CHANGELOG); the grammar re-emits `Attr` per segment via

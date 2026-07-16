@@ -18,7 +18,7 @@ spec is ahead of the parser again: catch-up is measured by the ACTIVE group
 `fixtures/v0.9/` (see `fixtures/README.md`), whose cases are edited from
 CORE text as it lands. Open parser residuals live in `TODO-CORE-PARSING.md`
 (event parser + grammar) and `TODO-PARSER.md` (AST/consumer layer) — not in
-a plan file. For cross-repo history see `~/src/udon/REVIEW-JULY-2026.md`.
+a plan file. For cross-repo history see `~/src/udon/_archive/REVIEW-JULY-2026.md`.
 
 ## The SPEC Is Ground Truth
 

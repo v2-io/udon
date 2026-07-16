@@ -29,6 +29,13 @@ root `TODO-META.md` — not here.)
       `""` + `is_anonymous()` (vs `Option<&str>`); streaming granularity =
       one root-level subtree per shipment, each an owned single-root
       `Document`; root blank lines/warnings ship nothing.
+- [ ] **Error-reporting quality** — multi-error collection
+      (`Document::parse` stopped at the first error as of the July estate
+      review), source-snippet diagnostics, and the message-quality bar
+      ("world-class error messages" was the stated goal; plumbing was
+      absent). Node spans landed 2026-07-11 — verify current state before
+      building on this description. *(routed from the archived reboot plan,
+      2026-07-16)*
 - [ ] **[later] Language bindings** — Ruby (FFI over the streaming API, lazy
       tree projection), WASM, Python (PyO3), C ABI shared library. Predicated
       on a stable, compliant parser API.

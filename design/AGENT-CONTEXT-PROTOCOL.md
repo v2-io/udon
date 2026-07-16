@@ -1,5 +1,14 @@
 # Agent Context Protocol — Brainstorm
 
+> **Status (2026-07-16).** Dec-2025 brainstorm, kept as vision/motivation.
+> Barely UDON-specific (it's about agent affordances for *code* tooling
+> generally), so CORE didn't supersede it — but its "build a new protocol"
+> framing predates MCP's dominance; the live UDON thread it seeded runs
+> `UDON-AS-ACP-FORMAT.md` → `udon-agentic.md` → `../ux/TODO-AGENT-UX.md`.
+> Many individual observations (semantic anchors, pre-edit ambiguity
+> warnings, propose/validate/apply, intent-aware responses) remain unbuilt
+> in mainstream tooling and still read fresh.
+
 *Raw thinking about what agents actually need from tooling*
 
 ---

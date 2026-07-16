@@ -5,7 +5,7 @@ This directory is home to both UX tracking lanes — `TODO-HUMAN-UX.md`
 empirical usability harness, agentic affordances) — plus the editor
 implementations below.
 
-First editor affordances for UDON. Context: REVIEW-JULY-2026.md §3 (concerns
+First editor affordances for UDON. Context: `_archive/REVIEW-JULY-2026.md` §3 (concerns
 4 and 6) — UDON's failure modes in unaware editors are *silent* (a reflowed
 line that lands `:attr`/`;-)`/`!important` at line start silently becomes
 structure), so even minimal editor awareness has outsized value. Everything
