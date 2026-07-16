@@ -1,5 +1,16 @@
 # UDON Parser Strategy
 
+> **Historical** (archived from `notes/` 2026-07-16). Dec-2025 architecture
+> plan, largely realized or superseded: the ring-buffer streaming sketch is
+> superseded by the descent **pushdown backend** (resumable at any byte
+> boundary); Liquid-as-host-dialect became `spec/DYNAMICS.md`; the
+> markdown-in-core question became `spec/MARKDOWN.md` + the SPEC-OTHER lane;
+> WASM exists (`core/udon-wasm/`). The bindings-tier plan (C ABI / WASM /
+> native ports) lives on as `core/TODO-PARSER.md` "[later] Language bindings".
+> One nugget not yet re-homed: if Liquid alignment ever needs formalizing,
+> defer to Shopify's Liquid spec as the reference standard (for DYNAMICS
+> ratification).
+
 ## Overview
 
 A Rust core parser with two build targets (C ABI shared library + WASM) to

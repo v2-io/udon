@@ -11,4 +11,16 @@
 Actionable items get extracted from these notes into the co-located TODO lanes
 (`../spec/TODO-AUX.md` for schema/paths/patch; `../spec/TODO-SPEC-OTHER.md` for
 dialects/markdown; `../TODO-UTILS.md`, `../ux/TODO-AGENT-UX.md`). The notes stay as
-reference.
+reference. When pulling, the drain rule holds: **deprecate, don't re-track,
+anything subsumed by the fixture + grammar iteration passes** — a "make the
+parser do spec-behavior X" item *is* a compliance fixture, not a lane task;
+only genuine residuals survive.
+
+Arrivals 2026-07-16 (from the dissolved `notes/`, each with its own status
+banner): `desc-design-principles.md` (Joseph's .desc measuring stick, current),
+`positioning.md` (agent-voice positioning essay, README source material),
+`markup-feature-matrix.md` (26-language survey, Markdown-subset evidence),
+`semachrome.md` (highlighting/theme-generation exploration; autocolors since
+landed). Historical `notes/` material went to `../_archive/` (`analysis.md`,
+`feedback.md`, `implementation-status.md`, `parser-strategy.md`,
+`implementation-phase-2.md`, `spikes/`).

@@ -2,7 +2,15 @@
 
 *Analysis prepared December 2025, examining a 2011 project through the lens of Temporal Software Theory*
 
-> **Historical.** Reference and mixin semantics described below predate the 2026-07-11 ratifications — see `decisions/DECIDED.md` (D1a: `@` is an inert pointer, never insertion; D-ATTR-1: attributes stack) and `spec/AUTHORITY.md`.
+> **Historical** (archived from `notes/` 2026-07-16). The Dec-2025 revival
+> analysis — repository archaeology, TST case, and the first round of
+> "Resolved Decisions". Several of those December resolutions were later
+> **reversed or superseded** by the ratified spec: scalar typing is syntactic
+> (not "everything is a string"), reference/mixin semantics predate the
+> ratifications (`@` is an inert pointer, never insertion; attributes stack —
+> decisions ledger now in `decisions-superseded/` and `DECIDED.bak.md` here),
+> and `spec/CORE.md` is the sole authority. Kept for the archaeology, the
+> TST framing, and the design-rationale narrative.
 
 ## What UDON Is
 

@@ -1,5 +1,12 @@
 # Lightweight Markup Language Feature Matrix
 
+> [!note] **Status (2026-07-16):** Dec-2025 survey (moved here from `notes/`);
+> facts about *other* languages, so largely evergreen. It is the exploration
+> ground the estate review cites for the Markdown-subset decision (renderer
+> conformance) — see `spec/TODO-SPEC-OTHER.md` "Markdown subset & layers" and
+> `markdown-layers.md` here. LLM-fluency stars reflect the Dec-2025 model that
+> wrote it.
+
 A comprehensive comparison of 26 lightweight markup languages across formatting, structure, interconnections, embedded languages, and tooling.
 
 ---

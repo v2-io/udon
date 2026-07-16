@@ -12,6 +12,13 @@ Items marked *(routed from the archived reboot plan, 2026-07-16)* arrived when
 
 - [ ] **Accessors** — `attr` (scalar/last) + `attr_all` (list); `traits` view
       always a list; host views.
+- [ ] **Reference expansion / mixin-style merge helpers** — core `@` is an
+      inert pointer by ratification (never insertion), which makes
+      dereference/expansion a *host* utility: resolve a reference's selector
+      tuple against a tree, and (maybe) the old merge-attributes-from-target
+      idiom. Whether the merge half is wanted at all, or belongs to the
+      schema layer, is open. *(routed from `notes/NEXT.md` "mixin expansion /
+      reference expansion", 2026-07-16; discuss w/ Joseph)*
 - [ ] **Value coercion API** — `as_i64()`, `as_f64()`, `as_bool()`, … Values
       hold validated raw text by design (good); the ergonomic layer is
       missing. *(routed from the archived reboot plan, 2026-07-16)*

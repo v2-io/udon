@@ -50,7 +50,9 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       Not yet done: density-adaptive fitness / corpus census / optimization
       loop (phase C); `mapping.udon`-as-UDON dogfood; ANSI/vim emission;
       contextual emphasis (phase D). The first real-vault look is tracked
-      under the Obsidian item above.
+      under the Obsidian item above. Dec-2025 design ground for the
+      multi-target/theme-generation ideas: `../design/semachrome.md` (moved
+      from `notes/` 2026-07-16).
 - [ ] **Syntax highlighting** — bring `udon.tmLanguage.json`, `vim/`, and
       `tree-sitter-udon/` current with CORE (especially the new escape model,
       `<…>` typing, and the 0.9 uniform block-attr scan — the "spec vs

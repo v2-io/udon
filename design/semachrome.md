@@ -2,6 +2,18 @@
 
 *Exploratory notes on syntax highlighting infrastructure*
 
+> [!note] **Status (2026-07-16):** Dec-2025 exploration (moved here from
+> `notes/`, was `integration-with-semachrome.md`). Since then the autocolors
+> engine **landed for real** in `core/udon-wasm/src/` (32-role kinship tree,
+> OKLCH — not the CIELAB assumed below — WCAG contrast bands, driving the
+> Obsidian plugin); theory + 2011 archaeology live in `ux/autocolors/PLAN.md`,
+> open phases in `ux/TODO-HUMAN-UX.md`. Also superseded in part: highlighting
+> is now rendered from parser events + spans, which undercuts the "two
+> parsers, two purposes" framing (the tree-sitter spike's keep is an open
+> question in the HUMAN-UX lane). Still-live ideas here: multi-target theme
+> generation (.tmTheme/vim/emacs/CSS/ANSI), colorscheme-definition-in-UDON
+> with relative notation, language-specific frequency weighting.
+
 ---
 
 ## The Name

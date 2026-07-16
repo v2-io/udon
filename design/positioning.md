@@ -1,5 +1,12 @@
 # UDON Positioning
 
+> [!note] **Status (2026-07-16):** Dec-2025 essay written in an agent's own
+> voice; moved here from `notes/`. The positioning holds up against CORE 0.9 —
+> the four-prefix framing, syntactic typing, and streaming claims are all
+> still true (streaming is now *actually* true via the pushdown backend).
+> Prime source material for the public README / outward docs
+> (`TODO-PUBLISHING.md`).
+
 UDON is optimized for agents. The fact that humans also find it clear is a
 fortunate consequence, not the design goal.
 

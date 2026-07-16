@@ -1,5 +1,15 @@
 # UDON Implementation Phase 2: Toward the Ideal
 
+> **Historical** (archived from `notes/` 2026-07-16). Dec-2025/Jan-2026 plan
+> from the **genmachine era** (descent's predecessor naming). Its central
+> architectural insight — streaming events as the primitive, grammar serves
+> streaming, no accumulation/helper functions — was fully realized by descent
+> + the pushdown backend; the roadmap itself was superseded by the July
+> reboot. Surviving threads are in the lanes: error-message quality →
+> `core/TODO-PARSER.md`; tree/selectors → same; bindings → same "[later]"
+> item. Performance targets herein are superseded by real measured numbers
+> (see `core/TODO-CORE-PARSING.md` perf item and commit history).
+
 ## Critical Architecture Insight (Added After Multiple Agent Sessions)
 
 **The streaming event model is the foundation, not a feature.**

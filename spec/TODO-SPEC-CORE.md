@@ -50,8 +50,14 @@
       stated single-line); unclosed identity bracket at EOF (`|el[unclosed`
       — not in the EOF table); empty embedded `|{}`; interpolation inside
       element keys (deferred to DYNAMICS); rational/complex bare-freeze
-      (already tracked in SPEC-OTHER). Each needs a ruling or an explicit
-      deferral. *(discuss w/ Joseph)*
+      (already tracked in SPEC-OTHER); **whitespace-only lines in prose** —
+      CORE says blank lines emit `BlankLine` but never says whether a
+      spaces-only line is "blank"; the parser (probed 2026-07-16) emits
+      `BlankLine` for empty lines but a residual-whitespace `Text` event for
+      spaces-only lines — consumers treating Text as "has content" will trip
+      (side-finding of the archived prose-collision spike,
+      `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
+      an explicit deferral. *(discuss w/ Joseph)*
 - [ ] **Silence with teeth: same-line trailing text after `!:lang:` is
       DROPPED from the event stream** (probe-confirmed 2026-07-16:
       `!:sh: echo hi` emits Raw with empty content and the tail bytes

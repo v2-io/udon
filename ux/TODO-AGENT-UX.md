@@ -10,7 +10,10 @@ fixtures having pinned behavior first.
       models and an older spec; redo from current CORE *after* the compliance
       fixtures have nailed behavior and surfaced ambiguities. Validate via the
       usability harness against the spec (the reference parser can't be the
-      yardstick until it is compliant).
+      yardstick until it is compliant). The January backlog imagined
+      per-profile variants worth weighing when rebuilding: simple (no
+      dynamics), udon+markdown, template/dynamics, dialects. *(routed from
+      `notes/NEXT.md`, 2026-07-16)*
 - [ ] **Empirical usability harness (rebuild)** — `test/usability/` results are
       stale (old models/spec); redo with current models, including local ollama.
 - [ ] **Agentic tool suite (design → implementation)** —
@@ -45,12 +48,23 @@ fixtures having pinned behavior first.
       `UDON-AS-ACP-FORMAT.md`). The Dec sketch's `|{@ ...}` form is not
       valid under 0.9 (inline elements take a name; `@` is a reference) —
       needs a syntax/convention ruling: named element (`|{note ...}`),
-      reserved trait, or new syntax *(discuss w/ Joseph)*.
+      reserved trait, or new syntax *(discuss w/ Joseph)*. Same need from the
+      Dec-2025 fresh-model review (`_archive/feedback.md`): comment-level
+      uncertainty markers (`;?`/`;??`), `???`/TBD values, `.draft`
+      prose-is-the-spec marking — fold into the same ruling.
 - [ ] **Handoff / compaction / memory affordances** — context-handoff
       generator, context-window compactor, UDON-as-agent-memory
       (`UDON-AGENT-TOOLS.md` §5, §15, wild ideas; `UDON-AS-ACP-FORMAT.md`
       bidirectional flow). Now has live consumers to design against — the
       ASF process maps. Predicated on the tool suite above.
+- [ ] **Self-chunking / RAG partitioning experiments** — the README claims
+      UDON documents self-segment for retrieval (element boundaries as
+      intentional chunk boundaries); nobody has measured it. An experiment
+      comparing element-boundary chunking against heuristic chunking (plus
+      the "automatic partitioning" idea — tooling that emits the chunks)
+      would turn the claim into evidence, or usefully kill it. Natural
+      harness tie-in. *(routed from `notes/NEXT.md` "automatic partitioning /
+      semantic chunking experiments", 2026-07-16)*
 - [ ] **UDON as agent/tool response format** — the `UDON-AS-ACP-FORMAT.md`
       thesis ("the format is the protocol"), alive but recontextualized:
       the Dec-2025 docs imagined a new from-scratch protocol (predating

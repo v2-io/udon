@@ -1,3 +1,13 @@
+> **Historical** (archived from `notes/` 2026-07-16). Raw transcript of the
+> Dec-2025 fresh-model (Opus 4.5) first-contact review of UDON, plus the
+> follow-up Q&A — quoted as evidence throughout `REVIEW-JULY-2026.md`. Its
+> major proposals were since ratified in CORE 0.8 (escape unification on `\`,
+> key/traits terminology, `@`-as-pointer) or absorbed into the lanes (Markdown
+> subset → SPEC-OTHER; CSS-selector paths → design/udon-paths; UDON-native
+> schema → TODO-AUX; uncertainty/TBD/draft marking → the AGENT-UX annotation
+> item). One unratified stray: `\<newline>` hard breaks — a renderer-level
+> concern that belongs to the Markdown-subset decision if anywhere.
+
 ∴ Thinking…
 
   Okay, this is fascinating. The user has created a new markup/data language called UDON. Let me give my honest, thorough impressions having just studied 26 other lightweight markup

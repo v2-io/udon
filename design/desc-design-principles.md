@@ -3,6 +3,10 @@
 *Recorded 2026-07-11 from Joseph, during the libdescent bootstrap work; this
 is the measuring stick for all desc-format proposals.*
 
+> Moved here from `notes/` 2026-07-16. Known inbound references from the
+> descent repo still point at the old path (`tools/descent/rust/PROGRESS.md`
+> ×2, `tools/descent/rust/spikes/udon-reader/NOTES.md`) — fix descent-side.
+
 ## Origin
 
 `.desc` began as a **descriptive table** — literally a bit-lookup-table-style
@@ -39,6 +43,6 @@ under the oracle-guarded rule, or to redesign in the UDON-dialect endpoint).
 
 The fusion endpoint (.desc as a pure UDON dialect + schema) succeeds only
 if the UDON rendering of a grammar is *at least as table-legible* as today's
-.desc. Rendering-to-tables (Layer 4, design/markdown-layers.md) is part of
+.desc. Rendering-to-tables (Layer 4, `markdown-layers.md` in this directory) is part of
 the answer: the stored form and the scanned form need not be identical if
 tooling renders grammars back into the lookup-table view Joseph reasons in.

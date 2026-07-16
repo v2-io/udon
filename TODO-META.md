@@ -23,14 +23,6 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
         indentation edge cases, prose-dedentation depth, element-name
         charset torture — and edge/combination coverage); operational
         detail in `core/fixtures/README.md`.
-- [ ] **Bootstrap: drain the legacy tracking into the lanes** — one source
-      left: `notes/` (drain in progress 2026-07-16); the `design/` notes are
-      covered by per-lane pull-items (AUX, SPEC-OTHER, UTILS, AGENT-UX).
-      The rule those pulls follow — **deprecate, do not re-track, anything
-      subsumed by the fixture + grammar iteration passes**: a "make the
-      parser do spec-behavior X" item *is* a compliance fixture, not a
-      CORE-PARSING task; only genuine residuals survive. Delete each source
-      when fully drained.
 - [ ] **[later] Literate fusion — the fused ground truth (CTQ-E).** Spec
       prose, descent grammar, and compliance fixtures extracted from ONE
       source — which, since `.desc` is already UDON-shaped, can itself be a

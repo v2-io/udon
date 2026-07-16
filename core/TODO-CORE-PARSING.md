@@ -76,10 +76,13 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       spec examples through the parser as prose bodies and assert survival.
       The July measurement (pre-0.9 guards): 89.7% byte-faithful with zero
       silent text mutations, 93.0% with a `!` letter-guard — the 0.9 Marker
-      Recognition guards now exist, so re-measure and pin it as a standing
-      corpus test; residual is UDON-quoting-UDON and math notation (`|E|`),
-      which is linter territory. *(routed from the archived review's CTQ,
-      2026-07-16)*
+      Recognition guards now exist (spot-verified by probe 2026-07-16:
+      line-initial `:=` and `!(…)` both survive as Text), so re-measure and
+      pin it as a standing corpus test; residual is UDON-quoting-UDON and
+      math notation (`|E|`), which is linter territory. Instrument + corpus
+      snapshot preserved at `_archive/spikes/prose_collision_probe.py` +
+      `commonmark-spec-0.31.2.json` (runnable; resurrect or rewrite as the
+      standing test). *(routed from the archived review's CTQ, 2026-07-16)*
 
 - [ ] **Whole-grammar fuzzing / no-panic guarantee** — "any byte sequence →
       events or Error events, never a crash" is a statable, testable

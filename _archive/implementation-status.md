@@ -1,5 +1,14 @@
 # UDON Implementation Status
 
+> **Historical** (archived from `notes/` 2026-07-16). The January-2026
+> cross-repo reconciliation snapshot ("2025-01-14" below is a new-year date
+> typo). The estate review called it "a snapshot of exactly the right shape";
+> its *content* is fully superseded — every decision it lists as needed was
+> ratified in CORE 0.8 (escape unification, key/traits, references) and its
+> sync targets (udon-ruby, the old descent example) are archived. The
+> "snapshot for coordination" role is now played by the versioned compliance
+> fixtures + per-area TODO lanes.
+
 **Comparison of spec, implementations, and proposals across sources.**
 
 Last updated: 2025-01-14
