@@ -107,13 +107,59 @@
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Raw block !:lang: — body verbatim, dedented relative to the directive
+# Raw block !:lang: — body verbatim, dedented relative to the raw base
 # ---------------------------------------------------------------------------
-# ⚠ CORE says the body is "dedented on output relative to the directive's
-# indent level" — the exact stripping rule (first-content-line base, as in
-# prose? directive column + fixed offset?) is not pinned. Encoded here as
-# first-content-line base with deeper lines keeping their relative indent
-# (the reading that loses no information). Filed in spec/TODO-SPEC-CORE.md.
+# The raw base is the FIRST CONTENT LINE's column (pinned in CORE "Raw
+# Directives" — same shape as prose content-base); deeper lines keep their
+# extra indent. The body may also begin on the directive line itself (ruled
+# 2026-07-16): whitespace after the label's closing ':' separates, the tail
+# is the first RawContent, and it does not establish the raw base.
+
+- id: raw_block_sameline_body
+  desc: body may begin on the directive line; the tail is the first RawContent
+  udon: "!:sh: echo hi\n"
+  events:
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+
+- id: raw_block_sameline_body_then_block
+  desc: same-line tail plus indented body; raw base set by the first INDENTED line
+  udon: "!:sh: echo one\n  echo two\n    indented\n"
+  events:
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo one"]
+    - [RawContent, "echo two"]
+    - [RawContent, "  indented"]
+    - DirectiveEnd
+
+- id: raw_block_sameline_body_eof
+  desc: same-line tail at EOF — emitted, never dropped (EOF closes silently)
+  udon: "!:sh: echo hi"
+  events:
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+
+- id: raw_block_node_value_sameline_body
+  desc: raw node value with a same-line body (uniform — CORE Raw Directives)
+  udon: "|el :script !:sh: make build\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "make build"]
+    - DirectiveEnd
+    - ElementEnd
 
 - id: raw_block_basic
   desc: colon-wrapped label opens a raw block; body is not parsed as UDON

@@ -6361,7 +6361,7 @@ impl<'a> Parser<'a> {
         let mut col: i32 = 0;
         let mut dstate: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe,  }
+        enum State { Dispatch, RawKind, RawColon, RawEol, RawSameline, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe,  }
         let mut state = State::Dispatch;
         loop {
             match state {
@@ -6423,7 +6423,11 @@ impl<'a> Parser<'a> {
                     }
                 }
                 State::RawEol => {
-                    match self.scan_to3(b'\n', b' ', b'\t') {
+                    if self.eof() {
+                        on_event(Event::DirectiveEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
                         Some(b'\n') => {
                     self.advance();
                     state = State::RawContent;
@@ -6433,9 +6437,27 @@ impl<'a> Parser<'a> {
                     self.advance();
                     continue;
                         }
+                        _ => {
+                    self.mark();
+                    state = State::RawSameline;
+                    continue;
+                        }
+                    }
+                }
+                State::RawSameline => {
+                    match self.scan_to1(b'\n') {
+                        Some(b'\n') => {
+                    self.set_term(0);
+                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
+                    self.advance();
+                    state = State::RawContent;
+                    continue;
+                        }
                         None => {
-                            on_event(Event::DirectiveEnd { span: self.span() });
-                            return;
+                    self.set_term(0);
+                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
                     }

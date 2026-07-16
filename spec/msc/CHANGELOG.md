@@ -62,6 +62,15 @@ wire-vs-view round-trip caution, node-value one-way-door caution,
 prose-base cross-ref, Document-layer mini-definition, `\` in the head row,
 Positional-Contexts examples out of table cells).
 
+### Added (2026-07-16, Joseph — ruled a plain bug on both sides)
+- **Raw blocks: same-line body** — `!:lang: tail` captures the tail as the
+  body's first content (whitespace after the label's closing `:` separates;
+  the tail does not establish the raw base — same shape as fences and
+  sameline prose; uniform in node-value position). CORE had been silent and
+  the reference parser silently dropped the tail bytes — the keep-everything
+  posture's one known violation, found live in a consumer document by the
+  2026-07-16 differential re-scan.
+
 ### Changed (ratified direction 2026-07-15; CORE text drafted same day; the
 inline R1–R5 draft flags were confirmed 2026-07-16 — see Ruled above)
 - **Plain attributes always take a value**; missing value with no deferred

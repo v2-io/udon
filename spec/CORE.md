@@ -1446,6 +1446,7 @@ The content follows normal indentation rules:
 - Indented under the directive
 - Not parsed as UDON (no `|`, `:`, `!`, `;` interpretation)
 - **Dedented relative to the first content line's column** (the *raw base*): that line establishes the strip column; deeper lines keep their extra indent as content. A line at or left of the directive's own column ends the block. (CORE previously said only "relative to the directive's indent level"; the first-content-line base is the exact stripping rule -- same shape as prose content-base.)
+- **The body may begin on the directive line itself** (ruled 2026-07-16 -- the same shape as fences, where everything after the opening backticks begins the body): whitespace after the label's closing `:` separates, and the rest of the line is the body's first content -- `!:sh: echo hi` captures `echo hi`. Like sameline prose, a same-line tail does **not** establish the raw base; the first *indented* content line does. This applies uniformly wherever the block form appears, including as a node value (`|el :script !:sh: make build`).
 
 ### Inline Raw Content
 

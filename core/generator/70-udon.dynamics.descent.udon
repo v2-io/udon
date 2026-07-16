@@ -22,10 +22,21 @@
     |c[':']                   | ->                               |>> :raw_eol
     |default                  |                                  |return  ; missing second :
 
+  ; The body may begin on the directive line (CORE "Raw Directives", ruled
+  ; 2026-07-16 — same shape as fences): whitespace after the label's closing
+  ; ':' separates; the rest of the line is the first RawContent. A same-line
+  ; tail does not establish the raw base (like sameline prose). Before this
+  ; ruling the tail was consumed with no event — the keep-everything
+  ; posture's one known violation.
   |state[:raw_eol]
     |c['\n']                  | ->                               |>> :raw_content
     |c[' \t']                 | ->                               |>>
-    |default                  | ->                               |>>  ; consume rest of line
+    |default                  | MARK                             |>> :raw_sameline
+
+  |state[:raw_sameline]
+    |eof                      | TERM | RawContent(USE_MARK)      |return
+    |c['\n']                  | TERM | RawContent(USE_MARK) | -> |>> :raw_content
+    |default                  | ->                               |>>
 
   ; Raw content — captured at greater indent, dedented relative to the
   ; FIRST content line's column (raw_base); deeper lines keep their extra

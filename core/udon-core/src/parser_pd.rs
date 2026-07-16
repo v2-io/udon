@@ -442,7 +442,7 @@ enum EmbeddedSt { PdEntry, Identity, PostIdentity, PreContent, PreContentMl, Che
 enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, MlWs, PdK233, PdK234, PdK235, PdK236, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, PdK243, PdK244, PdK245, PdK246, PdK247, PdK248, PdK249, PdK250, PdK251, PdK252, PdK253, PdK254, }
+enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawSameline, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, PdK243, PdK244, PdK245, PdK246, PdK247, PdK248, PdK249, PdK250, PdK251, PdK252, PdK253, PdK254, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum DirectiveArgsSt { PdEntry, PdK255, PdK256, }
@@ -8944,7 +8944,12 @@ impl PushdownParser {
                             }
                         }
                         BlockDirectiveSt::RawEol => {
-                            match self.scan_to3(b'\n', b' ', b'\t') {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
                                 Some(b'\n') => {
                                     self.advance_or_pend();
                                     f.st = BlockDirectiveSt::RawContent;
@@ -8955,8 +8960,26 @@ impl PushdownParser {
                                     f.st = BlockDirectiveSt::RawEol;
                                     continue 'st;
                                 }
+                                _ => {
+                                    self.mark();
+                                    f.st = BlockDirectiveSt::RawSameline;
+                                    continue 'st;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawSameline => {
+                            match self.scan_to1(b'\n') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let (c, sp) = self.take_capture(); on_event(StreamEvent::RawContent { content: c, span: sp }); }
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawContent;
+                                    continue 'st;
+                                }
                                 None => {
                                     if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let (c, sp) = self.take_capture(); on_event(StreamEvent::RawContent { content: c, span: sp }); }
                                     on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                                     continue 'run;
                                 }

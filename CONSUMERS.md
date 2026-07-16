@@ -79,12 +79,13 @@ plain strings, `<…>` reserved for the dialect layer, fences specified.
   parser, and the two meaning changes above already read as the authors
   intended.
 - `vivarium/doc/PROCESS.udon`: (a) in the `[udon-safe-subset]` norm, prose
-  reflow left `!:lang:` at the start of a line — it parses as a real
-  (empty) raw directive and the rest of that line ("never triple-backtick
-  fences; no @-references; never start a") is **absent from the event
-  stream** (identically under 0.8 and 0.9 — latent, not a regression).
-  Re-wrap the paragraph or escape the sigil (`\!:lang:`). The very next
-  clause of that norm states the equivalent rule for line-initial `:`.
+  reflow left `!:lang:` at the start of a line — it parses as a real raw
+  directive. Until 2026-07-16 the rest of that line was silently **absent
+  from the event stream**; Joseph ruled that a plain bug the same day and
+  the tail is now captured as the raw body — but the promotion itself
+  remains (the sentence displays as a code block, not prose). Re-wrap the
+  paragraph or escape the sigil (`\!:lang:`). The very next clause of that
+  norm states the equivalent rule for line-initial `:`.
   (b) The same file's `[flagged-file-routing]` norm quotes its `:files`
   list items as a workaround for defect #13 ("fix pending") — that defect
   is fixed; bare dotted items (`.archive/…`, `ref/…/x.md`) now parse

@@ -58,18 +58,6 @@
       (side-finding of the archived prose-collision spike,
       `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
       an explicit deferral. *(discuss w/ Joseph)*
-- [ ] **Silence with teeth: same-line trailing text after `!:lang:` is
-      DROPPED from the event stream** (probe-confirmed 2026-07-16:
-      `!:sh: echo hi` emits Raw with empty content and the tail bytes
-      appear in *no* event — the only known violation of the
-      keep-everything posture; latent since 0.8, so not a 0.9 regression).
-      CORE's raw-block section never addresses a same-line tail, and the
-      grammar's `:raw_eol` consumes it silently. Found in the field by the
-      2026-07-16 consumer re-scan: a reflowed paragraph in vivarium's
-      PROCESS.udon put `!:lang:` at line start and the sentence's remainder
-      vanishes. Coherent (a)-level options exist (tail = first raw content
-      line, or warn + keep as raw body); needs a ruling, then a fixture.
-      *(discuss w/ Joseph)*
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
