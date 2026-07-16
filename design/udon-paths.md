@@ -1,5 +1,19 @@
 # UDON Path Syntax
 
+> **⚠️ Stale — input material, not a design of record** (Joseph,
+> 2026-07-16: "old and stale... zero need to care at all about what it
+> says (or you can use it as your starting point, no problem)"). Predates
+> the 0.8/0.9 reboot: its positional-`[0]` rule collides with ratified
+> typed identity (`[1]` *is* the integer-1 key), its identifier charset
+> and `:attr:value` forms are pre-0.9, and the Ruby API section predates
+> the Rust toolchain. The live design work — including the ruled direction
+> that **in-document references become a subset of path syntax**, with a
+> descent-grammar prototype forcing the embeddability questions — is
+> tracked from `spec/TODO-AUX.md` (adjudication packet in `spec/msc/`).
+> The load-bearing ideas that survive on their merits: paths reuse UDON's
+> own prefixes; traits AND-filter; `at`/`all` = exactly-one-or-error vs
+> explicitly-plural.
+
 **A path language that reuses UDON's own prefix system.**
 
 The key insight: UDON already has a consistent prefix system (`|` elements, `:`

@@ -7,10 +7,19 @@ likely home is a future `spec/aux/` once `spec/` splits into
 
 ## Open
 
-- [ ] **Path syntax** — `../design/udon-paths.md` (settled-in-shape; extract
-      its open questions here — `||` descent, `[*]`, `:attr@`
-      reference-following). **First rung of the critical path to the
-      agentic edit tool** (Joseph's 2026-07-16 priority — see
+- [ ] **Path syntax — design fresh; references become a subset of it**
+      (Joseph, 2026-07-16). `../design/udon-paths.md` is input material
+      only ("old and stale... zero need to care what it says"); the design
+      drivers are (a) in-document `@` references = a path subset — CORE's
+      `@element[key].trait` selector tuple already *is* one path segment,
+      so the planned structured reference wire and paths co-design — and
+      (b) document-embeddability (bounded lookahead, clean value-boundary
+      terminators). **Prototype the parser as a simple descent grammar
+      alongside the design** (authorized; let the grammar surface the
+      terminator questions). Session packet with the open forks +
+      recommendations: `msc/adjudication-2026-07-paths-and-silences.md`
+      (positional-vs-typed-identity `[0]` is the big one). **First rung of
+      the critical path to the agentic edit tool** (see
       `../ux/TODO-AGENT-UX.md`, tool suite item); also feeds the paths
       implementation in `../TODO-UTILS.md`.
 - [ ] **Schema syntax** — a main pending area: how schemas (the constraint layer)
