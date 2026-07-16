@@ -1,7 +1,8 @@
 # autocolors × udon — bridge plan
 
-*2026-07-16. Status: proposed — nothing here is ratified; open decisions are
-marked. Source substrate: `archaeology-2011/` (verbatim 2011 artifacts, see
+*2026-07-16. Status: rulings 1–4 ratified (see Decisions) and the first
+build (phases A+B) landed the same day — see Phases for what is real vs.
+open. Source substrate: `archaeology-2011/` (verbatim 2011 artifacts, see
 its README) and the parser-driven highlighting landed in
 `../obsidian-udon/` this week.*
 
@@ -114,21 +115,39 @@ open decision) so targets stay cheap.
 
 ## Phases
 
-- **A. Palette engine spike** — OKLCH + APCA + monotone-base anchored to the
-  live theme; static 2011-style mapping for the current 11 classes; a
-  swatch/test page rendering `examples/cheatsheet.udon` under N generated
-  schemes side-by-side (the 2011 `quicktest.html` pattern — it worked).
-  *Proves: generated-at-load schemes look native and good in Obsidian.*
-- **B. Mapping + generator proper** — modern `mapping.udon`; port the
-  personality/divergence model; named-seed reproducibility; richer class
-  vocabulary from the wasm walk (depth, warnings, embedded-language spans).
-- **C. Fitness + density adaptation** — the four criteria + composition
-  budget as functions; corpus census via the parser; optimization loop;
-  A/B the result against phase-A output on the swatch page.
+- **A+B (merged per ruling #1: no swatch detour) — LANDED 2026-07-16.**
+  Rust engine beside the parser, same wasm artifact
+  (`core/udon-wasm/src/{roles,scheme,color,rng}.rs`):
+  - 32-role kinship tree (`roles.rs` — mapping.udon reborn as code for now;
+    each role states hue-kinship primes, chroma dulling, contrast bias, and
+    emphasis tier, never a color). The wasm walk now emits the fine roles:
+    event spans first, then a conservative lexical refinement of scaffold
+    bytes (sigils, brackets, quotes, flags, `$`-keys, `<…>` angles, trait
+    names) — adjacency decoration around authoritative spans, not a grammar.
+  - Generator: 2011 personality params + jittered-even hue spread +
+    kinship divergence, in OKLCH; lightness *solved* per role so WCAG
+    contrast vs. the live theme bg lands in its tier band (structure has a
+    low *max* — receding is a hard constraint, not taste); sibling-repair
+    pass. WCAG ratio stands in for APCA (open: upgrade).
+  - Name IS the seed: FNV-1a 64 + SplitMix64, **pinned** in rng.rs with a
+    pinning test — same name, same scheme, forever.
+  - Obsidian: scheme name is a plugin setting (default `tony-the-tiger`),
+    CSS generated at load + on `css-change`, injected as `#udon-autocolors`;
+    role names read from the wasm module so JS can't drift.
+  - Proven headless (unit tests + node end-to-end on the real onload path);
+    **not yet eyeballed in a live vault** — that's the next act.
+- **C. Fitness + density adaptation** *(open)* — the four criteria +
+  composition budget as measurable functions; corpus census via the parser
+  (per-class span *area*); optimization loop replacing the constructive
+  constraints-only generator; A/B against the landed output.
+- **C′. mapping.udon dogfood** *(open)* — lift the role tree out of
+  `roles.rs` into a modern `.udon` document once the 0.9 surface settles.
 - **D. Beyond** *(each gated on appetite, not feasibility)* — contextual
   emphasis (activity modes were sketched in NOTES §CONTEXTUAL EMPHASIS);
-  ANSI/vim emission; standalone library; the NOTES' own suggestion of
-  empirical testing (first-time vs. accustomed viewers).
+  ANSI/vim emission (highlight.rs still uses its own fixed palette);
+  standalone library; empirical testing (first-time vs. accustomed viewers);
+  depth-aware shading (role tree is static per-role today — nesting depth
+  isn't a color channel yet).
 
 ## Decisions (ruled by Joseph, 2026-07-16)
 

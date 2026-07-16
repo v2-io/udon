@@ -9,7 +9,7 @@ authors.workspace = true
 description = "UDON highlighter compiled to WebAssembly (raw ABI, no bindgen)"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"] # rlib so `cargo test` can run native unit tests
 
 [dependencies]
 udon-core = { path = "../udon-core" }

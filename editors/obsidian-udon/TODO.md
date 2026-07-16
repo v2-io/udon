@@ -23,7 +23,14 @@ then `cp core/target/wasm32-unknown-unknown/release/udon_wasm.wasm editors/obsid
       *Display-only:* this is a CodeMirror soft-wrap-indentation concern — **no
       hard newlines**, no change to the file's bytes or actual indentation.
 - [ ] **Automate the wasm rebuild+copy** (script or cargo alias), and consider
-      trimming size (159 KB now; wasm-opt later).
+      trimming size (227 KB now with the autocolors engine; wasm-opt later).
+- [ ] **Autocolors: first vault look.** The generated-scheme path (settings →
+      wasm `udon_theme` → injected `#udon-autocolors`) is node-proven end to
+      end but has not been rendered in a real Obsidian window: check a .udon
+      file + a ```udon fence in light and dark themes, reroll a few scheme
+      names, confirm the settings tab renders. Taste calls to revisit by eye:
+      overall chroma is deliberately mild; comment hue is randomized like any
+      family (2011 kept comments near-neutral); bold on element names.
 - [ ] **Live Preview fences: anchor on Obsidian's syntax tree** instead of the
       whole-document line-regex fence scan — the current scan is correct at
       note scale but doesn't handle exotic containers (nested callout depth

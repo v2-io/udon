@@ -22,6 +22,10 @@
  *      until 2026-07-16 -- retired in favor of the wasm walk; git has it.)
  *      Applies to both .udon files and ```udon fences in markdown notes.
  *   4. Folding on indentation.
+ *   4b. Autocolors (editors/autocolors/PLAN.md): the same wasm module
+ *      generates a named, deterministic color scheme (the scheme NAME is
+ *      the SEED) anchored to the live theme, injected as #udon-autocolors.
+ *      Scheme name + on/off live in plugin settings.
  *   5. Markdown rendering of prose is FUTURE. The seam is UdonView: it owns
  *      a single "source" editor today; a reading sub-view that walks prose
  *      spans through MarkdownRenderer can be added beside it.
@@ -225,11 +229,10 @@ class UdonView extends TextFileView {
  *      document from one wasm walk.
  */
 
-/* Token classes — keep in sync with core/udon-wasm/src/lib.rs and styles.css */
-const CLASS_NAMES = [
-  'dim', 'name', 'attr', 'string', 'number', 'keyword',
-  'text', 'comment', 'dynamic', 'reference', 'warning',
-];
+/* Token role names are read from the wasm module itself (udon_role_names),
+ * so JS and Rust cannot drift. Populated on init; see roles.rs for the tree.
+ * FALLBACK_ROLE keeps unpainted/unknown indices harmless. */
+const FALLBACK_ROLE = 'dim';
 
 /* ---------------------------------------------------------------- engine */
 
@@ -237,15 +240,48 @@ class UdonWasmHighlighter {
   constructor() {
     this.exports = null; // set once loaded
     this.cache = new Map(); // text -> spans (tiny LRU-ish; cleared at cap)
+    this.roleNames = []; // read from the wasm module on init
   }
 
   /** Instantiate from raw wasm bytes (ArrayBuffer). */
   async init(wasmBytes) {
     const { instance } = await WebAssembly.instantiate(wasmBytes, {});
     this.exports = instance.exports;
+    this.roleNames = this.readBytesResult(this.exports.udon_role_names())
+      .split('\n');
   }
 
   get ready() { return !!this.exports; }
+
+  /** Decode + free a [len:u32 LE][utf8] result from the wasm side. */
+  readBytesResult(ptr) {
+    const mem = this.exports.memory.buffer;
+    const len = new Uint32Array(mem, ptr, 1)[0];
+    const text = new TextDecoder().decode(new Uint8Array(mem, ptr + 4, len));
+    this.exports.udon_free_bytes(ptr);
+    return text;
+  }
+
+  className(cls) {
+    return 'udon-hl-' + (this.roleNames[cls] || FALLBACK_ROLE);
+  }
+
+  /**
+   * Generate the CSS for a named autocolors scheme, anchored to the live
+   * theme's background/foreground (0xRRGGBB ints). Deterministic: the
+   * scheme NAME is the SEED (see core/udon-wasm/src/rng.rs — pinned).
+   */
+  themeCss(schemeName, bgRgb, fgRgb) {
+    if (!this.exports) return null;
+    const nameBytes = new TextEncoder().encode(schemeName);
+    const { udon_alloc, udon_free, udon_theme } = this.exports;
+    const nptr = udon_alloc(nameBytes.length);
+    new Uint8Array(this.exports.memory.buffer, nptr, nameBytes.length).set(nameBytes);
+    const res = udon_theme(nptr, nameBytes.length, bgRgb, fgRgb);
+    const css = this.readBytesResult(res);
+    udon_free(nptr, nameBytes.length);
+    return css;
+  }
 
   /**
    * Highlight `text`; returns [{from, to, cls}] with UTF-16 offsets,
@@ -334,7 +370,7 @@ function udonReadingViewProcessor(highlighter) {
         code.textContent = '';
         for (const { from, to, cls } of spans) {
           const s = document.createElement('span');
-          s.className = 'udon-hl-' + CLASS_NAMES[cls];
+          s.className = highlighter.className(cls);
           s.textContent = text.slice(from, to);
           code.appendChild(s);
         }
@@ -384,7 +420,7 @@ function buildFenceDecorations(view, highlighter) {
           const a = bodyFrom + f;
           const b = Math.min(bodyFrom + t, bodyTo);
           if (b > a) {
-            builder.add(a, b, Decoration.mark({ class: 'udon-hl-' + CLASS_NAMES[cls] }));
+            builder.add(a, b, Decoration.mark({ class: highlighter.className(cls) }));
           }
         }
       }
@@ -429,7 +465,7 @@ function buildDocDecorations(view, highlighter) {
     for (const { from, to, cls } of spans) {
       const b = Math.min(to, doc.length); // clamp: we may have appended '\n'
       if (b > from) {
-        builder.add(from, b, Decoration.mark({ class: 'udon-hl-' + CLASS_NAMES[cls] }));
+        builder.add(from, b, Decoration.mark({ class: highlighter.className(cls) }));
       }
     }
   }
@@ -460,15 +496,68 @@ function udonDocEditorExtension(highlighter) {
 }
 
 
+/* ========================================================================
+ * Autocolors: generated color schemes (editors/autocolors/PLAN.md)
+ * ========================================================================
+ * The wasm module carries the scheme generator (core/udon-wasm/src/
+ * scheme.rs). At load — and again whenever Obsidian's theme CSS changes —
+ * the plugin resolves the live theme's background/foreground, asks the
+ * engine for the named scheme's CSS, and injects it as a <style> element.
+ * The scheme name is a plugin setting; THE NAME IS THE SEED, so any string
+ * is a scheme and the same name reproduces the same scheme everywhere.
+ * Turning autocolors off falls back to styles.css's static role colors.
+ */
+
+const DEFAULT_SETTINGS = {
+  autocolors: true,
+  schemeName: 'tony-the-tiger',
+};
+
+/** Resolve a CSS color (var reference, hex, rgb()) to a 0xRRGGBB int by
+ *  letting the browser compute it on a probe element. Returns null when
+ *  resolution is unavailable (e.g. headless smoke tests). */
+function resolveCssColor(expr, prop) {
+  try {
+    const probe = document.createElement('div');
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    probe.style.setProperty(prop === 'background' ? 'background-color' : 'color', expr);
+    document.body.appendChild(probe);
+    const computed = getComputedStyle(probe)[
+      prop === 'background' ? 'backgroundColor' : 'color'
+    ];
+    probe.remove();
+    const m = /rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/.exec(computed);
+    if (!m) return null;
+    return (Number(m[1]) << 16) | (Number(m[2]) << 8) | Number(m[3]);
+  } catch (e) {
+    return null;
+  }
+}
+
+/** The live theme's anchors, with dark-theme fallbacks. */
+function themeAnchors() {
+  const bg = resolveCssColor('var(--background-primary)', 'background');
+  const fg = resolveCssColor('var(--text-normal)', 'color');
+  return {
+    bg: bg == null ? 0x1e1e1e : bg,
+    fg: fg == null ? 0xdadada : fg,
+  };
+}
+
 module.exports = class UdonPlugin extends Plugin {
   async onload() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+
     // The single highlighting engine, shared by all three surfaces. Views
     // and extensions register immediately; painting starts once the wasm
     // engine is up (each surface refreshes itself on `loading`).
     const highlighter = new UdonWasmHighlighter();
+    this.highlighter = highlighter;
     highlighter.loading = this.app.vault.adapter
       .readBinary(`${this.manifest.dir}/udon.wasm`)
       .then((buf) => highlighter.init(buf))
+      .then(() => this.applyAutocolors())
       .catch((e) => console.error('UDON: wasm highlighter failed to load', e));
 
     this.registerView(VIEW_TYPE_UDON, (leaf) => new UdonView(leaf, highlighter));
@@ -481,9 +570,76 @@ module.exports = class UdonPlugin extends Plugin {
 
     this.registerMarkdownPostProcessor(udonReadingViewProcessor(highlighter), -50);
     this.registerEditorExtension(udonFenceEditorExtension(highlighter));
+
+    // Regenerate when the user switches Obsidian theme / light-dark mode:
+    // the scheme is anchored to the live bg/fg, so it follows.
+    this.registerEvent(this.app.workspace.on('css-change', () => this.applyAutocolors()));
+    if (this.addSettingTab && typeof require === 'function') {
+      try {
+        const { PluginSettingTab, Setting } = require('obsidian');
+        this.addSettingTab(new UdonSettingTab(this.app, this, PluginSettingTab, Setting));
+      } catch (e) {
+        console.error('UDON: settings tab unavailable', e);
+      }
+    }
+  }
+
+  /** (Re)generate and inject the autocolors stylesheet. */
+  applyAutocolors() {
+    if (!this.styleEl) {
+      this.styleEl = document.createElement('style');
+      this.styleEl.id = 'udon-autocolors';
+      document.head.appendChild(this.styleEl);
+      this.register(() => this.styleEl.remove());
+    }
+    if (!this.settings.autocolors || !this.highlighter.ready) {
+      this.styleEl.textContent = '';
+      return;
+    }
+    const { bg, fg } = themeAnchors();
+    const css = this.highlighter.themeCss(this.settings.schemeName || 'tony-the-tiger', bg, fg);
+    if (css) this.styleEl.textContent = css;
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
+    this.applyAutocolors();
   }
 
   onunload() {
-    // Obsidian detaches registered views/extensions automatically.
+    // Obsidian detaches registered views/extensions automatically; the
+    // autocolors <style> element is removed via this.register above.
   }
 };
+
+class UdonSettingTab {
+  constructor(app, plugin, PluginSettingTab, Setting) {
+    // Composition rather than inheritance so main.js stays loadable in
+    // headless smoke tests where `obsidian` is stubbed minimally.
+    const tab = new PluginSettingTab(app, plugin);
+    tab.display = () => {
+      const { containerEl } = tab;
+      containerEl.empty();
+      new Setting(containerEl)
+        .setName('Autocolors')
+        .setDesc('Generate the UDON color scheme from the scheme name (the name is the seed). Off = static fallback colors.')
+        .addToggle((t) => t
+          .setValue(plugin.settings.autocolors)
+          .onChange(async (v) => {
+            plugin.settings.autocolors = v;
+            await plugin.saveSettings();
+          }));
+      new Setting(containerEl)
+        .setName('Scheme name')
+        .setDesc('Any string is a scheme. Same name, same colors, everywhere, forever. Try a few until one sings.')
+        .addText((t) => t
+          .setPlaceholder('tony-the-tiger')
+          .setValue(plugin.settings.schemeName)
+          .onChange(async (v) => {
+            plugin.settings.schemeName = v.trim() || 'tony-the-tiger';
+            await plugin.saveSettings();
+          }));
+    };
+    return tab;
+  }
+}
