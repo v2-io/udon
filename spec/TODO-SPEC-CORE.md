@@ -48,6 +48,14 @@
       manual line wrapping in favor of long lines / soft wrap. Editorial,
       whole-file; best done as a single dedicated commit (no content changes
       mixed in) so diffs stay reviewable.
+- [ ] **Silences surfaced by the 2026-07-16 densification** (deliberately
+      not fixture-encoded — would be inventing spec): multiple element
+      suffixes (`|field?!`); multi-line `[...]` arrays (only envelopes are
+      stated single-line); unclosed identity bracket at EOF (`|el[unclosed`
+      — not in the EOF table); empty embedded `|{}`; interpolation inside
+      element keys (deferred to DYNAMICS); rational/complex bare-freeze
+      (already tracked in SPEC-OTHER). Each needs a ruling or an explicit
+      deferral. *(discuss w/ Joseph)*
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*

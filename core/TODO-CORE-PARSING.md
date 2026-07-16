@@ -20,20 +20,6 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       four after-key suffixes are fixture-encoded in `identity.yaml` and
       green; the Obsidian rendering miss is a highlighter-side issue.
 
-- [ ] **Collapse the per-opener `\`-escape ladders?** *(discuss w/ Joseph)*
-      (2026-07-16) Six near-identical `check_bs_{pipe,bang,semi}` /
-      `blob_bs_*` / `vbs_*` ladders (text, text_backticks, sameline_text,
-      verbatim_text, attr_text_verbatim, typed_value:blob) could become one
-      shared `/bs_escape(:opener)` helper — `PREPEND(:param)` already
-      suffices, no descent feature needed. Blocked on a behavior ruling:
-      the current states DROP the accumulated Text when input ends right
-      after `\|` / `\!` / `\;` (state has no eof case → bare return); a
-      helper-function version would EMIT it (callee returns, caller's :main
-      eof emits). Emitting looks more keep-everything-faithful, but that's
-      a spec call, not a refactor call. Exact-preserving variant exists
-      (helper returns an at-eof code + per-site route state) at ~zero net
-      line savings.
-
 - [ ] **Retire the line-oriented `StreamingParser` façade.** Review defect #1
       is RESOLVED at the generator level (2026-07-15): descent's pushdown
       backend (`--backend pushdown`) emits `parser_pd.rs`, resumable at any
@@ -74,15 +60,27 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       structurally cannot provide. Needs a small generated accessor on
       `PushdownParser` (frame → (function, salient params)) plus an API
       shape decision *(discuss w/ Joseph — he's keen)*.
-- [ ] **Perf regression watch** — keep the criterion benchmark suite meaningful
-      through the v0.8 grammar work; memory profiling on large files.
+- [ ] **Perf: bisect the post-0.9 pushdown delta** (2026-07-16). New
+      baseline recorded: pushdown ~290-307 MiB/s at 64k/4k/256B chunks on
+      the 1 MiB doc (was ~470-480 pre-0.9). **CONFOUNDED** — the stored
+      criterion baseline predates the whole attribute model + refactor +
+      descent changes, exactly what the new before/after-pair discipline
+      (core/CLAUDE.md) exists to prevent. Some cost is genuinely new
+      semantics (boundary scanning, blob machinery, deferred bodies); some
+      may be recoverable (SCAN coverage, state-hop overhead). Bisect with
+      proper pairs: bench at each landmark commit with the SAME grammar
+      across each descent bump. Also add a recursive-backend bench to the
+      suite (currently pushdown-only) and keep memory profiling on large
+      files in scope.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
       TODO.md (2026-07-15 + the 2026-07-16 de-state-machine pass):
-      - parameterized inline-emit payloads (`TypeName(:param)`) — collapses
-        the duplicated `check_bs_*` ladders (four text functions) and the
-        `spaced_suffix_*` states in `10-element.desc`.
+      - parameterized inline-emit payloads (`TypeName(:param)`) — would
+        collapse the `spaced_suffix_*` states in `10-element.desc`. (The
+        `check_bs_*` ladders were collapsed 2026-07-16 into the shared
+        `/bs_escape` helper without needing it — Joseph ruled the EOF
+        behavior fork: emit, never drop.)
       - runtime-byte SCAN targets — the only reason `double_quoted` /
         `single_quoted` (`30-values.desc`) are two functions instead of one
         `quoted(:q)`.
