@@ -44,6 +44,25 @@ draft rulings R1–R5 flagged inline pending confirmation, see
 - **Finished value + trailing material** on a block line: strong warning +
   ingest as segment array (never silent drop).
 
+### Changed (2026-07-15 fresh-eyes review pass — rulings by Joseph)
+- **`@` guard extended to `.`** (`@.trait-only` now parses) and `@` given
+  equal footing with `|` in the sameline scan — a reference can be an
+  attribute's value, a boundary-following sibling, or a block-line child.
+- **`|` guard corrected** to include the suffix characters (`|?` parses, as
+  Anonymous Elements always claimed).
+- **Spaced-trait identity form dropped**: identity is contiguous except the
+  trailing space-separated suffix; `.trait` after a space is prose.
+- **`\`-forced text posture unified** (head- and value-position): dead to
+  line-level structure and to the sameline-comment frame, alive to inline
+  forms (`|{…}` etc., individually escapable).
+- **Embedded `|{…}` framed ` ; ` comments ruled out for now** (bare `;`
+  literal, `;{…}` only) — revisit when dialects/embedded work matures.
+- **Anomaly posture made explicit**: warn-and-keep wherever coherent; errors
+  are non-halting events; drop/halt/reject is AST/app-layer configuration.
+- Stale 0.8 remnants fixed: raw-as-attribute-value prohibition (now a node
+  value), block-prose `;` summary rows, garbled Bracket Mode example,
+  past-base-`\` test-case note, Type Table pointed at Value Kinds.
+
 ## [0.8.0] — 2026-07-15
 
 **Final.** The reference parser (`udon-core`) passes the frozen v0.8

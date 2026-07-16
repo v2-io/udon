@@ -63,6 +63,31 @@ material) and `AttributeUnderAttribute` (a `:key` directly under an
 attribute). Codes that die with a model change are removed from this table,
 not kept as soft ghosts.
 
+### Anomaly posture (warnings, errors, recovery)
+
+When input is malformed or surprising, a response falls somewhere on this
+ladder:
+
+| | Response | Anything lost? |
+|---|----------|----------------|
+| (a) | **warn and keep everything** -- all bytes parsed/captured, just maybe not as the author intended | no |
+| (b) | warn and drop something | yes |
+| (c) | error and drop (possibly more) | yes |
+| (d) | error and halt the parse | rest of input |
+| (e) | error, reject the document | everything |
+
+**The core event parser commits to (a) wherever a coherent (a) exists** -- and
+so far one has been found for every known case (segment-ingest, pass-through,
+prose fallback with the marker restored, base-rebasing). Where it cannot
+(structurally unclosed constructs, tabs), it emits an **error event and keeps
+parsing** -- errors are events in the stream, not exceptions; nothing after
+the error point is silently discarded. Levels (c)-(e) are **not** event-parser
+behavior at all: whether an application treats accumulated warnings/errors as
+grounds to drop, halt, or reject is an AST-/app-layer decision, configured by
+the consumer -- to be specified when the schema and AST-parsing layers are
+built out. Error-code vocabulary follows the same working-name convention as
+warnings until then.
+
 ---
 
 ## The Core, and What It Leaves Open
@@ -218,12 +243,20 @@ triple-backtick (a freeform block). See Head Position.
 A backslash at **head position** -- the start of a line's intended column (after
 indentation), or in the sameline scan through elements and attributes before
 prose begins (see Head Position) -- is **consumed** and forces the rest of the
-physical line to prose, read verbatim as full text. Whatever the first character
-*would* have been (`|`, `:`, `!`, `;`, `@`, a triple-backtick fence, or nothing
-special), a head-position `\` makes the line prose. At head position there is no
-set of "escapable" characters to memorize -- the escape is defined by *position*
+physical line to prose. Whatever the first character *would* have been (`|`,
+`:`, `!`, `;`, `@`, a triple-backtick fence, or nothing special), a
+head-position `\` makes the line prose. At head position there is no set of
+"escapable" characters to memorize -- the escape is defined by *position*
 alone. (In prose flow, `\` escapes one small, exact set of inline openers --
 see below.)
+
+**What "forced to prose" means** (ratified 2026-07-15): the tail is ordinary
+prose *content*, dead to **line-level** structure but alive to **inline**
+structure. No marker, fence, or sameline comment applies -- a whitespace-framed
+` ; ` in the tail is literal text, the one place the sameline-comment frame
+does not fire. Inline forms (`|{...}`, `!{...}`, `;{...}`) still work exactly
+as in any prose, and remain individually escapable with `\`. The same posture
+applies to text entered via the value-position `\` (see Attributes).
 
 ````
 \|element            ->  |element            ; would-be element -> prose
@@ -330,8 +363,10 @@ Elements are the structural backbone:
 ```
 
 **Element recognition rule:** `|` is only an element marker when followed by
-one of: a letter, `[`, `.`, `{`, or `'`. Otherwise `|` is treated as prose
-(preserves Markdown table compatibility).
+one of: a letter (identifier start), `[`, `.`, `{`, `'`, or a suffix
+character (`? ! * +` -- so the anonymous `|?` parses). Otherwise `|` is
+treated as prose (preserves Markdown table compatibility: `| ` pipe-space is
+always literal).
 
 ### Marker Recognition
 
@@ -342,16 +377,19 @@ the character is prose. `|`'s guard is above. The rest:
   -- `!if`, `!for`, `!:lang:`. So `![img]`, `!=`, `!(` are prose. (`!{...}` is a
   *prose-level* inline form -- interpolation or inline directive -- not a
   head-position block directive.)
-- **`@`** (reference) marks when followed by `[` or an identifier -- `@[key]`,
-  `@element[key]`. What a consumer *does* with the reference is its choice (see
-  References and Mixins).
+- **`@`** (reference) marks when followed by `[`, `.`, or an identifier --
+  `@[key]`, `@element[key]`, `@.trait-only`. `@` has equal footing with `|` in
+  the sameline scan and in value position (a reference may be an attribute's
+  value, a boundary-following sibling, or a block-line child). What a consumer
+  *does* with the reference is its choice (see References and Mixins).
 - **`:`** (attribute) is **phase-restricted** rather than char-guarded: a `:` is
   an attribute only while the element has no child content yet; once any text or
   child element has appeared, a line-initial `:` is prose, with a warning when
   it sits at an ancestor-attribute column (see Attributes, "Phase Change and
   Late `:`"). A `:` not followed by a name also falls back to prose intact.
 - **`;`** (comment) marks per the Comments table (line comment at root /
-  sameline / after attribute values; literal in block prose).
+  sameline / after attribute values; within block prose, comment at the base
+  column, literal deeper).
 - **triple-backtick** (freeform) -- see Triple-Backtick Escape.
 
 Every guard is a few characters of bounded lookahead (see Bounded Lookahead).
@@ -454,9 +492,15 @@ explicit `true`; a flag key is an *attribute-level* spelling. See Attributes,
 |name?[key]              ; after name, before key
 |name?[key].trait        ; after name, before key and traits
 |name[key]?              ; after key
-|name[key]? .trait       ; after key, space before traits
 |name[key].trait ?       ; space-separated at the end
 ```
+
+**Identity is contiguous** except for that one trailing space-separated
+suffix. A `.trait` after a space is **not** identity -- it is prose
+(`|p .gitignore is a file` has no traits; ruled 2026-07-15, dropping the
+former spaced-trait form `|name[key]? .trait`). To put a trait after a
+key-side suffix, keep it contiguous (`|name?[key].trait`) or move the suffix
+to the end (`|name[key].trait ?`).
 
 **Suffix characters inside a trait are part of the trait.** `* ! ? +` are legal
 in a bare trait value, so `.foo?` is simply the trait `"foo?"` -- no quoting
@@ -601,6 +645,16 @@ Types live on the **map side** -- attribute values and array items. The
 children detect their own content. A block `!directive` as a node value is
 deferred to the DYNAMICS companion, not core.
 
+A reference in value position is the attribute's value; the same reference as
+a block line (or after a finished value at a boundary) is the **element's**
+reference child -- `@` and `|` behave identically in this respect:
+
+```udon
+|el :ref @[asdf].hey        ; el's attribute ref = the reference (value position)
+  @another[xyz]             ; a reference CHILD of |el, like a |node line would be
+  That there is a reference child, just like el.ref's value is a reference.
+```
+
 ### The Scan and the Bare-Token Boundary
 
 A `:` (passing its guard) enters attribute mode. After each key the parser
@@ -625,11 +679,11 @@ text." The rule:
 boundary. The next non-space character decides:**
 
 - **A head-position marker** -- `:` (next attribute), `\` (force-prose), a
-  guarded `|`, a framed ` ; ` comment, a fence, a guarded `!` -- means the
-  token **finished as a single-token value** and the scan continues, exactly
-  as if the token had been quoted. *(0.9 draft ruling R1 -- the boundary
-  marker set is the sameline-scan marker set; `@` is a value shape, not a
-  scan marker, so it does not appear here.)*
+  guarded `|`, a guarded `@`, a framed ` ; ` comment, a fence, a guarded `!`
+  -- means the token **finished as a single-token value** and the scan
+  continues, exactly as if the token had been quoted. (The boundary marker
+  set is the sameline-scan marker set; `@` sits on equal footing with `|` --
+  ruled 2026-07-15.)
 - **Plain text** means the line has committed: the bare token was the
   *beginning of a text blob*, which runs to the end of the line (or a framed
   ` ; ` comment) and belongs to whoever the ownership rules say (next
@@ -680,9 +734,17 @@ When a text blob starts, its owner is decided by priority:
 
 | Priority | Condition | Owner |
 |----------|-----------|-------|
-| 1 | An attribute to the left still **needs a value** (or is collecting -- see Multi-Segment Values) | That attribute's value |
-| 2 | Else: the nearest **element on the same line** to the left | Child text of that element (the attrs phase ends for this line's tail) |
+| 1 | An attribute to the left still **needs a value**, or is **collecting** | That attribute's value |
+| 2 | Else: the nearest **element on the same line** to the left | Child text of that element (the tail enters the element's children phase) |
 | 3 | Else | Ordinary indent/dedent ownership -- prose of whoever owns that column. **Not an error.** |
+
+**"Collecting" defined:** on a **block** attribute line (a line rooted by
+`:key`, no element on it), the attribute remains the line's collector even
+after its value is finished -- further same-line material is segment-ingested
+under that key, with the warning (see Multi-Segment Values). On an
+**element-rooted** line an attribute never collects past its finished value:
+the element takes the tail (row 2). This asymmetry is the whole difference
+between the two contexts.
 
 Row 2 is the **sameline decompress**: after an element line's attributes, a
 trailing tail is that element's content, as if the indent continued under it.
@@ -847,9 +909,13 @@ for **bare** (unquoted) tokens and in default tail ownership:
 | Embedded `\|{...}` | space, `\n`, `}` (unconsumed) | embedded element's content |
 | Array item | space, `\n`, `]` (unconsumed) | *(items only -- no tails)* |
 
-- A framed ` ; ` opens a comment in all attribute contexts (except the
-  value-`\` line); an unspaced `;` is part of the token
-  (`:url https://example.com/a?q=1;s=2` keeps its semicolon).
+- A framed ` ; ` opens a comment on element and block attribute lines
+  (except in `\`-forced text -- see Escape); an unspaced `;` is part of the
+  token (`:url https://example.com/a?q=1;s=2` keeps its semicolon).
+- **Inside embedded `|{...}` there are no framed sameline comments** for now
+  -- a bare `;` is literal; only `;{...}` comments there (ruled 2026-07-15;
+  framed comments in embeds will likely be revisited once the dialect layer
+  and embedded behavior are more fully fleshed out).
 - **Embedded** attributes follow the element-line rules with `}` as an extra
   terminator; `}` is not consumed (bracket matching). *(0.9 draft ruling
   R2 -- embedded is element-rooted sameline. Consequence: an embedded trailing
@@ -890,6 +956,17 @@ that would have made it an *ancestor's* attribute is **not** that attribute:
 it is prose (or structure) of whoever owns that column, with a **warning**
 (`AttributeAfterChildren`, working name) rather than an error.
 
+A sameline trailing tail (ownership row 2) **does** enter the children phase
+-- text is text, wherever it appeared (ruled 2026-07-15):
+
+```udon
+|el :a 1 and a tail
+  :b 2
+; a = 1; "and a tail" is el prose and forecloses el's attributes;
+; ":b 2" is el prose too, with the AttributeAfterChildren warning
+; (prose that looks like an attribute)
+```
+
 ---
 
 ## Prose Content
@@ -917,8 +994,9 @@ Any line not starting with a prefix is prose belonging to the parent:
 ```
 
 **Block prose** sets an indent-column for continuation and preserves literal
-semicolons. **Sameline prose** does not set an indent-column and treats `;` as a
-comment start.
+semicolons. **Sameline prose** does not set an indent-column; a
+whitespace-framed ` ; ` in it starts a comment (frame required on both sides
+-- see Sameline Comments).
 
 Since `;` is the comment delimiter, `#` has no special meaning in prose.
 Markdown flows naturally.
@@ -960,7 +1038,7 @@ Semicolon starts a comment depending on context:
 | Context | `;` Behavior | Example |
 |---------|--------------|---------|
 | Document root | Line comment | `; file header comment` |
-| Block prose | **Literal** (not comment) | `use x; do y` |
+| Block prose | Literal within the prose (deeper than the base); a `;` **at the prose base column** is a comment (see Comments and Indentation) | `use x; do y` |
 | Sameline prose | **Sameline comment** (whitespace-framed only) | `|p text ; comment` |
 | Block attr line | Line comment (after values) | `:key value ; comment` |
 | Sameline attrs | Line comment (after values) | `|el :k v ; comment` |
@@ -990,7 +1068,9 @@ is itself causing parse errors or warnings.
 A **sameline comment** is its own lexical form: a `;` with **whitespace on
 both sides** -- a space before it, and a space or end-of-line after it. It is
 the one marker allowed after a line has committed to prose (the carve-out
-named in Head Position). The frame is the condition:
+named in Head Position). The frame is the condition -- with one exclusion:
+`\`-forced text (head-position or value-position `\`) gives up the sameline
+comment entirely; a framed ` ; ` there is literal (see Escape):
 
 ```
 |li Item one ; TODO expand    ; " ; " framed both sides -> comment
@@ -1360,7 +1440,7 @@ The prose at column 0 triggers:
 - 0 <= two's column? Pop two
 - 0 <= one (0)? Pop one
 
-Three or four ElementEnd events fire in sequence.
+Four ElementEnd events fire in sequence (0 <= 0 pops `|one` too).
 
 ---
 
@@ -1637,7 +1717,7 @@ form:
 
 ```
 ; Correct -- nested embedded elements
-|ul |{li |{a Home} | }|{li |{a About}}
+|ul |{li |{a Home}}|{li |{a About}}
 
 ; INVALID -- mixing inline and embedded
 |ul |{li |a Home}     ; can't use |a inside |{...}
@@ -1724,7 +1804,7 @@ Inline raw uses brace-counting. The parser finds the closing `}` by counting
 brace depth. Nested `{}` pairs are fine as long as they're balanced. The form
 carries the same **Raw** marker event as the block form. A single space after
 the label's closing `:` is a separator (not content) -- so
-`!{:json: {"a":1}}` captures `{"a":1}`, not ` {"a":1}`. *(Provisional for 0.8;
+`!{:json: {"a":1}}` captures `{"a":1}`, not ` {"a":1}`. *(Provisional since 0.8;
 tighter nailing deferred until dialects / templating settle.)*
 
 Examples:
@@ -1742,7 +1822,10 @@ Examples:
   missing close {here
 ```
 
-Raw content cannot be an attribute value directly--attributes are typed scalars.
+A raw block (`!:lang:`) *is* usable as an attribute's **node value** (see
+Attributes, Value Kinds) -- the attribute is the raw node, same as any node
+value. (Whether the *inline* form can appear in value position is deferred
+with the rest of the inline-raw nailing.)
 
 ### Triple-Backtick Escape (Freeform)
 
@@ -1948,6 +2031,11 @@ sniffing.
 | `[...]` | List | `[1 2 3]`, `[a b c]` |
 | `:key?` (flag key) | Boolean `true` unless explicit | Flag/presence semantics -- see Attributes |
 | Anything else | String / text blob | Unquoted text |
+
+This table covers the **scalar** kinds. The full set of things an attribute
+value can be -- scalars plus references (`@...`), interpolations (`!{{...}}`),
+nodes, and text blobs -- is the Value Kinds table in Attributes; this section
+details the scalar row.
 
 ### Explicit Typing (`<...>`)
 
@@ -2212,7 +2300,8 @@ The examples in this document should be converted to unit tests. Key scenarios:
    - Block comment within element stays within element
    - Inline comments `;{...}` stripped from output
    - Head-position `\` forces prose (a leading `\;` outputs a literal `;`)
-   - A `\` past an established prose base is literal and warns (not head position)
+   - A `\` past an established prose base is literal, no event-parser warning
+     (`EscapeOutsideHeadPosition` is AST-layer, optional -- see Escape)
 
 ---
 
