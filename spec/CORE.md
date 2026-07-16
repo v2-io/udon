@@ -75,13 +75,13 @@ This is why temporal typing, the `!` dynamics language, and the prose Markdown s
 
 The parser operates in different contexts that affect parsing behavior:
 
-| Term | Meaning | Example |
-|------|---------|---------|
-| **block** | On its own indented line | `:key value` as child of element |
-| **sameline** | On the element definition line | `|el :key value Content` |
-| **inline** | Embedded in prose/text flow | `|{em text}`, `;{comment}`, `!{dir}` |
-| **embedded** | Inside `|{...}` delimiters | Synonym for inline element context |
-| **head** | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `|` `:` `!` `;` `@` and fences are recognized |
+| Term         | Meaning                                                                                                           | Example                          |                                             |
+| ------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------- |
+| **block**    | On its own indented line                                                                                          | `:key value` as child of element |                                             |
+| **sameline** | On the element definition line                                                                                    | `                                | el :key value Content`                      |
+| **inline**   | Embedded in prose/text flow                                                                                       | `                                | {em text}`, `;{comment}`, `!{dir}`          |
+| **embedded** | Inside `                                                                                                          | {...}` delimiters                | Synonym for inline element context          |
+| **head**     | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `                          | ` `:` `!` `;` `@` and fences are recognized |
 
 ### Head Position
 
@@ -433,8 +433,10 @@ One character of lookahead at one decision point -- the same shape as every othe
                                    ; "value" then 'w' -> text blob:
                                    ; first = "value with spaces :another x"
                                    ; (the later : is inside the blob -- just text)
-|el :alpha something \ el's text   ; "something" then '\' -> alpha = "something",
-                                   ; rest of line is |el's prose (see Escape)
+; next: "something" then '\' -> alpha = "something"; the rest of the line
+; (including any would-be ' ; ') is |el's prose -- so no annotation can
+; ride on it (see Escape):
+|el :alpha something \ el's text and this ; is prose too
 |el :alpha something ; a comment   ; framed ' ; ' at the boundary -> comment
 |el :url https://x.com :role foo   ; url = "https://x.com" (boundary is ':')
 ```
@@ -444,7 +446,9 @@ One character of lookahead at one decision point -- the same shape as every othe
 ```udon
 |el :alpha true            ; alpha = boolean true
 |el :alpha true story      ; alpha = "true story"  (text blob)
-|el :alpha true \ story    ; alpha = boolean true; el prose " story"
+; next: alpha = boolean true; el prose " story" (annotation must sit up
+; here -- after the \ everything, comments included, is prose):
+|el :alpha true \ story
 ```
 
 ### Text-Blob Values
