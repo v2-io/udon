@@ -17,6 +17,11 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       that; (c) the example doubles as a span-fidelity audit — any
       mis-painted character is a span bug. The pushdown backend's global
       spans extend the same approach to incremental re-highlighting.
+      *2026-07-16 spike:* the same walk now compiles to wasm
+      (`core/udon-wasm/`) and drives ```udon fence highlighting in the
+      Obsidian plugin (`obsidian-udon/fence-highlight.js`) — engine proven
+      under node; in-vault validation is the open item (see the plugin's
+      TODO.md).
 
 - [ ] **Obsidian plugin** — editing behavior, soft-wrap-to-prose-column, folding.
       Live feedback + detail stay in `obsidian-udon/TODO.md` (the plugin
