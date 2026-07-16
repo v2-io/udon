@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
-# regenerate-parser - Regenerate the UDON parser from .desc files
+# regenerate-parser - Regenerate the UDON parser from the grammar units
+# (generator/NN-udon.*.descent.udon — the descent DSL, each a valid UDON doc)
 #
-# Updates descent to latest, concatenates .desc files, runs descent, and builds.
+# Concatenates the grammar files in order, runs descent, and builds.
 #
 # Usage:
 #   ./regenerate-parser           # Update descent, generate parser, and build
@@ -68,22 +69,26 @@ describe_descent() {
 generate_parser() {
     local trace_mode="${1:-false}"
 
-    info "Concatenating .desc files..."
+    info "Concatenating grammar files..."
 
     # Topical grammar units, concatenated in order (descent sees ONE unit —
     # cross-file function references are free; order is for the reader).
-    # 00 must lead: it holds the |parser/|type/|entry-point declarations.
+    # 00 must lead: it holds the |parser/|type/|const/|entry-point
+    # declarations. Explicit list (not a glob) on purpose: the generator dir
+    # also holds set-aside grammars (udon-legacy-pre-0.8.descent.udon,
+    # temporal-value.desc.setaside) that a glob would silently ingest; a
+    # forgotten entry fails loudly below instead.
     local desc_files=(
-        "$GENERATOR_DIR/00-parser.desc"
-        "$GENERATOR_DIR/10-element.desc"
-        "$GENERATOR_DIR/20-attributes.desc"
-        "$GENERATOR_DIR/30-values.desc"
-        "$GENERATOR_DIR/40-prose.desc"
-        "$GENERATOR_DIR/50-comments.desc"
-        "$GENERATOR_DIR/60-embedded.desc"
-        "$GENERATOR_DIR/70-dynamics.desc"
-        "$GENERATOR_DIR/80-freeform.desc"
-        "$GENERATOR_DIR/90-references.desc"
+        "$GENERATOR_DIR/00-udon.core.descent.udon"
+        "$GENERATOR_DIR/10-udon.elements.descent.udon"
+        "$GENERATOR_DIR/20-udon.attributes.descent.udon"
+        "$GENERATOR_DIR/30-udon.values.descent.udon"
+        "$GENERATOR_DIR/40-udon.prose.descent.udon"
+        "$GENERATOR_DIR/50-udon.comments.descent.udon"
+        "$GENERATOR_DIR/60-udon.embedded.descent.udon"
+        "$GENERATOR_DIR/70-udon.dynamics.descent.udon"
+        "$GENERATOR_DIR/80-udon.freeform.descent.udon"
+        "$GENERATOR_DIR/90-udon.references.descent.udon"
     )
 
     for f in "${desc_files[@]}"; do

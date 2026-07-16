@@ -9,7 +9,7 @@ composite/standard types. (Core-spec edits live in `TODO-SPEC-CORE.md`.)
       bare-recognition model to a `<…>`-enveloped dialect (its banner flags this).
       The value grammar stays; "where temporal lives" is now the envelope.
       *Grammar side done 2026-07-15:* bare temporal recognition carved out of
-      `core/generator/values.desc` (bare temporal now falls back to string,
+      `core/generator/30-udon.values.descent.udon` (bare temporal now falls back to string,
       per CORE); the working recognition state machines are preserved
       verbatim in `core/generator/temporal-value.desc.setaside` for this
       dialect to re-home.

@@ -1,6 +1,6 @@
 # TODO-CORE-PARSING — event parser + descent grammar
 
-The event-level parser and the descent grammar (`generator/*.desc`). Holds only
+The event-level parser and the descent grammar (`generator/*.descent.udon`). Holds only
 residuals and decompositions — spec *compliance* is proven by the versioned
 fixture groups (see root `TODO-META.md`), not tracked here.
 
@@ -77,19 +77,19 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       follow up rather than work around or forget. Logged in descent's
       TODO.md (2026-07-15 + the 2026-07-16 de-state-machine pass):
       - parameterized inline-emit payloads (`TypeName(:param)`) — would
-        collapse the `spaced_suffix_*` states in `10-element.desc`. (The
+        collapse the `spaced_suffix_*` states in `10-udon.elements.descent.udon`. (The
         `check_bs_*` ladders were collapsed 2026-07-16 into the shared
         `/bs_escape` helper without needing it — Joseph ruled the EOF
         behavior fork: emit, never drop.)
       - runtime-byte SCAN targets — the only reason `double_quoted` /
-        `single_quoted` (`30-values.desc`) are two functions instead of one
+        `single_quoted` (`30-udon.values.descent.udon`) are two functions instead of one
         `quoted(:q)`.
       - state templates / a "self-terminating value" state property — the
-        ~15 number states in `30-values.desc` each repeat the same four
+        ~15 number states in `30-udon.values.descent.udon` each repeat the same four
         terminator rows; merging digit classes is not an alternative
         (per-base validation: `0o9` must fall to BareValue).
       - named INT constants — would let the attr/value return-code
-        vocabulary (documented at `/block_attr` in `20-attributes.desc`)
+        vocabulary (documented at `/block_attr` in `20-udon.attributes.descent.udon`)
         read symbolically.
       *Resolved 2026-07-16:* saved-state re-emittable captures landed in
       descent (`SAVE(slot)` / `TypeName(USE_SAVED(slot))`, both backends —

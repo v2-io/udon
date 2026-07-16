@@ -35,7 +35,7 @@ Do NOT use:
 - Fixture files as specification (the *active* group — `fixtures/v0.9/` —
   measures compliance, but CORE.md defines it; `fixtures/v0.8/` and
   `fixtures/legacy-pre-0.8/` are frozen reference only)
-- The generated parser or the `.desc` grammar as authority — when they
+- The generated parser or the descent grammar as authority — when they
   diverge from CORE, the implementation is wrong or lagging (see root
   `CLAUDE.md`, "Ground Truth")
 
@@ -57,16 +57,16 @@ core/
 │   ├── v0.8/            # FROZEN, RELEASED — the core-v0.8.0 contract
 │   └── legacy-pre-0.8/  # FROZEN — reference + mining source, not run
 ├── generator/           # Parser specification
-│   ├── 00-parser.desc   # Declarations, entry point, shared helpers
-│   ├── 10-element.desc  # Elements: identity, suffixes, children loop
-│   ├── 20-attributes.desc # The whole 0.9 attribute model
-│   ├── 30-values.desc   # Typed-value scanner, strings, arrays
-│   ├── 40-prose.desc    # Prose/text + the \ escape
-│   ├── 50-comments.desc # Line + inline comments
-│   ├── 60-embedded.desc # |{...}
-│   ├── 70-dynamics.desc # ! directives, raw, interpolation
-│   ├── 80-freeform.desc # ``` fences
-│   └── 90-references.desc # @
+│   ├── 00-udon.core.descent.udon   # Declarations, entry point, shared helpers
+│   ├── 10-udon.elements.descent.udon  # Elements: identity, suffixes, children loop
+│   ├── 20-udon.attributes.descent.udon # The whole 0.9 attribute model
+│   ├── 30-udon.values.descent.udon   # Typed-value scanner, strings, arrays
+│   ├── 40-udon.prose.descent.udon    # Prose/text + the \ escape
+│   ├── 50-udon.comments.descent.udon # Line + inline comments
+│   ├── 60-udon.embedded.descent.udon # |{...}
+│   ├── 70-udon.dynamics.descent.udon # ! directives, raw, interpolation
+│   ├── 80-udon.freeform.descent.udon # ``` fences
+│   └── 90-udon.references.descent.udon # @
 ├── regenerate-parser    # Script to regenerate parser.rs
 ├── TODO-CORE-PARSING.md # Open residuals: event parser + descent grammar
 └── TODO-PARSER.md       # Open residuals: AST / streaming-AST / bindings
@@ -82,7 +82,7 @@ Always use the wrapper script from `core/`:
 ./regenerate-parser --no-build # Generate only
 ```
 
-The script concatenates the ordered `generator/NN-*.desc` files (one topical
+The script concatenates the ordered `generator/NN-*.descent.udon` files (one topical
 unit per spec area; descent sees a single concatenated grammar) and
 runs descent from the pinned `tools/descent` submodule
 (`git submodule update --init tools/descent`). **Never edit
@@ -133,8 +133,8 @@ the descent side. (Track what a pending descent fix unblocks in
 what's happening, you are missing the entire point.**
 
 descent generates straightforward recursive descent code that does exactly what
-the .desc file says. The generated Rust is just a mechanical translation. The
-.desc file IS the parser logic.
+the grammar file says. The generated Rust is just a mechanical translation.
+The `.descent.udon` grammar IS the parser logic.
 
 Think in terms of:
 - Consuming the next byte (or two) at a time
@@ -152,7 +152,7 @@ Everything you need to understand is in `tools/descent/`:
 - **TODO.md** - Known issues and planned features
 - **CLAUDE.md** - Full DSL documentation
 
-The .desc file should read almost like a formal grammar. Your goal is to make it
+The grammar files should read almost like a formal grammar. Your goal is to make it
 more and more readable and "obvious" - so that future agents can understand the
 grammar just by reading it.
 
@@ -210,7 +210,7 @@ edge case" becomes enshrined as part of the grammar.
 2. **Read CORE.md** - understand what SHOULD happen per spec
 3. **Write fixture expectations** - based on spec, not parser output
 4. Run tests - expect failures
-5. Edit `generator/*.desc` - fix the grammar to match spec
+5. Edit `generator/*.descent.udon` - fix the grammar to match spec
 6. Regenerate with tracing - `./regenerate-parser --trace`
 7. Iterate until tests pass - parser now conforms to spec
 
@@ -237,7 +237,7 @@ accumulate uncommitted.
 **Ask when uncertain.** The spec is ground truth. If it's unclear, ask Joseph.
 If a fixture seems wrong, ask Joseph. If descent seems buggy, ask Joseph.
 
-**Make the .desc file better.** It should describe the SPEC more and more
+**Make the grammar files better.** It should describe the SPEC more and more
 clearly. It should teach the grammar to anyone who reads it. Every change
 should make it more obvious what UDON does.
 

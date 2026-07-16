@@ -32,7 +32,7 @@ design/             Ahead-of-spec exploration (udon-ast, udon-paths, udon-
                     no sync process, rich in future ideas — see design/README.md.
 notes/              Working analyses, historical planning, feedback
 core/               Rust workspace (absorbed libudon, full history):
-                    udon-core (parser + tree + fixtures), generator/*.desc,
+                    udon-core (parser + tree + fixtures), generator/*.descent.udon,
                     regenerate-parser
 tools/descent/      SUBMODULE — the parser generator (independent gem),
                     pinned at the SHA used for regeneration
@@ -67,7 +67,7 @@ cd core && cargo test --workspace --no-fail-fast
 cargo test -p udon-core --test canonical compliance_gate
                                            # the compliance gate by itself
 ./regenerate-parser                        # regenerates parser.rs from
-                                           # generator/*.desc via tools/descent
+                                           # generator/*.descent.udon via tools/descent
 ```
 
 Compliance RED is the honest, intended signal whenever the spec is ahead of
@@ -76,7 +76,7 @@ fixture expectations toward parser output. (The parser passes the frozen
 v0.8 group — tag `core-v0.8.0`; the 0.9 burn-down happens in `fixtures/v0.9/`.)
 
 - `core/udon-core/src/parser.rs` is **generated — do not hand-edit**. Change
-  `core/generator/*.desc` and regenerate. The generator is the pinned
+  `core/generator/*.descent.udon` and regenerate. The generator is the pinned
   `tools/descent` submodule (`git submodule update --init tools/descent`).
 - Known defects and their status: review §4 (twelve verified, numbered — cite
   them by number).
@@ -114,7 +114,7 @@ The `_archive/` Ruby validator is NOT authoritative. The December usability
 corpus (`test/usability/`) is evidence, not spec.
 
 **When the parser or descent grammar diverges from CORE, the implementation is
-wrong or lagging — the behavior is never "settled" by the code.** The `.desc`
+wrong or lagging — the behavior is never "settled" by the code.** The descent
 grammar and generated `parser.rs` are *never* authoritative. A divergence has
 three possible resolutions, and which applies is a spec-reasoning call
 (Joseph's), not inferred from what the code does: (a) the grammar holds
@@ -127,7 +127,7 @@ CORE says (including where CORE says different things in different places) — *
 a verdict**.
 
 **Read the primary source at the point you rely on it.** Re-open the actual CORE
-section or `.desc` rule before acting on it; memory of an earlier read, a
+section or grammar rule before acting on it; memory of an earlier read, a
 secondary artifact (`FULL-EBNF.md`, fixtures, older notes), or a summary is not
 the source. This is the single most-reproduced mistake in this repo's history.
 

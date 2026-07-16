@@ -86,7 +86,8 @@ core/
 │       └── span.rs      # Source locations
 ├── fixtures/            # Version-scoped compliance groups (v0.8 active)
 ├── generator/           # Parser specification
-│   └── NN-*.desc        # Topical grammar units (00-parser … 90-references),
+│   └── NN-udon.*.descent.udon   # Topical grammar units (00-udon.core …
+│                        # 90-udon.references), each a valid UDON doc,
 │                        # concatenated in order by ./regenerate-parser
 └── regenerate-parser    # Script to regenerate parser
 ```
@@ -111,7 +112,8 @@ cargo bench --bench parse
 
 ## Regenerating the Parser
 
-The parser is generated from `.desc` specifications using descent:
+The parser is generated from the `generator/*.descent.udon` grammar units
+(the descent `.desc` DSL — each file is a valid UDON document) using descent:
 
 ```bash
 # Uses the pinned submodule (gem-install fallback if absent)
