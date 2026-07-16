@@ -93,6 +93,24 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       targets, in likely order: boundary-state hops in the value scanner;
       per-event allocation in pushdown; SCAN coverage in the new states.
       Keep memory profiling on large files in scope.
+      **2026-07-16 perf pass (four landed pairs, cumulative pushdown
+      321 → 767 MiB/s, 2.4x; recursive control flat ~1.02 GiB/s):**
+      borrowed emission +23% (396); in-arm state loop +64% (650); SAVE
+      slots as struct fields +9% (712); inline take_capture +4.4% (742);
+      inline scan helpers +3.5% (767). Gap to recursive now ~1.33x, was
+      ~3.2x. Profiling (`examples/pd_profile.rs` + macOS `sample`): the
+      residual is spread inside the generated `run()` (frame-addressed
+      vars, per-dispatch exhausted checks, call/return frame moves) — no
+      single hot outlier left; malloc traffic eliminated. **Memory
+      baseline** (`examples/mem_profile.rs`, counting allocator, 1 MiB
+      doc): recursive +53 B peak / 442 allocs; pushdown peak = the
+      accumulation buffer, tracks chunk size (1.05 MB whole / 197 KB @64k
+      / 13 KB @4k / 1.7 KB @256B), ~449 allocs at every chunk size —
+      allocation count independent of event count (72,775). Remaining
+      untried ideas: hoist hot frame fields into locals per arm; fuse
+      column counting into the memchr scan (would speed BOTH backends);
+      drain-policy tuning; boundary-state hop reduction in the value
+      scanner (grammar-level); SCAN-coverage audit of the 0.9 states.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
