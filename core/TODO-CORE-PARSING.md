@@ -16,22 +16,6 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       XID_Start says prose. One fixture quarantined at
       `fixtures/v0.9/pending-unicode.yaml.disabled`; rename to re-enable
       once the validation step exists.
-- [ ] **De-state-machine the attribute machinery (recursive-descent
-      re-idiomization)** (Joseph, 2026-07-16: "all those if statements make
-      it look like you might have started abusing the grammar instead of
-      doing recursive descent"). The 0.9 burn-down grew if-chain dispatch
-      that fights the paradigm: the `attr_open` mode codes (1/2/3/4/5/6/
-      11/12/13) threaded from `typed_value` → `value` → the attr functions
-      → the element children loop, plus the `:attr_pending`/`:attr_body`/
-      `:attr_done`/`:battr_*`/`:sameline_*` router states. The descent-ish
-      shape: the attribute functions OWN their whole story — a
-      `/attr_deferred_body(attr_col)` function recursing into
-      /element / /prose / /block_directive for deferred values and
-      segments, and boundary continuations handled by direct calls rather
-      than return-code protocols — so the element loop shrinks back to
-      columns-and-children and the .desc reads like a grammar again.
-      Behavior-neutral refactor; the (now-green) fixture group is the
-      safety net. Fold the existing "Grammar cleanup" item into this pass.
 - [x] ~~Verify `*` suffix after `[key]` parses~~ (2026-07-16): covered — all
       four after-key suffixes are fixture-encoded in `identity.yaml` and
       green; the Obsidian rendering miss is a highlighter-side issue.
@@ -76,18 +60,25 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       structurally cannot provide. Needs a small generated accessor on
       `PushdownParser` (frame → (function, salient params)) plus an API
       shape decision *(discuss w/ Joseph — he's keen)*.
-- [ ] **Grammar cleanup (stylistic / organizational)** — DRY the ~21
-      near-identical number states in `values.desc`; parameterize
-      `double_quoted`/`single_quoted`. Behavior-neutral; not fixture-driven.
 - [ ] **Perf regression watch** — keep the criterion benchmark suite meaningful
       through the v0.8 grammar work; memory profiling on large files.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
-      TODO.md 2026-07-15: parameterized inline-emit payloads
-      (`TypeName(:param)`) — would collapse the duplicated `check_bs_*` and
-      `spaced_suffix_*` state ladders in `udon.desc` to single
-      parameterized states.
+      TODO.md (2026-07-15 + the 2026-07-16 de-state-machine pass):
+      - parameterized inline-emit payloads (`TypeName(:param)`) — collapses
+        the duplicated `check_bs_*` ladders (four text functions) and the
+        `spaced_suffix_*` states in `10-element.desc`.
+      - runtime-byte SCAN targets — the only reason `double_quoted` /
+        `single_quoted` (`30-values.desc`) are two functions instead of one
+        `quoted(:q)`.
+      - state templates / a "self-terminating value" state property — the
+        ~15 number states in `30-values.desc` each repeat the same four
+        terminator rows; merging digit classes is not an alternative
+        (per-base validation: `0o9` must fall to BareValue).
+      - named INT constants — would let the attr/value return-code
+        vocabulary (documented at `/block_attr` in `20-attributes.desc`)
+        read symbolically.
       *Resolved 2026-07-16:* saved-state re-emittable captures landed in
       descent (`SAVE(slot)` / `TypeName(USE_SAVED(slot))`, both backends —
       see descent CHANGELOG); the grammar re-emits `Attr` per segment via
