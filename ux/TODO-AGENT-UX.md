@@ -1,7 +1,8 @@
 # TODO-AGENT-UX — agent-facing tooling
 
-Cheat-sheets, the empirical usability harness, and agentic affordances. *(Home
-tbd.)* Predicated on the compliance fixtures having pinned behavior first.
+Cheat-sheets, the empirical usability harness, and agentic affordances — homed
+in `ux/` beside the human lane (2026-07-16). Predicated on the compliance
+fixtures having pinned behavior first.
 
 ## Open
 
