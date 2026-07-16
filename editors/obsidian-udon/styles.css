@@ -41,18 +41,33 @@
 }
 
 /* ------------------------------------------------------------------------
- * Token colors -- classes emitted by the wasm highlighter (indices defined
- * in core/udon-wasm/src/lib.rs; CLASS_NAMES in main.js). One set for all
- * surfaces: .udon files, and ```udon fences in Reading view / Live Preview.
- * Obsidian theme variables so light/dark both work. */
-.udon-hl-dim       { color: var(--text-faint); }
-.udon-hl-name      { color: var(--color-cyan, #56b6c2); font-weight: 600; }
-.udon-hl-attr      { color: var(--color-yellow, #d19a66); }
-.udon-hl-string    { color: var(--color-green, #98c379); }
-.udon-hl-number    { color: var(--color-purple, #c678dd); }
-.udon-hl-keyword   { color: var(--color-orange, #e5943a); }
-.udon-hl-text      { color: var(--text-normal); }
-.udon-hl-comment   { color: var(--text-faint); font-style: italic; }
-.udon-hl-dynamic   { color: var(--color-blue, #61afef); }
-.udon-hl-reference { color: var(--color-purple, #b48ead); text-decoration: underline; }
-.udon-hl-warning   { background: rgba(255, 0, 0, 0.18); }
+ * Token colors — STATIC FALLBACK only. The normal path is autocolors: the
+ * wasm engine (core/udon-wasm/src/scheme.rs) generates a full per-role
+ * stylesheet at plugin load, injected as #udon-autocolors, which cascades
+ * after this file and wins. These rules keep documents legible when
+ * autocolors is toggled off (or the theme call fails). Role names come from
+ * the wasm role table (core/udon-wasm/src/roles.rs); kin roles fall back to
+ * their family's color here — the kinship *shading* only exists generated. */
+.udon-hl-dim            { color: var(--text-faint); }
+.udon-hl-element-name   { color: var(--color-cyan, #56b6c2); font-weight: 600; }
+.udon-hl-element-sigil, .udon-hl-inline-sigil, .udon-hl-inline-close,
+.udon-hl-id-bracket     { color: var(--text-faint); }
+.udon-hl-id-key, .udon-hl-trait-name { color: var(--color-cyan, #56b6c2); }
+.udon-hl-id-key-dollar  { color: var(--color-cyan, #56b6c2); text-decoration: underline; }
+.udon-hl-trait-dot      { color: var(--text-faint); }
+.udon-hl-attr-key, .udon-hl-attr-flag { color: var(--color-yellow, #d19a66); }
+.udon-hl-attr-sigil     { color: var(--text-faint); }
+.udon-hl-string, .udon-hl-value-bare { color: var(--color-green, #98c379); }
+.udon-hl-string-quote, .udon-hl-array-bracket { color: var(--text-faint); }
+.udon-hl-escape         { color: var(--color-green, #98c379); text-decoration: underline; }
+.udon-hl-number         { color: var(--color-purple, #c678dd); }
+.udon-hl-bool, .udon-hl-nil { color: var(--color-orange, #e5943a); }
+.udon-hl-type-angle     { color: var(--color-purple, #c678dd); }
+.udon-hl-text           { color: var(--text-normal); }
+.udon-hl-comment        { color: var(--text-faint); font-style: italic; }
+.udon-hl-comment-sigil  { color: var(--text-faint); font-style: italic; }
+.udon-hl-dynamic, .udon-hl-interpolation, .udon-hl-raw-content { color: var(--color-blue, #61afef); }
+.udon-hl-dynamic-sigil  { color: var(--text-faint); }
+.udon-hl-reference      { color: var(--color-purple, #b48ead); text-decoration: underline; }
+.udon-hl-reference-sigil { color: var(--text-faint); }
+.udon-hl-warning        { background: rgba(255, 0, 0, 0.18); }

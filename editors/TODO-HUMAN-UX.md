@@ -33,11 +33,17 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       Joseph's 2011 project (procedural schemes in perceptual color space:
       emphasis as an information budget, colors as constrained relationships,
       composition-theory balance), unblocked by this week's parser-driven
-      highlighting: the wasm walk supplies exact roles *and* per-class density
-      statistics, and the plugin owns its CSS end to end. Plan + 2011
-      archaeology (including a `mapping.udon` in 2011-dialect UDON):
-      `autocolors/PLAN.md`. Phases A–D there; open decisions marked for
-      Joseph.
+      highlighting. Plan + 2011 archaeology: `autocolors/PLAN.md`.
+      *2026-07-16:* **first build landed** — Rust engine beside the parser
+      (`core/udon-wasm/src/{roles,scheme,color,rng}.rs`): 32-role kinship
+      tree, OKLCH + WCAG-contrast-band solver, name-is-the-seed determinism
+      (FNV-1a 64 + SplitMix64, pinned), live in the Obsidian plugin
+      (scheme name = setting, anchored to the active theme's bg/fg,
+      regenerated on `css-change`). Phase A+B essentials done; **not**
+      done: density-adaptive fitness / corpus census / optimization loop
+      (phase C), `mapping.udon`-as-UDON dogfood, ANSI/vim emission,
+      contextual emphasis (phase D). Unexercised: real Obsidian render
+      (headless-node-proven only) — needs a vault look.
 - [ ] **Syntax highlighting** — bring `udon.tmLanguage.json`, `vim/`, and
       `../tree-sitter-udon/` current with CORE (especially the new escape model
       and `<…>` typing).
