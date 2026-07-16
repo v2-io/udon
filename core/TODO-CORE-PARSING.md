@@ -6,6 +6,14 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
+- [ ] **`attr_trailing_blob` prose-shape audit** (2026-07-16, flagged by the
+      escape-ladder agent): it's commented "prose-shaped" but has no
+      inline-form or `\`-escape handling — the warn+stack trailing segment
+      may be unintentionally literal-only. Compare against CORE "Text-Blob
+      Values" (inline forms fire in blobs) and either wire it through
+      /bs_escape + the inline-form states like the other blobs, or document
+      why the trailing segment is deliberately plain.
+
 - [ ] **Full XID validation for non-ASCII name starts (descent)**
       (2026-07-16, diagnosis corrected same day: columns and content were
       ALWAYS UTF-8-correct — continuation bytes don't advance COL). What
