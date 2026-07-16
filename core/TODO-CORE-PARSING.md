@@ -88,16 +88,19 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       recognition in 0.8. *(routed from the archived review's CTQ,
       2026-07-16)*
 
-- [ ] **Interpolation coverage audit** — CORE "Implementation Notes" still
-      says interpolation in attribute values / element keys is not
-      implemented, but the 0.9 grammar routes value-position `!{{…}}`
-      through /interpolation and `[key]` through the typed /value path (so
-      the note may be stale). Verify against fixtures, correct the CORE
-      note, and pin what is genuinely still open — notably mixed
-      literal+interpolation multi-part values, where DYNAMICS.md's old
-      `ArrayStart`/segments sketch contradicts the ratified 0.9 flat wire
-      (only literal `[…]` arrays on the wire). *(multi-part wire shape:
-      discuss w/ Joseph)*
+- [ ] **Interpolation: multi-part values** — probed 2026-07-16:
+      whole-value interpolation works in both positions (`|el :href
+      !{{url}}` → `Attr`/`Interpolation`; `|div[!{{id}}]` →
+      `Attr "$key"`/`Interpolation` — CORE's stale Implementation Note
+      corrected same day). Still open: **mixed literal+interpolation**
+      (`:mixed pre!{{x}}post` parses as the single `BareValue`
+      `"pre!{{x}}post"` — the interpolation does not fire mid-token).
+      DYNAMICS.md's old multi-part sketch (`ArrayStart` + alternating
+      segments) contradicts the ratified 0.9 flat wire (only literal `[…]`
+      arrays on the wire; segments = re-emitted `Attr`), so the wire shape
+      needs a ruling before implementing — the flat-wire-consistent shape
+      would be re-emitted `Attr` segments, like blobs. Pin fixtures once
+      ruled. *(discuss w/ Joseph)*
 
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we

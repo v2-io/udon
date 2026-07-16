@@ -1834,5 +1834,5 @@ Two consequences:
 
 ## Implementation Notes (Non-Normative)
 
-- Interpolation in attribute values and element keys is not yet implemented in the parser; intended behavior is described in the DYNAMICS.md companion spec.
+- Whole-value interpolation is implemented in the parser (an attribute value or `[key]` that *is* `!{{...}}` emits an Interpolation event — verified 2026-07-16). **Mixed** literal+interpolation values (`pre!{{x}}post`) are not: the token parses as one bare string. The multi-part wire shape is an open decision (DYNAMICS.md's old `ArrayStart` sketch predates — and contradicts — the 0.9 flat wire); see `core/TODO-CORE-PARSING.md`.
 - Raw directives and freeform blocks are parsed as specified, but host behavior (highlighting, execution, etc.) is host-defined.
