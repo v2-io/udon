@@ -21,14 +21,49 @@ First alpha of the **attribute-model reconception** — the headline change
 0.8.0 explicitly left unsettled. Ratification carriers:
 `design/attribute-model-proposal-3-substrate.md` (decided model floor) +
 `design/attribute-model-proposal-3.md` (binding narrative); promotion
-nail-downs in `TODO-SPEC-CORE-0.9-supplement.md`. The active
+nail-downs were tracked in the 0.9 supplement (drained 2026-07-16 into the
+"Ruled" section below + `TODO-SPEC-CORE.md`; archived at
+`_archive/TODO-SPEC-CORE-0.9-supplement.md`). The active
 compliance-fixture group is now `core/fixtures/v0.9/` (seeded from the
 frozen v0.8 group; cases will be edited to the new model as CORE text
 lands — a RED gate during the burn-down is the honest signal).
 
-### Changed (ratified direction 2026-07-15; CORE text drafted same day — five
-draft rulings R1–R5 flagged inline pending confirmation, see
-`TODO-SPEC-CORE-0.9-supplement.md`)
+### Ruled — the attribute-model nail-downs (2026-07-15/16; all in CORE with dates inline — do not re-open)
+
+This block preserves the supplement's anti-re-open ledger. **2026-07-15
+(Joseph):** bare-token boundary rule (provisionally-open scan at a bare
+token's boundary; marker → single-token value, text → blob to ownership); no
+keyword carve-out (`:alpha true story` → `"true story"`); `@` guard + `.`
+and `@` equal-footing with `|` in the sameline scan; embedded framed ` ; `
+out for now (bare `;` literal; revisit with dialects); `\`-forced text =
+line-verbatim but inline forms fire, framed ` ; ` literal; spaced-trait form
+dropped (identity contiguous except trailing spaced suffix); sameline tail
+enters children phase; anomaly-posture ladder (warn-and-keep wherever
+coherent; errors non-halting; drop/halt/reject = AST/app config).
+**2026-07-16 (Joseph, R1–R5 confirmed):** R2 embedded = element-rooted
+sameline (+`}`), with the `\`-boundary content idiom and
+unspecified-in-0.9 framed-`;`-after-`\`; `MissingAttributeValue` = error
+event **+ synthesized `Nil`** (the stream never carries less shape than the
+source suggested); R3 ownership never changes at a `\` (two values on one
+attribute always warn and stack — never error, never drop); R4 flag
+semantics follow the NAME (quoted ≡ bare; `$?` aligns by construction); R5
+flat stacking wire (every `Attr` carries one value; all multiplicity =
+re-emitted `Attr`; no AttrStart/AttrEnd; only literal `[…]` arrays on the
+wire). **2026-07-16 (delegated, per-item calls recorded in CORE):** EOF =
+universal implicit closer with per-construct `Unclosed*` table; flag +
+deeper block = `AttributeSecondValue` warn+stack; mid-token typed-path
+failure = ordinary bare token; raw block usable as node value sameline;
+`<…>` envelopes single-line (`UnclosedTypeEnvelope` warn + string
+pass-through); interpolation ends at first `}}`; tabs illegal in
+indentation only; `AttributeUnderAttribute` recovery = open attr gets its
+`Nil`, error explains, offending line's bytes kept as element prose
+(fixture-pinned); plus the editorial batch (warning-table rewording,
+wire-vs-view round-trip caution, node-value one-way-door caution,
+prose-base cross-ref, Document-layer mini-definition, `\` in the head row,
+Positional-Contexts examples out of table cells).
+
+### Changed (ratified direction 2026-07-15; CORE text drafted same day; the
+inline R1–R5 draft flags were confirmed 2026-07-16 — see Ruled above)
 - **Plain attributes always take a value**; missing value with no deferred
   body is an error. Implicit valueless-`:key` = true is removed.
 - **Flags are spelled `:key?`** (terminal `?`; wire name keeps the `?`).

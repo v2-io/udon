@@ -13,7 +13,7 @@ a parser generator that produces callback-based recursive descent parsers.
 **The parser passes core spec 0.8.0** (tag `core-v0.8.0`, frozen group
 `fixtures/v0.8/`) — the first compliant parser. **The spec has moved on to
 0.9.0-alpha.1** (the attribute-model reconception; see
-`spec/TODO-SPEC-CORE.md` + `spec/TODO-SPEC-CORE-0.9-supplement.md`), so the
+`spec/TODO-SPEC-CORE.md` + the rulings ledger in `spec/msc/CHANGELOG.md`), so the
 spec is ahead of the parser again: catch-up is measured by the ACTIVE group
 `fixtures/v0.9/` (see `fixtures/README.md`), whose cases are edited from
 CORE text as it lands. Open parser residuals live in `TODO-CORE-PARSING.md`

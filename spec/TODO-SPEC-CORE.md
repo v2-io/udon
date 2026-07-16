@@ -29,13 +29,22 @@
       (Joseph, 2026-07-15) until dialects/templating settle. Provisional
       contract is in CORE ("Inline Raw Content") and green in fixtures;
       revisit for tighter rules later.
-- [ ] **Revisit the 0.9 supplement when the 0.9.0-alpha.1 spec text is
-      essentially finished.** [`TODO-SPEC-CORE-0.9-supplement.md`](TODO-SPEC-CORE-0.9-supplement.md)
-      holds the attribute-model nail-downs (boundary-marker set, embedded
-      context, event vocabulary, warning-code names, CORE collateral,
-      substrate text alignment). Work them at natural spots during the spec
-      writing (surface a recommendation to Joseph at each), then sweep
-      whatever remains before promoting past alpha.
+- [ ] **Reconsider the "guard" framing / Marker Recognition section**
+      (Joseph, 2026-07-15): reads as lexical-implementation detail, partially
+      redundant with each marker's own section. Options: fold each guard into
+      its marker's section; demote to a non-normative recognition summary; or
+      keep but tighten. Deferred until the 0.9 model text fully settles (an
+      editorial restructure, not a ruling). *(Residual of the drained 0.9
+      supplement — its rulings ledger now lives in the changelog under
+      0.9.0-alpha.1 "Ruled"; do not re-open those.)*
+- [ ] **Bare-pipe table fragility** — bare `|` inside table-cell code spans
+      (ruled for legibility 2026-07-16) is corrupted *in source* if a table
+      formatter re-parses the cells (it split the Positional Contexts table
+      once). Positional Contexts is now pipe-free; the remaining bare-pipe
+      tables (Prefixes, desugar, Value Kinds, Comments, terminators, inline
+      syntax, naming) are fine until a formatter sweeps them. If that
+      happens: de-pipe those cells the same way (examples into udon blocks),
+      or configure the formatter to skip CORE.md.
 - [ ] **Unwrap CORE.md's hard-wrapped prose** (Joseph, 2026-07-15): drop the
       manual line wrapping in favor of long lines / soft wrap. Editorial,
       whole-file; best done as a single dedicated commit (no content changes

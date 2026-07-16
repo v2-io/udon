@@ -223,7 +223,7 @@ Current state (2026-07-15):
   carries one value; multiplicity = re-emitted `Attr`). The v0.9 fixture
   group encodes the model and the parser passes it — gate GREEN
   (`cd core && cargo test -p udon-core --test canonical compliance_gate`).
-  Rulings ledger: `spec/TODO-SPEC-CORE-0.9-supplement.md`. Remaining before
+  Rulings ledger: `spec/msc/CHANGELOG.md` (0.9.0-alpha.1 "Ruled"). Remaining before
   a `core-v0.9.0` tag: fixture densification (EOF/Unclosed* cases, legacy
   mining, edge combinations) and the residual editorial opens.
 - **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
