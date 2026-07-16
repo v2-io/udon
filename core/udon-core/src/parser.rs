@@ -1112,7 +1112,7 @@ impl<'a> Parser<'a> {
         let mut astate: i32 = 0;
         let mut amode: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -1351,7 +1351,8 @@ impl<'a> Parser<'a> {
                 State::SamelineAttrAfter => {
                     match self.peek() {
                         _ if sstate == 2 => {
-                    state = State::SamelineNode;
+                    self.advance();
+                    state = State::SamelineNode2;
                     continue;
                         }
                         _ if sstate == 5 => {
@@ -1402,23 +1403,6 @@ impl<'a> Parser<'a> {
                         _ => {
                     self.parse_block_directive(elem_col, on_event);
                     state = State::PostBlockChild;
-                    continue;
-                        }
-                    }
-                }
-                State::SamelineNode => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::SamelineNode2;
-                    continue;
-                        }
-                        _ => {
-                    state = State::PreContent;
                     continue;
                         }
                     }

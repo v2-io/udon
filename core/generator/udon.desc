@@ -275,10 +275,13 @@
     |c[<XLBL_START SQ>]       | sstate = /sameline_attr          |>> :sameline_attr_after
     |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
 
-  ; A node value (plain :a |beta) is a VALUE, not a child — it does not set
-  ; content_seen (attrs-before-children counts children, not values).
+  ; Route the sameline-attribute outcome (return-code vocabulary at
+  ; /block_attr). A node value (plain :a |beta, code 2) is a VALUE, not a
+  ; child — it does not set content_seen (attrs-before-children counts
+  ; children, not values); the boundary codes 5/11/12/13 re-owned trailing
+  ; material for the element — children phase.
   |state[:sameline_attr_after]
-    |if[sstate == 2]                                             |>> :sameline_node
+    |if[sstate == 2]          | ->                                |>> :sameline_node2
     |if[sstate == 5]          | content_seen = 1                 |>> :pre_content
     |if[sstate == 6]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
     |if[sstate == 11]         | content_seen = 1                 |>> :sameline_node2
@@ -292,9 +295,8 @@
     |c['{']                   | -> | /sameline_directive         |>> :post_sameline_inline
     |default                  | /block_directive(:elem_col)      |>> :post_block_child
 
-  |state[:sameline_node]
-    |c['|']                   | ->                               |>> :sameline_node2
-    |default                                                     |>> :pre_content
+  ; Node after ':key' on the element line — the attr's VALUE (code 2) or a
+  ; boundary-following CHILD (code 11); the '|' is consumed on both paths.
   |state[:sameline_node2]
     |c['{']                   | -> | /embedded                   |>> :post_child
     |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 2, :elem_col) |>> :post_block_child
