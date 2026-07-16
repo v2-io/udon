@@ -1633,7 +1633,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ if col < content_base => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"InconsistentIndentation"), span: self.span() });
                     content_base = col;
                     state = State::DoProse;
                     continue;
@@ -1656,7 +1656,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ if col < content_base => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"InconsistentIndentation"), span: self.span() });
                     content_base = col;
                     state = State::DoVerbatim;
                     continue;
@@ -3452,7 +3452,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"Inconsistent indentation"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"InconsistentIndentation"), span: self.span() });
                     content_base = col;
                     self.mark();
                     state = State::ContLine;
@@ -4468,7 +4468,7 @@ impl<'a> Parser<'a> {
         on_event(Event::DirectiveStart { span: start_span.clone() });
         let mut depth: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Kind, Content, Scan, CheckClose,  }
+        enum State { Kind, SkipSep, Content, Scan, CheckClose,  }
         let mut state = State::Kind;
         loop {
             match state {
@@ -4480,11 +4480,29 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b':') => {
                     self.advance();
-                    state = State::Content;
+                    on_event(Event::Raw { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    state = State::SkipSep;
                     continue;
                         }
                         _ => {
                     self.parse_name(on_event);
+                    continue;
+                        }
+                    }
+                }
+                State::SkipSep => {
+                    if self.eof() {
+                        on_event(Event::DirectiveEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b' ') => {
+                    self.advance();
+                    state = State::Content;
+                    continue;
+                        }
+                        _ => {
+                    state = State::Content;
                     continue;
                         }
                     }
@@ -4713,7 +4731,7 @@ impl<'a> Parser<'a> {
                             self.advance();
                         }
                         None => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"No dialects loaded"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"NoDialectsLoaded"), span: self.span() });
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
@@ -4727,7 +4745,7 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         _ if depth == 0 => {
                     self.set_term(0);
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"No dialects loaded"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"NoDialectsLoaded"), span: self.span() });
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return;
                         }

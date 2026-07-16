@@ -25,10 +25,38 @@ Key properties:
 - Streamable, incremental parsing
 - Syntactic typing (not sniffing)
 
-**Parser behavior note:** Comments, blank lines (a `BlankLine` event), and
-recoverable anomalies (a `Warning` event -- e.g. inconsistent indentation) are
-all emitted as events by the main parser, alongside the structural ones. What
-consumers do with them (AST inclusion, filtering, etc.) is up to the host.
+**Parser behavior notes:**
+
+- **Comments, blank lines, warnings.** Comments, blank lines (a `BlankLine`
+  event), and recoverable anomalies (a `Warning` event) are all emitted as
+  events by the main parser, alongside the structural ones. What consumers do
+  with them (AST inclusion, filtering, etc.) is up to the host.
+- **Text granularity.** A `Text` event carries **no** guarantee of being a
+  complete text run. Escapes and (later) chunk boundaries may split one line's
+  prose into several `Text` events; consumers concatenate. Compliance fixtures
+  express text maximally collapsed per line; the harness folds same-line
+  adjacent Texts (span gap contains no newline) so expectations are
+  rhythm-independent.
+- **Warnings are codes, not ratified strings.** A `Warning` event's payload is
+  a **warning code** from the table below (PascalCase, matching
+  `ParseErrorCode` style). The human-readable text a host surfaces, and
+  *whether* a given warning is emitted in a given circumstance, are
+  parser/host decisions (menu-vs-knob: the core fixes the code vocabulary;
+  hosts pick voice and verbosity). Event-parser fixtures match codes.
+
+### Warning codes
+
+| Code | Description | Typical layer *(non-normative)* |
+|------|-------------|----------------------------------|
+| `InconsistentIndentation` | Prose (or comment continuation) line less indented than the established content-base; base rebases to the new column | event |
+| `NoDialectsLoaded` | A `<…>` typing envelope was recognized but no dialects are bound; value passed through as the plain string `"<…>"` | event |
+| `EscapeOutsideHeadPosition` | A leading `\` deeper than an established prose content-base looks like force-prose escape but is not head position (literal passthrough) | **AST** — not the event parser's inner loop |
+| `CommentMissingFollowingSpace` | Optional advisory: a `;` that opened a comment without the both-sides frame where that frame applies | host (advisory) |
+
+Further codes may be added when the attribute model and other layers land
+(e.g. `UnmarkedBooleanFlag`, `ValuedBooleanKey`, `MarkerInTextValue`,
+`DistantAttributeBlock`). Codes that die with a model change are removed from
+this table, not kept as soft ghosts.
 
 ---
 
@@ -245,19 +273,21 @@ ordinary dedentation rules:
    \     Here all of this is output with the lines indented,
          even though this more-indented line needs no marker -- cleaner --
       here too, with a smaller indent (still past the base column);
-  this line dedents past the base: a Warning fires and the base resets to it.
+  this line dedents past the base: a Warning (`InconsistentIndentation`) fires
+  and the base resets to it.
 ```
 
-**Warning -- a leading `\` that is not actually at head position.** If a `\`
-begins a line's content but sits *deeper* than an already-established prose
-content-base, the whitespace before it is already prose, so the `\` is **not** at
-head position: it is passed through literally, and a Warning fires (it looks like
-a force-prose escape but is not one).
+**Past-base `\` (not head position).** If a `\` begins a line's content but sits
+*deeper* than an already-established prose content-base, the whitespace before
+it is already prose, so the `\` is **not** at head position: it is passed
+through **literally**. The event parser does not warn here (its inner loop is
+byte-pulling, not stylistic inspection). An AST-layer host may emit
+`EscapeOutsideHeadPosition` when it cares.
 
 ```
 |element
   \  start some prose      ->  "  start some prose"    ; \ at head pos -> forces prose
-    \some more prose        ->  "  \some more prose"    ; \ past the base -> literal + Warning
+    \some more prose        ->  "  \some more prose"    ; \ past the base -> literal
 ```
 
 (The precise column bookkeeping -- the consumed `\` taking up no column for
@@ -515,7 +545,8 @@ concern, never core: the core stacks and list-types any attribute uniformly.
 
 ### Complex Attribute Values
 
-When an attribute needs structured content, use indentation:
+Authors often write an attribute with no same-line value and put structure on
+the following indented lines:
 
 ```
 |api-endpoint
@@ -525,7 +556,12 @@ When an attribute needs structured content, use indentation:
     |header :name Authorization :value Bearer token
 ```
 
-Attribute followed by newline+indent = structured value.
+Attribute followed by newline+indent = structured value -- **as authoring
+intent**. Event shape, ownership, and flag/value policy are **not settled
+in this version**. Active design carriers (not yet CORE):
+`design/attribute-model-proposal-3.md` (binding dualism, flags, segment
+arrays) and `design/attribute-model-proposal-2-substrate.md` (decided
+substrate). Do not treat the current parser's emission as the contract.
 
 ### Value Terminator Rules
 
@@ -550,9 +586,11 @@ Terminators: `\n` or ` ;` (space followed by semicolon)
 Because the value runs to end-of-line, a *block* line holds **one** attribute:
 `:bttr 2 :cttr 3` makes `:bttr` = the string `"2 :cttr 3"`, not two attributes.
 For multiple attributes, use the element (sameline) line (`|el :a 1 :b 2`) or
-separate block lines. A stranded ` :name ` inside a block value (looking like an
-intended second attribute) triggers a **Warning** -- the value is still taken to
-end-of-line; the warning just flags the likely mistake.
+separate block lines. A stranded ` :name ` inside a block value is still part of
+that value; a host may warn about the likely mistake, but the event parser is
+not required to (advisory emission is host-side -- see warning-code posture).
+(A future attribute-model reconception may replace run-to-EOL with a uniform
+line scan; until then, one-attribute-per-block-line is the rule.)
 
 #### Sameline Attribute Values
 
@@ -1373,6 +1411,15 @@ closing `}` ends the element:
    multiple lines} and continues.
 ```
 
+**Multiline content delivery.** Content inside a multiline `|{…}` is emitted
+as **per-line** `Text` events (continuation indentation skipped), not as one
+joined string. Consumers that want a single string concatenate.
+
+**Prose between embedded siblings.** Intervening prose -- including a single
+space -- between two `|{…}` forms is real content and is emitted as `Text`
+(round-trip fidelity). `|nav |{a A} |{b B}` yields `Text " "` between the two
+embedded elements.
+
 ---
 
 ## Unified Inline Syntax
@@ -1417,7 +1464,12 @@ passed to the host for syntax highlighting, execution, or other processing.
 The content follows normal indentation rules:
 - Indented under the directive
 - Not parsed as UDON (no `|`, `:`, `!`, `;` interpretation)
-- Dedented on output relative to the directive's indent level
+- **Dedented relative to the first content line's column** (the *raw base*):
+  that line establishes the strip column; deeper lines keep their extra indent
+  as content. A line at or left of the directive's own column ends the block.
+  (CORE previously said only "relative to the directive's indent level"; the
+  first-content-line base is the exact stripping rule -- same shape as prose
+  content-base.)
 
 ### Inline Raw Content
 
@@ -1428,7 +1480,11 @@ For inline raw content, use `!{:kind: ...}`:
 ```
 
 Inline raw uses brace-counting. The parser finds the closing `}` by counting
-brace depth. Nested `{}` pairs are fine as long as they're balanced.
+brace depth. Nested `{}` pairs are fine as long as they're balanced. The form
+carries the same **Raw** marker event as the block form. A single space after
+the label's closing `:` is a separator (not content) -- so
+`!{:json: {"a":1}}` captures `{"a":1}`, not ` {"a":1}`. *(Provisional for 0.8;
+tighter nailing deferred until dialects / templating settle.)*
 
 Examples:
 
@@ -1533,7 +1589,24 @@ emits the events above; it need not implement any particular dialect.
 
 ### References (`@`)
 
-`@` refers to an element defined elsewhere, by identity:
+`@` refers to an element defined elsewhere. A reference is a **selector
+tuple** `(element, key, traits)` -- provisional until a path syntax replaces
+this wholesale:
+
+| You write | Selector |
+|-----------|----------|
+| `@[mit]` | `(null, 'mit', [])` |
+| `@licence` | `('licence', null, [])` |
+| `@licence[mit]` | `('licence', 'mit', [])` |
+| `@.realized` | `(null, null, ['realized'])` |
+| `@licence[mit].realized` | `('licence', 'mit', ['realized'])` |
+
+- **Traits are selection criteria**, not augmentation of the target. The older
+  "not augmentable" rule survives with this sharper meaning: a reference does
+  not decorate or mutate the referent; traits only filter *which* definition
+  matches. Matching multiplicity is consumer-side.
+- **Notably absent by design:** suffixes, attributes, predicates, nesting.
+  To vary the target's content, define a new element.
 
 ```
 |license[mit]
@@ -1542,22 +1615,28 @@ emits the events above; it need not implement any particular dialect.
 
 |project
   :name MyProject
-  :license @[mit]    ; refer to the element keyed "mit"
+  :license @[mit]    ; (null, 'mit', [])
 ```
 
-`@element[key]` is the explicit form; `@[key]` is shorthand that **errors** if
-the key is ambiguous across element types. A reference is not augmentable --
-`@[mit]` points, unchanged; there is no `@[mit].trait` decoration. To vary the
-target, define a new element.
+`@element[key]` is the fully explicit form; `@[key]` is key-only shorthand that
+**errors at resolve time** if the key is ambiguous across element types (the
+parser still emits the inert reference either way).
 
-**A reference is inert at the core level** -- the parser emits a reference, it
-does not resolve it. *How* a consumer resolves `@` is a parser/host decision --
-the same recognize-in-core / resolve-in-consumer posture used throughout UDON.
-Resolution modes a host may offer:
+**A reference is inert at the core level** -- the parser emits it, it does not
+resolve it. *How* a consumer resolves `@` is a host decision. Resolution modes
+a host may offer:
 
 - **transclude** -- insert the referenced element's structure and content
 - **merge attributes** -- fold in only the referenced element's attributes
 - **leave inert** -- keep it as a pointer (the streaming / default behavior)
+
+**Event encoding (interim).** Until the structured encoding lands, the
+reference parser emits a single `Reference` event whose payload is the **raw
+text after `@`** (`@[mit]` → `"[mit]"`, `@license[mit]` → `"license[mit]"`) --
+no information loss, one uniform rule. The planned encoding reuses
+element-identity machinery: `ReferenceStart` / `Name` / `Attr "$key"` + value /
+`Attr "$traits"` + value / `ReferenceEnd` (typed keys, quoted names/traits,
+trait stacking free, symmetric with definition-side identity).
 
 The earlier `:[id]` attribute-merge syntax is **removed**: "merge that element's
 attributes" is just the *merge* resolution mode above, chosen by the consumer --
@@ -1644,20 +1723,20 @@ the value:
 :span  <temporal:interval:...> ; dialect + type
 ```
 
-**Recognition.** In attribute-value position, a bare value that begins with `<`
-opens the envelope; the matching `>` terminates it. To write a *literal* string
-value that begins with `<`, quote it (`:x "<not a type>"`). Outside bare
-attribute-value position -- in prose, or inside quotes -- `<` has no special
+**Recognition.** In **value position** -- attribute values and array items
+alike (uniform value rules) -- a bare value that begins with `<` opens the
+envelope; the matching `>` terminates it. To write a *literal* string value
+that begins with `<`, quote it (`:x "<not a type>"`, `["<not a type>"]`).
+Outside bare value position -- in prose, or inside quotes -- `<` has no special
 meaning.
 
 **Interim behavior -- no dialects yet (this version).** The dialect layer is
 not built. Until it lands, a conformant parser still recognizes the envelope
 (the `<>`-balanced span, terminating the value at the matching `>`) but emits
-a **Warning** that no dialects are loaded and passes the value through as a
-plain string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the
-string `"<5m>"` plus the warning). Nothing is lost or silently retyped;
-when dialects land, the same document parses to typed values and the warning
-disappears.
+warning code `NoDialectsLoaded` and passes the value through as a plain
+string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the string
+`"<5m>"` plus the warning). Nothing is lost or silently retyped; when dialects
+land, the same document parses to typed values and the warning disappears.
 
 **Nesting (forward note, deliberately under-specified).** Typed values will
 eventually nest -- a composite whose components are themselves typed, e.g.

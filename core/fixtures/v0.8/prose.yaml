@@ -82,11 +82,11 @@
     - [Name, "on-line-child"]
     - ElementEnd
     - [Text, "first-line-of-prose"]
-    - [Warning, "Inconsistent indentation"]
+    - [Warning, "InconsistentIndentation"]
     - [Text, "but what about this"]
     - [Text, "no new warning"]
     - [Text, "    four extra spaces"]
-    - [Warning, "Inconsistent indentation"]
+    - [Warning, "InconsistentIndentation"]
     - [Text, "new warning here"]
     - ElementEnd
 

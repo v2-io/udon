@@ -23,6 +23,26 @@ bumps may break).
   but emits a Warning that no dialects are loaded and passes the value through
   as the plain string `"<…>"` — nothing lost, nothing silently retyped.
 
+### Changed
+- **Stranded second-attr in block values** (2026-07-15): the value is still
+  taken to end-of-line (one attribute per block line); an event-level Warning
+  is no longer required — hosts may advise. Aligns with the warning-code
+  posture (emission is host-side) and anticipates the attribute-model
+  reconception.
+- **Warning codes** (2026-07-15): Warning event payload is a PascalCase code
+  (`InconsistentIndentation`, `NoDialectsLoaded`, …), not a ratified prose
+  string; emission circumstances are host-side. Table in CORE parser-behavior
+  notes.
+- **References as selector tuples** (2026-07-15): semantic model
+  `(element, key, traits)` in CORE; traits are selection criteria. Interim
+  wire remains a single `Reference` with raw text after `@` until structured
+  encoding lands.
+- **Several 0.8 silences pinned in CORE** (2026-07-15): Text granularity;
+  past-base `\` AST-only; `<…>` in array items; raw-block first-content-line
+  dedent; multiline embedded per-line Text; prose between embedded siblings;
+  inline-raw Raw+sep-space. *(Structured-attribute event shape intentionally
+  not pinned — open on `design/attribute-model-2026-07.md`.)*
+
 ## [0.8.0-alpha.1] — 2026-07-14
 
 First **alpha** of the rebooted spec (descent-rewrite era). Ratified in this

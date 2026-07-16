@@ -51,12 +51,6 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       `double_quoted`/`single_quoted`. Behavior-neutral; not fixture-driven.
 - [ ] **Perf regression watch** — keep the criterion benchmark suite meaningful
       through the v0.8 grammar work; memory profiling on large files.
-- [ ] **Past-base `\` Warning** — a leading `\` deeper than an established
-      prose content-base must pass through literally *and* fire a Warning
-      (CORE "Escape", flagged there as a grammar-level detail to settle;
-      fixture `escape.yaml::escape_past_base_is_literal_with_warning` holds
-      it RED). Needs a look-through-the-extra-spaces peek in the element
-      children loop that the current prose routing doesn't have.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's

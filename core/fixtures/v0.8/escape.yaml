@@ -181,14 +181,16 @@
     - [Text, "  start some prose"]
     - ElementEnd
 
+# RATIFIED (Joseph, 2026-07-15): past-base `\` warning is AST-layer, not
+# event-parser. Event layer: literal passthrough only (already correct).
+# EscapeOutsideHeadPosition lives on the AST warning ledger.
 - id: escape_past_base_is_literal_with_warning
-  desc: a leading backslash deeper than the established base is literal prose plus Warning
+  desc: a leading backslash deeper than the established base is literal prose (no event-level Warning)
   udon: "|element\n  \\  start some prose\n    \\some more prose\n"
   events:
     - ElementStart
     - [Name, "element"]
     - [Text, "  start some prose"]
-    - [Warning, "Escape not at head position"]
     - [Text, "  \\some more prose"]
     - ElementEnd
 

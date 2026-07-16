@@ -73,16 +73,19 @@
     - CommentEnd
     - ElementEnd
 
-# One attribute per block line; a stranded ` :name ` warns (decided 2026-07-14)
+# One attribute per block line: a stranded ` :name ` is part of the value
+# (CORE "Block Attribute Values"). Event parser is not required to warn —
+# stranded-attr warning dies with the attribute-model reconception
+# (spec/TODO-SPEC-CORE.md; design/attribute-model-2026-07.md). Hosts may
+# still advise.
 
 - id: block_line_holds_one_attribute
-  desc: a block value swallows what looks like a second attribute, with a Warning
+  desc: a block value swallows what looks like a second attribute (one attr per line)
   udon: "|el\n  :bttr 2 :cttr 3\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "bttr"]
-    - [Warning, "Possible second attribute in block value"]
     - [BareValue, "2 :cttr 3"]
     - ElementEnd
 
@@ -196,22 +199,15 @@
 # Complex attribute values: attribute + newline + indent = structured value
 # (CORE "Complex Attribute Values")
 # ---------------------------------------------------------------------------
+# OPEN — not settled in CORE. Active design:
+#   design/attribute-model-proposal-2.md (+ substrate).
+# events: [] = run for panics only; asserts nothing until ratification.
+# Do NOT pin current parser emission here (that is not the contract).
 
 - id: structured_attribute_value
-  desc: an attribute followed by an indented block takes elements as its value
+  desc: OPEN until attribute-model proposal 2 is ratified — panic-only
   udon: "|api\n  :headers\n    |header :name a :value b\n"
-  events:
-    - ElementStart
-    - [Name, "api"]
-    - [Attr, "headers"]
-    - ElementStart
-    - [Name, "header"]
-    - [Attr, "name"]
-    - [BareValue, "a"]
-    - [Attr, "value"]
-    - [BareValue, "b"]
-    - ElementEnd
-    - ElementEnd
+  events: []
 
 # ---------------------------------------------------------------------------
 # Attributes before children (CORE "Design Principles"); the prose-side

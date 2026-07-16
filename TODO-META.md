@@ -17,17 +17,17 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
         tag `grammar-v0.7`), v0.8 group live, harness rewired to discover it
         dynamically. *First full authoring pass done 2026-07-15:* ~227 cases
         across 15 files, every expectation derived from a complete read of
-        `spec/CORE.md` + companions (never traced from the parser); gate runs
-        RED at ~89 failures, concentrated in the 0.8-changed areas — the
-        intended signal. **Remaining:** Joseph rules on the fixture-flagged
-        spec silences (`spec/TODO-SPEC-CORE.md`, "Silences found while
-        authoring" — notably the proposed `TypedValue` event and the sameline
-        `;` contradiction); mine `legacy-pre-0.8/` for still-valid regression
-        cases not re-derived here (esp. `indentation_edge_cases`,
+        `spec/CORE.md` + companions (never traced from the parser). *Gate
+        GREEN 2026-07-15* (last residuals: past-base escape → AST-layer;
+        inline-raw Raw+sep-space; stranded-attr warn softened; structured
+        attr event-layer = BoolTrue + sibling children). **Remaining before
+        `core-v0.8.0` tag:** residual SPEC-CORE silences still open for
+        wording/execution (warning-code table, Text granularity note,
+        comment-vs-prose-base example, reference selector tuples, … — see
+        `spec/TODO-SPEC-CORE.md`); mine `legacy-pre-0.8/` for still-valid
+        regression cases not re-derived here (esp. `indentation_edge_cases`,
         `prose_dedentation` depth, `element_names` charset torture cases);
-        keep densifying edge/combination coverage as parser work exposes
-        gaps. (The interim scan artifact `notes/fixture-rebuild-index-*` was
-        used for a coverage cross-check and deleted.)
+        keep densifying edge/combination coverage as gaps surface.
       - Stand up the **unified compliance gate** — event-level fixtures by default
         (easiest place to reason about/fix the descent grammar), AST-level only
         where a core-syntax property is genuinely easier to assert there.

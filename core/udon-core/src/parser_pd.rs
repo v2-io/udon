@@ -365,7 +365,7 @@ enum SamelineDirectiveSt { PdEntry, Dispatch, PdK159, PdK160, PdK161, }
 enum InterpolationSt { PdEntry, Main, Closing, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineRawSt { PdEntry, Kind, Content, Scan, CheckClose, PdK162, }
+enum SamelineRawSt { PdEntry, Kind, SkipSep, Content, Scan, CheckClose, PdK162, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK163, PdK164, PdK165, PdK166, }
@@ -2679,7 +2679,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ if f.col < f.content_base => {
-                                    on_event(StreamEvent::Warning { content: b"Inconsistent indentation".to_vec(), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: b"InconsistentIndentation".to_vec(), span: self.gspan() });
                                     f.content_base = f.col;
                                     f.st = ElementSt::DoProse;
                                     self.stack.push(Frame::Element(f));
@@ -2706,7 +2706,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ if f.col < f.content_base => {
-                                    on_event(StreamEvent::Warning { content: b"Inconsistent indentation".to_vec(), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: b"InconsistentIndentation".to_vec(), span: self.gspan() });
                                     f.content_base = f.col;
                                     f.st = ElementSt::DoVerbatim;
                                     self.stack.push(Frame::Element(f));
@@ -5156,7 +5156,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    on_event(StreamEvent::Warning { content: b"Inconsistent indentation".to_vec(), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: b"InconsistentIndentation".to_vec(), span: self.gspan() });
                                     f.content_base = f.col;
                                     self.mark();
                                     f.st = LineCommentSt::ContLine;
@@ -6466,7 +6466,8 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b':') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineRawSt::Content;
+                                    on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
+                                    f.st = SamelineRawSt::SkipSep;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     continue 'run;
                                 }
@@ -6474,6 +6475,26 @@ impl PushdownParser {
                                     f.st = SamelineRawSt::PdK162;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     self.enter_name(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineRawSt::SkipSep => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineRawSt::Content;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineRawSt::Content;
+                                    self.stack.push(Frame::SamelineRaw(f));
                                     continue 'run;
                                 }
                             }
@@ -6734,7 +6755,7 @@ impl PushdownParser {
                                 Some(b'\n') => { self.advance(); self.stack.push(Frame::TypedValue(f)); continue 'run; }
                                 None => {
                                     if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                    on_event(StreamEvent::Warning { content: b"No dialects loaded".to_vec(), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: b"NoDialectsLoaded".to_vec(), span: self.gspan() });
                                     { let c = self.term_owned(); on_event(StreamEvent::BareValue { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }
@@ -6749,7 +6770,7 @@ impl PushdownParser {
                             match self.peek() {
                                 _ if f.depth == 0 => {
                                     self.set_term(0);
-                                    on_event(StreamEvent::Warning { content: b"No dialects loaded".to_vec(), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: b"NoDialectsLoaded".to_vec(), span: self.gspan() });
                                     { let c = self.term_owned(); on_event(StreamEvent::BareValue { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }

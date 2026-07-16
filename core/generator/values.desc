@@ -76,13 +76,13 @@
   ; string — the full <...> lexical form, so nothing is lost. When dialects
   ; land, this is where they take over.
   |state[:envelope]
-    |eof                      | Warning(No dialects loaded) | BareValue(USE_MARK) |return
+    |eof                      | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
     |c['<']                   | -> | depth += 1                  |>>
     |c['>']                   | -> | depth -= 1                  |>> :env_check
     |default                  | ->                               |>>
 
   |state[:env_check]
-    |if[depth == 0]           | TERM | Warning(No dialects loaded) | BareValue(USE_MARK) |return
+    |if[depth == 0]           | TERM | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
     |default                  |                                  |>> :envelope
 
   ; === Reference in value position (CORE "References") ===

@@ -1,11 +1,8 @@
 # Explicit typing envelope `<...>` (CORE "Explicit Typing (`<...>`)").
 #
-# INTERIM BEHAVIOR (ratified 2026-07-15, now in CORE "Explicit Typing"):
-# no dialects exist yet, so the envelope is recognized — <>-balanced, and it
-# terminates the value at the matching > — but the parser emits a Warning
-# ("No dialects loaded") and passes the value through as a plain string:
-# the full <...> lexical form, untouched. When the dialect layer lands,
-# these cases change to the dialect-era event shape.
+# INTERIM BEHAVIOR (CORE "Explicit Typing"): envelope recognized (<>-balanced,
+# value-terminating); Warning code NoDialectsLoaded; value passed through as
+# the plain string "<…>". Dialect-era event shape when dialects land.
 
 - id: envelope_unlabelled
   desc: bare value beginning with < opens the envelope
@@ -14,7 +11,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<2026-07-11>"]
     - ElementEnd
 
@@ -25,7 +22,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "dur"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
     - ElementEnd
 
@@ -36,7 +33,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "size"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<u64:0xf902>"]
     - ElementEnd
 
@@ -47,7 +44,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "span"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<temporal:interval:2026-01/2026-06>"]
     - ElementEnd
 
@@ -58,7 +55,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "q"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<r: <i: 3 -7> 0d83.23>"]
     - ElementEnd
 
@@ -88,24 +85,22 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<2026-07-11>"]
     - [Attr, "n"]
     - [Integer, "1"]
     - ElementEnd
 
-# ⚠ CORE says "in attribute-value position"; whether an *array item* is such
-# a position is not stated explicitly. Filed in spec/TODO-SPEC-CORE.md; this
-# case encodes the uniform reading (array items follow the same value rules).
+# CORE: envelope opens in value position (attribute values and array items).
 - id: envelope_as_array_item
-  desc: an array item beginning with < opens the envelope (bare value position)
+  desc: an array item beginning with < opens the envelope (value position)
   udon: "|el :xs [<5m> 3]\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "xs"]
     - ArrayStart
-    - [Warning, "No dialects loaded"]
+    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
     - [Integer, "3"]
     - ArrayEnd

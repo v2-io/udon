@@ -381,12 +381,12 @@
 
   |state[:prose_base]
     |if[content_base < 0]     | content_base = col               |>> :do_prose
-    |if[col < content_base]   | Warning(Inconsistent indentation) | content_base = col |>> :do_prose
+    |if[col < content_base]   | Warning(InconsistentIndentation) | content_base = col |>> :do_prose
     |default                  |                                  |>> :do_prose
 
   |state[:verbatim_base]
     |if[content_base < 0]     | content_base = col               |>> :do_verbatim
-    |if[col < content_base]   | Warning(Inconsistent indentation) | content_base = col |>> :do_verbatim
+    |if[col < content_base]   | Warning(InconsistentIndentation) | content_base = col |>> :do_verbatim
     |default                  |                                  |>> :do_verbatim
 
   |state[:do_verbatim]
@@ -941,7 +941,7 @@
     ; If content_base not set, first continuation sets it
     |if[content_base < 0]     | content_base = col | MARK        |>> :cont_line
     ; col < content_base: inconsistent indent, warn and reset
-    |default                  | Warning(Inconsistent indentation) | content_base = col | MARK |>> :cont_line
+    |default                  | Warning(InconsistentIndentation) | content_base = col | MARK |>> :cont_line
 
   ; Reached content_base while counting - MARK here, extra spaces are content
   |state[:at_content_base]
@@ -1209,11 +1209,19 @@
 
 ; Inline raw !{:kind: content}
 ; sameline_raw - raw content inside !{:kind:...}
-; Per FULL-SPEC.md lines 796-797: uses brace-counting for nested {} pairs
+; Brace-counting for nested {} pairs (CORE "Inline Raw Content").
+; Carries the block form's Raw marker; a single space after the label's
+; closing `:` is a separator, not content (spec/TODO-SPEC-CORE.md, provisional
+; for 0.8 — nailing tighter deferred past dialects/templating).
 |function[sameline_raw:Directive]  | depth = 0
   |state[:kind]
-    |c[':']                   | ->                               |>> :content
+    |c[':']                   | -> | Raw                         |>> :skip_sep
     |default                  | /name                            |>>  ; kind name
+
+  ; Separator: one optional space after the closing `:` is not content.
+  |state[:skip_sep]
+    |c[' ']                   | ->                               |>> :content
+    |default                  |                                  |>> :content
 
   |state[:content]
     | MARK                                                       |>> :scan
