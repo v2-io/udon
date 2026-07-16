@@ -16,22 +16,14 @@
       undercuts CORE-as-sole-source-of-truth and it has already caused confusion
       (cited as if corroborating CORE). Decide: delete / reduce to a pointer /
       keep. Deferred by Joseph for a deliberate call.
-- [ ] **Attribute model — ratify from proposal 3 + substrate 3.** Active:
-      - **[design/attribute-model-proposal-3-substrate.md](../design/attribute-model-proposal-3-substrate.md)**
-        — decided model floor (binding, segments, flags, prose-shaped text).
-      - **[design/attribute-model-proposal-3.md](../design/attribute-model-proposal-3.md)**
-        — narrative + residual editorial opens.
-      Archaeology: proposal-2 / 2-substrate, [attribute-model-2026-07.md](../design/attribute-model-2026-07.md).
-      CORE "Complex Attribute Values" unsettled until ratification.
-      Fixture `structured_attribute_value` is `events: []` until then.
-      *(discuss w/ Joseph)*
 - [ ] **References — structured event encoding** (semantics already in CORE
       "References"). Wire still interim: single `Reference` with raw text after
       `@`. Planned: `ReferenceStart` / `Name` / `Attr "$key"` / `Attr
       "$traits"` / `ReferenceEnd` (reuse element-identity machinery). When
-      taken: update `values.desc`/`udon.desc` reference functions, fixtures
-      (`references.yaml`, `markers.yaml::at_bracket_is_reference`,
-      `reference_trait_tail_interim` → real trait selection), `tree.rs`
+      taken: update the reference functions in the `generator/` grammar
+      units, fixtures (`references.yaml` incl.
+      `reference_trait_tail_in_payload` → real trait selection,
+      `markers.yaml::at_bracket_is_reference`), `tree.rs`
       `NodeKind::Reference`.
 - [ ] **Inline raw `!{:kind: …}` — deeper nailing** deferred past 0.8
       (Joseph, 2026-07-15) until dialects/templating settle. Provisional
