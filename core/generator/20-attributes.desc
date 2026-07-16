@@ -1,0 +1,469 @@
+; Attributes — keys, flags, values, deferred bodies, segment stacking
+;
+; CORE spec areas: the whole "Attributes" chapter (0.9 model): "Attribute
+; Keys and Flags", "The Scan and the Bare-Token Boundary", "Text-Blob
+; Values" and ownership, "Multi-Line Values (Deferred Block)",
+; "Multi-Segment Values and Stacking", "Node Values", "Value-Position \",
+; "Contexts and Terminators", and the flat "Event Encoding (0.9 Wire)".
+;
+; The three attribute contexts (block line, element sameline, embedded)
+; deliberately remain three functions — their terminator sets and tail
+; ownership differ exactly as CORE's "Contexts and Terminators" table says.
+
+
+; 0.9 attribute model (CORE "Attribute Keys and Flags"): a terminal '?' on
+; the key selects flag semantics (detected via PREV after /attr_key — the
+; last consumed byte is the key's last char). Plain attributes always take
+; a value: a valueless plain attr is a non-halting MissingAttributeValue
+; error + a synthesized Nil (the stream never carries less shape than the
+; source suggested; ruled 2026-07-16). A '|' in value position is left
+; unconsumed with NO event — the caller parses the node, and on the flat
+; wire "Attr followed by ElementStart" IS the node-value encoding.
+; Deferred block values resolve in the element children loop (attr_open
+; modes: 1 OPEN needs-value, 3 BODY collecting text segments, 4 DONE
+; finished — deeper material is warn+stack). Segment re-emission uses the
+; SAVE(akey) capture (descent SAVE/USE_SAVED, added 2026-07-16).
+
+; Shared attribute-key parsing for all three attribute contexts (block,
+; sameline, embedded). Parses the bare or quoted key, SAVEs it into the
+; `akey` slot (re-emitted per value segment — flat wire), and reports
+; flag-ness: returns 1 when the key's terminal character is '?' (flag
+; semantics, CORE "Attribute Keys and Flags"; quoted and bare keys alike —
+; R4, 2026-07-16), else 0. Callers guarantee the first char passes the
+; attr guard (name start or quote).
+|function[attr_ident:INT]  | result = 0
+  |state[:key]
+    |c[XLBL_START]            | /attr_key                        |>> :post_key
+    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
+
+  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
+  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char.
+  |state[:post_key]
+    |if[PREV == '?']          | SAVE(akey) | result = 1          |return result
+    |default                  | SAVE(akey)                       |return result
+
+  |state[:post_qkey]
+    |if[PREV == '?']          | SAVE(akey) | -> | result = 1     |return result
+    |default                  | SAVE(akey) | ->                  |return result
+
+
+; RETURN-CODE VOCABULARY (attribute functions + /value + /typed_value).
+; descent functions cannot read or write caller locals, so where a decision
+; must be finished by the caller (it owns the columns and content_seen),
+; the callee reports how its scan ended as a small INT:
+;   0  finished — value(s) complete, nothing pending for the caller
+;   1  attribute left OPEN at end-of-line (deferred value; block only)
+;   2  '|' in value position, UNCONSUMED — the node is the attr's VALUE
+;   3  value was a text BLOB (deferred continuation may follow deeper)
+;   4  (internal to /value: ':' consumed at boundary, next attr key follows)
+;   5  flag re-owned trailing material as element Text — children began
+;   6  '!' raw/directive in value position — caller parses the node value
+;  11  '|' consumed at a bare-token boundary — a CHILD node follows
+;  12  '!' consumed at a bare-token boundary — a directive follows
+;  13  '@' consumed at a bare-token boundary — a reference child follows
+; (11/12/13 exist because a marker guard needs the byte after the marker,
+; so the marker itself is already consumed when the guard passes; the
+; caller resumes the scan knowing which marker it was.)
+
+; Block attribute (:key on its own indented line). Uniform scan (CORE "The
+; Scan"): after a finished value, ':' starts the next attribute on the SAME
+; block line; block run-to-EOL is gone. Deferred/deeper lines are owned by
+; /attr_deferred_body, invoked by the element's children loop with this
+; function's return code mapped to the body mode.
+|function[block_attr:INT]  | result = 0
+  |state[:key]
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:flag]
+    |default | fstate = /flag_value('\0')                        |>> :flag_route
+  |state[:flag_route]
+    |if[fstate == 1]          | result = 5                       |return result
+    |default                                                     |>> :post_value
+
+  |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return result
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | result = 1                       |return result
+    |c[':']                   | /error(missing_attribute_value) | Nil |>> :key_next
+    |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
+    |c['|']                   | result = 2                       |return result
+    |c['`']                   | ->                               |>> :vff1
+    |c['!']                   | ->                               |>> :vbang
+    |c[<BS>]                  | result = 3 | -> | /attr_text_verbatim('\0') |return result
+    |default                  | vstate = /value(0, '\0')         |>> :post_value_route
+
+  ; Fence as node value (Value Kinds): three backticks open a freeform whose
+  ; node IS the value. Fewer fall back to the ordinary value scan.
+  |state[:vff1]
+    |c['`']                   | ->                               |>> :vff2
+    |default                  | PREPEND('`') | vstate = /value(0, '\0') |>> :post_value_route
+  |state[:vff2]
+    |c['`']                   | -> | /freeform                   |return result
+    |default                  | PREPEND('``') | vstate = /value(0, '\0') |>> :post_value_route
+
+  ; Raw block / directive as node value (`:script !:sh:` — resolved
+  ; 2026-07-16). Guard: ':' or identifier; `!{{` opens an interpolation
+  ; value; anything else means the '!' begins a text value.
+  |state[:vbang]
+    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c['{']                   | ->                               |>> :vinterp
+    |default                  | PREPEND('!') | vstate = /value(0, '\0') |>> :post_value_route
+  |state[:vinterp]
+    |c['{']                   | -> | /interpolation              |>> :post_value
+    |default                  | PREPEND('!') | PREPEND('{') | vstate = /value(0, '\0') |>> :post_value_route
+
+  ; A text-blob value may continue on deeper lines (BODY mode, code 3);
+  ; scalar values are finished (DONE zone, code 0 -> caller maps to 4).
+  |state[:post_value_route]
+    |if[vstate == 3]          | result = 3                       |>> :post_value
+    |if[vstate == 4]                                             |>> :key
+    |if[vstate == 11]         | result = 11                      |return result
+    |if[vstate == 12]         | result = 12                      |return result
+    |if[vstate == 13]         | result = 13                      |return result
+    |default                                                     |>> :post_value
+
+  ; Consume the ':' that ended a valueless attr and parse the next key.
+  |state[:key_next]
+    |c[':']                   | ->                               |>> :key
+    |default                  |                                  |return result
+
+  ; After a finished value: framed comment, next attribute (uniform scan),
+  ; end of line — or trailing material, which is the uniform two-values
+  ; rule: WARN + stack as a further segment under the same key (the key is
+  ; re-emitted from its SAVE(akey) capture). A boundary-\ only forces text
+  ; mode; ownership is identical (R3, 2026-07-16).
+  |state[:post_value]
+    |c[' \t']                 | ->                               |>>
+    |c[';']                   | -> | /line_comment_content        |return result
+    |c[':']                   |                                  |>> :key_next
+    |c['\n']                  |                                  |return result
+    |c['|']                   |                                  |return result
+    |c[<BS>]                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | -> | /attr_text_verbatim('\0') |return result
+    |default                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | /attr_trailing_blob('\0') |return result
+
+
+; attr_deferred_body - after a block-attribute line, this function OWNS
+; every line deeper than the attribute's column (CORE "Multi-Line Values" +
+; "Multi-Segment Values and Stacking"). :mode0 is where the line left the
+; attribute:
+;   1 = OPEN  key with no value yet — a deeper line IS the value: a node
+;       (the attr is the node), text (deferred text value -> BODY), or a
+;       comment (exempt; the attr stays open). Dedent/EOF while still OPEN
+;       means no value ever arrived: MissingAttributeValue + Nil.
+;   3 = BODY  a deferred text value is collecting — deeper lines are more
+;       segments of the SAME value, each re-emitting the key (flat wire).
+;   4 = DONE  the value is finished — deeper material is the uniform
+;       two-values rule: WARN (AttributeSecondValue) + stack as a further
+;       segment (never silent, never dropped). Comments are exempt.
+; Deferred values do NOT enter the element's children phase (attrs-before-
+; children counts children, not values) — the caller's content_seen is
+; untouched. Returns at EOF, or positioned at the first non-space character
+; of the dedented line (col <= :attr_col) for the caller's children loop.
+|function[attr_deferred_body]  :attr_col :parent_col :mode0  | mode = :mode0
+
+  ; End of a body line — or a mid-line return from a nested construct:
+  ; consume the newline, or re-derive the column and re-check.
+  |state[:line_end]
+    |eof                      |                                  |>> :finish
+    |c['\n']                  | ->                               |>> :line
+    |c[' ']                   | ->                               |>>
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->   |>> :line
+    |default                  | col = COL - 1                    |>> :check
+
+  ; Fresh line start within the body. Blank lines behave exactly as in
+  ; prose (CORE: no special policy).
+  |state[:line]
+    |eof                      |                                  |>> :finish
+    |c['\n']                  | -> | BlankLine                   |>>
+    |c[' ']                   | -> | col = 1                     |>> :ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->   |>>
+    |default                  | col = COL - 1                    |>> :check
+
+  |state[:ws]
+    |eof                      |                                  |>> :finish
+    |c[' ']                   | -> | col += 1                    |>>
+    |c['\n']                  | -> | BlankLine                   |>> :line
+    |default                  |                                  |>> :check
+
+  |state[:check]
+    |if[col <= :attr_col]                                        |>> :finish
+    |if[mode == 1]                                               |>> :open
+    |if[mode == 3]                                               |>> :body
+    |default                                                     |>> :done
+
+  ; OPEN: the deferred value arrives here (CORE "Multi-Line Values").
+  |state[:open]
+    |c['|']                   | mode = 4 | ->                    |>> :node
+    |c[':']                   | /error(attribute_under_attribute) | Nil | -> |>> :bad_attr
+    |c[';']                   | -> | /line_comment               |>> :line_end
+    |c['`']                   | mode = 4 | ->                    |>> :fence
+    |c['!']                   | mode = 4 | ->                    |>> :bang
+    |c[<BS>]                  | mode = 3 | -> | /verbatim_text   |>> :line_end
+    |default                  | mode = 3 | /prose(col, :parent_col, <>) |>> :line_end
+
+  ; BODY: further segments of the same text value, key re-emitted per
+  ; segment from its SAVE(akey) capture.
+  |state[:body]
+    |c[';']                   | -> | /line_comment               |>> :line_end
+    |c[':']                   | /error(attribute_under_attribute) | -> |>> :bad_attr
+    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | mode = 4 | -> |>> :node
+    |c[<BS>]                  | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line_end
+    |default                  | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line_end
+
+  ; DONE: the uniform two-values rule — warn + stack as a further segment.
+  |state[:done]
+    |c[';']                   | -> | /line_comment               |>> :line_end
+    |c[':']                   | /error(attribute_under_attribute) | -> |>> :bad_attr
+    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> |>> :node
+    |c[<BS>]                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line_end
+    |default                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line_end
+
+  ; A node as the value (or as a warned further segment): recurse into the
+  ; ordinary element / embedded machinery — the node owns its interior.
+  |state[:node]
+    |c['{']                   | -> | /embedded                   |>> :line_end
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :parent_col) |>> :line_end
+    |default                  | /prose(col, :parent_col, '|')    |>> :line_end
+
+  ; `!` guard (see document :check_bang): a raw block or directive line
+  ; within the body; a failed guard is prose with the '!' restored.
+  |state[:bang]
+    |c[':']                   | /block_directive(col)            |>> :line_end
+    |c[XLBL_START]            | /block_directive(col)            |>> :line_end
+    |c['{']                   | -> | /sameline_directive         |>> :line_end
+    |default                  | /prose(col, :parent_col, '!')    |>> :line_end
+
+  ; Triple-backtick fence as the (or a further) value node; fewer than
+  ; three backticks fall back to prose.
+  |state[:fence]
+    |c['`']                   | ->                               |>> :fence2
+    |default                  | /prose(col, :parent_col, '`')    |>> :line_end
+  |state[:fence2]
+    |c['`']                   | -> | /freeform                   |>> :line_end
+    |default                  | /prose_backticks(col, :parent_col) |>> :line_end
+
+  ; The offending ':'-line after AttributeUnderAttribute is kept as prose
+  ; (keep-everything posture; recovery shape is an open supplement item)
+  ; and the attribute machinery ends here — the caller's ordinary children
+  ; loop resumes.
+  |state[:bad_attr]
+    |default                  | /prose(col, :parent_col, ':')    |return
+
+  ; Dedent to/past the attribute column, or EOF: if the value never
+  ; arrived, the attribute errors + Nil (the stream never carries less
+  ; shape than the source suggested).
+  |state[:finish]
+    |if[mode == 1]            | /error(missing_attribute_value) | Nil |return
+    |default                  |                                  |return
+
+
+; Returns 2 when a '|' follows in value position — the node is the attr's
+; VALUE (parsed by the caller without entering the children phase).
+|function[sameline_attr:INT]  | result = 0
+  |state[:key]
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:flag]
+    |default | fstate = /flag_value('\0')                        |>> :flag_route
+  |state[:flag_route]
+    |if[fstate == 1]          | result = 5                       |return result
+    |default                                                     |return result
+
+  |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return result
+    |c[' \t']                 | ->                               |>>
+    |c['\n:']                 | /error(missing_attribute_value) | Nil |return result
+    |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
+    |c['|']                   | result = 2                       |return result
+    |c['`']                   | ->                               |>> :vff1
+    |c['!']                   | ->                               |>> :vbang
+    |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
+    |default                  | vv = /value(0, '\0')             |>> :vroute
+
+  |state[:vroute]
+    |if[vv == 3]              | result = 3                       |return result
+    |if[vv == 4]                                                 |>> :key
+    |if[vv == 11]             | result = 11                      |return result
+    |if[vv == 12]             | result = 12                      |return result
+    |if[vv == 13]             | result = 13                      |return result
+    |default                                                     |return result
+
+  |state[:vff1]
+    |c['`']                   | ->                               |>> :vff2
+    |default                  | PREPEND('`') | vv = /value(0, '\0') |>> :vroute
+  |state[:vff2]
+    |c['`']                   | -> | /freeform                   |return result
+    |default                  | PREPEND('``') | vv = /value(0, '\0') |>> :vroute
+
+  |state[:vbang]
+    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c['{']                   | ->                               |>> :vinterp
+    |default                  | PREPEND('!') | vv = /value(0, '\0') |>> :vroute
+  |state[:vinterp]
+    |c['{']                   | -> | /interpolation              |return result
+    |default                  | PREPEND('!') | PREPEND('{') | vv = /value(0, '\0') |>> :vroute
+
+
+|function[sameline_attr_embedded]
+  |state[:key]
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:flag]
+    |default | fstate = /flag_value('}')                         |return
+
+  |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return
+    |c[' \t']                 | ->                               |>>
+    |c[<'\n:' '}'>]           | /error(missing_attribute_value) | Nil |return
+    |c['|']                   |                                  |return
+    |c[<BS>]                  | -> | /attr_text_verbatim('}')     |return
+    |default                  | ev = /value(0, '}')              |>> :evroute
+
+  |state[:evroute]
+    |if[ev == 4]                                                 |>> :key
+    |default                                                     |return
+
+
+; Flag value (CORE flag rule): exactly true/false/null/nil as the next token
+; is the flag's value (consumed, even with trailing material — the keyword
+; ate); anything else snaps the flag to true and the material is RE-OWNED
+; (rule 2 wins over the extension rule — no warning). Returns 1 when the
+; re-owned material was emitted as prose-equivalent Text (callers foreclose
+; the attribute phase — the material entered the children phase), else 0.
+|function[flag_value:INT]  :bracket  | result = 0 | hit = 0
+  |state[:start]
+    |eof                      | BoolTrue                         |return
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | BoolTrue                         |return
+    |c[:bracket]              | BoolTrue                         |return
+    |c[<':;!@`' P BS>]        | BoolTrue                         |return
+    |c[LETTER]                | MARK | ->                        |>> :token
+    |default                  | MARK | BoolTrue | result = 1 | -> |>> :blob
+
+  |state[:token]
+    |eof                      | TERM                             |>> :tok_kw
+    |c[LABEL_CONT]            | ->                               |>>
+    |c['\n']                  | TERM                             |>> :tok_kw
+    |c[' \t']                 | TERM                             |>> :tok_kw
+    |c[:bracket]              | TERM                             |>> :tok_kw
+    |default                  | BoolTrue | result = 1 | ->       |>> :blob
+
+  ; The keyword eats even with trailing material (rule 1: "alone" = as a
+  ; token); a non-keyword lone token snaps true and becomes prose Text.
+  |state[:tok_kw]
+    |default | hit = KEYWORDS(flag_kw)                           |>> :tok_after
+  |state[:tok_after]
+    |if[hit == 1]                                                |return result
+    |default                  | BoolTrue | result = 1            |>> :blob
+
+  ; Snapped true; the material is prose-equivalent Text to end-of-line.
+  |state[:blob]
+    |eof                      | TERM | Text(USE_MARK)            |return result
+    |c['\n']                  | TERM | Text(USE_MARK)            |return result
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return result
+    |default                  | ->                               |>>
+
+
+|keywords[flag_kw]
+  | true   => BoolTrue
+  | false  => BoolFalse
+  | null   => Nil
+  | nil    => Nil
+
+
+; 0.9 key charset (CORE "Attribute Keys and Flags"): XID_Continue + '-' +
+; '/' + the suffix chars '?!*+', all unquoted. A TERMINAL '?' selects flag
+; semantics — callers detect it via PREV == '?' after this returns (the
+; last consumed byte is the key's last character).
+|function[attr_key:Attr]  | MARK
+  |state[:main]
+    |c[<XLBL_CONT '/?!*+'>]   | ->                               |>>
+    |default                  | TERM                             |return
+
+
+; Stops AT the closing quote (unconsumed) so callers can read PREV = the
+; last content character for terminal-'?' flag detection before consuming.
+|function[attr_key_quoted:Attr]  | MARK
+  |state[:main]
+    | /skip_single_quoted | TERM                                 |return
+
+
+; attr_trailing_blob - the warn+stack trailing segment on a block attr line
+; after a FINISHED value (the Warning and re-emitted Attr are the caller's).
+; Prose-shaped like any blob: framed ' ; ' opens a comment; runs to EOL or
+; the embedded bracket.
+|function[attr_trailing_blob]  :bracket  | MARK
+  |state[:main]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |c[';']                   |                                  |>> :semi
+    |default                  | ->                               |>>
+
+  |state[:semi]
+    |if[PREV == ' ']          | ->                               |>> :semi_after
+    |default                  | ->                               |>> :main
+
+  |state[:semi_after]
+    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |default                  |                                  |>> :main
+
+
+; attr_text_verbatim - value-position `\` (CORE "Value-Position \"): the
+; backslash was consumed by the caller; the rest of the line (or the
+; embedded bracket) is the attribute's TEXT value. Prose-shaped (S2 ruling:
+; \-forced text is dead to line-level structure but alive to inline forms,
+; individually escapable) — but NO sameline-comment affordance (P3-3): a
+; framed ' ; ' here is literal. Inline forms re-emit the key (flat wire).
+|function[attr_text_verbatim]  :bracket  | MARK
+  |state[:main]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |c['|']                   | ->                               |>> :pipe
+    |c['!']                   | ->                               |>> :bang
+    |c[';']                   | ->                               |>> :semi
+    |c[<BS>]                  | ->                               |>> :bs
+    |default                  | ->                               |>>
+
+  |state[:pipe]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /embedded |>> :after_inline
+    |default                  |                                  |>> :main
+  |state[:bang]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /sameline_directive |>> :after_inline
+    |default                  |                                  |>> :main
+  |state[:semi]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :main
+    |default                  |                                  |>> :main
+
+  |state[:bs]
+    |c['|']                   | ->                               |>> :bs_pipe
+    |c['!']                   | ->                               |>> :bs_bang
+    |c[';']                   | ->                               |>> :bs_semi
+    |default                  |                                  |>> :main
+  |state[:bs_pipe]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
+    |default                  |                                  |>> :main
+  |state[:bs_bang]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
+    |default                  |                                  |>> :main
+  |state[:bs_semi]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
+    |default                  |                                  |>> :main
+
+  |state[:after_inline]
+    |eof                      |                                  |return
+    |c['\n']                  |                                  |return
+    |c[:bracket]              |                                  |return
+    |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :main

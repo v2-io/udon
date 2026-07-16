@@ -86,8 +86,8 @@ core/
 │       └── span.rs      # Source locations
 ├── fixtures/            # Version-scoped compliance groups (v0.8 active)
 ├── generator/           # Parser specification
-│   ├── udon.desc        # Main parser grammar
-│   └── values.desc      # Value type parsing
+│   └── NN-*.desc        # Topical grammar units (00-parser … 90-references),
+│                        # concatenated in order by ./regenerate-parser
 └── regenerate-parser    # Script to regenerate parser
 ```
 

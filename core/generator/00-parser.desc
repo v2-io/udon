@@ -1,0 +1,158 @@
+; UDON Parser — declarations, entry point, and shared lexical helpers
+;
+; CORE spec areas: "Overview" (event vocabulary), "Positional Contexts",
+; the document root's head-position dispatch ("Head Position", "Marker
+; Recognition"), and the low-level helpers shared across the grammar.
+;
+; GENERATION: the ordered generator/*.desc files are concatenated by
+; ../regenerate-parser and fed to descent as ONE unit — cross-file function
+; references are free; file order is for the reader, not the tool.
+;
+; Design:
+;   1. Type system declares emit behavior
+;   2. EOF handling inferred from context
+;   3. No explicit emit() calls
+;   4. DSL describes grammar, generator infers mechanics
+;
+; Type categories:
+;   BRACKET  - emits Start on entry, End on exit (Element, Embedded, ...)
+;   CONTENT  - emits event on return (Name, Text, Comment, Attr, Value, ...)
+;   INTERNAL - no emit, used for intermediate values (indent count, flags)
+
+
+|parser udon
+
+
+|type[Element]       BRACKET    ; ElementStart on entry, ElementEnd on exit
+|type[Embedded]      BRACKET    ; EmbeddedStart/End
+|type[Directive]     BRACKET    ; DirectiveStart/End
+|type[Array]         BRACKET    ; ArrayStart/End
+|type[Freeform]      BRACKET    ; FreeformStart/End
+
+|type[Name]          CONTENT    ; emits Name event on return
+|type[Text]          CONTENT    ; emits Text event
+|type[Comment]       BRACKET    ; CommentStart/End - block structure like Element
+|type[Attr]          CONTENT    ; emits Attr event
+|type[StringValue]   CONTENT    ; emits StringValue event
+|type[BareValue]     CONTENT    ; emits BareValue event
+|type[BoolTrue]      CONTENT    ; emits BoolTrue event
+|type[BoolFalse]     CONTENT    ; emits BoolFalse event
+|type[Nil]           CONTENT    ; emits Nil event
+|type[Interpolation] CONTENT    ; emits Interpolation event
+|type[Reference]     CONTENT    ; emits Reference event
+|type[RawContent]    CONTENT    ; emits RawContent event
+|type[Raw]           CONTENT    ; emits Raw flag event
+|type[Integer]       CONTENT    ; emits Integer event (from values.desc)
+|type[Float]         CONTENT    ; emits Float event (from values.desc)
+|type[Rational]      CONTENT    ; emits Rational event (1/3r)
+|type[Complex]       CONTENT    ; emits Complex event (3+4i, 5i)
+|type[Warning]       CONTENT    ; emits Warning event (parser warnings)
+|type[BlankLine]     CONTENT    ; emits BlankLine for blank/whitespace-only lines
+
+|type[INT]           INTERNAL   ; no emit - internal integer
+|type[BOOL]          INTERNAL   ; no emit - internal boolean
+
+
+
+|entry-point /document
+
+
+|function[document]
+  ; :line is a FRESH line start: a bare newline here is a blank line and
+  ; emits BlankLine (CORE parser-behavior note). Constructs that stop at
+  ; their own terminating newline route through :eol so that newline is
+  ; consumed silently first.
+  |state[:line]
+    |c['\n']                  | -> | BlankLine                   |>>
+    |c[' ']                   | col = /count_indent              |>> :dispatch
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :line
+    |default                  | col = COL - 1                    |>> :dispatch  ; use actual column
+
+  |state[:eol]
+    |eof                      |                                  |return
+    |c['\n']                  | ->                               |>> :line
+    |default                  | col = COL - 1                    |>> :dispatch  ; construct returned mid-line
+
+  |state[:dispatch]
+    |c['|']                   | ->                               |>> :check_pipe
+    |c[':']                   | ->                               |>> :check_attr
+    |c['!']                   | ->                               |>> :check_bang
+    |c[';']                   | -> | /line_comment               |>> :line
+    |c['@']                   | ->                               |>> :check_at
+    |c['`']                   | ->                               |>> :check_freeform
+    |c[<BS>]                  | -> | /verbatim_text              |>> :eol
+    |default                  | /prose(col, -1, <>)              |>> :eol
+
+  ; Line-initial attr must be followed by a name start, quoted name, or
+  ; reference bracket. Anything else falls back to INTACT prose — the
+  ; colon is restored, never eaten (defect #12 data-loss half; the
+  ; promotion boundary itself is open decision 9).
+  |state[:check_attr]
+    |c[<XLBL_START SQ>]       | dstate = /block_attr             |>> :root_attr_check
+    |default                  | /prose(col, -1, ':')             |>> :eol
+
+  ; Deferred values are not supported at document root (attrs there are
+  ; already an edge case) — an open attr resolves immediately.
+  |state[:root_attr_check]
+    |if[dstate == 1]          | /error(missing_attribute_value) | Nil |>> :eol
+    |default                  |                                  |>> :eol
+
+  ; `!` guard (CORE Marker Recognition): directive only when followed by an
+  ; identifier or ':' (raw). `!{` at head position is the PROSE-LEVEL inline
+  ; form (interpolation / inline directive), NOT a block-Directive wrapper.
+  ; Everything else (![img], !=, bare !) is prose with the '!' restored.
+  |state[:check_bang]
+    |c[':']                   | /block_directive(col)            |>> :line
+    |c[XLBL_START]            | /block_directive(col)            |>> :line
+    |c['{']                   | -> | /sameline_directive         |>> :eol
+    |default                  | /prose(col, -1, '!')             |>> :eol
+
+  ; `@` guard (CORE Marker Recognition, 0.9): reference when followed by `[`,
+  ; `.` (trait-only selector, ruled 2026-07-16), or an identifier; otherwise
+  ; prose. The payload is the raw text after `@`.
+  |state[:check_at]
+    |c[<L XLBL_START '.'>]    | /block_ref                       |>> :eol
+    |default                  | /prose(col, -1, '@')             |>> :eol
+
+  |state[:check_freeform]
+    |c['`']                   | ->                               |>> :check_freeform2
+    |default                  | /prose(col, -1, '`')             |>> :eol
+
+  |state[:check_freeform2]
+    |c['`']                   | -> | /freeform                   |>> :line
+    |default                  | /prose_backticks(col, -1)        |>> :eol
+
+  |state[:check_pipe]
+    |c[<XLBL_START SQ '[' '.?!*+'>]  | /element(col, -1)               |>> :line
+    |c['{']                   | -> | /embedded                   |>> :eol
+    |default                  | /prose(col, -1, '|')             |>> :eol
+
+
+|function[count_indent:INT]  | result = 0
+  |state[:main]
+    |c[' ']                   | -> | result += 1                 |>>
+    |default                  |                                  |return result
+
+
+; DRYed: skip_single_quoted - void helper for '-quoted content with escapes
+; Stops AT closing ' (doesn't consume). Caller does TERM | -> to consume.
+; NOTE: Can't use ->[<SQ>] because we need to handle \' escapes
+|function[skip_single_quoted]
+  |state[:main]
+    |c[<SQ>]                  |                                  |return  ; don't consume
+    |c[<BS>]                  | -> | ->                          |>>
+    |default                  | ->                               |>>
+
+
+; DRYed: skip_brace_balanced - void helper for {}-counting
+; Caller handles MARK/TERM and emit type. Assumes opening { already consumed.
+; Returns with position AT the closing } (not consumed)
+|function[skip_brace_balanced]  | depth = 1
+  |state[:main]
+    |c['{']                   | -> | depth += 1                  |>>
+    |c['}']                   | depth -= 1                       |>> :check
+    |default                  | ->                               |>>
+
+  |state[:check]
+    |if[depth == 0]                                              |return  ; stop before }
+    | ->                                                         |>> :main  ; consume } and continue

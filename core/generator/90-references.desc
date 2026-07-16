@@ -1,0 +1,25 @@
+; References — the @ marker
+;
+; CORE spec areas: "References (@)" (selector tuples, inert at core) and
+; the @ guard of "Marker Recognition". Interim wire: one Reference event
+; carrying the raw text after @.
+
+
+; Reference (CORE "References", `@`-inert): called with the `@` consumed and
+; the current char passing the guard (`[`, `.`, or identifier start). The
+; payload is the RAW TEXT after `@` — `@[mit]` -> "[mit]",
+; `@license[mit].realized` -> "license[mit].realized" — one uniform rule, no
+; information loss (interim wire; structured encoding is a SPEC-CORE open
+; item). Trait tails (`.trait`) continue the reference both before and after
+; the `[key]` (0.9: selector tuples incl. trait-only `@.realized`). The old
+; `:[id]` attribute-merge form is REMOVED (merge is a host resolution mode).
+|function[block_ref:Reference]  | MARK
+  |state[:main]
+    |c['[']                   | ->[']'] | ->                     |>> :post_key
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
+    |default                  | TERM                             |return
+
+  ; After `[key]`: trait selectors may follow (`@el[key].trait.more`)
+  |state[:post_key]
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
+    |default                  | TERM                             |return

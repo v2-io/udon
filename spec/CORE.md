@@ -301,7 +301,7 @@ The value inside `[...]` follows the normal attribute-value rules -- every type 
 
 What the core fixes is the *rule* -- a bare name is a Unicode identifier (UAX #31 `XID_Start` to start, `XID_Continue` or `-` to continue). *Which Unicode version* those properties resolve against is a **parser / host-language decision**, not a core one: the core says "Unicode identifier," and the host's Unicode support (the reference parser tracks the `unicode-xid` crate's version) pins the exact codepoint set. This is the same core-vs-host split drawn in The Core, and What It Leaves Open.
 
-*(Reference grammar: `XLBL_START` = Unicode `XID_Start`, `XLBL_CONT` = `XID_Continue` + `-`; see `core/generator/udon.desc` -- `parse_element_identity`, `name`, `class_name` -- and `tools/descent/characters.md`.)*
+*(Reference grammar: `XLBL_START` = Unicode `XID_Start`, `XLBL_CONT` = `XID_Continue` + `-`; see `core/generator/10-element.desc` -- `parse_element_identity`, `name`, `class_name` -- and `tools/descent/characters.md`.)*
 
 ### Element Suffixes
 
@@ -1665,7 +1665,7 @@ A leading `0` *followed by more decimal digits* is decimal, not octal -- `0755` 
 3.14        1e10        1.5e-3 ; Floats
 ```
 
-*(Reference grammar: `core/generator/values.desc` -- `num_dec` / `num_hex` / `num_oct` / `num_bin`, leading-zero-is-decimal in `num_zero`, floats `num_float_frac` / `num_float_exp`. `0d` is a small pending grammar addition, a `d`/`D` arm in `num_zero`.)*
+*(Reference grammar: `core/generator/30-values.desc` -- `num_dec` / `num_hex` / `num_oct` / `num_bin`, leading-zero-is-decimal in `num_zero`, floats `num_float_frac` / `num_float_exp`. `0d` is a small pending grammar addition, a `d`/`D` arm in `num_zero`.)*
 
 **Rational and complex are provisional.** The grammar today also recognizes bare `1/3r` / `22/7r` (rational) and `5i` / `3+4i` (complex). At the moment their status is **parser-decided** -- the grammar recognizes them, and that is where the decision sits until the dialect layer lands, at which point it gets nailed down. Both are **current candidates** to move out of the bare core into a **standard-types `<...>` dialect** (e.g. `<r: 1 3>`, `<i: 3 4>`), where composition and nesting are clean and operator-free.
 

@@ -57,8 +57,16 @@ core/
 │   ├── v0.8/            # FROZEN, RELEASED — the core-v0.8.0 contract
 │   └── legacy-pre-0.8/  # FROZEN — reference + mining source, not run
 ├── generator/           # Parser specification
-│   ├── udon.desc        # Main grammar
-│   └── values.desc      # Value type parsing
+│   ├── 00-parser.desc   # Declarations, entry point, shared helpers
+│   ├── 10-element.desc  # Elements: identity, suffixes, children loop
+│   ├── 20-attributes.desc # The whole 0.9 attribute model
+│   ├── 30-values.desc   # Typed-value scanner, strings, arrays
+│   ├── 40-prose.desc    # Prose/text + the \ escape
+│   ├── 50-comments.desc # Line + inline comments
+│   ├── 60-embedded.desc # |{...}
+│   ├── 70-dynamics.desc # ! directives, raw, interpolation
+│   ├── 80-freeform.desc # ``` fences
+│   └── 90-references.desc # @
 ├── regenerate-parser    # Script to regenerate parser.rs
 ├── TODO-CORE-PARSING.md # Open residuals: event parser + descent grammar
 └── TODO-PARSER.md       # Open residuals: AST / streaming-AST / bindings
@@ -74,7 +82,8 @@ Always use the wrapper script from `core/`:
 ./regenerate-parser --no-build # Generate only
 ```
 
-The script concatenates `generator/udon.desc` and `generator/values.desc` and
+The script concatenates the ordered `generator/NN-*.desc` files (one topical
+unit per spec area; descent sees a single concatenated grammar) and
 runs descent from the pinned `tools/descent` submodule
 (`git submodule update --init tools/descent`). **Never edit
 `udon-core/src/parser.rs` directly.**

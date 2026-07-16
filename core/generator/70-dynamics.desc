@@ -1,0 +1,182 @@
+; Dynamics — ! directives, raw blocks, interpolation
+;
+; CORE spec areas: "Dynamics (!)", "Code and Raw Content" (block !:lang:
+; and inline !{:kind: ...}), "Unified Inline Syntax" (!{{expr}}
+; interpolation, !{directive ...}). Meaning is a dialect's job; the core
+; recognizes syntax and emits events.
+
+
+; Block directive - !name or !:lang: for raw, or !{...} inline at document level
+|function[block_directive:Directive]  :line_col  | raw_base = -1
+  |state[:dispatch]
+    |c[':']                   | ->                               |>> :raw_kind
+    |c[XLBL_START]                | /name                            |>> :after_name
+    |default                  |                                  |return  ; unreachable (callers guard)
+
+  ; Raw block !:lang: - parse kind name
+  |state[:raw_kind]
+    |c[XLBL_START]                | /name | Raw                      |>> :raw_colon
+    |default                  |                                  |return  ; malformed !:
+
+  |state[:raw_colon]
+    |c[':']                   | ->                               |>> :raw_eol
+    |default                  |                                  |return  ; missing second :
+
+  |state[:raw_eol]
+    |c['\n']                  | ->                               |>> :raw_content
+    |c[' \t']                 | ->                               |>>
+    |default                  | ->                               |>>  ; consume rest of line
+
+  ; Raw content — captured at greater indent, dedented relative to the
+  ; FIRST content line's column (raw_base); deeper lines keep their extra
+  ; indent as content (CORE "Raw Directives": relative indent preserved).
+  |state[:raw_content]
+    |c['\n']                  | ->                               |>>
+    |c[' ']                   | -> | col = 1                     |>> :raw_ws
+    |default                  |                                  |return  ; non-indented, done
+
+  |state[:raw_ws]
+    |if[raw_base >= 0 && col >= raw_base]                        |>> :raw_at_base
+    |c[' ']                   | -> | col += 1                    |>>
+    |c['\n']                  | ->                               |>> :raw_content  ; ws-only line
+    |default                  |                                  |>> :raw_checkbase
+
+  |state[:raw_checkbase]
+    |if[col <= :line_col]                                         |return  ; dedent
+    |if[raw_base < 0]         | raw_base = col | MARK            |>> :raw_line
+    |default                  | MARK                             |>> :raw_line  ; shallower than base: capture as-is
+
+  |state[:raw_at_base]
+    |default                  | MARK                             |>> :raw_line  ; extra spaces beyond base are content
+
+  |state[:raw_line]
+    |eof                      | TERM | RawContent(USE_MARK)      |return
+    |c['\n']                  | TERM | RawContent(USE_MARK) | -> |>> :raw_content
+    |default                  | ->                               |>>
+
+  ; Regular directive - parse condition/args and children
+  |state[:after_name]
+    |c['\n']                  | ->                               |>> :children
+    |c[' \t']                 | ->                               |>> :condition
+    |default                  |                                  |>> :children
+
+  |state[:condition]
+    |c['\n']                  | ->                               |>> :children
+    |default                  | MARK | /directive_args           |>> :children
+
+  ; Children at greater indent
+  |state[:children]
+    |c['\n']                  | ->                               |>>
+    |c[' ']                   | col = /count_indent              |>> :check_child
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
+    |default                  | col = COL - 1                    |>> :check_child
+
+  |state[:check_child]
+    |if[col <= :line_col]                                         |return
+    |                                                            |>> :child_dispatch
+
+  |state[:child_dispatch]
+    |c['|']                   | ->                               |>> :child_pipe
+    |c[':']                   | ->                               |>> :child_check_attr
+    |c['!']                   | ->                               |>> :dchild_check_bang
+    |c[';']                   | -> | /line_comment               |>> :children
+    |c[<BS>]                  | -> | /verbatim_text              |>> :children
+    |default                  | /prose(col, :line_col, <>)       |>> :children
+
+  ; `!` guard in directive children (see document :check_bang)
+  |state[:dchild_check_bang]
+    |c[':']                   | /block_directive(col)            |>> :children
+    |c[XLBL_START]            | /block_directive(col)            |>> :children
+    |c['{']                   | -> | /sameline_directive         |>> :children
+    |default                  | /prose(col, :line_col, '!')      |>> :children
+
+  ; Line-initial attr guard (see document :check_attr): failed attr parse
+  ; falls back to intact prose with the ':' restored (defect #12).
+  |state[:child_check_attr]
+    |c[<XLBL_START SQ>]       | dstate = /block_attr             |>> :dattr_check
+    |default                  | /prose(col, :line_col, ':')      |>> :children
+
+  |state[:dattr_check]
+    |if[dstate == 1]          | /error(missing_attribute_value) | Nil |>> :children
+    |default                  |                                  |>> :children
+
+  |state[:child_pipe]
+    |c['{']                   | -> | /embedded                   |>> :children
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :line_col)         |>> :children
+    |default                  | /prose(col, :line_col, '|')      |>> :children
+
+
+; Directive arguments - capture until newline or EOF
+|function[directive_args:Text]  | ->['\n'] | TERM
+
+
+; Inline dynamics - dispatch based on first char after {
+; Called with position at first char inside braces
+|function[sameline_directive]
+  |state[:dispatch]
+    |c['{']                   | -> | /interpolation              |return  ; !{{expr}}
+    |c[':']                   | -> | /sameline_raw                 |return  ; !{:kind: content}
+    |default                  | /sameline_dir_body                 |return  ; !{name args}
+
+
+; Interpolation !{{expr}} - double-brace, must close with }}
+|function[interpolation:Interpolation]  | MARK
+  |state[:main]
+    |eof                      | TERM | Interpolation(USE_MARK) | /error(UnclosedInterpolation)   |return
+    |c['}']                   | TERM | ->                              |>> :closing
+    |default                  | ->                                     |>>
+
+  ; First-}} rule (resolved 2026-07-16): a single '}' is expression content;
+  ; only '}}' terminates.
+  |state[:closing]
+    |c['}']                   | ->                                     |return  ; found }}
+    |eof                      | Interpolation(USE_MARK) | /error(UnclosedInterpolation) |return
+    |default                  | ->                                     |>> :main
+
+
+; Inline raw !{:kind: content}
+; sameline_raw - raw content inside !{:kind:...}
+; Brace-counting for nested {} pairs (CORE "Inline Raw Content").
+; Carries the block form's Raw marker; a single space after the label's
+; closing `:` is a separator, not content (spec/TODO-SPEC-CORE.md, provisional
+; for 0.8 — nailing tighter deferred past dialects/templating).
+|function[sameline_raw:Directive]  | depth = 0
+  |state[:kind]
+    |c[':']                   | -> | Raw                         |>> :skip_sep
+    |default                  | /name                            |>>  ; kind name
+
+  ; Separator: one optional space after the closing `:` is not content.
+  |state[:skip_sep]
+    |c[' ']                   | ->                               |>> :content
+    |default                  |                                  |>> :content
+
+  |state[:content]
+    | MARK                                                       |>> :scan
+
+  |state[:scan]
+    |c['{']                   | -> | depth += 1                  |>>  ; nested open
+    |c['}']                   |                                  |>> :check_close
+    |default                  | ->                               |>>
+
+  |state[:check_close]
+    |if[depth > 0]            | -> | depth -= 1                  |>> :scan  ; nested close
+    |default                  | TERM | RawContent(USE_MARK) | -> |return    ; final close
+
+
+; Regular inline directive !{name args}
+|function[sameline_dir_body:Directive]
+  |state[:name]
+    |c[XLBL_START]                | /name                            |>> :after_name
+    |default                  | /skip_brace_balanced             |return  ; malformed
+
+  |state[:after_name]
+    |c['}']                  | ->                               |return
+    |c[' \t']                 | ->                               |>> :args
+    |default                  | /skip_brace_balanced             |return
+
+  ; The body of a non-raw inline directive is UDON (CORE "Dynamics": can
+  ; contain |{...}, ;{...}, nested !{...}) — same content language as an
+  ; embedded element, so it reuses /embed_content (which consumes the }).
+  |state[:args]
+    |c['}']                  | ->                               |return
+    |default                  | /embed_content                   |return

@@ -1,13 +1,57 @@
-; UDON Value Type Parser Functions
+; Values — quoted strings, arrays, and the typed-value scanner
 ;
-; This file provides typed value parsing for UDON. It is concatenated
-; with udon.desc during parser generation.
-;
-; CONCATENATED WITH:
-;   udon.desc - Main UDON grammar (provides type declarations, entry point)
-;
-; GENERATION:
-;   ./regenerate-parser  # concatenates *.desc files and runs descent
+; CORE spec areas: "Value Types" (syntactic typing), "Numbers", "Explicit
+; Typing (<...>)" (interim warn+pass-through), "Inline Lists", and the
+; bare-token boundary of "The Scan" (the /typed_value boundary states).
+
+
+; Value parsing - unified function with context parameters
+;   :space_term = 0 (block: space is content) or 1 (space terminates)
+;   :bracket = 0 (none), '}' (embedded), ']' (array)
+; Returns 0 for finished scalar values, 3 when the value was a text blob
+; (see typed_value) — block_attr maps 3 to the BODY continuation mode.
+|function[value:INT]  :space_term :bracket
+  |state[:start]
+    |c[<DQ>]                  | -> | /double_quoted              |return
+    |c[<SQ>]                  | -> | /single_quoted              |return
+    |c['[']                   | /array                           |return  ; array owns its delimiter
+    |default                  | MARK | vres = /typed_value(:space_term, :bracket) |return vres
+
+
+; (value_bracket removed 2026-07-15: [key] values now route through the
+; typed /value path — CORE "Identity": every type is available in brackets,
+; [1] is the integer 1, ["01"] the string "01".)
+
+; Quoted string parsing - separate functions for each quote type
+; (parameterized version had scan optimization issues with :quote)
+|function[double_quoted:StringValue]  | MARK
+  |state[:main]
+    |c[<DQ>]                  | TERM | ->                        |return
+    |c[<BS>]                  | -> | ->                          |>>
+    |default                  | ->                               |>>
+
+
+|function[single_quoted:StringValue]  | MARK
+  |state[:main]
+    |c[<SQ>]                  | TERM | ->                        |return
+    |c[<BS>]                  | -> | ->                          |>>
+    |default                  | ->                               |>>
+
+
+; Array - items are space-separated, ] terminates
+; Array owns its delimiter; items are values (quotes, nested arrays, typed values)
+|function[array:Array]
+  |state[:entry]
+    |c['[']  | ->                                                 |>> :items
+  |state[:items]
+    |eof                      | /error(unclosed_array)            |return
+    |c[']']  | ->                                                 |return
+    |c['\n'] | /error(unclosed_array)                             |return
+    |c[' \t'] | ->                                                |>>
+    |default | /value(1, ']')                                     |>>
+
+
+; --- Typed-value scanner (formerly values.desc) ---
 ;
 ; PROVIDES:
 ;   /typed_value(:space_term, :bracket) - Main entry point
@@ -43,9 +87,6 @@
 ; in temporal-value.desc.setaside (NOT concatenated) for that dialect to
 ; re-home. Cut 2026-07-15; the last living version is at tag grammar-v0.7.
 
-; ============================================================================
-; Keyword Lookup (phf perfect hash)
-; ============================================================================
 
 ; O(1) keyword lookup for boolean/nil literals
 |keywords[bare_kw] :fallback /emit_bare_value
@@ -61,9 +102,6 @@
     |eof                      | BareValue(USE_MARK)              |return
     |default                  | BareValue(USE_MARK)              |return
 
-; ============================================================================
-; Main Entry - Context-Aware Value Parser
-; ============================================================================
 
 ; Returns 0 for a finished scalar/single-token value, 3 when the value was
 ; a TEXT BLOB (deferred continuation may follow on deeper lines — the

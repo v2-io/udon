@@ -1,0 +1,419 @@
+; Elements — identity, suffixes, block form, and the children loop
+;
+; CORE spec areas: "Elements" (identity [key]/.traits, suffixes, anonymous
+; elements, bare-name characters), "Hierarchy (Indentation and Columns)",
+; and the element side of "Automatic Prose Dedentation" (content_base).
+
+
+; NOTE: Error events are emitted inline where needed, e.g. Error(no_tabs)
+; No separate error function needed - the generator handles error codes.
+
+
+
+; DRYed: parse_element_identity(:close) - void helper for element identity
+; Parses: name?[id].class (suffix can appear before [id] and .class per SPEC 200-215)
+; :close = closer byte (} for embedded, 0 for block element)
+; Returns when identity complete or closer hit. Caller handles content.
+|function[parse_element_identity]  :close
+  |state[:identity]
+    |c[:close]                |                                  |return  ; closer hit (empty)
+    |c[XLBL_START]            | /name                            |>> :post_name
+    |c[<SQ>]                  | ->                               |>> :quoted_name
+    |c['[']                   | ->                               |>> :bracket
+    |c['.']                   |                                  |>> :class
+    |c['?!*+']                | /suffix                          |>> :post_suffix
+    |default                  |                                  |return  ; anonymous, identity done
+
+  |state[:quoted_name]
+    |c[<SQ>]                  | ->                               |>> :post_name
+    |default                  | /quoted_name                     |>> :post_name
+
+  |state[:post_name]
+    |c[:close]                |                                  |return
+    |c['[']                   | ->                               |>> :bracket
+    |c['.']                   |                                  |>> :class
+    |c['?!*+']                | /suffix                          |>> :post_suffix
+    |default                  |                                  |return
+
+  ; After suffix, can still have [id] and .class (SPEC 204-205: |name?[id].class)
+  |state[:post_suffix]
+    |c[:close]                |                                  |return
+    |c['[']                   | ->                               |>> :bracket
+    |c['.']                   |                                  |>> :class
+    |default                  |                                  |return
+
+  |state[:bracket]
+    |c[']']                   | ->                               |>> :post_bracket
+    |default                  | Attr($key) | /value(1, ']')       |>> :bracket_close
+
+  |state[:bracket_close]
+    |c[']']                   | ->                               |>> :post_bracket
+    |default                  |                                  |return  ; unclosed
+
+  |state[:post_bracket]
+    |c[:close]                |                                  |return
+    |c['.']                   |                                  |>> :class
+    |c['?!*+']                | /suffix                          |>> :post_suffix
+    |default                  |                                  |return
+
+  |state[:class]
+    |c['.']                   | ->                               |>>
+    |c[XLBL_START]            | Attr($traits) | /class_name       |>> :post_class
+    |c[<SQ>]                  | Attr($traits) | -> | /quoted_class |>> :post_class
+    |default                  |                                  |return  ; no more classes
+
+  |state[:post_class]
+    |c[:close]                |                                  |return
+    |c['.']                   |                                  |>> :class
+    |c['?!*+']                | /suffix                          |>> :post_suffix
+    |default                  |                                  |return
+
+
+|function[element:Element]  :elem_col :parent_col  | content_base = -1 | content_seen = 0 | attr_col = -1
+
+  |state[:identity]
+    | /parse_element_identity(<>)                                |>> :post_identity
+
+  |state[:post_identity]
+    |c['\n']                  | ->                               |>> :children
+    |c[' \t']                 | ->                               |>> :pre_content
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
+
+  |state[:pre_content]
+    |c['\n']                  | ->                               |>> :children
+    |c[' \t']                 | ->                               |>>
+    |c['`']                   | ->                               |>> :sameline_ff1
+    |c['?']                   | ->                               |>> :spaced_suffix_q
+    |c['*']                   | ->                               |>> :spaced_suffix_s
+    |c['+']                   | ->                               |>> :spaced_suffix_p
+    |c[':']                   | ->                               |>> :check_sameline_attr
+    |c['|']                   | ->                               |>> :check_sameline_pipe
+    |c[';']                   | ->                               |>> :check_sameline_semi
+    |c['!']                   | ->                               |>> :check_sameline_bang
+    |c['@']                   | ->                               |>> :check_sameline_at
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
+
+  ; Sameline fence: attributes keep the scan open, so triple-backticks after
+  ; elements/attributes open a freeform block (CORE "Triple-Backtick
+  ; Escape"). Fewer than three backticks fall back to sameline text.
+  |state[:sameline_ff1]
+    |c['`']                   | ->                               |>> :sameline_ff2
+    |default                  | /sameline_text(:elem_col, '`')   |>> :after_content
+  |state[:sameline_ff2]
+    |c['`']                   | -> | /freeform                   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '``')  |>> :after_content
+
+  ; Space-separated element-level suffix (CORE "Suffix positions":
+  ; `|name[key].trait ?`): the suffix char must stand alone — followed by
+  ; whitespace or end-of-line. Otherwise it is prose (restored via PREPEND).
+  ; Only ? * + take this path; a spaced '!' keeps its dynamics meaning.
+  |state[:spaced_suffix_q]
+    |eof                      | Attr($?) | BoolTrue              |return
+    |c[' \t\n']               | Attr($?) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('?') | /sameline_text(:elem_col, <>) |>> :after_content
+  |state[:spaced_suffix_s]
+    |eof                      | Attr($*) | BoolTrue              |return
+    |c[' \t\n']               | Attr($*) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('*') | /sameline_text(:elem_col, <>) |>> :after_content
+  |state[:spaced_suffix_p]
+    |eof                      | Attr($+) | BoolTrue              |return
+    |c[' \t\n']               | Attr($+) | BoolTrue              |>> :post_identity
+    |default                  | PREPEND('+') | /sameline_text(:elem_col, <>) |>> :after_content
+
+  ; Sameline attr guard: a ':' not followed by a name start / quoted name /
+  ; reference bracket is not an attr — fall back to intact text with the
+  ; ':' restored (defect #12 data-loss half).
+  |state[:check_sameline_attr]
+    |c[<XLBL_START SQ>]       | sstate = /sameline_attr          |>> :sameline_attr_after
+    |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
+
+  ; Route the sameline-attribute outcome (return-code vocabulary at
+  ; /block_attr). A node value (plain :a |beta, code 2) is a VALUE, not a
+  ; child — it does not set content_seen (attrs-before-children counts
+  ; children, not values); the boundary codes 5/11/12/13 re-owned trailing
+  ; material for the element — children phase.
+  |state[:sameline_attr_after]
+    |if[sstate == 2]          | ->                                |>> :sameline_node2
+    |if[sstate == 5]          | content_seen = 1                 |>> :pre_content
+    |if[sstate == 6]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
+    |if[sstate == 11]         | content_seen = 1                 |>> :sameline_node2
+    |if[sstate == 12]         | content_seen = 1                 |>> :sameline_bang
+    |if[sstate == 13]         | content_seen = 1 | /block_ref    |>> :pre_content
+    |default                                                     |>> :pre_content
+
+  ; '!' consumed at a value boundary: '{' opens the inline form; a name or
+  ; ':' opens a block directive rooted at this element line.
+  |state[:sameline_bang]
+    |c['{']                   | -> | /sameline_directive         |>> :post_sameline_inline
+    |default                  | /block_directive(:elem_col)      |>> :post_block_child
+
+  ; Node after ':key' on the element line — the attr's VALUE (code 2) or a
+  ; boundary-following CHILD (code 11); the '|' is consumed on both paths.
+  |state[:sameline_node2]
+    |c['{']                   | -> | /embedded                   |>> :post_child
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 2, :elem_col) |>> :post_block_child
+    |default                  | /sameline_text(:elem_col, '|')   |>> :after_content
+
+  |state[:check_sameline_pipe]
+    |c['{']                   | -> | content_seen = 1 | /embedded |>> :post_child
+    |c[<XLBL_START SQ '[' '.?!*+'>]  | content_seen = 1              |>> :check_sameline_elem_col
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, '|') |>> :after_content
+
+  ; Check if new element's column requires closing current element first (sibling detection)
+  ; Per SPEC: "pop while new_column <= stack_top.base_column". The '|' was
+  ; already consumed, so the pipe's 0-indexed column is COL - 2 (recording
+  ; COL - 1 here was a long-standing off-by-one: it made the pipe+1 column
+  ; a sibling instead of a child, and popped prose at exactly pipe+1 out of
+  ; its inline parent — caught by the legacy-mined regression cases).
+  |state[:check_sameline_elem_col]
+    |if[COL - 2 <= :elem_col]                                     |return
+    |                       | /element(COL - 2, :elem_col)        |>> :post_block_child
+
+  ; A block child element consumed its own lines and returned positioned at
+  ; the first character of a fresh (dedented) line — run it through the
+  ; ordinary children column bookkeeping.
+  |state[:post_block_child]
+    |eof                      |                                  |return
+    |c['\n']                  | ->                               |>> :children
+    |default                  | col = COL - 1                    |>> :check_child
+
+  |state[:check_sameline_semi]
+    |c['{']                   | -> | /brace_comment              |>> :post_sameline_inline
+    |default                  | /line_comment_content            |>> :after_content
+
+  |state[:check_sameline_bang]
+    |c['{']                   | -> | /sameline_directive           |>> :post_sameline_inline
+    |default                  | /sameline_text(:elem_col, '!')   |>> :after_content
+
+  ; `@` in the sameline scan (0.9: equal footing with `|` — CORE Marker
+  ; Recognition): a guarded reference is a reference child of the element;
+  ; a failed guard falls back to prose with the '@' restored.
+  |state[:check_sameline_at]
+    |c[<L XLBL_START '.'>]    | content_seen = 1 | /block_ref     |>> :pre_content
+    |default                  | /sameline_text(:elem_col, '@')   |>> :after_content
+
+  ; After inline directive on sameline - don't skip spaces, they're content now
+  |state[:post_sameline_inline]
+    |c['\n']                  | ->                               |>> :children
+    |eof                      |                                  |return
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+
+  ; After a sameline embedded child: whitespace before further content is
+  ; PROSE (round-trip fidelity — "|nav |{a} |{b}" keeps the separating
+  ; space as Text), so it routes through sameline_text like any other tail.
+  |state[:post_child]
+    |c['\n']                  | ->                               |>> :children
+    |c['|']                   |                                  |>> :check_post_pipe_col
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+
+  ; Check if '|' is at a sibling/dedent column - if so, let :children handle it
+  ; This avoids consuming the '|' before knowing if it belongs to a sibling
+  ; ('|' unconsumed here: its 0-indexed column is COL - 1)
+  |state[:check_post_pipe_col]
+    |if[COL - 1 <= :elem_col]                                    |>> :children
+    |default             | ->                                    |>> :check_sameline_pipe
+
+  ; === Children Loop ===
+  ; content_base tracks first child content's column for consistency warnings
+  ; For content beyond content_base column, extra spaces are preserved in output
+  |state[:children]
+    |c['\n']                  | -> | BlankLine                   |>> :after_newline
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
+    |default                  | col = COL - 1                    |>> :check_child
+
+  ; After consuming newline, check if next line is blank/whitespace-only
+  |state[:after_newline]
+    |eof                      |                                  |return
+    |c['\n']                  | -> | BlankLine                   |>>  ; blank line (empty)
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :children
+    |default                  | col = COL - 1                    |>> :check_child
+
+  ; Count spaces, but stop at content_base if set (to preserve extra spaces as content)
+  ; If line ends up whitespace-only, emit BlankLine
+  |state[:children_ws]
+    ; If content_base is set and we've reached it, stop counting
+    |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
+    |c[' ']                   | -> | col += 1                    |>>
+    |c['\n']                  | -> | BlankLine                   |>> :after_newline  ; whitespace-only
+    |default                  |                                  |>> :check_child
+
+  ; At content_base - check what follows
+  ; We've reached content_base column, now dispatch on character type
+  |state[:at_content_base]
+    |if[col <= :elem_col]                                        |return  ; dedent
+    |c['\n']                  | -> | BlankLine                   |>> :after_newline  ; whitespace-only to content_base
+    |c['|']                   | ->                               |>> :child_pipe
+    |c[':']                   | ->                               |>> :child_check_attr
+    |c['!']                   | ->                               |>> :child_check_bang
+    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c['@']                   | ->                               |>> :child_check_at
+    |c['`']                   | ->                               |>> :child_check_freeform
+    |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
+    ; For default content (includes space), extra spaces beyond content_base are preserved
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
+
+  |state[:check_child]
+    |if[col <= :elem_col]                                        |return  ; dedent
+    ; After child return, content_base may be set - route to :at_content_base if matched
+    |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
+    |default                                                     |>> :child_dispatch
+
+  ; First child content (content_base not yet set) or lines with less indent than content_base
+  ; content_base tracks the first child's column for consistency warnings
+  ; First child content (content_base not yet set) or lines with less indent
+  ; than content_base. content_base is a PROSE concept (CORE "Automatic
+  ; Prose Dedentation"): only prose lines — and the head-position `\`,
+  ; which anchors the base (CORE "Escape") — set it or warn against it.
+  ; Child elements, fences, comments, and directives at other columns are
+  ; ordinary structure (CORE's own table example mixes columns silently).
+  |state[:child_dispatch]
+    |c['|']                   | ->                               |>> :child_pipe
+    |c[':']                   | ->                               |>> :child_check_attr
+    |c['!']                   | ->                               |>> :child_check_bang
+    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c['@']                   | ->                               |>> :child_check_at
+    |c['`']                   | ->                               |>> :child_check_freeform
+    |c[<BS>]                  | ->                               |>> :verbatim_base
+    |default                  |                                  |>> :prose_base
+
+  |state[:prose_base]
+    |if[content_base < 0]     | content_base = col               |>> :do_prose
+    |if[col < content_base]   | Warning(InconsistentIndentation) | content_base = col |>> :do_prose
+    |default                  |                                  |>> :do_prose
+
+  |state[:verbatim_base]
+    |if[content_base < 0]     | content_base = col               |>> :do_verbatim
+    |if[col < content_base]   | Warning(InconsistentIndentation) | content_base = col |>> :do_verbatim
+    |default                  |                                  |>> :do_verbatim
+
+  |state[:do_verbatim]
+    |default                  | content_seen = 1 | /verbatim_text |>> :after_content
+
+  ; `!` guard in element children (see document :check_bang)
+  |state[:child_check_bang]
+    |c[':']                   | /block_directive(col)            |>> :after_content
+    |c[XLBL_START]            | /block_directive(col)            |>> :after_content
+    |c['{']                   | -> | /sameline_directive         |>> :after_content
+    |default                  | /prose(col, :elem_col, '!')      |>> :after_content
+
+  ; `@` guard in element children (see document :check_at; `.` per 0.9)
+  |state[:child_check_at]
+    |c[<L XLBL_START '.'>]    | /block_ref                       |>> :after_content
+    |default                  | /prose(col, :elem_col, '@')      |>> :after_content
+
+  ; Line-initial attr guard (see document :check_attr): failed attr parse
+  ; falls back to intact prose with the ':' restored (defect #12).
+  ; Phase restriction (CORE "Attributes Before Children"): once any text or
+  ; child element has appeared, a line-initial ':' is prose.
+  |state[:child_check_attr]
+    |if[content_seen == 1]    | Warning(AttributeAfterChildren) | /prose(col, :elem_col, ':') |>> :after_content
+    |c[<XLBL_START SQ>]       | attr_col = col | astate = /block_attr |>> :attr_after
+    |default                  | /prose(col, :elem_col, ':')      |>> :after_content
+
+  ; Route the block-attribute outcome. The attribute functions cannot see
+  ; this element's locals (descent params are one-way), so /block_attr
+  ; reports how its line ended as a small INT code (vocabulary documented
+  ; at /block_attr) and the element supplies the columns. Every path that
+  ; stays in the attribute phase converges on :attr_line_done, where
+  ; /attr_deferred_body owns all deeper lines; the boundary codes
+  ; 5/11/12/13 mean the scan re-owned trailing material for the ELEMENT —
+  ; the children phase begins (content_seen).
+  |state[:attr_after]
+    |if[astate == 1]          | amode = 1                        |>> :attr_line_done
+    |if[astate == 3]          | amode = 3                        |>> :attr_line_done
+    |if[astate == 2]          | amode = 4 | ->                   |>> :battr_node
+    |if[astate == 5]          | content_seen = 1                 |>> :after_content
+    |if[astate == 6]          | amode = 4 | /block_directive(attr_col) |>> :attr_line_done
+    |if[astate == 11]         | content_seen = 1 | amode = 4     |>> :battr_node
+    |if[astate == 12]         | content_seen = 1 | amode = 4     |>> :battr_bang
+    |if[astate == 13]         | content_seen = 1 | amode = 4 | /block_ref |>> :attr_line_done
+    |default                  | amode = 4                        |>> :attr_line_done
+
+  |state[:battr_bang]
+    |c['{']                   | -> | /sameline_directive         |>> :attr_line_done
+    |default                  | /block_directive(attr_col)       |>> :attr_line_done
+
+  ; Block-line node after a ':key' — either the attribute's node VALUE
+  ; (code 2: no content_seen) or a boundary-following CHILD (code 11).
+  ; The '|' is already consumed on both paths.
+  |state[:battr_node]
+    |c['{']                   | -> | /embedded                   |>> :attr_line_done
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 2, :elem_col) |>> :attr_line_done
+    |default                  | /prose(COL - 2, :elem_col, '|')  |>> :attr_line_done
+
+  ; Every block-attribute line ends here: /attr_deferred_body owns every
+  ; line deeper than the attribute's column (value body / warn+stack /
+  ; comments), then the ordinary children loop resumes at the dedent.
+  |state[:attr_line_done]
+    |default                  | /attr_deferred_body(attr_col, :elem_col, amode) |>> :post_block_child
+
+  |state[:do_prose]
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
+
+  ; Prose handlers go to :after_content to consume trailing \n
+  |state[:child_check_freeform]
+    |c['`']                   | ->                               |>> :child_check_freeform2
+    |default                  | /prose(col, :elem_col, '`')      |>> :after_content
+
+  |state[:child_check_freeform2]
+    |c['`']                   | -> | content_seen = 1 | /freeform |>> :after_content
+    |default                  | content_seen = 1 | /prose_backticks(col, :elem_col) |>> :after_content
+
+  |state[:child_pipe]
+    |c['{']                   | -> | content_seen = 1 | /embedded |>> :after_child
+    |c[<XLBL_START SQ '[' '.?!*+'>] | content_seen = 1 | /element(col, :elem_col) |>> :after_child
+    |default                  | content_seen = 1 | /prose(col, :elem_col, '|') |>> :after_content
+
+  ; After child element/embedded returns - always re-check column for potential dedent
+  |state[:after_child]
+    |                                                            |>> :children
+
+  ; After line content (prose, attr, comment, etc.) - consume trailing newline
+  ; This ensures :children only sees \n when at true line-start (blank line)
+  ; If content returned early (e.g., line_comment on dedent), re-dispatch mid-line
+  |state[:after_content]
+    |c['\n']                  | ->                               |>> :after_newline
+    |eof                      |                                  |return
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
+    |default                  | col = COL - 1                    |>> :check_child
+
+
+; 0.9 charset: `/` is a name-continue character — conventional namespacing
+; with zero core semantics (|acme/widget). CORE "Bare-name characters".
+|function[name:Name]  | MARK
+  |state[:main]
+    |c[<XLBL_CONT '/'>]       | ->                               |>>
+    |default                  | TERM                             |return
+
+
+|function[quoted_name:Name]  | MARK
+  |state[:main]
+    | /skip_single_quoted | TERM | ->                            |return
+
+
+; A bare trait's continue-set is XID_Continue + '-' + '/' PLUS the suffix
+; chars * ! ? + (CORE "Element Suffixes": a suffix char touching a trait is
+; part of the trait — `.foo?` is the trait "foo?"; '/' per 0.9 charset).
+|function[class_name:BareValue]  | MARK
+  |state[:main]
+    |c[<XLBL_CONT '/?!*+'>]   | ->                               |>>
+    |default                  | TERM                             |return
+
+
+|function[quoted_class:StringValue]  | MARK
+  |state[:main]
+    | /skip_single_quoted | TERM | ->                            |return
+
+
+|function[suffix]
+  |state[:main]
+    |c['?']                   | Attr($?) | BoolTrue | ->          |return
+    |c['!']                   | Attr($!) | BoolTrue | ->          |return
+    |c['*']                   | Attr($*) | BoolTrue | ->          |return
+    |c['+']                   | Attr($+) | BoolTrue | ->          |return
+    |default                  |                                  |return

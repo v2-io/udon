@@ -1,0 +1,91 @@
+; Comments — line comments (with continuation), inline ;{...}
+;
+; CORE spec areas: "Comments" (context table, sameline frame rule),
+; "Comments and Indentation" (continuation: every deeper line is comment
+; text), and "Literal Semicolons".
+
+
+;
+; Comment is a BRACKET type (like Element, Directive) - emits CommentStart/End.
+; Content inside is emitted as Text events.
+;
+; This allows comment continuation (SPEC 419-428) to use the same "children loop"
+; pattern as Element and Directive, DRYing the indentation-based block handling.
+
+; Block-level line comment - can have continuation (SPEC 419-428)
+; Called after `;` consumed at block level
+; Uses content_base like prose: first continuation line sets the base column,
+; subsequent lines are normalized relative to that base.
+|function[line_comment:Comment]  | comment_col = COL - 1 | content_base = -1
+  |state[:check]
+    |c['{']                   | -> | /comment_text_braced        |return
+    |default                  | MARK                             |>> :first_line
+
+  ; First line of comment content (the part after `;`)
+  |state[:first_line]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :children
+    |default                  | ->                               |>>
+
+  ; Children loop - check for continuation lines
+  ; Per SPEC 419-428: more-indented lines without prefix are continuation
+  |state[:children]
+    |eof                      |                                  |return
+    |c['\n']                  | ->                               |>>  ; blank line
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  |                                  |return  ; tab = end
+    |default                  |                                  |return  ; non-indented = end
+
+  ; Count spaces, but stop at content_base if set (like prose does)
+  |state[:children_ws]
+    ; If content_base is set and we've reached it, stop counting here
+    |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
+    |c[' ']                   | -> | col += 1                    |>>
+    |default                  |                                  |>> :check_continuation
+
+  ; Finished counting (hit non-space) - check if valid continuation.
+  ; UNIFORM (ratified 2026-07-15): every deeper line is comment text —
+  ; markers included; only dedent-or-same-column ends the comment.
+  |state[:check_continuation]
+    |if[col <= comment_col]                                      |return  ; dedent or same col
+    ; col > comment_col: this is a continuation line
+    ; If content_base not set, first continuation sets it
+    |if[content_base < 0]     | content_base = col | MARK        |>> :cont_line
+    ; col < content_base: inconsistent indent, warn and reset
+    |default                  | Warning(InconsistentIndentation) | content_base = col | MARK |>> :cont_line
+
+  ; Reached content_base while counting - MARK here, extra spaces are content
+  |state[:at_content_base]
+    |default                  | MARK                             |>> :cont_content
+
+  ; Consume extra spaces (beyond content_base) as content
+  |state[:cont_content]
+    |c[' ']                   | ->                               |>>
+    |default                  |                                  |>> :cont_line
+
+  |state[:cont_line]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :children
+    |default                  | ->                               |>>
+
+
+; Sameline comment - no continuation possible (content ends at newline/EOF)
+; Called after `;` consumed in sameline context
+|function[line_comment_content:Comment]  | MARK | ->['\n'] | TERM | Text(USE_MARK)
+
+
+; Brace comment ;{...} - BRACKET type like line_comment
+; Called after ;{ consumed
+|function[brace_comment:Comment]
+  |state[:main]
+    | /comment_text_braced                                       |return
+
+
+; Helper: capture brace-balanced content as Text
+|function[comment_text_braced]  | MARK
+  |state[:main]
+    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |default                  | /skip_brace_balanced             |>> :done
+  |state[:done]
+    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |default                  | TERM | Text(USE_MARK) | ->       |return

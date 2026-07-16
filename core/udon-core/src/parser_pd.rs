@@ -21,6 +21,17 @@ struct CountIndentFrame {
 }
 
 #[derive(Debug)]
+struct SkipSingleQuotedFrame {
+    st: SkipSingleQuotedSt,
+}
+
+#[derive(Debug)]
+struct SkipBraceBalancedFrame {
+    st: SkipBraceBalancedSt,
+    depth: i32,
+}
+
+#[derive(Debug)]
 struct ParseElementIdentityFrame {
     st: ParseElementIdentitySt,
     close: u8,
@@ -43,11 +54,6 @@ struct ElementFrame {
 #[derive(Debug)]
 struct NameFrame {
     st: NameSt,
-}
-
-#[derive(Debug)]
-struct SkipSingleQuotedFrame {
-    st: SkipSingleQuotedSt,
 }
 
 #[derive(Debug)]
@@ -131,8 +137,15 @@ struct AttrKeyQuotedFrame {
 }
 
 #[derive(Debug)]
-struct BlockRefFrame {
-    st: BlockRefSt,
+struct AttrTrailingBlobFrame {
+    st: AttrTrailingBlobSt,
+    bracket: u8,
+}
+
+#[derive(Debug)]
+struct AttrTextVerbatimFrame {
+    st: AttrTextVerbatimSt,
+    bracket: u8,
 }
 
 #[derive(Debug)]
@@ -159,15 +172,17 @@ struct ArrayFrame {
 }
 
 #[derive(Debug)]
-struct AttrTrailingBlobFrame {
-    st: AttrTrailingBlobSt,
-    bracket: u8,
+struct EmitBareValueFrame {
+    st: EmitBareValueSt,
 }
 
 #[derive(Debug)]
-struct AttrTextVerbatimFrame {
-    st: AttrTextVerbatimSt,
+struct TypedValueFrame {
+    st: TypedValueSt,
+    space_term: i32,
     bracket: u8,
+    depth: i32,
+    result: i32,
 }
 
 #[derive(Debug)]
@@ -198,11 +213,6 @@ struct TextBackticksFrame {
 }
 
 #[derive(Debug)]
-struct FreeformFrame {
-    st: FreeformSt,
-}
-
-#[derive(Debug)]
 struct TextFrame {
     st: TextSt,
     line_col: i32,
@@ -228,12 +238,6 @@ struct LineCommentFrame {
 #[derive(Debug)]
 struct LineCommentContentFrame {
     st: LineCommentContentSt,
-}
-
-#[derive(Debug)]
-struct SkipBraceBalancedFrame {
-    st: SkipBraceBalancedSt,
-    depth: i32,
 }
 
 #[derive(Debug)]
@@ -292,17 +296,13 @@ struct SamelineDirBodyFrame {
 }
 
 #[derive(Debug)]
-struct EmitBareValueFrame {
-    st: EmitBareValueSt,
+struct FreeformFrame {
+    st: FreeformSt,
 }
 
 #[derive(Debug)]
-struct TypedValueFrame {
-    st: TypedValueSt,
-    space_term: i32,
-    bracket: u8,
-    depth: i32,
-    result: i32,
+struct BlockRefFrame {
+    st: BlockRefSt,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -312,6 +312,12 @@ enum DocumentSt { PdEntry, Line, Eol, Dispatch, CheckAttr, RootAttrCheck, CheckB
 enum CountIndentSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
+enum SkipSingleQuotedSt { PdEntry, Main, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SkipBraceBalancedSt { PdEntry, Main, Check, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum ParseElementIdentitySt { PdEntry, Identity, QuotedName, PostName, PostSuffix, Bracket, BracketClose, PostBracket, Class, PostClass, PdK21, PdK22, PdK23, PdK24, PdK25, PdK26, PdK27, PdK28, PdK29, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -319,9 +325,6 @@ enum ElementSt { PdEntry, Identity, PostIdentity, PreContent, SamelineFf1, Samel
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum NameSt { PdEntry, Main, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SkipSingleQuotedSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum QuotedNameSt { PdEntry, Main, PdK96, }
@@ -360,10 +363,13 @@ enum AttrKeySt { PdEntry, Main, }
 enum AttrKeyQuotedSt { PdEntry, Main, PdK153, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockRefSt { PdEntry, Main, PostKey, PdK154, PdK155, }
+enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, PdK154, PdK155, PdK156, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ValueSt { PdEntry, Start, PdK156, PdK157, PdK158, PdK159, }
+enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, BsSemi, AfterInline, PdK157, PdK158, PdK159, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum ValueSt { PdEntry, Start, PdK160, PdK161, PdK162, PdK163, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum DoubleQuotedSt { PdEntry, Main, }
@@ -372,88 +378,83 @@ enum DoubleQuotedSt { PdEntry, Main, }
 enum SingleQuotedSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ArraySt { PdEntry, Entry, Items, PdK160, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, PdK161, PdK162, PdK163, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, BsSemi, AfterInline, PdK164, PdK165, PdK166, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum VerbatimTextSt { PdEntry, Main, Vpipe, Vbang, Vsemi, Vbs, VbsPipe, VbsBang, VbsSemi, Vafter, PdK167, PdK168, PdK169, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum ProseSt { PdEntry, Content, PdK170, PdK171, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum ProseBackticksSt { PdEntry, Content, PdK172, PdK173, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum TextBackticksSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK174, PdK175, PdK176, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK177, PdK178, PdK179, PdK180, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum TextSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK181, PdK182, PdK183, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK184, PdK185, PdK186, PdK187, PdK188, PdK189, PdK190, PdK191, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum LineCommentSt { PdEntry, Check, FirstLine, Children, ChildrenWs, CheckContinuation, AtContentBase, ContContent, ContLine, PdK192, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum LineCommentContentSt { PdEntry, PdK193, PdK194, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SkipBraceBalancedSt { PdEntry, Main, Check, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum BraceCommentSt { PdEntry, Main, PdK195, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum CommentTextBracedSt { PdEntry, Main, Done, PdK196, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum EmbeddedSt { PdEntry, Identity, PostIdentity, PreContent, PreContentMl, CheckAttr, PdK197, PdK198, PdK199, PdK200, PdK201, PdK202, PdK203, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, MlWs, PdK204, PdK205, PdK206, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK207, PdK208, PdK209, PdK210, PdK211, PdK212, PdK213, PdK214, PdK215, PdK216, PdK217, PdK218, PdK219, PdK220, PdK221, PdK222, PdK223, PdK224, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum DirectiveArgsSt { PdEntry, PdK225, PdK226, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirectiveSt { PdEntry, Dispatch, PdK227, PdK228, PdK229, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum InterpolationSt { PdEntry, Main, Closing, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineRawSt { PdEntry, Kind, SkipSep, Content, Scan, CheckClose, PdK230, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK231, PdK232, PdK233, PdK234, }
+enum ArraySt { PdEntry, Entry, Items, PdK164, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum EmitBareValueSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum TypedValueSt { PdEntry, Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobBs, BlobBsPipe, BlobBsBang, BlobBsSemi, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued, PdK235, PdK236, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, PdK243, PdK244, PdK245, PdK246, PdK247, PdK248, PdK249, PdK250, PdK251, PdK252, PdK253, PdK254, PdK255, PdK256, PdK257, PdK258, }
+enum TypedValueSt { PdEntry, Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobBs, BlobBsPipe, BlobBsBang, BlobBsSemi, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued, PdK165, PdK166, PdK167, PdK168, PdK169, PdK170, PdK171, PdK172, PdK173, PdK174, PdK175, PdK176, PdK177, PdK178, PdK179, PdK180, PdK181, PdK182, PdK183, PdK184, PdK185, PdK186, PdK187, PdK188, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum VerbatimTextSt { PdEntry, Main, Vpipe, Vbang, Vsemi, Vbs, VbsPipe, VbsBang, VbsSemi, Vafter, PdK189, PdK190, PdK191, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum ProseSt { PdEntry, Content, PdK192, PdK193, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum ProseBackticksSt { PdEntry, Content, PdK194, PdK195, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum TextBackticksSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK196, PdK197, PdK198, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum TextSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK199, PdK200, PdK201, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK202, PdK203, PdK204, PdK205, PdK206, PdK207, PdK208, PdK209, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum LineCommentSt { PdEntry, Check, FirstLine, Children, ChildrenWs, CheckContinuation, AtContentBase, ContContent, ContLine, PdK210, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum LineCommentContentSt { PdEntry, PdK211, PdK212, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum BraceCommentSt { PdEntry, Main, PdK213, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum CommentTextBracedSt { PdEntry, Main, Done, PdK214, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum EmbeddedSt { PdEntry, Identity, PostIdentity, PreContent, PreContentMl, CheckAttr, PdK215, PdK216, PdK217, PdK218, PdK219, PdK220, PdK221, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, MlWs, PdK222, PdK223, PdK224, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK225, PdK226, PdK227, PdK228, PdK229, PdK230, PdK231, PdK232, PdK233, PdK234, PdK235, PdK236, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum DirectiveArgsSt { PdEntry, PdK243, PdK244, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SamelineDirectiveSt { PdEntry, Dispatch, PdK245, PdK246, PdK247, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum InterpolationSt { PdEntry, Main, Closing, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SamelineRawSt { PdEntry, Kind, SkipSep, Content, Scan, CheckClose, PdK248, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK249, PdK250, PdK251, PdK252, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK253, PdK254, PdK255, PdK256, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum BlockRefSt { PdEntry, Main, PostKey, PdK257, PdK258, }
 
 #[derive(Debug)]
 enum Frame {
     Document(DocumentFrame),
     CountIndent(CountIndentFrame),
+    SkipSingleQuoted(SkipSingleQuotedFrame),
+    SkipBraceBalanced(SkipBraceBalancedFrame),
     ParseElementIdentity(ParseElementIdentityFrame),
     Element(ElementFrame),
     Name(NameFrame),
-    SkipSingleQuoted(SkipSingleQuotedFrame),
     QuotedName(QuotedNameFrame),
     ClassName(ClassNameFrame),
     QuotedClass(QuotedClassFrame),
@@ -466,23 +467,22 @@ enum Frame {
     FlagValue(FlagValueFrame),
     AttrKey(AttrKeyFrame),
     AttrKeyQuoted(AttrKeyQuotedFrame),
-    BlockRef(BlockRefFrame),
+    AttrTrailingBlob(AttrTrailingBlobFrame),
+    AttrTextVerbatim(AttrTextVerbatimFrame),
     Value(ValueFrame),
     DoubleQuoted(DoubleQuotedFrame),
     SingleQuoted(SingleQuotedFrame),
     Array(ArrayFrame),
-    AttrTrailingBlob(AttrTrailingBlobFrame),
-    AttrTextVerbatim(AttrTextVerbatimFrame),
+    EmitBareValue(EmitBareValueFrame),
+    TypedValue(TypedValueFrame),
     VerbatimText(VerbatimTextFrame),
     Prose(ProseFrame),
     ProseBackticks(ProseBackticksFrame),
     TextBackticks(TextBackticksFrame),
-    Freeform(FreeformFrame),
     Text(TextFrame),
     SamelineText(SamelineTextFrame),
     LineComment(LineCommentFrame),
     LineCommentContent(LineCommentContentFrame),
-    SkipBraceBalanced(SkipBraceBalancedFrame),
     BraceComment(BraceCommentFrame),
     CommentTextBraced(CommentTextBracedFrame),
     Embedded(EmbeddedFrame),
@@ -493,8 +493,8 @@ enum Frame {
     Interpolation(InterpolationFrame),
     SamelineRaw(SamelineRawFrame),
     SamelineDirBody(SamelineDirBodyFrame),
-    EmitBareValue(EmitBareValueFrame),
-    TypedValue(TypedValueFrame),
+    Freeform(FreeformFrame),
+    BlockRef(BlockRefFrame),
 }
 
 // ---- byte-class matchers (free fns; mirror the recursive backend) ----
@@ -870,6 +870,25 @@ impl PushdownParser {
         }));
     }
 
+    fn enter_skip_single_quoted<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(StreamEvent),
+    {
+        self.stack.push(Frame::SkipSingleQuoted(SkipSingleQuotedFrame {
+            st: SkipSingleQuotedSt::PdEntry,
+        }));
+    }
+
+    fn enter_skip_brace_balanced<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(StreamEvent),
+    {
+        self.stack.push(Frame::SkipBraceBalanced(SkipBraceBalancedFrame {
+            st: SkipBraceBalancedSt::PdEntry,
+            depth: 1,
+        }));
+    }
+
     fn enter_parse_element_identity<F>(&mut self, close: u8, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
@@ -906,15 +925,6 @@ impl PushdownParser {
         self.mark();
         self.stack.push(Frame::Name(NameFrame {
             st: NameSt::PdEntry,
-        }));
-    }
-
-    fn enter_skip_single_quoted<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(StreamEvent),
-    {
-        self.stack.push(Frame::SkipSingleQuoted(SkipSingleQuotedFrame {
-            st: SkipSingleQuotedSt::PdEntry,
         }));
     }
 
@@ -1051,13 +1061,23 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_block_ref<F>(&mut self, on_event: &mut F)
+    fn enter_attr_trailing_blob<F>(&mut self, bracket: u8, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
-        self.mark();
-        self.stack.push(Frame::BlockRef(BlockRefFrame {
-            st: BlockRefSt::PdEntry,
+        self.stack.push(Frame::AttrTrailingBlob(AttrTrailingBlobFrame {
+            st: AttrTrailingBlobSt::PdEntry,
+            bracket,
+        }));
+    }
+
+    fn enter_attr_text_verbatim<F>(&mut self, bracket: u8, on_event: &mut F)
+    where
+        F: FnMut(StreamEvent),
+    {
+        self.stack.push(Frame::AttrTextVerbatim(AttrTextVerbatimFrame {
+            st: AttrTextVerbatimSt::PdEntry,
+            bracket,
         }));
     }
 
@@ -1103,23 +1123,25 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_attr_trailing_blob<F>(&mut self, bracket: u8, on_event: &mut F)
+    fn enter_emit_bare_value<F>(&mut self, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
-        self.stack.push(Frame::AttrTrailingBlob(AttrTrailingBlobFrame {
-            st: AttrTrailingBlobSt::PdEntry,
-            bracket,
+        self.stack.push(Frame::EmitBareValue(EmitBareValueFrame {
+            st: EmitBareValueSt::PdEntry,
         }));
     }
 
-    fn enter_attr_text_verbatim<F>(&mut self, bracket: u8, on_event: &mut F)
+    fn enter_typed_value<F>(&mut self, space_term: i32, bracket: u8, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
-        self.stack.push(Frame::AttrTextVerbatim(AttrTextVerbatimFrame {
-            st: AttrTextVerbatimSt::PdEntry,
+        self.stack.push(Frame::TypedValue(TypedValueFrame {
+            st: TypedValueSt::PdEntry,
+            space_term,
             bracket,
+            depth: 0,
+            result: 0,
         }));
     }
 
@@ -1166,16 +1188,6 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_freeform<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(StreamEvent),
-    {
-        on_event(StreamEvent::FreeformStart { span: self.gspan() });
-        self.stack.push(Frame::Freeform(FreeformFrame {
-            st: FreeformSt::PdEntry,
-        }));
-    }
-
     fn enter_text<F>(&mut self, line_col: i32, parent_col: i32, prepend: &'static [u8], on_event: &mut F)
     where
         F: FnMut(StreamEvent),
@@ -1219,16 +1231,6 @@ impl PushdownParser {
         on_event(StreamEvent::CommentStart { span: self.gspan() });
         self.stack.push(Frame::LineCommentContent(LineCommentContentFrame {
             st: LineCommentContentSt::PdEntry,
-        }));
-    }
-
-    fn enter_skip_brace_balanced<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(StreamEvent),
-    {
-        self.stack.push(Frame::SkipBraceBalanced(SkipBraceBalancedFrame {
-            st: SkipBraceBalancedSt::PdEntry,
-            depth: 1,
         }));
     }
 
@@ -1335,25 +1337,23 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_emit_bare_value<F>(&mut self, on_event: &mut F)
+    fn enter_freeform<F>(&mut self, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
-        self.stack.push(Frame::EmitBareValue(EmitBareValueFrame {
-            st: EmitBareValueSt::PdEntry,
+        on_event(StreamEvent::FreeformStart { span: self.gspan() });
+        self.stack.push(Frame::Freeform(FreeformFrame {
+            st: FreeformSt::PdEntry,
         }));
     }
 
-    fn enter_typed_value<F>(&mut self, space_term: i32, bracket: u8, on_event: &mut F)
+    fn enter_block_ref<F>(&mut self, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
-        self.stack.push(Frame::TypedValue(TypedValueFrame {
-            st: TypedValueSt::PdEntry,
-            space_term,
-            bracket,
-            depth: 0,
-            result: 0,
+        self.mark();
+        self.stack.push(Frame::BlockRef(BlockRefFrame {
+            st: BlockRefSt::PdEntry,
         }));
     }
 
@@ -1851,6 +1851,81 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.ret = f.result;
+                                    continue 'run;
+                                }
+                            }
+                        }
+                    }
+                }
+                Frame::SkipSingleQuoted(mut f) => {
+                    match f.st {
+                        SkipSingleQuotedSt::PdEntry => {
+                            f.st = SkipSingleQuotedSt::Main;
+                            self.stack.push(Frame::SkipSingleQuoted(f));
+                            continue 'run;
+                        }
+                        SkipSingleQuotedSt::Main => {
+                            match self.scan_to3(b'\n', b'\'', b'\\') {
+                                Some(b'\'') => {
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    self.advance_or_pend();
+                                    f.st = SkipSingleQuotedSt::Main;
+                                    self.stack.push(Frame::SkipSingleQuoted(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SkipSingleQuoted(f)); continue 'run; }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::SkipSingleQuoted(f)); return ParseResult::NeedMoreData; }
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                    }
+                }
+                Frame::SkipBraceBalanced(mut f) => {
+                    match f.st {
+                        SkipBraceBalancedSt::PdEntry => {
+                            f.st = SkipBraceBalancedSt::Main;
+                            self.stack.push(Frame::SkipBraceBalanced(f));
+                            continue 'run;
+                        }
+                        SkipBraceBalancedSt::Main => {
+                            match self.scan_to3(b'\n', b'{', b'}') {
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.depth += 1;
+                                    f.st = SkipBraceBalancedSt::Main;
+                                    self.stack.push(Frame::SkipBraceBalanced(f));
+                                    continue 'run;
+                                }
+                                Some(b'}') => {
+                                    f.depth -= 1;
+                                    f.st = SkipBraceBalancedSt::Check;
+                                    self.stack.push(Frame::SkipBraceBalanced(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SkipBraceBalanced(f)); continue 'run; }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::SkipBraceBalanced(f)); return ParseResult::NeedMoreData; }
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        SkipBraceBalancedSt::Check => {
+                            match self.peek() {
+                                _ if f.depth == 0 => {
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.advance_or_pend();
+                                    f.st = SkipBraceBalancedSt::Main;
+                                    self.stack.push(Frame::SkipBraceBalanced(f));
                                     continue 'run;
                                 }
                             }
@@ -3750,36 +3825,6 @@ impl PushdownParser {
                         }
                     }
                 }
-                Frame::SkipSingleQuoted(mut f) => {
-                    match f.st {
-                        SkipSingleQuotedSt::PdEntry => {
-                            f.st = SkipSingleQuotedSt::Main;
-                            self.stack.push(Frame::SkipSingleQuoted(f));
-                            continue 'run;
-                        }
-                        SkipSingleQuotedSt::Main => {
-                            match self.scan_to3(b'\n', b'\'', b'\\') {
-                                Some(b'\'') => {
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    self.advance_or_pend();
-                                    f.st = SkipSingleQuotedSt::Main;
-                                    self.stack.push(Frame::SkipSingleQuoted(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SkipSingleQuoted(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SkipSingleQuoted(f)); return ParseResult::NeedMoreData; }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                    }
-                }
                 Frame::QuotedName(mut f) => {
                     match f.st {
                         QuotedNameSt::PdEntry => {
@@ -5516,269 +5561,6 @@ impl PushdownParser {
                         }
                     }
                 }
-                Frame::BlockRef(mut f) => {
-                    match f.st {
-                        BlockRefSt::PdEntry => {
-                            f.st = BlockRefSt::Main;
-                            self.stack.push(Frame::BlockRef(f));
-                            continue 'run;
-                        }
-                        BlockRefSt::Main => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'[') => {
-                                    f.st = BlockRefSt::PdK154;
-                                    self.stack.push(Frame::BlockRef(f));
-                                    continue 'run;
-                                }
-                                Some(b) if is_xlbl_cont(b) || b == b'.' => {
-                                    self.advance_or_pend();
-                                    f.st = BlockRefSt::Main;
-                                    self.stack.push(Frame::BlockRef(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockRefSt::PostKey => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_cont(b) || b == b'.' => {
-                                    self.advance_or_pend();
-                                    f.st = BlockRefSt::PostKey;
-                                    self.stack.push(Frame::BlockRef(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockRefSt::PdK154 => {
-                            if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
-                            f.st = BlockRefSt::PdK155;
-                            self.stack.push(Frame::BlockRef(f));
-                            continue 'run;
-                        }
-                        BlockRefSt::PdK155 => {
-                            self.advance_or_pend();
-                            f.st = BlockRefSt::PostKey;
-                            self.stack.push(Frame::BlockRef(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::Value(mut f) => {
-                    match f.st {
-                        ValueSt::PdEntry => {
-                            f.st = ValueSt::Start;
-                            self.stack.push(Frame::Value(f));
-                            continue 'run;
-                        }
-                        ValueSt::Start => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Value(f)); return ParseResult::NeedMoreData; }
-                                self.ret = 0;
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'"') => {
-                                    self.advance_or_pend();
-                                    f.st = ValueSt::PdK156;
-                                    self.stack.push(Frame::Value(f));
-                                    self.enter_double_quoted(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'\'') => {
-                                    self.advance_or_pend();
-                                    f.st = ValueSt::PdK157;
-                                    self.stack.push(Frame::Value(f));
-                                    self.enter_single_quoted(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'[') => {
-                                    f.st = ValueSt::PdK158;
-                                    self.stack.push(Frame::Value(f));
-                                    self.enter_array(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = ValueSt::PdK159;
-                                    let (pd_a0, pd_a1,) = (f.space_term, f.bracket, );
-                                    self.stack.push(Frame::Value(f));
-                                    self.enter_typed_value(pd_a0, pd_a1, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        ValueSt::PdK156 => {
-                            self.ret = 0;
-                            continue 'run;
-                        }
-                        ValueSt::PdK157 => {
-                            self.ret = 0;
-                            continue 'run;
-                        }
-                        ValueSt::PdK158 => {
-                            self.ret = 0;
-                            continue 'run;
-                        }
-                        ValueSt::PdK159 => {
-                            f.vres = self.ret;
-                            self.ret = f.vres;
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::DoubleQuoted(mut f) => {
-                    match f.st {
-                        DoubleQuotedSt::PdEntry => {
-                            f.st = DoubleQuotedSt::Main;
-                            self.stack.push(Frame::DoubleQuoted(f));
-                            continue 'run;
-                        }
-                        DoubleQuotedSt::Main => {
-                            match self.scan_to3(b'\n', b'"', b'\\') {
-                                Some(b'"') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    self.advance_or_pend();
-                                    f.st = DoubleQuotedSt::Main;
-                                    self.stack.push(Frame::DoubleQuoted(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::DoubleQuoted(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::DoubleQuoted(f)); return ParseResult::NeedMoreData; }
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                    }
-                }
-                Frame::SingleQuoted(mut f) => {
-                    match f.st {
-                        SingleQuotedSt::PdEntry => {
-                            f.st = SingleQuotedSt::Main;
-                            self.stack.push(Frame::SingleQuoted(f));
-                            continue 'run;
-                        }
-                        SingleQuotedSt::Main => {
-                            match self.scan_to3(b'\n', b'\'', b'\\') {
-                                Some(b'\'') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    self.advance_or_pend();
-                                    f.st = SingleQuotedSt::Main;
-                                    self.stack.push(Frame::SingleQuoted(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SingleQuoted(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SingleQuoted(f)); return ParseResult::NeedMoreData; }
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                    }
-                }
-                Frame::Array(mut f) => {
-                    match f.st {
-                        ArraySt::PdEntry => {
-                            f.st = ArraySt::Entry;
-                            self.stack.push(Frame::Array(f));
-                            continue 'run;
-                        }
-                        ArraySt::Entry => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::ArrayEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'[') => {
-                                    self.advance_or_pend();
-                                    f.st = ArraySt::Items;
-                                    self.stack.push(Frame::Array(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        ArraySt::Items => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
-                                on_event(StreamEvent::ArrayEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b']') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                Some(b'\n') => {
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
-                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = ArraySt::Items;
-                                    self.stack.push(Frame::Array(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = ArraySt::PdK160;
-                                    let (pd_a0, pd_a1,) = (1, b']', );
-                                    self.stack.push(Frame::Array(f));
-                                    self.enter_value(pd_a0, pd_a1, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        ArraySt::PdK160 => {
-                            f.st = ArraySt::Items;
-                            self.stack.push(Frame::Array(f));
-                            continue 'run;
-                        }
-                    }
-                }
                 Frame::AttrTrailingBlob(mut f) => {
                     match f.st {
                         AttrTrailingBlobSt::PdEntry => {
@@ -5839,7 +5621,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::AttrTrailingBlob(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(-2);
                                 { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = AttrTrailingBlobSt::PdK161;
+                                f.st = AttrTrailingBlobSt::PdK154;
                                 self.stack.push(Frame::AttrTrailingBlob(f));
                                 self.enter_line_comment_content(on_event);
                                 continue 'run;
@@ -5848,7 +5630,7 @@ impl PushdownParser {
                                 Some(b' ') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = AttrTrailingBlobSt::PdK162;
+                                    f.st = AttrTrailingBlobSt::PdK155;
                                     self.stack.push(Frame::AttrTrailingBlob(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -5856,7 +5638,7 @@ impl PushdownParser {
                                 Some(b'\n') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = AttrTrailingBlobSt::PdK163;
+                                    f.st = AttrTrailingBlobSt::PdK156;
                                     self.stack.push(Frame::AttrTrailingBlob(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -5868,13 +5650,13 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        AttrTrailingBlobSt::PdK161 => {
+                        AttrTrailingBlobSt::PdK154 => {
                             continue 'run;
                         }
-                        AttrTrailingBlobSt::PdK162 => {
+                        AttrTrailingBlobSt::PdK155 => {
                             continue 'run;
                         }
-                        AttrTrailingBlobSt::PdK163 => {
+                        AttrTrailingBlobSt::PdK156 => {
                             continue 'run;
                         }
                     }
@@ -5948,7 +5730,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK164;
+                                    f.st = AttrTextVerbatimSt::PdK157;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -5971,7 +5753,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK165;
+                                    f.st = AttrTextVerbatimSt::PdK158;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -5993,7 +5775,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK166;
+                                    f.st = AttrTextVerbatimSt::PdK159;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -6123,17 +5905,17 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        AttrTextVerbatimSt::PdK164 => {
+                        AttrTextVerbatimSt::PdK157 => {
                             f.st = AttrTextVerbatimSt::AfterInline;
                             self.stack.push(Frame::AttrTextVerbatim(f));
                             continue 'run;
                         }
-                        AttrTextVerbatimSt::PdK165 => {
+                        AttrTextVerbatimSt::PdK158 => {
                             f.st = AttrTextVerbatimSt::AfterInline;
                             self.stack.push(Frame::AttrTextVerbatim(f));
                             continue 'run;
                         }
-                        AttrTextVerbatimSt::PdK166 => {
+                        AttrTextVerbatimSt::PdK159 => {
                             self.mark();
                             f.st = AttrTextVerbatimSt::Main;
                             self.stack.push(Frame::AttrTextVerbatim(f));
@@ -6141,2990 +5923,199 @@ impl PushdownParser {
                         }
                     }
                 }
-                Frame::VerbatimText(mut f) => {
+                Frame::Value(mut f) => {
                     match f.st {
-                        VerbatimTextSt::PdEntry => {
-                            self.mark();
-                            f.st = VerbatimTextSt::Main;
-                            self.stack.push(Frame::VerbatimText(f));
+                        ValueSt::PdEntry => {
+                            f.st = ValueSt::Start;
+                            self.stack.push(Frame::Value(f));
                             continue 'run;
                         }
-                        VerbatimTextSt::Main => {
-                            match self.scan_to5(b'\n', b'|', b'!', b';', b'\\') {
-                                Some(b'\n') => {
+                        ValueSt::Start => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Value(f)); return ParseResult::NeedMoreData; }
+                                self.ret = 0;
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'"') => {
+                                    self.advance_or_pend();
+                                    f.st = ValueSt::PdK160;
+                                    self.stack.push(Frame::Value(f));
+                                    self.enter_double_quoted(on_event);
+                                    continue 'run;
+                                }
+                                Some(b'\'') => {
+                                    self.advance_or_pend();
+                                    f.st = ValueSt::PdK161;
+                                    self.stack.push(Frame::Value(f));
+                                    self.enter_single_quoted(on_event);
+                                    continue 'run;
+                                }
+                                Some(b'[') => {
+                                    f.st = ValueSt::PdK162;
+                                    self.stack.push(Frame::Value(f));
+                                    self.enter_array(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = ValueSt::PdK163;
+                                    let (pd_a0, pd_a1,) = (f.space_term, f.bracket, );
+                                    self.stack.push(Frame::Value(f));
+                                    self.enter_typed_value(pd_a0, pd_a1, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        ValueSt::PdK160 => {
+                            self.ret = 0;
+                            continue 'run;
+                        }
+                        ValueSt::PdK161 => {
+                            self.ret = 0;
+                            continue 'run;
+                        }
+                        ValueSt::PdK162 => {
+                            self.ret = 0;
+                            continue 'run;
+                        }
+                        ValueSt::PdK163 => {
+                            f.vres = self.ret;
+                            self.ret = f.vres;
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::DoubleQuoted(mut f) => {
+                    match f.st {
+                        DoubleQuotedSt::PdEntry => {
+                            f.st = DoubleQuotedSt::Main;
+                            self.stack.push(Frame::DoubleQuoted(f));
+                            continue 'run;
+                        }
+                        DoubleQuotedSt::Main => {
+                            match self.scan_to3(b'\n', b'"', b'\\') {
+                                Some(b'"') => {
                                     self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'|') => {
                                     self.advance_or_pend();
-                                    f.st = VerbatimTextSt::Vpipe;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::Vbang;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::Vsemi;
-                                    self.stack.push(Frame::VerbatimText(f));
+                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }
                                 Some(b'\\') => {
                                     self.advance_or_pend();
-                                    f.st = VerbatimTextSt::Vbs;
-                                    self.stack.push(Frame::VerbatimText(f));
+                                    self.advance_or_pend();
+                                    f.st = DoubleQuotedSt::Main;
+                                    self.stack.push(Frame::DoubleQuoted(f));
                                     continue 'run;
                                 }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::DoubleQuoted(f)); continue 'run; }
                                 None => {
-                                    if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    if !self.finished { self.stack.push(Frame::DoubleQuoted(f)); return ParseResult::NeedMoreData; }
+                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        VerbatimTextSt::Vpipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK167;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::Vbang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK168;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::Vsemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK169;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::Vbs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::VbsPipe;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::VbsBang;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = VerbatimTextSt::VbsSemi;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::VbsPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::VbsBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::VbsSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::Vafter => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = VerbatimTextSt::Main;
-                                    self.stack.push(Frame::VerbatimText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        VerbatimTextSt::PdK167 => {
-                            f.st = VerbatimTextSt::Vafter;
-                            self.stack.push(Frame::VerbatimText(f));
-                            continue 'run;
-                        }
-                        VerbatimTextSt::PdK168 => {
-                            f.st = VerbatimTextSt::Vafter;
-                            self.stack.push(Frame::VerbatimText(f));
-                            continue 'run;
-                        }
-                        VerbatimTextSt::PdK169 => {
-                            f.st = VerbatimTextSt::Vafter;
-                            self.stack.push(Frame::VerbatimText(f));
-                            continue 'run;
-                        }
                     }
                 }
-                Frame::Prose(mut f) => {
+                Frame::SingleQuoted(mut f) => {
                     match f.st {
-                        ProseSt::PdEntry => {
-                            if f.parent_col >= 0 && f.line_col <= f.parent_col {
-                                continue 'run;
-                            }
-                            f.st = ProseSt::PdK170;
-                            self.stack.push(Frame::Prose(f));
+                        SingleQuotedSt::PdEntry => {
+                            f.st = SingleQuotedSt::Main;
+                            self.stack.push(Frame::SingleQuoted(f));
                             continue 'run;
                         }
-                        ProseSt::Content => {
-                            f.st = ProseSt::PdK171;
-                            let (pd_a0, pd_a1, pd_a2,) = (f.line_col, f.parent_col, f.prepend, );
-                            self.stack.push(Frame::Prose(f));
-                            self.enter_text(pd_a0, pd_a1, pd_a2, on_event);
-                            continue 'run;
-                        }
-                        ProseSt::PdK170 => {
-                            f.st = ProseSt::Content;
-                            self.stack.push(Frame::Prose(f));
-                            continue 'run;
-                        }
-                        ProseSt::PdK171 => {
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::ProseBackticks(mut f) => {
-                    match f.st {
-                        ProseBackticksSt::PdEntry => {
-                            if f.parent_col >= 0 && f.line_col <= f.parent_col {
-                                continue 'run;
-                            }
-                            f.st = ProseBackticksSt::PdK172;
-                            self.stack.push(Frame::ProseBackticks(f));
-                            continue 'run;
-                        }
-                        ProseBackticksSt::Content => {
-                            f.st = ProseBackticksSt::PdK173;
-                            let (pd_a0, pd_a1,) = (f.line_col, f.parent_col, );
-                            self.stack.push(Frame::ProseBackticks(f));
-                            self.enter_text_backticks(pd_a0, pd_a1, on_event);
-                            continue 'run;
-                        }
-                        ProseBackticksSt::PdK172 => {
-                            f.st = ProseBackticksSt::Content;
-                            self.stack.push(Frame::ProseBackticks(f));
-                            continue 'run;
-                        }
-                        ProseBackticksSt::PdK173 => {
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::TextBackticks(mut f) => {
-                    match f.st {
-                        TextBackticksSt::PdEntry => {
-                            f.st = TextBackticksSt::Entry;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
-                        TextBackticksSt::Entry => {
-                            self.mark();
-                            self.prepend_bytes(b"`");
-                            self.prepend_bytes(b"`");
-                            f.st = TextBackticksSt::Main;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
-                        TextBackticksSt::Main => {
-                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
-                                Some(b'\n') => {
+                        SingleQuotedSt::Main => {
+                            match self.scan_to3(b'\n', b'\'', b'\\') {
+                                Some(b'\'') => {
                                     self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'|') => {
                                     self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckPipe;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckSemi;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckBang;
-                                    self.stack.push(Frame::TextBackticks(f));
+                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }
                                 Some(b'\\') => {
                                     self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckBs;
-                                    self.stack.push(Frame::TextBackticks(f));
+                                    self.advance_or_pend();
+                                    f.st = SingleQuotedSt::Main;
+                                    self.stack.push(Frame::SingleQuoted(f));
                                     continue 'run;
                                 }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SingleQuoted(f)); continue 'run; }
                                 None => {
-                                    if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    if !self.finished { self.stack.push(Frame::SingleQuoted(f)); return ParseResult::NeedMoreData; }
+                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
                             }
                         }
-                        TextBackticksSt::CheckPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK174;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK175;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK176;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckBs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckBsPipe;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckBsBang;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = TextBackticksSt::CheckBsSemi;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckBsPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckBsBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::CheckBsSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::AfterInline => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = TextBackticksSt::Main;
-                                    self.stack.push(Frame::TextBackticks(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextBackticksSt::PdK174 => {
-                            f.st = TextBackticksSt::AfterInline;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
-                        TextBackticksSt::PdK175 => {
-                            f.st = TextBackticksSt::AfterInline;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
-                        TextBackticksSt::PdK176 => {
-                            f.st = TextBackticksSt::AfterInline;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
                     }
                 }
-                Frame::Freeform(mut f) => {
+                Frame::Array(mut f) => {
                     match f.st {
-                        FreeformSt::PdEntry => {
-                            f.st = FreeformSt::Opening;
-                            self.stack.push(Frame::Freeform(f));
+                        ArraySt::PdEntry => {
+                            f.st = ArraySt::Entry;
+                            self.stack.push(Frame::Array(f));
                             continue 'run;
                         }
-                        FreeformSt::Opening => {
+                        ArraySt::Entry => {
                             if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {
-                                Some(b'\n') => {
+                                Some(b'[') => {
                                     self.advance_or_pend();
-                                    f.st = FreeformSt::LineStart;
-                                    self.stack.push(Frame::Freeform(f));
+                                    f.st = ArraySt::Items;
+                                    self.stack.push(Frame::Array(f));
                                     continue 'run;
                                 }
                                 _ => {
-                                    self.mark();
-                                    f.st = FreeformSt::PdK177;
-                                    self.stack.push(Frame::Freeform(f));
+                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                     continue 'run;
                                 }
                             }
                         }
-                        FreeformSt::LineStart => {
+                        ArraySt::Items => {
                             if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
+                                on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {
-                                Some(b'\n') => {
+                                Some(b']') => {
                                     self.advance_or_pend();
-                                    on_event(StreamEvent::BlankLine { content: Vec::new(), span: self.gspan() });
-                                    f.st = FreeformSt::LineStart;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = FreeformSt::Content;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        FreeformSt::Content => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::Content;
-                                    self.stack.push(Frame::Freeform(f));
+                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                     continue 'run;
                                 }
                                 Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::LineStart;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                Some(b'`') => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::MaybeEnd1;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::Line;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        FreeformSt::Line => {
-                            f.st = FreeformSt::PdK179;
-                            self.stack.push(Frame::Freeform(f));
-                            continue 'run;
-                        }
-                        FreeformSt::MaybeEnd1 => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'`') => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::MaybeEnd2;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = FreeformSt::Line;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        FreeformSt::MaybeEnd2 => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'`') => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::PostClose;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = FreeformSt::Line;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        FreeformSt::PostClose => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = FreeformSt::PostClose;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::FreeformEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = FreeformSt::Line;
-                                    self.stack.push(Frame::Freeform(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        FreeformSt::PdK177 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK178;
-                            self.stack.push(Frame::Freeform(f));
-                            continue 'run;
-                        }
-                        FreeformSt::PdK178 => {
-                            self.set_term(0);
-                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                            self.advance_or_pend();
-                            f.st = FreeformSt::LineStart;
-                            self.stack.push(Frame::Freeform(f));
-                            continue 'run;
-                        }
-                        FreeformSt::PdK179 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK180;
-                            self.stack.push(Frame::Freeform(f));
-                            continue 'run;
-                        }
-                        FreeformSt::PdK180 => {
-                            self.set_term(0);
-                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                            self.advance_or_pend();
-                            f.st = FreeformSt::LineStart;
-                            self.stack.push(Frame::Freeform(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::Text(mut f) => {
-                    match f.st {
-                        TextSt::PdEntry => {
-                            f.st = TextSt::Entry;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                        TextSt::Entry => {
-                            self.mark();
-                            self.prepend_bytes(f.prepend);
-                            f.st = TextSt::Main;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                        TextSt::Main => {
-                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckPipe;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckSemi;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckBang;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckBs;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        TextSt::CheckPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextSt::PdK181;
-                                    self.stack.push(Frame::Text(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextSt::PdK182;
-                                    self.stack.push(Frame::Text(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = TextSt::PdK183;
-                                    self.stack.push(Frame::Text(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckBs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckBsPipe;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckBsBang;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = TextSt::CheckBsSemi;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckBsPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckBsBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::CheckBsSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::AfterInline => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = TextSt::Main;
-                                    self.stack.push(Frame::Text(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        TextSt::PdK181 => {
-                            f.st = TextSt::AfterInline;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                        TextSt::PdK182 => {
-                            f.st = TextSt::AfterInline;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                        TextSt::PdK183 => {
-                            f.st = TextSt::AfterInline;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::SamelineText(mut f) => {
-                    match f.st {
-                        SamelineTextSt::PdEntry => {
-                            f.st = SamelineTextSt::Entry;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::Entry => {
-                            self.mark();
-                            self.prepend_bytes(f.prepend);
-                            f.st = SamelineTextSt::Main;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::Main => {
-                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckPipe;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    f.st = SamelineTextSt::CheckSemi;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckBang;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckBs;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        SamelineTextSt::CheckPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK184;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                                    f.st = SamelineTextSt::CheckPipeElemCol;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckPipeElemCol => {
-                            match self.peek() {
-                                _ if self.col() - 1 <= f.elem_col => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK185;
-                                    let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_element(pd_a0, pd_a1, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckSemi => {
-                            match self.peek() {
-                                _ if self.prev() == b' ' => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::SemiSpaced;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::SemiGlued;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::SemiSpaced => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(-1);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = SamelineTextSt::PdK186;
-                                self.stack.push(Frame::SamelineText(f));
-                                self.enter_line_comment_content(on_event);
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK187;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_line_comment_content(on_event);
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK188;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_line_comment_content(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK189;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::SemiGlued => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK190;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-1);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK191;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckBs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckBsPipe;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckBsBang;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineTextSt::CheckBsSemi;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckBsPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckBsBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::CheckBsSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::AfterInline => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = SamelineTextSt::Main;
-                                    self.stack.push(Frame::SamelineText(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineTextSt::PdK184 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK185 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK186 => {
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK187 => {
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK188 => {
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK189 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK190 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK191 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::LineComment(mut f) => {
-                    match f.st {
-                        LineCommentSt::PdEntry => {
-                            f.st = LineCommentSt::Check;
-                            self.stack.push(Frame::LineComment(f));
-                            continue 'run;
-                        }
-                        LineCommentSt::Check => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.st = LineCommentSt::PdK192;
-                                    self.stack.push(Frame::LineComment(f));
-                                    self.enter_comment_text_braced(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = LineCommentSt::FirstLine;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        LineCommentSt::FirstLine => {
-                            match self.scan_to1(b'\n') {
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = LineCommentSt::Children;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        LineCommentSt::Children => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = LineCommentSt::Children;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.col = 1;
-                                    f.st = LineCommentSt::ChildrenWs;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                Some(b'\t') => {
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        LineCommentSt::ChildrenWs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                _ if f.content_base >= 0 && f.col >= f.content_base => {
-                                    f.st = LineCommentSt::AtContentBase;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.col += 1;
-                                    f.st = LineCommentSt::ChildrenWs;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = LineCommentSt::CheckContinuation;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        LineCommentSt::CheckContinuation => {
-                            match self.peek() {
-                                _ if f.col <= f.comment_col => {
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ if f.content_base < 0 => {
-                                    f.content_base = f.col;
-                                    self.mark();
-                                    f.st = LineCommentSt::ContLine;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::Warning { content: b"InconsistentIndentation".to_vec(), span: self.gspan() });
-                                    f.content_base = f.col;
-                                    self.mark();
-                                    f.st = LineCommentSt::ContLine;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        LineCommentSt::AtContentBase => {
-                            self.mark();
-                            f.st = LineCommentSt::ContContent;
-                            self.stack.push(Frame::LineComment(f));
-                            continue 'run;
-                        }
-                        LineCommentSt::ContContent => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.st = LineCommentSt::ContContent;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = LineCommentSt::ContLine;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        LineCommentSt::ContLine => {
-                            match self.scan_to1(b'\n') {
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = LineCommentSt::Children;
-                                    self.stack.push(Frame::LineComment(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        LineCommentSt::PdK192 => {
-                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::LineCommentContent(mut f) => {
-                    match f.st {
-                        LineCommentContentSt::PdEntry => {
-                            self.mark();
-                            f.st = LineCommentContentSt::PdK193;
-                            self.stack.push(Frame::LineCommentContent(f));
-                            continue 'run;
-                        }
-                        LineCommentContentSt::PdK193 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::LineCommentContent(f)); return ParseResult::NeedMoreData; }
-                            f.st = LineCommentContentSt::PdK194;
-                            self.stack.push(Frame::LineCommentContent(f));
-                            continue 'run;
-                        }
-                        LineCommentContentSt::PdK194 => {
-                            self.set_term(0);
-                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::SkipBraceBalanced(mut f) => {
-                    match f.st {
-                        SkipBraceBalancedSt::PdEntry => {
-                            f.st = SkipBraceBalancedSt::Main;
-                            self.stack.push(Frame::SkipBraceBalanced(f));
-                            continue 'run;
-                        }
-                        SkipBraceBalancedSt::Main => {
-                            match self.scan_to3(b'\n', b'{', b'}') {
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.depth += 1;
-                                    f.st = SkipBraceBalancedSt::Main;
-                                    self.stack.push(Frame::SkipBraceBalanced(f));
-                                    continue 'run;
-                                }
-                                Some(b'}') => {
-                                    f.depth -= 1;
-                                    f.st = SkipBraceBalancedSt::Check;
-                                    self.stack.push(Frame::SkipBraceBalanced(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SkipBraceBalanced(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SkipBraceBalanced(f)); return ParseResult::NeedMoreData; }
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        SkipBraceBalancedSt::Check => {
-                            match self.peek() {
-                                _ if f.depth == 0 => {
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = SkipBraceBalancedSt::Main;
-                                    self.stack.push(Frame::SkipBraceBalanced(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                    }
-                }
-                Frame::BraceComment(mut f) => {
-                    match f.st {
-                        BraceCommentSt::PdEntry => {
-                            f.st = BraceCommentSt::Main;
-                            self.stack.push(Frame::BraceComment(f));
-                            continue 'run;
-                        }
-                        BraceCommentSt::Main => {
-                            f.st = BraceCommentSt::PdK195;
-                            self.stack.push(Frame::BraceComment(f));
-                            self.enter_comment_text_braced(on_event);
-                            continue 'run;
-                        }
-                        BraceCommentSt::PdK195 => {
-                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::CommentTextBraced(mut f) => {
-                    match f.st {
-                        CommentTextBracedSt::PdEntry => {
-                            self.mark();
-                            f.st = CommentTextBracedSt::Main;
-                            self.stack.push(Frame::CommentTextBraced(f));
-                            continue 'run;
-                        }
-                        CommentTextBracedSt::Main => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
-                                continue 'run;
-                            }
-                            f.st = CommentTextBracedSt::PdK196;
-                            self.stack.push(Frame::CommentTextBraced(f));
-                            self.enter_skip_brace_balanced(on_event);
-                            continue 'run;
-                        }
-                        CommentTextBracedSt::Done => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
-                                continue 'run;
-                            }
-                            self.set_term(0);
-                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                            self.advance_or_pend();
-                            continue 'run;
-                        }
-                        CommentTextBracedSt::PdK196 => {
-                            f.st = CommentTextBracedSt::Done;
-                            self.stack.push(Frame::CommentTextBraced(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::Embedded(mut f) => {
-                    match f.st {
-                        EmbeddedSt::PdEntry => {
-                            f.st = EmbeddedSt::Identity;
-                            self.stack.push(Frame::Embedded(f));
-                            continue 'run;
-                        }
-                        EmbeddedSt::Identity => {
-                            f.st = EmbeddedSt::PdK197;
-                            let (pd_a0,) = (b'}', );
-                            self.stack.push(Frame::Embedded(f));
-                            self.enter_parse_element_identity(pd_a0, on_event);
-                            continue 'run;
-                        }
-                        EmbeddedSt::PostIdentity => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
+                                    on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                     continue 'run;
                                 }
                                 Some(b' ' | b'\t') => {
                                     self.advance_or_pend();
-                                    f.st = EmbeddedSt::PreContent;
-                                    self.stack.push(Frame::Embedded(f));
+                                    f.st = ArraySt::Items;
+                                    self.stack.push(Frame::Array(f));
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = EmbeddedSt::PdK198;
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
+                                    f.st = ArraySt::PdK164;
+                                    let (pd_a0, pd_a1,) = (1, b']', );
+                                    self.stack.push(Frame::Array(f));
+                                    self.enter_value(pd_a0, pd_a1, on_event);
                                     continue 'run;
                                 }
                             }
                         }
-                        EmbeddedSt::PreContent => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbeddedSt::PreContent;
-                                    self.stack.push(Frame::Embedded(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbeddedSt::PreContentMl;
-                                    self.stack.push(Frame::Embedded(f));
-                                    continue 'run;
-                                }
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbeddedSt::CheckAttr;
-                                    self.stack.push(Frame::Embedded(f));
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbeddedSt::PdK199;
-                                    let (pd_a0,) = (b'}', );
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_attr_text_verbatim(pd_a0, on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbeddedSt::PdK200;
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbeddedSt::PreContentMl => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ' | b'\t' | b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbeddedSt::PreContentMl;
-                                    self.stack.push(Frame::Embedded(f));
-                                    continue 'run;
-                                }
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbeddedSt::PdK201;
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbeddedSt::CheckAttr => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = EmbeddedSt::PdK202;
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_sameline_attr_embedded(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.prepend_bytes(b":");
-                                    f.st = EmbeddedSt::PdK203;
-                                    self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbeddedSt::PdK197 => {
-                            f.st = EmbeddedSt::PostIdentity;
-                            self.stack.push(Frame::Embedded(f));
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK198 => {
-                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK199 => {
-                            f.st = EmbeddedSt::PostIdentity;
-                            self.stack.push(Frame::Embedded(f));
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK200 => {
-                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK201 => {
-                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK202 => {
-                            f.st = EmbeddedSt::PreContent;
-                            self.stack.push(Frame::Embedded(f));
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK203 => {
-                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::EmbedContent(mut f) => {
-                    match f.st {
-                        EmbedContentSt::PdEntry => {
-                            f.st = EmbedContentSt::Main;
-                            self.stack.push(Frame::EmbedContent(f));
-                            continue 'run;
-                        }
-                        EmbedContentSt::Main => {
-                            match self.scan_to6(b'}', b'\n', b'|', b';', b'!', b'\\') {
-                                Some(b'}') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::MlWs;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b'|') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckPipe;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckSemi;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckBang;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckBs;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedEmbedded, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        EmbedContentSt::CheckPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK204;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK205;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    self.enter_brace_comment(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK206;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckBs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckBsPipe;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckBsBang;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::CheckBsSemi;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckBsPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"|");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckBsBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b"!");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::CheckBsSemi => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.set_term(-2);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    self.mark();
-                                    self.prepend_bytes(b";");
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::MlWs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = EmbedContentSt::MlWs;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = EmbedContentSt::Main;
-                                    self.stack.push(Frame::EmbedContent(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        EmbedContentSt::PdK204 => {
-                            self.mark();
-                            f.st = EmbedContentSt::Main;
-                            self.stack.push(Frame::EmbedContent(f));
-                            continue 'run;
-                        }
-                        EmbedContentSt::PdK205 => {
-                            self.mark();
-                            f.st = EmbedContentSt::Main;
-                            self.stack.push(Frame::EmbedContent(f));
-                            continue 'run;
-                        }
-                        EmbedContentSt::PdK206 => {
-                            self.mark();
-                            f.st = EmbedContentSt::Main;
-                            self.stack.push(Frame::EmbedContent(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::BlockDirective(mut f) => {
-                    match f.st {
-                        BlockDirectiveSt::PdEntry => {
-                            f.st = BlockDirectiveSt::Dispatch;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::Dispatch => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawKind;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK207;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_name(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawKind => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK208;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_name(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawColon => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawEol;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawEol => {
-                            match self.scan_to3(b'\n', b' ', b'\t') {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawContent;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawEol;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        BlockDirectiveSt::RawContent => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawContent;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.col = 1;
-                                    f.st = BlockDirectiveSt::RawWs;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawWs => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                _ if f.raw_base >= 0 && f.col >= f.raw_base => {
-                                    f.st = BlockDirectiveSt::RawAtBase;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.col += 1;
-                                    f.st = BlockDirectiveSt::RawWs;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawContent;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::RawCheckbase;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawCheckbase => {
-                            match self.peek() {
-                                _ if f.col <= f.line_col => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ if f.raw_base < 0 => {
-                                    f.raw_base = f.col;
-                                    self.mark();
-                                    f.st = BlockDirectiveSt::RawLine;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = BlockDirectiveSt::RawLine;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::RawAtBase => {
-                            self.mark();
-                            f.st = BlockDirectiveSt::RawLine;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::RawLine => {
-                            match self.scan_to1(b'\n') {
-                                Some(b'\n') => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::RawContent;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        BlockDirectiveSt::AfterName => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::Condition;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::Condition => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.mark();
-                                    f.st = BlockDirectiveSt::PdK209;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_directive_args(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::Children => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'\n') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b' ') => {
-                                    f.st = BlockDirectiveSt::PdK210;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_count_indent(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'\t') => {
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::NoTabs, span: self.gspan() });
-                                    f.st = BlockDirectiveSt::PdK211;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.col = self.col() - 1;
-                                    f.st = BlockDirectiveSt::CheckChild;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::CheckChild => {
-                            match self.peek() {
-                                _ if f.col <= f.line_col => {
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::ChildDispatch;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::ChildDispatch => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'|') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::ChildPipe;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::ChildCheckAttr;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b'!') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::DchildCheckBang;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                Some(b';') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK213;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_line_comment(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK214;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_verbatim_text(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::PdK215;
-                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"", );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::DchildCheckBang => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b':') => {
-                                    f.st = BlockDirectiveSt::PdK216;
-                                    let (pd_a0,) = (f.col, );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_block_directive(pd_a0, on_event);
-                                    continue 'run;
-                                }
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK217;
-                                    let (pd_a0,) = (f.col, );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_block_directive(pd_a0, on_event);
-                                    continue 'run;
-                                }
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK218;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_sameline_directive(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::PdK219;
-                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"!", );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::ChildCheckAttr => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = BlockDirectiveSt::PdK220;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_block_attr(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::PdK221;
-                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b":", );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::DattrCheck => {
-                            match self.peek() {
-                                _ if f.dstate == 1 => {
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::MissingAttributeValue, span: self.gspan() });
-                                    on_event(StreamEvent::Nil { content: Vec::new(), span: self.gspan() });
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::Children;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::ChildPipe => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK222;
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_embedded(on_event);
-                                    continue 'run;
-                                }
-                                Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                                    f.st = BlockDirectiveSt::PdK223;
-                                    let (pd_a0, pd_a1,) = (f.col, f.line_col, );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_element(pd_a0, pd_a1, on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = BlockDirectiveSt::PdK224;
-                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"|", );
-                                    self.stack.push(Frame::BlockDirective(f));
-                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        BlockDirectiveSt::PdK207 => {
-                            f.st = BlockDirectiveSt::AfterName;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK208 => {
-                            on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
-                            f.st = BlockDirectiveSt::RawColon;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK209 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK210 => {
-                            f.col = self.ret;
-                            f.st = BlockDirectiveSt::CheckChild;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK211 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                            f.st = BlockDirectiveSt::PdK212;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK212 => {
-                            self.advance_or_pend();
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK213 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK214 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK215 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK216 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK217 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK218 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK219 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK220 => {
-                            f.dstate = self.ret;
-                            f.st = BlockDirectiveSt::DattrCheck;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK221 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK222 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK223 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                        BlockDirectiveSt::PdK224 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::DirectiveArgs(mut f) => {
-                    match f.st {
-                        DirectiveArgsSt::PdEntry => {
-                            f.st = DirectiveArgsSt::PdK225;
-                            self.stack.push(Frame::DirectiveArgs(f));
-                            continue 'run;
-                        }
-                        DirectiveArgsSt::PdK225 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
-                            f.st = DirectiveArgsSt::PdK226;
-                            self.stack.push(Frame::DirectiveArgs(f));
-                            continue 'run;
-                        }
-                        DirectiveArgsSt::PdK226 => {
-                            self.set_term(0);
-                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::SamelineDirective(mut f) => {
-                    match f.st {
-                        SamelineDirectiveSt::PdEntry => {
-                            f.st = SamelineDirectiveSt::Dispatch;
-                            self.stack.push(Frame::SamelineDirective(f));
-                            continue 'run;
-                        }
-                        SamelineDirectiveSt::Dispatch => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineDirective(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK227;
-                                    self.stack.push(Frame::SamelineDirective(f));
-                                    self.enter_interpolation(on_event);
-                                    continue 'run;
-                                }
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK228;
-                                    self.stack.push(Frame::SamelineDirective(f));
-                                    self.enter_sameline_raw(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineDirectiveSt::PdK229;
-                                    self.stack.push(Frame::SamelineDirective(f));
-                                    self.enter_sameline_dir_body(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineDirectiveSt::PdK227 => {
-                            continue 'run;
-                        }
-                        SamelineDirectiveSt::PdK228 => {
-                            continue 'run;
-                        }
-                        SamelineDirectiveSt::PdK229 => {
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::Interpolation(mut f) => {
-                    match f.st {
-                        InterpolationSt::PdEntry => {
-                            f.st = InterpolationSt::Main;
-                            self.stack.push(Frame::Interpolation(f));
-                            continue 'run;
-                        }
-                        InterpolationSt::Main => {
-                            match self.scan_to2(b'\n', b'}') {
-                                Some(b'}') => {
-                                    self.set_term(0);
-                                    self.advance_or_pend();
-                                    f.st = InterpolationSt::Closing;
-                                    self.stack.push(Frame::Interpolation(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::Interpolation(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        InterpolationSt::Closing => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = InterpolationSt::Main;
-                                    self.stack.push(Frame::Interpolation(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                    }
-                }
-                Frame::SamelineRaw(mut f) => {
-                    match f.st {
-                        SamelineRawSt::PdEntry => {
-                            f.st = SamelineRawSt::Kind;
-                            self.stack.push(Frame::SamelineRaw(f));
-                            continue 'run;
-                        }
-                        SamelineRawSt::Kind => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b':') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
-                                    f.st = SamelineRawSt::SkipSep;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineRawSt::PdK230;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    self.enter_name(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineRawSt::SkipSep => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b' ') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineRawSt::Content;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineRawSt::Content;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineRawSt::Content => {
-                            self.mark();
-                            f.st = SamelineRawSt::Scan;
-                            self.stack.push(Frame::SamelineRaw(f));
-                            continue 'run;
-                        }
-                        SamelineRawSt::Scan => {
-                            match self.scan_to3(b'\n', b'{', b'}') {
-                                Some(b'{') => {
-                                    self.advance_or_pend();
-                                    f.depth += 1;
-                                    f.st = SamelineRawSt::Scan;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                                Some(b'}') => {
-                                    f.st = SamelineRawSt::CheckClose;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SamelineRaw(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                        SamelineRawSt::CheckClose => {
-                            match self.peek() {
-                                _ if f.depth > 0 => {
-                                    self.advance_or_pend();
-                                    f.depth -= 1;
-                                    f.st = SamelineRawSt::Scan;
-                                    self.stack.push(Frame::SamelineRaw(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.set_term(0);
-                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineRawSt::PdK230 => {
-                            f.st = SamelineRawSt::Kind;
-                            self.stack.push(Frame::SamelineRaw(f));
-                            continue 'run;
-                        }
-                    }
-                }
-                Frame::SamelineDirBody(mut f) => {
-                    match f.st {
-                        SamelineDirBodySt::PdEntry => {
-                            f.st = SamelineDirBodySt::Name;
-                            self.stack.push(Frame::SamelineDirBody(f));
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::Name => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = SamelineDirBodySt::PdK231;
-                                    self.stack.push(Frame::SamelineDirBody(f));
-                                    self.enter_name(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineDirBodySt::PdK232;
-                                    self.stack.push(Frame::SamelineDirBody(f));
-                                    self.enter_skip_brace_balanced(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineDirBodySt::AfterName => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                Some(b' ' | b'\t') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineDirBodySt::Args;
-                                    self.stack.push(Frame::SamelineDirBody(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineDirBodySt::PdK233;
-                                    self.stack.push(Frame::SamelineDirBody(f));
-                                    self.enter_skip_brace_balanced(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineDirBodySt::Args => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b'}') => {
-                                    self.advance_or_pend();
-                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => {
-                                    f.st = SamelineDirBodySt::PdK234;
-                                    self.stack.push(Frame::SamelineDirBody(f));
-                                    self.enter_embed_content(on_event);
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineDirBodySt::PdK231 => {
-                            f.st = SamelineDirBodySt::AfterName;
-                            self.stack.push(Frame::SamelineDirBody(f));
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::PdK232 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::PdK233 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::PdK234 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                        ArraySt::PdK164 => {
+                            f.st = ArraySt::Items;
+                            self.stack.push(Frame::Array(f));
                             continue 'run;
                         }
                     }
@@ -9306,7 +6297,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK235;
+                                    f.st = TypedValueSt::PdK165;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_interpolation(on_event);
                                     continue 'run;
@@ -9327,7 +6318,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'[') => {
                                     self.mark();
-                                    f.st = TypedValueSt::PdK236;
+                                    f.st = TypedValueSt::PdK166;
                                     self.stack.push(Frame::TypedValue(f));
                                     continue 'run;
                                 }
@@ -9361,7 +6352,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'[') => {
-                                    f.st = TypedValueSt::PdK238;
+                                    f.st = TypedValueSt::PdK168;
                                     self.stack.push(Frame::TypedValue(f));
                                     continue 'run;
                                 }
@@ -9400,7 +6391,7 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(0);
-                                f.st = TypedValueSt::PdK240;
+                                f.st = TypedValueSt::PdK170;
                                 let matched = self.lookup_bare_kw(on_event);
                                 self.stack.push(Frame::TypedValue(f));
                                 if !matched {
@@ -9411,7 +6402,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'\n') => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK241;
+                                    f.st = TypedValueSt::PdK171;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9426,7 +6417,7 @@ impl PushdownParser {
                                 }
                                 Some(b) if b == f.bracket => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK242;
+                                    f.st = TypedValueSt::PdK172;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9452,7 +6443,7 @@ impl PushdownParser {
                             match self.peek() {
                                 _ if f.space_term == 1 => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK243;
+                                    f.st = TypedValueSt::PdK173;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9471,7 +6462,7 @@ impl PushdownParser {
                         TypedValueSt::KwBoundary => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                f.st = TypedValueSt::PdK244;
+                                f.st = TypedValueSt::PdK174;
                                 let matched = self.lookup_bare_kw(on_event);
                                 self.stack.push(Frame::TypedValue(f));
                                 if !matched {
@@ -9487,7 +6478,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'\n') => {
-                                    f.st = TypedValueSt::PdK245;
+                                    f.st = TypedValueSt::PdK175;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9496,7 +6487,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if b == f.bracket => {
-                                    f.st = TypedValueSt::PdK246;
+                                    f.st = TypedValueSt::PdK176;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9505,7 +6496,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b';' | b'`' | b'\\') => {
-                                    f.st = TypedValueSt::PdK247;
+                                    f.st = TypedValueSt::PdK177;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9552,7 +6543,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = TypedValueSt::PdK248;
+                                    f.st = TypedValueSt::PdK178;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9580,7 +6571,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'{' || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                                    f.st = TypedValueSt::PdK249;
+                                    f.st = TypedValueSt::PdK179;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9608,7 +6599,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b':' || b == b'{' => {
-                                    f.st = TypedValueSt::PdK250;
+                                    f.st = TypedValueSt::PdK180;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9636,7 +6627,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'[' || b == b'.' => {
-                                    f.st = TypedValueSt::PdK251;
+                                    f.st = TypedValueSt::PdK181;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -10602,7 +7593,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK252;
+                                    f.st = TypedValueSt::PdK182;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -10626,7 +7617,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK253;
+                                    f.st = TypedValueSt::PdK183;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -10787,7 +7778,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(-2);
                                 { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = TypedValueSt::PdK254;
+                                f.st = TypedValueSt::PdK184;
                                 self.stack.push(Frame::TypedValue(f));
                                 self.enter_line_comment_content(on_event);
                                 continue 'run;
@@ -10796,7 +7787,7 @@ impl PushdownParser {
                                 Some(b' ') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = TypedValueSt::PdK255;
+                                    f.st = TypedValueSt::PdK185;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -10804,7 +7795,7 @@ impl PushdownParser {
                                 Some(b'\n') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = TypedValueSt::PdK256;
+                                    f.st = TypedValueSt::PdK186;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -10813,7 +7804,7 @@ impl PushdownParser {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK257;
+                                    f.st = TypedValueSt::PdK187;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -10836,7 +7827,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK258;
+                                    f.st = TypedValueSt::PdK188;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -10848,121 +7839,3130 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        TypedValueSt::PdK235 => {
+                        TypedValueSt::PdK165 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK236 => {
+                        TypedValueSt::PdK166 => {
                             if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                            f.st = TypedValueSt::PdK237;
+                            f.st = TypedValueSt::PdK167;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK237 => {
+                        TypedValueSt::PdK167 => {
                             self.advance_or_pend();
                             f.st = TypedValueSt::RefTail;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK238 => {
+                        TypedValueSt::PdK168 => {
                             if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                            f.st = TypedValueSt::PdK239;
+                            f.st = TypedValueSt::PdK169;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK239 => {
+                        TypedValueSt::PdK169 => {
                             self.advance_or_pend();
                             f.st = TypedValueSt::RefTail;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK240 => {
+                        TypedValueSt::PdK170 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK241 => {
+                        TypedValueSt::PdK171 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK242 => {
+                        TypedValueSt::PdK172 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK243 => {
+                        TypedValueSt::PdK173 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK244 => {
+                        TypedValueSt::PdK174 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK245 => {
+                        TypedValueSt::PdK175 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK246 => {
+                        TypedValueSt::PdK176 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK247 => {
+                        TypedValueSt::PdK177 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK248 => {
+                        TypedValueSt::PdK178 => {
                             f.result = 4;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK249 => {
+                        TypedValueSt::PdK179 => {
                             f.result = 11;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK250 => {
+                        TypedValueSt::PdK180 => {
                             f.result = 12;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK251 => {
+                        TypedValueSt::PdK181 => {
                             f.result = 13;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK252 => {
+                        TypedValueSt::PdK182 => {
                             f.st = TypedValueSt::BlobAfterInline;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK253 => {
+                        TypedValueSt::PdK183 => {
                             f.st = TypedValueSt::BlobAfterInline;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK254 => {
+                        TypedValueSt::PdK184 => {
                             f.result = 3;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK255 => {
+                        TypedValueSt::PdK185 => {
                             f.result = 3;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK256 => {
+                        TypedValueSt::PdK186 => {
                             f.result = 3;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK257 => {
+                        TypedValueSt::PdK187 => {
                             self.mark();
                             f.st = TypedValueSt::Blob;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK258 => {
+                        TypedValueSt::PdK188 => {
                             self.mark();
                             f.st = TypedValueSt::Blob;
                             self.stack.push(Frame::TypedValue(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::VerbatimText(mut f) => {
+                    match f.st {
+                        VerbatimTextSt::PdEntry => {
+                            self.mark();
+                            f.st = VerbatimTextSt::Main;
+                            self.stack.push(Frame::VerbatimText(f));
+                            continue 'run;
+                        }
+                        VerbatimTextSt::Main => {
+                            match self.scan_to5(b'\n', b'|', b'!', b';', b'\\') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::Vpipe;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::Vbang;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::Vsemi;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::Vbs;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        VerbatimTextSt::Vpipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::PdK189;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::Vbang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::PdK190;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::Vsemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::PdK191;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::Vbs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::VbsPipe;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::VbsBang;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = VerbatimTextSt::VbsSemi;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::VbsPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::VbsBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::VbsSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::Vafter => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = VerbatimTextSt::Main;
+                                    self.stack.push(Frame::VerbatimText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        VerbatimTextSt::PdK189 => {
+                            f.st = VerbatimTextSt::Vafter;
+                            self.stack.push(Frame::VerbatimText(f));
+                            continue 'run;
+                        }
+                        VerbatimTextSt::PdK190 => {
+                            f.st = VerbatimTextSt::Vafter;
+                            self.stack.push(Frame::VerbatimText(f));
+                            continue 'run;
+                        }
+                        VerbatimTextSt::PdK191 => {
+                            f.st = VerbatimTextSt::Vafter;
+                            self.stack.push(Frame::VerbatimText(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::Prose(mut f) => {
+                    match f.st {
+                        ProseSt::PdEntry => {
+                            if f.parent_col >= 0 && f.line_col <= f.parent_col {
+                                continue 'run;
+                            }
+                            f.st = ProseSt::PdK192;
+                            self.stack.push(Frame::Prose(f));
+                            continue 'run;
+                        }
+                        ProseSt::Content => {
+                            f.st = ProseSt::PdK193;
+                            let (pd_a0, pd_a1, pd_a2,) = (f.line_col, f.parent_col, f.prepend, );
+                            self.stack.push(Frame::Prose(f));
+                            self.enter_text(pd_a0, pd_a1, pd_a2, on_event);
+                            continue 'run;
+                        }
+                        ProseSt::PdK192 => {
+                            f.st = ProseSt::Content;
+                            self.stack.push(Frame::Prose(f));
+                            continue 'run;
+                        }
+                        ProseSt::PdK193 => {
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::ProseBackticks(mut f) => {
+                    match f.st {
+                        ProseBackticksSt::PdEntry => {
+                            if f.parent_col >= 0 && f.line_col <= f.parent_col {
+                                continue 'run;
+                            }
+                            f.st = ProseBackticksSt::PdK194;
+                            self.stack.push(Frame::ProseBackticks(f));
+                            continue 'run;
+                        }
+                        ProseBackticksSt::Content => {
+                            f.st = ProseBackticksSt::PdK195;
+                            let (pd_a0, pd_a1,) = (f.line_col, f.parent_col, );
+                            self.stack.push(Frame::ProseBackticks(f));
+                            self.enter_text_backticks(pd_a0, pd_a1, on_event);
+                            continue 'run;
+                        }
+                        ProseBackticksSt::PdK194 => {
+                            f.st = ProseBackticksSt::Content;
+                            self.stack.push(Frame::ProseBackticks(f));
+                            continue 'run;
+                        }
+                        ProseBackticksSt::PdK195 => {
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::TextBackticks(mut f) => {
+                    match f.st {
+                        TextBackticksSt::PdEntry => {
+                            f.st = TextBackticksSt::Entry;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
+                        TextBackticksSt::Entry => {
+                            self.mark();
+                            self.prepend_bytes(b"`");
+                            self.prepend_bytes(b"`");
+                            f.st = TextBackticksSt::Main;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
+                        TextBackticksSt::Main => {
+                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckPipe;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckSemi;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckBang;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckBs;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        TextBackticksSt::CheckPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::PdK196;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::PdK197;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::PdK198;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckBs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckBsPipe;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckBsBang;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = TextBackticksSt::CheckBsSemi;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckBsPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckBsBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::CheckBsSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::AfterInline => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = TextBackticksSt::Main;
+                                    self.stack.push(Frame::TextBackticks(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextBackticksSt::PdK196 => {
+                            f.st = TextBackticksSt::AfterInline;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
+                        TextBackticksSt::PdK197 => {
+                            f.st = TextBackticksSt::AfterInline;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
+                        TextBackticksSt::PdK198 => {
+                            f.st = TextBackticksSt::AfterInline;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::Text(mut f) => {
+                    match f.st {
+                        TextSt::PdEntry => {
+                            f.st = TextSt::Entry;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
+                        TextSt::Entry => {
+                            self.mark();
+                            self.prepend_bytes(f.prepend);
+                            f.st = TextSt::Main;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
+                        TextSt::Main => {
+                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckPipe;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckSemi;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckBang;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckBs;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        TextSt::CheckPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextSt::PdK199;
+                                    self.stack.push(Frame::Text(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextSt::PdK200;
+                                    self.stack.push(Frame::Text(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = TextSt::PdK201;
+                                    self.stack.push(Frame::Text(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckBs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckBsPipe;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckBsBang;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = TextSt::CheckBsSemi;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckBsPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckBsBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::CheckBsSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::AfterInline => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = TextSt::Main;
+                                    self.stack.push(Frame::Text(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        TextSt::PdK199 => {
+                            f.st = TextSt::AfterInline;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
+                        TextSt::PdK200 => {
+                            f.st = TextSt::AfterInline;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
+                        TextSt::PdK201 => {
+                            f.st = TextSt::AfterInline;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::SamelineText(mut f) => {
+                    match f.st {
+                        SamelineTextSt::PdEntry => {
+                            f.st = SamelineTextSt::Entry;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::Entry => {
+                            self.mark();
+                            self.prepend_bytes(f.prepend);
+                            f.st = SamelineTextSt::Main;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::Main => {
+                            match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckPipe;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    f.st = SamelineTextSt::CheckSemi;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckBang;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckBs;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        SamelineTextSt::CheckPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::PdK202;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
+                                    f.st = SamelineTextSt::CheckPipeElemCol;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckPipeElemCol => {
+                            match self.peek() {
+                                _ if self.col() - 1 <= f.elem_col => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    f.st = SamelineTextSt::PdK203;
+                                    let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_element(pd_a0, pd_a1, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckSemi => {
+                            match self.peek() {
+                                _ if self.prev() == b' ' => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::SemiSpaced;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::SemiGlued;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::SemiSpaced => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(-1);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                f.st = SamelineTextSt::PdK204;
+                                self.stack.push(Frame::SamelineText(f));
+                                self.enter_line_comment_content(on_event);
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    f.st = SamelineTextSt::PdK205;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_line_comment_content(on_event);
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    f.st = SamelineTextSt::PdK206;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_line_comment_content(on_event);
+                                    continue 'run;
+                                }
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::PdK207;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::SemiGlued => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::PdK208;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-1);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::PdK209;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckBs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckBsPipe;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckBsBang;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineTextSt::CheckBsSemi;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckBsPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckBsBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::CheckBsSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::AfterInline => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = SamelineTextSt::Main;
+                                    self.stack.push(Frame::SamelineText(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineTextSt::PdK202 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK203 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK204 => {
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK205 => {
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK206 => {
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK207 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK208 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                        SamelineTextSt::PdK209 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::LineComment(mut f) => {
+                    match f.st {
+                        LineCommentSt::PdEntry => {
+                            f.st = LineCommentSt::Check;
+                            self.stack.push(Frame::LineComment(f));
+                            continue 'run;
+                        }
+                        LineCommentSt::Check => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.st = LineCommentSt::PdK210;
+                                    self.stack.push(Frame::LineComment(f));
+                                    self.enter_comment_text_braced(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = LineCommentSt::FirstLine;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        LineCommentSt::FirstLine => {
+                            match self.scan_to1(b'\n') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = LineCommentSt::Children;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        LineCommentSt::Children => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = LineCommentSt::Children;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.col = 1;
+                                    f.st = LineCommentSt::ChildrenWs;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                Some(b'\t') => {
+                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        LineCommentSt::ChildrenWs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                _ if f.content_base >= 0 && f.col >= f.content_base => {
+                                    f.st = LineCommentSt::AtContentBase;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.col += 1;
+                                    f.st = LineCommentSt::ChildrenWs;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = LineCommentSt::CheckContinuation;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        LineCommentSt::CheckContinuation => {
+                            match self.peek() {
+                                _ if f.col <= f.comment_col => {
+                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ if f.content_base < 0 => {
+                                    f.content_base = f.col;
+                                    self.mark();
+                                    f.st = LineCommentSt::ContLine;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::Warning { content: b"InconsistentIndentation".to_vec(), span: self.gspan() });
+                                    f.content_base = f.col;
+                                    self.mark();
+                                    f.st = LineCommentSt::ContLine;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        LineCommentSt::AtContentBase => {
+                            self.mark();
+                            f.st = LineCommentSt::ContContent;
+                            self.stack.push(Frame::LineComment(f));
+                            continue 'run;
+                        }
+                        LineCommentSt::ContContent => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.st = LineCommentSt::ContContent;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = LineCommentSt::ContLine;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        LineCommentSt::ContLine => {
+                            match self.scan_to1(b'\n') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = LineCommentSt::Children;
+                                    self.stack.push(Frame::LineComment(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::LineComment(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        LineCommentSt::PdK210 => {
+                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::LineCommentContent(mut f) => {
+                    match f.st {
+                        LineCommentContentSt::PdEntry => {
+                            self.mark();
+                            f.st = LineCommentContentSt::PdK211;
+                            self.stack.push(Frame::LineCommentContent(f));
+                            continue 'run;
+                        }
+                        LineCommentContentSt::PdK211 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::LineCommentContent(f)); return ParseResult::NeedMoreData; }
+                            f.st = LineCommentContentSt::PdK212;
+                            self.stack.push(Frame::LineCommentContent(f));
+                            continue 'run;
+                        }
+                        LineCommentContentSt::PdK212 => {
+                            self.set_term(0);
+                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::BraceComment(mut f) => {
+                    match f.st {
+                        BraceCommentSt::PdEntry => {
+                            f.st = BraceCommentSt::Main;
+                            self.stack.push(Frame::BraceComment(f));
+                            continue 'run;
+                        }
+                        BraceCommentSt::Main => {
+                            f.st = BraceCommentSt::PdK213;
+                            self.stack.push(Frame::BraceComment(f));
+                            self.enter_comment_text_braced(on_event);
+                            continue 'run;
+                        }
+                        BraceCommentSt::PdK213 => {
+                            on_event(StreamEvent::CommentEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::CommentTextBraced(mut f) => {
+                    match f.st {
+                        CommentTextBracedSt::PdEntry => {
+                            self.mark();
+                            f.st = CommentTextBracedSt::Main;
+                            self.stack.push(Frame::CommentTextBraced(f));
+                            continue 'run;
+                        }
+                        CommentTextBracedSt::Main => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
+                                continue 'run;
+                            }
+                            f.st = CommentTextBracedSt::PdK214;
+                            self.stack.push(Frame::CommentTextBraced(f));
+                            self.enter_skip_brace_balanced(on_event);
+                            continue 'run;
+                        }
+                        CommentTextBracedSt::Done => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
+                                continue 'run;
+                            }
+                            self.set_term(0);
+                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                            self.advance_or_pend();
+                            continue 'run;
+                        }
+                        CommentTextBracedSt::PdK214 => {
+                            f.st = CommentTextBracedSt::Done;
+                            self.stack.push(Frame::CommentTextBraced(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::Embedded(mut f) => {
+                    match f.st {
+                        EmbeddedSt::PdEntry => {
+                            f.st = EmbeddedSt::Identity;
+                            self.stack.push(Frame::Embedded(f));
+                            continue 'run;
+                        }
+                        EmbeddedSt::Identity => {
+                            f.st = EmbeddedSt::PdK215;
+                            let (pd_a0,) = (b'}', );
+                            self.stack.push(Frame::Embedded(f));
+                            self.enter_parse_element_identity(pd_a0, on_event);
+                            continue 'run;
+                        }
+                        EmbeddedSt::PostIdentity => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::PreContent;
+                                    self.stack.push(Frame::Embedded(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbeddedSt::PdK216;
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_embed_content(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbeddedSt::PreContent => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::PreContent;
+                                    self.stack.push(Frame::Embedded(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::PreContentMl;
+                                    self.stack.push(Frame::Embedded(f));
+                                    continue 'run;
+                                }
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::CheckAttr;
+                                    self.stack.push(Frame::Embedded(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::PdK217;
+                                    let (pd_a0,) = (b'}', );
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_attr_text_verbatim(pd_a0, on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbeddedSt::PdK218;
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_embed_content(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbeddedSt::PreContentMl => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ' | b'\t' | b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbeddedSt::PreContentMl;
+                                    self.stack.push(Frame::Embedded(f));
+                                    continue 'run;
+                                }
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbeddedSt::PdK219;
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_embed_content(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbeddedSt::CheckAttr => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b) if is_xlbl_start(b) || b == b'\'' => {
+                                    f.st = EmbeddedSt::PdK220;
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_sameline_attr_embedded(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.prepend_bytes(b":");
+                                    f.st = EmbeddedSt::PdK221;
+                                    self.stack.push(Frame::Embedded(f));
+                                    self.enter_embed_content(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbeddedSt::PdK215 => {
+                            f.st = EmbeddedSt::PostIdentity;
+                            self.stack.push(Frame::Embedded(f));
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK216 => {
+                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK217 => {
+                            f.st = EmbeddedSt::PostIdentity;
+                            self.stack.push(Frame::Embedded(f));
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK218 => {
+                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK219 => {
+                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK220 => {
+                            f.st = EmbeddedSt::PreContent;
+                            self.stack.push(Frame::Embedded(f));
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK221 => {
+                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::EmbedContent(mut f) => {
+                    match f.st {
+                        EmbedContentSt::PdEntry => {
+                            f.st = EmbedContentSt::Main;
+                            self.stack.push(Frame::EmbedContent(f));
+                            continue 'run;
+                        }
+                        EmbedContentSt::Main => {
+                            match self.scan_to6(b'}', b'\n', b'|', b';', b'!', b'\\') {
+                                Some(b'}') => {
+                                    self.set_term(0);
+                                    self.advance_or_pend();
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::MlWs;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b'|') => {
+                                    self.set_term(0);
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckPipe;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.set_term(0);
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckSemi;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.set_term(0);
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckBang;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckBs;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedEmbedded, span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        EmbedContentSt::CheckPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::PdK222;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::PdK223;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    self.enter_brace_comment(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::PdK224;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckBs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckBsPipe;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckBsBang;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::CheckBsSemi;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckBsPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"|");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckBsBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b"!");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::CheckBsSemi => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.set_term(-2);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.mark();
+                                    self.prepend_bytes(b";");
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::MlWs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedText, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = EmbedContentSt::MlWs;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = EmbedContentSt::Main;
+                                    self.stack.push(Frame::EmbedContent(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        EmbedContentSt::PdK222 => {
+                            self.mark();
+                            f.st = EmbedContentSt::Main;
+                            self.stack.push(Frame::EmbedContent(f));
+                            continue 'run;
+                        }
+                        EmbedContentSt::PdK223 => {
+                            self.mark();
+                            f.st = EmbedContentSt::Main;
+                            self.stack.push(Frame::EmbedContent(f));
+                            continue 'run;
+                        }
+                        EmbedContentSt::PdK224 => {
+                            self.mark();
+                            f.st = EmbedContentSt::Main;
+                            self.stack.push(Frame::EmbedContent(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::BlockDirective(mut f) => {
+                    match f.st {
+                        BlockDirectiveSt::PdEntry => {
+                            f.st = BlockDirectiveSt::Dispatch;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::Dispatch => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawKind;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b) if is_xlbl_start(b) => {
+                                    f.st = BlockDirectiveSt::PdK225;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_name(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawKind => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b) if is_xlbl_start(b) => {
+                                    f.st = BlockDirectiveSt::PdK226;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_name(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawColon => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawEol;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawEol => {
+                            match self.scan_to3(b'\n', b' ', b'\t') {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawContent;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawEol;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        BlockDirectiveSt::RawContent => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawContent;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.col = 1;
+                                    f.st = BlockDirectiveSt::RawWs;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawWs => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                _ if f.raw_base >= 0 && f.col >= f.raw_base => {
+                                    f.st = BlockDirectiveSt::RawAtBase;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.col += 1;
+                                    f.st = BlockDirectiveSt::RawWs;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawContent;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::RawCheckbase;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawCheckbase => {
+                            match self.peek() {
+                                _ if f.col <= f.line_col => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ if f.raw_base < 0 => {
+                                    f.raw_base = f.col;
+                                    self.mark();
+                                    f.st = BlockDirectiveSt::RawLine;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = BlockDirectiveSt::RawLine;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::RawAtBase => {
+                            self.mark();
+                            f.st = BlockDirectiveSt::RawLine;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::RawLine => {
+                            match self.scan_to1(b'\n') {
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::RawContent;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        BlockDirectiveSt::AfterName => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::Condition;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::Condition => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = BlockDirectiveSt::PdK227;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_directive_args(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::Children => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b' ') => {
+                                    f.st = BlockDirectiveSt::PdK228;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_count_indent(on_event);
+                                    continue 'run;
+                                }
+                                Some(b'\t') => {
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::NoTabs, span: self.gspan() });
+                                    f.st = BlockDirectiveSt::PdK229;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.col = self.col() - 1;
+                                    f.st = BlockDirectiveSt::CheckChild;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::CheckChild => {
+                            match self.peek() {
+                                _ if f.col <= f.line_col => {
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::ChildDispatch;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::ChildDispatch => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'|') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::ChildPipe;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::ChildCheckAttr;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b'!') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::DchildCheckBang;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                Some(b';') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::PdK231;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_line_comment(on_event);
+                                    continue 'run;
+                                }
+                                Some(b'\\') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::PdK232;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_verbatim_text(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::PdK233;
+                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"", );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::DchildCheckBang => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b':') => {
+                                    f.st = BlockDirectiveSt::PdK234;
+                                    let (pd_a0,) = (f.col, );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_block_directive(pd_a0, on_event);
+                                    continue 'run;
+                                }
+                                Some(b) if is_xlbl_start(b) => {
+                                    f.st = BlockDirectiveSt::PdK235;
+                                    let (pd_a0,) = (f.col, );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_block_directive(pd_a0, on_event);
+                                    continue 'run;
+                                }
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::PdK236;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_sameline_directive(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::PdK237;
+                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"!", );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::ChildCheckAttr => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b) if is_xlbl_start(b) || b == b'\'' => {
+                                    f.st = BlockDirectiveSt::PdK238;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_block_attr(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::PdK239;
+                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b":", );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::DattrCheck => {
+                            match self.peek() {
+                                _ if f.dstate == 1 => {
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::MissingAttributeValue, span: self.gspan() });
+                                    on_event(StreamEvent::Nil { content: Vec::new(), span: self.gspan() });
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::Children;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::ChildPipe => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.st = BlockDirectiveSt::PdK240;
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_embedded(on_event);
+                                    continue 'run;
+                                }
+                                Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
+                                    f.st = BlockDirectiveSt::PdK241;
+                                    let (pd_a0, pd_a1,) = (f.col, f.line_col, );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_element(pd_a0, pd_a1, on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = BlockDirectiveSt::PdK242;
+                                    let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"|", );
+                                    self.stack.push(Frame::BlockDirective(f));
+                                    self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockDirectiveSt::PdK225 => {
+                            f.st = BlockDirectiveSt::AfterName;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK226 => {
+                            on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
+                            f.st = BlockDirectiveSt::RawColon;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK227 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK228 => {
+                            f.col = self.ret;
+                            f.st = BlockDirectiveSt::CheckChild;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK229 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
+                            f.st = BlockDirectiveSt::PdK230;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK230 => {
+                            self.advance_or_pend();
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK231 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK232 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK233 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK234 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK235 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK236 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK237 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK238 => {
+                            f.dstate = self.ret;
+                            f.st = BlockDirectiveSt::DattrCheck;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK239 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK240 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK241 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK242 => {
+                            f.st = BlockDirectiveSt::Children;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::DirectiveArgs(mut f) => {
+                    match f.st {
+                        DirectiveArgsSt::PdEntry => {
+                            f.st = DirectiveArgsSt::PdK243;
+                            self.stack.push(Frame::DirectiveArgs(f));
+                            continue 'run;
+                        }
+                        DirectiveArgsSt::PdK243 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
+                            f.st = DirectiveArgsSt::PdK244;
+                            self.stack.push(Frame::DirectiveArgs(f));
+                            continue 'run;
+                        }
+                        DirectiveArgsSt::PdK244 => {
+                            self.set_term(0);
+                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::SamelineDirective(mut f) => {
+                    match f.st {
+                        SamelineDirectiveSt::PdEntry => {
+                            f.st = SamelineDirectiveSt::Dispatch;
+                            self.stack.push(Frame::SamelineDirective(f));
+                            continue 'run;
+                        }
+                        SamelineDirectiveSt::Dispatch => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineDirective(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineDirectiveSt::PdK245;
+                                    self.stack.push(Frame::SamelineDirective(f));
+                                    self.enter_interpolation(on_event);
+                                    continue 'run;
+                                }
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineDirectiveSt::PdK246;
+                                    self.stack.push(Frame::SamelineDirective(f));
+                                    self.enter_sameline_raw(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineDirectiveSt::PdK247;
+                                    self.stack.push(Frame::SamelineDirective(f));
+                                    self.enter_sameline_dir_body(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineDirectiveSt::PdK245 => {
+                            continue 'run;
+                        }
+                        SamelineDirectiveSt::PdK246 => {
+                            continue 'run;
+                        }
+                        SamelineDirectiveSt::PdK247 => {
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::Interpolation(mut f) => {
+                    match f.st {
+                        InterpolationSt::PdEntry => {
+                            f.st = InterpolationSt::Main;
+                            self.stack.push(Frame::Interpolation(f));
+                            continue 'run;
+                        }
+                        InterpolationSt::Main => {
+                            match self.scan_to2(b'\n', b'}') {
+                                Some(b'}') => {
+                                    self.set_term(0);
+                                    self.advance_or_pend();
+                                    f.st = InterpolationSt::Closing;
+                                    self.stack.push(Frame::Interpolation(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::Interpolation(f)); continue 'run; }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        InterpolationSt::Closing => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    { let c = self.term_owned(); on_event(StreamEvent::Interpolation { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.advance_or_pend();
+                                    f.st = InterpolationSt::Main;
+                                    self.stack.push(Frame::Interpolation(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                    }
+                }
+                Frame::SamelineRaw(mut f) => {
+                    match f.st {
+                        SamelineRawSt::PdEntry => {
+                            f.st = SamelineRawSt::Kind;
+                            self.stack.push(Frame::SamelineRaw(f));
+                            continue 'run;
+                        }
+                        SamelineRawSt::Kind => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b':') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
+                                    f.st = SamelineRawSt::SkipSep;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineRawSt::PdK248;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    self.enter_name(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineRawSt::SkipSep => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineRawSt::Content;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineRawSt::Content;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineRawSt::Content => {
+                            self.mark();
+                            f.st = SamelineRawSt::Scan;
+                            self.stack.push(Frame::SamelineRaw(f));
+                            continue 'run;
+                        }
+                        SamelineRawSt::Scan => {
+                            match self.scan_to3(b'\n', b'{', b'}') {
+                                Some(b'{') => {
+                                    self.advance_or_pend();
+                                    f.depth += 1;
+                                    f.st = SamelineRawSt::Scan;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                Some(b'}') => {
+                                    f.st = SamelineRawSt::CheckClose;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SamelineRaw(f)); continue 'run; }
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        SamelineRawSt::CheckClose => {
+                            match self.peek() {
+                                _ if f.depth > 0 => {
+                                    self.advance_or_pend();
+                                    f.depth -= 1;
+                                    f.st = SamelineRawSt::Scan;
+                                    self.stack.push(Frame::SamelineRaw(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::RawContent { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineRawSt::PdK248 => {
+                            f.st = SamelineRawSt::Kind;
+                            self.stack.push(Frame::SamelineRaw(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::SamelineDirBody(mut f) => {
+                    match f.st {
+                        SamelineDirBodySt::PdEntry => {
+                            f.st = SamelineDirBodySt::Name;
+                            self.stack.push(Frame::SamelineDirBody(f));
+                            continue 'run;
+                        }
+                        SamelineDirBodySt::Name => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b) if is_xlbl_start(b) => {
+                                    f.st = SamelineDirBodySt::PdK249;
+                                    self.stack.push(Frame::SamelineDirBody(f));
+                                    self.enter_name(on_event);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineDirBodySt::PdK250;
+                                    self.stack.push(Frame::SamelineDirBody(f));
+                                    self.enter_skip_brace_balanced(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineDirBodySt::AfterName => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = SamelineDirBodySt::Args;
+                                    self.stack.push(Frame::SamelineDirBody(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineDirBodySt::PdK251;
+                                    self.stack.push(Frame::SamelineDirBody(f));
+                                    self.enter_skip_brace_balanced(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineDirBodySt::Args => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'}') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = SamelineDirBodySt::PdK252;
+                                    self.stack.push(Frame::SamelineDirBody(f));
+                                    self.enter_embed_content(on_event);
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        SamelineDirBodySt::PdK249 => {
+                            f.st = SamelineDirBodySt::AfterName;
+                            self.stack.push(Frame::SamelineDirBody(f));
+                            continue 'run;
+                        }
+                        SamelineDirBodySt::PdK250 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                        SamelineDirBodySt::PdK251 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                        SamelineDirBodySt::PdK252 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::Freeform(mut f) => {
+                    match f.st {
+                        FreeformSt::PdEntry => {
+                            f.st = FreeformSt::Opening;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                        FreeformSt::Opening => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::LineStart;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = FreeformSt::PdK253;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::LineStart => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::BlankLine { content: Vec::new(), span: self.gspan() });
+                                    f.st = FreeformSt::LineStart;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.mark();
+                                    f.st = FreeformSt::Content;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::Content => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::Content;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::LineStart;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                Some(b'`') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::MaybeEnd1;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::Line;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::Line => {
+                            f.st = FreeformSt::PdK255;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                        FreeformSt::MaybeEnd1 => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'`') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::MaybeEnd2;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = FreeformSt::Line;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::MaybeEnd2 => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Warning { content: b"UnterminatedFreeform".to_vec(), span: self.gspan() });
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'`') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::PostClose;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = FreeformSt::Line;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::PostClose => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b' ' | b'\t') => {
+                                    self.advance_or_pend();
+                                    f.st = FreeformSt::PostClose;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    on_event(StreamEvent::FreeformEnd { span: self.gspan() });
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = FreeformSt::Line;
+                                    self.stack.push(Frame::Freeform(f));
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        FreeformSt::PdK253 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                            f.st = FreeformSt::PdK254;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                        FreeformSt::PdK254 => {
+                            self.set_term(0);
+                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                            self.advance_or_pend();
+                            f.st = FreeformSt::LineStart;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                        FreeformSt::PdK255 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
+                            f.st = FreeformSt::PdK256;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                        FreeformSt::PdK256 => {
+                            self.set_term(0);
+                            { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                            self.advance_or_pend();
+                            f.st = FreeformSt::LineStart;
+                            self.stack.push(Frame::Freeform(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::BlockRef(mut f) => {
+                    match f.st {
+                        BlockRefSt::PdEntry => {
+                            f.st = BlockRefSt::Main;
+                            self.stack.push(Frame::BlockRef(f));
+                            continue 'run;
+                        }
+                        BlockRefSt::Main => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'[') => {
+                                    f.st = BlockRefSt::PdK257;
+                                    self.stack.push(Frame::BlockRef(f));
+                                    continue 'run;
+                                }
+                                Some(b) if is_xlbl_cont(b) || b == b'.' => {
+                                    self.advance_or_pend();
+                                    f.st = BlockRefSt::Main;
+                                    self.stack.push(Frame::BlockRef(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockRefSt::PostKey => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
+                                { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b) if is_xlbl_cont(b) || b == b'.' => {
+                                    self.advance_or_pend();
+                                    f.st = BlockRefSt::PostKey;
+                                    self.stack.push(Frame::BlockRef(f));
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Reference { content: c, span: self.gspan_from_mark() }); }
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        BlockRefSt::PdK257 => {
+                            if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
+                            f.st = BlockRefSt::PdK258;
+                            self.stack.push(Frame::BlockRef(f));
+                            continue 'run;
+                        }
+                        BlockRefSt::PdK258 => {
+                            self.advance_or_pend();
+                            f.st = BlockRefSt::PostKey;
+                            self.stack.push(Frame::BlockRef(f));
                             continue 'run;
                         }
                     }
