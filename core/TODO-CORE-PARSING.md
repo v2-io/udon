@@ -20,6 +20,20 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       four after-key suffixes are fixture-encoded in `identity.yaml` and
       green; the Obsidian rendering miss is a highlighter-side issue.
 
+- [ ] **Collapse the per-opener `\`-escape ladders?** *(discuss w/ Joseph)*
+      (2026-07-16) Six near-identical `check_bs_{pipe,bang,semi}` /
+      `blob_bs_*` / `vbs_*` ladders (text, text_backticks, sameline_text,
+      verbatim_text, attr_text_verbatim, typed_value:blob) could become one
+      shared `/bs_escape(:opener)` helper — `PREPEND(:param)` already
+      suffices, no descent feature needed. Blocked on a behavior ruling:
+      the current states DROP the accumulated Text when input ends right
+      after `\|` / `\!` / `\;` (state has no eof case → bare return); a
+      helper-function version would EMIT it (callee returns, caller's :main
+      eof emits). Emitting looks more keep-everything-faithful, but that's
+      a spec call, not a refactor call. Exact-preserving variant exists
+      (helper returns an at-eof code + per-site route state) at ~zero net
+      line savings.
+
 - [ ] **Retire the line-oriented `StreamingParser` façade.** Review defect #1
       is RESOLVED at the generator level (2026-07-15): descent's pushdown
       backend (`--backend pushdown`) emits `parser_pd.rs`, resumable at any
