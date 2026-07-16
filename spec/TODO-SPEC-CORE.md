@@ -11,11 +11,6 @@
 
 ## Open
 
-- [ ] **Adjudicate `FULL-EBNF.md`'s fate** (raised 2026-07-14). It is a derived,
-      perpetually-lagging illustrative grammar; a second grammar artifact
-      undercuts CORE-as-sole-source-of-truth and it has already caused confusion
-      (cited as if corroborating CORE). Decide: delete / reduce to a pointer /
-      keep. Deferred by Joseph for a deliberate call.
 - [ ] **References — structured event encoding** (semantics already in CORE
       "References"). Wire still interim: single `Reference` with raw text after
       `@`. Planned: `ReferenceStart` / `Name` / `Attr "$key"` / `Attr
@@ -63,31 +58,5 @@
 
 ---
 
-## Design notes feeding future rulings
-
-- **[The Attribute Model — hash & array, edges & nodes](../design/attribute-model-2026-07.md)**
-  — see open item above. Same document is the ratification input for the
-  whole attribute reconception (uniform scan, node-valued attrs, `?` flags,
-  key charset, warning placement, …), not only "structured values."
-
----
-
-## Migrated this cycle (2026-07-15) — residual only above
-
-Ratified silences from the v0.8 fixture authoring pass that are now **in CORE**
-(and fixtures/grammar where the wire changed):
-
-| Topic | Where in CORE |
-|-------|----------------|
-| Text granularity | Parser behavior notes |
-| Warning codes (PascalCase; emission host-side) | Warning codes table |
-| Past-base `\` → AST-layer only | Escape |
-| `<…>` interim + array-item value position | Explicit Typing |
-| Structured attrs | **reopened** → design/attribute-model (not migrated) |
-| Raw-block first-content-line dedent | Raw Directives (Block) |
-| Multiline embedded per-line Text; space between siblings | Inline and Embedded |
-| Inline raw Raw marker + sep space | Inline Raw Content |
-| Comment continuation uniform; `;` framing; sameline comments | Comments / Head Position |
-| Comment deeper than prose base = prose | Comments and Indentation |
-| References = selector tuples; interim raw wire | References |
-| Stranded second-attr: no required event Warning | Block Attribute Values |
+*(History lives in git and `msc/CHANGELOG.md` — the 0.8 silence-migration
+table and the 0.9 rulings ledger are recorded there, not here.)*

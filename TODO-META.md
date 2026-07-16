@@ -6,53 +6,31 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
 
 ## Open
 
-- [ ] **[P0] Semantic spec-versioning + per-version compliance-fixture groups —
-      principled.** *Versioning spine established 2026-07-14:* `spec/CHANGELOG.md`
-      (Keep-a-Changelog + SemVer); `CORE.md` is now **0.8.0-alpha.1** (maturity
-      ladder: alpha → beta → rc → final, gate = compliance-passes); the model is
-      CommonMark's — the spec is the versioned contract and impls declare which
-      version they pass. **Remaining:**
-      - Build the **0.8.0 compliance-fixture group** in `core/fixtures/v0.8/`.
-        *Bundling done 2026-07-14* — legacy set aside (`core/fixtures/legacy-pre-0.8/`,
-        tag `grammar-v0.7`), v0.8 group live, harness rewired to discover it
-        dynamically. *First full authoring pass done 2026-07-15:* ~227 cases
-        across 15 files, every expectation derived from a complete read of
-        `spec/CORE.md` + companions (never traced from the parser). *Gate
-        GREEN 2026-07-15*, **0.8.0 finalized + tagged `core-v0.8.0`
-        2026-07-15** — first version with a compliant parser; v0.8 group
-        frozen. **0.9.0-alpha.1 opened same day** (attribute-model
-        reconception): active group `core/fixtures/v0.9/` seeded from v0.8;
-        `udon-core` declares targeting via `CORE_COMPLIANCE` in `lib.rs`;
-        `version_declarations_agree` (canonical.rs) asserts CORE-VERSION /
-        CORE_COMPLIANCE / ACTIVE_GROUP move together. **Remaining (now under
-        v0.9):** edit the group to the 0.9 CORE text as it lands; mine
-        `legacy-pre-0.8/` for still-valid regression cases not re-derived
-        (esp. `indentation_edge_cases`, `prose_dedentation` depth,
-        `element_names` charset torture cases); keep densifying
-        edge/combination coverage as gaps surface.
-      - Stand up the **unified compliance gate** — event-level fixtures by default
-        (easiest place to reason about/fix the descent grammar), AST-level only
-        where a core-syntax property is genuinely easier to assert there.
-      - **Finish the drift-check**: the in-repo test covers
-        CORE-VERSION/CORE_COMPLIANCE/ACTIVE_GROUP; CI-level assertion that
-        the `CORE.md` header and `CHANGELOG.md` top entry match
+- [ ] **[P0] Compliance-versioning residuals.** The spine is live: semver'd
+      CORE (`spec/CORE-VERSION`) + per-version fixture groups + the
+      `version_declarations_agree` test; model and history live in
+      `spec/msc/CHANGELOG.md` and `core/fixtures/README.md`. Remaining:
+      - **Unified compliance gate** — event-level fixtures by default (the
+        easiest place to reason about/fix the descent grammar); AST-level
+        only where a core-syntax property is genuinely easier to assert
+        there (none exist yet).
+      - **CI drift-check** — the in-repo test covers CORE-VERSION /
+        CORE_COMPLIANCE / ACTIVE_GROUP; the CI-level assertion that the
+        `CORE.md` header and `CHANGELOG.md` top entry match
         `spec/CORE-VERSION` is still open.
-      Once this exists, `TODO-CORE-PARSING` and `TODO-PARSER` hold only residuals
-      and decompositions, not the spec-behavior worklist.
-- [ ] **Bootstrap: drain the legacy tracking into the lanes, deprecating the
-      subsumed.** Triage every open item in the old places — the `design/`
-      notes, `_archive/REVIEW-JULY-2026.md` §4/§7-F *(drained 2026-07-16)*,
-      the `_archive/REBOOT-PLAN.md` backlog *(drained 2026-07-16)*
-      (§4 Phases 1–3 + spike track) — and route each to its lane.
-      (`core/PLAN.md` drained and deleted; the Dec-2025 `docs/` brainstorms
-      moved into `design/` as AGENT-UX mining sources.)
-      **DEPRECATE (do not re-track) anything subsumed by the fixture + grammar
-      iteration passes**: a "make the parser do spec-behavior X" item *is* a v0.8
-      compliance fixture, not a separate CORE-PARSING task. Only genuine residuals
-      survive — streaming-resumption architecture, grammar DRY, pending descent
-      items, perf, bindings, utilities, still-open spec decisions. Delete each
-      source when fully drained. The per-lane "pull from X"
-      tasks are the hands; this is the rule they follow.
+      - **v0.9 group densification** continues before any `core-v0.9.0` tag
+        (EOF/`Unclosed*` behaviors, `legacy-pre-0.8/` mining — esp.
+        indentation edge cases, prose-dedentation depth, element-name
+        charset torture — and edge/combination coverage); operational
+        detail in `core/fixtures/README.md`.
+- [ ] **Bootstrap: drain the legacy tracking into the lanes** — one source
+      left: `notes/` (drain in progress 2026-07-16); the `design/` notes are
+      covered by per-lane pull-items (AUX, SPEC-OTHER, UTILS, AGENT-UX).
+      The rule those pulls follow — **deprecate, do not re-track, anything
+      subsumed by the fixture + grammar iteration passes**: a "make the
+      parser do spec-behavior X" item *is* a compliance fixture, not a
+      CORE-PARSING task; only genuine residuals survive. Delete each source
+      when fully drained.
 - [ ] **[later] Literate fusion — the fused ground truth (CTQ-E).** Spec
       prose, descent grammar, and compliance fixtures extracted from ONE
       source — which, since `.desc` is already UDON-shaped, can itself be a

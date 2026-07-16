@@ -1,19 +1,28 @@
 # UDON Formal Grammar (EBNF)
 
-**Derived from CORE.md (authoritative). Fresh draft 2026-07-14, pending
-review — regenerate when CORE changes.**
+> **⚠️ Demoted reference — derived, perpetually lagging, illustration only**
+> (ruled by Joseph 2026-07-16, closing the standing adjudication item; moved
+> to `spec/msc/` the same week). `spec/CORE.md` is UDON's **sole**
+> authoritative definition — not this file, and not the descent grammar or
+> generated parser either. This EBNF is a *reading aid* that is regenerated
+> on demand and lags CORE between regenerations (it currently reflects
+> **0.8.0-alpha.1**; CORE has since moved through 0.8.0 to 0.9.0-alpha.1 —
+> the whole attribute model below is stale). **Never cite it as
+> corroborating or settling what CORE says** — that misuse is why it was
+> demoted.
 
-This is an EBNF-style formal grammar for UDON, derived from the current
-`CORE.md` (v0.8.0-alpha.1). It is a *reading aid*, not a parseable grammar:
-UDON is indentation-sensitive and operates in position-dependent modes (head
+This is an EBNF-style formal grammar for UDON, derived from `CORE.md` as of
+the date above. It is a *reading aid*, not a parseable grammar: UDON is
+indentation-sensitive and operates in position-dependent modes (head
 position, sameline scan, block, embedded), and a context-free EBNF cannot
 capture those modes. Every place the grammar cannot pin down the real rule is
 flagged with a `(* NOTE: ... *)` comment. Those notes are the load-bearing
 part — they mark exactly where the grammar is an approximation.
 
-**This grammar is illustration only — it cannot produce a parser.** UDON's real,
-authoritative grammar is the indentation-sensitive, mode-based state machine in
-`core/generator/*.desc`, from which the parser is generated. Two rules below were
+**This grammar is illustration only — it cannot produce a parser.** The
+reference implementation is generated from the indentation-sensitive,
+mode-based state machine in `core/generator/*.descent.udon` (itself
+subordinate to CORE). Two rules below were
 *precisely* defined in that descent grammar and only approximated here; both have
 now been back-filled from it (§5 numbers, §5.1 names/traits), with the
 remaining known parser-vs-spec gaps flagged inline:
