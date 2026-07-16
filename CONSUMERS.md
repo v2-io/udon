@@ -116,6 +116,15 @@ Ping/migrate consumers when any of these land:
    reflow sigil-promotion would have caught the live `!:lang:` promotion
    in PROCESS.udon — that hazard class now has a confirmed field instance.
 
+## Candidate future consumers (unscanned — an adoption watchlist)
+
+From the January backlog (preserved when `notes/NEXT.md` drained,
+2026-07-16): document classes Joseph has considered moving to UDON —
+ADRs, Axiomata, Signa, Archema, Operata, Lexicon *(now live — see
+inventory)*, Memorata, descent grammars *(already are UDON)*, A2A agent
+communications, mentoring-feedback docs, Loci. When one goes live, it
+gets an inventory row and its exposure counted.
+
 ## Discipline
 
 - Re-scan on every spec release and parser regeneration
