@@ -1106,12 +1106,13 @@ impl<'a> Parser<'a> {
         on_event(Event::ElementStart { span: start_span.clone() });
         let mut content_base: i32 = -1;
         let mut content_seen: i32 = 0;
-        let mut attr_open: i32 = 0;
         let mut attr_col: i32 = -1;
         let mut sstate: i32 = 0;
         let mut col: i32 = 0;
+        let mut astate: i32 = 0;
+        let mut amode: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, DedentOut, AttrPending, AttrBody, AttrDone, AttrResolved, AttrNode, AttrBadAttr, AttrFence, AttrFence2, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, BattrNode2, AfterContentOpen, AfterNewlineOpen, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -1766,20 +1767,8 @@ impl<'a> Parser<'a> {
                 State::CheckChild => {
                     match self.peek() {
                         _ if col <= elem_col => {
-                    state = State::DedentOut;
-                    continue;
-                        }
-                        _ if attr_open == 1 => {
-                    state = State::AttrPending;
-                    continue;
-                        }
-                        _ if attr_open == 3 => {
-                    state = State::AttrBody;
-                    continue;
-                        }
-                        _ if attr_open == 4 => {
-                    state = State::AttrDone;
-                    continue;
+                    on_event(Event::ElementEnd { span: self.span() });
+                    return;
                         }
                         _ if content_base >= 0 && col >= content_base => {
                     state = State::AtContentBase;
@@ -1787,254 +1776,6 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     state = State::ChildDispatch;
-                    continue;
-                        }
-                    }
-                }
-                State::DedentOut => {
-                    match self.peek() {
-                        _ if attr_open == 1 => {
-                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
-                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    attr_open = 0;
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                        }
-                        _ => {
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                        }
-                    }
-                }
-                State::AttrPending => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        _ if col <= attr_col => {
-                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
-                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    attr_open = 0;
-                    state = State::AttrResolved;
-                    continue;
-                        }
-                        Some(b'|') => {
-                    attr_open = 4;
-                    self.advance();
-                    state = State::AttrNode;
-                    continue;
-                        }
-                        Some(b':') => {
-                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
-                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    attr_open = 0;
-                    self.advance();
-                    state = State::AttrBadAttr;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    self.parse_line_comment(on_event);
-                    state = State::AfterContentOpen;
-                    continue;
-                        }
-                        Some(b'`') => {
-                    attr_open = 4;
-                    self.advance();
-                    state = State::AttrFence;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    attr_open = 4;
-                    self.advance();
-                    state = State::ChildCheckBang;
-                    continue;
-                        }
-                        Some(b'\\') => {
-                    attr_open = 3;
-                    self.advance();
-                    self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        _ => {
-                    attr_open = 3;
-                    self.parse_prose(col, elem_col, b"", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrBody => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        _ if col <= attr_col => {
-                    attr_open = 0;
-                    state = State::AttrResolved;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    self.parse_line_comment(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        Some(b':') => {
-                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
-                    attr_open = 0;
-                    self.advance();
-                    state = State::AttrBadAttr;
-                    continue;
-                        }
-                        Some(b'|') => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    attr_open = 4;
-                    self.advance();
-                    state = State::AttrNode;
-                    continue;
-                        }
-                        Some(b'\\') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    self.advance();
-                    self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        _ => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    self.parse_prose(col, elem_col, b"", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrDone => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        _ if col <= attr_col => {
-                    attr_open = 0;
-                    state = State::AttrResolved;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    self.parse_line_comment(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        Some(b':') => {
-                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
-                    attr_open = 0;
-                    self.advance();
-                    state = State::AttrBadAttr;
-                    continue;
-                        }
-                        Some(b'|') => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    self.advance();
-                    state = State::AttrNode;
-                    continue;
-                        }
-                        Some(b'\\') => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    self.advance();
-                    self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        _ => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
-                    self.parse_prose(col, elem_col, b"", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrResolved => {
-                    match self.peek() {
-                        _ if content_base >= 0 && col >= content_base => {
-                    state = State::AtContentBase;
-                    continue;
-                        }
-                        _ => {
-                    state = State::ChildDispatch;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrNode => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.advance();
-                    self.parse_embedded(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                    self.parse_element(col, elem_col, on_event);
-                    state = State::AfterChild;
-                    continue;
-                        }
-                        _ => {
-                    self.parse_prose(col, elem_col, b"|", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrBadAttr => {
-                    self.parse_prose(col, elem_col, b":", on_event);
-                    state = State::AfterContent;
-                    continue;
-                }
-                State::AttrFence => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'`') => {
-                    self.advance();
-                    state = State::AttrFence2;
-                    continue;
-                        }
-                        _ => {
-                    self.parse_prose(col, elem_col, b"`", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::AttrFence2 => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'`') => {
-                    self.advance();
-                    self.parse_freeform(on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        _ => {
-                    self.parse_prose_backticks(col, elem_col, on_event);
-                    state = State::AfterContent;
                     continue;
                         }
                     }
@@ -2192,7 +1933,7 @@ impl<'a> Parser<'a> {
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
                     attr_col = col;
-                    attr_open = self.parse_block_attr(on_event);
+                    astate = self.parse_block_attr(on_event);
                     state = State::AttrAfter;
                     continue;
                         }
@@ -2205,53 +1946,55 @@ impl<'a> Parser<'a> {
                 }
                 State::AttrAfter => {
                     match self.peek() {
-                        _ if attr_open == 2 => {
-                    attr_open = 4;
+                        _ if astate == 1 => {
+                    amode = 1;
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                        _ if astate == 3 => {
+                    amode = 3;
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                        _ if astate == 2 => {
+                    amode = 4;
+                    self.advance();
                     state = State::BattrNode;
                     continue;
                         }
-                        _ if attr_open == 1 => {
-                    state = State::AfterContentOpen;
-                    continue;
-                        }
-                        _ if attr_open == 3 => {
-                    state = State::AfterContent;
-                    continue;
-                        }
-                        _ if attr_open == 5 => {
+                        _ if astate == 5 => {
                     content_seen = 1;
-                    attr_open = 0;
                     state = State::AfterContent;
                     continue;
                         }
-                        _ if attr_open == 6 => {
-                    attr_open = 4;
+                        _ if astate == 6 => {
+                    amode = 4;
                     self.parse_block_directive(attr_col, on_event);
-                    state = State::PostBlockChild;
+                    state = State::AttrLineDone;
                     continue;
                         }
-                        _ if attr_open == 11 => {
+                        _ if astate == 11 => {
                     content_seen = 1;
-                    attr_open = 4;
-                    state = State::BattrNode2;
+                    amode = 4;
+                    state = State::BattrNode;
                     continue;
                         }
-                        _ if attr_open == 12 => {
+                        _ if astate == 12 => {
                     content_seen = 1;
-                    attr_open = 4;
+                    amode = 4;
                     state = State::BattrBang;
                     continue;
                         }
-                        _ if attr_open == 13 => {
+                        _ if astate == 13 => {
                     content_seen = 1;
-                    attr_open = 4;
+                    amode = 4;
                     self.parse_block_ref(on_event);
-                    state = State::AfterContent;
+                    state = State::AttrLineDone;
                     continue;
                         }
                         _ => {
-                    attr_open = 4;
-                    state = State::AfterContent;
+                    amode = 4;
+                    state = State::AttrLineDone;
                     continue;
                         }
                     }
@@ -2265,12 +2008,12 @@ impl<'a> Parser<'a> {
                         Some(b'{') => {
                     self.advance();
                     self.parse_sameline_directive(on_event);
-                    state = State::AfterContent;
+                    state = State::AttrLineDone;
                     continue;
                         }
                         _ => {
                     self.parse_block_directive(attr_col, on_event);
-                    state = State::PostBlockChild;
+                    state = State::AttrLineDone;
                     continue;
                         }
                     }
@@ -2281,107 +2024,28 @@ impl<'a> Parser<'a> {
                         return;
                     }
                     match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::BattrNode2;
-                    continue;
-                        }
-                        _ => {
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::BattrNode2 => {
-                    if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
                         Some(b'{') => {
                     self.advance();
                     self.parse_embedded(on_event);
-                    state = State::AfterContent;
+                    state = State::AttrLineDone;
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                     self.parse_element(self.col() - 2, elem_col, on_event);
-                    state = State::PostBlockChild;
+                    state = State::AttrLineDone;
                     continue;
                         }
                         _ => {
                     self.parse_prose(self.col() - 2, elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AttrLineDone;
                     continue;
                         }
                     }
                 }
-                State::AfterContentOpen => {
-                    if self.eof() {
-                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
-                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    attr_open = 0;
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                    }
-                    match self.peek() {
-                        Some(b'\n') => {
-                    self.advance();
-                    state = State::AfterNewlineOpen;
+                State::AttrLineDone => {
+                    self.parse_attr_deferred_body(attr_col, elem_col, amode, on_event);
+                    state = State::PostBlockChild;
                     continue;
-                        }
-                        Some(b' ') => {
-                    self.advance();
-                    col = 1;
-                    state = State::ChildrenWs;
-                    continue;
-                        }
-                        Some(b'\t') => {
-                    on_event(Event::Error { code: ParseErrorCode::NoTabs, span: self.span() });
-                    self.scan_to1(b'\n');
-                    self.advance();
-                    state = State::AfterNewlineOpen;
-                    continue;
-                        }
-                        _ => {
-                    col = self.col() - 1;
-                    state = State::CheckChild;
-                    continue;
-                        }
-                    }
-                }
-                State::AfterNewlineOpen => {
-                    if self.eof() {
-                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
-                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    attr_open = 0;
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                    }
-                    match self.peek() {
-                        Some(b'\n') => {
-                    self.advance();
-                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    continue;
-                        }
-                        Some(b' ') => {
-                    self.advance();
-                    col = 1;
-                    state = State::ChildrenWs;
-                    continue;
-                        }
-                        Some(b'\t') => {
-                    on_event(Event::Error { code: ParseErrorCode::NoTabs, span: self.span() });
-                    self.scan_to1(b'\n');
-                    self.advance();
-                    continue;
-                        }
-                        _ => {
-                    col = self.col() - 1;
-                    state = State::CheckChild;
-                    continue;
-                        }
-                    }
                 }
                 State::DoProse => {
                     content_seen = 1;
@@ -2966,6 +2630,358 @@ impl<'a> Parser<'a> {
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.parse_attr_trailing_blob(b'\0', on_event);
                     return result;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Parse attr_deferred_body
+    fn parse_attr_deferred_body<F>(&mut self, attr_col: i32, parent_col: i32, mode0: i32, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        let mut mode: i32 = mode0;
+        let mut col: i32 = 0;
+        #[derive(Clone, Copy)]
+        enum State { LineEnd, Line, Ws, Check, Open, Body, Done, Node, Bang, Fence, Fence2, BadAttr, Finish,  }
+        let mut state = State::LineEnd;
+        loop {
+            match state {
+                State::LineEnd => {
+                    if self.eof() {
+                    state = State::Finish;
+                    continue;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.advance();
+                    state = State::Line;
+                    continue;
+                        }
+                        Some(b' ') => {
+                    self.advance();
+                    continue;
+                        }
+                        Some(b'\t') => {
+                    on_event(Event::Error { code: ParseErrorCode::NoTabs, span: self.span() });
+                    self.scan_to1(b'\n');
+                    self.advance();
+                    state = State::Line;
+                    continue;
+                        }
+                        _ => {
+                    col = self.col() - 1;
+                    state = State::Check;
+                    continue;
+                        }
+                    }
+                }
+                State::Line => {
+                    if self.eof() {
+                    state = State::Finish;
+                    continue;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.advance();
+                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    continue;
+                        }
+                        Some(b' ') => {
+                    self.advance();
+                    col = 1;
+                    state = State::Ws;
+                    continue;
+                        }
+                        Some(b'\t') => {
+                    on_event(Event::Error { code: ParseErrorCode::NoTabs, span: self.span() });
+                    self.scan_to1(b'\n');
+                    self.advance();
+                    continue;
+                        }
+                        _ => {
+                    col = self.col() - 1;
+                    state = State::Check;
+                    continue;
+                        }
+                    }
+                }
+                State::Ws => {
+                    if self.eof() {
+                    state = State::Finish;
+                    continue;
+                    }
+                    match self.peek() {
+                        Some(b' ') => {
+                    self.advance();
+                    col += 1;
+                    continue;
+                        }
+                        Some(b'\n') => {
+                    self.advance();
+                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    state = State::Line;
+                    continue;
+                        }
+                        _ => {
+                    state = State::Check;
+                    continue;
+                        }
+                    }
+                }
+                State::Check => {
+                    match self.peek() {
+                        _ if col <= attr_col => {
+                    state = State::Finish;
+                    continue;
+                        }
+                        _ if mode == 1 => {
+                    state = State::Open;
+                    continue;
+                        }
+                        _ if mode == 3 => {
+                    state = State::Body;
+                    continue;
+                        }
+                        _ => {
+                    state = State::Done;
+                    continue;
+                        }
+                    }
+                }
+                State::Open => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'|') => {
+                    mode = 4;
+                    self.advance();
+                    state = State::Node;
+                    continue;
+                        }
+                        Some(b':') => {
+                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    self.advance();
+                    state = State::BadAttr;
+                    continue;
+                        }
+                        Some(b';') => {
+                    self.advance();
+                    self.parse_line_comment(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b'`') => {
+                    mode = 4;
+                    self.advance();
+                    state = State::Fence;
+                    continue;
+                        }
+                        Some(b'!') => {
+                    mode = 4;
+                    self.advance();
+                    state = State::Bang;
+                    continue;
+                        }
+                        Some(b'\\') => {
+                    mode = 3;
+                    self.advance();
+                    self.parse_verbatim_text(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    mode = 3;
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Body => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b';') => {
+                    self.advance();
+                    self.parse_line_comment(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b':') => {
+                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
+                    self.advance();
+                    state = State::BadAttr;
+                    continue;
+                        }
+                        Some(b'|') => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    mode = 4;
+                    self.advance();
+                    state = State::Node;
+                    continue;
+                        }
+                        Some(b'\\') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.advance();
+                    self.parse_verbatim_text(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Done => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b';') => {
+                    self.advance();
+                    self.parse_line_comment(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b':') => {
+                    on_event(Event::Error { code: ParseErrorCode::AttributeUnderAttribute, span: self.span() });
+                    self.advance();
+                    state = State::BadAttr;
+                    continue;
+                        }
+                        Some(b'|') => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.advance();
+                    state = State::Node;
+                    continue;
+                        }
+                        Some(b'\\') => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.advance();
+                    self.parse_verbatim_text(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Node => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'{') => {
+                    self.advance();
+                    self.parse_embedded(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
+                    self.parse_element(col, parent_col, on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_prose(col, parent_col, b"|", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Bang => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b':') => {
+                    self.parse_block_directive(col, on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b) if Self::is_xlbl_start(b) => {
+                    self.parse_block_directive(col, on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        Some(b'{') => {
+                    self.advance();
+                    self.parse_sameline_directive(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_prose(col, parent_col, b"!", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Fence => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'`') => {
+                    self.advance();
+                    state = State::Fence2;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_prose(col, parent_col, b"`", on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::Fence2 => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'`') => {
+                    self.advance();
+                    self.parse_freeform(on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_prose_backticks(col, parent_col, on_event);
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
+                State::BadAttr => {
+                    self.parse_prose(col, parent_col, b":", on_event);
+                    return;
+                }
+                State::Finish => {
+                    match self.peek() {
+                        _ if mode == 1 => {
+                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        _ => {
+                    return;
                         }
                     }
                 }
