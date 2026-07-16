@@ -84,9 +84,9 @@
     |c['\n']                  | ->                               |>> :children
     |c[' \t']                 | ->                               |>>
     |c['`']                   | ->                               |>> :sameline_ff1
-    |c['?']                   | ->                               |>> :spaced_suffix_q
-    |c['*']                   | ->                               |>> :spaced_suffix_s
-    |c['+']                   | ->                               |>> :spaced_suffix_p
+    |c['?']                   | -> | sfx = /spaced_suffix('$?', '?') |>> :spaced_suffix_route
+    |c['*']                   | -> | sfx = /spaced_suffix('$*', '*') |>> :spaced_suffix_route
+    |c['+']                   | -> | sfx = /spaced_suffix('$+', '+') |>> :spaced_suffix_route
     |c[':']                   | ->                               |>> :check_sameline_attr
     |c['|']                   | ->                               |>> :check_sameline_pipe
     |c[';']                   | ->                               |>> :check_sameline_semi
@@ -106,21 +106,13 @@
     |default                  | /sameline_text(:elem_col, '``')  |>> :after_content
 
   ; Space-separated element-level suffix (CORE "Suffix positions":
-  ; `|name[key].trait ?`): the suffix char must stand alone — followed by
-  ; whitespace or end-of-line. Otherwise it is prose (restored via PREPEND).
-  ; Only ? * + take this path; a spaced '!' keeps its dynamics meaning.
-  |state[:spaced_suffix_q]
-    |eof                      | Attr($?) | BoolTrue              |return
-    |c[' \t\n']               | Attr($?) | BoolTrue              |>> :post_identity
-    |default                  | PREPEND('?') | /sameline_text(:elem_col, <>) |>> :after_content
-  |state[:spaced_suffix_s]
-    |eof                      | Attr($*) | BoolTrue              |return
-    |c[' \t\n']               | Attr($*) | BoolTrue              |>> :post_identity
-    |default                  | PREPEND('*') | /sameline_text(:elem_col, <>) |>> :after_content
-  |state[:spaced_suffix_p]
-    |eof                      | Attr($+) | BoolTrue              |return
-    |c[' \t\n']               | Attr($+) | BoolTrue              |>> :post_identity
-    |default                  | PREPEND('+') | /sameline_text(:elem_col, <>) |>> :after_content
+  ; `|name[key].trait ?`): one parameterized resolver for ? * + (descent
+  ; TypeName(:param), 2026-07-16). FIN = suffix stood alone (attr emitted);
+  ; otherwise the char was restored via PREPEND and the line is prose.
+  ; A spaced '!' never takes this path — it keeps its dynamics meaning.
+  |state[:spaced_suffix_route]
+    |if[sfx == FIN]                                              |>> :post_identity
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
 
   ; Sameline attr guard: a ':' not followed by a name start / quoted name /
   ; reference bracket is not an attr — fall back to intact text with the
@@ -421,6 +413,17 @@
 |function[quoted_class:StringValue]  | MARK
   |state[:main]
     | /skip_single_quoted | TERM | ->                            |return
+
+
+; Spaced-suffix resolver (see :pre_content): the suffix char is consumed;
+; alone (whitespace/EOL/EOF follows) it emits its attr flag and reports
+; FIN; otherwise the char is PREPEND-restored for the caller's prose path
+; (reported as 1). :sfx is the attr key ('$?', '$*', '$+'), :ch the char.
+|function[spaced_suffix:INT]  :sfx :ch  | result = FIN
+  |state[:main]
+    |eof                      | Attr(:sfx) | BoolTrue            |return result
+    |c[' \t\n']               | Attr(:sfx) | BoolTrue            |return result
+    |default                  | PREPEND(:ch) | result = 1        |return result
 
 
 |function[suffix]

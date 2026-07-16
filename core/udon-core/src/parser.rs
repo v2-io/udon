@@ -1182,12 +1182,13 @@ impl<'a> Parser<'a> {
         let mut content_base: i32 = -1;
         let mut content_seen: i32 = 0;
         let mut attr_col: i32 = -1;
+        let mut sfx: i32 = 0;
         let mut sstate: i32 = 0;
         let mut col: i32 = 0;
         let mut astate: i32 = 0;
         let mut amode: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, BattrNodeTail, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixRoute, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, BattrNodeTail, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -1249,17 +1250,20 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'?') => {
                     self.advance();
-                    state = State::SpacedSuffixQ;
+                    sfx = self.parse_spaced_suffix(b"$?", b"?", on_event);
+                    state = State::SpacedSuffixRoute;
                     continue;
                         }
                         Some(b'*') => {
                     self.advance();
-                    state = State::SpacedSuffixS;
+                    sfx = self.parse_spaced_suffix(b"$*", b"*", on_event);
+                    state = State::SpacedSuffixRoute;
                     continue;
                         }
                         Some(b'+') => {
                     self.advance();
-                    state = State::SpacedSuffixP;
+                    sfx = self.parse_spaced_suffix(b"$+", b"+", on_event);
+                    state = State::SpacedSuffixRoute;
                     continue;
                         }
                         Some(b':') => {
@@ -1339,66 +1343,13 @@ impl<'a> Parser<'a> {
                         }
                     }
                 }
-                State::SpacedSuffixQ => {
-                    if self.eof() {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$?"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                    }
+                State::SpacedSuffixRoute => {
                     match self.peek() {
-                        Some(b' ' | b'\t' | b'\n') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$?"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                        _ if sfx == 0 => {
                     state = State::PostIdentity;
                     continue;
                         }
                         _ => {
-                    self.prepend_bytes(b"?");
-                    self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::SpacedSuffixS => {
-                    if self.eof() {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$*"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                    }
-                    match self.peek() {
-                        Some(b' ' | b'\t' | b'\n') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$*"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    state = State::PostIdentity;
-                    continue;
-                        }
-                        _ => {
-                    self.prepend_bytes(b"*");
-                    self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
-                    continue;
-                        }
-                    }
-                }
-                State::SpacedSuffixP => {
-                    if self.eof() {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$+"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    on_event(Event::ElementEnd { span: self.span() });
-                    return;
-                    }
-                    match self.peek() {
-                        Some(b' ' | b'\t' | b'\n') => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$+"), span: self.span() });
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
-                    state = State::PostIdentity;
-                    continue;
-                        }
-                        _ => {
-                    self.prepend_bytes(b"+");
                     self.parse_sameline_text(elem_col, b"", on_event);
                     state = State::AfterContent;
                     continue;
@@ -2337,6 +2288,33 @@ impl<'a> Parser<'a> {
                     self.advance();
                     on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
                     return;
+        }
+    }
+
+    /// Parse spaced_suffix -> INT
+    fn parse_spaced_suffix<F>(&mut self, sfx: &'static [u8], ch: &'static [u8], on_event: &mut F) -> i32
+    where
+        F: FnMut(Event<'a>),
+    {
+        let mut result: i32 = 0;
+        loop {
+            if self.eof() {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(sfx), span: self.span() });
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return result;
+            }
+            match self.peek() {
+                Some(b' ' | b'\t' | b'\n') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(sfx), span: self.span() });
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return result;
+                }
+                _ => {
+                    self.prepend_bytes(ch);
+                    result = 1;
+                    return result;
+                }
+            }
         }
     }
 
