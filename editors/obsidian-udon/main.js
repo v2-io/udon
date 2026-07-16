@@ -717,6 +717,13 @@ class UdonView extends TextFileView {
   }
 }
 
+/* SPIKE (2026-07-16): parser-driven ```udon fence highlighting in markdown
+ * notes — wasm build of the real udon-core parser (core/udon-wasm), no
+ * regex grammar. See fence-highlight.js for status + design notes. */
+const {
+  UdonWasmHighlighter, udonReadingViewProcessor, udonFenceEditorExtension,
+} = require('./fence-highlight.js');
+
 module.exports = class UdonPlugin extends Plugin {
   async onload() {
     this.registerView(VIEW_TYPE_UDON, (leaf) => new UdonView(leaf));
@@ -726,6 +733,16 @@ module.exports = class UdonPlugin extends Plugin {
       // Another plugin may have claimed .udon; don't break load.
       console.error('UDON: could not register .udon extension', e);
     }
+
+    // SPIKE: ```udon fences in markdown notes (both surfaces register
+    // immediately; the highlighter paints once the wasm engine is up).
+    const highlighter = new UdonWasmHighlighter();
+    highlighter.loading = this.app.vault.adapter
+      .readBinary(`${this.manifest.dir}/udon.wasm`)
+      .then((buf) => highlighter.init(buf))
+      .catch((e) => console.error('UDON: wasm highlighter failed to load', e));
+    this.registerMarkdownPostProcessor(udonReadingViewProcessor(highlighter), -50);
+    this.registerEditorExtension(udonFenceEditorExtension(highlighter));
   }
 
   onunload() {

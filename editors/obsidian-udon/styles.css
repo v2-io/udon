@@ -85,3 +85,19 @@
 
 /* \ escapes (\| \: \; \! \\) */
 .udon-editor .udon-escape { color: var(--code-important, var(--color-orange)); }
+
+/* ------------------------------------------------------------------------
+ * SPIKE (2026-07-16): parser-driven ```udon fence highlighting.
+ * Classes emitted by fence-highlight.js (indices in core/udon-wasm).
+ * Uses Obsidian theme variables so light/dark both work. */
+.udon-hl-dim       { color: var(--text-faint); }
+.udon-hl-name      { color: var(--color-cyan, #56b6c2); font-weight: 600; }
+.udon-hl-attr      { color: var(--color-yellow, #d19a66); }
+.udon-hl-string    { color: var(--color-green, #98c379); }
+.udon-hl-number    { color: var(--color-purple, #c678dd); }
+.udon-hl-keyword   { color: var(--color-orange, #e5943a); }
+.udon-hl-text      { color: var(--text-normal); }
+.udon-hl-comment   { color: var(--text-faint); font-style: italic; }
+.udon-hl-dynamic   { color: var(--color-blue, #61afef); }
+.udon-hl-reference { color: var(--color-purple, #b48ead); text-decoration: underline; }
+.udon-hl-warning   { background: rgba(255, 0, 0, 0.18); }

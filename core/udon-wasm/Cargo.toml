@@ -1,0 +1,15 @@
+# SPIKE (2026-07-16): wasm32 build of the event-stream highlighter for the
+# Obsidian plugin (editors/obsidian-udon). See editors/TODO-HUMAN-UX.md.
+[package]
+name = "udon-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "UDON highlighter compiled to WebAssembly (raw ABI, no bindgen)"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+udon-core = { path = "../udon-core" }
