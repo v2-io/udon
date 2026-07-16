@@ -40,56 +40,11 @@
   margin: 0 2px;
 }
 
-/* ------------------------------------------------------------------ */
-/* Token colors. Plumbing recedes; discriminators stand out.          */
-/* All colors come from Obsidian theme variables (light/dark safe).   */
-/* ------------------------------------------------------------------ */
-
-/* sigils & delimiters: | : [ ] . !{{ }} -- recede */
-.udon-editor .udon-sigil { color: var(--text-faint); }
-
-/* element name -- the structural discriminator */
-.udon-editor .udon-element { color: var(--code-tag, var(--color-red)); font-weight: 600; }
-
-/* [id] -- singular identity */
-.udon-editor .udon-id { color: var(--code-important, var(--color-orange)); }
-
-/* .class / traits */
-.udon-editor .udon-class { color: var(--code-property, var(--color-cyan)); font-style: italic; }
-
-/* suffix modifiers ? ! * + */
-.udon-editor .udon-suffix { color: var(--code-important, var(--color-orange)); font-weight: 600; }
-
-/* :attr keys */
-.udon-editor .udon-attr { color: var(--code-property, var(--color-cyan)); }
-
-/* comments -- ; line, ;{...} inline */
-.udon-editor .udon-comment { color: var(--code-comment, var(--text-faint)); font-style: italic; }
-
-/* quoted strings */
-.udon-editor .udon-string { color: var(--code-string, var(--color-green)); }
-
-/* numbers and true/false/null/nil */
-.udon-editor .udon-number { color: var(--code-value, var(--color-purple)); }
-.udon-editor .udon-constant { color: var(--code-keyword, var(--color-purple)); }
-
-/* !directives (if/for/include/...) */
-.udon-editor .udon-directive { color: var(--code-keyword, var(--color-pink)); font-weight: 600; }
-
-/* !:lang: raw labels and ``` fences */
-.udon-editor .udon-raw-label { color: var(--code-function, var(--color-yellow)); }
-.udon-editor .udon-fence { color: var(--text-faint); }
-
-/* !{{ interpolation }} body */
-.udon-editor .udon-interp { color: var(--code-function, var(--color-yellow)); }
-
-/* \ escapes (\| \: \; \! \\) */
-.udon-editor .udon-escape { color: var(--code-important, var(--color-orange)); }
-
 /* ------------------------------------------------------------------------
- * SPIKE (2026-07-16): parser-driven ```udon fence highlighting.
- * Classes emitted by the fence highlighter in main.js (indices in core/udon-wasm).
- * Uses Obsidian theme variables so light/dark both work. */
+ * Token colors -- classes emitted by the wasm highlighter (indices defined
+ * in core/udon-wasm/src/lib.rs; CLASS_NAMES in main.js). One set for all
+ * surfaces: .udon files, and ```udon fences in Reading view / Live Preview.
+ * Obsidian theme variables so light/dark both work. */
 .udon-hl-dim       { color: var(--text-faint); }
 .udon-hl-name      { color: var(--color-cyan, #56b6c2); font-weight: 600; }
 .udon-hl-attr      { color: var(--color-yellow, #d19a66); }
