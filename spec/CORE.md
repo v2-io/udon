@@ -516,7 +516,7 @@ A `\` in **value-expected** position -- a plain attribute still needs a value an
 |el :count \7 apples     ; count = "7 apples"  (text, not the integer 7)
 ```
 
-The first line's extent is the **rest of the physical line**, and that line gives up the sameline-comment affordance: a ` ;` there is literal blob text. (Deeper continuation lines under the still-open value join it as a deferred block.) This is the fourth positional use of `\` -- see Escape for the full positional set. On a *block* attr line, a `\` at a finished bare token's boundary behaves as at any boundary: the value closes and the rest of the line is the **element's** prose. *(0.9 draft ruling R3.)*
+The first line's extent is the **rest of the physical line**, and that line gives up the sameline-comment affordance: a ` ;` there is literal blob text. (Deeper continuation lines under the still-open value join it as a deferred block.) This is the fourth positional use of `\` -- see Escape for the full positional set. A `\` at a *finished* value's boundary forces the rest of the line to text like any boundary-`\`; who owns that text follows the ordinary ownership rules (ratified 2026-07-16): on an element line it is the element's prose, and on a **block attr line** -- no element on the line -- it is ingested as a further segment of that attribute's value array with the strong warning, like any trailing text there (see Multi-Segment Values). The `\` changes the text's *mode* (forced text, no comment affordance), never its owner.
 
 ### Node Values
 

@@ -50,8 +50,12 @@ recommendation — open until Joseph confirms each.
       remains unspecified in 0.9 (dialect-era revisit). In CORE "Contexts
       and Terminators" + plain-attr error wording. Fixture updates follow
       (`attributes.yaml::embedded_flag_attr_before_brace` and kin).
-- [ ] **Block-line `\` at the boundary** — *drafted (R3)*: value closes; the
-      rest of the line is the element's prose. CORE "Value-Position `\`".
+- [x] ~~R3 block-line `\` at the boundary~~ **RATIFIED 2026-07-16, opposite
+      of the draft**: ownership is unchanged by `\` — element line → element
+      prose; block attr line (no element on the line) → warn + stack as a
+      further segment of the attribute (the uniform two-values rule: **warn
+      and stack, never error, never drop**). The `\` only forces text mode
+      (no comment affordance). CORE "Value-Position `\`".
 - [ ] **Quoted keys never flag** — *drafted (R4)*: terminal-`?` flag
       semantics apply to **bare** keys only; a quoted key (`:'$?'`,
       `:'key?'`) is always a plain attribute. Keeps the suffix-sugar target
