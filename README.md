@@ -216,24 +216,24 @@ Current state (2026-07-15):
   froze and `udon-core` passed its full compliance-fixture group in the same
   cycle. Tag: `core-v0.8.0`; frozen group: `core/fixtures/v0.8/`. Canonical
   current version: `spec/CORE-VERSION`.
-- **CORE `0.9.0-alpha.1` underway — the attribute-model reconception**, the
-  one area 0.8.0 explicitly left unsettled. Plain attrs always take a value;
-  flags are `:key?`; values may be nodes / text blobs / segment arrays;
-  uniform scan replaces block run-to-EOL. Carriers:
-  `design/attribute-model-proposal-3-substrate.md` (decided floor) +
-  `design/attribute-model-proposal-3.md`; nail-downs in
-  `spec/TODO-SPEC-CORE-0.9-supplement.md`. Active fixture group:
-  `core/fixtures/v0.9/` (seeded from v0.8; edited as CORE text lands). Gate:
-  `cd core && cargo test -p udon-core --test canonical compliance_gate` —
-  RED during the burn-down is the honest signal.
+- **CORE `0.9.0-alpha.1` — the attribute-model reconception — is written,
+  ratified, and IMPLEMENTED** (2026-07-16): plain attrs always take a value;
+  flags are `:key?`; values may be nodes / text blobs / stacked segments;
+  uniform scan replaces block run-to-EOL; flat stacking wire (every `Attr`
+  carries one value; multiplicity = re-emitted `Attr`). The v0.9 fixture
+  group encodes the model and the parser passes it — gate GREEN
+  (`cd core && cargo test -p udon-core --test canonical compliance_gate`).
+  Rulings ledger: `spec/TODO-SPEC-CORE-0.9-supplement.md`. Remaining before
+  a `core-v0.9.0` tag: fixture densification (EOF/Unclosed* cases, legacy
+  mining, edge combinations) and the residual editorial opens.
 - **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
   (frozen, mining source); pre-0.8 grammar →
   `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`.
 - First consumers: agentic-systems (ASF process maps) and vivarium.
 
-Next: write the 0.9 attribute-model spec text (TODO-SPEC-CORE + the 0.9
-supplement), update the v0.9 fixtures from it, then burn the grammar down to
-green and tag `core-v0.9.0`.
+Next: densify the v0.9 fixture group (EOF/Unclosed* behaviors from CORE's
+"End of input" table, legacy-pre-0.8 mining, edge combinations), sweep the
+supplement's residual opens, then tag `core-v0.9.0`.
 
 ## How the work is organized
 
