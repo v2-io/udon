@@ -17,6 +17,21 @@ bumps may break).
 
 ## [Unreleased]
 
+*(0.9.0-alpha.1 opens after the 0.8.0 release below.)*
+
+## [0.8.0] — 2026-07-15
+
+**Final.** The reference parser (`udon-core`) passes the frozen v0.8
+compliance-fixture group (`core/fixtures/v0.8/`, ~233 cases) — the ladder's
+finalization gate. The `-beta`/`-rc` rungs were skipped deliberately: the
+contract froze and a parser passed in the same cycle, so the intermediate
+maturity labels had no interval to describe. Known-and-declared limits ship
+as part of the contract: "Complex Attribute Values" (structured attribute
+event shape) is explicitly unsettled in this version — its reconception is
+the headline of 0.9. Two authoring residuals (mining `legacy-pre-0.8/` for
+regression cases; densifying edge coverage) roll forward into the v0.9
+group's work rather than blocking this tag. Tag: `core-v0.8.0`.
+
 ### Added
 - **`<…>` interim behavior** (2026-07-15): until the dialect layer exists, a
   conformant parser recognizes the envelope (`<>`-balanced, value-terminating)
