@@ -614,15 +614,33 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
 
 ### Event Encoding (0.9 Wire)
 
-*(0.9 draft ruling R5 -- names are working names until the fixture group lands.)* An attribute whose value is a **single scalar, reference, or interpolation** keeps the 0.8 wire: `Attr` (the key) followed by one value event. An attribute with a **node value, text-blob segments, or a multi-segment array** brackets its interior instead:
+The wire stays **flat** (ratified in direction 2026-07-16): every `Attr` event carries exactly **one** value -- a scalar event, or one bracketed construct (Element, Embedded, Raw, Freeform, Array) -- and **all multiplicity is expressed by re-emitting the `Attr`**. Author-written stacking, warn+stack ingestion, multi-line text segments, and inline forms inside a text blob are one wire mechanism, because they are one semantic:
 
 ```text
-AttrStart ("headers")
-  ElementStart / Name "header" / ... / ElementEnd
-AttrEnd
+|el
+  :the-attribute <val> more text on the same line ; oopsie
+  :the-attribute \ some more text
+    even more text and then |{a hello}
+
+ElementStart / Name "el"
+Attr "the-attribute" / BareValue "<val>"       (+ NoDialectsLoaded warning)
+Warning (AttributeValueExtendedByTrailingText)
+Attr "the-attribute" / Text "more text on the same line"
+CommentStart / Text " oopsie" / CommentEnd
+Attr "the-attribute" / Text "some more text"
+Attr "the-attribute" / Text "even more text and then "
+Attr "the-attribute" / EmbeddedStart / Name "a" / Text "hello" / EmbeddedEnd
+...
 ```
 
-`AttrStart`/`AttrEnd` wrap ordinary events -- element, Text, Raw, Freeform, Interpolation -- so consumers reuse the machinery they already have. Flags settle as `BoolTrue` / `BoolFalse` / `Nil` exactly like plain values.
+Consequences:
+
+- **No new event types.** There is no `AttrStart`/`AttrEnd`; consumers aggregate repeated keys exactly as they already do for stacking (host views: `attr` = last, `attr_all` = list).
+- **Node value vs flag+child stays unambiguous**: `Attr "a"` followed by `ElementStart` means the element *is* the value; `Attr "a?"` / `BoolTrue` / `ElementStart` means the flag settled and the element is a child.
+- **The only arrays on the wire are literal `[...]`** -- "segment arrays" have no wire form of their own; segmentation is repetition. Provenance (one declaration vs several) is recoverable from spans and interleaved warnings when a host cares.
+- **Segment granularity carries the same non-guarantee as Text granularity** (see Parser behavior notes): fixtures express segments maximally collapsed; the harness folds.
+
+*(Working shape: the exact segmentation rhythm is expected to be refined by iterating the grammar and fixtures together -- the wire is deliberately flexible here; see the fixture-authoring posture in `core/fixtures/README.md`.)*
 
 ### Phase Change and Late `:`
 

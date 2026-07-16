@@ -63,12 +63,16 @@ recommendation — open until Joseph confirms each.
       flag-compliant as written, and longhand `:'$?'` defaults true like the
       suffix means. `$!`/`$*`/`$+` stay plain (sugar supplies explicit true).
       CORE "Attribute Keys and Flags" + Element Suffixes footnotes.
-- [ ] **Event vocabulary for multi-segment / node values** — *drafted (R5)*:
-      single scalar/reference/interpolation keeps `Attr` + one value event
-      (0.8 wire, low churn); node / text-blob / multi-segment values bracket
-      with `AttrStart` … `AttrEnd` around ordinary events. Names working
-      until the fixture group lands. `tree.rs` + harness follow. *(discuss
-      w/ Joseph)*
+- [x] ~~R5 event vocabulary~~ **RATIFIED (in direction) 2026-07-16, better
+      than both drafted options — flat stacking wire (Joseph's ETF-style
+      unification)**: every `Attr` carries exactly one value; ALL
+      multiplicity = re-emitting the `Attr` (author stacking, warn+stack,
+      multi-line segments, inline forms in blobs — one mechanism). No
+      `AttrStart`/`AttrEnd`; no wire-level "segment array" (literal `[…]`
+      only); node-vs-flag disambiguation by what follows the Attr.
+      Segmentation rhythm deliberately flexible — refine by iterating
+      grammar + fixtures together rather than pre-authoring exact rhythms.
+      CORE "Event Encoding (0.9 Wire)".
 - [ ] **Warning-code names (P3-7)** — *drafted as working names* in the CORE
       warning-codes table: `AttributeValueExtendedByTrailingText`,
       `AttributeSecondValue`, `AttributeAfterChildren`; errors
