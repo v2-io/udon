@@ -12,6 +12,7 @@ tbd.)* Predicated on the compliance fixtures having pinned behavior first.
       yardstick until it is compliant).
 - [ ] **Empirical usability harness (rebuild)** — `test/usability/` results are
       stale (old models/spec); redo with current models, including local ollama.
-- [ ] **Agentic tooling** — `design/udon-agentic.md` plus the Dec-2025 `docs/`
-      brainstorms (agent-context protocol, grammar-constrained generation,
-      agent tools); extract tasks here.
+- [ ] **Agentic tooling** — `design/udon-agentic.md` plus the Dec-2025
+      brainstorms now in `design/` (AGENT-CONTEXT-PROTOCOL.md,
+      GRAMMAR-CONSTRAINED-GENERATION.md, UDON-AGENT-TOOLS.md,
+      UDON-AS-ACP-FORMAT.md); extract tasks here.

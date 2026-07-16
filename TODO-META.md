@@ -43,8 +43,8 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       subsumed.** Triage every open item in the old places — the `design/`
       notes, `REVIEW-JULY-2026.md` §4/§7-F, the `REBOOT-PLAN.md` backlog
       (§4 Phases 1–3 + spike track) — and route each to its lane.
-      (`core/PLAN.md` drained and deleted; `docs/` routed as an AGENT-UX
-      mining source.)
+      (`core/PLAN.md` drained and deleted; the Dec-2025 `docs/` brainstorms
+      moved into `design/` as AGENT-UX mining sources.)
       **DEPRECATE (do not re-track) anything subsumed by the fixture + grammar
       iteration passes**: a "make the parser do spec-behavior X" item *is* a v0.8
       compliance fixture, not a separate CORE-PARSING task. Only genuine residuals
