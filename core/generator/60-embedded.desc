@@ -49,7 +49,7 @@
     |c['|']                   | TERM | ->                        |>> :check_pipe
     |c[';']                   | TERM | ->                        |>> :check_semi
     |c['!']                   | TERM | ->                        |>> :check_bang
-    |c[<BS>]                  | ->                               |>> :check_bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:check_pipe]
@@ -68,22 +68,6 @@
     ; Inline directive - emit accumulated text first
     |c['{']                   | Text(USE_MARK) | -> | /sameline_directive | MARK |>> :main
     |default                  | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-
-  ; `\` escaping an inline opener inside |{...} (see text's :check_bs)
-  |state[:check_bs]
-    |c['|']                   | ->                               |>> :check_bs_pipe
-    |c['!']                   | ->                               |>> :check_bs_bang
-    |c[';']                   | ->                               |>> :check_bs_semi
-    |default                  |                                  |>> :main
-  |state[:check_bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
-    |default                  |                                  |>> :main
 
   ; Embedded elements span lines; indentation inside is ignored (CORE
   ; "Bracket Mode Rules") — content is delivered per line, continuation

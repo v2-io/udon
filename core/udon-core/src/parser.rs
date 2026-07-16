@@ -3579,7 +3579,7 @@ impl<'a> Parser<'a> {
     {
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, BsSemi, AfterInline,  }
+        enum State { Main, Pipe, Bang, Semi, AfterInline,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -3612,7 +3612,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::Bs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -3625,7 +3626,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Pipe => {
                     if self.eof() {
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3645,7 +3648,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Bang => {
                     if self.eof() {
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3665,7 +3670,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Semi => {
                     if self.eof() {
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3674,89 +3681,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                     self.parse_brace_comment(on_event);
                     self.mark();
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::Bs => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::BsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::BsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::BsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::BsPipe => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::BsBang => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::BsSemi => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
                     state = State::Main;
                     continue;
                         }
@@ -3939,7 +3863,7 @@ impl<'a> Parser<'a> {
         let mut result: i32 = 0;
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobBs, BlobBsPipe, BlobBsBang, BlobBsSemi, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued,  }
+        enum State { Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -5034,7 +4958,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::BlobBs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Blob;
                     continue;
                         }
                         _ => {
@@ -5061,7 +4986,10 @@ impl<'a> Parser<'a> {
                 }
                 State::BlobPipe => {
                     if self.eof() {
-                        return 0;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    result = 3;
+                    return result;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5081,7 +5009,10 @@ impl<'a> Parser<'a> {
                 }
                 State::BlobBang => {
                     if self.eof() {
-                        return 0;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    result = 3;
+                    return result;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5091,89 +5022,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                     self.parse_sameline_directive(on_event);
                     state = State::BlobAfterInline;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Blob;
-                    continue;
-                        }
-                    }
-                }
-                State::BlobBs => {
-                    if self.eof() {
-                        return 0;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::BlobBsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::BlobBsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::BlobBsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Blob;
-                    continue;
-                        }
-                    }
-                }
-                State::BlobBsPipe => {
-                    if self.eof() {
-                        return 0;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Blob;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Blob;
-                    continue;
-                        }
-                    }
-                }
-                State::BlobBsBang => {
-                    if self.eof() {
-                        return 0;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Blob;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Blob;
-                    continue;
-                        }
-                    }
-                }
-                State::BlobBsSemi => {
-                    if self.eof() {
-                        return 0;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Blob;
                     continue;
                         }
                         _ => {
@@ -5280,6 +5128,96 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parse bs_escape
+    fn parse_bs_escape<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        #[derive(Clone, Copy)]
+        enum State { Main, Pipe, Bang, Semi,  }
+        let mut state = State::Main;
+        loop {
+            match state {
+                State::Main => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'|') => {
+                    self.advance();
+                    state = State::Pipe;
+                    continue;
+                        }
+                        Some(b'!') => {
+                    self.advance();
+                    state = State::Bang;
+                    continue;
+                        }
+                        Some(b';') => {
+                    self.advance();
+                    state = State::Semi;
+                    continue;
+                        }
+                        _ => {
+                    return;
+                        }
+                    }
+                }
+                State::Pipe => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'{') => {
+                    self.set_term(-2);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b"|");
+                    return;
+                        }
+                        _ => {
+                    return;
+                        }
+                    }
+                }
+                State::Bang => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'{') => {
+                    self.set_term(-2);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b"!");
+                    return;
+                        }
+                        _ => {
+                    return;
+                        }
+                    }
+                }
+                State::Semi => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'{') => {
+                    self.set_term(-2);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b";");
+                    return;
+                        }
+                        _ => {
+                    return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /// Parse verbatim_text
     fn parse_verbatim_text<F>(&mut self, on_event: &mut F)
     where
@@ -5287,7 +5225,7 @@ impl<'a> Parser<'a> {
     {
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Vpipe, Vbang, Vsemi, Vbs, VbsPipe, VbsBang, VbsSemi, Vafter,  }
+        enum State { Main, Vpipe, Vbang, Vsemi, Vafter,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -5315,7 +5253,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::Vbs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -5328,8 +5267,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Vpipe => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5348,8 +5288,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Vbang => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5368,8 +5309,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Vsemi => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5378,93 +5320,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                     self.parse_brace_comment(on_event);
                     state = State::Vafter;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::Vbs => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::VbsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::VbsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::VbsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::VbsPipe => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::VbsBang => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::VbsSemi => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Main;
                     continue;
                         }
                         _ => {
@@ -5526,7 +5381,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline,  }
+        enum State { Entry, Main, CheckPipe, CheckSemi, CheckBang, AfterInline,  }
         let mut state = State::Entry;
         loop {
             match state {
@@ -5561,7 +5416,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::CheckBs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -5627,93 +5483,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                     self.parse_sameline_directive(on_event);
                     state = State::AfterInline;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBs => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::CheckBsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::CheckBsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::CheckBsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsPipe => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsBang => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsSemi => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Main;
                     continue;
                         }
                         _ => {
@@ -5747,7 +5516,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline,  }
+        enum State { Entry, Main, CheckPipe, CheckSemi, CheckBang, AfterInline,  }
         let mut state = State::Entry;
         loop {
             match state {
@@ -5781,7 +5550,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::CheckBs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -5855,93 +5625,6 @@ impl<'a> Parser<'a> {
                         }
                     }
                 }
-                State::CheckBs => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::CheckBsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::CheckBsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::CheckBsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsPipe => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsBang => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsSemi => {
-                    if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
                 State::AfterInline => {
                     if self.eof() {
                     return;
@@ -5967,7 +5650,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline,  }
+        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, AfterInline,  }
         let mut state = State::Entry;
         loop {
             match state {
@@ -6000,7 +5683,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::CheckBs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -6134,89 +5818,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                     self.parse_sameline_directive(on_event);
                     state = State::AfterInline;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBs => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::CheckBsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::CheckBsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::CheckBsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsPipe => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsBang => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsSemi => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Main;
                     continue;
                         }
                         _ => {
@@ -6603,7 +6204,7 @@ impl<'a> Parser<'a> {
     {
         self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, MlWs,  }
+        enum State { Main, CheckPipe, CheckSemi, CheckBang, MlWs,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -6642,7 +6243,8 @@ impl<'a> Parser<'a> {
                         }
                         Some(b'\\') => {
                     self.advance();
-                    state = State::CheckBs;
+                    self.parse_bs_escape(on_event);
+                    state = State::Main;
                     continue;
                         }
                         None => {
@@ -6721,97 +6323,6 @@ impl<'a> Parser<'a> {
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.mark();
                     self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBs => {
-                    if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'|') => {
-                    self.advance();
-                    state = State::CheckBsPipe;
-                    continue;
-                        }
-                        Some(b'!') => {
-                    self.advance();
-                    state = State::CheckBsBang;
-                    continue;
-                        }
-                        Some(b';') => {
-                    self.advance();
-                    state = State::CheckBsSemi;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsPipe => {
-                    if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"|");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsBang => {
-                    if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b"!");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
-                    state = State::Main;
-                    continue;
-                        }
-                    }
-                }
-                State::CheckBsSemi => {
-                    if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b'{') => {
-                    self.set_term(-2);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.mark();
-                    self.prepend_bytes(b";");
-                    state = State::Main;
-                    continue;
-                        }
-                        _ => {
                     state = State::Main;
                     continue;
                         }

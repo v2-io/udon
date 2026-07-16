@@ -434,32 +434,20 @@
     |c['|']                   | ->                               |>> :pipe
     |c['!']                   | ->                               |>> :bang
     |c[';']                   | ->                               |>> :semi
-    |c[<BS>]                  | ->                               |>> :bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:pipe]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include | in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /embedded |>> :after_inline
     |default                  |                                  |>> :main
   |state[:bang]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include ! in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /sameline_directive |>> :after_inline
     |default                  |                                  |>> :main
   |state[:semi]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include ; in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :main
-    |default                  |                                  |>> :main
-
-  |state[:bs]
-    |c['|']                   | ->                               |>> :bs_pipe
-    |c['!']                   | ->                               |>> :bs_bang
-    |c[';']                   | ->                               |>> :bs_semi
-    |default                  |                                  |>> :main
-  |state[:bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
     |default                  |                                  |>> :main
 
   |state[:after_inline]

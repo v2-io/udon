@@ -402,7 +402,7 @@
     |c[';']                   |                                  |>> :blob_semi
     |c['|']                   | ->                               |>> :blob_pipe
     |c['!']                   | ->                               |>> :blob_bang
-    |c[<BS>]                  | ->                               |>> :blob_bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :blob
     |default                  | ->                               |>>
 
   ; In embedded context the blob is brace-balanced: a nested {...} pair is
@@ -415,28 +415,13 @@
   ; the key, parse the form, then (if more follows) re-emit the key again
   ; and continue collecting.
   |state[:blob_pipe]
+    |eof                      | TERM | Text(USE_MARK) | result = BLOB |return result  ; include | in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /embedded |>> :blob_after_inline
     |default                  |                                  |>> :blob
 
   |state[:blob_bang]
+    |eof                      | TERM | Text(USE_MARK) | result = BLOB |return result  ; include ! in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /sameline_directive |>> :blob_after_inline
-    |default                  |                                  |>> :blob
-
-  ; Prose escapes for the inline openers (same as sameline_text): the
-  ; backslash drops, the opener is literal, one Text (harness folds).
-  |state[:blob_bs]
-    |c['|']                   | ->                               |>> :blob_bs_pipe
-    |c['!']                   | ->                               |>> :blob_bs_bang
-    |c[';']                   | ->                               |>> :blob_bs_semi
-    |default                  |                                  |>> :blob
-  |state[:blob_bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :blob
-    |default                  |                                  |>> :blob
-  |state[:blob_bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :blob
-    |default                  |                                  |>> :blob
-  |state[:blob_bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :blob
     |default                  |                                  |>> :blob
 
   |state[:blob_after_inline]

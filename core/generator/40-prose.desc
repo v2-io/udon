@@ -6,6 +6,39 @@
 ; side; the element loop owns content_base bookkeeping).
 
 
+; bs_escape - the shared in-prose `\` escape lookahead (CORE "Escape"):
+; the caller consumed the `\` (leaving it in the accumulation span) and
+; calls here from its text-collecting state. If the `\` completes an
+; inline-opener escape (`\|{` `\!{` `\;{`), the pending Text is emitted
+; WITHOUT the `\`+marker (TERM(-2)), and the opener is made literal: the
+; marker is PREPENDed and the `{` left current for the caller to
+; accumulate as plain text. Anything else — including EOF parked anywhere
+; in the lookahead — consumes nothing further and keeps every byte (`\`,
+; and marker if consumed) in the caller's accumulation: a `\` that does
+; not complete an opener is literal, and the caller's own eof/eol arm
+; emits it (CORE "End of input (EOF)": nothing is ever discarded).
+|function[bs_escape]
+  |state[:main]
+    |eof                      |                                  |return
+    |c['|']                   | ->                               |>> :pipe
+    |c['!']                   | ->                               |>> :bang
+    |c[';']                   | ->                               |>> :semi
+    |default                  |                                  |return
+
+  |state[:pipe]
+    |eof                      |                                  |return
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |return
+    |default                  |                                  |return
+  |state[:bang]
+    |eof                      |                                  |return
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |return
+    |default                  |                                  |return
+  |state[:semi]
+    |eof                      |                                  |return
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |return
+    |default                  |                                  |return
+
+
 ; verbatim_text - head-position `\` escape (CORE "Escape (\)", ratified
 ; posture): the backslash was consumed by the caller; the rest of the
 ; physical line is PROSE-SHAPED — dead to line-level structure and to the
@@ -19,32 +52,20 @@
     |c['|']                   | ->                               |>> :vpipe
     |c['!']                   | ->                               |>> :vbang
     |c[';']                   | ->                               |>> :vsemi
-    |c[<BS>]                  | ->                               |>> :vbs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:vpipe]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include | in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /embedded |>> :vafter
     |default                  |                                  |>> :main
   |state[:vbang]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include ! in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /sameline_directive |>> :vafter
     |default                  |                                  |>> :main
   |state[:vsemi]
+    |eof                      | TERM | Text(USE_MARK)            |return  ; include ; in text
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment |>> :vafter
-    |default                  |                                  |>> :main
-
-  |state[:vbs]
-    |c['|']                   | ->                               |>> :vbs_pipe
-    |c['!']                   | ->                               |>> :vbs_bang
-    |c[';']                   | ->                               |>> :vbs_semi
-    |default                  |                                  |>> :main
-  |state[:vbs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:vbs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:vbs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
     |default                  |                                  |>> :main
 
   |state[:vafter]
@@ -83,7 +104,7 @@
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   | ->                               |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
-    |c[<BS>]                  | ->                               |>> :check_bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:check_pipe]
@@ -102,26 +123,6 @@
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /sameline_directive |>> :after_inline
     |default                  |                                  |>> :main
 
-
-  ; In prose flow, `\` escapes exactly the inline openers |{ !{ ;{ (CORE
-  ; "Escape"): the `\` is dropped and the opener is literal. Any other `\`
-  ; is literal (already accumulated). NOTE: the emit splits the Text event
-  ; at the escape point (one accumulation slice) - granularity is not
-  ; spec-fixed; see spec/TODO-SPEC-CORE.md.
-  |state[:check_bs]
-    |c['|']                   | ->                               |>> :check_bs_pipe
-    |c['!']                   | ->                               |>> :check_bs_bang
-    |c[';']                   | ->                               |>> :check_bs_semi
-    |default                  |                                  |>> :main
-  |state[:check_bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
-    |default                  |                                  |>> :main
 
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]
@@ -145,7 +146,7 @@
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   | ->                               |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
-    |c[<BS>]                  | ->                               |>> :check_bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:check_pipe]
@@ -164,26 +165,6 @@
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /sameline_directive |>> :after_inline
     |default                  |                                  |>> :main
 
-
-  ; In prose flow, `\` escapes exactly the inline openers |{ !{ ;{ (CORE
-  ; "Escape"): the `\` is dropped and the opener is literal. Any other `\`
-  ; is literal (already accumulated). NOTE: the emit splits the Text event
-  ; at the escape point (one accumulation slice) - granularity is not
-  ; spec-fixed; see spec/TODO-SPEC-CORE.md.
-  |state[:check_bs]
-    |c['|']                   | ->                               |>> :check_bs_pipe
-    |c['!']                   | ->                               |>> :check_bs_bang
-    |c[';']                   | ->                               |>> :check_bs_semi
-    |default                  |                                  |>> :main
-  |state[:check_bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
-    |default                  |                                  |>> :main
 
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]
@@ -207,7 +188,7 @@
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   |                                  |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
-    |c[<BS>]                  | ->                               |>> :check_bs
+    |c[<BS>]                  | -> | /bs_escape                  |>> :main
     |default                  | ->                               |>>
 
   |state[:check_pipe]
@@ -246,26 +227,6 @@
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /sameline_directive |>> :after_inline
     |default                  |                                  |>> :main
 
-
-  ; In prose flow, `\` escapes exactly the inline openers |{ !{ ;{ (CORE
-  ; "Escape"): the `\` is dropped and the opener is literal. Any other `\`
-  ; is literal (already accumulated). NOTE: the emit splits the Text event
-  ; at the escape point (one accumulation slice) - granularity is not
-  ; spec-fixed; see spec/TODO-SPEC-CORE.md.
-  |state[:check_bs]
-    |c['|']                   | ->                               |>> :check_bs_pipe
-    |c['!']                   | ->                               |>> :check_bs_bang
-    |c[';']                   | ->                               |>> :check_bs_semi
-    |default                  |                                  |>> :main
-  |state[:check_bs_pipe]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_bang]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
-    |default                  |                                  |>> :main
-  |state[:check_bs_semi]
-    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
-    |default                  |                                  |>> :main
 
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]

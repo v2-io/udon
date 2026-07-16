@@ -204,3 +204,118 @@
     - [Text, "      deeper line needs no marker,"]
     - [Text, "   smaller indent still past base"]
     - ElementEnd
+
+# ---------------------------------------------------------------------------
+# EOF parked mid-escape-lookahead (ruled 2026-07-16): input ending exactly at
+# `\`, `\|`, `\!`, or `\;` never drops the accumulated text. A `\` that does
+# not complete an inline opener is literal (CORE "Escape": "Any other `\` is
+# literal"), and CORE "End of input (EOF)": "Nothing is ever discarded at
+# EOF" — so the Text is emitted INCLUDING the trailing `\` and marker char.
+# root_only: the harness wrap/indent mutations would append material after
+# the deliberately-truncated input.
+# ---------------------------------------------------------------------------
+
+- id: eof_after_lone_bs_block_prose
+  desc: block prose ending in a lone backslash at EOF keeps the backslash
+  udon: "|p\n  text \\"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "text \\"]
+    - ElementEnd
+
+- id: eof_after_bs_pipe_block_prose
+  desc: block prose ending in backslash-pipe at EOF keeps both characters
+  udon: "|p\n  text \\|"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "text \\|"]
+    - ElementEnd
+
+- id: eof_after_bs_bang_block_prose
+  desc: block prose ending in backslash-bang at EOF keeps both characters
+  udon: "|p\n  text \\!"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "text \\!"]
+    - ElementEnd
+
+- id: eof_after_bs_semi_block_prose
+  desc: block prose ending in backslash-semicolon at EOF keeps both characters
+  udon: "|p\n  text \\;"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "text \\;"]
+    - ElementEnd
+
+- id: eof_after_bs_pipe_sameline_prose
+  desc: sameline prose ending in backslash-pipe at EOF keeps both characters
+  udon: "|p text \\|"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "text \\|"]
+    - ElementEnd
+
+- id: eof_after_lone_bs_attr_blob
+  desc: attribute text blob ending in a lone backslash at EOF keeps the backslash
+  udon: "|el :note some words \\"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "some words \\"]
+    - ElementEnd
+
+- id: eof_after_bs_pipe_attr_blob
+  desc: attribute text blob ending in backslash-pipe at EOF keeps both characters
+  udon: "|el :note some words \\|"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "some words \\|"]
+    - ElementEnd
+
+- id: eof_after_bs_bang_attr_blob
+  desc: attribute text blob ending in backslash-bang at EOF keeps both characters
+  udon: "|el :note some words \\!"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "some words \\!"]
+    - ElementEnd
+
+- id: eof_after_bs_semi_attr_blob
+  desc: attribute text blob ending in backslash-semicolon at EOF keeps both characters
+  udon: "|el :note some words \\;"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "some words \\;"]
+    - ElementEnd
+
+- id: eof_after_bs_pipe_value_position_text
+  desc: value-position backslash text ending in backslash-pipe at EOF keeps both characters
+  udon: "|el :k \\seven \\|"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, "seven \\|"]
+    - ElementEnd
