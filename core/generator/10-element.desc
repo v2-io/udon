@@ -339,11 +339,24 @@
 
   ; Block-line node after a ':key' — either the attribute's node VALUE
   ; (code 2: no content_seen) or a boundary-following CHILD (code 11).
-  ; The '|' is already consumed on both paths.
+  ; The '|' is already consumed on both paths. An EMBEDDED node value ends
+  ; mid-line, so its same-line tail is the finished-value extension case:
+  ; uniform scan continues (';' comment, ':' next attr) and trailing text
+  ; is AttributeValueExtendedByTrailingText + a re-emitted segment — the
+  ; SAME-LINE code, not the deeper-material AttributeSecondValue.
   |state[:battr_node]
-    |c['{']                   | -> | /embedded                   |>> :attr_line_done
+    |c['{']                   | -> | /embedded                   |>> :battr_node_tail
     |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 2, :elem_col) |>> :attr_line_done
     |default                  | /prose(COL - 2, :elem_col, '|')  |>> :attr_line_done
+
+  |state[:battr_node_tail]
+    |eof                      |                                  |>> :attr_line_done
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  |                                  |>> :attr_line_done
+    |c[';']                   | -> | /line_comment_content        |>> :attr_line_done
+    |c[':']                   | -> | attr_col = col | astate = /block_attr |>> :attr_after
+    |c[<BS>]                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | -> | /attr_text_verbatim('\0') |>> :attr_line_done
+    |default                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | /attr_trailing_blob('\0') |>> :attr_line_done
 
   ; Every block-attribute line ends here: /attr_deferred_body owns every
   ; line deeper than the attribute's column (value body / warn+stack /

@@ -193,3 +193,25 @@
     - [Attr, "a"]
     - [Text, "more text"]
     - ElementEnd
+
+# Same-line tail after an EMBEDDED node value on a deeply indented block
+# attr line — pins two things at once: the warn+stack owner is the ATTR at
+# any indentation depth (the pre-refactor grammar compared a locally
+# restarted column count against attr_col, making this depth-dependent),
+# and the code is the SAME-LINE AttributeValueExtendedByTrailingText, not
+# the deeper-material AttributeSecondValue.
+- id: embedded_node_value_sameline_tail_warns_and_stacks
+  desc: tail after an embedded node value on a deep block attr line ingests with the same-line code
+  udon: "|el\n        :a |{em x} tail here\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "x"]
+    - EmbeddedEnd
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "a"]
+    - [Text, "tail here"]
+    - ElementEnd

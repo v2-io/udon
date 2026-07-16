@@ -1187,7 +1187,7 @@ impl<'a> Parser<'a> {
         let mut astate: i32 = 0;
         let mut amode: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, SamelineAttrAfter, SamelineBang, SamelineNode2, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, AttrAfter, BattrBang, BattrNode, BattrNodeTail, AttrLineDone, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -2086,7 +2086,7 @@ impl<'a> Parser<'a> {
                         Some(b'{') => {
                     self.advance();
                     self.parse_embedded(on_event);
-                    state = State::AttrLineDone;
+                    state = State::BattrNodeTail;
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
@@ -2096,6 +2096,50 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(self.col() - 2, elem_col, b"|", on_event);
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                    }
+                }
+                State::BattrNodeTail => {
+                    if self.eof() {
+                    state = State::AttrLineDone;
+                    continue;
+                    }
+                    match self.peek() {
+                        Some(b' ' | b'\t') => {
+                    self.advance();
+                    continue;
+                        }
+                        Some(b'\n') => {
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                        Some(b';') => {
+                    self.advance();
+                    self.parse_line_comment_content(on_event);
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                        Some(b':') => {
+                    self.advance();
+                    attr_col = col;
+                    astate = self.parse_block_attr(on_event);
+                    state = State::AttrAfter;
+                    continue;
+                        }
+                        Some(b'\\') => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeValueExtendedByTrailingText"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.advance();
+                    self.parse_attr_text_verbatim(b'\0', on_event);
+                    state = State::AttrLineDone;
+                    continue;
+                        }
+                        _ => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeValueExtendedByTrailingText"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.parse_attr_trailing_blob(b'\0', on_event);
                     state = State::AttrLineDone;
                     continue;
                         }
