@@ -130,16 +130,22 @@ open decision) so targets stay cheap.
   ANSI/vim emission; standalone library; the NOTES' own suggestion of
   empirical testing (first-time vs. accustomed viewers).
 
-## Open decisions *(discuss w/ Joseph)*
+## Decisions (ruled by Joseph, 2026-07-16)
 
-1. **Engine language/home:** JS inside the plugin (fastest to phase A) vs.
-   Rust beside the parser compiled into the same wasm (one artifact, shared
-   by every target). Phase A in JS doesn't foreclose the move.
-2. **Class vocabulary width for phase B** — what the wasm walk should emit
-   beyond the 11 (depth? warning kinds? dialect boundaries?) is a
-   `core/udon-wasm` API decision.
-3. **Scope of ambition for the mapping file:** UDON-only role tree, or carry
-   the 2011 cross-language columns (vim/textmate/pygments) from day one —
-   i.e., is autocolors a udon-repo feature or a project that udon hosts?
-4. **Where randomness lives:** per-vault stable scheme (seeded once, kept)
-   vs. regenerate-on-demand (`muahaha` mode) vs. both behind a command.
+1. **Engine: Rust, beside the parser** (same wasm artifact) — and no swatch
+   detour: apply it to live UDON highlighting immediately. ("I've seen
+   swatches before and am not excited about the javascript.")
+2. **Class vocabulary: the works.** Fine-grained roles, not the ~15 buckets
+   vim schemes collapse into. The ruling includes the aesthetic north star,
+   verbatim in spirit: in `|element[123]`, if `element` is brighter red, the
+   `|` is a *dull* red, the square brackets a *different shade* of dull red,
+   and the key inside colored by its type ($-keys good underlined). "Various
+   shades that are *mild* distinctions in proximity look very, very
+   aesthetically pleasing and are very helpful." — i.e., kinship shading
+   (fitness criterion 1, parent-similarity) is the headline feature, which
+   requires the role stream to carry *structural kinship*, not just class.
+3. **Scope: play here first.** UDON-in-this-repo; cross-editor emission
+   stays future.
+4. **Schemes are named, and the name IS the seed** — any string, hashed, is
+   the RNG seed; fully portable. ("Remember how good the 'tony-the-tiger'
+   scheme looked??")
