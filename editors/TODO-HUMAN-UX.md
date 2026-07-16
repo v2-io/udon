@@ -29,6 +29,15 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       sub-tracker); umbrella tracking here. *(That sub-tracker is intentionally
       plugin-local — it's where live-use feedback lands and it travels with the
       plugin; two-level co-location, not scatter. Don't drain it by reflex.)*
+- [ ] **autocolors — generated, allocation-theoretic color schemes.**
+      Joseph's 2011 project (procedural schemes in perceptual color space:
+      emphasis as an information budget, colors as constrained relationships,
+      composition-theory balance), unblocked by this week's parser-driven
+      highlighting: the wasm walk supplies exact roles *and* per-class density
+      statistics, and the plugin owns its CSS end to end. Plan + 2011
+      archaeology (including a `mapping.udon` in 2011-dialect UDON):
+      `autocolors/PLAN.md`. Phases A–D there; open decisions marked for
+      Joseph.
 - [ ] **Syntax highlighting** — bring `udon.tmLanguage.json`, `vim/`, and
       `../tree-sitter-udon/` current with CORE (especially the new escape model
       and `<…>` typing).
