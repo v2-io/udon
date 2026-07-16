@@ -60,8 +60,12 @@ Items marked *(routed from the archived reboot plan, 2026-07-16)* arrived when
       one; the candidate jobs beyond style were agent round-trip stability,
       paste/ingest renormalization, and closing the column-alignment
       fragility corner; the hazard is prose reflow (structure-safe-only was
-      the recommendation on the table when it was set aside). Don't pick
-      this up without that discussion.
+      the recommendation on the table when it was set aside). Joseph's
+      tabling rationale, worth meeting before re-arguing: effort spent here
+      "would end up being friction for adoption when the same effort could
+      be spent on an actually principled tool" — the agentic edit tool
+      (span-splicing makes canonical form unnecessary for edits). Don't
+      pick this up without that discussion.
 - [ ] **`udon-cli`** — one installed binary `udon` (crate `udon-cli`,
       `[[bin]] name = "udon"` — crates.io `udon` itself is squatted):
       `parse` / `events` / `skeleton` first, then `lint`, then
