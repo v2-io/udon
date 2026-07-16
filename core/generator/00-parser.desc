@@ -54,6 +54,32 @@
 
 
 
+; === Return-code vocabulary (named constants; descent |const, 2026-07-16) ===
+; The attribute/value functions report how their scan ended as a small INT
+; (descent functions cannot touch caller locals). Full protocol documented
+; at /block_attr in 20-attributes.desc.
+|const[FIN]        0    ; finished — value(s) complete, nothing pending
+|const[OPEN]       1    ; attribute left OPEN at end-of-line (deferred value)
+|const[NODE]       2    ; '|' in value position, UNCONSUMED — node is the value
+|const[BLOB]       3    ; value was a text BLOB (may continue on deeper lines)
+|const[NEXT_KEY]   4    ; ':' consumed at boundary — next attr key follows
+|const[REOWNED]    5    ; flag re-owned trailing material as element Text
+|const[RAW]        6    ; '!' raw/directive in value position
+|const[CHILD]      11   ; '|' consumed at bare-token boundary — child node follows
+|const[DIRECTIVE]  12   ; '!' consumed at bare-token boundary — directive follows
+|const[REF]        13   ; '@' consumed at bare-token boundary — reference follows
+
+; attr_deferred_body modes (where the attribute line left things; the
+; OPEN/BLOB return codes map onto MODE_OPEN/MODE_BODY by design)
+|const[MODE_OPEN]  1    ; key with no value yet — a deeper line IS the value
+|const[MODE_BODY]  3    ; deferred text value collecting further segments
+|const[MODE_DONE]  4    ; value finished — deeper material is warn+stack
+
+; Small boolean-ish reports
+|const[IS_FLAG]    1    ; attr_ident: key's terminal char was '?'
+|const[FLAG_TEXT]  1    ; flag_value: re-owned material emitted as Text
+
+
 |entry-point /document
 
 
@@ -94,7 +120,7 @@
   ; Deferred values are not supported at document root (attrs there are
   ; already an edge case) — an open attr resolves immediately.
   |state[:root_attr_check]
-    |if[dstate == 1]          | /error(missing_attribute_value) | Nil |>> :eol
+    |if[dstate == OPEN]          | /error(missing_attribute_value) | Nil |>> :eol
     |default                  |                                  |>> :eol
 
   ; `!` guard (CORE Marker Recognition): directive only when followed by an

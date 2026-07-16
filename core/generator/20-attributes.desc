@@ -31,7 +31,7 @@
 ; semantics, CORE "Attribute Keys and Flags"; quoted and bare keys alike —
 ; R4, 2026-07-16), else 0. Callers guarantee the first char passes the
 ; attr guard (name start or quote).
-|function[attr_ident:INT]  | result = 0
+|function[attr_ident:INT]  | result = 0   ; 0 = plain, IS_FLAG = flag
   |state[:key]
     |c[XLBL_START]            | /attr_key                        |>> :post_key
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
@@ -39,11 +39,11 @@
   ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
   ; closing quote is NOT yet consumed, so PREV is the last CONTENT char.
   |state[:post_key]
-    |if[PREV == '?']          | SAVE(akey) | result = 1          |return result
+    |if[PREV == '?']          | SAVE(akey) | result = IS_FLAG    |return result
     |default                  | SAVE(akey)                       |return result
 
   |state[:post_qkey]
-    |if[PREV == '?']          | SAVE(akey) | -> | result = 1     |return result
+    |if[PREV == '?']          | SAVE(akey) | -> | result = IS_FLAG |return result
     |default                  | SAVE(akey) | ->                  |return result
 
 
@@ -70,29 +70,29 @@
 ; block line; block run-to-EOL is gone. Deferred/deeper lines are owned by
 ; /attr_deferred_body, invoked by the element's children loop with this
 ; function's return code mapped to the body mode.
-|function[block_attr:INT]  | result = 0
+|function[block_attr:INT]  | result = FIN
   |state[:key]
     |default                  | kf = /attr_ident                                                       |>> :key_route
   |state[:key_route]
-    |if[kf == 1]                                                 |>> :flag
+    |if[kf == IS_FLAG]                                                 |>> :flag
     |default                                                     |>> :value_start
 
   |state[:flag]
     |default | fstate = /flag_value('\0')                        |>> :flag_route
   |state[:flag_route]
-    |if[fstate == 1]          | result = 5                       |return result
+    |if[fstate == FLAG_TEXT]  | result = REOWNED                 |return result
     |default                                                     |>> :post_value
 
   |state[:value_start]
     |eof                      | /error(missing_attribute_value) | Nil |return result
     |c[' \t']                 | ->                               |>>
-    |c['\n']                  | result = 1                       |return result
+    |c['\n']                  | result = OPEN                    |return result
     |c[':']                   | /error(missing_attribute_value) | Nil |>> :key_next
     |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
-    |c['|']                   | result = 2                       |return result
+    |c['|']                   | result = NODE                    |return result
     |c['`']                   | ->                               |>> :vff1
     |c['!']                   | ->                               |>> :vbang
-    |c[<BS>]                  | result = 3 | -> | /attr_text_verbatim('\0') |return result
+    |c[<BS>]                  | result = BLOB | -> | /attr_text_verbatim('\0') |return result
     |default                  | vstate = /value(0, '\0')         |>> :post_value_route
 
   ; Fence as node value (Value Kinds): three backticks open a freeform whose
@@ -108,7 +108,7 @@
   ; 2026-07-16). Guard: ':' or identifier; `!{{` opens an interpolation
   ; value; anything else means the '!' begins a text value.
   |state[:vbang]
-    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c[<XLBL_START ':'>]      | result = RAW                     |return result
     |c['{']                   | ->                               |>> :vinterp
     |default                  | PREPEND('!') | vstate = /value(0, '\0') |>> :post_value_route
   |state[:vinterp]
@@ -118,11 +118,11 @@
   ; A text-blob value may continue on deeper lines (BODY mode, code 3);
   ; scalar values are finished (DONE zone, code 0 -> caller maps to 4).
   |state[:post_value_route]
-    |if[vstate == 3]          | result = 3                       |>> :post_value
-    |if[vstate == 4]                                             |>> :key
-    |if[vstate == 11]         | result = 11                      |return result
-    |if[vstate == 12]         | result = 12                      |return result
-    |if[vstate == 13]         | result = 13                      |return result
+    |if[vstate == BLOB]       | result = BLOB                    |>> :post_value
+    |if[vstate == NEXT_KEY]                                      |>> :key
+    |if[vstate == CHILD]      | result = CHILD                   |return result
+    |if[vstate == DIRECTIVE]  | result = DIRECTIVE               |return result
+    |if[vstate == REF]        | result = REF                     |return result
     |default                                                     |>> :post_value
 
   ; Consume the ':' that ended a valueless attr and parse the next key.
@@ -190,26 +190,26 @@
 
   |state[:check]
     |if[col <= :attr_col]                                        |>> :finish
-    |if[mode == 1]                                               |>> :open
-    |if[mode == 3]                                               |>> :body
+    |if[mode == MODE_OPEN]                                       |>> :open
+    |if[mode == MODE_BODY]                                       |>> :body
     |default                                                     |>> :done
 
   ; OPEN: the deferred value arrives here (CORE "Multi-Line Values").
   |state[:open]
-    |c['|']                   | mode = 4 | ->                    |>> :node
+    |c['|']                   | mode = MODE_DONE | ->            |>> :node
     |c[':']                   | /error(attribute_under_attribute) | Nil | -> |>> :bad_attr
     |c[';']                   | -> | /line_comment               |>> :line_end
-    |c['`']                   | mode = 4 | ->                    |>> :fence
-    |c['!']                   | mode = 4 | ->                    |>> :bang
-    |c[<BS>]                  | mode = 3 | -> | /verbatim_text   |>> :line_end
-    |default                  | mode = 3 | /prose(col, :parent_col, <>) |>> :line_end
+    |c['`']                   | mode = MODE_DONE | ->            |>> :fence
+    |c['!']                   | mode = MODE_DONE | ->            |>> :bang
+    |c[<BS>]                  | mode = MODE_BODY | -> | /verbatim_text |>> :line_end
+    |default                  | mode = MODE_BODY | /prose(col, :parent_col, <>) |>> :line_end
 
   ; BODY: further segments of the same text value, key re-emitted per
   ; segment from its SAVE(akey) capture.
   |state[:body]
     |c[';']                   | -> | /line_comment               |>> :line_end
     |c[':']                   | /error(attribute_under_attribute) | -> |>> :bad_attr
-    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | mode = 4 | -> |>> :node
+    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | mode = MODE_DONE | -> |>> :node
     |c[<BS>]                  | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line_end
     |default                  | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line_end
 
@@ -256,23 +256,23 @@
   ; arrived, the attribute errors + Nil (the stream never carries less
   ; shape than the source suggested).
   |state[:finish]
-    |if[mode == 1]            | /error(missing_attribute_value) | Nil |return
+    |if[mode == MODE_OPEN]    | /error(missing_attribute_value) | Nil |return
     |default                  |                                  |return
 
 
 ; Returns 2 when a '|' follows in value position — the node is the attr's
 ; VALUE (parsed by the caller without entering the children phase).
-|function[sameline_attr:INT]  | result = 0
+|function[sameline_attr:INT]  | result = FIN
   |state[:key]
     |default                  | kf = /attr_ident                                                       |>> :key_route
   |state[:key_route]
-    |if[kf == 1]                                                 |>> :flag
+    |if[kf == IS_FLAG]                                                 |>> :flag
     |default                                                     |>> :value_start
 
   |state[:flag]
     |default | fstate = /flag_value('\0')                        |>> :flag_route
   |state[:flag_route]
-    |if[fstate == 1]          | result = 5                       |return result
+    |if[fstate == FLAG_TEXT]  | result = REOWNED                 |return result
     |default                                                     |return result
 
   |state[:value_start]
@@ -280,18 +280,18 @@
     |c[' \t']                 | ->                               |>>
     |c['\n:']                 | /error(missing_attribute_value) | Nil |return result
     |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
-    |c['|']                   | result = 2                       |return result
+    |c['|']                   | result = NODE                    |return result
     |c['`']                   | ->                               |>> :vff1
     |c['!']                   | ->                               |>> :vbang
     |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
     |default                  | vv = /value(0, '\0')             |>> :vroute
 
   |state[:vroute]
-    |if[vv == 3]              | result = 3                       |return result
-    |if[vv == 4]                                                 |>> :key
-    |if[vv == 11]             | result = 11                      |return result
-    |if[vv == 12]             | result = 12                      |return result
-    |if[vv == 13]             | result = 13                      |return result
+    |if[vv == BLOB]           | result = BLOB                    |return result
+    |if[vv == NEXT_KEY]                                          |>> :key
+    |if[vv == CHILD]          | result = CHILD                   |return result
+    |if[vv == DIRECTIVE]      | result = DIRECTIVE               |return result
+    |if[vv == REF]            | result = REF                     |return result
     |default                                                     |return result
 
   |state[:vff1]
@@ -302,7 +302,7 @@
     |default                  | PREPEND('``') | vv = /value(0, '\0') |>> :vroute
 
   |state[:vbang]
-    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c[<XLBL_START ':'>]      | result = RAW                     |return result
     |c['{']                   | ->                               |>> :vinterp
     |default                  | PREPEND('!') | vv = /value(0, '\0') |>> :vroute
   |state[:vinterp]
@@ -314,7 +314,7 @@
   |state[:key]
     |default                  | kf = /attr_ident                                                       |>> :key_route
   |state[:key_route]
-    |if[kf == 1]                                                 |>> :flag
+    |if[kf == IS_FLAG]                                                 |>> :flag
     |default                                                     |>> :value_start
 
   |state[:flag]
@@ -329,7 +329,7 @@
     |default                  | ev = /value(0, '}')              |>> :evroute
 
   |state[:evroute]
-    |if[ev == 4]                                                 |>> :key
+    |if[ev == NEXT_KEY]                                          |>> :key
     |default                                                     |return
 
 
@@ -339,7 +339,7 @@
 ; (rule 2 wins over the extension rule — no warning). Returns 1 when the
 ; re-owned material was emitted as prose-equivalent Text (callers foreclose
 ; the attribute phase — the material entered the children phase), else 0.
-|function[flag_value:INT]  :bracket  | result = 0 | hit = 0
+|function[flag_value:INT]  :bracket  | result = 0 | hit = 0   ; 0 or FLAG_TEXT
   |state[:start]
     |eof                      | BoolTrue                         |return
     |c[' \t']                 | ->                               |>>
@@ -347,7 +347,7 @@
     |c[:bracket]              | BoolTrue                         |return
     |c[<':;!@`' P BS>]        | BoolTrue                         |return
     |c[LETTER]                | MARK | ->                        |>> :token
-    |default                  | MARK | BoolTrue | result = 1 | -> |>> :blob
+    |default                  | MARK | BoolTrue | result = FLAG_TEXT | -> |>> :blob
 
   |state[:token]
     |eof                      | TERM                             |>> :tok_kw
@@ -355,7 +355,7 @@
     |c['\n']                  | TERM                             |>> :tok_kw
     |c[' \t']                 | TERM                             |>> :tok_kw
     |c[:bracket]              | TERM                             |>> :tok_kw
-    |default                  | BoolTrue | result = 1 | ->       |>> :blob
+    |default                  | BoolTrue | result = FLAG_TEXT | -> |>> :blob
 
   ; The keyword eats even with trailing material (rule 1: "alone" = as a
   ; token); a non-keyword lone token snaps true and becomes prose Text.
@@ -363,7 +363,7 @@
     |default | hit = KEYWORDS(flag_kw)                           |>> :tok_after
   |state[:tok_after]
     |if[hit == 1]                                                |return result
-    |default                  | BoolTrue | result = 1            |>> :blob
+    |default                  | BoolTrue | result = FLAG_TEXT    |>> :blob
 
   ; Snapped true; the material is prose-equivalent Text to end-of-line.
   |state[:blob]

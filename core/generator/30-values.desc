@@ -106,7 +106,7 @@
 ; Returns 0 for a finished scalar/single-token value, 3 when the value was
 ; a TEXT BLOB (deferred continuation may follow on deeper lines — the
 ; caller's element loop enters BODY mode).
-|function[typed_value:INT]  :space_term :bracket  | MARK | depth = 0 | result = 0
+|function[typed_value:INT]  :space_term :bracket  | MARK | depth = 0 | result = FIN
   |state[:main]
     |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -199,19 +199,19 @@
     |default                  |                                  |>> :blob
 
   |state[:kwb_colon]
-    |c[<XLBL_START SQ>]       | KEYWORDS(bare_kw) | result = 4   |return result
+    |c[<XLBL_START SQ>]       | KEYWORDS(bare_kw) | result = NEXT_KEY |return result
     |default                  |                                  |>> :blob
   |state[:kwb_pipe]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | KEYWORDS(bare_kw) | result = 11 |return result
+    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | KEYWORDS(bare_kw) | result = CHILD |return result
     |default                  |                                  |>> :blob
   |state[:kwb_bang]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<XLBL_START ':' '{'>]  | KEYWORDS(bare_kw) | result = 12  |return result
+    |c[<XLBL_START ':' '{'>]  | KEYWORDS(bare_kw) | result = DIRECTIVE |return result
     |default                  |                                  |>> :blob
   |state[:kwb_at]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<L XLBL_START '.'>]    | KEYWORDS(bare_kw) | result = 13  |return result
+    |c[<L XLBL_START '.'>]    | KEYWORDS(bare_kw) | result = REF |return result
     |default                  |                                  |>> :blob
 
   ; === Numbers: after sign (+/-) ===
@@ -377,19 +377,19 @@
     |default                  |                                  |>> :blob
 
   |state[:strb_colon]
-    |c[<XLBL_START SQ>]       | BareValue(USE_MARK) | result = 4 |return result
+    |c[<XLBL_START SQ>]       | BareValue(USE_MARK) | result = NEXT_KEY |return result
     |default                  |                                  |>> :blob
   |state[:strb_pipe]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | BareValue(USE_MARK) | result = 11 |return result
+    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | BareValue(USE_MARK) | result = CHILD |return result
     |default                  |                                  |>> :blob
   |state[:strb_bang]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<XLBL_START ':' '{'>]  | BareValue(USE_MARK) | result = 12 |return result
+    |c[<XLBL_START ':' '{'>]  | BareValue(USE_MARK) | result = DIRECTIVE |return result
     |default                  |                                  |>> :blob
   |state[:strb_at]
     |if[:bracket == '}']                                         |>> :blob
-    |c[<L XLBL_START '.'>]    | BareValue(USE_MARK) | result = 13 |return result
+    |c[<L XLBL_START '.'>]    | BareValue(USE_MARK) | result = REF |return result
     |default                  |                                  |>> :blob
 
   ; === Text blob (0.9): the line committed — runs to EOL / bracket. The
@@ -398,8 +398,8 @@
   ; (flat wire) — with the normal prose escapes; a framed ' ; ' opens a
   ; comment. Returns result=3 (text value; may continue on deeper lines). ===
   |state[:blob]
-    |eof                      | TERM | Text(USE_MARK) | result = 3 |return result
-    |c['\n']                  | TERM | Text(USE_MARK) | result = 3 |return result
+    |eof                      | TERM | Text(USE_MARK) | result = BLOB |return result
+    |c['\n']                  | TERM | Text(USE_MARK) | result = BLOB |return result
     |c['{']                   | -> | depth += 1                  |>>
     |c[:bracket]              |                                  |>> :blob_close
     |c[';']                   |                                  |>> :blob_semi
@@ -412,7 +412,7 @@
   ; content; only the element's own closer ends the blob (unconsumed).
   |state[:blob_close]
     |if[depth > 0]            | -> | depth -= 1                  |>> :blob
-    |default                  | TERM | Text(USE_MARK) | result = 3 |return result
+    |default                  | TERM | Text(USE_MARK) | result = BLOB |return result
 
   ; Inline forms inside the blob: emit the pending Text segment, re-emit
   ; the key, parse the form, then (if more follows) re-emit the key again
@@ -443,9 +443,9 @@
     |default                  |                                  |>> :blob
 
   |state[:blob_after_inline]
-    |eof                      | result = 3                       |return result
-    |c['\n']                  | result = 3                       |return result
-    |c[:bracket]              | result = 3                       |return result
+    |eof                      | result = BLOB                    |return result
+    |c['\n']                  | result = BLOB                    |return result
+    |c[:bracket]              | result = BLOB                    |return result
     |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :blob
 
   ; Framed ' ; ' check (mirror of sameline_text): space before (PREV) and
@@ -457,9 +457,9 @@
     |default                  | ->                               |>> :blob_semi_glued
 
   |state[:blob_semi_after]
-    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
-    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
-    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
+    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
     |c['{']                   | TERM(-2) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :blob
     |default                  |                                  |>> :blob
 

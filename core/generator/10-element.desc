@@ -135,12 +135,12 @@
   ; children, not values); the boundary codes 5/11/12/13 re-owned trailing
   ; material for the element — children phase.
   |state[:sameline_attr_after]
-    |if[sstate == 2]          | ->                                |>> :sameline_node2
-    |if[sstate == 5]          | content_seen = 1                 |>> :pre_content
-    |if[sstate == 6]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
-    |if[sstate == 11]         | content_seen = 1                 |>> :sameline_node2
-    |if[sstate == 12]         | content_seen = 1                 |>> :sameline_bang
-    |if[sstate == 13]         | content_seen = 1 | /block_ref    |>> :pre_content
+    |if[sstate == NODE]          | ->                                |>> :sameline_node2
+    |if[sstate == REOWNED]          | content_seen = 1                 |>> :pre_content
+    |if[sstate == RAW]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
+    |if[sstate == CHILD]         | content_seen = 1                 |>> :sameline_node2
+    |if[sstate == DIRECTIVE]         | content_seen = 1                 |>> :sameline_bang
+    |if[sstate == REF]         | content_seen = 1 | /block_ref    |>> :pre_content
     |default                                                     |>> :pre_content
 
   ; '!' consumed at a value boundary: '{' opens the inline form; a name or
@@ -323,15 +323,15 @@
   ; 5/11/12/13 mean the scan re-owned trailing material for the ELEMENT —
   ; the children phase begins (content_seen).
   |state[:attr_after]
-    |if[astate == 1]          | amode = 1                        |>> :attr_line_done
-    |if[astate == 3]          | amode = 3                        |>> :attr_line_done
-    |if[astate == 2]          | amode = 4 | ->                   |>> :battr_node
-    |if[astate == 5]          | content_seen = 1                 |>> :after_content
-    |if[astate == 6]          | amode = 4 | /block_directive(attr_col) |>> :attr_line_done
-    |if[astate == 11]         | content_seen = 1 | amode = 4     |>> :battr_node
-    |if[astate == 12]         | content_seen = 1 | amode = 4     |>> :battr_bang
-    |if[astate == 13]         | content_seen = 1 | amode = 4 | /block_ref |>> :attr_line_done
-    |default                  | amode = 4                        |>> :attr_line_done
+    |if[astate == OPEN]       | amode = MODE_OPEN                |>> :attr_line_done
+    |if[astate == BLOB]       | amode = MODE_BODY                |>> :attr_line_done
+    |if[astate == NODE]       | amode = MODE_DONE | ->           |>> :battr_node
+    |if[astate == REOWNED]    | content_seen = 1                 |>> :after_content
+    |if[astate == RAW]        | amode = MODE_DONE | /block_directive(attr_col) |>> :attr_line_done
+    |if[astate == CHILD]      | content_seen = 1 | amode = MODE_DONE |>> :battr_node
+    |if[astate == DIRECTIVE]  | content_seen = 1 | amode = MODE_DONE |>> :battr_bang
+    |if[astate == REF]        | content_seen = 1 | amode = MODE_DONE | /block_ref |>> :attr_line_done
+    |default                  | amode = MODE_DONE                |>> :attr_line_done
 
   |state[:battr_bang]
     |c['{']                   | -> | /sameline_directive         |>> :attr_line_done
