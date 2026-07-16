@@ -29,14 +29,14 @@ together.
 
 ### Expected state right now
 
-`v0.9/` was seeded 2026-07-15 as a copy of the released v0.8 group. As the
-0.9 attribute-model text lands in `spec/CORE.md` (carriers:
-`design/attribute-model-proposal-3-substrate.md` + proposal-3; nail-downs in
-`spec/TODO-SPEC-CORE-0.9-supplement.md`), the affected cases are edited to
-the new model — expectations written from the spec text, **never traced from
-parser output** — and the gate goes RED until the grammar catches up. That
-RED is the honest work-remaining signal; the gate prints live per-file
-counts:
+`v0.9/` was rewritten to the ratified 0.9 attribute model 2026-07-16
+(expectations from the spec text, never traced from parser output) and the
+grammar burn-down brought the gate **GREEN the same day** — the parser
+implements the 0.9 model (flags, boundary rule, blobs, node values, flat
+stacking wire with SAVE-based segment re-emission). Densification continues
+(EOF/Unclosed* cases, legacy mining, edge combinations) before any
+`core-v0.9.0` tag; new cases may re-RED the gate — that stays the honest
+signal:
 
 ```bash
 cargo test -p udon-core --test canonical compliance_gate

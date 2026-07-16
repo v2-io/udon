@@ -34,9 +34,8 @@
 ; a head-position marker (or EOL/bracket) finishes the single-token value;
 ; plain text commits the REST OF THE LINE to a Text blob (owned by the
 ; attribute — ownership is the caller's context). A framed ' ; ' inside a
-; blob opens a comment. KNOWN GAPS (staged): inline forms inside blobs
-; (|{...} etc.) are literal content for now — segmentation needs the
-; re-emittable-key machinery (see TODO-CORE-PARSING).
+; blob opens a comment, and inline forms fire as re-attributed segments
+; via the SAVE(akey) capture (flat wire).
 ;
 ; TEMPORAL IS GONE FROM BARE RECOGNITION (CORE 0.8): a bare 2026-07-11 is
 ; the string "2026-07-11"; temporal lives in the <...> envelope, resolved by
@@ -66,7 +65,10 @@
 ; Main Entry - Context-Aware Value Parser
 ; ============================================================================
 
-|function[typed_value]  :space_term :bracket  | MARK | depth = 0
+; Returns 0 for a finished scalar/single-token value, 3 when the value was
+; a TEXT BLOB (deferred continuation may follow on deeper lines — the
+; caller's element loop enters BODY mode).
+|function[typed_value:INT]  :space_term :bracket  | MARK | depth = 0 | result = 0
   |state[:main]
     |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -297,32 +299,77 @@
     |c[<':;!@`' P BS>]        | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :blob
 
-  ; === Text blob (0.9): the line committed — runs to EOL / bracket, with
-  ; the framed ' ; ' comment carve-out. Re-TERMs over the boundary TERM so
-  ; the emitted Text spans from the original MARK. ===
+  ; === Text blob (0.9): the line committed — runs to EOL / bracket. The
+  ; blob is PROSE-SHAPED (CORE "Text-Blob Values"): inline forms fire as
+  ; segments — each re-emits the attribute key from its SAVE(akey) capture
+  ; (flat wire) — with the normal prose escapes; a framed ' ; ' opens a
+  ; comment. Returns result=3 (text value; may continue on deeper lines). ===
   |state[:blob]
-    |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |eof                      | TERM | Text(USE_MARK) | result = 3 |return result
+    |c['\n']                  | TERM | Text(USE_MARK) | result = 3 |return result
     |c['{']                   | -> | depth += 1                  |>>
     |c[:bracket]              |                                  |>> :blob_close
     |c[';']                   |                                  |>> :blob_semi
+    |c['|']                   | ->                               |>> :blob_pipe
+    |c['!']                   | ->                               |>> :blob_bang
+    |c[<BS>]                  | ->                               |>> :blob_bs
     |default                  | ->                               |>>
 
   ; In embedded context the blob is brace-balanced: a nested {...} pair is
-  ; content; only the element's own closer ends the blob. (Interim: inline
-  ; forms inside blobs are literal content until segment re-emission lands.)
+  ; content; only the element's own closer ends the blob (unconsumed).
   |state[:blob_close]
     |if[depth > 0]            | -> | depth -= 1                  |>> :blob
-    |default                  | TERM | Text(USE_MARK)            |return
+    |default                  | TERM | Text(USE_MARK) | result = 3 |return result
+
+  ; Inline forms inside the blob: emit the pending Text segment, re-emit
+  ; the key, parse the form, then (if more follows) re-emit the key again
+  ; and continue collecting.
+  |state[:blob_pipe]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /embedded |>> :blob_after_inline
+    |default                  |                                  |>> :blob
+
+  |state[:blob_bang]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /sameline_directive |>> :blob_after_inline
+    |default                  |                                  |>> :blob
+
+  ; Prose escapes for the inline openers (same as sameline_text): the
+  ; backslash drops, the opener is literal, one Text (harness folds).
+  |state[:blob_bs]
+    |c['|']                   | ->                               |>> :blob_bs_pipe
+    |c['!']                   | ->                               |>> :blob_bs_bang
+    |c[';']                   | ->                               |>> :blob_bs_semi
+    |default                  |                                  |>> :blob
+  |state[:blob_bs_pipe]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :blob
+    |default                  |                                  |>> :blob
+  |state[:blob_bs_bang]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :blob
+    |default                  |                                  |>> :blob
+  |state[:blob_bs_semi]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :blob
+    |default                  |                                  |>> :blob
+
+  |state[:blob_after_inline]
+    |eof                      | result = 3                       |return result
+    |c['\n']                  | result = 3                       |return result
+    |c[:bracket]              | result = 3                       |return result
+    |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :blob
 
   ; Framed ' ; ' check (mirror of sameline_text): space before (PREV) and
-  ; space/EOL after open a comment; anything else keeps the ';' literal.
+  ; space/EOL after open a comment; ';{' opens an inline comment (no
+  ; re-attribution — comments are not value segments); anything else keeps
+  ; the ';' literal.
   |state[:blob_semi]
     |if[PREV == ' ']          | ->                               |>> :blob_semi_after
-    |default                  | ->                               |>> :blob
+    |default                  | ->                               |>> :blob_semi_glued
 
   |state[:blob_semi_after]
-    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
-    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
-    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = 3 |return result
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :blob
+    |default                  |                                  |>> :blob
+
+  |state[:blob_semi_glued]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :blob
     |default                  |                                  |>> :blob

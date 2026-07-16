@@ -2,3 +2,4 @@
 .obsidian.vimrc
 __pycache__/
 *.pyc
+.claude/

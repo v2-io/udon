@@ -47,10 +47,10 @@ Contexts examples moved out of table cells (formatter-stability).
 
 ## Open
 
-- [ ] **`AttributeUnderAttribute` recovery shape** — where do the inner
-      line's bytes land after the error? (Dropping violates keep-everything;
-      ingest-as-what is unruled.) Fixture `attr_structured::attr_under_attr_error`
-      is panic-only until the grammar iteration settles it — decide there.
+- [x] ~~`AttributeUnderAttribute` recovery shape~~ **Settled in the grammar
+      iteration 2026-07-16** (delegated posture): the open attr gets its
+      `Nil` (shape preserved), the error explains it, the offending line's
+      bytes are kept as element prose. Fixture pins it.
 - [ ] **Reconsider the "guard" framing / Marker Recognition section**
       (Joseph, 2026-07-15): reads as lexical-implementation detail, partially
       redundant with each marker's own section. Options: fold each guard into

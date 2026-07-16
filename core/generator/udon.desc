@@ -387,6 +387,8 @@
   |state[:check_child]
     |if[col <= :elem_col]                                        |>> :dedent_out
     |if[attr_open == 1]                                          |>> :attr_pending
+    |if[attr_open == 3]                                          |>> :attr_body
+    |if[attr_open == 4]                                          |>> :attr_done
     ; After child return, content_base may be set - route to :at_content_base if matched
     |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
     |default                                                     |>> :child_dispatch
@@ -404,13 +406,35 @@
   ; counts children, not values) — content_seen stays untouched here.
   |state[:attr_pending]
     |if[col <= attr_col]      | /error(missing_attribute_value) | Nil | attr_open = 0 |>> :attr_resolved
-    |c['|']                   | attr_open = 0 | ->               |>> :attr_node
-    |c[':']                   | /error(attribute_under_attribute) | attr_open = 0 | -> |>> :attr_bad_attr
+    |c['|']                   | attr_open = 4 | ->               |>> :attr_node
+    |c[':']                   | /error(attribute_under_attribute) | Nil | attr_open = 0 | -> |>> :attr_bad_attr
     |c[';']                   | -> | /line_comment               |>> :after_content_open
-    |c['`']                   | attr_open = 0 | ->               |>> :attr_fence
-    |c['!']                   | attr_open = 0                    |>> :child_check_bang
-    |c[<BS>]                  | attr_open = 0 | -> | /verbatim_text |>> :after_content
-    |default                  | attr_open = 0 | /prose(col, :elem_col, <>) |>> :after_content
+    |c['`']                   | attr_open = 4 | ->               |>> :attr_fence
+    |c['!']                   | attr_open = 4                    |>> :child_check_bang
+    |c[<BS>]                  | attr_open = 3 | -> | /verbatim_text |>> :after_content
+    |default                  | attr_open = 3 | /prose(col, :elem_col, <>) |>> :after_content
+
+  ; BODY (attr_open == 3): a deferred text value is collecting — further
+  ; deeper lines are more segments of the SAME value, each re-emitting the
+  ; key (flat wire). Dedent to/past the attr column ends the value.
+  |state[:attr_body]
+    |if[col <= attr_col]      | attr_open = 0                    |>> :attr_resolved
+    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c[':']                   | /error(attribute_under_attribute) | attr_open = 0 | -> |>> :attr_bad_attr
+    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | attr_open = 4 | -> |>> :attr_node
+    |c[<BS>]                  | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :after_content
+    |default                  | Attr(USE_SAVED(akey)) | /prose(col, :elem_col, <>) |>> :after_content
+
+  ; DONE (attr_open == 4): the attribute has a finished value — deeper
+  ; material is the uniform two-values rule: WARN + stack as a further
+  ; segment (never silent, never dropped). Comments are exempt.
+  |state[:attr_done]
+    |if[col <= attr_col]      | attr_open = 0                    |>> :attr_resolved
+    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c[':']                   | /error(attribute_under_attribute) | attr_open = 0 | -> |>> :attr_bad_attr
+    |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> |>> :attr_node
+    |c[<BS>]                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :after_content
+    |default                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | /prose(col, :elem_col, <>) |>> :after_content
 
   |state[:attr_resolved]
     |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
@@ -486,9 +510,10 @@
     |default                  | /prose(col, :elem_col, ':')      |>> :after_content
 
   |state[:attr_after]
-    |if[attr_open == 2]       | attr_open = 0                    |>> :battr_node
+    |if[attr_open == 2]       | attr_open = 4                    |>> :battr_node
     |if[attr_open == 1]                                          |>> :after_content_open
-    |default                                                     |>> :after_content
+    |if[attr_open == 3]                                          |>> :after_content
+    |default                  | attr_open = 4                    |>> :after_content
 
   ; Block-line sameline node value (:a |node on its own line): parse the
   ; node as the value — again, no content_seen.
@@ -612,10 +637,10 @@
 ; source suggested; ruled 2026-07-16). A '|' in value position is left
 ; unconsumed with NO event — the caller parses the node, and on the flat
 ; wire "Attr followed by ElementStart" IS the node-value encoding.
-; KNOWN GAPS (fixture-red, staged): quoted flag keys (:'ready?' — needs
-; last-content-byte tracking through the quote scan); deferred block values
-; (:key at EOL + deeper lines — needs attr-open state in the element loop,
-; pass 1c).
+; Deferred block values resolve in the element children loop (attr_open
+; modes: 1 OPEN needs-value, 3 BODY collecting text segments, 4 DONE
+; finished — deeper material is warn+stack). Segment re-emission uses the
+; SAVE(akey) capture (descent SAVE/USE_SAVED, added 2026-07-16).
 
 ; Returns 1 when the attribute is left OPEN at end-of-line (deferred value:
 ; deeper lines are the body — the caller's children loop resolves it, or
@@ -631,12 +656,12 @@
   ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
   ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
   |state[:post_key]
-    |if[PREV == '?']                                             |>> :flag
-    |default                                                     |>> :value_start
+    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
+    |default                  | SAVE(akey)                       |>> :value_start
 
   |state[:post_qkey]
-    |if[PREV == '?']          | ->                               |>> :flag
-    |default                  | ->                               |>> :value_start
+    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
+    |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
     | /flag_value('\0')                                          |>> :post_value
@@ -646,8 +671,14 @@
     |c['\n']                  | result = 1                       |return result
     |c[':']                   | /error(missing_attribute_value) | Nil |>> :key_next
     |c['|']                   | result = 2                       |return result
-    |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
-    |default                  | /value(0, '\0')                  |>> :post_value
+    |c[<BS>]                  | result = 3 | -> | /attr_text_verbatim('\0') |return result
+    |default                  | vstate = /value(0, '\0')         |>> :post_value_route
+
+  ; A text-blob value may continue on deeper lines (BODY mode, code 3);
+  ; scalar values are finished (DONE zone, code 0 -> caller maps to 4).
+  |state[:post_value_route]
+    |if[vstate == 3]          | result = 3                       |>> :post_value
+    |default                                                     |>> :post_value
 
   ; Consume the ':' that ended a valueless attr and parse the next key.
   |state[:key_next]
@@ -655,14 +686,18 @@
     |default                  |                                  |return result
 
   ; After a finished value: framed comment, next attribute (uniform scan),
-  ; or end of line. Trailing text / boundary-\ after a FINISHED value is
-  ; the warn+stack segment case — staged (needs re-emittable key); interim
-  ; the material is left to the caller so no bytes are lost.
+  ; end of line — or trailing material, which is the uniform two-values
+  ; rule: WARN + stack as a further segment under the same key (the key is
+  ; re-emitted from its SAVE(akey) capture). A boundary-\ only forces text
+  ; mode; ownership is identical (R3, 2026-07-16).
   |state[:post_value]
     |c[' \t']                 | ->                               |>>
     |c[';']                   | -> | /line_comment_content        |return result
     |c[':']                   |                                  |>> :key_next
-    |default                  |                                  |return result
+    |c['\n']                  |                                  |return result
+    |c['|']                   |                                  |return result
+    |c[<BS>]                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | -> | /attr_text_verbatim('\0') |return result
+    |default                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | /attr_trailing_blob('\0') |return result
 
 
 ; Returns 2 when a '|' follows in value position — the node is the attr's
@@ -676,12 +711,12 @@
   ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
   ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
   |state[:post_key]
-    |if[PREV == '?']                                             |>> :flag
-    |default                                                     |>> :value_start
+    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
+    |default                  | SAVE(akey)                       |>> :value_start
 
   |state[:post_qkey]
-    |if[PREV == '?']          | ->                               |>> :flag
-    |default                  | ->                               |>> :value_start
+    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
+    |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
     | /flag_value('\0')                                          |return result
@@ -703,12 +738,12 @@
   ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
   ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
   |state[:post_key]
-    |if[PREV == '?']                                             |>> :flag
-    |default                                                     |>> :value_start
+    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
+    |default                  | SAVE(akey)                       |>> :value_start
 
   |state[:post_qkey]
-    |if[PREV == '?']          | ->                               |>> :flag
-    |default                  | ->                               |>> :value_start
+    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
+    |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
     | /flag_value('}')                                           |return
@@ -820,12 +855,14 @@
 ; Value parsing - unified function with context parameters
 ;   :space_term = 0 (block: space is content) or 1 (space terminates)
 ;   :bracket = 0 (none), '}' (embedded), ']' (array)
-|function[value]  :space_term :bracket
+; Returns 0 for finished scalar values, 3 when the value was a text blob
+; (see typed_value) — block_attr maps 3 to the BODY continuation mode.
+|function[value:INT]  :space_term :bracket
   |state[:start]
     |c[<DQ>]                  | -> | /double_quoted              |return
     |c[<SQ>]                  | -> | /single_quoted              |return
     |c['[']                   | /array                           |return  ; array owns its delimiter
-    |default                  | MARK | /typed_value(:space_term, :bracket) |return
+    |default                  | MARK | vres = /typed_value(:space_term, :bracket) |return vres
 
 ; (value_bracket removed 2026-07-15: [key] values now route through the
 ; typed /value path — CORE "Identity": every type is available in brackets,
@@ -860,15 +897,76 @@
 ; Prose / Text
 ; ============================================================================
 
+; attr_trailing_blob - the warn+stack trailing segment on a block attr line
+; after a FINISHED value (the Warning and re-emitted Attr are the caller's).
+; Prose-shaped like any blob: framed ' ; ' opens a comment; runs to EOL or
+; the embedded bracket.
+|function[attr_trailing_blob]  :bracket  | MARK
+  |state[:main]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |c[';']                   |                                  |>> :semi
+    |default                  | ->                               |>>
+
+  |state[:semi]
+    |if[PREV == ' ']          | ->                               |>> :semi_after
+    |default                  | ->                               |>> :main
+
+  |state[:semi_after]
+    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |default                  |                                  |>> :main
+
+
 ; attr_text_verbatim - value-position `\` (CORE "Value-Position \"): the
 ; backslash was consumed by the caller; the rest of the line (or the
-; embedded bracket) is the attribute's TEXT value — literal, no sameline
-; comment affordance (P3-3).
-|function[attr_text_verbatim:Text]  :bracket
+; embedded bracket) is the attribute's TEXT value. Prose-shaped (S2 ruling:
+; \-forced text is dead to line-level structure but alive to inline forms,
+; individually escapable) — but NO sameline-comment affordance (P3-3): a
+; framed ' ; ' here is literal. Inline forms re-emit the key (flat wire).
+|function[attr_text_verbatim]  :bracket  | MARK
   |state[:main]
-    |c['\n']                  | TERM                             |return
-    |c[:bracket]              | TERM                             |return
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |c['|']                   | ->                               |>> :pipe
+    |c['!']                   | ->                               |>> :bang
+    |c[';']                   | ->                               |>> :semi
+    |c[<BS>]                  | ->                               |>> :bs
     |default                  | ->                               |>>
+
+  |state[:pipe]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /embedded |>> :after_inline
+    |default                  |                                  |>> :main
+  |state[:bang]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | Attr(USE_SAVED(akey)) | -> | /sameline_directive |>> :after_inline
+    |default                  |                                  |>> :main
+  |state[:semi]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :main
+    |default                  |                                  |>> :main
+
+  |state[:bs]
+    |c['|']                   | ->                               |>> :bs_pipe
+    |c['!']                   | ->                               |>> :bs_bang
+    |c[';']                   | ->                               |>> :bs_semi
+    |default                  |                                  |>> :main
+  |state[:bs_pipe]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
+    |default                  |                                  |>> :main
+  |state[:bs_bang]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
+    |default                  |                                  |>> :main
+  |state[:bs_semi]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
+    |default                  |                                  |>> :main
+
+  |state[:after_inline]
+    |eof                      |                                  |return
+    |c['\n']                  |                                  |return
+    |c[:bracket]              |                                  |return
+    |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :main
 
 
 ; verbatim_text - head-position `\` escape (CORE "Escape (\)"): the

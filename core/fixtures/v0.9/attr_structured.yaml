@@ -97,7 +97,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "the-attribute"]
-    - [Text, "some text and then "]
+    - [Text, " some text and then "]
     - [Attr, "the-attribute"]
     - EmbeddedStart
     - [Name, "a"]
@@ -163,13 +163,20 @@
 
 # --- No attribute-under-attribute (CORE "Node Values") ---------------------
 
-# Recovery shape after the error (where ':first 1's bytes land — dropped
-# would violate the keep-everything posture; ingested-as-what is unruled) is
-# an open supplement item — panic-only until the grammar iteration settles it.
+# Recovery (settled in the grammar iteration, keep-everything posture): the
+# open attr gets its Nil (shape preserved), the error explains it, and the
+# offending line's bytes are kept as prose of the element.
 - id: attr_under_attr_error
-  desc: a :key directly under an attribute is an error (use a node carrier) — recovery shape open
+  desc: a :key directly under an attribute errors; attr gets Nil; line kept as prose
   udon: "|el\n  :theta\n    :first 1\n"
-  events: []
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "theta"]
+    - [Error, "AttributeUnderAttribute"]
+    - Nil
+    - [Text, ":first 1"]
+    - ElementEnd
 
 - id: heterogeneous_stack
   desc: stacks are heterogeneous — scalar, node, text under one key
