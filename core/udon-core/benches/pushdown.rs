@@ -11,7 +11,7 @@ use udon_core::{Parser, PushdownParser};
 
 fn doc_1mb() -> Vec<u8> {
     let base = std::fs::read("../examples/comprehensive.udon")
-        .expect("run from core/ (examples/comprehensive.udon)");
+        .expect("core/examples/comprehensive.udon (cargo runs benches with CWD = the udon-core package root)");
     let mut doc = Vec::with_capacity(1 << 20);
     while doc.len() < (1 << 20) {
         doc.extend_from_slice(&base);

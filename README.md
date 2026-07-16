@@ -90,7 +90,7 @@ Attributes are edges, elements are nodes — and as of core 0.9 an edge may term
 
 The test: if the label describes the *relationship to the parent*, it's an `:attribute` (scalar or node value); if the name describes the thing *itself* and position matters, it's a `|child`.
 
-> **Note:** The example documents in `examples/` don't yet fully illustrate this distinction. Improvements pending.
+> **Note:** The example documents in `design/examples/` don't yet fully illustrate this distinction. Improvements pending.
 
 ### Self-Chunking for RAG/Embeddings
 
@@ -161,7 +161,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 | [spec/CORE.md](spec/CORE.md) | Full specification (0.9.0-alpha.1 in progress; 0.8.0 tagged `core-v0.8.0`) |
 | [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
 | [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
-| [examples/](examples/) | Comprehensive syntax examples |
+| [design/examples/](design/examples/) | Comprehensive syntax examples |
 
 ## Implementation
 

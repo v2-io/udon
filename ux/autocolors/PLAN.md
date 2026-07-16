@@ -97,7 +97,7 @@ Make the NOTES' composition theory *measurable*, then optimize:
   document corpus. Visual-weight heuristics (warm > cool, dark > light,
   saturated > unsaturated) are listed in NOTES with orderings; encode them.
 - **Density-adaptive allocation:** fitness evaluated against *measured*
-  class densities (per-document, or per-corpus with `examples/` +
+  class densities (per-document, or per-corpus with `design/examples/` +
   `spec/CORE.md` fences as the default corpus), so emphasis is spent where
   information actually is. This is the "possibly customized per language
   (different densities)" line from the 2011 README, finally cashable.

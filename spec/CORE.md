@@ -1760,7 +1760,7 @@ Support callback/event mode for incremental processing:
 
 ## Examples
 
-For additional authoring guidance, see `examples/practices-gotchas.udon` (in review).
+For additional authoring guidance, see `design/examples/practices-gotchas.udon` (in review).
 
 ### Configuration
 

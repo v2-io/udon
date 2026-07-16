@@ -12,8 +12,8 @@ structure), so even minimal editor awareness has outsized value. Everything
 here follows one rule: **under-highlight rather than mis-highlight** — a
 wrong color teaches a wrong parse.
 
-All three implementations were validated against `examples/cheatsheet.udon`
-and `examples/comprehensive.udon` (the Obsidian tokenizer and the TextMate
+All three implementations were validated against `design/examples/cheatsheet.udon`
+and `design/examples/comprehensive.udon` (the Obsidian tokenizer and the TextMate
 grammar via automated token dumps; the vim syntax via headless `vim -es`
 synID dumps). Spec of record: `spec/CORE.md` v0.8.0-alpha.1.
 
