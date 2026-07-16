@@ -667,6 +667,29 @@
 ; finished — deeper material is warn+stack). Segment re-emission uses the
 ; SAVE(akey) capture (descent SAVE/USE_SAVED, added 2026-07-16).
 
+; Shared attribute-key parsing for all three attribute contexts (block,
+; sameline, embedded). Parses the bare or quoted key, SAVEs it into the
+; `akey` slot (re-emitted per value segment — flat wire), and reports
+; flag-ness: returns 1 when the key's terminal character is '?' (flag
+; semantics, CORE "Attribute Keys and Flags"; quoted and bare keys alike —
+; R4, 2026-07-16), else 0. Callers guarantee the first char passes the
+; attr guard (name start or quote).
+|function[attr_ident:INT]  | result = 0
+  |state[:key]
+    |c[XLBL_START]            | /attr_key                        |>> :post_key
+    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
+
+  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
+  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char.
+  |state[:post_key]
+    |if[PREV == '?']          | SAVE(akey) | result = 1          |return result
+    |default                  | SAVE(akey)                       |return result
+
+  |state[:post_qkey]
+    |if[PREV == '?']          | SAVE(akey) | -> | result = 1     |return result
+    |default                  | SAVE(akey) | ->                  |return result
+
+
 ; Returns 1 when the attribute is left OPEN at end-of-line (deferred value:
 ; deeper lines are the body — the caller's children loop resolves it, or
 ; errors MissingAttributeValue+Nil if nothing deeper claims it). Uniform
@@ -674,19 +697,10 @@
 ; attribute on the SAME block line; block run-to-EOL is gone.
 |function[block_attr:INT]  | result = 0
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :post_key
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
-
-  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
-  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
-  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
-  |state[:post_key]
-    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
-    |default                  | SAVE(akey)                       |>> :value_start
-
-  |state[:post_qkey]
-    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
-    |default                  | SAVE(akey) | ->                  |>> :value_start
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
 
   |state[:flag]
     |default | fstate = /flag_value('\0')                        |>> :flag_route
@@ -760,19 +774,10 @@
 ; VALUE (parsed by the caller without entering the children phase).
 |function[sameline_attr:INT]  | result = 0
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :post_key
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
-
-  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
-  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
-  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
-  |state[:post_key]
-    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
-    |default                  | SAVE(akey)                       |>> :value_start
-
-  |state[:post_qkey]
-    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
-    |default                  | SAVE(akey) | ->                  |>> :value_start
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
 
   |state[:flag]
     |default | fstate = /flag_value('\0')                        |>> :flag_route
@@ -817,19 +822,10 @@
 
 |function[sameline_attr_embedded]
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :post_key
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
-
-  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
-  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
-  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
-  |state[:post_key]
-    |if[PREV == '?']          | SAVE(akey)                       |>> :flag
-    |default                  | SAVE(akey)                       |>> :value_start
-
-  |state[:post_qkey]
-    |if[PREV == '?']          | SAVE(akey) | ->                  |>> :flag
-    |default                  | SAVE(akey) | ->                  |>> :value_start
+    |default                  | kf = /attr_ident                                                       |>> :key_route
+  |state[:key_route]
+    |if[kf == 1]                                                 |>> :flag
+    |default                                                     |>> :value_start
 
   |state[:flag]
     |default | fstate = /flag_value('}')                         |return

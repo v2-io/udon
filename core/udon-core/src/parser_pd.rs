@@ -70,9 +70,16 @@ struct SuffixFrame {
 }
 
 #[derive(Debug)]
+struct AttrIdentFrame {
+    st: AttrIdentSt,
+    result: i32,
+}
+
+#[derive(Debug)]
 struct BlockAttrFrame {
     st: BlockAttrSt,
     result: i32,
+    kf: i32,
     fstate: i32,
     vstate: i32,
 }
@@ -81,6 +88,7 @@ struct BlockAttrFrame {
 struct SamelineAttrFrame {
     st: SamelineAttrSt,
     result: i32,
+    kf: i32,
     fstate: i32,
     vv: i32,
 }
@@ -88,6 +96,7 @@ struct SamelineAttrFrame {
 #[derive(Debug)]
 struct SamelineAttrEmbeddedFrame {
     st: SamelineAttrEmbeddedSt,
+    kf: i32,
     fstate: i32,
     ev: i32,
 }
@@ -316,13 +325,16 @@ enum QuotedClassSt { PdEntry, Main, PdK116, }
 enum SuffixSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockAttrSt { PdEntry, Key, PostKey, PostQkey, Flag, FlagRoute, ValueStart, Vff1, Vff2, Vbang, Vinterp, PostValueRoute, KeyNext, PostValue, PdK117, PdK118, PdK119, PdK120, PdK121, PdK122, PdK123, PdK124, PdK125, PdK126, PdK127, PdK128, PdK129, PdK130, PdK131, }
+enum AttrIdentSt { PdEntry, Key, PostKey, PostQkey, PdK117, PdK118, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineAttrSt { PdEntry, Key, PostKey, PostQkey, Flag, FlagRoute, ValueStart, Vroute, Vff1, Vff2, Vbang, Vinterp, PdK132, PdK133, PdK134, PdK135, PdK136, PdK137, PdK138, PdK139, PdK140, PdK141, PdK142, PdK143, }
+enum BlockAttrSt { PdEntry, Key, KeyRoute, Flag, FlagRoute, ValueStart, Vff1, Vff2, Vbang, Vinterp, PostValueRoute, KeyNext, PostValue, PdK119, PdK120, PdK121, PdK122, PdK123, PdK124, PdK125, PdK126, PdK127, PdK128, PdK129, PdK130, PdK131, PdK132, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineAttrEmbeddedSt { PdEntry, Key, PostKey, PostQkey, Flag, ValueStart, Evroute, PdK144, PdK145, PdK146, PdK147, PdK148, }
+enum SamelineAttrSt { PdEntry, Key, KeyRoute, Flag, FlagRoute, ValueStart, Vroute, Vff1, Vff2, Vbang, Vinterp, PdK133, PdK134, PdK135, PdK136, PdK137, PdK138, PdK139, PdK140, PdK141, PdK142, PdK143, }
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum SamelineAttrEmbeddedSt { PdEntry, Key, KeyRoute, Flag, ValueStart, Evroute, PdK144, PdK145, PdK146, PdK147, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum FlagValueSt { PdEntry, Start, Token, TokKw, TokAfter, Blob, }
@@ -331,13 +343,13 @@ enum FlagValueSt { PdEntry, Start, Token, TokKw, TokAfter, Blob, }
 enum AttrKeySt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrKeyQuotedSt { PdEntry, Main, PdK149, }
+enum AttrKeyQuotedSt { PdEntry, Main, PdK148, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockRefSt { PdEntry, Main, PostKey, PdK150, PdK151, }
+enum BlockRefSt { PdEntry, Main, PostKey, PdK149, PdK150, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ValueSt { PdEntry, Start, PdK152, PdK153, PdK154, PdK155, }
+enum ValueSt { PdEntry, Start, PdK151, PdK152, PdK153, PdK154, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum DoubleQuotedSt { PdEntry, Main, }
@@ -346,79 +358,79 @@ enum DoubleQuotedSt { PdEntry, Main, }
 enum SingleQuotedSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ArraySt { PdEntry, Entry, Items, PdK156, }
+enum ArraySt { PdEntry, Entry, Items, PdK155, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, PdK157, PdK158, PdK159, }
+enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, PdK156, PdK157, PdK158, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, BsSemi, AfterInline, PdK160, PdK161, PdK162, }
+enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, BsSemi, AfterInline, PdK159, PdK160, PdK161, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum VerbatimTextSt { PdEntry, Main, Vpipe, Vbang, Vsemi, Vbs, VbsPipe, VbsBang, VbsSemi, Vafter, PdK163, PdK164, PdK165, }
+enum VerbatimTextSt { PdEntry, Main, Vpipe, Vbang, Vsemi, Vbs, VbsPipe, VbsBang, VbsSemi, Vafter, PdK162, PdK163, PdK164, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ProseSt { PdEntry, Content, PdK166, PdK167, }
+enum ProseSt { PdEntry, Content, PdK165, PdK166, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum ProseBackticksSt { PdEntry, Content, PdK168, PdK169, }
+enum ProseBackticksSt { PdEntry, Content, PdK167, PdK168, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum TextBackticksSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK170, PdK171, PdK172, }
+enum TextBackticksSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK169, PdK170, PdK171, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK173, PdK174, PdK175, PdK176, }
+enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK172, PdK173, PdK174, PdK175, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum TextSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK177, PdK178, PdK179, }
+enum TextSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK176, PdK177, PdK178, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK180, PdK181, PdK182, PdK183, PdK184, PdK185, PdK186, PdK187, }
+enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, AfterInline, PdK179, PdK180, PdK181, PdK182, PdK183, PdK184, PdK185, PdK186, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum LineCommentSt { PdEntry, Check, FirstLine, Children, ChildrenWs, CheckContinuation, AtContentBase, ContContent, ContLine, PdK188, }
+enum LineCommentSt { PdEntry, Check, FirstLine, Children, ChildrenWs, CheckContinuation, AtContentBase, ContContent, ContLine, PdK187, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum LineCommentContentSt { PdEntry, PdK189, PdK190, }
+enum LineCommentContentSt { PdEntry, PdK188, PdK189, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SkipBraceBalancedSt { PdEntry, Main, Check, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BraceCommentSt { PdEntry, Main, PdK191, }
+enum BraceCommentSt { PdEntry, Main, PdK190, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum CommentTextBracedSt { PdEntry, Main, Done, PdK192, }
+enum CommentTextBracedSt { PdEntry, Main, Done, PdK191, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum EmbeddedSt { PdEntry, Identity, PostIdentity, PreContent, PreContentMl, CheckAttr, PdK193, PdK194, PdK195, PdK196, PdK197, PdK198, PdK199, }
+enum EmbeddedSt { PdEntry, Identity, PostIdentity, PreContent, PreContentMl, CheckAttr, PdK192, PdK193, PdK194, PdK195, PdK196, PdK197, PdK198, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, MlWs, PdK200, PdK201, PdK202, }
+enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, CheckBs, CheckBsPipe, CheckBsBang, CheckBsSemi, MlWs, PdK199, PdK200, PdK201, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK203, PdK204, PdK205, PdK206, PdK207, PdK208, PdK209, PdK210, PdK211, PdK212, PdK213, PdK214, PdK215, PdK216, PdK217, PdK218, PdK219, PdK220, }
+enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK202, PdK203, PdK204, PdK205, PdK206, PdK207, PdK208, PdK209, PdK210, PdK211, PdK212, PdK213, PdK214, PdK215, PdK216, PdK217, PdK218, PdK219, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum DirectiveArgsSt { PdEntry, PdK221, PdK222, }
+enum DirectiveArgsSt { PdEntry, PdK220, PdK221, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirectiveSt { PdEntry, Dispatch, PdK223, PdK224, PdK225, }
+enum SamelineDirectiveSt { PdEntry, Dispatch, PdK222, PdK223, PdK224, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum InterpolationSt { PdEntry, Main, Closing, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineRawSt { PdEntry, Kind, SkipSep, Content, Scan, CheckClose, PdK226, }
+enum SamelineRawSt { PdEntry, Kind, SkipSep, Content, Scan, CheckClose, PdK225, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK227, PdK228, PdK229, PdK230, }
+enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK226, PdK227, PdK228, PdK229, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum EmitBareValueSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum TypedValueSt { PdEntry, Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobBs, BlobBsPipe, BlobBsBang, BlobBsSemi, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued, PdK231, PdK232, PdK233, PdK234, PdK235, PdK236, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, PdK243, PdK244, PdK245, PdK246, PdK247, PdK248, PdK249, PdK250, PdK251, PdK252, PdK253, PdK254, }
+enum TypedValueSt { PdEntry, Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobBs, BlobBsPipe, BlobBsBang, BlobBsSemi, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued, PdK230, PdK231, PdK232, PdK233, PdK234, PdK235, PdK236, PdK237, PdK238, PdK239, PdK240, PdK241, PdK242, PdK243, PdK244, PdK245, PdK246, PdK247, PdK248, PdK249, PdK250, PdK251, PdK252, PdK253, }
 
 #[derive(Debug)]
 enum Frame {
@@ -432,6 +444,7 @@ enum Frame {
     ClassName(ClassNameFrame),
     QuotedClass(QuotedClassFrame),
     Suffix(SuffixFrame),
+    AttrIdent(AttrIdentFrame),
     BlockAttr(BlockAttrFrame),
     SamelineAttr(SamelineAttrFrame),
     SamelineAttrEmbedded(SamelineAttrEmbeddedFrame),
@@ -928,6 +941,16 @@ impl PushdownParser {
         }));
     }
 
+    fn enter_attr_ident<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(StreamEvent),
+    {
+        self.stack.push(Frame::AttrIdent(AttrIdentFrame {
+            st: AttrIdentSt::PdEntry,
+            result: 0,
+        }));
+    }
+
     fn enter_block_attr<F>(&mut self, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
@@ -935,6 +958,7 @@ impl PushdownParser {
         self.stack.push(Frame::BlockAttr(BlockAttrFrame {
             st: BlockAttrSt::PdEntry,
             result: 0,
+            kf: 0,
             fstate: 0,
             vstate: 0,
         }));
@@ -947,6 +971,7 @@ impl PushdownParser {
         self.stack.push(Frame::SamelineAttr(SamelineAttrFrame {
             st: SamelineAttrSt::PdEntry,
             result: 0,
+            kf: 0,
             fstate: 0,
             vv: 0,
         }));
@@ -958,6 +983,7 @@ impl PushdownParser {
     {
         self.stack.push(Frame::SamelineAttrEmbedded(SamelineAttrEmbeddedFrame {
             st: SamelineAttrEmbeddedSt::PdEntry,
+            kf: 0,
             fstate: 0,
             ev: 0,
         }));
@@ -4351,30 +4377,30 @@ impl PushdownParser {
                         }
                     }
                 }
-                Frame::BlockAttr(mut f) => {
+                Frame::AttrIdent(mut f) => {
                     match f.st {
-                        BlockAttrSt::PdEntry => {
-                            f.st = BlockAttrSt::Key;
-                            self.stack.push(Frame::BlockAttr(f));
+                        AttrIdentSt::PdEntry => {
+                            f.st = AttrIdentSt::Key;
+                            self.stack.push(Frame::AttrIdent(f));
                             continue 'run;
                         }
-                        BlockAttrSt::Key => {
+                        AttrIdentSt::Key => {
                             if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::BlockAttr(f)); return ParseResult::NeedMoreData; }
+                                if !self.finished { self.stack.push(Frame::AttrIdent(f)); return ParseResult::NeedMoreData; }
                                 self.ret = 0;
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockAttrSt::PdK117;
-                                    self.stack.push(Frame::BlockAttr(f));
+                                    f.st = AttrIdentSt::PdK117;
+                                    self.stack.push(Frame::AttrIdent(f));
                                     self.enter_attr_key(on_event);
                                     continue 'run;
                                 }
                                 Some(b'\'') => {
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK118;
-                                    self.stack.push(Frame::BlockAttr(f));
+                                    f.st = AttrIdentSt::PdK118;
+                                    self.stack.push(Frame::AttrIdent(f));
                                     self.enter_attr_key_quoted(on_event);
                                     continue 'run;
                                 }
@@ -4384,34 +4410,71 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        BlockAttrSt::PostKey => {
+                        AttrIdentSt::PostKey => {
                             match self.peek() {
                                 _ if self.prev() == b'?' => {
                                     { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    f.st = BlockAttrSt::Flag;
-                                    self.stack.push(Frame::BlockAttr(f));
+                                    f.result = 1;
+                                    self.ret = f.result;
                                     continue 'run;
                                 }
                                 _ => {
                                     { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    f.st = BlockAttrSt::ValueStart;
-                                    self.stack.push(Frame::BlockAttr(f));
+                                    self.ret = f.result;
                                     continue 'run;
                                 }
                             }
                         }
-                        BlockAttrSt::PostQkey => {
+                        AttrIdentSt::PostQkey => {
                             match self.peek() {
                                 _ if self.prev() == b'?' => {
                                     { let cap = self.save_capture(); self.saved.insert("akey", cap); }
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::Flag;
-                                    self.stack.push(Frame::BlockAttr(f));
+                                    f.result = 1;
+                                    self.ret = f.result;
                                     continue 'run;
                                 }
                                 _ => {
                                     { let cap = self.save_capture(); self.saved.insert("akey", cap); }
                                     self.advance_or_pend();
+                                    self.ret = f.result;
+                                    continue 'run;
+                                }
+                            }
+                        }
+                        AttrIdentSt::PdK117 => {
+                            f.st = AttrIdentSt::PostKey;
+                            self.stack.push(Frame::AttrIdent(f));
+                            continue 'run;
+                        }
+                        AttrIdentSt::PdK118 => {
+                            f.st = AttrIdentSt::PostQkey;
+                            self.stack.push(Frame::AttrIdent(f));
+                            continue 'run;
+                        }
+                    }
+                }
+                Frame::BlockAttr(mut f) => {
+                    match f.st {
+                        BlockAttrSt::PdEntry => {
+                            f.st = BlockAttrSt::Key;
+                            self.stack.push(Frame::BlockAttr(f));
+                            continue 'run;
+                        }
+                        BlockAttrSt::Key => {
+                            f.st = BlockAttrSt::PdK119;
+                            self.stack.push(Frame::BlockAttr(f));
+                            self.enter_attr_ident(on_event);
+                            continue 'run;
+                        }
+                        BlockAttrSt::KeyRoute => {
+                            match self.peek() {
+                                _ if f.kf == 1 => {
+                                    f.st = BlockAttrSt::Flag;
+                                    self.stack.push(Frame::BlockAttr(f));
+                                    continue 'run;
+                                }
+                                _ => {
                                     f.st = BlockAttrSt::ValueStart;
                                     self.stack.push(Frame::BlockAttr(f));
                                     continue 'run;
@@ -4419,7 +4482,7 @@ impl PushdownParser {
                             }
                         }
                         BlockAttrSt::Flag => {
-                            f.st = BlockAttrSt::PdK119;
+                            f.st = BlockAttrSt::PdK120;
                             let (pd_a0,) = (b'\0', );
                             self.stack.push(Frame::BlockAttr(f));
                             self.enter_flag_value(pd_a0, on_event);
@@ -4470,7 +4533,7 @@ impl PushdownParser {
                                     on_event(StreamEvent::Error { code: ParseErrorCode::MissingAttributeValue, span: self.gspan() });
                                     on_event(StreamEvent::Nil { content: Vec::new(), span: self.gspan() });
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK120;
+                                    f.st = BlockAttrSt::PdK121;
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -4495,14 +4558,14 @@ impl PushdownParser {
                                 Some(b'\\') => {
                                     f.result = 3;
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK121;
+                                    f.st = BlockAttrSt::PdK122;
                                     let (pd_a0,) = (b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_attr_text_verbatim(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = BlockAttrSt::PdK122;
+                                    f.st = BlockAttrSt::PdK123;
                                     let (pd_a0, pd_a1,) = (0, b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -4525,7 +4588,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.prepend_bytes(b"`");
-                                    f.st = BlockAttrSt::PdK123;
+                                    f.st = BlockAttrSt::PdK124;
                                     let (pd_a0, pd_a1,) = (0, b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -4542,14 +4605,14 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'`') => {
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK124;
+                                    f.st = BlockAttrSt::PdK125;
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_freeform(on_event);
                                     continue 'run;
                                 }
                                 _ => {
                                     self.prepend_bytes(b"``");
-                                    f.st = BlockAttrSt::PdK125;
+                                    f.st = BlockAttrSt::PdK126;
                                     let (pd_a0, pd_a1,) = (0, b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -4577,7 +4640,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.prepend_bytes(b"!");
-                                    f.st = BlockAttrSt::PdK126;
+                                    f.st = BlockAttrSt::PdK127;
                                     let (pd_a0, pd_a1,) = (0, b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -4594,7 +4657,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK127;
+                                    f.st = BlockAttrSt::PdK128;
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_interpolation(on_event);
                                     continue 'run;
@@ -4602,7 +4665,7 @@ impl PushdownParser {
                                 _ => {
                                     self.prepend_bytes(b"!");
                                     self.prepend_bytes(b"{");
-                                    f.st = BlockAttrSt::PdK128;
+                                    f.st = BlockAttrSt::PdK129;
                                     let (pd_a0, pd_a1,) = (0, b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -4679,7 +4742,7 @@ impl PushdownParser {
                                 }
                                 Some(b';') => {
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK129;
+                                    f.st = BlockAttrSt::PdK130;
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -4701,7 +4764,7 @@ impl PushdownParser {
                                     on_event(StreamEvent::Warning { content: b"AttributeValueExtendedByTrailingText".to_vec(), span: self.gspan() });
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = BlockAttrSt::PdK130;
+                                    f.st = BlockAttrSt::PdK131;
                                     let (pd_a0,) = (b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_attr_text_verbatim(pd_a0, on_event);
@@ -4710,7 +4773,7 @@ impl PushdownParser {
                                 _ => {
                                     on_event(StreamEvent::Warning { content: b"AttributeValueExtendedByTrailingText".to_vec(), span: self.gspan() });
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
-                                    f.st = BlockAttrSt::PdK131;
+                                    f.st = BlockAttrSt::PdK132;
                                     let (pd_a0,) = (b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
                                     self.enter_attr_trailing_blob(pd_a0, on_event);
@@ -4718,24 +4781,16 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        BlockAttrSt::PdK117 => {
-                            f.st = BlockAttrSt::PostKey;
-                            self.stack.push(Frame::BlockAttr(f));
-                            continue 'run;
-                        }
-                        BlockAttrSt::PdK118 => {
-                            f.st = BlockAttrSt::PostQkey;
-                            self.stack.push(Frame::BlockAttr(f));
-                            continue 'run;
-                        }
                         BlockAttrSt::PdK119 => {
-                            f.fstate = self.ret;
-                            f.st = BlockAttrSt::FlagRoute;
+                            f.kf = self.ret;
+                            f.st = BlockAttrSt::KeyRoute;
                             self.stack.push(Frame::BlockAttr(f));
                             continue 'run;
                         }
                         BlockAttrSt::PdK120 => {
-                            self.ret = f.result;
+                            f.fstate = self.ret;
+                            f.st = BlockAttrSt::FlagRoute;
+                            self.stack.push(Frame::BlockAttr(f));
                             continue 'run;
                         }
                         BlockAttrSt::PdK121 => {
@@ -4743,9 +4798,7 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BlockAttrSt::PdK122 => {
-                            f.vstate = self.ret;
-                            f.st = BlockAttrSt::PostValueRoute;
-                            self.stack.push(Frame::BlockAttr(f));
+                            self.ret = f.result;
                             continue 'run;
                         }
                         BlockAttrSt::PdK123 => {
@@ -4755,13 +4808,13 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BlockAttrSt::PdK124 => {
-                            self.ret = f.result;
-                            continue 'run;
-                        }
-                        BlockAttrSt::PdK125 => {
                             f.vstate = self.ret;
                             f.st = BlockAttrSt::PostValueRoute;
                             self.stack.push(Frame::BlockAttr(f));
+                            continue 'run;
+                        }
+                        BlockAttrSt::PdK125 => {
+                            self.ret = f.result;
                             continue 'run;
                         }
                         BlockAttrSt::PdK126 => {
@@ -4771,18 +4824,20 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BlockAttrSt::PdK127 => {
-                            f.st = BlockAttrSt::PostValue;
-                            self.stack.push(Frame::BlockAttr(f));
-                            continue 'run;
-                        }
-                        BlockAttrSt::PdK128 => {
                             f.vstate = self.ret;
                             f.st = BlockAttrSt::PostValueRoute;
                             self.stack.push(Frame::BlockAttr(f));
                             continue 'run;
                         }
+                        BlockAttrSt::PdK128 => {
+                            f.st = BlockAttrSt::PostValue;
+                            self.stack.push(Frame::BlockAttr(f));
+                            continue 'run;
+                        }
                         BlockAttrSt::PdK129 => {
-                            self.ret = f.result;
+                            f.vstate = self.ret;
+                            f.st = BlockAttrSt::PostValueRoute;
+                            self.stack.push(Frame::BlockAttr(f));
                             continue 'run;
                         }
                         BlockAttrSt::PdK130 => {
@@ -4790,6 +4845,10 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BlockAttrSt::PdK131 => {
+                            self.ret = f.result;
+                            continue 'run;
+                        }
+                        BlockAttrSt::PdK132 => {
                             self.ret = f.result;
                             continue 'run;
                         }
@@ -4803,59 +4862,19 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineAttrSt::Key => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineAttr(f)); return ParseResult::NeedMoreData; }
-                                self.ret = 0;
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = SamelineAttrSt::PdK132;
-                                    self.stack.push(Frame::SamelineAttr(f));
-                                    self.enter_attr_key(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'\'') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineAttrSt::PdK133;
-                                    self.stack.push(Frame::SamelineAttr(f));
-                                    self.enter_attr_key_quoted(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    self.ret = 0;
-                                    continue 'run;
-                                }
-                            }
+                            f.st = SamelineAttrSt::PdK133;
+                            self.stack.push(Frame::SamelineAttr(f));
+                            self.enter_attr_ident(on_event);
+                            continue 'run;
                         }
-                        SamelineAttrSt::PostKey => {
+                        SamelineAttrSt::KeyRoute => {
                             match self.peek() {
-                                _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                _ if f.kf == 1 => {
                                     f.st = SamelineAttrSt::Flag;
                                     self.stack.push(Frame::SamelineAttr(f));
                                     continue 'run;
                                 }
                                 _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    f.st = SamelineAttrSt::ValueStart;
-                                    self.stack.push(Frame::SamelineAttr(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineAttrSt::PostQkey => {
-                            match self.peek() {
-                                _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineAttrSt::Flag;
-                                    self.stack.push(Frame::SamelineAttr(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    self.advance_or_pend();
                                     f.st = SamelineAttrSt::ValueStart;
                                     self.stack.push(Frame::SamelineAttr(f));
                                     continue 'run;
@@ -5079,13 +5098,9 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        SamelineAttrSt::PdK132 => {
-                            f.st = SamelineAttrSt::PostKey;
-                            self.stack.push(Frame::SamelineAttr(f));
-                            continue 'run;
-                        }
                         SamelineAttrSt::PdK133 => {
-                            f.st = SamelineAttrSt::PostQkey;
+                            f.kf = self.ret;
+                            f.st = SamelineAttrSt::KeyRoute;
                             self.stack.push(Frame::SamelineAttr(f));
                             continue 'run;
                         }
@@ -5151,57 +5166,19 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineAttrEmbeddedSt::Key => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::SamelineAttrEmbedded(f)); return ParseResult::NeedMoreData; }
-                                continue 'run;
-                            }
-                            match self.peek() {
-                                Some(b) if is_xlbl_start(b) => {
-                                    f.st = SamelineAttrEmbeddedSt::PdK144;
-                                    self.stack.push(Frame::SamelineAttrEmbedded(f));
-                                    self.enter_attr_key(on_event);
-                                    continue 'run;
-                                }
-                                Some(b'\'') => {
-                                    self.advance_or_pend();
-                                    f.st = SamelineAttrEmbeddedSt::PdK145;
-                                    self.stack.push(Frame::SamelineAttrEmbedded(f));
-                                    self.enter_attr_key_quoted(on_event);
-                                    continue 'run;
-                                }
-                                _ => {
-                                    continue 'run;
-                                }
-                            }
+                            f.st = SamelineAttrEmbeddedSt::PdK144;
+                            self.stack.push(Frame::SamelineAttrEmbedded(f));
+                            self.enter_attr_ident(on_event);
+                            continue 'run;
                         }
-                        SamelineAttrEmbeddedSt::PostKey => {
+                        SamelineAttrEmbeddedSt::KeyRoute => {
                             match self.peek() {
-                                _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                _ if f.kf == 1 => {
                                     f.st = SamelineAttrEmbeddedSt::Flag;
                                     self.stack.push(Frame::SamelineAttrEmbedded(f));
                                     continue 'run;
                                 }
                                 _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    f.st = SamelineAttrEmbeddedSt::ValueStart;
-                                    self.stack.push(Frame::SamelineAttrEmbedded(f));
-                                    continue 'run;
-                                }
-                            }
-                        }
-                        SamelineAttrEmbeddedSt::PostQkey => {
-                            match self.peek() {
-                                _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    self.advance_or_pend();
-                                    f.st = SamelineAttrEmbeddedSt::Flag;
-                                    self.stack.push(Frame::SamelineAttrEmbedded(f));
-                                    continue 'run;
-                                }
-                                _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
-                                    self.advance_or_pend();
                                     f.st = SamelineAttrEmbeddedSt::ValueStart;
                                     self.stack.push(Frame::SamelineAttrEmbedded(f));
                                     continue 'run;
@@ -5209,7 +5186,7 @@ impl PushdownParser {
                             }
                         }
                         SamelineAttrEmbeddedSt::Flag => {
-                            f.st = SamelineAttrEmbeddedSt::PdK146;
+                            f.st = SamelineAttrEmbeddedSt::PdK145;
                             let (pd_a0,) = (b'}', );
                             self.stack.push(Frame::SamelineAttrEmbedded(f));
                             self.enter_flag_value(pd_a0, on_event);
@@ -5239,14 +5216,14 @@ impl PushdownParser {
                                 }
                                 Some(b'\\') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineAttrEmbeddedSt::PdK147;
+                                    f.st = SamelineAttrEmbeddedSt::PdK146;
                                     let (pd_a0,) = (b'}', );
                                     self.stack.push(Frame::SamelineAttrEmbedded(f));
                                     self.enter_attr_text_verbatim(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineAttrEmbeddedSt::PdK148;
+                                    f.st = SamelineAttrEmbeddedSt::PdK147;
                                     let (pd_a0, pd_a1,) = (0, b'}', );
                                     self.stack.push(Frame::SamelineAttrEmbedded(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -5267,23 +5244,19 @@ impl PushdownParser {
                             }
                         }
                         SamelineAttrEmbeddedSt::PdK144 => {
-                            f.st = SamelineAttrEmbeddedSt::PostKey;
+                            f.kf = self.ret;
+                            f.st = SamelineAttrEmbeddedSt::KeyRoute;
                             self.stack.push(Frame::SamelineAttrEmbedded(f));
                             continue 'run;
                         }
                         SamelineAttrEmbeddedSt::PdK145 => {
-                            f.st = SamelineAttrEmbeddedSt::PostQkey;
-                            self.stack.push(Frame::SamelineAttrEmbedded(f));
-                            continue 'run;
-                        }
-                        SamelineAttrEmbeddedSt::PdK146 => {
                             f.fstate = self.ret;
                             continue 'run;
                         }
-                        SamelineAttrEmbeddedSt::PdK147 => {
+                        SamelineAttrEmbeddedSt::PdK146 => {
                             continue 'run;
                         }
-                        SamelineAttrEmbeddedSt::PdK148 => {
+                        SamelineAttrEmbeddedSt::PdK147 => {
                             f.ev = self.ret;
                             f.st = SamelineAttrEmbeddedSt::Evroute;
                             self.stack.push(Frame::SamelineAttrEmbedded(f));
@@ -5477,12 +5450,12 @@ impl PushdownParser {
                             continue 'run;
                         }
                         AttrKeyQuotedSt::Main => {
-                            f.st = AttrKeyQuotedSt::PdK149;
+                            f.st = AttrKeyQuotedSt::PdK148;
                             self.stack.push(Frame::AttrKeyQuoted(f));
                             self.enter_skip_single_quoted(on_event);
                             continue 'run;
                         }
-                        AttrKeyQuotedSt::PdK149 => {
+                        AttrKeyQuotedSt::PdK148 => {
                             self.set_term(0);
                             { let c = self.term_owned(); on_event(StreamEvent::Attr { content: c, span: self.gspan_from_mark() }); }
                             continue 'run;
@@ -5504,7 +5477,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'[') => {
-                                    f.st = BlockRefSt::PdK150;
+                                    f.st = BlockRefSt::PdK149;
                                     self.stack.push(Frame::BlockRef(f));
                                     continue 'run;
                                 }
@@ -5541,13 +5514,13 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        BlockRefSt::PdK150 => {
+                        BlockRefSt::PdK149 => {
                             if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
-                            f.st = BlockRefSt::PdK151;
+                            f.st = BlockRefSt::PdK150;
                             self.stack.push(Frame::BlockRef(f));
                             continue 'run;
                         }
-                        BlockRefSt::PdK151 => {
+                        BlockRefSt::PdK150 => {
                             self.advance_or_pend();
                             f.st = BlockRefSt::PostKey;
                             self.stack.push(Frame::BlockRef(f));
@@ -5571,33 +5544,37 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'"') => {
                                     self.advance_or_pend();
-                                    f.st = ValueSt::PdK152;
+                                    f.st = ValueSt::PdK151;
                                     self.stack.push(Frame::Value(f));
                                     self.enter_double_quoted(on_event);
                                     continue 'run;
                                 }
                                 Some(b'\'') => {
                                     self.advance_or_pend();
-                                    f.st = ValueSt::PdK153;
+                                    f.st = ValueSt::PdK152;
                                     self.stack.push(Frame::Value(f));
                                     self.enter_single_quoted(on_event);
                                     continue 'run;
                                 }
                                 Some(b'[') => {
-                                    f.st = ValueSt::PdK154;
+                                    f.st = ValueSt::PdK153;
                                     self.stack.push(Frame::Value(f));
                                     self.enter_array(on_event);
                                     continue 'run;
                                 }
                                 _ => {
                                     self.mark();
-                                    f.st = ValueSt::PdK155;
+                                    f.st = ValueSt::PdK154;
                                     let (pd_a0, pd_a1,) = (f.space_term, f.bracket, );
                                     self.stack.push(Frame::Value(f));
                                     self.enter_typed_value(pd_a0, pd_a1, on_event);
                                     continue 'run;
                                 }
                             }
+                        }
+                        ValueSt::PdK151 => {
+                            self.ret = 0;
+                            continue 'run;
                         }
                         ValueSt::PdK152 => {
                             self.ret = 0;
@@ -5608,10 +5585,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         ValueSt::PdK154 => {
-                            self.ret = 0;
-                            continue 'run;
-                        }
-                        ValueSt::PdK155 => {
                             f.vres = self.ret;
                             self.ret = f.vres;
                             continue 'run;
@@ -5737,7 +5710,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = ArraySt::PdK156;
+                                    f.st = ArraySt::PdK155;
                                     let (pd_a0, pd_a1,) = (1, b']', );
                                     self.stack.push(Frame::Array(f));
                                     self.enter_value(pd_a0, pd_a1, on_event);
@@ -5745,7 +5718,7 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        ArraySt::PdK156 => {
+                        ArraySt::PdK155 => {
                             f.st = ArraySt::Items;
                             self.stack.push(Frame::Array(f));
                             continue 'run;
@@ -5812,7 +5785,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::AttrTrailingBlob(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(-2);
                                 { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = AttrTrailingBlobSt::PdK157;
+                                f.st = AttrTrailingBlobSt::PdK156;
                                 self.stack.push(Frame::AttrTrailingBlob(f));
                                 self.enter_line_comment_content(on_event);
                                 continue 'run;
@@ -5821,7 +5794,7 @@ impl PushdownParser {
                                 Some(b' ') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = AttrTrailingBlobSt::PdK158;
+                                    f.st = AttrTrailingBlobSt::PdK157;
                                     self.stack.push(Frame::AttrTrailingBlob(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -5829,7 +5802,7 @@ impl PushdownParser {
                                 Some(b'\n') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = AttrTrailingBlobSt::PdK159;
+                                    f.st = AttrTrailingBlobSt::PdK158;
                                     self.stack.push(Frame::AttrTrailingBlob(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -5841,13 +5814,13 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        AttrTrailingBlobSt::PdK156 => {
+                            continue 'run;
+                        }
                         AttrTrailingBlobSt::PdK157 => {
                             continue 'run;
                         }
                         AttrTrailingBlobSt::PdK158 => {
-                            continue 'run;
-                        }
-                        AttrTrailingBlobSt::PdK159 => {
                             continue 'run;
                         }
                     }
@@ -5921,7 +5894,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK160;
+                                    f.st = AttrTextVerbatimSt::PdK159;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -5944,7 +5917,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK161;
+                                    f.st = AttrTextVerbatimSt::PdK160;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -5966,7 +5939,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::PdK162;
+                                    f.st = AttrTextVerbatimSt::PdK161;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -6096,17 +6069,17 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        AttrTextVerbatimSt::PdK159 => {
+                            f.st = AttrTextVerbatimSt::AfterInline;
+                            self.stack.push(Frame::AttrTextVerbatim(f));
+                            continue 'run;
+                        }
                         AttrTextVerbatimSt::PdK160 => {
                             f.st = AttrTextVerbatimSt::AfterInline;
                             self.stack.push(Frame::AttrTextVerbatim(f));
                             continue 'run;
                         }
                         AttrTextVerbatimSt::PdK161 => {
-                            f.st = AttrTextVerbatimSt::AfterInline;
-                            self.stack.push(Frame::AttrTextVerbatim(f));
-                            continue 'run;
-                        }
-                        AttrTextVerbatimSt::PdK162 => {
                             self.mark();
                             f.st = AttrTextVerbatimSt::Main;
                             self.stack.push(Frame::AttrTextVerbatim(f));
@@ -6173,7 +6146,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK163;
+                                    f.st = VerbatimTextSt::PdK162;
                                     self.stack.push(Frame::VerbatimText(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -6196,7 +6169,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK164;
+                                    f.st = VerbatimTextSt::PdK163;
                                     self.stack.push(Frame::VerbatimText(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -6219,7 +6192,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = VerbatimTextSt::PdK165;
+                                    f.st = VerbatimTextSt::PdK164;
                                     self.stack.push(Frame::VerbatimText(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -6349,17 +6322,17 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        VerbatimTextSt::PdK162 => {
+                            f.st = VerbatimTextSt::Vafter;
+                            self.stack.push(Frame::VerbatimText(f));
+                            continue 'run;
+                        }
                         VerbatimTextSt::PdK163 => {
                             f.st = VerbatimTextSt::Vafter;
                             self.stack.push(Frame::VerbatimText(f));
                             continue 'run;
                         }
                         VerbatimTextSt::PdK164 => {
-                            f.st = VerbatimTextSt::Vafter;
-                            self.stack.push(Frame::VerbatimText(f));
-                            continue 'run;
-                        }
-                        VerbatimTextSt::PdK165 => {
                             f.st = VerbatimTextSt::Vafter;
                             self.stack.push(Frame::VerbatimText(f));
                             continue 'run;
@@ -6372,23 +6345,23 @@ impl PushdownParser {
                             if f.parent_col >= 0 && f.line_col <= f.parent_col {
                                 continue 'run;
                             }
-                            f.st = ProseSt::PdK166;
+                            f.st = ProseSt::PdK165;
                             self.stack.push(Frame::Prose(f));
                             continue 'run;
                         }
                         ProseSt::Content => {
-                            f.st = ProseSt::PdK167;
+                            f.st = ProseSt::PdK166;
                             let (pd_a0, pd_a1, pd_a2,) = (f.line_col, f.parent_col, f.prepend, );
                             self.stack.push(Frame::Prose(f));
                             self.enter_text(pd_a0, pd_a1, pd_a2, on_event);
                             continue 'run;
                         }
-                        ProseSt::PdK166 => {
+                        ProseSt::PdK165 => {
                             f.st = ProseSt::Content;
                             self.stack.push(Frame::Prose(f));
                             continue 'run;
                         }
-                        ProseSt::PdK167 => {
+                        ProseSt::PdK166 => {
                             continue 'run;
                         }
                     }
@@ -6399,23 +6372,23 @@ impl PushdownParser {
                             if f.parent_col >= 0 && f.line_col <= f.parent_col {
                                 continue 'run;
                             }
-                            f.st = ProseBackticksSt::PdK168;
+                            f.st = ProseBackticksSt::PdK167;
                             self.stack.push(Frame::ProseBackticks(f));
                             continue 'run;
                         }
                         ProseBackticksSt::Content => {
-                            f.st = ProseBackticksSt::PdK169;
+                            f.st = ProseBackticksSt::PdK168;
                             let (pd_a0, pd_a1,) = (f.line_col, f.parent_col, );
                             self.stack.push(Frame::ProseBackticks(f));
                             self.enter_text_backticks(pd_a0, pd_a1, on_event);
                             continue 'run;
                         }
-                        ProseBackticksSt::PdK168 => {
+                        ProseBackticksSt::PdK167 => {
                             f.st = ProseBackticksSt::Content;
                             self.stack.push(Frame::ProseBackticks(f));
                             continue 'run;
                         }
-                        ProseBackticksSt::PdK169 => {
+                        ProseBackticksSt::PdK168 => {
                             continue 'run;
                         }
                     }
@@ -6487,7 +6460,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK170;
+                                    f.st = TextBackticksSt::PdK169;
                                     self.stack.push(Frame::TextBackticks(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -6511,7 +6484,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK171;
+                                    f.st = TextBackticksSt::PdK170;
                                     self.stack.push(Frame::TextBackticks(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -6535,7 +6508,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextBackticksSt::PdK172;
+                                    f.st = TextBackticksSt::PdK171;
                                     self.stack.push(Frame::TextBackticks(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -6665,17 +6638,17 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        TextBackticksSt::PdK169 => {
+                            f.st = TextBackticksSt::AfterInline;
+                            self.stack.push(Frame::TextBackticks(f));
+                            continue 'run;
+                        }
                         TextBackticksSt::PdK170 => {
                             f.st = TextBackticksSt::AfterInline;
                             self.stack.push(Frame::TextBackticks(f));
                             continue 'run;
                         }
                         TextBackticksSt::PdK171 => {
-                            f.st = TextBackticksSt::AfterInline;
-                            self.stack.push(Frame::TextBackticks(f));
-                            continue 'run;
-                        }
-                        TextBackticksSt::PdK172 => {
                             f.st = TextBackticksSt::AfterInline;
                             self.stack.push(Frame::TextBackticks(f));
                             continue 'run;
@@ -6705,7 +6678,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.mark();
-                                    f.st = FreeformSt::PdK173;
+                                    f.st = FreeformSt::PdK172;
                                     self.stack.push(Frame::Freeform(f));
                                     continue 'run;
                                 }
@@ -6771,7 +6744,7 @@ impl PushdownParser {
                             }
                         }
                         FreeformSt::Line => {
-                            f.st = FreeformSt::PdK175;
+                            f.st = FreeformSt::PdK174;
                             self.stack.push(Frame::Freeform(f));
                             continue 'run;
                         }
@@ -6842,13 +6815,13 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        FreeformSt::PdK173 => {
+                        FreeformSt::PdK172 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK174;
+                            f.st = FreeformSt::PdK173;
                             self.stack.push(Frame::Freeform(f));
                             continue 'run;
                         }
-                        FreeformSt::PdK174 => {
+                        FreeformSt::PdK173 => {
                             self.set_term(0);
                             { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                             self.advance_or_pend();
@@ -6856,13 +6829,13 @@ impl PushdownParser {
                             self.stack.push(Frame::Freeform(f));
                             continue 'run;
                         }
-                        FreeformSt::PdK175 => {
+                        FreeformSt::PdK174 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK176;
+                            f.st = FreeformSt::PdK175;
                             self.stack.push(Frame::Freeform(f));
                             continue 'run;
                         }
-                        FreeformSt::PdK176 => {
+                        FreeformSt::PdK175 => {
                             self.set_term(0);
                             { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                             self.advance_or_pend();
@@ -6938,7 +6911,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextSt::PdK177;
+                                    f.st = TextSt::PdK176;
                                     self.stack.push(Frame::Text(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -6962,7 +6935,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextSt::PdK178;
+                                    f.st = TextSt::PdK177;
                                     self.stack.push(Frame::Text(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -6986,7 +6959,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TextSt::PdK179;
+                                    f.st = TextSt::PdK178;
                                     self.stack.push(Frame::Text(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -7116,17 +7089,17 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        TextSt::PdK176 => {
+                            f.st = TextSt::AfterInline;
+                            self.stack.push(Frame::Text(f));
+                            continue 'run;
+                        }
                         TextSt::PdK177 => {
                             f.st = TextSt::AfterInline;
                             self.stack.push(Frame::Text(f));
                             continue 'run;
                         }
                         TextSt::PdK178 => {
-                            f.st = TextSt::AfterInline;
-                            self.stack.push(Frame::Text(f));
-                            continue 'run;
-                        }
-                        TextSt::PdK179 => {
                             f.st = TextSt::AfterInline;
                             self.stack.push(Frame::Text(f));
                             continue 'run;
@@ -7198,7 +7171,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK180;
+                                    f.st = SamelineTextSt::PdK179;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -7225,7 +7198,7 @@ impl PushdownParser {
                                 _ => {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK181;
+                                    f.st = SamelineTextSt::PdK180;
                                     let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_element(pd_a0, pd_a1, on_event);
@@ -7254,7 +7227,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(-1);
                                 { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = SamelineTextSt::PdK182;
+                                f.st = SamelineTextSt::PdK181;
                                 self.stack.push(Frame::SamelineText(f));
                                 self.enter_line_comment_content(on_event);
                                 continue 'run;
@@ -7263,7 +7236,7 @@ impl PushdownParser {
                                 Some(b'\n') => {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK183;
+                                    f.st = SamelineTextSt::PdK182;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -7271,7 +7244,7 @@ impl PushdownParser {
                                 Some(b' ') => {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = SamelineTextSt::PdK184;
+                                    f.st = SamelineTextSt::PdK183;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -7280,7 +7253,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK185;
+                                    f.st = SamelineTextSt::PdK184;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -7304,7 +7277,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK186;
+                                    f.st = SamelineTextSt::PdK185;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -7328,7 +7301,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = SamelineTextSt::PdK187;
+                                    f.st = SamelineTextSt::PdK186;
                                     self.stack.push(Frame::SamelineText(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -7454,14 +7427,17 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        SamelineTextSt::PdK179 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
+                            continue 'run;
+                        }
                         SamelineTextSt::PdK180 => {
                             f.st = SamelineTextSt::AfterInline;
                             self.stack.push(Frame::SamelineText(f));
                             continue 'run;
                         }
                         SamelineTextSt::PdK181 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
                             continue 'run;
                         }
                         SamelineTextSt::PdK182 => {
@@ -7471,6 +7447,8 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineTextSt::PdK184 => {
+                            f.st = SamelineTextSt::AfterInline;
+                            self.stack.push(Frame::SamelineText(f));
                             continue 'run;
                         }
                         SamelineTextSt::PdK185 => {
@@ -7479,11 +7457,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineTextSt::PdK186 => {
-                            f.st = SamelineTextSt::AfterInline;
-                            self.stack.push(Frame::SamelineText(f));
-                            continue 'run;
-                        }
-                        SamelineTextSt::PdK187 => {
                             f.st = SamelineTextSt::AfterInline;
                             self.stack.push(Frame::SamelineText(f));
                             continue 'run;
@@ -7506,7 +7479,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = LineCommentSt::PdK188;
+                                    f.st = LineCommentSt::PdK187;
                                     self.stack.push(Frame::LineComment(f));
                                     self.enter_comment_text_braced(on_event);
                                     continue 'run;
@@ -7664,7 +7637,7 @@ impl PushdownParser {
                                 _ => unreachable!(),
                             }
                         }
-                        LineCommentSt::PdK188 => {
+                        LineCommentSt::PdK187 => {
                             on_event(StreamEvent::CommentEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -7674,17 +7647,17 @@ impl PushdownParser {
                     match f.st {
                         LineCommentContentSt::PdEntry => {
                             self.mark();
+                            f.st = LineCommentContentSt::PdK188;
+                            self.stack.push(Frame::LineCommentContent(f));
+                            continue 'run;
+                        }
+                        LineCommentContentSt::PdK188 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::LineCommentContent(f)); return ParseResult::NeedMoreData; }
                             f.st = LineCommentContentSt::PdK189;
                             self.stack.push(Frame::LineCommentContent(f));
                             continue 'run;
                         }
                         LineCommentContentSt::PdK189 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::LineCommentContent(f)); return ParseResult::NeedMoreData; }
-                            f.st = LineCommentContentSt::PdK190;
-                            self.stack.push(Frame::LineCommentContent(f));
-                            continue 'run;
-                        }
-                        LineCommentContentSt::PdK190 => {
                             self.set_term(0);
                             { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                             on_event(StreamEvent::CommentEnd { span: self.gspan() });
@@ -7745,12 +7718,12 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BraceCommentSt::Main => {
-                            f.st = BraceCommentSt::PdK191;
+                            f.st = BraceCommentSt::PdK190;
                             self.stack.push(Frame::BraceComment(f));
                             self.enter_comment_text_braced(on_event);
                             continue 'run;
                         }
-                        BraceCommentSt::PdK191 => {
+                        BraceCommentSt::PdK190 => {
                             on_event(StreamEvent::CommentEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -7772,7 +7745,7 @@ impl PushdownParser {
                                 on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
                                 continue 'run;
                             }
-                            f.st = CommentTextBracedSt::PdK192;
+                            f.st = CommentTextBracedSt::PdK191;
                             self.stack.push(Frame::CommentTextBraced(f));
                             self.enter_skip_brace_balanced(on_event);
                             continue 'run;
@@ -7790,7 +7763,7 @@ impl PushdownParser {
                             self.advance_or_pend();
                             continue 'run;
                         }
-                        CommentTextBracedSt::PdK192 => {
+                        CommentTextBracedSt::PdK191 => {
                             f.st = CommentTextBracedSt::Done;
                             self.stack.push(Frame::CommentTextBraced(f));
                             continue 'run;
@@ -7805,7 +7778,7 @@ impl PushdownParser {
                             continue 'run;
                         }
                         EmbeddedSt::Identity => {
-                            f.st = EmbeddedSt::PdK193;
+                            f.st = EmbeddedSt::PdK192;
                             let (pd_a0,) = (b'}', );
                             self.stack.push(Frame::Embedded(f));
                             self.enter_parse_element_identity(pd_a0, on_event);
@@ -7830,7 +7803,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = EmbeddedSt::PdK194;
+                                    f.st = EmbeddedSt::PdK193;
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_embed_content(on_event);
                                     continue 'run;
@@ -7869,14 +7842,14 @@ impl PushdownParser {
                                 }
                                 Some(b'\\') => {
                                     self.advance_or_pend();
-                                    f.st = EmbeddedSt::PdK195;
+                                    f.st = EmbeddedSt::PdK194;
                                     let (pd_a0,) = (b'}', );
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_attr_text_verbatim(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = EmbeddedSt::PdK196;
+                                    f.st = EmbeddedSt::PdK195;
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_embed_content(on_event);
                                     continue 'run;
@@ -7902,7 +7875,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = EmbeddedSt::PdK197;
+                                    f.st = EmbeddedSt::PdK196;
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_embed_content(on_event);
                                     continue 'run;
@@ -7917,32 +7890,36 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = EmbeddedSt::PdK198;
+                                    f.st = EmbeddedSt::PdK197;
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_sameline_attr_embedded(on_event);
                                     continue 'run;
                                 }
                                 _ => {
                                     self.prepend_bytes(b":");
-                                    f.st = EmbeddedSt::PdK199;
+                                    f.st = EmbeddedSt::PdK198;
                                     self.stack.push(Frame::Embedded(f));
                                     self.enter_embed_content(on_event);
                                     continue 'run;
                                 }
                             }
                         }
-                        EmbeddedSt::PdK193 => {
+                        EmbeddedSt::PdK192 => {
                             f.st = EmbeddedSt::PostIdentity;
                             self.stack.push(Frame::Embedded(f));
                             continue 'run;
                         }
-                        EmbeddedSt::PdK194 => {
+                        EmbeddedSt::PdK193 => {
                             on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
                             continue 'run;
                         }
-                        EmbeddedSt::PdK195 => {
+                        EmbeddedSt::PdK194 => {
                             f.st = EmbeddedSt::PostIdentity;
                             self.stack.push(Frame::Embedded(f));
+                            continue 'run;
+                        }
+                        EmbeddedSt::PdK195 => {
+                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
                             continue 'run;
                         }
                         EmbeddedSt::PdK196 => {
@@ -7950,15 +7927,11 @@ impl PushdownParser {
                             continue 'run;
                         }
                         EmbeddedSt::PdK197 => {
-                            on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        EmbeddedSt::PdK198 => {
                             f.st = EmbeddedSt::PreContent;
                             self.stack.push(Frame::Embedded(f));
                             continue 'run;
                         }
-                        EmbeddedSt::PdK199 => {
+                        EmbeddedSt::PdK198 => {
                             on_event(StreamEvent::EmbeddedEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -8035,7 +8008,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK200;
+                                    f.st = EmbedContentSt::PdK199;
                                     self.stack.push(Frame::EmbedContent(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -8061,7 +8034,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK201;
+                                    f.st = EmbedContentSt::PdK200;
                                     self.stack.push(Frame::EmbedContent(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -8087,7 +8060,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = EmbedContentSt::PdK202;
+                                    f.st = EmbedContentSt::PdK201;
                                     self.stack.push(Frame::EmbedContent(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -8229,6 +8202,12 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        EmbedContentSt::PdK199 => {
+                            self.mark();
+                            f.st = EmbedContentSt::Main;
+                            self.stack.push(Frame::EmbedContent(f));
+                            continue 'run;
+                        }
                         EmbedContentSt::PdK200 => {
                             self.mark();
                             f.st = EmbedContentSt::Main;
@@ -8236,12 +8215,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         EmbedContentSt::PdK201 => {
-                            self.mark();
-                            f.st = EmbedContentSt::Main;
-                            self.stack.push(Frame::EmbedContent(f));
-                            continue 'run;
-                        }
-                        EmbedContentSt::PdK202 => {
                             self.mark();
                             f.st = EmbedContentSt::Main;
                             self.stack.push(Frame::EmbedContent(f));
@@ -8270,7 +8243,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK203;
+                                    f.st = BlockDirectiveSt::PdK202;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_name(on_event);
                                     continue 'run;
@@ -8289,7 +8262,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK204;
+                                    f.st = BlockDirectiveSt::PdK203;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_name(on_event);
                                     continue 'run;
@@ -8487,7 +8460,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.mark();
-                                    f.st = BlockDirectiveSt::PdK205;
+                                    f.st = BlockDirectiveSt::PdK204;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_directive_args(on_event);
                                     continue 'run;
@@ -8508,14 +8481,14 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b' ') => {
-                                    f.st = BlockDirectiveSt::PdK206;
+                                    f.st = BlockDirectiveSt::PdK205;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_count_indent(on_event);
                                     continue 'run;
                                 }
                                 Some(b'\t') => {
                                     on_event(StreamEvent::Error { code: ParseErrorCode::NoTabs, span: self.gspan() });
-                                    f.st = BlockDirectiveSt::PdK207;
+                                    f.st = BlockDirectiveSt::PdK206;
                                     self.stack.push(Frame::BlockDirective(f));
                                     continue 'run;
                                 }
@@ -8567,20 +8540,20 @@ impl PushdownParser {
                                 }
                                 Some(b';') => {
                                     self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK209;
+                                    f.st = BlockDirectiveSt::PdK208;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_line_comment(on_event);
                                     continue 'run;
                                 }
                                 Some(b'\\') => {
                                     self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK210;
+                                    f.st = BlockDirectiveSt::PdK209;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_verbatim_text(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = BlockDirectiveSt::PdK211;
+                                    f.st = BlockDirectiveSt::PdK210;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"", );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
@@ -8596,14 +8569,14 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b':') => {
-                                    f.st = BlockDirectiveSt::PdK212;
+                                    f.st = BlockDirectiveSt::PdK211;
                                     let (pd_a0,) = (f.col, );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_block_directive(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = BlockDirectiveSt::PdK213;
+                                    f.st = BlockDirectiveSt::PdK212;
                                     let (pd_a0,) = (f.col, );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_block_directive(pd_a0, on_event);
@@ -8611,13 +8584,13 @@ impl PushdownParser {
                                 }
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK214;
+                                    f.st = BlockDirectiveSt::PdK213;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = BlockDirectiveSt::PdK215;
+                                    f.st = BlockDirectiveSt::PdK214;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"!", );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
@@ -8633,13 +8606,13 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = BlockDirectiveSt::PdK216;
+                                    f.st = BlockDirectiveSt::PdK215;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_block_attr(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = BlockDirectiveSt::PdK217;
+                                    f.st = BlockDirectiveSt::PdK216;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b":", );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
@@ -8672,20 +8645,20 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = BlockDirectiveSt::PdK218;
+                                    f.st = BlockDirectiveSt::PdK217;
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                                    f.st = BlockDirectiveSt::PdK219;
+                                    f.st = BlockDirectiveSt::PdK218;
                                     let (pd_a0, pd_a1,) = (f.col, f.line_col, );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_element(pd_a0, pd_a1, on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = BlockDirectiveSt::PdK220;
+                                    f.st = BlockDirectiveSt::PdK219;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.line_col, b"|", );
                                     self.stack.push(Frame::BlockDirective(f));
                                     self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
@@ -8693,36 +8666,41 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        BlockDirectiveSt::PdK203 => {
+                        BlockDirectiveSt::PdK202 => {
                             f.st = BlockDirectiveSt::AfterName;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
-                        BlockDirectiveSt::PdK204 => {
+                        BlockDirectiveSt::PdK203 => {
                             on_event(StreamEvent::Raw { content: Vec::new(), span: self.gspan() });
                             f.st = BlockDirectiveSt::RawColon;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
-                        BlockDirectiveSt::PdK205 => {
+                        BlockDirectiveSt::PdK204 => {
                             f.st = BlockDirectiveSt::Children;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
-                        BlockDirectiveSt::PdK206 => {
+                        BlockDirectiveSt::PdK205 => {
                             f.col = self.ret;
                             f.st = BlockDirectiveSt::CheckChild;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
-                        BlockDirectiveSt::PdK207 => {
+                        BlockDirectiveSt::PdK206 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::BlockDirective(f)); return ParseResult::NeedMoreData; }
-                            f.st = BlockDirectiveSt::PdK208;
+                            f.st = BlockDirectiveSt::PdK207;
+                            self.stack.push(Frame::BlockDirective(f));
+                            continue 'run;
+                        }
+                        BlockDirectiveSt::PdK207 => {
+                            self.advance_or_pend();
+                            f.st = BlockDirectiveSt::Children;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
                         BlockDirectiveSt::PdK208 => {
-                            self.advance_or_pend();
                             f.st = BlockDirectiveSt::Children;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
@@ -8758,13 +8736,13 @@ impl PushdownParser {
                             continue 'run;
                         }
                         BlockDirectiveSt::PdK215 => {
-                            f.st = BlockDirectiveSt::Children;
+                            f.dstate = self.ret;
+                            f.st = BlockDirectiveSt::DattrCheck;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
                         BlockDirectiveSt::PdK216 => {
-                            f.dstate = self.ret;
-                            f.st = BlockDirectiveSt::DattrCheck;
+                            f.st = BlockDirectiveSt::Children;
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
@@ -8783,27 +8761,22 @@ impl PushdownParser {
                             self.stack.push(Frame::BlockDirective(f));
                             continue 'run;
                         }
-                        BlockDirectiveSt::PdK220 => {
-                            f.st = BlockDirectiveSt::Children;
-                            self.stack.push(Frame::BlockDirective(f));
-                            continue 'run;
-                        }
                     }
                 }
                 Frame::DirectiveArgs(mut f) => {
                     match f.st {
                         DirectiveArgsSt::PdEntry => {
+                            f.st = DirectiveArgsSt::PdK220;
+                            self.stack.push(Frame::DirectiveArgs(f));
+                            continue 'run;
+                        }
+                        DirectiveArgsSt::PdK220 => {
+                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
                             f.st = DirectiveArgsSt::PdK221;
                             self.stack.push(Frame::DirectiveArgs(f));
                             continue 'run;
                         }
                         DirectiveArgsSt::PdK221 => {
-                            if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
-                            f.st = DirectiveArgsSt::PdK222;
-                            self.stack.push(Frame::DirectiveArgs(f));
-                            continue 'run;
-                        }
-                        DirectiveArgsSt::PdK222 => {
                             self.set_term(0);
                             { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                             continue 'run;
@@ -8825,33 +8798,33 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK223;
+                                    f.st = SamelineDirectiveSt::PdK222;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_interpolation(on_event);
                                     continue 'run;
                                 }
                                 Some(b':') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK224;
+                                    f.st = SamelineDirectiveSt::PdK223;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_sameline_raw(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirectiveSt::PdK225;
+                                    f.st = SamelineDirectiveSt::PdK224;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_sameline_dir_body(on_event);
                                     continue 'run;
                                 }
                             }
                         }
+                        SamelineDirectiveSt::PdK222 => {
+                            continue 'run;
+                        }
                         SamelineDirectiveSt::PdK223 => {
                             continue 'run;
                         }
                         SamelineDirectiveSt::PdK224 => {
-                            continue 'run;
-                        }
-                        SamelineDirectiveSt::PdK225 => {
                             continue 'run;
                         }
                     }
@@ -8928,7 +8901,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineRawSt::PdK226;
+                                    f.st = SamelineRawSt::PdK225;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     self.enter_name(on_event);
                                     continue 'run;
@@ -9002,7 +8975,7 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        SamelineRawSt::PdK226 => {
+                        SamelineRawSt::PdK225 => {
                             f.st = SamelineRawSt::Kind;
                             self.stack.push(Frame::SamelineRaw(f));
                             continue 'run;
@@ -9024,13 +8997,13 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = SamelineDirBodySt::PdK227;
+                                    f.st = SamelineDirBodySt::PdK226;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_name(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK228;
+                                    f.st = SamelineDirBodySt::PdK227;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_skip_brace_balanced(on_event);
                                     continue 'run;
@@ -9056,7 +9029,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK229;
+                                    f.st = SamelineDirBodySt::PdK228;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_skip_brace_balanced(on_event);
                                     continue 'run;
@@ -9076,16 +9049,20 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK230;
+                                    f.st = SamelineDirBodySt::PdK229;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_embed_content(on_event);
                                     continue 'run;
                                 }
                             }
                         }
-                        SamelineDirBodySt::PdK227 => {
+                        SamelineDirBodySt::PdK226 => {
                             f.st = SamelineDirBodySt::AfterName;
                             self.stack.push(Frame::SamelineDirBody(f));
+                            continue 'run;
+                        }
+                        SamelineDirBodySt::PdK227 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
                         SamelineDirBodySt::PdK228 => {
@@ -9093,10 +9070,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineDirBodySt::PdK229 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::PdK230 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -9279,7 +9252,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK231;
+                                    f.st = TypedValueSt::PdK230;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_interpolation(on_event);
                                     continue 'run;
@@ -9300,7 +9273,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'[') => {
                                     self.mark();
-                                    f.st = TypedValueSt::PdK232;
+                                    f.st = TypedValueSt::PdK231;
                                     self.stack.push(Frame::TypedValue(f));
                                     continue 'run;
                                 }
@@ -9334,7 +9307,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'[') => {
-                                    f.st = TypedValueSt::PdK234;
+                                    f.st = TypedValueSt::PdK233;
                                     self.stack.push(Frame::TypedValue(f));
                                     continue 'run;
                                 }
@@ -9373,7 +9346,7 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(0);
-                                f.st = TypedValueSt::PdK236;
+                                f.st = TypedValueSt::PdK235;
                                 let matched = self.lookup_bare_kw(on_event);
                                 self.stack.push(Frame::TypedValue(f));
                                 if !matched {
@@ -9384,7 +9357,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'\n') => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK237;
+                                    f.st = TypedValueSt::PdK236;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9399,7 +9372,7 @@ impl PushdownParser {
                                 }
                                 Some(b) if b == f.bracket => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK238;
+                                    f.st = TypedValueSt::PdK237;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9425,7 +9398,7 @@ impl PushdownParser {
                             match self.peek() {
                                 _ if f.space_term == 1 => {
                                     self.set_term(0);
-                                    f.st = TypedValueSt::PdK239;
+                                    f.st = TypedValueSt::PdK238;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9444,7 +9417,7 @@ impl PushdownParser {
                         TypedValueSt::KwBoundary => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                f.st = TypedValueSt::PdK240;
+                                f.st = TypedValueSt::PdK239;
                                 let matched = self.lookup_bare_kw(on_event);
                                 self.stack.push(Frame::TypedValue(f));
                                 if !matched {
@@ -9460,7 +9433,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'\n') => {
-                                    f.st = TypedValueSt::PdK241;
+                                    f.st = TypedValueSt::PdK240;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9469,7 +9442,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if b == f.bracket => {
-                                    f.st = TypedValueSt::PdK242;
+                                    f.st = TypedValueSt::PdK241;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9478,7 +9451,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b';' | b'`' | b'\\') => {
-                                    f.st = TypedValueSt::PdK243;
+                                    f.st = TypedValueSt::PdK242;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9525,7 +9498,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) || b == b'\'' => {
-                                    f.st = TypedValueSt::PdK244;
+                                    f.st = TypedValueSt::PdK243;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9553,7 +9526,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'{' || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                                    f.st = TypedValueSt::PdK245;
+                                    f.st = TypedValueSt::PdK244;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9581,7 +9554,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b':' || b == b'{' => {
-                                    f.st = TypedValueSt::PdK246;
+                                    f.st = TypedValueSt::PdK245;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -9609,7 +9582,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'[' || b == b'.' => {
-                                    f.st = TypedValueSt::PdK247;
+                                    f.st = TypedValueSt::PdK246;
                                     let matched = self.lookup_bare_kw(on_event);
                                     self.stack.push(Frame::TypedValue(f));
                                     if !matched {
@@ -10575,7 +10548,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK248;
+                                    f.st = TypedValueSt::PdK247;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_embedded(on_event);
                                     continue 'run;
@@ -10599,7 +10572,7 @@ impl PushdownParser {
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: c.clone(), span: sp.clone() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK249;
+                                    f.st = TypedValueSt::PdK248;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_sameline_directive(on_event);
                                     continue 'run;
@@ -10760,7 +10733,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(-2);
                                 { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                f.st = TypedValueSt::PdK250;
+                                f.st = TypedValueSt::PdK249;
                                 self.stack.push(Frame::TypedValue(f));
                                 self.enter_line_comment_content(on_event);
                                 continue 'run;
@@ -10769,7 +10742,7 @@ impl PushdownParser {
                                 Some(b' ') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = TypedValueSt::PdK251;
+                                    f.st = TypedValueSt::PdK250;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -10777,7 +10750,7 @@ impl PushdownParser {
                                 Some(b'\n') => {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                    f.st = TypedValueSt::PdK252;
+                                    f.st = TypedValueSt::PdK251;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_line_comment_content(on_event);
                                     continue 'run;
@@ -10786,7 +10759,7 @@ impl PushdownParser {
                                     self.set_term(-2);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK253;
+                                    f.st = TypedValueSt::PdK252;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -10809,7 +10782,7 @@ impl PushdownParser {
                                     self.set_term(-1);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     self.advance_or_pend();
-                                    f.st = TypedValueSt::PdK254;
+                                    f.st = TypedValueSt::PdK253;
                                     self.stack.push(Frame::TypedValue(f));
                                     self.enter_brace_comment(on_event);
                                     continue 'run;
@@ -10821,32 +10794,36 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        TypedValueSt::PdK231 => {
+                        TypedValueSt::PdK230 => {
                             self.ret = 0;
                             continue 'run;
                         }
-                        TypedValueSt::PdK232 => {
+                        TypedValueSt::PdK231 => {
                             if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                            f.st = TypedValueSt::PdK233;
+                            f.st = TypedValueSt::PdK232;
+                            self.stack.push(Frame::TypedValue(f));
+                            continue 'run;
+                        }
+                        TypedValueSt::PdK232 => {
+                            self.advance_or_pend();
+                            f.st = TypedValueSt::RefTail;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
                         TypedValueSt::PdK233 => {
-                            self.advance_or_pend();
-                            f.st = TypedValueSt::RefTail;
+                            if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
+                            f.st = TypedValueSt::PdK234;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
                         TypedValueSt::PdK234 => {
-                            if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                            f.st = TypedValueSt::PdK235;
+                            self.advance_or_pend();
+                            f.st = TypedValueSt::RefTail;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
                         TypedValueSt::PdK235 => {
-                            self.advance_or_pend();
-                            f.st = TypedValueSt::RefTail;
-                            self.stack.push(Frame::TypedValue(f));
+                            self.ret = 0;
                             continue 'run;
                         }
                         TypedValueSt::PdK236 => {
@@ -10878,27 +10855,28 @@ impl PushdownParser {
                             continue 'run;
                         }
                         TypedValueSt::PdK243 => {
-                            self.ret = 0;
-                            continue 'run;
-                        }
-                        TypedValueSt::PdK244 => {
                             f.result = 4;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK245 => {
+                        TypedValueSt::PdK244 => {
                             f.result = 11;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK246 => {
+                        TypedValueSt::PdK245 => {
                             f.result = 12;
                             self.ret = f.result;
                             continue 'run;
                         }
-                        TypedValueSt::PdK247 => {
+                        TypedValueSt::PdK246 => {
                             f.result = 13;
                             self.ret = f.result;
+                            continue 'run;
+                        }
+                        TypedValueSt::PdK247 => {
+                            f.st = TypedValueSt::BlobAfterInline;
+                            self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
                         TypedValueSt::PdK248 => {
@@ -10907,8 +10885,8 @@ impl PushdownParser {
                             continue 'run;
                         }
                         TypedValueSt::PdK249 => {
-                            f.st = TypedValueSt::BlobAfterInline;
-                            self.stack.push(Frame::TypedValue(f));
+                            f.result = 3;
+                            self.ret = f.result;
                             continue 'run;
                         }
                         TypedValueSt::PdK250 => {
@@ -10922,17 +10900,12 @@ impl PushdownParser {
                             continue 'run;
                         }
                         TypedValueSt::PdK252 => {
-                            f.result = 3;
-                            self.ret = f.result;
-                            continue 'run;
-                        }
-                        TypedValueSt::PdK253 => {
                             self.mark();
                             f.st = TypedValueSt::Blob;
                             self.stack.push(Frame::TypedValue(f));
                             continue 'run;
                         }
-                        TypedValueSt::PdK254 => {
+                        TypedValueSt::PdK253 => {
                             self.mark();
                             f.st = TypedValueSt::Blob;
                             self.stack.push(Frame::TypedValue(f));

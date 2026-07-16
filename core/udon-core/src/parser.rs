@@ -2641,16 +2641,14 @@ impl<'a> Parser<'a> {
         }
     }
 
-    /// Parse block_attr -> INT
-    fn parse_block_attr<F>(&mut self, on_event: &mut F) -> i32
+    /// Parse attr_ident -> INT
+    fn parse_attr_ident<F>(&mut self, on_event: &mut F) -> i32
     where
         F: FnMut(Event<'a>),
     {
         let mut result: i32 = 0;
-        let mut fstate: i32 = 0;
-        let mut vstate: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Key, PostKey, PostQkey, Flag, FlagRoute, ValueStart, Vff1, Vff2, Vbang, Vinterp, PostValueRoute, KeyNext, PostValue,  }
+        enum State { Key, PostKey, PostQkey,  }
         let mut state = State::Key;
         loop {
             match state {
@@ -2679,13 +2677,12 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         _ if self.prev() == b'?' => {
                     self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    state = State::Flag;
-                    continue;
+                    result = 1;
+                    return result;
                         }
                         _ => {
                     self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    state = State::ValueStart;
-                    continue;
+                    return result;
                         }
                     }
                 }
@@ -2694,12 +2691,46 @@ impl<'a> Parser<'a> {
                         _ if self.prev() == b'?' => {
                     self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
                     self.advance();
-                    state = State::Flag;
-                    continue;
+                    result = 1;
+                    return result;
                         }
                         _ => {
                     self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
                     self.advance();
+                    return result;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Parse block_attr -> INT
+    fn parse_block_attr<F>(&mut self, on_event: &mut F) -> i32
+    where
+        F: FnMut(Event<'a>),
+    {
+        let mut result: i32 = 0;
+        let mut kf: i32 = 0;
+        let mut fstate: i32 = 0;
+        let mut vstate: i32 = 0;
+        #[derive(Clone, Copy)]
+        enum State { Key, KeyRoute, Flag, FlagRoute, ValueStart, Vff1, Vff2, Vbang, Vinterp, PostValueRoute, KeyNext, PostValue,  }
+        let mut state = State::Key;
+        loop {
+            match state {
+                State::Key => {
+                    kf = self.parse_attr_ident(on_event);
+                    state = State::KeyRoute;
+                    continue;
+                }
+                State::KeyRoute => {
+                    match self.peek() {
+                        _ if kf == 1 => {
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
                     state = State::ValueStart;
                     continue;
                         }
@@ -2948,59 +2979,26 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         let mut result: i32 = 0;
+        let mut kf: i32 = 0;
         let mut fstate: i32 = 0;
         let mut vv: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Key, PostKey, PostQkey, Flag, FlagRoute, ValueStart, Vroute, Vff1, Vff2, Vbang, Vinterp,  }
+        enum State { Key, KeyRoute, Flag, FlagRoute, ValueStart, Vroute, Vff1, Vff2, Vbang, Vinterp,  }
         let mut state = State::Key;
         loop {
             match state {
                 State::Key => {
-                    if self.eof() {
-                        return 0;
-                    }
-                    match self.peek() {
-                        Some(b) if Self::is_xlbl_start(b) => {
-                    self.parse_attr_key(on_event);
-                    state = State::PostKey;
+                    kf = self.parse_attr_ident(on_event);
+                    state = State::KeyRoute;
                     continue;
-                        }
-                        Some(b'\'') => {
-                    self.advance();
-                    self.parse_attr_key_quoted(on_event);
-                    state = State::PostQkey;
-                    continue;
-                        }
-                        _ => {
-                            return 0;
-                        }
-                    }
                 }
-                State::PostKey => {
+                State::KeyRoute => {
                     match self.peek() {
-                        _ if self.prev() == b'?' => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
+                        _ if kf == 1 => {
                     state = State::Flag;
                     continue;
                         }
                         _ => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    state = State::ValueStart;
-                    continue;
-                        }
-                    }
-                }
-                State::PostQkey => {
-                    match self.peek() {
-                        _ if self.prev() == b'?' => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    self.advance();
-                    state = State::Flag;
-                    continue;
-                        }
-                        _ => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    self.advance();
                     state = State::ValueStart;
                     continue;
                         }
@@ -3184,59 +3182,26 @@ impl<'a> Parser<'a> {
     where
         F: FnMut(Event<'a>),
     {
+        let mut kf: i32 = 0;
         let mut fstate: i32 = 0;
         let mut ev: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Key, PostKey, PostQkey, Flag, ValueStart, Evroute,  }
+        enum State { Key, KeyRoute, Flag, ValueStart, Evroute,  }
         let mut state = State::Key;
         loop {
             match state {
                 State::Key => {
-                    if self.eof() {
-                        return;
-                    }
-                    match self.peek() {
-                        Some(b) if Self::is_xlbl_start(b) => {
-                    self.parse_attr_key(on_event);
-                    state = State::PostKey;
+                    kf = self.parse_attr_ident(on_event);
+                    state = State::KeyRoute;
                     continue;
-                        }
-                        Some(b'\'') => {
-                    self.advance();
-                    self.parse_attr_key_quoted(on_event);
-                    state = State::PostQkey;
-                    continue;
-                        }
-                        _ => {
-                            return;
-                        }
-                    }
                 }
-                State::PostKey => {
+                State::KeyRoute => {
                     match self.peek() {
-                        _ if self.prev() == b'?' => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
+                        _ if kf == 1 => {
                     state = State::Flag;
                     continue;
                         }
                         _ => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    state = State::ValueStart;
-                    continue;
-                        }
-                    }
-                }
-                State::PostQkey => {
-                    match self.peek() {
-                        _ if self.prev() == b'?' => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    self.advance();
-                    state = State::Flag;
-                    continue;
-                        }
-                        _ => {
-                    self.saved_akey = { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; self.mark_pos..end };
-                    self.advance();
                     state = State::ValueStart;
                     continue;
                         }
