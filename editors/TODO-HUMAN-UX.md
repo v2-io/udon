@@ -19,7 +19,7 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       spans extend the same approach to incremental re-highlighting.
       *2026-07-16 spike:* the same walk now compiles to wasm
       (`core/udon-wasm/`) and drives ```udon fence highlighting in the
-      Obsidian plugin (`obsidian-udon/fence-highlight.js`) — engine proven
+      Obsidian plugin (`obsidian-udon/main.js` (fence section)) — engine proven
       under node; in-vault validation is the open item (see the plugin's
       TODO.md).
 
