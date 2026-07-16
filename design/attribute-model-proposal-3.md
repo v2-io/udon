@@ -363,6 +363,10 @@ attr of an *ancestor* is **not** that ancestor’s attribute — it is prose
 
 Not CORE prose; for implementers:
 
+> **Superseded 2026-07-16 by the ratified flat stacking wire** (CORE "Event
+> Encoding (0.9 Wire)"): no `AttrStart`/`AttrEnd`; every `Attr` carries one
+> value; all multiplicity = re-emitted `Attr`. Kept as archaeology.
+
 1. **Attr container:** scalar stay `Attr` + one value event when simple.
 2. **Segment array:** when a key has multiple segments (stacking, §2.3
    extension, multi-line text, inline forms inside a text blob), emit

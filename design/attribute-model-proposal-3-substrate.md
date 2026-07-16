@@ -141,32 +141,38 @@ that element’s content (attrs phase ends for this line’s tail).
   Interpolation, Embedded, …) under one attribute key. Hosts may flatten
   text-reducible segments later.
 
-**Sameline bare values and spaces (critical):**
+**Bare values and spaces — the BOUNDARY RULE (ratified 2026-07-15,
+supersedes this section's earlier mid-line/end-of-line wording):**
 
-On an **element-rooted same line**:
+A bare value token holds the sameline scan *provisionally open* at its
+boundary; the **next non-space character decides** — one character of
+lookahead at one decision point:
 
-- A **mid-line** bare value (more attributes still to the right) is a
-  **scalar**: no unquoted spaces. If the value needs spaces, **quote** it.
-- **Only at the end of the line** may unquoted multi-word text appear —
-  the last open attr’s trailing text blob (rest of line).
+- a **head-position marker** (`:` next attr, `\` force-prose, guarded `|`,
+  guarded `@`, framed ` ; `, fence, guarded `!`) → the token finished as a
+  **single-token value** and the scan continues, as if it had been quoted;
+- **plain text** → the line commits: the token was the *beginning of a text
+  blob* running to end of line (or a framed ` ; ` comment), owned by
+  binding priority (open attr first).
+
+There is no "mid-line vs end-of-line" distinction and no lookahead over the
+rest of the line — earlier drafts' "letter-first bare value" framing is
+retired as an implementation-level category the rule doesn't need.
 
 ```udon
 |el :first value :another with some text
-; first  => "value"              (mid-line bare scalar — no spaces)
-; another => "with some text"  (end of line — unquoted spaces OK)
+; first  => "value"           ("value" then ':' — marker at the boundary)
+; another => "with some text" ("with" then 's' — text commits the blob)
 
-|el :first "sorry, got to quote" :second but not this one necessarily...
-; first  => "sorry, got to quote"   (mid-line scalar with spaces → quotes)
-; second => "but not this one necessarily..."  (end of line)
+|el :first value with spaces :another x
+; first => "value with spaces :another x"  ("value" then 'w' — the whole
+;                                            tail is the blob; the later
+;                                            ':' is just characters in it)
 
-; NOT a mid-line bare scalar with spaces:
-; |el :first value with spaces :another x
-; "value" finishes first as a bare scalar; "with spaces" starts el prose
-; (attrs phase ends) — :another is not a second attr.
+|el :alpha something \ el's text
+; alpha => "something"; the \ at the boundary closes the value and forces
+; the rest to |el's prose (ownership never changes at a \ — R3)
 ```
-
-There is **no** general “quote-optional spaces on sameline” except
-**at the end of the line**.
 
 **User guidance (non-normative):** prefer simple shapes; mixing is allowed
 via segments / stacking.
@@ -397,6 +403,13 @@ posture).
 ---
 
 ## S15. Event / AST sketch (non-normative)
+
+> **Superseded 2026-07-16 by the ratified FLAT STACKING WIRE** (Joseph's
+> ETF-style unification; CORE "Event Encoding (0.9 Wire)"): there is no
+> `AttrStart`/`AttrEnd` — every `Attr` carries exactly one value, and ALL
+> multiplicity (stacking, warn+stack ingestion, multi-line segments, inline
+> forms in blobs) is expressed by re-emitting the `Attr`. Only literal
+> `[…]` arrays exist on the wire. Kept below as archaeology.
 
 - Simple single-segment scalar: `Attr` + one value event (low churn).
 - Multi-segment / stacking / inline-in-text: ordered multi-value under one

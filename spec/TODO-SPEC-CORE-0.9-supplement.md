@@ -65,11 +65,8 @@ Contexts examples moved out of table cells (formatter-stability).
       syntax, naming) are fine until a formatter sweeps them. If that
       happens: de-pipe those cells the same way (examples into udon blocks),
       or configure the formatter to skip CORE.md.
-- [ ] **Substrate/proposal text alignment.** Update
-      `design/attribute-model-proposal-3-substrate.md` §S5 (boundary rule
-      replaces mid-line/end-of-line wording; fix the "NOT" example —
-      `|el :first value with spaces :another x` → `first="value with spaces
-      :another x"`; drop "letter-first bare value" framing; drop the
-      spaced-trait form) and §S8 (boundary-`\`); touch proposal-3 §4/§10
-      examples; note the flat-wire R5 outcome superseding §S15/P3 §6
-      sketches.
+- [x] ~~Substrate/proposal text alignment~~ **Done 2026-07-16**: substrate
+      §S5 rewritten to the boundary rule (wrong "NOT" example corrected,
+      "letter-first" framing retired); §S15 and proposal-3 §6 wire sketches
+      marked superseded-by-flat-wire (kept as archaeology). Proposal-3 §4/§10
+      example outcomes match the ratified rules as written.
