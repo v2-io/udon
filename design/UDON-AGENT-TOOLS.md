@@ -1,5 +1,18 @@
 # UDON Agent Tools — Brainstorm
 
+> **Status (2026-07-16).** Dec-2025, substantially superseded: the Tier-2/3
+> tool ideas were absorbed and developed in `udon-agentic.md` (Jan 2026 —
+> glance/focus/propose/apply/session/trace/infer/validate/search + the
+> annotate/extract/diff/timeline/template/audit set), and the Tier-1
+> streaming substrate landed in `core/` 2026-07-15 (`TreeStream` /
+> `PushdownParser`). All syntax here predates 0.8/0.9 (`.class` is now
+> `.trait`; `|{@ ...}` is not valid — inline elements take a name, `@` is a
+> reference; the attribute model changed wholesale) — `spec/CORE.md` is the
+> authority. Still-live residue is tracked in `../ux/TODO-AGENT-UX.md`:
+> semantic merge, mid-generation partial-tree feedback, the annotation
+> layer, handoff/compaction/memory, plus JSON/YAML round-trip (§Tier 4,
+> UTILS-lane material).
+
 *Tooling ideas for UDON as an agent-native format*
 
 ---

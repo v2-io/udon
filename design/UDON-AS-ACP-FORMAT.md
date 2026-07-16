@@ -1,5 +1,16 @@
 # UDON as ACP's Native Format
 
+> **Status (2026-07-16).** Dec-2025. The thesis — UDON as the native format
+> for agent↔tool and agent↔agent communication, "the format is the
+> protocol" — is alive and tracked in `../ux/TODO-AGENT-UX.md`, though
+> recontextualized: not a new from-scratch protocol (written before MCP's
+> dominance) but UDON as the payload convention inside existing protocols
+> and harnesses. The examples predate 0.8/0.9 (`|{@ ...}` annotations and
+> the attribute/list forms are no longer valid; `spec/CORE.md` is the
+> authority). Two of its open questions have since resolved: performance
+> (the 2026-07 parser outruns serde_json — see README benchmarks) and a
+> first real consumer (the ASF process maps).
+
 *The convergence of Agent Context Protocol and UDON*
 
 ---

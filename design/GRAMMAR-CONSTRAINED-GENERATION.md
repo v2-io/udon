@@ -1,5 +1,16 @@
 # Grammar-Constrained LLM Generation
 
+> **Status (2026-07-16).** Dec-2025. The technique explainer holds up; the
+> tool-landscape section is a Dec-2025 snapshot (the structured-output
+> ecosystem has moved since), and every UDON grammar sketch below
+> predates the 0.8 reboot and 0.9 attribute model — do not copy them
+> (`id`/`classes` are now identity `key`/`traits`; attributes and values
+> changed wholesale; `spec/CORE.md` is the authority). The doc hand-sketches
+> a PEG because no machine-readable grammar existed then; today one does —
+> `core/generator/*.descent.udon` plus a pushdown parser tracking exactly
+> the state constrained decoding needs. Task tracked in
+> `../ux/TODO-AGENT-UX.md`.
+
 *How to go from a PEG grammar to guaranteed-valid LLM output*
 
 ---
