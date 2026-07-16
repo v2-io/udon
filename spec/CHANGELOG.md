@@ -26,7 +26,9 @@ compliance-fixture group is now `core/fixtures/v0.9/` (seeded from the
 frozen v0.8 group; cases will be edited to the new model as CORE text
 lands — a RED gate during the burn-down is the honest signal).
 
-### Changed (direction, ratified 2026-07-15; CORE text pending)
+### Changed (ratified direction 2026-07-15; CORE text drafted same day — five
+draft rulings R1–R5 flagged inline pending confirmation, see
+`TODO-SPEC-CORE-0.9-supplement.md`)
 - **Plain attributes always take a value**; missing value with no deferred
   body is an error. Implicit valueless-`:key` = true is removed.
 - **Flags are spelled `:key?`** (terminal `?`; wire name keeps the `?`).

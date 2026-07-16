@@ -44,6 +44,10 @@
       substrate text alignment). Work them at natural spots during the spec
       writing (surface a recommendation to Joseph at each), then sweep
       whatever remains before promoting past alpha.
+- [ ] **Unwrap CORE.md's hard-wrapped prose** (Joseph, 2026-07-15): drop the
+      manual line wrapping in favor of long lines / soft wrap. Editorial,
+      whole-file; best done as a single dedicated commit (no content changes
+      mixed in) so diffs stay reviewable.
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*

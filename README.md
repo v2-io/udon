@@ -62,28 +62,33 @@ This layering makes UDON suitable as a **host for domain-specific languages**—
 
 A common question from XML/HTML: when should data be an `:attribute` vs a `|child` element?
 
-UDON provides clearer guidance than the traditional "attributes for metadata" rule:
+UDON provides clearer guidance than the traditional "attributes for metadata" rule — ask **whose name is it?**
 
 | Question | → `:attribute` | → `|child` |
 |----------|----------------|------------|
-| **Type** | Typed scalar (string, number, bool, list of scalars) | Untyped, arbitrary structure |
+| **Whose name?** | The **parent's** relationship-label (`my author`, `my timeout`) | The thing's **own** name (what it *is*) |
 | **Cardinality** | Usually one per key; same-key assignments **stack** (all values kept, in order) — schemas constrain cardinality | Can repeat (sequence semantics) |
 | **Order** | Assignment order preserved; rarely semantic | Matters |
 
+Attributes are edges, elements are nodes — and as of core 0.9 an edge may terminate at a leaf value *or* at a node, so the old "structure must be a child" pressure is gone:
+
 ```udon
-; Attributes: typed scalars (same-key assignments stack; schemas may constrain)
-|message :timestamp "2025-01-15" :role user :priority 3
+; Attributes: what things are TO the message (0.9 model: flags take ?)
+|message :timestamp "2025-01-15" :role user :priority 3 :urgent?
   Can you help with my account?
 
-; Children: structured, repeatable, ordered
-|author
-  |name Jane Doe
-  |affiliation
-    |org Acme Corp
-    |role Principal Engineer
+; Attribute whose value IS a node (it's still "my author" — the parent's label)
+|book :title "The Craft"
+  :author
+    |person :name "Jane Doe" :affiliation "Acme Corp"
+
+; Children: what things ARE, in sequence
+|chapter Introduction
+|chapter The Middle Part
+|chapter Conclusion
 ```
 
-The simplest test: **Can it be expressed as a typed scalar?** If yes, use `:attribute`. If it needs structure, repetition with order, or contains prose, use `|child` or inline content.
+The test: if the label describes the *relationship to the parent*, it's an `:attribute` (scalar or node value); if the name describes the thing *itself* and position matters, it's a `|child`.
 
 > **Note:** The example documents in `examples/` don't yet fully illustrate this distinction. Improvements pending.
 

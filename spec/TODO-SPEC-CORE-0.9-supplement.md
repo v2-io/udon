@@ -20,34 +20,42 @@ Version plan: v0.8 fixture group freezes as-is; the model lands as
 
 ## Open
 
-- [ ] **Boundary-marker set, stated exactly.** One normative sentence listing
-      which markers keep the scan open at a bare-token boundary
-      (`:`, `\`, guarded `|`, framed ` ; `, fence — and whether `@` / `!`
-      participate; recommendation: yes, full head-position uniformity).
-- [ ] **Embedded context (`|{…}`) under the new model.** Neither proposal
-      addresses it. `|{input :required}` (today BoolTrue) becomes an error
-      under flags — needs `:required?`. Presumed rule: embedded = element-
-      rooted sameline with `}` as an additional terminator. Needs a ruling +
-      fixture updates (`attributes.yaml::embedded_flag_attr_before_brace`
-      and kin). *(discuss w/ Joseph)*
-- [ ] **Block-line `\` at the boundary.** `:key something \ tail` on a block
-      attr line: value finishes as `"something"`; who owns the tail
-      (presumably element prose)? One example's worth of spec text.
-- [ ] **Event vocabulary for multi-segment / node values.** Substrate §S15
-      says "`AttrStart`…`AttrEnd` or equivalent" — the grammar, `tree.rs`,
-      and the fixture harness need the real names and shapes. Largest
-      implementation decision in the pile. *(discuss w/ Joseph)*
-- [ ] **Warning-code names (P3-7).** Final strings for the CORE table
-      (`AttributeValueExtendedByTrailingText`, `MissingAttributeValue`, the
-      §S6.3 second-value warn, phase-late `:`), and prune forecast codes
-      that die with the model (`UnmarkedBooleanFlag`, `ValuedBooleanKey`;
-      `MarkerInTextValue` likely dies with the literal-text model).
-- [ ] **CORE collateral beyond the Attributes section.** Booleans (`:flag` →
-      true dies), Absent-vs-Nil-vs-False table, scattered `|button :disabled`
-      examples, Value Terminator Rules / Bare String Terminators tables
-      (run-to-EOL dies), README attribute-vs-child decision table. Plus a
-      footnote that element-suffix sugar (`|el?` → `$?` BoolTrue) is
-      untouched by and distinct from attr flags (`:key?`).
+**Status 2026-07-15: the 0.9 CORE Attributes text is DRAFTED** (CORE.md
+"Attributes" + collateral). Items below marked *drafted (R#)* are resolved in
+that draft by an explicit recommendation, flagged inline in CORE with the same
+R-number — they stay open here until Joseph confirms each (or rules
+otherwise while reviewing the section at its natural spot).
+
+- [ ] **Boundary-marker set** — *drafted (R1)*: `:`, `\`, guarded `|`, framed
+      ` ; `, fence, guarded `!`; `@` excluded (it is a value shape, not a
+      scan marker). CORE "The Scan and the Bare-Token Boundary".
+- [ ] **Embedded context (`|{…}`) under the new model** — *drafted (R2)*:
+      embedded = element-rooted sameline with `}` as an extra terminator.
+      Consequences drafted explicitly: `|{input :required}` errors (write
+      `:required?`); an open bare attr's trailing tail is the attr's blob, so
+      `|{a :href /home :title Home here}` gives `title="Home here"` and NO
+      embedded content — this **changes a long-standing canonical example**;
+      confirm deliberately. Fixture updates follow
+      (`attributes.yaml::embedded_flag_attr_before_brace` and kin).
+      *(discuss w/ Joseph)*
+- [ ] **Block-line `\` at the boundary** — *drafted (R3)*: value closes; the
+      rest of the line is the element's prose. CORE "Value-Position `\`".
+- [ ] **Quoted keys never flag** — *drafted (R4, new item)*: terminal-`?`
+      flag semantics apply to **bare** keys only; a quoted key (`:'$?'`,
+      `:'key?'`) is always a plain attribute. Keeps the suffix-sugar target
+      `:'$?' true` plain. CORE "Attribute Keys and Flags".
+- [ ] **Event vocabulary for multi-segment / node values** — *drafted (R5)*:
+      single scalar/reference/interpolation keeps `Attr` + one value event
+      (0.8 wire, low churn); node / text-blob / multi-segment values bracket
+      with `AttrStart` … `AttrEnd` around ordinary events. Names working
+      until the fixture group lands. `tree.rs` + harness follow. *(discuss
+      w/ Joseph)*
+- [ ] **Warning-code names (P3-7)** — *drafted as working names* in the CORE
+      warning-codes table: `AttributeValueExtendedByTrailingText`,
+      `AttributeSecondValue`, `AttributeAfterChildren`; errors
+      `MissingAttributeValue`, `AttributeUnderAttribute`. Dead forecast codes
+      (`UnmarkedBooleanFlag`, `ValuedBooleanKey`, `MarkerInTextValue`)
+      pruned. Finalize strings at fixture landing.
 - [ ] **Substrate/proposal text alignment with the boundary ruling.** Update
       `design/attribute-model-proposal-3-substrate.md` §S5 (replace the
       mid-line/end-of-line wording with the boundary rule; correct the

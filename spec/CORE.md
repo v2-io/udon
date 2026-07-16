@@ -52,11 +52,16 @@ Key properties:
 | `NoDialectsLoaded` | A `<…>` typing envelope was recognized but no dialects are bound; value passed through as the plain string `"<…>"` | event |
 | `EscapeOutsideHeadPosition` | A leading `\` deeper than an established prose content-base looks like force-prose escape but is not head position (literal passthrough) | **AST** — not the event parser's inner loop |
 | `CommentMissingFollowingSpace` | Optional advisory: a `;` that opened a comment without the both-sides frame where that frame applies | host (advisory) |
+| `AttributeValueExtendedByTrailingText` | Same-line trailing text after a block attribute's finished value; ingested as a further segment of that key's value array (see Attributes, Multi-Segment Values) | event |
+| `AttributeSecondValue` | Deeper second value (text or sibling node) under an attribute whose value is finished, without a new `:key`; ingested as a further segment | event |
+| `AttributeAfterChildren` | A line-initial `:` at an ancestor-attribute column after that element entered its children phase; treated as prose of the column's owner | event or AST |
 
-Further codes may be added when the attribute model and other layers land
-(e.g. `UnmarkedBooleanFlag`, `ValuedBooleanKey`, `MarkerInTextValue`,
-`DistantAttributeBlock`). Codes that die with a model change are removed from
-this table, not kept as soft ghosts.
+Warning-code strings above from the 0.9 attribute model are **working names**
+(final at fixture-group landing). Two related **errors** (not warnings) also
+arrive with that model: `MissingAttributeValue` (plain attribute with no value
+material) and `AttributeUnderAttribute` (a `:key` directly under an
+attribute). Codes that die with a model change are removed from this table,
+not kept as soft ghosts.
 
 ---
 
@@ -119,7 +124,10 @@ of every line**, and it has two faces:
   prose -- not head position.
 - **sameline scan** -- the run along an element line through elements *and
   attributes* (`|a |b :k v ...`), still looking for the next marker. Elements
-  and attributes keep the scan open; the first *prose* word ends it.
+  and attributes keep the scan open; the first *prose* word ends it. (A bare
+  attribute-value token holds the scan *provisionally* open at its boundary --
+  the next character decides; see Attributes, "The Scan and the Bare-Token
+  Boundary".)
 
 At head position, and *only* there, the special-start markers are recognized:
 `|` (element), `:` (attribute), `!` (directive), `;` (comment), `@` (reference),
@@ -153,12 +161,16 @@ naturally.
 **Block context:**
 - Attributes on their own indented lines
 - Prose that sets the indent-column for continuation
-- Values can contain spaces without quoting
+- Trailing text after a finished value: segment-ingest + warning (see
+  Attributes)
 
 **Sameline context:**
 - Attributes/content on the element definition line
 - Prose that does NOT set indent-column
-- Values are space-delimited (quote for spaces)
+- Trailing text after a finished value: the element's prose
+
+(In both contexts the value grammar itself is uniform -- bare tokens,
+quoted strings, the bare-token boundary rule; see Attributes.)
 
 ### Inline Elements (Context Reminder)
 
@@ -294,6 +306,14 @@ byte-pulling, not stylistic inspection). An AST-layer host may emit
 indent-level and subsequent head-position purposes -- is a grammar-level detail
 to settle when the parser catches up.)
 
+**In value-expected position, `\` enters text mode.** The fourth positional
+use: a `\` where a plain attribute still needs a value (no value token
+started) is consumed and makes the value a text blob -- `|el :count \7 apples`
+gives `count` = the text `"7 apples"`, not the integer `7`. See Attributes,
+"Value-Position `\`". The full positional set is: head position (force line
+to prose), mid-prose before an inline opener (escape it), value-expected
+position (enter text), anywhere else (literal). Position alone disambiguates.
+
 `'` is **not** an escape -- a line beginning `'|`... is prose starting with an
 apostrophe (`'` remains a string / name / key delimiter, see Value Types). Inside
 quoted strings (`"..."` / `'...'`), `\` follows the string's own escaping, not
@@ -327,8 +347,9 @@ the character is prose. `|`'s guard is above. The rest:
   References and Mixins).
 - **`:`** (attribute) is **phase-restricted** rather than char-guarded: a `:` is
   an attribute only while the element has no child content yet; once any text or
-  child element has appeared, a line-initial `:` is prose (see Attributes Before
-  Children). A `:` not followed by a name also falls back to prose intact.
+  child element has appeared, a line-initial `:` is prose, with a warning when
+  it sits at an ancestor-attribute column (see Attributes, "Phase Change and
+  Late `:`"). A `:` not followed by a name also falls back to prose intact.
 - **`;`** (comment) marks per the Comments table (line comment at root /
   sameline / after attribute values; literal in block prose).
 - **triple-backtick** (freeform) -- see Triple-Backtick Escape.
@@ -380,13 +401,17 @@ a Unicode identifier. The first character must carry the Unicode **`XID_Start`**
 property (ASCII `A`-`Z` / `a`-`z` plus the corresponding non-ASCII
 identifier-start letters; digits, `_`, and `-` are *excluded* from this first
 position). Each following character must carry **`XID_Continue`** *or* be a
-hyphen `-` -- so digits, `_`, `-`, and identifier-continue marks may extend a
-name, and kebab-case is first-class (`|my-element`). Any character outside that
-set -- a space, `.`, `[`, `:`, `$`, other punctuation -- ends the bare name; to
-put such a character *in* a name or trait, single-quote it (`|'weird name'`,
-`.'ns.kind'`). A bare `.trait` additionally absorbs the suffix characters
-`* ! ? +` (see Element Suffixes), so a trait's continue-set is `XID_Continue`
-plus `-` plus `* ! ? +`.
+hyphen `-` or slash `/` -- so digits, `_`, `-`, `/`, and identifier-continue
+marks may extend a name; kebab-case is first-class (`|my-element`) and `/` is
+conventional namespacing with zero core semantics (`|acme/widget`). Any
+character outside that set -- a space, `.`, `[`, `:`, `$`, other punctuation --
+ends the bare name; to put such a character *in* a name or trait, single-quote
+it (`|'weird name'`, `.'ns.kind'`). A bare `.trait` additionally absorbs the
+suffix characters `* ! ? +` (see Element Suffixes), so a trait's continue-set
+is `XID_Continue` plus `-` `/` plus `* ! ? +`. (The suffix characters are
+*not* name-continue characters for element names -- there they remain element
+suffixes. Attribute keys have their own continue-set: see Attributes, "Keys
+and Flags".)
 
 What the core fixes is the *rule* -- a bare name is a Unicode identifier (UAX #31
 `XID_Start` to start, `XID_Continue` or `-` to continue). *Which Unicode version*
@@ -416,6 +441,11 @@ UDON performs only the expansion; the *meaning* is defined by the consuming
 schema or dialect:
 - a schema might read `?` as optional, `!` as required
 - a grammar might read `?` as 0-or-1, `*` as 0-or-more, `+` as 1-or-more
+
+(Element suffixes are unrelated to attribute **flag keys** `:key?` -- the
+suffix is sugar on an *element* that desugars to a plain `$`-attribute with an
+explicit `true`; a flag key is an *attribute-level* spelling. See Attributes,
+"Keys and Flags".)
 
 **Suffix positions** (a suffix binds to the element identity):
 
@@ -478,31 +508,318 @@ desugaring; everything else is a straight read of the attribute stream.
 
 ## Attributes
 
-Attributes are key-value pairs:
+*(This whole section is the 0.9 reconception, ratified from
+`design/attribute-model-proposal-3-substrate.md` + proposal 3. It replaces the
+0.8 model: implicit valueless-true, block run-to-EOL, and
+attributes-as-typed-scalars are all retired -- see the CHANGELOG.)*
+
+### Attributes Are Labeled Edges
+
+An element automatically has a **hash** and an **array**:
+
+- **Attributes (the hash)** are labeled edges from the *parent's* perspective:
+  `my address`, `my headers`. The label is conserved. Values under one key
+  stack, in source order.
+- **Children (the array)** are positional, heterogeneous, and self-named.
+
+A child names *what it is*; an attribute names *what it is to the parent*.
+That -- **whose name is it?** -- is the test for choosing between them, not
+"scalars go in attributes, structure goes in children." In graph terms:
+attributes are edges, elements are nodes, and an edge may terminate at a leaf
+value, at a node, or at an ordered array of values. Restricting attributes to
+scalars was XML residue, not a UDON decision.
 
 ```
-|element :key value :another-key another value
+|element :key value :another-key "another value"
 ```
 
-Attributes can appear in two contexts:
-- **Sameline**: on the element definition line
-- **Block**: on their own indented line
+Attributes appear in two positions -- **sameline** (on the element definition
+line) and **block** (on their own indented line) -- plus inside embedded
+`|{...}` elements. The value grammar is the same everywhere; what differs by
+context is a small terminator set and who owns trailing material (below).
 
-Attribute values are context-sensitive:
-- **Block** values run to end of line; ` ;` starts a comment
-- **Sameline** values are space-delimited; quote for spaces
-- **Embedded** values are space-delimited; `}` also terminates the value
+### Attribute Keys and Flags
 
-When an attribute has no value (followed immediately by `:`, newline, or a
-context terminator), it is treated as boolean true.
+An unquoted attribute key is a Unicode identifier (`XID_Start` to start) whose
+continue-set is `XID_Continue` plus `-`, `/`, and the suffix characters
+`? ! * +`. As with element names, anything else takes single quotes
+(`:'weird key'`). `/` is conventional namespacing with **zero** core semantics
+(`:address/street 123`).
 
-**Empty/missing values:** The parser emits `BoolTrue` for attributes without a
-value:
+A **terminal `?` on an unquoted key selects flag semantics**; a `?` anywhere
+else in the key is just a character. A quoted key is always a plain attribute,
+whatever it ends with -- quoting means "exactly this name, no reading of it"
+(so the suffix-sugar target `:'$?' true` is a plain attribute). *(0.9 draft
+ruling R4 -- quoted keys never flag.)*
+
+**Plain attributes always take a value.** A plain `:key` followed by no value
+material -- end of line with nothing indented under it, or a context
+terminator -- is an **error** (`MissingAttributeValue`, working name). The 0.8
+implicit "valueless means true" is gone; presence/absence flags are spelled
+with `?`:
 
 ```udon
-|button :disabled :type submit
-; disabled -> BoolTrue, type -> "submit"
+|button :disabled? :type submit    ; disabled? = true, type = "submit"
+|el :ready? false                  ; ready? = false (explicit)
 ```
+
+**Flag rule.** After `:key?`, look at the next token in value position:
+
+1. Exactly `true`, `false`, `null`, or `nil` **alone** -> that is the flag's
+   value (consumed).
+2. **Anything else** -- a bare word, `|node`, `:next`, end of line -- the flag
+   snaps to **`true`** and that material is *re-owned* by the continuing scan;
+   it is never the flag's body.
+
+```udon
+|el :a?                       ; a? = true
+|el :a? false                 ; a? = false
+|el :a? |beta                 ; a? = true; |beta is a child of |el
+|el :a? well it sure is true  ; a? = true; el prose "well it sure is true"
+```
+
+The flag's wire name **includes** the `?` (`a?`), preserving round-trip
+fidelity. Element suffix sugar (`|el?` -> `:'$?' true`) is a separate,
+untouched mechanism -- it desugars to a plain attribute with an explicit
+value.
+
+### Value Kinds
+
+An attribute's value is one of these kinds -- or an **ordered array** of them
+(see Multi-Segment Values):
+
+| Kind | Forms |
+|------|-------|
+| **Scalar** | quoted string, number, `true`/`false`/`null`/`nil` alone, `[...]` list, `<...>` envelope |
+| **Reference** | `@...` (a selector; inert at core, like every reference) |
+| **Interpolation** | `!{{...}}` (host-evaluated; see DYNAMICS) |
+| **Node** | `\|element`, `!:lang:` raw block, or a freeform fence -- the value *is* that node |
+| **Text blob** | prose-shaped trailing text (below) |
+
+Types live on the **map side** -- attribute values and array items. The
+`<...>` envelope is meaningful in value position and nowhere in free prose;
+children detect their own content. A block `!directive` as a node value is
+deferred to the DYNAMICS companion, not core.
+
+### The Scan and the Bare-Token Boundary
+
+A `:` (passing its guard) enters attribute mode. After each key the parser
+collects that attribute's value material, then the scan continues for the
+current owner. This **uniform scan** applies on block lines too -- a block
+line is no longer one-value-runs-to-EOL:
+
+```udon
+|el
+  :a 1 :b 2      ; a = 1, b = 2  (two attributes; 0.8 made b part of a's string)
+```
+
+Most value shapes announce their extent by their first character -- a digit or
+sign commits to a number, `"`/`'` to a string, `<` to an envelope, `[` to a
+list, `@` to a reference, `|` to a node -- and self-terminate. (A committed
+token that goes wrong mid-way, like `32849...x`, falls through to text --
+token-local, no unbounded lookahead.) The interesting case is a bare word,
+where UDON must decide between "short scalar value" and "the start of running
+text." The rule:
+
+**A bare value token holds the sameline scan provisionally open at its
+boundary. The next non-space character decides:**
+
+- **A head-position marker** -- `:` (next attribute), `\` (force-prose), a
+  guarded `|`, a framed ` ; ` comment, a fence, a guarded `!` -- means the
+  token **finished as a single-token value** and the scan continues, exactly
+  as if the token had been quoted. *(0.9 draft ruling R1 -- the boundary
+  marker set is the sameline-scan marker set; `@` is a value shape, not a
+  scan marker, so it does not appear here.)*
+- **Plain text** means the line has committed: the bare token was the
+  *beginning of a text blob*, which runs to the end of the line (or a framed
+  ` ; ` comment) and belongs to whoever the ownership rules say (next
+  section).
+
+One character of lookahead at one decision point -- the same shape as every
+other guard (see Bounded Lookahead).
+
+```udon
+|el :first value :another x        ; "value" then ':' -> single-token value
+|el :first value with spaces :another x
+                                   ; "value" then 'w' -> text blob:
+                                   ; first = "value with spaces :another x"
+                                   ; (the later : is inside the blob -- just text)
+|el :alpha something \ el's text   ; "something" then '\' -> alpha = "something",
+                                   ; rest of line is |el's prose (see Escape)
+|el :alpha something ; a comment   ; framed ' ; ' at the boundary -> comment
+|el :url https://x.com :role foo   ; url = "https://x.com" (boundary is ':')
+```
+
+**Keywords and the boundary.** `true` / `false` / `null` / `nil` are typed
+only when the token finishes alone -- that is, when the boundary shows a
+marker or end-of-line. If plain text follows, the keyword was just the first
+word of a blob:
+
+```udon
+|el :alpha true            ; alpha = boolean true
+|el :alpha true story      ; alpha = "true story"  (text blob)
+|el :alpha true \ story    ; alpha = boolean true; el prose " story"
+```
+
+### Text-Blob Values
+
+A text blob is **prose-shaped**, the same family as element prose -- not a
+second literal-only dialect:
+
+- Inline forms fire: `|{...}`, `!{...}`, `;{...}`, with the normal prose `\`
+  escapes for those openers.
+- A trailing whitespace-framed ` ; ` is a sameline comment, **except** on a
+  value-`\` line (below).
+- The event stream may deliver a blob as a sequence of segments (Text,
+  Interpolation, Embedded, ...) under the one key; hosts may flatten
+  text-reducible segments.
+
+#### Whose Text Is This? (Ownership)
+
+When a text blob starts, its owner is decided by priority:
+
+| Priority | Condition | Owner |
+|----------|-----------|-------|
+| 1 | An attribute to the left still **needs a value** (or is collecting -- see Multi-Segment Values) | That attribute's value |
+| 2 | Else: the nearest **element on the same line** to the left | Child text of that element (the attrs phase ends for this line's tail) |
+| 3 | Else | Ordinary indent/dedent ownership -- prose of whoever owns that column. **Not an error.** |
+
+Row 2 is the **sameline decompress**: after an element line's attributes, a
+trailing tail is that element's content, as if the indent continued under it.
+Row 3 is just normal document prose.
+
+```udon
+|el :first value :another with some text
+; first = "value"; another = "with some text"        (row 1 -- open attr)
+
+|el :first value :another "with" some text
+; first = "value"; another = "with"; el prose "some text"   (row 2 -- value done)
+
+|el
+  :title The full title goes here ; TODO
+; open attr on a block line -> the text is the value; the comment is a comment
+```
+
+#### Multi-Line Values (Deferred Block)
+
+If the key line ends with **no finished value**, deeper lines are the value
+body, under ordinary indent / dedent / content-base rules -- blank lines
+behave exactly as they do in prose, no special policy:
+
+```udon
+|el
+  :body
+    line one
+
+    line two with |{em emphasis}
+```
+
+Sequential text lines under one open value are one multi-line text value
+(multiple Text segments; concatenation-equivalent). This is also the home for
+structured values:
+
+```udon
+|api-endpoint
+  :method POST
+  :headers
+    |header :name Content-Type :value application/json
+```
+
+(...though note `:headers` here gets exactly **one** node -- see Node Values.)
+
+#### Value-Position `\`
+
+A `\` in **value-expected** position -- a plain attribute still needs a value
+and no value token has started -- is consumed and enters text mode:
+
+```udon
+|el :count \7 apples     ; count = "7 apples"  (text, not the integer 7)
+```
+
+The first line's extent is the **rest of the physical line**, and that line
+gives up the sameline-comment affordance: a ` ;` there is literal blob text.
+(Deeper continuation lines under the still-open value join it as a deferred
+block.) This is the fourth positional use of `\` -- see Escape for the full
+positional set. On a *block* attr line, a `\` at a finished bare token's
+boundary behaves as at any boundary: the value closes and the rest of the
+line is the **element's** prose. *(0.9 draft ruling R3.)*
+
+### Node Values
+
+An attribute's value may be a node -- the attribute *is* that element (or raw
+block, or fence), with **no anonymous wrapper**:
+
+```udon
+|api :headers |header :name Content-Type :value application/json
+; headers IS the |header node (sameline binding -- no block-deeper requirement)
+
+|el
+  :beta
+    |veni-vidi-vici :working 1234
+; beta IS a veni-vidi-vici
+```
+
+- Once a node is accepted as the value, **its scan owns its interior** --
+  its identity, its attributes, its prose, its children:
+  `|el :a |the-node :k "v" more` gives `a` = the node, the node `:k "v"`,
+  and `"more"` as the *node's* prose.
+- To make a node a **child of the element** while a flag is set, use a flag
+  key: `|el :a? |beta` -> `a?` = true, `|beta` child of `|el`.
+- **No attribute-under-attribute.** A deeper line that is itself `:key`
+  directly under an attribute (not inside a node value) is an **error**
+  (`AttributeUnderAttribute`, working name) -- maps-of-maps take a named node
+  carrier: `:theta` + deeper `|config :first 1 :second 2`.
+- The preferred, warning-free shape is **one node per declaration**; stack
+  the key to add more. A second sibling node at the value's depth is the
+  ingest-with-warning case below.
+
+### Multi-Segment Values and Stacking
+
+When the same key appears more than once on an element, the values **stack**
+-- an ordered list of assignments, in source order. Stacking is the uniform
+rule for *every* attribute; last-wins / "one per key" is **not** how UDON
+attributes behave. This is what makes the trait sugar work -- `.a.b` is two
+`$traits` assignments (see Identity and Classification).
+
+```udon
+|el :x 1 :x 2        ; x = [1, 2]  (both kept, in order)
+```
+
+**Stacking and list values are orthogonal** -- a list literal `[...]` is *one*
+value that happens to be a list; stacking is *multiple* assignments:
+
+```udon
+|el :x [1 2] :x [3]   ; x = [[1, 2], [3]]
+```
+
+Stacks are heterogeneous (`:a 1` then `:a |node` then `:a more text` -- all
+three kept, in order). A host may offer a single-value accessor (scalar /
+last) beside the list accessor; what is *allowed* -- e.g. forbidding a
+multi-valued `$key` -- is a schema concern, never core.
+
+In the same **stacking spirit**, material that arrives after an attribute's
+value is already finished is **ingested as a further segment of that key's
+value array, with a strong warning** -- never silently dropped, never a hard
+reject:
+
+```udon
+|el
+  :attr "first" and here's another one
+; WARN (AttributeValueExtendedByTrailingText, working name)
+; attr ~= ["first", "and here's another one"]
+
+|el
+  :when <7:02pm>
+    extra deeper text
+; WARN (AttributeSecondValue, working name)
+; when ~= [<7:02pm>, "extra deeper text"]  -- same for a second sibling node
+```
+
+**Why the first one warns:** joining that block line onto the element's line
+*changes the meaning* -- `|el :attr "first" and here's another one` makes the
+tail the **element's** prose (ownership row 2), not a segment of `attr`. The
+warning marks exactly that refactoring hazard. To declare a second value
+deliberately, write the key again (stacking) or an explicit list.
 
 ### Inline Lists
 
@@ -512,142 +829,66 @@ Square brackets for list values:
 |server :ports [8080 8443 9000] :tags [api public]
 ```
 
-- Space-delimited within brackets
-- Quoted strings for values with spaces: `["hello world" foo bar]`
+- Space-delimited within brackets; each item typed independently by the
+  normal value rules (numbers, quoted strings, `<...>` envelopes, nested
+  lists).
+- **No text blobs inside `[...]`** -- a bare item is a single token; quote
+  items that need spaces: `["hello world" foo bar]`.
 
-### Attribute Stacking
+### Contexts and Terminators
 
-When the same attribute key appears more than once on an element, the values
-**stack** -- they accumulate as an ordered list of assignments, in source
-order. Stacking is the uniform rule for *every* attribute; last-wins /
-"one per key" is **not** how UDON attributes behave.
+The value grammar is uniform; contexts differ only in their terminator sets
+for **bare** (unquoted) tokens and in default tail ownership:
+
+| Context | Bare-token terminators | Tail after a finished value |
+|---------|------------------------|------------------------------|
+| Element (sameline) line | space, `\n` | element's prose (ownership row 2) |
+| Block attr line | space, `\n` | segment-ingest + warning |
+| Embedded `\|{...}` | space, `\n`, `}` (unconsumed) | embedded element's content |
+| Array item | space, `\n`, `]` (unconsumed) | *(items only -- no tails)* |
+
+- A framed ` ; ` opens a comment in all attribute contexts (except the
+  value-`\` line); an unspaced `;` is part of the token
+  (`:url https://example.com/a?q=1;s=2` keeps its semicolon).
+- **Embedded** attributes follow the element-line rules with `}` as an extra
+  terminator; `}` is not consumed (bracket matching). *(0.9 draft ruling
+  R2 -- embedded is element-rooted sameline. Consequence: an embedded trailing
+  tail after an **open** bare attr is the attr's blob, so
+  `|{a :href /home :title Home here}` gives `title = "Home here"` and no
+  embedded content -- quote the value (`:title "Home" here`) to leave content
+  for the element. And `|{input :required}` is an error; write
+  `|{input :required?}`.)*
+- **Array items**: `}` is *not* a terminator inside `[...]` -- the array
+  closes only on `]` (else `UnclosedArray`). A `}` closing an embedded
+  element must come after the `]`. **Quoted-item nuance**: a quoted item's
+  closing quote ends it, so `["x"y]` and `["x""y"]` each yield two items,
+  same as `["x" y]`.
+
+### Event Encoding (0.9 Wire)
+
+*(0.9 draft ruling R5 -- names are working names until the fixture group
+lands.)* An attribute whose value is a **single scalar, reference, or
+interpolation** keeps the 0.8 wire: `Attr` (the key) followed by one value
+event. An attribute with a **node value, text-blob segments, or a
+multi-segment array** brackets its interior instead:
 
 ```
-|el :x 1 :x 2        ; x = [1, 2]  (both kept, in order)
+AttrStart ("headers")
+  ElementStart / Name "header" / ... / ElementEnd
+AttrEnd
 ```
 
-The event stream is the truth: each `:key` occurrence emits its own `Attr`, in
-order. This is also what makes the trait sugar work -- `.a.b` desugars to two
-`$traits` assignments (see Identity and Classification).
+`AttrStart`/`AttrEnd` wrap ordinary events -- element, Text, Raw, Freeform,
+Interpolation -- so consumers reuse the machinery they already have. Flags
+settle as `BoolTrue` / `BoolFalse` / `Nil` exactly like plain values.
 
-**Stacking and list values are orthogonal** -- two different multiplicity axes.
-A list literal `[...]` is *one* value that happens to be a list; stacking is
-*multiple* assignments of the same key. They compose:
+### Phase Change and Late `:`
 
-```
-|el :x [1 2] :x [3]   ; x = [[1, 2], [3]] -- two stacked values, the first a list
-```
-
-A host may offer a single-value accessor (scalar / last) beside a list
-accessor (all values); the `traits` view is always a list (see Host Views).
-What is *allowed* -- e.g. forbidding a multi-valued `$key` -- is a schema
-concern, never core: the core stacks and list-types any attribute uniformly.
-
-### Complex Attribute Values
-
-Authors often write an attribute with no same-line value and put structure on
-the following indented lines:
-
-```
-|api-endpoint
-  :method POST
-  :headers
-    |header :name Content-Type :value application/json
-    |header :name Authorization :value Bearer token
-```
-
-Attribute followed by newline+indent = structured value -- **as authoring
-intent**. Event shape, ownership, and flag/value policy are **not settled
-in this version**. Active design carriers (not yet CORE):
-`design/attribute-model-proposal-3-substrate.md` (decided model floor) and
-`design/attribute-model-proposal-3.md` (narrative). Do not treat the
-current parser's emission as the contract.
-
-### Value Terminator Rules
-
-Different contexts have different terminator sets for **unquoted values**.
-
-#### Block Attribute Values
-
-```udon
-|el
-  :key value with spaces allowed here
-  :url https://example.com/path?q=1;s=2
-  :note this has a semicolon too ; but THIS is a comment
-```
-
-Terminators: `\n` or ` ;` (space followed by semicolon)
-
-- Values extend to end of line
-- Spaces allowed without quoting
-- `;` preceded by space starts comment
-- `;` without preceding space is part of value
-
-Because the value runs to end-of-line, a *block* line holds **one** attribute:
-`:bttr 2 :cttr 3` makes `:bttr` = the string `"2 :cttr 3"`, not two attributes.
-For multiple attributes, use the element (sameline) line (`|el :a 1 :b 2`) or
-separate block lines. A stranded ` :name ` inside a block value is still part of
-that value; a host may warn about the likely mistake, but the event parser is
-not required to (advisory emission is host-side -- see warning-code posture).
-(A future attribute-model reconception may replace run-to-EOL with a uniform
-line scan; until then, one-attribute-per-block-line is the rule.)
-
-#### Sameline Attribute Values
-
-```udon
-|el :key1 value1 :key2 value2 ; comment
-|el :url https://x.com :role foo
-```
-
-Terminators: `\n` or `SPACE`
-
-- Space delimits values
-- Use quotes for values with spaces: `:key "hello world"`
-- `;` after values starts comment (child of element)
-- `:` after space starts next attribute
-
-#### Embedded Attribute Values
-
-```udon
-|p Click |{a :href /home :title Home here} now.
-```
-
-Terminators: `\n`, `SPACE`, or `}`
-
-- Same as sameline, plus `}` closes the embedded element
-- `}` is NOT consumed (returned for proper bracket matching)
-
-#### Array Item Values
-
-```udon
-:tags [one two three]
-:coords [1.5 2.3 4.1]
-```
-
-Terminators: `\n`, `SPACE`, or `]`
-
-- Space separates array items
-- `]` closes array (not consumed)
-- Context (block vs embedded) doesn't affect array terminators
-- `}` is **not** a terminator: inside `[...]` it is a literal character; the
-  array closes only on `]` (with no `]`, it ends as an `UnclosedArray` error). A
-  `}` meant to close an embedded `|{...}` must come *after* the array's `]`.
-
-**Quoted-item nuance** (a consequence of the terminator rules, not a separate
-rule): a quoted string's closing `"` ends its item, so a character immediately
-after it -- with no separating space -- begins the next item. Thus `["x"y]` and
-`["x""y"]` each yield two items (`["x", "y"]`), the same as `["x" y]`.
-
-### Bare String Terminators (Summary)
-
-These rules apply to **unquoted values** (bare strings, numbers, booleans, nil).
-
-| Context | Terminators | Space? | Notes |
-|---------|-------------|--------|-------|
-| Block attr | `\n`, ` ;` | In value | Comment needs ` ;` |
-| Sameline attr | `\n`, `SPACE` | Terminates | Quote for spaces |
-| Embedded attr | `\n`, `SPACE`, `}` | Terminates | Don't consume `}` |
-| Array item | `\n`, `SPACE`, `]` | Terminates | Don't consume `]` |
+Attributes precede children -- unchanged (see Design Principles). Once an
+element has entered its children phase, a later line-initial `:` at a column
+that would have made it an *ancestor's* attribute is **not** that attribute:
+it is prose (or structure) of whoever owns that column, with a **warning**
+(`AttributeAfterChildren`, working name) rather than an error.
 
 ---
 
@@ -856,9 +1097,9 @@ else it is already literal, so most literal semicolons need no escape at all:
 | Context | Literal `;` |
 |---------|-------------|
 | Block prose | Already literal (`code; more code`) |
-| Block attr value | Already literal, or quote (`:sql 'SELECT; DROP'`) |
+| Attr values (block & sameline) | Literal when not whitespace-framed (`:url .../a?q=1;s=2`), or quote (`:sql 'SELECT; DROP'`); a framed ` ; ` after value material starts a comment |
 | Sameline prose | Literal unless whitespace-framed (a *sameline comment* needs a space before AND a space/EOL after); `a;b` and `a ;b` are literal |
-| Sameline attr values | Literal when not preceded by a space; a ` ;` after the value starts a comment, so quote (`:k "a; b"`) or force the whole tail to prose with a head-position `\` (see Escape) |
+| Value-`\` text | Fully literal, framed or not -- a value entered via `\` gives up the sameline-comment affordance (`:k \a ; b` is the value `"a ; b"`) |
 | Embedded `\|{...}` | Bare `;` is literal -- only `;{` opens an inline comment |
 
 There is no separate `\;` escape: a `\` that is not at head position is passed
@@ -867,8 +1108,8 @@ space, block prose, or embedded) or from quoting; a whole prose tail that must
 carry would-be markers is forced to prose with a head-position `\`.
 
 ```
-|el :key and-this;-is-ok this is prose ; and this is a comment
-  this is also prose ; but this is not a comment
+|el :key and-this;-is-ok now part of the value ; and this is a comment
+  this is prose of |el ; but this is not a comment
 
 !:c:
   // And obviously semicolons anywhere here are ok...
@@ -1705,8 +1946,8 @@ sniffing.
 | `true`, `false` | Boolean | (lowercase only) |
 | `null`, `nil` | Nil | (both equivalent) |
 | `[...]` | List | `[1 2 3]`, `[a b c]` |
-| `:key` (no value) | Boolean `true` | Flag/presence semantics |
-| Anything else | String | Unquoted text |
+| `:key?` (flag key) | Boolean `true` unless explicit | Flag/presence semantics -- see Attributes |
+| Anything else | String / text blob | Unquoted text |
 
 ### Explicit Typing (`<...>`)
 
@@ -1827,10 +2068,13 @@ imaginary) pulls toward the envelope. Treat both as not yet frozen. See
 ```
 :enabled true     ; Boolean true
 :debug false      ; Boolean false
-:flag             ; Boolean true (missing value = true)
+:flag?            ; Boolean true (flag key -- see Attributes, "Keys and Flags")
 ```
 
-Lowercase only. `TRUE`, `True`, `FALSE` are strings.
+Lowercase only. `TRUE`, `True`, `FALSE` are strings. A keyword is typed only
+when it finishes alone at its boundary -- `:alpha true story` is the text
+`"true story"` (see Attributes, "The Scan and the Bare-Token Boundary"). A
+plain `:key` with no value at all is an error, not `true` -- flags take `?`.
 
 ### Nil
 
@@ -1867,7 +2111,7 @@ Each element is typed independently by the same rules.
 
 ```
 |config
-  :debug              ; debug = true (flag present)
+  :debug?             ; debug? = true (flag present)
   :verbose false      ; verbose = false (explicit)
   :deprecated null    ; deprecated = nil (explicitly unset)
   ; timeout is absent (key doesn't exist)
@@ -1877,7 +2121,10 @@ These are distinct:
 - **Absent**: Key not present at all
 - **Nil**: Key present, value explicitly "no value"
 - **False**: Key present, value is boolean false
-- **True**: Key present with no value (flag) or explicit `true`
+- **True**: Flag key present bare (`:debug?`) or any key with explicit `true`
+
+(A plain key with no value is none of these -- it is a `MissingAttributeValue`
+error; see Attributes.)
 
 ---
 
