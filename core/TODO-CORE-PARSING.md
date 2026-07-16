@@ -83,9 +83,18 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       2026-07-16 for the \-escape-ladder collapse + file renames: neutral
       to slightly positive — pushdown −1% to −7.5% time, recursive +1%
       (within the ±3-8% noise band the untouched comparison parsers show).
-      No regression from that work; the confounded post-0.9 delta above is
-      still the thing to bisect. Keep memory profiling on large files in
-      scope.
+      No regression from that work. **Unconfounded 0.8-vs-0.9 grammar pair
+      (2026-07-16, identical harness/input — 0.8-tag parsers swapped under
+      the current bench)**: on the old-world `comprehensive.udon` 1 MiB
+      doc, the 0.9 model costs ~21% single-shot time (recursive 1258 → ~1040
+      MiB/s) and ~34% pushdown throughput (474 → ~310 MiB/s), with KNOWN
+      semantic skew — 0.9 emits more events on this doc (MissingAttribute-
+      Value+Nil for old valueless attrs, blob Texts, boundary work), and
+      pushdown pays per-event owned-Vec allocation, which is why it suffers
+      double (see the borrow-from-buffer emission item). Optimization
+      targets, in likely order: boundary-state hops in the value scanner;
+      per-event allocation in pushdown; SCAN coverage in the new states.
+      Keep memory profiling on large files in scope.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
