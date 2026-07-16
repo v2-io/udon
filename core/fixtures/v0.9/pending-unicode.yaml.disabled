@@ -1,0 +1,52 @@
+# QUARANTINED — real parser gaps blocked on descent-level Unicode work
+# (tracked in core/TODO-CORE-PARSING.md, 2026-07-16). The generated guards
+# classify ALL high bytes as identifier-start (so Greek names work but
+# `|→arrow` wrongly parses as an element), and COL counts bytes, not
+# characters. These cases encode CORE's actual XID_Start/XID_Continue and
+# char-column semantics; the `.disabled` extension keeps them out of the
+# harness (which globs *.yaml) until descent decodes UTF-8 in its charclass
+# and column machinery. Re-enable by renaming to .yaml — they should then
+# go green with no edits.
+
+- id: ascii_control_for_multibyte_column_tracking
+  desc: ASCII control for multibyte_name_column_tracking (same shape, same events)
+  udon: "|aX |b\n     c\n"
+  events:
+    - ElementStart
+    - [Name, "aX"]
+    - ElementStart
+    - [Name, "b"]
+    - [Text, "c"]
+    - ElementEnd
+    - ElementEnd
+
+# ===========================================================================
+# Content-base bookkeeping across child elements (CORE "Automatic Prose
+# Dedentation"). Mined from indentation_edge_cases.yaml — these were
+# regression cases for a real pre-0.8 bug (base lost when a child closed).
+# ===========================================================================
+
+# ⚠ CORE does not state whether columns count characters or bytes; the
+# review's defect #6 (REVIEW-JULY-2026 §4, verified) ruled char-correct
+# column tracking, and the legacy pair encoded that. Encoded here as
+# CHAR-counted: 'é' is one column, so |b's pipe is at column 4 and the
+# 5-space prose line (column 5 > 4) is INSIDE |b. A byte-counting parser
+# would put |b at column 5 and dedent the prose out of it — that divergence
+# is exactly what this case pins. Spec-text gap worth a SPEC-CORE note.
+- id: multibyte_name_column_tracking
+  desc: columns count characters, not bytes — prose one past a multibyte-named line's inline child stays inside it
+  udon: "|aé |b\n     c\n"
+  events:
+    - ElementStart
+    - [Name, "aé"]
+    - ElementStart
+    - [Name, "b"]
+    - [Text, "c"]
+    - ElementEnd
+    - ElementEnd
+
+- id: symbol_start_is_prose
+  desc: a non-identifier symbol after the pipe fails the element guard — prose
+  udon: "|→arrow\n"
+  events:
+    - [Text, "|→arrow"]

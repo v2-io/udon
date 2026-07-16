@@ -76,6 +76,7 @@
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |c['<']                   | -> | depth += 1                  |>> :envelope
     |c['@']                   | ->                               |>> :maybe_ref
+    |c['!']                   | ->                               |>> :maybe_interp
     |c['0']                   | ->                               |>> :num_zero
     |c['123456789']           |                                  |>> :num_dec
     |c['+-']                  | ->                               |>> :num_sign
@@ -96,6 +97,15 @@
   |state[:env_check]
     |if[depth == 0]           | TERM | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
     |default                  |                                  |>> :envelope
+
+  ; === Interpolation in value position (CORE Value Kinds) ===
+  ; !{{...}} is a first-class value; anything else after '!' is text.
+  |state[:maybe_interp]
+    |c['{']                   | ->                               |>> :maybe_interp2
+    |default                  |                                  |>> :string
+  |state[:maybe_interp2]
+    |c['{']                   | -> | /interpolation              |return
+    |default                  |                                  |>> :string
 
   ; === Reference in value position (CORE "References", 0.9 guard) ===
   ; Guard: `@` + `[`, `.`, or identifier. Payload is the raw text after `@`
@@ -131,14 +141,39 @@
     |if[space_term == 1]      | TERM | KEYWORDS(bare_kw)         |return
     |default                  | TERM                             |>> :kw_boundary
 
-  ; Keyword-path boundary: consume spaces; a marker/EOL finishes the lone
-  ; token (typed if keyword); plain text commits the blob.
+  ; Keyword-path boundary: consume spaces; a GUARDED marker/EOL finishes
+  ; the lone token (typed if keyword); a guard-failing lookalike (`:3`,
+  ; `|~`, `!=`) is plain text and commits the blob (CORE: markers are
+  ; defined by their guards). Guard-passing markers whose first char had to
+  ; be consumed return a code so the caller resumes the scan:
+  ;   4 = ':' consumed, attr key follows      11 = '|' consumed, node follows
+  ;  12 = '!' consumed, directive follows     13 = '@' consumed, ref follows
   |state[:kw_boundary]
     |eof                      | KEYWORDS(bare_kw)                |return
     |c[' \t']                 | ->                               |>>
     |c['\n']                  | KEYWORDS(bare_kw)                |return
     |c[:bracket]              | KEYWORDS(bare_kw)                |return
-    |c[<':;!@`' P BS>]        | KEYWORDS(bare_kw)                |return
+    |c[<';`' BS>]             | KEYWORDS(bare_kw)                |return
+    |c[':']                   | ->                               |>> :kwb_colon
+    |c['|']                   | ->                               |>> :kwb_pipe
+    |c['!']                   | ->                               |>> :kwb_bang
+    |c['@']                   | ->                               |>> :kwb_at
+    |default                  |                                  |>> :blob
+
+  |state[:kwb_colon]
+    |c[<XLBL_START SQ>]       | KEYWORDS(bare_kw) | result = 4   |return result
+    |default                  |                                  |>> :blob
+  |state[:kwb_pipe]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | KEYWORDS(bare_kw) | result = 11 |return result
+    |default                  |                                  |>> :blob
+  |state[:kwb_bang]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<XLBL_START ':' '{'>]  | KEYWORDS(bare_kw) | result = 12  |return result
+    |default                  |                                  |>> :blob
+  |state[:kwb_at]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<L XLBL_START '.'>]    | KEYWORDS(bare_kw) | result = 13  |return result
     |default                  |                                  |>> :blob
 
   ; === Numbers: after sign (+/-) ===
@@ -290,13 +325,33 @@
     |if[space_term == 1]      | BareValue(USE_MARK)              |return
     |default                  | TERM                             |>> :str_boundary
 
-  ; Bare-string boundary: same shape as the keyword boundary.
+  ; Bare-string boundary: same shape as the keyword boundary (same codes).
   |state[:str_boundary]
     |eof                      | BareValue(USE_MARK)              |return
     |c[' \t']                 | ->                               |>>
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
-    |c[<':;!@`' P BS>]        | BareValue(USE_MARK)              |return
+    |c[<';`' BS>]             | BareValue(USE_MARK)              |return
+    |c[':']                   | ->                               |>> :strb_colon
+    |c['|']                   | ->                               |>> :strb_pipe
+    |c['!']                   | ->                               |>> :strb_bang
+    |c['@']                   | ->                               |>> :strb_at
+    |default                  |                                  |>> :blob
+
+  |state[:strb_colon]
+    |c[<XLBL_START SQ>]       | BareValue(USE_MARK) | result = 4 |return result
+    |default                  |                                  |>> :blob
+  |state[:strb_pipe]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<'{' XLBL_START SQ '[' '.?!*+'>] | BareValue(USE_MARK) | result = 11 |return result
+    |default                  |                                  |>> :blob
+  |state[:strb_bang]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<XLBL_START ':' '{'>]  | BareValue(USE_MARK) | result = 12 |return result
+    |default                  |                                  |>> :blob
+  |state[:strb_at]
+    |if[:bracket == '}']                                         |>> :blob
+    |c[<L XLBL_START '.'>]    | BareValue(USE_MARK) | result = 13 |return result
     |default                  |                                  |>> :blob
 
   ; === Text blob (0.9): the line committed — runs to EOL / bracket. The

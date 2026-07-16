@@ -1,0 +1,717 @@
+# Cases mined from fixtures/legacy-pre-0.8/ (2026-07-16). Method: legacy
+# INPUTS were the quarry; every expectation below is re-derived from
+# spec/CORE.md 0.9.0-alpha.1 text — legacy expectations were never copied
+# (they encode the pre-0.8 model: id/class wire names, `'` escape,
+# valueless-true, bare temporal, run-to-EOL block values).
+#
+# Genuinely-uncertain readings are marked with `# ⚠` comments explaining the
+# reasoning. Sources per section are noted; skipped legacy files/areas are
+# reported in the mining report, not here.
+
+# ===========================================================================
+# Deep / ragged indentation and the pop rule (CORE "Hierarchy": "pop while
+# new_column <= stack_top.base_column"). Mined from indentation.yaml,
+# indentation_hierarchy.yaml, indentation_edge_cases.yaml.
+# ===========================================================================
+
+- id: single_space_indent_is_child
+  desc: one column deeper is enough — column 1 > column 0 makes b a child of a
+  udon: "|a\n |b\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - ElementEnd
+
+- id: ragged_single_space_chain_full_close
+  desc: a six-deep single-space staircase all closes at a column-0 sibling
+  udon: "|a\n |b\n  |c\n   |d\n    |e\n     |f\n|z\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - ElementStart
+    - [Name, "d"]
+    - ElementStart
+    - [Name, "e"]
+    - ElementStart
+    - [Name, "f"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementStart
+    - [Name, "z"]
+    - ElementEnd
+
+- id: vertical_partial_dedent
+  desc: a dedent to b's own column pops c and b (same column = sibling), d is child of a
+  udon: "|a\n  |b\n    |c\n  |d\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - ElementEnd
+    - ElementEnd
+    - ElementStart
+    - [Name, "d"]
+    - ElementEnd
+    - ElementEnd
+
+- id: attr_only_element_then_root_sibling
+  desc: an element holding only a block attribute closes at a column-0 sibling
+  udon: "|a\n  :attr value\n|b\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Attr, "attr"]
+    - [BareValue, "value"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+
+
+- id: prose_resumes_after_child_same_column_no_warning
+  desc: prose at the established base after a child element closes — no warning
+  udon: "|p\n  first prose\n  |em child\n  second prose\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "first prose"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "child"]
+    - ElementEnd
+    - [Text, "second prose"]
+    - ElementEnd
+
+- id: prose_after_child_below_base_warns_and_rebases
+  desc: prose under the established base (but past the owner's column) after a child closes — warn, rebase
+  udon: "|p\n  first prose\n  |em child\n second prose\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "first prose"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "child"]
+    - ElementEnd
+    - [Warning, "InconsistentIndentation"]
+    - [Text, "second prose"]
+    - ElementEnd
+
+- id: sameline_content_then_child_then_prose
+  desc: sameline content sets no base; the first indented prose line after the child establishes it
+  udon: "|p sameline\n   |em child\n   after child\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "sameline"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "child"]
+    - ElementEnd
+    - [Text, "after child"]
+    - ElementEnd
+
+- id: sameline_then_child_then_prose_shrinks
+  desc: base established after the child; a shallower later prose line warns and rebases
+  udon: "|p sameline\n   |em child\n   first\n  second\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "sameline"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "child"]
+    - ElementEnd
+    - [Text, "first"]
+    - [Warning, "InconsistentIndentation"]
+    - [Text, "second"]
+    - ElementEnd
+
+# ⚠ Legacy expected InconsistentIndentation between each pair here. CORE
+# 0.9's warning table scopes that code to "prose (or comment-continuation)
+# line[s]"; an ELEMENT line at a lesser column is the ordinary dedent/pop
+# rule, and the Hierarchy chapter's "poor form (warn or error)" aside sits
+# in a Style Recommendation marked Non-Authoritative. Encoded as: pure pop
+# mechanics, no warnings — b/c/d each pop their predecessor and land as
+# children of alpha. If ragged element siblings SHOULD warn, that needs a
+# CORE ruling first.
+- id: decreasing_element_indent_pops_no_warning
+  desc: elements at decreasing indents are ordinary dedents (siblings under alpha), not indentation warnings
+  udon: "|alpha\n    |a\n   |b\n  |c\n"
+  events:
+    - ElementStart
+    - [Name, "alpha"]
+    - ElementStart
+    - [Name, "a"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "c"]
+    - ElementEnd
+    - ElementEnd
+
+# ⚠ Legacy expected a warning here (attribute line "sets content_base").
+# CORE 0.9's dedentation rule and its implementation sketch establish the
+# content-base from indented PROSE lines; an attribute line is structure,
+# not prose, and the warning table's trigger is a prose line "indented less
+# than the established content-base" — none has been established when the
+# prose arrives. Encoded as: no warning; the prose line itself establishes
+# base 2. If structural lines should seed the base, that needs CORE text.
+- id: attr_line_does_not_set_prose_base
+  desc: a deeper block-attribute line does not establish the prose content-base
+  udon: "|el\n    :attr value\n  prose\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "attr"]
+    - [BareValue, "value"]
+    - [Text, "prose"]
+    - ElementEnd
+
+- id: prose_at_every_level_of_deep_nesting
+  desc: each element keeps its own content-base; prose resumes correctly after every dedent
+  udon: "|div\n  div text\n  |p\n    p text\n    |em\n      em text\n    after em\n  after p\nafter div\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - [Text, "div text"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "p text"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "em text"]
+    - ElementEnd
+    - [Text, "after em"]
+    - ElementEnd
+    - [Text, "after p"]
+    - ElementEnd
+    - [Text, "after div"]
+
+- id: alternating_prose_and_children_at_base
+  desc: prose and child elements alternate at the same column with no warnings
+  udon: "|p\n  prose 1\n  |em em1\n  prose 2\n  |strong strong1\n  prose 3\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "prose 1"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "em1"]
+    - ElementEnd
+    - [Text, "prose 2"]
+    - ElementStart
+    - [Name, "strong"]
+    - [Text, "strong1"]
+    - ElementEnd
+    - [Text, "prose 3"]
+    - ElementEnd
+
+# ===========================================================================
+# Element-name charset torture (CORE "Bare-name characters": XID_Start to
+# start; XID_Continue, '-', or '/' to continue; anything else ends the name;
+# quote for the rest). Mined from element_names.yaml / elements.yaml, plus
+# the spec's own |acme/widget example, which no active case covered.
+# ===========================================================================
+
+- id: slash_namespace_name
+  desc: "'/' continues a bare name — conventional namespacing, zero core semantics"
+  udon: "|acme/widget\n"
+  events:
+    - ElementStart
+    - [Name, "acme/widget"]
+    - ElementEnd
+
+- id: greek_name
+  desc: non-ASCII XID_Start letters begin and continue a bare name
+  udon: "|σελίδα\n"
+  events:
+    - ElementStart
+    - [Name, "σελίδα"]
+    - ElementEnd
+
+- id: cjk_name
+  desc: CJK ideographs are XID_Start/XID_Continue
+  udon: "|要素\n"
+  events:
+    - ElementStart
+    - [Name, "要素"]
+    - ElementEnd
+
+- id: combining_mark_continues_name
+  desc: a combining mark (U+0301) is XID_Continue — the decomposed name is kept as written
+  udon: "|élan\n"
+  events:
+    - ElementStart
+    - [Name, "élan"]
+    - ElementEnd
+
+- id: non_ascii_digit_continues_name
+  desc: an Arabic-Indic digit (U+0663, Nd) is XID_Continue
+  udon: "|foo٣\n"
+  events:
+    - ElementStart
+    - [Name, "foo٣"]
+    - ElementEnd
+
+
+- id: trailing_hyphen_stays_in_name
+  desc: "'-' is a continue character even at the end of the name"
+  udon: "|x-\n"
+  events:
+    - ElementStart
+    - [Name, "x-"]
+    - ElementEnd
+
+- id: quoted_name_carrying_marker_characters
+  desc: a quoted name may contain pipes, colons, spaces — all inert inside the quotes
+  udon: "|'a |b :c'\n"
+  events:
+    - ElementStart
+    - [Name, "a |b :c"]
+    - ElementEnd
+
+- id: quoted_name_with_key
+  desc: identity continues after a quoted name
+  udon: "|'special-name'[id7]\n"
+  events:
+    - ElementStart
+    - [Name, "special-name"]
+    - [Attr, "$key"]
+    - [BareValue, "id7"]
+    - ElementEnd
+
+- id: quoted_name_with_suffix
+  desc: a suffix binds after a quoted name like after any name
+  udon: "|'weird name'?\n"
+  events:
+    - ElementStart
+    - [Name, "weird name"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: unicode_trait
+  desc: bare trait values follow the same Unicode identifier rule
+  udon: "|el.θέμα\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "θέμα"]
+    - ElementEnd
+
+- id: trait_with_slash
+  desc: "'/' continues a bare trait value (namespacing)"
+  udon: "|el.ns/kind\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "ns/kind"]
+    - ElementEnd
+
+# ===========================================================================
+# Quoted keys (CORE "Attribute Keys and Flags": anything outside the bare
+# set takes single quotes). Mined from inline_attributes.yaml.
+# ===========================================================================
+
+- id: quoted_key_with_space
+  desc: a single-quoted attribute key may contain spaces
+  udon: "|el :'my key' value\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "my key"]
+    - [BareValue, "value"]
+    - ElementEnd
+
+- id: quoted_dollar_key_is_ordinary
+  desc: any $-name is a legal attribute via quoting — nothing is reserved
+  udon: "|el :'$custom' 5\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$custom"]
+    - [Integer, "5"]
+    - ElementEnd
+
+# ===========================================================================
+# Anonymous elements + suffix interactions (CORE "Anonymous Elements",
+# "Element Suffixes"). Mined from elements.yaml / element_recognition.yaml.
+# ===========================================================================
+
+- id: anonymous_key_and_trait
+  desc: anonymous element carrying both a key and a trait
+  udon: "|[k].t\n"
+  events:
+    - ElementStart
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Attr, "$traits"]
+    - [BareValue, "t"]
+    - ElementEnd
+
+- id: anonymous_trait_absorbs_suffix_char
+  desc: suffix characters touching an anonymous element's trait are part of the trait
+  udon: "|.opt?\n"
+  events:
+    - ElementStart
+    - [Attr, "$traits"]
+    - [BareValue, "opt?"]
+    - ElementEnd
+
+- id: anonymous_suffix_with_attrs
+  desc: a suffix-only anonymous element is an ordinary element and may carry attributes
+  udon: "|? :k v\n"
+  events:
+    - ElementStart
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - ElementEnd
+
+# ===========================================================================
+# Inline chains and embedded torture (CORE "Inline Nesting", "Inline and
+# Embedded Elements", "Bracket Mode Rules", element guard: pipe-space is
+# always literal). Mined from inline_element_nesting.yaml and
+# embedded_elements.yaml.
+# ===========================================================================
+
+- id: text_binds_to_innermost_inline_element
+  desc: trailing text on an inline chain belongs to the innermost element
+  udon: "|a |b |c text for c\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - [Text, "text for c"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: deeply_nested_embedded
+  desc: three levels of embedded nesting, content in the innermost
+  udon: "|p |{a |{b |{c deep}}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - EmbeddedStart
+    - [Name, "b"]
+    - EmbeddedStart
+    - [Name, "c"]
+    - [Text, "deep"]
+    - EmbeddedEnd
+    - EmbeddedEnd
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: adjacent_embedded_no_text_between
+  desc: back-to-back embedded elements with no separating prose emit no Text between them
+  udon: "|p |{a one}|{b two}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "one"]
+    - EmbeddedEnd
+    - EmbeddedStart
+    - [Name, "b"]
+    - [Text, "two"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: pipe_space_literal_between_embeds
+  desc: a bare pipe-space between embedded siblings is literal prose (guard fails on space)
+  udon: "|nav |{a Home} | |{a About}\n"
+  events:
+    - ElementStart
+    - [Name, "nav"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "Home"]
+    - EmbeddedEnd
+    - [Text, " | "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "About"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: extra_closing_brace_is_prose
+  desc: a stray brace after an embedded element closes is ordinary prose
+  udon: "|p |{a text}} more\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "text"]
+    - EmbeddedEnd
+    - [Text, "} more"]
+    - ElementEnd
+
+- id: embedded_with_suffix
+  desc: suffix sugar works on embedded elements
+  udon: "|form |{field? optional}\n"
+  events:
+    - ElementStart
+    - [Name, "form"]
+    - EmbeddedStart
+    - [Name, "field"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Text, "optional"]
+    - EmbeddedEnd
+    - ElementEnd
+
+# ===========================================================================
+# Comments (CORE "Comments", "Sameline Comments", "Literal Semicolons").
+# Mined from comments.yaml.
+# ===========================================================================
+
+- id: element_then_sameline_comment_only
+  desc: a framed comment may be an element's only sameline material
+  udon: "|div ; just a comment\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - CommentStart
+    - [Text, " just a comment"]
+    - CommentEnd
+    - ElementEnd
+
+# ⚠ Root is a NO-FRAME comment position (Comments table: document root →
+# line comment), so `;no space` IS a comment. CommentMissingFollowingSpace
+# is expressly an optional host-layer ADVISORY ("host (advisory)" in the
+# warning table), so the event expectation carries no Warning. A parser
+# emitting the advisory in its core event stream would fail this case —
+# per the table it should not.
+- id: unspaced_comment_at_root
+  desc: at root an unframed ';' still opens a line comment (advisory is host-layer)
+  udon: ";no space\n"
+  events:
+    - CommentStart
+    - [Text, "no space"]
+    - CommentEnd
+
+# ⚠ Empty comment: encoded with no Text event, on the fixtures' maximal-
+# collapse posture (an empty text run is no run). If the harness/parser
+# settle on emitting [Text, ""] here, this case is the place that decision
+# surfaces.
+- id: empty_comment_line
+  desc: a bare ';' line is an empty comment
+  udon: ";\n"
+  events:
+    - CommentStart
+    - CommentEnd
+
+- id: attr_token_semicolon_then_comment
+  desc: an unspaced ';' stays in the bare token; the later framed ' ; ' opens a comment
+  udon: "|el\n  :data foo;bar ; this is comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "data"]
+    - [BareValue, "foo;bar"]
+    - CommentStart
+    - [Text, " this is comment"]
+    - CommentEnd
+    - ElementEnd
+
+# ⚠ A mid-token '\' is neither head position, inline-opener escape, nor
+# value-expected position — CORE Escape: "Any other `\` is literal" — so it
+# rides inside the bare token untouched and the token runs to the space.
+# The framed ' ; ' after the finished value then opens a comment as usual.
+- id: backslash_inside_bare_token_is_literal
+  desc: a backslash mid-token is literal token content; the framed comment still fires
+  udon: "|el :key val\\;ue ; real comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key"]
+    - [BareValue, "val\\;ue"]
+    - CommentStart
+    - [Text, " real comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: block_colon_smiley_is_prose
+  desc: a ':' not followed by a name falls back to prose intact (marker guard)
+  udon: "|el\n  :-) ok\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":-) ok"]
+    - ElementEnd
+
+# ===========================================================================
+# Values (CORE "Value Types", "Numbers", "The Scan and the Bare-Token
+# Boundary", "Inline Lists"). Mined from values.yaml, value_types.yaml,
+# arrays.yaml, temporal.yaml. Almost all of legacy temporal is dead — bare
+# temporal recognition is retired (temporal is a <…> dialect now); the one
+# shape worth keeping is "a bare datetime is just a string".
+# ===========================================================================
+
+- id: bare_datetime_is_string
+  desc: a bare ISO datetime is a plain string — temporal typing requires the <...> envelope
+  udon: "|el :at 2024-01-15T10:30:00Z\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "at"]
+    - [BareValue, "2024-01-15T10:30:00Z"]
+    - ElementEnd
+
+- id: committed_number_falls_back_to_bare_token
+  desc: a number that goes wrong mid-token (12ab) becomes an ordinary bare token; the boundary rule still applies
+  udon: "|el :x 12ab :y 3\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [BareValue, "12ab"]
+    - [Attr, "y"]
+    - [Integer, "3"]
+    - ElementEnd
+
+- id: nested_arrays
+  desc: list items may themselves be lists
+  udon: "|el :matrix [[1 2] [3 4]]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "matrix"]
+    - ArrayStart
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - ArrayStart
+    - [Integer, "3"]
+    - [Integer, "4"]
+    - ArrayEnd
+    - ArrayEnd
+    - ElementEnd
+
+- id: deep_nested_array_single_item
+  desc: nesting depth is not bounded
+  udon: "|el :deep [[[1]]]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "deep"]
+    - ArrayStart
+    - ArrayStart
+    - ArrayStart
+    - [Integer, "1"]
+    - ArrayEnd
+    - ArrayEnd
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_bracket_characters_in_quoted_items
+  desc: quoted items may contain bracket characters without affecting the array
+  udon: "|el :tricky [\"[x]\" \"]\" \"[\"]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "tricky"]
+    - ArrayStart
+    - [StringValue, "[x]"]
+    - [StringValue, "]"]
+    - [StringValue, "["]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_dotted_and_versionish_items_are_bare
+  desc: dotted names and version-like tokens are bare strings (number fall-through, item-local)
+  udon: "|el :v [a.b 1.2.3 v2.0]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "v"]
+    - ArrayStart
+    - [BareValue, "a.b"]
+    - [BareValue, "1.2.3"]
+    - [BareValue, "v2.0"]
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ CORE's Value Kinds table lists Interpolation `!{{...}}` as an attribute
+# value kind, and the blob-segment note delivers it as an Interpolation
+# event under the key — encoded that way here. The Implementation Notes
+# admit the parser doesn't do this yet (expected RED), and the exact wire
+# rhythm for interpolation-as-sole-value is otherwise unpinned.
+- id: interpolation_as_attr_value
+  desc: an interpolation may be an attribute's whole value (host-evaluated, unparsed)
+  udon: "|div :class !{{computed_class}}\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - [Attr, "class"]
+    - [Interpolation, "computed_class"]
+    - ElementEnd
+
+# ===========================================================================
+# Dynamics in the hierarchy (CORE "Dynamics (`!`)", "Hierarchy" — directives
+# participate in indentation like elements). Mined from dynamics.yaml
+# (directive_inside_element); the expression stays verbatim, the body is
+# UDON, and a dedent to the directive's column closes it.
+# ===========================================================================
+
+- id: directive_inside_element_then_prose
+  desc: a directive nested in an element closes on dedent; following prose belongs to the element
+  udon: "|el\n  !if x\n    |p yes\n  after\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "yes"]
+    - ElementEnd
+    - DirectiveEnd
+    - [Text, "after"]
+    - ElementEnd
+
+# ===========================================================================
+# Freeform exactness (CORE "Triple-Backtick Escape": the body is captured
+# exactly). Mined from freeform_blocks.yaml — whitespace-only lines are
+# content, not blank lines; exact preservation is freeform's contract.
+# ===========================================================================
+
+- id: freeform_whitespace_only_line_is_content
+  desc: a spaces-only line inside a fence is exact Text content, not a BlankLine
+  udon: "```\na\n   \nb\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - [Text, "   "]
+    - [Text, "b"]
+    - FreeformEnd

@@ -29,7 +29,9 @@ together.
 
 ### Expected state right now
 
-`v0.9/` was rewritten to the ratified 0.9 attribute model 2026-07-16
+`v0.9/` (~380 cases + harness variations; densified 2026-07-16 with EOF/
+recovery, legacy-mined regressions, attribute-model combinations, and
+cross-feature interplay) was rewritten to the ratified 0.9 attribute model 2026-07-16
 (expectations from the spec text, never traced from parser output) and the
 grammar burn-down brought the gate **GREEN the same day** — the parser
 implements the 0.9 model (flags, boundary rule, blobs, node values, flat

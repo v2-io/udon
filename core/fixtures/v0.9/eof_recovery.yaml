@@ -1,0 +1,387 @@
+# End-of-input and anomaly recovery (CORE "End of input (EOF)" — the
+# Unclosed* table — and "Anomaly posture"). EOF is the universal implicit
+# closer: every pending End event flushes, innermost-first, exactly as a
+# full dedent would fire them. A construct whose content is already coherent
+# closes SILENTLY; a construct still awaiting a DELIMITER closes with its
+# captured content plus an Unclosed* anomaly. A missing final newline is
+# never, by itself, an anomaly. Nothing is ever discarded at EOF.
+#
+# Every expectation below is derived from CORE text alone (never traced from
+# parser output). Cases are root_only because the harness's wrap/indent
+# mutations would insert material after the deliberately-truncated input.
+
+# ---------------------------------------------------------------------------
+# Missing final newline is a non-anomaly (CORE "End of input (EOF)": "EOF is
+# newline-equivalent everywhere a rule says 'followed by a newline'").
+# Indentation-scoped constructs close silently; End events flush.
+# ---------------------------------------------------------------------------
+
+- id: eof_element_no_final_newline
+  desc: an element with no trailing newline closes silently — no anomaly
+  udon: "|div"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - ElementEnd
+
+- id: eof_nested_elements_flush_innermost_first
+  desc: EOF flushes pending ElementEnd events innermost-first, like a full dedent
+  udon: "|a\n  |b\n    |c"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: eof_block_attr_no_final_newline
+  desc: a finished block attribute value at EOF is coherent — silent close
+  udon: "|el\n  :k v"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - ElementEnd
+
+- id: eof_line_comment_no_final_newline
+  desc: a line comment at EOF closes silently (CommentEnd flushes)
+  udon: "; note"
+  root_only: true
+  events:
+    - CommentStart
+    - [Text, " note"]
+    - CommentEnd
+
+- id: eof_comment_continuation_closes_silently
+  desc: an indentation-continued comment closes silently at EOF
+  udon: "|a\n  ; start of comment\n    still part of the comment"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - CommentStart
+    - [Text, " start of comment"]
+    - [Text, "still part of the comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: eof_directive_closes_silently
+  desc: a block directive's pending DirectiveEnd flushes silently at EOF
+  udon: "!if logged_in\n  |greeting Welcome"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "logged_in"]
+    - ElementStart
+    - [Name, "greeting"]
+    - [Text, "Welcome"]
+    - ElementEnd
+    - DirectiveEnd
+
+- id: eof_raw_block_closes_silently
+  desc: an indentation-scoped raw block closes silently at EOF (no closer to forget)
+  udon: "!:sh:\n  echo hi"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+
+- id: eof_deferred_attr_value_closes_silently
+  desc: a deferred (indentation-scoped) attribute value with body closes silently
+  udon: "|el\n  :note\n    line one\n    line two"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "line one"]
+    - [Attr, "note"]
+    - [Text, "line two"]
+    - ElementEnd
+
+- id: eof_fence_closer_no_final_newline
+  desc: a fence closer "followed by a newline" accepts EOF as that newline — no anomaly
+  udon: "```\nbody\n```"
+  root_only: true
+  events:
+    - FreeformStart
+    - [Text, "body"]
+    - FreeformEnd
+
+- id: eof_prose_no_final_newline
+  desc: prose cut off by EOF mid-word is just the text so far — no anomaly
+  udon: "|p hello worl"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hello worl"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Delimiter-awaiting constructs at EOF: captured content + Unclosed* error;
+# End events still flush (CORE EOF table). Errors are events in the stream,
+# never exceptions (CORE "Anomaly posture").
+# ---------------------------------------------------------------------------
+
+- id: eof_unclosed_embedded
+  desc: EOF inside |{...} — content so far + UnclosedEmbedded; EmbeddedEnd flushes
+  udon: "|p some |{em abc"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "some "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "abc"]
+    - [Error, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+# ⚠ CORE fixes per-construct behavior (content + Error; End flushes) but is
+# silent on MULTIPLICITY when several embeds are open at once. Encoded here
+# as one UnclosedEmbedded per unclosed |{, innermost-first — each construct
+# was individually awaiting its delimiter, and the errors sit where each
+# End flushes (uniform with the single case).
+- id: eof_unclosed_embedded_nested
+  desc: nested unclosed embeds each error, flushing innermost-first
+  udon: "|p |{a x |{b y"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "b"]
+    - [Text, "y"]
+    - [Error, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - [Error, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: eof_unclosed_inline_comment
+  desc: EOF inside ;{...} — content so far + UnclosedInlineComment; CommentEnd flushes
+  udon: "|p a ;{note"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Text, "note"]
+    - [Error, "UnclosedInlineComment"]
+    - CommentEnd
+    - ElementEnd
+
+# ⚠ CORE's EOF table says "ArrayEnd flushes" after UnclosedArray, so ArrayEnd
+# is encoded here; note arrays.yaml's array_unclosed_is_error (newline-ended)
+# omits ArrayEnd — if the two shapes should agree, that is a spec/fixture
+# reconciliation to raise, but at EOF the table's wording is explicit.
+- id: eof_unclosed_array
+  desc: EOF inside [...] — items so far + UnclosedArray; ArrayEnd flushes
+  udon: "|el :xs [1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Error, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# <...> typing envelope: single-line, warning-recovered (CORE "Explicit
+# Typing": a newline before the matching > ends the value there — captured
+# text passed through as a string + Warning UnclosedTypeEnvelope; same at
+# EOF per the EOF table).
+# ---------------------------------------------------------------------------
+
+# ⚠ Three readings chosen where CORE is silent on event-level detail:
+# (1) payload — "captured text as string" is encoded as the raw lexical
+#     capture INCLUDING the opening `<` ("<2026-07"), consistent with the
+#     completed-envelope pass-through keeping the full `<...>` form and
+#     with keep-everything;
+# (2) event kind — BareValue, matching the completed-envelope interim
+#     encoding in typing_envelope.yaml;
+# (3) no NoDialectsLoaded alongside — the envelope never completed, so no
+#     value was offered to dialect dispatch; the single UnclosedTypeEnvelope
+#     warning carries the anomaly. Ordering follows the EOF table's
+#     "captured content + warning" (content first), whereas completed
+#     envelopes put NoDialectsLoaded BEFORE the value — flag if that
+#     asymmetry should be unified.
+- id: eof_unclosed_envelope
+  desc: EOF inside <...> — captured text as string + UnclosedTypeEnvelope warning
+  udon: "|el :when <2026-07"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<2026-07"]
+    - ElementEnd
+
+- id: envelope_newline_before_close
+  desc: envelopes are single-line — a newline before > ends the value with a warning, parse continues
+  udon: "|el :when <7:02\nprose after\n"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<7:02"]
+    - ElementEnd
+    - [Text, "prose after"]
+
+# ---------------------------------------------------------------------------
+# Unterminated freeform fence (CORE EOF table: body so far + Warning
+# UnterminatedFreeform — the body is coherent, the author likely forgot the
+# closer; a warning not an error, and FreeformEnd flushes like every End).
+# ---------------------------------------------------------------------------
+
+- id: eof_unterminated_freeform
+  desc: fence never closed — body kept + UnterminatedFreeform warning
+  udon: "```\nbody line\nmore body"
+  root_only: true
+  events:
+    - FreeformStart
+    - [Text, "body line"]
+    - [Text, "more body"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+
+- id: eof_unterminated_freeform_in_element
+  desc: the warning fires and End events still flush out through the parent
+  udon: "|code\n  ```\n  x = 1"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "code"]
+    - FreeformStart
+    - [Text, "  x = 1"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Still-open plain attribute at EOF (CORE "Attribute Keys and Flags": a plain
+# :key with no value material is MissingAttributeValue — a non-halting error
+# event, and the attribute is still emitted WITH a Nil value; the stream
+# never carries less shape than the source suggested).
+# ---------------------------------------------------------------------------
+
+- id: eof_open_attr_missing_value_sameline
+  desc: sameline plain attr cut off by EOF with no value — error + synthesized Nil
+  udon: "|el :key"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - ElementEnd
+
+- id: eof_open_attr_missing_value_block
+  desc: block plain attr at EOF with nothing deeper — error + synthesized Nil
+  udon: "|el\n  :note"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# EOF mid-token is a clean boundary (CORE "The Scan and the Bare-Token
+# Boundary": end-of-line — hence EOF — finishes a bare token alone; keywords
+# and numbers type normally). Non-anomalies, all.
+# ---------------------------------------------------------------------------
+
+- id: eof_mid_bare_token
+  desc: a bare value token finished by EOF is a single-token value
+  udon: "|el :k valu"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "valu"]
+    - ElementEnd
+
+- id: eof_mid_number_integer
+  desc: an integer finished by EOF types normally
+  udon: "|el :n 42"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "42"]
+    - ElementEnd
+
+- id: eof_mid_number_float
+  desc: a float finished by EOF types normally
+  udon: "|el :n 3.14"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Float, "3.14"]
+    - ElementEnd
+
+- id: eof_keyword_alone_types
+  desc: a keyword finishing alone at EOF is typed, not a blob
+  udon: "|el :flag true"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "flag"]
+    - BoolTrue
+    - ElementEnd
+
+- id: eof_flag_key_snaps_true
+  desc: a flag key at EOF (nothing in value position) snaps to true — no anomaly
+  udon: "|el :ready?"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ready?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: eof_mid_blob
+  desc: a text blob cut off by EOF is the text so far — no anomaly
+  udon: "|el :note some trailing words"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "some trailing words"]
+    - ElementEnd

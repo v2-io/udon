@@ -6,13 +6,19 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
-- [ ] **Verify `*` suffix after `[key]` parses** (2026-07-16). The Obsidian
-      highlighter (grammar-driven) renders `|field[name]*` as plain text
-      while `|field[name]?` / `!` / `+` highlight correctly — either a
-      highlighter/wasm issue or a real `*` gap in `parse_element_identity`'s
-      `:post_bracket` path. When authoring the v0.9 identity fixtures, make
-      sure all four suffixes are covered in the after-key position
-      (`|field[name]?` `!` `*` `+`), not just `?`.
+- [ ] **Unicode-correct guards and columns (descent)** (2026-07-16). The
+      generated parsers classify every byte ≥ 0x80 as identifier-start, so
+      `|→arrow` wrongly parses as an element (CORE: `→` is not XID_Start →
+      prose), and `COL` counts bytes rather than characters (multibyte names
+      shift column arithmetic). Needs UTF-8 decoding in descent's charclass
+      guards + column tracking, both backends. Three spec-correct fixtures
+      are quarantined at `fixtures/v0.9/pending-unicode.yaml.disabled` —
+      re-enable by renaming once descent lands the work; they should go
+      green with no edits. (CORE "Bare-name characters" lets the host pin
+      the Unicode *version*, not the classification itself.)
+- [x] ~~Verify `*` suffix after `[key]` parses~~ (2026-07-16): covered — all
+      four after-key suffixes are fixture-encoded in `identity.yaml` and
+      green; the Obsidian rendering miss is a highlighter-side issue.
 
 - [ ] **Retire the line-oriented `StreamingParser` façade.** Review defect #1
       is RESOLVED at the generator level (2026-07-15): descent's pushdown

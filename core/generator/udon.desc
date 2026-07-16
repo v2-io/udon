@@ -279,7 +279,18 @@
   ; content_seen (attrs-before-children counts children, not values).
   |state[:sameline_attr_after]
     |if[sstate == 2]                                             |>> :sameline_node
+    |if[sstate == 5]          | content_seen = 1                 |>> :pre_content
+    |if[sstate == 6]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
+    |if[sstate == 11]         | content_seen = 1                 |>> :sameline_node2
+    |if[sstate == 12]         | content_seen = 1                 |>> :sameline_bang
+    |if[sstate == 13]         | content_seen = 1 | /block_ref    |>> :pre_content
     |default                                                     |>> :pre_content
+
+  ; '!' consumed at a value boundary: '{' opens the inline form; a name or
+  ; ':' opens a block directive rooted at this element line.
+  |state[:sameline_bang]
+    |c['{']                   | -> | /sameline_directive         |>> :post_sameline_inline
+    |default                  | /block_directive(:elem_col)      |>> :post_block_child
 
   |state[:sameline_node]
     |c['|']                   | ->                               |>> :sameline_node2
@@ -410,7 +421,7 @@
     |c[':']                   | /error(attribute_under_attribute) | Nil | attr_open = 0 | -> |>> :attr_bad_attr
     |c[';']                   | -> | /line_comment               |>> :after_content_open
     |c['`']                   | attr_open = 4 | ->               |>> :attr_fence
-    |c['!']                   | attr_open = 4                    |>> :child_check_bang
+    |c['!']                   | attr_open = 4 | ->               |>> :child_check_bang
     |c[<BS>]                  | attr_open = 3 | -> | /verbatim_text |>> :after_content
     |default                  | attr_open = 3 | /prose(col, :elem_col, <>) |>> :after_content
 
@@ -513,7 +524,16 @@
     |if[attr_open == 2]       | attr_open = 4                    |>> :battr_node
     |if[attr_open == 1]                                          |>> :after_content_open
     |if[attr_open == 3]                                          |>> :after_content
+    |if[attr_open == 5]       | content_seen = 1 | attr_open = 0 |>> :after_content
+    |if[attr_open == 6]       | attr_open = 4 | /block_directive(attr_col) |>> :post_block_child
+    |if[attr_open == 11]      | content_seen = 1 | attr_open = 4 |>> :battr_node2
+    |if[attr_open == 12]      | content_seen = 1 | attr_open = 4 |>> :battr_bang
+    |if[attr_open == 13]      | content_seen = 1 | attr_open = 4 | /block_ref |>> :after_content
     |default                  | attr_open = 4                    |>> :after_content
+
+  |state[:battr_bang]
+    |c['{']                   | -> | /sameline_directive         |>> :after_content
+    |default                  | /block_directive(attr_col)       |>> :post_block_child
 
   ; Block-line sameline node value (:a |node on its own line): parse the
   ; node as the value — again, no content_seen.
@@ -664,20 +684,51 @@
     |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
-    | /flag_value('\0')                                          |>> :post_value
+    |default | fstate = /flag_value('\0')                        |>> :flag_route
+  |state[:flag_route]
+    |if[fstate == 1]          | result = 5                       |return result
+    |default                                                     |>> :post_value
 
   |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return result
     |c[' \t']                 | ->                               |>>
     |c['\n']                  | result = 1                       |return result
     |c[':']                   | /error(missing_attribute_value) | Nil |>> :key_next
+    |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
     |c['|']                   | result = 2                       |return result
+    |c['`']                   | ->                               |>> :vff1
+    |c['!']                   | ->                               |>> :vbang
     |c[<BS>]                  | result = 3 | -> | /attr_text_verbatim('\0') |return result
     |default                  | vstate = /value(0, '\0')         |>> :post_value_route
+
+  ; Fence as node value (Value Kinds): three backticks open a freeform whose
+  ; node IS the value. Fewer fall back to the ordinary value scan.
+  |state[:vff1]
+    |c['`']                   | ->                               |>> :vff2
+    |default                  | PREPEND('`') | vstate = /value(0, '\0') |>> :post_value_route
+  |state[:vff2]
+    |c['`']                   | -> | /freeform                   |return result
+    |default                  | PREPEND('``') | vstate = /value(0, '\0') |>> :post_value_route
+
+  ; Raw block / directive as node value (`:script !:sh:` — resolved
+  ; 2026-07-16). Guard: ':' or identifier; `!{{` opens an interpolation
+  ; value; anything else means the '!' begins a text value.
+  |state[:vbang]
+    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c['{']                   | ->                               |>> :vinterp
+    |default                  | PREPEND('!') | vstate = /value(0, '\0') |>> :post_value_route
+  |state[:vinterp]
+    |c['{']                   | -> | /interpolation              |>> :post_value
+    |default                  | PREPEND('!') | PREPEND('{') | vstate = /value(0, '\0') |>> :post_value_route
 
   ; A text-blob value may continue on deeper lines (BODY mode, code 3);
   ; scalar values are finished (DONE zone, code 0 -> caller maps to 4).
   |state[:post_value_route]
     |if[vstate == 3]          | result = 3                       |>> :post_value
+    |if[vstate == 4]                                             |>> :key
+    |if[vstate == 11]         | result = 11                      |return result
+    |if[vstate == 12]         | result = 12                      |return result
+    |if[vstate == 13]         | result = 13                      |return result
     |default                                                     |>> :post_value
 
   ; Consume the ':' that ended a valueless attr and parse the next key.
@@ -719,14 +770,44 @@
     |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
-    | /flag_value('\0')                                          |return result
+    |default | fstate = /flag_value('\0')                        |>> :flag_route
+  |state[:flag_route]
+    |if[fstate == 1]          | result = 5                       |return result
+    |default                                                     |return result
 
   |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return result
     |c[' \t']                 | ->                               |>>
     |c['\n:']                 | /error(missing_attribute_value) | Nil |return result
+    |c[';']                   | /error(missing_attribute_value) | Nil | -> | /line_comment_content |return result
     |c['|']                   | result = 2                       |return result
+    |c['`']                   | ->                               |>> :vff1
+    |c['!']                   | ->                               |>> :vbang
     |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
-    |default                  | /value(0, '\0')                  |return result
+    |default                  | vv = /value(0, '\0')             |>> :vroute
+
+  |state[:vroute]
+    |if[vv == 3]              | result = 3                       |return result
+    |if[vv == 4]                                                 |>> :key
+    |if[vv == 11]             | result = 11                      |return result
+    |if[vv == 12]             | result = 12                      |return result
+    |if[vv == 13]             | result = 13                      |return result
+    |default                                                     |return result
+
+  |state[:vff1]
+    |c['`']                   | ->                               |>> :vff2
+    |default                  | PREPEND('`') | vv = /value(0, '\0') |>> :vroute
+  |state[:vff2]
+    |c['`']                   | -> | /freeform                   |return result
+    |default                  | PREPEND('``') | vv = /value(0, '\0') |>> :vroute
+
+  |state[:vbang]
+    |c[<XLBL_START ':'>]      | result = 6                       |return result
+    |c['{']                   | ->                               |>> :vinterp
+    |default                  | PREPEND('!') | vv = /value(0, '\0') |>> :vroute
+  |state[:vinterp]
+    |c['{']                   | -> | /interpolation              |return result
+    |default                  | PREPEND('!') | PREPEND('{') | vv = /value(0, '\0') |>> :vroute
 
 
 |function[sameline_attr_embedded]
@@ -746,22 +827,28 @@
     |default                  | SAVE(akey) | ->                  |>> :value_start
 
   |state[:flag]
-    | /flag_value('}')                                           |return
+    |default | fstate = /flag_value('}')                         |return
 
   |state[:value_start]
+    |eof                      | /error(missing_attribute_value) | Nil |return
     |c[' \t']                 | ->                               |>>
     |c[<'\n:' '}'>]           | /error(missing_attribute_value) | Nil |return
     |c['|']                   |                                  |return
     |c[<BS>]                  | -> | /attr_text_verbatim('}')     |return
-    |default                  | /value(0, '}')                   |return
+    |default                  | ev = /value(0, '}')              |>> :evroute
+
+  |state[:evroute]
+    |if[ev == 4]                                                 |>> :key
+    |default                                                     |return
 
 
 ; Flag value (CORE flag rule): exactly true/false/null/nil as the next token
 ; is the flag's value (consumed, even with trailing material — the keyword
-; ate); anything else snaps the flag to true. A non-keyword TOKEN commits the
-; rest of the line to a text blob (the first prose word ends the scan); a
-; marker in value position leaves the material to the continuing scan.
-|function[flag_value]  :bracket
+; ate); anything else snaps the flag to true and the material is RE-OWNED
+; (rule 2 wins over the extension rule — no warning). Returns 1 when the
+; re-owned material was emitted as prose-equivalent Text (callers foreclose
+; the attribute phase — the material entered the children phase), else 0.
+|function[flag_value:INT]  :bracket  | result = 0 | hit = 0
   |state[:start]
     |eof                      | BoolTrue                         |return
     |c[' \t']                 | ->                               |>>
@@ -769,38 +856,33 @@
     |c[:bracket]              | BoolTrue                         |return
     |c[<':;!@`' P BS>]        | BoolTrue                         |return
     |c[LETTER]                | MARK | ->                        |>> :token
-    |default                  | MARK | BoolTrue | ->             |>> :blob
+    |default                  | MARK | BoolTrue | result = 1 | -> |>> :blob
 
   |state[:token]
-    |eof                      | TERM | KEYWORDS(flag_kw)         |return
+    |eof                      | TERM                             |>> :tok_kw
     |c[LABEL_CONT]            | ->                               |>>
-    |c['\n']                  | TERM | KEYWORDS(flag_kw)         |return
-    |c[' \t']                 | TERM | KEYWORDS(flag_kw)         |return
-    |c[:bracket]              | TERM | KEYWORDS(flag_kw)         |return
-    |default                  | BoolTrue | ->                    |>> :blob
+    |c['\n']                  | TERM                             |>> :tok_kw
+    |c[' \t']                 | TERM                             |>> :tok_kw
+    |c[:bracket]              | TERM                             |>> :tok_kw
+    |default                  | BoolTrue | result = 1 | ->       |>> :blob
 
-  ; Snapped true; the token begins a blob to end-of-line (bracket-aware).
+  ; The keyword eats even with trailing material (rule 1: "alone" = as a
+  ; token); a non-keyword lone token snaps true and becomes prose Text.
+  |state[:tok_kw]
+    |default | hit = KEYWORDS(flag_kw)                           |>> :tok_after
+  |state[:tok_after]
+    |if[hit == 1]                                                |return result
+    |default                  | BoolTrue | result = 1            |>> :blob
+
+  ; Snapped true; the material is prose-equivalent Text to end-of-line.
   |state[:blob]
-    |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
-    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |eof                      | TERM | Text(USE_MARK)            |return result
+    |c['\n']                  | TERM | Text(USE_MARK)            |return result
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return result
     |default                  | ->                               |>>
 
 
-; KEYWORDS fallback for flag_value: a lone non-keyword token — the flag
-; snapped to true and the token begins a blob to end-of-line (uses the
-; caller's MARK; re-TERMs at the blob end).
-|function[flag_snap_blob]
-  |state[:main]
-    | BoolTrue                                                   |>> :blob
-  |state[:blob]
-    |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
-    |c['}']                   | TERM | Text(USE_MARK)            |return
-    |default                  | ->                               |>>
-
-
-|keywords[flag_kw] :fallback /flag_snap_blob
+|keywords[flag_kw]
   | true   => BoolTrue
   | false  => BoolFalse
   | null   => Nil
@@ -888,8 +970,10 @@
   |state[:entry]
     |c['[']  | ->                                                 |>> :items
   |state[:items]
+    |eof                      | /error(unclosed_array)            |return
     |c[']']  | ->                                                 |return
-    |c[' \t\n'] | ->                                              |>>
+    |c['\n'] | /error(unclosed_array)                             |return
+    |c[' \t'] | ->                                                |>>
     |default | /value(1, ']')                                     |>>
 
 
@@ -969,13 +1053,51 @@
     |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :main
 
 
-; verbatim_text - head-position `\` escape (CORE "Escape (\)"): the
-; backslash was consumed by the caller; the REST OF THE PHYSICAL LINE is
-; prose, read verbatim - no inline forms, no marker interpretation. The
-; consumed `\` takes no column: callers set content_base to the `\`'s
-; column exactly as for ordinary first-line prose. Trailing newline is left
-; for the caller's line loop.
-|function[verbatim_text:Text]  | ->['\n'] | TERM
+; verbatim_text - head-position `\` escape (CORE "Escape (\)", ratified
+; posture): the backslash was consumed by the caller; the rest of the
+; physical line is PROSE-SHAPED — dead to line-level structure and to the
+; sameline-comment frame (a framed ' ; ' is literal), but alive to inline
+; forms (|{...} !{...} ;{...}), each individually escapable. The consumed
+; `\` takes no column. Trailing newline is left for the caller's line loop.
+|function[verbatim_text]  | MARK
+  |state[:main]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['|']                   | ->                               |>> :vpipe
+    |c['!']                   | ->                               |>> :vbang
+    |c[';']                   | ->                               |>> :vsemi
+    |c[<BS>]                  | ->                               |>> :vbs
+    |default                  | ->                               |>>
+
+  |state[:vpipe]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /embedded |>> :vafter
+    |default                  |                                  |>> :main
+  |state[:vbang]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /sameline_directive |>> :vafter
+    |default                  |                                  |>> :main
+  |state[:vsemi]
+    |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment |>> :vafter
+    |default                  |                                  |>> :main
+
+  |state[:vbs]
+    |c['|']                   | ->                               |>> :vbs_pipe
+    |c['!']                   | ->                               |>> :vbs_bang
+    |c[';']                   | ->                               |>> :vbs_semi
+    |default                  |                                  |>> :main
+  |state[:vbs_pipe]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |>> :main
+    |default                  |                                  |>> :main
+  |state[:vbs_bang]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |>> :main
+    |default                  |                                  |>> :main
+  |state[:vbs_semi]
+    |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |>> :main
+    |default                  |                                  |>> :main
+
+  |state[:vafter]
+    |eof                      |                                  |return
+    |c['\n']                  |                                  |return
+    |default                  | MARK                             |>> :main
 
 ; prose - block-level text content with optional prepend character
 ; :prepend = <> (none), '|' (pipe prefix), '`' (backtick prefix)
@@ -1062,6 +1184,7 @@
 ; Preserves exact whitespace - no dedentation
 ; Closing ``` detected when line starts with optional whitespace then ```
 |function[freeform:Freeform]
+  |eof | Warning(UnterminatedFreeform)                           |return
   ; Opening line: everything after the backticks begins the body (CORE
   ; "Triple-Backtick Escape" — an info string is just the body's first
   ; content; there is no separate info-string rule).
@@ -1346,7 +1469,11 @@
 ; Helper: capture brace-balanced content as Text
 |function[comment_text_braced]  | MARK
   |state[:main]
-    | /skip_brace_balanced | TERM | Text(USE_MARK) | ->          |return
+    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |default                  | /skip_brace_balanced             |>> :done
+  |state[:done]
+    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |default                  | TERM | Text(USE_MARK) | ->       |return
 
 
 ; ============================================================================
@@ -1391,13 +1518,12 @@
 ; Quoted strings are emitted as StringValue to avoid brace confusion
 |function[embed_content:Text]  | MARK
   |state[:main]
+    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_embedded) |return
     |c['}']                  | TERM | ->                        |return
     |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :ml_ws
     |c['|']                   | TERM | ->                        |>> :check_pipe
     |c[';']                   | TERM | ->                        |>> :check_semi
     |c['!']                   | TERM | ->                        |>> :check_bang
-    |c[<DQ>]                  | TERM | Text(USE_MARK) | -> | /double_quoted | MARK |>> :main
-    |c[<SQ>]                  | TERM | Text(USE_MARK) | -> | /single_quoted | MARK |>> :main
     |c[<BS>]                  | ->                               |>> :check_bs
     |default                  | ->                               |>>
 
@@ -1566,9 +1692,12 @@
     |c['}']                   | TERM | ->                              |>> :closing
     |default                  | ->                                     |>>
 
+  ; First-}} rule (resolved 2026-07-16): a single '}' is expression content;
+  ; only '}}' terminates.
   |state[:closing]
     |c['}']                   | ->                                     |return  ; found }}
-    |default                  | Interpolation(USE_MARK) | /error(UnclosedInterpolation) |return  ; only single }
+    |eof                      | Interpolation(USE_MARK) | /error(UnclosedInterpolation) |return
+    |default                  | ->                                     |>> :main
 
 
 ; Inline raw !{:kind: content}

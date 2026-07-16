@@ -596,6 +596,8 @@ In the same **stacking spirit**, material that arrives after an attribute's valu
 ; when ~= [<7:02pm>, "extra deeper text"]  -- same for a second sibling node
 ```
 
+**Flags are exempt** from the same-line extension rule: after `:key?`, non-keyword material is *re-owned by the continuing scan* (flag rule 2 -- the specific rule wins), never ingested as a flag segment and never warned. Only *plain* attributes with finished values extend-and-warn.
+
 **Why the first one warns:** joining that block line onto the element's line *changes the meaning* -- `|el :attr "first" and here's another one` makes the tail the **element's** prose (ownership row 2), not a segment of `attr`. The warning marks exactly that refactoring hazard. To declare a second value deliberately, write the key again (stacking) or an explicit list.
 
 ### Inline Lists

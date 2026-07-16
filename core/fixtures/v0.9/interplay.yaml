@@ -1,0 +1,380 @@
+# Cross-feature interplay — combinations the single-feature files don't pin.
+# Every expectation here is derived from spec/CORE.md 0.9.0-alpha.1 text
+# (sections cited per block); nothing traced from parser output. Cases that
+# rest on a reading rather than an explicit spec sentence carry a ⚠ comment.
+
+# ---------------------------------------------------------------------------
+# Comments × structure (CORE "Comments": uniform continuation, ratified
+# 2026-07-15 — EVERY more-indented line is comment text, markers and fences
+# included, until a line at or dedented from the comment's column)
+# ---------------------------------------------------------------------------
+
+- id: comment_swallows_fence_lines
+  desc: comment continuation swallows a would-be fence — nothing excepted
+  udon: "|el\n  ; commented out\n    ```\n    |x\n    ```\n  live prose\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - CommentStart
+    - [Text, " commented out"]
+    - [Text, "```"]
+    - [Text, "|x"]
+    - [Text, "```"]
+    - CommentEnd
+    - [Text, "live prose"]
+    - ElementEnd
+
+# ⚠ CORE never states outright that a sameline comment leaves the attribute
+# phase open. Reasoning: comments are events, not content ("Comments are
+# emitted as events, not discarded"), and the phase changes only when "any
+# text or child element has appeared" (Marker Recognition, `:` guard). A
+# comment is neither, so :a on the next line is still an attribute.
+- id: sameline_comment_keeps_attribute_phase
+  desc: a head-position comment on the element line does not foreclose attributes
+  udon: "|el ; note\n  :a 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - CommentStart
+    - [Text, " note"]
+    - CommentEnd
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - ElementEnd
+
+# CORE's own "Absent vs Nil vs False" example interleaves a comment line
+# among block attributes; a comment is not text/child, so the phase holds.
+- id: comment_between_block_attributes
+  desc: a comment line between block attributes leaves the attribute phase open
+  udon: "|el\n  :a 1\n  ; between\n  :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - CommentStart
+    - [Text, " between"]
+    - CommentEnd
+    - [Attr, "b"]
+    - [Integer, "2"]
+    - ElementEnd
+
+- id: comment_after_reference_value
+  desc: a framed ' ; ' after a finished reference value opens a comment
+  udon: "|el :r @[k] ; note\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "r"]
+    - [Reference, "[k]"]
+    - CommentStart
+    - [Text, " note"]
+    - CommentEnd
+    - ElementEnd
+
+- id: sameline_semi_space_before_only_is_literal
+  desc: space before but none after — frame incomplete, literal (a; b shape)
+  udon: "|li end; not a comment\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "end; not a comment"]
+    - ElementEnd
+
+- id: adjacent_inline_comments
+  desc: two back-to-back brace-counted inline comments, no frame needed
+  udon: "|p a ;{c1};{c2} b\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Text, "c1"]
+    - CommentEnd
+    - CommentStart
+    - [Text, "c2"]
+    - CommentEnd
+    - [Text, " b"]
+    - ElementEnd
+
+- id: empty_inline_comment
+  desc: an empty ;{} is a valid (empty) inline comment
+  udon: "|p a ;{} b\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - CommentEnd
+    - [Text, " b"]
+    - ElementEnd
+
+# After an InconsistentIndentation rebase the NEW column is the prose base,
+# so a `;` there is head position — a comment (CORE Automatic Prose
+# Dedentation + Comments and Indentation).
+- id: rebase_then_comment_at_new_base
+  desc: after the base rebases down, a semicolon at the new base is a comment
+  udon: "|el\n    deep prose\n  shallow rebases\n  ; comment at the new base\n  more prose\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "deep prose"]
+    - [Warning, "InconsistentIndentation"]
+    - [Text, "shallow rebases"]
+    - CommentStart
+    - [Text, " comment at the new base"]
+    - CommentEnd
+    - [Text, "more prose"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Escape × everything (CORE "Escape (`\`)", "What forced-to-prose means",
+# ratified 2026-07-15: dead to LINE-level structure, alive to INLINE forms;
+# the framed ' ; ' is the one comment affordance that does NOT fire)
+# ---------------------------------------------------------------------------
+
+- id: escape_would_be_directive
+  desc: leading backslash makes a would-be block directive line prose
+  udon: "\\!if logged_in\n"
+  events:
+    - [Text, "!if logged_in"]
+
+- id: forced_tail_inline_forms_fire_framed_semicolon_does_not
+  desc: in a \-forced tail, |{...} and ;{...} still fire but ' ; ' is literal
+  udon: "|p \\ tail |{em x} and ;{note} more ; still prose\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, " tail "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "x"]
+    - EmbeddedEnd
+    - [Text, " and "]
+    - CommentStart
+    - [Text, "note"]
+    - CommentEnd
+    - [Text, " more ; still prose"]
+    - ElementEnd
+
+- id: forced_tail_inline_opener_still_escapable
+  desc: inside a \-forced tail the inline openers remain individually escapable
+  udon: "|p \\ see \\|{em b} raw\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, " see |{em b} raw"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Freeform fences (CORE "Triple-Backtick Escape"): the closer must be
+# backticks-then-newline; the body is captured exactly
+# ---------------------------------------------------------------------------
+
+- id: fence_pseudo_closer_with_trailing_text_is_body
+  desc: backticks followed by non-whitespace do not close the fence — body line
+  udon: "```\nbody\n``` not the closer\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "body"]
+    - [Text, "``` not the closer"]
+    - FreeformEnd
+
+# ⚠ CORE fixes exact capture inside the fence but does not say whether a
+# whitespace-only line is a BlankLine event or a Text of spaces. Encoded as
+# Text "   " — the exact-capture reading that loses no bytes; BlankLine is
+# pinned (freeform.yaml) only for truly empty lines. Flag if the harness or
+# a ruling decides whitespace-only lines normalize to BlankLine.
+- id: fence_whitespace_only_line_captured_exactly
+  desc: a spaces-only line inside a fence is captured exactly, not blank
+  udon: "```\na\n   \nb\n```\n"
+  events:
+    - FreeformStart
+    - [Text, "a"]
+    - [Text, "   "]
+    - [Text, "b"]
+    - FreeformEnd
+
+# CORE "Value Kinds": a node value may be "|element, !:lang: raw block, or a
+# freeform fence — the value IS that node"; sameline fences open after
+# attributes because attributes keep the scan open.
+- id: fence_as_attribute_node_value
+  desc: a sameline fence satisfies an open attribute as its node value
+  udon: "|el :script ```\nline one\n```\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - FreeformStart
+    - [Text, "line one"]
+    - FreeformEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Raw blocks × structure (CORE "Raw Directives (Block)", "Code and Raw
+# Content" — raw base is the first content line's column; a line at or left
+# of the directive's column ends the block)
+# ---------------------------------------------------------------------------
+
+- id: raw_block_ends_at_dedent_prose_resumes
+  desc: a dedent to the directive's column ends the raw body; prose resumes
+  udon: "|x\n  !:sh:\n    echo hi\n  back to prose\n"
+  events:
+    - ElementStart
+    - [Name, "x"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - [Text, "back to prose"]
+    - ElementEnd
+
+# Resolved 2026-07-16 (CORE "Inline Raw Content" closing para): a raw block
+# is usable as an attribute's node value sameline; body follows the
+# ordinary raw rules.
+- id: raw_block_sameline_attr_node_value
+  desc: "sameline !:lang: after an open attribute — the attr IS the raw node"
+  udon: "|el :script !:sh:\n  echo hi\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Interpolation × braces (CORE "Unified Inline Syntax": !{{expr}} ends at
+# the FIRST `}}` — a single `}` is expression content; resolved 2026-07-16)
+# ---------------------------------------------------------------------------
+
+- id: interpolation_ends_at_first_double_brace
+  desc: "!{{ {\"a\":1}}} — the first }} ends the expression; leftover } is prose"
+  udon: "|p !{{ {\"a\":1}}} tail\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, " {\"a\":1"]
+    - [Text, "} tail"]
+    - ElementEnd
+
+- id: interpolation_spaced_inner_braces_capture_whole
+  desc: spacing the braces keeps a JSON object inside one expression
+  udon: "|p !{{ {\"a\":1} }} ok\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, " {\"a\":1} "]
+    - [Text, " ok"]
+    - ElementEnd
+
+# CORE "Value Kinds" lists !{{...}} as an attribute value kind. (Impl note
+# says parser support is pending — this fixture measures the spec anyway.)
+- id: interpolation_as_attribute_value
+  desc: an interpolation in value position is the attribute's value
+  udon: "|el :cost !{{price * 2}}\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "cost"]
+    - [Interpolation, "price * 2"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Typing envelope edge (CORE "Explicit Typing": envelopes are single-line —
+# resolved 2026-07-16; newline before > = string + UnclosedTypeEnvelope)
+# ---------------------------------------------------------------------------
+
+# ⚠ Two readings not pinned by CORE: (1) whether the pass-through string
+# keeps the opening `<` — encoded WITH it, matching the closed-envelope
+# pass-through ("the full <...> lexical form, untouched") and losing no
+# bytes; (2) whether NoDialectsLoaded ALSO fires — encoded without it, since
+# the envelope never completed and UnclosedTypeEnvelope already carries the
+# anomaly. Warning-before-value order follows typing_envelope.yaml.
+- id: envelope_unclosed_at_newline_warns
+  desc: a newline before the matching > ends the value as a string plus warning
+  udon: "|el :when <7:02pm\n|next\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<7:02pm"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "next"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# References × head position and boundaries (CORE "References (`@`)",
+# interim wire: ONE Reference event, payload = raw text after @)
+# ---------------------------------------------------------------------------
+
+- id: reference_trait_only_selector
+  desc: "@.trait-only passes the guard (@ then .) — payload is the raw tail"
+  udon: "|p\n  @.realized\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Reference, ".realized"]
+    - ElementEnd
+
+- id: reference_full_selector_payload
+  desc: element, key, and trait selectors ride one raw payload (interim wire)
+  udon: "|p\n  @license[mit].realized\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Reference, "license[mit].realized"]
+    - ElementEnd
+
+# Boundary rule (CORE "The Scan and the Bare-Token Boundary"): a guarded @
+# at a bare token's boundary finishes the value; the reference is then the
+# ELEMENT's reference child ("@ and | behave identically in this respect").
+- id: reference_after_finished_value_is_element_child
+  desc: "@ at the value boundary — value finishes, reference child of the element"
+  udon: "|el :a 1 @[x]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Reference, "[x]"]
+    - ElementEnd
+
+# CORE "Value Kinds" worked example: value-position reference vs block-line
+# reference child, with following prose.
+- id: reference_value_then_reference_child_then_prose
+  desc: attr-value reference, block reference child, then ordinary prose
+  udon: "|el\n  :ref @[asdf].hey\n  @another[xyz]\n  That there is a reference child.\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ref"]
+    - [Reference, "[asdf].hey"]
+    - [Reference, "another[xyz]"]
+    - [Text, "That there is a reference child."]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Embedded elements × prose commitment (CORE "Head Position": once prose
+# begins, markers are literal — inside |{...} too; only inline forms fire)
+# ---------------------------------------------------------------------------
+
+- id: embedded_prose_committed_markers_literal
+  desc: after the first prose word inside |{...}, bare markers and quotes are literal
+  udon: "|p x |{em keep | and : and @ and \"q\" here} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "keep | and : and @ and \"q\" here"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd

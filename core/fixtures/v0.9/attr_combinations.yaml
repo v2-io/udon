@@ -1,0 +1,818 @@
+# Attribute-model COMBINATION torture cases (CORE "Attributes" chapter,
+# 0.9 reconception, ratified 2026-07-15/16). These go beyond the basics in
+# attributes.yaml / flags.yaml / attr_boundary.yaml / attr_structured.yaml:
+# flags in embedded/block contexts, flag stacking, the full boundary-marker
+# set (and guard-FAILING lookalikes), references as values and after values,
+# node values with full identity, raw/fence node values, heterogeneous
+# stacks, multi-segment deferred text with comments/blanks, warn+stack over
+# every first-value kind, value-position \ with inline forms, uniform block
+# chains, key charsets, $-designated longhand equivalence, arrays with
+# envelopes inside, phase-change interactions, attr-under-attr variants.
+#
+# All expectations derived from CORE.md text only (never parser output).
+# Wire facts (CORE "Event Encoding (0.9 Wire)"): every Attr carries exactly
+# one value event; multiplicity = re-emitted Attr; node value = Attr followed
+# directly by ElementStart/DirectiveStart/FreeformStart; flags settle as
+# BoolTrue/BoolFalse/Nil; MissingAttributeValue = Error then Nil after Attr.
+
+# ---------------------------------------------------------------------------
+# Flags in embedded elements (CORE "Attribute Keys and Flags" + "Contexts and
+# Terminators": embedded is element-rooted sameline with '}' as an extra,
+# unconsumed terminator — so a keyword finishing at '}' finishes ALONE).
+# ---------------------------------------------------------------------------
+
+- id: embedded_flag_bare_true
+  desc: bare flag inside an embedded element defaults true
+  udon: "|p x |{cb :on?} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "cb"]
+    - [Attr, "on?"]
+    - BoolTrue
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: embedded_flag_false_at_brace
+  desc: keyword alone at the '}' boundary is the flag's value
+  udon: "|p x |{cb :on? false} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "cb"]
+    - [Attr, "on?"]
+    - BoolFalse
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: embedded_flag_null_then_content
+  desc: keyword alone-as-token is consumed; the tail is embedded content
+  udon: "|p x |{cb :on? null note} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "cb"]
+    - [Attr, "on?"]
+    - Nil
+    - [Text, "note"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: embedded_flag_nonkeyword_snaps_true
+  desc: non-keyword after an embedded flag snaps true; material re-owned as content
+  udon: "|p x |{cb :on? maybe} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "cb"]
+    - [Attr, "on?"]
+    - BoolTrue
+    - [Text, "maybe"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Flags on block lines — remaining keywords (flags.yaml has bare/false/nil
+# sameline) and flag stacking.
+# ---------------------------------------------------------------------------
+
+- id: block_flags_true_and_null
+  desc: explicit true and null as flag values on block lines
+  udon: "|el\n  :a? true\n  :b? null\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Attr, "b?"]
+    - Nil
+    - ElementEnd
+
+- id: flag_stacking
+  desc: flags stack like any attribute — two assignments, both kept in order
+  udon: "|el :a? :a? false\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Attr, "a?"]
+    - BoolFalse
+    - ElementEnd
+
+# ⚠ Flag rule 2 says non-keyword material after a flag "is re-owned by the
+# continuing scan; it is never the flag's body" — explicit and flag-specific.
+# The "Collecting" rule for block attr lines would instead segment-ingest
+# trailing text under the key with AttributeValueExtendedByTrailingText.
+# Reading the flag-specific "never the flag's body" as overriding: the flag
+# snaps true and the tail is ordinary prose of the column's owner (ownership
+# row 3 — no open attr, no element on the line). If the collecting rule is
+# meant to win, this becomes Warning + Attr "a?" / Text instead.
+- id: block_flag_trailing_prose_reowned
+  desc: "⚠ non-keyword tail after a block-line flag is the element's prose, never the flag's body"
+  udon: "|el\n  :a? hello there\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Text, "hello there"]
+    - ElementEnd
+
+# ⚠ An envelope after a flag: `<…>` is "meaningful in value position and
+# nowhere in free prose", and flag rule 2 re-owns anything but a lone keyword.
+# The re-owned material is not in value position (the flag consumed none of
+# it), so `<5m>` is plain prose of the element — no envelope recognition, no
+# NoDialectsLoaded warning.
+- id: flag_envelope_snaps_true_prose
+  desc: "⚠ an envelope after a flag key is re-owned as plain element prose"
+  udon: "|el :f? <5m>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "f?"]
+    - BoolTrue
+    - [Text, "<5m>"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# The bare-token boundary vs the full marker set (CORE "The Scan and the
+# Bare-Token Boundary": boundary marker set = the sameline-scan marker set —
+# ':', '\', guarded '|', guarded '@', framed ' ; ', fence, guarded '!').
+# attr_boundary.yaml covers ':', '\', framed ' ; '. Here: the rest, plus
+# guard-FAILING lookalikes.
+# ---------------------------------------------------------------------------
+
+- id: boundary_guarded_pipe_finishes_value
+  desc: a guarded '|' at the boundary finishes the value; the node is the element's child
+  udon: "|el :a val |node x\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [BareValue, "val"]
+    - ElementStart
+    - [Name, "node"]
+    - [Text, "x"]
+    - ElementEnd
+    - ElementEnd
+
+- id: boundary_guarded_at_finishes_value
+  desc: a guarded '@' at the boundary finishes the value; the reference is the element's child
+  udon: "|el :a val @[r]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [BareValue, "val"]
+    - [Reference, "[r]"]
+    - ElementEnd
+
+- id: boundary_fence_finishes_value
+  desc: a fence at the boundary finishes the value and opens (sameline scan allows fences after attrs)
+  udon: "|el :k v ```txt\nbody\n```\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - FreeformStart
+    - [Text, "txt"]
+    - [Text, "body"]
+    - FreeformEnd
+    - ElementEnd
+
+- id: boundary_guarded_bang_finishes_value
+  desc: a guarded '!' at the boundary finishes the value; the directive follows in the scan
+  udon: "|el :k v !if cond\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "cond"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ⚠ The boundary list names ':' plainly, but ':' recognition elsewhere
+# requires a following name ("a ':' not followed by a name also falls back to
+# prose intact", Marker Recognition) — and the boundary set is defined as
+# "the sameline-scan marker set", i.e. markers that PASS their guards. ':3'
+# starts with a digit (not XID_Start), so it is not a marker: the boundary
+# sees plain text and the bare token was the beginning of a blob.
+- id: boundary_colon_digit_guard_fails_blob
+  desc: "⚠ ':3' fails the attribute guard, so the whole tail is a text blob"
+  udon: "|el :a val :3 more\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Text, "val :3 more"]
+    - ElementEnd
+
+# ⚠ Same reasoning: '|' guards on letter/[/./{/'/suffix — '~' fails, so '|~'
+# is not a marker; blob commits from the original bare token.
+- id: boundary_pipe_guard_fails_blob
+  desc: "⚠ '|~' fails the element guard, so the tail is a text blob"
+  udon: "|el :a val |~ x\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Text, "val |~ x"]
+    - ElementEnd
+
+- id: boundary_bang_guard_fails_blob
+  desc: "'!' guards on identifier-or-':' — '!=' fails, so the tail is a text blob"
+  udon: "|el :k v != 3\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, "v != 3"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# References as attribute values and after finished values (CORE "Value
+# Kinds": '@ has equal footing with |'; interim wire = single Reference
+# event, payload = raw text after '@', traits included in the payload).
+# ---------------------------------------------------------------------------
+
+- id: reference_value_full_selector
+  desc: a full element[key].trait selector as an attribute's value (interim payload)
+  udon: "|el :ref @el[k].trait\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ref"]
+    - [Reference, "el[k].trait"]
+    - ElementEnd
+
+- id: reference_value_then_tail_is_prose
+  desc: a reference value self-terminates; the tail is element prose (ownership row 2)
+  udon: "|el :a @[r] tail\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Reference, "[r]"]
+    - [Text, "tail"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Node values with full identity (CORE "Node Values" + "Identity": the node's
+# scan owns its interior; identity desugars to $-designated attrs in source
+# order; a suffix char touching a .trait is consumed by the trait).
+# ---------------------------------------------------------------------------
+
+- id: node_value_with_suffix_key_trait
+  desc: node value carrying suffix, key, and trait — identity desugars inside the node
+  udon: "|el :w |node?[k].t\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "w"]
+    - ElementStart
+    - [Name, "node"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Attr, "$traits"]
+    - [BareValue, "t"]
+    - ElementEnd
+    - ElementEnd
+
+- id: node_value_trait_absorbs_question
+  desc: a '?' touching the trait is part of the trait, not a suffix
+  udon: "|el :w |node[k].t?\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "w"]
+    - ElementStart
+    - [Name, "node"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Attr, "$traits"]
+    - [BareValue, "t?"]
+    - ElementEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Node values that are raw blocks and fences (CORE "Value Kinds" + the
+# "Inline Raw Content" tail note, resolved 2026-07-16: a raw block IS usable
+# as a node value, sameline and deferred; raw base = first content line's
+# column, ends at dedent to/left of the LINE's structural column).
+# ---------------------------------------------------------------------------
+
+- id: raw_block_node_value_sameline
+  desc: sameline ':script !:sh:' — the attribute IS the raw node
+  udon: "|el :script !:sh:\n  echo hi\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - ElementEnd
+
+- id: raw_block_node_value_deferred
+  desc: deferred raw node value under an open attribute
+  udon: "|el\n  :script\n    !:sh:\n      echo hi\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - ElementEnd
+
+- id: fence_node_value_deferred
+  desc: a freeform fence as a deferred node value (exact whitespace preserved)
+  udon: "|el\n  :code\n    ```\n    x = 1\n    ```\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "code"]
+    - FreeformStart
+    - [Text, "    x = 1"]
+    - FreeformEnd
+    - ElementEnd
+
+# ⚠ Value Kinds lists "a freeform fence" among node kinds and sameline node
+# binding needs no block-deeper form ("|element" case is explicit) — reading
+# a fence opened in the scan while the attr is open as the attr's node value.
+# Only the raw-block sameline form was explicitly resolved 2026-07-16; if
+# fences bind differently sameline, this case moves.
+- id: fence_node_value_sameline
+  desc: "⚠ a fence opened while the attr is open is the attr's node value"
+  udon: "|el :code ```py\nx = 1\n```\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "code"]
+    - FreeformStart
+    - [Text, "py"]
+    - [Text, "x = 1"]
+    - FreeformEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Heterogeneous stacking mixes (CORE "Multi-Segment Values and Stacking":
+# stacks are heterogeneous; every Attr re-emitted with one value).
+# ---------------------------------------------------------------------------
+
+- id: heterogeneous_stack_ref_envelope_array
+  desc: reference, envelope, and array stacked under one key
+  udon: "|el :a @[r] :a <5m> :a [1]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Reference, "[r]"]
+    - [Attr, "a"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<5m>"]
+    - [Attr, "a"]
+    - ArrayStart
+    - [Integer, "1"]
+    - ArrayEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Multi-segment deferred text with interleaved comments and blank lines
+# (CORE "Multi-Line Values": blank lines behave exactly as in prose; comments
+# are events, a ';' at the content-base column is a comment).
+# ---------------------------------------------------------------------------
+
+# ⚠ Comment interleaving inside an OPEN deferred value is not spelled out
+# verbatim; derived from the block-prose comment rule (';' at the base column
+# is a comment) + comments-are-events + "blank lines behave exactly as they
+# do in prose". If a base-column ';' inside an open value is instead value
+# text, the CommentStart/End trio becomes an Attr "body" / Text segment.
+- id: deferred_text_comment_and_blank_interleaved
+  desc: "⚠ blank line and base-column comment interleave with deferred text segments"
+  udon: "|el\n  :body\n    seg one\n\n    ; a note\n    seg two\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "body"]
+    - [Text, "seg one"]
+    - BlankLine
+    - CommentStart
+    - [Text, " a note"]
+    - CommentEnd
+    - [Attr, "body"]
+    - [Text, "seg two"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Warn + stack over different first-value kinds (attr_structured covers
+# quoted-first and envelope-first-deeper). Numbers, arrays, envelopes with
+# same-line tails, nodes with deeper seconds.
+# ---------------------------------------------------------------------------
+
+- id: number_first_trailing_text_warns_and_stacks
+  desc: block line — integer finishes, trailing text ingests with the warning
+  udon: "|el\n  :n 42 and more\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "42"]
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "n"]
+    - [Text, "and more"]
+    - ElementEnd
+
+- id: array_first_trailing_text_warns_and_stacks
+  desc: block line — array closes, trailing text ingests with the warning
+  udon: "|el\n  :xs [1 2] extra\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "xs"]
+    - [Text, "extra"]
+    - ElementEnd
+
+- id: envelope_first_trailing_text_warns_and_stacks
+  desc: the CORE wire-sketch shape — envelope value, same-line tail ingests
+  udon: "|el\n  :t <v> tail\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "t"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<v>"]
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "t"]
+    - [Text, "tail"]
+    - ElementEnd
+
+- id: node_first_deeper_text_warns_and_stacks
+  desc: deeper text after a node value ingests with AttributeSecondValue
+  udon: "|el\n  :h\n    |hdr\n    trailing text\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "h"]
+    - ElementStart
+    - [Name, "hdr"]
+    - ElementEnd
+    - [Warning, "AttributeSecondValue"]
+    - [Attr, "h"]
+    - [Text, "trailing text"]
+    - ElementEnd
+
+- id: node_first_second_sibling_node_warns_and_stacks
+  desc: a second sibling node at the value's depth ingests with the warning ("same for a second sibling node")
+  udon: "|el\n  :h\n    |a\n    |b\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "h"]
+    - ElementStart
+    - [Name, "a"]
+    - ElementEnd
+    - [Warning, "AttributeSecondValue"]
+    - [Attr, "h"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - ElementEnd
+
+- id: number_first_deeper_text_warns_and_stacks
+  desc: deeper text under a finished number value ingests with the warning
+  udon: "|el\n  :n 5\n    deeper\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "5"]
+    - [Warning, "AttributeSecondValue"]
+    - [Attr, "n"]
+    - [Text, "deeper"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Value-position \ combined with inline forms (CORE "Value-Position \" +
+# "Text-Blob Values" + Escape: the blob is prose-shaped — inline forms fire,
+# \ escapes their openers, but the framed ' ; ' comment affordance is GONE on
+# a \-entered line).
+# ---------------------------------------------------------------------------
+
+- id: value_backslash_inline_form_and_escaped_opener
+  desc: "value-\\ text: embedded fires, \\|{ is literal, framed ' ; ' is literal"
+  udon: "|el\n  :msg \\a |{em b} ; c \\|{d}\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "msg"]
+    - [Text, "a "]
+    - [Attr, "msg"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "b"]
+    - EmbeddedEnd
+    - [Attr, "msg"]
+    - [Text, " ; c |{d}"]
+    - ElementEnd
+
+- id: value_backslash_space_only
+  desc: "':k \\' with only spaced text — the \\ consumes itself, the tail (leading space kept) is the value"
+  udon: "|el :k \\ tail\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, " tail"]
+    - ElementEnd
+
+- id: value_backslash_then_deeper_continuation
+  desc: "value-\\ first line plus deeper continuation join as one deferred value"
+  udon: "|el\n  :k \\first ; line\n    deeper line\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, "first ; line"]
+    - [Attr, "k"]
+    - [Text, "deeper line"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Uniform scan chains on block lines (CORE "The Scan": block lines scan
+# exactly like element lines — mixed value kinds in one chain).
+# ---------------------------------------------------------------------------
+
+- id: block_chain_mixed_kinds
+  desc: number, flag, quoted string, reference in one block-line chain
+  udon: "|el\n  :a 1 :b? :c \"x\" :d @[r]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Attr, "b?"]
+    - BoolTrue
+    - [Attr, "c"]
+    - [StringValue, "x"]
+    - [Attr, "d"]
+    - [Reference, "[r]"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Key charsets: '/', '?', '!', '*', '+' in non-terminal positions; terminal
+# '!' is a plain key (only terminal '?' selects flags); quoted '$!' longhand.
+# ---------------------------------------------------------------------------
+
+- id: key_suffix_chars_nonterminal
+  desc: "'/', '!', '*', '+' mid-key are ordinary key characters"
+  udon: "|el :a/b!c*d+e 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a/b!c*d+e"]
+    - [Integer, "1"]
+    - ElementEnd
+
+- id: key_terminal_bang_is_plain
+  desc: a terminal '!' does NOT select flag semantics — plain key, takes a value
+  udon: "|el :req! yes\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "req!"]
+    - [BareValue, "yes"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# $-designated longhand vs sugar equivalence (CORE "Identity", "Element
+# Suffixes": $! ends in a non-? character, so it is a PLAIN attribute — the
+# suffix sugar always supplies its explicit true).
+# ---------------------------------------------------------------------------
+
+- id: suffix_bang_sugar
+  desc: "|el! desugars to the plain attribute :'$!' true"
+  udon: "|el!\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$!"]
+    - BoolTrue
+    - ElementEnd
+
+- id: suffix_bang_longhand_equivalent
+  desc: "longhand :'$!' true is indistinguishable from the |el! sugar"
+  udon: "|el :'$!' true\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$!"]
+    - BoolTrue
+    - ElementEnd
+
+# ⚠ '$!' ends in '!', not '?', so it is a plain attribute ("the other suffix
+# targets ($!, $*, $+) ... are plain attributes"); plain attributes always
+# take a value — so a valueless longhand :'$!' is MissingAttributeValue +
+# synthesized Nil, unlike :'$?' which defaults true. Deliberate asymmetry
+# per the flag-alignment rationale, but worth pinning.
+- id: longhand_dollar_bang_valueless_errors
+  desc: "⚠ valueless :'$!' is a plain attr — error + Nil (only '$?' defaults true)"
+  udon: "|el :'$!'\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$!"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - ElementEnd
+
+- id: traits_sugar_and_longhand_stack
+  desc: a sugar .trait and a longhand :'$traits' stack in source order
+  udon: "|el.a :'$traits' b\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$traits"]
+    - [BareValue, "a"]
+    - [Attr, "$traits"]
+    - [BareValue, "b"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Arrays as values with envelopes inside; quoted-item nuance (CORE "Inline
+# Lists" + "Explicit Typing": envelope recognition is uniform in value
+# position, array items included; "Contexts and Terminators" quoted-item
+# nuance: a closing quote ends the item).
+# ---------------------------------------------------------------------------
+
+# ⚠ Warning placement for an in-array envelope follows the established
+# fixture convention (NoDialectsLoaded immediately before the BareValue it
+# annotates), inside the ArrayStart/End bracket.
+- id: array_with_envelope_and_nested_list
+  desc: "⚠ envelope, quoted string, and nested list as array items"
+  udon: "|el :xs [<5m> \"a b\" [1 2]]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<5m>"]
+    - [StringValue, "a b"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_quoted_item_nuance
+  desc: a quoted item's closing quote ends it — ["x"y] is two items
+  udon: "|el :q [\"x\"y] :r [\"a\"\"b\"]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "q"]
+    - ArrayStart
+    - [StringValue, "x"]
+    - [BareValue, "y"]
+    - ArrayEnd
+    - [Attr, "r"]
+    - ArrayStart
+    - [StringValue, "a"]
+    - [StringValue, "b"]
+    - ArrayEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Phase change interactions (CORE "Phase Change and Late ':'": a sameline
+# tail — text is text wherever it appeared — enters the children phase; a
+# later ancestor-attribute-column ':' is prose + AttributeAfterChildren).
+# ---------------------------------------------------------------------------
+
+- id: flag_snap_prose_forecloses_attributes
+  desc: prose re-owned after a flag snap enters the children phase too
+  udon: "|el :a? oops\n  :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Text, "oops"]
+    - [Warning, "AttributeAfterChildren"]
+    - [Text, ":b 2"]
+    - ElementEnd
+
+- id: child_element_then_late_colon
+  desc: a child element enters the children phase; a later ':' line is prose + warning
+  udon: "|el :a 1\n  |kid\n  :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - ElementStart
+    - [Name, "kid"]
+    - ElementEnd
+    - [Warning, "AttributeAfterChildren"]
+    - [Text, ":b 2"]
+    - ElementEnd
+
+- id: block_prose_then_late_colon
+  desc: block prose enters the children phase; a base-column ':' line is prose + warning
+  udon: "|el\n  some prose\n  :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "some prose"]
+    - [Warning, "AttributeAfterChildren"]
+    - [Text, ":b 2"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Attr-under-attr variants (CORE "Node Values": a deeper ':key' directly
+# under an attribute is AttributeUnderAttribute; recovery per the settled
+# keep-everything posture — Nil only if the attr was still open).
+# ---------------------------------------------------------------------------
+
+# ⚠ CORE forbids ':key' directly under "an attribute" without distinguishing
+# open vs finished. Reading: still AttributeUnderAttribute (the more specific
+# rule; AttributeSecondValue covers "text or sibling node", not ':key'), no
+# synthesized Nil (the attr already has its value), offending bytes kept as
+# element prose. If instead the finished-value case is meant to warn+stack,
+# this becomes Warning AttributeSecondValue + Attr "a" / Text ":b 2".
+- id: attr_under_finished_attr_error
+  desc: "⚠ ':key' deeper under a FINISHED attr still errors; no Nil; line kept as prose"
+  udon: "|el\n  :a 1\n    :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Error, "AttributeUnderAttribute"]
+    - [Text, ":b 2"]
+    - ElementEnd
+
+# ⚠ Same rule under a flag: the flag's value is "always finished at its own
+# line" (flag rule 3), so no Nil is synthesized; the ':key' line errors and
+# its bytes are kept as prose.
+- id: attr_under_flag_error
+  desc: "⚠ ':key' deeper under a flag errors; flag already settled true; line kept as prose"
+  udon: "|el\n  :f?\n    :x 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "f?"]
+    - BoolTrue
+    - [Error, "AttributeUnderAttribute"]
+    - [Text, ":x 1"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# MissingAttributeValue at a comment boundary (CORE "Attribute Keys and
+# Flags": a plain key followed by a context terminator with no value material
+# errors and still emits with Nil).
+# ---------------------------------------------------------------------------
+
+- id: plain_attr_valueless_before_comment
+  desc: a framed ' ; ' right after a plain key — no value material; error + Nil, then the comment
+  udon: "|el :k ; note\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - CommentStart
+    - [Text, " note"]
+    - CommentEnd
+    - ElementEnd

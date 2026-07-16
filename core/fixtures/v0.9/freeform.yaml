@@ -125,13 +125,14 @@
     - [Text, "b"]
     - FreeformEnd
 
-- id: freeform_unclosed_error
+- id: freeform_unterminated_warns
   desc: unclosed fence errors at EOF, content preserved
   udon: "```\nunclosed"
   events:
     - FreeformStart
     - [Text, "unclosed"]
-    - [Error, "UnclosedFreeform"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
 
 - id: freeform_sets_structural_parent
   desc: the fence's indentation sets its structural parent
