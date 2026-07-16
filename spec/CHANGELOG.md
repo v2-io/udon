@@ -15,9 +15,32 @@ against it (a CI drift-check enforces agreement — to be wired).
 Format: [Keep a Changelog]. Versioning: [Semantic Versioning] (pre-1.0, so minor
 bumps may break).
 
-## [Unreleased]
+## [0.9.0-alpha.1] — 2026-07-15 (in progress)
 
-*(0.9.0-alpha.1 opens after the 0.8.0 release below.)*
+First alpha of the **attribute-model reconception** — the headline change
+0.8.0 explicitly left unsettled. Ratification carriers:
+`design/attribute-model-proposal-3-substrate.md` (decided model floor) +
+`design/attribute-model-proposal-3.md` (binding narrative); promotion
+nail-downs in `TODO-SPEC-CORE-0.9-supplement.md`. The active
+compliance-fixture group is now `core/fixtures/v0.9/` (seeded from the
+frozen v0.8 group; cases will be edited to the new model as CORE text
+lands — a RED gate during the burn-down is the honest signal).
+
+### Changed (direction, ratified 2026-07-15; CORE text pending)
+- **Plain attributes always take a value**; missing value with no deferred
+  body is an error. Implicit valueless-`:key` = true is removed.
+- **Flags are spelled `:key?`** (terminal `?`; wire name keeps the `?`).
+- **Attribute values may be nodes, text blobs, or segment arrays** —
+  edges may terminate at nodes; "attributes are typed scalars" is retired.
+- **Uniform scan replaces block run-to-EOL** (`:a 1 :b 2` on a block line
+  is two attributes).
+- **Bare-token boundary rule**: the sameline scan stays provisionally open
+  at a bare value token's boundary — a head-position marker (`:`, `\`,
+  guarded `|`, framed ` ; `, fence) means the token finished as a
+  single-token value; plain text commits the rest of the line as a text
+  blob owned by binding priority (open attr first).
+- **Finished value + trailing material** on a block line: strong warning +
+  ingest as segment array (never silent drop).
 
 ## [0.8.0] — 2026-07-15
 

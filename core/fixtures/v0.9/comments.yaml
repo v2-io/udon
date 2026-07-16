@@ -1,0 +1,269 @@
+# Comments and literal semicolons (CORE "Comments", "Literal Semicolons",
+# "Comments and Indentation"). Comments are events, not discarded.
+
+# ---------------------------------------------------------------------------
+# The context table: where `;` opens a comment and where it is literal
+# ---------------------------------------------------------------------------
+
+- id: root_line_comment
+  desc: document root — line comment
+  udon: "; file header comment\n"
+  events:
+    - CommentStart
+    - [Text, " file header comment"]
+    - CommentEnd
+
+- id: block_prose_semicolon_literal
+  desc: block prose — semicolon is literal
+  udon: "|pre\n  return x; // semicolon is literal\n"
+  events:
+    - ElementStart
+    - [Name, "pre"]
+    - [Text, "return x; // semicolon is literal"]
+    - ElementEnd
+
+- id: root_prose_mid_line_semicolon_literal
+  desc: a semicolon mid-line in root prose is literal
+  udon: "use x; do y\n"
+  events:
+    - [Text, "use x; do y"]
+
+# Sameline comments (ratified 2026-07-15): a `;` after prose opens a
+# comment ONLY when whitespace-framed — space before, space or EOL after.
+- id: sameline_prose_comment
+  desc: sameline prose — a whitespace-framed semicolon starts a comment
+  udon: "|li Item one ; TODO expand\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "Item one "]
+    - CommentStart
+    - [Text, " TODO expand"]
+    - CommentEnd
+    - ElementEnd
+
+- id: sameline_semi_no_space_after_is_literal
+  desc: no space after the semicolon — not a sameline comment
+  udon: "|li Item one ;still prose\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "Item one ;still prose"]
+    - ElementEnd
+
+- id: sameline_semi_no_space_before_is_literal
+  desc: no space before the semicolon — not a sameline comment
+  udon: "|li ratio 1;2 done\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "ratio 1;2 done"]
+    - ElementEnd
+
+- id: sameline_trailing_semi_is_empty_comment
+  desc: end-of-line is a valid after-boundary — trailing framed ; opens an empty comment
+  udon: "|li trailing wins ;\n"
+  events:
+    - ElementStart
+    - [Name, "li"]
+    - [Text, "trailing wins "]
+    - CommentStart
+    - CommentEnd
+    - ElementEnd
+
+- id: block_attr_line_comment
+  desc: block attribute line — comment after the value
+  udon: "|el\n  :key value ; comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key"]
+    - [BareValue, "value"]
+    - CommentStart
+    - [Text, " comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: sameline_attrs_comment
+  desc: sameline attributes — comment after the values
+  udon: "|el :k v ; trailing comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - CommentStart
+    - [Text, " trailing comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: embedded_bare_semicolon_literal
+  desc: inside |{...} a bare semicolon is literal — only ;{ opens a comment
+  udon: "|p x |{em a; b} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "a; b"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Comment continuation by indentation
+# ---------------------------------------------------------------------------
+
+- id: comment_continuation
+  desc: a more-indented non-prefix line continues the comment until dedent
+  udon: "; This would be a comment\n  this is still part of the comment\nprose after\n"
+  events:
+    - CommentStart
+    - [Text, " This would be a comment"]
+    - [Text, "this is still part of the comment"]
+    - CommentEnd
+    - [Text, "prose after"]
+
+# ---------------------------------------------------------------------------
+# Comments participate in indent/dedent (CORE "Block Comments")
+# ---------------------------------------------------------------------------
+
+- id: comment_column_closes_elements
+  desc: a column-0 comment closes all open elements before the next sibling
+  udon: "|parent\n  |child\n; closes both\n|sibling\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - ElementEnd
+    - ElementEnd
+    - CommentStart
+    - [Text, " closes both"]
+    - CommentEnd
+    - ElementStart
+    - [Name, "sibling"]
+    - ElementEnd
+
+# ⚠ CORE contradiction filed in spec/TODO-SPEC-CORE.md: "Comments and
+# CORE Head Position + Comments: deeper than prose base ⇒ inside prose,
+# markers literal. (Older Comments example that suggested otherwise is fixed.)
+- id: comment_deeper_than_prose_base_is_prose
+  desc: a semicolon line deeper than the prose base is inside the prose
+  udon: "|element\n  Some prose content\n   ; one column past the prose base\n  More prose content\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "Some prose content"]
+    - [Text, " ; one column past the prose base"]
+    - [Text, "More prose content"]
+    - ElementEnd
+
+- id: comment_at_prose_base_is_comment
+  desc: a semicolon line AT the prose base is head position — a comment
+  udon: "|element\n  Some prose content\n  ; a comment at the base\n  More prose content\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "Some prose content"]
+    - CommentStart
+    - [Text, " a comment at the base"]
+    - CommentEnd
+    - [Text, "More prose content"]
+    - ElementEnd
+
+# Uniform continuation (ratified 2026-07-15): every line deeper than the
+# comment's column is comment TEXT — markers included, nothing parsed —
+# until a line at or dedented from it. Block-comment-out is a primary use.
+- id: comment_swallows_deeper_block
+  desc: a comment at the right indent comments out a whole nested block
+  udon: "|element\n  some prose to begin with\n  ; Start the comment\n    |another-element\n       and its prose\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "some prose to begin with"]
+    - CommentStart
+    - [Text, " Start the comment"]
+    - [Text, "|another-element"]
+    - [Text, "   and its prose"]
+    - CommentEnd
+    - ElementEnd
+
+- id: comment_block_out_at_root
+  desc: root-level block-comment-out; same-column line ends the comment
+  udon: "; silence this\n  |broken :attr\n  :stray x\n|live\n"
+  events:
+    - CommentStart
+    - [Text, " silence this"]
+    - [Text, "|broken :attr"]
+    - [Text, ":stray x"]
+    - CommentEnd
+    - ElementStart
+    - [Name, "live"]
+    - ElementEnd
+
+- id: comment_same_column_is_sibling
+  desc: a comment at a child's column is that child's sibling (child closed)
+  udon: "|parent\n  |child\n  ; sibling of child\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - ElementEnd
+    - CommentStart
+    - [Text, " sibling of child"]
+    - CommentEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Inline comments ;{...} — brace-counted, the only comment form in prose
+# ---------------------------------------------------------------------------
+
+- id: inline_comment_in_prose
+  desc: inline comment interrupts prose text
+  udon: "|p This has ;{TODO fix wording} some text that continues.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "This has "]
+    - CommentStart
+    - [Text, "TODO fix wording"]
+    - CommentEnd
+    - [Text, " some text that continues."]
+    - ElementEnd
+
+- id: inline_comment_nested_braces
+  desc: nested balanced braces are allowed inside an inline comment
+  udon: "|p a ;{note {inner} ok} b\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Text, "note {inner} ok"]
+    - CommentEnd
+    - [Text, " b"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Literal semicolons at line start need the head-position escape
+# ---------------------------------------------------------------------------
+
+- id: escaped_semicolon_line
+  desc: a leading backslash outputs a literal semicolon line (see escape.yaml)
+  udon: "\\; This line starts with a semicolon in the output\n"
+  events:
+    - [Text, "; This line starts with a semicolon in the output"]
+
+- id: attr_value_semicolon_no_space_literal
+  desc: sameline value keeps a no-space semicolon
+  udon: "|el :key and-this;-is-ok rest is prose\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key"]
+    - [BareValue, "and-this;-is-ok"]
+    - [Text, "rest is prose"]
+    - ElementEnd

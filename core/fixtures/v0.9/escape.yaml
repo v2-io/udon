@@ -1,0 +1,206 @@
+# The escape model — one positional rule (CORE "Escape (`\`) — Forcing Prose",
+# "Literal Semicolons", "Unified Inline Syntax").
+#
+# Expectations derived from spec/CORE.md v0.8.0-alpha.1. The pre-0.8 parser
+# used a `'`-escape; these cases encode the ratified `\` model and are
+# expected RED until the grammar catches up.
+#
+# NOTE (CORE, end of Escape section): the precise column bookkeeping of the
+# consumed `\` (taking up no column) is flagged in CORE as "a grammar-level
+# detail to settle when the parser catches up." The content-base anchoring
+# cases below encode CORE's own worked examples; if the settling changes
+# them, CORE changes first.
+
+# ---------------------------------------------------------------------------
+# Head position at line start: `\` consumed, rest of line is verbatim prose
+# ---------------------------------------------------------------------------
+
+- id: escape_would_be_element
+  desc: leading backslash makes a would-be element line prose
+  udon: "\\|element\n"
+  events:
+    - [Text, "|element"]
+
+- id: escape_would_be_attribute
+  desc: leading backslash makes a would-be attribute line prose
+  udon: "\\:not-an-attr\n"
+  events:
+    - [Text, ":not-an-attr"]
+
+- id: escape_would_be_reference
+  desc: leading backslash makes a would-be reference line prose
+  udon: "\\@name see this\n"
+  events:
+    - [Text, "@name see this"]
+
+- id: escape_would_be_fence
+  desc: leading backslash makes a would-be fence line prose
+  udon: "\\```not a fence\n"
+  events:
+    - [Text, "```not a fence"]
+
+- id: escape_would_be_comment
+  desc: leading backslash outputs a literal semicolon line
+  udon: "\\; literal semicolon line\n"
+  events:
+    - [Text, "; literal semicolon line"]
+
+- id: escape_never_special_harmless
+  desc: escaping a character that was never special is harmless
+  udon: "\\![img](pic.jpg)\n"
+  events:
+    - [Text, "![img](pic.jpg)"]
+
+- id: escape_doubles_for_literal_backslash
+  desc: a literal leading backslash doubles (first consumed, second is prose)
+  udon: "\\\\path\\to\n"
+  events:
+    - [Text, "\\path\\to"]
+
+- id: escape_double_before_word
+  desc: double backslash before an ordinary word yields one literal backslash
+  udon: "\\\\hello\n"
+  events:
+    - [Text, "\\hello"]
+
+# `'` is NOT an escape in 0.8 (it was pre-0.8): a line beginning '| is prose
+# starting with an apostrophe.
+- id: apostrophe_is_not_an_escape
+  desc: a leading apostrophe is ordinary prose, not an escape
+  udon: "'|element\n"
+  events:
+    - [Text, "'|element"]
+
+# ---------------------------------------------------------------------------
+# Head position in the sameline scan (CORE "Sameline, too" example)
+# ---------------------------------------------------------------------------
+
+- id: escape_in_sameline_scan
+  desc: backslash reached before prose begins forces the rest of the line to prose
+  udon: "|element |another :val [234 19] \\ how wonderful ; it is\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - ElementStart
+    - [Name, "another"]
+    - [Attr, "val"]
+    - ArrayStart
+    - [Integer, "234"]
+    - [Integer, "19"]
+    - ArrayEnd
+    - [Text, " how wonderful ; it is"]
+    - ElementEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# In prose flow: `\` escapes exactly the inline openers `|{`, `!{`, `;{`
+# ---------------------------------------------------------------------------
+# Text events carry NO completeness guarantee (ratified 2026-07-15): an
+# escape (or a chunk boundary) may split a line's prose into several Texts.
+# The harness collapses same-line adjacent Texts before comparing, so these
+# fixtures express text maximally collapsed, independent of emission rhythm.
+
+- id: escape_inline_element_opener
+  desc: backslash before an inline element opener makes it literal
+  udon: "|p see \\|{em x}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "see |{em x}"]
+    - ElementEnd
+
+- id: escape_inline_bang_opener
+  desc: backslash before an interpolation/directive opener makes it literal
+  udon: "|p price \\!{cost}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "price !{cost}"]
+    - ElementEnd
+
+- id: escape_inline_interpolation_opener
+  desc: backslash before a double-brace interpolation makes it literal
+  udon: "|p show \\!{{expr}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "show !{{expr}}"]
+    - ElementEnd
+
+- id: escape_inline_comment_opener
+  desc: backslash before an inline comment opener makes it literal
+  udon: "|p wink \\;{x}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "wink ;{x}"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Any other `\` is literal (escape-sequence reading is host-layer)
+# ---------------------------------------------------------------------------
+
+- id: backslash_mid_prose_literal
+  desc: backslashes before ordinary text pass through untouched
+  udon: "|p Windows path C:\\Users\\me\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Windows path C:\\Users\\me"]
+    - ElementEnd
+
+- id: backslash_trailing_literal
+  desc: a trailing backslash is literal (line-join reading is host-layer)
+  udon: "|p wrap this line \\\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "wrap this line \\"]
+    - ElementEnd
+
+- id: backslash_after_prose_begins_literal
+  desc: prose has begun, so a later backslash-word is literal
+  udon: "|a hello \\world\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - [Text, "hello \\world"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Content-base anchoring: the consumed `\` takes up no column and sets the
+# prose block's content-base at its own column (CORE worked examples)
+# ---------------------------------------------------------------------------
+
+- id: escape_anchors_content_base
+  desc: head-position backslash anchors content-base at its column, keeping interior spacing
+  udon: "|element\n  \\  start some prose\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "  start some prose"]
+    - ElementEnd
+
+# RATIFIED (Joseph, 2026-07-15): past-base `\` warning is AST-layer, not
+# event-parser. Event layer: literal passthrough only (already correct).
+# EscapeOutsideHeadPosition lives on the AST warning ledger.
+- id: escape_past_base_is_literal_with_warning
+  desc: a leading backslash deeper than the established base is literal prose (no event-level Warning)
+  udon: "|element\n  \\  start some prose\n    \\some more prose\n"
+  events:
+    - ElementStart
+    - [Name, "element"]
+    - [Text, "  start some prose"]
+    - [Text, "  \\some more prose"]
+    - ElementEnd
+
+- id: escape_anchor_only_first_line_needed
+  desc: only the first line needs the backslash; later lines follow ordinary dedentation
+  udon: "|el\n   \\     indented output,\n         deeper line needs no marker,\n      smaller indent still past base\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "     indented output,"]
+    - [Text, "      deeper line needs no marker,"]
+    - [Text, "   smaller indent still past base"]
+    - ElementEnd

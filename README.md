@@ -153,7 +153,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 |----------|-------------|
 | [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md) | The estate review: verified state, defects, open decisions |
 | [REBOOT-PLAN.md](REBOOT-PLAN.md) | Prioritized plan: phases, backlog, spikes |
-| [spec/CORE.md](spec/CORE.md) | Full specification (v0.8.0-alpha.1) |
+| [spec/CORE.md](spec/CORE.md) | Full specification (0.9.0-alpha.1 in progress; 0.8.0 tagged `core-v0.8.0`) |
 | [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
 | [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
 | [examples/](examples/) | Comprehensive syntax examples |
@@ -204,27 +204,31 @@ The original work is preserved in reference repositories:
 **Rebooted July 2026** — see [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md)
 (the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
 
-Current state (2026-07-14):
-- **CORE `v0.8.0-alpha.1`** — the rebooted spec, ratified this cycle (escape
-  unification, `<…>` typing, numbers/`0d`, identity `key`/`traits`, `@`-inert).
-  Canonical version: `spec/CORE-VERSION`.
+Current state (2026-07-15):
+- **CORE 0.8.0 released — first version with a compliant parser.** The
+  rebooted spec (escape unification, `<…>` typing, numbers/`0d`, identity
+  `key`/`traits`, `@`-inert, warning codes, references as selector tuples)
+  froze and `udon-core` passed its full compliance-fixture group in the same
+  cycle. Tag: `core-v0.8.0`; frozen group: `core/fixtures/v0.8/`. Canonical
+  current version: `spec/CORE-VERSION`.
+- **CORE `0.9.0-alpha.1` underway — the attribute-model reconception**, the
+  one area 0.8.0 explicitly left unsettled. Plain attrs always take a value;
+  flags are `:key?`; values may be nodes / text blobs / segment arrays;
+  uniform scan replaces block run-to-EOL. Carriers:
+  `design/attribute-model-proposal-3-substrate.md` (decided floor) +
+  `design/attribute-model-proposal-3.md`; nail-downs in
+  `spec/TODO-SPEC-CORE-0.9-supplement.md`. Active fixture group:
+  `core/fixtures/v0.9/` (seeded from v0.8; edited as CORE text lands). Gate:
+  `cd core && cargo test -p udon-core --test canonical compliance_gate` —
+  RED during the burn-down is the honest signal.
 - **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
-  (frozen, the rebuild's mining source); pre-0.8 grammar →
-  `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`. The
-  parser and grammar still build the pre-0.8 model.
-- **Compliance burn-down underway.** `core/fixtures/v0.8/` holds ~230
-  spec-derived cases (authored 2026-07-15) and the grammar is being brought to
-  green against them — temporal carved out to a set-aside dialect grammar, the
-  `\` escape model, `$key`/`$traits` identity, marker guards, `@`-inert
-  references, and the `<…>` interim (warn + pass-through) already landed. For
-  the live count run the gate:
-  `cd core && cargo test -p udon-core --test canonical v0_8_compliance_group`.
-  Nothing is tagged `core-v0.8.0` until the gate is fully green.
+  (frozen, mining source); pre-0.8 grammar →
+  `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`.
 - First consumers: agentic-systems (ASF process maps) and vivarium.
 
-Next: finish the grammar burn-down (remaining RED is itemized between
-`spec/TODO-SPEC-CORE.md` — rulings — and ordinary grammar work), then tag
-`core-v0.8.0` and stand up the drift-check (`TODO-META` [P0]).
+Next: write the 0.9 attribute-model spec text (TODO-SPEC-CORE + the 0.9
+supplement), update the v0.9 fixtures from it, then burn the grammar down to
+green and tag `core-v0.9.0`.
 
 ## How the work is organized
 
@@ -249,18 +253,19 @@ inline, not in a separate valve.
 | Area (→ TODO) | Covers | Complies now | Core target |
 |---|---|---|---|
 | **META** (`TODO-META.md`) | tracking system; compliance-versioning keystone | — | — |
-| **SPEC-CORE** (`spec/TODO-SPEC-CORE.md`) | the core spec `CORE.md` | *is the contract* | **`0.8.0-alpha.1`** |
-| **SPEC-OTHER** (`spec/TODO-SPEC-OTHER.md`) | dialects, markdown, temporal, composite | — none yet | `core ^0.8` |
-| **AUX** (`spec/TODO-AUX.md`) | schema, paths, patch | — none yet | `core ^0.8` |
-| **CORE-PARSING** (`core/TODO-CORE-PARSING.md`) | event parser + descent grammar | pre-0.8 (pre-reboot) | `core ^0.8` |
-| **PARSER** (`core/TODO-PARSER.md`) | AST one-shot + streaming-AST | — none yet | `core ^0.8` |
-| **HUMAN-UX** (`editors/TODO-HUMAN-UX.md`) | Obsidian, syntax highlighting | pre-0.8 (old spec) | `core ^0.8` |
-| **UTILS** (`TODO-UTILS.md`) | `udon-utl` — accessors, conversion, `fmt` | — none yet | parser → `core ^0.8` |
-| **AGENT-UX** (`TODO-AGENT-UX.md`) | cheat-sheets, empirical harness | pre-0.8 (old models+spec) | `core ^0.8` |
+| **SPEC-CORE** (`spec/TODO-SPEC-CORE.md`) | the core spec `CORE.md` | *is the contract* | **`0.9.0-alpha.1`** |
+| **SPEC-OTHER** (`spec/TODO-SPEC-OTHER.md`) | dialects, markdown, temporal, composite | — none yet | `core ^0.9` |
+| **AUX** (`spec/TODO-AUX.md`) | schema, paths, patch | — none yet | `core ^0.9` |
+| **CORE-PARSING** (`core/TODO-CORE-PARSING.md`) | event parser + descent grammar | **`core-v0.8.0`** | `core ^0.9` |
+| **PARSER** (`core/TODO-PARSER.md`) | AST one-shot + streaming-AST | — none yet | `core ^0.9` |
+| **HUMAN-UX** (`editors/TODO-HUMAN-UX.md`) | Obsidian, syntax highlighting | pre-0.8 (old spec) | `core ^0.9` |
+| **UTILS** (`TODO-UTILS.md`) | `udon-utl` — accessors, conversion, `fmt` | — none yet | parser → `core ^0.9` |
+| **AGENT-UX** (`TODO-AGENT-UX.md`) | cheat-sheets, empirical harness | pre-0.8 (old models+spec) | `core ^0.9` |
 | **PUBLISHING** (`TODO-PUBLISHING.md`) | README, release, crates.io | — | — |
 
-The current `core-v…` tag mirrors `spec/CORE-VERSION` and the SPEC-CORE target
-above — they move together. Migration in progress: the `design/` notes,
+`spec/CORE-VERSION` and the SPEC-CORE target above move together; a
+`core-v…` tag marks each *released* version (latest: `core-v0.8.0`), so the
+tag trails the version file while an alpha is in progress. Migration in progress: the `design/` notes,
 `REVIEW-JULY-2026.md` §4/§7-F, and the `REBOOT-PLAN.md` backlog are still
 draining into these lanes (see the `TODO-META.md` bootstrap task; delete a
 source when empty — `core/PLAN.md` and the retired `JOSEPH-TODO` are already

@@ -1,0 +1,207 @@
+# Dynamics SYNTAX only (CORE "Dynamics (`!`) — a baseline dialect", "Code and
+# Raw Content", "Unified Inline Syntax"). The core recognizes `!` forms and
+# emits events; the expression language is the DYNAMICS.md dialect and is NOT
+# asserted here — expressions are captured verbatim and unparsed.
+
+# ---------------------------------------------------------------------------
+# Block directives: !name at head position, any name, body parsed as UDON
+# ---------------------------------------------------------------------------
+
+- id: directive_with_body
+  desc: directive with expression text and UDON body
+  udon: "!if logged_in\n  |greeting Welcome back!\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "logged_in"]
+    - ElementStart
+    - [Name, "greeting"]
+    - [Text, "Welcome back!"]
+    - ElementEnd
+    - DirectiveEnd
+
+- id: directive_any_name
+  desc: the parser does not enumerate directive names
+  udon: "!frobnicate all the things\n"
+  events:
+    - DirectiveStart
+    - [Name, "frobnicate"]
+    - [Text, "all the things"]
+    - DirectiveEnd
+
+- id: directive_expression_verbatim
+  desc: the expression is captured verbatim, unparsed
+  udon: "!if age >= 18 and verified\n  |p adult\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "age >= 18 and verified"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "adult"]
+    - ElementEnd
+    - DirectiveEnd
+
+- id: sibling_directives
+  desc: dedent closes a directive; a sibling directive follows
+  udon: "!if x\n  |p yes\n!else\n  |p no\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "yes"]
+    - ElementEnd
+    - DirectiveEnd
+    - DirectiveStart
+    - [Name, "else"]
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "no"]
+    - ElementEnd
+    - DirectiveEnd
+
+# ---------------------------------------------------------------------------
+# Interpolation !{{expr}} — expression unparsed; prose-level form
+# ---------------------------------------------------------------------------
+
+- id: interpolation_in_prose
+  desc: interpolation interrupts prose text
+  udon: "|p Hello, !{{user.name}}!\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Hello, "]
+    - [Interpolation, "user.name"]
+    - [Text, "!"]
+    - ElementEnd
+
+- id: interpolation_with_filters
+  desc: filter chains are part of the verbatim expression
+  udon: "|p !{{name | capitalize}}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "name | capitalize"]
+    - ElementEnd
+
+- id: interpolation_empty
+  desc: empty interpolation is valid; the host decides what it means
+  udon: "|p x !{{}} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - [Interpolation, ""]
+    - [Text, " y"]
+    - ElementEnd
+
+- id: interpolation_at_head_is_prose_level
+  desc: head-position interpolation is prose-level, not a block directive (also in markers.yaml)
+  udon: "|el\n  !{{content}}\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Interpolation, "content"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Raw block !:lang: — body verbatim, dedented relative to the directive
+# ---------------------------------------------------------------------------
+# ⚠ CORE says the body is "dedented on output relative to the directive's
+# indent level" — the exact stripping rule (first-content-line base, as in
+# prose? directive column + fixed offset?) is not pinned. Encoded here as
+# first-content-line base with deeper lines keeping their relative indent
+# (the reading that loses no information). Filed in spec/TODO-SPEC-CORE.md.
+
+- id: raw_block_basic
+  desc: colon-wrapped label opens a raw block; body is not parsed as UDON
+  udon: "!:elixir:\n  def hello do\n    IO.puts(\"world\")\n  end\n"
+  events:
+    - DirectiveStart
+    - [Name, "elixir"]
+    - [Raw, ""]
+    - [RawContent, "def hello do"]
+    - [RawContent, "  IO.puts(\"world\")"]
+    - [RawContent, "end"]
+    - DirectiveEnd
+
+- id: raw_block_markers_inert
+  desc: UDON markers inside a raw block are not interpreted
+  udon: "!:elixir:\n  value |> transform()\n  ; not a comment\n  :not an attr\n"
+  events:
+    - DirectiveStart
+    - [Name, "elixir"]
+    - [Raw, ""]
+    - [RawContent, "value |> transform()"]
+    - [RawContent, "; not a comment"]
+    - [RawContent, ":not an attr"]
+    - DirectiveEnd
+
+- id: raw_block_inside_element
+  desc: raw block indents under its parent element
+  udon: "|example\n  !:sql:\n    SELECT * FROM users\n"
+  events:
+    - ElementStart
+    - [Name, "example"]
+    - DirectiveStart
+    - [Name, "sql"]
+    - [Raw, ""]
+    - [RawContent, "SELECT * FROM users"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Inline raw !{:kind: ...} — brace-counted
+# ---------------------------------------------------------------------------
+
+- id: inline_raw_json
+  desc: inline raw with balanced nested braces
+  udon: "|p The response was !{:json: {\"status\": \"ok\"}} as expected.\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "The response was "]
+    - DirectiveStart
+    - [Name, "json"]
+    - [Raw, ""]
+    - [RawContent, "{\"status\": \"ok\"}"]
+    - DirectiveEnd
+    - [Text, " as expected."]
+    - ElementEnd
+
+- id: inline_raw_regex_braces
+  desc: brace-counting handles regex quantifiers when balanced
+  udon: "|p match !{:regex: [a-z]{3,5}} here\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "match "]
+    - DirectiveStart
+    - [Name, "regex"]
+    - [Raw, ""]
+    - [RawContent, "[a-z]{3,5}"]
+    - DirectiveEnd
+    - [Text, " here"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Inline directive !{name ...} — body parsed as UDON
+# ---------------------------------------------------------------------------
+
+- id: inline_directive_with_udon_body
+  desc: non-raw inline directives support nested UDON
+  udon: "|p !{include |{em emphasized} content}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "include"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "emphasized"]
+    - EmbeddedEnd
+    - [Text, " content"]
+    - DirectiveEnd
+    - ElementEnd

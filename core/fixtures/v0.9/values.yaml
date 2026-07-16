@@ -1,0 +1,353 @@
+# Core scalar value types (CORE "Value Types", "Numbers", "Booleans", "Nil",
+# "Strings"). Syntactic typing: the syntax determines the type, never
+# sniffing. The bare set is FROZEN: strings, integer, float, booleans, nil,
+# lists. Everything else (all temporal included) is a string when bare.
+#
+# Rational and complex are PROVISIONAL (CORE "Numbers") — parser-decided
+# until the dialect layer lands — so no compliance cases are authored for
+# them here; see spec/TODO-SPEC-OTHER.md (composite/standard numeric types).
+
+# ---------------------------------------------------------------------------
+# Integers — four bases, `_` separators, optional sign
+# ---------------------------------------------------------------------------
+
+- id: int_decimal
+  desc: plain decimal integer
+  udon: "|el :n 42\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "42"]
+    - ElementEnd
+
+- id: int_underscores
+  desc: underscores between digits are readability-only
+  udon: "|el :n 1_000_000\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "1_000_000"]
+    - ElementEnd
+
+- id: int_hex
+  desc: hexadecimal with 0x prefix
+  udon: "|el :n 0xFF\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0xFF"]
+    - ElementEnd
+
+- id: int_hex_underscores
+  desc: underscores work in any base
+  udon: "|el :n 0xFF_FF\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0xFF_FF"]
+    - ElementEnd
+
+- id: int_octal
+  desc: octal with 0o prefix
+  udon: "|el :n 0o755\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0o755"]
+    - ElementEnd
+
+- id: int_binary
+  desc: binary with 0b prefix
+  udon: "|el :n 0b1010\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0b1010"]
+    - ElementEnd
+
+- id: int_explicit_decimal_prefix
+  desc: 0d is the explicit decimal prefix (ratified 2026-07-14)
+  udon: "|el :n 0d42\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0d42"]
+    - ElementEnd
+
+- id: int_explicit_decimal_prefix_upper
+  desc: 0D works like 0d
+  udon: "|el :n 0D42\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0D42"]
+    - ElementEnd
+
+- id: int_leading_zero_is_decimal
+  desc: a leading 0 followed by decimal digits is decimal, not octal
+  udon: "|el :n 0755\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "0755"]
+    - ElementEnd
+
+- id: int_negative
+  desc: leading minus signs an integer
+  udon: "|el :n -17\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "-17"]
+    - ElementEnd
+
+- id: int_positive_sign
+  desc: leading plus signs an integer
+  udon: "|el :n +5\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [Integer, "+5"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Floats — fractional part, exponent, or both (decimal only)
+# ---------------------------------------------------------------------------
+
+- id: float_fractional
+  desc: decimal with fractional part
+  udon: "|el :x 3.14\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Float, "3.14"]
+    - ElementEnd
+
+- id: float_exponent_only
+  desc: an exponent alone makes a float
+  udon: "|el :x 1e10\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Float, "1e10"]
+    - ElementEnd
+
+- id: float_frac_and_exponent
+  desc: fractional part plus signed exponent
+  udon: "|el :x 1.5e-3\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Float, "1.5e-3"]
+    - ElementEnd
+
+- id: float_underscores
+  desc: underscores in floats
+  udon: "|el :x 1_000.5\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Float, "1_000.5"]
+    - ElementEnd
+
+- id: float_negative
+  desc: signed float
+  udon: "|el :x -2.5\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [Float, "-2.5"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Booleans — lowercase only
+# ---------------------------------------------------------------------------
+
+- id: bool_true
+  desc: lowercase true
+  udon: "|el :enabled true\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "enabled"]
+    - BoolTrue
+    - ElementEnd
+
+- id: bool_false
+  desc: lowercase false
+  udon: "|el :debug false\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "debug"]
+    - BoolFalse
+    - ElementEnd
+
+- id: bool_uppercase_is_string
+  desc: TRUE is a string, not a boolean
+  udon: "|el :x TRUE\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [BareValue, "TRUE"]
+    - ElementEnd
+
+- id: bool_titlecase_is_string
+  desc: True is a string, not a boolean
+  udon: "|el :x True\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [BareValue, "True"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Nil — null and nil, equivalent; `~` is NOT nil
+# ---------------------------------------------------------------------------
+
+- id: nil_null
+  desc: null is nil
+  udon: "|el :v null\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "v"]
+    - Nil
+    - ElementEnd
+
+- id: nil_nil
+  desc: nil is nil
+  udon: "|el :v nil\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "v"]
+    - Nil
+    - ElementEnd
+
+- id: tilde_is_string
+  desc: tilde is an ordinary string (removed as nil synonym)
+  udon: "|el :v ~\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "v"]
+    - [BareValue, "~"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Strings — quoted (both quote styles) and bare fallback
+# ---------------------------------------------------------------------------
+
+- id: string_double_quoted
+  desc: double-quoted string
+  udon: "|el :name \"quoted string\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "name"]
+    - [StringValue, "quoted string"]
+    - ElementEnd
+
+- id: string_single_quoted
+  desc: single-quoted string
+  udon: "|el :name 'single quotes'\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "name"]
+    - [StringValue, "single quotes"]
+    - ElementEnd
+
+- id: string_quoted_number
+  desc: a quoted number is a string
+  udon: "|el :n \"42\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "n"]
+    - [StringValue, "42"]
+    - ElementEnd
+
+- id: string_quoted_true
+  desc: a quoted boolean word is a string
+  udon: "|el :truthy \"true\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "truthy"]
+    - [StringValue, "true"]
+    - ElementEnd
+
+- id: string_bare_fallback
+  desc: anything else unquoted is a string
+  udon: "|el\n  :desc unquoted text here\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "desc"]
+    - [BareValue, "unquoted text here"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Bare temporal forms are STRINGS in 0.8 — temporal is a <...> dialect
+# (CORE "Explicit Typing": "a bare 2026-07-11 is simply the string")
+# ---------------------------------------------------------------------------
+
+- id: bare_date_is_string
+  desc: a bare ISO date is just a string in core 0.8
+  udon: "|el :date 2026-07-11\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "date"]
+    - [BareValue, "2026-07-11"]
+    - ElementEnd
+
+- id: bare_time_is_string
+  desc: a bare time is just a string
+  udon: "|el :at 14:30:00\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "at"]
+    - [BareValue, "14:30:00"]
+    - ElementEnd
+
+- id: bare_duration_is_string
+  desc: a bare duration shorthand is just a string
+  udon: "|el :ttl 5m\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ttl"]
+    - [BareValue, "5m"]
+    - ElementEnd
+
+- id: bare_iso_duration_is_string
+  desc: a bare ISO-8601 duration is just a string
+  udon: "|el :len P1Y2M\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "len"]
+    - [BareValue, "P1Y2M"]
+    - ElementEnd

@@ -19,8 +19,8 @@ a submodule.
    **_archive/FULL-SPEC-TODO.bak.md** (reference only — e.g. the
    core/host/schema/dialect ownership discussion). Neither is the spec; CORE.md is.
 4. **spec/CORE.md** — the authoritative language specification
-   (v0.8.0-alpha.1, with known divergences catalogued in the review's §2
-   genealogy table).
+   (0.9.0-alpha.1 in progress; 0.8.0 released and tagged `core-v0.8.0` —
+   canonical version in `spec/CORE-VERSION`).
 
 ## Layout
 
@@ -59,18 +59,21 @@ belong in the human README.
 ```bash
 cd core && cargo test --workspace --no-fail-fast
                                            # unit + streaming tests green;
-                                           # v0_8_compliance_group stays RED
-                                           # until the grammar fully catches
-                                           # up to CORE 0.8 (it reports the
-                                           # live per-file burn-down count)
-cargo test -p udon-core --test canonical v0_8_compliance_group
+                                           # compliance_gate runs the ACTIVE
+                                           # fixture group (fixtures/v0.9/) and
+                                           # goes RED as its cases are updated
+                                           # ahead of the grammar (live
+                                           # per-file burn-down counts)
+cargo test -p udon-core --test canonical compliance_gate
                                            # the compliance gate by itself
 ./regenerate-parser                        # regenerates parser.rs from
                                            # generator/*.desc via tools/descent
 ```
 
-Compliance RED is the honest, intended signal — burn it down by fixing the
-grammar to CORE, never by editing fixture expectations toward parser output.
+Compliance RED is the honest, intended signal whenever the spec is ahead of
+the parser — burn it down by fixing the grammar to CORE, never by editing
+fixture expectations toward parser output. (The parser passes the frozen
+v0.8 group — tag `core-v0.8.0`; the 0.9 burn-down happens in `fixtures/v0.9/`.)
 
 - `core/udon-core/src/parser.rs` is **generated — do not hand-edit**. Change
   `core/generator/*.desc` and regenerate. The generator is the pinned

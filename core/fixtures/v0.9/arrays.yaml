@@ -1,0 +1,131 @@
+# Inline lists / arrays (CORE "Inline Lists", "Array Item Values", "Lists").
+
+- id: array_basic
+  desc: space-delimited items, each typed independently
+  udon: "|server :ports [8080 8443 9000]\n"
+  events:
+    - ElementStart
+    - [Name, "server"]
+    - [Attr, "ports"]
+    - ArrayStart
+    - [Integer, "8080"]
+    - [Integer, "8443"]
+    - [Integer, "9000"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_mixed_types
+  desc: each element is typed independently by the same rules
+  udon: "|el :mixed [1 two 3.0 true]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "mixed"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [BareValue, "two"]
+    - [Float, "3.0"]
+    - BoolTrue
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_quoted_strings
+  desc: quoted strings for items with spaces
+  udon: "|el :quoted [\"hello world\" foo bar]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "quoted"]
+    - ArrayStart
+    - [StringValue, "hello world"]
+    - [BareValue, "foo"]
+    - [BareValue, "bar"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_empty
+  desc: empty list
+  udon: "|el :empty []\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "empty"]
+    - ArrayStart
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_in_block_attr
+  desc: array terminators are the same in block context
+  udon: "|el\n  :tags [api public]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "tags"]
+    - ArrayStart
+    - [BareValue, "api"]
+    - [BareValue, "public"]
+    - ArrayEnd
+    - ElementEnd
+
+# Quoted-item nuance (CORE "Array Item Values"): a closing quote ends its
+# item; a character immediately after begins the next item.
+
+- id: array_quote_then_bare_no_space
+  desc: closing quote ends the item, next character starts a new item
+  udon: "|el :x [\"x\"y]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [StringValue, "x"]
+    - [BareValue, "y"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: array_adjacent_quoted_items
+  desc: two quoted items with no separating space are two items
+  udon: "|el :x [\"x\"\"y\"]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [StringValue, "x"]
+    - [StringValue, "y"]
+    - ArrayEnd
+    - ElementEnd
+
+# `}` is not an array terminator (CORE "Array Item Values"): inside [...] a
+# `}` is a literal character; the array closes only on `]`.
+
+- id: array_brace_is_literal_inside
+  desc: a closing brace inside an array is part of the bare item
+  udon: "|p x |{a :v [1}2] tail} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "v"]
+    - ArrayStart
+    - [BareValue, "1}2"]
+    - ArrayEnd
+    - [Text, "tail"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: array_unclosed_is_error
+  desc: an array with no closing bracket ends as an UnclosedArray error
+  udon: "|el :x [1 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Error, "UnclosedArray"]
+    - ElementEnd

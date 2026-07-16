@@ -6,41 +6,54 @@ concern independent of the Rust harness.
 
 ```
 core/fixtures/
-├── v0.8/              ← ACTIVE compliance-fixture group (the harness runs this)
-│   └── *.yaml         ← ~226 spec-derived cases, one file per CORE area
+├── v0.9/              ← ACTIVE compliance-fixture group (the harness runs this)
+│   └── *.yaml         ← seeded from v0.8; being edited to CORE 0.9.0-alpha.1
+├── v0.8/              ← FROZEN, RELEASED. The core-v0.8.0 contract; udon-core passes it.
 └── legacy-pre-0.8/    ← FROZEN. Not run. Reference + mining source.
 ```
 
 ## The active group is the compliance definition
 
-`spec/CORE-VERSION` is `0.8.0-alpha.1`. **Compliance means "the parser passes
-the fixtures in the active group directory"** — and `v0.8/` *is* that group.
-The harness discovers `*.yaml` in `v0.8/` dynamically (see
-`../udon-core/tests/common/loader.rs::active_fixture_names`), so cases added
-during the rebuild are picked up automatically, without editing the harness.
+`spec/CORE-VERSION` is the operable source of truth for the current version.
+**Compliance means "the parser passes the fixtures in the active group
+directory."** The harness discovers `*.yaml` in the active group dynamically
+(see `../udon-core/tests/common/loader.rs::active_fixture_names`), so cases
+added during a rebuild are picked up automatically, without editing the
+harness.
 
 The active group is named by the constant `ACTIVE_GROUP` in `loader.rs`. When
-the spec advances (e.g. `v0.9`), add the new group directory and bump that one
-constant.
+the spec advances, add the new group directory and bump that one constant.
+The `version_declarations_agree` test in `canonical.rs` asserts that
+`CORE-VERSION`, `udon_core::CORE_COMPLIANCE`, and `ACTIVE_GROUP` move
+together.
 
 ### Expected state right now
 
-`v0.8/` was populated 2026-07-15 with ~230 cases derived directly from
-`spec/CORE.md` v0.8.0-alpha.1 (one file per spec area; every expectation
-written from the spec text, never traced from parser output). The grammar
-burn-down is underway — RED is the honest work-remaining signal, and the
-gate prints the live per-file counts:
+`v0.9/` was seeded 2026-07-15 as a copy of the released v0.8 group. As the
+0.9 attribute-model text lands in `spec/CORE.md` (carriers:
+`design/attribute-model-proposal-3-substrate.md` + proposal-3; nail-downs in
+`spec/TODO-SPEC-CORE-0.9-supplement.md`), the affected cases are edited to
+the new model — expectations written from the spec text, **never traced from
+parser output** — and the gate goes RED until the grammar catches up. That
+RED is the honest work-remaining signal; the gate prints live per-file
+counts:
 
 ```bash
-cargo test -p udon-core --test canonical v0_8_compliance_group
+cargo test -p udon-core --test canonical compliance_gate
 ```
 
-Where CORE is silent on an event-level detail, the case carries a `⚠` comment
-naming the reading it encodes, and the silence is filed in
-`spec/TODO-SPEC-CORE.md` (see "Silences found while authoring the v0.8
-fixtures") — those readings are proposals awaiting Joseph's ratification, and
-the affected cases (notably the whole proposed `TypedValue` vocabulary in
-`typing_envelope.yaml`) may be edited when he rules.
+Two residuals rolled forward from the 0.8 authoring pass also live in this
+group's work: mining `legacy-pre-0.8/` for still-valid regression cases
+(esp. indentation edge cases, prose-dedentation depth, element-name charset
+torture) and densifying edge/combination coverage.
+
+## v0.8/ is frozen and released
+
+The `core-v0.8.0` contract (tag of the same name, 2026-07-15): ~233 cases
+derived directly from `spec/CORE.md` 0.8.0, one file per spec area, every
+expectation written from the spec text. `udon-core` passes the full group —
+the first compliant parser. **Do not edit**; the 0.9 evolution happens in
+`v0.9/`.
 
 ## legacy-pre-0.8/ is frozen
 
@@ -51,9 +64,9 @@ They are **non-compliant by construction** and are **not run** by the harness.
 They are kept intact and unmodified for two reasons:
 
 1. **Reference** — how the pre-0.8 model behaved, case by case.
-2. **Mining source** — the 0.8 rebuild lifts the still-valid regression cases
-   out of here into `v0.8/`. That sorting happens in the rebuild; the archive
-   is deliberately kept whole (not pre-sorted into valid/invalid).
+2. **Mining source** — the rebuild lifts still-valid regression cases out of
+   here into the active group. That sorting happens in the rebuild; the
+   archive is deliberately kept whole (not pre-sorted into valid/invalid).
 
 The switch-over is marked by the git tag `grammar-v0.7`. After that tag there
 is no obligation to run legacy — it is archaeology plus a quarry.

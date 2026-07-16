@@ -18,23 +18,25 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
         dynamically. *First full authoring pass done 2026-07-15:* ~227 cases
         across 15 files, every expectation derived from a complete read of
         `spec/CORE.md` + companions (never traced from the parser). *Gate
-        GREEN 2026-07-15* (last residuals: past-base escape → AST-layer;
-        inline-raw Raw+sep-space; stranded-attr warn softened; structured
-        attr event-layer = BoolTrue + sibling children). **Remaining before
-        `core-v0.8.0` tag:** residual SPEC-CORE silences still open for
-        wording/execution (warning-code table, Text granularity note,
-        comment-vs-prose-base example, reference selector tuples, … — see
-        `spec/TODO-SPEC-CORE.md`); mine `legacy-pre-0.8/` for still-valid
-        regression cases not re-derived here (esp. `indentation_edge_cases`,
-        `prose_dedentation` depth, `element_names` charset torture cases);
-        keep densifying edge/combination coverage as gaps surface.
+        GREEN 2026-07-15*, **0.8.0 finalized + tagged `core-v0.8.0`
+        2026-07-15** — first version with a compliant parser; v0.8 group
+        frozen. **0.9.0-alpha.1 opened same day** (attribute-model
+        reconception): active group `core/fixtures/v0.9/` seeded from v0.8;
+        `udon-core` declares targeting via `CORE_COMPLIANCE` in `lib.rs`;
+        `version_declarations_agree` (canonical.rs) asserts CORE-VERSION /
+        CORE_COMPLIANCE / ACTIVE_GROUP move together. **Remaining (now under
+        v0.9):** edit the group to the 0.9 CORE text as it lands; mine
+        `legacy-pre-0.8/` for still-valid regression cases not re-derived
+        (esp. `indentation_edge_cases`, `prose_dedentation` depth,
+        `element_names` charset torture cases); keep densifying
+        edge/combination coverage as gaps surface.
       - Stand up the **unified compliance gate** — event-level fixtures by default
         (easiest place to reason about/fix the descent grammar), AST-level only
         where a core-syntax property is genuinely easier to assert there.
-      - `udon-core` declares *targeting core-v0.8.0* (a `CORE_COMPLIANCE` marker) →
-        gate RED until green; finalize + tag `core-v0.8.0` when a parser passes.
-      - **Wire the drift-check**: CI asserts the `CORE.md` header and
-        `CHANGELOG.md` top entry match the operable source `spec/CORE-VERSION`.
+      - **Finish the drift-check**: the in-repo test covers
+        CORE-VERSION/CORE_COMPLIANCE/ACTIVE_GROUP; CI-level assertion that
+        the `CORE.md` header and `CHANGELOG.md` top entry match
+        `spec/CORE-VERSION` is still open.
       Once this exists, `TODO-CORE-PARSING` and `TODO-PARSER` hold only residuals
       and decompositions, not the spec-behavior worklist.
 - [ ] **Bootstrap: drain the legacy tracking into the lanes, deprecating the

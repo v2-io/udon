@@ -1,0 +1,63 @@
+# Error recovery (CORE "Design Principles > Strict Whitespace" plus the
+# unclosed-construct behaviors). The parser emits as many valid events as it
+# can, an Error event where the problem is detected, and still closes open
+# elements (balanced Start/End even on error).
+#
+# Error CODES are an implementation vocabulary (ParseErrorCode), not fixed by
+# CORE; these cases use the established codes. Unclosed embedded elements and
+# inline comments are deliberately NOT encoded yet — their recovery behavior
+# has no CORE text and no settled code *(discuss w/ Joseph before adding)*.
+
+- id: tab_indentation_error
+  desc: tabs are forbidden in indentation (strict whitespace)
+  udon: "|el\n\t|child\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Error, "NoTabs"]
+    - ElementEnd
+
+- id: unclosed_double_quote_error
+  desc: an unclosed double-quoted value errors at EOF, content preserved
+  udon: "|el :val \"unclosed"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "val"]
+    - [StringValue, "unclosed"]
+    - [Error, "UnclosedStringValue"]
+    - ElementEnd
+
+- id: unclosed_single_quote_error
+  desc: an unclosed single-quoted value errors at EOF
+  udon: "|el :val 'unclosed"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "val"]
+    - [StringValue, "unclosed"]
+    - [Error, "UnclosedStringValue"]
+    - ElementEnd
+
+- id: unclosed_interpolation_error
+  desc: an unclosed interpolation errors at EOF, captured content preserved
+  udon: "|p total is !{{count"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "total is "]
+    - [Interpolation, "count"]
+    - [Error, "UnclosedInterpolation"]
+    - ElementEnd
+
+- id: elements_still_close_after_error
+  desc: nested elements all close after an error line
+  udon: "|a\n  |b\n\t|c\n"
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - [Error, "NoTabs"]
+    - ElementEnd
+    - ElementEnd

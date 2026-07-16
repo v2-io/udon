@@ -73,20 +73,20 @@ fn collect_fixture_failures(name: &str) -> Vec<String> {
 
 // === v0.8 compliance-fixture group ===
 //
-// The harness runs the ACTIVE version-scoped group (core/fixtures/v0.8/),
-// discovered dynamically. The legacy pre-0.8 corpus (core/fixtures/legacy-pre-0.8/)
-// is frozen and NOT run — see core/fixtures/README.md.
+// The harness runs the ACTIVE version-scoped group (see loader::ACTIVE_GROUP),
+// discovered dynamically. Frozen groups (core/fixtures/v0.8/, tag core-v0.8.0;
+// core/fixtures/legacy-pre-0.8/) are NOT run — see core/fixtures/README.md.
 //
-// The group currently holds only a smoke placeholder, so this is green-trivial.
-// As real 0.8 cases land they will go RED against the still-pre-0.8 parser
-// until the parser is rebuilt; that RED is the intended, honest state.
+// A RED gate is the intended, honest state whenever the spec is ahead of the
+// parser: as the active group's cases are updated to the new spec version they
+// go RED until the grammar catches up. (udon-core last fully passed 0.8.0.)
 
 #[test]
-fn v0_8_compliance_group() {
+fn compliance_gate() {
     let names = common::active_fixture_names();
     assert!(
         !names.is_empty(),
-        "v0.8 compliance-fixture group is empty: {:?}",
+        "compliance-fixture group is empty: {:?}",
         common::active_group_dir()
     );
     let mut failures = Vec::new();
@@ -98,13 +98,48 @@ fn v0_8_compliance_group() {
     }
     if !failures.is_empty() {
         panic!(
-            "\nv0.8 compliance: {} of {} canonical+variation checks failed across {} files:\n  {}",
+            "\n{} compliance: {} of {} canonical+variation checks failed across {} files:\n  {}",
+            common::ACTIVE_GROUP,
             failures.len(),
             total,
             names.len(),
             failures.join("\n  ")
         );
     }
+}
+
+// Drift-check (TODO-META): the three version declarations move together —
+// spec/CORE-VERSION (operable source of truth), udon_core::CORE_COMPLIANCE
+// (what the parser targets), and loader::ACTIVE_GROUP (which fixture group
+// measures it). CI-level enforcement of the CORE.md header / CHANGELOG top
+// entry remains open in TODO-META.
+#[test]
+fn version_declarations_agree() {
+    let core_version_path = common::fixtures_root()
+        .parent()
+        .and_then(|core| core.parent())
+        .map(|repo| repo.join("spec/CORE-VERSION"))
+        .expect("repo root above core/fixtures");
+    let core_version = std::fs::read_to_string(&core_version_path)
+        .unwrap_or_else(|e| panic!("read {:?}: {e}", core_version_path));
+    let core_version = core_version.trim();
+    assert_eq!(
+        core_version,
+        udon_core::CORE_COMPLIANCE,
+        "spec/CORE-VERSION vs udon_core::CORE_COMPLIANCE"
+    );
+    // "0.9.0-alpha.1" → group "v0.9"
+    let mut parts = core_version.split('.');
+    let expected_group = format!(
+        "v{}.{}",
+        parts.next().unwrap_or_default(),
+        parts.next().unwrap_or_default()
+    );
+    assert_eq!(
+        expected_group,
+        common::ACTIVE_GROUP,
+        "CORE-VERSION major.minor vs loader::ACTIVE_GROUP"
+    );
 }
 
 // Quick smoke test

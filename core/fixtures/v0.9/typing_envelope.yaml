@@ -1,0 +1,107 @@
+# Explicit typing envelope `<...>` (CORE "Explicit Typing (`<...>`)").
+#
+# INTERIM BEHAVIOR (CORE "Explicit Typing"): envelope recognized (<>-balanced,
+# value-terminating); Warning code NoDialectsLoaded; value passed through as
+# the plain string "<…>". Dialect-era event shape when dialects land.
+
+- id: envelope_unlabelled
+  desc: bare value beginning with < opens the envelope
+  udon: "|el :when <2026-07-11>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<2026-07-11>"]
+    - ElementEnd
+
+- id: envelope_shorthand_duration
+  desc: shorthand stays writable inside the envelope
+  udon: "|el :dur <5m>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "dur"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<5m>"]
+    - ElementEnd
+
+- id: envelope_type_labelled
+  desc: type-labelled envelope
+  udon: "|el :size <u64:0xf902>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "size"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<u64:0xf902>"]
+    - ElementEnd
+
+- id: envelope_dialect_and_type_labelled
+  desc: dialect-and-type-labelled envelope
+  udon: "|el :span <temporal:interval:2026-01/2026-06>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "span"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<temporal:interval:2026-01/2026-06>"]
+    - ElementEnd
+
+- id: envelope_nested_balanced
+  desc: nesting is angle-bracket-balanced; the payload is captured whole
+  udon: "|el :q <r: <i: 3 -7> 0d83.23>\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "q"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<r: <i: 3 -7> 0d83.23>"]
+    - ElementEnd
+
+- id: envelope_quoted_literal_stays_string
+  desc: a quoted value beginning with < is a plain string, not an envelope
+  udon: "|el :x \"<not a type>\"\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - [StringValue, "<not a type>"]
+    - ElementEnd
+
+- id: angle_in_prose_not_special
+  desc: outside bare attribute-value position, < has no special meaning
+  udon: "|p a < b and <tag> stay prose\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a < b and <tag> stay prose"]
+    - ElementEnd
+
+- id: envelope_in_sameline_position
+  desc: envelope works in sameline attribute-value position, > terminates
+  udon: "|el :when <2026-07-11> :n 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<2026-07-11>"]
+    - [Attr, "n"]
+    - [Integer, "1"]
+    - ElementEnd
+
+# CORE: envelope opens in value position (attribute values and array items).
+- id: envelope_as_array_item
+  desc: an array item beginning with < opens the envelope (value position)
+  udon: "|el :xs [<5m> 3]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<5m>"]
+    - [Integer, "3"]
+    - ArrayEnd
+    - ElementEnd

@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 ///
 /// This is the single knob that selects which version-scoped group the harness
 /// runs. Bump it when the spec advances and a new group directory is created.
-pub const ACTIVE_GROUP: &str = "v0.8";
+pub const ACTIVE_GROUP: &str = "v0.9";
 
 /// A single test case from a fixture file
 #[derive(Debug, Clone, Deserialize)]

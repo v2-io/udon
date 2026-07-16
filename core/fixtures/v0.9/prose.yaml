@@ -1,0 +1,140 @@
+# Prose content and automatic dedentation (CORE "Prose Content", "Automatic
+# Prose Dedentation"). Prose is opaque text — Markdown inside it survives
+# verbatim. Blank lines emit BlankLine events (CORE Overview parser-behavior
+# note); consumers decide what to do with them.
+
+- id: sameline_prose
+  desc: sameline content is emitted directly, no content-base established
+  udon: "|p Hello world\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "Hello world"]
+    - ElementEnd
+
+- id: root_prose_line
+  desc: prose at document root
+  udon: "Just some prose\n"
+  events:
+    - [Text, "Just some prose"]
+
+- id: markdown_passes_through
+  desc: markdown formatting in prose is opaque text
+  udon: "|article\n  This has **bold** and `code` and # is not special.\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Text, "This has **bold** and `code` and # is not special."]
+    - ElementEnd
+
+- id: markdown_list_lines
+  desc: markdown list markers are plain prose lines
+  udon: "|article\n  - item one\n  - item two\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Text, "- item one"]
+    - [Text, "- item two"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Content-base establishment and stripping (CORE "The Rule")
+# ---------------------------------------------------------------------------
+
+- id: basic_dedentation
+  desc: first indented line establishes content_base; that indent is stripped
+  udon: "|section **The great indent**\n  This content is inner,\n  and continues\n"
+  events:
+    - ElementStart
+    - [Name, "section"]
+    - [Text, "**The great indent**"]
+    - [Text, "This content is inner,"]
+    - [Text, "and continues"]
+    - ElementEnd
+
+- id: deep_continuation_indent
+  desc: the user chooses line 2's indent; all of it is stripped
+  udon: "|later-part This stuff is inner\n            and aligned with This\n"
+  events:
+    - ElementStart
+    - [Name, "later-part"]
+    - [Text, "This stuff is inner"]
+    - [Text, "and aligned with This"]
+    - ElementEnd
+
+- id: extra_spaces_preserved
+  desc: lines deeper than content_base keep their extra spaces
+  udon: "|el\n  base line\n      four extra spaces\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "base line"]
+    - [Text, "    four extra spaces"]
+    - ElementEnd
+
+- id: inconsistent_dedent_warns_and_rebases
+  desc: a line under content_base warns and lowers the base (CORE worked example)
+  udon: "|the-parent |on-line-child\n      first-line-of-prose\n   but what about this\n   no new warning\n       four extra spaces\n  new warning here\n"
+  events:
+    - ElementStart
+    - [Name, "the-parent"]
+    - ElementStart
+    - [Name, "on-line-child"]
+    - ElementEnd
+    - [Text, "first-line-of-prose"]
+    - [Warning, "InconsistentIndentation"]
+    - [Text, "but what about this"]
+    - [Text, "no new warning"]
+    - [Text, "    four extra spaces"]
+    - [Warning, "InconsistentIndentation"]
+    - [Text, "new warning here"]
+    - ElementEnd
+
+- id: dedent_to_element_column_is_sibling
+  desc: prose at the element's own column dedents out instead of warning
+  udon: "|element-bigger first line\n  second line\nsibling prose\n"
+  events:
+    - ElementStart
+    - [Name, "element-bigger"]
+    - [Text, "first line"]
+    - [Text, "second line"]
+    - ElementEnd
+    - [Text, "sibling prose"]
+
+# ---------------------------------------------------------------------------
+# Prose interleaving with structure (head re-entry each line)
+# ---------------------------------------------------------------------------
+
+- id: element_interrupts_prose
+  desc: a nested element interrupts prose; prose resumes after
+  udon: "|article\n  Before the quote.\n  |blockquote\n    Nested content.\n  Back to prose.\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Text, "Before the quote."]
+    - ElementStart
+    - [Name, "blockquote"]
+    - [Text, "Nested content."]
+    - ElementEnd
+    - [Text, "Back to prose."]
+    - ElementEnd
+
+- id: blank_line_between_prose
+  desc: blank lines are emitted as BlankLine events
+  udon: "|article\n  first paragraph\n\n  second paragraph\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Text, "first paragraph"]
+    - BlankLine
+    - [Text, "second paragraph"]
+    - ElementEnd
+
+- id: blank_lines_at_root
+  desc: blank lines at root each emit BlankLine
+  udon: "one\n\n\ntwo\n"
+  events:
+    - [Text, "one"]
+    - BlankLine
+    - BlankLine
+    - [Text, "two"]

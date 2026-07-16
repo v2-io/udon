@@ -1,0 +1,83 @@
+# References `@` (CORE "References and Mixins", "Marker Recognition").
+# Semantic model: selector tuple (element, key, traits) — inert at core.
+# INTERIM event encoding (CORE): single Reference event, payload = raw text
+# after `@` ("[mit]", "license[mit]"). Structured ReferenceStart/…/End is
+# planned; these fixtures pin the interim wire.
+
+- id: reference_shorthand_block
+  desc: shorthand key reference on its own line
+  udon: "|page\n  @[header]\n"
+  events:
+    - ElementStart
+    - [Name, "page"]
+    - [Reference, "[header]"]
+    - ElementEnd
+
+- id: reference_explicit_form
+  desc: explicit element-and-key reference
+  udon: "|project\n  @license[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "project"]
+    - [Reference, "license[mit]"]
+    - ElementEnd
+
+- id: reference_bare_identifier
+  desc: an @ followed by an identifier is a reference (guard rule)
+  udon: "|doc\n  @footer\n"
+  events:
+    - ElementStart
+    - [Name, "doc"]
+    - [Reference, "footer"]
+    - ElementEnd
+
+- id: reference_as_attribute_value
+  desc: a reference in attribute-value position
+  udon: "|project :license @[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "project"]
+    - [Attr, "license"]
+    - [Reference, "[mit]"]
+    - ElementEnd
+
+- id: reference_is_inert
+  desc: defining and referring — the parser emits both, resolves nothing
+  udon: "|license[mit]\n  MIT License\n|project\n  :license @[mit]\n"
+  events:
+    - ElementStart
+    - [Name, "license"]
+    - [Attr, "$key"]
+    - [BareValue, "mit"]
+    - [Text, "MIT License"]
+    - ElementEnd
+    - ElementStart
+    - [Name, "project"]
+    - [Attr, "license"]
+    - [Reference, "[mit]"]
+    - ElementEnd
+
+# INTERIM wire: after `]` the grammar returns, so `.trait` is currently a
+# following Text. CORE's selector-tuple model treats `@[mit].trait` as
+# (null, 'mit', ['trait']) once structured encoding lands — this case will
+# flip then. Pinning interim behavior so the gate stays honest.
+- id: reference_trait_tail_interim
+  desc: interim — .trait after ] is separate Text until structured Reference encoding
+  udon: "|p\n  @[mit].trait\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Reference, "[mit]"]
+    - [Text, ".trait"]
+    - ElementEnd
+
+# The old attribute-merge `:[id]` is gone: a line-initial `:[` has no name,
+# so it falls back to prose intact (CORE Marker Recognition).
+- id: colon_bracket_merge_removed
+  desc: the removed :[id] merge syntax is now just prose fallback
+  udon: "|db\n  :[base-db]\n"
+  events:
+    - ElementStart
+    - [Name, "db"]
+    - [Text, ":[base-db]"]
+    - ElementEnd

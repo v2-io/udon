@@ -32,6 +32,12 @@
 //! }
 //! ```
 
+/// The core-spec version this parser TARGETS (`spec/CORE-VERSION`). Targeting
+/// is a declaration, not an achievement: compliance is proven only by passing
+/// that version's fixture group (`core/fixtures/v<major.minor>/`). Last
+/// version actually passed: **0.8.0** (tag `core-v0.8.0`, 2026-07-15).
+pub const CORE_COMPLIANCE: &str = "0.9.0-alpha.1";
+
 pub mod parser;
 pub mod parser_pd;
 pub mod span;
