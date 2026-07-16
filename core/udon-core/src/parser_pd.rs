@@ -2488,7 +2488,7 @@ impl PushdownParser {
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                                     f.st = ElementSt::PdK48;
-                                    let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
+                                    let (pd_a0, pd_a1,) = (self.col() - 2, f.elem_col, );
                                     self.stack.push(Frame::Element(f));
                                     self.enter_element(pd_a0, pd_a1, on_event);
                                     continue 'run;
@@ -2535,13 +2535,13 @@ impl PushdownParser {
                         }
                         ElementSt::CheckSamelineElemCol => {
                             match self.peek() {
-                                _ if self.col() - 1 <= f.elem_col => {
+                                _ if self.col() - 2 <= f.elem_col => {
                                     on_event(StreamEvent::ElementEnd { span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => {
                                     f.st = ElementSt::PdK52;
-                                    let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
+                                    let (pd_a0, pd_a1,) = (self.col() - 2, f.elem_col, );
                                     self.stack.push(Frame::Element(f));
                                     self.enter_element(pd_a0, pd_a1, on_event);
                                     continue 'run;
@@ -2688,7 +2688,7 @@ impl PushdownParser {
                         }
                         ElementSt::CheckPostPipeCol => {
                             match self.peek() {
-                                _ if self.col() <= f.elem_col => {
+                                _ if self.col() - 1 <= f.elem_col => {
                                     f.st = ElementSt::Children;
                                     self.stack.push(Frame::Element(f));
                                     continue 'run;
@@ -3522,14 +3522,14 @@ impl PushdownParser {
                                 }
                                 Some(b) if is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                                     f.st = ElementSt::PdK100;
-                                    let (pd_a0, pd_a1,) = (self.col() - 1, f.elem_col, );
+                                    let (pd_a0, pd_a1,) = (self.col() - 2, f.elem_col, );
                                     self.stack.push(Frame::Element(f));
                                     self.enter_element(pd_a0, pd_a1, on_event);
                                     continue 'run;
                                 }
                                 _ => {
                                     f.st = ElementSt::PdK101;
-                                    let (pd_a0, pd_a1, pd_a2,) = (self.col() - 1, f.elem_col, b"|", );
+                                    let (pd_a0, pd_a1, pd_a2,) = (self.col() - 2, f.elem_col, b"|", );
                                     self.stack.push(Frame::Element(f));
                                     self.enter_prose(pd_a0, pd_a1, pd_a2, on_event);
                                     continue 'run;

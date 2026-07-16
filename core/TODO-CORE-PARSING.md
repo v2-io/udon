@@ -6,16 +6,32 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
-- [ ] **Unicode-correct guards and columns (descent)** (2026-07-16). The
-      generated parsers classify every byte ≥ 0x80 as identifier-start, so
-      `|→arrow` wrongly parses as an element (CORE: `→` is not XID_Start →
-      prose), and `COL` counts bytes rather than characters (multibyte names
-      shift column arithmetic). Needs UTF-8 decoding in descent's charclass
-      guards + column tracking, both backends. Three spec-correct fixtures
-      are quarantined at `fixtures/v0.9/pending-unicode.yaml.disabled` —
-      re-enable by renaming once descent lands the work; they should go
-      green with no edits. (CORE "Bare-name characters" lets the host pin
-      the Unicode *version*, not the classification itself.)
+- [ ] **Full XID validation for non-ASCII name starts (descent)**
+      (2026-07-16, diagnosis corrected same day: columns and content were
+      ALWAYS UTF-8-correct — continuation bytes don't advance COL). What
+      remains is the documented conservative guard: non-ASCII lead bytes
+      (0xC2–0xF4) classify as identifier-start, with the `match_xid_start`
+      full-decode validation both template lineages reference but don't
+      generate. Consequence: `|→arrow` parses as an element where CORE's
+      XID_Start says prose. One fixture quarantined at
+      `fixtures/v0.9/pending-unicode.yaml.disabled`; rename to re-enable
+      once the validation step exists.
+- [ ] **De-state-machine the attribute machinery (recursive-descent
+      re-idiomization)** (Joseph, 2026-07-16: "all those if statements make
+      it look like you might have started abusing the grammar instead of
+      doing recursive descent"). The 0.9 burn-down grew if-chain dispatch
+      that fights the paradigm: the `attr_open` mode codes (1/2/3/4/5/6/
+      11/12/13) threaded from `typed_value` → `value` → the attr functions
+      → the element children loop, plus the `:attr_pending`/`:attr_body`/
+      `:attr_done`/`:battr_*`/`:sameline_*` router states. The descent-ish
+      shape: the attribute functions OWN their whole story — a
+      `/attr_deferred_body(attr_col)` function recursing into
+      /element / /prose / /block_directive for deferred values and
+      segments, and boundary continuations handled by direct calls rather
+      than return-code protocols — so the element loop shrinks back to
+      columns-and-children and the .desc reads like a grammar again.
+      Behavior-neutral refactor; the (now-green) fixture group is the
+      safety net. Fold the existing "Grammar cleanup" item into this pass.
 - [x] ~~Verify `*` suffix after `[key]` parses~~ (2026-07-16): covered — all
       four after-key suffixes are fixture-encoded in `identity.yaml` and
       green; the Obsidian rendering miss is a highlighter-side issue.

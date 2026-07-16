@@ -1435,7 +1435,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                    self.parse_element(self.col() - 1, elem_col, on_event);
+                    self.parse_element(self.col() - 2, elem_col, on_event);
                     state = State::PostBlockChild;
                     continue;
                         }
@@ -1474,12 +1474,12 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelineElemCol => {
                     match self.peek() {
-                        _ if self.col() - 1 <= elem_col => {
+                        _ if self.col() - 2 <= elem_col => {
                     on_event(Event::ElementEnd { span: self.span() });
                     return;
                         }
                         _ => {
-                    self.parse_element(self.col() - 1, elem_col, on_event);
+                    self.parse_element(self.col() - 2, elem_col, on_event);
                     state = State::PostBlockChild;
                     continue;
                         }
@@ -1602,7 +1602,7 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckPostPipeCol => {
                     match self.peek() {
-                        _ if self.col() <= elem_col => {
+                        _ if self.col() - 1 <= elem_col => {
                     state = State::Children;
                     continue;
                         }
@@ -2305,12 +2305,12 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
-                    self.parse_element(self.col() - 1, elem_col, on_event);
+                    self.parse_element(self.col() - 2, elem_col, on_event);
                     state = State::PostBlockChild;
                     continue;
                         }
                         _ => {
-                    self.parse_prose(self.col() - 1, elem_col, b"|", on_event);
+                    self.parse_prose(self.col() - 2, elem_col, b"|", on_event);
                     state = State::AfterContent;
                     continue;
                         }
