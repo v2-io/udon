@@ -78,10 +78,10 @@ The parser operates in different contexts that affect parsing behavior:
 | Term | Meaning | Example |
 |------|---------|---------|
 | **block** | On its own indented line | `:key value` as child of element |
-| **sameline** | On the element definition line | `\|el :key value Content` |
-| **inline** | Embedded in prose/text flow | `\|{em text}`, `;{comment}`, `!{dir}` |
-| **embedded** | Inside `\|{...}` delimiters | Synonym for inline element context |
-| **head** | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `\|` `:` `!` `;` `@` and fences are recognized |
+| **sameline** | On the element definition line | `|el :key value Content` |
+| **inline** | Embedded in prose/text flow | `|{em text}`, `;{comment}`, `!{dir}` |
+| **embedded** | Inside `|{...}` delimiters | Synonym for inline element context |
+| **head** | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `|` `:` `!` `;` `@` and fences are recognized |
 
 ### Head Position
 
@@ -145,7 +145,7 @@ Four special characters at line start (after indentation):
 
 | Prefix | Domain     | Purpose                                 |
 | ------ | ---------- | --------------------------------------- |
-| `\|`   | Structure  | Elements and nodes                      |
+| `|`   | Structure  | Elements and nodes                      |
 | `:`    | Attributes | Key-value metadata                      |
 | `!`    | Dynamics   | Evaluation, control flow, interpolation |
 | `;`    | Comments   | Comment lines / inline comments         |
@@ -261,11 +261,11 @@ Every guard is a few characters of bounded lookahead (see Bounded Lookahead).
 
 **These are sugar.** An element is nothing but a **name + ordered attributes + children**; there are no separate identity, trait, or suffix fields in the model. `[key]`, `.trait`, and the suffixes below all *desugar* into ordinary attributes whose names are specially designated:
 
-| You write | Desugars to |
-|-----------|-------------|
-| `\|el[k]` | `\|el :'$key' k` |
-| `\|el.a.b` | `\|el :'$traits' a :'$traits' b` |
-| `\|el?` | `\|el :'$?' true` |
+| You write  | Desugars to                      |
+| ---------- | -------------------------------- |
+| `|el[k]`  | `|el :'$key' k`                 |
+| `|el.a.b` | `|el :'$traits' a :'$traits' b` |
+| `|el?`    | `|el :'$?' true`                |
 
 The value inside `[...]` follows the normal attribute-value rules -- every type is available: `[1]` is the integer `1`, `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`.
 
@@ -396,7 +396,7 @@ An attribute's value is one of these kinds -- or an **ordered array** of them (s
 | **Scalar** | quoted string, number, `true`/`false`/`null`/`nil` alone, `[...]` list, `<...>` envelope |
 | **Reference** | `@...` (a selector; inert at core, like every reference) |
 | **Interpolation** | `!{{...}}` (host-evaluated; see DYNAMICS) |
-| **Node** | `\|element`, `!:lang:` raw block, or a freeform fence -- the value *is* that node |
+| **Node** | `|element`, `!:lang:` raw block, or a freeform fence -- the value *is* that node |
 | **Text blob** | prose-shaped trailing text (below) |
 
 Types live on the **map side** -- attribute values and array items. The `<...>` envelope is meaningful in value position and nowhere in free prose; children detect their own content. A block `!directive` as a node value is deferred to the DYNAMICS companion, not core.
@@ -585,7 +585,7 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
 |---------|------------------------|------------------------------|
 | Element (sameline) line | space, `\n` | element's prose (ownership row 2) |
 | Block attr line | space, `\n` | segment-ingest + warning |
-| Embedded `\|{...}` | space, `\n`, `}` (unconsumed) | embedded element's content |
+| Embedded `|{...}` | space, `\n`, `}` (unconsumed) | embedded element's content |
 | Array item | space, `\n`, `]` (unconsumed) | *(items only -- no tails)* |
 
 - A framed ` ; ` opens a comment on element and block attribute lines (except in `\`-forced text -- see Escape); an unspaced `;` is part of the token (`:url https://example.com/a?q=1;s=2` keeps its semicolon).
@@ -683,10 +683,10 @@ Semicolon starts a comment depending on context:
 |---------|--------------|---------|
 | Document root | Line comment | `; file header comment` |
 | Block prose | Literal within the prose (deeper than the base); a `;` **at the prose base column** is a comment (see Comments and Indentation) | `use x; do y` |
-| Sameline prose | **Sameline comment** (whitespace-framed only) | `\|p text ; comment` |
+| Sameline prose | **Sameline comment** (whitespace-framed only) | `|p text ; comment` |
 | Block attr line | Line comment (after values) | `:key value ; comment` |
-| Sameline attrs | Line comment (after values) | `\|el :k v ; comment` |
-| Inline/embedded | `;{...}` only | `\|{em text ;{note}}` |
+| Sameline attrs | Line comment (after values) | `|el :k v ; comment` |
+| Inline/embedded | `;{...}` only | `|{em text ;{note}}` |
 
 **Parser behavior:** Comments are emitted as events, not discarded. The consuming layer decides whether to keep or strip them. This enables use cases like documentation extraction, TODO tracking, or comment-aware transformations.
 
@@ -798,7 +798,7 @@ A `;` starts a comment only in specific positions (see Comments); everywhere els
 | Attr values (block & sameline) | Literal when not whitespace-framed (`:url .../a?q=1;s=2`), or quote (`:sql 'SELECT; DROP'`); a framed ` ; ` after value material starts a comment |
 | Sameline prose | Literal unless whitespace-framed (a *sameline comment* needs a space before AND a space/EOL after); `a;b` and `a ;b` are literal |
 | Value-`\` text | Fully literal, framed or not -- a value entered via `\` gives up the sameline-comment affordance (`:k \a ; b` is the value `"a ; b"`) |
-| Embedded `\|{...}` | Bare `;` is literal -- only `;{` opens an inline comment |
+| Embedded `|{...}` | Bare `;` is literal -- only `;{` opens an inline comment |
 
 There is no separate `\;` escape: a `\` that is not at head position is passed through literally (see Escape). A literal `;` comes from position (no preceding space, block prose, or embedded) or from quoting; a whole prose tail that must carry would-be markers is forced to prose with a head-position `\`.
 
@@ -1346,7 +1346,7 @@ All prefix characters support a bracket-delimited inline form:
 
 | Syntax | Description |
 |--------|-------------|
-| `\|{element ...}` | Embedded element |
+| `|{element ...}` | Embedded element |
 | `!{{expr}}` | Interpolation (double-brace) |
 | `!{directive ...}` | Inline directive |
 | `;{comment}` | Inline comment |
@@ -1718,7 +1718,7 @@ Parser functions should use this terminology consistently:
 | (new) | `bare_string_embedded` | Embedded attr values |
 | (new) | `bare_string_array` | Array item values |
 | `inline_text` | `sameline_text` | Text on element line |
-| `embedded` | `embedded` | `\|{...}` (unchanged) |
+| `embedded` | `embedded` | `|{...}` (unchanged) |
 
 ---
 
