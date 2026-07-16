@@ -38,15 +38,18 @@ recommendation — open until Joseph confirms each.
 
 ### Draft rulings awaiting confirmation
 
-- [ ] **Embedded context (`|{…}`) under the new model** — *drafted (R2)*:
+- [x] **Embedded context (`|{…}`) under the new model** — *ratified 2026-07-16 (R2)*:
       embedded = element-rooted sameline with `}` as an extra terminator.
-      Consequences drafted explicitly: `|{input :required}` errors (write
-      `:required?`); an open bare attr's trailing tail is the attr's blob, so
-      `|{a :href /home :title Home here}` gives `title="Home here"` and NO
-      embedded content — this **changes a long-standing canonical example**;
-      confirm deliberately. Fixture updates follow
+      `|{input :required}` → non-halting `MissingAttributeValue` error event
+      (no invented value; host/AST decides key-present-valueless vs drop);
+      write `:required?`. Open bare attr's tail is the attr's blob through
+      `}`: `|{a :href /home :title Home here}` → `title="Home here"`, no
+      content (canonical-example migration). Quote or boundary-`\` to leave
+      content: `|{a :href /home :title Home \ Welcome home!}` →
+      title="Home", content " Welcome home!". Framed ` ; ` inside embeds
+      remains unspecified in 0.9 (dialect-era revisit). In CORE "Contexts
+      and Terminators" + plain-attr error wording. Fixture updates follow
       (`attributes.yaml::embedded_flag_attr_before_brace` and kin).
-      *(discuss w/ Joseph)*
 - [ ] **Block-line `\` at the boundary** — *drafted (R3)*: value closes; the
       rest of the line is the element's prose. CORE "Value-Position `\`".
 - [ ] **Quoted keys never flag** — *drafted (R4)*: terminal-`?` flag

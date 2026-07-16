@@ -366,7 +366,7 @@ An unquoted attribute key is a Unicode identifier (`XID_Start` to start) whose c
 
 A **terminal `?` on an unquoted key selects flag semantics**; a `?` anywhere else in the key is just a character. A quoted key is always a plain attribute, whatever it ends with -- quoting means "exactly this name, no reading of it" (so the suffix-sugar target `:'$?' true` is a plain attribute). *(0.9 draft ruling R4 -- quoted keys never flag.)*
 
-**Plain attributes always take a value.** A plain `:key` followed by no value material -- end of line with nothing indented under it, or a context terminator -- is an **error** (`MissingAttributeValue`, working name). The 0.8 implicit "valueless means true" is gone; presence/absence flags are spelled with `?`:
+**Plain attributes always take a value.** A plain `:key` followed by no value material -- end of line with nothing indented under it, or a context terminator -- is an **error** (`MissingAttributeValue`, working name). Per the anomaly posture, that means a non-halting error *event*: the attribute is emitted with **no** value event -- the parser invents nothing (no implicit `true`, no `nil`) -- and parsing continues with nothing downstream lost; how the errored attribute materializes (key-present-valueless vs dropped) is a host/AST decision. The 0.8 implicit "valueless means true" is gone; presence/absence flags are spelled with `?`:
 
 ```udon
 |button :disabled? :type submit    ; disabled? = true, type = "submit"
@@ -594,7 +594,22 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
 
 - A framed ` ; ` opens a comment on element and block attribute lines (except in `\`-forced text -- see Escape); an unspaced `;` is part of the token (`:url https://example.com/a?q=1;s=2` keeps its semicolon).
 - **Inside embedded `|{...}` there are no framed sameline comments** for now -- a bare `;` is literal; only `;{...}` comments there (ruled 2026-07-15; framed comments in embeds will likely be revisited once the dialect layer and embedded behavior are more fully fleshed out).
-- **Embedded** attributes follow the element-line rules with `}` as an extra terminator; `}` is not consumed (bracket matching). *(0.9 draft ruling R2 -- embedded is element-rooted sameline. Consequence: an embedded trailing tail after an **open** bare attr is the attr's blob, so `|{a :href /home :title Home here}` gives `title = "Home here"` and no embedded content -- quote the value (`:title "Home" here`) to leave content for the element. And `|{input :required}` is an error; write `|{input :required?}`.)*
+- **Embedded** attributes follow the element-line rules with `}` as an extra terminator; `}` is not consumed (bracket matching). Embedded is simply element-rooted sameline (ratified 2026-07-16); the consequences follow uniformly:
+
+  ```udon
+  |{input :required}                     ; ERROR (MissingAttributeValue) -- write |{input :required?}
+  |{a :href /home :title Home here}      ; title = "Home here" -- the blob runs to } -- NO content
+  |{a :href /home :title "Home" here}    ; title = "Home"; content "here"
+  |{a :href /home :title Home \ Welcome home!}
+  ;                                      ^ boundary-\: title = "Home"; content " Welcome home!"
+  ```
+
+  A trailing framed ` ; ` after `\`-entered text inside the embedded form --
+  `|{a :href /home :title Home \ Welcome home! ; hope that helps}` -- will
+  probably gain comment semantics once the dialect layer and embedded
+  behavior are fleshed out; in 0.9 its result is **unspecified** -- do not
+  rely on it either way. (A framed ` ; ` in ordinary embedded content stays
+  literal per the bullet above, with its own revisit note.)
 - **Array items**: `}` is *not* a terminator inside `[...]` -- the array closes only on `]` (else `UnclosedArray`). A `}` closing an embedded element must come after the `]`. **Quoted-item nuance**: a quoted item's closing quote ends it, so `["x"y]` and `["x""y"]` each yield two items, same as `["x" y]`.
 
 ### Event Encoding (0.9 Wire)
