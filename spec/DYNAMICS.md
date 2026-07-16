@@ -90,10 +90,14 @@ even if they started parsing as numbers:
 |item[283!{{more}}]
 ```
 
-**Parser implementation note:** Multi-part values emit as a sequence:
-`ArrayStart`, then alternating `StringValue`/`Interpolation` events, then
-`ArrayEnd`. If parsing began as a numeric type and hits interpolation, emit
-accumulated content as `StringValue` instead.
+**Parser implementation note:** *(stale wire sketch — do not implement from
+this)* This section's `ArrayStart` + alternating `StringValue`/`Interpolation`
++ `ArrayEnd` encoding predates and **contradicts** CORE 0.9's ratified flat
+wire (only literal `[…]` arrays on the wire; all multiplicity = re-emitted
+`Attr`). The flat-wire-consistent shape would be re-emitted `Attr` segments,
+like text blobs — the ruling is pending (see `core/TODO-CORE-PARSING.md`,
+"Interpolation: multi-part values"). Whole-value interpolation is already
+implemented; mixed multi-part is not (verified 2026-07-16).
 
 ### Expression Grammar
 
