@@ -161,6 +161,14 @@ impl<'a> Event<'a> {
     }
 }
 
+/// Keyword lookup map for flag_kw.
+/// Generated from |keywords[flag_kw] - O(1) perfect hash lookup.
+static FLAG_KW_KEYWORDS: phf::Map<&'static [u8], u8> = phf_map! {
+    b"true" => 0u8,
+    b"false" => 1u8,
+    b"null" => 2u8,
+    b"nil" => 3u8,
+};
 /// Keyword lookup map for bare_kw.
 /// Generated from |keywords[bare_kw] - O(1) perfect hash lookup.
 static BARE_KW_KEYWORDS: phf::Map<&'static [u8], u8> = phf_map! {
@@ -181,6 +189,7 @@ pub enum ParseErrorCode {
     UnclosedText,
     NoTabs,
     UnclosedInterpolation,
+    MissingAttributeValue,
 }
 
 /// Callback-based parser.
@@ -497,6 +506,39 @@ impl<'a> Parser<'a> {
         }
     }
 
+    // ========== Keyword Lookup: flag_kw ==========
+    /// Look up accumulated content in flag_kw keywords.
+    /// Returns true if a keyword matched (event emitted), false otherwise.
+    fn lookup_flag_kw<F>(&mut self, on_event: &mut F) -> bool
+    where
+        F: FnMut(Event<'a>),
+    {
+        let content = self.term();
+        if let Some(&id) = FLAG_KW_KEYWORDS.get(content.as_ref()) {
+            let span = self.span_from_mark();
+            match id {
+                0 => on_event(Event::BoolTrue { content, span }),
+                1 => on_event(Event::BoolFalse { content, span }),
+                2 => on_event(Event::Nil { content, span }),
+                3 => on_event(Event::Nil { content, span }),
+                _ => unreachable!("keyword map contains only valid ids"),
+            }
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Look up and emit keyword, or call fallback function.
+    fn lookup_flag_kw_or_fallback<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        if !self.lookup_flag_kw(on_event) {
+            self.parse_flag_snap_blob(on_event);
+        }
+    }
+
     // ========== Keyword Lookup: bare_kw ==========
     /// Look up accumulated content in bare_kw keywords.
     /// Returns true if a keyword matched (event emitted), false otherwise.
@@ -687,7 +729,7 @@ impl<'a> Parser<'a> {
                         return;
                     }
                     match self.peek() {
-                        Some(b) if Self::is_xlbl_start(b) || b == b'[' => {
+                        Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
                     self.parse_block_ref(on_event);
                     state = State::Eol;
                     continue;
@@ -1016,7 +1058,7 @@ impl<'a> Parser<'a> {
         let mut content_seen: i32 = 0;
         let mut col: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
+        enum State { Identity, PostIdentity, PreContent, SamelineFf1, SamelineFf2, SpacedSuffixQ, SpacedSuffixS, SpacedSuffixP, CheckSamelineAttr, CheckSamelinePipe, CheckSamelineElemCol, PostBlockChild, CheckSamelineSemi, CheckSamelineBang, CheckSamelineAt, PostSamelineInline, PostChild, CheckPostPipeCol, Children, AfterNewline, ChildrenWs, AtContentBase, CheckChild, ChildDispatch, ProseBase, VerbatimBase, DoVerbatim, ChildCheckBang, ChildCheckAt, ChildCheckAttr, DoProse, ChildCheckFreeform, ChildCheckFreeform2, ChildPipe, AfterChild, AfterContent,  }
         let mut state = State::Identity;
         loop {
             match state {
@@ -1109,6 +1151,11 @@ impl<'a> Parser<'a> {
                         Some(b'!') => {
                     self.advance();
                     state = State::CheckSamelineBang;
+                    continue;
+                        }
+                        Some(b'@') => {
+                    self.advance();
+                    state = State::CheckSamelineAt;
                     continue;
                         }
                         Some(b'\\') => {
@@ -1341,6 +1388,25 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"!", on_event);
+                    state = State::AfterContent;
+                    continue;
+                        }
+                    }
+                }
+                State::CheckSamelineAt => {
+                    if self.eof() {
+                        on_event(Event::ElementEnd { span: self.span() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
+                    content_seen = 1;
+                    self.parse_block_ref(on_event);
+                    state = State::PreContent;
+                    continue;
+                        }
+                        _ => {
+                    self.parse_sameline_text(elem_col, b"@", on_event);
                     state = State::AfterContent;
                     continue;
                         }
@@ -1708,7 +1774,7 @@ impl<'a> Parser<'a> {
                         return;
                     }
                     match self.peek() {
-                        Some(b) if Self::is_xlbl_start(b) || b == b'[' => {
+                        Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
                     self.parse_block_ref(on_event);
                     state = State::AfterContent;
                     continue;
@@ -1865,7 +1931,7 @@ impl<'a> Parser<'a> {
                 return;
             }
             match self.peek() {
-                Some(b) if Self::is_xlbl_cont(b) => {
+                Some(b) if Self::is_xlbl_cont(b) || b == b'/' => {
                     self.advance();
                     continue;
                 }
@@ -1936,7 +2002,7 @@ impl<'a> Parser<'a> {
                 return;
             }
             match self.peek() {
-                Some(b) if Self::is_xlbl_cont(b) || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
+                Some(b) if Self::is_xlbl_cont(b) || b == b'/' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                     self.advance();
                     continue;
                 }
@@ -2015,7 +2081,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Key, ValueStart, PostValue,  }
+        enum State { Key, PostKey, PostQkey, Flag, ValueStart, PostValue,  }
         let mut state = State::Key;
         loop {
             match state {
@@ -2026,19 +2092,55 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) => {
                     self.parse_attr_key(on_event);
-                    state = State::ValueStart;
+                    state = State::PostKey;
                     continue;
                         }
                         Some(b'\'') => {
                     self.advance();
                     self.parse_attr_key_quoted(on_event);
-                    state = State::ValueStart;
+                    state = State::PostQkey;
                     continue;
                         }
                         _ => {
                             return;
                         }
                     }
+                }
+                State::PostKey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::PostQkey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    self.advance();
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    self.advance();
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::Flag => {
+                    self.parse_flag_value(b'\0', on_event);
+                    return;
                 }
                 State::ValueStart => {
                     if self.eof() {
@@ -2050,7 +2152,16 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b'\n') => {
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b':') => {
+                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b'|') => {
                     return;
                         }
                         _ => {
@@ -2085,7 +2196,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Key, ValueStart,  }
+        enum State { Key, PostKey, PostQkey, Flag, ValueStart,  }
         let mut state = State::Key;
         loop {
             match state {
@@ -2096,19 +2207,55 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) => {
                     self.parse_attr_key(on_event);
-                    state = State::ValueStart;
+                    state = State::PostKey;
                     continue;
                         }
                         Some(b'\'') => {
                     self.advance();
                     self.parse_attr_key_quoted(on_event);
-                    state = State::ValueStart;
+                    state = State::PostQkey;
                     continue;
                         }
                         _ => {
                             return;
                         }
                     }
+                }
+                State::PostKey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::PostQkey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    self.advance();
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    self.advance();
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::Flag => {
+                    self.parse_flag_value(b'\0', on_event);
+                    return;
                 }
                 State::ValueStart => {
                     if self.eof() {
@@ -2119,8 +2266,12 @@ impl<'a> Parser<'a> {
                     self.advance();
                     continue;
                         }
-                        Some(b'\n' | b':' | b'|') => {
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                        Some(b'\n' | b':') => {
+                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b'|') => {
                     return;
                         }
                         _ => {
@@ -2139,7 +2290,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Key, ValueStart,  }
+        enum State { Key, PostKey, PostQkey, Flag, ValueStart,  }
         let mut state = State::Key;
         loop {
             match state {
@@ -2150,19 +2301,55 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) => {
                     self.parse_attr_key(on_event);
-                    state = State::ValueStart;
+                    state = State::PostKey;
                     continue;
                         }
                         Some(b'\'') => {
                     self.advance();
                     self.parse_attr_key_quoted(on_event);
-                    state = State::ValueStart;
+                    state = State::PostQkey;
                     continue;
                         }
                         _ => {
                             return;
                         }
                     }
+                }
+                State::PostKey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::PostQkey => {
+                    if self.eof() {
+                        return;
+                    }
+                    match self.peek() {
+                        _ if self.prev() == b'?' => {
+                    self.advance();
+                    state = State::Flag;
+                    continue;
+                        }
+                        _ => {
+                    self.advance();
+                    state = State::ValueStart;
+                    continue;
+                        }
+                    }
+                }
+                State::Flag => {
+                    self.parse_flag_value(b'}', on_event);
+                    return;
                 }
                 State::ValueStart => {
                     if self.eof() {
@@ -2173,14 +2360,165 @@ impl<'a> Parser<'a> {
                     self.advance();
                     continue;
                         }
-                        Some(b'\n' | b':' | b'|' | b'}') => {
-                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                        Some(b'\n' | b':' | b'}') => {
+                    on_event(Event::Error { code: ParseErrorCode::MissingAttributeValue, span: self.span() });
+                    on_event(Event::Nil { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b'|') => {
                     return;
                         }
                         _ => {
                     self.parse_value(1, b'}', on_event);
                     return;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Parse flag_value
+    fn parse_flag_value<F>(&mut self, bracket: u8, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        #[derive(Clone, Copy)]
+        enum State { Start, Token, Blob,  }
+        let mut state = State::Start;
+        loop {
+            match state {
+                State::Start => {
+                    if self.eof() {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b' ' | b'\t') => {
+                    self.advance();
+                    continue;
+                        }
+                        Some(b'\n') => {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b) if b == bracket => {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b':' | b';' | b'!' | b'@' | b'`' | b'|' | b'\\') => {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    return;
+                        }
+                        Some(b'a' | b'b' | b'c' | b'd' | b'e' | b'f' | b'g' | b'h' | b'i' | b'j' | b'k' | b'l' | b'm' | b'n' | b'o' | b'p' | b'q' | b'r' | b's' | b't' | b'u' | b'v' | b'w' | b'x' | b'y' | b'z' | b'A' | b'B' | b'C' | b'D' | b'E' | b'F' | b'G' | b'H' | b'I' | b'J' | b'K' | b'L' | b'M' | b'N' | b'O' | b'P' | b'Q' | b'R' | b'S' | b'T' | b'U' | b'V' | b'W' | b'X' | b'Y' | b'Z') => {
+                    self.mark();
+                    self.advance();
+                    state = State::Token;
+                    continue;
+                        }
+                        _ => {
+                    self.mark();
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    self.advance();
+                    state = State::Blob;
+                    continue;
+                        }
+                    }
+                }
+                State::Token => {
+                    if self.eof() {
+                    self.set_term(0);
+                    self.lookup_flag_kw_or_fallback(on_event);
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'a' | b'b' | b'c' | b'd' | b'e' | b'f' | b'g' | b'h' | b'i' | b'j' | b'k' | b'l' | b'm' | b'n' | b'o' | b'p' | b'q' | b'r' | b's' | b't' | b'u' | b'v' | b'w' | b'x' | b'y' | b'z' | b'A' | b'B' | b'C' | b'D' | b'E' | b'F' | b'G' | b'H' | b'I' | b'J' | b'K' | b'L' | b'M' | b'N' | b'O' | b'P' | b'Q' | b'R' | b'S' | b'T' | b'U' | b'V' | b'W' | b'X' | b'Y' | b'Z' | b'0' | b'1' | b'2' | b'3' | b'4' | b'5' | b'6' | b'7' | b'8' | b'9' | b'_' | b'-') => {
+                    self.advance();
+                    continue;
+                        }
+                        Some(b'\n') => {
+                    self.set_term(0);
+                    self.lookup_flag_kw_or_fallback(on_event);
+                    return;
+                        }
+                        Some(b' ' | b'\t') => {
+                    self.set_term(0);
+                    self.lookup_flag_kw_or_fallback(on_event);
+                    return;
+                        }
+                        Some(b) if b == bracket => {
+                    self.set_term(0);
+                    self.lookup_flag_kw_or_fallback(on_event);
+                    return;
+                        }
+                        _ => {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    self.advance();
+                    state = State::Blob;
+                    continue;
+                        }
+                    }
+                }
+                State::Blob => {
+                    if self.eof() {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        Some(b) if b == bracket => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => {
+                    self.advance();
+                    continue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Parse flag_snap_blob
+    fn parse_flag_snap_blob<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        #[derive(Clone, Copy)]
+        enum State { Main, Blob,  }
+        let mut state = State::Main;
+        loop {
+            match state {
+                State::Main => {
+                    on_event(Event::BoolTrue { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    state = State::Blob;
+                    continue;
+                }
+                State::Blob => {
+                    match self.scan_to2(b'\n', b'}') {
+                        Some(b'\n') => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        Some(b'}') => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        None => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
             }
@@ -2199,7 +2537,7 @@ impl<'a> Parser<'a> {
                 return;
             }
             match self.peek() {
-                Some(b) if Self::is_xlbl_cont(b) => {
+                Some(b) if Self::is_xlbl_cont(b) || b == b'/' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                     self.advance();
                     continue;
                 }
@@ -2225,7 +2563,6 @@ impl<'a> Parser<'a> {
             }
                     self.parse_skip_single_quoted(on_event);
                     self.set_term(0);
-                    self.advance();
                     on_event(Event::Attr { content: self.term(), span: self.span_from_mark() });
                     return;
         }
@@ -2237,27 +2574,50 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         self.mark();
+        #[derive(Clone, Copy)]
+        enum State { Main, PostKey,  }
+        let mut state = State::Main;
         loop {
-            if self.eof() {
-                on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
-                return;
-            }
-            match self.peek() {
-                Some(b'[') => {
+            match state {
+                State::Main => {
+                    if self.eof() {
+                        on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b'[') => {
                     self.scan_to1(b']');
                     self.advance();
-                    self.set_term(0);
-                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
-                    return;
-                }
-                Some(b) if Self::is_xlbl_cont(b) => {
+                    state = State::PostKey;
+                    continue;
+                        }
+                        Some(b) if Self::is_xlbl_cont(b) || b == b'.' => {
                     self.advance();
                     continue;
-                }
-                _ => {
+                        }
+                        _ => {
                     self.set_term(0);
                     on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
                     return;
+                        }
+                    }
+                }
+                State::PostKey => {
+                    if self.eof() {
+                        on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                        return;
+                    }
+                    match self.peek() {
+                        Some(b) if Self::is_xlbl_cont(b) || b == b'.' => {
+                    self.advance();
+                    continue;
+                        }
+                        _ => {
+                    self.set_term(0);
+                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                    }
                 }
             }
         }
@@ -4656,7 +5016,7 @@ impl<'a> Parser<'a> {
         let mut depth: i32 = 0;
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Envelope, EnvCheck, MaybeRef, RefIdent, CheckSpace, BlockSpace, Accumulate, AccumSpace, AccumBlock, NumSign, NumZero, NumZeroSpace, NumZeroBlock, NumDec, NumDecSpace, NumDecBlock, NumHex, NumHexSpace, NumHexBlock, NumOct, NumOctSpace, NumOctBlock, NumBin, NumBinSpace, NumBinBlock, NumFloatFrac, NumFloatFracSpace, NumFloatFracBlock, NumFloatExp, NumFloatExpSpace, NumFloatExpBlock, NumFloatExpDigits, NumFloatExpDSpace, NumFloatExpDBlock, NumRationalDenom, NumRationalSpace, NumRationalBlock, NumComplexSign, NumComplexImag, NumComplexImagSpace, NumComplexImagBlock, NumComplexImagFrac, NumComplexImagFracSpace, NumComplexImagFracBlock, NumComplexImagExp, NumComplexImagExpSpace, NumComplexImagExpBlock, NumComplexImagExpD, NumComplexImagExpDSpace, NumComplexImagExpDBlock, String, StringSpace, StringBlock,  }
+        enum State { Main, Envelope, EnvCheck, MaybeRef, RefIdent, RefTail, CheckSpace, BlockSpace, Accumulate, AccumSpace, AccumBlock, NumSign, NumZero, NumZeroSpace, NumZeroBlock, NumDec, NumDecSpace, NumDecBlock, NumHex, NumHexSpace, NumHexBlock, NumOct, NumOctSpace, NumOctBlock, NumBin, NumBinSpace, NumBinBlock, NumFloatFrac, NumFloatFracSpace, NumFloatFracBlock, NumFloatExp, NumFloatExpSpace, NumFloatExpBlock, NumFloatExpDigits, NumFloatExpDSpace, NumFloatExpDBlock, NumRationalDenom, NumRationalSpace, NumRationalBlock, NumComplexSign, NumComplexImag, NumComplexImagSpace, NumComplexImagBlock, NumComplexImagFrac, NumComplexImagFracSpace, NumComplexImagFracBlock, NumComplexImagExp, NumComplexImagExpSpace, NumComplexImagExpBlock, NumComplexImagExpD, NumComplexImagExpDSpace, NumComplexImagExpDBlock, String, StringSpace, StringBlock,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -4764,11 +5124,10 @@ impl<'a> Parser<'a> {
                     self.mark();
                     self.scan_to1(b']');
                     self.advance();
-                    self.set_term(0);
-                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
-                    return;
+                    state = State::RefTail;
+                    continue;
                         }
-                        Some(b) if Self::is_xlbl_start(b) => {
+                        Some(b) if Self::is_xlbl_start(b) || b == b'.' => {
                     self.mark();
                     self.advance();
                     state = State::RefIdent;
@@ -4787,16 +5146,33 @@ impl<'a> Parser<'a> {
                     return;
                     }
                     match self.peek() {
-                        Some(b) if Self::is_xlbl_cont(b) => {
+                        Some(b) if Self::is_xlbl_cont(b) || b == b'.' => {
                     self.advance();
                     continue;
                         }
                         Some(b'[') => {
                     self.scan_to1(b']');
                     self.advance();
+                    state = State::RefTail;
+                    continue;
+                        }
+                        _ => {
                     self.set_term(0);
                     on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
                     return;
+                        }
+                    }
+                }
+                State::RefTail => {
+                    if self.eof() {
+                    self.set_term(0);
+                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b) if Self::is_xlbl_cont(b) || b == b'.' => {
+                    self.advance();
+                    continue;
                         }
                         _ => {
                     self.set_term(0);

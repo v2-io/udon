@@ -107,10 +107,11 @@
     |c['{']                   | -> | /sameline_directive         |>> :eol
     |default                  | /prose(col, -1, '!')             |>> :eol
 
-  ; `@` guard (CORE Marker Recognition): reference when followed by `[` or an
-  ; identifier; otherwise prose. The payload is the raw text after `@`.
+  ; `@` guard (CORE Marker Recognition, 0.9): reference when followed by `[`,
+  ; `.` (trait-only selector, ruled 2026-07-16), or an identifier; otherwise
+  ; prose. The payload is the raw text after `@`.
   |state[:check_at]
-    |c[<L XLBL_START>]        | /block_ref                       |>> :eol
+    |c[<L XLBL_START '.'>]    | /block_ref                       |>> :eol
     |default                  | /prose(col, -1, '@')             |>> :eol
 
   |state[:check_freeform]
@@ -230,6 +231,7 @@
     |c['|']                   | ->                               |>> :check_sameline_pipe
     |c[';']                   | ->                               |>> :check_sameline_semi
     |c['!']                   | ->                               |>> :check_sameline_bang
+    |c['@']                   | ->                               |>> :check_sameline_at
     |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
     |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
 
@@ -293,6 +295,13 @@
   |state[:check_sameline_bang]
     |c['{']                   | -> | /sameline_directive           |>> :post_sameline_inline
     |default                  | /sameline_text(:elem_col, '!')   |>> :after_content
+
+  ; `@` in the sameline scan (0.9: equal footing with `|` — CORE Marker
+  ; Recognition): a guarded reference is a reference child of the element;
+  ; a failed guard falls back to prose with the '@' restored.
+  |state[:check_sameline_at]
+    |c[<L XLBL_START '.'>]    | content_seen = 1 | /block_ref     |>> :pre_content
+    |default                  | /sameline_text(:elem_col, '@')   |>> :after_content
 
   ; After inline directive on sameline - don't skip spaces, they're content now
   |state[:post_sameline_inline]
@@ -399,9 +408,9 @@
     |c['{']                   | -> | /sameline_directive         |>> :after_content
     |default                  | /prose(col, :elem_col, '!')      |>> :after_content
 
-  ; `@` guard in element children (see document :check_at)
+  ; `@` guard in element children (see document :check_at; `.` per 0.9)
   |state[:child_check_at]
-    |c[<L XLBL_START>]        | /block_ref                       |>> :after_content
+    |c[<L XLBL_START '.'>]    | /block_ref                       |>> :after_content
     |default                  | /prose(col, :elem_col, '@')      |>> :after_content
 
   ; Line-initial attr guard (see document :check_attr): failed attr parse
@@ -449,9 +458,11 @@
 ; Names (element/class names)
 ; ============================================================================
 
+; 0.9 charset: `/` is a name-continue character — conventional namespacing
+; with zero core semantics (|acme/widget). CORE "Bare-name characters".
 |function[name:Name]  | MARK
   |state[:main]
-    |c[XLBL_CONT]             | ->                               |>>
+    |c[<XLBL_CONT '/'>]       | ->                               |>>
     |default                  | TERM                             |return
 
 
@@ -470,12 +481,12 @@
     | /skip_single_quoted | TERM | ->                            |return
 
 
-; A bare trait's continue-set is XID_Continue + '-' PLUS the suffix chars
-; * ! ? + (CORE "Element Suffixes": a suffix char touching a trait is part
-; of the trait — `.foo?` is the trait "foo?").
+; A bare trait's continue-set is XID_Continue + '-' + '/' PLUS the suffix
+; chars * ! ? + (CORE "Element Suffixes": a suffix char touching a trait is
+; part of the trait — `.foo?` is the trait "foo?"; '/' per 0.9 charset).
 |function[class_name:BareValue]  | MARK
   |state[:main]
-    |c[<XLBL_CONT '?!*+'>]    | ->                               |>>
+    |c[<XLBL_CONT '/?!*+'>]   | ->                               |>>
     |default                  | TERM                             |return
 
 
@@ -497,14 +508,43 @@
     |default                  |                                  |return
 
 
+; 0.9 attribute model (CORE "Attribute Keys and Flags"): a terminal '?' on
+; the key selects flag semantics (detected via PREV after /attr_key — the
+; last consumed byte is the key's last char). Plain attributes always take
+; a value: a valueless plain attr is a non-halting MissingAttributeValue
+; error + a synthesized Nil (the stream never carries less shape than the
+; source suggested; ruled 2026-07-16). A '|' in value position is left
+; unconsumed with NO event — the caller parses the node, and on the flat
+; wire "Attr followed by ElementStart" IS the node-value encoding.
+; KNOWN GAPS (fixture-red, staged): quoted flag keys (:'ready?' — needs
+; last-content-byte tracking through the quote scan); deferred block values
+; (:key at EOL + deeper lines — needs attr-open state in the element loop,
+; pass 1c).
+
 |function[block_attr]
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :value_start
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
+    |c[XLBL_START]            | /attr_key                        |>> :post_key
+    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
+
+  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
+  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
+  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
+  |state[:post_key]
+    |if[PREV == '?']                                             |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:post_qkey]
+    |if[PREV == '?']          | ->                               |>> :flag
+    |default                  | ->                               |>> :value_start
+
+  |state[:flag]
+    | /flag_value('\0')                                          |return
 
   |state[:value_start]
     |c[' \t']                 | ->                               |>>
-    |c['\n']                  | BoolTrue                         |return
+    |c['\n']                  | /error(missing_attribute_value) | Nil |return
+    |c[':']                   | /error(missing_attribute_value) | Nil |return
+    |c['|']                   |                                  |return
     |default                  | /value(0, '\0')                  |>> :post_value
 
   ; After value, check for trailing comment (per SPEC: ` ;` terminates values)
@@ -515,35 +555,122 @@
 
 |function[sameline_attr]
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :value_start
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
+    |c[XLBL_START]            | /attr_key                        |>> :post_key
+    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
+
+  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
+  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
+  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
+  |state[:post_key]
+    |if[PREV == '?']                                             |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:post_qkey]
+    |if[PREV == '?']          | ->                               |>> :flag
+    |default                  | ->                               |>> :value_start
+
+  |state[:flag]
+    | /flag_value('\0')                                          |return
 
   |state[:value_start]
     |c[' \t']                 | ->                               |>>
-    |c['\n:|']                | BoolTrue                         |return
+    |c['\n:']                 | /error(missing_attribute_value) | Nil |return
+    |c['|']                   |                                  |return
     |default                  | /value(1, '\0')                  |return
 
 
 |function[sameline_attr_embedded]
   |state[:key]
-    |c[XLBL_START]            | /attr_key                        |>> :value_start
-    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :value_start
+    |c[XLBL_START]            | /attr_key                        |>> :post_key
+    |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
+
+  ; PREV after /attr_key is the key's last char; after /attr_key_quoted the
+  ; closing quote is NOT yet consumed, so PREV is the last CONTENT char —
+  ; flag semantics follow the name whether quoted or bare (R4, 2026-07-16).
+  |state[:post_key]
+    |if[PREV == '?']                                             |>> :flag
+    |default                                                     |>> :value_start
+
+  |state[:post_qkey]
+    |if[PREV == '?']          | ->                               |>> :flag
+    |default                  | ->                               |>> :value_start
+
+  |state[:flag]
+    | /flag_value('}')                                           |return
 
   |state[:value_start]
     |c[' \t']                 | ->                               |>>
-    |c[<'\n:|' '}'>]           | BoolTrue                         |return
+    |c[<'\n:' '}'>]           | /error(missing_attribute_value) | Nil |return
+    |c['|']                   |                                  |return
     |default                  | /value(1, '}')                   |return
 
 
+; Flag value (CORE flag rule): exactly true/false/null/nil as the next token
+; is the flag's value (consumed, even with trailing material — the keyword
+; ate); anything else snaps the flag to true. A non-keyword TOKEN commits the
+; rest of the line to a text blob (the first prose word ends the scan); a
+; marker in value position leaves the material to the continuing scan.
+|function[flag_value]  :bracket
+  |state[:start]
+    |eof                      | BoolTrue                         |return
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | BoolTrue                         |return
+    |c[:bracket]              | BoolTrue                         |return
+    |c[<':;!@`' P BS>]        | BoolTrue                         |return
+    |c[LETTER]                | MARK | ->                        |>> :token
+    |default                  | MARK | BoolTrue | ->             |>> :blob
+
+  |state[:token]
+    |eof                      | TERM | KEYWORDS(flag_kw)         |return
+    |c[LABEL_CONT]            | ->                               |>>
+    |c['\n']                  | TERM | KEYWORDS(flag_kw)         |return
+    |c[' \t']                 | TERM | KEYWORDS(flag_kw)         |return
+    |c[:bracket]              | TERM | KEYWORDS(flag_kw)         |return
+    |default                  | BoolTrue | ->                    |>> :blob
+
+  ; Snapped true; the token begins a blob to end-of-line (bracket-aware).
+  |state[:blob]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c[:bracket]              | TERM | Text(USE_MARK)            |return
+    |default                  | ->                               |>>
+
+
+; KEYWORDS fallback for flag_value: a lone non-keyword token — the flag
+; snapped to true and the token begins a blob to end-of-line (uses the
+; caller's MARK; re-TERMs at the blob end).
+|function[flag_snap_blob]
+  |state[:main]
+    | BoolTrue                                                   |>> :blob
+  |state[:blob]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['}']                   | TERM | Text(USE_MARK)            |return
+    |default                  | ->                               |>>
+
+
+|keywords[flag_kw] :fallback /flag_snap_blob
+  | true   => BoolTrue
+  | false  => BoolFalse
+  | null   => Nil
+  | nil    => Nil
+
+
+; 0.9 key charset (CORE "Attribute Keys and Flags"): XID_Continue + '-' +
+; '/' + the suffix chars '?!*+', all unquoted. A TERMINAL '?' selects flag
+; semantics — callers detect it via PREV == '?' after this returns (the
+; last consumed byte is the key's last character).
 |function[attr_key:Attr]  | MARK
   |state[:main]
-    |c[XLBL_CONT]             | ->                               |>>
+    |c[<XLBL_CONT '/?!*+'>]   | ->                               |>>
     |default                  | TERM                             |return
 
 
+; Stops AT the closing quote (unconsumed) so callers can read PREV = the
+; last content character for terminal-'?' flag detection before consuming.
 |function[attr_key_quoted:Attr]  | MARK
   |state[:main]
-    | /skip_single_quoted | TERM | ->                            |return
+    | /skip_single_quoted | TERM                                 |return
 
 
 ; ============================================================================
@@ -551,15 +678,22 @@
 ; ============================================================================
 
 ; Reference (CORE "References", `@`-inert): called with the `@` consumed and
-; the current char passing the guard (`[` or identifier start). The payload
-; is the RAW TEXT after `@` — `@[mit]` -> "[mit]", `@license[mit]` ->
-; "license[mit]" — one uniform rule, no information loss (payload
-; convention proposed in spec/TODO-SPEC-CORE.md). The old `:[id]`
-; attribute-merge form is REMOVED (merge is a host resolution mode).
+; the current char passing the guard (`[`, `.`, or identifier start). The
+; payload is the RAW TEXT after `@` — `@[mit]` -> "[mit]",
+; `@license[mit].realized` -> "license[mit].realized" — one uniform rule, no
+; information loss (interim wire; structured encoding is a SPEC-CORE open
+; item). Trait tails (`.trait`) continue the reference both before and after
+; the `[key]` (0.9: selector tuples incl. trait-only `@.realized`). The old
+; `:[id]` attribute-merge form is REMOVED (merge is a host resolution mode).
 |function[block_ref:Reference]  | MARK
   |state[:main]
-    |c['[']                   | ->[']'] | -> | TERM              |return
-    |c[XLBL_CONT]             | ->                               |>>
+    |c['[']                   | ->[']'] | ->                     |>> :post_key
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
+    |default                  | TERM                             |return
+
+  ; After `[key]`: trait selectors may follow (`@el[key].trait.more`)
+  |state[:post_key]
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
     |default                  | TERM                             |return
 
 

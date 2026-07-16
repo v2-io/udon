@@ -61,14 +61,13 @@
 # following Text. CORE's selector-tuple model treats `@[mit].trait` as
 # (null, 'mit', ['trait']) once structured encoding lands — this case will
 # flip then. Pinning interim behavior so the gate stays honest.
-- id: reference_trait_tail_interim
-  desc: interim — .trait after ] is separate Text until structured Reference encoding
+- id: reference_trait_tail_in_payload
+  desc: .trait selectors are part of the raw payload (one uniform rule, no loss)
   udon: "|p\n  @[mit].trait\n"
   events:
     - ElementStart
     - [Name, "p"]
-    - [Reference, "[mit]"]
-    - [Text, ".trait"]
+    - [Reference, "[mit].trait"]
     - ElementEnd
 
 # The old attribute-merge `:[id]` is gone: a line-initial `:[` has no name,

@@ -85,18 +85,25 @@
     |if[depth == 0]           | TERM | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
     |default                  |                                  |>> :envelope
 
-  ; === Reference in value position (CORE "References") ===
-  ; Guard: `@` + `[` or identifier. Payload is the raw text after `@`
-  ; (brackets included) — same convention as /block_ref in udon.desc.
+  ; === Reference in value position (CORE "References", 0.9 guard) ===
+  ; Guard: `@` + `[`, `.`, or identifier. Payload is the raw text after `@`
+  ; (brackets and trait tails included) — same convention as /block_ref in
+  ; udon.desc (`@el[key].trait` is one payload "el[key].trait").
   |state[:maybe_ref]
-    |c[<L>]                   | MARK | ->[']'] | -> | TERM | Reference(USE_MARK) |return
-    |c[XLBL_START]            | MARK | ->                        |>> :ref_ident
+    |c[<L>]                   | MARK | ->[']'] | ->              |>> :ref_tail
+    |c[<XLBL_START '.'>]      | MARK | ->                        |>> :ref_ident
     |default                  |                                  |>> :string
 
   |state[:ref_ident]
     |eof                      | TERM | Reference(USE_MARK)       |return
-    |c[XLBL_CONT]             | ->                               |>>
-    |c[<L>]                   | ->[']'] | -> | TERM | Reference(USE_MARK) |return
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
+    |c[<L>]                   | ->[']'] | ->                     |>> :ref_tail
+    |default                  | TERM | Reference(USE_MARK)       |return
+
+  ; After `[key]`: trait selectors may still follow (`@el[key].trait`)
+  |state[:ref_tail]
+    |eof                      | TERM | Reference(USE_MARK)       |return
+    |c[<XLBL_CONT '.'>]       | ->                               |>>
     |default                  | TERM | Reference(USE_MARK)       |return
 
   |state[:check_space]
