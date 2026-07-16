@@ -156,21 +156,23 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 
 | Document | Description |
 |----------|-------------|
-| [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md) | The estate review: verified state, defects, open decisions |
-| [REBOOT-PLAN.md](REBOOT-PLAN.md) | Prioritized plan: phases, backlog, spikes |
 | [spec/CORE.md](spec/CORE.md) | Full specification (0.9.0-alpha.1 in progress; 0.8.0 tagged `core-v0.8.0`) |
-| [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema) |
-| [notes/analysis.md](notes/analysis.md) | Design rationale and historical context |
+| [spec/msc/CHANGELOG.md](spec/msc/CHANGELOG.md) | Spec changelog + the 0.9 rulings ledger |
+| [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema, positioning) — see its README |
 | [design/examples/](design/examples/) | Comprehensive syntax examples |
+| [CONSUMERS.md](CONSUMERS.md) | Live-usage registry: who parses UDON outside this repo |
+| [_archive/](_archive/) | The record: estate review + reboot plan (drained 2026-07-16), integrated spikes, superseded analyses |
 
 ## Implementation
 
-This repo became the umbrella on 2026-07-09 (see REBOOT-PLAN.md Phase R):
+This repo became the umbrella on 2026-07-09 (record:
+`_archive/REBOOT-PLAN.md` Phase R):
 
 | Location | Description |
 |----------|-------------|
-| [core/](core/) | Rust workspace: `udon-core` parser + arena tree + fixtures (absorbed from the archived v2-io/libudon, full history) |
-| [tools/descent](tools/descent) | Parser-generator submodule (independent repo + gem) |
+| [core/](core/) | Rust workspace: `udon-core` parser + arena tree + fixtures (absorbed from the archived v2-io/libudon, full history); `udon-wasm` (event-driven highlighting + the autocolors engine) |
+| [tools/descent](tools/descent) | Parser-generator submodule (independent repo; tracker `TODO-DESCENT.md` there) |
+| [ux/](ux/) | Editor + agent UX: Obsidian plugin, autocolors, tree-sitter spike, vim, TextMate |
 | [_archive/udon-ruby](_archive/) | Frozen Ruby binding (archived; submodule, not auto-initialized) |
 
 ```bash
@@ -178,7 +180,7 @@ cd core && cargo test --workspace     # build + test the reference parser
 ```
 
 Rust consumers: `udon-core = { git = "https://github.com/v2-io/udon" }`
-(crates.io publication pending — see REBOOT-PLAN.md R8).
+(crates.io publication pending — `TODO-PUBLISHING.md`).
 
 ## Historical Repositories
 
@@ -206,10 +208,12 @@ The original work is preserved in reference repositories:
 
 ## Status
 
-**Rebooted July 2026** — see [REVIEW-JULY-2026.md](REVIEW-JULY-2026.md)
-(the audit) and [REBOOT-PLAN.md](REBOOT-PLAN.md) (the plan).
+**Rebooted July 2026**; the estate review that seeded it and the reboot plan
+are archived — fully drained into the per-area TODO lanes on 2026-07-16 —
+at [_archive/REVIEW-JULY-2026.md](_archive/REVIEW-JULY-2026.md) and
+[_archive/REBOOT-PLAN.md](_archive/REBOOT-PLAN.md).
 
-Current state (2026-07-15):
+Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The
   rebooted spec (escape unification, `<…>` typing, numbers/`0d`, identity
   `key`/`traits`, `@`-inert, warning codes, references as selector tuples)
@@ -229,11 +233,13 @@ Current state (2026-07-15):
 - **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
   (frozen, mining source); pre-0.8 grammar →
   `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`.
-- First consumers: agentic-systems (ASF process maps) and vivarium.
+- **Live consumers are clean under 0.9** — a differential re-scan
+  (2026-07-16, both parsers, event streams diffed) found zero
+  errors/warnings across all six external documents; see `CONSUMERS.md`.
 
 Next: densify the v0.9 fixture group (EOF/Unclosed* behaviors from CORE's
-"End of input" table, legacy-pre-0.8 mining, edge combinations), sweep the
-supplement's residual opens, then tag `core-v0.9.0`.
+"End of input" table, legacy-pre-0.8 mining, edge combinations), rule the
+open spec silences (`spec/TODO-SPEC-CORE.md`), then tag `core-v0.9.0`.
 
 ## How the work is organized
 
@@ -270,9 +276,8 @@ inline, not in a separate valve.
 
 `spec/CORE-VERSION` and the SPEC-CORE target above move together; a
 `core-v…` tag marks each *released* version (latest: `core-v0.8.0`), so the
-tag trails the version file while an alpha is in progress. Migration in progress: the `design/` notes,
-`REVIEW-JULY-2026.md` §4/§7-F, and the `REBOOT-PLAN.md` backlog are still
-draining into these lanes (see the `TODO-META.md` bootstrap task; delete a
-source when empty — `core/PLAN.md` and the retired `JOSEPH-TODO` are already
-drained and deleted). `REVIEW-JULY-2026.md` and `REBOOT-PLAN.md` remain the
-historical *why* and phase plan.
+tag trails the version file while an alpha is in progress. The legacy-tracking
+migration **completed 2026-07-16**: the estate review, reboot plan, 0.9
+supplement, `notes/`, and the Dec-2025 brainstorms are all drained into these
+lanes and archived (`_archive/` keeps the record; the drain rule for future
+`design/`-note pulls lives in `design/README.md`).
