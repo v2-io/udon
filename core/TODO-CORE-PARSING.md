@@ -45,21 +45,19 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       trampoline (see the [future] emission-mode item below); recursive
       stays the single-shot default. Still pending: `--trace` plumbing for
       the pushdown backend.
-- [ ] **[future] Borrow-from-buffer pushdown emission** — close the
-      streaming-throughput gap when a consumer actually needs it. v1 emits
-      owned `Vec<u8>` per content event (one allocation each); since the
-      accumulation buffer already retains everything from the active mark
-      onward, most events could borrow `Event<'buf>` slices, owning only
-      content that a drain would invalidate (the same rule `Cow` already
-      expresses) — delivery contract: "consume before the next
-      push_chunk". Measured basis (2026-07-15, `benches/pushdown.rs`,
-      1 MiB doc): recursive zero-copy 1.25 GiB/s; pushdown-owned ~470-480
-      MiB/s at every chunk size (whole → 256 B; suspension itself costs
-      ~3%). Expectation: since parsing itself sustains 1.25 GiB/s and the
-      gap is allocation-dominated, borrowed emission should land in the
-      0.9-1.2 GiB/s range; the residual is trampoline dispatch. Only worth
-      building against a real streaming consumer with a throughput need —
-      the correctness story is complete without it.
+- [x] ~~[future] Borrow-from-buffer pushdown emission~~ **LANDED 2026-07-16**
+      (descent 344e5d9): `StreamEvent<'a>` with `Cow<'a, [u8]>` content;
+      pushdown emits `Cow::Borrowed` buffer slices except PREPEND-combined
+      content (owned) and SAVE-slot re-emission (owned storage, borrowed
+      re-emit). Delivery contract enforced by the HRTB callback bound —
+      borrowed events live only inside the callback. Measured pair
+      (1 MiB doc): pushdown 321 → 396 MiB/s whole/64k/4k, 301 → 369 at
+      256 B (+23%); recursive control unchanged. **The old 0.9-1.2 GiB/s
+      expectation was wrong** — profiling (macOS `sample`, see
+      `examples/pd_profile.rs`) shows malloc/free is only ~2-3% of pushdown
+      run time; ~73% of samples are inside the generated `run()` trampoline
+      (frame pop/match/push per state hop + inlined state bodies). The
+      residual gap is dispatch-shaped, not allocation-shaped.
 - [ ] **Agent-facing parse diagnostics (the inspectable-stack dividend).**
       The pushdown machine's reified stack can report, at any suspension or
       error: the open element path (names/keys/columns), depths, and the

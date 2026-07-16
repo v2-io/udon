@@ -28,10 +28,11 @@ use crate::parser::{Event, StreamEvent};
 use crate::parser_pd::PushdownParser;
 use crate::tree::{describe_code, Document, ParseError, TreeBuilder};
 
-/// Convert an owned [`StreamEvent`] into an owned-lifetime [`Event`] so the
-/// tree machinery (written against `Event<'a>`) can consume it. Content
-/// becomes `Cow::Owned` — the price of outliving the chunk.
-fn to_owned_event(ev: StreamEvent) -> Event<'static> {
+/// Convert a [`StreamEvent`] (possibly borrowing the parser's buffer) into
+/// an owned-lifetime [`Event`] so the tree machinery (written against
+/// `Event<'a>`) can consume it. Content becomes `Cow::Owned` — the price of
+/// outliving the chunk.
+fn to_owned_event(ev: StreamEvent<'_>) -> Event<'static> {
     macro_rules! bare {
         ($v:ident, $span:expr) => {
             Event::$v { span: $span }
@@ -39,7 +40,7 @@ fn to_owned_event(ev: StreamEvent) -> Event<'static> {
     }
     macro_rules! content {
         ($v:ident, $c:expr, $span:expr) => {
-            Event::$v { content: Cow::Owned($c), span: $span }
+            Event::$v { content: Cow::Owned($c.into_owned()), span: $span }
         };
     }
     match ev {
@@ -147,8 +148,8 @@ impl TreeStream {
         }
     }
 
-    /// Push an owned [`StreamEvent`] (from [`StreamingParser`]).
-    pub fn push_stream_event(&mut self, event: StreamEvent) {
+    /// Push a [`StreamEvent`] (borrowed content is copied here).
+    pub fn push_stream_event(&mut self, event: StreamEvent<'_>) {
         self.push(to_owned_event(event));
     }
 

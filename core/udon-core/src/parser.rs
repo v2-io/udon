@@ -7224,9 +7224,13 @@ pub enum ParseResult {
     NeedMoreData,
 }
 
-/// Event with owned content for streaming across chunk boundaries.
+/// Event for streaming parsers. Content is `Cow`: borrowed from the
+/// parser's buffer where safe (zero-copy), owned where a buffer drain
+/// would invalidate it. Delivery contract: a borrowed event is valid only
+/// during the callback that receives it — copy (`into_owned`) anything
+/// that must outlive the call.
 #[derive(Debug, Clone, PartialEq)]
-pub enum StreamEvent {
+pub enum StreamEvent<'a> {
     ElementStart { span: Range<usize> },
     ElementEnd { span: Range<usize> },
     EmbeddedStart { span: Range<usize> },
@@ -7237,31 +7241,32 @@ pub enum StreamEvent {
     ArrayEnd { span: Range<usize> },
     FreeformStart { span: Range<usize> },
     FreeformEnd { span: Range<usize> },
-    Name { content: Vec<u8>, span: Range<usize> },
-    Text { content: Vec<u8>, span: Range<usize> },
+    Name { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Text { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
     CommentStart { span: Range<usize> },
     CommentEnd { span: Range<usize> },
-    Attr { content: Vec<u8>, span: Range<usize> },
-    StringValue { content: Vec<u8>, span: Range<usize> },
-    BareValue { content: Vec<u8>, span: Range<usize> },
-    BoolTrue { content: Vec<u8>, span: Range<usize> },
-    BoolFalse { content: Vec<u8>, span: Range<usize> },
-    Nil { content: Vec<u8>, span: Range<usize> },
-    Interpolation { content: Vec<u8>, span: Range<usize> },
-    Reference { content: Vec<u8>, span: Range<usize> },
-    RawContent { content: Vec<u8>, span: Range<usize> },
-    Raw { content: Vec<u8>, span: Range<usize> },
-    Integer { content: Vec<u8>, span: Range<usize> },
-    Float { content: Vec<u8>, span: Range<usize> },
-    Rational { content: Vec<u8>, span: Range<usize> },
-    Complex { content: Vec<u8>, span: Range<usize> },
-    Warning { content: Vec<u8>, span: Range<usize> },
-    BlankLine { content: Vec<u8>, span: Range<usize> },
+    Attr { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    StringValue { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    BareValue { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    BoolTrue { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    BoolFalse { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Nil { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Interpolation { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Reference { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    RawContent { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Raw { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Integer { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Float { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Rational { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Complex { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    Warning { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
+    BlankLine { content: std::borrow::Cow<'a, [u8]>, span: Range<usize> },
     Error { code: ParseErrorCode, span: Range<usize> },
 }
-impl StreamEvent {
-    /// Convert from borrowed Event to owned StreamEvent.
-    fn from_event(event: Event<'_>, offset: usize) -> Self {
+impl<'a> StreamEvent<'a> {
+    /// Convert a borrowed Event, re-basing spans to global offsets.
+    /// Content passes through as-is (still borrowed where it was).
+    fn from_event(event: Event<'a>, offset: usize) -> Self {
         match event {
             Event::ElementStart { span } => {
                 StreamEvent::ElementStart { span: (span.start + offset)..(span.end + offset) }
@@ -7295,13 +7300,13 @@ impl StreamEvent {
             }
             Event::Name { content, span } => {
                 StreamEvent::Name {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Text { content, span } => {
                 StreamEvent::Text {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
@@ -7313,97 +7318,97 @@ impl StreamEvent {
             }
             Event::Attr { content, span } => {
                 StreamEvent::Attr {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::StringValue { content, span } => {
                 StreamEvent::StringValue {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::BareValue { content, span } => {
                 StreamEvent::BareValue {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::BoolTrue { content, span } => {
                 StreamEvent::BoolTrue {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::BoolFalse { content, span } => {
                 StreamEvent::BoolFalse {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Nil { content, span } => {
                 StreamEvent::Nil {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Interpolation { content, span } => {
                 StreamEvent::Interpolation {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Reference { content, span } => {
                 StreamEvent::Reference {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::RawContent { content, span } => {
                 StreamEvent::RawContent {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Raw { content, span } => {
                 StreamEvent::Raw {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Integer { content, span } => {
                 StreamEvent::Integer {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Float { content, span } => {
                 StreamEvent::Float {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Rational { content, span } => {
                 StreamEvent::Rational {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Complex { content, span } => {
                 StreamEvent::Complex {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::Warning { content, span } => {
                 StreamEvent::Warning {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
             Event::BlankLine { content, span } => {
                 StreamEvent::BlankLine {
-                    content: content.into_owned(),
+                    content,
                     span: (span.start + offset)..(span.end + offset),
                 }
             }
@@ -7484,7 +7489,7 @@ impl StreamingParser {
     /// Call `finish()` after the last chunk to handle any remaining content.
     pub fn parse<F>(&mut self, chunk: &[u8], mut on_event: F) -> ParseResult
     where
-        F: FnMut(StreamEvent),
+        F: for<'e> FnMut(StreamEvent<'e>),
     {
         // Append new chunk to buffer
         self.buffer.extend_from_slice(chunk);
@@ -7537,7 +7542,7 @@ impl StreamingParser {
     /// This triggers EOF handling for any incomplete constructs.
     pub fn finish<F>(mut self, mut on_event: F)
     where
-        F: FnMut(StreamEvent),
+        F: for<'e> FnMut(StreamEvent<'e>),
     {
         if self.buffer.is_empty() {
             return;
