@@ -2,11 +2,12 @@
 
 **Status:** DRAFT for review (2026-07-15/16). Not CORE.  
 **Active carrier** for the attribute-model decision.  
-**Substrate (decided / switch-invariant):**  
-[`attribute-model-proposal-2-substrate.md`](attribute-model-proposal-2-substrate.md)  
-— frame, taxonomy, first-char typing, one-node topology, no attr-under-attr
-*maps*, warning-placement, value-position `\`, charset baseline. Import it;
-this document only states the **switch and binding** layer.
+**Substrate (decided model floor):**  
+[`attribute-model-proposal-3-substrate.md`](attribute-model-proposal-3-substrate.md)  
+— frame, binding dualism, prose-shaped text, segment arrays, flags, nodes,
+scan, charset, warnings. This document is the **narrative + residual
+editorial opens**; prefer the substrate for implementable decided rules.
+Archaeology: `attribute-model-proposal-2-substrate.md`.
 
 **Supersedes as active proposal prose:**  
 [`attribute-model-proposal-2.md`](attribute-model-proposal-2.md) (keep as
@@ -28,10 +29,11 @@ Examples are **[PROPOSED]** unless marked otherwise.
 ### 0.1 One-sentence thesis
 
 **Plain attributes always take a value; flags are spelled `:key?`; trailing
-text is a prose-shaped blob whose *owner* is decided by a thin dualism
-(open attr vs same-line element vs error); multi-segment text under one
-attr is a heterogeneous array (like stacking), with a warning when a
-finished value is extended by more same-line text on a block attr line.**
+text is a prose-shaped blob whose *owner* is decided by open attr vs
+same-line element vs ordinary indent prose; multi-segment values under one
+attr are heterogeneous arrays (like stacking), with a strong warning when a
+finished value is extended by more same-line text (esp. block line — joining
+onto the element line rebinds the tail).**
 
 ---
 
@@ -58,7 +60,7 @@ finished value is extended by more same-line text on a block attr line.**
 1. Key **ends with** `?` for flag behavior. Wire name includes `?` (not
    stripped). Keys may also contain `?` `*` `!` `+` and `/` unquoted
    (charset); only a **terminal** `?` selects flag semantics.
-2. Next token in value position:
+2. Next thing in value position:
    - exactly `true` / `false` / `null` / `nil` (alone) → that is the value;
    - **anything else** (including `|node`, bare words, `:next`, EOL, …) →
      value snaps to **`true`**, and that material is **re-owned** by the
@@ -113,6 +115,12 @@ block-deeper-only requirement).
   is an **array of segments** when there is more than one piece (including
   pure multi-Text from line breaks) — same spirit as stacking and
   always-list `traits`.
+
+**Sameline bare values and spaces:** a **mid-line** bare value (more attrs
+still to the right) is a **scalar** — no unquoted spaces; quote if the
+value needs spaces. **Unquoted multi-word text is only for the last**
+trailing value material on the line (end-of-line open-attr text blob).
+See substrate §S5.
 
 **User guidance (non-normative):** prefer simple scalar shapes for
 readability; mixing is allowed technically via arrays / stacking.
@@ -265,10 +273,11 @@ Open attr; first-line text + deeper text = one multi-line text value
                 premise that multiple sequential texts are equivalent to their concatenation
 
              :but-this-one <7:02pm>
-               should throw an error because this text is trying to bind to the attribute that already has a value
+               ; finished value + deeper second value → strong WARN + array segment
+               extra deeper text
 
-             :this-one-though <1M> and here is some dangling text ; I vote error because it's unambiguous to the parser but likely ambiguous to user
-                                                                  ; and because conceptually it's equivalent to the one right above
+             :this-one-though <1M> and here is some dangling text ; strong WARN + segment array
+                                                                  ; (join onto element line would rebind tail as prose)
              This text is unambiguously a child of child.
    :this will get a warning but is normal text because additional attributes for |e were foreclosed when |child changed the phase to children...
    And thisHere's the thing about that child that just got defined... This is unambiguously its text...
@@ -307,9 +316,13 @@ of the **current owner** (parent element, or node if inside a node value):
 
 ```udon
 |el :first value :another with some text
-; first  => "value"
-; another => "with some text"   (open attr gets trailing text blob)
-; model sketch: <|el>{ first: "value", another: "with some text" }
+; first  => "value"              (mid-line bare scalar — no spaces)
+; another => "with some text"  (end of line — unquoted spaces OK)
+; model: <|el>{ first: "value", another: "with some text" }
+
+|el :first "sorry, got to quote" :second but not this one necessarily...
+; first  => "sorry, got to quote"   (mid-line scalar with spaces → quotes)
+; second => "but not this one necessarily..."  (end of line)
 
 |el :first value :another "with" some text
 ; first   => "value"
@@ -357,10 +370,9 @@ Not CORE prose; for implementers:
    ordered multi-value under one key — same host view as stacking.
 3. **Flags:** `BoolTrue` / `BoolFalse` / `Nil` as today for settled flags.
 4. **Warning codes (sketch):**  
-   - `AttributeValueExtendedOnBlockLine` — §2.3  
-   - phase-late attr-looking prose (existing advisory family)  
-   - `SecondAttributeValue` / deeper continuation after finished value — error  
-   - `DanglingTextWithoutOwner` — §2.2 row 3  
+   - `AttributeValueExtendedByTrailingText` — §2.3 (finished + same-line tail)  
+   - `SecondAttributeValue` — §2.4 / second node (strong warn + still ingest)  
+   - phase-late attr-looking prose — warn only, pull in as normal text
 
 ---
 
@@ -388,8 +400,8 @@ comments; identity `$` sugar; core scalars; `<…>` interim; substrate frame.
 |-----------|-----|
 | `:disabled` flag | `:disabled?` or `:disabled true` |
 | `\|el :a \|b` meaning child | write `:a? \|b` for flag+child; plain `:a \|b` means node value |
-| Multi-word bare on one line as one string | quotes, deferred block, or accept first-token + el prose |
-| Block `:attr "x" more` | works as array + **warn**; or quote all / deferred block |
+| Mid-line scalar with spaces | **quote** it; unquoted multi-word text only at **end of line** |
+| Block `:attr "x" more` | strong **warn** + segment array; or quote all / deferred block |
 
 ---
 
@@ -422,9 +434,12 @@ Most prior P3-* items are **decided** (this pass). Residual:
 |el :ready? :count 3
 |el :ready? false
 
-; multi-attr + open-attr trailing text
+; multi-attr: mid-line bare scalar (quote if spaces); end-of-line text may have spaces
 |el :first value :another with some text
 ; first => "value"; another => "with some text"
+
+|el :first "sorry, got to quote" :second but not this one necessarily...
+; first => "sorry, got to quote"; second => "but not this one necessarily..."
 
 ; finished quote then el prose
 |el :first value :another "with" some text

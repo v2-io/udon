@@ -16,12 +16,12 @@
       undercuts CORE-as-sole-source-of-truth and it has already caused confusion
       (cited as if corroborating CORE). Decide: delete / reduce to a pointer /
       keep. Deferred by Joseph for a deliberate call.
-- [ ] **Attribute model — ratify from proposal 3 + substrate.** Active:
+- [ ] **Attribute model — ratify from proposal 3 + substrate 3.** Active:
+      - **[design/attribute-model-proposal-3-substrate.md](../design/attribute-model-proposal-3-substrate.md)**
+        — decided model floor (binding, segments, flags, prose-shaped text).
       - **[design/attribute-model-proposal-3.md](../design/attribute-model-proposal-3.md)**
-        — semantic `?`, binding dualism, segment arrays, §2.3 warn+ingest.
-      - **[design/attribute-model-proposal-2-substrate.md](../design/attribute-model-proposal-2-substrate.md)**
-        — decided switch-invariant substrate.
-      Archaeology: proposal-2, [attribute-model-2026-07.md](../design/attribute-model-2026-07.md).
+        — narrative + residual editorial opens.
+      Archaeology: proposal-2 / 2-substrate, [attribute-model-2026-07.md](../design/attribute-model-2026-07.md).
       CORE "Complex Attribute Values" unsettled until ratification.
       Fixture `structured_attribute_value` is `events: []` until then.
       *(discuss w/ Joseph)*
@@ -37,6 +37,13 @@
       (Joseph, 2026-07-15) until dialects/templating settle. Provisional
       contract is in CORE ("Inline Raw Content") and green in fixtures;
       revisit for tighter rules later.
+- [ ] **Revisit the 0.9 supplement when the 0.9.0-alpha.1 spec text is
+      essentially finished.** [`TODO-SPEC-CORE-0.9-supplement.md`](TODO-SPEC-CORE-0.9-supplement.md)
+      holds the attribute-model nail-downs (boundary-marker set, embedded
+      context, event vocabulary, warning-code names, CORE collateral,
+      substrate text alignment). Work them at natural spots during the spec
+      writing (surface a recommendation to Joseph at each), then sweep
+      whatever remains before promoting past alpha.
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*

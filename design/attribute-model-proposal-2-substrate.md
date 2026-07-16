@@ -1,10 +1,11 @@
 # Attribute model — substrate (switch-invariant)
 
-**Companion to** [`attribute-model-proposal-3.md`](attribute-model-proposal-3.md)
-(active binding proposal). Archaeology: proposal-2.
+> **Superseded by
+> [`attribute-model-proposal-3-substrate.md`](attribute-model-proposal-3-substrate.md).**  
+> Do not implement from this file (literal-only text, both-roots parent-owns-tail,
+> hard second-node error are obsolete).
 
-**Status:** **DECIDED** switch-invariant substrate for CORE. No open forks
-here — unresolved binding questions live only in proposal 3.
+**Status:** ARCHIVES.
 
 Independent of the semantic-`?` switch: if that switch were rejected, this
 substrate would still stand (with a different binding doc).

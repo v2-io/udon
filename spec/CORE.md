@@ -559,9 +559,9 @@ the following indented lines:
 Attribute followed by newline+indent = structured value -- **as authoring
 intent**. Event shape, ownership, and flag/value policy are **not settled
 in this version**. Active design carriers (not yet CORE):
-`design/attribute-model-proposal-3.md` (binding dualism, flags, segment
-arrays) and `design/attribute-model-proposal-2-substrate.md` (decided
-substrate). Do not treat the current parser's emission as the contract.
+`design/attribute-model-proposal-3-substrate.md` (decided model floor) and
+`design/attribute-model-proposal-3.md` (narrative). Do not treat the
+current parser's emission as the contract.
 
 ### Value Terminator Rules
 
