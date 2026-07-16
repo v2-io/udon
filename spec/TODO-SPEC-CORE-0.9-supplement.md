@@ -1,152 +1,75 @@
 # TODO-SPEC-CORE 0.9 supplement — attribute-model nail-downs
 
-Small rulings and collateral edits the 0.9 attribute-model promotion
-(proposal-3 + substrate-3 → CORE) forces. Each gets decided either at its
-natural spot while writing the spec (with a recommendation surfaced to
-Joseph there), or in the sweep-up pass when the 0.9.0-alpha.1 spec text is
-essentially finished (see the revisit item in `TODO-SPEC-CORE.md`).
+Rulings ledger + residual opens for the 0.9 attribute-model promotion.
+Everything ruled below is **in CORE** (each with its date inline there); this
+list exists so nobody re-opens settled questions. Sweep the residual opens
+when the 0.9.0-alpha.1 text is essentially finished (revisit item in
+`TODO-SPEC-CORE.md`).
 
-**Context — ruled 2026-07-15, carried here so the items below make sense:**
-the sameline scan stays *provisionally open* at a bare value token's
-boundary; the next non-space character decides — a head-position marker
-(`:` next attr, `\` force-prose, guarded `|`, guarded `@`, framed ` ; `,
-fence, guarded `!`) means the token finished as a single-token value and the
-scan continues; plain text commits the rest of the line as a text blob owned
-per binding priority (open attr first). `|el :alpha true story` →
-`alpha="true story"` (no keyword carve-out; flags cover keyword-then-prose).
-Version plan: v0.8 frozen + tagged; the model is landing as **0.9.0-alpha.1**
-with the `core/fixtures/v0.9/` group.
+## Ruled (in CORE — do not re-open)
 
-**Ruled 2026-07-15 (review pass, now in CORE — listed so nobody re-opens
-them):** `@` guard extended to `.` (`@.trait-only` parses) and `@` has equal
-footing with `|` in the sameline scan; embedded `|{…}` framed ` ; ` comments
-ruled OUT for now (bare `;` literal, `;{…}` only — revisit with dialects);
-`\`-forced text (head- or value-position) is line-verbatim but inline forms
-still fire, and framed ` ; ` is literal there; spaced-trait identity form
-(`|name[key]? .trait`) dropped — identity is contiguous except the trailing
-spaced suffix; sameline tail prose DOES enter children phase (later block
-`:key` = prose + `AttributeAfterChildren`); anomaly posture = warn-and-keep
-(a) wherever coherent, errors are non-halting events, drop/halt/reject are
-AST/app-layer config (CORE "Anomaly posture").
+**2026-07-15 (Joseph):** bare-token boundary rule (scan provisionally open at
+a bare token's boundary; marker → single-token value, text → blob to
+ownership); no keyword carve-out (`:alpha true story` → `"true story"`);
+`@` guard + `.` and `@` equal-footing with `|` in the sameline scan;
+embedded framed ` ; ` out for now (bare `;` literal; revisit with dialects);
+`\`-forced text = line-verbatim but inline forms fire, framed ` ; ` literal
+(P3-3); spaced-trait form dropped (identity contiguous except trailing
+spaced suffix); sameline tail enters children phase; anomaly-posture ladder
+(warn-and-keep (a) wherever coherent; errors non-halting; drop/halt/reject =
+AST/app config).
+
+**2026-07-16 (Joseph):** R2 embedded = element-rooted sameline (+`}`), with
+the `\`-boundary content idiom and unspecified-in-0.9 framed-`;`-after-`\`;
+`MissingAttributeValue` = error event **+ synthesized `Nil`** (stream never
+carries less shape than the source suggested); R3 ownership never changes at
+a `\` (block-line trailing = warn+stack, uniformly: **two values on one
+attribute always warn and stack — never error, never drop**); R4 flag
+semantics follow the NAME (quoted ≡ bare; `$?` aligns by construction); R5
+flat stacking wire (every `Attr` carries one value; all multiplicity =
+re-emitted `Attr`; no AttrStart/AttrEnd; only literal `[…]` arrays on the
+wire).
+
+**2026-07-16 (delegated to Claude, per-item calls recorded in CORE):**
+EOF = universal implicit closer with per-construct `Unclosed*` table
+(CORE "End of input"); flag + deeper block = `AttributeSecondValue`
+warn+stack (flag rule item 4); mid-token typed-path failure = ordinary bare
+token, boundary rule at its end (CORE "The Scan"); raw block usable as node
+value sameline too, ordinary raw-base rules (CORE "Inline Raw Content"
+tail note); `<…>` envelopes single-line (`UnclosedTypeEnvelope` warn +
+string pass-through); interpolation ends at first `}}`; tabs illegal in
+indentation only (content tabs pass through); plus editorial: warning-table
+reword (`CommentMissingFollowingSpace`, `InconsistentIndentation`),
+wire-vs-view round-trip caution (Host Views), node-value one-way-door
+caution (Node Values), prose-base exception cross-ref (Hierarchy),
+Document-layer mini-definition, `\` added to the head row, Positional
+Contexts examples moved out of table cells (formatter-stability).
 
 ## Open
 
-**Status 2026-07-15: the 0.9 CORE Attributes text is DRAFTED and
-review-passed once** (fresh-eyes agent; blockers + significant findings
-fixed). Items marked *drafted (R#)* are resolved in the draft by an explicit
-recommendation — open until Joseph confirms each.
-
-### Draft rulings awaiting confirmation
-
-- [x] **Embedded context (`|{…}`) under the new model** — *ratified 2026-07-16 (R2)*:
-      embedded = element-rooted sameline with `}` as an extra terminator.
-      `|{input :required}` → non-halting `MissingAttributeValue` error event
-      (no invented value; host/AST decides key-present-valueless vs drop);
-      write `:required?`. Open bare attr's tail is the attr's blob through
-      `}`: `|{a :href /home :title Home here}` → `title="Home here"`, no
-      content (canonical-example migration). Quote or boundary-`\` to leave
-      content: `|{a :href /home :title Home \ Welcome home!}` →
-      title="Home", content " Welcome home!". Framed ` ; ` inside embeds
-      remains unspecified in 0.9 (dialect-era revisit). In CORE "Contexts
-      and Terminators" + plain-attr error wording. Fixture updates follow
-      (`attributes.yaml::embedded_flag_attr_before_brace` and kin).
-- [x] ~~R3 block-line `\` at the boundary~~ **RATIFIED 2026-07-16, opposite
-      of the draft**: ownership is unchanged by `\` — element line → element
-      prose; block attr line (no element on the line) → warn + stack as a
-      further segment of the attribute (the uniform two-values rule: **warn
-      and stack, never error, never drop**). The `\` only forces text mode
-      (no comment affordance). CORE "Value-Position `\`".
-- [x] ~~R4 quoted keys never flag~~ **RATIFIED 2026-07-16, opposite of the
-      draft**: flag semantics follow the NAME — terminal `?` flags whether
-      quoted or bare; `:'ready?'` ≡ `:ready?`. The `?` marker was chosen to
-      align with `$?`; the suffix sugar `|el?` → `:'$?' true` is
-      flag-compliant as written, and longhand `:'$?'` defaults true like the
-      suffix means. `$!`/`$*`/`$+` stay plain (sugar supplies explicit true).
-      CORE "Attribute Keys and Flags" + Element Suffixes footnotes.
-- [x] ~~R5 event vocabulary~~ **RATIFIED (in direction) 2026-07-16, better
-      than both drafted options — flat stacking wire (Joseph's ETF-style
-      unification)**: every `Attr` carries exactly one value; ALL
-      multiplicity = re-emitting the `Attr` (author stacking, warn+stack,
-      multi-line segments, inline forms in blobs — one mechanism). No
-      `AttrStart`/`AttrEnd`; no wire-level "segment array" (literal `[…]`
-      only); node-vs-flag disambiguation by what follows the Attr.
-      Segmentation rhythm deliberately flexible — refine by iterating
-      grammar + fixtures together rather than pre-authoring exact rhythms.
-      CORE "Event Encoding (0.9 Wire)".
-- [ ] **Warning-code names (P3-7)** — *drafted as working names* in the CORE
-      warning-codes table: `AttributeValueExtendedByTrailingText`,
-      `AttributeSecondValue`, `AttributeAfterChildren`; errors
-      `MissingAttributeValue`, `AttributeUnderAttribute`. Dead forecast codes
-      pruned. Finalize strings at fixture landing.
-
-### From the 2026-07-15 fresh-eyes review — needing rulings
-
-- [ ] **EOF behavior (review S11).** Unspecified everywhere: EOF inside
-      `|{…}` (indentation-immune, only `}` closes — what if it never comes?),
-      inside a freeform fence (closer "must be followed by a newline" — file
-      ends without one?), inside quoted strings / `<…>` envelopes / `[…]` /
-      `!{{…}}` / an open deferred attribute value; whether pending
-      ElementEnds flush. Matters doubly for streaming. The anomaly-posture
-      (a) instinct suggests: close everything implicitly at EOF, warn/error
-      per construct — needs a per-construct table. *(discuss w/ Joseph)*
-- [ ] **Flag key alone on a block line with deeper material (review M3).**
-      `:a?` on its own line, deeper indented lines follow. Flag finishes
-      `true` at EOL, so is the deeper text `AttributeSecondValue` ingest,
-      element prose, or error? Recommendation: `AttributeSecondValue`
-      warn+ingest, for uniformity with finished values. *(discuss w/ Joseph)*
-- [ ] **Mid-token typed-path failure → single token or blob (review M5).**
-      Recommendation: after fall-through, the token is an ordinary bare
-      token and the boundary rule applies at its end. So `:x 12ab :y 3` →
-      `x="12ab"`, `y=3` (boundary is `:`), while `:x 12ab more` → blob
-      `x="12ab more"` (boundary is text). One sentence in CORE "The Scan"
-      settles it. *(discuss w/ Joseph)*
-- [ ] **Raw block as sameline node value (review M4).** `|el :script !:sh:`
-      + deeper lines — allowed? Where does the raw body indent from?
-      Currently only the block-line-initial form is illustrated. *(discuss
-      w/ Joseph)*
-- [ ] **`<…>` envelope across newlines (review M2).** `:x <a` EOL `b>` —
-      error, multi-line envelope, or blob text? Recommendation: envelope is
-      single-line at 0.9 (newline before `>` = unclosed → warn + pass
-      through as text); revisit with dialects. *(discuss w/ Joseph)*
-- [ ] **Interpolation terminator (review M1).** `!{{ {"a":1} }}` — first
-      `}}` or brace-counting? Core lexing question even though the language
-      inside is DYNAMICS. *(discuss w/ Joseph)*
-- [ ] **Tabs scope (review M6).** Tab in indentation is `NoTabs` — but tab
-      *inside* prose or a value? Tabs-only unmixed indent? One sentence.
+- [ ] **`AttributeUnderAttribute` recovery shape** — where do the inner
+      line's bytes land after the error? (Dropping violates keep-everything;
+      ingest-as-what is unruled.) Fixture `attr_structured::attr_under_attr_error`
+      is panic-only until the grammar iteration settles it — decide there.
 - [ ] **Reconsider the "guard" framing / Marker Recognition section**
-      (Joseph, 2026-07-15): reads as lexical-implementation detail,
-      partially redundant with each marker's own section (it was written
-      pre-spec-read by an earlier agent). Options: fold each guard into its
-      marker's section; demote to a non-normative recognition summary; or
-      keep but tighten. Do this together with the hard-wrap removal pass,
-      after the model text settles.
-
-### Editorial / smaller (review minors)
-
-- [ ] `CommentMissingFollowingSpace` description self-undermines (M9) — only
-      coherent for no-frame contexts; reword.
-- [ ] `InconsistentIndentation` description's comment-continuation clause
-      (M10) — a dedented continuation line ends the comment; state which
-      case actually warns.
-- [ ] Stack-vs-list host-view collapse (M7) — `:x 1 :x 2` vs `:x [1 2]`
-      read identically through the ergonomic view; add a wire-vs-view note
-      in Host Views.
-- [ ] Node-value one-way door (M14) — `|api :headers |header :k v :timeout 30`
-      silently gives `timeout` to the header; true by rule, add a called-out
-      trap note in Node Values.
-- [ ] Prose-deeper-than-base swallows structure (M15) — cross-reference the
-      Head Position prose exception from the Hierarchy chapter.
-- [ ] Undefined forward terms (M13) — "content-base" used before defined;
-      "Document layer/builder" never defined; "pragma" load-bearing for
-      unlabelled `<…>` dispatch but undeclarable; `\` missing from the
-      "head" row of the Positional Contexts table.
-
-### Carried from before
-
-- [ ] **Substrate/proposal text alignment with the boundary ruling.** Update
-      `design/attribute-model-proposal-3-substrate.md` §S5 (replace the
-      mid-line/end-of-line wording with the boundary rule; correct the
-      "NOT" example — `|el :first value with spaces :another x` →
-      `first="value with spaces :another x"`; drop the "letter-first bare
-      value" framing; drop the spaced-trait form if mentioned) and §S8 (add
-      the boundary-`\` case); touch the matching proposal-3 §4/§10 examples.
+      (Joseph, 2026-07-15): reads as lexical-implementation detail, partially
+      redundant with each marker's own section. Options: fold each guard into
+      its marker's section; demote to a non-normative recognition summary; or
+      keep but tighten. Deferred until the 0.9 model text fully settles (an
+      editorial restructure, not a ruling).
+- [ ] **Bare-pipe table fragility** — bare `|` inside table-cell code spans
+      (ruled for legibility 2026-07-16) is corrupted *in source* if a table
+      formatter re-parses the cells (it split the Positional Contexts table
+      once). Positional Contexts is now pipe-free; the remaining bare-pipe
+      tables (Prefixes, desugar, Value Kinds, Comments, terminators, inline
+      syntax, naming) are fine until a formatter sweeps them. If that
+      happens: de-pipe those cells the same way (examples into udon blocks),
+      or configure the formatter to skip CORE.md.
+- [ ] **Substrate/proposal text alignment.** Update
+      `design/attribute-model-proposal-3-substrate.md` §S5 (boundary rule
+      replaces mid-line/end-of-line wording; fix the "NOT" example —
+      `|el :first value with spaces :another x` → `first="value with spaces
+      :another x"`; drop "letter-first bare value" framing; drop the
+      spaced-trait form) and §S8 (boundary-`\`); touch proposal-3 §4/§10
+      examples; note the flat-wire R5 outcome superseding §S15/P3 §6
+      sketches.

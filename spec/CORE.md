@@ -28,10 +28,10 @@ Key properties:
 
 | Code                                   | Description                                                                                                                                                      | Typical layer *(non-normative)*             |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `InconsistentIndentation`              | Prose (or comment continuation) line less indented than the established content-base; base rebases to the new column                                             | event                                       |
+| `InconsistentIndentation`              | Prose (or comment-continuation) line indented less than the established content-base but still deeper than the owner's column; the base rebases to the new column (a line at or left of the owner's column is an ordinary dedent, not this warning). "Content-base" is defined in Automatic Prose Dedentation.                                             | event                                       |
 | `NoDialectsLoaded`                     | A `<…>` typing envelope was recognized but no dialects are bound; value passed through as the plain string `"<…>"`                                               | event                                       |
 | `EscapeOutsideHeadPosition`            | A leading `\` deeper than an established prose content-base looks like force-prose escape but is not head position (literal passthrough)                         | **AST** — not the event parser's inner loop |
-| `CommentMissingFollowingSpace`         | Optional advisory: a `;` that opened a comment without the both-sides frame where that frame applies                                                             | host (advisory)                             |
+| `CommentMissingFollowingSpace`         | Optional advisory for **no-frame** comment positions (root / block lines / after attribute values): a `;` that opened a comment with no space after it (`;comment`). In frame-required positions an unframed `;` is literal, so this advisory never applies there.                                                             | host (advisory)                             |
 | `AttributeValueExtendedByTrailingText` | Same-line trailing text after a block attribute's finished value; ingested as a further segment of that key's value array (see Attributes, Multi-Segment Values) | event                                       |
 | `AttributeSecondValue`                 | Deeper second value (text or sibling node) under an attribute whose value is finished, without a new `:key`; ingested as a further segment                       | event                                       |
 | `AttributeAfterChildren`               | A line-initial `:` at an ancestor-attribute column after that element entered its children phase; treated as prose of the column's owner                         | event or AST                                |
@@ -51,6 +51,23 @@ When input is malformed or surprising, a response falls somewhere on this ladder
 | (e) | error, reject the document | everything |
 
 **The core event parser commits to (a) wherever a coherent (a) exists** -- and so far one has been found for every known case (segment-ingest, pass-through, prose fallback with the marker restored, base-rebasing). Where it cannot (structurally unclosed constructs, tabs), it emits an **error event and keeps parsing** -- errors are events in the stream, not exceptions; nothing after the error point is silently discarded. Levels (c)-(e) are **not** event-parser behavior at all: whether an application treats accumulated warnings/errors as grounds to drop, halt, or reject is an AST-/app-layer decision, configured by the consumer -- to be specified when the schema and AST-parsing layers are built out. Error-code vocabulary follows the same working-name convention as warnings until then.
+
+### End of input (EOF)
+
+**EOF is the universal implicit closer** (resolved 2026-07-16, delegated): every pending `End` event flushes, innermost-first, exactly as a full dedent would fire them. A construct whose content is already coherent closes *silently*; a construct still awaiting a **delimiter** closes with its captured content emitted plus an `Unclosed*` anomaly. A missing final newline is never, by itself, an anomaly (EOF is newline-equivalent everywhere a rule says "followed by a newline").
+
+| Open at EOF | Behavior |
+|-------------|----------|
+| Elements, directives, comments, deferred attribute values (indentation-scoped) | Close silently; `End` events flush in order |
+| Quoted string | Captured content as `StringValue` + `Error UnclosedStringValue` |
+| `[...]` array | Items so far + `Error UnclosedArray`; `ArrayEnd` flushes |
+| `\|{...}` embedded | Content so far + `Error UnclosedEmbedded`; `EmbeddedEnd` flushes |
+| `;{...}` inline comment | Content so far + `Error UnclosedInlineComment`; `CommentEnd` flushes |
+| `!{{...}}` interpolation | Captured expression + `Error UnclosedInterpolation` |
+| `<...>` envelope | Captured text as string + `Warning UnclosedTypeEnvelope` (envelopes are single-line -- see Explicit Typing) |
+| Freeform fence | Body so far + `Warning UnterminatedFreeform` (the body is coherent; the author likely forgot the closer) |
+
+Nothing is ever discarded at EOF; the errors/warnings mark what the author probably intended to finish. (For streaming parsers, "EOF" means the consumer's explicit end-of-input signal, not a chunk boundary.)
 
 ---
 
@@ -75,13 +92,20 @@ This is why temporal typing, the `!` dynamics language, and the prose Markdown s
 
 The parser operates in different contexts that affect parsing behavior:
 
-| Term         | Meaning                                                                                                           | Example                          |                                             |
-| ------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------- |
-| **block**    | On its own indented line                                                                                          | `:key value` as child of element |                                             |
-| **sameline** | On the element definition line                                                                                    | `                                | el :key value Content`                      |
-| **inline**   | Embedded in prose/text flow                                                                                       | `                                | {em text}`, `;{comment}`, `!{dir}`          |
-| **embedded** | Inside `                                                                                                          | {...}` delimiters                | Synonym for inline element context          |
-| **head**     | Start of any line (at a structural column), *or* sameline scan through elements/attributes -- before prose begins | where `                          | ` `:` `!` `;` `@` and fences are recognized |
+| Term | Meaning |
+|------|---------|
+| **block** | On its own indented line (`:key value` as a child line of an element) |
+| **sameline** | On the element definition line |
+| **inline** | Embedded in prose/text flow (`;{comment}`, `!{dir}`, the braced element form) |
+| **embedded** | Inside the braced-element delimiters -- synonym for inline element context |
+| **head** | Start of any line (at a structural column), *or* sameline scan through elements/attributes before prose begins -- where all the markers (pipe, `:`, `!`, `;`, `@`, fences) and the `\` escape are recognized |
+
+```udon
+|el :key value Content            ; sameline: attrs + content on the definition line
+|el
+  :key value                      ; block: its own indented line
+  prose with |{em inline} content ; inline/embedded within prose flow
+```
 
 ### Head Position
 
@@ -339,6 +363,8 @@ The wire form carries the specially-designated attributes as-is. Like Markdown, 
 
 `traits`-always-a-list is the one normalization a host applies beyond the plain desugaring; everything else is a straight read of the attribute stream.
 
+**Wire vs. view (a round-trip caution):** the ergonomic views can collapse distinctions the wire preserves -- `:x 1 :x 2` (two stacked assignments) and `:x [1 2]` (one list value) may both read as `[1, 2]` through a naive accessor. The wire always distinguishes them (two `Attr` events vs. one `Attr` + one array); round-trip and provenance-sensitive tooling should work from `all_attributes` / the event stream, not the flattened view.
+
 ---
 
 ## Attributes
@@ -377,6 +403,7 @@ A **terminal `?` on the key selects flag semantics** -- quoted or bare, the same
 
 1. Exactly `true`, `false`, `null`, or `nil` **alone** -> that is the flag's value (consumed).
 2. **Anything else** -- a bare word, `|node`, `:next`, end of line -- the flag snaps to **`true`** and that material is *re-owned* by the continuing scan; it is never the flag's body.
+3. A flag's value is always finished at its own line, so deeper indented material under a flag key is the ordinary finished-value case: ingested as further segments under that key with the `AttributeSecondValue` warning (resolved 2026-07-16, delegated -- uniform with every finished value).
 
 ```udon
 |el :a?                       ; a? = true
@@ -418,7 +445,7 @@ A `:` (passing its guard) enters attribute mode. After each key the parser colle
   :a 1 :b 2      ; a = 1, b = 2  (two attributes; 0.8 made b part of a's string)
 ```
 
-Most value shapes announce their extent by their first character -- a digit or sign commits to a number, `"`/`'` to a string, `<` to an envelope, `[` to a list, `@` to a reference, `|` to a node -- and self-terminate. (A committed token that goes wrong mid-way, like `32849...x`, falls through to text -- token-local, no unbounded lookahead.) The interesting case is a bare word, where UDON must decide between "short scalar value" and "the start of running text." The rule:
+Most value shapes announce their extent by their first character -- a digit or sign commits to a number, `"`/`'` to a string, `<` to an envelope, `[` to a list, `@` to a reference, `|` to a node -- and self-terminate. A committed token that goes wrong mid-way, like `12ab`, falls through to being an ordinary bare token -- token-local, no unbounded lookahead -- and the boundary rule below then applies at its end exactly as for a letter-first token (`:x 12ab :y 3` gives `x = "12ab"`, `y = 3`; `:x 12ab more` gives the blob `"12ab more"`). The interesting case is a bare word, where UDON must decide between "short scalar value" and "the start of running text." The rule:
 
 **A bare value token holds the sameline scan provisionally open at its boundary. The next non-space character decides:**
 
@@ -536,6 +563,7 @@ An attribute's value may be a node -- the attribute *is* that element (or raw bl
 - To make a node a **child of the element** while a flag is set, use a flag key: `|el :a? |beta` -> `a?` = true, `|beta` child of `|el`.
 - **No attribute-under-attribute.** A deeper line that is itself `:key` directly under an attribute (not inside a node value) is an **error** (`AttributeUnderAttribute`, working name) -- maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
 - The preferred, warning-free shape is **one node per declaration**; stack the key to add more. A second sibling node at the value's depth is the ingest-with-warning case below.
+- **The node value is a one-way door on its line** -- worth a beginner's caution: once the node opens, there is no way back to the outer element on that line. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*, not to `api` -- almost certainly not what was meant. Put the outer element's attributes *before* the node-valued one, or move the node to a deferred block.
 
 ### Multi-Segment Values and Stacking
 
@@ -886,7 +914,7 @@ Both positions are technically valid siblings of `|two`, but mixing them is conf
 
 ### The Column Rules
 
-1. **Greater column = child** (push onto stack)
+1. **Greater column = child** (push onto stack) -- with one exception this chapter inherits from Head Position: a line indented *deeper than an established prose content-base* is inside that prose (literal text), not a child structure. Structure resumes at or left of the base.
 2. **Same column = sibling** (pop current, push as child of parent)
 3. **Lesser column = dedent** (pop until column > top's base_column)
 
@@ -1384,7 +1412,7 @@ All prefix characters support a bracket-delimited inline form:
 | Syntax | Description |
 |--------|-------------|
 | `|{element ...}` | Embedded element |
-| `!{{expr}}` | Interpolation (double-brace) |
+| `!{{expr}}` | Interpolation (double-brace; ends at the **first `}}`** -- a single `}` is expression content, a literal `}}` inside needs host-level handling. Resolved 2026-07-16, delegated.) |
 | `!{directive ...}` | Inline directive |
 | `;{comment}` | Inline comment |
 
@@ -1442,7 +1470,7 @@ Examples:
   missing close {here
 ```
 
-A raw block (`!:lang:`) *is* usable as an attribute's **node value** (see Attributes, Value Kinds) -- the attribute is the raw node, same as any node value. (Whether the *inline* form can appear in value position is deferred with the rest of the inline-raw nailing.)
+A raw block (`!:lang:`) *is* usable as an attribute's **node value** (see Attributes, Value Kinds) -- the attribute is the raw node, same as any node value, in both positions (resolved 2026-07-16, delegated): on the deferred block form, and sameline -- `|el :script !:sh:` followed by deeper lines -- where the body follows the ordinary raw rules (raw base = first content line's column; the block ends at a dedent to or left of the *line's* structural column). (Whether the *inline* form can appear in value position is deferred with the rest of the inline-raw nailing.)
 
 ### Triple-Backtick Escape (Freeform)
 
@@ -1539,7 +1567,7 @@ The earlier `:[id]` attribute-merge syntax is **removed**: "merge that element's
 
 Because `|` always *defines*, two elements of the same type sharing a key (`|user[1]` written twice) is a **duplicate definition** -- never a re-open or merge. Uniqueness is over `(element-type, key)`.
 
-This is a **Document-layer** concern, never a core parse rule: the streaming parser is stateless and cannot track document-wide keys. When a document is assembled, the default is to **error** on a duplicate `(element-type, key)`. The Document builder exposes a policy, so append-oriented sources (event logs, concatenated generator output) may choose otherwise:
+This is a **Document-layer** concern -- the consumer that assembles a whole tree from the event stream (an AST builder, a document store), as opposed to the stateless event parser -- never a core parse rule: the streaming parser cannot track document-wide keys. When a document is assembled, the default is to **error** on a duplicate `(element-type, key)`. The Document builder exposes a policy, so append-oriented sources (event logs, concatenated generator output) may choose otherwise:
 
 ```text
 error | allow-if-identical | first-wins | last-wins | keep-all
@@ -1597,6 +1625,8 @@ The types above are the **frozen core scalar set** -- recognized *bare*, from th
 ```
 
 **Recognition.** In **value position** -- attribute values and array items alike (uniform value rules) -- a bare value that begins with `<` opens the envelope; the matching `>` terminates it. To write a *literal* string value that begins with `<`, quote it (`:x "<not a type>"`, `["<not a type>"]`). Outside bare value position -- in prose, or inside quotes -- `<` has no special meaning.
+
+**Envelopes are single-line** (resolved 2026-07-16, delegated): a newline before the matching `>` ends the value there -- captured text passed through as a string plus `Warning UnclosedTypeEnvelope` (working name), keep-everything as usual. Multi-line envelopes, if ever wanted, arrive with the dialect layer.
 
 **Interim behavior -- no dialects yet (this version).** The dialect layer is not built. Until it lands, a conformant parser still recognizes the envelope (the `<>`-balanced span, terminating the value at the matching `>`) but emits warning code `NoDialectsLoaded` and passes the value through as a plain string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the string `"<5m>"` plus the warning). Nothing is lost or silently retyped; when dialects land, the same document parses to typed values and the warning disappears.
 
@@ -1714,8 +1744,7 @@ Attributes must precede child content. No scattered attributes.
 
 ### Strict Whitespace
 
-- Spaces only, no tabs
-- Error on mixed indentation
+- Spaces only, no tabs -- **in indentation**. A tab anywhere in indentation (mixed or tabs-only) is the `NoTabs` error; a tab *inside* prose, a value, or a comment is ordinary content, passed through untouched (resolved 2026-07-16, delegated).
 
 ### Streaming Parse
 
