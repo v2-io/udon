@@ -1,0 +1,188 @@
+# Structured attribute values under the flat stacking wire (CORE "Node
+# Values", "Multi-Segment Values and Stacking", "Event Encoding (0.9 Wire)",
+# ratified 2026-07-16): every Attr carries exactly one value; multiplicity —
+# author stacking, warn+stack ingestion, multi-line text segments, inline
+# forms inside a blob — is re-emitted Attr. Segment rhythm is deliberately
+# flexible (iterate grammar+fixtures); these encode the maximally-collapsed
+# shapes.
+
+# --- Node values -----------------------------------------------------------
+
+- id: node_value_sameline
+  desc: plain :a |beta — the node IS the value (no block-deeper requirement)
+  udon: "|el :a |beta\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - ElementStart
+    - [Name, "beta"]
+    - ElementEnd
+    - ElementEnd
+
+- id: node_value_owns_interior
+  desc: once accepted, the node's scan owns its attrs and prose
+  udon: "|el :a |the-node :k \"v\" more\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - ElementStart
+    - [Name, "the-node"]
+    - [Attr, "k"]
+    - [StringValue, "v"]
+    - [Text, "more"]
+    - ElementEnd
+    - ElementEnd
+
+- id: node_value_deferred_block
+  desc: attr + deeper element = node value (the classic :headers shape)
+  udon: "|api\n  :headers\n    |header :name a :value b\n"
+  events:
+    - ElementStart
+    - [Name, "api"]
+    - [Attr, "headers"]
+    - ElementStart
+    - [Name, "header"]
+    - [Attr, "name"]
+    - [BareValue, "a"]
+    - [Attr, "value"]
+    - [BareValue, "b"]
+    - ElementEnd
+    - ElementEnd
+
+# --- Deferred text values ---------------------------------------------------
+
+- id: deferred_text_value
+  desc: key line with no value + deeper lines = multi-line text value (re-emitted Attr per segment)
+  udon: "|el\n  :note\n    first line\n    second line\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "first line"]
+    - [Attr, "note"]
+    - [Text, "second line"]
+    - ElementEnd
+
+- id: open_attr_first_line_plus_deeper
+  desc: open attr takes first-line text and deeper continuation as one value
+  udon: "|el\n  :also this one\n    continued deeper\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "also"]
+    - [Text, "this one"]
+    - [Attr, "also"]
+    - [Text, "continued deeper"]
+    - ElementEnd
+
+- id: deferred_text_blank_line_preserved
+  desc: blank lines follow ordinary prose rules inside a deferred value
+  udon: "|el\n  :body\n    line one\n\n    line two\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "body"]
+    - [Text, "line one"]
+    - BlankLine
+    - [Attr, "body"]
+    - [Text, "line two"]
+    - ElementEnd
+
+- id: blob_with_inline_form_segments
+  desc: inline forms inside a text blob are re-attributed segments (R5 sketch)
+  udon: "|el\n  :the-attribute \\ some text and then |{a hello}\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "the-attribute"]
+    - [Text, "some text and then "]
+    - [Attr, "the-attribute"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "hello"]
+    - EmbeddedEnd
+    - ElementEnd
+
+# --- Warn + stack (the uniform two-values rule: never error, never drop) ---
+
+- id: finished_value_trailing_text_warns_and_stacks
+  desc: block line trailing text after a finished value ingests with a warning
+  udon: "|el\n  :attr \"first\" and here's another one\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "attr"]
+    - [StringValue, "first"]
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "attr"]
+    - [Text, "and here's another one"]
+    - ElementEnd
+
+- id: boundary_backslash_block_line_warns_and_stacks
+  desc: "boundary-\\ on a block line: same owner as plain trailing text (R3)"
+  udon: "|el\n  :key something \\ tail here\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "key"]
+    - [BareValue, "something"]
+    - [Warning, "AttributeValueExtendedByTrailingText"]
+    - [Attr, "key"]
+    - [Text, " tail here"]
+    - ElementEnd
+
+- id: deeper_second_value_warns_and_stacks
+  desc: deeper material under a finished value ingests with a warning
+  udon: "|el\n  :when <7:02pm>\n    extra deeper text\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<7:02pm>"]
+    - [Warning, "AttributeSecondValue"]
+    - [Attr, "when"]
+    - [Text, "extra deeper text"]
+    - ElementEnd
+
+- id: deeper_comment_under_finished_value_ok
+  desc: comments under a finished value are legal, no second-value warning
+  udon: "|el\n  :omega <val>\n    ; just a note, not a second value\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "omega"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<val>"]
+    - CommentStart
+    - [Text, "just a note, not a second value"]
+    - CommentEnd
+    - ElementEnd
+
+# --- No attribute-under-attribute (CORE "Node Values") ---------------------
+
+# Recovery shape after the error (where ':first 1's bytes land — dropped
+# would violate the keep-everything posture; ingested-as-what is unruled) is
+# an open supplement item — panic-only until the grammar iteration settles it.
+- id: attr_under_attr_error
+  desc: a :key directly under an attribute is an error (use a node carrier) — recovery shape open
+  udon: "|el\n  :theta\n    :first 1\n"
+  events: []
+
+- id: heterogeneous_stack
+  desc: stacks are heterogeneous — scalar, node, text under one key
+  udon: "|el\n  :a 1\n  :a |node\n  :a more text\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Attr, "a"]
+    - ElementStart
+    - [Name, "node"]
+    - ElementEnd
+    - [Attr, "a"]
+    - [Text, "more text"]
+    - ElementEnd

@@ -1,0 +1,122 @@
+# Flag attributes (CORE "Attribute Keys and Flags", ratified 2026-07-16):
+# terminal ? on the key — quoted or bare — selects flag semantics. After
+# :key?, exactly true/false/null/nil ALONE is the value; anything else snaps
+# the flag to true and is re-owned by the continuing scan. Wire name keeps
+# the ?.
+
+- id: flag_bare_defaults_true
+  desc: flag key alone defaults to true
+  udon: "|el :a?\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: flag_explicit_false
+  desc: keyword alone after the flag is its value
+  udon: "|el :ready? false\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ready?"]
+    - BoolFalse
+    - ElementEnd
+
+- id: flag_explicit_nil
+  desc: nil alone after the flag is its value
+  udon: "|el :ready? nil\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ready?"]
+    - Nil
+    - ElementEnd
+
+- id: flag_then_next_attr
+  desc: the 0.8 idiom, spelled with ? (disabled? true, type submit)
+  udon: "|button :disabled? :type submit\n"
+  events:
+    - ElementStart
+    - [Name, "button"]
+    - [Attr, "disabled?"]
+    - BoolTrue
+    - [Attr, "type"]
+    - [BareValue, "submit"]
+    - ElementEnd
+
+- id: flag_keyword_consumed_then_prose
+  desc: keyword alone-as-token is the flag value; the tail is element prose
+  udon: "|el :a? true it sure is true\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Text, "it sure is true"]
+    - ElementEnd
+
+- id: flag_nonkeyword_snaps_true_prose_reowned
+  desc: anything but a lone keyword snaps the flag to true; material re-owned
+  udon: "|el :a? well it sure is true\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - [Text, "well it sure is true"]
+    - ElementEnd
+
+- id: flag_then_node_is_child
+  desc: after a flag, a node belongs to the element (contrast plain :a |beta)
+  udon: "|el :a? |beta\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a?"]
+    - BoolTrue
+    - ElementStart
+    - [Name, "beta"]
+    - ElementEnd
+    - ElementEnd
+
+- id: flag_quoted_key_equivalent
+  desc: flag semantics follow the name — quoted 'ready?' is the same flag
+  udon: "|el :'ready?'\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ready?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: flag_longhand_suffix_target
+  desc: longhand :'$?' defaults true exactly like the |el? suffix means
+  udon: "|el :'$?'\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: nonterminal_question_is_plain_key
+  desc: a ? anywhere but the end is just a key character (charset)
+  udon: "|el :is?it 1\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "is?it"]
+    - [Integer, "1"]
+    - ElementEnd
+
+- id: key_with_slash_namespace
+  desc: '/ is conventional namespacing with zero core semantics'
+  udon: "|el :address/street 123\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "address/street"]
+    - [Integer, "123"]
+    - ElementEnd

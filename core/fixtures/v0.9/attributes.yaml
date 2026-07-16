@@ -1,33 +1,39 @@
-# Attributes: contexts, terminators, stacking, flags (CORE "Attributes",
-# "Value Terminator Rules", "Attribute Stacking", "Bare String Terminators").
+# Attributes under the 0.9 model (CORE "Attributes", ratified 2026-07-15/16):
+# uniform scan, plain-attrs-always-take-a-value, text blobs, flat stacking
+# wire (every Attr carries exactly one value; multiplicity = re-emitted Attr).
+#
+# MissingAttributeValue event order (Attr / Error / Nil) is provisional —
+# the error explains the synthesized Nil that follows. Adjust here + grammar
+# together if a different order proves more natural.
 
 # ---------------------------------------------------------------------------
-# Block vs sameline values
+# Text blobs as values (CORE "The Scan and the Bare-Token Boundary",
+# "Text-Blob Values"): an open attr's bare token followed by plain text
+# commits the rest of the line to the attr as a text blob.
 # ---------------------------------------------------------------------------
 
-- id: block_value_runs_to_eol
-  desc: block attribute values run to end of line, spaces unquoted
+- id: block_value_text_blob
+  desc: block attribute bare value with spaces is a text blob owned by the attr
   udon: "|el\n  :author Alice Smith\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "author"]
-    - [BareValue, "Alice Smith"]
+    - [Text, "Alice Smith"]
     - ElementEnd
 
-- id: sameline_value_space_delimited
-  desc: sameline values are space-delimited; the next word is prose
+- id: sameline_open_attr_takes_blob
+  desc: sameline open attr takes the whole trailing text blob (E1 ruling)
   udon: "|el :author Alice Smith\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "author"]
-    - [BareValue, "Alice"]
-    - [Text, "Smith"]
+    - [Text, "Alice Smith"]
     - ElementEnd
 
 - id: sameline_quoted_value_with_spaces
-  desc: quote a sameline value to include spaces
+  desc: a quoted value self-terminates; no blob
   udon: "|el :author \"Alice Smith\"\n"
   events:
     - ElementStart
@@ -37,7 +43,7 @@
     - ElementEnd
 
 - id: multiple_sameline_attrs
-  desc: colon after space starts the next attribute
+  desc: bare token followed by ':' at the boundary is a single-token value
   udon: "|el :key1 value1 :key2 value2\n"
   events:
     - ElementStart
@@ -48,10 +54,8 @@
     - [BareValue, "value2"]
     - ElementEnd
 
-# Block value semicolon rules (CORE "Block Attribute Values")
-
 - id: block_value_url_semicolon_kept
-  desc: a semicolon without preceding space is part of the value
+  desc: a semicolon without whitespace framing is part of the token
   udon: "|el\n  :url https://example.com/path?q=1;s=2\n"
   events:
     - ElementStart
@@ -60,63 +64,84 @@
     - [BareValue, "https://example.com/path?q=1;s=2"]
     - ElementEnd
 
-- id: block_value_space_semicolon_is_comment
-  desc: space-semicolon terminates the value and starts a comment
+- id: block_blob_space_semicolon_is_comment
+  desc: a framed ' ; ' ends the text blob and starts a comment
   udon: "|el\n  :note this has a semicolon too ; but THIS is a comment\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "note"]
-    - [BareValue, "this has a semicolon too"]
+    - [Text, "this has a semicolon too"]
     - CommentStart
     - [Text, " but THIS is a comment"]
     - CommentEnd
     - ElementEnd
 
-# One attribute per block line: a stranded ` :name ` is part of the value
-# (CORE "Block Attribute Values"). Event parser is not required to warn —
-# stranded-attr warning dies with the attribute-model reconception
-# (spec/TODO-SPEC-CORE.md; design/attribute-model-2026-07.md). Hosts may
-# still advise.
+# ---------------------------------------------------------------------------
+# Uniform scan on block lines (CORE "The Scan"): block run-to-EOL is gone.
+# ---------------------------------------------------------------------------
 
-- id: block_line_holds_one_attribute
-  desc: a block value swallows what looks like a second attribute (one attr per line)
+- id: block_line_uniform_scan
+  desc: a block line holds multiple attributes (0.8 swallowed ":cttr 3" into bttr)
   udon: "|el\n  :bttr 2 :cttr 3\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "bttr"]
-    - [BareValue, "2 :cttr 3"]
+    - [Integer, "2"]
+    - [Attr, "cttr"]
+    - [Integer, "3"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Missing value = boolean true (CORE "Attributes")
+# Plain attributes always take a value (CORE "Attribute Keys and Flags"):
+# valueless plain attr = non-halting error + synthesized Nil (ruled
+# 2026-07-16 — the stream never carries less shape than the source
+# suggested). Flags live in flags.yaml.
 # ---------------------------------------------------------------------------
 
-- id: flag_attr_sameline
-  desc: attribute followed immediately by another attribute is boolean true
+- id: plain_attr_valueless_sameline_error
+  desc: plain attr followed by another attr errors and emits Nil
   udon: "|button :disabled :type submit\n"
   events:
     - ElementStart
     - [Name, "button"]
     - [Attr, "disabled"]
-    - BoolTrue
+    - [Error, "MissingAttributeValue"]
+    - Nil
     - [Attr, "type"]
     - [BareValue, "submit"]
     - ElementEnd
 
-- id: flag_attr_at_eol
-  desc: attribute followed by newline is boolean true
+- id: plain_attr_valueless_block_error
+  desc: plain attr at EOL with nothing deeper errors and emits Nil
   udon: "|config\n  :debug\n"
   events:
     - ElementStart
     - [Name, "config"]
     - [Attr, "debug"]
-    - BoolTrue
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - ElementEnd
+
+- id: embedded_plain_attr_valueless_error
+  desc: valueless plain attr inside embedded errors too (R2 — write :required?)
+  udon: "|p x |{input :required} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "input"]
+    - [Attr, "required"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - EmbeddedEnd
+    - [Text, " y"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Attribute stacking — the uniform rule (CORE "Attribute Stacking")
+# Attribute stacking — the uniform rule (unchanged from 0.8)
 # ---------------------------------------------------------------------------
 
 - id: same_key_stacks
@@ -161,12 +186,11 @@
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Embedded attribute values: `}` also terminates, unconsumed
-# (CORE "Embedded Attribute Values")
+# Embedded attribute values (R2: element-rooted sameline + '}' terminator)
 # ---------------------------------------------------------------------------
 
 - id: embedded_value_terminated_by_brace
-  desc: a closing brace ends an embedded attribute value and still closes the element
+  desc: a closing brace at the boundary finishes a single-token value
   udon: "|p go |{a :href /home} now\n"
   events:
     - ElementStart
@@ -180,38 +204,62 @@
     - [Text, " now"]
     - ElementEnd
 
-- id: embedded_flag_attr_before_brace
-  desc: an embedded attribute with no value before the brace is boolean true
-  udon: "|p x |{input :required} y\n"
+- id: embedded_open_attr_blob_swallows_tail
+  desc: open bare attr's blob runs to } — no embedded content (R2 gallery)
+  udon: "|p x |{a :href /home :title Home here} y\n"
   events:
     - ElementStart
     - [Name, "p"]
     - [Text, "x "]
     - EmbeddedStart
-    - [Name, "input"]
-    - [Attr, "required"]
-    - BoolTrue
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - [Attr, "title"]
+    - [Text, "Home here"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: embedded_quoted_value_leaves_content
+  desc: quoting the value leaves the tail as embedded content (R2 gallery)
+  udon: "|p x |{a :href /home :title \"Home\" here} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - [Attr, "title"]
+    - [StringValue, "Home"]
+    - [Text, " here"]
+    - EmbeddedEnd
+    - [Text, " y"]
+    - ElementEnd
+
+- id: embedded_boundary_backslash_gives_content
+  desc: boundary-\ closes the value and forces the tail to embedded content (R2 gallery)
+  udon: "|p x |{a :href /home :title Home \\ Welcome home!} y\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - [Attr, "title"]
+    - [BareValue, "Home"]
+    - [Text, " Welcome home!"]
     - EmbeddedEnd
     - [Text, " y"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Complex attribute values: attribute + newline + indent = structured value
-# (CORE "Complex Attribute Values")
-# ---------------------------------------------------------------------------
-# OPEN — not settled in CORE. Active design:
-#   design/attribute-model-proposal-2.md (+ substrate).
-# events: [] = run for panics only; asserts nothing until ratification.
-# Do NOT pin current parser emission here (that is not the contract).
-
-- id: structured_attribute_value
-  desc: OPEN until attribute-model proposal 2 is ratified — panic-only
-  udon: "|api\n  :headers\n    |header :name a :value b\n"
-  events: []
-
-# ---------------------------------------------------------------------------
-# Attributes before children (CORE "Design Principles"); the prose-side
-# behavior of a late `:` is covered in markers.yaml (colon_after_*).
+# Attributes before children (unchanged); phase-change warning is in
+# attr_boundary.yaml.
 # ---------------------------------------------------------------------------
 
 - id: attrs_then_children

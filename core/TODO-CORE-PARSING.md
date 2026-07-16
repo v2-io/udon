@@ -66,3 +66,12 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       (`TypeName(:param)`) — would collapse the duplicated `check_bs_*` and
       `spaced_suffix_*` state ladders in `udon.desc` to single
       parameterized states.
+      *Likely addition for the 0.9 wire (Joseph, 2026-07-16):* **saved-state /
+      re-emittable captures** — the flat stacking wire re-emits `Attr "key"`
+      for every segment of a multi-segment value (across lines for deferred
+      blocks), so the grammar needs to hold the current key and re-emit it —
+      something descent's MARK/TERM single-capture model doesn't do today.
+      Wanted eventually anyway. Fallback if it lags: the wire is flexible —
+      arrays are already valid attribute values, so segments could
+      interim-emit as one `Attr` + ArrayStart…ArrayEnd until re-emission
+      lands (keep this option in mind per Joseph).

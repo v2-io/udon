@@ -328,3 +328,30 @@
     - [Name, "el"]
     - [Text, "$rest"]
     - ElementEnd
+
+# ---------------------------------------------------------------------------
+# 0.9 additions: after-key '?' (completes the four-suffix coverage prompted
+# by the 2026-07-16 highlighter observation) and the spaced-trait removal
+# (CORE "Identity is contiguous", ruled 2026-07-16).
+# ---------------------------------------------------------------------------
+
+- id: suffix_question_after_key
+  desc: question suffix after the key (all four suffixes valid there)
+  udon: "|field[name]?\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$key"]
+    - [BareValue, "name"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - ElementEnd
+
+- id: spaced_trait_is_prose
+  desc: a .trait after a space is NOT identity — it is prose (spaced-trait form dropped)
+  udon: "|p .gitignore is a file\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, ".gitignore is a file"]
+    - ElementEnd

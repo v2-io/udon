@@ -1,0 +1,163 @@
+# The bare-token boundary rule (CORE "The Scan and the Bare-Token Boundary",
+# ruled 2026-07-15): a bare value token holds the sameline scan provisionally
+# open at its boundary; the next non-space character decides — head-position
+# marker => single-token value + scan continues; plain text => text blob to
+# EOL owned by binding priority. Ownership (CORE "Whose Text Is This?"):
+# open attr > nearest same-line element > warn+stack on attr-rooted lines.
+
+- id: boundary_colon_single_token
+  desc: "'value' then ':' — single-token value, scan continues (E1 head)"
+  udon: "|el :first value :another x\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "first"]
+    - [BareValue, "value"]
+    - [Attr, "another"]
+    - [BareValue, "x"]
+    - ElementEnd
+
+- id: boundary_text_commits_blob
+  desc: "'value' then 'w' — blob to EOL; later ':' is just text inside it (E2)"
+  udon: "|el :first value with spaces :another x\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "first"]
+    - [Text, "value with spaces :another x"]
+    - ElementEnd
+
+- id: boundary_backslash_closes_value
+  desc: "boundary-\\ on an element line: value closes, tail is element prose"
+  udon: "|el :alpha something \\ el's text\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "alpha"]
+    - [BareValue, "something"]
+    - [Text, " el's text"]
+    - ElementEnd
+
+- id: boundary_framed_semicolon_comment
+  desc: a framed ' ; ' at the boundary closes the value and opens a comment
+  udon: "|el :alpha something ; a comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "alpha"]
+    - [BareValue, "something"]
+    - CommentStart
+    - [Text, " a comment"]
+    - CommentEnd
+    - ElementEnd
+
+- id: boundary_url_then_next_attr
+  desc: unspaced ';' stays in the token; ':' at the boundary continues the scan
+  udon: "|el :url https://x.com :role foo\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "url"]
+    - [BareValue, "https://x.com"]
+    - [Attr, "role"]
+    - [BareValue, "foo"]
+    - ElementEnd
+
+# Keywords and the boundary (no keyword carve-out; ruled 2026-07-15)
+
+- id: keyword_alone_is_typed
+  desc: keyword finishing alone at EOL is typed
+  udon: "|el :alpha true\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "alpha"]
+    - BoolTrue
+    - ElementEnd
+
+- id: keyword_then_text_is_blob
+  desc: text at the boundary means the keyword was the first word of a blob
+  udon: "|el :alpha true story\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "alpha"]
+    - [Text, "true story"]
+    - ElementEnd
+
+- id: keyword_then_backslash_is_typed
+  desc: boundary-\ lets a keyword finish typed; tail is element prose
+  udon: "|el :alpha true \\ story\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "alpha"]
+    - BoolTrue
+    - [Text, " story"]
+    - ElementEnd
+
+# Ownership row 2 — finished value, nearest same-line element decompresses
+
+- id: finished_value_tail_is_element_prose
+  desc: after a finished quoted value the tail belongs to the element (row 2)
+  udon: "|el :first value :another \"with\" some text\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "first"]
+    - [BareValue, "value"]
+    - [Attr, "another"]
+    - [StringValue, "with"]
+    - [Text, "some text"]
+    - ElementEnd
+
+- id: finished_typed_value_tail_is_element_prose
+  desc: digit-committed value finishes; tail is element prose (blessed asymmetry)
+  udon: "|el :count 7 apples\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "count"]
+    - [Integer, "7"]
+    - [Text, "apples"]
+    - ElementEnd
+
+# Phase change (CORE "Phase Change and Late ':'", ruled 2026-07-15): a
+# sameline tail enters the children phase; a later ancestor-column ':' line
+# is prose + warning.
+
+- id: sameline_tail_forecloses_attributes
+  desc: tail prose ends the attr phase; later ':' line is prose with a warning
+  udon: "|el :a 1 and a tail\n  :b 2\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Text, "and a tail"]
+    - [Warning, "AttributeAfterChildren"]
+    - [Text, ":b 2"]
+    - ElementEnd
+
+# Value-position \ (CORE "Value-Position \", substrate S6 + P3-3): enters
+# text mode; rest of physical line; no sameline-comment affordance there.
+
+- id: value_backslash_enters_text
+  desc: \ in value-expected position makes the value text, not the integer
+  udon: "|el :count \\7 apples\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "count"]
+    - [Text, "7 apples"]
+    - ElementEnd
+
+- id: value_backslash_semicolon_literal
+  desc: a framed ' ; ' inside \-entered text is literal (P3-3)
+  udon: "|el\n  :k \\a ; b\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, "a ; b"]
+    - ElementEnd
