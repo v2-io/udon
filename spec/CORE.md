@@ -166,7 +166,7 @@ A backslash at **head position** -- the start of a line's intended column (after
 
 **What "forced to prose" means** (ratified 2026-07-15): the tail is ordinary prose *content*, dead to **line-level** structure but alive to **inline** structure. No marker, fence, or sameline comment applies -- a whitespace-framed ` ; ` in the tail is literal text, the one place the sameline-comment frame does not fire. Inline forms (`|{...}`, `!{...}`, `;{...}`) still work exactly as in any prose, and remain individually escapable with `\`. The same posture applies to text entered via the value-position `\` (see Attributes).
 
-````
+````udon
 \|element            ->  |element            ; would-be element -> prose
 \:not-an-attr        ->  :not-an-attr        ; would-be attribute -> prose
 \@name see this      ->  @name see this      ; would-be reference -> prose
@@ -177,7 +177,7 @@ A backslash at **head position** -- the start of a line's intended column (after
 
 **Sameline, too.** Head position runs through elements and attributes, so a `\` reached before any prose has begun forces the remainder to prose on the current element:
 
-```
+```udon
 |element |another :val [234 19] \ how wonderful ; it is
 ```
 
@@ -185,7 +185,7 @@ A backslash at **head position** -- the start of a line's intended column (after
 
 **In prose, `\` escapes an inline-form opener.** The only structure inside prose flow is the inline forms, so a `\` immediately before an opener -- `|{`, `!{`, or `;{` (the `!{` covering interpolation, directive, and raw, which all begin `!{`) -- is consumed and makes that opener literal; prose continues normally:
 
-```
+```udon
 |p see \|{em x}     ->  literal "|{em x}", prose continues
 |p price \!{cost}   ->  literal "!{cost}" (not a directive/interpolation)
 |p wink \;{x}       ->  literal ";{x}" (not an inline comment)
@@ -193,7 +193,7 @@ A backslash at **head position** -- the start of a line's intended column (after
 
 **Any other `\` is literal.** A `\` not at head position and not before an inline opener -- mid-value, trailing, or before ordinary text -- is emitted literally, with any escape-sequence reading (`\n`, `\t`, a trailing `\` as a line-join, ...) left to the host/app layer:
 
-```
+```udon
 |p Windows path C:\Users\me    ->  prose "Windows path C:\Users\me"  ; \U \m untouched
 |p wrap this line \            ->  prose "wrap this line \"          ; trailing \ to host
 |a hello \world                ->  "hello" begins prose, "\world"    ; literal
@@ -203,7 +203,7 @@ A **literal leading backslash doubles**: the first `\` forces prose and is consu
 
 **The consumed `\` takes up no column.** Being the line's first non-space character, a head-position `\` also sets the prose block's content-base: the text after it backs up one column into the `\`'s position, and that column becomes the current indent level (see Automatic Prose Dedentation). This gives a clean way to indent a whole prose block with its interior spacing intact -- and only the **first** line needs the `\`; it anchors the base, and the rest follows the ordinary dedentation rules:
 
-```
+```udon
 |the-element |another
    \     Here all of this is output with the lines indented,
          even though this more-indented line needs no marker -- cleaner --
@@ -214,7 +214,7 @@ A **literal leading backslash doubles**: the first `\` forces prose and is consu
 
 **Past-base `\` (not head position).** If a `\` begins a line's content but sits *deeper* than an already-established prose content-base, the whitespace before it is already prose, so the `\` is **not** at head position: it is passed through **literally**. The event parser does not warn here (its inner loop is byte-pulling, not stylistic inspection). An AST-layer host may emit `EscapeOutsideHeadPosition` when it cares.
 
-```
+```udon
 |element
   \  start some prose      ->  "  start some prose"    ; \ at head pos -> forces prose
     \some more prose        ->  "  \some more prose"    ; \ past the base -> literal
@@ -232,7 +232,7 @@ A **literal leading backslash doubles**: the first `\` forces prose and is consu
 
 Elements are the structural backbone:
 
-```
+```udon
 |element-name
 ```
 
@@ -252,7 +252,7 @@ Every guard is a few characters of bounded lookahead (see Bounded Lookahead).
 
 ### Identity (Keys) and Classification (Traits)
 
-```
+```udon
 |element[key].trait1.trait2
 ```
 
@@ -283,7 +283,7 @@ What the core fixes is the *rule* -- a bare name is a Unicode identifier (UAX #3
 
 Elements may carry suffix flags (`?`, `!`, `*`, `+`) that desugar to specially-designated boolean attributes:
 
-```
+```udon
 |field[name]?      ->  |field[name] :'$?' true
 |field[name]!      ->  |field[name] :'$!' true
 |field[name]*      ->  |field[name] :'$*' true
@@ -299,7 +299,7 @@ UDON performs only the expansion; the *meaning* is defined by the consuming sche
 
 **Suffix positions** (a suffix binds to the element identity):
 
-```
+```udon
 |name?                   ; after the name
 |name?[key]              ; after name, before key
 |name?[key].trait        ; after name, before key and traits
@@ -311,7 +311,7 @@ UDON performs only the expansion; the *meaning* is defined by the consuming sche
 
 **Suffix characters inside a trait are part of the trait.** `* ! ? +` are legal in a bare trait value, so `.foo?` is simply the trait `"foo?"` -- no quoting needed. This is why an element-level suffix *after* a trait uses the space-separated form or precedes the trait: a suffix character touching a `.trait` is consumed by the trait.
 
-```
+```udon
 |el.bar?         ; traits: ["bar?"]
 |el.bar ?        ; traits: ["bar"], $? = true
 |el?.bar         ; $? = true, traits: ["bar"]
@@ -321,7 +321,7 @@ UDON performs only the expansion; the *meaning* is defined by the consuming sche
 
 An element's **name is optional.** A pipe may be followed directly by a key, a trait, or a suffix, producing an element with no name:
 
-```
+```udon
 |[k]                      ; anonymous, key k
 |.some-trait              ; anonymous, trait "some-trait"
 |.some-trait :adapter pg  ; ...and carrying attributes
@@ -354,7 +354,7 @@ An element automatically has a **hash** and an **array**:
 
 A child names *what it is*; an attribute names *what it is to the parent*. That -- **whose name is it?** -- is the test for choosing between them, not "scalars go in attributes, structure goes in children." In graph terms: attributes are edges, elements are nodes, and an edge may terminate at a leaf value, at a node, or at an ordered array of values. Restricting attributes to scalars was XML residue, not a UDON decision.
 
-```
+```udon
 |element :key value :another-key "another value"
 ```
 
@@ -570,7 +570,7 @@ In the same **stacking spirit**, material that arrives after an attribute's valu
 
 Square brackets for list values:
 
-```
+```udon
 |server :ports [8080 8443 9000] :tags [api public]
 ```
 
@@ -597,7 +597,7 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
 
 *(0.9 draft ruling R5 -- names are working names until the fixture group lands.)* An attribute whose value is a **single scalar, reference, or interpolation** keeps the 0.8 wire: `Attr` (the key) followed by one value event. An attribute with a **node value, text-blob segments, or a multi-segment array** brackets its interior instead:
 
-```
+```text
 AttrStart ("headers")
   ElementStart / Name "header" / ... / ElementEnd
 AttrEnd
@@ -625,7 +625,7 @@ A sameline trailing tail (ownership row 2) **does** enter the children phase -- 
 
 Any line not starting with a prefix is prose belonging to the parent:
 
-```
+```udon
 |article
   :author Joseph
 
@@ -653,7 +653,7 @@ The parser treats prose as **opaque text** -- it does not interpret the Markdown
 
 **Prefer Markdown over inline UDON in prose.** When both could work, use Markdown:
 
-```
+```udon
 ; Preferred -- familiar, readable
 This has `inline code` and **bold** text.
 
@@ -665,7 +665,7 @@ Reserve `|{...}` inline elements for cases where you need attributes or semantic
 
 Embedded elements can appear within prose using `|{...}`:
 
-```
+```udon
 |article
   :author Joseph
 
@@ -692,7 +692,7 @@ Semicolon starts a comment depending on context:
 
 Line comments may be continued by indentation: **every** more-indented line -- markers and structure included, nothing excepted -- is comment text until a line at or dedented from the comment's column (ratified 2026-07-15). Comment content is inert: the parser never interprets it, only carries it. This is what makes a `;` at the right column comment out an entire block without touching its lines -- including the primary case of silencing structure that is itself causing parse errors or warnings.
 
-```
+```udon
 ; This would be a comment
   this is still part of the comment
 \; But this line is output as text (leading \ forces prose).
@@ -702,7 +702,7 @@ Line comments may be continued by indentation: **every** more-indented line -- m
 
 A **sameline comment** is its own lexical form: a `;` with **whitespace on both sides** -- a space before it, and a space or end-of-line after it. It is the one marker allowed after a line has committed to prose (the carve-out named in Head Position). The frame is the condition -- with one exclusion: `\`-forced text (head-position or value-position `\`) gives up the sameline comment entirely; a framed ` ; ` there is literal (see Escape):
 
-```
+```udon
 |li Item one ; TODO expand    ; " ; " framed both sides -> comment
 |li Item one ;still prose     ; no space after -> the ";still" is literal
 |li ratio 1;2 done            ; no space before -> literal
@@ -731,7 +731,7 @@ Sameline prose is brief (single line) and commonly followed by comments:
 
 For inline comments within prose, use `;{...}`:
 
-```
+```udon
 |p This has ;{TODO: fix wording} some text that continues.
 ```
 
@@ -802,7 +802,7 @@ A `;` starts a comment only in specific positions (see Comments); everywhere els
 
 There is no separate `\;` escape: a `\` that is not at head position is passed through literally (see Escape). A literal `;` comes from position (no preceding space, block prose, or embedded) or from quoting; a whole prose tail that must carry would-be markers is forced to prose with a head-position `\`.
 
-```
+```udon
 |el :key and-this;-is-ok now part of the value ; and this is a comment
   this is prose of |el ; but this is not a comment
 
@@ -859,7 +859,7 @@ Both positions are technically valid siblings of `|two`, but mixing them is conf
 
 This is a commonly misunderstood aspect of UDON indentation. The next line gets to choose how far to indent. From an indent of one space vs the parent, through to (but including) the pipe for the next nested one.
 
-```
+```udon
 |alpha |beta |theta
                     ;<- where to put |gamma depends on who you want it to be siblings with
                     ;   these comments are in fact children of |theta
@@ -870,7 +870,7 @@ This is a commonly misunderstood aspect of UDON indentation. The next line gets 
 sibling of beta
 ```
 
-```
+```udon
 |parent
   |child        <- column 2
   |sibling      <- column 2: SAME column = SIBLING of child, not inside it!
@@ -879,13 +879,13 @@ sibling of beta
 
 ### Inline Nesting
 
-```
+```udon
 |one |two |three  ; three is child of two, two is child of one
 ```
 
 Equivalent to:
 
-```
+```udon
 |one
      |two
           |three
@@ -895,7 +895,7 @@ Equivalent to:
 
 When a subsequent line places an element at the same column as a previous inline element, they become siblings (children of the same parent):
 
-```
+```udon
 |table |tr |td A1
            |td A2       ; same column as |td A1 -> sibling (both children of |tr)
        |tr |td B1       ; same column as first |tr -> sibling (both children of |table)
@@ -907,7 +907,7 @@ The column position determines ancestry: an element becomes a child of whichever
 
 ### Sibling After Inline Elements
 
-```
+```udon
 |one |two |three
   |alpha          ; sibling of |two -- child of |one
 ```
@@ -922,7 +922,7 @@ Here `|alpha` at column 2:
 
 ### Column Alignment = Sibling
 
-```
+```udon
 |one |two |three
      |alpha       ; same as above -- sibling of |two, child of |one
 ```
@@ -938,13 +938,13 @@ Here `|alpha` at column 2:
 
 Inline elements are exactly as if they were on separate lines at those columns.
 
-```
+```udon
 |alpha |beta |c |d
 ```
 
 Equivalent to:
 
-```
+```udon
 |alpha
        |beta
              |c
@@ -962,19 +962,19 @@ The inline notation is just a compact way to write the vertical form. The column
 
 ### Child of Inline Element (Special Case)
 
-```
+```udon
 |one |two |three
         |alpha   ; child of |two (sibling of |three)
 ```
 
-```
+```udon
 |one |two |three
           |alpha  ; same -- child of |two, sibling of |three
 ```
 
 ### Multi-line Progression
 
-```
+```udon
 |one |two |three
        |alpha     ; child of |two
      |beta        ; sibling of |two (child of |one)
@@ -984,7 +984,7 @@ The inline notation is just a compact way to write the vertical form. The column
 
 **You only care about the previous line's stack state.**
 
-```
+```udon
 |one |two |three
   |alpha
      |beta      ; child of |alpha, NOT related to |two at all
@@ -992,7 +992,7 @@ The inline notation is just a compact way to write the vertical form. The column
 
 From `|beta`'s perspective, the world looks like:
 
-```
+```udon
 |alpha
    |beta
 ```
@@ -1003,7 +1003,7 @@ The stack naturally handles everything. No special inline column tracking is nee
 
 ### Complex Example: Many Inline Elements
 
-```
+```udon
 |a |b |c |d |e |f |g
          |child-of-c
    |child-of-a
@@ -1032,7 +1032,7 @@ For `|child-of-a` at column 3:
 
 ### Closing Multiple Levels
 
-```
+```udon
 |one
   |two
     |three
@@ -1150,7 +1150,7 @@ and this would be a sibling of |element instead.  ; col 0 = element's col, DEDEN
 
 **Output text:**
 
-```
+```text
 **The great indent**
 This content is all inner-content of |section,
 and will continue to be inner-content of |section
@@ -1169,7 +1169,7 @@ The inline content (`**The great indent**`) has no leading space. The indented l
 
 **Output text:**
 
-```
+```text
 This stuff is inner to |later-part
 and, with a slightly different formatting
 preference-- is indented quite a ways.
@@ -1204,7 +1204,7 @@ For prose after inline elements, valid columns are between the parent's `|` (exc
 
 **Output text:**
 
-```
+```text
 first-line-of-prose...
 but what about this???
 ^ this is the new reference
@@ -1228,13 +1228,13 @@ Prose dedentation happens per-line as content is parsed:
 
 Triple-backtick (freeform) blocks preserve exact whitespace - no automatic dedentation:
 
-```udon
+````udon
 |code
   ```
   def foo():
       return 1
   ```
-```
+````
 
 The content inside the backticks is preserved exactly as written.
 
@@ -1289,7 +1289,7 @@ fn emit_indented_prose(&mut self, line: &[u8], line_column: u16) {
 
 For inline elements within prose, use the embedded form `|{...}`:
 
-```
+```udon
 |p This paragraph has |{em emphasized text} and |{a :href /foo a link} inline.
 ```
 
@@ -1304,13 +1304,13 @@ Inline elements are embedded elements; this spec uses "inline" for prose placeme
 
 Multiple embedded elements are siblings:
 
-```
+```udon
 |nav |{a :href / Home} |{a :href /about About} |{a :href /contact Contact}
 ```
 
 Embedded elements can be nested:
 
-```
+```udon
 |p See |{a :href /doc the |{em official} documentation} for details.
 ```
 
@@ -1318,7 +1318,7 @@ Embedded elements can be nested:
 
 **Once in bracket mode, stay in bracket mode.** Inside `|{...}`, you cannot use inline element syntax (`|element`). All nested elements must also use embedded form:
 
-```
+```udon
 ; Correct -- nested embedded elements
 |ul |{li |{a Home}}|{li |{a About}}
 
@@ -1328,7 +1328,7 @@ Embedded elements can be nested:
 
 Embedded elements can span multiple lines--indentation inside is ignored, and the closing `}` ends the element:
 
-```
+```udon
 |p This has |{a :href /docs
    a link that spans
    multiple lines} and continues.
@@ -1363,7 +1363,7 @@ The character immediately after the prefix determines the parse mode with no loo
 
 Use `!:lang:` for code samples and raw (non-UDON) content:
 
-```
+```udon
 |example
   !:elixir:
     def hello do
@@ -1384,7 +1384,7 @@ The content follows normal indentation rules:
 
 For inline raw content, use `!{:kind: ...}`:
 
-```
+```udon
 |p The response was !{:json: {"status": "ok", "count": 42}} as expected.
 ```
 
@@ -1392,7 +1392,7 @@ Inline raw uses brace-counting. The parser finds the closing `}` by counting bra
 
 Examples:
 
-```
+```udon
 ; Works -- braces are balanced (even nested)
 !{:json: {"key": "value"}}
 !{:regex: [a-z]{3,5}}
@@ -1418,7 +1418,7 @@ Triple-backticks break out of indentation sensitivity entirely: the body is capt
 
 Because head position is re-entered every line, a fence interleaves freely with prose and child lines -- here it begins at a line start (head position) even though prose lines preceded it:
 
-```
+````udon
 |a
   here is prose
   |b a child element
@@ -1426,7 +1426,7 @@ Because head position is re-entered every line, a fence interleaves freely with 
   ```text and the fence begins
   still inside the fence
   ``` ; fence ends
-```
+````
 
 In sameline scan a fence may follow elements *and* attributes -- attributes keep the scan open, so `|a |b :k v ` followed by triple-backticks opens a fence whose body starts after the backticks.
 
@@ -1476,7 +1476,7 @@ The **language** inside directives and interpolations -- expressions, operators,
 - **Traits are selection criteria**, not augmentation of the target. The older "not augmentable" rule survives with this sharper meaning: a reference does not decorate or mutate the referent; traits only filter *which* definition matches. Matching multiplicity is consumer-side.
 - **Notably absent by design:** suffixes, attributes, predicates, nesting. To vary the target's content, define a new element.
 
-```
+```udon
 |license[mit]
   MIT License
   Copyright 2025...
@@ -1504,7 +1504,7 @@ Because `|` always *defines*, two elements of the same type sharing a key (`|use
 
 This is a **Document-layer** concern, never a core parse rule: the streaming parser is stateless and cannot track document-wide keys. When a document is assembled, the default is to **error** on a duplicate `(element-type, key)`. The Document builder exposes a policy, so append-oriented sources (event logs, concatenated generator output) may choose otherwise:
 
-```
+```text
 error | allow-if-identical | first-wins | last-wins | keep-all
 ```
 
@@ -1514,7 +1514,7 @@ plus an optional `warn`. `allow-if-identical` compares by tree-equality (ignorin
 
 We are experimenting with letting an anonymous, trait-only element act as a **mixin**: attaching its trait to another element makes that element inherit the mixin's attributes.
 
-```
+```udon
 |.defaults
   :adapter postgres
   :host localhost
@@ -1552,7 +1552,7 @@ This table covers the **scalar** kinds. The full set of things an attribute valu
 
 The types above are the **frozen core scalar set** -- recognized *bare*, from their syntax alone. This set is closed: nothing is ever added to bare recognition. Every other -- every **dialect** -- type is written inside an explicit **`<...>` envelope** in attribute-value position, where `>` terminates the value:
 
-```
+```udon
 :when  <2026-07-11>            ; a date -- temporal dialect, not bare
 :dur   <5m>                    ; a duration; shorthand stays writable in-envelope
 :size  <u64:0xf902>            ; type-labelled
@@ -1590,7 +1590,7 @@ A leading `0` *followed by more decimal digits* is decimal, not octal -- `0755` 
 
 **Floats** are decimal numbers that carry a fractional part (`.` then digits), an exponent (`e`/`E`, optional `+`/`-`, then digits), or both: `3.14`, `1e10`, `1.5e-3`. A decimal token with neither a `.` nor an exponent is an integer.
 
-```
+```udon
 42          1_000_000   0d42   ; Integers (decimal, incl. explicit 0d)
 0xFF        0o755       0b1010 ; Hex, octal, binary
 3.14        1e10        1.5e-3 ; Floats
@@ -1604,7 +1604,7 @@ A rational is inherently compositional -- two literals over a bar -- so it leans
 
 ### Booleans
 
-```
+```udon
 :enabled true     ; Boolean true
 :debug false      ; Boolean false
 :flag?            ; Boolean true (flag key -- see Attributes, "Keys and Flags")
@@ -1616,14 +1616,14 @@ Lowercase only. `TRUE`, `True`, `FALSE` are strings. A keyword is typed only whe
 
 Two equivalent spellings:
 
-```
+```udon
 :value null
 :value nil
 ```
 
 ### Strings
 
-```
+```udon
 :name "quoted string"       ; Explicit string
 :name 'single quotes'       ; Also string
 :desc unquoted text here    ; String (fallback)
@@ -1633,7 +1633,7 @@ Two equivalent spellings:
 
 ### Lists
 
-```
+```udon
 :ports [8080 8443 9000]
 :tags [api public internal]
 :mixed [1 two 3.0 true]
@@ -1645,7 +1645,7 @@ Each element is typed independently by the same rules.
 
 ### Absent vs Nil vs False
 
-```
+```udon
 |config
   :debug?             ; debug? = true (flag present)
   :verbose false      ; verbose = false (explicit)
@@ -1668,7 +1668,7 @@ These are distinct:
 
 ### Attributes Before Children
 
-```
+```udon
 |element[key].trait :attr1 value1 :attr2 value2
   children here
 ```
@@ -1696,7 +1696,7 @@ For additional authoring guidance, see `examples/practices-gotchas.udon` (in rev
 
 ### Configuration
 
-```
+```udon
 |database[primary].postgres
   :host db.example.com
   :port 5432
