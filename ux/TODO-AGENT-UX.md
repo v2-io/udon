@@ -26,6 +26,17 @@ fixtures having pinned behavior first.
       (`UDON-AGENT-TOOLS.md` §Tier 1) — then an implementation home (rides
       the parser API + `udon-utl`; path syntax is TODO-AUX's lane;
       propose/apply anticipates the still-undrafted patch syntax there).
+      **Priority signal (Joseph, 2026-07-16):** the piece he most wants is
+      the principled agentic **edit** tool — in his words, one that "works
+      like [the assistant's] edit tool but guarantees atomicity and
+      guarantees that whatever you're changing or patching etc. has the
+      right indents and is conformant with that file's spec. It needs the
+      path syntax and schema syntax first though." Critical path as named:
+      path syntax → schema syntax (both `spec/TODO-AUX.md`), plus the
+      serializer/round-trip + spans substrate (`TODO-UTILS.md`,
+      `core/TODO-PARSER.md`). A staged shape exists if wanted: an atomic +
+      indent-computing + *syntax*-validating v0 needs only paths +
+      round-trip; *schema* conformance arrives with schema + pragma.
 - [ ] **Grammar-constrained generation** — guaranteed-valid UDON from local
       models via a decoder grammar artifact (GBNF / lark / llguidance-style).
       `../design/GRAMMAR-CONSTRAINED-GENERATION.md` explains the technique

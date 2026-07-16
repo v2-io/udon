@@ -54,10 +54,14 @@ Items marked *(routed from the archived reboot plan, 2026-07-16)* arrived when
       (Layer 3; degradation policy per `spec/MARKDOWN.md`); then JSON / YAML,
       bidirectional, spec-faithful, on the real tree (the old udon-ruby
       `bin/` scripts were regex sketches — reference only).
-- [ ] **`udon fmt`** — optional; UDON mandates no canonical form, so only if
-      we choose to offer one. If we do, it has two more jobs beyond style:
+- [ ] **`udon fmt` — TABLED** (Joseph, 2026-07-16: "needs a much bigger ux
+      prioritization discussion"). Context for whenever it reopens: UDON
+      mandates no canonical form, so shipping a formatter creates a de-facto
+      one; the candidate jobs beyond style were agent round-trip stability,
       paste/ingest renormalization, and closing the column-alignment
-      fragility corner (padding slack after renames). *(discuss w/ Joseph)*
+      fragility corner; the hazard is prose reflow (structure-safe-only was
+      the recommendation on the table when it was set aside). Don't pick
+      this up without that discussion.
 - [ ] **`udon-cli`** — one installed binary `udon` (crate `udon-cli`,
       `[[bin]] name = "udon"` — crates.io `udon` itself is squatted):
       `parse` / `events` / `skeleton` first, then `lint`, then
