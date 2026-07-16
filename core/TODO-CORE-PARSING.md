@@ -6,6 +6,14 @@ fixture groups (see root `TODO-META.md`), not tracked here.
 
 ## Open
 
+- [ ] **Verify `*` suffix after `[key]` parses** (2026-07-16). The Obsidian
+      highlighter (grammar-driven) renders `|field[name]*` as plain text
+      while `|field[name]?` / `!` / `+` highlight correctly — either a
+      highlighter/wasm issue or a real `*` gap in `parse_element_identity`'s
+      `:post_bracket` path. When authoring the v0.9 identity fixtures, make
+      sure all four suffixes are covered in the after-key position
+      (`|field[name]?` `!` `*` `+`), not just `?`.
+
 - [ ] **Retire the line-oriented `StreamingParser` façade.** Review defect #1
       is RESOLVED at the generator level (2026-07-15): descent's pushdown
       backend (`--backend pushdown`) emits `parser_pd.rs`, resumable at any
