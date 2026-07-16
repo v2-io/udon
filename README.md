@@ -263,9 +263,9 @@ inline, not in a separate valve.
 | **AUX** (`spec/TODO-AUX.md`) | schema, paths, patch | — none yet | `core ^0.9` |
 | **CORE-PARSING** (`core/TODO-CORE-PARSING.md`) | event parser + descent grammar | **`core-v0.8.0`** | `core ^0.9` |
 | **PARSER** (`core/TODO-PARSER.md`) | AST one-shot + streaming-AST | — none yet | `core ^0.9` |
-| **HUMAN-UX** (`editors/TODO-HUMAN-UX.md`) | Obsidian, syntax highlighting | pre-0.8 (old spec) | `core ^0.9` |
+| **HUMAN-UX** (`ux/TODO-HUMAN-UX.md`) | Obsidian, syntax highlighting | pre-0.8 (old spec) | `core ^0.9` |
 | **UTILS** (`TODO-UTILS.md`) | `udon-utl` — accessors, conversion, `fmt` | — none yet | parser → `core ^0.9` |
-| **AGENT-UX** (`TODO-AGENT-UX.md`) | cheat-sheets, empirical harness | pre-0.8 (old models+spec) | `core ^0.9` |
+| **AGENT-UX** (`ux/TODO-AGENT-UX.md`) | cheat-sheets, empirical harness | pre-0.8 (old models+spec) | `core ^0.9` |
 | **PUBLISHING** (`TODO-PUBLISHING.md`) | README, release, crates.io | — | — |
 
 `spec/CORE-VERSION` and the SPEC-CORE target above move together; a

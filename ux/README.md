@@ -1,4 +1,9 @@
-# UDON editor support
+# UDON UX — editor support and UX lanes
+
+This directory is home to both UX tracking lanes — `TODO-HUMAN-UX.md`
+(editors, highlighting, Obsidian) and `TODO-AGENT-UX.md` (cheat-sheets, the
+empirical usability harness, agentic affordances) — plus the editor
+implementations below.
 
 First editor affordances for UDON. Context: REVIEW-JULY-2026.md §3 (concerns
 4 and 6) — UDON's failure modes in unaware editors are *silent* (a reflowed
@@ -20,7 +25,7 @@ synID dumps). Spec of record: `spec/CORE.md` v0.8.0-alpha.1.
 | `udon.tmLanguage.json` | TextMate grammar | VS Code, Sublime, anything TextMate |
 | `vim/` | syntax + ftdetect + ftplugin | vim / neovim |
 
-There is also the tree-sitter grammar spike at `../tree-sitter-udon/`
+There is also the tree-sitter grammar spike at `tree-sitter-udon/`
 (same spec version, Dec 2025). It targets tree-sitter consumers (neovim
 nvim-treesitter, helix, udon-aware `gq`) and is complementary to these;
 its token rules broadly agree, but it does not model the `;`
@@ -68,7 +73,7 @@ Plain-JS plugin, checked in ready to load — `manifest.json` + `main.js` +
 
 ```bash
 # from the repo root; pick your vault
-cp -r editors/obsidian-udon "<vault>/.obsidian/plugins/udon"
+cp -r ux/obsidian-udon "<vault>/.obsidian/plugins/udon"
 ```
 
 Then in Obsidian: Settings → Community plugins → reload/enable **UDON**.
@@ -128,7 +133,7 @@ Quickest (no marketplace): create a minimal local extension —
 
 ```bash
 mkdir -p ~/.vscode/extensions/udon-syntax/syntaxes
-cp editors/udon.tmLanguage.json ~/.vscode/extensions/udon-syntax/syntaxes/
+cp ux/udon.tmLanguage.json ~/.vscode/extensions/udon-syntax/syntaxes/
 cat > ~/.vscode/extensions/udon-syntax/package.json <<'EOF'
 {
   "name": "udon-syntax", "displayName": "UDON", "version": "0.1.0",
@@ -165,11 +170,10 @@ with `PackageDev`. (Deferred: a native `.sublime-syntax` port.)
 ### Notes / limitations
 
 - Block-attribute lines with **multiple** attributes (`:a 1 :b 2` on one
-  line) color only the first key: CORE says block values run to end of
-  line, while `examples/cheatsheet.udon` line 18 uses several attrs per
-  block line — the spec and the cheatsheet disagree here, so the grammar
-  refuses to guess. (Flagged as a spec ambiguity; sameline attrs on
-  element lines are unaffected.)
+  line) color only the first key. This was flagged as a spec ambiguity when
+  these grammars were built (0.8 block values ran to end of line); CORE 0.9's
+  uniform scan has since **resolved** it — `:a 1 :b 2` is two attributes —
+  and all three grammars have a marked spot to tighten to that ruling.
 - Freeform ``` fences may open mid-line (spec-true) — including in prose;
   a literal triple-backtick in prose will start an uncolored region until
   the next ```.
@@ -184,7 +188,7 @@ with `PackageDev`. (Deferred: a native `.sublime-syntax` port.)
 ```bash
 # vim 8+ / neovim packages path (or use your plugin manager with this dir)
 mkdir -p ~/.vim/pack/udon/start
-ln -s "$(pwd)/editors/vim" ~/.vim/pack/udon/start/udon
+ln -s "$(pwd)/ux/vim" ~/.vim/pack/udon/start/udon
 # neovim: ~/.config/nvim/pack/udon/start instead
 ```
 

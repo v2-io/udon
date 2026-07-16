@@ -10,5 +10,5 @@
 
 Actionable items get extracted from these notes into the co-located TODO lanes
 (`../spec/TODO-AUX.md` for schema/paths/patch; `../spec/TODO-SPEC-OTHER.md` for
-dialects/markdown; `../TODO-UTILS.md`, `../TODO-AGENT-UX.md`). The notes stay as
+dialects/markdown; `../TODO-UTILS.md`, `../ux/TODO-AGENT-UX.md`). The notes stay as
 reference.

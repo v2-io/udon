@@ -27,12 +27,12 @@ constraints.
 
 The palette regenerates automatically when you switch Obsidian themes or
 light/dark mode. Live-use feedback (taste calls, mispaints) lands in
-`TODO.md` here.
+`../TODO-HUMAN-UX.md` (the UX lane, under the Obsidian plugin item).
 
 ## Install
 
 This repo is itself a test vault (`.obsidian/` is gitignored); the plugin is
-symlinked: `.obsidian/plugins/udon → ../../editors/obsidian-udon`. For any
+symlinked: `.obsidian/plugins/udon → ../../ux/obsidian-udon`. For any
 other vault, copy or symlink this directory to
 `<vault>/.obsidian/plugins/udon/` and enable it. Four files matter at
 runtime: `main.js`, `styles.css`, `manifest.json`, `udon.wasm`.
@@ -43,7 +43,7 @@ After any grammar or engine change:
 
 ```bash
 cd core && cargo build -p udon-wasm --release --target wasm32-unknown-unknown
-cp target/wasm32-unknown-unknown/release/udon_wasm.wasm ../editors/obsidian-udon/udon.wasm
+cp target/wasm32-unknown-unknown/release/udon_wasm.wasm ../ux/obsidian-udon/udon.wasm
 ```
 
 then reload the plugin (toggle off/on). One rebuild updates highlighting

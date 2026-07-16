@@ -21,7 +21,7 @@ consistency-or-precedence rule.
 
 Practical properties that motivated it: globbing by schema (`*.desc.udon`);
 editor associations unaffected (all tooling keys on the final `.udon` —
-verified against editors/); `bin/find-consumers` can later group/profile by
+verified against ux/); `bin/find-consumers` can later group/profile by
 designator; and self-description — the bootstrap work made `udon.desc` a
 first-class UDON document, so its name should say so.
 

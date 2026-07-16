@@ -24,11 +24,32 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       consumers of this item: LSP semantic tokens, and whether the
       tree-sitter spike still earns its keep.
 
-- [ ] **Obsidian plugin** — editing behavior, soft-wrap-to-prose-column, folding.
-      Live feedback + detail stay in `obsidian-udon/TODO.md` (the plugin
-      sub-tracker); umbrella tracking here. *(That sub-tracker is intentionally
-      plugin-local — it's where live-use feedback lands and it travels with the
-      plugin; two-level co-location, not scatter. Don't drain it by reflex.)*
+- [ ] **Obsidian plugin** (`obsidian-udon/`) — Joseph's live-use feedback
+      lands here. Open items (drained from the former plugin sub-tracker,
+      2026-07-16):
+      - [ ] **Get editing to work** — the umbrella item for the editing
+            experience (Joseph; to be detailed with an Obsidian-focused agent).
+      - [ ] **Soft-wrap prose to a hanging indent at its own column** —
+            display-wrapped continuations currently return to column 1; give
+            wrapped prose a hanging indent to the prose column. *Display-only*
+            (CodeMirror soft-wrap concern): no hard newlines, no byte changes.
+      - [ ] **Automate the wasm rebuild+copy** (script or cargo alias:
+            `cd core && cargo build -p udon-wasm --release --target
+            wasm32-unknown-unknown`, then copy `udon_wasm.wasm` →
+            `obsidian-udon/udon.wasm`); consider trimming size (227 KB with
+            the autocolors engine; wasm-opt later).
+      - [ ] **Autocolors: first real-vault look** — the settings → wasm
+            `udon_theme` → injected `#udon-autocolors` path is node-proven end
+            to end but unrendered in a live Obsidian window: check a `.udon`
+            file and a ```` ```udon ```` fence in light and dark themes,
+            reroll a few scheme names, confirm the settings tab. Taste calls
+            to revisit by eye: deliberately mild chroma; comment hue
+            randomized like any family (2011 kept comments near-neutral);
+            bold on element names.
+      - [ ] **Live Preview fences: anchor on Obsidian's syntax tree** instead
+            of the whole-document line-regex fence scan — correct at note
+            scale but blind to exotic containers (nested callout depth,
+            indented-code ambiguity) and O(doc) per edit.
 - [ ] **autocolors — generated, allocation-theoretic color schemes.**
       Joseph's 2011 project (procedural schemes in perceptual color space:
       emphasis as an information budget, colors as constrained relationships,
@@ -45,5 +66,7 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       contextual emphasis (phase D). Unexercised: real Obsidian render
       (headless-node-proven only) — needs a vault look.
 - [ ] **Syntax highlighting** — bring `udon.tmLanguage.json`, `vim/`, and
-      `../tree-sitter-udon/` current with CORE (especially the new escape model
-      and `<…>` typing).
+      `tree-sitter-udon/` current with CORE (especially the new escape model,
+      `<…>` typing, and the 0.9 uniform block-attr scan — the "spec vs
+      cheatsheet disagree on multi-attr block lines" flag all three grammars
+      carry is resolved: `:a 1 :b 2` is two attributes).
