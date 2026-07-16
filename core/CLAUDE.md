@@ -88,6 +88,15 @@ runs descent from the pinned `tools/descent` submodule
 (`git submodule update --init tools/descent`). **Never edit
 `udon-core/src/parser.rs` directly.**
 
+**Benchmarks are part of the process** (Joseph, 2026-07-16): any grammar
+change to `generator/` **or** any descent change must run the criterion
+suite (`cargo bench -p udon-core`) as an **immediate before/after pair** —
+benchmark, apply the one change, benchmark again — so the comparison is
+never confounded by unrelated parsing changes. Byte-identical generated
+output is never a goal per se; the fixture gate plus these benchmarks are
+the criteria. Record meaningful deltas in the commit message; investigate
+regressions before committing.
+
 ## Debugging: Use Tracing
 
 **Tracing is your primary debugging tool.** When iterating on the grammar:
