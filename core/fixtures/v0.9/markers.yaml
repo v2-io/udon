@@ -181,6 +181,7 @@
     - [Attr, "k"]
     - [BareValue, "v"]
     - [Text, "some prose"]
+    - [Warning, "AttributeAfterChildren"]
     - [Text, ":later x"]
     - ElementEnd
 
@@ -193,6 +194,7 @@
     - ElementStart
     - [Name, "child"]
     - ElementEnd
+    - [Warning, "AttributeAfterChildren"]
     - [Text, ":later x"]
     - ElementEnd
 
@@ -270,7 +272,6 @@
     - ElementStart
     - [Name, "b"]
     - [Attr, "k"]
-    - [BareValue, "v"]
-    - [Text, "word :notattr"]
+    - [Text, "v word :notattr"]
     - ElementEnd
     - ElementEnd

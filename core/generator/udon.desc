@@ -94,8 +94,14 @@
   ; colon is restored, never eaten (defect #12 data-loss half; the
   ; promotion boundary itself is open decision 9).
   |state[:check_attr]
-    |c[<XLBL_START SQ>]       | /block_attr                      |>> :eol
+    |c[<XLBL_START SQ>]       | dstate = /block_attr             |>> :root_attr_check
     |default                  | /prose(col, -1, ':')             |>> :eol
+
+  ; Deferred values are not supported at document root (attrs there are
+  ; already an edge case) — an open attr resolves immediately.
+  |state[:root_attr_check]
+    |if[dstate == 1]          | /error(missing_attribute_value) | Nil |>> :eol
+    |default                  |                                  |>> :eol
 
   ; `!` guard (CORE Marker Recognition): directive only when followed by an
   ; identifier or ':' (raw). `!{` at head position is the PROSE-LEVEL inline
@@ -209,7 +215,7 @@
 ; Element (block form - indent-based children)
 ; ============================================================================
 
-|function[element:Element]  :elem_col :parent_col  | content_base = -1 | content_seen = 0
+|function[element:Element]  :elem_col :parent_col  | content_base = -1 | content_seen = 0 | attr_open = 0 | attr_col = -1
 
   |state[:identity]
     | /parse_element_identity(<>)                                |>> :post_identity
@@ -266,8 +272,22 @@
   ; reference bracket is not an attr — fall back to intact text with the
   ; ':' restored (defect #12 data-loss half).
   |state[:check_sameline_attr]
-    |c[<XLBL_START SQ>]       | /sameline_attr                   |>> :pre_content
+    |c[<XLBL_START SQ>]       | sstate = /sameline_attr          |>> :sameline_attr_after
     |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
+
+  ; A node value (plain :a |beta) is a VALUE, not a child — it does not set
+  ; content_seen (attrs-before-children counts children, not values).
+  |state[:sameline_attr_after]
+    |if[sstate == 2]                                             |>> :sameline_node
+    |default                                                     |>> :pre_content
+
+  |state[:sameline_node]
+    |c['|']                   | ->                               |>> :sameline_node2
+    |default                                                     |>> :pre_content
+  |state[:sameline_node2]
+    |c['{']                   | -> | /embedded                   |>> :post_child
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 1, :elem_col) |>> :post_block_child
+    |default                  | /sameline_text(:elem_col, '|')   |>> :after_content
 
   |state[:check_sameline_pipe]
     |c['{']                   | -> | content_seen = 1 | /embedded |>> :post_child
@@ -365,10 +385,53 @@
     |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
 
   |state[:check_child]
-    |if[col <= :elem_col]                                        |return  ; dedent
+    |if[col <= :elem_col]                                        |>> :dedent_out
+    |if[attr_open == 1]                                          |>> :attr_pending
     ; After child return, content_base may be set - route to :at_content_base if matched
     |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
     |default                                                     |>> :child_dispatch
+
+  ; Dedent past this element: an open attr never got its value.
+  |state[:dedent_out]
+    |if[attr_open == 1]       | /error(missing_attribute_value) | Nil | attr_open = 0 |return
+    |default                                                     |return
+
+  ; A deferred attribute is open (CORE "Multi-Line Values"): a deeper line
+  ; is its value body — a node (the attr IS the node), text (deferred text
+  ; value), or a comment (exempt; the attr stays open). A line at or left
+  ; of the attr's own column means no value ever arrived: error + Nil.
+  ; Deferred values do NOT enter the children phase (attrs-before-children
+  ; counts children, not values) — content_seen stays untouched here.
+  |state[:attr_pending]
+    |if[col <= attr_col]      | /error(missing_attribute_value) | Nil | attr_open = 0 |>> :attr_resolved
+    |c['|']                   | attr_open = 0 | ->               |>> :attr_node
+    |c[':']                   | /error(attribute_under_attribute) | attr_open = 0 | -> |>> :attr_bad_attr
+    |c[';']                   | -> | /line_comment               |>> :after_content_open
+    |c['`']                   | attr_open = 0 | ->               |>> :attr_fence
+    |c['!']                   | attr_open = 0                    |>> :child_check_bang
+    |c[<BS>]                  | attr_open = 0 | -> | /verbatim_text |>> :after_content
+    |default                  | attr_open = 0 | /prose(col, :elem_col, <>) |>> :after_content
+
+  |state[:attr_resolved]
+    |if[content_base >= 0 && col >= content_base]               |>> :at_content_base
+    |default                                                     |>> :child_dispatch
+
+  |state[:attr_node]
+    |c['{']                   | -> | /embedded                   |>> :after_content
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :elem_col)   |>> :after_child
+    |default                  | /prose(col, :elem_col, '|')      |>> :after_content
+
+  ; The offending ':'-line after AttributeUnderAttribute is kept as prose
+  ; (keep-everything posture; recovery shape is an open supplement item).
+  |state[:attr_bad_attr]
+    |default                  | /prose(col, :elem_col, ':')      |>> :after_content
+
+  |state[:attr_fence]
+    |c['`']                   | ->                               |>> :attr_fence2
+    |default                  | /prose(col, :elem_col, '`')      |>> :after_content
+  |state[:attr_fence2]
+    |c['`']                   | -> | /freeform                   |>> :after_content
+    |default                  | /prose_backticks(col, :elem_col) |>> :after_content
 
   ; First child content (content_base not yet set) or lines with less indent than content_base
   ; content_base tracks the first child's column for consistency warnings
@@ -418,9 +481,42 @@
   ; Phase restriction (CORE "Attributes Before Children"): once any text or
   ; child element has appeared, a line-initial ':' is prose.
   |state[:child_check_attr]
-    |if[content_seen == 1]    | /prose(col, :elem_col, ':')      |>> :after_content
-    |c[<XLBL_START SQ>]       | /block_attr                      |>> :after_content
+    |if[content_seen == 1]    | Warning(AttributeAfterChildren) | /prose(col, :elem_col, ':') |>> :after_content
+    |c[<XLBL_START SQ>]       | attr_col = col | attr_open = /block_attr |>> :attr_after
     |default                  | /prose(col, :elem_col, ':')      |>> :after_content
+
+  |state[:attr_after]
+    |if[attr_open == 2]       | attr_open = 0                    |>> :battr_node
+    |if[attr_open == 1]                                          |>> :after_content_open
+    |default                                                     |>> :after_content
+
+  ; Block-line sameline node value (:a |node on its own line): parse the
+  ; node as the value — again, no content_seen.
+  |state[:battr_node]
+    |c['|']                   | ->                               |>> :battr_node2
+    |default                                                     |>> :after_content
+  |state[:battr_node2]
+    |c['{']                   | -> | /embedded                   |>> :after_content
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 1, :elem_col) |>> :post_block_child
+    |default                  | /prose(COL - 1, :elem_col, '|')  |>> :after_content
+
+  ; Parallel EOF-sensitive states while a deferred attribute is open: at
+  ; EOF the attr never got a value -> MissingAttributeValue + Nil. (These
+  ; exist because the generator's inferred EOF handling runs before any
+  ; |if cases; only an explicit unconditional |eof can intercept it.)
+  |state[:after_content_open]
+    |eof                      | /error(missing_attribute_value) | Nil | attr_open = 0 |return
+    |c['\n']                  | ->                               |>> :after_newline_open
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :after_newline_open
+    |default                  | col = COL - 1                    |>> :check_child
+
+  |state[:after_newline_open]
+    |eof                      | /error(missing_attribute_value) | Nil | attr_open = 0 |return
+    |c['\n']                  | -> | BlankLine                   |>>
+    |c[' ']                   | -> | col = 1                     |>> :children_ws
+    |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
+    |default                  | col = COL - 1                    |>> :check_child
 
   |state[:do_prose]
     |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
@@ -521,7 +617,12 @@
 ; (:key at EOL + deeper lines — needs attr-open state in the element loop,
 ; pass 1c).
 
-|function[block_attr]
+; Returns 1 when the attribute is left OPEN at end-of-line (deferred value:
+; deeper lines are the body — the caller's children loop resolves it, or
+; errors MissingAttributeValue+Nil if nothing deeper claims it). Uniform
+; scan (CORE "The Scan"): after a finished value, ':' starts the next
+; attribute on the SAME block line; block run-to-EOL is gone.
+|function[block_attr:INT]  | result = 0
   |state[:key]
     |c[XLBL_START]            | /attr_key                        |>> :post_key
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
@@ -538,22 +639,35 @@
     |default                  | ->                               |>> :value_start
 
   |state[:flag]
-    | /flag_value('\0')                                          |return
+    | /flag_value('\0')                                          |>> :post_value
 
   |state[:value_start]
     |c[' \t']                 | ->                               |>>
-    |c['\n']                  | /error(missing_attribute_value) | Nil |return
-    |c[':']                   | /error(missing_attribute_value) | Nil |return
-    |c['|']                   |                                  |return
+    |c['\n']                  | result = 1                       |return result
+    |c[':']                   | /error(missing_attribute_value) | Nil |>> :key_next
+    |c['|']                   | result = 2                       |return result
+    |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
     |default                  | /value(0, '\0')                  |>> :post_value
 
-  ; After value, check for trailing comment (per SPEC: ` ;` terminates values)
+  ; Consume the ':' that ended a valueless attr and parse the next key.
+  |state[:key_next]
+    |c[':']                   | ->                               |>> :key
+    |default                  |                                  |return result
+
+  ; After a finished value: framed comment, next attribute (uniform scan),
+  ; or end of line. Trailing text / boundary-\ after a FINISHED value is
+  ; the warn+stack segment case — staged (needs re-emittable key); interim
+  ; the material is left to the caller so no bytes are lost.
   |state[:post_value]
-    |c[';']                   | -> | /line_comment_content        |return
-    |default                  |                                  |return
+    |c[' \t']                 | ->                               |>>
+    |c[';']                   | -> | /line_comment_content        |return result
+    |c[':']                   |                                  |>> :key_next
+    |default                  |                                  |return result
 
 
-|function[sameline_attr]
+; Returns 2 when a '|' follows in value position — the node is the attr's
+; VALUE (parsed by the caller without entering the children phase).
+|function[sameline_attr:INT]  | result = 0
   |state[:key]
     |c[XLBL_START]            | /attr_key                        |>> :post_key
     |c[<SQ>]                  | -> | /attr_key_quoted            |>> :post_qkey
@@ -570,13 +684,14 @@
     |default                  | ->                               |>> :value_start
 
   |state[:flag]
-    | /flag_value('\0')                                          |return
+    | /flag_value('\0')                                          |return result
 
   |state[:value_start]
     |c[' \t']                 | ->                               |>>
-    |c['\n:']                 | /error(missing_attribute_value) | Nil |return
-    |c['|']                   |                                  |return
-    |default                  | /value(1, '\0')                  |return
+    |c['\n:']                 | /error(missing_attribute_value) | Nil |return result
+    |c['|']                   | result = 2                       |return result
+    |c[<BS>]                  | -> | /attr_text_verbatim('\0')   |return result
+    |default                  | /value(0, '\0')                  |return result
 
 
 |function[sameline_attr_embedded]
@@ -602,7 +717,8 @@
     |c[' \t']                 | ->                               |>>
     |c[<'\n:' '}'>]           | /error(missing_attribute_value) | Nil |return
     |c['|']                   |                                  |return
-    |default                  | /value(1, '}')                   |return
+    |c[<BS>]                  | -> | /attr_text_verbatim('}')     |return
+    |default                  | /value(0, '}')                   |return
 
 
 ; Flag value (CORE flag rule): exactly true/false/null/nil as the next token
@@ -743,6 +859,17 @@
 ; ============================================================================
 ; Prose / Text
 ; ============================================================================
+
+; attr_text_verbatim - value-position `\` (CORE "Value-Position \"): the
+; backslash was consumed by the caller; the rest of the line (or the
+; embedded bracket) is the attribute's TEXT value — literal, no sameline
+; comment affordance (P3-3).
+|function[attr_text_verbatim:Text]  :bracket
+  |state[:main]
+    |c['\n']                  | TERM                             |return
+    |c[:bracket]              | TERM                             |return
+    |default                  | ->                               |>>
+
 
 ; verbatim_text - head-position `\` escape (CORE "Escape (\)"): the
 ; backslash was consumed by the caller; the REST OF THE PHYSICAL LINE is
@@ -1144,6 +1271,7 @@
     |c[' \t']                 | ->                               |>>
     |c['\n']                  | ->                               |>> :pre_content_ml
     |c[':']                   | ->                               |>> :check_attr
+    |c[<BS>]                  | -> | /attr_text_verbatim('}')    |>> :post_identity
     |default                  | /embed_content                   |return
 
   ; Newline directly after identity/attributes: skip continuation
@@ -1307,8 +1435,12 @@
   ; Line-initial attr guard (see document :check_attr): failed attr parse
   ; falls back to intact prose with the ':' restored (defect #12).
   |state[:child_check_attr]
-    |c[<XLBL_START SQ>]       | /block_attr                      |>> :children
+    |c[<XLBL_START SQ>]       | dstate = /block_attr             |>> :dattr_check
     |default                  | /prose(col, :line_col, ':')      |>> :children
+
+  |state[:dattr_check]
+    |if[dstate == 1]          | /error(missing_attribute_value) | Nil |>> :children
+    |default                  |                                  |>> :children
 
   |state[:child_pipe]
     |c['{']                   | -> | /embedded                   |>> :children

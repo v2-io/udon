@@ -298,13 +298,13 @@
     - ElementEnd
 
 - id: string_bare_fallback
-  desc: anything else unquoted is a string
+  desc: a bare token followed by text commits a text blob (0.9 boundary rule)
   udon: "|el\n  :desc unquoted text here\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "desc"]
-    - [BareValue, "unquoted text here"]
+    - [Text, "unquoted text here"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------

@@ -157,7 +157,7 @@
     - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<val>"]
     - CommentStart
-    - [Text, "just a note, not a second value"]
+    - [Text, " just a note, not a second value"]
     - CommentEnd
     - ElementEnd
 

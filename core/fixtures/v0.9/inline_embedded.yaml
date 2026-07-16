@@ -25,8 +25,7 @@
     - EmbeddedStart
     - [Name, "a"]
     - [Attr, "href"]
-    - [BareValue, "/home"]
-    - [Text, "here"]
+    - [Text, "/home here"]
     - EmbeddedEnd
     - [Text, " to continue."]
     - ElementEnd
@@ -57,20 +56,21 @@
     - EmbeddedStart
     - [Name, "a"]
     - [Attr, "href"]
-    - [BareValue, "/"]
-    - [Text, "Home"]
+    - [Text, "/ Home"]
     - EmbeddedEnd
     - [Text, " "]
     - EmbeddedStart
     - [Name, "a"]
     - [Attr, "href"]
-    - [BareValue, "/about"]
-    - [Text, "About"]
+    - [Text, "/about About"]
     - EmbeddedEnd
     - ElementEnd
 
+# 0.9: the open attr's prose-shaped blob owns the tail INCLUDING the inline
+# form — segments re-emit the Attr (flat wire). RED until segment
+# re-emission lands (staged; see TODO-CORE-PARSING).
 - id: nested_embedded
-  desc: embedded elements nest inside embedded content
+  desc: inline forms inside an attr blob are re-attributed segments (0.9)
   udon: "|p See |{a :href /doc the |{em official} documentation} for details.\n"
   events:
     - ElementStart
@@ -79,12 +79,13 @@
     - EmbeddedStart
     - [Name, "a"]
     - [Attr, "href"]
-    - [BareValue, "/doc"]
-    - [Text, "the "]
+    - [Text, "/doc the "]
+    - [Attr, "href"]
     - EmbeddedStart
     - [Name, "em"]
     - [Text, "official"]
     - EmbeddedEnd
+    - [Attr, "href"]
     - [Text, " documentation"]
     - EmbeddedEnd
     - [Text, " for details."]

@@ -258,12 +258,11 @@
     - [Text, "; This line starts with a semicolon in the output"]
 
 - id: attr_value_semicolon_no_space_literal
-  desc: sameline value keeps a no-space semicolon
+  desc: unspaced semicolon stays in the token; text at the boundary makes it all one blob (CORE Literal Semicolons example)
   udon: "|el :key and-this;-is-ok rest is prose\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "key"]
-    - [BareValue, "and-this;-is-ok"]
-    - [Text, "rest is prose"]
+    - [Text, "and-this;-is-ok rest is prose"]
     - ElementEnd

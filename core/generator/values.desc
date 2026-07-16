@@ -11,7 +11,8 @@
 ;
 ; PROVIDES:
 ;   /typed_value(:space_term, :bracket) - Main entry point
-;     :space_term = 0 (block: space is content) or 1 (space terminates)
+;     :space_term = 0 (attr value: bare-token BOUNDARY rule applies) or
+;                   1 (array item / [key]: space simply terminates)
 ;     :bracket = 0 (none), } (embedded), or ] (array)
 ;
 ; EMITS:
@@ -20,9 +21,22 @@
 ;   Nil        - null, nil
 ;   Integer    - decimal, hex (0x), octal (0o), binary (0b)
 ;   Float      - with decimal point or exponent
-;   Rational   - integer/integer + r (e.g., 1/3r, 22/7r)  [provisional, CORE "Numbers"]
-;   Complex    - number +/- number + i, or number + i (e.g., 3+4i, 5i)  [provisional]
-;   BareValue  - unrecognized (string)
+;   Rational   - integer/integer + r (e.g., 1/3r)  [provisional, CORE "Numbers"]
+;   Complex    - number +/- number + i (e.g., 3+4i, 5i)  [provisional]
+;   BareValue  - single-token bare string
+;   Text       - text blob (0.9: bare token + plain text at the boundary)
+;   Reference  - @... in value position
+;
+; THE 0.9 BOUNDARY MODEL (CORE "The Scan and the Bare-Token Boundary"):
+; self-terminating shapes (numbers, quotes, <...>, [...], @refs) end at
+; space in every mode. Only the keyword/bare-string paths hold the scan
+; provisionally open at a space: the next non-space character decides —
+; a head-position marker (or EOL/bracket) finishes the single-token value;
+; plain text commits the REST OF THE LINE to a Text blob (owned by the
+; attribute — ownership is the caller's context). A framed ' ; ' inside a
+; blob opens a comment. KNOWN GAPS (staged): inline forms inside blobs
+; (|{...} etc.) are literal content for now — segmentation needs the
+; re-emittable-key machinery (see TODO-CORE-PARSING).
 ;
 ; TEMPORAL IS GONE FROM BARE RECOGNITION (CORE 0.8): a bare 2026-07-11 is
 ; the string "2026-07-11"; temporal lives in the <...> envelope, resolved by
@@ -52,14 +66,11 @@
 ; Main Entry - Context-Aware Value Parser
 ; ============================================================================
 
-; typed_value parses a bare (unquoted) value with context-aware termination.
-; Void function - emits polymorphic types (Integer, Float, BoolTrue, etc.)
-; All emits are explicit inline; no auto-emit on return.
 |function[typed_value]  :space_term :bracket  | MARK | depth = 0
   |state[:main]
     |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
-    |c[' ']                   |                                  |>> :check_space
+    |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |c['<']                   | -> | depth += 1                  |>> :envelope
     |c['@']                   | ->                               |>> :maybe_ref
@@ -67,16 +78,15 @@
     |c['123456789']           |                                  |>> :num_dec
     |c['+-']                  | ->                               |>> :num_sign
     |LETTER                   | ->                               |>> :accumulate
-    |default                  | ->                               |>>
+    |default                  | ->                               |>> :string
 
   ; === Explicit-typing envelope <...> (CORE "Explicit Typing") ===
-  ; INTERIM (ratified 2026-07-15, in CORE): the dialect layer doesn't exist
-  ; yet, so the envelope is recognized (<>-balanced, terminates the value at
-  ; the matching >) but emits a Warning and passes through as a plain
-  ; string — the full <...> lexical form, so nothing is lost. When dialects
-  ; land, this is where they take over.
+  ; INTERIM: recognized (<>-balanced, single-line) but Warning + string
+  ; pass-through until the dialect layer lands. A newline before the
+  ; matching '>' is UnclosedTypeEnvelope (CORE: envelopes are single-line).
   |state[:envelope]
-    |eof                      | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
+    |eof                      | Warning(UnclosedTypeEnvelope) | BareValue(USE_MARK) |return
+    |c['\n']                  | TERM | Warning(UnclosedTypeEnvelope) | BareValue(USE_MARK) |return
     |c['<']                   | -> | depth += 1                  |>>
     |c['>']                   | -> | depth -= 1                  |>> :env_check
     |default                  | ->                               |>>
@@ -106,14 +116,6 @@
     |c[<XLBL_CONT '.'>]       | ->                               |>>
     |default                  | TERM | Reference(USE_MARK)       |return
 
-  |state[:check_space]
-    |if[space_term == 0]     | ->                               |>> :block_space
-    |default                  | BareValue(USE_MARK)              |return
-
-  |state[:block_space]
-    |c[';']                | TERM(-1) | BareValue(USE_MARK)   |return  ; comment (;)
-    |default                  |                                  |>> :main
-
   ; === Accumulate identifier for keyword lookup ===
   ; If we see non-label chars (like .), it's not a keyword - continue as string
   |state[:accumulate]
@@ -124,21 +126,26 @@
     |LABEL_CONT               | ->                               |>>
     |default                  | ->                               |>> :string
   |state[:accum_space]
-    |if[space_term == 0]     | ->                               |>> :accum_block
-    |default                  | TERM | KEYWORDS(bare_kw)         |return
-  |state[:accum_block]
-    |c[';']                | TERM(-1) | KEYWORDS(bare_kw)     |return
-    |default                  |                                  |>> :accumulate
+    |if[space_term == 1]      | TERM | KEYWORDS(bare_kw)         |return
+    |default                  | TERM                             |>> :kw_boundary
+
+  ; Keyword-path boundary: consume spaces; a marker/EOL finishes the lone
+  ; token (typed if keyword); plain text commits the blob.
+  |state[:kw_boundary]
+    |eof                      | KEYWORDS(bare_kw)                |return
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | KEYWORDS(bare_kw)                |return
+    |c[:bracket]              | KEYWORDS(bare_kw)                |return
+    |c[<':;!@`' P BS>]        | KEYWORDS(bare_kw)                |return
+    |default                  |                                  |>> :blob
 
   ; === Numbers: after sign (+/-) ===
-  ; A signed number (+5, -3.5, -0xFF via :num_zero). Anything else after the
-  ; sign is a word (falls to keyword/string accumulation).
   |state[:num_sign]
     |c['0']                   | ->                               |>> :num_zero
     |c['123456789']           |                                  |>> :num_dec
     |default                  |                                  |>> :accumulate
 
-  ; === Numbers: zero prefix (0x hex, 0o octal, 0b binary, 0d explicit decimal) ===
+  ; === Numbers (self-terminating: space ends them in every mode) ===
   |state[:num_zero]
     |eof                      | Integer(USE_MARK)                |return
     |c['xX']                  | ->                               |>> :num_hex
@@ -149,17 +156,10 @@
     |c['eE']                  | ->                               |>> :num_float_exp
     |c[<0-9 '_'>]              | ->                               |>> :num_dec
     |c['\n']                  | Integer(USE_MARK)                |return
-    |c[' ']                   |                                  |>> :num_zero_space
+    |c[' ']                   | Integer(USE_MARK)                |return
     |c[:bracket]              | Integer(USE_MARK)                |return
     |default                  |                                  |>> :string
-  |state[:num_zero_space]
-    |if[space_term == 0]     | ->                               |>> :num_zero_block
-    |default                  | Integer(USE_MARK)                |return
-  |state[:num_zero_block]
-    |c[';']                | Integer(USE_MARK)                |return
-    |default                  |                                  |>> :string
 
-  ; === Numbers: decimal digits ===
   |state[:num_dec]
     |eof                      | Integer(USE_MARK)                |return
     |c[<0-9 '_'>]             | ->                               |>>
@@ -167,67 +167,36 @@
     |c['eE']                  | ->                               |>> :num_float_exp
     |c['/']                   | ->                               |>> :num_rational_denom
     |c['i']                   | -> | Complex(USE_MARK)           |return
-    ; Complex sign — both signs again now that dates no longer claim '-'
     |c['+-']                  | ->                               |>> :num_complex_sign
     |c['\n']                  | Integer(USE_MARK)                |return
-    |c[' ']                   |                                  |>> :num_dec_space
+    |c[' ']                   | Integer(USE_MARK)                |return
     |c[:bracket]              | Integer(USE_MARK)                |return
     |default                  |                                  |>> :string
-  |state[:num_dec_space]
-    |if[space_term == 0]     | ->                               |>> :num_dec_block
-    |default                  | Integer(USE_MARK)                |return
-  |state[:num_dec_block]
-    |c[';']                | Integer(USE_MARK)                |return
-    |default                  |                                  |>> :string
 
-
-
-  ; === Numbers: hex (0xFF) ===
   |state[:num_hex]
     |eof                      | Integer(USE_MARK)                |return
     |c[<0-9 a-f A-F '_'>]     | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
-    |c[' ']                   |                                  |>> :num_hex_space
+    |c[' ']                   | Integer(USE_MARK)                |return
     |c[:bracket]              | Integer(USE_MARK)                |return
     |default                  |                                  |>> :string
-  |state[:num_hex_space]
-    |if[space_term == 0]     | ->                               |>> :num_hex_block
-    |default                  | Integer(USE_MARK)                |return
-  |state[:num_hex_block]
-    |c[';']                | Integer(USE_MARK)                |return
-    |default                  |                                  |>> :string
 
-  ; === Numbers: octal (0o755) ===
   |state[:num_oct]
     |eof                      | Integer(USE_MARK)                |return
     |c[<0-7 '_'>]              | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
-    |c[' ']                   |                                  |>> :num_oct_space
+    |c[' ']                   | Integer(USE_MARK)                |return
     |c[:bracket]              | Integer(USE_MARK)                |return
     |default                  |                                  |>> :string
-  |state[:num_oct_space]
-    |if[space_term == 0]     | ->                               |>> :num_oct_block
-    |default                  | Integer(USE_MARK)                |return
-  |state[:num_oct_block]
-    |c[';']                | Integer(USE_MARK)                |return
-    |default                  |                                  |>> :string
 
-  ; === Numbers: binary (0b1010) ===
   |state[:num_bin]
     |eof                      | Integer(USE_MARK)                |return
     |c[<0-1 '_'>]              | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
-    |c[' ']                   |                                  |>> :num_bin_space
+    |c[' ']                   | Integer(USE_MARK)                |return
     |c[:bracket]              | Integer(USE_MARK)                |return
     |default                  |                                  |>> :string
-  |state[:num_bin_space]
-    |if[space_term == 0]     | ->                               |>> :num_bin_block
-    |default                  | Integer(USE_MARK)                |return
-  |state[:num_bin_block]
-    |c[';']                | Integer(USE_MARK)                |return
-    |default                  |                                  |>> :string
 
-  ; === Numbers: float fractional part ===
   |state[:num_float_frac]
     |eof                      | Float(USE_MARK)                  |return
     |c[<0-9 '_'>]             | ->                               |>>
@@ -235,30 +204,17 @@
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['+-']                  | ->                               |>> :num_complex_sign
     |c['\n']                  | Float(USE_MARK)                  |return
-    |c[' ']                   |                                  |>> :num_float_frac_space
+    |c[' ']                   | Float(USE_MARK)                  |return
     |c[:bracket]              | Float(USE_MARK)                  |return
     |default                  |                                  |>> :string
-  |state[:num_float_frac_space]
-    |if[space_term == 0]     | ->                               |>> :num_float_frac_block
-    |default                  | Float(USE_MARK)                  |return
-  |state[:num_float_frac_block]
-    |c[';']                | Float(USE_MARK)                  |return
-    |default                  |                                  |>> :string
 
-  ; === Numbers: float exponent ===
   |state[:num_float_exp]
     |eof                      | Float(USE_MARK)                  |return
     |c['+-']                  | ->                               |>> :num_float_exp_digits
     |c[<0-9>]                  |                                  |>> :num_float_exp_digits
     |c['\n']                  | Float(USE_MARK)                  |return
-    |c[' ']                   |                                  |>> :num_float_exp_space
+    |c[' ']                   | Float(USE_MARK)                  |return
     |c[:bracket]              | Float(USE_MARK)                  |return
-    |default                  |                                  |>> :string
-  |state[:num_float_exp_space]
-    |if[space_term == 0]     | ->                               |>> :num_float_exp_block
-    |default                  | Float(USE_MARK)                  |return
-  |state[:num_float_exp_block]
-    |c[';']                | Float(USE_MARK)                  |return
     |default                  |                                  |>> :string
 
   |state[:num_float_exp_digits]
@@ -267,105 +223,61 @@
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['+-']                  | ->                               |>> :num_complex_sign
     |c['\n']                  | Float(USE_MARK)                  |return
-    |c[' ']                   |                                  |>> :num_float_exp_d_space
+    |c[' ']                   | Float(USE_MARK)                  |return
     |c[:bracket]              | Float(USE_MARK)                  |return
     |default                  |                                  |>> :string
-  |state[:num_float_exp_d_space]
-    |if[space_term == 0]     | ->                               |>> :num_float_exp_d_block
-    |default                  | Float(USE_MARK)                  |return
-  |state[:num_float_exp_d_block]
-    |c[';']                | Float(USE_MARK)                  |return
-    |default                  |                                  |>> :string
 
-  ; === Rational: integer/integer + r (e.g., 1/3r, 22/7r) ===
-  ; After seeing '/' following an integer, accumulate denominator digits
-  ; MUST end with 'r' to be valid rational, otherwise falls back to string
+  ; === Rational: integer/integer + r (e.g., 1/3r) — provisional ===
   |state[:num_rational_denom]
-    |eof                      | BareValue(USE_MARK)              |return  ; no 'r', not rational
+    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['r']                   | -> | Rational(USE_MARK)          |return
-    |c['\n']                  | BareValue(USE_MARK)              |return  ; no 'r', not rational
-    |c[' ']                   |                                  |>> :num_rational_space
-    |c[:bracket]              | BareValue(USE_MARK)              |return  ; no 'r', not rational
-    |default                  |                                  |>> :string
-  |state[:num_rational_space]
-    |if[space_term == 0]     | ->                               |>> :num_rational_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:num_rational_block]
-    |c[';']                   | BareValue(USE_MARK)              |return
+    |c['\n']                  | BareValue(USE_MARK)              |return
+    |c[' ']                   | BareValue(USE_MARK)              |return
+    |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
 
-  ; === Complex: number +/- number + i (e.g., 3+4i, 3.5-2i) ===
-  ; After seeing '+' or '-' following a number, accumulate imaginary part
-  ; MUST end with 'i' to be valid complex, otherwise falls back to string
+  ; === Complex: number +/- number + i (e.g., 3+4i) — provisional ===
   |state[:num_complex_sign]
     |c[<0-9>]                 |                                  |>> :num_complex_imag
     |default                  |                                  |>> :string
   |state[:num_complex_imag]
-    |eof                      | BareValue(USE_MARK)              |return  ; no 'i', not complex
+    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['.']                   | ->                               |>> :num_complex_imag_frac
     |c['eE']                  | ->                               |>> :num_complex_imag_exp
     |c['i']                   | -> | Complex(USE_MARK)           |return
-    |c['\n']                  | BareValue(USE_MARK)              |return  ; no 'i', not complex
-    |c[' ']                   |                                  |>> :num_complex_imag_space
-    |c[:bracket]              | BareValue(USE_MARK)              |return  ; no 'i', not complex
+    |c['\n']                  | BareValue(USE_MARK)              |return
+    |c[' ']                   | BareValue(USE_MARK)              |return
+    |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
-  |state[:num_complex_imag_space]
-    |if[space_term == 0]     | ->                               |>> :num_complex_imag_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:num_complex_imag_block]
-    |c[';']                   | BareValue(USE_MARK)              |return
-    |default                  |                                  |>> :string
-
-  ; === Complex imaginary part: fractional (3+4.5i) ===
   |state[:num_complex_imag_frac]
     |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['eE']                  | ->                               |>> :num_complex_imag_exp
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['\n']                  | BareValue(USE_MARK)              |return
-    |c[' ']                   |                                  |>> :num_complex_imag_frac_space
+    |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
-  |state[:num_complex_imag_frac_space]
-    |if[space_term == 0]     | ->                               |>> :num_complex_imag_frac_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:num_complex_imag_frac_block]
-    |c[';']                   | BareValue(USE_MARK)              |return
-    |default                  |                                  |>> :string
-
-  ; === Complex imaginary part: exponent (3+4e2i) ===
   |state[:num_complex_imag_exp]
     |eof                      | BareValue(USE_MARK)              |return
     |c['+-']                  | ->                               |>> :num_complex_imag_exp_d
     |c[<0-9>]                 |                                  |>> :num_complex_imag_exp_d
     |c['\n']                  | BareValue(USE_MARK)              |return
-    |c[' ']                   |                                  |>> :num_complex_imag_exp_space
+    |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
-    |default                  |                                  |>> :string
-  |state[:num_complex_imag_exp_space]
-    |if[space_term == 0]     | ->                               |>> :num_complex_imag_exp_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:num_complex_imag_exp_block]
-    |c[';']                   | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
   |state[:num_complex_imag_exp_d]
     |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['\n']                  | BareValue(USE_MARK)              |return
-    |c[' ']                   |                                  |>> :num_complex_imag_exp_d_space
+    |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
-  |state[:num_complex_imag_exp_d_space]
-    |if[space_term == 0]     | ->                               |>> :num_complex_imag_exp_d_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:num_complex_imag_exp_d_block]
-    |c[';']                   | BareValue(USE_MARK)              |return
-    |default                  |                                  |>> :string
 
-  ; === String fallback (anything not keyword/number) ===
+  ; === Bare string (anything not keyword/number) ===
   |state[:string]
     |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -373,8 +285,44 @@
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  | ->                               |>>
   |state[:string_space]
-    |if[space_term == 0]     | ->                               |>> :string_block
-    |default                  | BareValue(USE_MARK)              |return
-  |state[:string_block]
-    |c[';']                | TERM(-1) | BareValue(USE_MARK)   |return
-    |default                  |                                  |>> :string
+    |if[space_term == 1]      | BareValue(USE_MARK)              |return
+    |default                  | TERM                             |>> :str_boundary
+
+  ; Bare-string boundary: same shape as the keyword boundary.
+  |state[:str_boundary]
+    |eof                      | BareValue(USE_MARK)              |return
+    |c[' \t']                 | ->                               |>>
+    |c['\n']                  | BareValue(USE_MARK)              |return
+    |c[:bracket]              | BareValue(USE_MARK)              |return
+    |c[<':;!@`' P BS>]        | BareValue(USE_MARK)              |return
+    |default                  |                                  |>> :blob
+
+  ; === Text blob (0.9): the line committed — runs to EOL / bracket, with
+  ; the framed ' ; ' comment carve-out. Re-TERMs over the boundary TERM so
+  ; the emitted Text spans from the original MARK. ===
+  |state[:blob]
+    |eof                      | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['{']                   | -> | depth += 1                  |>>
+    |c[:bracket]              |                                  |>> :blob_close
+    |c[';']                   |                                  |>> :blob_semi
+    |default                  | ->                               |>>
+
+  ; In embedded context the blob is brace-balanced: a nested {...} pair is
+  ; content; only the element's own closer ends the blob. (Interim: inline
+  ; forms inside blobs are literal content until segment re-emission lands.)
+  |state[:blob_close]
+    |if[depth > 0]            | -> | depth -= 1                  |>> :blob
+    |default                  | TERM | Text(USE_MARK)            |return
+
+  ; Framed ' ; ' check (mirror of sameline_text): space before (PREV) and
+  ; space/EOL after open a comment; anything else keeps the ';' literal.
+  |state[:blob_semi]
+    |if[PREV == ' ']          | ->                               |>> :blob_semi_after
+    |default                  | ->                               |>> :blob
+
+  |state[:blob_semi_after]
+    |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |default                  |                                  |>> :blob
