@@ -517,6 +517,14 @@ enum Frame {
     BlockRef(BlockRefFrame),
 }
 
+/// SAVE(slot) captures — owned (content, global span) so a drain or
+/// chunk seam can never invalidate them. Re-emitted (borrowed) by
+/// TypeName(USE_SAVED(slot)); an unsaved slot is empty content @ 0..0.
+#[derive(Debug, Default)]
+struct SavedSlots {
+    akey: (Vec<u8>, std::ops::Range<usize>),
+}
+
 // ---- byte-class matchers (free fns; mirror the recursive backend) ----
 
 #[allow(dead_code)]
@@ -601,10 +609,8 @@ pub struct PushdownParser {
     column: u32,
     finished: bool,
     started: bool,
-    /// SAVE(slot) captures — owned (content, global span) so a drain or
-    /// chunk seam can never invalidate them. Re-emitted by
-    /// TypeName(USE_SAVED(slot)).
-    saved: std::collections::HashMap<&'static str, (Vec<u8>, std::ops::Range<usize>)>,
+    /// SAVE(slot) captures — see [`SavedSlots`].
+    saved: SavedSlots,
 }
 
 impl Default for PushdownParser {
@@ -626,7 +632,7 @@ impl PushdownParser {
             term_pos: usize::MAX,
             prepend_buf: Vec::new(),
             term_prepend_len: 0,
-            saved: std::collections::HashMap::new(),
+            saved: SavedSlots::default(),
             pending_skip: 0,
             ret: 0,
             line: 1,
@@ -759,15 +765,6 @@ impl PushdownParser {
             combined.extend_from_slice(&self.buf[start..end]);
             (std::borrow::Cow::Owned(combined), span)
         }
-    }
-
-    /// Snapshot the current MARK..TERM capture for SAVE(slot) — owned copy,
-    /// non-destructive (prepend buffer untouched).
-    fn save_capture(&self) -> (Vec<u8>, std::ops::Range<usize>) {
-        let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos };
-        let content = self.buf[self.mark_pos.min(end)..end].to_vec();
-        let span = (self.base + self.mark_pos)..(self.base + end.max(self.mark_pos));
-        (content, span)
     }
 
     #[inline(always)]
@@ -3213,7 +3210,7 @@ impl PushdownParser {
                                 }
                                 Some(b'\\') => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeValueExtendedByTrailingText"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = ElementSt::PdK89;
                                     let (pd_a0,) = (b'\0', );
@@ -3223,7 +3220,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeValueExtendedByTrailingText"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     f.st = ElementSt::PdK90;
                                     let (pd_a0,) = (b'\0', );
                                     self.stack.push(Frame::Element(f));
@@ -3882,13 +3879,13 @@ impl PushdownParser {
                         AttrIdentSt::PostKey => {
                             match self.peek() {
                                 _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                    { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; let start = self.mark_pos.min(end); self.saved.akey.0.clear(); self.saved.akey.0.extend_from_slice(&self.buf[start..end]); self.saved.akey.1 = (self.base + self.mark_pos)..(self.base + end.max(self.mark_pos)); }
                                     f.result = 1;
                                     self.ret = f.result;
                                     continue 'run;
                                 }
                                 _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                    { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; let start = self.mark_pos.min(end); self.saved.akey.0.clear(); self.saved.akey.0.extend_from_slice(&self.buf[start..end]); self.saved.akey.1 = (self.base + self.mark_pos)..(self.base + end.max(self.mark_pos)); }
                                     self.ret = f.result;
                                     continue 'run;
                                 }
@@ -3897,14 +3894,14 @@ impl PushdownParser {
                         AttrIdentSt::PostQkey => {
                             match self.peek() {
                                 _ if self.prev() == b'?' => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                    { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; let start = self.mark_pos.min(end); self.saved.akey.0.clear(); self.saved.akey.0.extend_from_slice(&self.buf[start..end]); self.saved.akey.1 = (self.base + self.mark_pos)..(self.base + end.max(self.mark_pos)); }
                                     self.advance_or_pend();
                                     f.result = 1;
                                     self.ret = f.result;
                                     continue 'run;
                                 }
                                 _ => {
-                                    { let cap = self.save_capture(); self.saved.insert("akey", cap); }
+                                    { let end = if self.term_pos != usize::MAX { self.term_pos } else { self.pos }; let start = self.mark_pos.min(end); self.saved.akey.0.clear(); self.saved.akey.0.extend_from_slice(&self.buf[start..end]); self.saved.akey.1 = (self.base + self.mark_pos)..(self.base + end.max(self.mark_pos)); }
                                     self.advance_or_pend();
                                     self.ret = f.result;
                                     continue 'run;
@@ -4216,7 +4213,7 @@ impl PushdownParser {
                                 }
                                 Some(b'\\') => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeValueExtendedByTrailingText"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = BlockAttrSt::PdK117;
                                     let (pd_a0,) = (b'\0', );
@@ -4226,7 +4223,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeValueExtendedByTrailingText"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     f.st = BlockAttrSt::PdK118;
                                     let (pd_a0,) = (b'\0', );
                                     self.stack.push(Frame::BlockAttr(f));
@@ -4491,14 +4488,14 @@ impl PushdownParser {
                                 }
                                 Some(b'|') => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeSecondValue"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     f.mode = 4;
                                     self.advance_or_pend();
                                     f.st = AttrDeferredBodySt::Node;
                                     continue 'st;
                                 }
                                 Some(b'\\') => {
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = AttrDeferredBodySt::PdK127;
                                     self.stack.push(Frame::AttrDeferredBody(f));
@@ -4506,7 +4503,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     f.st = AttrDeferredBodySt::PdK128;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.parent_col, b"", );
                                     self.stack.push(Frame::AttrDeferredBody(f));
@@ -4536,14 +4533,14 @@ impl PushdownParser {
                                 }
                                 Some(b'|') => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeSecondValue"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = AttrDeferredBodySt::Node;
                                     continue 'st;
                                 }
                                 Some(b'\\') => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeSecondValue"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = AttrDeferredBodySt::PdK130;
                                     self.stack.push(Frame::AttrDeferredBody(f));
@@ -4552,7 +4549,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"AttributeSecondValue"[..]), span: self.gspan() });
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     f.st = AttrDeferredBodySt::PdK131;
                                     let (pd_a0, pd_a1, pd_a2,) = (f.col, f.parent_col, b"", );
                                     self.stack.push(Frame::AttrDeferredBody(f));
@@ -5525,7 +5522,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     self.set_term(-1);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = AttrTextVerbatimSt::PdK163;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
@@ -5549,7 +5546,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     self.set_term(-1);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = AttrTextVerbatimSt::PdK164;
                                     self.stack.push(Frame::AttrTextVerbatim(f));
@@ -5598,7 +5595,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.mark();
                                     f.st = AttrTextVerbatimSt::Main;
                                     continue 'st;
@@ -7158,7 +7155,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     self.set_term(-1);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = TypedValueSt::PdK189;
                                     self.stack.push(Frame::TypedValue(f));
@@ -7184,7 +7181,7 @@ impl PushdownParser {
                                 Some(b'{') => {
                                     self.set_term(-1);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.advance_or_pend();
                                     f.st = TypedValueSt::PdK190;
                                     self.stack.push(Frame::TypedValue(f));
@@ -7216,7 +7213,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    if let Some((c, sp)) = self.saved.get("akey") { on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&c[..]), span: sp.clone() }); }
+                                    on_event(StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.mark();
                                     f.st = TypedValueSt::Blob;
                                     continue 'st;
