@@ -77,9 +77,15 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       semantics (boundary scanning, blob machinery, deferred bodies); some
       may be recoverable (SCAN coverage, state-hop overhead). Bisect with
       proper pairs: bench at each landmark commit with the SAME grammar
-      across each descent bump. Also add a recursive-backend bench to the
-      suite (currently pushdown-only) and keep memory profiling on large
-      files in scope.
+      across each descent bump. (Correction: the suite DOES include
+      recursive_single_shot plus parse/compare groups — the earlier
+      pushdown-only note read a filtered log.) First proper pair recorded
+      2026-07-16 for the \-escape-ladder collapse + file renames: neutral
+      to slightly positive — pushdown −1% to −7.5% time, recursive +1%
+      (within the ±3-8% noise band the untouched comparison parsers show).
+      No regression from that work; the confounded post-0.9 delta above is
+      still the thing to bisect. Keep memory profiling on large files in
+      scope.
 - [ ] **Pending descent-tool items** — requests/fixes we're waiting on from
       `descent` itself, tracked from *our* side (what it unblocks here) so we
       follow up rather than work around or forget. Logged in descent's
