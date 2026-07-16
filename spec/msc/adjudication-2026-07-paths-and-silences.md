@@ -36,13 +36,18 @@ reference wire (`ReferenceStart`/`Name`/`Attr "$key"`/`Attr "$traits"`)
 is its encoding. Unification is nearly free by construction. Two design
 consequences to keep in hand:
 
-- **The subset question**: what do in-document references get? Today:
-  one segment, no attrs/wildcards/descent ("notably absent by design").
-  Candidate extension: multi-segment absolute paths (`@config|database[primary]`)
-  while keeping wildcards/`||`/indices out of *references* (a reference
-  should select deterministically; trait-multiplicity is already
-  consumer-side). The full syntax stays available to tools (at/all,
-  skeleton, edit tool).
+- **The subset question — genuinely open**: what do in-document references
+  get? Today: one segment, no attrs/wildcards/descent ("notably absent by
+  design"). For the record (Joseph, 2026-07-16): references were **never
+  nailed down as zero-or-one vs multiple** — and CORE agrees: "matching
+  multiplicity is consumer-side" is ratified, and a trait-only `@.realized`
+  is plural by design. So no determinism principle constrains the subset;
+  if wildcards/`||`/indices stay out of *references*, the reason must be
+  something real (value-boundary syntax budget, conservatism-until-need),
+  not uniqueness. Candidate floor: multi-segment absolute paths
+  (`@config|database[primary]`); ceiling: the whole path language. The
+  full syntax is available to tools (at/all, skeleton, edit tool) either
+  way.
 - **Document-embeddability is a hard constraint the standalone framing
   never had**: reference-paths must parse inside documents under bounded
   lookahead with clean terminators at value boundaries — e.g. what
@@ -159,10 +164,12 @@ Ruling: _________
   Under P0 this is literally "a reference, evaluated" — one mechanism.
 - Trailing `:customer@` = **follow the reference stored in the attr**; the
   path continues *at the resolved definition* (`|order[123]:customer@:email`).
-- Unresolvable / ambiguous follow = path error (at()'s fail-loudly
-  contract), never a silent empty.
+- Multiplicity inherits, it is not re-legislated: a reference may match
+  multiple definitions (consumer-side multiplicity, ratified in CORE) —
+  following one under `at()` errors on plural, under `all()` fans out.
+  Unresolvable = path error (fail-loudly), never a silent empty.
 
-Recommendation: adopt all three clauses; specify them as the path-side
+Recommendation: adopt these clauses; specify them as the path-side
 semantics of the unified reference form.
 
 Ruling: _________
