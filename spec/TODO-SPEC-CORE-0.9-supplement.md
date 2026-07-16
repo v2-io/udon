@@ -56,10 +56,13 @@ recommendation — open until Joseph confirms each.
       further segment of the attribute (the uniform two-values rule: **warn
       and stack, never error, never drop**). The `\` only forces text mode
       (no comment affordance). CORE "Value-Position `\`".
-- [ ] **Quoted keys never flag** — *drafted (R4)*: terminal-`?` flag
-      semantics apply to **bare** keys only; a quoted key (`:'$?'`,
-      `:'key?'`) is always a plain attribute. Keeps the suffix-sugar target
-      `:'$?' true` plain. CORE "Attribute Keys and Flags".
+- [x] ~~R4 quoted keys never flag~~ **RATIFIED 2026-07-16, opposite of the
+      draft**: flag semantics follow the NAME — terminal `?` flags whether
+      quoted or bare; `:'ready?'` ≡ `:ready?`. The `?` marker was chosen to
+      align with `$?`; the suffix sugar `|el?` → `:'$?' true` is
+      flag-compliant as written, and longhand `:'$?'` defaults true like the
+      suffix means. `$!`/`$*`/`$+` stay plain (sugar supplies explicit true).
+      CORE "Attribute Keys and Flags" + Element Suffixes footnotes.
 - [ ] **Event vocabulary for multi-segment / node values** — *drafted (R5)*:
       single scalar/reference/interpolation keeps `Attr` + one value event
       (0.8 wire, low churn); node / text-blob / multi-segment values bracket

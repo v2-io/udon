@@ -295,7 +295,7 @@ UDON performs only the expansion; the *meaning* is defined by the consuming sche
 - a schema might read `?` as optional, `!` as required
 - a grammar might read `?` as 0-or-1, `*` as 0-or-more, `+` as 1-or-more
 
-(Element suffixes are unrelated to attribute **flag keys** `:key?` -- the suffix is sugar on an *element* that desugars to a plain `$`-attribute with an explicit `true`; a flag key is an *attribute-level* spelling. See Attributes, "Keys and Flags".)
+(Element suffixes and attribute **flag keys** `:key?` are deliberately aligned: `|el?` desugars to `:'$?' true`, and `$?` -- ending in `?` -- is itself a flag key, so the sugar and the hand-written form mean the same thing by construction. See Attributes, "Keys and Flags".)
 
 **Suffix positions** (a suffix binds to the element identity):
 
@@ -364,7 +364,7 @@ Attributes appear in two positions -- **sameline** (on the element definition li
 
 An unquoted attribute key is a Unicode identifier (`XID_Start` to start) whose continue-set is `XID_Continue` plus `-`, `/`, and the suffix characters `? ! * +`. As with element names, anything else takes single quotes (`:'weird key'`). `/` is conventional namespacing with **zero** core semantics (`:address/street 123`).
 
-A **terminal `?` on an unquoted key selects flag semantics**; a `?` anywhere else in the key is just a character. A quoted key is always a plain attribute, whatever it ends with -- quoting means "exactly this name, no reading of it" (so the suffix-sugar target `:'$?' true` is a plain attribute). *(0.9 draft ruling R4 -- quoted keys never flag.)*
+A **terminal `?` on the key selects flag semantics** -- quoted or bare, the same name is the same attribute: `:'ready?'` and `:ready?` are semantically identical (ratified 2026-07-16). A `?` anywhere else in the key is just a character. This is by design, not coincidence: the flag marker was chosen to *align* with the `$?` suffix attribute -- `|el?` desugars to `:'$?' true`, which the flag rule reads exactly as written (keyword alone -> that value), and a longhand `:'$?'` with no value defaults true precisely the way the suffix means it. The other suffix targets (`$!`, `$*`, `$+`) end in non-`?` characters, so they are plain attributes -- the sugar always supplies their explicit `true`.
 
 **Plain attributes always take a value.** A plain `:key` followed by no value material -- end of line with nothing indented under it, or a context terminator -- is an **error** (`MissingAttributeValue`, working name). Per the anomaly posture, that means a non-halting error *event*, and the attribute is still emitted **with a `Nil` value** -- the event stream never carries less shape than the source suggested; the error annotates *why* the nil is there, and an introspecting layer (AST, schema, app) decides what to do about it (ruled 2026-07-16). The 0.8 implicit "valueless means true" is gone; presence/absence flags are spelled with `?`:
 
@@ -385,7 +385,7 @@ A **terminal `?` on an unquoted key selects flag semantics**; a `?` anywhere els
 |el :a? well it sure is true  ; a? = true; el prose "well it sure is true"
 ```
 
-The flag's wire name **includes** the `?` (`a?`), preserving round-trip fidelity. Element suffix sugar (`|el?` -> `:'$?' true`) is a separate, untouched mechanism -- it desugars to a plain attribute with an explicit value.
+The flag's wire name **includes** the `?` (`a?`), preserving round-trip fidelity. Element suffix sugar (`|el?` -> `:'$?' true`) rides the same mechanism: `$?` is a flag key like any other, written with its value explicit.
 
 ### Value Kinds
 
