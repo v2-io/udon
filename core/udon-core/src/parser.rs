@@ -183,7 +183,6 @@ pub enum ParseErrorCode {
     UnexpectedEof,
     UnexpectedChar,
     Unclosed,
-    UnclosedStringValue,
     UnclosedText,
     UnclosedInterpolation,
     UnclosedFreeform,
@@ -193,6 +192,7 @@ pub enum ParseErrorCode {
     UnclosedArray,
     UnclosedEmbedded,
     UnclosedInlineComment,
+    UnclosedStringValue,
 }
 
 /// Callback-based parser.
@@ -3431,12 +3431,7 @@ impl<'a> Parser<'a> {
                     }
                 }
                 State::Blob => {
-                    if self.eof() {
-                    self.set_term(0);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    return result;
-                    }
-                    match self.peek() {
+                    match self.scan_to2(b'\n', bracket) {
                         Some(b'\n') => {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
@@ -3447,10 +3442,12 @@ impl<'a> Parser<'a> {
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return result;
                         }
-                        _ => {
-                    self.advance();
-                    continue;
+                        None => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return result;
                         }
+                        _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
             }
@@ -3508,12 +3505,7 @@ impl<'a> Parser<'a> {
         loop {
             match state {
                 State::Main => {
-                    if self.eof() {
-                    self.set_term(0);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    return;
-                    }
-                    match self.peek() {
+                    match self.scan_to3(b'\n', b';', bracket) {
                         Some(b'\n') => {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
@@ -3528,10 +3520,12 @@ impl<'a> Parser<'a> {
                     state = State::Semi;
                     continue;
                         }
-                        _ => {
-                    self.advance();
-                    continue;
+                        None => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                         }
+                        _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
                 State::Semi => {
@@ -3590,12 +3584,7 @@ impl<'a> Parser<'a> {
         loop {
             match state {
                 State::Main => {
-                    if self.eof() {
-                    self.set_term(0);
-                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    return;
-                    }
-                    match self.peek() {
+                    match self.scan_to6(b'\n', b'|', b'!', b';', b'\\', bracket) {
                         Some(b'\n') => {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
@@ -3626,10 +3615,12 @@ impl<'a> Parser<'a> {
                     state = State::Bs;
                     continue;
                         }
-                        _ => {
-                    self.advance();
-                    continue;
+                        None => {
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
                         }
+                        _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
                 State::Pipe => {
@@ -3811,12 +3802,12 @@ impl<'a> Parser<'a> {
             match self.peek() {
                 Some(b'"') => {
                     self.advance();
-                    self.parse_double_quoted(on_event);
+                    self.parse_quoted(b'"', on_event);
                     return 0;
                 }
                 Some(b'\'') => {
                     self.advance();
-                    self.parse_single_quoted(on_event);
+                    self.parse_quoted(b'\'', on_event);
                     return 0;
                 }
                 Some(b'[') => {
@@ -3832,15 +3823,15 @@ impl<'a> Parser<'a> {
         }
     }
 
-    /// Parse double_quoted -> StringValue
-    fn parse_double_quoted<F>(&mut self, on_event: &mut F)
+    /// Parse quoted -> StringValue
+    fn parse_quoted<F>(&mut self, q: u8, on_event: &mut F)
     where
         F: FnMut(Event<'a>),
     {
         self.mark();
         loop {
-            match self.scan_to3(b'\n', b'"', b'\\') {
-                Some(b'"') => {
+            match self.scan_to3(b'\n', b'\\', q) {
+                Some(b) if b == q => {
                     self.set_term(0);
                     self.advance();
                     on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
@@ -3855,38 +3846,7 @@ impl<'a> Parser<'a> {
                     self.advance();
                 }
                 None => {
-                    on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedStringValue, span: self.span() });
-                    return;
-                }
-                _ => unreachable!("scan_to only returns target chars"),
-            }
-        }
-    }
-
-    /// Parse single_quoted -> StringValue
-    fn parse_single_quoted<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(Event<'a>),
-    {
-        self.mark();
-        loop {
-            match self.scan_to3(b'\n', b'\'', b'\\') {
-                Some(b'\'') => {
                     self.set_term(0);
-                    self.advance();
-                    on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
-                    return;
-                }
-                Some(b'\\') => {
-                    self.advance();
-                    self.advance();
-                    continue;
-                }
-                Some(b'\n') => {
-                    self.advance();
-                }
-                None => {
                     on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
                     on_event(Event::Error { code: ParseErrorCode::UnclosedStringValue, span: self.span() });
                     return;
@@ -4878,11 +4838,7 @@ impl<'a> Parser<'a> {
                     }
                 }
                 State::String => {
-                    if self.eof() {
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return 0;
-                    }
-                    match self.peek() {
+                    match self.scan_to3(b'\n', b' ', bracket) {
                         Some(b'\n') => {
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return 0;
@@ -4895,10 +4851,11 @@ impl<'a> Parser<'a> {
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return 0;
                         }
-                        _ => {
-                    self.advance();
-                    continue;
+                        None => {
+                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    return 0;
                         }
+                        _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
                 State::StringSpace => {

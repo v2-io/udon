@@ -166,13 +166,9 @@ struct ValueFrame {
 }
 
 #[derive(Debug)]
-struct DoubleQuotedFrame {
-    st: DoubleQuotedSt,
-}
-
-#[derive(Debug)]
-struct SingleQuotedFrame {
-    st: SingleQuotedSt,
+struct QuotedFrame {
+    st: QuotedSt,
+    q: u8,
 }
 
 #[derive(Debug)]
@@ -384,10 +380,7 @@ enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, Bs, BsPipe, BsBang, B
 enum ValueSt { PdEntry, Start, PdK165, PdK166, PdK167, PdK168, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum DoubleQuotedSt { PdEntry, Main, }
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-enum SingleQuotedSt { PdEntry, Main, }
+enum QuotedSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum ArraySt { PdEntry, Entry, Items, PdK169, }
@@ -483,8 +476,7 @@ enum Frame {
     AttrTrailingBlob(AttrTrailingBlobFrame),
     AttrTextVerbatim(AttrTextVerbatimFrame),
     Value(ValueFrame),
-    DoubleQuoted(DoubleQuotedFrame),
-    SingleQuoted(SingleQuotedFrame),
+    Quoted(QuotedFrame),
     Array(ArrayFrame),
     EmitBareValue(EmitBareValueFrame),
     TypedValue(TypedValueFrame),
@@ -1119,23 +1111,14 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_double_quoted<F>(&mut self, on_event: &mut F)
+    fn enter_quoted<F>(&mut self, q: u8, on_event: &mut F)
     where
         F: FnMut(StreamEvent),
     {
         self.mark();
-        self.stack.push(Frame::DoubleQuoted(DoubleQuotedFrame {
-            st: DoubleQuotedSt::PdEntry,
-        }));
-    }
-
-    fn enter_single_quoted<F>(&mut self, on_event: &mut F)
-    where
-        F: FnMut(StreamEvent),
-    {
-        self.mark();
-        self.stack.push(Frame::SingleQuoted(SingleQuotedFrame {
-            st: SingleQuotedSt::PdEntry,
+        self.stack.push(Frame::Quoted(QuotedFrame {
+            st: QuotedSt::PdEntry,
+            q,
         }));
     }
 
@@ -5568,14 +5551,7 @@ impl PushdownParser {
                             }
                         }
                         FlagValueSt::Blob => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::FlagValue(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                self.ret = f.result;
-                                continue 'run;
-                            }
-                            match self.peek() {
+                            match self.scan_to2(b'\n', f.bracket) {
                                 Some(b'\n') => {
                                     self.set_term(0);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
@@ -5588,12 +5564,14 @@ impl PushdownParser {
                                     self.ret = f.result;
                                     continue 'run;
                                 }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = FlagValueSt::Blob;
-                                    self.stack.push(Frame::FlagValue(f));
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::FlagValue(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
+                                    self.ret = f.result;
                                     continue 'run;
                                 }
+                                _ => unreachable!(),
                             }
                         }
                     }
@@ -5656,13 +5634,7 @@ impl PushdownParser {
                             continue 'run;
                         }
                         AttrTrailingBlobSt::Main => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::AttrTrailingBlob(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
+                            match self.scan_to3(b'\n', b';', f.bracket) {
                                 Some(b'\n') => {
                                     self.set_term(0);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
@@ -5678,12 +5650,13 @@ impl PushdownParser {
                                     self.stack.push(Frame::AttrTrailingBlob(f));
                                     continue 'run;
                                 }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = AttrTrailingBlobSt::Main;
-                                    self.stack.push(Frame::AttrTrailingBlob(f));
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::AttrTrailingBlob(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }
+                                _ => unreachable!(),
                             }
                         }
                         AttrTrailingBlobSt::Semi => {
@@ -5756,13 +5729,7 @@ impl PushdownParser {
                             continue 'run;
                         }
                         AttrTextVerbatimSt::Main => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::AttrTextVerbatim(f)); return ParseResult::NeedMoreData; }
-                                self.set_term(0);
-                                { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
-                                continue 'run;
-                            }
-                            match self.peek() {
+                            match self.scan_to6(b'\n', b'|', b'!', b';', b'\\', f.bracket) {
                                 Some(b'\n') => {
                                     self.set_term(0);
                                     { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
@@ -5797,12 +5764,13 @@ impl PushdownParser {
                                     self.stack.push(Frame::AttrTextVerbatim(f));
                                     continue 'run;
                                 }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = AttrTextVerbatimSt::Main;
-                                    self.stack.push(Frame::AttrTextVerbatim(f));
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::AttrTextVerbatim(f)); return ParseResult::NeedMoreData; }
+                                    self.set_term(0);
+                                    { let c = self.term_owned(); on_event(StreamEvent::Text { content: c, span: self.gspan_from_mark() }); }
                                     continue 'run;
                                 }
+                                _ => unreachable!(),
                             }
                         }
                         AttrTextVerbatimSt::Pipe => {
@@ -6026,15 +5994,17 @@ impl PushdownParser {
                                 Some(b'"') => {
                                     self.advance_or_pend();
                                     f.st = ValueSt::PdK165;
+                                    let (pd_a0,) = (b'"', );
                                     self.stack.push(Frame::Value(f));
-                                    self.enter_double_quoted(on_event);
+                                    self.enter_quoted(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 Some(b'\'') => {
                                     self.advance_or_pend();
                                     f.st = ValueSt::PdK166;
+                                    let (pd_a0,) = (b'\'', );
                                     self.stack.push(Frame::Value(f));
-                                    self.enter_single_quoted(on_event);
+                                    self.enter_quoted(pd_a0, on_event);
                                     continue 'run;
                                 }
                                 Some(b'[') => {
@@ -6072,16 +6042,16 @@ impl PushdownParser {
                         }
                     }
                 }
-                Frame::DoubleQuoted(mut f) => {
+                Frame::Quoted(mut f) => {
                     match f.st {
-                        DoubleQuotedSt::PdEntry => {
-                            f.st = DoubleQuotedSt::Main;
-                            self.stack.push(Frame::DoubleQuoted(f));
+                        QuotedSt::PdEntry => {
+                            f.st = QuotedSt::Main;
+                            self.stack.push(Frame::Quoted(f));
                             continue 'run;
                         }
-                        DoubleQuotedSt::Main => {
-                            match self.scan_to3(b'\n', b'"', b'\\') {
-                                Some(b'"') => {
+                        QuotedSt::Main => {
+                            match self.scan_to3(b'\n', b'\\', f.q) {
+                                Some(b) if b == f.q => {
                                     self.set_term(0);
                                     self.advance_or_pend();
                                     { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
@@ -6090,47 +6060,14 @@ impl PushdownParser {
                                 Some(b'\\') => {
                                     self.advance_or_pend();
                                     self.advance_or_pend();
-                                    f.st = DoubleQuotedSt::Main;
-                                    self.stack.push(Frame::DoubleQuoted(f));
+                                    f.st = QuotedSt::Main;
+                                    self.stack.push(Frame::Quoted(f));
                                     continue 'run;
                                 }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::DoubleQuoted(f)); continue 'run; }
+                                Some(b'\n') => { self.advance(); self.stack.push(Frame::Quoted(f)); continue 'run; }
                                 None => {
-                                    if !self.finished { self.stack.push(Frame::DoubleQuoted(f)); return ParseResult::NeedMoreData; }
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
-                                    continue 'run;
-                                }
-                                _ => unreachable!(),
-                            }
-                        }
-                    }
-                }
-                Frame::SingleQuoted(mut f) => {
-                    match f.st {
-                        SingleQuotedSt::PdEntry => {
-                            f.st = SingleQuotedSt::Main;
-                            self.stack.push(Frame::SingleQuoted(f));
-                            continue 'run;
-                        }
-                        SingleQuotedSt::Main => {
-                            match self.scan_to3(b'\n', b'\'', b'\\') {
-                                Some(b'\'') => {
+                                    if !self.finished { self.stack.push(Frame::Quoted(f)); return ParseResult::NeedMoreData; }
                                     self.set_term(0);
-                                    self.advance_or_pend();
-                                    { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
-                                    continue 'run;
-                                }
-                                Some(b'\\') => {
-                                    self.advance_or_pend();
-                                    self.advance_or_pend();
-                                    f.st = SingleQuotedSt::Main;
-                                    self.stack.push(Frame::SingleQuoted(f));
-                                    continue 'run;
-                                }
-                                Some(b'\n') => { self.advance(); self.stack.push(Frame::SingleQuoted(f)); continue 'run; }
-                                None => {
-                                    if !self.finished { self.stack.push(Frame::SingleQuoted(f)); return ParseResult::NeedMoreData; }
                                     { let c = self.term_owned(); on_event(StreamEvent::StringValue { content: c, span: self.gspan_from_mark() }); }
                                     on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
                                     continue 'run;
@@ -7389,13 +7326,7 @@ impl PushdownParser {
                             }
                         }
                         TypedValueSt::String => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let c = self.term_owned(); on_event(StreamEvent::BareValue { content: c, span: self.gspan_from_mark() }); }
-                                self.ret = 0;
-                                continue 'run;
-                            }
-                            match self.peek() {
+                            match self.scan_to3(b'\n', b' ', f.bracket) {
                                 Some(b'\n') => {
                                     { let c = self.term_owned(); on_event(StreamEvent::BareValue { content: c, span: self.gspan_from_mark() }); }
                                     self.ret = 0;
@@ -7411,12 +7342,13 @@ impl PushdownParser {
                                     self.ret = 0;
                                     continue 'run;
                                 }
-                                _ => {
-                                    self.advance_or_pend();
-                                    f.st = TypedValueSt::String;
-                                    self.stack.push(Frame::TypedValue(f));
+                                None => {
+                                    if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
+                                    { let c = self.term_owned(); on_event(StreamEvent::BareValue { content: c, span: self.gspan_from_mark() }); }
+                                    self.ret = 0;
                                     continue 'run;
                                 }
+                                _ => unreachable!(),
                             }
                         }
                         TypedValueSt::StringSpace => {
