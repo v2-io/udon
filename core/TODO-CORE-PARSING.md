@@ -19,6 +19,36 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       through `/bs_escape` + the inline-form states like the other blobs, or
       document why they are deliberately plain.
 
+- [ ] **The sameline-scan `!` guard is position-inconsistent** (found by the
+      2026-07-16 densification pass; probe-verified same day). A three-way,
+      no verdict — this may be an impl gap or may want a CORE ruling:
+      - **CORE says** head position includes the sameline scan ("the run
+        along an element line through elements *and attributes* … still
+        looking for the next marker"), and Marker Recognition says `!`
+        marks when followed by "an identifier character or `:`" —
+        `!if`, `!for`, `!:lang:`. Triple-backtick's section states the
+        sameline case explicitly ("a fence may follow elements *and*
+        attributes"); the `!` section states no such carve-out either way.
+      - **The grammar** implements the full guard in *two* places and not
+        a third: `30-udon.values.descent.udon`'s `:kwb_bang` / `:strb_bang`
+        (bare-token value boundary) guard on `<XLBL_START ':' '{'>` and
+        return the DIRECTIVE code; every block-line context
+        (`:check_bang`, `:child_check_bang`, `:dchild_check_bang`,
+        `attr_deferred_body :bang`) guards fully. But the element's plain
+        sameline scan — `10-udon.elements.descent.udon` `:check_sameline_bang`
+        — has only a `'{'` arm; its default restores the `!` as prose.
+        (Sameline *fences* are implemented in the same scan via
+        `:sameline_ff1`/`:sameline_ff2`, so the grammar is inconsistent
+        with itself, not merely conservative.)
+      - **The parser** therefore splits by what precedes: `|el :k v !if x`
+        → `DirectiveStart` (value-boundary path); `|el !if x`,
+        `|a |b !if x`, `|el :go? !:sh:` → `Text` (prose). One fixture
+        pins the flag case RED-honest:
+        `dynamics_syntax::flag_then_raw_block_is_child` (it also encodes
+        flag rule 2's "re-owned by the continuing scan" → the raw block is
+        the *element's* child, which the `/block_directive(:elem_col)`
+        route would give directly). *(discuss w/ Joseph)*
+
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
       (0xC2–0xF4) as identifier-start without the `match_xid_start`
