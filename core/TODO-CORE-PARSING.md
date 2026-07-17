@@ -77,16 +77,43 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         (the fixture's event *order* is a ⚠ reading; its *absence* is
         not). *(discuss w/ Joseph)*
 
-- [ ] **Newline-unclosed vs EOF-unclosed differ on the wire** (surfaced by
-      the same pass; a prior author left an in-fixture comment that was
-      never routed). `arrays.yaml::array_unclosed_is_error` (newline
-      terminates) omits `ArrayEnd`; `eof_recovery::eof_unclosed_array`
-      includes it, per the EOF table's explicit "`ArrayEnd` flushes".
-      **Both are green** — so the parser genuinely implements two
-      different wires, and CORE has **no table row at all** for
-      newline-terminated unclosed constructs. Either the newline case
-      wants its own ruled row, or it should be stated as EOF-equivalent.
-      *(discuss w/ Joseph)*
+- [ ] **A bare marker as the final byte of input is silently discarded**
+      (found 2026-07-16 by the densification agent's review of the EOF
+      proposal; probe-verified by two of us independently). **The worst
+      keep-everything violation found to date** — it is data loss, not
+      merely a missing anomaly:
+
+      | input | at EOF | with a trailing `\n` |
+      |---|---|---|
+      | `\|` | **0 events** | `Text "\|"` |
+      | `@` | **0 events** | `Text "@"` |
+      | `!` | **0 events** | `Text "!"` |
+      | `:` | **0 events** | `Text ":"` |
+      | `!{` | **0 events** | `DirectiveStart`/`End` |
+
+      Add any byte after the marker (`\|1`, `@ x`, `:-)`) and it parses
+      fine, so the trigger is exactly **a guard left pending at EOF**.
+      These are the 16 no-emit `\|eof` arms. It violates two ratified
+      sentences at once: *"Nothing is ever discarded at EOF"* and *"a
+      missing final newline is never, by itself, an anomaly (EOF is
+      newline-equivalent everywhere a rule says 'followed by a
+      newline')"*. Candidate resolution (the agent's, and it follows
+      directly from the second sentence): **resolve the pending guard as
+      if at a newline** — `\|` + EOF → `Text "\|"`, ordinary prose, no
+      anomaly; `\|{` + EOF → `EmbeddedStart` + `UnclosedEmbedded`.
+      Deliberately unfixtured pending the ruling (fixtures here would be
+      inventing spec). *(discuss w/ Joseph)*
+
+      *(Correction, same day: this item previously claimed that
+      newline-unclosed and EOF-unclosed arrays differ on the wire —
+      `arrays.yaml::array_unclosed_is_error` omitting `ArrayEnd`. **That
+      was false.** It relayed a prior author's in-fixture comment that
+      neither the agent nor I probed before recording it. Both forms emit
+      `Error UnclosedArray` + `ArrayEnd`, identically. The real question
+      hiding there is different and now separate: that fixture presumes
+      arrays are **single-line**, which is an un-ruled silence — only
+      envelopes are stated single-line — so it silently takes a side on a
+      blocked item. Routed to `spec/TODO-SPEC-CORE.md`.)*
 
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
