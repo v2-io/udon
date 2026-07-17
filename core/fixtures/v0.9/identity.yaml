@@ -41,6 +41,22 @@
     - [StringValue, "01"]
     - ElementEnd
 
+- id: key_typed_array_tuple
+  desc: bracket values are typed by the normal value rules — an array value
+    makes a composite (tuple) key; same wire as the longhand
+    :'$key' [12 'asdf'] (Joseph, 2026-07-16 — surrogate/natural identity
+    work builds on this)
+  udon: "|el[[12 'asdf']]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "12"]
+    - [StringValue, "asdf"]
+    - ArrayEnd
+    - ElementEnd
+
 - id: key_bare_hyphenated
   desc: a bare key with digits and hyphens is a string
   udon: "|item[abc-123]\n"

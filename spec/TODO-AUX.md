@@ -27,6 +27,18 @@ likely home is a future `spec/aux/` once `spec/` splits into
       `../design/udon-guarantees.md`. **Second rung of the edit-tool
       critical path** (conformance-at-apply needs it, plus the pragma in
       `TODO-SPEC-OTHER.md` to bind a document to its schema).
+      **Why schemas carry more weight here than in most formats (Joseph,
+      2026-07-16):** the indentation hazard is *worse* than Python's —
+      "python will break catastrophically if some code gets the wrong
+      indent... whereas it won't be as obvious to udon except thanks to
+      schemas." Wrong-scope prose/structure in UDON is *valid*, just
+      silently re-parented; schemas are what restore the loud failure
+      (and the edit tool's computed indentation removes the write-side
+      hazard entirely). Constraint-side asks accumulated 2026-07-16:
+      uniqueness/cardinality over `$key` incl. multiple-keys + tuple keys
+      (`TODO-SPEC-CORE.md`); transition-validity (old→new); soft/hard
+      gradual constraints; schema-by-exemplar + aspirational designators
+      (below); consistency profiles as the enforcement dial.
       *(discuss w/ Joseph)*
 - [ ] **Schema-by-exemplar** (Joseph, 2026-07-16): sometimes "the slow
       evolution of some exemplary file [is] actually the *input* to the

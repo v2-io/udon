@@ -78,7 +78,18 @@
       included (longhand `:'$key' 9 :'$key' scribal` is arguably wire-legal
       today); Host Views already says `key` is "the value(s) of `$key`";
       and multi-valued-`$key` prohibition is explicitly a schema concern,
-      not core. Genuinely open: (a) surface syntax — the identity grammar's
+      not core. **And tuple (composite) keys parse TODAY, probe-verified
+      2026-07-16**: `|el[[12 'asdf']]` = one `$key` whose value is the
+      array — identical wire to `:'$key' [12 'asdf']` — because `[key]`
+      routes through the full typed value path ("every type is available");
+      now pinned as fixture `key_typed_array_tuple`. So the design space
+      has three wire-real shapes: single typed key, tuple key (one
+      identity, compound value), and multiple independent keys (stacked
+      `$key`s — sugar syntax missing). Joseph's motivating blind spot:
+      UUIDs appear in both databases and documents, and nothing cleanly
+      "put[s] uuid in the same category as a simple auto-increment key" —
+      ad-hoc surrogate keys (SS1.3.38-style) are common in notational
+      markup precisely because "no one has built the middle." Genuinely open: (a) surface syntax — the identity grammar's
       post-bracket state doesn't accept a second `[`; (b) uniqueness
       semantics — per-key unique within the type (each key an independent
       handle, the SQL surrogate+natural reading) vs tuple-unique; (c)
