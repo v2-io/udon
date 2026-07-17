@@ -60,22 +60,51 @@ undifferentiated queued up… we're golden?"). It cannot be the whole rule:
 unclosed — under (a)-only, the very bug that prompted this would be
 *blessed as clean*.
 
+### The event shape (Joseph, 2026-07-16 — the refinement)
+
+```
+[unexpected-eof]
+   - [undifferentiated in buffer]
+   - [unclosed-groups]   (each with the exact location where the group BEGAN)
+```
+
+*"Seems like everything the subsequent stages could want."* It does — and
+it is better than the per-frame-anomaly sketch it replaces, for a reason
+worth naming: **the group list dissolves the composition question
+entirely.** The four ⚠ readings the densification pass had to invent
+(`|p |{a x |{b y`, `|el :xs [1 [2`, `|el :xs ["a`, `|p |{a :href`) were all
+artifacts of trying to express a *set* of unmet expectations as a
+*sequence* of anomalies. As a list, there is no ordering to rule, no
+innermost-first sentence to write, and nothing for a grammar to get wrong.
+The `spec/TODO-SPEC-CORE.md` composition silence doesn't get answered; it
+stops existing.
+
+The start-location half is the actionable one: the message a human or agent
+needs is never "something broke at EOF" but *"you opened `|{` at 3:12 and
+never closed it."* EOF is where it was noticed; the group's opening is where
+it gets fixed. (Native form note: the parser's currency is **spans** — every
+event carries one, and `span.rs` is wired — so the group list naturally
+carries opening *spans*, with line/column being the host's rendering of
+them. Same information, one less thing for the core to track.)
+
+**Clean-EOF test, refined:** no event iff the buffer holds nothing
+undifferentiated **and** no groups are open. `|p |{a :href x` fails the
+second condition with an empty buffer — which is exactly the bug this
+model needs to catch, and does.
+
 ## What it buys
 
 1. **The bug class disappears.** No state can forget an `|eof` arm, because
    states no longer carry them.
-2. **Composition falls out of the mechanism.** The v0.9 densification had to
-   *choose* a reading four times (`|p |{a x |{b y`, `|el :xs [1 [2`,
-   `|el :xs ["a`, `|p |{a :href`) — CORE's "End of input" table is
-   per-construct and silent on several-open-at-once (tracked in
-   `spec/TODO-SPEC-CORE.md`). A generated unwind is innermost-first *by
-   construction*, so the proposed spec sentence — "when several constructs
-   are open, each closes innermost-first, and each awaiting a delimiter
-   carries its own anomaly" — becomes a **description of what the generator
-   does** rather than a rule the grammar must remember to obey.
-3. **The `Unclosed*` vocabulary becomes derived** from frame identity
-   instead of a hand-curated table that the grammar matches by discipline —
-   which is how the table and the grammar drifted apart in the first place.
+2. **The composition question stops existing** (see the event shape above):
+   a set of unmet expectations is expressed as a *set*. No ordering rule,
+   nothing for a grammar to get wrong, four ⚠ fixtures become plain.
+3. **CORE's "End of input" table collapses** from seven behavior rows to
+   one event plus a definition of *group* (delimiter-scoped construct).
+   The `Unclosed*` code vocabulary is no longer hand-curated in a table the
+   grammar must match by discipline — the group *kind* is carried in the
+   list, and that is how the table and the grammar drifted apart in the
+   first place.
 4. **~80 lines leave the grammar**, and the units get easier to read: the
    value scanner's ~15 number states stop repeating four terminator rows
    *plus* an eof row.
@@ -102,24 +131,44 @@ declaration so the generator can synthesize both halves.
 
 ## Open questions (genuinely open — not rhetorical)
 
+- **Where does the event sit relative to the flushed `End`s?** The
+  universal implicit closer (ratified) flushes every pending `End`,
+  innermost-first. The single-event shape wants the *complete* group list,
+  which — in the recursive backend, whose stack is Rust's and cannot be
+  introspected — can only be assembled *as each frame returns*. That
+  implies the event fires **after** the unwind, at the outermost frame: a
+  closing summary. Consequence: the undifferentiated bytes arrive after the
+  `End`s of the constructs they came from, so a consumer places them by
+  **span**, not by stream position. That is fine (every event carries a
+  span) but it is a real change in how a consumer reads the tail of a
+  stream, and it should be a conscious choice rather than a side effect of
+  the mechanism. The alternative — remainder emitted in place, group-list
+  summary at the end — costs a second event and buys positional placement.
+  The pushdown backend could do either (its stack is reified); the
+  recursive one constrains the design, so pick for both.
+- **Does the Warning/Error split survive?** Today's table is not uniform on
+  purpose: an unterminated **freeform fence** is a *Warning* ("the body is
+  coherent; the author likely forgot the closer") and an unclosed `<…>`
+  envelope is a *Warning* (string pass-through), while unclosed
+  string/array/embed/comment/interpolation are *Errors*. One
+  `[unexpected-eof]` event collapses that: severity becomes either a
+  per-group field, or — more consistent with the ratified anomaly posture
+  ("drop/halt/reject is AST-/app-layer configuration") — **derived by the
+  consumer from the group kind**. The second reading is cleaner and matches
+  "make it the AST parser's and the application coder's problem," but it
+  does move a judgment that CORE currently makes. Worth ruling explicitly.
+- **What is a "group"?** The list carries delimiter-scoped constructs only;
+  indentation-scoped ones (elements, directives, comments, deferred
+  attribute values) close silently and coherently, and must *not* appear —
+  otherwise every document ends with a list of its own open elements. CORE
+  already draws this line in prose; the proposal turns it into a per-type
+  property the generator reads.
 - **Non-bracket captures have no `Start` event.** A remainder inside a
   quoted string inside an array (`|el :xs ["a`) is positionally ambiguous
   to a consumer: it can see the `ArrayStart` but nothing marks that a quote
-  opened. The frame-identity half of (b) resolves this — but it means the
-  anomaly, not the remainder, carries the "what was open" information.
-  Worth confirming that's the right division.
-- **Both backends.** The pushdown machine has a reified stack (cf. the
-  agent-facing-diagnostics item in `core/TODO-CORE-PARSING.md`), but the
-  recursive backend's stack is Rust's. This should be fine — the eof paths
-  are *generated into each function* either way, so neither backend needs
-  runtime introspection. Verify before relying on it.
-- **Does the remainder event replace the content event, or precede it?**
-  Today `|p some |{em abc` emits `Text "abc"` + `Error UnclosedEmbedded`.
-  Under the proposal, is it `Rest "abc"` (the remainder *is* the content,
-  undifferentiated) or `Text "abc"` + remainder-marker? The first is
-  simpler and matches "undifferentiated"; the second preserves what the
-  parser actually knew. Joseph's phrasing ("undifferentiated / not emitted
-  as event yet") leans toward the first.
+  opened. The group list resolves it — the quote is *in the list*, with its
+  opening span — which is another argument for the single-event shape:
+  the list is the only place the full open-set is expressible.
 - **Newline-unclosed vs EOF-unclosed.** They currently differ on the wire
   (`arrays.yaml::array_unclosed_is_error` omits `ArrayEnd`;
   `eof_recovery::eof_unclosed_array` flushes it — both green), and CORE has
