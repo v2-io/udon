@@ -660,8 +660,95 @@ profile lifecycle.
      to `ux/TODO-AGENT-UX.md`'s harness rebuild — same instrument.
 5. Then a **design note** in the register of `attribute-model-2026-07.md` —
    reasoning included, for Joseph to ratify from rather than re-derive.
-   Probable spine: element-form fields; constraint-only; the JSON-Schema
-   composition vocabulary; open-world/soft-by-default; evolution via
-   upcast; the profile dial; **and a worked schema for
-   `test/scenarios/corpus/`** as the honesty test — seven documents, six
-   genres, written by someone who wasn't designing the schema.
+   Its job is **not** to pick words (the harness can settle those — §3
+   axis 2, and rowan's reverse-testing method). Its job is to answer
+   **§4.8**: field-based, content-model-based, or a named hybrid — and
+   where the seam falls. Probable spine: Joseph's December spelling
+   (element-form, trait-as-type, constraints-as-attributes); his block
+   names as the schema/behavior seam; the JSON-Schema composition
+   vocabulary for cross-field constraints; open-world/soft-by-default;
+   evolution via upcast + `was:`/`since:`; the profile dial; **and a worked
+   schema for `test/scenarios/corpus/`** as the honesty test — seven
+   documents, six genres, written by someone who wasn't designing the
+   schema, and content-model-shaped where rowan is field-shaped.
+
+---
+
+## 6. File index — what's been read, what hasn't, and when it's from
+
+*Status vocabulary:* **read** = first-hand, in full · **partial** = named
+bands only · **distilled** = read by a delegated agent, its full
+distillation on record, I have highlights · **scouted** = an agent mapped
+it; I have its shape, not its text · **queued** = identified, unread ·
+**⚠ unread** = *has been cited or leaned on without being opened* — the
+honest gaps.
+
+### In-repo (`~/src/udon`)
+
+| File | Date | Status | Carries |
+|---|---|---|---|
+| `spec/CORE.md` | 0.9.0-alpha.1 | **read** | The authority. Assigns the schema layer its job in its own text ("Constraint… a schema's job"; "forbidding a multi-valued `$key` is a schema concern"); ratifies trait-as-lightweight-typing and the two-clause suffix sentence (§4.8). |
+| `design/examples/archema-operata.udon` | **2025-12-24** | **read** (≈130/238) | **The most important artifact in the lane.** The working DSL: trait-as-type, constraints-as-attributes, blocks-as-layers, `!:rb:` escapes. |
+| `design/examples/operata-intent-graph.udon` | 2025-12 | **partial** (40/118) | The query/graph layer; `|edge :when :relationship == prepares` (predicate in value position). |
+| `design/examples/schema-dsl.udon` | 2025-12-23 | **⚠ unread** (256) | *"A schema for UDON schemas, written in UDON"* — the meta-schema attempt. **Cited in this document; never opened.** |
+| `design/examples/ash-like-{billing,inventory,support}.udon` | 2025-12-24 | **⚠ unread** | Three more hand-written DSLs. Same family as archema-operata; unexamined for what they do *differently*. |
+| `design/udon-schema-exploration.md` | Jan 2026 (committed 07-08) | **read** | The thirteen puzzle pieces + 16 open questions. Content-model-flavored (§4.8). |
+| `design/udon-guarantees.md` | Jan 2026 (committed 07-08) | **read** | Guarantee ladder; Casual/Careful/Critical profiles; the gatekeeper problem; the append-only-log patch ancestor. |
+| `design/udon-agentic.md` | Jan 2026 | **read** | `validate` + `infer` are the schema's tool surface; `infer` is exemplar's read-side twin; Future Directions already lists schema-inference. |
+| `design/udon-paths.md` | Jan 2026 (banner 07-16) | **read** | Selection — constraints that quantify ("every `||endpoint`") need it. |
+| `design/agentic-ux-principles.md` | 2026-07-16 | *(authored here)* | P7: the file's own law governs; declared-is-theater-until-honored. |
+| `design/attribute-model-proposal-3.md` + `-substrate.md` | 2026-07 | **⚠ unread** | **The 0.9 model's ratification carriers.** I've been reasoning about what 0.9 changed (kinds, stacking) from CORE + the changelog, *not* from these. Biggest in-repo gap. |
+| `design/udon-ast.md` | Jan 2026 | **⚠ unread** (751) | Type-scoped `(element-name, key)` uniqueness — **which I've cited repeatedly as the `at`-uniqueness predicate** — plus ReferenceIndex, Document views. Known only through a delegated distillation. |
+| `design/composite-types.md` | 2026-07 | **queued** (3K) | `<…>` nesting; matters if type-refs are dialect-refs. |
+| `design/GRAMMAR-CONSTRAINED-GENERATION.md` | Dec 2025 | **distilled** | Schemas as generation constraints; argues for machine-readable schema. |
+| `test/scenarios/corpus/operata.domain.udon` | 2026-07-16 | **⚠ unread** | *Already a schema-flavored document in 0.9 idiom.* Known only from the building agent's report. |
+| `test/scenarios/corpus/operata-live.workspace.udon` | 2026-07-16 | **⚠ unread** | The mutation target; integer keys beside legacy string keys. |
+| `test/scenarios/` (rest) | 2026-07-16 | **distilled** | The requirements document nobody meant to write (§1); `schema-guard-before-write`; `SchemaViolation`. |
+| `spec/TODO-AUX.md` · `TODO-SPEC-CORE.md` · `TODO-SPEC-OTHER.md` · `TODO-UTILS.md` | live | **read** | The lanes: schema/paths/patch; multiple keys; pragma; guard + cadence. |
+
+### rowan (`~/src/rowan` — internals still say `Archema`)
+
+| File | Status | Carries |
+|---|---|---|
+| `lib/archema/resource/identities.rb` | **read** | Surrogate + natural, built: PK (composite ok) **plus** named plural identities, each an independent unique key-set, with eager/pre-check timing. |
+| `docs/dev/adr-003-document-schema-first.md` | **read** | Constraint vocabulary from JSON Schema; schema-layer validation canonical; per-store best-effort projection → maps to the enforcement-cadence dial. |
+| `docs/exp/schema-evolution-patterns.md` | **read** | 1,950 real migrations → six ladders w/ asymmetry; only 8.5% asymmetric; **"natural keys are additive."** External empirical data. |
+| `lib/archema/resource/constraints.rb` | **partial** (header + DSL) | `one_of`/`any_of`/`when_value`/`dependent_required` + JSON-Schema mapping per constraint; block-structured. |
+| `lib/archema/resource/versioning.rb` | **partial** (1–60) | **`_schema: type/version` in-document = the pragma, shipped.** `upcast from:`, compat declarations, per-field `since:`/`deprecated:`. |
+| `lib/archema/resource/evolution_context.rb` | **partial** (ops + header) | add/rename/split/merge/transform/remove_field, atomic, **each registering its inverse upcast**. |
+| `docs/VISION-drafts.md` §Empirical (303–400) | **partial** | Naive-agent guessability; `was:` beat `alias:`; **reverse testing** as a method; "intuitive = prior exposure". External empirical data. |
+| `lib/archema/resource/attributes.rb` | **queued** (3 bands of 1091) | The flag + evolution-metadata vocabulary at a glance; the `field` dispatcher; composite-PK DSL. |
+| `docs/msc/plan-document-schema-constraints.md` | **queued** (469) | **Its Open Questions (427–450) are live forks we may re-tread**: strictness levels, schema inheritance, constraints-on-relationships. |
+| `lib/archema/schema/differ.rb` | **queued** (header) | Transition-validity analog: classifies changes, raises `:possible_rename`/`:type_change` as decisions, not guesses. |
+| `docs/dev/plan-safe-rdbms-evolution.md` | **queued** (Core Insight ~45) | Database-as-Truth vs transition-periods vs **Resource-as-Truth**; expand/monitor/contract. |
+| `lib/archema/agentic/tool_export.rb` + `docs/sys/agentic/tool-export.md` | **queued** | Schema→tool-definitions + JSON Schema from one model. **Working today.** |
+| `docs/msc/archema-ash-comparison-research.md` | **queued** (3 sections of 1619) | Cat. B (evolution), Cat. M (JSON-Schema composition), Exec summary (8 contributions vs 15 gaps). |
+| `lib/archema/types.rb` | **queued** (296) | The concrete type/constraint catalog (dry-types). |
+| `lib/archema/resource/relationships.rb` | **queued** (698) | Cardinality options `min_required`/`max_allowed`, `managed:`. |
+| `docs/usr/10-schema-evolution.md` | **queued** (238) | The user-facing narrative + **branch-safety / divergent-evolution conflict detection** + decision-log audit trail. |
+| `docs/dev/adr-004-programmatic-schema-api.md` | **queued** | Ruby-API-first; the Erlang/OTP mental model for runtime evolution. |
+| `KEY_FILES.md`, `MAP.md`, `LEXICON.md` | **scouted** | The index; Track 1 (Ash parity) / Track 5 (safe RDBMS evolution). |
+| *dead ends (scouted, ruled out)* | — | `.archema/schema_history/*` (test artifacts) · `docs/ref/critical-synthesis.md` (philosophy) · `docs/ref/patterns/*` (Ambler catalog) · `tmp/ash/` (vendored real Ash). |
+
+### autopax (`~/src/autopax`)
+
+| File | Status | Carries |
+|---|---|---|
+| `docs/ADR/010-markdown-parsing-and-validation.md` | **queued** (399) | **"P3: Schema-Derived Agentic Tools"** + phase-4 tool generation. The schemas→tooling bridge. |
+| `docs/ADR/migration-proposals/003-workflow.md` | **queued** | Agentic Workflow Principles (+ archived analysis companion). |
+
+### The honest gap list
+
+1. **`design/attribute-model-proposal-3.md` + substrate** — the 0.9
+   ratification carriers, unread, while I reason about the 0.9 model daily.
+2. **`design/udon-ast.md`** — unread, while citing its uniqueness predicate
+   as the foundation of `at`.
+3. **`design/examples/schema-dsl.udon`** — the meta-schema attempt, unread,
+   cited in this file.
+4. **The three `ash-like-*.udon`** — unread; unknown what they do
+   differently from archema-operata.
+5. **`test/scenarios/corpus/operata.domain.udon`** — the one 0.9-idiom
+   schema-flavored document in existence, known only secondhand.
+6. **Timeline gap:** nothing between **Jan 14, 2026** (dormancy) and
+   **Jul 8, 2026** (reboot) — six months where rowan kept moving and udon
+   didn't. Rowan's Track-5 work may postdate every udon document here.

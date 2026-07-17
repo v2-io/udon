@@ -346,29 +346,98 @@ success correlates with evaluation rigor).
   stage *missing*); era-artifact §C2 is its wiring diagram. Whoever lands it
   should treat this document as the udon-side consumer.
 
-## Primary sources
+## Source index — what's been read, what hasn't, and when it's from
 
-**Read first-hand for this synthesis (2026-07-16):** sapientia reflections
-(`everything-is-truth-work`, `phenomenology-in-tools`,
-`tools-as-truth-bearing`, Zi-am-tur, Sep 2025) · ASF segments
-`der-orient-cascade`, `der-loop-interventional-access`,
-`der-deliberation-cost`, `scope-observation-ambiguity-modulation`,
-`der-change-proximity-principle` · ASF `msc/era-artifact-asf-contributions-
-2026-07-04.md` §C2 · udon `design/udon-agentic.md`, `design/udon-guarantees.md`.
+*Status:* **read** = first-hand, in full · **partial** = named sections ·
+**distilled** = read by a delegated agent, full distillation on record, I
+hold highlights + verified quotes · **scouted** = an agent mapped it; I
+have its shape, not its text · **queued** = identified, unread ·
+**⚠ unread** = *cited or leaned on without being opened* — the honest gaps.
 
-**Via commissioned distillations (full texts on record; quotes verified
-verbatim by the distillers):** nexum `vision-agentic-toys.md` (Nov 2025,
-incl. Joseph's margin TODO) · ennaos `05-tool-building-philosophy-patterns.md`
-+ both addenda (Oct 2025; incl. Joseph's five-dimension directives verbatim)
-· `agentic-semantic-code-manipulation-synthesis.md` (Joseph & Claude, Oct
-2025) · autopax `2025-11-26-operata-system.md` · behavioral-floor
-`spike-audit2-declared-vs-honored.md` · zoetica agent-expertise report ·
-Anthropic `mcp-builder` skill + the enterprise-patterns survey (external;
-corroboration only) · the 2026-01-14 udon session transcript (line 10 — the
-origin of `udon-agentic.md`'s four principles).
+### The 2025 phenomenology corpus (Joseph's list, 2026-07-16)
 
-**Register cautions carried from the sources:** the 2025 quantitative claims
-(success rates, "12x faster", ROI projections) are illustrative
-constructions, not measurements — cite shapes, never values. The 60/30/6/4
-model roster is dated; its *ratio insight* ("friction is lack of
-crystallized process, not lack of intelligence") is the durable content.
+| File | Date | Status | Carries |
+|---|---|---|---|
+| `_core/sapientia/docs/reflections/everything-is-truth-work.md` | 2025-09-19 | **read** | Tool conventions re-read as truth-claims ("silence is golden" = don't lie; "fail fast" = tell truth immediately; "idempotent" = be truthful about state changes). P1, P9. |
+| `_core/sapientia/docs/reflections/phenomenology-in-tools.md` | 2025-09-18 | **read** | Conventions are "phenomenologically impoverished" — the rule without the felt reason. **The confessor reframe** (P9). |
+| `_core/sapientia/docs/reflections/tools-as-truth-bearing.md` | 2025-09-18 | **read** | The driving metaphor (conscious → transparent); 60/30/6/4 (**ratio insight durable, model roster dated**); tools creating tools. P8. |
+| `_core/nexum/docs/dev/vision-agentic-toys.md` | 2025-11-09 | **distilled** | intent/pre/post/schema/structured-I-O; the four Key Design Principles ("make the best thing the easiest thing"); **Joseph's margin TODO at :246 — "[missing: functional/idempotent vs side-effects]"** (the open ASF thread). |
+| `_core/ennaos/…/05-tool-building-philosophy-patterns.md` | 2025-10-31 | **distilled** (3155) | The keystone. The `str-replace` guard (**the `at` rule, discovered from pain**); SIGNUM's validate-before-write `with`-chain; errors-teach-architecture; sovereignty-aware tooling (P7); Appendix A's citation-work phenomenology. |
+| `_core/ennaos/…/refs/agentic-semantic-code-manipulation-synthesis.md` | 2025-10-31 | **distilled** (2630) | Closest cousin. Text-as-canonical + semantics-on-top; **bidirectional lens laws** (GetPut/PutGet/PutPut — the pre-ASF rigor anchor, P8); schema-driven editing; TST T-08 (`time ∝ |changeset|`). |
+| `_core/ennaos/…/refs/addendum-intent-driven-tooling-and-semantic-storage.md` | 2025-10-31 | **distilled** (2346) | **Joseph's five-dimension directives verbatim**; comparative + unsolicited feedback channels; the OOB-audit-with-approval-gates architecture (resolves the learning-vs-determinism tension from within). |
+| `_core/ennaos/…/refs/addendum-phenomenology-and-tool-architecture.md` | 2025-10-31 | **distilled** (1514) | **Error-as-menu** (strict + ranked candidates); transactional plurality for `all`; the edit→check→revert anti-pattern; multi-modal views; result-layering w/ a discard tier; *"the projectional editing dream wasn't wrong — it was trying to replace the wrong thing."* |
+| `_core/zoetica/.archive/…/agent-expertise-best-practices-report.md` | 2025 | **distilled** | The ACI point (anchor-based over line-numbers — validates path addressing, and names the strict-vs-lenient axis); consolidate-into-workflow-tools; eval rigor > architectural cleverness. |
+| `autopax/docs/exp/2025-11-26-operata-system.md` | 2025-11-26 | **distilled** | Prefix-collision disambiguation (= the `at` pattern in the identity domain); plumbing/intelligence split; git-as-transaction; speculative decomposition (the exploration-in-tool tension). |
+| `behavioral-floor/spikes/spike-audit2-declared-vs-honored.md` | 2026-05-14 | **distilled** | *Not* about tools (my brief guessed wrong; the agent corrected it) — LLM-architecture philosophy. But hands P7 its sharpest name: **declared ≠ honored**; a schema in a file is theater until a write-path refuses to violate it. |
+| `_ref/anthropic-skills/mcp-builder/SKILL.md` | external | **distilled** | Current first-party validation: actionable/educational errors; names-over-IDs; workflows-not-endpoints; `destructiveHint`/`idempotentHint` vocabulary. |
+| `vaults/clean_split/enterprise-implementation-patterns.md` | external | **distilled** | Weakest source (altitude-mismatched marketing). Kernel: validate-and-escalate, don't write through a violation. |
+| `.claude.bak.2026-01-26/…/145408e9-….jsonl:10` | 2026-01-14 | **distilled** | Archaeology: the thinking-block that summarizes `udon-agentic.md`'s four principles + `udon-ast.md`'s type-scoped uniqueness. The origin point. |
+| `agentic-systems/02-tst-core/src/der-change-proximity-principle.md` | — | **read** | cost = size × spread; boundary-crossing costs; its own note that agent tooling changes effective distances → **the tool as proximity modifier** (P8). |
+
+### ASF (`~/src/archema-io/asf`) — scouted by an agent, spine read first-hand
+
+| File | Tier | Status | Carries |
+|---|---|---|---|
+| `01-aat-core/src/der-loop-interventional-access.md` | **exact** | **read** | **P1's ground.** Tool call = intervention; result = Level-2 data; "the loop is a perpetual experiment"; C1/C2/C3 gates = what an interface controls; goal-conditioned policies violate (C2) by construction. |
+| `01-aat-core/src/der-orient-cascade.md` | ordering **exact** | **read** | **P5's ground.** Epistemic update first, forced by information dependency. Names the agent pathology: infinite loops from treating structural failure as parametric. |
+| `01-aat-core/src/der-deliberation-cost.md` | conditional | **read** | P5's budget rule: stop when marginal insight-rate < drift-rate. The AI-agent's-dilemma row. |
+| `03-llm-core/src/scope-observation-ambiguity-modulation.md` | conditional (bound = conditional theorem) | **read** | **P3's ground.** ‖ΔM_bias‖ ≤ C·κ·𝒜; κ immovable, **𝒜 is the designer's knob**; "a test failure is a test failure regardless of the deadline." |
+| `msc/era-artifact-asf-contributions-2026-07-04.md` §C2 | routed proposal | **read** | **P2's ground + this doc's charter.** The three legs; **Joseph's mutate/reveal/teach-law decomposition**; "a well-designed refusal is mutation-free but revelation- and law-rich"; law-feedback establishes (C3); laws are the slow manifold. |
+| `01-aat-core/OUTLINE.md` → `#disc-tool-interface-design` row | **stage: missing** | **scouted** | **The empty socket this document fills from the udon side.** The row *is* the unwritten segment's spec. |
+| `03-llm-core/src/disc-five-forcing-functions.md` | discussion-grade | **⚠ scouted, unread** | **P4's ground** — 𝒯 = ν·K and the persistence forcing function. **I cite the tempo-is-existential argument from the era-artifact's summary of it, not from the segment.** |
+| `03-llm-core/src/result-coupled-diagnostic-framework.md` | conditional | **⚠ scouted, unread** | "Scaffolding is a structural requirement, not engineering convenience"; models compilers/tests/probes as projection/contraction operators — i.e. feedback surfaces as formal objects. Cited in P3 secondhand. |
+| `03-llm-core/OUTLINE.md` | — | **scouted** | The three-rung scope lattice; names Claude Code's harness as the regime being formalized. |
+| `03-llm-core/src/der-logogenic-as-wrapping.md` | conditional | **queued** | W₁/W₂ wrapping — *why* a tool wraps a Class-3 model toward Class-1. |
+| `03-llm-core/src/der-turnover-information-recursion.md` | conditional | **queued** | Persistence rides the scaffold's reinjection channel — the **cross-session** half this doc explicitly scopes out. |
+| `01-aat-core/src/disc-exploit-explore-deliberate.md` | discussion-grade | **queued** | The when-to-plan-vs-act math, with an explicit "AI coding agent" row. |
+| `02-tst-core/src/{obs-software-epistemic-properties, der-code-quality-as-observation-infrastructure, def-atomic-changeset, emp-changeset-size-principle, scope-developer-agent}.md` | mixed | **queued** | Software as the calibration lab; code-quality → U_o → η* → 𝒯; the atomicity/changeset cluster (P8's other half). |
+| `ref/agentic-tft/agentic-tft-cognitive-loop-spec.md` | pre-AAT, "~75% confident" | **queued** (534) | PERCEIVE → CONTEXTUALIZE → CHOOSE → EFFECT + **CADENTIA**; the intuition the orient-cascade later formalized. Explicitly un-revisited against AAT. |
+
+### udon in-repo
+
+| File | Status | Carries |
+|---|---|---|
+| `design/udon-agentic.md` | **read** | The tool-suite design of record; its four principles are P8/P5/P9's ancestors; the error taxonomy P2 keeps. |
+| `design/udon-guarantees.md` | **read** | The gatekeeper problem (P7); profiles; the append-only-log patch ancestor. |
+| `design/udon-paths.md` | **read** | `at`/`all`; the addressing substrate. |
+| `design/udon-ast.md` | **⚠ unread** (751) | **Type-scoped `(element-name, key)` uniqueness — `at`'s uniqueness predicate, which this document leans on in P1/P8 — known only via distillation.** Also SourceInfo, ReferenceIndex, the skeleton view. |
+| `design/{UDON-AGENT-TOOLS,AGENT-CONTEXT-PROTOCOL,GRAMMAR-CONSTRAINED-GENERATION,UDON-AS-ACP-FORMAT}.md` | **distilled** | The Dec-2025 brainstorms; each now carries a dated status banner. Semantic *merge* is the one Tier-1 idea `udon-agentic.md` lacks. |
+| `test/scenarios/` | **distilled** | The BDD acceptance layer; its journeys are this document's test cases (`schema-guard-before-write`, `handoff-mid-edit`, `contested-claim`). |
+
+### Found in the memorata sweep, not yet used
+
+| File | Status | Why it might matter |
+|---|---|---|
+| `_core/ennaos/…/02-current-agentic-tool-landscape.md` | **queued** | Commercial tools & **edit formats** — the closest thing to a competitive survey for the edit tool. |
+| `_core/tst/batch-analyze/combined-software-first-principles.md` | **queued** | FP-007…FP-010 formalization queue — the software-first-principles lineage. |
+| `_core/nexum/docs/dev/agentic-toys-comparison-matrix.md` | **queued** | Sibling of vision-agentic-toys. |
+| `.claude.bak.2026-01-26/…/c8003469-….jsonl` | **queued** | **The session that created `design/udon-agentic.md`.** Its reasoning, unread. |
+| `autopax/docs/ADR/010-markdown-parsing-and-validation.md` | **queued** | "Schema-Derived Agentic Tools" — bridges this doc to the schema lane. |
+
+### The honest gap list
+
+1. **`disc-five-forcing-functions`** — P4 (tempo is existential) rests on a
+   segment I have only through the era-artifact's summary of it.
+2. **`result-coupled-diagnostic-framework`** — cited in P3, unread.
+3. **`design/udon-ast.md`** — `at`'s uniqueness predicate, cited
+   throughout, known only secondhand. *(Same gap as the schema
+   workbench's.)*
+4. **The TST cluster** — P8's changeset/atomicity half is scouted, not read.
+5. **Timeline gap:** the corpus is Sep–Nov 2025 and the ASF math is
+   2026-04→07. **Nothing between.** The `ref/agentic-tft/` bridge (Feb
+   2026) is exactly that gap's occupant and is unread — it is the missing
+   link between the phenomenology and the mathematics.
+
+### Register cautions carried from the sources
+
+- The 2025 **quantitative** claims (success rates, "12x faster", ROI
+  projections) are illustrative constructions, **not measurements** — cite
+  shapes, never values.
+- The 60/30/6/4 model roster is dated; its *ratio insight* ("friction is
+  lack of crystallized process, not lack of intelligence") is durable.
+- **Convergence caution (Joseph, 2026-07-16):** where sources share an
+  author, agreement is consistency, not corroboration. The `at`-rule
+  convergence survives *because* its legs are genuinely separate (an ELI's
+  phenomenology; Anthropic's product tooling, dated ~32 weeks earlier by
+  `~/src/vestigia/FINDINGS.md` §7; udon's spec discipline) — but that is
+  the exception, and it should be checked, not assumed.
