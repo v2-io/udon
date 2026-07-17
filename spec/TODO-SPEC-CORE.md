@@ -58,6 +58,46 @@
       (side-finding of the archived prose-collision spike,
       `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
       an explicit deferral. *(discuss w/ Joseph)*
+- [ ] **EOF anomaly composition — the biggest of the 2026-07-16 batch**
+      (hit 4× while densifying; each case needed a *reading*). CORE's
+      "End of input" table is **per-construct and silent on composition**
+      — it rules each row alone, but EOF guarantees several constructs are
+      open at once. Concrete cases: `|p |{a x |{b y` (two embeds) ·
+      `|el :xs [1 [2` (nested arrays) · `|el :xs ["a` (string in array) ·
+      `|p |{a :href` (embed + open attr). The fixtures encode
+      innermost-first, each construct carrying its own anomaly where its
+      `End` flushes — the reading uniform with the single-construct rows,
+      marked ⚠ throughout. The densifying agent's proposed one-sentence
+      fix, worth weighing as-is: *"when several constructs are open, each
+      closes innermost-first, and each awaiting a delimiter carries its
+      own anomaly."* That sentence would turn all four readings into
+      derivations **and** reclassify the `UnclosedEmbedded`-drop
+      divergence (`../core/TODO-CORE-PARSING.md`) from arguable to plain
+      bug. *(discuss w/ Joseph)*
+- [ ] **Smaller silences from the same pass** (each with a concrete case;
+      none encoded): **empty identity bracket** `|el[]` — empty key, or a
+      key whose value is the empty list `[]`? (the EOF list has
+      `|el[unclosed` but not this) · **reference / interpolation as array
+      items** `:xs [@[r] 1]` — Inline Lists *enumerates* ("numbers, quoted
+      strings, `<…>` envelopes, nested lists") while Value Kinds calls
+      references a value kind and Explicit Typing says value position
+      covers "array items alike": enumeration vs uniform rule ·
+      **raw block with an empty same-line body** `!:sh: ` — is the empty
+      rest an empty `RawContent` or none? (a corner of the 2026-07-16
+      same-line-body ruling) · **blank-line placement vs dedent**
+      `|p\n  |a\n\n  |b` — `BlankLine` inside still-open `|a` (encoded,
+      stream-order, ⚠) or after its `End`? *(discuss w/ Joseph)*
+- [ ] **Did `InconsistentIndentation` deliberately narrow to prose?**
+      (2026-07-16). Legacy fixtures asserted that a **comment** or
+      **attribute** line seeds the prose content-base and warns
+      (`comment_sets_content_base`, `attribute_sets_content_base`); CORE
+      0.9's warning table scopes the code to a "**Prose** (or
+      comment-continuation) line". The narrowing reads as deliberate —
+      the 0.9 grammar treats content-base as a prose concept, and its
+      `:child_dispatch` comment says so explicitly — but it is **not
+      recorded as a change anywhere found**, and three legacy fixtures die
+      on it. Confirm and note it, or restore the broader rule.
+      *(discuss w/ Joseph)*
 - [ ] **Multiple keys — surrogate *and* natural identity** (Joseph,
       2026-07-16: "at first I thought [it] was overkill but now I realize
       [it] should probably be valid... although there's still a lot to

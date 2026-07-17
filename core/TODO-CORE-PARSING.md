@@ -49,6 +49,45 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         the *element's* child, which the `/block_directive(:elem_col)`
         route would give directly). *(discuss w/ Joseph)*
 
+- [ ] **`UnclosedEmbedded` is dropped when EOF lands in the embed's
+      attribute phase** (found by the 2026-07-16 densification pass;
+      probe-verified and *widened* the same day — the agent reported it as
+      specific to the `MissingAttributeValue` path; it is not). A
+      three-way, no verdict:
+      - **CORE says** ("End of input" table) `|{...}` open at EOF →
+        "Content so far + `Error UnclosedEmbedded`; `EmbeddedEnd`
+        flushes." The row is **unconditional** — it says nothing about
+        what is open *inside* the embed.
+      - **The grammar**: the anomaly lives in exactly one place —
+        `60-udon.embedded.descent.udon`'s `embed_content:main` `|eof` arm.
+        The `embedded` function's own `:post_identity` / `:pre_content` /
+        `:check_attr` states have **no `|eof` arm**, so an EOF reached in
+        the identity/attribute phase returns silently; `EmbeddedEnd` still
+        fires (BRACKET type), but no error does.
+      - **The parser**: `|p some |{em abc` (EOF in content) →
+        `UnclosedEmbedded` ✓. `|p |{a :href` (EOF, valueless attr) →
+        `MissingAttributeValue` + `Nil` + `EmbeddedEnd`, no
+        `UnclosedEmbedded`. **`|p |{a :href x` (EOF, a perfectly ordinary
+        completed attribute) → `Attr`/`BareValue`/`EmbeddedEnd`/`ElementEnd`
+        — no anomaly of any kind**: an unclosed embed closes as silently as
+        if it had seen its `}`. So the trigger is the attribute *phase*,
+        not the error path. Pinned RED by
+        `eof_recovery::eof_unclosed_embedded_with_open_attr`. Interacts
+        with the EOF-composition silence in `spec/TODO-SPEC-CORE.md`
+        (the fixture's event *order* is a ⚠ reading; its *absence* is
+        not). *(discuss w/ Joseph)*
+
+- [ ] **Newline-unclosed vs EOF-unclosed differ on the wire** (surfaced by
+      the same pass; a prior author left an in-fixture comment that was
+      never routed). `arrays.yaml::array_unclosed_is_error` (newline
+      terminates) omits `ArrayEnd`; `eof_recovery::eof_unclosed_array`
+      includes it, per the EOF table's explicit "`ArrayEnd` flushes".
+      **Both are green** — so the parser genuinely implements two
+      different wires, and CORE has **no table row at all** for
+      newline-terminated unclosed constructs. Either the newline case
+      wants its own ruled row, or it should be stated as EOF-equivalent.
+      *(discuss w/ Joseph)*
+
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
       (0xC2–0xF4) as identifier-start without the `match_xid_start`
