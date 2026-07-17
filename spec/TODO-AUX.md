@@ -27,6 +27,20 @@ likely home is a future `spec/aux/` once `spec/` splits into
       `../design/udon-guarantees.md`. **Second rung of the edit-tool
       critical path** (conformance-at-apply needs it, plus the pragma in
       `TODO-SPEC-OTHER.md` to bind a document to its schema).
+      **Rowan is the first waiting customer, not just prior art (Joseph,
+      2026-07-16):** most of his thinking on "highly-resilient-structured-
+      document schemas" was laid down in `~/src/rowan` — and rowan stalled
+      *specifically because* "I got tired of all of the ruby DSL for the
+      schema definitions and started craving udon and decided I wasn't
+      going to move it forward anymore until udon was really ready." So
+      UDON's schema syntax is rowan's schema DSL's intended final form:
+      the acceptance test for any design here is "can rowan's
+      attributes/constraints/identities/versioning vocabulary be written
+      in it, better than the Ruby?" (the `design/examples/ash-like-*.udon`
+      files are early sketches of exactly this). This also explains the
+      January exploration's Archema-flavored pieces (relationships,
+      actions, policies, storage projection, derivation targets — they ARE
+      rowan's architecture with UDON as the authoring surface).
       **Why schemas carry more weight here than in most formats (Joseph,
       2026-07-16):** the indentation hazard is *worse* than Python's —
       "python will break catastrophically if some code gets the wrong
