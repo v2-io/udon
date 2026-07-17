@@ -77,6 +77,24 @@ two weeks of settling rowan's schema architecture, Joseph was hand-writing
 Ash-shaped schemas in UDON. The craving is dated and immediate, not
 hindsight.
 
+**The deferral, stated (Joseph, 2026-07-16)** — this is the lane's actual
+status and it is not "unexplored": *"path, schema, and dialects were all
+**deferred so we could get the parser core working**, which is what we've
+done today until this session where I'm letting us pre-explore a bit."*
+So the schema layer is **deliberately postponed work with a completed
+prerequisite**, not a blank page. Three consequences for whoever reads
+this next:
+
+1. **The prerequisite is now met.** The parser core is compliant
+   (`core-v0.9.0` pending only densification + rulings), which is what the
+   deferral was waiting on.
+2. **The deferral is why the December DSLs went quiet**, not disinterest —
+   and why they are *still the state of the art* eight months later
+   (§7). Nothing superseded them; nothing was allowed to.
+3. **This session is explicitly pre-exploration** — *"gathering up the
+   resources"* — not design. §5's design note is the *next* session's job,
+   with more room to think (his framing). **Do not converge here.**
+
 ---
 
 ## 1. Source index — in-repo
@@ -406,11 +424,10 @@ directly reusable thing in rowan**, and it cuts three ways:
    `was:/was_type:/since:/deprecated:/removed:`), 448–600 (the `field`
    dispatcher — how constraint separates from relationship), 746–1030
    (primary-key DSL incl. composite at ~992).
-2. **`docs/msc/plan-document-schema-constraints.md`** (469) — the design
-   plan behind `constraints.rb`; its **Open Questions (427–450)** are live
-   forks we may be re-treading: validation strictness levels, schema
-   inheritance, constraints-on-relationships, external `.schema.json` vs
-   generated.
+2. ~~`docs/msc/plan-document-schema-constraints.md` Open Questions~~
+   **read 2026-07-16 — see §9.** (Rest of the 469-line plan still queued:
+   the DSL-keyword table at 72–80 includes the unbuilt `all_of` /
+   `not_schema`.)
 7. **`lib/archema/schema/differ.rb`** (header 1–55 only) — snapshot diffing
    that classifies changes and **raises `:possible_rename` / `:type_change`
    as conflicts requiring an explicit decision rather than guessing**.
@@ -1055,3 +1072,46 @@ design. Two consequences, and they cut opposite ways:
   guidance, formatter, or generation-constraint artifact has to encode. It
   is also why `:rule "email =~ /@/"` (quoted) survives 0.9 where the bare
   form wouldn't (§7).
+
+---
+
+## 9. Rowan's five open questions ARE udon's — asked Dec 2025, still open
+
+`rowan/docs/msc/plan-document-schema-constraints.md` §Open Questions
+(427–450), read 2026-07-16. **This is the most useful page in rowan for
+this lane**, because it is not answers — it is Joseph's own *unresolved*
+forks in the constraint DSL, and four of the five are questions I had been
+treating as udon-native discoveries. Verbatim, with the mapping:
+
+| Rowan's question (Dec 2025) | Where I'd "discovered" it |
+|---|---|
+| **1. Validation strictness levels?** `strict` (reject) / `warn` (log but continue) / `permissive` (ignore) | **The Casual / Careful / Critical profiles** (`udon-guarantees.md`) **and** the udon-guard **enforcement-cadence spectrum** (`TODO-UTILS.md`). Same question, three names. |
+| **3. Runtime vs load-time validation?** validate all on startup / lazy on first access / background job | **Survey axis 5, "enforcement locus"** — which I called *"almost nobody treats this as a declared property… probably novel."* He was asking it in December. |
+| **4. External schema files?** store `.schema.json` alongside data, **or always generate from the definition?** | **Survey axis 10, "where the schema physically lives"** — the axis I'd just added as Joseph's catch. It was already his question. |
+| **5. Constraint on relationships?** `one_of` on relationship refs, not just attributes; **cross-resource constraints** | **Cross-document referential integrity** — which `test/scenarios/corpus/archema.concept-matrix.udon` demands (cross-document `:in`/`:ref` joins) and which `udon-ast.md`'s ReferenceIndex anticipates. |
+| **2. Schema inheritance?** *Can a Resource extend another's schema? How do constraints compose across inheritance?* | **⚠ NOTHING. I have no position, no note, no mechanism.** |
+
+### What this changes
+
+- **The design note inherits a question list, it doesn't start one.** Four
+  of these are already load-bearing in this workbench under other names;
+  the honest move is to *merge* them rather than let udon re-ask them in
+  its own vocabulary and then "discover" the overlap a third time.
+- **Question 2 is a real hole in my synthesis.** Schema inheritance /
+  composition has no udon-side thinking at all — and UDON has an obvious
+  candidate mechanism nobody has connected to it: **traits**. CORE's
+  *Mixins* section already sketches trait-based attribute inheritance
+  (`|.defaults` + `|database[prod].defaults`) and explicitly leaves
+  resolution to the consumer. If a schema is a UDON document and traits
+  classify, then *schema* inheritance may be the same mechanism as
+  *document* mixins — which would be the kind of unification the
+  exploration doc's closing instruction asks for ("let the elegant
+  unification emerge"). **Unexamined. Flag for the design note.**
+- **Rowan's Success Criteria include `Schema version lookup from document
+  metadata`** — the pragma again (§2, `_schema: type/version`), listed as
+  an acceptance test rather than an idea.
+- **Its references are the ancestry, stated:** JSON Schema Draft 2020-12
+  (core + validation) and **dry-types constraints** — so rowan's
+  per-field constraint catalog (`:min`/`:max`/`:format`/enum-via-`values:`)
+  is dry-types', and any udon type/constraint vocabulary inherits from
+  there whether it means to or not.
