@@ -225,41 +225,104 @@ migration scripts. **What I like most:** the identity ladder is annotated
 exotic feature. And the constraint ladder (permissive→strict, 14.1% of
 migrations) *is* schema-by-exemplar's lifecycle, observed empirically.
 
-### Queued — the next batch (in the order I'd read them)
+### Read first-hand — batch 2 (2026-07-16)
 
-1. **`lib/archema/resource/constraints.rb`** (594) — the composition
-   vocabulary as built: `one_of` / `any_of` / `when_value` /
-   `dependent_required`, with `present`/`absent`/`equals`/`required`
-   sub-predicates. **Each constraint also emits a JSON-Schema fragment** —
-   validate *and* export from one declaration. Header table lines 13–21;
-   DSL context 452–591.
-2. **`lib/archema/resource/versioning.rb`** (375) — `schema_id` +
-   `schema_version` → `full_schema_id` embedded in documents as
-   `_schema: type/version`; `backward_compatible_with` /
-   `forward_compatible_with`; `upcast from: "1" do |data| … end`; the
-   read-time `upcast_path`/`upcast_data` chaining engine (202–251). A
-   **migrate-on-read**, non-destructive posture — Protobuf/Avro-ish.
-   Header example 18–52 shows the whole model on one screen.
-3. **`lib/archema/resource/evolution_context.rb`** (274) — runtime
-   `Resource.evolve do … end`, with the operation vocabulary that matters:
-   `add_field` / `rename_field` / `split_field` / `merge_fields` /
-   `transform_field` / `remove_field` — **each one simultaneously mutates
-   the definition and registers the inverse upcast** (`register_upcast!`,
-   ~261). The cleanest statement anywhere of "data outlives its schema
-   version."
-4. **`lib/archema/resource/attributes.rb`** (1091) — three bands only:
+**`lib/archema/resource/constraints.rb`** — four constraints, each stated
+with its JSON Schema mapping *in the header table*: `one_of`→`oneOf`,
+`any_of`→`anyOf`, `when_value`→`if/then`,
+`dependent_required`→`dependentRequired`; sub-predicates
+`present`/`required`(alias)/`absent`/`equals`. Its own framing: *"JSON
+Schema has richer constraint vocabulary than RDBMS, so we model
+constraints here and project to SQL where possible."* **What I like — and
+it's the finding that matters:** the DSL is **block-structured**, and the
+blocks map to UDON element-form *directly*:
+
+```ruby
+one_of do            #  →   |one-of
+  present :post_id   #  →     |present :post-id
+  present :photo_id  #  →     |present :photo-id
+end                  #
+```
+
+That is **Piece 3's sketch, arrived at independently and then built** —
+and it lands in element-form, which is the 0.9-survivable spelling (§4.4).
+The strongest evidence yet that the element-form spine is right: rowan's
+Ruby is already shaped like the UDON it was craving.
+
+**`lib/archema/resource/versioning.rb`** — **the pragma already exists,
+in production, elsewhere.** `schema_id "autopax-agent-card"` +
+`schema_version "2.0.0"` → **`_schema: type/version` embedded in the
+document itself** — self-describing, per-document. Plus
+`backward_compatible_with "1.0.0", "2.0.0"`, `upcast from: "1" do |data|
+… end` (migrate-on-read, non-destructive, Protobuf/Avro-ish), and
+**per-field evolution metadata**: `attribute :session_id, :uuid8,
+since: "2.0.0"`, `attribute :legacy_tags, :array, deprecated: "3.0.0"`.
+**What I like:** the whole model fits on one screen (header 18–52), and
+its worked examples are `autopax-agent-card` and `chronica-entry` — **real
+documents from this ecosystem**. So `spec/TODO-SPEC-OTHER.md`'s pragma
+item isn't greenfield: rowan has a shipped answer, and UDON's
+filename-designator idea (`<name>.<schema>.udon`) is the same fact moved
+from the body to the filename. *Worth deciding deliberately: designator,
+in-body pragma, or both.*
+
+**`lib/archema/resource/evolution_context.rb`** — the operation
+vocabulary, confirmed: `add_field` · `rename_field(to:)` ·
+`split_field(into:, using:)` · `merge_fields(into:, using:)` ·
+`transform_field(using:)` · `remove_field` — captured, applied
+**atomically**, and **each registers its inverse upcast**
+(`register_upcast!`) so old data still reads. That last property is the
+whole trick: evolution is declared *once*, forward and backward fall out
+together. Nothing else in the survey does this.
+
+**`docs/VISION-drafts.md` §Empirical Validation (2025-12-19)** — 13
+zero-context tests, naive agents asked to guess the API. **The most
+directly reusable thing in rowan**, and it cuts three ways:
+
+1. **Two of our candidate names are validated.** `was:` beat `alias:`
+   (*"alias implies forward, `was` implies backward"*), and the **reverse
+   test** — show the syntax, ask for an interpretation — got `field :email,
+   was: :username` → *"renamed field for migration/backwards
+   compatibility"* ✓ and `one_of :phone, :email` → *"XOR validation:
+   exactly one must be present"* ✓. Both self-documenting.
+2. **A methodology worth stealing outright: reverse testing.** Not "can an
+   agent guess the syntax" but *"shown the syntax, does an agent read it
+   correctly?"* For a schema layer this may be the **more relevant test** —
+   schemas live in the repo and get *read*, not guessed. Its conclusion:
+   *"Archema's novel syntax is self-documenting. Even without examples,
+   agents can infer meaning from the syntax itself."*
+3. **⚠ It complicates §4.4 (the element-suffix spine).** Under *Novel
+   Features*: for optional fields, agents expected **`optional: true`
+   (explicit keyword)**, not **`:optional` (a symbolic flag)**. UDON's
+   `|field[date]?` is a symbolic flag. So the empirical data mildly cuts
+   *against* the suffix spelling I've been arguing for — though the reverse
+   test suggests it would still *read* correctly, and `?`-as-optional has
+   enormous prior exposure (regex, TypeScript, GraphQL). **Guessability and
+   readability are different axes, and rowan's own data separates them:**
+   agents did *not* guess `one_of`, but read it perfectly. Since schemas
+   are read far more than invented, readability probably dominates — but
+   that's an argument, not a measurement, and the harness could settle it.
+
+   The meta-lesson, verbatim, and it generalizes past Rails: *"'Intuitive'
+   is not what should be obvious but what **is** obvious based on prior
+   exposure."* For a UDON schema DSL, the prior exposure is JSON Schema and
+   RELAX NG — which is an argument for taking their vocabulary (§3) rather
+   than inventing.
+4. Adjacent gifts: agents invented **`as_of(date)`** for temporal queries
+   ("elegant" — note for the temporal dialect / paths); and the companion
+   **minimal-documentation experiment** ("what's the smallest set of
+   examples that lets agents infer 95% of the functionality?") is the
+   cheat-sheet question in `ux/TODO-AGENT-UX.md`, already run once with a
+   method attached.
+
+### Queued — remaining
+
+1. **`lib/archema/resource/attributes.rb`** (1091) — three bands only:
    16–36 (the flag + evolution-metadata vocabulary at a glance:
    `:optional/:required/:private/:sensitive/:readonly/:immutable`;
    `was:/was_type:/since:/deprecated:/removed:`), 448–600 (the `field`
    dispatcher — how constraint separates from relationship), 746–1030
    (primary-key DSL incl. composite at ~992).
-5. **`docs/VISION-drafts.md`** (490), the **empirical-validation half
-   (303–474)** — they ran naive AI agents at the DSL to test guessability
-   and let the results pick the words (`where` over `filter`, `was:` over
-   `alias:`, `one_of` self-documents). **These are validated names, not
-   guesses** — the single most directly reusable thing in rowan for a DSL
-   that agents must author. (The top half is subtractive-design manifesto.)
-6. **`docs/msc/plan-document-schema-constraints.md`** (469) — the design
+2. **`docs/msc/plan-document-schema-constraints.md`** (469) — the design
    plan behind `constraints.rb`; its **Open Questions (427–450)** are live
    forks we may be re-treading: validation strictness levels, schema
    inheritance, constraints-on-relationships, external `.schema.json` vs
@@ -447,6 +510,14 @@ ancestor) · gradual constraint · transition validity for documents.
    suffixes exist for this: *"a schema might read `?` as optional, `!` as
    required; a grammar might read `?` as 0-or-1, `*` as 0-or-more, `+` as
    1-or-more."* The DSL doesn't invent cardinality; it **claims** it.
+   **Independently corroborated:** rowan's constraint DSL is
+   block-structured and maps to element-form one-for-one (§2, batch 2) —
+   the Ruby it grew tired of is already shaped like the UDON it wanted.
+   **Honestly contested:** rowan's agent testing found agents expect
+   `optional: true` (keyword) over `:optional` (symbolic flag). The
+   counter is that they *read* symbolic flags correctly even when they
+   don't guess them, and `?`-as-optional has heavy prior exposure — but
+   this deserves the harness, not my confidence.
 5. **Soft regions: prose is the ambient default, mirroring the notation.**
    Piece 8's option D (absence of constraint = soft) reads as merely
    convenient; I'd argue it's *principled* — prose is the unmarked case in
@@ -472,10 +543,24 @@ hardest piece (§4.5) has an argument but no mechanism.
 
 ## 5. Next
 
-1. The rowan batch, in §2's queued order (constraints → versioning →
-   evolution_context → attributes bands → VISION empirical).
-2. Autopax ADR-010.
-3. Then a **design note** in the register of `attribute-model-2026-07.md` —
+1. ~~constraints → versioning → evolution_context → VISION empirical~~
+   **done 2026-07-16** (§2, batch 2).
+2. The remaining rowan queue (attributes bands; the constraints *plan*'s
+   open questions; differ; safe-RDBMS-evolution's Core Insight;
+   tool_export; the three ash-comparison sections).
+3. Autopax ADR-010 (schema-derived agentic tools).
+4. **Two things the reading turned up that want Joseph, before or during
+   the design note:**
+   - **The pragma is not greenfield.** Rowan ships `_schema: type/version`
+     *inside the document*; UDON's `<name>.<schema>.udon` designator is the
+     same fact in the filename. Designator, in-body pragma, or both? (The
+     aspirational-designator idea only works if the filename is at least
+     *a* carrier.) → `spec/TODO-SPEC-OTHER.md`, `spec/TODO-SPEC-CORE.md`.
+   - **Reverse-testing the DSL** (show syntax → ask for interpretation) is
+     cheap, already has a method in rowan, and would settle §4.4's
+     suffix-vs-keyword contest with data instead of taste. It also belongs
+     to `ux/TODO-AGENT-UX.md`'s harness rebuild — same instrument.
+5. Then a **design note** in the register of `attribute-model-2026-07.md` —
    reasoning included, for Joseph to ratify from rather than re-derive.
    Probable spine: element-form fields; constraint-only; the JSON-Schema
    composition vocabulary; open-world/soft-by-default; evolution via
