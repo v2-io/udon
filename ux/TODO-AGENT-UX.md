@@ -26,6 +26,9 @@ fixtures having pinned behavior first.
       (`UDON-AGENT-TOOLS.md` §Tier 1) — then an implementation home (rides
       the parser API + `udon-utl`; path syntax is TODO-AUX's lane;
       propose/apply anticipates the still-undrafted patch syntax there).
+      *The WHY layer now exists:* `../design/agentic-ux-principles.md`
+      (2026-07-16) — re-derive each tool against it before build; where a
+      sketch and a principle disagree, the principle governs.
       **Priority signal (Joseph, 2026-07-16):** the piece he most wants is
       the principled agentic **edit** tool — in his words, one that "works
       like [the assistant's] edit tool but guarantees atomicity and
