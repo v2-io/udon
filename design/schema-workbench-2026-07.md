@@ -468,6 +468,22 @@ UDON-native; the nearest gesture is Piece 12's dialect-as-lens.
 - **YAML/TOML:** no native validation schema — JSON Schema applied
   post-parse (yamllint, taplo, historically Kwalify/Cerberus). Query side:
   `yq`, `jq`, `dasel`.
+- **The two Joseph was actually looking at in Dec 2025** (recovered
+  2026-07-16 — he named `schemacop` in `schema-dsl.udon`'s own conventions
+  block, and remembers `yq` as concurrent reading):
+  - **schemacop** (Ruby) — the cited precedent for
+    *optional-by-default*, and the reason `schema-dsl.udon`'s bare
+    `|type[name]` means optional while `!` means required. Its v3 DSL is
+    block-structured and type-first (`str!`, `int?`, `hsh { … }`,
+    `ary { … }`) — **which is visibly where `|str[username]!` comes from.**
+    Worth reading directly: it is the nearest living ancestor of the
+    element-typed spelling, and its own choices (why optional-by-default,
+    how it handles `ary`/`hsh` nesting) are pre-argued.
+  - **`yq`** — not a schema language at all, but the *query/transform*
+    side of the same problem, and the reason it was in the room is
+    probably udon-paths, not schemas. Its lesson for us is the same one
+    semgrep/ast-grep teach: **the expression should look like the data it
+    addresses.** Cross-link: `udon-paths.md`, and the adjudication packet.
 - **Formatters/linters worth the glance:** gofmt / black / rustfmt
   (canonical form, no options — the "one true output" school); Prettier
   (configurable); ESLint (rule-based + autofix); and the structural family
@@ -545,6 +561,23 @@ lives in linters, not schemas. **Gradual constraint** (mandatory → typed →
 suggested → free) and confidence-annotated regions are close to
 unoccupied. Piece 13's `;?` markers reach at something real.
 
+**10. Where does the schema physically live?** *(Added 2026-07-16 —
+Joseph's catch, and the family my first survey missed entirely.)*
+
+| locus | examples |
+|---|---|
+| **Separate document** | JSON Schema, XSD, RELAX NG, `.proto`, CUE, schema-dsl.udon |
+| **In the host language** | Zod/io-ts, Ecto, ActiveRecord, rowan's Ruby DSL |
+| **In the data, as a field** | rowan's `_schema: type/version`; Avro's embedded writer schema |
+| **In the filename** | UDON's `<name>.<schema>.udon` designator |
+| **In comments** ← *the missed family* | **Ruby's `rbs_inline` (`# @rbs`)**, YARD (`# @param`), Python's `# type:` comments (PEP 484), TypeScript's JSDoc `/** @type */`, Go's struct tags (metadata smuggled in a string), Rust's `#[serde(...)]` attributes |
+
+**The irony worth naming:** rowan's own source is comment-typed — every
+file I read this session opens with `# rbs_inline: enabled` and carries
+`# @rbs` annotations beside the Ruby. So the project whose Ruby-DSL fatigue
+started all this is *itself* using the comment-locus for its type layer,
+and I read past it a dozen times.
+
 ### Where that leaves UDON
 
 **Occupied — don't reinvent:** constraint vocabulary (take JSON Schema's;
@@ -556,6 +589,75 @@ reader/writer + rowan's upcast).
 structure ⊃ prose, fractal) · the enforcement-cadence dial as a *declared*
 property · prototype-like/exemplar as a lifecycle (CUE is the nearest
 ancestor) · gradual constraint · transition validity for documents.
+
+### ⚠ The comment-locus option — a fourth candidate, and possibly the one
+
+*(Opened 2026-07-16 by Joseph in a single sentence — "we haven't even
+talked about things like Ruby and other languages do all the time —
+comment-based special typing and stuff." Recorded at length because it may
+dissolve two problems I'd flagged as mechanism-less, and because **it
+parses today**.)*
+
+**UDON is unusually ready for this**, for three reasons that are already
+ratified:
+
+1. **Comments are a first-class tier of voice**, by design — the README
+   lists them beside elements and attributes, not as detritus.
+2. **Comments are events, not discards.** CORE: *"Comments are emitted as
+   events, not discarded. The consuming layer decides whether to keep or
+   strip them. This enables use cases like documentation extraction, TODO
+   tracking, or comment-aware transformations."* A comment-consuming
+   schema layer is *the use case CORE names*.
+3. **`;{…}` inline comments already exist**, so annotation can sit beside a
+   value without touching it: `:username alice ;{@str :max 32}` is legal
+   0.9 **today** (unprobed — see the gap list).
+
+What it would buy, and these are exactly my open problems:
+
+- **Gradual constraint gets a mechanism, not an argument.** Annotate the
+  fields you want constrained; leave the rest alone. The unannotated are
+  free *by construction* — there is no "absence of constraint" to
+  interpret, because absence is literally absence. §4.5's missing mechanism.
+- **Soft regions become visible in the source.** Prose is unannotated =
+  soft; annotated = hard. The fractal boundary stops being a schema
+  question and becomes a *typographic* one — you can *see* it.
+- **Schema-by-exemplar becomes trivial** rather than clever: you annotate
+  the exemplar *in place*, and the exemplar *is* the schema. No inference
+  step, no separate artifact to drift.
+- **Aspirational binding gets cheap**: annotate what you *wish* were true;
+  nothing enforces until something does.
+- **Zero data-model pollution** — the schema never appears in the tree the
+  consumer sees.
+- **It composes with the other loci** rather than competing: a separate
+  `schema-dsl`-style document for the contract; comment annotations for
+  the local, the gradual, the in-progress.
+
+**And Joseph was already reaching for it in January**: Piece 13's
+uncertainty markers (`;?` uncertain, `;??` very uncertain, `;!` reviewer
+attention) are *comment-locus annotations*. A `;@`-family for schema would
+be the same instinct, one aisle over.
+
+**Honest costs / open questions:** comments are *inert by ratified rule* —
+making a subset semantic is exactly the "escape the comment tier" move that
+tends to end badly (cf. every `# noqa` / pragma-comment ecosystem);
+tooling must strip-preserve them (the edit tool's round-trip must not eat
+them); there's a real question whether an annotation *about* a value should
+be positionally adjacent (`;{…}` after) or a block above; and CORE's
+warning `CommentMissingFollowingSpace` and the framed-` ; ` rules mean the
+lexical shape wants care. **None of these is a probe away from an answer —
+they're a design conversation.**
+
+### The plural-implementations posture (Joseph, 2026-07-16)
+
+*"The options we have available are so plentiful, and we have the coding
+capacity to do more than one approach."* Worth writing down as a standing
+instruction to this lane: **the goal is not to pick the winner.** Four loci
+(separate document / trait-typed / element-typed / comment-annotated) are
+all live, all cheap to prototype against the same corpus, and the harness
+can A/B them empirically (§3 axis 2, rowan's reverse-testing method). The
+design note's job is to **frame the options well enough that they can be
+built and measured**, not to argue one into place. Convergence is what the
+evidence is for.
 
 ---
 
@@ -761,6 +863,7 @@ honest gaps.
 | `docs/dev/plan-safe-rdbms-evolution.md` | **queued** (Core Insight ~45) | Database-as-Truth vs transition-periods vs **Resource-as-Truth**; expand/monitor/contract. |
 | `lib/archema/agentic/tool_export.rb` + `docs/sys/agentic/tool-export.md` | **queued** | Schema→tool-definitions + JSON Schema from one model. **Working today.** |
 | `docs/msc/archema-ash-comparison-research.md` | **queued** (3 sections of 1619) | Cat. B (evolution), Cat. M (JSON-Schema composition), Exec summary (8 contributions vs 15 gaps). |
+| *(every `lib/archema/**/*.rb`)* | **observed in passing** | **`# rbs_inline: enabled` + `# @rbs` annotations** — rowan's own type layer lives in the **comment locus** (§3 axis 10). Read past a dozen times before noticing. |
 | `lib/archema/types.rb` | **queued** (296) | The concrete type/constraint catalog (dry-types). |
 | `lib/archema/resource/relationships.rb` | **queued** (698) | Cardinality options `min_required`/`max_allowed`, `managed:`. |
 | `docs/usr/10-schema-evolution.md` | **queued** (238) | The user-facing narrative + **branch-safety / divergent-evolution conflict detection** + decision-log audit trail. |
@@ -793,7 +896,10 @@ honest gaps.
    key + suffix); `:pattern ^[a-z][a-z0-9_]*$` is a bare-token value with
    regex metacharacters and wants a probe; `:enum ["" " "]` likewise.
    **Cheap, mechanical, and it converts three historical artifacts into
-   three live candidates.** Do this before proposing anything.
+   three live candidates.** Do this before proposing anything. **Add the
+   fourth**: probe `:username alice ;{@str :max 32}` and a block-comment
+   annotation form, so the comment-locus option arrives as a measured
+   candidate rather than an idea.
 6. **Timeline gap:** nothing between **Jan 14, 2026** (dormancy) and
    **Jul 8, 2026** (reboot) — six months where rowan kept moving and udon
    didn't. Rowan's Track-5 work may postdate every udon document here.
