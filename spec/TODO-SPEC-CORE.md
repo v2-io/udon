@@ -58,6 +58,39 @@
       (side-finding of the archived prose-collision spike,
       `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
       an explicit deferral. *(discuss w/ Joseph)*
+- [ ] **Multiple keys — surrogate *and* natural identity** (Joseph,
+      2026-07-16: "at first I thought [it] was overkill but now I realize
+      [it] should probably be valid... although there's still a lot to
+      figure out. Basically a surrogate key *and* a natural key.")
+      Motivating case: vivarium's `terrestris.ordinum.udon`, where each
+      `|phase[scribal]` also carries `:num 9` — an identity in practice,
+      unreferenceable as one. Desired shape:
+
+      ```udon
+      |phase[9][scribal]     ; addressable by either key
+        :name Scribal
+        :epithet the world now has Writing and history
+        :target 3
+      ```
+
+      with `@phase[9]` ≡ `@phase[scribal]`. **Most of the model already
+      exists**: stacking is the uniform rule for every attribute, `$key`
+      included (longhand `:'$key' 9 :'$key' scribal` is arguably wire-legal
+      today); Host Views already says `key` is "the value(s) of `$key`";
+      and multi-valued-`$key` prohibition is explicitly a schema concern,
+      not core. Genuinely open: (a) surface syntax — the identity grammar's
+      post-bracket state doesn't accept a second `[`; (b) uniqueness
+      semantics — per-key unique within the type (each key an independent
+      handle, the SQL surrogate+natural reading) vs tuple-unique; (c)
+      reference/path resolution by any key, and what `@phase[9]` does if
+      9 and scribal ever name different elements (duplicate-definition
+      policy interplay); (d) typed-key equality across the pair
+      (`[9]` integer vs `["9"]` string already distinct — helpful here);
+      (e) host-view shape (`key()` scalar = which one? first? natural-by-
+      convention?). Continuous with the relational reading in the
+      adjudication packet (surrogate/natural is the SQL perspective
+      arriving on schedule). *(discuss w/ Joseph — his leaning: valid,
+      design open)*
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
