@@ -36,7 +36,36 @@ Items marked *(routed from the archived reboot plan, 2026-07-16)* arrived when
       indicators, counts — `design/udon-ast.md`). Quietly the single best
       agent-orientation affordance in the whole design; build it in the
       first utilities pass, not the last. *(routed from the archived reboot
-      plan, 2026-07-16)*
+      plan, 2026-07-16)* Joseph, 2026-07-16: a given-a-document
+      show-all-viable-paths tool "could be super useful — it's also
+      essentially a document summary" — same tool: skeleton = the paths
+      enumeration = the summary, one artifact serving all three readings
+      (and the natural first consumer of the path syntax).
+- [ ] **udon guard — a file-watcher enforcing tool-mediated edits**
+      (Joseph, 2026-07-16, sketch): "an udon file-watcher that specifically
+      undoes any agent-or-human edits to any udon files, where using the
+      correct tool instead receives a token from this guard that says what
+      edit it is going to attempt / operation or set of operations, that it
+      will use to know if the edit is legitimately through the correct
+      tool. (or something like that). (keep the blanket readability...)"
+      This is the answer to `design/udon-guarantees.md`'s gatekeeper
+      problem ("a rogue vim edit bypasses everything") — enforcement
+      inverted from hope-writes-flow-through-the-tool to
+      out-of-band-writes-revert-by-default; the token handshake is
+      declared-vs-honored made mechanical (the tool declares the operation;
+      the guard verifies the resulting diff matches the declaration —
+      `design/agentic-ux-principles.md` P7). Design notes to work through
+      (mine, unratified): reverted edits are **quarantined, never
+      destroyed** (keep-everything applies to humans too — revert + save
+      the rejected edit + notify, so a vim edit becomes a reviewable
+      proposal rather than a loss); files stay plain readable text (the
+      guard is beside the files, never wrapping them); enrollment likely
+      per-directory/profile (the Careful/Critical dial) rather than
+      blanket; VCS interplay needs care (checkout/merge/rebase legitimately
+      rewrite files — recognize or suspend); token shape could be as thin
+      as an intent record (op descriptor + expected-result content hash)
+      the guard matches against observed changes. Predicated on the edit
+      tool existing. *(discuss w/ Joseph when picked up)*
 - [ ] **Paths implementation** — `at`/`all` MVP first, exercised against the
       live ASF process map (earliest real-consumer signal; surfaces path
       syntax issues like `||` and `[*]` before the full implementation
