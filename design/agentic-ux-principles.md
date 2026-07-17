@@ -400,7 +400,7 @@ have its shape, not its text · **queued** = identified, unread ·
 | `design/udon-agentic.md` | **read** | The tool-suite design of record; its four principles are P8/P5/P9's ancestors; the error taxonomy P2 keeps. |
 | `design/udon-guarantees.md` | **read** | The gatekeeper problem (P7); profiles; the append-only-log patch ancestor. |
 | `design/udon-paths.md` | **read** | `at`/`all`; the addressing substrate. |
-| `design/udon-ast.md` | **⚠ unread** (751) | **Type-scoped `(element-name, key)` uniqueness — `at`'s uniqueness predicate, which this document leans on in P1/P8 — known only via distillation.** Also SourceInfo, ReferenceIndex, the skeleton view. |
+| `design/udon-ast.md` | Jan 2026 | **read** (structure + the load-bearing sections) | Mixed: **wire details superseded** (it still calls `$key`/`$?` "undecided"; its `.a.b → :class [a b]` is now *wrong* — 0.9 stacks; `:[key]` merge removed; id/class aliases retired). **Live and unbuilt**: SourceInfo as a parallel layer (`span`/`line`/`column`/`form`/`original_whitespace`/`attr_order` — spans landed 2026-07-11, the rest didn't), ReferenceIndex + `unresolved()`, the skeleton view, and an "Inferred Schema" sketch. **Correction: the uniqueness predicate this document cites it for is in CORE** ("Uniqueness is over `(element-type, key)`", Duplicate Definitions) — cite CORE, not this. |
 | `design/{UDON-AGENT-TOOLS,AGENT-CONTEXT-PROTOCOL,GRAMMAR-CONSTRAINED-GENERATION,UDON-AS-ACP-FORMAT}.md` | **distilled** | The Dec-2025 brainstorms; each now carries a dated status banner. Semantic *merge* is the one Tier-1 idea `udon-agentic.md` lacks. |
 | `test/scenarios/` | **distilled** | The BDD acceptance layer; its journeys are this document's test cases (`schema-guard-before-write`, `handoff-mid-edit`, `contested-claim`). |
 
@@ -419,9 +419,11 @@ have its shape, not its text · **queued** = identified, unread ·
 1. **`disc-five-forcing-functions`** — P4 (tempo is existential) rests on a
    segment I have only through the era-artifact's summary of it.
 2. **`result-coupled-diagnostic-framework`** — cited in P3, unread.
-3. **`design/udon-ast.md`** — `at`'s uniqueness predicate, cited
-   throughout, known only secondhand. *(Same gap as the schema
-   workbench's.)*
+3. ~~`design/udon-ast.md` — cited throughout, known only secondhand~~
+   **read 2026-07-16.** Outcome: the citation was to a secondary source for
+   a fact CORE already carries (see the index row). Where this document
+   says "type-scoped `(element-name, key)` uniqueness", the authority is
+   **CORE, Duplicate Definitions**.
 4. **The TST cluster** — P8's changeset/atomicity half is scouted, not read.
 5. **Timeline gap:** the corpus is Sep–Nov 2025 and the ASF math is
    2026-04→07. **Nothing between.** The `ref/agentic-tft/` bridge (Feb
