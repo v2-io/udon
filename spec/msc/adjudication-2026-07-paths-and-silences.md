@@ -205,6 +205,40 @@ Ruling: _________
 
 ---
 
+## Part A½ — Field evidence from the scenario corpus (2026-07-16, `test/scenarios/`)
+
+A delegated day-in-the-life build (7 corpus docs + 26 scenarios, five
+fictional agents, all parse-clean) exercised the draft syntax before any
+session. What one working day demanded:
+
+- **P1 evidence: (a) held up in use.** Typed-key equality earned its keep
+  (`|intent[42]` ≠ `|intent["0042"]` coexist in the workspace corpus);
+  positional access was never wanted once.
+- **P5 evidence: `||` is the workhorse** — nearly every real path begins
+  with it. **P6 exercised exactly as written** (stacked `:fed-by` follow:
+  `at` errors on plural, `all` fans out). P3 never arose in a full day.
+- **New: paths must be quotable in documents** — a bare leading `|`/`@` in
+  value position is a node/reference value, so every in-document `:path`
+  is a quoted string today; `<path:…>` is the natural dialect home later.
+- **New: suffix flags are invisible to paths** — traits filter but `$?`
+  doesn't; "every `?`-marked process" (6 live sites in the real ASF map)
+  has no path. `|process[x]?` is already legal document spelling — paths
+  could mirror it. *(discuss w/ Joseph)*
+- **Datum for P9: attribute-value filtering wanted 4× in one day** (e.g.
+  keyless `|carrier` disambiguation only by `:in`). The host-over-`all()`
+  valve worked; the frequency is the datum for whether v2 wants a
+  predicate.
+- **Patch semantics that need naming when patch syntax drafts**: all paths
+  resolve against pre-state; `|require` preconditions (CAS — the
+  contested-claim scenario is impossible without it); node-grain
+  staleness; ops stateable as postconditions (resumable handoff plans);
+  sugar-aware serialization (an appended `$traits` renders as `.trait`,
+  never a `:'$traits'` line).
+- **Draft error vocabulary that fell out**: `PathNotUnique` /
+  `PathNotFound` / `ReferencePlural` / `PreconditionFailed` /
+  `SchemaViolation` — plural-path, plural-value, and plural-reference are
+  distinct failures.
+
 ## Part B — 0.9 spec silences (from TODO-SPEC-CORE; each needs ruling or explicit deferral)
 
 ### S1 — Multiple element suffixes (`|field?!`)
