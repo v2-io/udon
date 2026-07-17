@@ -187,6 +187,17 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         (per-base validation: `0o9` must fall to BareValue). Design options
         recorded in TODO-DESCENT (row-splice templates the leading
         candidate).
+      - **EOF as a generated concern** *(proposal, Joseph 2026-07-16 —
+        `../design/eof-model-proposal-2026-07.md`; awaiting his ruling)*.
+        Two facts at EOF — undifferentiated buffer remainder, and unmet
+        delimiter expectations from opened constructs — generated rather
+        than hand-written per state. Measured motivation: 90 `|eof` arms
+        in the active units, 80 pure boilerplate, 10 carrying anomalies —
+        and both 2026-07-16 REDs sit in states that forgot one. Would
+        dissolve the EOF-composition silence (unwind order *is*
+        innermost-first) and derive the `Unclosed*` vocabulary from frame
+        identity. Joseph: *"I've always felt EOF handling in the descent
+        grammar was one of its weakest areas."*
       - **generator-verified determinism** — descent verifying that every
         state's transitions cover disjoint byte classes, making the grammar
         its own determinism proof; also the real fix for warning-free
