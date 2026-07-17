@@ -830,8 +830,10 @@ honest gaps.
 | `spec/CORE.md` | 0.9.0-alpha.1 | **read** | The authority. Assigns the schema layer its job in its own text ("Constraint… a schema's job"; "forbidding a multi-valued `$key` is a schema concern"); ratifies trait-as-lightweight-typing and the two-clause suffix sentence (§4.8). |
 | `design/examples/archema-operata.udon` | **2025-12-24** | **read** (≈130/238) | **The most important artifact in the lane.** The working DSL: trait-as-type, constraints-as-attributes, blocks-as-layers, `!:rb:` escapes. |
 | `design/examples/operata-intent-graph.udon` | 2025-12 | **partial** (40/118) | The query/graph layer; `|edge :when :relationship == prepares` (predicate in value position). |
-| `design/examples/schema-dsl.udon` | 2025-12-23 | **read** | **The third paradigm: type-as-element-name** (`\|str[username]!`), JSON Schema's vocabulary in UDON, suffix for presence, block-form composition (`\|one_of`/`\|all_of`/`\|is_not`), `\|ref` for reuse, `:when` for conditional presence, **and the meta-schema** (Piece 11, already drafted). Cites *schemacop* as its optionality precedent. |
-| `design/examples/ash-like-{billing,inventory,support}.udon` | 2025-12-24 | **⚠ unread** | Three more hand-written DSLs. Same family as archema-operata; unexamined for what they do *differently*. |
+| `design/examples/schema-dsl.udon` | 2025-12-23 | **read** | **The third paradigm: type-as-element-name** (`\|str[username]!`), JSON Schema's vocabulary in UDON, suffix for presence, block-form composition (`\|one_of`/`\|all_of`/`\|is_not`), `\|ref` for reuse, `:when` for conditional presence, **and the meta-schema** (Piece 11, already drafted). Cites *schemacop* as its optionality precedent. **0.9-clean** (§7). |
+| `design/examples/ash-like-billing.udon` (126) · `ash-like-inventory.udon` (106) | 2025-12-24 | **read** | **The 4th variant — Elixir-flavored**, not "more of the same": `!:ex:` escapes and `^arg` pin-style argument refs (vs archema-operata's `!:rb:` + `!{arg}`); resource-level storage mapping (`:table`/`:primary-key`/`:timestamps true`); **`:unique true` inline** competing with the `\|identities` block; `\|validations` w/ `:rule "…"` strings; `\|policies` w/ `:effect allow`; `\|calculations` w/ `:expr "sum(lines.amount)"`; `:accept [...]` on actions. See §7. |
+| `design/examples/ash-like-support.udon` (107) | 2025-12-24 | **skimmed** | Presumed same family as billing/inventory — *and that presumption has failed three times now.* |
+| X
 | `design/udon-schema-exploration.md` | Jan 2026 (committed 07-08) | **read** | The thirteen puzzle pieces + 16 open questions. Content-model-flavored (§4.8). |
 | `design/udon-guarantees.md` | Jan 2026 (committed 07-08) | **read** | Guarantee ladder; Casual/Careful/Critical profiles; the gatekeeper problem; the append-only-log patch ancestor. |
 | `design/udon-agentic.md` | Jan 2026 | **read** | `validate` + `infer` are the schema's tool surface; `infer` is exemplar's read-side twin; Future Directions already lists schema-inference. |
@@ -884,22 +886,94 @@ honest gaps.
    ratification carriers, unread, while I reason about the 0.9 model daily.
 2. **`design/udon-ast.md`** — unread, while citing its uniqueness predicate
    as the foundation of `at`.
-3. **The three `ash-like-*.udon`** — unread; unknown what they do
-   differently from archema-operata, and given that *schema-dsl* and
-   *archema-operata* turned out to be **two different paradigms one day
-   apart**, "more of the same" is exactly the assumption that has failed
-   twice now.
+3. ~~The three `ash-like-*.udon`~~ **read 2026-07-16 (§7)** — and they were
+   a 4th variant, so "more of the same" has now failed *three* times as an
+   assumption. `ash-like-support.udon` (107) skimmed only.
 4. **`test/scenarios/corpus/operata.domain.udon`** — the one 0.9-idiom
    schema-flavored document in existence, known only secondhand.
-5. **The 0.9 diff of all three December spellings** — none has been run
-   through the current parser. `|str[username]!` should be fine (element +
-   key + suffix); `:pattern ^[a-z][a-z0-9_]*$` is a bare-token value with
-   regex metacharacters and wants a probe; `:enum ["" " "]` likewise.
-   **Cheap, mechanical, and it converts three historical artifacts into
-   three live candidates.** Do this before proposing anything. **Add the
-   fourth**: probe `:username alice ;{@str :max 32}` and a block-comment
-   annotation form, so the comment-locus option arrives as a measured
-   candidate rather than an idea.
+5. ~~The 0.9 diff of the December spellings~~ **done 2026-07-16 — see §7.**
+   Still to probe: the comment-locus forms (`:username alice ;{@str :max
+   32}` and a block-comment annotation), so that option arrives measured
+   rather than imagined.
 6. **Timeline gap:** nothing between **Jan 14, 2026** (dormancy) and
    **Jul 8, 2026** (reboot) — six months where rowan kept moving and udon
    didn't. Rowan's Track-5 work may postdate every udon document here.
+
+---
+
+## 7. The 0.9 diff — probe results (2026-07-16)
+
+Every December spelling run through the current parser. **Headline: the
+schema DSLs survive; the expression sub-language is the casualty.**
+
+| input | result | verdict |
+|---|---|---|
+| `\|str[username]!` + `:min 3` + `:pattern ^[a-z][a-z0-9_]*$` | `Name` · `Attr $key`/`BareValue username` · **`Attr $!`/`BoolTrue`** · `Attr min`/`Integer 3` · `Attr pattern`/`BareValue ^[a-z][a-z0-9_]*$` | **clean** ✅ |
+| `\|is_not` + `:enum ["" " "]` | `ArrayStart` · `StringValue ""` · `StringValue " "` · `ArrayEnd` | **clean** ✅ |
+| `\|calc[total].money :expr "sum(lines.amount)"` | `Attr $key`/`BareValue total` · `Attr $traits`/`BareValue money` · `Attr expr`/`StringValue` | **clean** ✅ |
+| `\|when :actor-role == :accountant` | `Attr actor-role`/`BareValue ==` · `Attr accountant` · **`Error MissingAttributeValue`** · `Nil` | **ERRORS** ❌ |
+| `\|filter :email == ^email` | `Attr email` · **`Text`** (the whole `== ^email` as a blob) | **degrades** ⚠ |
+| `:fallback !{:ex: "Money.zero(:USD)"}` | `Attr fallback` · **`Text`** | **degrades** ⚠ |
+
+### What this establishes
+
+1. **`schema-dsl.udon` is 0.9-viable essentially as written** — and better
+   than that: **its `!` suffix desugars to `Attr "$!"` + `BoolTrue`.**
+   Required-ness lands on the exact designated attribute CORE reserves for
+   it. `|str[username]!` *is* `|str[username] :'$!' true`, and a schema
+   reading `$!` as "required" is precisely the reading CORE's Element
+   Suffixes section describes. **The December spelling and the ratified
+   sugar were made for each other**, eight months apart, without either
+   knowing.
+2. **Regexes survive as bare values** — `^[a-z][a-z0-9_]*$` needs no
+   quoting (no spaces → no blob → no boundary). That was the probe I most
+   expected to fail.
+3. **`archema-operata`'s trait-typed field line is clean** —
+   `.money`/`.string` land as `$traits`, `:allow-nil false` as an ordinary
+   attribute.
+4. **The casualty is the expression sub-language, and only that.**
+   `:when :actor-role == :accountant` doesn't degrade — it **errors**
+   (`==` becomes the value; `:accountant` starts an attribute that never
+   gets one). `|filter :email == ^email` degrades silently to a text blob.
+   Which is *correct behavior*: those are expressions, expressions are
+   DYNAMICS' territory, and the December files predate the
+   dynamics/dialect boundary.
+5. **Joseph hedged in December without knowing it.** The same files carry
+   **both** forms: quoted (`:rule "email =~ /@/"`, `:expr
+   "sum(lines.amount)"`) and bare (`|when :actor-role == :accountant`).
+   **The quoted form is the 0.9-safe one** — it survives untouched as a
+   `StringValue`. So the expression layer already has a working spelling
+   in his own files; the bare form is the one that needs the dialect.
+6. **`!{:kind: …}` in value position → `Text`, silently** — a *live use
+   case* for an explicitly-open spec question. CORE: *"Whether the inline
+   form can appear in value position is deferred with the rest of the
+   inline-raw nailing."* `archema-operata` uses it
+   (`:fallback !{:ex: "Money.zero(:USD)"}`). Route to
+   `spec/TODO-SPEC-CORE.md`'s inline-raw item as evidence that the
+   deferral has a consumer waiting.
+
+### The 4th and 5th spellings (from `ash-like-*`, read 2026-07-16)
+
+The three `ash-like-*.udon` are **not** "more of the same" — the
+assumption that has now failed three times:
+
+- **They're Elixir-flavored**, where `archema-operata` is Ruby: `!:ex:`
+  escapes, and **`^arg` pin-style argument references** (`|filter :email ==
+  ^email`, `:rule "on_hand + ^delta >= 0"`) — Elixir's pin operator — where
+  archema-operata used `!{claimer}` interpolation. **Two argument-reference
+  syntaxes.**
+- **Storage mapping at the resource level**: `:table customers`,
+  `:primary-key id`, `:timestamps true` — which `archema-operata` doesn't
+  have (it puts `:store sqlite` on the *domain*). Puzzle Piece 9 (storage
+  projection), already sketched twice, differently.
+- **`:unique true` inline** — competing with `archema-operata`'s
+  `|identity[unique-slug] :keys [slug] :eager-check true` block. **Two ways
+  to say unique**, and they aren't equivalent: the flag is per-attribute,
+  the block is a named multi-attribute key-set with check timing.
+- **A `|validations` block** with rule-strings (`|validation[email-format]
+  :rule "email =~ /@/"`), plus `|policies` with `:effect allow` +
+  `|when …`, plus **`|calculations`** (`|calc[total-amount].money :expr
+  "sum(lines.amount)"`) — three more blocks in the schema/behavior seam
+  (§4.1) that `archema-operata` doesn't carry.
+- `:accept [email name]` on actions; `|read[by-sku] :get true`;
+  `|authorize :accounting-only` (an action naming a policy).
