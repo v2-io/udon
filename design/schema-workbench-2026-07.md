@@ -14,6 +14,25 @@
 > **Epistemic note:** the comparative survey (§3) is model knowledge, not a
 > fresh survey — verify anything before it becomes load-bearing. Everything
 > in §1–§2 is first-hand read or probe-verified unless marked otherwise.
+>
+> **⚠ Correction — do not read rowan↔udon agreement as convergence**
+> (Joseph, 2026-07-16): *"I wouldn't read too much into the convergences
+> you see — it was all me."* Rowan and udon share one author. Where an
+> earlier draft of this document called rowan's DSL shape "independent
+> corroboration" of a udon position, that was **false weight**: it is one
+> person being consistent across two projects, which is evidence about the
+> *author's* instincts, not about the design being forced. Struck
+> throughout. What survives as genuine evidence is a shorter list, and it
+> is worth knowing which is which:
+> - **Mechanical facts** — the 0.9 probe results; what CORE ratifies.
+> - **External empirical data** — rowan's 1,950-migration survey; rowan's
+>   naive-agent guessability tests.
+> - **Genuinely independent agents** — e.g. the two EOF reviewers who
+>   never saw each other.
+> - **What Joseph reached for by hand before any theory** (§1, December
+>   examples) — *not* independent, but a real usability datum about the
+>   primary author, and arguably the strongest signal available for a
+>   notation whose point is being pleasant to write.
 
 ---
 
@@ -93,14 +112,63 @@ Plus **16 open questions** at the end — still the live agenda.
 - The soft/hard framing that Piece 8 formalizes: *"The boundary is fractal,
   not linear."*
 
-### The December 2025 hand-written attempts
+### The December 2025 hand-written attempts — READ THESE FIRST
 
-**`examples/schema-dsl.udon`** (2025-12-23) and
-**`examples/ash-like-{billing,inventory,support}.udon`** (2025-12-24) —
-Joseph writing Ash-shaped schemas in UDON by hand, the day after the
-revival commit. **These are the closest thing to a requirements document we
-have**, because they're what he *reached for* before any theory. Pre-0.9,
-so the spelling has drifted — but the shapes are the ask.
+`examples/archema-operata.udon` (238) · `examples/operata-intent-graph.udon`
+(118) · `examples/schema-dsl.udon` (256) ·
+`examples/ash-like-{billing,inventory,support}.udon` — Dec 2025.
+
+**These are the most important artifacts in the schema lane and I nearly
+reasoned past them from a filename.** They are not sketches: they are a
+complete, working, Ash-shaped schema DSL in UDON, hand-written by Joseph
+*before any theory* — and the causal arrow runs backwards from what I first
+assumed. Joseph (2026-07-16): *"that's why I resurrected udon after
+creating rowan and iterating on it for a while."* **Rowan's Ruby-DSL
+fatigue is why udon came back.** These files are the thing he came back
+*for*.
+
+The spelling — and it is **better than anything proposed since**, including
+mine:
+
+```udon
+|attr[id].uuid8 :primary true
+|attr[slug].string :allow-nil false
+|attr[actionability].atom :default active :one-of [active ongoing resource archived]
+|identity[unique-slug] :keys [slug] :eager-check true
+|has-many[children] :destination operata.intent :inverse-of parent
+```
+
+Four moves I had not considered, all of them 0.9-safe:
+
+1. **Type is a TRAIT** — `.uuid8` / `.string` / `.text` / `.atom` /
+   `.datetime` / `.integer`. Not `:type string`, not `|type[email]`.
+   **CORE already blesses this**: *"Classification doubles as lightweight
+   typing even when no behavior is attached to it."* Ratified *and*
+   reached-for. It also dissolves Piece 2 (§1) without argument.
+2. **Constraints are plain attributes with values** — `:primary true`,
+   `:allow-nil false`, `:default active`, `:one-of [...]`. So the split is
+   clean and legible: **trait = what it is; attribute = how it's
+   constrained.**
+3. **The blocks *are* the layers.** `|attributes` / `|identities` /
+   `|relationships` (schema) vs `|actions` / `|queries` / `|graph`
+   (behavior). §4.1's "constrain, don't behave" cut is **already drawn in
+   his file, as block names** — which is a better argument for it than my
+   reasoning was, and also a correction: the *document* legitimately holds
+   both. A rowan resource definition = the schema blocks + the behavior
+   blocks. UDON's schema layer is the former; rowan's dialect adds the
+   latter.
+4. **`!:rb:` escape hatches, deliberately placed** — *"Escapes for time and
+   argument plumbing"*, *"Higher-level query helpers live in Ruby"*. The
+   DSL doesn't pretend to express everything; it names its own boundary.
+   (Also: `:arguments [claimer]` + `|change :set-claimed-by !{claimer}` —
+   interpolation as argument plumbing; and in the intent-graph,
+   `|edge[prepares] :from child :to parent :when :relationship == prepares`
+   — a predicate expression in value position.)
+
+**⚠ A name collision worth catching early:** this DSL's `:one-of [a b c]`
+is an **enum on one attribute's value**. Rowan's `one_of do present :x;
+present :y end` is **XOR across attributes** (the polymorphic-FK
+constraint). Same name, different constraints. One of them has to move.
 
 ### Adjacent in-repo docs the schema layer must not contradict
 
@@ -501,23 +569,19 @@ ancestor) · gradual constraint · transition validity for documents.
 2. **Constraint-only, because typing is already dialects** (survey axis 4).
    The one I'm most confident about.
 3. **Grammar + constraint hybrid, open-world by default.**
-4. **The spelling is forced, and the survivor is better.**
-   Probe-verified 2026-07-16: `:date? date` now parses as flag `date?`=true
-   plus re-owned text `"date"` — and the re-owned text enters the children
-   phase, so **every subsequent attribute line on that element becomes
-   prose**. One optional marker poisons the field list. The element form
-   survives: `|field[date]? :type date`. And CORE *already* says the
-   suffixes exist for this: *"a schema might read `?` as optional, `!` as
-   required; a grammar might read `?` as 0-or-1, `*` as 0-or-more, `+` as
-   1-or-more."* The DSL doesn't invent cardinality; it **claims** it.
-   **Independently corroborated:** rowan's constraint DSL is
-   block-structured and maps to element-form one-for-one (§2, batch 2) —
-   the Ruby it grew tired of is already shaped like the UDON it wanted.
-   **Honestly contested:** rowan's agent testing found agents expect
-   `optional: true` (keyword) over `:optional` (symbolic flag). The
-   counter is that they *read* symbolic flags correctly even when they
-   don't guess them, and `?`-as-optional has heavy prior exposure — but
-   this deserves the harness, not my confidence.
+4. **The spelling: Joseph's December DSL already won, and my proposal
+   loses on its own terms.** Probe-verified: Piece 1's `:date? date` is
+   dead under 0.9 (flag `date?`=true + re-owned text, which then poisons
+   every following attribute line into prose). I proposed
+   `|field[date]? :type date`. **The December DSL is better**:
+   `|attr[date].datetime :allow-nil true` — trait-as-type,
+   constraints-as-attributes (§1). And my suffix-for-optionality idea loses
+   **twice over**: rowan's agent tests say agents expect an explicit
+   keyword (`optional: true`) over a symbolic flag, *and* Joseph's own hand
+   — the strongest usability datum available — reached for `:allow-nil
+   false`, not `|attr[slug]?`. Two strikes, from opposite directions.
+   *What survives*: element-form itself, and the element **suffixes** —
+   but for a **different job** than I assigned them. Which is §4.8.
 5. **Soft regions: prose is the ambient default, mirroring the notation.**
    Piece 8's option D (absence of constraint = soft) reads as merely
    convenient; I'd argue it's *principled* — prose is the unmarked case in
@@ -534,10 +598,44 @@ ancestor) · gradual constraint · transition validity for documents.
    reference / interpolation), not just type. Richer, but more regular —
    everything is the hash and the array.
 
-**Honest state: not nearly there.** This is a *position in the design
-space*, and the survey suggests it's coherent and unoccupied. It is not a
-design: no syntax proposed, no worked example, no meta-schema, and the
-hardest piece (§4.5) has an argument but no mechanism.
+8. **⚠ THE REAL TENSION, and I only saw it by reading the December files:
+   field-based vs content-model-based.** These are survey axis 1
+   (constraint vs grammar), and **Joseph has written both, for different
+   purposes**:
+   - **`archema-operata.udon` is field-based** — records with typed,
+     constrained fields (`|attr[slug].string :allow-nil false`). Ash/rowan
+     lineage. Optionality is a *property of a field*.
+   - **Piece 1 is content-model-based** — what elements may appear, how
+     many, in what nesting (`|section*`, `|p+`). RELAX NG lineage.
+     Cardinality is a *property of a position in a tree*.
+
+   They are not the same constraint wearing different clothes, and Piece 1
+   conflated them (its `:author!`/`:date?` mixes field-optionality with
+   content-model cardinality). **UDON needs both, and they may want
+   different spellings** — `:allow-nil false` for fields (Joseph's hand,
+   agents' expectation), and the ratified **suffixes** for content-model
+   cardinality (`|section*` = zero-or-more of these children), which is
+   exactly the job CORE describes: *"a grammar might read `?` as 0-or-1,
+   `*` as 0-or-more, `+` as 1-or-more."* Note the sentence has **two
+   clauses** — "a schema might read `?` as optional" *and* "a grammar might
+   read `*` as 0-or-more" — and I collapsed them into one. They're the two
+   paradigms, named in CORE, one clause each.
+
+   **Which matters because the two consumers differ:** rowan wants
+   field-based (its resources are records). `test/scenarios/corpus/` wants
+   content-model (its documents are prose ⊃ structure ⊃ prose, arbitrarily
+   nested). **A schema layer serving both is the actual design problem** —
+   and it's the same hybrid RELAX NG + Schematron settled on for XML
+   (§3, axis 1), which is at least a well-trodden shape.
+
+**Honest state: not nearly there, and one rung lower than I thought an hour
+ago.** §4.8 is the question the design note has to answer, and I didn't
+know it existed until I read the files I'd been citing by name. The
+position that survives: constrain-don't-behave (now with Joseph's block
+names as its evidence), constraint-only-because-typing-is-dialects (though
+trait-as-type may make even that moot), element-form, open-world/soft-by-
+default (still an argument, no mechanism), and the exemplar/aspirational/
+profile lifecycle.
 
 ---
 
