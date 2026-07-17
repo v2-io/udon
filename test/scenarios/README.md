@@ -28,9 +28,16 @@ Two halves, one fiction:
 Not `.feature`, not markdown: the README's own pitch — UDON as "a host for
 domain-specific languages — Gherkin-like BDD for any domain" — is taken at
 its word. Each scenario is a `|scenario` element with `|given` / `|when` /
-`|then` children and prose flowing between them; a future runner parses
-these files with the very parser they test. Until a runner exists they are
-read by humans and agents; the journey shapes are the contract.
+`|then` children and prose flowing between them. Until a runner exists they
+are read by humans and agents; the journey shapes are the contract.
+
+**⚠ Runner rule — peg the reader (Joseph, 2026-07-16):** when the runner
+exists, it reads these files with a **pinned, known-good parser version**,
+never this repo's head parser — the head parser is the thing under test, and
+a broken head could misread the very scenarios that would catch it. Declare
+the utilized reader version explicitly (the `udon-core-v…` tag family) and
+bump it deliberately. Same bootstrap rule as the fixtures-as-UDON plan in
+`../../TODO-META.md` (its dogfood item spells out the trap).
 
 ## ⚠ Path syntax is provisional
 

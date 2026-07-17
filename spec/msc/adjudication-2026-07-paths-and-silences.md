@@ -238,6 +238,20 @@ session. What one working day demanded:
   `PathNotFound` / `ReferencePlural` / `PreconditionFailed` /
   `SchemaViolation` — plural-path, plural-value, and plural-reference are
   distinct failures.
+- **The relational reading (Joseph's leaning, 2026-07-16, brainstorm — not
+  ruled):** the evidence says agents address documents *relationally* —
+  `||element[key]` is a primary-key lookup over type-scoped identity, and
+  it, not structural navigation, is the workhorse. "Basically back to a
+  SQL-like perspective… but with better safety and much better viewing
+  comprehension" — the tree is the storage/rendering layer; the addressing
+  is selection. Consequences to weigh when the syntax settles: set algebra
+  over path results (traits already AND; is union a syntax feature à la
+  CSS's comma, or host-side over `all()`?), and the attr-value-filtering
+  frequency datum above is the same relational pull. Also noted: identity
+  is never *foreclosed* in UDON (`[key]` takes any type; anonymous
+  elements can gain keys) — it is merely sometimes unnatural (prose,
+  append-streams), which is exactly where P7's positional-API deferral
+  already sits.
 
 ## Part B — 0.9 spec silences (from TODO-SPEC-CORE; each needs ruling or explicit deferral)
 
