@@ -33,6 +33,22 @@
 >   examples) — *not* independent, but a real usability datum about the
 >   primary author, and arguably the strongest signal available for a
 >   notation whose point is being pleasant to write.
+>
+> **The pattern behind the correction, since it recurred three times in one
+> session and future readers will have the same reflex:** I kept reading
+> *design intent* as *independent convergence*. Rowan's DSL matching a udon
+> position; the December examples matching CORE's identity model; the
+> element suffixes fitting a schema's required/optional need — each felt
+> like separate paths meeting, and each was **one designer being
+> consistent with himself over eight months**. Joseph, on the suffixes:
+> *"I absolutely put those in the syntax because I had schemas on my mind.
+> This is you catching up with me to help me catch up with me."* The
+> fitness in all three cases is **real and load-bearing** — a design whose
+> parts were built for each other is *better*, not worse. But it is
+> evidence of **coherent authorship**, not of a forced solution, and it
+> carries none of the corroborative weight that genuine independence would.
+> When this document says a thing "fits," assume intent until shown
+> otherwise.
 
 ---
 
@@ -922,9 +938,12 @@ schema DSLs survive; the expression sub-language is the casualty.**
    Required-ness lands on the exact designated attribute CORE reserves for
    it. `|str[username]!` *is* `|str[username] :'$!' true`, and a schema
    reading `$!` as "required" is precisely the reading CORE's Element
-   Suffixes section describes. **The December spelling and the ratified
-   sugar were made for each other**, eight months apart, without either
-   knowing.
+   Suffixes section describes. **This fitness is design intent, not
+   serendipity** — Joseph, 2026-07-16: *"I absolutely put those in the
+   syntax because I had schemas on my mind."* The suffixes were built for
+   a schema layer before the schema layer existed; CORE's *"a schema might
+   read `?` as optional, `!` as required"* is that intent surviving into
+   the ratified text. The fitness is real; the coincidence is not.
 2. **Regexes survive as bare values** — `^[a-z][a-z0-9_]*$` needs no
    quoting (no spaces → no blob → no boundary). That was the probe I most
    expected to fail.
