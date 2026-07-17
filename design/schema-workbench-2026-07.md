@@ -855,7 +855,7 @@ honest gaps.
 | `design/udon-agentic.md` | Jan 2026 | **read** | `validate` + `infer` are the schema's tool surface; `infer` is exemplar's read-side twin; Future Directions already lists schema-inference. |
 | `design/udon-paths.md` | Jan 2026 (banner 07-16) | **read** | Selection — constraints that quantify ("every `||endpoint`") need it. |
 | `design/agentic-ux-principles.md` | 2026-07-16 | *(authored here)* | P7: the file's own law governs; declared-is-theater-until-honored. |
-| `design/attribute-model-proposal-3.md` + `-substrate.md` | 2026-07 | **⚠ unread** | **The 0.9 model's ratification carriers.** I've been reasoning about what 0.9 changed (kinds, stacking) from CORE + the changelog, *not* from these. Biggest in-repo gap. |
+| `design/attribute-model-proposal-3.md` (494) + `-substrate.md` (479) | 2026-07-15/16 | **read** (proposal §0–§2 + structural sweep of both) | The 0.9 model's ratification carriers. **Fully drained — zero `[OPEN]` items remain** (only the legend row), so CORE carries everything and these are archaeology now. Two live threads for us: the **"kind" footnote** (§8 below) and the **positional scalar/blob rule** (§8). Its segment-array wire framing was **superseded by R5's flat wire** (recorded in the changelog). |
 | `design/udon-ast.md` | Jan 2026 | **⚠ unread** (751) | Type-scoped `(element-name, key)` uniqueness — **which I've cited repeatedly as the `at`-uniqueness predicate** — plus ReferenceIndex, Document views. Known only through a delegated distillation. |
 | `design/composite-types.md` | 2026-07 | **queued** (3K) | `<…>` nesting; matters if type-refs are dialect-refs. |
 | `design/GRAMMAR-CONSTRAINED-GENERATION.md` | Dec 2025 | **distilled** | Schemas as generation constraints; argues for machine-readable schema. |
@@ -996,3 +996,62 @@ assumption that has now failed three times:
   (§4.1) that `archema-operata` doesn't carry.
 - `:accept [email name]` on actions; `|read[by-sku] :get true`;
   `|authorize :accounting-only` (an action naming a policy).
+
+---
+
+## 8. The attribute model's carriers — read 2026-07-16
+
+`attribute-model-proposal-3.md` + its substrate are **fully drained**: a
+grep for `[OPEN]` returns only the legend row. CORE carries every decision;
+these are archaeology. Two facts from them matter here, and one absence
+matters more.
+
+**The absence: the 0.9 attribute model was designed with *zero* schema
+awareness.** `grep -i schema` across both carriers returns **nothing** —
+494 + 479 lines about the exact model a schema must constrain, with the
+word never appearing. Meanwhile **CORE mentions schemas eight times**, and
+three of those are load-bearing job-assignments to this lane:
+
+- *"**Constraint** — what is allowed or required (cardinality, vocabularies,
+  'no array-valued `$key`'). A **schema's** job. Proscription lives here,
+  never in the core."*
+- *"**Dialects are not schemas.** A dialect says what a value *means /
+  types*; a schema says what is *allowed*. They never trade jobs."*
+- *"what is allowed — e.g. forbidding a multi-valued `$key` — is a schema
+  concern, never core."*
+
+So the schema-awareness entered at **CORE drafting**, not in the model's
+design. Two consequences, and they cut opposite ways:
+
+1. **The schema layer inherits a model that never anticipated it** — which
+   is *correct* (a model shouldn't be bent by every future consumer) but
+   means we cannot assume any 0.9 affordance was built with schemas in
+   view. Contrast **identity**, where the suffixes *were* (§7.1) — so
+   0.9 is schema-aware in its *sugar* and schema-blind in its *attribute
+   model*. Worth knowing which is which before leaning on either.
+2. **The `:type` question gets sharper.** CORE draws "dialects type, schemas
+   constrain — *they never trade jobs*" as a hard line. But
+   `archema-operata`'s **trait-as-type** (`|attr[slug].string`) puts typing
+   in the *schema* document. Is `.string` there a *dialect* reference
+   (CORE's job-split honored), or is the schema typing (job-split
+   violated)? **This is now the sharpest open question in the lane**, it
+   is CORE-textual rather than aesthetic, and §4.2's
+   "constraint-only-because-typing-is-dialects" position depends entirely
+   on the answer.
+
+**Two live threads the carriers leave us:**
+
+- **The "kind" footnote** (proposal-3 §2.1, non-normative): *"an array of
+  only text / text-reducible segments may later be treated as a soft
+  'kind' distinct from a junk-drawer heterogeneous array — not required for
+  0.8."* That is a **schema-shaped distinction**, deferred: a schema
+  wanting to say "this attribute is a text blob" vs "this attribute is a
+  list of values" needs exactly that kind. Nobody has picked it up.
+- **The positional scalar/blob rule** (proposal-3 §2.1, substrate §S5): *"a
+  **mid-line** bare value (more attrs still to the right) is a **scalar** —
+  no unquoted spaces… Unquoted multi-word text is only for the **last**
+  trailing value material on the line."* So **a value's legal spelling
+  depends on its position on the line** — which any schema-authoring
+  guidance, formatter, or generation-constraint artifact has to encode. It
+  is also why `:rule "email =~ /@/"` (quoted) survives 0.9 where the bare
+  form wouldn't (§7).
