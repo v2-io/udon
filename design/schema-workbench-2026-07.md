@@ -28,7 +28,9 @@
 > - **External empirical data** — rowan's 1,950-migration survey; rowan's
 >   naive-agent guessability tests.
 > - **Genuinely independent agents** — e.g. the two EOF reviewers who
->   never saw each other.
+>   never saw each other; the corpus-building agent's `operata.domain.udon`
+>   port landing on the same 0.9 idiom as this document's hand-run probes
+>   (§7), neither having seen the other.
 > - **What Joseph reached for by hand before any theory** (§1, December
 >   examples) — *not* independent, but a real usability datum about the
 >   primary author, and arguably the strongest signal available for a
@@ -231,20 +233,23 @@ and read-status for each are in §6.
 the path/edit tool, but it constrains the schema layer just as hard, and
 it's the only body of 0.9-idiom documents I know of:
 
-- **`corpus/operata.domain.udon`** is already a schema-flavored document in
-  0.9 idiom — flags, `:allow-nil? false`, interpolations, a same-line raw
-  value. Someone (an agent, but still) has already answered "what does a
-  constraint-ish UDON document look like under the current model" — though
-  I haven't read this file myself yet (§6).
+- **`corpus/operata.domain.udon`** is a full-file 0.9 port of the December
+  `archema-operata.udon` DSL, and it has a conforming instance
+  (`operata-live.workspace.udon`) and a schema-guard acceptance scenario
+  checked against both — read first-hand 2026-07-16; the idiom it lands
+  on, and how it compares to the hand-run 0.9 probes elsewhere in this
+  document, is in §7 rather than repeated here.
 - **What the corpus demands a schema be able to say**, derived from what's
-  in it: typed identity keys (`|intent[42]` beside `|intent["0042"]` —
+  in it: typed identity keys (`|intent[311]` beside `|intent["0042"]` —
   key type and uniqueness), stacked traits (cardinality over `$traits`),
   node-valued attrs (kind), `<…>` dates (dialect binding), flags (presence
   semantics), prose interleaved at every level (soft regions, live and
   unavoidable), cross-document `:in`/`:ref` joins (referential integrity
   across files).
-- **`features/03-modifying`** contains a `schema-guard-before-write`
-  scenario — an acceptance test for conformance-at-apply already exists.
+- **`features/03-modifying.scenarios.udon`** contains the
+  `schema-guard-before-write` scenario (§7) — an acceptance test for
+  conformance-at-apply already exists, though it's a written scenario, not
+  evidence the guard is implemented.
 - Its draft error vocabulary includes `SchemaViolation` alongside
   `PathNotUnique` / `PathNotFound` / `ReferencePlural` / `PreconditionFailed`.
 - A schema for this corpus looks, to me, like the cheapest honest test
@@ -726,7 +731,12 @@ below means "nothing I've read contradicts it," not "ratified."
    axis the harness can actually measure (rowan's reverse-testing method,
    §3). This looks to me like the central open question for the design
    note, and it's A/B-able rather than something to argue into place from
-   here.
+   here. (The scenario corpus now has a full-file 0.9 port of
+   `archema-operata.udon` — §7 — that lands on trait-as-type, but it
+   inherited that choice from the December file it's a mechanical
+   translation of rather than choosing it independently, so it doesn't
+   move this fork either way. Noted so a future reader doesn't read it as
+   a second data point.)
 
 6. **`schema-dsl.udon` already contains several things worth diffing
    against 0.9 rather than re-proposing.** Block-form composition as
@@ -811,6 +821,18 @@ all.
    genres, written by someone who wasn't designing the schema, and
    content-model-shaped where rowan is field-shaped.
 
+   **This last piece changes shape, not size, now that `operata.domain.udon`
+   (§7) is read.** One of the seven documents already has a schema, a
+   conforming instance, and a guard scenario — but the schema is a
+   mechanical 0.9 port that inherited its answers to §4 items 2 and 5
+   (typing's job-boundary; element-name vs. trait) rather than the design
+   note deciding them, and it covers one resource domain of six genres.
+   So the honesty test isn't "write a schema for the corpus" from a blank
+   page anymore; it's "audit `operata.domain.udon` against whatever the
+   design note settles, then extend the same treatment to the remaining
+   genres" — a real change to the starting point, not a reason to call the
+   task done.
+
 ---
 
 ## 6. File status ledger
@@ -843,8 +865,8 @@ repeating status per file.
 | `design/udon-ast.md` | Jan 2026 | **⚠ unread** (751) | Type-scoped `(element-name, key)` uniqueness — which I've cited repeatedly as the `at`-uniqueness predicate — plus ReferenceIndex, Document views. Known only through a delegated distillation. |
 | `design/composite-types.md` | 2026-07 | **queued** (3K) | `<…>` nesting; matters if type-refs are dialect-refs. |
 | `design/GRAMMAR-CONSTRAINED-GENERATION.md` | Dec 2025 | **distilled** | Schemas as generation constraints; argues for machine-readable schema. |
-| `test/scenarios/corpus/operata.domain.udon` | 2026-07-16 | **⚠ unread** | Already a schema-flavored document in 0.9 idiom, per the building agent's report — not verified first-hand yet. |
-| `test/scenarios/corpus/operata-live.workspace.udon` | 2026-07-16 | **⚠ unread** | The mutation target; integer keys beside legacy string keys. |
+| `test/scenarios/corpus/operata.domain.udon` | 2026-07-16 | **read** | A full-file 0.9 port of `archema-operata.udon`, built by a delegated agent for the scenario corpus — see §7 for the idiom it lands on and how it compares to the hand-run probes. |
+| `test/scenarios/corpus/operata-live.workspace.udon` | 2026-07-16 | **read** | Data conforming to `operata.domain.udon` (§7); the mutation target; typed-key contrast — integer `|intent[311]` beside legacy string `|intent["0042"]`. |
 | `test/scenarios/` (rest) | 2026-07-16 | **distilled** | The requirements corpus (§1); `schema-guard-before-write`; `SchemaViolation`. |
 | `spec/TODO-AUX.md` · `TODO-SPEC-CORE.md` · `TODO-SPEC-OTHER.md` · `TODO-UTILS.md` | live | **read** | The lanes: schema/paths/patch; multiple keys; pragma; guard + cadence. |
 
@@ -884,9 +906,10 @@ repeating status per file.
 
 1. **`design/udon-ast.md`** — unread, while citing its uniqueness predicate
    as the foundation of `at`.
-2. **`test/scenarios/corpus/operata.domain.udon` and `operata-live.workspace.udon`**
-   — the 0.9-idiom schema-flavored documents this lane leans on, known only
-   secondhand.
+2. ~~`test/scenarios/corpus/operata.domain.udon` and `operata-live.workspace.udon`~~
+   **read 2026-07-16 — see §7.** The rest of the seven-document corpus
+   (§1) beyond this one resource domain is still secondhand, via the
+   `test/scenarios/ (rest)` distillation above.
 3. **Comment-locus forms unprobed** — `:username alice ;{@str :max 32}` and
    a block-comment annotation should be run through the parser before that
    option (§3) is treated as more than plausible.
@@ -973,6 +996,73 @@ that has now failed three times:
   (§4 item 1) that `archema-operata` doesn't carry.
 - `:accept [email name]` on actions; `|read[by-sku] :get true`;
   `|authorize :accounting-only` (an action naming a policy).
+
+### A full-file port, independently run (`test/scenarios/corpus/operata.domain.udon`)
+
+Read 2026-07-16, later than the rest of this section — it had sat in the
+ledger (§6) as ⚠ unread while cited secondhand. Its own header states what
+it is: *"evolved from design/examples/archema-operata.udon to 0.9 idiom:
+flags (`:primary?`), explicit flag-false (`:allow-nil? false`),
+double-brace interpolation, same-line raw values."* A delegated agent
+built it, for the path/edit-tool scenario corpus, by porting the December
+DSL to 0.9 — a different process, run without reference to the probes
+above. The two land on the same idiom:
+
+- Boolean constraints become **flag keys**: `:primary?`, `:allow-nil?
+  false`, `:eager-check?`.
+- Non-boolean constraints stay plain attributes: `:default active`,
+  `:one-of [active ongoing resource archived]`.
+- Type stays a **trait**: `.uuid8`, `.string`, `.atom`, `.text`,
+  `.integer`, `.datetime`, `.boolean` — the last of these not in the
+  December file (below).
+- Interpolation is double-brace: `!{{claimer}}`, `!{{now}}` (December used
+  single-brace `!{claimer}`).
+- `:migrate !:sh: bin/operata migrate --auto` is a same-line raw value —
+  the form CORE ruled the same day this port was built: *"The body may
+  begin on the directive line itself (ruled 2026-07-16 — the same shape as
+  fences…): whitespace after the label's closing `:` separates, and the
+  rest of the line is the body's first content."*
+
+This is a genuine instance of the header's "genuinely independent agents"
+evidence tier, not the false-convergence pattern it warns against: the
+port and the hand-run probes above didn't see each other. Worth being
+precise about what it does and doesn't establish, though — the port's
+choice of **trait-as-type** isn't new evidence for §4 item 5's open fork.
+It's inherited from the December source file it's a mechanical translation
+of, not chosen independently; the same caution the header gives about
+reading design intent as convergence applies here in a new shape.
+
+Two small deltas from the December file: `:require-nil [claimed-by]` (line
+67, a precondition on `|update[claim]`) and `.boolean` as a trait type.
+`:require-nil` sits inside `|actions` → `|update[claim]`, not
+`|attributes` — an action precondition, not a field constraint, so it's
+consistent with §4 item 1's constrain-don't-behave line rather than a
+complication of it. Whether it's a fifth constraint predicate alongside
+rowan's `present`/`absent`/`required`/`equals` (§2) or something the
+behavior layer owns outright is unresolved and probably belongs with
+rowan's queue rather than here.
+
+**The corpus also carries the pair `operata.domain.udon` is a schema
+for.** `operata-live.workspace.udon` states it directly: *"data conforming
+to operata.domain.udon."* It carries the deliberate typed-key contrast
+(`|intent[311]`, the integer, beside `|intent["0042"]`, the string — a
+legacy import that kept its zero-padded id) and `<2026-07-21T08:00>`
+envelopes. And `test/scenarios/features/03-modifying.scenarios.udon`'s
+`schema-guard-before-write` scenario (verified, lines 98–118) writes the
+acceptance test against this exact pair: a patch setting `intent[312]`'s
+`:status` to `resurrected` is refused before the file is touched, citing
+`:one-of [projected active realized abandoned]` by name; a patch setting
+`:claimed-by` to the integer `42` is refused because the attribute
+is `.string` — refused, not coerced. This is a scenario — a written
+acceptance test for how the tool *should* behave — not evidence the guard
+is built; the corpus's job is to constrain the eventual implementation,
+which is still `⚠ unread`-adjacent (§6) beyond this pair.
+
+So one resource domain of the corpus's "seven documents, six genres" (§1)
+already has a schema, an instance, and a guard scenario checked against
+it — the honesty test in §5 isn't starting from nothing for this one
+document. See §5 for what that changes about the design note's first
+task.
 
 ---
 
