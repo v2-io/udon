@@ -348,6 +348,39 @@
     - DirectiveEnd
     - ElementEnd
 
+# The same-line-body rule "applies uniformly wherever the block form appears,
+# including as a node value" (CORE Raw Directives, ruled 2026-07-16) — here
+# composed with the DEFERRED node-value position.
+- id: raw_block_node_value_deferred_sameline_body
+  desc: deferred raw node value whose body begins on the directive line
+  udon: "|el\n  :script\n    !:sh: echo hi\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - ElementEnd
+
+# Markers are inert in a raw body wherever the body starts — a same-line tail
+# is body, so UDON markers in it are captured verbatim.
+- id: raw_block_sameline_body_markers_inert
+  desc: markers in a raw same-line body are verbatim, like any raw content
+  udon: "|el :script !:sh: echo |a :b ; c\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo |a :b ; c"]
+    - DirectiveEnd
+    - ElementEnd
+
 - id: fence_node_value_deferred
   desc: a freeform fence as a deferred node value (exact whitespace preserved)
   udon: "|el\n  :code\n    ```\n    x = 1\n    ```\n"

@@ -748,3 +748,138 @@
     - [Text, "c"]
     - ElementEnd
     - ElementEnd
+
+# ===========================================================================
+# Second mining pass (2026-07-16, densification residuals). Sources:
+# comment_indentation.yaml, suffix_positions.yaml, attributes.yaml,
+# indentation_edge_cases.yaml — the files (or veins) the first pass did not
+# lift. Expectations re-derived from CORE 0.9.0-alpha.1 text, as above.
+# Deliberately NOT lifted: multiple_suffixes (|field?! — blocked silence),
+# unclosed_bracket_in_id / unclosed_quoted_element_name (blocked/new
+# silences), the '-escape cases (dead model), :[id] merge (removed syntax,
+# already pinned), mixin resolution (host behavior, not parser).
+# ===========================================================================
+
+- id: block_comment_one_deeper_is_inside_child
+  desc: a comment one column past a child's pipe is INSIDE the child (CORE's own Block Comments example)
+  udon: "|parent\n  |child\n   ; inside child\n"
+  events:
+    - ElementStart
+    - [Name, "parent"]
+    - ElementStart
+    - [Name, "child"]
+    - CommentStart
+    - [Text, " inside child"]
+    - CommentEnd
+    - ElementEnd
+    - ElementEnd
+
+- id: suffix_then_spaced_trait_is_prose
+  desc: a .trait after a key-side suffix and a space is prose, not identity ("Identity is contiguous")
+  udon: "|field[myid]? .cls\n"
+  events:
+    - ElementStart
+    - [Name, "field"]
+    - [Attr, "$key"]
+    - [BareValue, "myid"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Text, ".cls"]
+    - ElementEnd
+
+- id: bare_colon_line_is_prose
+  desc: a lone ':' line falls back to prose intact — the colon must not vanish
+  udon: "|el\n  :\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":"]
+    - ElementEnd
+
+- id: colon_guard_fallback_inside_directive
+  desc: a directive's body is UDON, so the ':' guard fallback applies there too
+  udon: "!if cond\n  :-) ok\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "cond"]
+    - [Text, ":-) ok"]
+    - DirectiveEnd
+
+- id: block_prose_framed_semicolon_literal
+  desc: a whitespace-framed ' ; ' in BLOCK prose is literal (CORE Literal Semicolons example — the sameline-comment frame is a sameline-prose affordance)
+  udon: "|el\n  this is prose of el ; but this is not a comment\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "this is prose of el ; but this is not a comment"]
+    - ElementEnd
+
+# ⚠ Same reasoning as attr_line_does_not_set_prose_base above: the
+# dedentation rule's implementation sketch establishes the content-base from
+# indented PROSE, and the warning table's trigger is a prose (or
+# comment-continuation) line under an ESTABLISHED base. A comment line is
+# structure (events, not content), so no base exists when the prose arrives —
+# the prose line itself establishes base 2, no warning. Legacy expected a
+# warning here; if comment lines should seed the base, that needs CORE text.
+- id: comment_line_does_not_set_prose_base
+  desc: "⚠ a deeper comment line does not establish the prose content-base"
+  udon: "|el\n    ; a comment\n  prose\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - CommentStart
+    - [Text, " a comment"]
+    - CommentEnd
+    - [Text, "prose"]
+    - ElementEnd
+
+# ⚠ Placement by stream order (CORE: comments, blank lines, and warnings are
+# "emitted as events by the main parser, alongside the structural ones";
+# parsing is per-line): the blank line is encountered while |a is still open
+# — the dedent that closes |a fires only when |b's column is seen — so the
+# BlankLine sits inside |a. If blank-line placement should instead defer to
+# the next structural line's dedent, that needs CORE text.
+- id: blank_line_between_children_stream_order
+  desc: "⚠ a blank line between sibling children is emitted inside the still-open first child"
+  udon: "|p\n  |a\n\n  |b\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - ElementStart
+    - [Name, "a"]
+    - BlankLine
+    - ElementEnd
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - ElementEnd
+
+- id: escape_at_base_after_child_forces_prose
+  desc: the prose base column is head position after a child closes, so a '\' there forces prose
+  udon: "|p\n  first\n  |em child\n  \\|not element\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "first"]
+    - ElementStart
+    - [Name, "em"]
+    - [Text, "child"]
+    - ElementEnd
+    - [Text, "|not element"]
+    - ElementEnd
+
+- id: full_identity_attrs_and_block_prose
+  desc: the README front-matter shape — key, trait, sameline attr, block prose, in order
+  udon: "|article[intro].featured :author Joseph\n  body prose\n"
+  events:
+    - ElementStart
+    - [Name, "article"]
+    - [Attr, "$key"]
+    - [BareValue, "intro"]
+    - [Attr, "$traits"]
+    - [BareValue, "featured"]
+    - [Attr, "author"]
+    - [BareValue, "Joseph"]
+    - [Text, "body prose"]
+    - ElementEnd

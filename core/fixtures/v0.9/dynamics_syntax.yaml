@@ -161,6 +161,82 @@
     - DirectiveEnd
     - ElementEnd
 
+- id: raw_block_sameline_body_in_element
+  desc: same-line body on an indented raw block inside an element
+  udon: "|example\n  !:sql: SELECT 1\n"
+  events:
+    - ElementStart
+    - [Name, "example"]
+    - DirectiveStart
+    - [Name, "sql"]
+    - [Raw, ""]
+    - [RawContent, "SELECT 1"]
+    - DirectiveEnd
+    - ElementEnd
+
+- id: raw_block_sameline_body_then_dedent_prose
+  desc: a same-line body does not change the block-end rule — a line at the directive's column ends it
+  udon: "|x\n  !:sh: echo hi\n  back to prose\n"
+  events:
+    - ElementStart
+    - [Name, "x"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - [Text, "back to prose"]
+    - ElementEnd
+
+# "The rest of the line is the body's first content" (ruled 2026-07-16), and
+# a raw body is captured verbatim — no ';' interpretation — so a framed
+# ' ; ' in the same-line tail is body, not a comment.
+- id: raw_block_sameline_body_semicolon_is_body
+  desc: a framed ' ; ' in a raw same-line body is verbatim body content
+  udon: "!:sh: echo hi ; not a comment\n"
+  events:
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi ; not a comment"]
+    - DirectiveEnd
+
+- id: raw_block_node_value_sameline_body_plus_block
+  desc: node value with same-line body AND indented continuation — the indented line sets the raw base; the block ends at the LINE's structural column
+  udon: "|el :script !:sh: make build\n  make test\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "make build"]
+    - [RawContent, "make test"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ⚠ Flag rule 2 re-owns non-keyword material to the continuing scan, and a
+# guarded '!' is in the boundary marker set — so the raw block is the
+# ELEMENT's child while the flag settles true (the flag analogue of
+# ':a? |beta'; contrast raw_block_node_value_sameline where a PLAIN attr is
+# the raw node). Body rules per the sameline-opened form: raw base = first
+# content line's column, end at the line's structural column.
+- id: flag_then_raw_block_is_child
+  desc: "⚠ after a flag key, a sameline raw block is the element's child, not the flag's value"
+  udon: "|el :go? !:sh:\n  echo hi\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "go?"]
+    - BoolTrue
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "echo hi"]
+    - DirectiveEnd
+    - ElementEnd
+
 - id: raw_block_basic
   desc: colon-wrapped label opens a raw block; body is not parsed as UDON
   udon: "!:elixir:\n  def hello do\n    IO.puts(\"world\")\n  end\n"

@@ -67,6 +67,156 @@
     - [BareValue, "abc-123"]
     - ElementEnd
 
+# ---------------------------------------------------------------------------
+# The [key] value path is the full typed value path ("every type is
+# available") — so every value KIND reachable in attribute-value position is
+# reachable in a key, and identity sugar composes with it. Densified
+# 2026-07-16 around key_typed_array_tuple, which the surrogate/natural
+# identity work builds on.
+# ---------------------------------------------------------------------------
+
+- id: key_typed_float
+  desc: bracket values are typed by the normal value rules — float
+  udon: "|item[3.14]\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - [Float, "3.14"]
+    - ElementEnd
+
+- id: key_typed_quoted_with_spaces
+  desc: a quoted key value may carry spaces and marker characters
+  udon: "|item['a b :c']\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - [StringValue, "a b :c"]
+    - ElementEnd
+
+- id: key_typed_keyword_alone
+  desc: a keyword alone in the bracket types as a keyword (normal value rules)
+  udon: "|item[true]\n"
+  events:
+    - ElementStart
+    - [Name, "item"]
+    - [Attr, "$key"]
+    - BoolTrue
+    - ElementEnd
+
+# ⚠ The envelope opens "in value position -- attribute values and array items
+# alike", and `[key]` desugars to the attribute value of :'$key' via the full
+# typed value path. Reading: a key beginning with `<` opens the envelope, with
+# the interim NoDialectsLoaded pass-through. Warning-before-value order per
+# typing_envelope.yaml. If identity brackets are meant to be outside value
+# position for envelope purposes, this case moves.
+- id: key_typed_envelope
+  desc: "⚠ an envelope as a key value — interim pass-through plus NoDialectsLoaded"
+  udon: "|el[<u64:0xf902>]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<u64:0xf902>"]
+    - ElementEnd
+
+- id: key_typed_array_tuple_with_trait_and_suffix
+  desc: a tuple key composes with trait and suffix sugar, all in source order
+  udon: "|el[[12 'asdf']].t?\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "12"]
+    - [StringValue, "asdf"]
+    - ArrayEnd
+    - [Attr, "$traits"]
+    - [BareValue, "t?"]
+    - ElementEnd
+
+- id: key_typed_array_tuple_longhand_equivalent
+  desc: the tuple key's longhand is the same wire (:'$key' [12 'asdf'])
+  udon: "|el :'$key' [12 'asdf']\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "12"]
+    - [StringValue, "asdf"]
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ Stacking is the uniform rule for EVERY attribute, $key included, and
+# multi-valued-$key prohibition is explicitly a schema concern, not core —
+# so the longhand stacked form is wire-legal today (the SUGAR for it,
+# |phase[9][scribal], is the open design question in TODO-SPEC-CORE, and is
+# deliberately NOT encoded here).
+- id: key_longhand_stacks
+  desc: "⚠ stacked $key longhand — two identities on the wire (sugar syntax is an open design question)"
+  udon: "|phase :'$key' 9 :'$key' scribal\n"
+  events:
+    - ElementStart
+    - [Name, "phase"]
+    - [Attr, "$key"]
+    - [Integer, "9"]
+    - [Attr, "$key"]
+    - [BareValue, "scribal"]
+    - ElementEnd
+
+- id: key_typed_array_tuple_nested
+  desc: a tuple key's items follow item rules — nesting is not bounded
+  udon: "|el[[1 [2 3]]]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - ArrayStart
+    - [Integer, "2"]
+    - [Integer, "3"]
+    - ArrayEnd
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ Scope note: TODO-SPEC-CORE's silences item blocks element-key
+# interpolation BEYOND the whole-value case; the whole-value case itself is
+# derivable from normative text (Value Kinds lists Interpolation as a value
+# kind; Identity says "[key] follows the normal attribute-value rules --
+# every type is available") and is carved out of that block. Only the sole-
+# value shape is encoded; `pre!{{x}}post` in a key stays un-encoded.
+- id: key_whole_value_interpolation
+  desc: "⚠ a key that IS an interpolation — the whole-value case only (mixed literal+interpolation stays open)"
+  udon: "|el[!{{computed}}]\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [Interpolation, "computed"]
+    - ElementEnd
+
+- id: key_typed_array_tuple_in_embedded
+  desc: identity rules are the same inside |{...} — a tuple key works there too
+  udon: "|p see |{ref[[1 'a']] target}\n"
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "see "]
+    - EmbeddedStart
+    - [Name, "ref"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [StringValue, "a"]
+    - ArrayEnd
+    - [Text, "target"]
+    - EmbeddedEnd
+    - ElementEnd
+
 - id: key_longhand_equivalent
   desc: writing the designated attribute longhand is the same element (sugar targets ordinary attrs)
   udon: "|el :'$key' 3890\n"

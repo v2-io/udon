@@ -189,6 +189,41 @@
     - CommentEnd
     - ElementEnd
 
+- id: eof_unclosed_inline_comment_nested_brace
+  desc: an unbalanced inner brace leaves the comment awaiting its closer — content so far kept
+  udon: "|p a ;{note {inner"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Text, "note {inner"]
+    - [Error, "UnclosedInlineComment"]
+    - CommentEnd
+    - ElementEnd
+
+# ⚠ Same multiplicity reading as eof_unclosed_embedded_nested: the open attr
+# resolves first (innermost expectation — MissingAttributeValue + Nil, per
+# "Attribute Keys and Flags"), then the embed's own delimiter anomaly and
+# EmbeddedEnd flush. Two individually-pinned EOF rules composed; CORE does
+# not order them explicitly.
+- id: eof_unclosed_embedded_with_open_attr
+  desc: "⚠ EOF inside |{...} with a valueless plain attr — error+Nil, then UnclosedEmbedded"
+  udon: "|p |{a :href"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - [Error, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
 # ⚠ CORE's EOF table says "ArrayEnd flushes" after UnclosedArray, so ArrayEnd
 # is encoded here; note arrays.yaml's array_unclosed_is_error (newline-ended)
 # omits ArrayEnd — if the two shapes should agree, that is a spec/fixture
@@ -204,6 +239,63 @@
     - ArrayStart
     - [Integer, "1"]
     - [Integer, "2"]
+    - [Error, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ Nested delimiters at EOF, same innermost-first reading as
+# eof_unclosed_embedded_nested: each open bracket was individually awaiting
+# its `]`, so each errs where its ArrayEnd flushes.
+- id: eof_unclosed_array_nested
+  desc: "⚠ nested unclosed arrays each error, innermost-first"
+  udon: "|el :xs [1 [2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - ArrayStart
+    - [Integer, "2"]
+    - [Error, "UnclosedArray"]
+    - ArrayEnd
+    - [Error, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ Cascade: quoted-string row (StringValue + UnclosedStringValue) inside the
+# array row (items so far + UnclosedArray; ArrayEnd flushes) — innermost
+# first. Item-then-error order matches error_cases.yaml's unclosed-string
+# shape.
+- id: eof_unclosed_string_in_unclosed_array
+  desc: "⚠ EOF inside a quoted item inside [...] — both anomalies, innermost-first"
+  udon: "|el :xs [\"a"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [StringValue, "a"]
+    - [Error, "UnclosedStringValue"]
+    - [Error, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+# ⚠ Envelope row inside the array row. Warning-before-value order follows the
+# envelope convention (typing_envelope.yaml / eof_unclosed_envelope).
+- id: eof_unclosed_envelope_in_unclosed_array
+  desc: "⚠ EOF inside <...> inside [...] — envelope warning, then the array error"
+  udon: "|el :xs [<5m"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<5m"]
     - [Error, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
@@ -384,4 +476,80 @@
     - [Name, "el"]
     - [Attr, "note"]
     - [Text, "some trailing words"]
+    - ElementEnd
+
+# ---------------------------------------------------------------------------
+# Remaining table rows × contexts: quoted string on a block line,
+# interpolation in value position, and newline-equivalence through the
+# marker paths (directive, identity, reference, sameline comment) — all
+# derived from the same EOF rules as the cases above.
+# ---------------------------------------------------------------------------
+
+- id: eof_unclosed_string_block_attr
+  desc: an unclosed quoted value on a block attr line — same row, block context
+  udon: "|el\n  :k \"unclosed"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "unclosed"]
+    - [Error, "UnclosedStringValue"]
+    - ElementEnd
+
+- id: eof_unclosed_interpolation_value_position
+  desc: EOF inside a whole-value interpolation — captured expression + error
+  udon: "|el :cost !{{price"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "cost"]
+    - [Interpolation, "price"]
+    - [Error, "UnclosedInterpolation"]
+    - ElementEnd
+
+- id: eof_directive_line_no_newline
+  desc: a bodiless directive line at EOF closes silently (newline-equivalence)
+  udon: "!if x"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - DirectiveEnd
+
+- id: eof_full_identity_no_newline
+  desc: suffix, key, and trait all desugar normally when EOF ends the line
+  udon: "|el?[k].t"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$?"]
+    - BoolTrue
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Attr, "$traits"]
+    - [BareValue, "t"]
+    - ElementEnd
+
+- id: eof_reference_no_newline
+  desc: a complete reference at EOF is coherent — no anomaly
+  udon: "@[k]"
+  root_only: true
+  events:
+    - [Reference, "[k]"]
+
+- id: eof_sameline_comment_no_newline
+  desc: EOL is a valid comment after-boundary, and EOF is newline-equivalent
+  udon: "|p hi ; note"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hi "]
+    - CommentStart
+    - [Text, " note"]
+    - CommentEnd
     - ElementEnd
