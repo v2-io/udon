@@ -1,0 +1,170 @@
+; asf-processes.process-map.udon — scenario-corpus edition
+; Pseudo-real: same genre as asf/msc/meta-process-review-2026-07-07/
+; PROCESS-MAP-v0.udon, rewritten in 0.9 idiom (references for the signal
+; graph, flags, a node-valued attribute) with its own abridged content so
+; the BDD scenarios can mutate it freely.
+
+|process-map[asf-processes]
+  :title The meta-processes of ASF, as a system
+  :created <2026-07-07>
+  :revised <2026-07-20>
+  :version 0.2.0
+  :status second-pass
+
+  ; Conventions:
+  ;   - Each process carries :health (from findings) and :drain.
+  ;   - :drain is one of: healing | task-force | nil
+  ;   - A `?` suffix marks a genuinely unknown sub-process we'd have to design.
+  ;   - Signal flow is written as references (:feeds / :fed-by), one edge per
+  ;     assignment, so the graph is navigable rather than prose.
+
+  |meta-meta-process[self-governance]
+    :name How this map governs and evolves itself
+    :source-sink participant-feedback
+
+    Kept to a few imperatives on purpose:
+    - Make it easy to follow the *right current* process.
+    - Make it just as easy to *evolve* a process.
+    - Every participant may give feedback on *any* process.
+
+  |cluster[spine]
+    :name Decision-routing & stewardship
+    :scope cross-cutting
+    :steward
+      |role :name coherence-steward :standing? :filled? false
+
+    Every stall below reduces to a decision that never reached Joseph in
+    actionable form; this is the parent, not a sibling.
+
+    |process[decision-surfacing]
+      :name Decision surfacing
+      :health broken
+      :drain healing
+      :example spikes/epistemic-target-ontology/
+      :feeds @process[valve]
+
+      Recognize a genuine-Joseph fork, assemble a real brief, route it to a
+      valve he can act from. The catch-rate is under half; the newer half
+      leaks. Per-fork trigger + prune.
+
+    |process[coherence-stewardship]?
+      :name Coherence stewardship (the domain-master role)
+      :health absent
+      :drain nil
+      :design-unknown how it's instantiated across turnover
+
+      Not a gatekeeper; a check on cross-process coherence. A standing role,
+      not a queue.
+
+    |process[valve]
+      :name The valve itself
+      :health under-fed
+      :drain healing
+      :fed-by @process[decision-surfacing]
+      :fed-by @process[finding-routing]
+
+      The durable list of genuinely-his calls. Exists, well-designed,
+      under-fed.
+
+  |cluster[verification]
+    :name Verification
+
+    |process[de-novo-audits]
+      :name De-novo audits (open-ended, multi-model, low-prescription)
+      :health strong
+      :drain healing
+      :fed-by @process[spike-integration]
+      :feeds @process[finding-routing]
+
+      The crown-jewel method; each establishes **lower bounds** (found
+      problems), never completeness. Strong method, no cadence or trigger.
+
+    |process[follow-up-audits]?
+      :name Follow-up / triggered audits
+      :health absent
+      :drain healing
+      :design-unknown the trigger + the scoped-instruction generator
+
+      Fired by an edit, especially multi-segment edits. **Does not exist** —
+      a named gap.
+
+    |process[empirical-verification]?
+      :name Simulation / empirical verification
+      :health absent
+      :drain task-force
+      :wire-to [vivarium relata papers]
+      :design-unknown the whole empirical/sim discipline
+
+      Sims, experiments, and benchmarks as first-class, with knowledge
+      landing self-contained. No disciplined process yet; eleven `.py`
+      files parked since March.
+
+  |cluster[integration]
+    :name Integration
+
+    |process[finding-routing]
+      :name Audit-finding routing (strengthen-first)
+      :health healthy
+      :drain healing
+      :fed-by @process[de-novo-audits]
+      :feeds @process[valve]
+
+      Route, don't execute; disposition per finding.
+
+    |process[audit-graduation]
+      :name Audit graduation / working-dir clearing
+      :health broken
+      :drain task-force
+      :backlog 22
+
+      Verify dispositions + settle gold. Broken: 0 of 22 cleared; the
+      gold-dir gate never convened.
+
+    |process[spike-integration]
+      :name Spike integration
+      :health healthy
+      :drain healing
+      :feeds @process[de-novo-audits]
+
+      Land the knowledge, route the artifact.
+
+  |cluster[coherence]
+    :name Coherence maintenance
+
+    |process[lexicon]
+      :name Naming / terminology / lexicon
+      :health infra-healthy, decision-stalled
+      :drain healing
+      :feeds @process[valve]
+
+      Infra healthy; ~506 currents unrouted; LEXICON reorg blocked.
+      Route N per cycle + drain.
+
+    |process[drift-repair]
+      :name Cross-segment consistency / drift repair
+      :health opportunistic
+      :drain healing
+
+      Idiom-drift, stale cross-refs.
+
+  |diagram[core-loop]
+    :caption The core loop
+    !:text:
+      generation --> verification --> integration --> [files change]
+          ^                                                |
+          +----------------- triggers <------- follow-up audit
+                                                           |
+                             THE SPINE (decision-routing) <+
+
+  |diagnosis
+    **The diagnosis in one sentence:** these are **un-clocked queues driven
+    by a single human clock** — sources fire on Joseph's whim, so a burst of
+    generation floods verification and integration, whose drains are also
+    gated on Joseph; everything backs up between his sessions.
+
+  |open-unknowns
+    :items [follow-up-audits empirical-verification coherence-stewardship]
+
+    The `?` items still to design: the follow-up-audit trigger, the
+    empirical/sim discipline, and the coherence-steward role across
+    turnover.

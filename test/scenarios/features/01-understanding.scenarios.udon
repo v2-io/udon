@@ -1,0 +1,247 @@
+; 01-understanding.scenarios.udon — a day in the life, morning
+; BDD scenarios for the future udon path/query tool. Conventions and the
+; op vocabulary: ../README.md. Every :path value is a QUOTED STRING in the
+; provisional syntax of spec/msc/adjudication-2026-07-paths-and-silences.md
+; (Part A) — the journey shapes are the contract here, not the spelling.
+; Scenarios carrying the .gap trait document an affordance the current
+; packet does NOT cover; each has a |gap child saying what was wanted.
+
+|feature[understanding].day-in-the-life
+  :date <2026-07-21>
+  :tool udon-path
+  :path-syntax provisional-2026-07
+  :corpus ../corpus/
+
+  The surveyor arrives in the archema neighborhood knowing nothing. Its
+  first hour is pure understanding: orient, address, resolve, follow.
+  Nothing is written before noon.
+
+  |scenario[skeleton-first]
+    :at <09:05> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    A 170-line file the surveyor has never seen. Reading it whole costs
+    context; the skeleton is the orientation move.
+
+    |given the process map as shipped
+    |when
+      |skeleton :path "|process-map[asf-processes]" :depth 2
+    |then the skeleton lists each child element with name, key, traits,
+      suffix flags, and a child/prose summary — enough to navigate,
+      nothing more
+      !:text:
+        |process-map[asf-processes]  (5 attrs)
+          |meta-meta-process[self-governance]  (2 attrs, prose 4 lines)
+          |cluster[spine]      (3 attrs, 3 processes, prose 2 lines)
+          |cluster[verification]   (1 attr, 3 processes)
+          |cluster[integration]    (1 attr, 3 processes)
+          |cluster[coherence]      (1 attr, 2 processes)
+          |diagram[core-loop]      (1 attr, raw 6 lines)
+          |diagnosis               (prose 4 lines)
+          |open-unknowns           (1 attr, prose 3 lines)
+      |expect :count 8 :note top-level children under the root
+      The `?` suffixes (coherence-stewardship, follow-up-audits,
+      empirical-verification) surface in the skeleton — they are identity
+      material, not decoration.
+
+  |scenario[exactly-one-read]
+    :at <09:12> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    |given the process map as shipped
+    |when
+      |at :path "|process-map[asf-processes]|cluster[spine]|process[valve]:health"
+    |then
+      |expect :value under-fed :type string
+      `at` returns exactly one value or errors; here the path is fully
+      keyed, so it cannot be plural.
+
+  |scenario[ambiguity-fails-loudly]
+    :at <09:14> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    The surveyor lazily asks for "the cluster". Four exist. The tool must
+    never guess.
+
+    |given the process map as shipped
+    |when
+      |at :path "|process-map[asf-processes]|cluster"
+    |then
+      |expect-error :code PathNotUnique :matches 4
+      The error payload carries the disambiguating identities
+      ([spine] [verification] [integration] [coherence]) so the recovery
+      is one edit away — fail-loudly must also mean fail-helpfully.
+
+  |scenario[all-with-trait-filter]
+    :at <09:22> :agent ordinator
+    :file corpus/terrestris.ordinum.udon
+
+    |given the ordinum as shipped
+    |when
+      |all :path "||promise.capability"
+    |then
+      |expect :count 2 :keys [coriolis seeded-asymmetry]
+      Traits AND-filter; `||` descends any depth. Promise classes are
+      traits, so the class taxonomy is path-visible for free.
+    |when
+      |all :path "||promise.state"
+    |then
+      |expect :count 6 :note document order, phase by phase
+
+  |scenario[typed-keys-are-typed]
+    :at <09:30> :agent operator-1
+    :file corpus/operata-live.workspace.udon
+
+    The workspace keys intents by integer id; one legacy import kept its
+    zero-padded STRING id. The path scanner types bracket contents by the
+    same value rules as the document side (packet P4).
+
+    |given the workspace as shipped
+    |when
+      |at :path "||intent[311]:status"
+    |then
+      |expect :value projected
+    |when
+      |at :path '||intent["0042"]:status'
+    |then
+      |expect :value realized
+      The path needed single quotes at the UDON layer so the key's double
+      quotes survive; carrier syntax and path syntax interact exactly here.
+    |when
+      |at :path "||intent[42]"
+    |then
+      |expect-error :code PathNotFound
+      Integer 42 matches nothing: "0042" is a string key and typed
+      equality does not coerce. Silent empty would have hidden a real
+      modeling distinction.
+
+  |scenario[suffix-flags-are-invisible].gap
+    :at <09:40> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    The founding consumer's most load-bearing annotation is the `?`
+    suffix — "a genuinely unknown sub-process we'd have to design." The
+    surveyor wants exactly those.
+
+    |given the process map as shipped
+    |when the surveyor looks for a path meaning "every process whose $?
+      flag is set"
+    |then no syntax expresses it: wildcards select elements, traits
+      filter by $traits, but no form filters by any other attribute —
+      including the specially-designated $? that the suffix sugar writes
+    |workaround
+      |all :path "||process"
+      ...then filter host-side on the `$?` attribute of each result.
+    |gap
+      :packet-ref P9
+      :shape attribute-existence filter, or suffix-flags as first-class
+        path material the way traits already are
+      Suffixes and traits are siblings in the identity model ("|el?"
+      desugars to an attribute exactly as ".trait" does), yet paths can
+      see one and not the other. Six live sites in the real process map.
+
+  |scenario[follow-reference-multiplicity]
+    :at <09:52> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    The valve's :fed-by is a STACKED attribute — two reference values,
+    one per edge, written as two assignments.
+
+    |given the process map as shipped
+    |when
+      |at :path "||process[valve]:fed-by"
+    |then
+      |expect :value @process[finding-routing] :note last assignment wins
+        under `at` (packet P2); the stack is the attr's own semantics,
+        not path ambiguity
+    |when
+      |all :path "||process[valve]:fed-by"
+    |then
+      |expect :count 2 :note both references, source order
+    |when
+      |at :path "||process[valve]:fed-by@:health"
+    |then
+      |expect-error :code ReferencePlural
+      Following the stack under `at` errors on plural (packet P6 —
+      multiplicity inherits, it is not re-legislated).
+    |when
+      |all :path "||process[valve]:fed-by@:health"
+    |then
+      |expect :values [broken healthy]
+      `all` fans out through both referenced definitions.
+
+  |scenario[proto-path-in-the-wild].gap
+    :at <10:05> :agent ordinator
+    :file corpus/terrestris.ordinum.udon
+
+    The ordinum's defeasances carry quoted qualified ids — :voids
+    "2.water-covered-surface" — a hand-rolled path convention that
+    predates any path tool. Resolving one is a two-hop journey.
+
+    |given the ordinum as shipped
+    |when the ordinator resolves the defeasance in phase[abyssal] that
+      voids "2.water-covered-surface"
+    |then the "2." qualifier means "the phase whose :num is 2" — an
+      attribute-VALUE lookup no path form expresses; and the promise slug
+      is reachable directly because (element-type, key) is document-unique
+      anyway
+    |workaround
+      |all :path "||phase"
+      ...host-side, keep the one whose :num reads 2; then
+      |at :path "||phase[protogenic]|promises|promise[water-covered-surface]"
+    |gap
+      :packet-ref P9
+      :shape value-equality filter (":num=2"-shaped), or a blessed idiom
+        for domain-level foreign keys
+      Real consumer files already contain proto-paths as quoted strings
+      (ordinum defeasances; lexicon |rel :to slugs; decision-log |ref
+      values). The path tool will be asked to resolve conventions it did
+      not define. Deciding the posture — resolve, assist, or refuse — is
+      a design call the packet does not yet make.
+
+  |scenario[prose-is-half-the-document].gap
+    :at <10:20> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    The diagnosis element IS its prose; the conventions live in comments.
+    Understanding means reading both.
+
+    |given the process map as shipped
+    |when
+      |at :path "|process-map[asf-processes]|diagnosis"
+    |then
+      |expect :node diagnosis
+      The element is addressable; its prose arrives as the node's text
+      children via the API — no path points AT a paragraph (packet P7,
+      deferred, and this morning agrees with the deferral so far)
+    |when the surveyor asks for every comment in the file (the
+      conventions block, the section banners)
+    |then comments are events the parser preserves, but paths cannot
+      address them at all
+    |gap
+      :packet-ref P7
+      :shape none yet — API-side access on the parent node was enough
+        for every read this morning; the pressure P7 predicts is real
+        but it lands on the PATCH side (03-modifying, fix-typo) before
+        the read side
+
+  |scenario[cross-document-seam]
+    :at <10:40> :agent surveyor
+    :file corpus/archema.concept-matrix.udon
+
+    |given the concept matrix as shipped
+    |when
+      |at :path "||concept[decision-authority]|carrier"
+    |then
+      |expect-error :code PathNotUnique :matches 2
+      The two carriers are keyless siblings, distinguishable only by
+      their :in attribute — which paths cannot filter on (P9's absence
+      again; keying every carrier just to be addressable would duplicate
+      the :in data into the identity)
+    |when the surveyor follows a carrier: :in names a FILE, :ref holds the
+      in-document reference
+    |then resolution is a host journey — open the :in document, evaluate
+      the :ref there. The path language is document-scoped and the packet
+      is silent on whether that is a boundary or a v1 scope choice; this
+      corpus votes "boundary, but say so out loud" — the two-attr idiom
+      (:in + :ref) worked fine and kept each file's reference space clean.

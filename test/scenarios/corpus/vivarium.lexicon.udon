@@ -1,0 +1,135 @@
+; vivarium.lexicon.udon — scenario-corpus edition
+; Pseudo-real: same genre as archema-io/vivarium/LEXICON.udon (dictionary-
+; grade |term entries, relation edges, register conventions), abridged and
+; recast in 0.9 idiom so the BDD scenarios can read, diff, and mutate it.
+
+|lexicon[vivarium]
+  :seeded <2026-07-03>
+  :restructured <2026-07-11>
+  :status living
+  :title vivarium — LEXICON (the bounded, ubiquitous vocabulary)
+
+  |meta[entry-schema]
+    :authority PROCESS.udon self-governance valve
+
+    One term per |term element — the [slug] is the headword. The FIRST
+    paragraph is the definition. Then only-if-real children:
+    - |not      — what it is not / what not to call it
+    - |confused — easily confused with (and how to tell apart)
+    - |rel      — relation edges (:to term-slug :kind verb)
+    - |context  — binding scope beyond vivarium/archema; register notes
+    - |source   — the design doc carrying the full machinery
+
+    LEXICON states PRESENT TRUTH ONLY; history lives in the superseded
+    ledger, not here. Statuses: settled (in live use, collision-checked),
+    carved (chosen against a recorded collision), open (needs Joseph's
+    decision; candidates loosely held).
+
+    Register convention (deliberate): Greek = the law-article machinery
+    (nomos family), Latin = the world-governance layer (regula, regnum,
+    ordinum), plain English = the lived concepts (Kingdom, Charge, Promise,
+    slot, permit). Register signals layer; a proposal that crosses
+    registers should notice it is doing so.
+
+    !:md:
+      | register | layer            | examples                  |
+      |----------|------------------|---------------------------|
+      | Greek    | law-articles     | nomos, nomotheke          |
+      | Latin    | world-governance | ordinum, regula, regnum   |
+      | English  | lived concepts   | Charge, Promise, permit   |
+
+  |section[world-structure] :num 1
+    :name World-structure (phases & gates)
+
+    |term[phase] :status carved
+      A span in which a set of macro systems runs until converged.
+      |rel :to charge :kind must-deliver
+      |rel :to promise :kind hands-forward
+      |rel :to phase-gate :kind bounded-by
+      |source tabularium/terrestris.ordinum.udon
+
+    |term[phase-gate] :status settled :since <2026-07-04>
+      The boundary between phases — the threshold where the previous
+      phase's Charge is checked and met.
+      |rel :to charge :kind opened-by
+
+    |term[charge] :status settled
+      What a phase must establish — the GATING SUBSET of its promises. A
+      phase's charge IS the next phase-gate's opening condition.
+      |rel :to promise :kind gating-subset-of
+
+    |term[promise] :status settled :since <2026-07-11>
+      A defeasible, forward-facing commitment a phase generates that later
+      phases may depend on — the SUPERSET of which Charge is the gating
+      subset. Its `.class` is its kind (stackable): state, regime,
+      capability, limit. Maturity ladder: named (prose only), specified
+      (has a predicate), claimed (has :kept-by), kept (predicate passes at
+      a declared tier). No promise may be marked fulfilled without a
+      predicate — nothing has been defined that could convict it.
+      |not the active-system-set — a promise is the OUTCOME guaranteed
+        forward, not the process that keeps it.
+      |confused the async CS "Promise/Future" — carved; no async exists in
+        this codebase, and the referent is a forward commitment, never a
+        deferred value.
+      |rel :to charge :kind generated-by
+      |rel :to defeasance :kind voided-by
+      |rel :to predicate :kind checked-by
+      |source tabularium/terrestris.ordinum.udon
+
+    |term[defeasance] :status settled :since <2026-07-11>
+      The mechanism of "defeasible": a later phase's explicit retirement of
+      a prior promise, with an honest reason. Promises in force at phase N
+      equal the union of promises 1..N minus the union of defeasances 1..N.
+      |rel :to promise :kind voids
+      |source tabularium/terrestris.ordinum.udon
+
+    |term[regime] :status settled
+      A working, deliberately non-MECE label for the DOMINANCE STRUCTURE of
+      the vivarium at a given causal-step: which systems, states, and
+      cycles currently dominate the dynamics. Fuzziness is by design —
+      "dominant" is consumer-relative.
+      |confused ASF's dynamic-regime axis (R0-R3) — near ASF material say
+        "world regime" vs "dynamic regime Rn".
+      |context phase is the crisp term; regime may stay gloss (Joseph).
+
+    |term[regime-change] :status open
+      Activation, deactivation, or replacement of the dominant systems. A
+      phase boundary is a regime-change we CERTIFY — memoized, charged,
+      gated; most regime-changes we never certify. (Joseph flagged residual
+      vagueness; the certify-vs-don't split is the sharpening so far.)
+
+    |term[subphase] :status open
+      Reserved: an intermediate regime WITHIN a phase — what a
+      regime-change becomes when a phase earns internal gates.
+
+  |section[runtime-fidelity] :num 2
+    :name Runtime & fidelity
+
+    |term[fidelity-ladder] :status settled
+      Spend representation by consequence; every aspect has a ladder of
+      model rungs and may honestly occupy any rung whose sufficient
+      statistics its consumers need.
+      |rel :to rung :kind composed-of
+
+    |term[rung] :status settled
+      A system's position on its fidelity ladder — crude stand-in up
+      through full physics, both directions legitimate.
+      |rel :to fidelity-ladder :kind position-on
+
+    |term[nomos] :status settled :since <2026-07-10>
+      :forms pl. nomos (invariant); family nomothete / nomothetic / nomotheke
+      The keyed, versioned, memoizable invocation unit — the executable
+      embodiment of one ARTICLE of world-law. A phase is a choreography of
+      nomos; a nomos runs a kernel implementing a system's current rung.
+      |rel :to kernel :kind runs
+      |rel :to slot :kind candidate-occupant-of
+
+    |term[kernel] :status settled
+      The concrete numerical implementation — the code.
+      |rel :to nomos :kind run-by
+
+    |term[memo] :status settled
+      A cached converged state in the lazy query-graph runtime; the memo
+      left at a phase-transition is the largest. The save-file IS the memo
+      store.
+      |not "checkpoint" (retired; see the collision ledger).

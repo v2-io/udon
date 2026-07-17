@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# verify — parse every .udon file in test/scenarios/ with the current
+# reference parser and fail on any Warning/Error event, with one allowed
+# exception: NoDialectsLoaded. The corpus uses <…> envelopes deliberately
+# (dates/times where the temporal dialect will land), and that warning is
+# their specified interim behavior (CORE, "Explicit Typing"). Everything
+# else — parse errors, indentation warnings, attribute anomalies — means a
+# file has drifted from 0.9 and the corpus's "parses clean" contract is
+# broken.
+#
+# Usage: test/scenarios/bin/verify        (from the repo root, or anywhere)
+# Needs: core/ built once:
+#   cd core && cargo build --release --example stdin_parse
+set -euo pipefail
+
+here="$(cd "$(dirname "$0")/.." && pwd)"
+repo="$(cd "$here/../.." && pwd)"
+parser="$repo/core/target/release/examples/stdin_parse"
+
+if [[ ! -x "$parser" ]]; then
+  echo "verify: parser not built — run: cd core && cargo build --release --example stdin_parse" >&2
+  exit 2
+fi
+
+fail=0
+shopt -s nullglob
+for f in "$here"/corpus/*.udon "$here"/features/*.udon; do
+  rel="${f#"$repo"/}"
+  # stdin_parse prints events on stderr; decode Warning/Error payload bytes.
+  out="$("$parser" < "$f" 2>&1 | ruby -ne '
+    if $_ =~ /^EVENT: (Warning|Error) \{ content: \[([\d, ]*)\], span: (\d+)/
+      code = $2.split(", ").map(&:to_i).pack("C*")
+      puts "#{code == "NoDialectsLoaded" ? "ENV" : "BAD"}\t#{$1}\t#{code}\tbyte #{$3}"
+    end')"
+  bad="$(echo "$out" | grep '^BAD' || true)"
+  n_env="$(echo "$out" | grep -c '^ENV' || true)"
+  if [[ -n "$bad" ]]; then
+    echo "FAIL $rel"
+    echo "$bad" | cut -f2- | sed 's/^/  /'
+    fail=1
+  else
+    echo "ok   $rel (${n_env} envelope warnings, allowed)"
+  fi
+done
+
+exit "$fail"

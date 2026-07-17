@@ -1,0 +1,83 @@
+; operata-live.workspace.udon — scenario-corpus edition
+; A live Operata workspace: data conforming to operata.domain.udon.
+; This is the file the day-in-the-life agents mutate most — claims,
+; releases, realizations, archives. Note the typed identity keys:
+; |intent[311] is the INTEGER 311; |intent["0042"] is the STRING "0042"
+; (a legacy import that kept its zero-padded id). The path scenarios use
+; that contrast deliberately.
+
+|workspace[operata-live]
+  :domain operata
+  :snapshot <2026-07-21T08:00>
+
+  |effort[udon-reboot]
+    :title UDON reboot — spec, parser, tooling
+    :actionability active
+    :temporal present
+    :owner-type human
+
+    |intent[311]
+      :title Densify the v0.9 fixture group
+      :kind primitive
+      :status projected
+      :relationship prepares
+      :claimed-by nil
+      :claimed-at nil
+      :position 1
+
+    |intent[312]
+      :title Sweep the supplement's residual editorial opens
+      :kind primitive
+      :status projected
+      :relationship prepares
+      :claimed-by nil
+      :claimed-at nil
+      :position 2
+
+    |intent[340]
+      :title Tag core-v0.9.0
+      :kind compound
+      :status active
+      :relationship root
+      :claimed-by operator-1
+      :claimed-at <2026-07-21T08:41>
+      :position 3
+
+    |intent["0042"]
+      :title Reserve crates.io names (legacy import)
+      :kind primitive
+      :status realized
+      :relationship supports
+      :claimed-by nil
+      :claimed-at nil
+      :position 4
+
+      |realization[r-0042-1]
+        :outcome udon-core and udon-cli verified available and reserved
+        :delta easier
+        :recorded-by operator-1
+        :propagate false
+
+  |effort[lexicon-reorg]
+    :title vivarium LEXICON — route the unrouted currents
+    :actionability active
+    :temporal present
+    :owner-type eli
+
+    |intent[401]
+      :title Settle the regime-change entry
+      :kind primitive
+      :status projected
+      :relationship root
+      :claimed-by nil
+      :claimed-at nil
+      :position 1
+
+    |intent[402]
+      :title Split section 2 into runtime vs fidelity
+      :kind compound
+      :status projected
+      :relationship decomposes
+      :claimed-by nil
+      :claimed-at nil
+      :position 2
