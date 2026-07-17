@@ -24,3 +24,10 @@ banner): `desc-design-principles.md` (Joseph's .desc measuring stick, current),
 landed). Historical `notes/` material went to `../_archive/` (`analysis.md`,
 `feedback.md`, `implementation-status.md`, `parser-strategy.md`,
 `implementation-phase-2.md`, `spikes/`).
+
+**Current (an exception to the superseded-banner above):**
+`agentic-ux-principles.md` — synthesized 2026-07-16 from the 2025 tool-
+phenomenology corpus + ASF/AAT's mathematics; the WHY layer under
+`udon-agentic.md` (which remains the tool-suite WHAT) and the design of
+record for the tooling pipeline's UX. Where a sketch elsewhere in this
+directory disagrees with it, the principle governs.
