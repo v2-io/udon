@@ -65,7 +65,16 @@ Items marked *(routed from the archived reboot plan, 2026-07-16)* arrived when
       rewrite files — recognize or suspend); token shape could be as thin
       as an intent record (op descriptor + expected-result content hash)
       the guard matches against observed changes. Predicated on the edit
-      tool existing. *(discuss w/ Joseph when picked up)*
+      tool existing. **Refinement (Joseph, 2026-07-16): quarantine lowers
+      the required cadence — the guard "could be a commit check instead"
+      of a live watcher — and the posture is udon-filetype-specific, a
+      spectrum:** RDBMS-like hardening/concurrency/immediate rejection at
+      one end; gentleman's-agreement care with schema checkpointing at
+      deploy in the middle; no-schema-yet-but-aspiring at the other (see
+      the schema-by-exemplar and aspirational-designator items in
+      `spec/TODO-AUX.md`). Enforcement cadence (live watcher → commit
+      check → deploy checkpoint → convention) selects per file/profile.
+      *(discuss w/ Joseph when picked up)*
 - [ ] **Paths implementation** — `at`/`all` MVP first, exercised against the
       live ASF process map (earliest real-consumer signal; surfaces path
       syntax issues like `||` and `[*]` before the full implementation
