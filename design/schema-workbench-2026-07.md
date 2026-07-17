@@ -598,44 +598,82 @@ ancestor) · gradual constraint · transition validity for documents.
    reference / interpolation), not just type. Richer, but more regular —
    everything is the hash and the array.
 
-8. **⚠ THE REAL TENSION, and I only saw it by reading the December files:
-   field-based vs content-model-based.** These are survey axis 1
-   (constraint vs grammar), and **Joseph has written both, for different
-   purposes**:
-   - **`archema-operata.udon` is field-based** — records with typed,
-     constrained fields (`|attr[slug].string :allow-nil false`). Ash/rowan
-     lineage. Optionality is a *property of a field*.
-   - **Piece 1 is content-model-based** — what elements may appear, how
-     many, in what nesting (`|section*`, `|p+`). RELAX NG lineage.
-     Cardinality is a *property of a position in a tree*.
+8. **THE REAL QUESTION — sharper than I first framed it, and only visible
+   after reading all three December files: is the type the *element name*
+   or a *trait*?** Joseph wrote **three** spellings, and the two December
+   ones are one day apart:
 
-   They are not the same constraint wearing different clothes, and Piece 1
-   conflated them (its `:author!`/`:date?` mixes field-optionality with
-   content-model cardinality). **UDON needs both, and they may want
-   different spellings** — `:allow-nil false` for fields (Joseph's hand,
-   agents' expectation), and the ratified **suffixes** for content-model
-   cardinality (`|section*` = zero-or-more of these children), which is
-   exactly the job CORE describes: *"a grammar might read `?` as 0-or-1,
-   `*` as 0-or-more, `+` as 1-or-more."* Note the sentence has **two
-   clauses** — "a schema might read `?` as optional" *and* "a grammar might
-   read `*` as 0-or-more" — and I collapsed them into one. They're the two
-   paradigms, named in CORE, one clause each.
+   | | spelling | type lives in | required/optional | lineage |
+   |---|---|---|---|---|
+   | **`schema-dsl.udon`** (12-23) | `\|str[username]!` `:min 3` | **the element name** (`str`/`int`/`bool`/`arr`/`obj`/`any`/`ref`) | **the suffix** (`!` req, `?` opt, bare = opt — *"like schemacop"*, his note) | JSON Schema |
+   | **`archema-operata.udon`** (12-24) | `\|attr[slug].string :allow-nil false` | **a trait** | *(not expressed — `:allow-nil` is a different axis, see below)* | Ash / rowan |
+   | **Piece 1** (Jan) | `:author! string` | an attr value | the key's suffix | RELAX NG-ish |
 
-   **Which matters because the two consumers differ:** rowan wants
-   field-based (its resources are records). `test/scenarios/corpus/` wants
-   content-model (its documents are prose ⊃ structure ⊃ prose, arbitrarily
-   nested). **A schema layer serving both is the actual design problem** —
-   and it's the same hybrid RELAX NG + Schematron settled on for XML
-   (§3, axis 1), which is at least a well-trodden shape.
+   **Correction to my own §4.4: the suffix does not "lose twice."** I had
+   `schema-dsl`'s `|str[display_name]?` and `archema-operata`'s
+   `:allow-nil false` filed as competing answers to one question. **They
+   answer two different questions, and CORE already ratifies the
+   distinction** — its *Absent vs Nil vs False* section: *"Absent: key not
+   present at all. Nil: key present, value explicitly 'no value'."*
+   - `!` / `?` on the field = **presence** (must this key exist?)
+   - `:allow-nil false` = **nullability** (may its value be nil?)
 
-**Honest state: not nearly there, and one rung lower than I thought an hour
-ago.** §4.8 is the question the design note has to answer, and I didn't
-know it existed until I read the files I'd been citing by name. The
-position that survives: constrain-don't-behave (now with Joseph's block
-names as its evidence), constraint-only-because-typing-is-dialects (though
-trait-as-type may make even that moot), element-form, open-world/soft-by-
-default (still an argument, no mechanism), and the exemplar/aspirational/
-profile lifecycle.
+   Both are needed; Joseph wrote each where it belongs; rowan's
+   agent-expectation datum (`optional: true` over `:optional`) applies to
+   the *nullability* axis, not the presence one. My "two strikes" was a
+   category error.
+
+   **So the live fork is narrower and better-formed:**
+
+   - **Type-as-element-name** (`|str[email]! :format email`) — reads
+     beautifully; types are first-class and a dialect can add one; the
+     suffix falls naturally on the field. But the schema's shape is
+     **inverted from the document's**: in a document `|user[alice]` means
+     element=`user`, key=`alice`; in this schema `|str[username]` means
+     element=*type*, key=*name*. The schema stops looking like the thing it
+     describes.
+   - **Type-as-trait** (`|attr[slug].string`) — uses UDON's own
+     element/key/trait roles *natively* (thing / identity / classification),
+     which CORE blesses (*"classification doubles as lightweight
+     typing"*), and keeps the schema shaped like a UDON document. Costs
+     verbosity, and leaves the type's meaning positional by convention.
+
+   The tie-breaker candidate: UDON's stated aesthetic elsewhere is
+   **"paths look like the UDON they navigate"** and "the schema *is* a UDON
+   document." That argues for trait-as-type. The counter-argument is that
+   `|str[email]! :format email` is simply nicer to read, and readability is
+   the axis the harness can actually measure (§3 axis 2, reverse testing).
+   **This is the design note's central question, and it is A/B-able.**
+
+9. **`schema-dsl.udon` also already contains things I'd listed as missing.**
+   Block-form composition as elements (`|one_of` / `|any_of` / `|all_of` /
+   `|is_not` — matching rowan's block DSL shape); `:when ssl` for
+   conditional presence (JSON Schema's if/then); `|ref user` and
+   `|ref[owner] user` for type reuse; anonymous inline types for array
+   items (`|arr[tags]?` + child `|str :max 20`); **and a meta-schema**
+   (`|schema[udon-schema]` — "schemas all the way up", Piece 11, already
+   drafted). Its constraint vocabulary is JSON Schema's, near-complete:
+   `:min` `:max` `:min_length` `:pattern` `:format` `:enum` `:default`
+   `:multiple_of` `:when`. **The schema layer is much less greenfield than
+   §4's framing implies** — the first design-note draft should probably
+   start by *diffing these three files against 0.9* rather than proposing.
+
+10. **⚠ Name collision, now three-way:** `:one-of [a b c]`
+    (archema-operata) = **enum on one attribute**; `|one_of` (schema-dsl) =
+    **union of types**; rowan's `one_of do present :x end` = **XOR across
+    attributes**. Three constraints, one name. Whichever survives, the
+    other two need names — and `:enum` already exists in schema-dsl for the
+    first.
+
+**Honest state: not nearly there — but the ground is much better mapped
+than four hours ago, and mostly by Joseph in December.** §4.8 is the
+question the design note must answer; §4.9 says the answer may be mostly
+editorial. What survives of my own contribution: the field/CORE-derived
+corrections (Piece 1 is dead under 0.9; presence ≠ nullability), the
+constraint-only-because-typing-is-dialects argument (which
+**trait-as-type may moot entirely** — if the type is a trait, is it also a
+dialect ref?), open-world/soft-by-default (still an argument, no
+mechanism), and the exemplar/aspirational/profile lifecycle.
 
 ---
 
@@ -690,7 +728,7 @@ honest gaps.
 | `spec/CORE.md` | 0.9.0-alpha.1 | **read** | The authority. Assigns the schema layer its job in its own text ("Constraint… a schema's job"; "forbidding a multi-valued `$key` is a schema concern"); ratifies trait-as-lightweight-typing and the two-clause suffix sentence (§4.8). |
 | `design/examples/archema-operata.udon` | **2025-12-24** | **read** (≈130/238) | **The most important artifact in the lane.** The working DSL: trait-as-type, constraints-as-attributes, blocks-as-layers, `!:rb:` escapes. |
 | `design/examples/operata-intent-graph.udon` | 2025-12 | **partial** (40/118) | The query/graph layer; `|edge :when :relationship == prepares` (predicate in value position). |
-| `design/examples/schema-dsl.udon` | 2025-12-23 | **⚠ unread** (256) | *"A schema for UDON schemas, written in UDON"* — the meta-schema attempt. **Cited in this document; never opened.** |
+| `design/examples/schema-dsl.udon` | 2025-12-23 | **read** | **The third paradigm: type-as-element-name** (`\|str[username]!`), JSON Schema's vocabulary in UDON, suffix for presence, block-form composition (`\|one_of`/`\|all_of`/`\|is_not`), `\|ref` for reuse, `:when` for conditional presence, **and the meta-schema** (Piece 11, already drafted). Cites *schemacop* as its optionality precedent. |
 | `design/examples/ash-like-{billing,inventory,support}.udon` | 2025-12-24 | **⚠ unread** | Three more hand-written DSLs. Same family as archema-operata; unexamined for what they do *differently*. |
 | `design/udon-schema-exploration.md` | Jan 2026 (committed 07-08) | **read** | The thirteen puzzle pieces + 16 open questions. Content-model-flavored (§4.8). |
 | `design/udon-guarantees.md` | Jan 2026 (committed 07-08) | **read** | Guarantee ladder; Casual/Careful/Critical profiles; the gatekeeper problem; the append-only-log patch ancestor. |
@@ -743,12 +781,19 @@ honest gaps.
    ratification carriers, unread, while I reason about the 0.9 model daily.
 2. **`design/udon-ast.md`** — unread, while citing its uniqueness predicate
    as the foundation of `at`.
-3. **`design/examples/schema-dsl.udon`** — the meta-schema attempt, unread,
-   cited in this file.
-4. **The three `ash-like-*.udon`** — unread; unknown what they do
-   differently from archema-operata.
-5. **`test/scenarios/corpus/operata.domain.udon`** — the one 0.9-idiom
+3. **The three `ash-like-*.udon`** — unread; unknown what they do
+   differently from archema-operata, and given that *schema-dsl* and
+   *archema-operata* turned out to be **two different paradigms one day
+   apart**, "more of the same" is exactly the assumption that has failed
+   twice now.
+4. **`test/scenarios/corpus/operata.domain.udon`** — the one 0.9-idiom
    schema-flavored document in existence, known only secondhand.
+5. **The 0.9 diff of all three December spellings** — none has been run
+   through the current parser. `|str[username]!` should be fine (element +
+   key + suffix); `:pattern ^[a-z][a-z0-9_]*$` is a bare-token value with
+   regex metacharacters and wants a probe; `:enum ["" " "]` likewise.
+   **Cheap, mechanical, and it converts three historical artifacts into
+   three live candidates.** Do this before proposing anything.
 6. **Timeline gap:** nothing between **Jan 14, 2026** (dormancy) and
    **Jul 8, 2026** (reboot) — six months where rowan kept moving and udon
    didn't. Rowan's Track-5 work may postdate every udon document here.
