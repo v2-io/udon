@@ -104,6 +104,15 @@ fixture groups (see root `TODO-META.md`), not tracked here.
       Deliberately unfixtured pending the ruling (fixtures here would be
       inventing spec). *(discuss w/ Joseph)*
 
+      **Fixable in 0.9 from ratified text alone** (Joseph's scoping call,
+      2026-07-16): the *model* — generated EOF, the group property, the
+      event shape (`design/eof-model-proposal-2026-07.md`) — waits for the
+      dialect boundary, because the group vocabulary is exactly what that
+      boundary renegotiates. The *bugs* don't: this one follows from
+      newline-equivalence + nothing-is-discarded, and the
+      `UnclosedEmbedded` drop follows from the EOF table's unconditional
+      embed row. No new spec needed for either.
+
       *(Correction, same day: this item previously claimed that
       newline-unclosed and EOF-unclosed arrays differ on the wire —
       `arrays.yaml::array_unclosed_is_error` omitting `ArrayEnd`. **That

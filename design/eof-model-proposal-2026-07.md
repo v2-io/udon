@@ -1,13 +1,41 @@
 # EOF as a generated concern — a proposal to descent, motivated by udon
 
-> **Status: proposal, not ratified.** Joseph's idea (2026-07-16), developed
-> with Claude, then reviewed by two agents independently (one deep in the
-> fixture corpus, one fresh and deliberately unprimed). It touches neither
-> `spec/CORE.md` nor the grammar. It wants Joseph's ruling on the model,
-> then descent's owner on the mechanism. Register: the collaboration's —
-> reasoning included, so nobody re-derives it. **Every factual claim below
-> is probe-verified**; an earlier draft carried two that were not, and both
-> were false (see *Corrections*, last section).
+> **Status: proposal, not ratified — and deliberately NOT a 0.9 item.**
+> Joseph's idea (2026-07-16), developed with Claude, then reviewed by two
+> agents independently (one deep in the fixture corpus, one fresh and
+> deliberately unprimed). It touches neither `spec/CORE.md` nor the
+> grammar. Register: the collaboration's — reasoning included, so nobody
+> re-derives it. **Every factual claim below is probe-verified**; an
+> earlier draft carried two that were not, and both were false (see
+> *Corrections*).
+>
+> **Scoping ruling (Joseph, 2026-07-16): the model waits for the dialect
+> boundary; the bugs do not.** His words: *"I don't think we can answer the
+> EOF question completely in 0.9 because I highly suspect we will be
+> turning over parsing of embedded/inline stuff to dialects."* This is
+> exactly right, and it bites on the load-bearing part: **the group
+> vocabulary is what depends on the dialect boundary.** Of the seven
+> delimiter-scoped constructs in CORE's EOF table, at least three are
+> already dialect-bound or dialect-candidates — interpolation (DYNAMICS
+> owns the expression), `<…>` envelopes (dialects *are* the envelope's
+> point), and `|{…}` embedded, which CORE already hedges twice (the
+> framed-`;`-in-embeds note defers "once the dialect layer and embedded
+> behavior are more fully fleshed out"; the inline-raw nailing defers
+> "until dialects/templating settle"). Deeper still: if a dialect owns the
+> *inside* of `|{…}`, "unclosed" splits — core knows the `|{` opened and no
+> `}` came (boundary brace-counting), but only the dialect knows whether
+> the content was *coherent*, which is the fact-(b) property itself. A
+> per-construct property cannot be finalized while its construct list is
+> being renegotiated.
+>
+> **What that frees for 0.9:** both bugs below are fixable from
+> **already-ratified text**, with no model decision and no new spec —
+> the bare-marker drop by *"EOF is newline-equivalent everywhere a rule
+> says 'followed by a newline'"* + *"nothing is ever discarded at EOF"*
+> (`|` + `\n` → `Text "|"`, therefore `|` + EOF → `Text "|"`), and the
+> `UnclosedEmbedded` drop by the EOF table's embed row, which is already
+> unconditional. Fix the data loss on ratified ground; defer the model to
+> where it can be answered once instead of twice.
 
 ## Why this came up
 
