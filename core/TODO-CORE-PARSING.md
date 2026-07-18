@@ -13,6 +13,13 @@ items below that are pure EOF bugs are instances of that framing —
 implement against it, not against the superseded aggregate-event sketch in
 `../design/eof-model-proposal-2026-07.md`.
 
+**Warning-code names are provisional (2026-07-18):** the alpha.2 `Unclosed*` /
+`UnclosedInline*` / `$partial-key` spellings are hand-picked working names,
+defined only because descent can't yet auto-derive `Unclosed<Construct>` from
+the grammar (`../tools/descent/TODO-DESCENT.md`). Implement toward them, but
+expect a subversion to regenerate them descent-appropriately — don't harden the
+grammar around a guessed spelling the derivation would clean up.
+
 ## Open
 
 - [ ] **Prose-shaped-blob audit: `attr_trailing_blob` and `flag_value`'s

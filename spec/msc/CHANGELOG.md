@@ -26,6 +26,14 @@ edits.
 
 ### Ruled (2026-07-17/18; do not re-open)
 
+> **Names are provisional.** The *decisions* below are ruled; the exact code /
+> attribute **spellings** (`Unclosed*`, `UnclosedInlineDirective`,
+> `UnclosedInlineRaw`, `$partial-key`, …) are hand-picked working names,
+> pre-defined only because descent cannot yet auto-derive `Unclosed<Construct>`
+> from the grammar. Expect an upcoming subversion to regenerate them into
+> descent-appropriate forms — implement toward them, but do not cement the
+> spellings as contract.
+
 - **Positional vs delimited.** Every construct closes either **positionally**
   (extent by geometry — EOL / dedent / EOF) or **delimited** (a printed
   end-sequence the grammar matches). At EOF, positional constructs finish by
@@ -94,6 +102,18 @@ edits.
   "UnclosedText"`, are grammar-phase **bugs** the fixtures pin against). A
   **nameless** `!{`<EOF> (nothing after `!{`) → **prose `Text "!{"`** — no valid
   directive ever started, parallel to the bare-marker family (Joseph agreed).
+- **Root-level attribute → undefined** (§1.6, 2026-07-18). A line-initial `:key`
+  at the document root (no owning element) is **undefined** in this version —
+  the parser emits a free-floating `Attr`, but don't rely on it. Marked
+  undefined in CORE (Attributes).
+- **Remaining EOF edges → governed by EOF ≡ eol + full-dedent** (§1.5 / §1.7 /
+  §1.9 etc., 2026-07-18; Joseph). No separate rulings: the EOF case behaves
+  exactly as the equivalent end-of-line + full-dedent case — empty value-`\` at
+  EOF = its eol case; `;`<EOF> must equal `;\n`; a spaces-only final line = a
+  mid-document spaces-only line + eol. Where the parser diverges today (e.g.
+  `;`<EOF> ≠ `;\n`) that's a **red-find**, not a new rule. (The spaces-only-line
+  *content* question — `BlankLine` vs `Text` — is a separate standing silence in
+  `TODO-SPEC-CORE.md`, orthogonal to the EOF aspect.)
 
 ## [0.9.0-alpha.1] — 2026-07-15
 
