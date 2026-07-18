@@ -13,22 +13,38 @@ CORE §End-of-input: **"EOF is newline + maximal dedent."** The grammar already
 declares, per construct, what happens at a newline and at a dedent. So EOF
 handling should not be *authored* — it is **derivable**:
 
-- **Positional** → at EOF, do the state's **`\n` arm** (unconsumed), and where
-  that arm continues a line-loop, take the loop's **dedent-return**. That is
-  the entire positional-EOF behavior, and it already lives in the grammar as
-  the `\n`/dedent arms. *Every one of the ~55 positional `|eof` arms is a
-  verbatim twin of its own state's `\n` arm.* (Verified across prose, values,
-  comments, attributes, elements.)
-- **Delimited** → the construct has *no* geometric close (it either spans
-  lines, or its `\n` is itself the soft-failure) — it waits for a printed
-  closer. At EOF (the ultimate dedent) it cannot close normally, so the
-  generator **synthesizes** the soft-failure: keep content-so-far (TERM + emit
-  pending), emit `Unclosed<Construct>` **warning**, emit `End` (if BRACKET),
-  return — *uniform, at every state of the activation, attributed to the
-  activation's entry site.*
+- **Positional** → **inject a synthetic newline + maximal dedent at the cursor
+  and run the machine** (Joseph's framing, empirically confirmed). *NOT* "clone
+  the state's `\n` arm" — my first pass said that and it is **false** (see A-1
+  below, verified): a whole family of states have neither a `\n` arm nor an
+  `|eof` arm and route newline via a *fall-through* (`default → :string`), so
+  there is no arm to clone; only running the machine through the fall-through
+  emits the value. The `\n`-arm-equals-`|eof`-arm equality is a property of
+  **leaf** states only; loop states take the dedent-return, fall-through states
+  follow the default path, and semantic-close states run their own check. All
+  three are subsumed by "inject `\n`+dedent, run," which is why that is the
+  primitive and arm-cloning is only its leaf-state corollary.
+- **Delimited** → the construct waits for a printed closer; a synthetic `\n` is
+  geometry it is immune to (it would be swallowed as content). So at true EOF
+  the generator **force-unwinds** it: keep content-so-far, emit
+  `Unclosed<Construct>` **warning**, emit `End` (if BRACKET), return — attributed
+  to the **activation** entry site (closer-in-callee is the norm; see gap-1),
+  owning **partial-closer restoration** (gap-4) and a **positional-tail-after-
+  closer** carve-out (freeform `post_close`; agent-3 B-7).
 
-Two synthesized primitives replace all 90 hand `|eof` arms. Classification is
-the only thing that has to be inferred.
+So EOF handling is derivable from **geometry + classification**: positional gets
+synthetic-geometry-run, delimited gets force-unwind; **classification is the
+only inferred thing, and it routes between the two halves.** The semantic-close
+arms (`MissingAttributeValue` etc.) are a third thing — *not* geometry, *not*
+deletable unless codegen reproduces the deferred-body dedent cascade (agent-3
+A-3). So "delete all ~75 arms" holds only for the leaf value/text/comment arms.
+
+**Classifier confirms the delimited set mechanically.** `descent-rs classify`
+(new `tools/descent/.../classify.rs`, encoding the rule not my answers):
+positional=33 **delimited=11** MIXED=1 — the 11 delimited match this doc's hand
+set exactly; the 1 MIXED is `typed_value` (the `<…>` envelope sub-region), i.e.
+gap-3, pinned mechanically. Independent third computation, agrees with reading +
+fresh-eyes review.
 
 ## Classification table (every function)
 
@@ -128,21 +144,30 @@ own once, instead of each construct re-deriving it.
 grammar comment already notes "expects-inference can't see a param terminator."
 A `c[:param]→return` must count as a closer-accept.
 
-**gap-6 — Line-boundedness is a *declared per-construct property*, and the
-grammar diverges from CORE.** EOF-failure is fully defined; **newline**-as-close
-is NOT uniformly defined:
-- envelope: CORE **defines** single-line (`\n`→`UnclosedTypeEnvelope`).
-- array: grammar **hand-codes** `\n`→`UnclosedArray`, but CORE §Line-boundedness
-  lists array among **"deliberately undefined"** — the grammar is *more*
-  committed than the spec. **Surface this: either CORE adopts array-as-line-
-  bound, or the grammar's `\n` arm is the parser's undefined-behavior choice,
-  not a guarantee.**
-- strings, interpolation, inline comment/directive/raw, identity key: multi-line
-  **undefined**; parser varies (quoted/interp span lines today).
-- embed, freeform: settled **multi-line**.
-⇒ The generator should infer **EOF** behavior but must **not** infer/cement
-newline-as-close. Model line-boundedness as a per-construct **flag** (default:
-EOF-only; opt-in: newline also closes-with-warning), so undefined stays
+**gap-6 — Line-boundedness is an *unsettled per-construct decision*; do NOT
+treat CORE's text as authority for it.** *(CORRECTED after verification — my
+first pass said "the grammar diverges from CORE," treating CORE as a compliance
+target. Wrong frame: this is a descent-first spike; CORE's EOF specifics lag the
+decisions and are provisional (CORE line 39 says so). The spike defines the
+target; CORE follows.)* EOF-failure IS a ratified ruling (fully defined). The
+**newline** behavior of delimited constructs is genuinely unsettled, and the
+evidence is that CORE contradicts *itself*, not the grammar:
+- CORE §End-of-input (line 66) says line-bound `[...]`/`<...>` **close-with-a-
+  warning on a newline** (and feeds incomplete-input accounting) — so the
+  grammar's `\n`→`UnclosedArray` (30-values:46) *matches* that section.
+- CORE §Line-boundedness (line 76) lumps arrays into **"deliberately undefined,
+  may change."**
+- These two CORE sections disagree → array line-boundedness was **never actually
+  decided**; it's provisional text. (The design doc agrees: "a live UX choice,
+  one flag on that one construct.")
+- And the three "undefined" constructs actually behave **three ways** today
+  (verified): envelope warns+closes on `\n` (30-values:127), array warns+closes
+  (30-values:46), **string silently spans** (`quoted` has *no* `\n` arm,
+  30-values:30-36) — so the blanket "close them on the line they open" oversells
+  a uniformity that isn't there.
+⇒ Treat line-boundedness as an open per-construct **flag** the spike/grammar
+declares (default: EOF-only; opt-in: newline also closes-with-warning) — a
+decision to make, not to read off CORE. Infer **EOF**; do **not** infer/cement
 undefined and the array/CORE divergence is explicit, not smuggled in by
 inference. *(This is the one scoping refinement to the design doc's table, which
 presents `newline ≡ EOF for line-bound` as more settled than CORE is.)*
@@ -153,21 +178,51 @@ number/string `|eof` arms in `typed_value` are each a twin of their `\n` arm;
 needed. The two open descent items (`TODO-DESCENT` self-terminating-value +
 EOF-inference) **converge** — worth noting so they're not solved twice.
 
-**gap-8 — "EOF = the `\n` arm" beats "auto-emit by return type."** Prose/text/
-blob functions are **void** with manual `Text(USE_MARK)` emits, so descent's
-current "CONTENT→auto content-emit at EOF" rule doesn't cover them — but
-"EOF = the `\n` arm" does, uniformly, void or typed. So the generative primitive
-should be *newline-arm cloning*, not return-type-driven emit. (The latter stays
-a correct special case *of* the former.)
+**gap-8 — the generative primitive is newline-injection, not return-type emit
+*or* arm-cloning.** Prose/text/blob functions are **void** with manual
+`Text(USE_MARK)` emits, so descent's "CONTENT→auto content-emit at EOF" rule
+doesn't cover them. "Inject `\n`+dedent and run" does, uniformly — void or
+typed, leaf or fall-through. (Return-type auto-emit and leaf-state arm-cloning
+are both corollaries of it, correct only where they apply.)
 
-## Implementation shape for P1 (descent-rs)
-1. **Positional EOF = clone the `\n` arm** (biggest, safest win: ~55 arms;
-   behavior-identical → gate stays green). Proves the primitive; subsumes gap-7.
-2. **Delimited classification by activation** (gaps 1,4,5): generalize
-   `infer_expects` → recognize param/multi-byte/depth closers *and* closer-in-
-   callee via a light call-graph pass; emit content→`Unclosed<Construct>`→End at
-   every state; record entry site in frame state. Fixes the FINDINGS bugs; reds
-   → correct.
-3. **Static-reject mixed machines** *after* extracting `/envelope` (gap-3), so
-   the reject rule has no false positive.
-4. Leave newline-boundedness a declared flag (gap-6); do **not** infer it.
+**gap-9 — NEW, VERIFIED: a state family silently DROPS content at EOF today.**
+*(Found by fresh-eyes adversarial review, re-verified by me via
+`examples/stdin_parse`.)* States entered by *consuming* a marker/sign byte that
+route newline through a fall-through (`default → :string`/`:accumulate`) have
+**no `\n` arm and no `|eof` arm**, so at true EOF they hit `typed_value`'s
+INTERNAL default (bare return, no emit) and the accumulated bytes vanish:
+```
+|e :x +      → Attr "x", ElementEnd            ; the "+" value is GONE
+|e :x +\n    → Attr "x", BareValue "+", …      ; newline emits it
+|e :x abc :  → Attr "x", ElementEnd            ; "abc :" entirely GONE
+```
+Implicated (30-values): `:num_sign`, `:num_complex_sign`, `:maybe_ref`,
+`:maybe_interp*`, `:strb_*`, `:kwb_*`. This is a real keep-everything violation
+the earlier classification missed, and the decisive reason the primitive is
+newline-**injection** (which follows the fall-through and emits) not
+arm-cloning (nothing to clone). These are undocumented reds-in-waiting →
+`core/fixtures/_wip/`. (Also verified: gap-5's inferred `skip_single_quoted`
+path emits a *generic* `Error{Unclosed}`, warning-first, wrong severity — the
+normalization must reach the inferred helpers, not just top-level constructs.)
+
+## Candidate directions for the descent generation (HYPOTHESES — not a verified plan)
+*Marked as hypotheses per "don't record certain-sounding plans that aren't
+verified." What IS verified: the classifier (delimited=11, MIXED=1); the 15/16
+arm redundancy; A-1/B-5; the newline-injection necessity. What follows is the
+untested build path.*
+1. **Classification** — DONE and verified (`classify.rs`). Foundation in hand.
+2. **Positional EOF = inject `\n` + maximal dedent, run the machine**, flagged
+   at_eof (suppresses spurious `BlankLine`; routes delimited frames to unwind
+   not consume). *Hypothesis:* fixes gap-9 for free; needs a runtime change to
+   the byte-source, not just codegen. Unbuilt.
+3. **Delimited EOF = force-unwind** (keep→`Unclosed<C>`→End) at the activation
+   root (gaps 1,4,5), with partial-closer restoration + the freeform
+   positional-tail carve-out. Fixes the FINDINGS bugs. Unbuilt.
+4. **Extract `/envelope`** from `typed_value` (gap-3) so the mixed-machine
+   becomes a clean delimited function; then a static reject-rule for mixed
+   machines has no false positive.
+5. **Semantic-close arms survive** (or codegen reproduces the deferred-body
+   dedent cascade) — not deletable geometry (agent-3 A-3).
+6. **Line-boundedness stays a declared flag** (gap-6); do **not** infer it.
+7. **Derive `Unclosed<Construct>` from the construct name**, not hand-picked
+   spellings (CORE line 39 + TODO-DESCENT both call for this).

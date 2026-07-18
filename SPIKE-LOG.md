@@ -93,5 +93,66 @@ table row is more committed than the spec actually is.
     generated model must express "once the closer is consumed the frame is
     closed; the trailing check is positional." No descent change needed here.
 - **State:** 15 arms deleted (freeform's override restored, correctly kept),
-  gate at baseline 2/478, both remaining reds pre-existing. Next: the delimited
-  classifier (gaps 1/4/5) — the actual FINDINGS-bug fixer.
+  gate at baseline 2/478, both remaining reds pre-existing.
+- **Verification pass (Joseph: verify before cementing; agents are inputs, not
+  adjudicators).** Spawned 3 adversarial checkers vs the primaries. Agent-2
+  (CORE claims) returned; adjudicated against my own reads:
+  - gap-6 CORRECTED (see P0 doc): my "grammar diverges from CORE" was the wrong
+    FRAME. CORE §End-of-input (66) says line-bound `[..]`/`<..>` warn-on-newline
+    (grammar matches it); CORE §Line-boundedness (76) calls arrays "undefined" —
+    CORE contradicts *itself*, evidence that array line-boundedness was never
+    decided. The three "undefined" constructs behave 3 ways (envelope warns,
+    array warns, string silently spans — `quoted` has no `\n` arm).
+  - Recalibration (Joseph): this is a **descent-first spike**; CORE's EOF
+    specifics LAG the decisions and are the prior agent's provisional guesses
+    (CORE line 39 says so). Do NOT treat CORE as a compliance target. Frame =
+    ratified rulings (positional/delimited, two-level severity, keep-everything,
+    EOF≡newline+dedent, content-first order); provisional = code spellings +
+    per-construct line-boundedness (spike may change). "Compliant with CORE" was
+    my reflex-error; dropped.
+  - Agent-1 (grammar classification) died on an API error mid-run — its job is
+    largely covered by the mechanical `classify.rs` pass below; re-spawn fresh
+    eyes only if the pass leaves gaps. Agent-3 (thesis stress-test) still running.
+- **Integration build in progress: descent classification pass.** New
+  `tools/descent/rust/descent-core/src/classify.rs` (report-only, no codegen
+  change) + `descent-cli classify <file>`. Encodes the RULE (exit-structure →
+  positional/delimited/mixed, with a 4th "semantic-close" tag for the
+  `/error` litmus-out cases), NOT my answer key — so it's an independent third
+  computation to triangulate against my reading + the agents. v1 is direct (no
+  call-graph), so closer-in-callee (embed etc.) will surface as a POSITIONAL
+  misclass — the expected, informative divergence that localizes gap-1. Next:
+  run it, compare to hand-classification, then add callee-inheritance (v2).
+- **Classifier DONE + correct (committed in descent submodule 84e62e5).** v1
+  surfaced the closer-in-callee blind spots mechanically AND revealed my own
+  rule over-fired on the closer side (MIXED=10). Refined the rule (call=
+  delegation w/ fixed-point inheritance; `\n`/space=always geometric; consumed
+  non-geom=closer; Unclosed*/Unterminated* only = closer-failure; fn-level vs
+  state-level delimfail). Result: **positional=33 delimited=11 MIXED=1**. The 11
+  delimited match the hand set EXACTLY (quoted/array/embed/embed_content/interp/
+  sameline_raw/sameline_dir_body/brace_comment/comment_text_braced/freeform/
+  sameline_directive); the 1 MIXED = typed_value (`<…>` envelope sub-region =
+  gap-3), pinned mechanically. Three-way agreement: my reading + fresh-eyes +
+  descent's computation.
+- **Agent-3 (thesis stress-test) returned — high value, adjudicated + spot-
+  verified myself:**
+  - REFUTES literal "(A) positional EOF = clone the `\n` arm": **gap-9 (NEW,
+    verified)** — a state family (`:num_sign`, `:maybe_ref`, `:strb_*`, `:kwb_*`
+    …) has no `\n` arm AND no `|eof` arm; at EOF `typed_value`'s INTERNAL default
+    drops accumulated content. Verified myself: `|e :x +` <EOF> → `+` GONE;
+    `|e :x abc :` → "abc :" GONE. ⇒ primitive is newline-INJECTION (run the
+    machine through the fall-through), not arm-cloning. Confirms Joseph's framing
+    is *necessary*, not just cleaner.
+  - B-5 (verified myself): `|e :'abc`<EOF> → generic `Error{Unclosed}`, warning-
+    first, `Error` not `Warning` — descent's inferred `skip_single_quoted` path
+    is wrong on code+severity+order; normalization must reach inferred helpers.
+  - Confirms/sharpens gaps 1-8; adds the reference-`[` missing-warning (parallel
+    to identity-`[`), the two-outlier emission-order, the positional-tail-after-
+    closer generalization (B-7), and the semantic-close-not-deletable bound (A-3).
+  - Agent-2's gap-6 correction folded in (CORE-internal inconsistency, not
+    grammar-vs-CORE; line-boundedness unsettled/provisional).
+- **VERIFIED vs OPEN (per Joseph — don't cement unverified plans):** VERIFIED =
+  classifier (delim=11, MIXED=1); 15/16 arm redundancy; A-1/gap-9 + B-5;
+  newline-injection necessity; the delimited set. OPEN/HYPOTHESIS = the descent
+  *generation* (positional inject-and-run + delimited force-unwind) — unbuilt;
+  it's a descent-core runtime change (per CLAUDE.md, Joseph's fast-turnaround
+  domain + needs benchmarks). P0 doc "Candidate directions" is marked hypothesis.
