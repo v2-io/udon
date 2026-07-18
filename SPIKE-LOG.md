@@ -156,3 +156,24 @@ table row is more committed than the spec actually is.
   *generation* (positional inject-and-run + delimited force-unwind) — unbuilt;
   it's a descent-core runtime change (per CLAUDE.md, Joseph's fast-turnaround
   domain + needs benchmarks). P0 doc "Candidate directions" is marked hypothesis.
+- **THE PIVOT — DONE & VERIFIED (highest-leverage move).** Wired the
+  classification into the IR so the generator USES it: delimited fn + return
+  type + no `expects_char` → `delimited_code = Unclosed<ReturnType>` (ir_builder
+  post-pass via classify.rs); the recursive template's EOF-default emits
+  `Warning(b"Unclosed…")` + bracket End — a generated force-unwind matching the
+  hand arms. Committed in descent (1ee96d3). **Proven** (quoted's hand |eof arm
+  deleted): `|e :k "abc`<EOF> → `StringValue("abc"), Warning(UnclosedStringValue)`
+  — auto-generated for a `:q` PARAM closer infer_expects can't see. **And it
+  fixed a standing FINDINGS red for free:** `embedded`'s un-armed phases now
+  force-unwind (`…Attr, MissingAttributeValue, Nil, Warning(UnclosedEmbedded),
+  EmbeddedEnd` — matches the fixture exactly; semantic-close composes correctly
+  before the force-unwind). **Gate 2→1** (remaining red = unrelated non-EOF
+  dynamics case). This converts the spike from analysis into a working
+  generation foundation and demonstrates the north-star (descent auto-supplies
+  EOF + derived codes) end-to-end.
+- **Still open (clear + de-risked now):** delete the other delimited fns' hand
+  arms (interpolation/array/comment/raw/dir_body) → the ~75-arm deletion;
+  construct-name convention for the irregular codes (embed_content→Embedded,
+  freeform→Unterminated); migrate the wrong expects_char Error+enum path onto
+  this Warning path (B-5); the positional inject-and-run (gap-9). Benchmark pair
+  owed before merge (EOF cold-path, expected ~nil).

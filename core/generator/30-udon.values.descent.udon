@@ -29,7 +29,10 @@
 ; UnclosedStringValue) — expects-inference can't see a param terminator.
 |function[quoted:StringValue]  :q  | MARK
   |state[:main]
-    |eof                      | TERM | StringValue(USE_MARK) | Warning(UnclosedStringValue) |return
+    ; |eof arm DELETED (spike): descent now auto-generates the force-unwind
+    ; (StringValue content + Warning(UnclosedStringValue)) from the
+    ; positional/delimited classification — quoted is delimited via its :q
+    ; PARAM closer, which expects-inference cannot see. Proof of the pivot.
     |c[:q]                    | TERM | ->                        |return
     |c[<BS>]                  | -> | ->                          |>>
     |default                  | ->                               |>>

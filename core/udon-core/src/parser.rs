@@ -3766,7 +3766,6 @@ impl<'a> Parser<'a> {
                     self.advance();
                 }
                 None => {
-                    self.set_term(0);
                     on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
                     on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedStringValue"), span: self.span() });
                     return;
@@ -3790,6 +3789,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Entry => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
                         on_event(Event::ArrayEnd { span: self.span() });
                         return;
                     }
@@ -6092,6 +6092,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostIdentity => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
                         on_event(Event::EmbeddedEnd { span: self.span() });
                         return;
                     }
@@ -6115,6 +6116,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PreContent => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
                         on_event(Event::EmbeddedEnd { span: self.span() });
                         return;
                     }
@@ -6153,6 +6155,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PreContentMl => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
                         on_event(Event::EmbeddedEnd { span: self.span() });
                         return;
                     }
@@ -6175,6 +6178,7 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckAttr => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
                         on_event(Event::EmbeddedEnd { span: self.span() });
                         return;
                     }
@@ -6869,6 +6873,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Kind => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
                     }
@@ -6887,6 +6892,7 @@ impl<'a> Parser<'a> {
                 }
                 State::SkipSep => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
                     }
@@ -6922,6 +6928,7 @@ impl<'a> Parser<'a> {
                             self.advance();
                         }
                         None => {
+                            on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                             on_event(Event::DirectiveEnd { span: self.span() });
                             return;
                         }
@@ -6963,6 +6970,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Name => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
                     }
@@ -6981,6 +6989,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterName => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
                     }
@@ -7004,6 +7013,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Args => {
                     if self.eof() {
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
                         on_event(Event::DirectiveEnd { span: self.span() });
                         return;
                     }

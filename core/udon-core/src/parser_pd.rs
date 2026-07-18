@@ -5722,9 +5722,7 @@ impl PushdownParser {
                                 Some(b'\n') => { self.advance(); continue 'st; }
                                 None => {
                                     if !self.finished { self.stack.push(Frame::Quoted(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::StringValue { content: c, span: sp }); }
-                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedStringValue"[..]), span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
