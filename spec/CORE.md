@@ -67,6 +67,8 @@ Every construct closes in one of two ways. A **positional** construct -- element
 
 Each delimited construct carries its own `Unclosed<Construct>` **warning** (`UnclosedStringValue`, `UnclosedEmbedded`, … — freeform's is `UnterminatedFreeform`). The code vocabulary is in the Warning codes registry above; the per-construct closer and its nuances (e.g. the `<...>` envelope's single-line rule -- see Explicit Typing) belong at each construct's own section, and collecting them there is a deliberate follow-up (`TODO-SPEC-CORE.md`), independent of this normalization.
 
+**Emission order.** An unclosed construct emits its kept **content first, then the `Unclosed*` warning, then any bracket `End`** -- `…content… → Unclosed* → End` -- uniform across every delimited construct. The warning annotates the content it follows; this is already what the multi-line embed and freeform do, and the AST layer is order-agnostic (it no-ops on warnings), so nothing downstream depends on it.
+
 Nothing is ever discarded; the warnings mark what the author probably meant to finish. (For streaming parsers, "EOF" means the consumer's explicit end-of-input signal, not a chunk boundary.)
 
 ### Line-boundedness (current version)

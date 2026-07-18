@@ -54,6 +54,13 @@ edits.
   define multi-line or warn; multi-line meanwhile is at author's risk.
   (Resolves the string-line-boundedness gap surfaced by the alpha.2 fixture
   harvest.)
+- **Unclosed emission order** (2026-07-18). An unclosed delimited construct
+  emits its kept **content first, then the `Unclosed*` warning, then any `End`**
+  (`…content… → Unclosed* → End`), uniform across the family — matching what
+  multi-line embed/freeform already do. The AST builder is order-agnostic
+  (no-ops on warnings, `tree.rs`), so nothing downstream depends on it. 6 of 7
+  constructs already comply; `<…>` (warning-first today) is the lone outlier to
+  reorder in the grammar phase.
 
 ## [0.9.0-alpha.1] — 2026-07-15
 
