@@ -19,22 +19,18 @@
 ; emits it (CORE "End of input (EOF)": nothing is ever discarded).
 |function[bs_escape]
   |state[:main]
-    |eof                      |                                  |return
     |c['|']                   | ->                               |>> :pipe
     |c['!']                   | ->                               |>> :bang
     |c[';']                   | ->                               |>> :semi
     |default                  |                                  |return
 
   |state[:pipe]
-    |eof                      |                                  |return
     |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('|') |return
     |default                  |                                  |return
   |state[:bang]
-    |eof                      |                                  |return
     |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND('!') |return
     |default                  |                                  |return
   |state[:semi]
-    |eof                      |                                  |return
     |c['{']                   | TERM(-2) | Text(USE_MARK) | MARK | PREPEND(';') |return
     |default                  |                                  |return
 
@@ -69,7 +65,6 @@
     |default                  |                                  |>> :main
 
   |state[:vafter]
-    |eof                      |                                  |return
     |c['\n']                  |                                  |return
     |default                  | MARK                             |>> :main
 
@@ -127,7 +122,6 @@
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]
     |c['\n']                  |                                  |return  ; at end, no emit
-    |eof                      |                                  |return  ; at end, no emit
     |default                  | MARK                             |>> :main
 
 
@@ -169,7 +163,6 @@
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]
     |c['\n']                  |                                  |return  ; at end, no emit
-    |eof                      |                                  |return  ; at end, no emit
     |default                  | MARK                             |>> :main
 
 
@@ -231,5 +224,4 @@
   ; After inline construct - only set MARK if more content follows
   |state[:after_inline]
     |c['\n']                  |                                  |return  ; at end, no emit
-    |eof                      |                                  |return  ; at end, no emit
     |default                  | MARK                             |>> :main

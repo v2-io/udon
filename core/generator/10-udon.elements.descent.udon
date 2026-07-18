@@ -167,7 +167,6 @@
   ; the first character of a fresh (dedented) line — run it through the
   ; ordinary children column bookkeeping.
   |state[:post_block_child]
-    |eof                      |                                  |return
     |c['\n']                  | ->                               |>> :children
     |default                  | col = COL - 1                    |>> :check_child
 
@@ -189,7 +188,6 @@
   ; After inline directive on sameline - don't skip spaces, they're content now
   |state[:post_sameline_inline]
     |c['\n']                  | ->                               |>> :children
-    |eof                      |                                  |return
     |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
 
   ; After a sameline embedded child: whitespace before further content is
@@ -218,7 +216,6 @@
 
   ; After consuming newline, check if next line is blank/whitespace-only
   |state[:after_newline]
-    |eof                      |                                  |return
     |c['\n']                  | -> | BlankLine                   |>>  ; blank line (empty)
     |c[' ']                   | -> | col = 1                     |>> :children_ws
     |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>> :children
@@ -382,7 +379,6 @@
   ; If content returned early (e.g., line_comment on dedent), re-dispatch mid-line
   |state[:after_content]
     |c['\n']                  | ->                               |>> :after_newline
-    |eof                      |                                  |return
     |c[' ']                   | -> | col = 1                     |>> :children_ws
     |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
     |default                  | col = COL - 1                    |>> :check_child

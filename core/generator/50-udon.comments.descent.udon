@@ -30,7 +30,6 @@
   ; Children loop - check for continuation lines
   ; Per SPEC 419-428: more-indented lines without prefix are continuation
   |state[:children]
-    |eof                      |                                  |return
     |c['\n']                  | ->                               |>>  ; blank line
     |c[' ']                   | -> | col = 1                     |>> :children_ws
     |c['\t']                  |                                  |return  ; tab = end

@@ -7632,6 +7632,7 @@ impl PushdownParser {
                         VerbatimTextSt::Vafter => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::VerbatimText(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {
@@ -7845,6 +7846,7 @@ impl PushdownParser {
                         TextBackticksSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {
@@ -8001,6 +8003,7 @@ impl PushdownParser {
                         TextSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                on_event(StreamEvent::Error { code: ParseErrorCode::Unclosed, span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {

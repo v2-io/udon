@@ -95,7 +95,6 @@
     |default                  | col = COL - 1                    |>> :dispatch  ; use actual column
 
   |state[:eol]
-    |eof                      |                                  |return
     |c['\n']                  | ->                               |>> :line
     |default                  | col = COL - 1                    |>> :dispatch  ; construct returned mid-line
 

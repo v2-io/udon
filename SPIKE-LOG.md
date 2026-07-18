@@ -59,3 +59,28 @@ table row is more committed than the spec actually is.
   -> `{Type}End` if bracket. Positional `|eof` arms exist exactly where
   auto-inference is insufficient: void manual-emit (prose/text) + per-state
   typed (typed_value numbers). That's the P1 target.
+- **P1 experiment #1 (empirical, decisive).** Deleted all 16 pure `|eof| |return`
+  arms → gate 2→3/478. Bisected: the +1 is `eof_recovery::eof_fence_closer_no_final_newline`
+  (freeform `post_close`); the other two reds (`dynamics_syntax::flag_then_raw_block_is_child`,
+  `eof_recovery::eof_unclosed_embedded_with_open_attr`) are **pre-existing**
+  (latter is the documented FINDINGS embed-drop bug). Restored ONLY freeform's
+  arm → back to 2/478. Conclusion:
+  - **15 of 16 pure-return positional arms are redundant** — descent's default
+    EOF already reproduces a bare `return` (document, 4× `element` BRACKET arms,
+    prose, comments, attr). Deleted; gate holds. (90→75 arms.)
+  - **The 1 exception is a real descent bug**, not a grammar need: for a BRACKET
+    function, `render_eof` emits `{Type}End` **explicitly** (rust_pushdown.rs
+    ~552), which **double-emits** against the frame's normal return-`End` when
+    EOF lands in a *post-closer* state. `freeform:post_close` (closer already
+    consumed, peeking for the trailing newline) hits this: expected
+    `FreeformStart/Text/FreeformEnd` (3), got 4 (extra `FreeformEnd`). The hand
+    `|eof|return` masked it by routing through the single normal return.
+  - **Fix direction:** `render_eof`'s bracket case should route EOF through the
+    normal return path (single `End`), not emit `{Type}End` as a separate event.
+    Once fixed, freeform's arm deletes too (and the delimited synthesis, which
+    also needs End-after-content, inherits the correct single-End path). Needs
+    the descent before/after benchmark pair (per CLAUDE.md) since it's a codegen
+    change — deferred to the next push.
+- **State:** 15 arms deleted, gate at baseline 2/478. Both remaining reds
+  pre-existing. Next: fix `render_eof` bracket End (unblocks bracket arms +
+  delimited synthesis), then the delimited classifier (gaps 1/4/5).

@@ -451,7 +451,6 @@
     |default                  |                                  |>> :main
 
   |state[:after_inline]
-    |eof                      |                                  |return
     |c['\n']                  |                                  |return
     |c[:bracket]              |                                  |return
     |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :main
