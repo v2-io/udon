@@ -23,14 +23,14 @@ likely home is a future `spec/aux/` once `spec/` splits into
       `../ux/TODO-AGENT-UX.md`, tool suite item); also feeds the paths
       implementation in `../TODO-UTILS.md`.
 - [ ] **Schema syntax** — a main pending area: how schemas (the constraint layer)
-      are written. **Start at `../design/schema-workbench-2026-07.md`** —
-      the source index (in-repo + rowan + autopax, with what's read vs
-      queued), the comparative survey of schema languages and the axes they
-      differentiate on, and the position forming; it points into the older
-      ground (`../design/udon-schema-exploration.md`'s thirteen puzzle
-      pieces, `../design/udon-guarantees.md`) rather than restating it. **Second rung of the edit-tool
-      critical path** (conformance-at-apply needs it, plus the pragma in
-      `TODO-SPEC-OTHER.md` to bind a document to its schema).
+      are written. **Forming design note (2026-07-18):**
+      `../design/schema-notes-2026-07.md` (short form, three surfaces,
+      orthography, v0 set, P1–P10 freezes, F1–F7 forks for Joseph). **Source
+      index / survey:** `../design/schema-workbench-2026-07.md` (points into
+      `udon-schema-exploration.md`, `udon-guarantees.md`, rowan, corpus).
+      **Second rung of the edit-tool critical path** (conformance-at-apply
+      needs it, plus the pragma in `TODO-SPEC-OTHER.md` to bind a document
+      to its schema).
       **Rowan is the first waiting customer, not just prior art (Joseph,
       2026-07-16):** most of his thinking on "highly-resilient-structured-
       document schemas" was laid down in `~/src/rowan` — and rowan stalled

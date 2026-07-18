@@ -1,15 +1,13 @@
 # Schema workbench — sources, survey, and where the thinking is
 
-> **Status: workbench, not a design.** A staging document for the schema
-> layer: what's been read, what's worth reading, what resonated, the
-> comparative survey, and the position that's forming. **Nothing here is
-> ratified and nothing here is a proposal yet** — the deliverable it feeds
-> is a design note in the register of `attribute-model-2026-07.md`, which
-> Joseph would ratify from. Opened 2026-07-16 (Claude, at Joseph's
-> request: *"put together a more comprehensive scratch-pad in project that
-> basically indexes all of your sources so far and the things you like
-> about them"*). Expect it to be edited, argued with, and eventually
-> archived once the design note exists.
+> **Status: workbench / source index.** Staging document for the schema
+> layer: what's been read, comparative survey, open readings. **Forming
+> design note (next step toward ratification):**
+> [`schema-notes-2026-07.md`](schema-notes-2026-07.md) (2026-07-18) — not
+> ratified; Joseph-facing freezes and forks. This workbench remains the
+> archaeology and survey; the notes file is the position to argue with.
+> Opened 2026-07-16 (Claude, at Joseph's request). Expect eventual archive
+> once a ratified `schema-model-*.md` exists.
 >
 > **Epistemic note:** the comparative survey (§3) is model knowledge, not a
 > fresh survey — verify anything before it becomes load-bearing. Everything
