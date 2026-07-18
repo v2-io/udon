@@ -17,7 +17,7 @@
 > Every UDON construct closes in exactly one of two ways. **Positional**
 > constructs close on *geometry* — end of line, dedent, or EOF (EOF is just "a
 > newline followed by a maximal dedent"). **Delimited** constructs close when the
-> parser scans for and finds a printed *end-sequence* it was waiting for (`"`,
+> parser matches the printed *end-sequence* it's waiting for (`"`,
 > `]`, `}`, `}}`, `` ``` ``, `>`). At end of input every open frame closes
 > innermost-first: positional frames close silently (an ordinary end); a
 > still-open **delimited** frame is the *only* thing that makes EOF "unexpected"
@@ -60,7 +60,10 @@ children? does it match the schema? — it is *not* part of this mechanism.
 - `MissingAttributeValue`: needs "was a value supplied?" → semantic content →
   **out**. The attribute+value pair is **positional**; it closes on geometry and
   runs its own local check *at that close*. The check rides on the close; it is
-  not the closing mechanism.
+  not the closing mechanism. (Same for the **OPEN** case — `:key` awaiting its
+  value on a deeper line: the body's *extent* is geometric, so it is positional;
+  the "did a value arrive?" check is semantic-at-close. An unpaid value is never
+  a delimiter, so an OPEN attr is never "delimited.")
 - Cardinality / schema / dialect: same species, one layer up — the consumer
   checks when it receives the clean close event and raises its own error. →
   **out**.
@@ -74,7 +77,7 @@ other errors in UDON; they are not this mechanism's job.
 
 | | **Positional** | **Delimited** |
 |--|----------------|---------------|
-| **Closes on** | geometry — end of line, dedent, EOF | a printed end-sequence the parser scans for |
+| **Closes on** | geometry — end of line, dedent, EOF | a printed end-sequence the parser matches |
 | **Examples** | elements, directives, line comments, prose/text blocks, deferred attribute bodies, bare-token finish | `"…"` `'…'`, `[…]`, `\|{…}`, `;{…}`, `!{{…}}`, `` ``` `` freeform, `<…>`, identity `[…]` |
 | **EOF is** | an ordinary end (≡ newline + maximal dedent) — close silently | **unexpected iff still open** — keep content + `Unclosed*` (entry-site span) + End |
 | **Anomaly at EOF** | none by itself | that construct's code — Error, or **Warning** for `<…>` and freeform |
@@ -154,9 +157,17 @@ Consequences:
 
 - **Bugs become static checks.** A function with a closer-accept *and* a bare
   geometric-accept (no anomaly) is an *inconsistent machine* — precisely the
-  `embedded` any-phase EOF-drop bug. The generator should reject it (or rewrite
-  the stray geometric exit into a failure). "Forgot `|eof` on this phase" can no
-  longer silently drop content.
+  `embedded` any-phase EOF-drop bug. The generator should **reject** it by
+  default (rewriting the stray exit into a failure only under an explicit
+  override) — rejecting keeps grammar-cleanup loud rather than papering over a
+  function that may not want to be delimited at all. "Forgot `|eof` on this
+  phase" can no longer silently drop content.
+- **Inference must handle non-trivial closers** — parameterized closers
+  (`quoted :q`, identity `:close`), multi-byte / path closers (`}}`, the freeform
+  fence line), and closer-in-callee where the BRACKET sits on the caller (embed):
+  classify at the *activation root* (opener → End), counting a callee's
+  hard-return toward hard success when the callee cannot itself soft-return.
+  Fuller mechanics: `../tools/descent/TODO-DESCENT.md`.
 - **Arrange each function as one shape or the other** (behavior-preserving): a
   *layout body* (only geometric accepts) or a *matched body* (closer-accept +
   generated failure) — not "layout until we forget `|eof`." The combinator that
@@ -196,8 +207,12 @@ CORE text last, once the runtime matches.
 
 - [ ] Rewrite "End of input" to the one rule + one composition sentence
       (innermost-first, the frame stack); collapse the per-construct table into
-      kind + existing codes/severities.
-- [ ] Add unclosed identity `[…]` at EOF (delimited); confirm the code name.
+      kind + existing codes/severities. Note: the delimited-class **severity**
+      policy (esp. freeform — see Position vs the existing spec) is a required
+      ruling before freeform can go in the first CORE pass. *(discuss w/ Joseph)*
+- [ ] Add unclosed identity `[…]` at EOF (delimited); confirm the code name — a
+      **new** anomaly surface for consumers (nothing errored there before), so
+      fixture it when it lands.
 - [ ] One sentence distinguishing positional *context* from positional
       *construct* (see Vocabulary), embed as the teaching example.
 - [ ] Decide line-bound vs multi-line `[…]` (one flag; UX call, not a second EOF
