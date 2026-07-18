@@ -36,7 +36,7 @@ Key properties:
 | `AttributeSecondValue`                 | Deeper second value (text or sibling node) under an attribute whose value is finished, without a new `:key`; ingested as a further segment                       | event                                       |
 | `AttributeAfterChildren`               | A line-initial `:` at an ancestor-attribute column after that element entered its children phase; treated as prose of the column's owner                         | event or AST                                |
 
-Warning-code strings above from the 0.9 attribute model are **working names** (final at fixture-group landing). Two related **errors** (not warnings) also arrive with that model: `MissingAttributeValue` (plain attribute with no value material) and `AttributeUnderAttribute` (a `:key` directly under an attribute). Codes that die with a model change are removed from this table, not kept as soft ghosts.
+Warning-code strings above from the 0.9 attribute model are **working names** (final at fixture-group landing). Two related **errors** (not warnings) also arrive with that model: `MissingAttributeValue` (plain attribute with no value material) and `AttributeUnderAttribute` (a `:key` directly under an attribute). Codes that die with a model change are removed from this table, not kept as soft ghosts. The `Unclosed*` family are **warnings** too under the two-level severity ruling (see End of input): `UnclosedStringValue`, `UnclosedArray`, `UnclosedEmbedded`, `UnclosedInlineComment`, `UnclosedInterpolation`, `UnclosedTypeEnvelope`, `UnterminatedFreeform`, `UnclosedIdentityKey` -- one per delimited construct, emitted when its closer never arrives (content kept). This registry is their single home until they migrate to each construct's own section (`TODO-SPEC-CORE.md`).
 
 ### Anomaly posture (warnings, errors, recovery)
 
@@ -50,24 +50,24 @@ When input is malformed or surprising, a response falls somewhere on this ladder
 | (d) | error and halt the parse | rest of input |
 | (e) | error, reject the document | everything |
 
-**The core event parser commits to (a) wherever a coherent (a) exists** -- and so far one has been found for every known case (segment-ingest, pass-through, prose fallback with the marker restored, base-rebasing). Where it cannot (structurally unclosed constructs, tabs), it emits an **error event and keeps parsing** -- errors are events in the stream, not exceptions; nothing after the error point is silently discarded. Levels (c)-(e) are **not** event-parser behavior at all: whether an application treats accumulated warnings/errors as grounds to drop, halt, or reject is an AST-/app-layer decision, configured by the consumer -- to be specified when the schema and AST-parsing layers are built out. Error-code vocabulary follows the same working-name convention as warnings until then.
+**The core event parser commits to (a) wherever a coherent (a) exists** -- and so far one has been found for every known case (segment-ingest, pass-through, prose fallback with the marker restored, base-rebasing, and unclosed delimited constructs -- which keep their content and **warn**, the missing closer marked but nothing lost; the *document*-level incompleteness is a separate result, see End of input). Where the parser genuinely cannot keep everything -- a tab in indentation drops its line -- it emits an **error event and keeps parsing** -- errors are events in the stream, not exceptions; nothing after the error point is silently discarded. Levels (c)-(e) are **not** event-parser behavior at all: whether an application treats accumulated warnings/errors as grounds to drop, halt, or reject is an AST-/app-layer decision, configured by the consumer -- to be specified when the schema and AST-parsing layers are built out. Error-code vocabulary follows the same working-name convention as warnings until then.
 
 ### End of input (EOF)
 
-**EOF is the universal implicit closer** (resolved 2026-07-16, delegated): every pending `End` event flushes, innermost-first, exactly as a full dedent would fire them. A construct whose content is already coherent closes *silently*; a construct still awaiting a **delimiter** closes with its captured content emitted plus an `Unclosed*` anomaly. A missing final newline is never, by itself, an anomaly (EOF is newline-equivalent everywhere a rule says "followed by a newline").
+*(positional/delimited framing + two-level severity ruled 2026-07-17/18; design of record: `TODO-EOF-refactor.md`)*
 
-| Open at EOF | Behavior |
-|-------------|----------|
-| Elements, directives, comments, deferred attribute values (indentation-scoped) | Close silently; `End` events flush in order |
-| Quoted string | Captured content as `StringValue` + `Error UnclosedStringValue` |
-| `[...]` array | Items so far + `Error UnclosedArray`; `ArrayEnd` flushes |
-| `\|{...}` embedded | Content so far + `Error UnclosedEmbedded`; `EmbeddedEnd` flushes |
-| `;{...}` inline comment | Content so far + `Error UnclosedInlineComment`; `CommentEnd` flushes |
-| `!{{...}}` interpolation | Captured expression + `Error UnclosedInterpolation` |
-| `<...>` envelope | Captured text as string + `Warning UnclosedTypeEnvelope` (envelopes are single-line -- see Explicit Typing) |
-| Freeform fence | Body so far + `Warning UnterminatedFreeform` (the body is coherent; the author likely forgot the closer) |
+Every construct closes in one of two ways. A **positional** construct -- element, directive, comment, prose/text block, deferred attribute value, etc. -- takes its extent from *geometry*: end of line, dedent, or EOF. A **delimited** construct -- quoted string, `[...]` array, `|{...}` embed, `;{...}` inline comment, `!{{...}}` interpolation, `<...>` envelope, ` ``` ` freeform, identity `[...]`, etc. -- closes only when the parser matches a printed **end-sequence**.
 
-Nothing is ever discarded at EOF; the errors/warnings mark what the author probably intended to finish. (For streaming parsers, "EOF" means the consumer's explicit end-of-input signal, not a chunk boundary.)
+**The rule.** At end of input every open construct closes, innermost-first (exactly as a full dedent flushes `End` events): a **positional** construct closes by its ordinary end rule, *silently* -- EOF is newline-equivalent, and a missing final newline is never, by itself, an anomaly. A still-open **delimited** construct is the only thing EOF is "unexpected" for: its captured content is kept, an `Unclosed*` **warning** is emitted citing where the construct **opened**, and its `End` flushes. When several are open they compose by the same unwind; each answers independently against its own entry site, so nested delimited constructs yield one `Unclosed*` each.
+
+**Severity is two levels** -- *Warning* means content was kept; *Error* means something was lost:
+
+- **Per construct: `Warning`.** Every `Unclosed*` keeps everything that had arrived before EOF -- which may be nothing beyond the opener itself -- so each is a **warning**, emitted in-band as its frame unwinds. (This is why unclosed constructs sit at level (a) of the Anomaly posture, not the error tier.)
+- **Per document: one incomplete-input result.** A delimited construct still open at *true* EOF means the input is **assumed to have been incomplete** -- truncated upstream, or an unfinished intent. That is a defined condition the consuming layer reports as **non-success** (e.g. a non-zero CLI exit / an `Err` result); it is a *result*, not a stream event, and its surface belongs to the AST/host layer (see `../core/TODO-PARSER.md`). A line-bound delimited construct (`[...]`, `<...>`) also closes-with-a-warning on a **newline**; that warning counts toward incomplete-input only when the closing newline **was the EOF** -- one that closed on an interior newline left a complete document behind it.
+
+Each delimited construct carries its own `Unclosed<Construct>` **warning** (`UnclosedStringValue`, `UnclosedEmbedded`, … — freeform's is `UnterminatedFreeform`). The code vocabulary is in the Warning codes registry above; the per-construct closer and its nuances (e.g. the `<...>` envelope's single-line rule -- see Explicit Typing) belong at each construct's own section, and collecting them there is a deliberate follow-up (`TODO-SPEC-CORE.md`), independent of this normalization.
+
+Nothing is ever discarded; the warnings mark what the author probably meant to finish. (For streaming parsers, "EOF" means the consumer's explicit end-of-input signal, not a chunk boundary.)
 
 ---
 
