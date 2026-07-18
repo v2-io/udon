@@ -45,6 +45,15 @@ edits.
   silent); a bare marker as the final byte → positional (EOF ≡ newline → prose),
   not unexpected EOF; an embed open in any phase at EOF → delimited (fixes the
   any-phase drop).
+- **Line-boundedness** (2026-07-18). Embedded `|{…}` and freeform ` ``` ` are
+  locked **multi-line**; every other delimited construct (`<…>`, `"…"`/`'…'`,
+  `[…]` array & identity key, `!{{…}}`, `;{…}`, `!{…}`/`!{:kind:…}`) is
+  **single-line for now, multi-line deliberately undefined** — not yet verified
+  safe across a newline (current parser behavior at a newline varies — some warn
+  like `<…>`, some tolerate — and is not guaranteed). A future version may
+  define multi-line or warn; multi-line meanwhile is at author's risk.
+  (Resolves the string-line-boundedness gap surfaced by the alpha.2 fixture
+  harvest.)
 
 ## [0.9.0-alpha.1] — 2026-07-15
 

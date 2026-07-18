@@ -69,6 +69,10 @@ Each delimited construct carries its own `Unclosed<Construct>` **warning** (`Unc
 
 Nothing is ever discarded; the warnings mark what the author probably meant to finish. (For streaming parsers, "EOF" means the consumer's explicit end-of-input signal, not a chunk boundary.)
 
+### Line-boundedness (current version)
+
+Two delimited constructs are settled as **multi-line** and stay that way: `|{...}` embedded and the ` ``` ` freeform fence. For **every other** delimited construct -- the `<...>` typing envelope, `"..."` / `'...'` strings, `[...]` arrays, `[...]` identity keys, `!{{...}}` interpolation, `;{...}` inline comments, and the `!{...}` / `!{:kind:...}` inline directive/raw forms -- **spanning multiple lines is deliberately undefined in this version**: they have not been verified safe across a newline (head-position re-entry, indentation, and the like), so **close them on the line they open**. What the current parser does at an embedded newline is not a guarantee and varies -- some warn (e.g. `<...>` ends the value with `UnclosedTypeEnvelope`, see Explicit Typing), some silently tolerate it -- and either may change; multi-line here is at your own risk. We expect to make them multi-line once the consequences are fully understood; if a case is instead made *illegal*, the parser will warn at that point rather than silently change meaning.
+
 ---
 
 ## The Core, and What It Leaves Open
