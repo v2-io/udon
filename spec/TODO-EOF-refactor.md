@@ -21,9 +21,10 @@
 > `]`, `}`, `}}`, `` ``` ``, `>`). At end of input every open frame closes
 > innermost-first: positional frames close silently (an ordinary end); a
 > still-open **delimited** frame is the *only* thing that makes EOF "unexpected"
-> — it keeps its content-so-far, emits an `Unclosed*` anomaly citing where it
-> **opened**, and flushes its End. Nothing is ever discarded. That is the whole
-> model.
+> — it keeps its content-so-far, emits an `Unclosed*` **warning** citing where it
+> **opened**, and flushes its End. Any frame still open at EOF also flips the
+> parse *result* to non-success (the input was incomplete). Nothing is ever
+> discarded. That is the whole model.
 
 ## Why this was ever confusing (read once)
 
@@ -80,7 +81,7 @@ other errors in UDON; they are not this mechanism's job.
 | **Closes on** | geometry — end of line, dedent, EOF | a printed end-sequence the parser matches |
 | **Examples** | elements, directives, line comments, prose/text blocks, deferred attribute bodies, bare-token finish | `"…"` `'…'`, `[…]`, `\|{…}`, `;{…}`, `!{{…}}`, `` ``` `` freeform, `<…>`, identity `[…]` |
 | **EOF is** | an ordinary end (≡ newline + maximal dedent) — close silently | **unexpected iff still open** — keep content + `Unclosed*` (entry-site span) + End |
-| **Anomaly at EOF** | none by itself | that construct's code — Error, or **Warning** for `<…>` and freeform |
+| **Anomaly at EOF** | none by itself | per-construct **Warning** (content kept), citing entry site — *and* the document result flips to non-success (see *Severity — two levels*) |
 
 **Line-bound delimited** (`[…]`, `<…>`, identity `[…]`): a delimited construct
 whose scan is *also* cut short by a newline. The newline there is **not** a hard
@@ -95,6 +96,42 @@ EOF.** Each borrows the other's terminator — which is how the ~89 hand `|eof`
 arms *and* the scattered `\n → unclosed` arms both collapse into "which kind is
 this, and (if delimited) is newline also a boundary."
 
+## Severity — two levels (ruled 2026-07-18)
+
+Severity means one thing applied at two scopes. **Warning = content was kept;
+Error = something is gone.** By that test every unclosed-delimited case is
+keep-everything (the string survives as `StringValue`, the array keeps its items
++ `ArrayEnd`, the embed its content + `EmbeddedEnd`), so:
+
+1. **Per construct: uniformly `Warning`.** As each still-open delimited frame
+   unwinds at EOF it emits its `Unclosed*` **warning**, in-band, citing its entry
+   site — nothing was lost by the parse. This retires the current CORE split
+   (some `Unclosed*` are `Error`, `<…>`/freeform are `Warning`); that split was
+   pre-refactor confusion, not a decision. The code is unchanged
+   (`UnclosedStringValue`, …); only its severity normalizes to Warning.
+
+2. **Per document: one incomplete-input result.** A delimited frame *still open
+   at true EOF* means the input is not a whole document — data was lost upstream
+   of us (a truncated file / cut stream) or in the author's intent (the closer
+   they meant to type). So the **parse result turns non-success** (`Result::Err`
+   / non-zero CLI exit): one terminal "Unexpected EOF — input incomplete."
+
+**Scope precisely — "open at *true* EOF," not "any delimiter that failed."** A
+line-bound construct that failed on a *newline* mid-document (`[1 2⏎…`) already
+closed on that newline; its frame is off the stack long before EOF, the document
+reaches a clean end with an empty stack, and it is a plain Warning, **zero exit**.
+Only a frame on the stack when input runs out feeds the document result. The
+distinction that earns its keep: *structurally complete document with a local
+defect* (warning only) vs *truncated document* (warning + non-success) — the same
+missing `]`, genuinely different situations, and CI wants to tell them apart.
+
+**The document result is a *result*, not a wire event.** It carries nothing (no
+residual buffer), is computed after the in-band warnings have flushed, and is the
+parse's outcome — which is exactly what keeps it clear of the rejected
+aggregate-`unexpected-eof` vehicle (below). Cost is one bit at the driver: after
+the final unwind, is any frame on the reified stack delimited? If yes, the result
+is incomplete.
+
 ## Position vs the existing spec
 
 CORE's current "End of input" section already produces the *right outcomes* — it
@@ -108,18 +145,10 @@ EOF (delimited; currently silent and absent from the table).
 **Where this contradicts current 0.9 spec text, change the spec.** The pre-1.0
 text is not precedent. The only bar for keeping a current behavior is a
 *user-facing* reason the general model would not already serve — *"the spec
-already says X for this case"* is **not** such a reason. Worked examples of the
-bar:
-
-- Unclosed `<…>` staying a **Warning** *survives* the bar: it degrades to the
-  same string a dialect-less `<…>` already produces under `NoDialectsLoaded`, so
-  erroring would be the inconsistency.
-- The freeform-vs-quote severity split does **not** obviously survive it (a
-  forgotten `` ``` `` can swallow the rest of the file into the fence, yet is a
-  Warning; an unclosed quote swallows nothing more at EOF, yet is an Error). If
-  severity varies at all, re-derive it on a real axis — blast-radius /
-  recovery-ambiguity — or make the delimited class uniform. Do not inherit
-  today's split as if it encoded a decision.
+already says X for this case"* is **not** such a reason. Severity is the worked
+example: the fix was not to defend today's per-construct `Error`/`Warning` split
+but to replace it with a principled two-level model — see *Severity — two levels*
+above.
 
 ## Things that look like they matter but do not
 
@@ -190,8 +219,10 @@ Consequences:
   trailing newline" anomalous; contradicts newline-equivalence.
 - **A closer-sequence table in CORE or descent** — the grammar already owns the
   exit language; a second copy will drift.
-- **"All `Unclosed*` are Warnings"** (or all Errors) — severity is per-construct
-  code vocabulary; see the user-facing-reason bar above.
+- **Collapsing severity to a single level** — neither "all `Unclosed*` are
+  Errors" nor one blanket Warning with no document signal. The ruling is *two*
+  levels: per-construct **Warning** (content kept) + a document-level
+  incomplete-input **result** (non-zero exit). See *Severity — two levels*.
 - **Modeling `MissingAttributeValue` / cardinality / schema as part of this
   mechanism** — semantics; out, by the litmus test.
 
@@ -207,9 +238,14 @@ CORE text last, once the runtime matches.
 
 - [ ] Rewrite "End of input" to the one rule + one composition sentence
       (innermost-first, the frame stack); collapse the per-construct table into
-      kind + existing codes/severities. Note: the delimited-class **severity**
-      policy (esp. freeform — see Position vs the existing spec) is a required
-      ruling before freeform can go in the first CORE pass. *(discuss w/ Joseph)*
+      kind + codes.
+- [ ] Fold in the two-level severity ruling (see *Severity — two levels*):
+      relabel every per-construct `Unclosed*` to **Warning**, and add the
+      document-level incomplete-input **result** (non-zero exit) fired iff a
+      delimited frame is open at true EOF. Also reconcile CORE's "Anomaly
+      posture" ladder, which today calls unclosed constructs an "error event"
+      while insisting they keep everything — the two-level split says which half
+      is which (content kept = warning; structure incomplete = the result).
 - [ ] Add unclosed identity `[…]` at EOF (delimited); confirm the code name — a
       **new** anomaly surface for consumers (nothing errored there before), so
       fixture it when it lands.
