@@ -1,0 +1,487 @@
+# ============================================================================
+# EXPLORATORY SANDBOX — multi-line behavior of the "single-line for now,
+# multi-line deliberately UNDEFINED" delimited constructs.
+#
+#   *** THIS IS NOT A COMPLIANCE GROUP. NOTHING HERE IS RATIFIED. ***
+#
+# CORE ("Line-boundedness (current version)") locks two constructs MULTI-LINE
+# (|{...} embedded, ``` freeform) — those are OUT OF SCOPE here. For EVERY
+# OTHER delimited construct — <...> typing envelope, "..."/'...' strings,
+# [...] arrays, [...] identity keys, !{{...}} interpolation, ;{...} inline
+# comments, and !{...} / !{:kind:...} inline directive/raw — spanning a
+# newline is *deliberately undefined in this version*: "close them on the
+# line they open." What the parser does at an embedded newline "is not a
+# guarantee and varies — some warn, some silently tolerate it — and either
+# may change."
+#
+# THE INVERTED DISCIPLINE (read before editing):
+#   Normal fixtures assert DESIRED behavior from CORE; a mismatch is a parser
+#   bug. This file is the OPPOSITE. These inputs have no ratified "correct"
+#   answer, so each `events:` block (where present) records what the parser
+#   does TODAY — CURRENT, exploratory, NOT ratified. A future diff here is
+#   INFORMATIVE (the spec/parser moved), NOT a failure. Do not "fix the
+#   parser to this file"; if anything, these observations should inform the
+#   eventual multi-line/dialect ruling, after which the good cases graduate
+#   into a real v0.x group with spec-derived expectations.
+#
+# HOW TO RUN (never runs in CI / the compliance gate — see README.md):
+#   cargo test -p udon-core --test exploratory -- --ignored --nocapture
+#
+# TWO KINDS OF CASE:
+#   * `events:` filled  — current output is stable; recorded as CURRENT.
+#   * `events: []`      — current output is messy/buggy/undefined; the case
+#                         is a NO-PANIC PROBE only, with the observed behavior
+#                         described in the comment (asserting buggy output
+#                         would risk cementing it — see core/CLAUDE.md).
+#
+# GENUINE BUGS found while building this are marked `# ★ BUG` and written up
+# loudly in the final report — they CONTRADICT ratified rules (keep-
+# everything; Unclosed* are Warnings; the Warning-codes registry), so they
+# are real finds, not merely "undefined multi-line."
+#
+# All cases are root_only (truncated / context-sensitive multi-line inputs);
+# the exploratory runner only ever runs the canonical form (no variations).
+# ============================================================================
+
+
+# ===========================================================================
+# THE HEADLINE FINDING (cross-cutting): line-boundedness is NOT a property of
+# the container alone — it is EMERGENT. A construct that silently SPANS
+# (string, interpolation) swallows the newline, so a nominally LINE-BOUND
+# container ([...] array, [...] identity key) reaches its closer on a LATER
+# line and closes CLEANLY, with no warning. The "single-line for now" rule is
+# thus silently violable by nesting. These two cases are the sharpest ones.
+# ===========================================================================
+
+- id: ml_span_string_defeats_linebound_array
+  desc: "spanning string item makes the line-bound array reach its ] on line 2 — CLEAN close, no warning"
+  udon: "|el :xs [\"a\nb\" 2]"
+  root_only: true
+  # CURRENT (exploratory, not ratified): the array is line-bound (a BARE
+  # newline soft-closes it — see ml_arr_bare_newline_soft_closes below), but
+  # the string spans the newline, so the array's ] IS found and it closes
+  # with NO UnclosedArray. Same input without the quotes would warn.
+  # ambiguity: is line-boundedness meant to be defeasible by an inner spanning
+  # construct? If arrays are truly single-line, should this warn (or the
+  # string be forbidden from spanning inside an array)? Whichever way the
+  # multi-line ruling goes, container and contents must be decided together.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [StringValue, "a\nb"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: ml_span_interp_defeats_linebound_array
+  desc: "spanning interpolation item likewise closes the array cleanly across a newline"
+  udon: "|el :xs [!{{a\nb}} 2]"
+  root_only: true
+  # CURRENT (exploratory, not ratified): same emergent-span effect as the
+  # string case — the interpolation swallows the newline, the ] is reached,
+  # clean close.
+  # ambiguity: identical question to the string case; interpolation is the
+  # other silent-spanner, so both entry points defeat array line-bounding.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Interpolation, "a\nb"]
+    - [Integer, "2"]
+    - ArrayEnd
+    - ElementEnd
+
+- id: ml_span_string_defeats_linebound_identity_key
+  desc: "spanning string key makes the line-bound identity [...] reach its ] on line 2 — clean $key"
+  udon: "|el[\"a\nb\"]"
+  root_only: true
+  # CURRENT (exploratory, not ratified): identity [...] is line-bound and
+  # SILENT (see ml_id_bare_newline_silent), but the quoted key spans, so the
+  # identity ] closes cleanly and $key = the multi-line StringValue.
+  # ambiguity: an identity key silently spanning lines is surprising for a
+  # "key" (keys are short, single-line by intuition); does the multi-line
+  # ruling want keys explicitly single-line regardless of inner spanners?
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [StringValue, "a\nb"]
+    - ElementEnd
+
+
+# ===========================================================================
+# A. STRINGS  "..."  /  '...'   →   SILENTLY SPANS (no warning)
+#    A newline is captured as LITERAL content; the closing quote on a later
+#    line closes the string normally. Interior indentation is kept VERBATIM
+#    (no dedent). CORE.md is silent on string line-boundedness (already a
+#    known open: _wip/FINDINGS.md §1.1, TODO-SPEC-CORE) — the parser's de
+#    facto answer is "multi-line, newline = content."
+# ===========================================================================
+
+- id: ml_str_closer_next_line
+  desc: "double-quoted string spans a newline; closer on line 2 closes it — no warning"
+  udon: "|el :k \"abc\ndef\""
+  root_only: true
+  # CURRENT (exploratory, not ratified): newline is literal content of one
+  # StringValue; the string spans and closes cleanly.
+  # ambiguity: should a quoted string be allowed to span at all? If yes, is
+  # the raw newline the right content, or should continuation lines be joined
+  # / dedented (YAML block-scalar style)? CORE says nothing yet.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "abc\ndef"]
+    - ElementEnd
+
+- id: ml_str_indent_kept_verbatim
+  desc: "leading indentation on a continuation line is captured verbatim (no dedent)"
+  udon: "|el :k \"abc\n  def\""
+  root_only: true
+  # CURRENT (exploratory, not ratified): the two leading spaces on line 2 are
+  # part of the StringValue.
+  # ambiguity: THIS is the load-bearing multi-line-string question. Verbatim
+  # capture means indentation for readability leaks into the value — almost
+  # certainly not what an author wants. A real multi-line string rule needs an
+  # indentation/dedent policy (common-prefix strip? relative-to-opener?).
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "abc\n  def"]
+    - ElementEnd
+
+- id: ml_str_blank_line_inside
+  desc: "a blank line inside a spanning string is kept as content (\\n\\n)"
+  udon: "|el :k \"a\n\nb\""
+  root_only: true
+  # CURRENT (exploratory, not ratified): the blank line survives as a bare
+  # newline in the value — note this is NOT emitted as a BlankLine structural
+  # event; inside the string it is pure content.
+  # ambiguity: paragraph handling inside multi-line values is undefined.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "a\n\nb"]
+    - ElementEnd
+
+- id: ml_str_closed_then_prose_same_line
+  desc: "material after the closing quote on line 2 becomes ordinary prose"
+  udon: "|el :k \"ab\ncd\" trailing"
+  root_only: true
+  # CURRENT (exploratory, not ratified): value spans to the line-2 quote;
+  # "trailing" after it is prose of |el.
+  # ambiguity: once a value can span, "where does the value end and the
+  # element body begin" needs a defined rule; here it is "at the close quote."
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "ab\ncd"]
+    - [Text, "trailing"]
+    - ElementEnd
+
+
+# ===========================================================================
+# B. ARRAYS  [...]   →   LINE-BOUND, WARNS
+#    A BARE newline (no inner spanner) soft-closes the array with
+#    UnclosedArray + ArrayEnd; whatever follows on the next line is ordinary
+#    document material (prose if indented under the element, root-level
+#    otherwise). Contrast section-top: an inner spanner defeats this.
+# ===========================================================================
+
+- id: ml_arr_bare_newline_soft_closes
+  desc: "bare newline inside [...] soft-closes it (UnclosedArray); the rest of line 2 is prose"
+  udon: "|el :xs [1\n  2]"
+  root_only: true
+  # CURRENT (exploratory, not ratified): line-bound — newline ≡ EOF for the
+  # array; "2]" (indented under el) parses as prose.
+  # ambiguity: this is the current-parser answer to the OPEN UX question
+  # "are arrays multi-line?" (_wip/FINDINGS.md, TODO-EOF-refactor "Open
+  # work"). If arrays become multi-line, this flips to a clean 2-item array.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Text, "2]"]
+    - ElementEnd
+
+- id: ml_arr_never_closed_lines_become_prose
+  desc: "never-closed array at root: each following line becomes its own root-level Text"
+  udon: "|el :xs [1\n2\n3"
+  root_only: true
+  # CURRENT (exploratory, not ratified): array warns + closes at the first
+  # newline; "2" and "3" are unindented, so they are root-level Text events
+  # AFTER ElementEnd (not children of el).
+  # ambiguity: indentation-vs-line-bounding interaction — the array closing
+  # does not pull following lines into the element.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+    - [Text, "2"]
+    - [Text, "3"]
+
+
+# ===========================================================================
+# C. TYPING ENVELOPE  <...>   →   LINE-BOUND, WARNS  (already enforced)
+#    This is the ONE construct whose single-line-ness CORE already ENFORCES
+#    (a newline warns UnclosedTypeEnvelope — see CORE "Explicit Typing").
+#    Captured lexeme INCLUDES the opening "<". Rest of line 2 → prose.
+# ===========================================================================
+
+- id: ml_env_bare_newline_soft_closes
+  desc: "newline inside <...> ends the value with UnclosedTypeEnvelope; rest of line 2 is prose"
+  udon: "|el :k <abc\n  def>"
+  root_only: true
+  # CURRENT (exploratory, not ratified — though the newline-warns rule IS
+  # ratified for <...>): captured "<abc" (incl the "<"), "def>" is prose.
+  # ambiguity: the captured value keeps the literal "<" — an artifact of
+  # pass-through, worth confirming when envelopes get a real dialect layer.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<abc"]
+    - [Text, "def>"]
+    - ElementEnd
+
+- id: ml_env_never_closed_lines_become_prose
+  desc: "never-closed envelope: value is only line-1's capture; following lines are prose"
+  udon: "|el :k <a\nb\nc"
+  root_only: true
+  # CURRENT (exploratory, not ratified): warns at the first newline, keeps
+  # "<a"; "b" and "c" are root-level Text after ElementEnd.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<a"]
+    - ElementEnd
+    - [Text, "b"]
+    - [Text, "c"]
+
+
+# ===========================================================================
+# D. IDENTITY KEYS  [...]   →   LINE-BOUND, but SILENT (NO warning)
+#    ★ ASYMMETRY: identity [...] is line-bound like arrays/envelopes, yet it
+#    closes the key at the newline WITHOUT any warning (UnclosedIdentityKey
+#    never fires today — a known gap: _wip/FINDINGS.md §1.3, §2). So the same
+#    "line-bound" behavior is loud for arrays/envelopes and silent here.
+# ===========================================================================
+
+- id: ml_id_bare_newline_silent
+  desc: "★ newline inside identity [...] silently closes $key (NO UnclosedIdentityKey); rest is prose"
+  udon: "|el[abc\n  def]"
+  root_only: true
+  # CURRENT (exploratory, not ratified): $key = "abc" (line 1 only); "def]"
+  # is prose. No warning — contrast arrays (UnclosedArray) and envelopes
+  # (UnclosedTypeEnvelope), which DO warn on the same shape.
+  # ambiguity: should a truncated identity key warn (UnclosedIdentityKey is
+  # in the registry but unemitted)? The silent-vs-loud asymmetry across the
+  # three bracket-family constructs is the spec question.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [BareValue, "abc"]
+    - [Text, "def]"]
+    - ElementEnd
+
+
+# ===========================================================================
+# E. INTERPOLATION  !{{...}}   →   SILENTLY SPANS (no warning when closed)
+#    Newline = expression content; the closing }} on a later line closes it.
+#    Interior indentation kept verbatim. Unclosed at EOF keeps everything
+#    INCLUDING the trailing newline, then UnclosedInterpolation.
+# ===========================================================================
+
+- id: ml_interp_closer_next_line
+  desc: "interpolation spans a newline; }} on line 2 closes it — no warning"
+  udon: "|p !{{a\nb}}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): one Interpolation with an embedded
+  # newline in the expression text.
+  # ambiguity: expression languages are usually newline-tolerant, so spanning
+  # may be DESIRABLE here (unlike strings/arrays) — but it is still undefined,
+  # and indentation is captured verbatim (see next).
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "a\nb"]
+    - ElementEnd
+
+- id: ml_interp_indent_kept_verbatim
+  desc: "continuation-line indentation inside !{{...}} is captured verbatim"
+  udon: "|p !{{a\n  b}}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): the two leading spaces are part of
+  # the expression text.
+  # ambiguity: same dedent question as strings — does the interpolation
+  # expression want its indentation trimmed?
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "a\n  b"]
+    - ElementEnd
+
+- id: ml_interp_never_closed_keeps_trailing_newline
+  desc: "unclosed interpolation at EOF keeps everything incl the trailing newline, then warns"
+  udon: "|p !{{a\nb\n"
+  root_only: true
+  # CURRENT (exploratory, not ratified): note the captured expression ends
+  # with a literal "\n" (the final newline is kept as content), UNLIKE the
+  # closed cases. Then UnclosedInterpolation.
+  # ambiguity: keeping the trailing newline in the captured expression is a
+  # keep-everything artifact; a real rule might trim it.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "a\nb\n"]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+
+
+# ===========================================================================
+# F. INLINE COMMENTS  ;{...}   →   SILENTLY SPANS (no warning when closed)
+#    Brace-delimited; newline = comment content; closing } on a later line
+#    closes it. Interior indentation kept verbatim.
+# ===========================================================================
+
+- id: ml_ic_closer_next_line
+  desc: "inline comment spans a newline; } on line 2 closes it — no warning"
+  udon: "|p a ;{note\nmore}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): one CommentStart/Text/CommentEnd,
+  # the Text carrying the embedded newline.
+  # ambiguity: multi-line inline comments may be genuinely useful; but with
+  # the closer optional-ish (brace-counted), a stray unbalanced brace makes
+  # the comment silently eat following lines — a footgun worth a rule.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Text, "note\nmore"]
+    - CommentEnd
+    - ElementEnd
+
+- id: ml_ic_deep_indent_kept_verbatim
+  desc: "continuation-line indentation inside ;{...} is captured verbatim"
+  udon: "|p ;{line1\n      deep indent}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): the six leading spaces are kept in
+  # the comment Text.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - CommentStart
+    - [Text, "line1\n      deep indent"]
+    - CommentEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# G. INLINE DIRECTIVE  !{directive ...}   →   spans (per-line Text args) when
+#    closed; ★ BUGGY when unclosed.
+#    CLOSED across lines: each line becomes a separate Text argument, closer
+#    } on a later line closes it. This "works" but is undefined.
+#    UNCLOSED: two DIFFERENT anomaly shapes depending on a trailing newline,
+#    both wrong — see the ★ BUG probes. (Model gap: no UnclosedInlineDirective
+#    code exists — _wip/FINDINGS.md §1.2 / L3.)
+# ===========================================================================
+
+- id: ml_dir_closed_next_line
+  desc: "inline directive spans lines (each line a Text arg); } on line 2 closes it"
+  udon: "|p !{if a\nb}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): DirectiveStart, name "if", then one
+  # Text per line, DirectiveEnd. Closes cleanly.
+  # ambiguity: is a directive meant to take multi-line arguments this way? The
+  # per-line Text split is an implementation artifact, not a designed rule.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "a"]
+    - [Text, "b"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ★ BUG (probe only — do not assert). Unclosed inline directive WITH a
+# trailing newline before EOF: the parser DOUBLES the last text argument
+# ("|p !{if x\n" -> Text "xx"; "|p !{if x\nhello\n" -> Text "x", Text
+# "hellohello") AND emits [Error, "UnclosedText"] — an ERROR (not a Warning,
+# violating the two-level severity ruling) with a code that is NOT in the
+# Warning-codes registry. Contradicts keep-everything (content corrupted) and
+# the ruling that Unclosed* are warnings. See the final report.
+- id: ml_dir_unclosed_trailing_newline_BUG
+  desc: "★ BUG: unclosed !{directive} + trailing newline doubles last arg AND emits Error UnclosedText"
+  udon: "|p !{if x\n"
+  root_only: true
+  events: []
+
+# ★ BUG (probe only). Unclosed inline directive WITHOUT a trailing newline:
+# no doubling, but the anomaly is [Warning, "UnclosedEmbedded"] — a Warning
+# (right severity) with the WRONG code (this is a directive, not an embed;
+# no UnclosedInlineDirective code exists). So the SAME construct yields two
+# different anomaly shapes depending solely on a trailing newline.
+- id: ml_dir_unclosed_no_trailing_newline_BUG
+  desc: "★ BUG: unclosed !{directive}, no trailing newline — Warning UnclosedEmbedded (wrong code)"
+  udon: "|p !{if x\nhello"
+  root_only: true
+  events: []
+
+
+# ===========================================================================
+# H. INLINE RAW  !{:kind: ...}   →   spans when closed; ★ BUGGY when unclosed
+#    CLOSED across lines: RawContent keeps the embedded newline; brace-counted
+#    closer } on a later line closes it.
+#    UNCLOSED: ★ ALL raw content is DROPPED and NO warning is emitted.
+# ===========================================================================
+
+- id: ml_raw_closed_next_line
+  desc: "inline raw spans a newline; RawContent keeps it; } on line 2 closes it"
+  udon: "|p !{:json: abc\ndef}"
+  root_only: true
+  # CURRENT (exploratory, not ratified): RawContent carries the embedded
+  # newline; clean close.
+  # ambiguity: multi-line raw is plausibly desirable (embedded JSON/code), but
+  # undefined; the indentation/dedent question applies here too.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "json"]
+    - [Raw, ""]
+    - [RawContent, "abc\ndef"]
+    - DirectiveEnd
+    - ElementEnd
+
+# ★ BUG (probe only — do not assert). Unclosed inline raw: the entire raw
+# body is LOST. "|p !{:json: abc"<EOF> (with or without a trailing newline)
+# emits DirectiveStart, name, Raw "", DirectiveEnd — NO RawContent, NO
+# warning. Contrast the closed form, which keeps "abc". This violates
+# keep-everything (total content loss) and emits no anomaly at all. Also a
+# model gap: no UnclosedInlineRaw code exists. See the final report.
+- id: ml_raw_unclosed_drops_content_BUG
+  desc: "★ BUG: unclosed !{:kind: ...} drops ALL content and emits NO warning"
+  udon: "|p !{:json: abc"
+  root_only: true
+  events: []
