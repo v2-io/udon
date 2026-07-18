@@ -29,13 +29,30 @@ root `TODO-META.md` — not here.)
       `""` + `is_anonymous()` (vs `Option<&str>`); streaming granularity =
       one root-level subtree per shipment, each an owned single-root
       `Document`; root blank lines/warnings ship nothing.
-- [ ] **Error-reporting quality** — multi-error collection
-      (`Document::parse` stopped at the first error as of the July estate
-      review), source-snippet diagnostics, and the message-quality bar
-      ("world-class error messages" was the stated goal; plumbing was
-      absent). Node spans landed 2026-07-11 — verify current state before
-      building on this description. *(routed from the archived reboot plan,
-      2026-07-16)*
+- [ ] **Error-reporting quality + keep-everything at the AST layer.** Current
+      state (verified 2026-07-18 at `tree.rs:244`, supersedes the estate
+      review's stale "stopped at first error"): `Document::parse` collects *all*
+      errors now, but two things fight keep-everything and will bite whoever
+      builds the real API — (a) on any error it returns `Err(ParseErrors)` and
+      **drops the built tree** (the event layer kept everything; the AST layer
+      throws it away), and (b) **warnings are never collected** (handed to the
+      builder, which ignores them), so a caller can't see them at all. The
+      two-level severity ruling (`../spec/TODO-EOF-refactor.md` → *Severity — two
+      levels*) sharpens both: every `Unclosed*` is now a **warning** (dropping
+      warnings would hide unclosed constructs), and the document-level
+      incomplete-input is a **result**, not a diagnostic (modeling it as an
+      event is the rejected aggregate vehicle). Constraints for the rework —
+      **surface shape left to the implementer**: the tree stays available,
+      diagnostics (warnings + errors: severity/span/code/message) ride
+      alongside, and the completeness verdict is separate — the
+      rust-analyzer/rowan "tree + diagnostics" shape rather than
+      `Result<Tree, Err>`, with a `?`-friendly strict convenience for callers
+      who'd rather bail. Timesaver worth folding in: the code vocabulary is
+      split (errors are a typed `ParseErrorCode`, warnings are stringly-typed
+      `Cow<[u8]>`) — the ruling moves `Unclosed*` into warnings, so a unified
+      `Severity` + typed code earns its keep. Still open too: source-snippet
+      diagnostics, the message-quality bar. *(current-state + severity linkage
+      2026-07-18)*
 - [ ] **[later] Language bindings** — Ruby (FFI over the streaming API, lazy
       tree projection), WASM, Python (PyO3), C ABI shared library. Predicated
       on a stable, compliant parser API.
