@@ -7,10 +7,14 @@
 > *Discipline (META-1): read the CORE section before editing or advising on
 > it, and re-grep line numbers — they drift.*
 
-**EOF / positional–delimited:** settled framing and CORE rewrite plan live in
-[`TODO-EOF-refactor.md`](TODO-EOF-refactor.md) (incl. Addendum A on inferring
-kind from grammar shape). Prefer that over inventing EOF composition rules
-in isolation.
+**EOF / positional–delimited (alpha.2 — RULINGS LANDED, do not re-open):** every
+EOF decision is now ruled and recorded in [`msc/CHANGELOG.md`](msc/CHANGELOG.md)
+(0.9.0-alpha.2 "Ruled"); the CORE text is rewritten (End of input / Anomaly
+posture / Line-boundedness / Emission order). The active next step is the fixture
+**finalization** — roadmap in `../core/fixtures/_wip/FINDINGS.md`. Design of
+record: [`TODO-EOF-refactor.md`](TODO-EOF-refactor.md) (Addendum A). Warning-code
+spellings are provisional (the CHANGELOG guardrail — descent will regenerate
+them). Prefer the CHANGELOG + refactor doc over inventing EOF rules in isolation.
 
 ---
 

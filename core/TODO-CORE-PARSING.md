@@ -20,6 +20,14 @@ the grammar (`../tools/descent/TODO-DESCENT.md`). Implement toward them, but
 expect a subversion to regenerate them descent-appropriately — don't harden the
 grammar around a guessed spelling the derivation would clean up.
 
+**Fixtures-first gate (Joseph's trade, 2026-07-18):** the alpha.2 EOF bugs below
+are being **documented as fixtures first**. Do **not** touch the grammar to fix
+them until the fixture *finalization* is complete (apply corrections → verify +
+promote the `_wip/` drafts into `v0.9/` → the surviving gate reds become the real
+to-do). Roadmap: README Status + `fixtures/_wip/FINDINGS.md`; rulings:
+`../spec/msc/CHANGELOG.md` alpha.2. The gate being RED on these right now is
+**intended**.
+
 ## Open
 
 - [ ] **Prose-shaped-blob audit: `attr_trailing_blob` and `flag_value`'s

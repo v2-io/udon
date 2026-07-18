@@ -156,7 +156,7 @@ UDON achieves the highest elements/sec because it parses fewer bytes for the sam
 
 | Document | Description |
 |----------|-------------|
-| [spec/CORE.md](spec/CORE.md) | Full specification (0.9.0-alpha.1 in progress; 0.8.0 tagged `core-v0.8.0`) |
+| [spec/CORE.md](spec/CORE.md) | Full specification (0.9.0-alpha.2 in progress; 0.8.0 tagged `core-v0.8.0`) |
 | [spec/msc/CHANGELOG.md](spec/msc/CHANGELOG.md) | Spec changelog + the 0.9 rulings ledger |
 | [design/](design/) | Ahead-of-spec design layer (AST, paths, agentic tools, schema, positioning) — see its README |
 | [design/examples/](design/examples/) | Comprehensive syntax examples |
@@ -213,6 +213,36 @@ are archived — fully drained into the per-area TODO lanes on 2026-07-16 —
 at [_archive/REVIEW-JULY-2026.md](_archive/REVIEW-JULY-2026.md) and
 [_archive/REBOOT-PLAN.md](_archive/REBOOT-PLAN.md).
 
+**Active work (2026-07-18) — CORE `0.9.0-alpha.2`, the EOF recast.** The biggest
+change since alpha.1: end-of-input and its edges were reconceived as **positional
+vs delimited** constructs with **two-level severity** (each per-construct
+`Unclosed*` = a *Warning*, content kept; the document-level "incomplete input" is
+a separate *result*, not a wire event). CORE's "End of input" / "Anomaly posture"
+/ "Line-boundedness" / "Emission order" sections are rewritten; the design of
+record is [`spec/TODO-EOF-refactor.md`](spec/TODO-EOF-refactor.md) and **the full
+ruling ledger is [`spec/msc/CHANGELOG.md`](spec/msc/CHANGELOG.md) (0.9.0-alpha.2
+"Ruled")** — every EOF decision is there (line-boundedness = multi-line
+deliberately undefined; emission order content→warning→End; `$partial-key` for
+unclosed keys; inline `!{…}` codes; empty/whitespace brackets; root-`:x`
+undefined; EOF≡eol edges; …). Warning-code **spellings are provisional** pending
+descent's auto-derivation (see the CHANGELOG guardrail) — do not cement them.
+
+*Where it stands, and what's next (READ THIS if you're picking up the work):* an
+exhaustive **fixture harvest** — 104 spec-derived draft cases across three agents
+— sits in `core/fixtures/_wip/`, and its guide
+[`core/fixtures/_wip/FINDINGS.md`](core/fixtures/_wip/FINDINGS.md) carries the
+**finalization roadmap** in its top banner. A **non-gating exploratory sandbox**
+for undefined multi-line behavior is in `core/fixtures/exploratory/` (run:
+`cargo test -p udon-core --test exploratory -- --ignored --nocapture`). The
+compliance gate is intentionally **RED** on the alpha.2 EOF bugs the harvest
+documented — *reds are finds, not failures; they are the grammar to-do list.*
+**NEXT is fixtures-first (NO grammar changes until the fixtures are complete —
+Joseph's explicit trade):** the *fixture finalization* — apply the FINDINGS §3
+corrections to `v0.9/`, verify each `_wip/` draft against the CHANGELOG rulings +
+CORE (correcting fixture-bugs; a red must be a real grammar gap, not a
+mis-expectation), and promote the verified drafts into `v0.9/` with reds intact.
+*Then* the grammar phase (implement the rulings + fix the bugs → green).
+
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The
   rebooted spec (escape unification, `<…>` typing, numbers/`0d`, identity
@@ -237,9 +267,11 @@ Current state (2026-07-16):
   (2026-07-16, both parsers, event streams diffed) found zero
   errors/warnings across all six external documents; see `CONSUMERS.md`.
 
-Next: densify the v0.9 fixture group (EOF/Unclosed* behaviors from CORE's
-"End of input" table, legacy-pre-0.8 mining, edge combinations), rule the
-open spec silences (`spec/TODO-SPEC-CORE.md`), then tag `core-v0.9.0`.
+Next: the **alpha.2 fixture finalization** described at the top of this Status
+(fixtures-first, no grammar yet), then the grammar phase (implement the rulings +
+fix the EOF bugs → green), then remaining densification and the `core-v0.9.0`
+tag. (The EOF-densification the 2026-07-16 note called for is what the alpha.2
+recast + harvest delivered.)
 
 ## How the work is organized
 
@@ -264,7 +296,7 @@ inline, not in a separate valve.
 | Area (→ TODO) | Covers | Complies now | Core target |
 |---|---|---|---|
 | **META** (`TODO-META.md`) | tracking system; compliance-versioning keystone | — | — |
-| **SPEC-CORE** (`spec/TODO-SPEC-CORE.md`) | the core spec `CORE.md` | *is the contract* | **`0.9.0-alpha.1`** |
+| **SPEC-CORE** (`spec/TODO-SPEC-CORE.md`) | the core spec `CORE.md` | *is the contract* | **`0.9.0-alpha.2`** |
 | **SPEC-OTHER** (`spec/TODO-SPEC-OTHER.md`) | dialects, markdown, temporal, composite | — none yet | `core ^0.9` |
 | **AUX** (`spec/TODO-AUX.md`) | schema, paths, patch | — none yet | `core ^0.9` |
 | **CORE-PARSING** (`core/TODO-CORE-PARSING.md`) | event parser + descent grammar | **`core-v0.8.0`** | `core ^0.9` |
