@@ -1,0 +1,967 @@
+# ============================================================================
+# DELIMITED CONSTRUCTS UNCLOSED AT EOF (and, for line-bound ones, at an
+# interior newline) — EXHAUSTIVE DRAFT
+#
+# Slice of the alpha.2 EOF refactor. Design of record:
+# spec/TODO-EOF-refactor.md. Governing spec text: CORE.md "End of input
+# (EOF)", "Anomaly posture", "Warning codes".
+#
+# THE MODEL (as I derived expectations from):
+#   * Every DELIMITED construct (quoted string, [..] array, |{..} embed,
+#     ;{..} inline comment, !{{..}} interpolation, <..> envelope, ``` fence,
+#     identity [..]) closes ONLY on its printed end-sequence. At EOF a still-
+#     open one KEEPS its content-so-far, emits its Unclosed* WARNING (citing
+#     where it opened), and flushes its End — innermost-first, one warning
+#     per open frame.
+#   * Two-level severity (CORE "End of input"): every per-construct Unclosed*
+#     is a **Warning** (content kept). The document-level "incomplete input"
+#     is a separate *driver result* (non-zero exit / Err), NOT a wire event —
+#     so NO fixture below can assert it. See the ⚑ INFRASTRUCTURE flag at the
+#     bottom: the two-level ruling is currently un-testable through this
+#     fixture format, and the line-bound-on-interior-newline cases (arrays,
+#     identity keys) are wire-IDENTICAL to their EOF twins yet differ in the
+#     document result. If that distinction is meant to be enforced, the
+#     fixture schema needs a `result:`/`incomplete_input:` field.
+#
+# WHY root_only ON EVERY CASE: inputs are deliberately truncated; the
+# harness's wrap/indent variations would append material after the cut point
+# (matches eof_recovery.yaml).
+#
+# Expectations DERIVED FROM CORE, never traced from parser output. I *did*
+# run the current parser once per case to fill the `red?:` note honestly
+# (parser output NEVER drove an expectation — where parser disagrees with
+# CORE I assert CORE and mark red). Event vocabulary + ordering conventions
+# lifted from v0.9/eof_recovery.yaml, error_cases.yaml, arrays.yaml,
+# typing_envelope.yaml, identity.yaml, freeform.yaml.
+#
+# KEY FINDINGS surfaced to Joseph (detail inline + in the report):
+#   1. EMBEDDED any-phase EOF-drop bug is real and precise: |{..} emits
+#      UnclosedEmbedded ONLY once CONTENT has begun. In bare-opener /
+#      identity / attr phase the warning is DROPPED. Every such case is RED.
+#      (Named in TODO-EOF-refactor "Open work".)
+#   2. IDENTITY [..] emits NO Unclosed warning today, in ANY phase — the code
+#      UnclosedIdentityKey never fires. Wholly-new consumer surface; every
+#      identity-open case is RED.
+#   3. INTERPOLATION drops a lone trailing `}` ( !{{a} at EOF captures "a",
+#      not "a}" ) — content loss, contra keep-everything. RED.
+#   4. ⚑ MODEL GAP: inline directive !{..} and inline raw !{:kind: ..} are
+#      brace-delimited constructs with NO Unclosed* code in the registry.
+#      The parser reuses `UnclosedEmbedded` for an unclosed inline directive.
+#      See section J.
+#   5. ⚑ MODEL AMBIGUITY: quoted strings are NOT in the line-bound list, so a
+#      newline inside "..." is captured as content (parser agrees). CORE.md
+#      never states this either way. Section A flags it.
+# ============================================================================
+
+
+# ===========================================================================
+# A. QUOTED STRINGS  "..."  and  '...'
+#    CORE "Strings"; "End of input" (delimited); code UnclosedStringValue.
+#    Wire shape (error_cases.yaml / eof_recovery.yaml): [StringValue, <text>]
+#    then [Warning, UnclosedStringValue] — NO StringEnd event. Content-first.
+#    Strings are NOT in the line-bound set (TODO-EOF-refactor "The cut"), so a
+#    newline is ordinary content (see A5 ⚑).
+#    Already covered elsewhere: eof_unclosed_string_block_attr (block, EOF),
+#    error_cases unclosed_double/single_quote (sameline, EOF). These add the
+#    opener-only / empty-capture / newline-inside variations.
+# ===========================================================================
+
+# CORE "End of input": content kept "may be nothing beyond the opener itself"
+# — so an opener with nothing captured is a StringValue of "" plus the warning.
+- id: du_str_double_opener_only
+  desc: '" opened then EOF, nothing captured — empty StringValue + warning'
+  udon: '|el :k "'
+  root_only: true
+  # CORE: "captured content is kept ... may be nothing beyond the opener" + UnclosedStringValue
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, ""]
+    - [Warning, "UnclosedStringValue"]
+    - ElementEnd
+
+- id: du_str_single_opener_only
+  desc: "' opened then EOF, nothing captured — empty StringValue + warning"
+  udon: "|el :k '"
+  root_only: true
+  # CORE "Strings": '...' is equally a string; same EOF rule.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, ""]
+    - [Warning, "UnclosedStringValue"]
+    - ElementEnd
+
+- id: du_str_sameline_partial
+  desc: sameline double-quote with partial content at EOF
+  udon: '|el :k "abc'
+  root_only: true
+  # CORE "End of input": captured content ("abc") kept + UnclosedStringValue.
+  # red?: no  (matches error_cases unclosed_double_quote_error shape)
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "abc"]
+    - [Warning, "UnclosedStringValue"]
+    - ElementEnd
+
+# ⚑ MODEL AMBIGUITY (most valuable find in this section). CORE.md nowhere
+# states whether "..." may span a newline. TODO-EOF-refactor's line-bound set
+# is ONLY {[..], <..>, identity [..]} — strings excluded — which *implies*
+# the newline is plain content and the string runs to the matching quote or
+# EOF. I assert that reading (newline IN the StringValue). If instead strings
+# should be line-bound (newline warns like <..>), this case flips. Please rule.
+- id: du_str_newline_inside_is_content
+  desc: "⚑ newline inside \"...\" is captured as content (strings not line-bound) — CORE silent"
+  udon: "|el :k \"abc\ndef"
+  root_only: true
+  # CORE "The cut" (TODO-EOF-refactor): strings absent from the line-bound set
+  # ⇒ newline is content, not a soft close. red?: no (parser agrees) but
+  # NORMATIVE STATUS UNSTATED in CORE.md — flag.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [StringValue, "abc\ndef"]
+    - [Warning, "UnclosedStringValue"]
+    - ElementEnd
+
+
+# ===========================================================================
+# B. ARRAYS  [...]
+#    CORE "Inline Lists", "Contexts and Terminators" (closes only on ']',
+#    else UnclosedArray); LINE-BOUND (TODO-EOF-refactor). Wire shape
+#    (arrays.yaml/eof_recovery.yaml): items, then [Warning, UnclosedArray],
+#    then ArrayEnd. Whether [..] is line-bound vs multi-line is EXPLICITLY an
+#    open UX decision (TODO-EOF-refactor "Open work"); current direction =
+#    line-bound (arrays.yaml array_unclosed_is_error), which I follow + flag.
+#    Already covered: eof_unclosed_array (EOF, items), array_unclosed_is_error
+#    (newline), eof_unclosed_array_nested. These add opener-only + the
+#    interior-newline "rest becomes prose" behavior.
+# ===========================================================================
+
+- id: du_arr_opener_only_eof
+  desc: "[ opened then EOF, no items — ArrayStart + UnclosedArray + ArrayEnd"
+  udon: "|el :xs ["
+  root_only: true
+  # CORE "End of input": empty capture kept; UnclosedArray; ArrayEnd flushes.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+# LINE-BOUND consequence: the newline soft-closes the array (UnclosedArray at
+# the newline), and everything after it is ordinary document material — here
+# the "2]" on the next line is prose of |el. This is the load-bearing
+# demonstration that [..] does not span newlines under the current flag.
+- id: du_arr_newline_closes_rest_is_prose
+  desc: interior newline soft-closes the array; the following line is prose
+  udon: "|el :x [1\n  2]"
+  root_only: true
+  # CORE/TODO-EOF-refactor "Line-bound delimited": newline ≡ EOF for [..];
+  # UnclosedArray at the newline, then "2]" parses as prose.
+  # red?: no  (⚑ but see infra flag: document result here is SUCCESS —
+  #            complete doc — vs non-success for the EOF twin; un-assertable)
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "x"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Text, "2]"]
+    - ElementEnd
+
+# Sameline (element-line) array value, opener + one item, EOF — same row as
+# block but element-line context, to pin the terminator uniformity.
+- id: du_arr_sameline_partial_eof
+  desc: sameline array value with one item at EOF
+  udon: "|el :xs [1"
+  root_only: true
+  # CORE "Contexts and Terminators": array grammar uniform across contexts.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# C. EMBEDDED  |{...}
+#    CORE "Inline and Embedded Elements"; "Attributes" (embedded = element-
+#    rooted sameline). NOT line-bound (spans lines). Code UnclosedEmbedded.
+#    Wire shape (eof_unclosed_embedded): content, [Warning, UnclosedEmbedded],
+#    EmbeddedEnd.
+#
+#    ★ THE any-phase EOF-DROP BUG (TODO-EOF-refactor "Open work"): the parser
+#    emits UnclosedEmbedded ONLY after CONTENT has begun. In bare-opener,
+#    identity, and attr phases it silently drops the warning. CORE requires
+#    the warning in EVERY phase (keep-everything + "the only thing EOF is
+#    unexpected for"). So C1–C6 below are RED by design — they document the
+#    gap. (The content-phase cases eof_unclosed_embedded / _nested already
+#    pass; not duplicated here.)
+# ===========================================================================
+
+- id: du_embed_bare_opener_eof
+  desc: "|{ opened then EOF, no name yet — UnclosedEmbedded still required"
+  udon: "|p |{"
+  root_only: true
+  # CORE "End of input": a still-open delimited frame warns even if nothing
+  # beyond the opener was captured. Anonymous embed, empty.
+  # red?: YES — parser emits EmbeddedStart+EmbeddedEnd, NO warning (drop bug).
+  # (⚑ minor: is a bare "|{"<EOF> even a valid embed opener, or prose? I read
+  #  the opener as recognized ⇒ open frame ⇒ warns. Confirm.)
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_embed_identity_phase_eof
+  desc: "|{a — name captured, no content — UnclosedEmbedded required (RED)"
+  udon: "|p |{a"
+  root_only: true
+  # CORE: name is kept; frame still open at EOF ⇒ UnclosedEmbedded.
+  # red?: YES — parser drops the warning (identity phase).
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_embed_identity_key_open_eof
+  desc: "|{a[k — embed AND identity key both open — cascade of two warnings (RED)"
+  udon: "|p |{a[k"
+  root_only: true
+  # CORE: innermost-first — identity key soft-closes (UnclosedIdentityKey,
+  # content "k" kept) THEN the embed (UnclosedEmbedded). Two open frames.
+  # red?: YES — parser emits neither warning (identity never warns; embed
+  # drops in identity phase). Doubly red.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_embed_attr_open_missing_value_eof
+  desc: "|{a :href — open plain attr (MissingAttributeValue) then UnclosedEmbedded (RED)"
+  udon: "|p |{a :href"
+  root_only: true
+  # CORE "Attribute Keys and Flags": plain :key with no value ⇒
+  # MissingAttributeValue ERROR + synthesized Nil (positional, semantic-at-
+  # close). CORE "End of input": embed frame still open ⇒ UnclosedEmbedded.
+  # This is the CORE-NAMED gap (eof_recovery eof_unclosed_embedded_with_open_attr).
+  # red?: YES — parser emits Error+Nil but DROPS UnclosedEmbedded (attr phase).
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [Error, "MissingAttributeValue"]
+    - Nil
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_embed_flag_then_eof
+  desc: "|{a :ready? — flag snaps true, then UnclosedEmbedded (RED)"
+  udon: "|p |{a :ready?"
+  root_only: true
+  # CORE "Flag rule": :ready? at boundary (EOF) snaps to true, no
+  # MissingAttributeValue. CORE "End of input": embed frame open ⇒ warning.
+  # red?: YES — parser emits BoolTrue but drops UnclosedEmbedded (attr phase).
+  # (Good contrast to du_embed_attr_open_*: flag ⇒ no error, plain ⇒ error.)
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "ready?"]
+    - BoolTrue
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_embed_attr_value_then_eof
+  desc: "|{a :href /home — bare value finishes at EOF-boundary, then UnclosedEmbedded (RED)"
+  udon: "|p |{a :href /home"
+  root_only: true
+  # CORE "The Scan and the Bare-Token Boundary": EOF is a boundary marker, so
+  # the bare token "/home" finishes as a single-token value (BareValue), same
+  # as the embedded_multiline fixture's "/docs". CORE "End of input": embed
+  # still open ⇒ UnclosedEmbedded.
+  # red?: YES — parser emits BareValue "/home" but drops UnclosedEmbedded.
+  # (⚑ minor: BareValue vs Text-blob here — I read EOF as the boundary marker
+  #  ⇒ BareValue; the parser agrees on BareValue. The DROP is the only defect.)
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "href"]
+    - [BareValue, "/home"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+# Content-phase POSITIVE control that is NOT already in eof_recovery: name +
+# one content word. Confirms the boundary — this one the parser DOES warn on.
+- id: du_embed_content_phase_eof
+  desc: "|{a x — content begun, so UnclosedEmbedded fires (positive control, not red)"
+  udon: "|p |{a x"
+  root_only: true
+  # CORE "End of input": embed open ⇒ UnclosedEmbedded.
+  # red?: no — parser warns once content has begun (marks the bug boundary).
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "x"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# D. INLINE COMMENTS  ;{...}
+#    CORE "Inline Comments"; brace-counted; NOT line-bound. Code
+#    UnclosedInlineComment. Wire shape (eof_unclosed_inline_comment):
+#    CommentStart, [Text ..], [Warning, UnclosedInlineComment], CommentEnd.
+#    Already covered: eof_unclosed_inline_comment (content),
+#    _nested_brace. These add opener-only, in-blob, and in-embed contexts.
+# ===========================================================================
+
+- id: du_ic_opener_only_eof
+  desc: ";{ opened then EOF, empty — warning still fires"
+  udon: "|p a ;{"
+  root_only: true
+  # CORE "End of input": empty capture kept + UnclosedInlineComment.
+  # red?: no  (parser emits CommentStart + empty Text + warning + CommentEnd;
+  #            empty Text omitted here as a foldable artifact)
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+    - ElementEnd
+
+# ;{..} inside a text-blob attribute value (CORE "Text-Blob Values": inline
+# forms fire in a blob). Pins the inline comment in VALUE/BLOB position.
+- id: du_ic_in_text_blob_eof
+  desc: unclosed ;{ inside an attribute text blob at EOF
+  udon: "|el\n  :note text ;{c"
+  root_only: true
+  # CORE "Text-Blob Values": ";{...}" fires inside a blob; CORE "End of input"
+  # ⇒ UnclosedInlineComment. Block attr line, so blob owns the tail.
+  # red?: unsure (blob segmentation rhythm is "working shape" per CORE Event
+  #        Encoding note; assert the comment warning regardless of Text split)
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "text "]
+    - CommentStart
+    - [Text, "c"]
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+    - ElementEnd
+
+# ;{..} unclosed INSIDE an embedded element that is ALSO unclosed — cascade.
+# CORE "Contexts and Terminators": inside |{..} only ;{..} opens a comment.
+- id: du_ic_in_unclosed_embed_eof
+  desc: unclosed ;{ inside an unclosed |{ — inner comment warns, then embed warns
+  udon: "|p |{em x ;{note"
+  root_only: true
+  # CORE: innermost-first — UnclosedInlineComment (content "note") then, since
+  # the embed is in CONTENT phase, UnclosedEmbedded.
+  # red?: no — this one the parser gets right (embed already in content phase,
+  #        so its warning is not dropped; comment warns too). Nice positive
+  #        cascade. (Parser emits a spurious empty Text before UnclosedEmbedded;
+  #        omitted here as foldable.)
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "em"]
+    - [Text, "x "]
+    - CommentStart
+    - [Text, "note"]
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# E. INTERPOLATION  !{{...}}
+#    CORE "Unified Inline Syntax": ends at the FIRST }} — a single } is
+#    expression content. NOT line-bound. Code UnclosedInterpolation. Wire
+#    shape (error_cases unclosed_interpolation_error): [Interpolation, <expr>]
+#    then [Warning, UnclosedInterpolation] — NO end event.
+#    Already covered: unclosed_interpolation_error (prose),
+#    eof_unclosed_interpolation_value_position (value). These add opener-only,
+#    the lone-}-is-content rule, and array-item position.
+# ===========================================================================
+
+- id: du_interp_opener_only_eof
+  desc: "!{{ opened then EOF, empty expression + warning"
+  udon: "|p !{{"
+  root_only: true
+  # CORE: empty capture kept + UnclosedInterpolation.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, ""]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+
+# ★ CONTENT-LOSS BUG. CORE "Unified Inline Syntax": interpolation "ends at the
+# first }} — a single } is expression content." So !{{a} at EOF has NOT closed
+# (only one }), and keep-everything ⇒ the captured expression is "a}".
+- id: du_interp_lone_brace_is_content_eof
+  desc: "!{{a} — a lone } is expression content, so \"a}\" is captured (RED)"
+  udon: "|p !{{a}"
+  root_only: true
+  # CORE "Unified Inline Syntax" (first }} closes; single } is content) +
+  # keep-everything ⇒ Interpolation "a}".
+  # red?: YES — parser captures only "a" (drops the trailing }), losing a byte.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "a}"]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+
+- id: du_interp_in_unclosed_array_eof
+  desc: unclosed !{{ as an array item, inside an unclosed [ — cascade
+  udon: "|el :xs [!{{x"
+  root_only: true
+  # CORE "Value Kinds": Interpolation is a value kind ⇒ valid array item.
+  # Innermost-first: UnclosedInterpolation then UnclosedArray + ArrayEnd.
+  # red?: no — parser produces both warnings (array & interpolation both warn).
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Interpolation, "x"]
+    - [Warning, "UnclosedInterpolation"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# F. TYPING ENVELOPE  <...>
+#    CORE "Explicit Typing": single-line (LINE-BOUND); > terminates; interim
+#    NoDialectsLoaded pass-through. Code UnclosedTypeEnvelope. Wire shape
+#    (eof_unclosed_envelope): [Warning, UnclosedTypeEnvelope] BEFORE
+#    [BareValue, "<..."] — warning-first, opposite of string/array. NO end.
+#    Already covered: eof_unclosed_envelope (EOF), envelope_newline_before_close
+#    (newline), eof_unclosed_envelope_in_unclosed_array. These add opener-only.
+#    ⚑ ORDER ASYMMETRY (already flagged in eof_recovery.yaml): a COMPLETED
+#    envelope emits NoDialectsLoaded then value; an UNCLOSED one emits
+#    UnclosedTypeEnvelope then value — but is UnclosedTypeEnvelope INSTEAD of
+#    NoDialectsLoaded (envelope never completed ⇒ nothing offered to dialects)
+#    or ALONGSIDE it? I assert INSTEAD (parser agrees). Confirm.
+# ===========================================================================
+
+- id: du_env_opener_only_eof
+  desc: "< opened in value position then EOF — UnclosedTypeEnvelope + captured \"<\""
+  udon: "|el :when <"
+  root_only: true
+  # CORE "Explicit Typing" + "End of input": captured lexical form (just "<")
+  # passed through as string; single UnclosedTypeEnvelope, no NoDialectsLoaded.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "when"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<"]
+    - ElementEnd
+
+- id: du_env_as_array_item_opener_only_eof
+  desc: "< as an array item then EOF — envelope warns, then the array warns"
+  udon: "|el :xs [<"
+  root_only: true
+  # CORE "Explicit Typing" (opens in array-item value position) + "End of input":
+  # innermost-first — UnclosedTypeEnvelope + "<", then UnclosedArray + ArrayEnd.
+  # red?: no (mirrors eof_unclosed_envelope_in_unclosed_array with empty payload)
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# G. FREEFORM FENCE  ```
+#    CORE "Triple-Backtick Escape". Closer = a line whose first non-space
+#    content is ```. NOT line-bound (spans lines by nature). Code
+#    UnterminatedFreeform. Wire shape (eof_unterminated_freeform):
+#    FreeformStart, [Text ..], [Warning, UnterminatedFreeform], FreeformEnd.
+#    Already covered: eof_unterminated_freeform (body),
+#    eof_unterminated_freeform_in_element, freeform_unterminated_warns.
+#    These add opener-only and info-string-no-newline.
+# ===========================================================================
+
+- id: du_freeform_opener_only_eof
+  desc: "``` opened then EOF, empty body — UnterminatedFreeform, no Text"
+  udon: "```"
+  root_only: true
+  # CORE "End of input": frame open, nothing captured ⇒ warning only.
+  # red?: no
+  events:
+    - FreeformStart
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+
+- id: du_freeform_info_string_no_newline_eof
+  desc: "```rust then EOF — info-string text begins the body (no separate info rule)"
+  udon: "```rust"
+  root_only: true
+  # CORE "Triple-Backtick Escape": everything after the backticks begins the
+  # body; EOF newline-equivalent ⇒ "rust" is the body's first Text.
+  # red?: no (⚑ minor: is a no-newline info string body-content or empty? I
+  #        read it as body content; parser agrees.)
+  events:
+    - FreeformStart
+    - [Text, "rust"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+
+- id: du_freeform_sameline_opened_unterminated_eof
+  desc: fence opened in sameline scan (after attrs), body, then EOF
+  udon: "|a |b :k v ```\nbody"
+  root_only: true
+  # CORE "Triple-Backtick Escape": a fence may follow elements+attributes in
+  # sameline scan; body starts after the backticks. Open at EOF ⇒ warning.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - [Attr, "k"]
+    - [BareValue, "v"]
+    - FreeformStart
+    - [Text, "body"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+    - ElementEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# H. IDENTITY BRACKET  [...]   ← THE WHOLLY-NEW SURFACE
+#    CORE "Identity (Keys) and Classification": [key] desugars to :'$key'.
+#    LINE-BOUND (TODO-EOF-refactor "The cut"). Code UnclosedIdentityKey —
+#    NEW, listed in CORE Warning codes but NOT YET emitted by the parser in
+#    ANY phase. Every case here is RED and documents the new consumer surface.
+#    NO wire precedent exists; I follow the content-then-warning shape
+#    (like array/embed) and place the warning before ElementEnd.
+#
+#    ⚑ EVENT-SHAPE OPENS for Joseph (new surface — please rule):
+#      (a) When content WAS captured ( |el[k ), is the $key Attr emitted WITH
+#          its partial value AND the warning (I assert yes — keep-everything),
+#          or suppressed? Parser today emits $key/value but no warning.
+#      (b) When NOTHING was captured ( |el[ ), is an EMPTY $key Attr emitted,
+#          or just the warning (I assert: just the warning — nothing arrived)?
+#      (c) Ordering: content, then UnclosedIdentityKey, then ElementEnd (my
+#          choice), or warning first?
+# ===========================================================================
+
+- id: du_id_opener_only_eof
+  desc: "|el[ then EOF, nothing captured — UnclosedIdentityKey, no $key (RED)"
+  udon: "|el["
+  root_only: true
+  # CORE "Identity" + "End of input" (new row: unclosed identity [..] ⇒
+  # UnclosedIdentityKey). Nothing captured ⇒ no $key Attr (open (b)).
+  # red?: YES — parser emits ElementStart/Name/ElementEnd only, no warning.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_partial_eof
+  desc: "|el[k then EOF — $key value \"k\" kept + UnclosedIdentityKey (RED)"
+  udon: "|el[k"
+  root_only: true
+  # CORE: content "k" kept as the $key value; frame open ⇒ UnclosedIdentityKey.
+  # red?: YES — parser emits $key/BareValue "k" but NO warning.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_newline_closes_rest_is_prose
+  desc: "|el[k then newline — line-bound soft close + UnclosedIdentityKey; rest is prose (RED)"
+  udon: "|el[k\nmore"
+  root_only: true
+  # CORE/TODO-EOF-refactor "Line-bound delimited": newline ≡ EOF for identity
+  # [..]; UnclosedIdentityKey at the newline; "more" parses as prose child.
+  # red?: YES — parser closes and treats "more" as prose (right) but omits the
+  #        warning (⚑ document result here is SUCCESS vs non-success for the
+  #        EOF twin — see infra flag).
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - [Text, "more"]
+    - ElementEnd
+
+- id: du_id_anonymous_eof
+  desc: "|[k then EOF — anonymous element, unclosed identity key (RED)"
+  udon: "|[k"
+  root_only: true
+  # CORE "Anonymous Elements": name optional; identity sugar unchanged. Frame
+  # open ⇒ UnclosedIdentityKey.
+  # red?: YES — parser emits $key/"k", no warning.
+  events:
+    - ElementStart
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_string_key_open_eof
+  desc: "|el[\"abc then EOF — unclosed string INSIDE unclosed identity key (RED cascade)"
+  udon: "|el[\"abc"
+  root_only: true
+  # CORE "Identity" ("[key] follows normal attribute-value rules"): a quoted
+  # key value. Innermost-first: UnclosedStringValue (content "abc") then
+  # UnclosedIdentityKey.
+  # red?: YES — parser warns UnclosedStringValue (inner) but drops
+  #        UnclosedIdentityKey (outer). Half-red — exposes the cascade gap.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [StringValue, "abc"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_tuple_array_open_eof
+  desc: "|el[[1 2 then EOF — unclosed array (tuple key) inside unclosed identity (RED cascade)"
+  udon: "|el[[1 2"
+  root_only: true
+  # CORE "Identity" (key_typed_array_tuple: [[..]] is a composite key) +
+  # "End of input". Innermost-first: UnclosedArray + ArrayEnd, then
+  # UnclosedIdentityKey. Two DIFFERENT bracket kinds nested.
+  # red?: YES — parser warns UnclosedArray (inner) but drops UnclosedIdentityKey.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_envelope_key_open_eof
+  desc: "|el[<u64 then EOF — unclosed envelope inside unclosed identity key (RED cascade)"
+  udon: "|el[<u64"
+  root_only: true
+  # CORE "Identity" + "Explicit Typing" (envelope opens in value position, and
+  # a key IS value position). Innermost-first: UnclosedTypeEnvelope + "<u64",
+  # then UnclosedIdentityKey.
+  # red?: YES — parser warns UnclosedTypeEnvelope but drops UnclosedIdentityKey.
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<u64"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_in_embedded_eof
+  desc: "|{ref[k then EOF — identity key open inside embed inside prose (RED double cascade)"
+  udon: "|p |{ref[k"
+  root_only: true
+  # CORE "Inline Elements" (identity rules identical inside |{..}) + "End of
+  # input". Innermost-first: UnclosedIdentityKey (content "k"), then
+  # UnclosedEmbedded (embed in identity phase).
+  # red?: YES — parser emits neither warning (identity never warns; embed
+  #        drops in identity phase). Doubly red.
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "ref"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# I. VALUE-POSITION delimited constructs hitting EOF (string / array /
+#    envelope as an ATTRIBUTE VALUE). The block-attr string, value array, and
+#    value envelope are already in eof_recovery. This adds the sameline-attr
+#    string (opener-only) to complete the context matrix, and stacks a
+#    string+array cascade not otherwise present in opener-only form.
+# ===========================================================================
+
+# (Sameline attr string opener-only == du_str_double_opener_only in section A;
+#  the value-position matrix is otherwise covered by eof_recovery + A/B/F.)
+
+- id: du_val_string_in_array_opener_only_eof
+  desc: opener-only quoted item inside an unclosed array at EOF
+  udon: '|el :xs ["'
+  root_only: true
+  # CORE "End of input" cascade (cf. eof_unclosed_string_in_unclosed_array,
+  # but empty capture): StringValue "" + UnclosedStringValue, then
+  # UnclosedArray + ArrayEnd.
+  # red?: no
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [StringValue, ""]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+
+
+# ===========================================================================
+# J. ⚑ MODEL GAPS — delimited constructs with NO Unclosed* code in CORE's
+#    Warning-codes registry. These are NOT assertable as clean fixtures yet
+#    (there is no spec-blessed code to expect); encoded here as DOCUMENTATION
+#    with events: [] so the harness ignores them, and so Joseph sees exactly
+#    what falls through the model. THESE ARE THE HIGH-VALUE FINDS.
+# ===========================================================================
+
+# J1. INLINE DIRECTIVE  !{directive ...}
+#     CORE "Unified Inline Syntax" / "Dynamics": !{name ...} is a brace-
+#     delimited construct (Directive events). It is delimited (closes on }).
+#     But the Warning-codes registry has NO UnclosedInlineDirective. Today the
+#     parser, on "|p !{if x"<EOF>, emits DirectiveStart/Name/Text then reuses
+#     **UnclosedEmbedded** (wrong code) + DirectiveEnd. Two model questions:
+#       (i) should there be an UnclosedInlineDirective code (parallel to
+#           UnclosedEmbedded/UnclosedInlineComment)?
+#      (ii) if it reuses another code, which? (UnclosedEmbedded is misleading.)
+- id: du_gap_inline_directive_unclosed_eof
+  desc: "⚑ MODEL GAP: unclosed !{directive} has no Unclosed* code (parser reuses UnclosedEmbedded)"
+  udon: "|p !{if x"
+  root_only: true
+  # CORE registry lacks a code; do not assert one. Flagged for TODO-SPEC-CORE.
+  events: []
+
+# J2. INLINE RAW  !{:kind: ...}
+#     CORE "Inline Raw Content": brace-counted (Raw event), delimited by }.
+#     Also has NO Unclosed* code. What does "|p !{:json: {\"a\":1" (unbalanced,
+#     EOF) warn? Undefined. Same family of gap as J1.
+- id: du_gap_inline_raw_unclosed_eof
+  desc: "⚑ MODEL GAP: unclosed !{:kind: ..} inline raw has no Unclosed* code"
+  udon: "|p !{:json: {\"a\":1"
+  root_only: true
+  # CORE registry lacks a code; do not assert one. Flagged for TODO-SPEC-CORE.
+  events: []
+
+# ===========================================================================
+# K. AUDIT OF EXISTING v0.9 FIXTURES against the alpha.2 model
+#    (per the coordinator's amendment: surface non-compliant existing cases
+#    anywhere, for central application — I do NOT edit shared files.)
+#
+#    Bottom line: I found NO existing fixture that asserts *event-level*
+#    non-compliant behavior — in particular none cements the embedded-drop or
+#    identity-no-warning bugs (those are coverage HOLES, filled by sections
+#    C/H above, not wrong assertions). What I did find is (1) id/desc WORDING
+#    that still says "error" for what alpha.2 ruled a Warning, and (2) STALE
+#    comments that describe CORE as "silent" on questions the alpha.2 doc now
+#    resolves. Listed for a central wording/comment pass — none blocks the
+#    gate. Each: fixture · issue · CORE clause · suggested fix.
+#
+#    K1. error_cases.yaml — HEADER COMMENT is stale (medium).
+#        The top comment: "Unclosed embedded elements and inline comments are
+#        deliberately NOT encoded yet — their recovery behavior has no CORE
+#        text and no settled code *(discuss w/ Joseph before adding)*."
+#        CORE now HAS UnclosedEmbedded / UnclosedInlineComment (Warning codes
+#        registry) and eof_recovery.yaml encodes both. CLAUSE: CORE "Warning
+#        codes" + "End of input". FIX: delete/replace that paragraph; point to
+#        eof_recovery.yaml + TODO-EOF-refactor.
+#
+#    K2. error_cases.yaml ids/descs say "error" for Warnings (low).
+#        unclosed_double_quote_error, unclosed_single_quote_error,
+#        unclosed_interpolation_error — events correctly use [Warning, ...],
+#        but id/desc call them "error". CLAUSE: CORE "End of input" two-level
+#        severity ("every Unclosed* keeps everything ... so each is a
+#        Warning"). FIX: rename to *_warns / reword desc; events unchanged.
+#
+#    K3. arrays.yaml array_unclosed_is_error — id + desc say "error" (low).
+#        Event is [Warning, "UnclosedArray"] (correct). CLAUSE: same as K2.
+#        FIX: id -> array_unclosed_warns; desc "... ends with an UnclosedArray
+#        warning". Also worth an interior-newline note (SUCCESS doc result) vs
+#        the EOF twin (non-success) — see the ⚑ infra flag in L.
+#
+#    K4. freeform.yaml freeform_unterminated_warns — id fine, desc says
+#        "errors at EOF" (low). Event correct (UnterminatedFreeform warning).
+#        FIX: desc "unclosed fence warns at EOF, content preserved".
+#
+#    K5. eof_recovery.yaml ⚠ "CORE is silent on MULTIPLICITY" comments are now
+#        stale (low). eof_unclosed_embedded_nested, eof_unclosed_array_nested,
+#        eof_unclosed_string_in_unclosed_array, eof_unclosed_embedded_with_open_attr
+#        each hedge that CORE "does not order them explicitly" / is "silent on
+#        multiplicity." alpha.2 RESOLVES this: CORE "End of input" now states
+#        "innermost-first ... nested delimited constructs yield one Unclosed*
+#        each," and TODO-EOF-refactor "Things that look like they matter"
+#        confirms cascades are correct + order-independent (each cites its own
+#        entry site). Events are ALREADY compliant; only the comments overclaim
+#        silence. FIX: retarget those comments to cite CORE "End of input" +
+#        TODO-EOF-refactor instead of flagging silence.
+#
+#    K6. eof_recovery.yaml eof_unclosed_embedded_with_open_attr — NOTE, not a
+#        defect. Its assertion (Error MissingAttributeValue, Nil, then
+#        UnclosedEmbedded) is exactly alpha.2-correct and RED (parser drops the
+#        embed warning in attr phase). My du_embed_attr_open_missing_value_eof
+#        is the same input — DEDUP at merge (keep one). Flagging so it isn't
+#        double-added.
+#
+#    (No event-payload corrections proposed anywhere — the existing EOF corpus
+#    is event-compliant; alpha.2 mostly adds NEW rows, which are the RED
+#    coverage in sections C/E/H.)
+#
+#
+# ===========================================================================
+# L. ⚑⚑ CORE-ITSELF AMBIGUITIES / GAPS (the loudest finds — where a fixture
+#    reads as "non-compliant" but the real problem is the SPEC).
+#
+#    L1. ⚑⚑ QUOTED STRING LINE-BOUNDEDNESS IS UNSTATED IN CORE.md.
+#        CORE.md "Strings" and "End of input" never say whether "..."/'...'
+#        may span a newline. TODO-EOF-refactor's line-bound set is ONLY
+#        {[..], <..>, identity [..]} — strings excluded — which *implies*
+#        multi-line (newline = content). The parser agrees (see A5:
+#        du_str_newline_inside_is_content). But this is carried ONLY by the
+#        design doc, not by CORE.md. RULE + write it into CORE "Strings":
+#        either "quoted strings may span newlines; a newline is literal
+#        content" OR make them line-bound like <..>. Everything downstream
+#        (multi-line config strings, YAML-migration fidelity) hinges on this.
+#
+#    L2. ⚑⚑ UnclosedIdentityKey EVENT SHAPE IS UNSPECIFIED (new surface).
+#        CORE lists the code but not the wire shape. Three opens (see section
+#        H header): (a) partial-capture — is $key emitted WITH its partial
+#        value AND the warning? (I assert yes.) (b) empty capture ( |el[ ) —
+#        empty $key Attr, or warning only? (I assert warning only.) (c)
+#        content-then-warning ordering (I assert content first). The parser
+#        emits NO warning at all today in any phase, so this is greenfield —
+#        please pin the shape so the RED cases in H have a fixed target.
+#
+#    L3. ⚑⚑ NO Unclosed* CODE FOR INLINE DIRECTIVE !{..} OR INLINE RAW
+#        !{:kind: ..}. Both are brace-delimited (delimited constructs) yet the
+#        Warning-codes registry omits them. The parser reuses UnclosedEmbedded
+#        for an unclosed inline directive (see J1) — misleading. CORE "Warning
+#        codes" + "Unified Inline Syntax": ADD UnclosedInlineDirective (and
+#        decide inline-raw's — it may fold into the raw family). Until then the
+#        model has a hole exactly where the EOF refactor claims completeness
+#        ("collapse the ~89 |eof arms ... which kind is this").
+#
+#    L4. ⚑ ENVELOPE-AT-EOF: NoDialectsLoaded alongside or instead? CORE is
+#        silent on whether an UNCLOSED envelope also emits NoDialectsLoaded
+#        (the value never completed, so arguably nothing was offered to
+#        dialects). Existing fixtures + my section F choose INSTEAD (only
+#        UnclosedTypeEnvelope). Worth one sentence in CORE "Explicit Typing".
+#
+#    L5. ⚑ [..] ARRAY LINE-BOUND vs MULTI-LINE is a KNOWN-OPEN UX decision
+#        (TODO-EOF-refactor "Open work"), not a CORE error — but every array
+#        fixture (arrays.yaml, section B) silently assumes line-bound. When
+#        ruled, revisit if multi-line wins. Noted so the assumption is visible.
+#
+#    L6. ⚑ INTERPOLATION lone-} at EOF: CORE is CLEAR ("first }} closes; a
+#        single } is content"), so !{{a}<EOF> ⇒ "a}". This is a PARSER bug
+#        (drops the }), not a CORE ambiguity — recorded here only so the
+#        clear-spec/buggy-parser split is explicit. See E2.
+#
+#
+# ===========================================================================
+# ⚑ INFRASTRUCTURE FLAG — the two-level severity ruling is currently
+#    UN-TESTABLE through this fixture format.
+#
+#    alpha.2 severity has TWO scopes: per-construct Warning (wire event, which
+#    these fixtures DO assert) AND a per-document incomplete-input RESULT
+#    (non-zero exit / Err) that is explicitly "a *result*, not a stream event."
+#    No fixture below can assert that result. Worse, the line-bound-on-interior-
+#    newline cases are WIRE-IDENTICAL to their at-EOF twins yet differ in the
+#    result:
+#      * du_arr_newline_closes_rest_is_prose  (interior newline) → doc SUCCESS
+#      * du_arr_opener_only_eof / eof_unclosed_array (at EOF)     → doc NON-SUCCESS
+#      same UnclosedArray + ArrayEnd on the wire.
+#    Ditto identity: du_id_newline_closes_rest_is_prose (SUCCESS) vs
+#    du_id_partial_eof / du_id_opener_only_eof (NON-SUCCESS).
+#    If the two-level ruling is to be ENFORCED (CI telling "truncated doc" from
+#    "structurally-complete doc with a local defect" — the distinction
+#    TODO-EOF-refactor says "earns its keep"), the fixture schema needs a field
+#    like `result: incomplete` / `incomplete_input: true`. Flagging for
+#    TODO-META / core/fixtures/README.md — this is a whole class of the model
+#    that no fixture can currently pin.
+# ===========================================================================
+
+
+# J3. REFERENCE SELECTOR BRACKET  @el[k
+#     CORE "References (@)": a reference is a selector tuple (element, key,
+#     traits) — the [key] there uses the same bracket. On "@el[k"<EOF> the
+#     parser captures the WHOLE lexeme "el[k" into one Reference event (the
+#     unclosed [ is swallowed into the selector, no warning). Is an unclosed
+#     reference-key meant to warn (UnclosedIdentityKey? a reference-specific
+#     code?) or is a reference's bracket deliberately lax (references are inert
+#     at core)? The brief did not list references as delimited; flagging as an
+#     adjacent question.
+- id: du_gap_reference_bracket_unclosed_eof
+  desc: "⚑ MODEL QUESTION: unclosed [ inside a @reference selector — warn, or lax?"
+  udon: "@el[k"
+  root_only: true
+  # No spec-blessed expectation; parser swallows "el[k" as the Reference.
+  events: []

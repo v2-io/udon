@@ -1,0 +1,871 @@
+# =============================================================================
+# EOF composition, nesting, cascades, and edge combinations  (alpha.2 slice)
+# =============================================================================
+#
+# Draft fixtures for Joseph to verify + merge. The harness does NOT run _wip/.
+#
+# EVERY expectation below is derived from spec/CORE.md text (the "End of input
+# (EOF)" section, "Anomaly posture", "Warning codes", and the construct
+# sections), NEVER traced from parser output. Where I ran the parser it was
+# ONLY to confirm red/green for the `# red?:` line — never to source an
+# expectation.
+#
+# Governing model (CORE "End of input (EOF)", ruled 2026-07-17/18):
+#   - Every construct is POSITIONAL (closes on geometry: EOL/dedent/EOF,
+#     silently) or DELIMITED (closes on a printed end-sequence).
+#   - At EOF, open frames unwind INNERMOST-FIRST. Positional -> silent.
+#     Delimited -> keep content + one `Unclosed*` WARNING (citing the entry
+#     site) + flush its End.
+#   - Several open delimited frames => one `Unclosed*` EACH (the cascade is
+#     honest, not a bug). Each answers against its own entry site, so nesting
+#     order is not load-bearing.
+#   - Severity is two levels: per-construct Warning (content kept) + a
+#     document-level incomplete-input RESULT (not a wire event; can't be
+#     asserted in a fixture — noted in comments where relevant).
+#
+# All cases are truncated inputs, so all are `root_only: true` (the harness's
+# wrap/indent mutations would append material past the deliberate truncation —
+# same reason eof_recovery.yaml uses it).
+#
+# CONVENTIONS confirmed from existing fixtures / harness.rs:
+#   - Empty Text ("") is DROPPED by the harness (blank lines are `BlankLine`,
+#     never Text ""); so no empty-Text events appear below. Empty
+#     Interpolation "" is NOT dropped (only Text is) — it stays on the wire.
+#   - Intra-construct order: content-then-Warning for string / array / embed /
+#     interpolation / inline-comment / freeform; but WARNING-then-content for
+#     the `<...>` envelope (matching its NoDialectsLoaded convention). That
+#     asymmetry is unpinned by CORE — see the FLAGS section at the bottom.
+#
+# `# red?:` legend:  yes = parser diverges from this CORE expectation today
+# (a documented gap — the deliverable); no = parser already matches;
+# unsure = depends on an unresolved CORE question (see FLAGS).
+
+
+# ---------------------------------------------------------------------------
+# 1. Homogeneous cascades (same delimiter kind nested)
+# ---------------------------------------------------------------------------
+
+# CORE: "nested delimited constructs yield one `Unclosed*` each" — innermost
+# first. array-in-array-in-array holding a string: 1 UnclosedStringValue +
+# 3 UnclosedArray. (The brief's `[[["x` shape.)
+- id: eof_string_in_triple_array
+  desc: string nested 3 arrays deep at EOF — one string warning + three array warnings
+  udon: "|el :m [[[\"x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "m"]
+    - ArrayStart
+    - ArrayStart
+    - ArrayStart
+    - [StringValue, "x"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no  (parser produces exactly this — deep array cascade works)
+
+# CORE: same rule for embeds. THREE open embeds => THREE UnclosedEmbedded.
+- id: eof_embed_triple_nested
+  desc: three nested unclosed embeds at EOF — one UnclosedEmbedded per frame
+  udon: "|p |{a |{b |{c"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - EmbeddedStart
+    - [Name, "b"]
+    - EmbeddedStart
+    - [Name, "c"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: YES — the parser drops the INNERMOST embed's warning (emits only 2
+  # of 3 UnclosedEmbedded). An embed whose content-so-far is empty loses its
+  # UnclosedEmbedded entirely (see eof_empty_embed_unclosed below). This is
+  # the "embedded any-phase EOF-drop" bug (TODO-EOF-refactor "Open work").
+
+# CORE: string in a 2-deep array. 1 UnclosedStringValue + 2 UnclosedArray.
+- id: eof_string_in_nested_array
+  desc: quoted item inside a nested array at EOF — string + two array warnings
+  udon: "|el :m [[1 \"a"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "m"]
+    - ArrayStart
+    - ArrayStart
+    - [Integer, "1"]
+    - [StringValue, "a"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no
+
+
+# ---------------------------------------------------------------------------
+# 2. Heterogeneous cascades (different delimiter kinds nested)
+# ---------------------------------------------------------------------------
+
+# CORE: an embed (delimited, prose interior) whose content holds an
+# interpolation (delimited). Both unwind innermost-first; embed HAS content
+# ("x ") so its own warning fires.
+- id: eof_interp_in_embed
+  desc: unclosed interpolation inside an unclosed embed — both warn, innermost first
+  udon: "|p |{a x !{{expr"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "x "]
+    - [Interpolation, "expr"]
+    - [Warning, "UnclosedInterpolation"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: `;{...}` opens an inline comment inside embed content (CORE "Literal
+# Semicolons": inside |{...} only `;{` opens a comment). Comment + embed both
+# unclosed.
+- id: eof_inline_comment_in_embed
+  desc: unclosed ;{ inside an unclosed embed — comment warns, then embed warns
+  udon: "|p |{a x ;{note"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "x "]
+    - CommentStart
+    - [Text, "note"]
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: an array is a value, so it opens only in value position — here as an
+# embedded element's attribute value. array warns+ends, THEN the embed warns.
+- id: eof_array_in_embed_attr
+  desc: unclosed array as an embed-attr value at EOF — array then embed warnings
+  udon: "|p |{a :xs [1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: YES — parser emits UnclosedArray+ArrayEnd correctly but DROPS the
+  # embed's UnclosedEmbedded (embed's last frame-content is an attr/value, not
+  # prose -> the any-phase EOF-drop bug). Same bug as eof_recovery.yaml's
+  # eof_unclosed_embedded_with_open_attr.
+
+# CORE: quoted string as an embed-attr value. string warns, THEN embed warns.
+- id: eof_string_in_embed_attr
+  desc: unclosed quoted value on an embed attr at EOF — string then embed warnings
+  udon: "|p |{a :k \"v"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "k"]
+    - [StringValue, "v"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: YES — embed's UnclosedEmbedded dropped (ends on a value; same bug).
+
+# CORE: interpolation-in-attr-in-embed (brief's explicit request).
+- id: eof_interp_in_embed_attr
+  desc: unclosed interpolation as an embed-attr value at EOF — interp then embed
+  udon: "|p |{a :k !{{x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "k"]
+    - [Interpolation, "x"]
+    - [Warning, "UnclosedInterpolation"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: YES — embed's UnclosedEmbedded dropped (same any-phase drop bug).
+
+
+# ---------------------------------------------------------------------------
+# 3. Delimited constructs after a FLAG key (:key?)  —  a sharp, adversarial
+#    finding: flag rule 2 (CORE "Attribute Keys and Flags") re-owns non-keyword
+#    material by the CONTINUING SCAN, which recognizes head-position MARKERS
+#    (| : @ ! ;{) but NOT value-position delimiters (" [ <). So a `"` or `[`
+#    after a flag becomes PROSE — no string/array construct opens at all.
+# ---------------------------------------------------------------------------
+
+# CORE flag rule 2: after :k? a `"` is "anything else" -> flag snaps true, the
+# `"v` is re-owned by the continuing scan. `"` is not a head marker -> prose.
+# NO string opens, so NO UnclosedStringValue.
+- id: eof_flag_then_quote_is_prose
+  desc: a quote after a flag key is prose, not a string value — no cascade
+  udon: "|el :k? \"v"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k?"]
+    - BoolTrue
+    - [Text, "\"v"]
+    - ElementEnd
+  # red?: no  (confirms the finding — worth a fixture precisely because it
+  # looks like it should be an unclosed string and is not)
+
+# CORE: same for `[` — not a head marker -> prose. No UnclosedArray.
+- id: eof_flag_then_bracket_is_prose
+  desc: a bracket after a flag key is prose, not an array — no UnclosedArray
+  udon: "|el :k? [1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k?"]
+    - BoolTrue
+    - [Text, "[1 2"]
+    - ElementEnd
+  # red?: no
+
+# CORE: contrast — `|{` IS a head marker, so an embed DOES open (as a child of
+# el) after the flag settles. So the delimiter-vs-prose split hinges on marker
+# membership, not on being "a delimiter."
+- id: eof_flag_then_embed_opens
+  desc: an embed after a flag key opens (|{ is a marker) and can go unclosed
+  udon: "|el :k? |{a x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k?"]
+    - BoolTrue
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "x"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: flag then a real next attribute whose value is an unclosed array.
+- id: eof_flag_then_next_attr_unclosed_array
+  desc: flag settles true, then a following attr carries an unclosed array
+  udon: "|el :ok? :xs [1"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "ok?"]
+    - BoolTrue
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no
+
+
+# ---------------------------------------------------------------------------
+# 4. Delimited as attr value / node value / array item / multi-segment stack
+# ---------------------------------------------------------------------------
+
+# CORE "Node Values": a freeform fence is a node value. Fence is delimited ->
+# UnterminatedFreeform at EOF.
+- id: eof_fence_node_value_unterminated
+  desc: an unterminated fence as an attr node value at EOF — body kept + warning
+  udon: "|el :body ```\ncode"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "body"]
+    - FreeformStart
+    - [Text, "code"]
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+    - ElementEnd
+  # red?: no
+
+# CORE "Node Values" + raw block is POSITIONAL (indentation-scoped, no
+# closer) -> closes SILENTLY at EOF. Good contrast: a node value that does NOT
+# warn.
+- id: eof_raw_node_value_silent
+  desc: a raw block as an attr node value closes silently at EOF (positional)
+  udon: "|el :script !:sh:\n  make"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "script"]
+    - DirectiveStart
+    - [Name, "sh"]
+    - [Raw, ""]
+    - [RawContent, "make"]
+    - DirectiveEnd
+    - ElementEnd
+  # red?: no
+
+# CORE "Multi-Segment Values and Stacking": stacked key whose FINAL segment is
+# an unclosed array. The array warns; earlier segments are intact.
+- id: eof_stacked_attr_final_unclosed_array
+  desc: stacked attribute whose last value is an unclosed array at EOF
+  udon: "|el\n  :a 1\n  :a [2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "a"]
+    - [Integer, "1"]
+    - [Attr, "a"]
+    - ArrayStart
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no
+
+
+# ---------------------------------------------------------------------------
+# 5. EMPTY constructs at EOF — closed vs unclosed-empty. CORE (End of input):
+#    an Unclosed* keeps "everything that had arrived before EOF -- which may
+#    be nothing beyond the opener itself" -> an empty unclosed delimited
+#    construct STILL warns.
+# ---------------------------------------------------------------------------
+
+# CORE: empty unclosed embed still warns (nothing beyond the opener).
+- id: eof_empty_embed_unclosed
+  desc: an empty unclosed embed at EOF still emits UnclosedEmbedded
+  udon: "|p |{a"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: YES — parser emits EmbeddedStart/Name/EmbeddedEnd with NO warning.
+  # This is the root of the cascade bug above: empty embed content drops the
+  # warning. Note the ASYMMETRY vs empty unclosed array (next), which DOES
+  # warn — flagged below.
+
+# CORE: empty unclosed array warns.
+- id: eof_empty_array_unclosed
+  desc: an empty unclosed array at EOF emits UnclosedArray
+  udon: "|el :m ["
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "m"]
+    - ArrayStart
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no  (parser warns here — hence the asymmetry with the empty embed)
+
+# CORE: a closed empty array — no warning.
+- id: eof_empty_array_closed
+  desc: a closed empty array at EOF is silent (no final newline is fine)
+  udon: "|el :m []"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "m"]
+    - ArrayStart
+    - ArrayEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: empty unclosed inline comment warns (empty Text folds away).
+- id: eof_empty_inline_comment_unclosed
+  desc: an empty unclosed ;{ at EOF warns; empty comment text folds away
+  udon: "|p a ;{"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: closed empty inline comment — silent.
+- id: eof_empty_inline_comment_closed
+  desc: a closed empty ;{} at EOF is silent
+  udon: "|p a ;{}"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "a "]
+    - CommentStart
+    - CommentEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: empty unclosed interpolation. NB: Interpolation "" is NOT folded (only
+# Text is), so the empty payload stays on the wire.
+- id: eof_empty_interpolation_unclosed
+  desc: an empty unclosed interpolation at EOF — empty expr kept + warning
+  udon: "|el :i !{{"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "i"]
+    - [Interpolation, ""]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+  # red?: unsure — parser matches, but whether an empty `!{{` payload should
+  # emit `[Interpolation, ""]` vs nothing is not pinned by CORE.
+
+# CORE: closed empty interpolation.
+- id: eof_empty_interpolation_closed
+  desc: a closed empty interpolation !{{}} — empty expression value
+  udon: "|el :i !{{}}"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "i"]
+    - [Interpolation, ""]
+    - ElementEnd
+  # red?: unsure (same empty-payload question)
+
+# CORE: empty unclosed envelope. Envelope order is WARNING-then-content
+# (matches its NoDialectsLoaded convention). Payload keeps the opener `<`.
+- id: eof_empty_envelope_unclosed
+  desc: a bare `<` with no close at EOF — UnclosedTypeEnvelope + the `<` kept
+  udon: "|el :e <"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "e"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<"]
+    - ElementEnd
+  # red?: no
+
+# CORE: closed empty envelope `<>` — recognized, no dialects -> NoDialectsLoaded
+# + the string "<>".
+- id: eof_empty_envelope_closed
+  desc: a closed empty envelope `<>` — NoDialectsLoaded + "<>"
+  udon: "|el :e <>"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "e"]
+    - [Warning, "NoDialectsLoaded"]
+    - [BareValue, "<>"]
+    - ElementEnd
+  # red?: unsure — parser matches, but CORE never states whether an EMPTY
+  # envelope is a valid `<...>` or should itself be an anomaly.
+
+# CORE: empty unclosed freeform (fence opener then immediate EOF).
+- id: eof_empty_freeform_unclosed
+  desc: a bare fence opener at EOF — UnterminatedFreeform with no body
+  udon: "```"
+  root_only: true
+  events:
+    - FreeformStart
+    - [Warning, "UnterminatedFreeform"]
+    - FreeformEnd
+  # red?: no
+
+# CORE: closed empty freeform.
+- id: eof_empty_freeform_closed
+  desc: an immediately-closed empty fence is silent
+  udon: "```\n```"
+  root_only: true
+  events:
+    - FreeformStart
+    - FreeformEnd
+  # red?: no
+
+
+# ---------------------------------------------------------------------------
+# 6. Identity key `[...]` at EOF — DELIMITED, warning `UnclosedIdentityKey`.
+#    This is the row CORE's End-of-input rewrite ADDS (TODO-EOF-refactor:
+#    "unclosed identity [...] at EOF (delimited; currently silent and absent
+#    from the table)"). A NEW anomaly surface -> expected RED.
+# ---------------------------------------------------------------------------
+
+# CORE: `|el[k` never closes its identity bracket -> UnclosedIdentityKey. The
+# $key attr keeps its value; the warning cites the `[` entry site. There is no
+# bracket End event (identity desugars to an attr), so the warning rides at
+# the close, before ElementEnd.
+- id: eof_unclosed_identity_key_bare
+  desc: an unclosed identity `[key` at EOF — value kept + UnclosedIdentityKey
+  udon: "|el[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+  # red?: YES — parser is SILENT (emits $key/BareValue and closes, no warning).
+  # New code UnclosedIdentityKey not yet emitted. FLAG: the exact placement of
+  # the warning (after the value, before ElementEnd) is my reading; CORE does
+  # not yet specify where an identity-key warning sits on the wire, since
+  # $key has no bracket End of its own.
+
+# CORE: identity key whose value is an array, both unclosed. Cascade: inner
+# array (UnclosedArray+ArrayEnd) then the identity key (UnclosedIdentityKey).
+- id: eof_unclosed_identity_key_array_value
+  desc: unclosed identity `[[1 2` (array-valued key) at EOF — array + identity warnings
+  udon: "|el[[1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+  # red?: YES — parser emits the array warning correctly but NOT the identity
+  # warning. Documents both the new code and the identity/array composition.
+
+
+# ---------------------------------------------------------------------------
+# 7. EOF at awkward inner points
+# ---------------------------------------------------------------------------
+
+# CORE "Value-Position `\`": a `\` in value-expected position enters text mode;
+# `\x` -> the text "x" (not typed). Clean, unambiguous case.
+- id: eof_value_escape_text
+  desc: value-position backslash enters text mode; `\x` is the text "x"
+  udon: "|el :k \\x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [Text, "x"]
+    - ElementEnd
+  # red?: no
+
+# CORE "Escape": a `\` NOT at head position is passed through literally; in
+# prose it's just a character. `abc\`<EOF> -> Text "abc\".
+- id: eof_prose_trailing_backslash
+  desc: a trailing backslash in prose is literal — Text "abc\\"
+  udon: "|p abc\\"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "abc\\"]
+    - ElementEnd
+  # red?: no
+
+# CORE "Explicit Typing" nesting note (DELIBERATELY under-specified): nested
+# `<...>` is a single `<>`-balanced span. At EOF -> one UnclosedTypeEnvelope,
+# payload = the full lexical span incl. both openers.
+- id: eof_nested_envelope_unclosed
+  desc: "nested `<r: <i: 3` unclosed at EOF — one balanced-span envelope warning"
+  udon: "|el :r <r: <i: 3"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "r"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [BareValue, "<r: <i: 3"]
+    - ElementEnd
+  # red?: no — BUT CORE calls nesting "deliberately under-specified"; the
+  # single-warning / full-span reading matching the parser is incidental, not
+  # a ratified guarantee. FLAG.
+
+# CORE: interpolation unclosed in prose (not value position).
+- id: eof_interp_in_prose_unclosed
+  desc: an unclosed interpolation mid-prose at EOF — expr kept + warning
+  udon: "|p x !{{expr"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "x "]
+    - [Interpolation, "expr"]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+  # red?: no
+
+# CORE "Unified Inline Syntax": the char after `;` decides mode with no
+# lookahead — `;{` is the inline-comment opener EVEN at head position (a line
+# comment needs `; ` framing). So `;{foo`<EOF> at root is a DELIMITED inline
+# comment left unclosed, not a positional line comment.
+- id: eof_inline_comment_at_head_unclosed
+  desc: "`;{` at head opens an inline comment (delimited), unclosed at EOF -> warning"
+  udon: ";{foo"
+  root_only: true
+  events:
+    - CommentStart
+    - [Text, "foo"]
+    - [Warning, "UnclosedInlineComment"]
+    - CommentEnd
+  # red?: no  (contrast a line comment `; foo`, which is positional -> silent)
+
+
+# ---------------------------------------------------------------------------
+# 8. Blank / whitespace at or before EOF  (an OPEN CORE question lives here)
+# ---------------------------------------------------------------------------
+
+# CORE "Overview": blank lines are a `BlankLine` event. A trailing blank line
+# after prose emits BlankLine (inside the still-open element, before its End).
+- id: eof_trailing_blank_line
+  desc: a trailing empty line after prose emits BlankLine, then the element closes
+  udon: "|p hi\n\n"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hi"]
+    - BlankLine
+    - ElementEnd
+  # red?: no — but whether a TRAILING blank belongs inside |p (before its End)
+  # vs after it is a placement CORE doesn't state; noting it.
+
+# *** OPEN CORE QUESTION (flagged in the brief) ***
+# A spaces-only final line. The parser SILENTLY drops it (no BlankLine, no
+# Text) — contrast the truly-empty line above, which DOES emit BlankLine, and
+# a spaces-only line INSIDE a fence, which is exact Text content
+# (legacy_mined.yaml::freeform_whitespace_only_line_is_content). So a
+# spaces-only line behaves as THREE different things across contexts. CORE
+# gives no rule for the structural (non-fence) case. Encoded to the parser's
+# current drop-it behavior ONLY to document the question; NOT a CORE-derived
+# assertion.
+- id: eof_spaces_only_final_line
+  desc: "OPEN QUESTION — a spaces-only final line; parser drops it silently"
+  udon: "|p hi\n   "
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hi"]
+    - ElementEnd
+  # red?: unsure — CORE has NO ruling. Options CORE could take: (a) drop
+  # (current), (b) BlankLine like an empty line, (c) InconsistentIndentation
+  # or content. Needs a Joseph ruling.
+
+# Related: trailing spaces on the SAME line as prose. Parser KEEPS them in the
+# Text ("hi   "). Whether sameline trailing whitespace is trimmed or preserved
+# is also unstated by CORE.
+- id: eof_trailing_spaces_sameline
+  desc: "OPEN QUESTION — trailing spaces on a prose line; parser keeps them"
+  udon: "|p hi   "
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Text, "hi   "]
+    - ElementEnd
+  # red?: unsure — CORE unstated (trim vs keep sameline trailing whitespace).
+
+
+# ---------------------------------------------------------------------------
+# 9. Mixed positional + delimited stacks; document-complete vs truncated
+# ---------------------------------------------------------------------------
+
+# CORE: delimited unwinds first (warns), then the enclosing positional frames
+# (nested elements) close silently, innermost-first.
+- id: eof_unclosed_array_under_nested_elements
+  desc: unclosed array inside 3 nested elements — array warns, then silent ElementEnds
+  udon: "|a\n  |b\n    |c :xs [1"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+  # red?: no
+
+# CORE: an embed with content inside a directive body. embed warns; directive
+# + element close silently.
+- id: eof_unclosed_embed_in_directive
+  desc: unclosed embed (with content) inside a directive body — embed warns, rest silent
+  udon: "!if x\n  |p |{a y"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "y"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+    - DirectiveEnd
+  # red?: no  (embed here HAS content, so the warning fires — contrast the
+  # empty-embed / value-ending-embed reds above)
+
+# CORE "Inline and Embedded": a multi-line embed delivers per-line Text;
+# unclosed at EOF it warns once (content present).
+- id: eof_multiline_embed_unclosed
+  desc: a multi-line unclosed embed — per-line Text, one UnclosedEmbedded
+  udon: "|p |{a line1\n   line2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Text, "line1"]
+    - [Text, "line2"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+  # red?: no
+
+# CORE "End of input" (document result): a line-bound `[...]` that closes on an
+# INTERIOR newline warns but leaves a COMPLETE document (the warning does NOT
+# count toward incomplete-input). Here the array closes on the newline, then
+# "more prose" parses on. The document-level result (success here vs non-
+# success for a true-EOF-open frame) is NOT a wire event, so it can't be
+# asserted — but this is the fixture that pins the interior-newline half.
+- id: eof_linebound_array_closes_on_interior_newline
+  desc: line-bound array warns on an interior newline; parse continues; document stays complete
+  udon: "|el :xs [1 2\nmore prose\n"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "xs"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+    - [Text, "more prose"]
+  # red?: no — BUT this assumes `[...]` is LINE-BOUND, which CORE lists as an
+  # OPEN UX flag (line-bound vs multi-line). If arrays become multi-line, this
+  # case changes. FLAG. (The document-result distinction — complete here vs
+  # truncated when a frame is open at TRUE eof — has no fixture surface.)
+
+
+# ---------------------------------------------------------------------------
+# 10. CORE-ITSELF AMBIGUITIES  (the loudest finds — a fixture that reads as
+#     "non-compliant" but is arguably right, with CORE the thing to fix)
+# ---------------------------------------------------------------------------
+
+# FLAG A — intra-construct order is NOT uniform. For string/array/embed/
+# interp/inline-comment/freeform the order is CONTENT then Warning; for the
+# `<...>` envelope it is WARNING then content (BareValue). CORE never states a
+# rule; both existing envelope fixtures (typing_envelope.yaml,
+# eof_recovery.yaml) encode warning-first, and eof_recovery.yaml's COMMENT for
+# eof_unclosed_envelope even CLAIMS "content first" while ENCODING warning-
+# first — a self-contradiction. Ask: should all Unclosed* warnings sit on the
+# same side of their captured content? (No fixture here — this is a spec/
+# convention decision.)
+
+# FLAG B — interpolation / reference as an ARRAY ITEM. CORE "Inline Lists"
+# lists item kinds as "numbers, quoted strings, <...> envelopes, nested lists"
+# — omitting interpolation and references. But the parser DOES accept `!{{...}}`
+# as an array item. Is that a CORE omission (interpolation/ref ARE valid items)
+# or should `[!{{x` be something else? Encoded to parser behavior, flagged.
+- id: eof_interp_as_array_item
+  desc: "AMBIGUOUS — interpolation as an array item; CORE's item list omits it"
+  udon: "|el :m [!{{x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "m"]
+    - ArrayStart
+    - [Interpolation, "x"]
+    - [Warning, "UnclosedInterpolation"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - ElementEnd
+  # red?: no (parser accepts) — but CORE's Inline Lists item-kind list does not
+  # include interpolation; either the list is under-inclusive or this input
+  # should not open an interpolation. Needs a ruling.
+
+# FLAG C — empty value-position `\` at EOF. `:k \`<EOF>: CORE says value-
+# position `\` "enters text mode", so a value (empty text) IS supplied ->
+# arguably NOT MissingAttributeValue. But the harness DROPS empty Text, so the
+# wire shows `[Attr,"k"]` with no value event — indistinguishable from a
+# missing value. Which is correct: an empty Text value, a MissingAttributeValue
+# error, or something else? Encoded to the parser's (folded) output.
+- id: eof_empty_value_escape
+  desc: "AMBIGUOUS — `:k \\` at EOF; empty text value vs MissingAttributeValue"
+  udon: "|el :k \\"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - ElementEnd
+  # red?: unsure — the empty Text the parser emits folds away, leaving an Attr
+  # with no value event. CORE's "plain attributes always take a value" vs
+  # "value-position \ enters text mode" don't jointly resolve the empty case.
+
+# FLAG D — empty-embed vs empty-array warning ASYMMETRY (see section 5): an
+# empty unclosed `[` warns (UnclosedArray) but an empty unclosed `|{a` does
+# NOT (parser). CORE says every open delimited construct warns, so the embed
+# is the bug — but the asymmetry is worth calling out explicitly since both
+# are "delimited, empty, unclosed" and only one warns today.
