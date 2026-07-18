@@ -147,7 +147,7 @@
     - EmbeddedStart
     - [Name, "em"]
     - [Text, "abc"]
-    - [Error, "UnclosedEmbedded"]
+    - [Warning, "UnclosedEmbedded"]
     - EmbeddedEnd
     - ElementEnd
 
@@ -169,9 +169,9 @@
     - EmbeddedStart
     - [Name, "b"]
     - [Text, "y"]
-    - [Error, "UnclosedEmbedded"]
+    - [Warning, "UnclosedEmbedded"]
     - EmbeddedEnd
-    - [Error, "UnclosedEmbedded"]
+    - [Warning, "UnclosedEmbedded"]
     - EmbeddedEnd
     - ElementEnd
 
@@ -185,7 +185,7 @@
     - [Text, "a "]
     - CommentStart
     - [Text, "note"]
-    - [Error, "UnclosedInlineComment"]
+    - [Warning, "UnclosedInlineComment"]
     - CommentEnd
     - ElementEnd
 
@@ -199,7 +199,7 @@
     - [Text, "a "]
     - CommentStart
     - [Text, "note {inner"]
-    - [Error, "UnclosedInlineComment"]
+    - [Warning, "UnclosedInlineComment"]
     - CommentEnd
     - ElementEnd
 
@@ -220,7 +220,7 @@
     - [Attr, "href"]
     - [Error, "MissingAttributeValue"]
     - Nil
-    - [Error, "UnclosedEmbedded"]
+    - [Warning, "UnclosedEmbedded"]
     - EmbeddedEnd
     - ElementEnd
 
@@ -239,7 +239,7 @@
     - ArrayStart
     - [Integer, "1"]
     - [Integer, "2"]
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
 
@@ -258,9 +258,9 @@
     - [Integer, "1"]
     - ArrayStart
     - [Integer, "2"]
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
 
@@ -278,8 +278,8 @@
     - [Attr, "xs"]
     - ArrayStart
     - [StringValue, "a"]
-    - [Error, "UnclosedStringValue"]
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
 
@@ -296,7 +296,7 @@
     - ArrayStart
     - [Warning, "UnclosedTypeEnvelope"]
     - [BareValue, "<5m"]
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
 
@@ -494,7 +494,7 @@
     - [Name, "el"]
     - [Attr, "k"]
     - [StringValue, "unclosed"]
-    - [Error, "UnclosedStringValue"]
+    - [Warning, "UnclosedStringValue"]
     - ElementEnd
 
 - id: eof_unclosed_interpolation_value_position
@@ -506,7 +506,7 @@
     - [Name, "el"]
     - [Attr, "cost"]
     - [Interpolation, "price"]
-    - [Error, "UnclosedInterpolation"]
+    - [Warning, "UnclosedInterpolation"]
     - ElementEnd
 
 - id: eof_directive_line_no_newline

@@ -43,7 +43,7 @@
 ; Quoted strings are emitted as StringValue to avoid brace confusion
 |function[embed_content:Text]  | MARK
   |state[:main]
-    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_embedded) |return
+    |eof                      | TERM | Text(USE_MARK) | Warning(UnclosedEmbedded) |return
     |c['}']                  | TERM | ->                        |return
     |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :ml_ws
     |c['|']                   | TERM | ->                        |>> :check_pipe

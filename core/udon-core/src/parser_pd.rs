@@ -5724,7 +5724,7 @@ impl PushdownParser {
                                     if !self.finished { self.stack.push(Frame::Quoted(f)); return ParseResult::NeedMoreData; }
                                     self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::StringValue { content: c, span: sp }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedStringValue, span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedStringValue"[..]), span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
@@ -5762,7 +5762,7 @@ impl PushdownParser {
                         ArraySt::Items => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedArray"[..]), span: self.gspan() });
                                 on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -5773,7 +5773,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'\n') => {
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedArray, span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedArray"[..]), span: self.gspan() });
                                     on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                     continue 'run;
                                 }
@@ -8510,7 +8510,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(0);
                                 { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInlineComment"[..]), span: self.gspan() });
                                 continue 'run;
                             }
                             f.st = CommentTextBracedSt::PdK225;
@@ -8523,7 +8523,7 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::CommentTextBraced(f)); return ParseResult::NeedMoreData; }
                                 self.set_term(0);
                                 { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInlineComment"[..]), span: self.gspan() });
                                 continue 'run;
                             }
                             self.set_term(0);
@@ -8751,7 +8751,7 @@ impl PushdownParser {
                                     if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
                                     self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedEmbedded, span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedEmbedded"[..]), span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
@@ -9485,7 +9485,7 @@ impl PushdownParser {
                                     if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
                                     self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Interpolation { content: c, span: sp }); }
-                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInterpolation"[..]), span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
@@ -9495,7 +9495,7 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
                                 { let (c, sp) = self.take_capture(); on_event(StreamEvent::Interpolation { content: c, span: sp }); }
-                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInterpolation"[..]), span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {

@@ -127,6 +127,6 @@
     - ArrayStart
     - [Integer, "1"]
     - [Integer, "2"]
-    - [Error, "UnclosedArray"]
+    - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd

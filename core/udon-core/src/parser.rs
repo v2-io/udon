@@ -189,10 +189,6 @@ pub enum ParseErrorCode {
     NoTabs,
     AttributeUnderAttribute,
     MissingAttributeValue,
-    UnclosedArray,
-    UnclosedEmbedded,
-    UnclosedInlineComment,
-    UnclosedStringValue,
 }
 
 /// Callback-based parser.
@@ -3772,7 +3768,7 @@ impl<'a> Parser<'a> {
                 None => {
                     self.set_term(0);
                     on_event(Event::StringValue { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedStringValue, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedStringValue"), span: self.span() });
                     return;
                 }
                 _ => unreachable!("scan_to only returns target chars"),
@@ -3810,7 +3806,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Items => {
                     if self.eof() {
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedArray, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
                     on_event(Event::ArrayEnd { span: self.span() });
                     return;
                     }
@@ -3821,7 +3817,7 @@ impl<'a> Parser<'a> {
                     return;
                         }
                         Some(b'\n') => {
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedArray, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
                     on_event(Event::ArrayEnd { span: self.span() });
                     return;
                         }
@@ -6051,7 +6047,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInlineComment"), span: self.span() });
                     return;
                     }
                     self.parse_skip_brace_balanced(on_event);
@@ -6062,7 +6058,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedInlineComment, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInlineComment"), span: self.span() });
                     return;
                     }
                     self.set_term(0);
@@ -6250,7 +6246,7 @@ impl<'a> Parser<'a> {
                         None => {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedEmbedded, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
                     return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
@@ -6826,7 +6822,7 @@ impl<'a> Parser<'a> {
                         None => {
                     self.set_term(0);
                     on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
                     return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
@@ -6835,7 +6831,7 @@ impl<'a> Parser<'a> {
                 State::Closing => {
                     if self.eof() {
                     on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
                     return;
                     }
                     match self.peek() {

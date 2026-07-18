@@ -29,7 +29,7 @@
 ; UnclosedStringValue) — expects-inference can't see a param terminator.
 |function[quoted:StringValue]  :q  | MARK
   |state[:main]
-    |eof                      | TERM | StringValue(USE_MARK) | /error(unclosed_string_value) |return
+    |eof                      | TERM | StringValue(USE_MARK) | Warning(UnclosedStringValue) |return
     |c[:q]                    | TERM | ->                        |return
     |c[<BS>]                  | -> | ->                          |>>
     |default                  | ->                               |>>
@@ -41,9 +41,9 @@
   |state[:entry]
     |c['[']  | ->                                                 |>> :items
   |state[:items]
-    |eof                      | /error(unclosed_array)            |return
+    |eof                      | Warning(UnclosedArray)            |return
     |c[']']  | ->                                                 |return
-    |c['\n'] | /error(unclosed_array)                             |return
+    |c['\n'] | Warning(UnclosedArray)                             |return
     |c[' \t'] | ->                                                |>>
     |default | /value(1, ']')                                     |>>
 

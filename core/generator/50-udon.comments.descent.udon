@@ -84,8 +84,8 @@
 ; Helper: capture brace-balanced content as Text
 |function[comment_text_braced]  | MARK
   |state[:main]
-    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |eof                      | TERM | Text(USE_MARK) | Warning(UnclosedInlineComment) |return
     |default                  | /skip_brace_balanced             |>> :done
   |state[:done]
-    |eof                      | TERM | Text(USE_MARK) | /error(unclosed_inline_comment) |return
+    |eof                      | TERM | Text(USE_MARK) | Warning(UnclosedInlineComment) |return
     |default                  | TERM | Text(USE_MARK) | ->       |return

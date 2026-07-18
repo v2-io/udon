@@ -133,7 +133,7 @@
 ; Interpolation !{{expr}} - double-brace, must close with }}
 |function[interpolation:Interpolation]  | MARK
   |state[:main]
-    |eof                      | TERM | Interpolation(USE_MARK) | /error(UnclosedInterpolation)   |return
+    |eof                      | TERM | Interpolation(USE_MARK) | Warning(UnclosedInterpolation)   |return
     |c['}']                   | TERM | ->                              |>> :closing
     |default                  | ->                                     |>>
 
@@ -141,7 +141,7 @@
   ; only '}}' terminates.
   |state[:closing]
     |c['}']                   | ->                                     |return  ; found }}
-    |eof                      | Interpolation(USE_MARK) | /error(UnclosedInterpolation) |return
+    |eof                      | Interpolation(USE_MARK) | Warning(UnclosedInterpolation) |return
     |default                  | ->                                     |>> :main
 
 

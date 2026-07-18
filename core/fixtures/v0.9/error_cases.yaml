@@ -25,7 +25,7 @@
     - [Name, "el"]
     - [Attr, "val"]
     - [StringValue, "unclosed"]
-    - [Error, "UnclosedStringValue"]
+    - [Warning, "UnclosedStringValue"]
     - ElementEnd
 
 - id: unclosed_single_quote_error
@@ -36,7 +36,7 @@
     - [Name, "el"]
     - [Attr, "val"]
     - [StringValue, "unclosed"]
-    - [Error, "UnclosedStringValue"]
+    - [Warning, "UnclosedStringValue"]
     - ElementEnd
 
 - id: unclosed_interpolation_error
@@ -47,7 +47,7 @@
     - [Name, "p"]
     - [Text, "total is "]
     - [Interpolation, "count"]
-    - [Error, "UnclosedInterpolation"]
+    - [Warning, "UnclosedInterpolation"]
     - ElementEnd
 
 - id: elements_still_close_after_error
