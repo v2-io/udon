@@ -83,6 +83,17 @@ edits.
   the envelope's single-line warning and treat it like the other
   multi-line-tolerating constructs (with whitespace pre-trimming), that's
   welcome — a convenience, not a spec requirement.
+- **Unclosed inline `!{…}` directive / `!{:kind:…}` raw → two new codes** (§1.2,
+  2026-07-18; executor's call, per Joseph). Parallel to `UnclosedInterpolation`
+  (the third `!{`-family member): unclosed inline directive `!{name …}` →
+  **`UnclosedInlineDirective`**; unclosed inline raw `!{:kind: …}` →
+  **`UnclosedInlineRaw`**. The "Inline" prefix disambiguates from the *block*
+  `!name` / `!:lang:` forms (positional — never "unclosed"). Content→warning,
+  keep-everything: the raw body must survive (the current silent-drop of raw
+  content, and the directive's content-doubling + off-registry `Error
+  "UnclosedText"`, are grammar-phase **bugs** the fixtures pin against). A
+  **nameless** `!{`<EOF> (nothing after `!{`) → **prose `Text "!{"`** — no valid
+  directive ever started, parallel to the bare-marker family (Joseph agreed).
 
 ## [0.9.0-alpha.1] — 2026-07-15
 
