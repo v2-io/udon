@@ -84,7 +84,10 @@ edits.
   shaped by the slot: single-value slots — identity key `|el[ ]`, reference key
   `@[ ]`, envelope `< >` — → **nil** (not a whitespace string); an **array**
   `[ ]` → **empty array** (0 items, not `[nil]`). Resolves the open `|el[]`
-  question (nil-valued key, not empty-list value). **Multi-line** whitespace
+  question (nil-valued key, not empty-list value). The collapse to empty needs a **proper close** — an
+  **unclosed** whitespace bracket/envelope keeps its whitespace **verbatim**
+  (content-so-far) + its `Unclosed*`, unifying with keep-everything and
+  `$partial-key`'s partial value (§1.3 / §1.10). **Multi-line** whitespace
   (with newlines, `<  ⏎  >`) stays in the deliberately-undefined multi-line
   space — the envelope's current `UnclosedTypeEnvelope` warning is fine.
   *Grammar hint (Joseph):* if implementing multi-line finds it simpler to drop
@@ -114,6 +117,11 @@ edits.
   `;`<EOF> ≠ `;\n`) that's a **red-find**, not a new rule. (The spaces-only-line
   *content* question — `BlankLine` vs `Text` — is a separate standing silence in
   `TODO-SPEC-CORE.md`, orthogonal to the EOF aspect.)
+- **Interpolation / reference as array items → yes** (§1.8, 2026-07-18; Joseph
+  agreed). Array items follow the uniform value rules (Value Kinds; Explicit
+  Typing's "array items alike"), so interpolation `!{{…}}` and references `@…`
+  are valid items — the "Inline Lists" enumeration (numbers/strings/envelopes/
+  nested lists) is illustrative, not exhaustive.
 
 ## [0.9.0-alpha.1] — 2026-07-15
 

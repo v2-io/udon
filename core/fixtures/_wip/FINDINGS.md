@@ -2,7 +2,9 @@
 
 **Status (2026-07-18):** harvest of three parallel spec-grounded agents (delimited-unclosed, positional+bare-marker, composition+edges) — **104 draft cases** in this `_wip/` dir (`delimited-unclosed.yaml`, `positional-and-bare-marker.yaml`, `composition-and-edges.yaml`). Drafts are **not verified case-by-case yet** and are **not run by the harness** (`_wip/` is a sibling of `v0.9/`). Every expectation was derived from CORE, not the parser. **Reds are finds, not failures.**
 
-Finalization (verify each case → promote the good ones to `v0.9/` → pin the ruling-gated ones) is the next phase, **gated on the §1 rulings** below. This doc is the guide for it.
+**§1 RULINGS ARE NOW MADE (2026-07-18)** — see `spec/msc/CHANGELOG.md` alpha.2 "Ruled" for every decision (line-boundedness = multi-line deliberately undefined; emission order content→warning→End; `$partial-key` for unclosed identity/ref keys; empty/whitespace-only *closed* bracket→nil / array→empty, but *unclosed* keeps whitespace verbatim; inline `!{…}`/`!{:kind:…}` → `UnclosedInlineDirective`/`UnclosedInlineRaw`; nameless `!{`<EOF>→prose; root-`:x`→undefined; EOF≡eol for the edges; interp/ref *are* valid array items). Warning-code **spellings are provisional** (CHANGELOG guardrail — descent will regenerate them).
+
+**Finalization roadmap for the next agent (fixtures-only — NO grammar changes yet, per Joseph):** (1) apply the §3 corrections to the live `v0.9/` fixtures; (2) verify each `_wip/` draft against the CHANGELOG rulings + CORE, **correcting fixture-bugs** — a red must be a real grammar gap, not a mis-expectation; (3) promote the verified drafts into `v0.9/` (merge into the topical files, dedupe), **reds included** — they are the spec of what the grammar phase must implement; (4) run the compliance gate; the surviving reds are the grammar to-do list. This doc + the CHANGELOG ledger are the complete spec for it.
 
 ---
 
