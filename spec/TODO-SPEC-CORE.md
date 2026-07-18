@@ -7,6 +7,11 @@
 > *Discipline (META-1): read the CORE section before editing or advising on
 > it, and re-grep line numbers — they drift.*
 
+**EOF / positional–delimited:** settled framing and CORE rewrite plan live in
+[`TODO-EOF-refactor.md`](TODO-EOF-refactor.md) (incl. Addendum A on inferring
+kind from grammar shape). Prefer that over inventing EOF composition rules
+in isolation.
+
 ---
 
 ## Open
@@ -58,22 +63,15 @@
       (side-finding of the archived prose-collision spike,
       `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
       an explicit deferral. *(discuss w/ Joseph)*
-- [ ] **EOF anomaly composition — the biggest of the 2026-07-16 batch**
-      (hit 4× while densifying; each case needed a *reading*). CORE's
-      "End of input" table is **per-construct and silent on composition**
-      — it rules each row alone, but EOF guarantees several constructs are
-      open at once. Concrete cases: `|p |{a x |{b y` (two embeds) ·
-      `|el :xs [1 [2` (nested arrays) · `|el :xs ["a` (string in array) ·
-      `|p |{a :href` (embed + open attr). The fixtures encode
-      innermost-first, each construct carrying its own anomaly where its
-      `End` flushes — the reading uniform with the single-construct rows,
-      marked ⚠ throughout. The densifying agent's proposed one-sentence
-      fix, worth weighing as-is: *"when several constructs are open, each
-      closes innermost-first, and each awaiting a delimiter carries its
-      own anomaly."* That sentence would turn all four readings into
-      derivations **and** reclassify the `UnclosedEmbedded`-drop
-      divergence (`../core/TODO-CORE-PARSING.md`) from arguable to plain
-      bug. *(discuss w/ Joseph)*
+- [ ] **EOF section rewrite — positional / delimited** (settled 2026-07-17;
+      design of record: [`TODO-EOF-refactor.md`](TODO-EOF-refactor.md)).
+      Collapse "End of input" to: unexpected EOF only for still-open
+      **delimited** activations; **positional** finishes by ordinary end
+      rules; composition = innermost-first (stack). Clarifies positional
+      *context* vs *construct* (text block positional, embed delimited).
+      Turns densification composition ⚠ fixtures into derivations and
+      makes the embed any-phase drop a plain bug. Also folds: unclosed
+      identity `[` (delimited under the framing).
 - [ ] **Smaller silences from the same pass** (each with a concrete case;
       none encoded): **empty identity bracket** `|el[]` — empty key, or a
       key whose value is the empty list `[]`? (the EOF list has

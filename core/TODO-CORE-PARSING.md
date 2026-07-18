@@ -4,6 +4,15 @@ The event-level parser and the descent grammar (`generator/*.descent.udon`). Hol
 residuals and decompositions — spec *compliance* is proven by the versioned
 fixture groups (see root `TODO-META.md`), not tracked here.
 
+**EOF / positional–delimited framing:** design of record is
+[`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md) (2026-07-17),
+including **Addendum A** (infer kind from grammar exit structure; arrange
+layout vs matched bodies). Unexpected EOF only for still-open **delimited**
+activations; **positional** constructs finish by ordinary end rules. The
+items below that are pure EOF bugs are instances of that framing —
+implement against it, not against the superseded aggregate-event sketch in
+`../design/eof-model-proposal-2026-07.md`.
+
 ## Open
 
 - [ ] **Prose-shaped-blob audit: `attr_trailing_blob` and `flag_value`'s
@@ -49,80 +58,21 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         the *element's* child, which the `/block_directive(:elem_col)`
         route would give directly). *(discuss w/ Joseph)*
 
-- [ ] **`UnclosedEmbedded` is dropped when EOF lands in the embed's
-      attribute phase** (found by the 2026-07-16 densification pass;
-      probe-verified and *widened* the same day — the agent reported it as
-      specific to the `MissingAttributeValue` path; it is not). A
-      three-way, no verdict:
-      - **CORE says** ("End of input" table) `|{...}` open at EOF →
-        "Content so far + `Error UnclosedEmbedded`; `EmbeddedEnd`
-        flushes." The row is **unconditional** — it says nothing about
-        what is open *inside* the embed.
-      - **The grammar**: the anomaly lives in exactly one place —
-        `60-udon.embedded.descent.udon`'s `embed_content:main` `|eof` arm.
-        The `embedded` function's own `:post_identity` / `:pre_content` /
-        `:check_attr` states have **no `|eof` arm**, so an EOF reached in
-        the identity/attribute phase returns silently; `EmbeddedEnd` still
-        fires (BRACKET type), but no error does.
-      - **The parser**: `|p some |{em abc` (EOF in content) →
-        `UnclosedEmbedded` ✓. `|p |{a :href` (EOF, valueless attr) →
-        `MissingAttributeValue` + `Nil` + `EmbeddedEnd`, no
-        `UnclosedEmbedded`. **`|p |{a :href x` (EOF, a perfectly ordinary
-        completed attribute) → `Attr`/`BareValue`/`EmbeddedEnd`/`ElementEnd`
-        — no anomaly of any kind**: an unclosed embed closes as silently as
-        if it had seen its `}`. So the trigger is the attribute *phase*,
-        not the error path. Pinned RED by
-        `eof_recovery::eof_unclosed_embedded_with_open_attr`. Interacts
-        with the EOF-composition silence in `spec/TODO-SPEC-CORE.md`
-        (the fixture's event *order* is a ⚠ reading; its *absence* is
-        not). *(discuss w/ Joseph)*
+- [ ] **`UnclosedEmbedded` dropped when EOF lands outside `embed_content`**
+      (any phase — identity/attrs, not only valueless attr). Pinned RED:
+      `eof_recovery::eof_unclosed_embedded_with_open_attr`. Under the
+      settled framing (`../spec/TODO-EOF-refactor.md`): embed is
+      **delimited** — unexpected EOF whenever the activation is still
+      open, phase irrelevant; anomaly cites entry site (`|{`). Grammar
+      today only arms `|eof` in `embed_content:main`. Implement against
+      that framing (hand-fix interim, or generated delimited unwind).
 
-- [ ] **A bare marker as the final byte of input is silently discarded**
-      (found 2026-07-16 by the densification agent's review of the EOF
-      proposal; probe-verified by two of us independently). **The worst
-      keep-everything violation found to date** — it is data loss, not
-      merely a missing anomaly:
-
-      | input | at EOF | with a trailing `\n` |
-      |---|---|---|
-      | `\|` | **0 events** | `Text "\|"` |
-      | `@` | **0 events** | `Text "@"` |
-      | `!` | **0 events** | `Text "!"` |
-      | `:` | **0 events** | `Text ":"` |
-      | `!{` | **0 events** | `DirectiveStart`/`End` |
-
-      Add any byte after the marker (`\|1`, `@ x`, `:-)`) and it parses
-      fine, so the trigger is exactly **a guard left pending at EOF**.
-      These are the 16 no-emit `\|eof` arms. It violates two ratified
-      sentences at once: *"Nothing is ever discarded at EOF"* and *"a
-      missing final newline is never, by itself, an anomaly (EOF is
-      newline-equivalent everywhere a rule says 'followed by a
-      newline')"*. Candidate resolution (the agent's, and it follows
-      directly from the second sentence): **resolve the pending guard as
-      if at a newline** — `\|` + EOF → `Text "\|"`, ordinary prose, no
-      anomaly; `\|{` + EOF → `EmbeddedStart` + `UnclosedEmbedded`.
-      Deliberately unfixtured pending the ruling (fixtures here would be
-      inventing spec). *(discuss w/ Joseph)*
-
-      **Fixable in 0.9 from ratified text alone** (Joseph's scoping call,
-      2026-07-16): the *model* — generated EOF, the group property, the
-      event shape (`design/eof-model-proposal-2026-07.md`) — waits for the
-      dialect boundary, because the group vocabulary is exactly what that
-      boundary renegotiates. The *bugs* don't: this one follows from
-      newline-equivalence + nothing-is-discarded, and the
-      `UnclosedEmbedded` drop follows from the EOF table's unconditional
-      embed row. No new spec needed for either.
-
-      *(Correction, same day: this item previously claimed that
-      newline-unclosed and EOF-unclosed arrays differ on the wire —
-      `arrays.yaml::array_unclosed_is_error` omitting `ArrayEnd`. **That
-      was false.** It relayed a prior author's in-fixture comment that
-      neither the agent nor I probed before recording it. Both forms emit
-      `Error UnclosedArray` + `ArrayEnd`, identically. The real question
-      hiding there is different and now separate: that fixture presumes
-      arrays are **single-line**, which is an un-ruled silence — only
-      envelopes are stated single-line — so it silently takes a side on a
-      blocked item. Routed to `spec/TODO-SPEC-CORE.md`.)*
+- [ ] **Bare marker as final byte silently discarded** (data loss: `|` /
+      `@` / `!` / `:` / `!{` at EOF → 0 events; same + `\n` → ordinary
+      events). Pending-guard paths are **positional** default end under
+      `../spec/TODO-EOF-refactor.md` — EOF ≡ newline, **not** unexpected
+      EOF. The 16 no-emit `|eof` arms are the bug sites. Fixture the
+      family once CORE text matches the framing.
 
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
@@ -223,17 +173,15 @@ fixture groups (see root `TODO-META.md`), not tracked here.
         (per-base validation: `0o9` must fall to BareValue). Design options
         recorded in TODO-DESCENT (row-splice templates the leading
         candidate).
-      - **EOF as a generated concern** *(proposal, Joseph 2026-07-16 —
-        `../design/eof-model-proposal-2026-07.md`; awaiting his ruling)*.
-        Two facts at EOF — undifferentiated buffer remainder, and unmet
-        delimiter expectations from opened constructs — generated rather
-        than hand-written per state. Measured motivation: 90 `|eof` arms
-        in the active units, 80 pure boilerplate, 10 carrying anomalies —
-        and both 2026-07-16 REDs sit in states that forgot one. Would
-        dissolve the EOF-composition silence (unwind order *is*
-        innermost-first) and derive the `Unclosed*` vocabulary from frame
-        identity. Joseph: *"I've always felt EOF handling in the descent
-        grammar was one of its weakest areas."*
+      - **EOF as a generated concern** — design of record:
+        `../spec/TODO-EOF-refactor.md` (**positional** default end +
+        **delimited** unexpected-EOF unwind from type/function property
+        + entry site; closer language stays in the grammar). Supersedes
+        the aggregate-event sketch in
+        `../design/eof-model-proposal-2026-07.md`. Motivation: ~89 hand
+        `|eof` arms; bugs live where an arm was forgotten. Joseph: *"I've
+        always felt EOF handling in the descent grammar was one of its
+        weakest areas."*
       - **generator-verified determinism** — descent verifying that every
         state's transitions cover disjoint byte classes, making the grammar
         its own determinism proof; also the real fix for warning-free

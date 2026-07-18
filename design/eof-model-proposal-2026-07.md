@@ -1,11 +1,17 @@
 # EOF as a generated concern — a proposal to descent, motivated by udon
 
-> **Status: proposal, not ratified — and deliberately NOT a 0.9 item.**
+> **Status: historical exploration (2026-07-16) — superseded as design of
+> record by [`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md)
+> (2026-07-17).** Probe facts and bug measurements below remain useful;
+> the aggregate-event vehicle, residual-buffer-as-anomaly, and "two facts"
+> framing are **not** what to implement. The settled model:
+> **positional** vs **delimited** constructs; unexpected EOF only for
+> still-open delimited activations; grammar owns closers; entry site for
+> diagnostics.
+>
+> **Original status note (kept for archaeology):** proposal, not ratified —
 > Joseph's idea (2026-07-16), developed with Claude, then reviewed by two
-> agents independently (one deep in the fixture corpus, one fresh and
-> deliberately unprimed). It touches neither `spec/CORE.md` nor the
-> grammar. Register: the collaboration's — reasoning included, so nobody
-> re-derives it. **Every factual claim below is probe-verified**; an
+> agents independently. **Every factual claim below is probe-verified**; an
 > earlier draft carried two that were not, and both were false (see
 > *Corrections*).
 >
