@@ -71,7 +71,44 @@ in isolation.
       *context* vs *construct* (text block positional, embed delimited).
       Turns densification composition ⚠ fixtures into derivations and
       makes the embed any-phase drop a plain bug. Also folds: unclosed
-      identity `[` (delimited under the framing).
+      identity `[` (delimited under the framing) and the **two-level severity
+      ruling** (2026-07-18 — every `Unclosed*` → **Warning**; the document-level
+      incomplete-input is a *result*, not a diagnostic; see the EOF doc's
+      *Severity — two levels*). Reconcile CORE's "Anomaly posture" ladder with
+      it (today it calls unclosed constructs an "error event" while insisting
+      they keep everything — the split says which half is which).
+- [ ] **"Positional" / "delimited" terminology audit** (before/with the EOF
+      rewrite). The design of record makes **positional construct** (extent by
+      geometry) and **delimited construct** (printed end-sequence owed) precise
+      terms; CORE already uses both words in *other* senses, so each existing
+      use needs a look — same sense, or a genuinely different thing that should
+      keep a distinct word? Current uses (2026-07-18 grep):
+      - "positional" = **recognition locus** — `## Positional Contexts` (§91:
+        block/sameline/inline/head). Different axis from construct-extent; the
+        EOF doc's Vocabulary box keeps them distinct — carry that in.
+      - "positional" = **order/sequence** — "Children (the array) are
+        *positional*" (§379). The *ordered* sense; likely say "ordered" to free
+        the word.
+      - "positional" = **the `\` escape's cursor-position rule** — "the four
+        *positional* uses of `\`" (§249, §546). A third sense; probably fine
+        scoped to `\`, but confirm it doesn't read as construct-extent.
+      - "delimiter" is mostly the literal-char sense (§100/§251/§611/§717/§1412
+        — compatible). Watch: §57 "awaiting a *delimiter*" (already the new
+        sense — the rewrite formalizes it) and DYNAMICS §209 "indentation to
+        *delimit* scope" (loosely "bound" — conflicts, since indentation-closed
+        is *positional*, not delimited).
+      Keep / disambiguate-in-place / rename-a-sense is a spec-reasoning call.
+      *(discuss w/ Joseph if a rename is wanted)*
+- [ ] **Cleanup opportunities to fold into the EOF pass** (broad notes, not a
+      mandate — take only what the rewrite already touches). The rulings land
+      near the top of CORE (End of input §55, Warning codes §27, Anomaly posture
+      §41), so that neighborhood is open anyway: collapse the per-construct EOF
+      table into the one rule (a net simplification); update the Warning-codes
+      table for the severity relabel and firm up settled "working name" hedges;
+      the terminology audit above. Dovetails with the standing editorial items
+      here (unwrap the hard-wrapped prose; reconsider the guard / Marker-
+      Recognition framing; bare-pipe table fragility) — do those opportunistically
+      where the pass already touches that text, not as a separate sweep.
 - [ ] **Smaller silences from the same pass** (each with a concrete case;
       none encoded): **empty identity bracket** `|el[]` — empty key, or a
       key whose value is the empty list `[]`? (the EOF list has
