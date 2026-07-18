@@ -15,7 +15,38 @@ against it (a CI drift-check enforces agreement — to be wired).
 Format: [Keep a Changelog]. Versioning: [Semantic Versioning] (pre-1.0, so minor
 bumps may break).
 
-## [0.9.0-alpha.1] — 2026-07-15 (in progress)
+## [0.9.0-alpha.2] — 2026-07-18 (in progress)
+
+**EOF handling recast as positional / delimited, plus a two-level severity
+model.** Rulings ratified in conversation (Joseph, 2026-07-17/18); design of
+record: [`../TODO-EOF-refactor.md`](../TODO-EOF-refactor.md). The CORE-text
+rewrite of "End of input" (+ Anomaly posture + Warning codes) is **pending** —
+this entry records the ratified rulings; `../TODO-SPEC-CORE.md` tracks the CORE
+edits.
+
+### Ruled (2026-07-17/18; do not re-open)
+
+- **Positional vs delimited.** Every construct closes either **positionally**
+  (extent by geometry — EOL / dedent / EOF) or **delimited** (a printed
+  end-sequence the grammar matches). At EOF, positional constructs finish by
+  ordinary end rules (silent); a still-open **delimited** construct is the only
+  "unexpected EOF" — content kept + `Unclosed*` citing its entry site + End.
+  Composition is innermost-first (the frame stack). Semantics (needs-a-value,
+  cardinality, schema) are *not* this mechanism — they are close-time checks by
+  whoever owns the construct.
+- **Two-level severity.** Warning = content kept; Error = something lost. So
+  every per-construct `Unclosed*` is a **Warning** (keep-everything), retiring
+  the old per-construct Error/Warning split. Separately, a delimited frame open
+  at *true* EOF means the input is not a whole document → the parse **result**
+  turns non-success (non-zero exit): a result, not a wire event. Line-bound
+  failures mid-document (array/envelope on a newline) are warnings only, zero
+  exit.
+- **Consequences.** Unclosed identity `[` at EOF → delimited anomaly (was
+  silent); a bare marker as the final byte → positional (EOF ≡ newline → prose),
+  not unexpected EOF; an embed open in any phase at EOF → delimited (fixes the
+  any-phase drop).
+
+## [0.9.0-alpha.1] — 2026-07-15
 
 First alpha of the **attribute-model reconception** — the headline change
 0.8.0 explicitly left unsettled. Ratification carriers:
