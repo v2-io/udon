@@ -68,19 +68,30 @@ table row is more committed than the spec actually is.
   - **15 of 16 pure-return positional arms are redundant** — descent's default
     EOF already reproduces a bare `return` (document, 4× `element` BRACKET arms,
     prose, comments, attr). Deleted; gate holds. (90→75 arms.)
-  - **The 1 exception is a real descent bug**, not a grammar need: for a BRACKET
-    function, `render_eof` emits `{Type}End` **explicitly** (rust_pushdown.rs
-    ~552), which **double-emits** against the frame's normal return-`End` when
-    EOF lands in a *post-closer* state. `freeform:post_close` (closer already
-    consumed, peeking for the trailing newline) hits this: expected
-    `FreeformStart/Text/FreeformEnd` (3), got 4 (extra `FreeformEnd`). The hand
-    `|eof|return` masked it by routing through the single normal return.
-  - **Fix direction:** `render_eof`'s bracket case should route EOF through the
-    normal return path (single `End`), not emit `{Type}End` as a separate event.
-    Once fixed, freeform's arm deletes too (and the delimited synthesis, which
-    also needs End-after-content, inherits the correct single-End path). Needs
-    the descent before/after benchmark pair (per CLAUDE.md) since it's a codegen
-    change — deferred to the next push.
-- **State:** 15 arms deleted, gate at baseline 2/478. Both remaining reds
-  pre-existing. Next: fix `render_eof` bracket End (unblocks bracket arms +
-  delimited synthesis), then the delimited classifier (gaps 1/4/5).
+  - **The 1 exception (freeform post_close) is NOT a bug — it is a legitimate,
+    load-bearing override.** *(CORRECTION: my first pass here claimed a
+    "render_eof double-emits End" descent bug. That was WRONG — asserted from
+    the +1 event count + a plausible mechanism, never verified. Dumping the
+    actual events (`examples/stdin_parse`) showed the 4th event is
+    `Warning(UnterminatedFreeform)`, not a second `FreeformEnd`.)*
+  - **Real mechanism:** `freeform` has a **function-level** `|eof |
+    Warning(UnterminatedFreeform) | return` (line 11). The `post_close` state's
+    `|eof | |return` **overrides** it: once the closer `` ``` `` matched,
+    `post_close` is only checking for the optional trailing newline, so EOF
+    there is a clean close (EOF ≡ that newline) and must NOT warn. Delete the
+    override → EOF at post_close falls through to the function-level handler →
+    a correctly-closed fence spuriously emits `UnterminatedFreeform`.
+  - **The clean rule (principled):** a state-level `|eof| |return` is REDUNDANT
+    iff its function has NO function-level `|eof` handler (default EOF = return,
+    matches); it is LOAD-BEARING iff the function HAS one (the state arm exists
+    to suppress it where wrong). `freeform` is the ONLY one of the 16 with a
+    function-level handler → the only non-redundant deletion. Verified by
+    reading the grammar + the gate delta.
+  - **Model mapping:** this validates the design MORE cleanly — `freeform` is
+    delimited (function-level → warn-if-EOF-while-open); `post_close` is the
+    *positional tail after the closer matched* (EOF ≡ newline, no warning). The
+    generated model must express "once the closer is consumed the frame is
+    closed; the trailing check is positional." No descent change needed here.
+- **State:** 15 arms deleted (freeform's override restored, correctly kept),
+  gate at baseline 2/478, both remaining reds pre-existing. Next: the delimited
+  classifier (gaps 1/4/5) — the actual FINDINGS-bug fixer.
