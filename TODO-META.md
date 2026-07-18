@@ -23,6 +23,64 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
         indentation edge cases, prose-dedentation depth, element-name
         charset torture — and edge/combination coverage); operational
         detail in `core/fixtures/README.md`.
+- [ ] **Spec organization & the artifact ecosystem — contract vs. pedagogy**
+      (Joseph, 2026-07-18; moved from `spec/TODO-SPEC-CORE.md` — it spans
+      spec ↔ grammar ↔ fixtures ↔ learning artifacts, not just CORE.md edits).
+      The tension: CORE.md is trying to be both a concise, easy-to-modify
+      *contract* and a *tutorial* (worked hierarchy walkthroughs, beginner
+      cautions, dedentation examples all sit inside normative text) — part of
+      what makes it feel like a stack. One document probably can't fully
+      optimize both. Threads:
+      - **(2) DRY migration.** Give each construct its canonical names *at its
+        own section* — the grammar / event / warning / AST spellings it appears
+        under (e.g. `identity-key` / `IdentityKey` / `UnclosedIdentityKey`) — so
+        naming lives once, with the construct, and central registries shrink to
+        the rule + a derived index. Concrete EOF checklist to place:
+        string→`UnclosedStringValue`; `[…]`→`UnclosedArray` (+`ArrayEnd`);
+        `|{…}`→`UnclosedEmbedded` (+`EmbeddedEnd`);
+        `;{…}`→`UnclosedInlineComment` (+`CommentEnd`);
+        `!{{…}}`→`UnclosedInterpolation`; `<…>`→`UnclosedTypeEnvelope`
+        (single-line); freeform→`UnterminatedFreeform`; identity
+        `[`→`UnclosedIdentityKey` (element's `End` flushes). Pairs with
+        descent's name-derivation + parser-manifest items
+        (`tools/descent/TODO-DESCENT.md`).
+      - **(3) Structural pass → a separable spine.** The cross-cutting pile at
+        the top of CORE (Warning codes / Anomaly posture / End of input)
+        duplicates per-construct behavior. Aim not merely to reorganize but to
+        **separate the normative spine from the pedagogical layer** (rule vs.
+        example / why / caution, marked structurally) so a reader — or a tool —
+        can lift just the spine. That keeps CORE teaching now, makes any later
+        split mechanical, and is the empirical test of "adhoc stack?" (a doc
+        whose spine won't lift out cleanly is one). **Start with a grounded
+        structural assessment of the live CORE.md** (decide against facts, not
+        memory).
+      - **The density gradient** (Joseph): [cheat-sheets] < [learning-examples]
+        < [learning-version] < [fixtures] < [spec] < [grammar], by
+        density/readability. Two refinements: (a) a gradient of
+        *hand-maintained* artifacts is the scatter problem ×N — it pays off only
+        if they are **derived** from one source (many projections), i.e. the
+        Literate-fusion item below; (b) density-order ≠ authority-order (UDON
+        makes grammar densest but *spec* authoritative, on purpose), so
+        generation **radiates from the authoritative source outward** — machine
+        side (grammar/fixtures) and human side (learning/cheat-sheets) both —
+        not linearly from the dense end.
+      - **Pedagogy is audience-relative** (Joseph): the dense end teaches too —
+        fixtures and grammar are genuinely *pedagogical for agents* where a
+        human would find them dense. "Teaching" and "low-density" are different
+        axes; a projection can be dense AND pedagogical for the right reader.
+      - **Direction to weigh — literate weave** (Joseph, "not sure it'd work"):
+        instead of separate CORE.md + `core/generator/*.descent.udon`, break the
+        grammar up and **weave it into the (better-organized) spec** — a
+        literate-programming shape where the density lives in the official spec
+        and a rule and its grammar edit sit right next to each other. A specific
+        flavor of Literate-fusion; worth prototyping against it.
+      Converges with **[later] Literate fusion** (next item) — that is the
+      "one source → spec/grammar/fixtures" *machinery*; this is the
+      *organization + which-artifacts* question. **Sequencing (my bet):**
+      separability-within-one-doc first (cheap, reversible, keeps it teaching),
+      let the real seams show under load, then split *with* derivation — not six
+      hand-maintained artifacts before we know where they cleave.
+      *(discuss w/ Joseph)*
 - [ ] **[later] Literate fusion — the fused ground truth (CTQ-E).** Spec
       prose, descent grammar, and compliance fixtures extracted from ONE
       source — which, since `.desc` is already UDON-shaped, can itself be a

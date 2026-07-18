@@ -33,3 +33,9 @@ composite/standard types. (Core-spec edits live in `TODO-SPEC-CORE.md`.)
       notes into here. (The archived review's §7-F decision list is fully
       accounted for: eight of nine resolved in CORE 0.8/0.9; the ninth — the
       Markdown subset — is the MARKDOWN.md item above.)
+- [ ] **Spec organization / artifact ecosystem** — the contract-vs-pedagogy,
+      DRY-migration, structural-spine, density-gradient, agent-pedagogy, and
+      literate-weave threads are tracked cross-cuttingly in **`../TODO-META.md`**
+      (they span spec ↔ grammar ↔ fixtures ↔ learning artifacts). Noted here
+      because how the companion specs relate to CORE and to the
+      learning/cheat-sheet layer is part of that picture.

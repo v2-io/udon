@@ -180,34 +180,6 @@ in isolation.
 - [ ] **Filename-designator ↔ pragma binding** — when the schema layer lands,
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
-- [ ] **Spec DRY + structure** (Joseph, 2026-07-18) — deliberately
-      **independent** of the alpha.2 EOF normalization (done, self-contained;
-      it left the *rule* in End of input and the *codes* in the Warning-codes
-      registry, no per-construct table). Central enumerated lists are a
-      scattered-update liability: each little change means hunting every list —
-      the opposite of what a source-of-truth format should make easy.
-      - **(2) DRY migration.** Give each construct its canonical names *at its
-        own section* — the grammar / event / warning / AST spellings it appears
-        under (e.g. `identity-key` / `IdentityKey` / `UnclosedIdentityKey`) — so
-        naming lives once, with the construct, and the central registries shrink
-        to the rule + a derived index. Concrete EOF checklist to place:
-        string→`UnclosedStringValue`; `[…]`→`UnclosedArray` (+`ArrayEnd`);
-        `|{…}`→`UnclosedEmbedded` (+`EmbeddedEnd`);
-        `;{…}`→`UnclosedInlineComment` (+`CommentEnd`);
-        `!{{…}}`→`UnclosedInterpolation`; `<…>`→`UnclosedTypeEnvelope`
-        (single-line); freeform→`UnterminatedFreeform`; identity
-        `[`→`UnclosedIdentityKey` (element's `End` flushes).
-      - **(3) Structural pass.** The cross-cutting-concern pile at the top of
-        CORE (Warning codes / Anomaly posture / End of input) duplicates
-        per-construct behavior; a cleaner organization + a consistent
-        per-construct name-label convention would make CORE easier to modify.
-        **Start with a grounded structural assessment of the live CORE.md** so
-        the reorg is decided against current facts, not memory (Joseph flagged
-        he hasn't read it recently).
-      Pairs with descent's name-derivation + parser-manifest items
-      (`../tools/descent/TODO-DESCENT.md`): if the parser lists the codes it
-      actually issues, the spec vocabulary is *checked against* it, not
-      hand-synced.
 
 ---
 
