@@ -61,6 +61,28 @@ edits.
   (no-ops on warnings, `tree.rs`), so nothing downstream depends on it. 6 of 7
   constructs already comply; `<…>` (warning-first today) is the lone outlier to
   reorder in the grammar phase.
+- **Unclosed identity/reference key → `$partial-key`** (§1.3, 2026-07-18). An
+  **unclosed** identity or reference key emits its partial content under
+  **`$partial-key`**, not `$key`, then `UnclosedIdentityKey`, then `End` — e.g.
+  `|el[k`<EOF> → `[Attr,$partial-key],[BareValue,k],[Warning,UnclosedIdentityKey],
+  ElementEnd`. A distinct name (not a flag on `$key`) because it must **fail
+  safe**: a consumer reading `$key` / resolving a reference automatically
+  excludes it (the partial value is still kept), whereas an ignored flag would
+  treat the incomplete key as real — dangerous, especially for references.
+  Compatible with the content→warning order (it's a content-marking).
+- **Empty / whitespace-only brackets & envelopes → empty value** (2026-07-18;
+  behavior-level, may stay out of CORE prose). A **closed** bracket/envelope
+  whose content is only **single-line** whitespace (spaces, tabs) is empty,
+  shaped by the slot: single-value slots — identity key `|el[ ]`, reference key
+  `@[ ]`, envelope `< >` — → **nil** (not a whitespace string); an **array**
+  `[ ]` → **empty array** (0 items, not `[nil]`). Resolves the open `|el[]`
+  question (nil-valued key, not empty-list value). **Multi-line** whitespace
+  (with newlines, `<  ⏎  >`) stays in the deliberately-undefined multi-line
+  space — the envelope's current `UnclosedTypeEnvelope` warning is fine.
+  *Grammar hint (Joseph):* if implementing multi-line finds it simpler to drop
+  the envelope's single-line warning and treat it like the other
+  multi-line-tolerating constructs (with whitespace pre-trimming), that's
+  welcome — a convenience, not a spec requirement.
 
 ## [0.9.0-alpha.1] — 2026-07-15
 
