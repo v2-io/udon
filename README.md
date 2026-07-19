@@ -239,7 +239,8 @@ silent-drops, and the bare-marker-at-EOF drops; **normalized** `UnterminatedFree
 shipped in [`tools/descent/CHANGELOG.md`](tools/descent/CHANGELOG.md); residuals in
 [`core/TODO-CORE-PARSING.md`](core/TODO-CORE-PARSING.md) +
 [`tools/descent/TODO-DESCENT.md`](tools/descent/TODO-DESCENT.md) (the `|unclosed`
-directive; inline-raw/-directive content-keeping + codes; pushdown backend). The
+directive; inline-raw/-directive content-keeping + codes). Both parser backends
+are at parity (recursive + pushdown, `pushdown_differential` green). The
 alpha.2 **fixture finalization** now reconciles against this new behavior +
 vocabulary rather than the pre-spike output.
 
