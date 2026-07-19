@@ -1,7 +1,8 @@
 # TODO — the text-wire recast: newline-carrying Text (P0 SHOW-STOPPER)
 
-> **Status: DESIGN, awaiting Joseph's calls on the shortlist below; then
-> harness audit → fixtures-first rewrite → grammar sweep → CORE text.**
+> **Status: D1–D4 RULED (2026-07-19, CHANGELOG third batch) + harness audit
+> DONE (`core/fixtures/_wip/HARNESS-AUDIT.md`; landmine #1 defused c55a4f5).
+> Executing: CORE text → fixtures-first rewrite → grammar sweep → AST.**
 > This is the design of record for fixing the project's highest-priority
 > defect (Joseph, 2026-07-19): *the event wire drops the document's
 > newlines.* Prose/freeform/comment/raw Text events exclude their line

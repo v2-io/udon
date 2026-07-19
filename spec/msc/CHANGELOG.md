@@ -127,6 +127,31 @@ edits.
   are valid items — the "Inline Lists" enumeration (numbers/strings/envelopes/
   nested lists) is illustrative, not exhaustive.
 
+### Ruled (2026-07-19, third batch — the TEXT-WIRE recast, P0; do not re-open)
+
+**The reconstruction contract** (design of record: `../TODO-TEXT-WIRE.md`):
+the document's text stream is reconstructable by pure in-order concatenation
+of the event stream's text-bearing events — no spans, no source. Line
+terminators within text are TEXT and ride the wire; indentation/markers/
+consumed escapes/pure-structure-line terminators are GEOMETRY (spans only);
+comment content never carries its enclosing line's terminator. The spec
+carries ZERO fixture/harness content — only split-freedom ("a Text event is
+never guaranteed complete") + this contract.
+
+- **D1 — ruled yes**: when an annotation or inline form owns a text line's
+  end, the terminator rides a trailing terminator-only `Text "\n"` after it
+  (byte-honest, source order; comment-stripping keeps line boundaries).
+- **D2 — ruled Text**: freeform blank lines are `Text "\n"` (freeform is the
+  exact mode; BlankLine belongs to interpreted prose).
+- **D3 — ruled explicit tolerance**: the EOF-vs-newline twin comparison
+  suppresses the captured newline that is really an EOF stand-in — the
+  varied twin's final text event compares modulo the appended terminator.
+  (Harness convention — lives in fixtures/README, not CORE.)
+- **D4 — ruled yes** (Joseph: the S6 discussion assumed newlines were being
+  preserved): `BlankLine` is defined as contributing `"\n"` to
+  reconstruction — a labeled newline-only line; the S6 AST policy
+  (interior → newline, edges → ornamentation) stands unchanged.
+
 ### Ruled (2026-07-19, second batch — the standing-silences clearout; do not re-open)
 - **S1 — element suffixes stack**: `|field?!` ≡ `|field :'$?' true :'$!' true`
   (desugaring implies it; today a second suffix half-parses to prose — grammar
