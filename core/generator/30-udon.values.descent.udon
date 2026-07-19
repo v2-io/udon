@@ -24,11 +24,8 @@
 
 ; Quoted string parsing — ONE function for both quote kinds (:q is the
 ; closing quote). Runtime-byte SCAN targets (descent, 2026-07-16) keep the
-; memchr fast path with the parameterized quote. Delimited via the :q PARAM
-; closer: no hand |eof arm is needed — descent classifies quoted as delimited
-; and generates the unclosed force-unwind at EOF (partial StringValue content +
-; Warning(UnclosedStringValue)). This is the param-closer case the older
-; single-literal expects-inference structurally cannot see.
+; memchr fast path with the parameterized quote. (Delimited via the :q param
+; closer — the case single-literal inference can't see; EOF auto-handled.)
 |function[quoted:StringValue]  :q  | MARK
   |state[:main]
     |c[:q]                    | TERM | ->                        |return
@@ -41,11 +38,9 @@
 |function[array:Array]
   |state[:entry]
     |c['[']  | ->                                                 |>> :items
-  ; Delimited (BRACKET Array): the unclosed-at-EOF force-unwind
-  ; (Warning(UnclosedArray) + ArrayEnd) is auto-generated from the classification
-  ; — no hand |eof. The explicit \n arm below is NOT the EOF mechanism; it is the
-  ; array's line-bound close (a per-construct policy: a newline inside [...] ends
-  ; the array with a warning; see CORE Line-boundedness — currently a live open).
+  ; The \n arm below is NOT EOF handling (that's auto-generated) — it is the
+  ; array's line-bound close: a newline inside [...] ends the array with a
+  ; warning (a per-construct policy; CORE Line-boundedness, currently a live open).
   |state[:items]
     |c[']']  | ->                                                 |return
     |c['\n'] | Warning(UnclosedArray)                             |return

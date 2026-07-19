@@ -7,16 +7,11 @@
 ; Freeform block - captures content until closing ``` at start of any line
 ; Preserves exact whitespace - no dedentation
 ; Closing ``` detected when line starts with optional whitespace then ```
-; freeform's closer is the ` ``` ` fence LINE — a line-shape, not a byte —
-; matched across maybe_end1/2→post_close and finishing on a geometric newline,
-; so the positional/delimited classifier can't see it structurally (it reads as
-; positional). This function-level |eof is therefore its explicit delimited
-; DECLARATION: at EOF still open, force-unwind with Warning(UnclosedFreeform) +
-; FreeformEnd. Code NORMALIZED from the old hand-picked "UnterminatedFreeform"
-; to the uniform Unclosed<Construct> family (2026-07-18 spike; CORE line 39
-; anticipated this). The eventual clean form is a declarative `|unclosed
-; Freeform` directive (TODO-DESCENT "derive Unclosed<Name>"). post_close keeps
-; its own |eof (once closed, EOF is the optional trailing newline — no warning).
+; EXCEPTION to the auto-EOF convention (see 00-core): freeform's closer is the
+; ` ``` ` fence LINE (a line-shape, not a byte), invisible to the classifier, so
+; this function-level |eof is its explicit delimited declaration. (The eventual
+; clean form is a `|unclosed Freeform` directive.) post_close keeps its own |eof
+; too — the positional tail once the fence has closed (no warning).
 |function[freeform:Freeform]
   |eof | Warning(UnclosedFreeform)                              |return
   ; Opening line: everything after the backticks begins the body (CORE

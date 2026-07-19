@@ -10,7 +10,7 @@
 ;
 ; Design:
 ;   1. Type system declares emit behavior
-;   2. EOF handling inferred from context
+;   2. EOF handling inferred from context (see EOF below)
 ;   3. No explicit emit() calls
 ;   4. DSL describes grammar, generator infers mechanics
 ;
@@ -18,6 +18,17 @@
 ;   BRACKET  - emits Start on entry, End on exit (Element, Embedded, ...)
 ;   CONTENT  - emits event on return (Name, Text, Comment, Attr, Value, ...)
 ;   INTERNAL - no emit, used for intermediate values (indent count, flags)
+;
+; EOF (end of input) is handled by descent, NOT hand-written per state.
+; A construct is classified positional or delimited from its exit structure:
+;   * positional (closes on geometry) -> EOF is newline+maximal-dedent: the
+;     state runs its own \n arm, or its fall-through default, at EOF.
+;   * delimited  (closes on a printed end-sequence) -> at EOF still open it
+;     force-unwinds: keep content + Warning(Unclosed<Construct>) + End.
+; So the ABSENCE of an |eof arm is the norm. A hand |eof arm remains only for
+; a genuine exception: a delimited construct whose closer the classifier cannot
+; see structurally (freeform's fence LINE), or a positional-tail override
+; (freeform post_close). Those few are commented AS exceptions where they sit.
 
 
 |parser udon

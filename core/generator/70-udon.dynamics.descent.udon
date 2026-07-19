@@ -130,10 +130,8 @@
     |default                  | /sameline_dir_body                 |return  ; !{name args}
 
 
-; Interpolation !{{expr}} - double-brace, must close with }}. Delimited (the
-; }} closer, matched across :main→:closing): the unclosed-at-EOF force-unwind
-; (partial Interpolation content + Warning(UnclosedInterpolation)) is
-; auto-generated from the classification — no hand |eof in either state.
+; Interpolation !{{expr}} - double-brace, must close with }} (matched across
+; :main → :closing). (Delimited; EOF auto-handled.)
 |function[interpolation:Interpolation]  | MARK
   |state[:main]
     |c['}']                   | TERM | ->                              |>> :closing
