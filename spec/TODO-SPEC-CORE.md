@@ -30,6 +30,17 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       `\`-forced empty text) + the *ornamentation vs text-literal*
       vocabulary; C2 annotation convention note (also ux/TODO-AGENT-UX.md).
       AST-side S6 interpretation → `../core/TODO-PARSER.md`.
+      **Plus (Joseph's catch, 2026-07-19): specify the TEXT RECONSTRUCTION
+      rule** — CORE says "consumers concatenate" but never states the joiner.
+      Actual rule: span-based — content is borrowed from the source, so the
+      host inspects the inter-span gap (contains `\n` → line boundary, join
+      with newline; escape-consumed bytes → same-line split, concatenate).
+      State it, AND name the assumption it rides on: reconstruction requires
+      source access; a source-discarding streaming consumer cannot
+      distinguish adjacent Texts (same-line split vs line boundary) from
+      content alone. Wire-self-sufficiency options (line-boundary marker
+      event, or an adjacency invariant needing the escape path to change)
+      → weigh at the streaming/AST layer, `../core/TODO-PARSER.md`.
 
 - [ ] **CORE text for the `*{`-reduce-to-text ruling** (ruled 2026-07-19 —
       CHANGELOG alpha.2; the decisions are closed, this is the spec-text
