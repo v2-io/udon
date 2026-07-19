@@ -5760,7 +5760,6 @@ impl PushdownParser {
                         ArraySt::Items => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Array(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedArray"[..]), span: self.gspan() });
                                 on_event(StreamEvent::ArrayEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -9484,9 +9483,8 @@ impl PushdownParser {
                                 Some(b'\n') => { self.advance(); continue 'st; }
                                 None => {
                                     if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
-                                    self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Interpolation { content: c, span: sp }); }
-                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInterpolation"[..]), span: self.gspan() });
+                                    on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
@@ -9496,7 +9494,7 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Interpolation(f)); return ParseResult::NeedMoreData; }
                                 { let (c, sp) = self.take_capture(); on_event(StreamEvent::Interpolation { content: c, span: sp }); }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedInterpolation"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Error { code: ParseErrorCode::UnclosedInterpolation, span: self.gspan() });
                                 continue 'run;
                             }
                             match self.peek() {

@@ -133,7 +133,9 @@
 ; Interpolation !{{expr}} - double-brace, must close with }}
 |function[interpolation:Interpolation]  | MARK
   |state[:main]
-    |eof                      | TERM | Interpolation(USE_MARK) | Warning(UnclosedInterpolation)   |return
+    ; |eof DELETED (spike): descent auto-generates the force-unwind
+    ; (Interpolation content + Warning(UnclosedInterpolation)) from the
+    ; delimited classification (return type Interpolation → derived code).
     |c['}']                   | TERM | ->                              |>> :closing
     |default                  | ->                                     |>>
 
@@ -141,7 +143,7 @@
   ; only '}}' terminates.
   |state[:closing]
     |c['}']                   | ->                                     |return  ; found }}
-    |eof                      | Interpolation(USE_MARK) | Warning(UnclosedInterpolation) |return
+    ; |eof DELETED (spike): auto-generated force-unwind (see :main).
     |default                  | ->                                     |>> :main
 
 

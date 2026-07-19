@@ -44,7 +44,10 @@
   |state[:entry]
     |c['[']  | ->                                                 |>> :items
   |state[:items]
-    |eof                      | Warning(UnclosedArray)            |return
+    ; |eof DELETED (spike): auto-generated force-unwind (Warning(UnclosedArray)
+    ; + ArrayEnd) from the delimited classification (return type Array). The
+    ; \n arm stays — it's the line-bound close (a per-construct policy), NOT
+    ; the EOF mechanism.
     |c[']']  | ->                                                 |return
     |c['\n'] | Warning(UnclosedArray)                             |return
     |c[' \t'] | ->                                                |>>

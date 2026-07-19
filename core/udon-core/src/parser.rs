@@ -3806,9 +3806,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Items => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
-                    on_event(Event::ArrayEnd { span: self.span() });
-                    return;
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
+                        on_event(Event::ArrayEnd { span: self.span() });
+                        return;
                     }
                     match self.peek() {
                         Some(b']') => {
@@ -6262,7 +6262,7 @@ impl<'a> Parser<'a> {
                 State::CheckPipe => {
                     if self.eof() {
                         on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
                         return;
                     }
                     match self.peek() {
@@ -6286,7 +6286,7 @@ impl<'a> Parser<'a> {
                 State::CheckSemi => {
                     if self.eof() {
                         on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
                         return;
                     }
                     match self.peek() {
@@ -6310,7 +6310,7 @@ impl<'a> Parser<'a> {
                 State::CheckBang => {
                     if self.eof() {
                         on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
                         return;
                     }
                     match self.peek() {
@@ -6334,7 +6334,7 @@ impl<'a> Parser<'a> {
                 State::MlWs => {
                     if self.eof() {
                         on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Error { code: ParseErrorCode::UnclosedText, span: self.span() });
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
                         return;
                     }
                     match self.peek() {
@@ -6827,19 +6827,18 @@ impl<'a> Parser<'a> {
                             self.advance();
                         }
                         None => {
-                    self.set_term(0);
-                    on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
-                    return;
+                            on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
+                            on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
+                            return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
                     }
                 }
                 State::Closing => {
                     if self.eof() {
-                    on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
-                    return;
+                        on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
+                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
+                        return;
                     }
                     match self.peek() {
                         Some(b'}') => {
