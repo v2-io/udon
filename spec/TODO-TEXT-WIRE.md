@@ -98,6 +98,15 @@ or inline form owns the line's end.
   changes the final text event by one byte (`"x"` → `"x\n"`) — the
   comparison needs a defined final-terminator tolerance (decision D3), or
   those variations assert the appended form.
+- **AUDIT FINDINGS (2026-07-19, `core/fixtures/_wip/HARNESS-AUDIT.md`):**
+  (1) `expects_multiline_content`'s `c.contains('\n')` variation-skip proxy
+  MUST be re-scoped to delimited-capture kinds before the wire fix — else
+  it silently skips variation coverage for nearly every prose fixture the
+  day Texts carry terminators (the audit's key non-obvious find); (2) the
+  fabricating `push_text_chunk` tests (tree.rs ~1027/1034) die with the
+  function; (3) exploratory recordings were captured through the fold —
+  post-fix drift there is expected noise, pre-flagged; (4) `spans.rs` is
+  the anti-compensator template — keep and extend it.
 
 ## AST-layer finding (2026-07-19, answering "how did the AST proceed?")
 
@@ -110,6 +119,12 @@ lines vanish. Its tests assert the heuristic's own output. A downstream
 patch over the felt symptom of the missing newlines — delete it in the
 sweep: `collect_text` becomes pure concatenation (+ BlankLine → `"\n"`),
 and `tree_api`/`stream_tree` text tests are re-derived from the new wire.
+**Verified worse (audit + grep): the builder DROPS BlankLine events entirely
+outside raw blocks** ("not represented in the tree (yet)", tree.rs ~818) —
+the AST loses paragraph breaks wholesale. The sweep adds a BlankLine node
+representation (the S6 AST policy requires it for interior→newline AND the
+ornamentation/round-trip option) plus the D4 `"\n"` contribution in
+`collect_text`.
 
 ## Grammar changes (both backends via regen)
 
