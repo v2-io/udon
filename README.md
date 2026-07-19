@@ -286,6 +286,13 @@ boundary rewrite (no brace form is ever a boundary marker — CHANGELOG
 2026-07-19; CORE text + grammar tracked in `spec/TODO-SPEC-CORE.md` +
 `core/TODO-CORE-PARSING.md`).
 
+**⚠⚠ P0 SHOW-STOPPER (2026-07-19, before ANY other 0.9 work): the event wire
+drops the document's newlines.** Prose/freeform Text events exclude their line
+terminators; reconstruction currently requires source-gap inspection — and the
+fixture harness's source-aware fold *enabled* the bug instead of catching it.
+Fix: newline-carrying Text (harness audit first, then the sweep) —
+`spec/TODO-SPEC-CORE.md` (the P0 item). Nothing tags before this.
+
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The
   rebooted spec (escape unification, `<…>` typing, numbers/`0d`, identity

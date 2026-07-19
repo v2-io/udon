@@ -30,7 +30,8 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       `\`-forced empty text) + the *ornamentation vs text-literal*
       vocabulary; C2 annotation convention note (also ux/TODO-AGENT-UX.md).
       AST-side S6 interpretation → `../core/TODO-PARSER.md`.
-      **Plus — WIRE DEFECT, fix PRE-TAG (Joseph, 2026-07-19): text must be
+      **Plus — ⚠⚠ P0, THE HIGHEST SHOW-STOPPING PRIORITY IN THE PROJECT
+      (Joseph, 2026-07-19): text must be
       reconstructable from the events alone.** Today prose/freeform Text
       events exclude their line terminators — newline bytes are consumed
       with NO event carrying them (a quiet keep-everything violation), so
@@ -42,6 +43,20 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       (composes with EOF ≡ newline); freeform sweeps in the same pass.
       Blast radius: text-family grammar fns (consume-then-TERM), most prose
       fixture expectations, the harness fold, CORE Text-granularity notes.
+      Joseph's framing, verbatim in spirit: the bug was *ENABLED by the
+      fixtures instead of caught by them* — the harness's source-gap fold
+      gave the comparison knowledge no consumer has, keeping the gate green
+      over a wire that drops the document's newlines ("udon-is-useless"
+      grade). Sequence: (1) fresh-eyes adversarial harness audit — every
+      place the comparison rewrites/drops/consults anything beyond the
+      event stream (the empty-Text fold itself is FINE per the authorized
+      concatenation rule — an empty segment folds into a general text
+      assertion — UNLESS that empty was supposed to be "\n"/"\n\n",
+      which is this same bug, not a separate one); (2) the
+      newline-carrying-Text sweep (grammar + fixtures + harness
+      de-compensation + CORE text), shaped with Joseph; (3) only then any
+      other fixture-territory work (*{ rewrite, S-batch). Nothing tags —
+      and nothing else builds on the wire — before this.
       *(exact shape discuss w/ Joseph before the sweep)*
 
 - [ ] **CORE text for the `*{`-reduce-to-text ruling** (ruled 2026-07-19 —
