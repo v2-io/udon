@@ -42,8 +42,7 @@
 #   2. IDENTITY [..] emits NO Unclosed warning today, in ANY phase — the code
 #      UnclosedIdentityKey never fires. Wholly-new consumer surface; every
 #      identity-open case is RED.
-#   3. INTERPOLATION drops a lone trailing `}` ( !{{a} at EOF captures "a",
-#      not "a}" ) — content loss, contra keep-everything. RED.
+#   3. (FIXED 2026-07-19) interpolation lone-} — promoted to v0.9/eof_delimited.
 #   4. ⚑ MODEL GAP: inline directive !{..} and inline raw !{:kind: ..} are
 #      brace-delimited constructs with NO Unclosed* code in the registry.
 #      The parser reuses `UnclosedEmbedded` for an unclosed inline directive.
@@ -108,23 +107,6 @@
     - [Text, "c"]
     - [Warning, "UnclosedInlineComment"]
     - CommentEnd
-    - ElementEnd
-
-# ★ CONTENT-LOSS BUG. CORE "Unified Inline Syntax": interpolation "ends at the
-# first }} — a single } is expression content." So !{{a} at EOF has NOT closed
-# (only one }), and keep-everything ⇒ the captured expression is "a}".
-- id: du_interp_lone_brace_is_content_eof
-  desc: "!{{a} — a lone } is expression content, so \"a}\" is captured (RED)"
-  udon: "|p !{{a}"
-  root_only: true
-  # CORE "Unified Inline Syntax" (first }} closes; single } is content) +
-  # keep-everything ⇒ Interpolation "a}".
-  # red?: YES — parser captures only "a" (drops the trailing }), losing a byte.
-  events:
-    - ElementStart
-    - [Name, "p"]
-    - [Interpolation, "a}"]
-    - [Warning, "UnclosedInterpolation"]
     - ElementEnd
 
 

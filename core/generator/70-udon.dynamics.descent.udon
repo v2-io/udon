@@ -122,25 +122,37 @@
 
 
 ; Inline dynamics - dispatch based on first char after {
-; Called with position at first char inside braces
+; Called with position at first char inside braces.
+; EOF or EOL here means the line ended right after `!{` — a NAMELESS opener.
+; Ruled (CHANGELOG alpha.2): no valid directive ever started, so the consumed
+; bytes are restored as prose Text "!{" (parallel to the bare-marker family;
+; EOF ≡ eol per the same ledger, so the newline twin matches). Intercepted
+; BEFORE /sameline_dir_body, whose BRACKET entry would emit DirectiveStart;
+; the newline is left unconsumed for the caller's line handling.
 |function[sameline_directive]
   |state[:dispatch]
+    |eof                      | MARK | PREPEND('\x21\x7b') | TERM | Text(USE_MARK) |return
+    |c['\n']                  | MARK | PREPEND('\x21\x7b') | TERM | Text(USE_MARK) |return
     |c['{']                   | -> | /interpolation              |return  ; !{{expr}}
     |c[':']                   | -> | /sameline_raw                 |return  ; !{:kind: content}
     |default                  | /sameline_dir_body                 |return  ; !{name args}
 
 
 ; Interpolation !{{expr}} - double-brace, must close with }} (matched across
-; :main → :closing). (Delimited; EOF auto-handled.)
+; :main → :closing). (Delimited; EOF auto-handled.) No TERM is issued until
+; the closer is CONFIRMED: a lone consumed '}' stays inside the accumulation,
+; so the generated EOF force-unwind keeps it as content — `!{{a}`<EOF> emits
+; "a}" (keep-everything; the gap-4 partial-closer case), while a clean `}}`
+; close excludes both closer bytes via TERM(-1) before consuming the second.
 |function[interpolation:Interpolation]  | MARK
   |state[:main]
-    |c['}']                   | TERM | ->                              |>> :closing
+    |c['}']                   | ->                                     |>> :closing
     |default                  | ->                                     |>>
 
   ; First-}} rule (resolved 2026-07-16): a single '}' is expression content;
   ; only '}}' terminates.
   |state[:closing]
-    |c['}']                   | ->                                     |return  ; found }}
+    |c['}']                   | TERM(-1) | ->                          |return  ; found }}
     |default                  | ->                                     |>> :main
 
 
@@ -189,9 +201,9 @@
   ; `/skip_brace_balanced` (silent), so without this arm the unclosed directive
   ; returned with no warning (only the `:args` path warns, via embed_content's
   ; own eof). Explicit EOF arm keeps the already-emitted name and warns, mirroring
-  ; freeform's `|eof | Warning(UnclosedFreeform)`. (The NAMELESS `!{`<EOF> — still
-  ; in :name at EOF — is a separate, harder case: ruled to prose `Text "!{"`,
-  ; which can't be emitted after DirectiveStart; tracked as a red.)
+  ; freeform's `|eof | Warning(UnclosedFreeform)`. (The NAMELESS `!{`<EOF> is
+  ; intercepted BEFORE this function ever runs — sameline_directive's :dispatch
+  ; eof arm restores the consumed bytes as prose Text "!{", per the ruling.)
   |state[:after_name]
     |eof                      | Warning(UnclosedInlineDirective) |return
     |c['}']                  | ->                               |return

@@ -528,8 +528,8 @@
 #    L5. Array line-bound vs multi-line — STILL OPEN (deliberately undefined;
 #        the newline cases here are descriptive pins; settling it is tracked
 #        in spec/TODO-SPEC-CORE.md).
-#    L6. Interpolation lone-} at EOF — STILL RED (parser bug, the gap-4
-#        partial-closer restoration; _wip/delimited-unclosed.yaml).
+#    L6. Interpolation lone-} at EOF — FIXED 2026-07-19 (no TERM until `}}`
+#        confirmed; gated below as du_interp_lone_brace_is_content_eof).
 #
 # ===========================================================================
 # ⚑ INFRASTRUCTURE FLAG (STILL OPEN) — the document-level incomplete-input
@@ -562,3 +562,20 @@
   udon: "@el[k"
   root_only: true
   events: []
+
+# CORE "Unified Inline Syntax": interpolation ends at the FIRST `}}` — a
+# single `}` is expression content — so `!{{a}` at EOF has NOT closed and
+# keep-everything requires the captured expression "a}". Fixed 2026-07-19:
+# the grammar no longer TERMs at the first `}` (the closer is excluded via
+# TERM(-1) only once `}}` is confirmed), so the EOF force-unwind keeps the
+# consumed partial closer as content.
+- id: du_interp_lone_brace_is_content_eof
+  desc: "!{{a} at EOF — a lone } is expression content, so \"a}\" is captured"
+  udon: "|p !{{a}"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - [Interpolation, "a}"]
+    - [Warning, "UnclosedInterpolation"]
+    - ElementEnd

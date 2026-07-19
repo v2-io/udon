@@ -463,25 +463,25 @@ enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawSamelin
 enum DirectiveArgsSt { PdEntry, PdK306, PdK307, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirectiveSt { PdEntry, Dispatch, PdK308, PdK309, PdK310, PdK311, }
+enum SamelineDirectiveSt { PdEntry, Dispatch, PdK308, PdK309, PdK310, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum InterpolationSt { PdEntry, Main, Closing, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineRawSt { PdEntry, Kind, SkipSep, PdK312, PdK313, PdK314, PdK315, }
+enum SamelineRawSt { PdEntry, Kind, SkipSep, PdK311, PdK312, PdK313, PdK314, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SamelineRawBodySt { PdEntry, Scan, CheckClose, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK316, PdK317, PdK318, PdK319, PdK320, PdK321, }
+enum SamelineDirBodySt { PdEntry, Name, AfterName, Args, PdK315, PdK316, PdK317, PdK318, PdK319, PdK320, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK322, PdK323, PdK324, PdK325, }
+enum FreeformSt { PdEntry, Opening, LineStart, Content, Line, MaybeEnd1, MaybeEnd2, PostClose, PdK321, PdK322, PdK323, PdK324, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum BlockRefSt { PdEntry, Main, PostKey, PdK326, PdK327, }
+enum BlockRefSt { PdEntry, Main, PostKey, PdK325, PdK326, }
 
 #[derive(Debug)]
 enum Frame {
@@ -9890,28 +9890,36 @@ impl PushdownParser {
                         SamelineDirectiveSt::Dispatch => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineDirective(f)); return ParseResult::NeedMoreData; }
-                                f.st = SamelineDirectiveSt::PdK308;
-                                self.stack.push(Frame::SamelineDirective(f));
-                                self.enter_sameline_dir_body(on_event);
+                                self.mark();
+                                self.prepend_bytes(b"!{");
+                                self.set_term(0);
+                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
                                 continue 'run;
                             }
                             match self.peek() {
+                                Some(b'\n') => {
+                                    self.mark();
+                                    self.prepend_bytes(b"!{");
+                                    self.set_term(0);
+                                    { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
+                                    continue 'run;
+                                }
                                 Some(b'{') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK309;
+                                    f.st = SamelineDirectiveSt::PdK308;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_interpolation(on_event);
                                     continue 'run;
                                 }
                                 Some(b':') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineDirectiveSt::PdK310;
+                                    f.st = SamelineDirectiveSt::PdK309;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_sameline_raw(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirectiveSt::PdK311;
+                                    f.st = SamelineDirectiveSt::PdK310;
                                     self.stack.push(Frame::SamelineDirective(f));
                                     self.enter_sameline_dir_body(on_event);
                                     continue 'run;
@@ -9925,9 +9933,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineDirectiveSt::PdK310 => {
-                            continue 'run;
-                        }
-                        SamelineDirectiveSt::PdK311 => {
                             continue 'run;
                         }
                     }
@@ -9944,7 +9949,6 @@ impl PushdownParser {
                         InterpolationSt::Main => {
                             match self.scan_to2(b'\n', b'}') {
                                 Some(b'}') => {
-                                    self.set_term(0);
                                     self.advance_or_pend();
                                     f.st = InterpolationSt::Closing;
                                     continue 'st;
@@ -9968,6 +9972,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'}') => {
+                                    self.set_term(-1);
                                     self.advance_or_pend();
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Interpolation { content: c, span: sp }); }
                                     continue 'run;
@@ -10005,7 +10010,7 @@ impl PushdownParser {
                                     continue 'st;
                                 }
                                 _ => {
-                                    f.st = SamelineRawSt::PdK312;
+                                    f.st = SamelineRawSt::PdK311;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     self.enter_name(on_event);
                                     continue 'run;
@@ -10015,7 +10020,7 @@ impl PushdownParser {
                         SamelineRawSt::SkipSep => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineRaw(f)); return ParseResult::NeedMoreData; }
-                                f.st = SamelineRawSt::PdK313;
+                                f.st = SamelineRawSt::PdK312;
                                 self.stack.push(Frame::SamelineRaw(f));
                                 self.enter_sameline_raw_body(on_event);
                                 continue 'run;
@@ -10023,32 +10028,32 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b' ') => {
                                     self.advance_or_pend();
-                                    f.st = SamelineRawSt::PdK314;
+                                    f.st = SamelineRawSt::PdK313;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     self.enter_sameline_raw_body(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineRawSt::PdK315;
+                                    f.st = SamelineRawSt::PdK314;
                                     self.stack.push(Frame::SamelineRaw(f));
                                     self.enter_sameline_raw_body(on_event);
                                     continue 'run;
                                 }
                             }
                         }
-                        SamelineRawSt::PdK312 => {
+                        SamelineRawSt::PdK311 => {
                             f.st = SamelineRawSt::Kind;
                             continue 'st;
+                        }
+                        SamelineRawSt::PdK312 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                            continue 'run;
                         }
                         SamelineRawSt::PdK313 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
                         SamelineRawSt::PdK314 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        SamelineRawSt::PdK315 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -10115,20 +10120,20 @@ impl PushdownParser {
                         SamelineDirBodySt::Name => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
-                                f.st = SamelineDirBodySt::PdK316;
+                                f.st = SamelineDirBodySt::PdK315;
                                 self.stack.push(Frame::SamelineDirBody(f));
                                 self.enter_skip_brace_balanced(on_event);
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b) if is_xlbl_start(b) => {
-                                    f.st = SamelineDirBodySt::PdK317;
+                                    f.st = SamelineDirBodySt::PdK316;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_name(on_event);
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK318;
+                                    f.st = SamelineDirBodySt::PdK317;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_skip_brace_balanced(on_event);
                                     continue 'run;
@@ -10154,7 +10159,7 @@ impl PushdownParser {
                                     continue 'st;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK319;
+                                    f.st = SamelineDirBodySt::PdK318;
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_skip_brace_balanced(on_event);
                                     continue 'run;
@@ -10164,7 +10169,7 @@ impl PushdownParser {
                         SamelineDirBodySt::Args => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
-                                f.st = SamelineDirBodySt::PdK320;
+                                f.st = SamelineDirBodySt::PdK319;
                                 let (pd_a0,) = (b"UnclosedInlineDirective", );
                                 self.stack.push(Frame::SamelineDirBody(f));
                                 self.enter_embed_content(pd_a0, on_event);
@@ -10177,7 +10182,7 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 _ => {
-                                    f.st = SamelineDirBodySt::PdK321;
+                                    f.st = SamelineDirBodySt::PdK320;
                                     let (pd_a0,) = (b"UnclosedInlineDirective", );
                                     self.stack.push(Frame::SamelineDirBody(f));
                                     self.enter_embed_content(pd_a0, on_event);
@@ -10185,13 +10190,17 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        SamelineDirBodySt::PdK316 => {
+                        SamelineDirBodySt::PdK315 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
-                        SamelineDirBodySt::PdK317 => {
+                        SamelineDirBodySt::PdK316 => {
                             f.st = SamelineDirBodySt::AfterName;
                             continue 'st;
+                        }
+                        SamelineDirBodySt::PdK317 => {
+                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
+                            continue 'run;
                         }
                         SamelineDirBodySt::PdK318 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
@@ -10202,10 +10211,6 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineDirBodySt::PdK320 => {
-                            on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
-                            continue 'run;
-                        }
-                        SamelineDirBodySt::PdK321 => {
                             on_event(StreamEvent::DirectiveEnd { span: self.gspan() });
                             continue 'run;
                         }
@@ -10235,7 +10240,7 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     self.mark();
-                                    f.st = FreeformSt::PdK322;
+                                    f.st = FreeformSt::PdK321;
                                     continue 'st;
                                 }
                             }
@@ -10294,7 +10299,7 @@ impl PushdownParser {
                             }
                         }
                         FreeformSt::Line => {
-                            f.st = FreeformSt::PdK324;
+                            f.st = FreeformSt::PdK323;
                             continue 'st;
                         }
                         FreeformSt::MaybeEnd1 => {
@@ -10358,24 +10363,24 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        FreeformSt::PdK322 => {
+                        FreeformSt::PdK321 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK323;
+                            f.st = FreeformSt::PdK322;
                             continue 'st;
                         }
-                        FreeformSt::PdK323 => {
+                        FreeformSt::PdK322 => {
                             self.set_term(0);
                             { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
                             self.advance_or_pend();
                             f.st = FreeformSt::LineStart;
                             continue 'st;
                         }
-                        FreeformSt::PdK324 => {
+                        FreeformSt::PdK323 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                            f.st = FreeformSt::PdK325;
+                            f.st = FreeformSt::PdK324;
                             continue 'st;
                         }
-                        FreeformSt::PdK325 => {
+                        FreeformSt::PdK324 => {
                             self.set_term(0);
                             { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
                             self.advance_or_pend();
@@ -10402,7 +10407,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'[') => {
-                                    f.st = BlockRefSt::PdK326;
+                                    f.st = BlockRefSt::PdK325;
                                     continue 'st;
                                 }
                                 Some(b) if is_xlbl_cont(b) || b == b'.' => {
@@ -10437,12 +10442,12 @@ impl PushdownParser {
                                 }
                             }
                         }
-                        BlockRefSt::PdK326 => {
+                        BlockRefSt::PdK325 => {
                             if self.scan_to1(b']').is_none() && !self.finished { self.stack.push(Frame::BlockRef(f)); return ParseResult::NeedMoreData; }
-                            f.st = BlockRefSt::PdK327;
+                            f.st = BlockRefSt::PdK326;
                             continue 'st;
                         }
-                        BlockRefSt::PdK327 => {
+                        BlockRefSt::PdK326 => {
                             self.advance_or_pend();
                             f.st = BlockRefSt::PostKey;
                             continue 'st;

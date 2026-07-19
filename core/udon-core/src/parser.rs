@@ -6913,10 +6913,20 @@ impl<'a> Parser<'a> {
     {
         loop {
             if self.eof() {
-                    self.parse_sameline_dir_body(on_event);
+                    self.mark();
+                    self.prepend_bytes(b"!{");
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
             }
             match self.peek() {
+                Some(b'\n') => {
+                    self.mark();
+                    self.prepend_bytes(b"!{");
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                }
                 Some(b'{') => {
                     self.advance();
                     self.parse_interpolation(on_event);
@@ -6949,7 +6959,6 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to2(b'\n', b'}') {
                         Some(b'}') => {
-                    self.set_term(0);
                     self.advance();
                     state = State::Closing;
                     continue;
@@ -6973,6 +6982,7 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'}') => {
+                    self.set_term(-1);
                     self.advance();
                     on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
                     return;

@@ -320,3 +320,14 @@
     - [Name, "inc"]
     - [Warning, "UnclosedInlineDirective"]
     - DirectiveEnd
+
+# Nameless `!{` at EOF (ruled: prose — no valid directive ever started,
+# parallel to the bare-marker family). Fixed 2026-07-19: sameline_directive's
+# :dispatch intercepts EOF BEFORE /sameline_dir_body would emit
+# DirectiveStart, restoring the consumed bytes as Text "!{".
+- id: bang_brace_eof
+  desc: nameless `!{` at EOF is prose Text "!{"
+  udon: "!{"
+  root_only: true
+  events:
+    - [Text, "!{"]
