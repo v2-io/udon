@@ -244,21 +244,31 @@ are at parity (recursive + pushdown, `pushdown_differential` green). The
 alpha.2 **fixture finalization** now reconciles against this new behavior +
 vocabulary rather than the pre-spike output.
 
-*Where it stands, and what's next (READ THIS if you're picking up the work):* an
-exhaustive **fixture harvest** — 104 spec-derived draft cases across three agents
-— sits in `core/fixtures/_wip/`, and its guide
-[`core/fixtures/_wip/FINDINGS.md`](core/fixtures/_wip/FINDINGS.md) carries the
-**finalization roadmap** in its top banner. A **non-gating exploratory sandbox**
-for undefined multi-line behavior is in `core/fixtures/exploratory/` (run:
-`cargo test -p udon-core --test exploratory -- --ignored --nocapture`). The
-compliance gate is intentionally **RED** on the alpha.2 EOF bugs the harvest
-documented — *reds are finds, not failures; they are the grammar to-do list.*
-**NEXT is fixtures-first (NO grammar changes until the fixtures are complete —
-Joseph's explicit trade):** the *fixture finalization* — apply the FINDINGS §3
-corrections to `v0.9/`, verify each `_wip/` draft against the CHANGELOG rulings +
-CORE (correcting fixture-bugs; a red must be a real grammar gap, not a
-mis-expectation), and promote the verified drafts into `v0.9/` with reds intact.
-*Then* the grammar phase (implement the rulings + fix the bugs → green).
+*Where it stands, and what's next (READ THIS if you're picking up the work):*
+**The compliance gate is fully GREEN and CORE is finalized for the recast.** A
+later 2026-07-18 pass — Joseph reopened grammar/descent/spec, sequencing at the
+executor's discretion — resolved the harvest's headline reds *in the grammar*
+and closed the CORE gaps:
+- descent gained a **`|unclosed <Name>`** directive; **inline `!{…}` directive /
+  `!{:kind:…}` raw** at EOF now keep their content and derive
+  `UnclosedInlineDirective` / `UnclosedInlineRaw` (was: dropped body / wrong
+  code). The **sameline `!` guard** was completed (`|el :go? !:sh:` opens a child
+  raw block) — the last standing gate red.
+- **CORE finalized**: the array line-boundedness §66/§76 contradiction resolved,
+  the `UnclosedInline*` registry rows added, `$partial-key` documented,
+  references / interpolations blessed as array items, provisional-names note
+  corrected (codes now derive from the grammar).
+
+The exhaustive **fixture harvest** (104 draft cases) still sits in
+`core/fixtures/_wip/` with its roadmap + a **session-update banner** in
+[`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md); a **non-gating exploratory
+sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
+(run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
+**What remains** (documented, not blocking): promote the ~83 already-green
+`_wip` cases into `v0.9/` for regression coverage; the **identity/reference-key
+EOF** warning (`UnclosedIdentityKey` + `$partial-key` — the harder shared
+`parse_element_identity` case, `core/TODO-CORE-PARSING.md`); and the `<…>`
+envelope's content-first emission order (extract `/envelope`, design-doc gap-3).
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The
@@ -284,11 +294,11 @@ Current state (2026-07-16):
   (2026-07-16, both parsers, event streams diffed) found zero
   errors/warnings across all six external documents; see `CONSUMERS.md`.
 
-Next: the **alpha.2 fixture finalization** described at the top of this Status
-(fixtures-first, no grammar yet), then the grammar phase (implement the rulings +
-fix the EOF bugs → green), then remaining densification and the `core-v0.9.0`
-tag. (The EOF-densification the 2026-07-16 note called for is what the alpha.2
-recast + harvest delivered.)
+Next: promote the remaining already-green `_wip` cases into `v0.9/` (coverage),
+then the identity/reference-key EOF warning + the `<…>` envelope emission-order
+cleanup (both above), then remaining densification and the `core-v0.9.0` tag.
+(The alpha.2 EOF recast + the 2026-07-18 grammar pass delivered the
+EOF-densification the 2026-07-16 note called for, and the gate is green.)
 
 ## How the work is organized
 

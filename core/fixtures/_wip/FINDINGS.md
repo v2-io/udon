@@ -1,5 +1,43 @@
 # alpha.2 EOF fixture harvest — findings & rulings needed
 
+> **⚡ SESSION UPDATE (2026-07-18, later — supersedes the "fixtures-only, NO
+> grammar changes" trade in the roadmap below).** Joseph reopened
+> grammar/descent/spec as fair game ("sequencing is yours; touch the
+> descent.udon files freely"). Much of this harvest's red set is now **resolved
+> in the grammar**, and the v0.9 compliance gate is **fully green**:
+> - **Inline `!{…}` directive / `!{:kind:…}` raw at EOF** — codes + content-keeping
+>   DONE. descent gained a **`|unclosed <Name>`** directive: inline raw keeps its
+>   body + derives `UnclosedInlineRaw` (a CONTENT sub-scan `sameline_raw_body`),
+>   inline directive derives `UnclosedInlineDirective` (caller-owns-name via
+>   `embed_content(:uc)`). Gating fixtures live at
+>   `v0.9/eof_recovery.yaml::eof_unclosed_inline_{directive,raw}`.
+> - **Embed any-phase drop, bare-marker-at-EOF, number-state drops,
+>   `UnterminatedFreeform`→`UnclosedFreeform`** — fixed by the earlier EOF spike
+>   (run green now).
+> - **The sameline `!` guard** (`flag_then_raw_block_is_child`) — fixed (was the
+>   last standing gate red); `|el :go? !:sh:` now opens a child raw block.
+> - **CORE finalized** for the recast (array line-boundedness §66/§76, the
+>   `UnclosedInline*` registry rows, `$partial-key`, interp/ref as array items).
+>
+> **What genuinely REMAINS from this harvest** (still reds / not yet promoted):
+> - **Identity / reference key at EOF (~11 cases)** — `UnclosedIdentityKey` +
+>   `$partial-key` not emitted yet. The hard one: `parse_element_identity` is
+>   shared (element/embed/identity), the per-call-site "one function, both kinds"
+>   case (descent classify gap-2). Tracked in `core/TODO-CORE-PARSING.md`; the
+>   identity reds here are the target spec.
+> - **`<…>` envelope emission order** is still warning-first (the lone
+>   emission-order outlier); the clean fix extracts `<…>` into its own
+>   `/envelope` delimited function (design-doc gap-3), after which it derives
+>   content-first for free. Not yet done.
+> - **Promote the ~83 already-green `_wip` cases into `v0.9/`** for regression
+>   coverage (pure coverage; keeps the gate green).
+>
+> **Before promoting, re-verify each draft's `red?:` note against the CURRENT
+> parser** — the harvest's notes predate all of the above, so many "reds" are
+> green now (the fast way: temporarily drop the `_wip/*.yaml` into
+> `fixtures/exploratory/` and run the exploratory player, which reports
+> MATCH/DRIFT without gating).
+
 **Status (2026-07-18):** harvest of three parallel spec-grounded agents (delimited-unclosed, positional+bare-marker, composition+edges) — **104 draft cases** in this `_wip/` dir (`delimited-unclosed.yaml`, `positional-and-bare-marker.yaml`, `composition-and-edges.yaml`). Drafts are **not verified case-by-case yet** and are **not run by the harness** (`_wip/` is a sibling of `v0.9/`). Every expectation was derived from CORE, not the parser. **Reds are finds, not failures.**
 
 **§1 RULINGS ARE NOW MADE (2026-07-18)** — see `spec/msc/CHANGELOG.md` alpha.2 "Ruled" for every decision (line-boundedness = multi-line deliberately undefined; emission order content→warning→End; `$partial-key` for unclosed identity/ref keys; empty/whitespace-only *closed* bracket→nil / array→empty, but *unclosed* keeps whitespace verbatim; inline `!{…}`/`!{:kind:…}` → `UnclosedInlineDirective`/`UnclosedInlineRaw`; nameless `!{`<EOF>→prose; root-`:x`→undefined; EOF≡eol for the edges; interp/ref *are* valid array items). Warning-code **spellings are provisional** (CHANGELOG guardrail — descent will regenerate them).
