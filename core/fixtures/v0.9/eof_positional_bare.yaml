@@ -1,0 +1,336 @@
+# EOF/edge cases promoted from _wip/positional-and-bare-marker.yaml (2026-07-19 densification).
+# Spec-derived (CORE + CHANGELOG alpha.2 Ruled), verified green vs the current
+# parser. See _wip/FINDINGS.md for the triage.
+
+- id: pos_deep_nest_eof
+  desc: four elements deep, EOF pops them all innermost-first — no anomaly
+  # CORE: "End of input" — every open positional construct closes silently,
+  # innermost-first "exactly as a full dedent flushes End events".
+  # red?: no  (parser already flushes all four ElementEnds at EOF)
+  udon: "|a\n  |b\n    |c\n      |d"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementStart
+    - [Name, "c"]
+    - ElementStart
+    - [Name, "d"]
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+    - ElementEnd
+
+# --- Mixed positional stack (element > directive > element) pops at EOF ---
+- id: pos_mixed_stack_eof
+  desc: element/directive/element stack all close silently at EOF, innermost-first
+  # CORE: "End of input" + "Dynamics" (a block directive is positional). The
+  # DirectiveEnd flushes between the ElementEnds by ordinary dedent order.
+  # red?: no
+  udon: "|a\n  !if x\n    |b"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - ElementStart
+    - [Name, "b"]
+    - ElementEnd
+    - DirectiveEnd
+    - ElementEnd
+
+# --- Deferred attribute body inside nested elements, silent close ---
+- id: pos_deferred_attr_in_nested_eof
+  desc: a deferred (indentation-scoped) attr value deep in a stack closes silently at EOF
+  # CORE "Attributes > Multi-Line Values (Deferred Block)": deeper lines are
+  # the value body; the body is positional (extent is geometric), so it ends
+  # silently at EOF. Then the ElementEnds flush. NOT MissingAttributeValue —
+  # a value body was supplied.
+  # red?: no
+  udon: "|a\n  |b\n    :note\n      deep text"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "a"]
+    - ElementStart
+    - [Name, "b"]
+    - [Attr, "note"]
+    - [Text, "deep text"]
+    - ElementEnd
+    - ElementEnd
+
+# --- Empty input: zero events ---
+- id: pos_empty_document_eof
+  desc: an empty document (immediate EOF) produces no events
+  # CORE "End of input": nothing is open, nothing to flush.
+  # red?: no
+  udon: ""
+  root_only: true
+  events: []
+
+# --- Newline-equivalence twins: with vs without trailing \n → same structure.
+#     The `_eof` form is root_only (truncated); the `_nl` form is an ordinary
+#     terminated document. Their events must be IDENTICAL (EOF ≡ newline). ---
+
+- id: nleq_element_eof
+  desc: element, no trailing newline — closes silently
+  # CORE "End of input": missing final newline is never, by itself, an anomaly.
+  # red?: no
+  udon: "|div"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - ElementEnd
+- id: nleq_element_nl
+  desc: element, WITH trailing newline — identical structure to nleq_element_eof
+  # red?: no
+  udon: "|div\n"
+  events:
+    - ElementStart
+    - [Name, "div"]
+    - ElementEnd
+
+- id: nleq_directive_eof
+  desc: bodiless directive line, no trailing newline — silent close
+  # CORE "End of input" + "Marker Recognition" (! + identifier).
+  # red?: no
+  udon: "!if x"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - DirectiveEnd
+- id: nleq_directive_nl
+  desc: bodiless directive line, WITH trailing newline — identical to nleq_directive_eof
+  # red?: no
+  udon: "!if x\n"
+  events:
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - DirectiveEnd
+
+- id: nleq_deferred_attr_eof
+  desc: deferred attr value body, no trailing newline — silent close
+  # CORE "Attributes > Multi-Line Values": positional value body ends at EOF.
+  # red?: no
+  udon: "|el\n  :note\n    line one\n    line two"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "line one"]
+    - [Attr, "note"]
+    - [Text, "line two"]
+    - ElementEnd
+- id: nleq_deferred_attr_nl
+  desc: deferred attr value body, WITH trailing newline — identical to nleq_deferred_attr_eof
+  # red?: no
+  udon: "|el\n  :note\n    line one\n    line two\n"
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "note"]
+    - [Text, "line one"]
+    - [Attr, "note"]
+    - [Text, "line two"]
+    - ElementEnd
+
+
+# ===========================================================================
+#  SECTION B — The bare-marker family at EOF
+#  A head-position guard left pending at the final byte. CORE "Head Position":
+#  "The instant a guard fails ... the line commits to prose." EOF is
+#  newline-equivalent, so each resolves exactly as its `\n` twin does.
+#  MOST OF THESE ARE RED: the current parser drops the content entirely.
+# ===========================================================================
+
+- id: bare_pipe_eof
+  desc: a lone pipe as the final byte is prose "|"
+  # CORE "Elements > Element recognition rule": `|` is an element only when
+  # followed by a letter, `[`, `.`, `{`, `'`, or a suffix char. EOF follows
+  # nothing → guard fails → prose. EOF ≡ newline; the green twin `|\n`
+  # (markers.yaml::bare_pipe_is_prose) already emits Text "|". Root prose is
+  # a bare Text (no wrapper — cf. markers.yaml, references::eof_reference).
+  # red?: YES — parser currently emits 0 events (the keep-everything drop).
+  udon: "|"
+  root_only: true
+  events:
+    - [Text, "|"]
+
+- id: bare_at_eof
+  desc: a lone @ as the final byte is prose "@"
+  # CORE "Marker Recognition": `@` marks only when followed by `[`, `.`, or an
+  # identifier. EOF → guard fails → prose. Twin `@\n` is green → Text "@".
+  # (Note: even the `\n` twin `bare_at_is_prose` is MISSING from markers.yaml
+  # — see the coverage-gap list at the bottom.)
+  # red?: YES — parser emits 0 events.
+  udon: "@"
+  root_only: true
+  events:
+    - [Text, "@"]
+
+- id: bare_bang_eof
+  desc: a lone ! as the final byte is prose "!"
+  # CORE "Marker Recognition": `!` marks only when followed by an identifier
+  # char or `:`. EOF → guard fails → prose. Green twin `!\n`
+  # (markers.yaml::bare_bang_is_prose) emits Text "!".
+  # red?: YES — parser emits 0 events.
+  udon: "!"
+  root_only: true
+  events:
+    - [Text, "!"]
+
+- id: bare_colon_eof
+  desc: "a lone : as the final byte is prose ':'"
+  # CORE "Marker Recognition": "A `:` not followed by a name also falls back
+  # to prose intact." EOF → no name → prose ":". (At document root there is
+  # no element to attach an attribute to; the no-name fallback avoids that
+  # question — contrast bare_colon_name_root_eof below, which does NOT, and
+  # is a CORE gap.)
+  # red?: YES — parser emits 0 events.
+  udon: ":"
+  root_only: true
+  events:
+    - [Text, ":"]
+
+- id: bare_semicolon_eof
+  desc: a lone ; as the final byte opens an empty line comment
+  # CORE "Comments": `;` at document root is a line comment; the content is
+  # empty; the comment is positional (closes on geometry) so it closes
+  # silently at EOF. CommentStart/CommentEnd with no Text segment for the
+  # empty body.
+  # red?: NO for this shape — BUT its `\n` twin `;\n` currently emits an
+  # extra Text "" (CommentStart / Text "" / CommentEnd), so the two DIVERGE
+  # and violate newline-equivalence. One of them is wrong; flagged in the
+  # audit list. I assert the no-empty-Text shape here (CORE mandates no
+  # empty-segment event).
+  udon: ";"
+  root_only: true
+  events:
+    - CommentStart
+    - CommentEnd
+
+- id: bare_fence_eof
+  desc: a lone opening triple-backtick fence at EOF is an unterminated freeform block
+  # CORE "Triple-Backtick Escape": a fence opens at head position; everything
+  # after the backticks begins the body (here: empty). It is DELIMITED
+  # (closes on a `\`\`\`` line), so at EOF it is unclosed → body kept (empty)
+  # + UnclosedFreeform warning + FreeformEnd flush ("End of input",
+  # two-level severity: content kept = Warning).
+  # red?: NO — the fence path already handles EOF correctly (emits
+  # FreeformStart / Warning UnclosedFreeform / FreeformEnd). This is the
+  # instructive CONTRAST: the freeform opener recovers at EOF, but the other
+  # delimited inline openers (|{, !{) do NOT — see below.
+  udon: "```"
+  root_only: true
+  events:
+    - FreeformStart
+    - [Warning, "UnclosedFreeform"]
+    - FreeformEnd
+
+- id: bare_embed_open_eof
+  desc: a bare "|{" opener at EOF — anonymous embed, unclosed
+  # CORE "Inline and Embedded Elements": `|{` opens an embedded element
+  # (anonymous is legal — "Anonymous Elements"). It is DELIMITED (content
+  # terminates at `}`). Unclosed at EOF → captured content (nothing beyond
+  # the opener) kept + UnclosedEmbedded warning + EmbeddedEnd flush ("End of
+  # input"; the code is in the Warning-codes registry).
+  # red?: YES — parser emits EmbeddedStart / EmbeddedEnd with NO
+  # UnclosedEmbedded warning. It DROPS the anomaly on the empty/anonymous
+  # path, even though `|p |{em abc`<EOF> (eof_recovery::eof_unclosed_embedded)
+  # correctly warns. Inconsistent — the warning must fire here too.
+  udon: "|{"
+  root_only: true
+  events:
+    - EmbeddedStart
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+
+# --- Pending boundary marker on an element line at EOF --------------------
+- id: el_colon_eof
+  desc: "|el : at EOF — the : has no name, so it is el's prose ':'"
+  # CORE "Marker Recognition" (`:` not followed by a name → prose intact) +
+  # "Attributes > Whose Text Is This?" row 2 (an element to the left owns the
+  # sameline tail). Green twin `|el :\n` already emits …Text ":"….
+  # red?: YES — parser drops the ENTIRE element (0 events) at true EOF.
+  udon: "|el :"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, ":"]
+    - ElementEnd
+
+- id: el_at_eof
+  desc: "|el @ at EOF — the @ guard fails at EOF, so it is el's prose '@'"
+  # CORE "Marker Recognition" (`@` marks only before `[`/`.`/identifier; EOF
+  # fails the guard) + ownership row 2. Green twin `|el @\n` emits …Text "@".
+  # red?: YES — parser emits ElementStart/Name/ElementEnd but DROPS the "@".
+  udon: "|el @"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Text, "@"]
+    - ElementEnd
+
+- id: head_escape_pipe_eof
+  desc: "\\| at EOF — head-position escape forces the '|' to prose"
+  # CORE "Escape": head-position `\` consumed, tail "|" becomes prose Text "|".
+  # THE SHARP CONTRAST WITH bare_pipe_eof: the SAME intended output (Text "|"),
+  # but only the ESCAPED form survives at EOF today — the bare `|`<EOF> drops.
+  # red?: NO — parser correctly emits Text "|".
+  udon: "\\|"
+  root_only: true
+  events:
+    - [Text, "|"]
+
+- id: value_escape_content_eof
+  desc: "value-position \\ with content at EOF — count is the text blob '7 apples'"
+  # CORE "Attributes > Value-Position `\`": a `\` where a plain attr still
+  # needs a value enters text mode; the extent is the rest of the physical
+  # line. Verbatim CORE example (|el :count \7 apples => count = "7 apples").
+  # red?: NO — parser correctly emits Attr count / Text "7 apples".
+  udon: "|el :count \\7 apples"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "count"]
+    - [Text, "7 apples"]
+    - ElementEnd
+
+# Empty value-position `\` (ruled 2026-07-19): `:a \` is an empty-string value,
+# no warning — a user's deliberate empty value, peer to `:a ""` and `:a nil`.
+# The parser emits a real (empty) Text event a consumer receives; asserting
+# [Text, ""] opts this case into exact (unfolded) comparison (see harness
+# `asserts_empty_text`). Span currently excludes the `\` — a separate round-trip
+# nicety tracked in core/TODO-CORE-PARSING.md, not asserted here.
+- id: value_escape_empty_eof
+  desc: value-position `\` with empty tail at EOF — count is an empty-string value
+  udon: "|el :count \\"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "count"]
+    - [Text, ""]
+    - ElementEnd
+
+# Lone head-position `\` at EOF (ruled 2026-07-19): forces an empty prose tail
+# that MUST survive — folding it away would lose the final line. The parser
+# emits the empty Text; asserting [Text, ""] pins it via exact comparison.
+- id: head_escape_alone_eof
+  desc: a lone head-position `\` at EOF forces an empty (but kept) prose tail
+  udon: "\\"
+  root_only: true
+  events:
+    - [Text, ""]

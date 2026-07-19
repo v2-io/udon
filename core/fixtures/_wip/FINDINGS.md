@@ -1,49 +1,78 @@
 # alpha.2 EOF fixture harvest — findings & rulings needed
 
-> **⚡ SESSION UPDATE (2026-07-18, later — supersedes the "fixtures-only, NO
-> grammar changes" trade in the roadmap below).** Joseph reopened
-> grammar/descent/spec as fair game ("sequencing is yours; touch the
-> descent.udon files freely"). Much of this harvest's red set is now **resolved
-> in the grammar**, and the v0.9 compliance gate is **fully green**:
-> - **Inline `!{…}` directive / `!{:kind:…}` raw at EOF** — codes + content-keeping
->   DONE. descent gained a **`|unclosed <Name>`** directive: inline raw keeps its
->   body + derives `UnclosedInlineRaw` (a CONTENT sub-scan `sameline_raw_body`),
->   inline directive derives `UnclosedInlineDirective` (caller-owns-name via
->   `embed_content(:uc)`). Gating fixtures live at
->   `v0.9/eof_recovery.yaml::eof_unclosed_inline_{directive,raw}`.
-> - **Embed any-phase drop, bare-marker-at-EOF, number-state drops,
->   `UnterminatedFreeform`→`UnclosedFreeform`** — fixed by the earlier EOF spike
->   (run green now).
-> - **The sameline `!` guard** (`flag_then_raw_block_is_child`) — fixed (was the
->   last standing gate red); `|el :go? !:sh:` now opens a child raw block.
-> - **CORE finalized** for the recast (array line-boundedness §66/§76, the
->   `UnclosedInline*` registry rows, `$partial-key`, interp/ref as array items).
+> **⚡ SESSION UPDATE (2026-07-19 — densification pass: 86 cases PROMOTED; this
+> dir now holds ONLY the 18 genuine reds/ruling-needed).** The full 104-draft
+> harvest was re-verified case-by-case against the CURRENT parser (a throwaway
+> triage running each draft through the real harness `run_test`). Result:
+> **82 PASS + 4 PROBE = 86 promoted → `v0.9/`**, split by source into
+> `eof_delimited.yaml` (from delimited-unclosed), `eof_positional_bare.yaml`
+> (from positional-and-bare-marker), `eof_composition.yaml` (from
+> composition-and-edges). Backend parity was verified first-hand (recursive vs
+> pushdown AGREE on every red input; `pushdown_differential` green over the new
+> files). Gate + full workspace suite GREEN.
 >
-> **What genuinely REMAINS from this harvest** (still reds / not yet promoted):
-> - **Identity / reference key at EOF (~11 cases)** — `UnclosedIdentityKey` +
->   `$partial-key` not emitted yet. The hard one: `parse_element_identity` is
->   shared (element/embed/identity), the per-call-site "one function, both kinds"
->   case (descent classify gap-2). Tracked in `core/TODO-CORE-PARSING.md`; the
->   identity reds here are the target spec.
-> - **`<…>` envelope emission order** — ✅ DONE (commit `e377585`): extracted
->   into its own multi-line `/envelope` delimited function; content-first on
->   clean close (`NoDialectsLoaded`) and at EOF (`UnclosedTypeEnvelope`),
->   classifier MIXED=0. Verified 2026-07-19.
-> - **Promote the ~83 already-green `_wip` cases into `v0.9/`** for regression
->   coverage (pure coverage; keeps the gate green) — this is the densification
->   step now in progress (2026-07-19).
+> **Harness fix that landed with the promotion:** `run_with_variations`
+> (`tests/common/harness.rs`) skipped variations for EOF tests only when the id
+> contained `"unclosed"`/`"error"` — a fragile substring proxy. Generalized to
+> the semantic signal: **any case whose expected events contain an `Unclosed*`
+> warning skips variations** (an appended newline would close a line-bound
+> `[…]`/`<…>`/string on the newline instead of at EOF). This is what lets the
+> promoted cases gate without per-case flags.
 >
-> **Before promoting, re-verify each draft's `red?:` note against the CURRENT
-> parser** — the harvest's notes predate all of the above, so many "reds" are
-> green now (the fast way: temporarily drop the `_wip/*.yaml` into
-> `fixtures/exploratory/` and run the exploratory player, which reports
-> MATCH/DRIFT without gating).
+> **The 18 that REMAIN here are genuine grammar reds / open rulings** (verified
+> 2026-07-19, both backends agree — these are the grammar-phase to-do, NOT
+> fixture-bugs):
+> - **Identity / reference key at EOF (11)** — `du_id_*`,
+>   `eof_unclosed_identity_key_*`, `du_embed_identity_key_open_eof`,
+>   `du_id_in_embedded_eof`. `UnclosedIdentityKey` never fires; the value still
+>   desugars to `$key` (ruling says `$partial-key`). The hard shared-scanner
+>   `parse_element_identity` gap-2 (`core/TODO-CORE-PARSING.md`). **NOTE: these
+>   drafts still say `$key`; reconcile to `$partial-key` per the CHANGELOG
+>   ruling before they become the accurate target spec.**
+> - **`bang_brace_eof` / `bang_brace_name_eof`** — `!{`<EOF> and `!{inc`<EOF>
+>   emit `DirectiveStart…DirectiveEnd` with **no** `UnclosedInlineDirective`.
+>   The `|unclosed InlineDirective` mechanism fires for the *args* path
+>   (`!{if x`) but NOT the no-args pre-body states (`:name`/`:after_name`) —
+>   a partial-force-unwind gap worth a look, this was expected to be auto-handled.
+>   (And per the ruling, nameless `!{`<EOF> should be prose `Text "!{"`, so
+>   `bang_brace_eof`'s own expectation needs fixing too.)
+> - **`du_interp_lone_brace_is_content_eof`** — `!{{a}`<EOF> drops the trailing
+>   `}` (captures `"a"`, not `"a}"`): the partial-closer-restoration gap
+>   (design-doc gap-4), known-unimplemented.
+> - **`du_ic_in_text_blob_eof`** — `:note text ;{c`<EOF>: parser finishes `text`
+>   as a single-token `BareValue` + a comment whose text wrongly includes the
+>   `{` and lacks `UnclosedInlineComment`; the draft expects blob-treatment
+>   (`Text "text "` + inline comment). Blob-vs-single-token boundary question.
+> **The 3 "ruling-needed" cases are RESOLVED + PROMOTED (Joseph, 2026-07-19):**
+> - `eof_empty_envelope_closed` — `<>` stays the **interim string `"<>"` +
+>   `NoDialectsLoaded`** (empty→nil deferred to the dialect era); order fixed to
+>   content-first → `v0.9/eof_composition.yaml`.
+> - `value_escape_empty_eof` (`:a \`) and `head_escape_alone_eof` (lone `\`) —
+>   ruled **empty-string value / kept empty prose, visible** (`:a \` is peer to
+>   `:a ""` and `:a nil`; a trailing `\` line must survive). **The product was
+>   already correct** — it emits the `Text ""`; only the fixture couldn't assert
+>   it because the harness folds empty Text. Fixed at the harness: a case that
+>   **asserts an empty `Text ""` is compared exactly** (no fold) and skips
+>   variations (`harness.rs::asserts_empty_text` — the assertion declares its own
+>   mode, `assert-text == ""` vs the default `assert-collapsed-text`). Both →
+>   `v0.9/eof_positional_bare.yaml`. (Open, non-blocking: the empty node's span
+>   excludes the `\` — a round-trip nicety, `core/TODO-CORE-PARSING.md`.)
+>
+> So **15 genuine grammar reds** remain here (11 identity-key + 2 inline-directive
+> `bang_brace_*` + interp partial-closer + `;{`-in-blob) — the grammar-phase
+> to-do; nothing else.
 
 **Status (2026-07-18):** harvest of three parallel spec-grounded agents (delimited-unclosed, positional+bare-marker, composition+edges) — **104 draft cases** in this `_wip/` dir (`delimited-unclosed.yaml`, `positional-and-bare-marker.yaml`, `composition-and-edges.yaml`). Drafts are **not verified case-by-case yet** and are **not run by the harness** (`_wip/` is a sibling of `v0.9/`). Every expectation was derived from CORE, not the parser. **Reds are finds, not failures.**
 
 **§1 RULINGS ARE NOW MADE (2026-07-18)** — see `spec/msc/CHANGELOG.md` alpha.2 "Ruled" for every decision (line-boundedness = multi-line deliberately undefined; emission order content→warning→End; `$partial-key` for unclosed identity/ref keys; empty/whitespace-only *closed* bracket→nil / array→empty, but *unclosed* keeps whitespace verbatim; inline `!{…}`/`!{:kind:…}` → `UnclosedInlineDirective`/`UnclosedInlineRaw`; nameless `!{`<EOF>→prose; root-`:x`→undefined; EOF≡eol for the edges; interp/ref *are* valid array items). Warning-code **spellings are provisional** (CHANGELOG guardrail — descent will regenerate them).
 
-**Finalization roadmap for the next agent (fixtures-only — NO grammar changes yet, per Joseph):** (1) apply the §3 corrections to the live `v0.9/` fixtures; (2) verify each `_wip/` draft against the CHANGELOG rulings + CORE, **correcting fixture-bugs** — a red must be a real grammar gap, not a mis-expectation; (3) promote the verified drafts into `v0.9/` (merge into the topical files, dedupe), **reds included** — they are the spec of what the grammar phase must implement; (4) run the compliance gate; the surviving reds are the grammar to-do list. This doc + the CHANGELOG ledger are the complete spec for it.
+**Finalization roadmap — LARGELY EXECUTED 2026-07-19 (see the banner above).**
+The verify-and-promote steps ran: green drafts promoted to `v0.9/`, envelope
+emission-order fixture-bugs corrected, the harness variation-skip generalized.
+What's left is the **grammar phase** against the 18 reds still in this dir (the
+banner categorizes them) — no longer "reds included in the gate": the gate is
+green and the reds live here as the target spec, out of the gate, until the
+grammar catches up. This doc + the CHANGELOG ledger remain the complete spec.
 
 ---
 

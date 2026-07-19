@@ -36,6 +36,17 @@ against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; ruling
 
 ## Open
 
+- [ ] **Empty forced-text span excludes the consumed `\` (round-trip nicety).**
+      Ruled 2026-07-19: `:a \`<EOF> is a kept empty-string value and a lone `\`
+      line is kept empty prose — the parser emits the (empty) `Text` correctly
+      (product is right; verified both backends). But the empty node's span is
+      zero-width *after* the `\` (`\hi`<EOF> → `Text "hi"` span 1..3; `\`<EOF> →
+      `Text ""` span 1..1), so the consumed `\` byte isn't covered and the line
+      isn't byte-exactly round-trippable from spans. Harmless for content that
+      re-parses the same (`\hi`≡`hi` as prose); matters only for a byte-faithful
+      serializer. Low priority; fold into the serializer/SourceInfo work
+      (`../TODO-UTILS.md`). Fixtures don't assert spans, so no gate impact.
+
 - [ ] **Prose-shaped-blob audit: `attr_trailing_blob` and `flag_value`'s
       re-owned text** (2026-07-16). CORE "Text-Blob Values" says blobs are
       prose-shaped — inline forms fire, framed ` ; ` opens a comment. Two

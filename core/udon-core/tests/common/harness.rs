@@ -29,6 +29,24 @@ fn collect_events(input: &[u8]) -> Vec<Event<'_>> {
 /// events together whenever the source between their spans contains no
 /// newline. Across lines the boundary is real (each Text is one line's
 /// content, newline excluded), so those never merge.
+/// Whether a case asserts an empty `Text ""` in its expected events.
+///
+/// This is the fixture's own way of saying "I mean this literally" — the
+/// assertion IS the declaration (`assert-text == ""`, vs the default
+/// `assert-collapsed-text`). A case that spells out an empty Text is pinning
+/// that the parser really emits it (e.g. an intentional empty forced-text
+/// value `:a \`, or a trailing `\` line that must survive) — a `Text` a real
+/// API consumer genuinely receives, that `collapse_adjacent_text` would
+/// otherwise drop for rhythm-independence. Such a case is compared EXACTLY
+/// (no fold) and skips variations. Note this only lets you assert the
+/// well-defined *empty* Text; unspecified mid-line Text *splits* still can't
+/// be pinned, which is correct — their granularity is deliberately unspecified.
+pub fn asserts_empty_text(case: &TestCase) -> bool {
+    case.events.iter().any(|e| {
+        matches!(e, ExpectedEvent::WithContent(name, content) if name == "Text" && content.is_empty())
+    })
+}
+
 fn collapse_adjacent_text<'a>(events: Vec<Event<'a>>, input: &[u8]) -> Vec<Event<'a>> {
     let mut out: Vec<Event<'_>> = Vec::with_capacity(events.len());
     for e in events {
@@ -106,7 +124,15 @@ fn format_expected(event: &ExpectedEvent) -> String {
 /// but still run the parser to check for panics/errors.
 pub fn run_test(case: &TestCase) -> TestResult {
     let input = case.udon.as_bytes();
-    let events = collapse_adjacent_text(collect_events(input), input);
+    // A case that asserts an empty Text wants EXACT comparison (see
+    // `asserts_empty_text`): the raw events, unfolded, so the empty Text it
+    // pins is actually present to match against.
+    let raw = collect_events(input);
+    let events = if asserts_empty_text(case) {
+        raw
+    } else {
+        collapse_adjacent_text(raw, input)
+    };
 
     let actual: Vec<String> = events.iter().map(format_event).collect();
     let expected: Vec<String> = case.events.iter().map(format_expected).collect();
@@ -181,11 +207,23 @@ pub fn run_with_variations(case: &TestCase, gen: &mut Gen) -> TestResult {
     });
     // Also skip if the test ID suggests error/edge case testing
     let is_error_test = case.id.contains("unclosed") || case.id.contains("error");
+    // Semantic form of the same intent: any case that expects an `Unclosed*`
+    // warning is a truncated/unclosed-construct test whose parse changes if the
+    // harness appends a trailing newline or blank lines (a line-bound `[…]` /
+    // `<…>` / string closes on the inserted newline instead of at EOF). The
+    // id-substring check above is a fragile proxy for this; the expected-events
+    // signal catches every EOF case regardless of how it happens to be named.
+    let expects_unclosed = case.events.iter().any(|e| {
+        matches!(e, ExpectedEvent::WithContent(s, c) if s == "Warning" && c.starts_with("Unclosed"))
+    });
     // Skip variations for freeform tests - freeform blocks only work at document root
     let is_freeform_test = case.events.iter().any(|e| {
         matches!(e, ExpectedEvent::Bare(s) if s == "FreeformStart")
     });
-    if expects_error || is_error_test || is_freeform_test {
+    // A case asserting an empty Text is an exact-comparison case (see
+    // `asserts_empty_text`); varying its input could add or remove the very
+    // Text it pins, so it runs canonically like the EOF/unclosed cases.
+    if expects_error || is_error_test || is_freeform_test || expects_unclosed || asserts_empty_text(case) {
         return run_test(case);
     }
 

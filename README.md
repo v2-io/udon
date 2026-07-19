@@ -259,20 +259,24 @@ and closed the CORE gaps:
   references / interpolations blessed as array items, provisional-names note
   corrected (codes now derive from the grammar).
 
-The exhaustive **fixture harvest** (104 draft cases) still sits in
-`core/fixtures/_wip/` with its roadmap + a **session-update banner** in
-[`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md); a **non-gating exploratory
+The exhaustive **fixture harvest** (104 draft cases) was triaged and
+**densified 2026-07-19**: the 86 green/probe cases were promoted from
+`core/fixtures/_wip/` into three new `v0.9/` files (`eof_delimited.yaml`,
+`eof_positional_bare.yaml`, `eof_composition.yaml`); backend parity was verified
+first-hand (recursive vs pushdown agree on every case) and the harness's
+variation-skip was generalized from an id-substring proxy to the semantic
+`Unclosed*`-in-expected-events signal. The `<…>` envelope's content-first
+emission order **landed** (commit `e377585`; extracted into its own multi-line
+`/envelope` delimited function, classifier MIXED=0). A **non-gating exploratory
 sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
 (run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
-The `<…>` envelope's content-first emission order **landed** (commit `e377585`):
-`<…>` was extracted into its own multi-line `/envelope` delimited function, so
-the classifier is MIXED=0 and both the clean-close (`NoDialectsLoaded`) and the
-at-EOF (`UnclosedTypeEnvelope`) cases emit content-first (verified 2026-07-19).
-**What remains** (documented, not blocking): promote the ~83 already-green
-`_wip` cases into `v0.9/` for regression coverage; and the **identity/reference-key
-EOF** warning (`UnclosedIdentityKey` + `$partial-key` — the harder shared
-`parse_element_identity` case, still unimplemented: `|el[k`<EOF> emits `$key`
-with no warning today — `core/TODO-CORE-PARSING.md`).
+**What remains** — the 18 genuine reds/ruling-needed kept in `_wip/` as the
+grammar-phase target spec (banner in [`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md)):
+the **identity/reference-key EOF** warning (`UnclosedIdentityKey` + `$partial-key`,
+the shared `parse_element_identity` gap-2 — `|el[k`<EOF> emits `$key` with no
+warning today, `core/TODO-CORE-PARSING.md`); the no-args inline-directive EOF gap
+(`!{inc`<EOF> emits no `UnclosedInlineDirective`); interp partial-closer (gap-4);
+and 3 open rulings.
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The

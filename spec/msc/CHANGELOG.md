@@ -126,6 +126,26 @@ edits.
   are valid items — the "Inline Lists" enumeration (numbers/strings/envelopes/
   nested lists) is illustrative, not exhaustive.
 
+### Ruled (2026-07-19; densification pass — do not re-open)
+- **Empty envelope `<>` → interim string, for now.** A closed empty `<>` stays
+  the no-dialects pass-through `BareValue "<>"` + `NoDialectsLoaded` (content-first,
+  uniform with every envelope). The empty-bracket ruling's `< >`→**nil** collapse
+  is a **dialect-era** refinement, deferred until the dialect layer lands — it
+  does not fire in the no-dialects interim. (Joseph: "current behavior is fine for
+  now due to no dialects.")
+- **Empty forced-text is a real, kept value — `:a \` ≡ an empty string.** A
+  value-position `\` with an empty tail is an **empty-string value, no warning,
+  not `MissingAttributeValue`** — a user's deliberate empty value, peer to `:a ""`
+  and `:a nil`. A lone head-position `\` at EOF likewise forces an **empty prose
+  tail that must survive** (folding it would lose the final line). The parser
+  already emits the (empty) `Text` event a real consumer receives; the wire is
+  correct. *(Open, non-blocking: the empty node's span excludes the consumed `\`,
+  so it isn't yet byte-round-trippable — `core/TODO-CORE-PARSING.md`.)* Fixture
+  note: empty `Text` is folded by the compliance harness for rhythm-independence,
+  so a case pinning it asserts `Text ""` explicitly to opt into exact comparison
+  (`asserts_empty_text`) — a *test-harness* convention, orthogonal to product
+  behavior (real API consumers never fold).
+
 ### Landed — EOF generation (2026-07-18 spike; out of fixtures-first order, per Joseph)
 descent now **auto-supplies** the EOF handling the rulings above describe:
 delimited constructs **force-unwind** (keep content + `Warning(Unclosed<Construct>)`
