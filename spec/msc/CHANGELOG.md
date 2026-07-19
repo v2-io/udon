@@ -140,14 +140,26 @@ edits.
   comment (framed form, unchanged). Underlying principle as stated: inline
   `*{…}` constructs "are assumed to *reduce to more text*." This confirms the
   blob-treatment expectation of the `du_ic_in_text_blob_eof` red (now a plain
-  grammar to-do, not spec-ambiguous). **Scope note:** whether the
-  reduce-to-text principle also re-classes `|{…}` / `!{…}` at a bare-token
-  boundary (today: boundary markers → child / directive, per the 2026-07-15
-  marker set) is **proposed, consistency-checked, and awaiting Joseph's
-  confirm** — it would rewrite the boundary set to block-form-markers-only,
-  flip `:n |{em x}` from node value to blob segment, widen the blob one-way
-  door (`|el :n |{em x} :a 1` would make `:a 1` text of `n`), and unify the
-  C1 multi-part-interpolation wire for free.
+  grammar to-do, not spec-ambiguous).
+- **The general `*{` principle — CONFIRMED** (Joseph, 2026-07-19, after the
+  consistency check): **no inline brace form (`|{…}`, `!{…}`, `;{…}`) is ever
+  a boundary marker or a mode exit** — encountered at a bare-token boundary
+  or in value-expected position, it commits/continues **text mode**, firing
+  within the blob as a segment (or, for `;{…}`, reducing to `""`). The
+  boundary-marker set becomes **block-form markers only** (`|name`-form `|`,
+  guarded `@`, block `!name`/`!:…:`, `:key`, framed ` ; `, fence, `\`).
+  Consequences ratified with it: `|el :n |{em x} :a 1` ≡ `|el :n \|{em x}
+  :a 1` in ownership (all of it is `n`'s blob — `:a 1` included) **except**
+  the framed ` ; ` sameline comment stays active in a brace-committed blob
+  (it is an ordinary prose-shaped blob), unlike `\`-forced text which gives
+  the comment affordance up. `:n |{em x}` flips from *node value* to *blob
+  segment*; sameline node values remain block-form (`:headers |header …`
+  unchanged). This also settles the C1 multi-part-interpolation wire by
+  construction: `pre!{{x}}post` is a blob — re-emitted `Attr` segments
+  Text/Interpolation/Text — and whole-value `!{{x}}` is its one-segment
+  degenerate (wire-compatible with today's `Attr`/`Interpolation`).
+  CORE-text edits: `spec/TODO-SPEC-CORE.md`; grammar + fixture flips:
+  `core/TODO-CORE-PARSING.md`.
 - **Empty envelope `<>` → interim string, for now.** A closed empty `<>` stays
   the no-dialects pass-through `BareValue "<>"` + `NoDialectsLoaded` (content-first,
   uniform with every envelope). The empty-bracket ruling's `< >`→**nil** collapse

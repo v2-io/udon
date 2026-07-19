@@ -88,11 +88,17 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
       blob (`:n ;{}` → empty-string value); (c) the comment currently
       captures `"{c"` (swallows the brace) and misses
       `UnclosedInlineComment` on this path. The `_wip` red's expectation is
-      confirmed accurate. **Held pending Joseph's confirm of the general
-      `*{`-reduce-to-text scope** (whether `|{`/`!{` at boundaries also stop
-      being boundary markers — see the CHANGELOG scope note; if confirmed,
-      the boundary rewrite covers all three at once and several gating
-      fixtures pinning CHILD/DIRECTIVE boundary codes flip).
+      confirmed accurate. **The general `*{` scope is CONFIRMED**
+      (2026-07-19, CHANGELOG): `|{`/`!{` at boundaries also stop being
+      boundary markers — one boundary rewrite covers all three brace forms.
+      Full grammar scope: the `:kwb_pipe`/`:kwb_bang`/`:strb_*` `{`-guard
+      arms flip from CHILD/DIRECTIVE codes to blob-commit; the value_start
+      `|`→NODE path stays for block-form `|name` but `|{` routes to the
+      blob; `;`+`{` at value_start begins a blob (`:n ;{}` → empty-string
+      value); the framed ` ; ` stays active in brace-committed blobs.
+      Gating fixtures pinning the old boundary codes flip with it
+      (spec-first: re-derive them from the ruling before touching the
+      grammar). CORE-text half: `spec/TODO-SPEC-CORE.md`.
       *(The other two non-identity reds landed 2026-07-19: nameless `!{` at
       EOF/EOL → prose `Text "!{"` via an interception in `sameline_directive
       :dispatch` before DirectiveStart can fire; interp's lone trailing `}` is

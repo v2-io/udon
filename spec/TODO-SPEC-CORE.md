@@ -22,6 +22,19 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
 
 ## Open
 
+- [ ] **CORE text for the `*{`-reduce-to-text ruling** (ruled 2026-07-19 —
+      CHANGELOG alpha.2; the decisions are closed, this is the spec-text
+      landing). Edits: (a) "The Scan and the Bare-Token Boundary" — the
+      boundary-marker set becomes block-form markers only; a brace form
+      (`|{`/`!{`/`;{`) at the boundary commits the blob like plain text;
+      (b) "Node Values" / "Value Kinds" — sameline node binding is
+      block-form; `:n |{em x}` is a blob segment, not a node value; (c)
+      value-expected `;{`/`*{` begins a blob (`:n ;{}` ≡ `:n ""` — not
+      `MissingAttributeValue`); (d) note the ` ; ` affordance stays active
+      in brace-committed blobs (unlike `\`-forced text); (e) the multi-part
+      interpolation wire (`pre!{{x}}post` = re-emitted `Attr` segments)
+      falls out — update the Implementation Note + DYNAMICS' stale sketch
+      pointer, closing the C1 adjudication item.
 - [ ] **References — structured event encoding** (semantics already in CORE
       "References"). Wire still interim: single `Reference` with raw text after
       `@`. Planned: `ReferenceStart` / `Name` / `Attr "$key"` / `Attr
