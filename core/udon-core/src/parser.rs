@@ -7154,7 +7154,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Opening => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnterminatedFreeform"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedFreeform"), span: self.span() });
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
                     }
@@ -7177,7 +7177,7 @@ impl<'a> Parser<'a> {
                 }
                 State::LineStart => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnterminatedFreeform"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedFreeform"), span: self.span() });
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
                     }
@@ -7196,7 +7196,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Content => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnterminatedFreeform"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedFreeform"), span: self.span() });
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
                     }
@@ -7234,7 +7234,7 @@ impl<'a> Parser<'a> {
                 }
                 State::MaybeEnd1 => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnterminatedFreeform"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedFreeform"), span: self.span() });
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
                     }
@@ -7252,7 +7252,7 @@ impl<'a> Parser<'a> {
                 }
                 State::MaybeEnd2 => {
                     if self.eof() {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnterminatedFreeform"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedFreeform"), span: self.span() });
                     on_event(Event::FreeformEnd { span: self.span() });
                     return;
                     }

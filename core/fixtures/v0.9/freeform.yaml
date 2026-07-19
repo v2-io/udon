@@ -125,13 +125,13 @@
     - [Text, "b"]
     - FreeformEnd
 
-- id: freeform_unterminated_warns
+- id: freeform_unclosed_warns
   desc: unclosed fence errors at EOF, content preserved
   udon: "```\nunclosed"
   events:
     - FreeformStart
     - [Text, "unclosed"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
 
 - id: freeform_sets_structural_parent

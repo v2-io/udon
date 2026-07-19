@@ -9693,7 +9693,7 @@ impl PushdownParser {
                         FreeformSt::Opening => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnterminatedFreeform"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedFreeform"[..]), span: self.gspan() });
                                 on_event(StreamEvent::FreeformEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -9713,7 +9713,7 @@ impl PushdownParser {
                         FreeformSt::LineStart => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnterminatedFreeform"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedFreeform"[..]), span: self.gspan() });
                                 on_event(StreamEvent::FreeformEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -9734,7 +9734,7 @@ impl PushdownParser {
                         FreeformSt::Content => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnterminatedFreeform"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedFreeform"[..]), span: self.gspan() });
                                 on_event(StreamEvent::FreeformEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -9770,7 +9770,7 @@ impl PushdownParser {
                         FreeformSt::MaybeEnd1 => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnterminatedFreeform"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedFreeform"[..]), span: self.gspan() });
                                 on_event(StreamEvent::FreeformEnd { span: self.gspan() });
                                 continue 'run;
                             }
@@ -9789,7 +9789,7 @@ impl PushdownParser {
                         FreeformSt::MaybeEnd2 => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Freeform(f)); return ParseResult::NeedMoreData; }
-                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnterminatedFreeform"[..]), span: self.gspan() });
+                                on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedFreeform"[..]), span: self.gspan() });
                                 on_event(StreamEvent::FreeformEnd { span: self.gspan() });
                                 continue 'run;
                             }

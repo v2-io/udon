@@ -346,23 +346,23 @@
     - [Text, "prose after"]
 
 # ---------------------------------------------------------------------------
-# Unterminated freeform fence (CORE EOF table: body so far + Warning
-# UnterminatedFreeform — the body is coherent, the author likely forgot the
+# Unclosed freeform fence (CORE EOF table: body so far + Warning
+# UnclosedFreeform — the body is coherent, the author likely forgot the
 # closer; a warning not an error, and FreeformEnd flushes like every End).
 # ---------------------------------------------------------------------------
 
-- id: eof_unterminated_freeform
-  desc: fence never closed — body kept + UnterminatedFreeform warning
+- id: eof_unclosed_freeform
+  desc: fence never closed — body kept + UnclosedFreeform warning
   udon: "```\nbody line\nmore body"
   root_only: true
   events:
     - FreeformStart
     - [Text, "body line"]
     - [Text, "more body"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
 
-- id: eof_unterminated_freeform_in_element
+- id: eof_unclosed_freeform_in_element
   desc: the warning fires and End events still flush out through the parent
   udon: "|code\n  ```\n  x = 1"
   root_only: true
@@ -371,7 +371,7 @@
     - [Name, "code"]
     - FreeformStart
     - [Text, "  x = 1"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
     - ElementEnd
 
