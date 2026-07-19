@@ -227,24 +227,32 @@ closes first, then the delimited frame force-unwinds. Do NOT introduce any
 kind-nesting invariant or aggregate-unwind that would assume delimited-before-
 positional.
 
-## Candidate directions for the descent generation (HYPOTHESES — not a verified plan)
-*Marked as hypotheses per "don't record certain-sounding plans that aren't
-verified." What IS verified: the classifier (delimited=11, MIXED=1); the 15/16
-arm redundancy; A-1/B-5; the newline-injection necessity. What follows is the
-untested build path.*
-1. **Classification** — DONE and verified (`classify.rs`). Foundation in hand.
-2. **Positional EOF = inject `\n` + maximal dedent, run the machine**, flagged
-   at_eof (suppresses spurious `BlankLine`; routes delimited frames to unwind
-   not consume). *Hypothesis:* fixes gap-9 for free; needs a runtime change to
-   the byte-source, not just codegen. Unbuilt.
-3. **Delimited EOF = force-unwind** (keep→`Unclosed<C>`→End) at the activation
-   root (gaps 1,4,5), with partial-closer restoration + the freeform
-   positional-tail carve-out. Fixes the FINDINGS bugs. Unbuilt.
-4. **Extract `/envelope`** from `typed_value` (gap-3) so the mixed-machine
-   becomes a clean delimited function; then a static reject-rule for mixed
-   machines has no false positive.
-5. **Semantic-close arms survive** (or codegen reproduces the deferred-body
-   dedent cascade) — not deletable geometry (agent-3 A-3).
-6. **Line-boundedness stays a declared flag** (gap-6); do **not** infer it.
-7. **Derive `Unclosed<Construct>` from the construct name**, not hand-picked
-   spellings (CORE line 39 + TODO-DESCENT both call for this).
+## Build status (LANDED 2026-07-18, merged to `main`; both backends)
+1. **Classification** — ✅ DONE (`classify.rs`; report-only).
+2. **Positional EOF ≡ newline** — ✅ DONE, and the *hypothesis was refined*: it
+   needed **no runtime byte-source change**. Instead codegen runs the state's
+   own returning `\n` arm (`eof_run_newline`) or its fall-through `default`
+   (`eof_run_default`) at EOF — same effect as "inject `\n` + dedent, run the
+   machine," achieved purely in the generator. Fixed gap-9's silent drops.
+3. **Delimited EOF = force-unwind** (keep → `Warning(Unclosed<C>)` → End) — ✅
+   DONE (`delimited_code`), attributed per-frame. Fixed the embed any-phase-drop.
+   *Not yet:* **partial-closer restoration** (gap-4/B-3: interpolation `!{{a}`
+   still loses the consumed `}`); accumulating-BRACKET content-keeping
+   (`sameline_raw` raw-body drop).
+4. **Extract `/envelope`** from `typed_value` (gap-3) — ⬜ NOT done; `typed_value`
+   remains the one MIXED machine. Needed before a **static reject** of mixed
+   machines is sound (else it false-positives — see TODO-DESCENT).
+5. **Semantic-close arms survive** — ✅ they do (compose correctly before the
+   force-unwind; verified `|{a :b`<EOF>).
+6. **Line-boundedness stays a declared flag** — ✅ not inferred; and CORE's own
+   §66-vs-§76 inconsistency on arrays is filed (spec/TODO-SPEC-CORE).
+7. **Derive `Unclosed<Construct>` from the construct name** — 🔶 PARTIAL:
+   `Unclosed<ReturnType>` derivation works for the regular constructs;
+   `UnterminatedFreeform` normalized to `UnclosedFreeform`; the irregular
+   callee-scanned codes (InlineRaw/InlineDirective, embed_content→Embedded) await
+   the **`|unclosed <Name>`** directive (TODO-DESCENT).
+8. **Both backends at parity** — ✅ pushdown ported; `eof_run` predicates shared
+   in `ir.rs`; `pushdown_differential` green.
+9. **Remaining hand `|eof`:** freeform (fence-LINE closer, invisible to the
+   classifier) + the callee-scanners keep a one-line declaration; ~40 prose/
+   comment leaf arms are still deletable (diminishing, per-state care).

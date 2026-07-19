@@ -4,13 +4,14 @@ The event-level parser and the descent grammar (`generator/*.descent.udon`). Hol
 residuals and decompositions — spec *compliance* is proven by the versioned
 fixture groups (see root `TODO-META.md`), not tracked here.
 
-**EOF / positional–delimited framing:** design of record is
-[`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md) (2026-07-17),
-including **Addendum A** (infer kind from grammar exit structure; arrange
-layout vs matched bodies). Unexpected EOF only for still-open **delimited**
-activations; **positional** constructs finish by ordinary end rules. The
-items below that are pure EOF bugs are instances of that framing —
-implement against it, not against the superseded aggregate-event sketch in
+**EOF / positional–delimited framing (mechanism LANDED 2026-07-18):** design of
+record is [`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md) (its
+"Grammar / descent direction" section — formerly cited as "Addendum A": infer
+kind from exit structure). The generation is **implemented in descent** (both
+backends) — see [`../design/eof-descent-classification.md`](../design/eof-descent-classification.md).
+Unexpected EOF only for still-open **delimited** activations; **positional**
+constructs finish on EOF ≡ newline. Remaining pure-EOF-bug items below implement
+against that framing, not the superseded aggregate-event sketch in
 `../design/eof-model-proposal-2026-07.md`.
 
 **Warning-code names are provisional (2026-07-18):** the alpha.2 `Unclosed*` /

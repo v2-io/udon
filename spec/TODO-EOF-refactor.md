@@ -6,11 +6,20 @@
 > below; keep only for archaeology). Where any other file in the repo describes
 > EOF differently, this file wins.
 >
-> **Status (2026-07-18):** framing settled with Joseph in conversation
-> (2026-07-17); doc rewritten to this positional/delimited form. Not yet in CORE
-> text, the grammar, or descent. This is the whole picture an implementer needs
-> to move; the mechanics live in the lane trackers
-> (`../core/TODO-CORE-PARSING.md`, `../tools/descent/TODO-DESCENT.md`).
+> **Status (2026-07-18): LARGELY REALIZED — now a design record, not a to-do.**
+> The framing is **in CORE** (End of input / Anomaly posture / Line-boundedness /
+> Emission order were rewritten to it) AND **in descent** (both backends generate
+> the EOF handling from a positional/delimited classification — landed out of the
+> fixtures-first order by Joseph's explicit call, merged to `main`). So the
+> forward-looking prose below ("collapse that table," "add the row," "delete the
+> ~89 arms") reflects the pre-landing PLAN — much of it is done: ~34 arms deleted,
+> CORE already collapsed to the one rule, embed/gap-9/bare-marker bugs fixed,
+> vocabulary normalized (`UnterminatedFreeform` → `UnclosedFreeform`). The
+> implemented shape + residuals: [`../design/eof-descent-classification.md`](../design/eof-descent-classification.md),
+> `../tools/descent/TODO-DESCENT.md`, `../core/TODO-CORE-PARSING.md`. This doc
+> stays as the design record (the *why* of the layer-recovery); read those three
+> for the *state*. (The **"Grammar / descent direction"** section below is what
+> other trackers used to call "Addendum A.")
 
 ## Short form
 
