@@ -267,17 +267,17 @@
   # CORE "Triple-Backtick Escape": a fence opens at head position; everything
   # after the backticks begins the body (here: empty). It is DELIMITED
   # (closes on a `\`\`\`` line), so at EOF it is unclosed → body kept (empty)
-  # + UnterminatedFreeform warning + FreeformEnd flush ("End of input",
+  # + UnclosedFreeform warning + FreeformEnd flush ("End of input",
   # two-level severity: content kept = Warning).
   # red?: NO — the fence path already handles EOF correctly (emits
-  # FreeformStart / Warning UnterminatedFreeform / FreeformEnd). This is the
+  # FreeformStart / Warning UnclosedFreeform / FreeformEnd). This is the
   # instructive CONTRAST: the freeform opener recovers at EOF, but the other
   # delimited inline openers (|{, !{) do NOT — see below.
   udon: "```"
   root_only: true
   events:
     - FreeformStart
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
 
 - id: bare_embed_open_eof

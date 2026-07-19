@@ -537,22 +537,22 @@
 # G. FREEFORM FENCE  ```
 #    CORE "Triple-Backtick Escape". Closer = a line whose first non-space
 #    content is ```. NOT line-bound (spans lines by nature). Code
-#    UnterminatedFreeform. Wire shape (eof_unterminated_freeform):
-#    FreeformStart, [Text ..], [Warning, UnterminatedFreeform], FreeformEnd.
-#    Already covered: eof_unterminated_freeform (body),
-#    eof_unterminated_freeform_in_element, freeform_unterminated_warns.
+#    UnclosedFreeform. Wire shape (eof_unclosed_freeform):
+#    FreeformStart, [Text ..], [Warning, UnclosedFreeform], FreeformEnd.
+#    Already covered: eof_unclosed_freeform (body),
+#    eof_unclosed_freeform_in_element, freeform_unterminated_warns.
 #    These add opener-only and info-string-no-newline.
 # ===========================================================================
 
 - id: du_freeform_opener_only_eof
-  desc: "``` opened then EOF, empty body — UnterminatedFreeform, no Text"
+  desc: "``` opened then EOF, empty body — UnclosedFreeform, no Text"
   udon: "```"
   root_only: true
   # CORE "End of input": frame open, nothing captured ⇒ warning only.
   # red?: no
   events:
     - FreeformStart
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
 
 - id: du_freeform_info_string_no_newline_eof
@@ -566,7 +566,7 @@
   events:
     - FreeformStart
     - [Text, "rust"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
 
 - id: du_freeform_sameline_opened_unterminated_eof
@@ -585,7 +585,7 @@
     - [BareValue, "v"]
     - FreeformStart
     - [Text, "body"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
     - ElementEnd
     - ElementEnd
@@ -849,7 +849,7 @@
 #        the EOF twin (non-success) — see the ⚑ infra flag in L.
 #
 #    K4. freeform.yaml freeform_unterminated_warns — id fine, desc says
-#        "errors at EOF" (low). Event correct (UnterminatedFreeform warning).
+#        "errors at EOF" (low). Event correct (UnclosedFreeform warning).
 #        FIX: desc "unclosed fence warns at EOF, content preserved".
 #
 #    K5. eof_recovery.yaml ⚠ "CORE is silent on MULTIPLICITY" comments are now

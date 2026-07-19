@@ -309,7 +309,7 @@
 # ---------------------------------------------------------------------------
 
 # CORE "Node Values": a freeform fence is a node value. Fence is delimited ->
-# UnterminatedFreeform at EOF.
+# UnclosedFreeform at EOF.
 - id: eof_fence_node_value_unterminated
   desc: an unterminated fence as an attr node value at EOF — body kept + warning
   udon: "|el :body ```\ncode"
@@ -320,7 +320,7 @@
     - [Attr, "body"]
     - FreeformStart
     - [Text, "code"]
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
     - ElementEnd
   # red?: no
@@ -509,12 +509,12 @@
 
 # CORE: empty unclosed freeform (fence opener then immediate EOF).
 - id: eof_empty_freeform_unclosed
-  desc: a bare fence opener at EOF — UnterminatedFreeform with no body
+  desc: a bare fence opener at EOF — UnclosedFreeform with no body
   udon: "```"
   root_only: true
   events:
     - FreeformStart
-    - [Warning, "UnterminatedFreeform"]
+    - [Warning, "UnclosedFreeform"]
     - FreeformEnd
   # red?: no
 
