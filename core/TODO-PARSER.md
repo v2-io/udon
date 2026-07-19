@@ -29,6 +29,12 @@ root `TODO-META.md` — not here.)
       `""` + `is_anonymous()` (vs `Option<&str>`); streaming granularity =
       one root-level subtree per shipment, each an owned single-root
       `Document`; root blank lines/warnings ship nothing.
+- [ ] **S6 blank-line interpretation (AST layer)** — ruled 2026-07-19: the
+      event stream is geometry-faithful (`BlankLine` everywhere non-protruding);
+      the AST builder interprets — interior BlankLines between text become
+      newlines; leading/trailing become *ornamentation* (discarded from text)
+      or literal BlankLine nodes kept for round-trip. Decide the node shape
+      with the error-reporting rework below.
 - [ ] **Error-reporting quality + keep-everything at the AST layer.** Current
       state (verified 2026-07-18 at `tree.rs:244`, supersedes the estate
       review's stale "stopped at first error"): `Document::parse` collects *all*

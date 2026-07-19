@@ -22,6 +22,15 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
 
 ## Open
 
+- [ ] **Land the 2026-07-19 second-batch rulings in CORE text + fixtures**
+      (decisions in the CHANGELOG; this is the landing): S1 suffix stacking
+      (Element Suffixes text + grammar + fixtures); S4 empty `|{}` sentence +
+      fixture; S5 interp-as-key sentence + fixture; S6 blank-line event rule
+      (BlankLine span covers the whitespace; protruding whitespace is prose;
+      `\`-forced empty text) + the *ornamentation vs text-literal*
+      vocabulary; C2 annotation convention note (also ux/TODO-AGENT-UX.md).
+      AST-side S6 interpretation → `../core/TODO-PARSER.md`.
+
 - [ ] **CORE text for the `*{`-reduce-to-text ruling** (ruled 2026-07-19 —
       CHANGELOG alpha.2; the decisions are closed, this is the spec-text
       landing). Edits: (a) "The Scan and the Bare-Token Boundary" — the

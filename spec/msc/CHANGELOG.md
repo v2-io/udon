@@ -127,6 +127,37 @@ edits.
   are valid items — the "Inline Lists" enumeration (numbers/strings/envelopes/
   nested lists) is illustrative, not exhaustive.
 
+### Ruled (2026-07-19, second batch — the standing-silences clearout; do not re-open)
+- **S1 — element suffixes stack**: `|field?!` ≡ `|field :'$?' true :'$!' true`
+  (desugaring implies it; today a second suffix half-parses to prose — grammar
+  + fixtures to land).
+- **S3 — unclosed identity at EOF**: confirmed settled by the `$partial-key`
+  mechanism (landed same day).
+- **S4 — empty embedded `|{}`**: a valid, empty anonymous embedded ELEMENT
+  (EmbeddedStart/End bracket an element node); bless current behavior with a
+  CORE sentence + fixture.
+- **S5 — interpolation as a whole element key**: `|div[!{{id}}]` →
+  `Attr "$key"` + Interpolation (host evaluates); pin with a CORE sentence +
+  fixture. (Mixed key text rides the multi-part rule the `*{` ruling settled.)
+- **S6 — blank/whitespace-only lines, the two-layer model** (Joseph): at the
+  EVENT level, any blank line whose whitespace does NOT protrude past the
+  prose content-base emits `BlankLine` (span covering the whitespace —
+  round-trip safe); whitespace protruding PAST the base is prose content with
+  the extra whitespace preserved (existing dedentation rule); a `\` at head
+  position on an otherwise-blank line forces a kept empty Text line. The
+  INTERPRETATION is the AST builder's: interior BlankLines between text →
+  newlines; leading/trailing → **ornamentation** (UDON-level decoration, not
+  text content) — or literal BlankLine nodes for reversibility. Vocabulary:
+  *ornamentation* vs *text-literal*. No event-parser lookahead needed — the
+  trailing-blank ambiguity resolves at the AST layer.
+- **C2 — annotation layer**: option (a), a named-element convention
+  (`|{note :confidence 0.7 …}`, schema-owned vocabulary, strippable); richer
+  syntax deferred to 0.10 with paths/dialects/schema.
+- **Tag gating** (process, not spec): `core-v0.9.0` waits for the final
+  legacy-mining pass + densification attempts + the `*{` boundary rewrite.
+- *(S2 — array multi-line — pending one clarification round; see
+  TODO-SPEC-CORE's Line-boundedness item.)*
+
 ### Ruled (2026-07-19; densification pass — do not re-open)
 - **`;{` in value position / at a bare-token boundary → text-blob
   continuation, never a boundary marker** (Joseph, 2026-07-19). The framed
