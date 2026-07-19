@@ -274,6 +274,7 @@ struct EmbeddedFrame {
 #[derive(Debug)]
 struct EmbedContentFrame {
     st: EmbedContentSt,
+    uc: &'static [u8],
 }
 
 #[derive(Debug)]
@@ -1307,13 +1308,14 @@ impl PushdownParser {
         }));
     }
 
-    fn enter_embed_content<F>(&mut self, on_event: &mut F)
+    fn enter_embed_content<F>(&mut self, uc: &'static [u8], on_event: &mut F)
     where
         F: for<'e> FnMut(StreamEvent<'e>),
     {
         self.mark();
         self.stack.push(Frame::EmbedContent(EmbedContentFrame {
             st: EmbedContentSt::PdEntry,
+            uc,
         }));
     }
 
@@ -8911,8 +8913,9 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
                                 f.st = EmbeddedSt::PdK269;
+                                let (pd_a0,) = (b"UnclosedEmbedded", );
                                 self.stack.push(Frame::Embedded(f));
-                                self.enter_embed_content(on_event);
+                                self.enter_embed_content(pd_a0, on_event);
                                 continue 'run;
                             }
                             match self.peek() {
@@ -8928,8 +8931,9 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     f.st = EmbeddedSt::PdK270;
+                                    let (pd_a0,) = (b"UnclosedEmbedded", );
                                     self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
+                                    self.enter_embed_content(pd_a0, on_event);
                                     continue 'run;
                                 }
                             }
@@ -8972,8 +8976,9 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     f.st = EmbeddedSt::PdK272;
+                                    let (pd_a0,) = (b"UnclosedEmbedded", );
                                     self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
+                                    self.enter_embed_content(pd_a0, on_event);
                                     continue 'run;
                                 }
                             }
@@ -8998,8 +9003,9 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     f.st = EmbeddedSt::PdK273;
+                                    let (pd_a0,) = (b"UnclosedEmbedded", );
                                     self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
+                                    self.enter_embed_content(pd_a0, on_event);
                                     continue 'run;
                                 }
                             }
@@ -9009,8 +9015,9 @@ impl PushdownParser {
                                 if !self.finished { self.stack.push(Frame::Embedded(f)); return ParseResult::NeedMoreData; }
                                 self.prepend_bytes(b":");
                                 f.st = EmbeddedSt::PdK274;
+                                let (pd_a0,) = (b"UnclosedEmbedded", );
                                 self.stack.push(Frame::Embedded(f));
-                                self.enter_embed_content(on_event);
+                                self.enter_embed_content(pd_a0, on_event);
                                 continue 'run;
                             }
                             match self.peek() {
@@ -9023,8 +9030,9 @@ impl PushdownParser {
                                 _ => {
                                     self.prepend_bytes(b":");
                                     f.st = EmbeddedSt::PdK276;
+                                    let (pd_a0,) = (b"UnclosedEmbedded", );
                                     self.stack.push(Frame::Embedded(f));
-                                    self.enter_embed_content(on_event);
+                                    self.enter_embed_content(pd_a0, on_event);
                                     continue 'run;
                                 }
                             }
@@ -9120,7 +9128,7 @@ impl PushdownParser {
                                     if !self.finished { self.stack.push(Frame::EmbedContent(f)); return ParseResult::NeedMoreData; }
                                     self.set_term(0);
                                     { let (c, sp) = self.take_capture(); on_event(StreamEvent::Text { content: c, span: sp }); }
-                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(&b"UnclosedEmbedded"[..]), span: self.gspan() });
+                                    on_event(StreamEvent::Warning { content: std::borrow::Cow::Borrowed(f.uc), span: self.gspan() });
                                     continue 'run;
                                 }
                                 _ => unreachable!(),
@@ -10106,8 +10114,9 @@ impl PushdownParser {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineDirBody(f)); return ParseResult::NeedMoreData; }
                                 f.st = SamelineDirBodySt::PdK318;
+                                let (pd_a0,) = (b"UnclosedInlineDirective", );
                                 self.stack.push(Frame::SamelineDirBody(f));
-                                self.enter_embed_content(on_event);
+                                self.enter_embed_content(pd_a0, on_event);
                                 continue 'run;
                             }
                             match self.peek() {
@@ -10118,8 +10127,9 @@ impl PushdownParser {
                                 }
                                 _ => {
                                     f.st = SamelineDirBodySt::PdK319;
+                                    let (pd_a0,) = (b"UnclosedInlineDirective", );
                                     self.stack.push(Frame::SamelineDirBody(f));
-                                    self.enter_embed_content(on_event);
+                                    self.enter_embed_content(pd_a0, on_event);
                                     continue 'run;
                                 }
                             }

@@ -6188,7 +6188,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostIdentity => {
                     if self.eof() {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                     }
@@ -6204,7 +6204,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ => {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                         }
@@ -6243,7 +6243,7 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         _ => {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                         }
@@ -6266,7 +6266,7 @@ impl<'a> Parser<'a> {
                     return;
                         }
                         _ => {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                         }
@@ -6275,7 +6275,7 @@ impl<'a> Parser<'a> {
                 State::CheckAttr => {
                     if self.eof() {
                     self.prepend_bytes(b":");
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                     }
@@ -6287,7 +6287,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.prepend_bytes(b":");
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedEmbedded", on_event);
                     on_event(Event::EmbeddedEnd { span: self.span() });
                     return;
                         }
@@ -6298,7 +6298,7 @@ impl<'a> Parser<'a> {
     }
 
     /// Parse embed_content -> Text
-    fn parse_embed_content<F>(&mut self, on_event: &mut F)
+    fn parse_embed_content<F>(&mut self, uc: &'static [u8], on_event: &mut F)
     where
         F: FnMut(Event<'a>),
     {
@@ -6350,7 +6350,7 @@ impl<'a> Parser<'a> {
                         None => {
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(uc), span: self.span() });
                     return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
@@ -7131,7 +7131,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Args => {
                     if self.eof() {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedInlineDirective", on_event);
                     on_event(Event::DirectiveEnd { span: self.span() });
                     return;
                     }
@@ -7142,7 +7142,7 @@ impl<'a> Parser<'a> {
                     return;
                         }
                         _ => {
-                    self.parse_embed_content(on_event);
+                    self.parse_embed_content(b"UnclosedInlineDirective", on_event);
                     on_event(Event::DirectiveEnd { span: self.span() });
                     return;
                         }

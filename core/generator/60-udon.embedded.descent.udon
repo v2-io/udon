@@ -14,7 +14,7 @@
   |state[:post_identity]
     |c['}']                  | ->                               |return  ; empty or identity-only
     |c[' \t']                 | ->                               |>> :pre_content
-    |default                  | /embed_content                   |return
+    |default                  | /embed_content('UnclosedEmbedded') |return
 
   |state[:pre_content]
     |c['}']                  | ->                               |return
@@ -22,28 +22,31 @@
     |c['\n']                  | ->                               |>> :pre_content_ml
     |c[':']                   | ->                               |>> :check_attr
     |c[<BS>]                  | -> | /attr_text_verbatim('}')    |>> :post_identity
-    |default                  | /embed_content                   |return
+    |default                  | /embed_content('UnclosedEmbedded') |return
 
   ; Newline directly after identity/attributes: skip continuation
   ; indentation (ignored inside |{...}) without emitting an empty Text.
   |state[:pre_content_ml]
     |c[' \t\n']               | ->                               |>>
     |c['}']                  | ->                               |return
-    |default                  | /embed_content                   |return
+    |default                  | /embed_content('UnclosedEmbedded') |return
 
   ; Embedded attr guard: failed attr parse falls back to intact content
   ; with the ':' restored (defect #12 data-loss half).
   |state[:check_attr]
     |c[<XLBL_START SQ>]       | /sameline_attr_embedded          |>> :pre_content
-    |default                  | PREPEND(':') | /embed_content    |return
+    |default                  | PREPEND(':') | /embed_content('UnclosedEmbedded') |return
 
 
 ; embed_content - text content inside |{...}
 ; Handles: text, embedded elements, comments, directives, quoted strings
-; Quoted strings are emitted as StringValue to avoid brace confusion
-|function[embed_content:Text]  | MARK
+; Quoted strings are emitted as StringValue to avoid brace confusion.
+; The unclosed-at-EOF code is CALLER-SUPPLIED (:uc): this scanner is shared, so
+; the construct identity belongs to whoever owns the `}` — an embedded element
+; (UnclosedEmbedded) or an inline directive (UnclosedInlineDirective).
+|function[embed_content:Text]  :uc  | MARK
   |state[:main]
-    |eof                      | TERM | Text(USE_MARK) | Warning(UnclosedEmbedded) |return
+    |eof                      | TERM | Text(USE_MARK) | Warning(:uc)             |return
     |c['}']                  | TERM | ->                        |return
     |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :ml_ws
     |c['|']                   | TERM | ->                        |>> :check_pipe

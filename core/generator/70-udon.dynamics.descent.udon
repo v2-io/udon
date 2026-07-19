@@ -179,6 +179,7 @@
 
 ; Regular inline directive !{name args}
 |function[sameline_dir_body:Directive]
+  |unclosed InlineDirective
   |state[:name]
     |c[XLBL_START]                | /name                            |>> :after_name
     |default                  | /skip_brace_balanced             |return  ; malformed
@@ -193,4 +194,4 @@
   ; embedded element, so it reuses /embed_content (which consumes the }).
   |state[:args]
     |c['}']                  | ->                               |return
-    |default                  | /embed_content                   |return
+    |default                  | /embed_content('UnclosedInlineDirective') |return
