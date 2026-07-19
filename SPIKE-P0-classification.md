@@ -205,6 +205,21 @@ arm-cloning (nothing to clone). These are undocumented reds-in-waiting →
 path emits a *generic* `Error{Unclosed}`, warning-first, wrong severity — the
 normalization must reach the inferred helpers, not just top-level constructs.)
 
+## Unwind is per-frame and kind-agnostic (VERIFIED — must stay true)
+The generated EOF handling is **strictly per-frame**: `delimited_code` force-unwind
+and `eof_run_default`/`eof_run_newline` both fire on the *current* function's EOF,
+and the recursive backend unwinds the call stack **innermost-first regardless of
+kind**. There is NO aggregate/global "unwind all delimited, then all positional"
+step — so no ordering assumption to break. Verified: `|p |{a |{b x`<EOF> →
+`…Text("x"), Warning(UnclosedEmbedded)[b], EmbeddedEnd[b], Warning(UnclosedEmbedded)[a],
+EmbeddedEnd[a], ElementEnd` (inner frame closes before outer; content before each
+frame's warning). This is exactly what the **future "positional within delimited"**
+needs (Joseph, 2026-07-18 — e.g. array-start → indented positional children →
+array-end): a positional frame nested in a delimited one emits its content and
+closes first, then the delimited frame force-unwinds. Do NOT introduce any
+kind-nesting invariant or aggregate-unwind that would assume delimited-before-
+positional.
+
 ## Candidate directions for the descent generation (HYPOTHESES — not a verified plan)
 *Marked as hypotheses per "don't record certain-sounding plans that aren't
 verified." What IS verified: the classifier (delimited=11, MIXED=1); the 15/16

@@ -130,12 +130,12 @@
     |default                  | /sameline_dir_body                 |return  ; !{name args}
 
 
-; Interpolation !{{expr}} - double-brace, must close with }}
+; Interpolation !{{expr}} - double-brace, must close with }}. Delimited (the
+; }} closer, matched across :main→:closing): the unclosed-at-EOF force-unwind
+; (partial Interpolation content + Warning(UnclosedInterpolation)) is
+; auto-generated from the classification — no hand |eof in either state.
 |function[interpolation:Interpolation]  | MARK
   |state[:main]
-    ; |eof DELETED (spike): descent auto-generates the force-unwind
-    ; (Interpolation content + Warning(UnclosedInterpolation)) from the
-    ; delimited classification (return type Interpolation → derived code).
     |c['}']                   | TERM | ->                              |>> :closing
     |default                  | ->                                     |>>
 
@@ -143,7 +143,6 @@
   ; only '}}' terminates.
   |state[:closing]
     |c['}']                   | ->                                     |return  ; found }}
-    ; |eof DELETED (spike): auto-generated force-unwind (see :main).
     |default                  | ->                                     |>> :main
 
 
