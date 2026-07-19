@@ -128,6 +128,26 @@ edits.
   nested lists) is illustrative, not exhaustive.
 
 ### Ruled (2026-07-19; densification pass — do not re-open)
+- **`;{` in value position / at a bare-token boundary → text-blob
+  continuation, never a boundary marker** (Joseph, 2026-07-19). The framed
+  ` ; ` remains the sameline comment that ENDS value capture; the `;{…}`
+  inline comment is part of the flowing text and **reduces to `""`**
+  (comment events are not value segments). Consequences, from Joseph's
+  examples: `|el :n ;{}` ≡ `|el :n ""` (an empty-string value, not
+  `MissingAttributeValue`); `|el :n ;{`<EOF> → same + `UnclosedInlineComment`;
+  `|el :n value ;{`<EOF> → `n = "value "` (trailing space kept — the blob
+  committed at the `;{`) + the warning; `|el :n val ;` → `"val"` + an empty
+  comment (framed form, unchanged). Underlying principle as stated: inline
+  `*{…}` constructs "are assumed to *reduce to more text*." This confirms the
+  blob-treatment expectation of the `du_ic_in_text_blob_eof` red (now a plain
+  grammar to-do, not spec-ambiguous). **Scope note:** whether the
+  reduce-to-text principle also re-classes `|{…}` / `!{…}` at a bare-token
+  boundary (today: boundary markers → child / directive, per the 2026-07-15
+  marker set) is **proposed, consistency-checked, and awaiting Joseph's
+  confirm** — it would rewrite the boundary set to block-form-markers-only,
+  flip `:n |{em x}` from node value to blob segment, widen the blob one-way
+  door (`|el :n |{em x} :a 1` would make `:a 1` text of `n`), and unify the
+  C1 multi-part-interpolation wire for free.
 - **Empty envelope `<>` → interim string, for now.** A closed empty `<>` stays
   the no-dialects pass-through `BareValue "<>"` + `NoDialectsLoaded` (content-first,
   uniform with every envelope). The empty-bracket ruling's `< >`→**nil** collapse

@@ -76,19 +76,23 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
       NAMED inline-directive no-args case `!{inc`<EOF> landed 2026-07-19 via an
       explicit `:after_name` `|eof` arm.)*
 
-- [ ] **`;{` in a text blob** (`du_ic_in_text_blob_eof`, the last non-identity
-      alpha.2 red): `:note text ;{c`<EOF> — the parser finishes `text` as a
-      single-token `BareValue` and the `;{` comment captures `"{c"` without
-      `UnclosedInlineComment`. Underlying question — does `;{` (the
-      inline-comment lexeme, vs the framed ` ; `) act as a bare-token
-      **boundary marker**? CORE's boundary set names only the framed ` ; `,
-      but "Sameline Comments" says `;{…}` needs no whitespace frame — the two
-      clauses collide exactly here, and the readings diverge on untruncated
-      documents too (boundary ⇒ single-token value + element-level comment +
-      element prose; blob ⇒ the comment AND all trailing prose belong to the
-      attribute's value). **Spec-ambiguous → needs a Joseph ruling** before a
-      fixture/grammar change; under the boundary reading the `_wip` red's
-      expectation itself flips.
+- [ ] **`;{` at a bare-token boundary / in value position → blob
+      continuation** (`du_ic_in_text_blob_eof`, the last non-identity alpha.2
+      red — **RULED 2026-07-19**, CHANGELOG: `;{` never ends value capture;
+      it continues the text and reduces to `""`; the framed ` ; ` remains the
+      capture-ending comment). Grammar work: (a) the boundary states
+      (`:kw_boundary`/`:str_boundary`) treat any `;` as ending the token —
+      `;`+`{` must instead commit the blob (Text segment through the
+      pre-`;` space, then the comment, blob continues); (b) `value_start`'s
+      `;` arm errors `MissingAttributeValue` — `;`+`{` must instead begin a
+      blob (`:n ;{}` → empty-string value); (c) the comment currently
+      captures `"{c"` (swallows the brace) and misses
+      `UnclosedInlineComment` on this path. The `_wip` red's expectation is
+      confirmed accurate. **Held pending Joseph's confirm of the general
+      `*{`-reduce-to-text scope** (whether `|{`/`!{` at boundaries also stop
+      being boundary markers — see the CHANGELOG scope note; if confirmed,
+      the boundary rewrite covers all three at once and several gating
+      fixtures pinning CHILD/DIRECTIVE boundary codes flip).
       *(The other two non-identity reds landed 2026-07-19: nameless `!{` at
       EOF/EOL → prose `Text "!{"` via an interception in `sameline_directive
       :dispatch` before DirectiveStart can fire; interp's lone trailing `}` is
