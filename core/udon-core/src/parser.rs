@@ -6972,9 +6972,8 @@ impl<'a> Parser<'a> {
     {
         let start_span = self.span();
         on_event(Event::DirectiveStart { span: start_span.clone() });
-        let mut depth: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { Kind, SkipSep, Content, Scan, CheckClose,  }
+        enum State { Kind, SkipSep,  }
         let mut state = State::Kind;
         loop {
             match state {
@@ -6999,26 +6998,40 @@ impl<'a> Parser<'a> {
                 }
                 State::SkipSep => {
                     if self.eof() {
-                    state = State::Content;
-                    continue;
+                    self.parse_sameline_raw_body(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b' ') => {
                     self.advance();
-                    state = State::Content;
-                    continue;
+                    self.parse_sameline_raw_body(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                         }
                         _ => {
-                    state = State::Content;
-                    continue;
+                    self.parse_sameline_raw_body(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                         }
                     }
                 }
-                State::Content => {
-                    self.mark();
-                    state = State::Scan;
-                    continue;
-                }
+            }
+        }
+    }
+
+    /// Parse sameline_raw_body -> RawContent
+    fn parse_sameline_raw_body<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        self.mark();
+        let mut depth: i32 = 0;
+        #[derive(Clone, Copy)]
+        enum State { Scan, CheckClose,  }
+        let mut state = State::Scan;
+        loop {
+            match state {
                 State::Scan => {
                     match self.scan_to3(b'\n', b'{', b'}') {
                         Some(b'{') => {
@@ -7034,8 +7047,8 @@ impl<'a> Parser<'a> {
                             self.advance();
                         }
                         None => {
-                            on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
-                            on_event(Event::DirectiveEnd { span: self.span() });
+                            on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
+                            on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInlineRaw"), span: self.span() });
                             return;
                         }
                         _ => unreachable!("scan_to only returns target chars"),
@@ -7051,9 +7064,8 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.set_term(0);
-                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
                     self.advance();
-                    on_event(Event::DirectiveEnd { span: self.span() });
+                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
                     }

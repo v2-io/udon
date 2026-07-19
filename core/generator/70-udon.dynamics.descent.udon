@@ -144,25 +144,29 @@
     |default                  | ->                                     |>> :main
 
 
-; Inline raw !{:kind: content}
-; sameline_raw - raw content inside !{:kind:...}
-; Brace-counting for nested {} pairs (CORE "Inline Raw Content").
-; Carries the block form's Raw marker; a single space after the label's
-; closing `:` is a separator, not content (spec/TODO-SPEC-CORE.md, provisional
-; for 0.8 — nailing tighter deferred past dialects/templating).
-|function[sameline_raw:Directive]  | depth = 0
+; Inline raw !{:kind: content} — the Directive wrapper: emit Raw + the kind
+; name, then delegate the brace-balanced body to /sameline_raw_body. A single
+; space after the label's closing `:` is a separator, not content
+; (spec/TODO-SPEC-CORE.md, provisional for 0.8 — tighter nailing deferred past
+; dialects/templating).
+|function[sameline_raw:Directive]
   |state[:kind]
     |c[':']                   | -> | Raw                         |>> :skip_sep
     |default                  | /name                            |>>  ; kind name
 
   ; Separator: one optional space after the closing `:` is not content.
   |state[:skip_sep]
-    |c[' ']                   | ->                               |>> :content
-    |default                  |                                  |>> :content
+    |c[' ']                   | -> | /sameline_raw_body          |return
+    |default                  | /sameline_raw_body               |return
 
-  |state[:content]
-    | MARK                                                       |>> :scan
-
+; The inline-raw BODY: brace-balanced verbatim content, closer `}` (CORE
+; "Inline Raw Content"; nested {} pairs are balanced content). Its OWN delimited
+; construct (CONTENT/RawContent) so the generated EOF force-unwind keeps the
+; body (RawContent) AND — via `|unclosed InlineRaw` — names its warning
+; UnclosedInlineRaw, not the Directive return type of the wrapper. Mirrors the
+; embedded / embed_content split.
+|function[sameline_raw_body:RawContent]  | depth = 0
+  |unclosed InlineRaw
   |state[:scan]
     |c['{']                   | -> | depth += 1                  |>>  ; nested open
     |c['}']                   |                                  |>> :check_close
@@ -170,7 +174,7 @@
 
   |state[:check_close]
     |if[depth > 0]            | -> | depth -= 1                  |>> :scan  ; nested close
-    |default                  | TERM | RawContent(USE_MARK) | -> |return    ; final close
+    |default                  | TERM | ->                        |return    ; RawContent auto-emitted on return
 
 
 ; Regular inline directive !{name args}
