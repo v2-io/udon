@@ -73,9 +73,33 @@ against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; ruling
       case (descent classify gap-2), not expressible by the return-type
       derivation or a single `|unclosed <Name>`. Needs the caller-owns-name
       pattern extended to the bracket, or a small dedicated key-scan sub-function
-      per owner. The 11 identity-key reds in `fixtures/_wip/` are the target spec.
+      per owner. The 11 identity-key reds in `fixtures/_wip/` are the target spec
+      — now reconciled to `$partial-key` + content-first order (2026-07-19), so
+      they're accurate to the ruling.
       *(The sibling inline-raw / inline-directive EOF codes+content-keeping landed
-      via `|unclosed <Name>` + caller-owns-name — commits 071f140 / d217b8d.)*
+      via `|unclosed <Name>` + caller-owns-name — commits 071f140 / d217b8d; the
+      NAMED inline-directive no-args case `!{inc`<EOF> landed 2026-07-19 via an
+      explicit `:after_name` `|eof` arm.)*
+
+- [ ] **Remaining alpha.2 EOF grammar reds (the 3 non-identity ones in
+      `fixtures/_wip/`).** All ruled; all need marker/closer restoration this
+      architecture doesn't yet have generically:
+      - **Nameless `!{`<EOF> → prose `Text "!{"`** (`bang_brace_eof`). Ruled, but
+        by the time we reach `sameline_dir_body :name` the caller (`sameline_text`
+        / `document`) has already consumed `!{` and `DirectiveStart` has fired, so
+        emitting prose needs intercepting the EOF-after-`!{`-with-no-name **before**
+        entry (in `sameline_directive :dispatch`) and restoring the `!{` bytes as
+        text — the same restore-consumed-marker problem as gap-4.
+      - **Interp drops a lone trailing `}`** (`du_interp_lone_brace_is_content_eof`):
+        `!{{a}`<EOF> captures `"a"` not `"a}"` — the partial-closer-restoration gap
+        (design-doc gap-4): a partially-matched multi-byte closer (`}}`) at EOF must
+        restore the consumed `}` into content. Best owned once by the generator.
+      - **`;{` in a text blob** (`du_ic_in_text_blob_eof`): `:note text ;{c`<EOF> —
+        the parser finishes `text` as a single-token `BareValue` and the `;{` comment
+        captures `"{c"` without `UnclosedInlineComment`. Underlying question — does
+        `;{` (the inline-comment lexeme, vs the framed ` ; `) act as a bare-token
+        **boundary marker**? CORE's boundary set names only the framed ` ; `.
+        **Spec-ambiguous → needs a Joseph ruling** before a fixture/grammar change.
 
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
