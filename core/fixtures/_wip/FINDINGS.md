@@ -76,10 +76,18 @@
 > `v0.9/eof_delimited.yaml`; positional-and-bare-marker.yaml emptied and
 > removed.
 >
-> So **12 genuine grammar reds** remain here — the 11 identity-key family
-> (the descent hold/release + caller-owns-name work) + `;{`-in-blob
-> (`du_ic_in_text_blob_eof`, awaiting the boundary-vs-blob ruling). The
-> grammar-phase to-do; nothing else.
+> **Identity-key family LANDED (2026-07-19, later still):** descent gained
+> HOLD/RELEASE emission (the attr name — `$key` vs `$partial-key` — is a
+> late-decided prologue over the held value events), and all 11 identity
+> reds went green and were promoted (eof_delimited section H +
+> eof_composition; the newline case's draft expectation was corrected — a
+> col-0 following line is ROOT prose per the hierarchy rule, not element
+> prose). `positional-and-bare-marker.yaml` and `composition-and-edges.yaml`
+> are gone (emptied by promotion).
+>
+> So **1 red remains** in this dir — `;{`-in-blob (`du_ic_in_text_blob_eof`),
+> ruled 2026-07-19 (blob continuation) and folded into the `*{` boundary
+> rewrite tracked in `core/TODO-CORE-PARSING.md`. Nothing else.
 
 **Status (2026-07-18):** harvest of three parallel spec-grounded agents (delimited-unclosed, positional+bare-marker, composition+edges) — **104 draft cases** in this `_wip/` dir (`delimited-unclosed.yaml`, `positional-and-bare-marker.yaml`, `composition-and-edges.yaml`). Drafts are **not verified case-by-case yet** and are **not run by the harness** (`_wip/` is a sibling of `v0.9/`). Every expectation was derived from CORE, not the parser. **Reds are finds, not failures.**
 

@@ -18,7 +18,16 @@ likely home is a future `spec/aux/` once `spec/` splits into
       alongside the design** (authorized; let the grammar surface the
       terminator questions). Session packet with the open forks +
       recommendations: `msc/adjudication-2026-07-paths-and-silences.md`
-      (positional-vs-typed-identity `[0]` is the big one). **First rung of
+      (positional-vs-typed-identity `[0]` is the big one). **New driver
+      (Joseph, 2026-07-19): a `@{…}` inline-reference embed** — symmetry
+      with the `|{`/`!{`/`;{` brace family (all prose-level, reduce-to-text
+      per the 2026-07-19 ruling), the first mid-prose reference form (bare
+      `@` is literal in prose today), and a clean answer to the
+      path-embeddability terminator problem (a printed closer instead of
+      boundary rules: `@{config|database[primary]}`). Probably 0.10;
+      co-design with the path grammar since the payload would BE the
+      reference-path subset. Prose-escape set grows to `\@{`; check `@{`
+      against the CommonMark corpus. **First rung of
       the critical path to the agentic edit tool** (see
       `../ux/TODO-AGENT-UX.md`, tool suite item); also feeds the paths
       implementation in `../TODO-UTILS.md`.

@@ -966,6 +966,9 @@ impl<'a> Parser<'a> {
     where
         F: FnMut(Event<'a>),
     {
+        // HOLD buffer: events emitted by held /calls collect here until
+        // RELEASE prologues the late-decided event and flushes them.
+        let mut held: Vec<Event<'a>> = Vec::new();
         #[derive(Clone, Copy)]
         enum State { Identity, QuotedName, PostName, PostSuffix, Bracket, BracketClose, PostBracket, Class, PostClass,  }
         let mut state = State::Identity;
@@ -1078,20 +1081,21 @@ impl<'a> Parser<'a> {
                 }
                 State::Bracket => {
                     if self.eof() {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$key"), span: self.span() });
-                    self.parse_value(1, b']', on_event);
-                    state = State::BracketClose;
-                    continue;
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedIdentityKey"), span: self.span() });
+                    return;
                     }
                     match self.peek() {
+                        Some(b'\n') => {
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedIdentityKey"), span: self.span() });
+                    return;
+                        }
                         Some(b']') => {
                     self.advance();
                     state = State::PostBracket;
                     continue;
                         }
                         _ => {
-                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$key"), span: self.span() });
-                    self.parse_value(1, b']', on_event);
+                    { let mut __held_sink = |__ev: Event<'a>| held.push(__ev); let mut __held_dyn: &mut dyn FnMut(Event<'a>) = &mut __held_sink; self.parse_value(1, b']', &mut __held_dyn); }
                     state = State::BracketClose;
                     continue;
                         }
@@ -1099,15 +1103,23 @@ impl<'a> Parser<'a> {
                 }
                 State::BracketClose => {
                     if self.eof() {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$partial-key"), span: self.span() });
+                    for __held_ev in held.drain(..) { on_event(__held_ev); }
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedIdentityKey"), span: self.span() });
                     return;
                     }
                     match self.peek() {
                         Some(b']') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$key"), span: self.span() });
+                    for __held_ev in held.drain(..) { on_event(__held_ev); }
                     self.advance();
                     state = State::PostBracket;
                     continue;
                         }
                         _ => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$partial-key"), span: self.span() });
+                    for __held_ev in held.drain(..) { on_event(__held_ev); }
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedIdentityKey"), span: self.span() });
                     return;
                         }
                     }
@@ -7448,6 +7460,46 @@ pub enum StreamEvent<'a> {
     Error { code: ParseErrorCode, span: Range<usize> },
 }
 impl<'a> StreamEvent<'a> {
+    /// Own the content so the event can outlive the parse buffer — used by
+    /// the pushdown backend's HOLD buffer (held events must survive drains
+    /// and chunk seams).
+    #[allow(dead_code)]
+    pub(crate) fn into_static(self) -> StreamEvent<'static> {
+        match self {
+            StreamEvent::ElementStart { span } => StreamEvent::ElementStart { span },
+            StreamEvent::ElementEnd { span } => StreamEvent::ElementEnd { span },
+            StreamEvent::EmbeddedStart { span } => StreamEvent::EmbeddedStart { span },
+            StreamEvent::EmbeddedEnd { span } => StreamEvent::EmbeddedEnd { span },
+            StreamEvent::DirectiveStart { span } => StreamEvent::DirectiveStart { span },
+            StreamEvent::DirectiveEnd { span } => StreamEvent::DirectiveEnd { span },
+            StreamEvent::ArrayStart { span } => StreamEvent::ArrayStart { span },
+            StreamEvent::ArrayEnd { span } => StreamEvent::ArrayEnd { span },
+            StreamEvent::FreeformStart { span } => StreamEvent::FreeformStart { span },
+            StreamEvent::FreeformEnd { span } => StreamEvent::FreeformEnd { span },
+            StreamEvent::Name { content, span } => StreamEvent::Name { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Text { content, span } => StreamEvent::Text { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::CommentStart { span } => StreamEvent::CommentStart { span },
+            StreamEvent::CommentEnd { span } => StreamEvent::CommentEnd { span },
+            StreamEvent::Attr { content, span } => StreamEvent::Attr { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::StringValue { content, span } => StreamEvent::StringValue { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::BareValue { content, span } => StreamEvent::BareValue { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::BoolTrue { content, span } => StreamEvent::BoolTrue { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::BoolFalse { content, span } => StreamEvent::BoolFalse { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Nil { content, span } => StreamEvent::Nil { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Interpolation { content, span } => StreamEvent::Interpolation { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Reference { content, span } => StreamEvent::Reference { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::RawContent { content, span } => StreamEvent::RawContent { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Raw { content, span } => StreamEvent::Raw { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Integer { content, span } => StreamEvent::Integer { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Float { content, span } => StreamEvent::Float { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Rational { content, span } => StreamEvent::Rational { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Complex { content, span } => StreamEvent::Complex { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Warning { content, span } => StreamEvent::Warning { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::BlankLine { content, span } => StreamEvent::BlankLine { content: std::borrow::Cow::Owned(content.into_owned()), span },
+            StreamEvent::Error { code, span } => StreamEvent::Error { code, span },
+        }
+    }
+
     /// Convert a borrowed Event, re-basing spans to global offsets.
     /// Content passes through as-is (still borrowed where it was).
     fn from_event(event: Event<'a>, offset: usize) -> Self {

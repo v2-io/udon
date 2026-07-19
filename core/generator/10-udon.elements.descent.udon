@@ -42,13 +42,24 @@
     |c['.']                   |                                  |>> :class
     |default                  |                                  |return
 
+  ; Identity key [...] — the attr NAME is decided by whether the closing ']'
+  ; ever arrives ($key on a clean close; $partial-key + UnclosedIdentityKey
+  ; when it doesn't — the CORE §Identity fail-safe, ruled alpha.2 §1.3), so
+  ; the value's events are HELD and the name is RELEASEd as a late prologue
+  ; at the close decision. An empty bracket cut off at EOF/EOL emits the
+  ; warning alone (nothing captured ⇒ no attr — ruling (b)); an empty closed
+  ; [] stays silent (current behavior). The :bracket_close default covers
+  ; both the line-bound newline close and, via the generated EOF≡newline
+  ; handling, true EOF.
   |state[:bracket]
+    |eof                      | Warning(UnclosedIdentityKey)     |return
+    |c['\n']                  | Warning(UnclosedIdentityKey)     |return
     |c[']']                   | ->                               |>> :post_bracket
-    |default                  | Attr($key) | /value(1, ']')       |>> :bracket_close
+    |default                  | HOLD | /value(1, ']')            |>> :bracket_close
 
   |state[:bracket_close]
-    |c[']']                   | ->                               |>> :post_bracket
-    |default                  |                                  |return  ; unclosed
+    |c[']']                   | RELEASE(Attr('$key')) | ->       |>> :post_bracket
+    |default                  | RELEASE(Attr('$partial-key')) | Warning(UnclosedIdentityKey) |return
 
   |state[:post_bracket]
     |c[:close]                |                                  |return

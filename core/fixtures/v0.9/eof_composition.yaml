@@ -724,3 +724,33 @@
     - [BareValue, "<>"]
     - [Warning, "NoDialectsLoaded"]
     - ElementEnd
+
+# Identity-key EOF rows (landed 2026-07-19 with the descent HOLD/RELEASE
+# mechanism — see eof_delimited.yaml section H).
+- id: eof_unclosed_identity_key_bare
+  desc: an unclosed identity `[key` at EOF — value kept under $partial-key + warning
+  udon: "|el[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: eof_unclosed_identity_key_array_value
+  desc: unclosed identity `[[1 2` (array-valued key) at EOF — array + identity warnings
+  udon: "|el[[1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd

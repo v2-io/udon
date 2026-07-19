@@ -274,12 +274,17 @@ sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
 (run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
 The three "ruling-needed" cases were ruled and promoted, and the named
 inline-directive EOF gap (`!{inc`<EOF>) was **fixed** (both backends).
-**What remains** — 14 genuine reds kept in `_wip/` as the grammar-phase target
-spec (banner in [`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md)): the
-**identity/reference-key EOF** warning (`UnclosedIdentityKey` + `$partial-key`,
-the shared `parse_element_identity` gap-2 — `|el[k`<EOF> emits `$key` with no
-warning today, `core/TODO-CORE-PARSING.md`); the *nameless* `!{`<EOF> (ruled to
-prose `Text "!{"`); interp partial-closer (gap-4); and `;{`-in-blob.
+**Update (2026-07-19, later): the red burn-down is COMPLETE but one.** The
+nameless `!{` (→ prose, EOF and EOL twins) and the interp partial-closer
+(`!{{a}` keeps `"a}"`) were grammar fixes; the 11 identity/reference-key reds
+landed via a new descent mechanism — **HOLD/RELEASE emission** (the `$key` vs
+`$partial-key` attr name is a late-decided prologue over the held value
+events; `|el[k`<EOF> now warns `UnclosedIdentityKey` and fails safe under
+`$partial-key`, cascades included). All promoted to `v0.9/`. **What remains**
+— one red: `;{`-in-blob, folded into the newly-RULED `*{`-reduce-to-text
+boundary rewrite (no brace form is ever a boundary marker — CHANGELOG
+2026-07-19; CORE text + grammar tracked in `spec/TODO-SPEC-CORE.md` +
+`core/TODO-CORE-PARSING.md`).
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The

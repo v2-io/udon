@@ -220,10 +220,19 @@ pub fn run_with_variations(case: &TestCase, gen: &mut Gen) -> TestResult {
     let is_freeform_test = case.events.iter().any(|e| {
         matches!(e, ExpectedEvent::Bare(s) if s == "FreeformStart")
     });
+    // A case whose expected CONTENT spans a newline (a multi-line capture —
+    // envelope/string/interpolation interiors) is interior-mutation-sensitive:
+    // the blank-line/indent variations land INSIDE the construct and become
+    // part of the captured content, changing the expectation. Same semantic
+    // family as the Unclosed skip: the variation would test a different input.
+    let expects_multiline_content = case.events.iter().any(|e| {
+        matches!(e, ExpectedEvent::WithContent(_, c) if c.contains('\n'))
+    });
     // A case asserting an empty Text is an exact-comparison case (see
     // `asserts_empty_text`); varying its input could add or remove the very
     // Text it pins, so it runs canonically like the EOF/unclosed cases.
-    if expects_error || is_error_test || is_freeform_test || expects_unclosed || asserts_empty_text(case) {
+    if expects_error || is_error_test || is_freeform_test || expects_unclosed
+        || expects_multiline_content || asserts_empty_text(case) {
         return run_test(case);
     }
 

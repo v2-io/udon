@@ -160,7 +160,7 @@
     - ElementEnd
 
 - id: du_embed_identity_phase_eof
-  desc: "|{a — name captured, no content — UnclosedEmbedded required (RED)"
+  desc: "|{a — name captured, no content — UnclosedEmbedded required"
   udon: "|p |{a"
   root_only: true
   # CORE: name is kept; frame still open at EOF ⇒ UnclosedEmbedded.
@@ -174,7 +174,7 @@
     - ElementEnd
 
 - id: du_embed_attr_open_missing_value_eof
-  desc: "|{a :href — open plain attr (MissingAttributeValue) then UnclosedEmbedded (RED)"
+  desc: "|{a :href — open plain attr (MissingAttributeValue) then UnclosedEmbedded"
   udon: "|p |{a :href"
   root_only: true
   # CORE "Attribute Keys and Flags": plain :key with no value ⇒
@@ -195,7 +195,7 @@
     - ElementEnd
 
 - id: du_embed_flag_then_eof
-  desc: "|{a :ready? — flag snaps true, then UnclosedEmbedded (RED)"
+  desc: "|{a :ready? — flag snaps true, then UnclosedEmbedded"
   udon: "|p |{a :ready?"
   root_only: true
   # CORE "Flag rule": :ready? at boundary (EOF) snaps to true, no
@@ -213,7 +213,7 @@
     - ElementEnd
 
 - id: du_embed_attr_value_then_eof
-  desc: "|{a :href /home — bare value finishes at EOF-boundary, then UnclosedEmbedded (RED)"
+  desc: "|{a :href /home — bare value finishes at EOF-boundary, then UnclosedEmbedded"
   udon: "|p |{a :href /home"
   root_only: true
   # CORE "The Scan and the Bare-Token Boundary": EOF is a boundary marker, so
@@ -578,4 +578,139 @@
     - [Name, "p"]
     - [Interpolation, "a}"]
     - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+
+# ===========================================================================
+# H. IDENTITY KEY [...] at EOF — landed 2026-07-19 via descent HOLD/RELEASE
+#    (the attr NAME — $key vs $partial-key — is a late-decided prologue: the
+#    key value's events are held until the ']' does or does not arrive).
+#    Ruled (CHANGELOG alpha.2 §1.3): partial content desugars under
+#    $partial-key (the fail-safe — a consumer reading $key / resolving a
+#    reference excludes a truncated identity) + UnclosedIdentityKey,
+#    content-first; nothing captured ⇒ warning alone, no attr.
+# ===========================================================================
+
+- id: du_id_opener_only_eof
+  desc: "|el[ then EOF, nothing captured — UnclosedIdentityKey alone, no attr"
+  udon: "|el["
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_partial_eof
+  desc: "|el[k then EOF — $partial-key value \"k\" kept + UnclosedIdentityKey"
+  udon: "|el[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+# The newline twin: identity keys are line-bound today (deliberately-undefined
+# multi-line — CORE Line-boundedness), so the newline soft-closes with the
+# warning; "more" at column 0 dedents past |el (hierarchy rule), so it is
+# ROOT prose after ElementEnd. (The _wip draft had it inside the element —
+# a draft error against the pop-while-≤ rule.)
+- id: du_id_newline_closes_rest_is_prose
+  desc: "|el[k then newline — soft close + UnclosedIdentityKey; col-0 'more' is root prose"
+  udon: "|el[k\nmore"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+    - [Text, "more"]
+
+- id: du_id_anonymous_eof
+  desc: "|[k then EOF — anonymous element, unclosed identity key"
+  udon: "|[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_string_key_open_eof
+  desc: "|el[\"abc then EOF — unclosed string INSIDE unclosed identity key (cascade)"
+  udon: "|el[\"abc"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - [StringValue, "abc"]
+    - [Warning, "UnclosedStringValue"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_tuple_array_open_eof
+  desc: "|el[[1 2 then EOF — unclosed array (tuple key) inside unclosed identity (cascade)"
+  udon: "|el[[1 2"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - ArrayStart
+    - [Integer, "1"]
+    - [Integer, "2"]
+    - [Warning, "UnclosedArray"]
+    - ArrayEnd
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_id_envelope_key_open_eof
+  desc: "|el[<u64 then EOF — unclosed envelope inside unclosed identity key (cascade)"
+  udon: "|el[<u64"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "<u64"]
+    - [Warning, "UnclosedTypeEnvelope"]
+    - [Warning, "UnclosedIdentityKey"]
+    - ElementEnd
+
+- id: du_embed_identity_key_open_eof
+  desc: "|{a[k — embed AND identity key both open — cascade of two warnings"
+  udon: "|p |{a[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "a"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
+    - ElementEnd
+
+- id: du_id_in_embedded_eof
+  desc: "|{ref[k then EOF — identity key open inside embed inside prose (double cascade)"
+  udon: "|p |{ref[k"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - EmbeddedStart
+    - [Name, "ref"]
+    - [Attr, "$partial-key"]
+    - [BareValue, "k"]
+    - [Warning, "UnclosedIdentityKey"]
+    - [Warning, "UnclosedEmbedded"]
+    - EmbeddedEnd
     - ElementEnd

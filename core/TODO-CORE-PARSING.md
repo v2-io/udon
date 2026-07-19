@@ -25,8 +25,10 @@ grammar around a guessed spelling the derivation would clean up.
 Joseph's explicit call), and the fixture densification is DONE (2026-07-19).**
 descent auto-supplies both EOF halves (delimited force-unwind + positional
 EOF ≡ newline) — shipped in `../tools/descent/CHANGELOG.md`; design record
-archived at `../_archive/eof-descent-classification.md`. The 14 genuine
-grammar reds live in `fixtures/_wip/` (banner: `fixtures/_wip/FINDINGS.md`);
+archived at `../_archive/eof-descent-classification.md`. **The alpha.2 red
+burn-down is COMPLETE but one** (2026-07-19): the identity-key family landed
+via descent HOLD/RELEASE; the sole remaining red is `;{`-in-blob, folded into
+the `*{` boundary rewrite below (banner: `fixtures/_wip/FINDINGS.md`);
 rulings: `../spec/msc/CHANGELOG.md` alpha.2.
 
 ## Open
@@ -56,25 +58,19 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
       document why they are deliberately plain.
 
 
-- [ ] **Identity / reference key: emit `UnclosedIdentityKey` + `$partial-key`
-      at EOF** (grammar phase; ruled — CORE Identity + End of input, CHANGELOG
-      alpha.2 §1.3). An unclosed `|el[k` / `@el[k` currently keeps the key value
-      but emits **no warning**, and desugars to `$key` — should warn
-      `UnclosedIdentityKey` and desugar to **`$partial-key`** (the fail-safe so a
-      consumer excludes a truncated key). Harder than the inline forms: the block
-      scanner `parse_element_identity` is INTERNAL and **shared** across element /
-      embed / identity, so the identity bracket is a delimited sub-region whose
-      owner is the caller's frame — the per-call-site "one function, both kinds"
-      case (descent classify gap-2), not expressible by the return-type
-      derivation or a single `|unclosed <Name>`. Needs the caller-owns-name
-      pattern extended to the bracket, or a small dedicated key-scan sub-function
-      per owner. The 11 identity-key reds in `fixtures/_wip/` are the target spec
-      — now reconciled to `$partial-key` + content-first order (2026-07-19), so
-      they're accurate to the ruling.
-      *(The sibling inline-raw / inline-directive EOF codes+content-keeping landed
-      via `|unclosed <Name>` + caller-owns-name — commits 071f140 / d217b8d; the
-      NAMED inline-directive no-args case `!{inc`<EOF> landed 2026-07-19 via an
-      explicit `:after_name` `|eof` arm.)*
+- [ ] **Hold/release perf: per-key cost on identity-dense documents.** The
+      2026-07-19 identity landing (descent HOLD/RELEASE) costs ~50ns per
+      keyed element on the recursive backend (parse/comprehensive.udon
+      ~720 → ~666 MiB/s, ~30 keys/15KB — real, isolated to keys; keyless
+      parsing unaffected). Suspects, in likely order: the per-key Vec malloc
+      (first held push), the type-erased `&mut dyn` sink dispatch, and the
+      doubled monomorphization of the value subtree (icache). Candidate
+      fixes: reuse a parser-level scratch buffer (needs return-site restore
+      in the template), capacity hints, or narrowing the dyn boundary.
+      Bench-pair discipline applies. *(The reference-key half — `@el[k` —
+      still awaits the structured reference encoding; the interim raw-text
+      wire has no key attr to mark partial. See the J3 probe in
+      eof_delimited.yaml.)*
 
 - [ ] **`;{` at a bare-token boundary / in value position → blob
       continuation** (`du_ic_in_text_blob_eof`, the last non-identity alpha.2
