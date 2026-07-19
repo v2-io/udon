@@ -154,7 +154,7 @@ geometry). Contract-violating for that one malformed edge; fixing it cleanly
 wants the descent line-discipline feature (experience notes #1) rather than
 another hand-threaded state. Revisit with the `*{` rewrite.
 
-## Final-terminator disposition (Joseph's venture, 2026-07-19 — proposed, near-ruled)
+## Final-terminator disposition (RULED 2026-07-19 — see CHANGELOG; kept here as the worked mapping)
 
 The very FINAL trailing newline of a text run (before dedent/End) is the one
 still-underdefined disposition: ornament (udon-positional) vs inner text.
@@ -167,12 +167,12 @@ wire almost for free:
   ornament) and the final terminator inside an ordinary prose Text
   (AST may trim as ornament or keep as text — both implementable, byte
   present either way).
-Scope question (one gap): a NON-blank `\`-forced line (`\hi⏎` →
-`Text "hi\n"`) is wire-indistinguishable from unforced — if forcedness
-must mark THAT line's terminator explicit too, it needs a wire marker;
-if the trailing-`\`-line idiom is the intended explicitness gesture (as
-the S6 discussion suggests), the rule is fully expressible today with no
-wire change. AST-side landing: `core/TODO-PARSER.md` S6 item.
+RESOLUTION (Joseph's three examples): interior = text; run-final
+IN-CONTENT terminator = ornamental (AST trims); run-final STANDALONE
+`Text "\n"` (trailing `\` at line end) = explicit (kept). The
+trailing-`\` idiom IS the explicitness gesture — no wire marker needed.
+AST-side landing: `core/TODO-PARSER.md` S6 item; CORE gets the three
+worked examples.
 
 ## Decision shortlist for Joseph
 

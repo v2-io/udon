@@ -129,6 +129,20 @@ edits.
 
 ### Ruled (2026-07-19, third batch — the TEXT-WIRE recast, P0; do not re-open)
 
+- **Final-terminator disposition — RULED via three examples (Joseph,
+  principle of least surprise).** Interior newlines within a text run are
+  TEXT (a forced-text line followed by more text keeps its newline). A text
+  run's FINAL terminator: when it rides INSIDE the run's last content-bearing
+  Text (…`\ tail`⏎ then a child/structure line) it is ORNAMENTAL — the AST
+  trims it; when the author puts `\` at the very END of the line (empty
+  forced tail → the standalone `Text "\n"` event) it is EXPLICIT — kept
+  ("the only reason I'd put the backslash at the end like that is because I
+  *do* want the explicit newline"). The wire distinguishes the two for free
+  (in-content trailing `\n` vs standalone `Text "\n"`), so this is purely
+  an AST policy — no wire change. CORE landing: state it with Joseph's three
+  worked examples (TODO-SPEC-CORE S-batch item); AST landing: TODO-PARSER
+  S6 item.
+
 **The reconstruction contract** (design of record: `../TODO-TEXT-WIRE.md`):
 the document's text stream is reconstructable by pure in-order concatenation
 of the event stream's text-bearing events — no spans, no source. Line

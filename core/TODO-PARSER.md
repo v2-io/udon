@@ -33,8 +33,13 @@ root `TODO-META.md` — not here.)
       event stream is geometry-faithful (`BlankLine` everywhere non-protruding);
       the AST builder interprets — interior BlankLines between text become
       newlines; leading/trailing become *ornamentation* (discarded from text)
-      or literal BlankLine nodes kept for round-trip. Decide the node shape
-      with the error-reporting rework below.
+      or literal BlankLine nodes kept for round-trip. PLUS the ruled
+      final-terminator disposition (2026-07-19): interior terminators are
+      text; a run-final terminator INSIDE the last content Text is
+      ornamental (trim); a run-final STANDALONE `Text "\n"` (the trailing-`\`
+      idiom) is explicit (keep). `all_text()` stays pure reconstruction; the
+      interpreted accessor applies this policy. Decide the node shape with
+      the error-reporting rework below.
 - [ ] **Error-reporting quality + keep-everything at the AST layer.** Current
       state (verified 2026-07-18 at `tree.rs:244`, supersedes the estate
       review's stale "stopped at first error"): `Document::parse` collects *all*

@@ -29,7 +29,10 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       (BlankLine span covers the whitespace; protruding whitespace is prose;
       `\`-forced empty text) + the *ornamentation vs text-literal*
       vocabulary; C2 annotation convention note (also ux/TODO-AGENT-UX.md).
-      AST-side S6 interpretation → `../core/TODO-PARSER.md`.
+      AST-side S6 interpretation → `../core/TODO-PARSER.md`. Include the
+      **final-terminator disposition** with Joseph's three worked examples
+      (ruled 2026-07-19: interior = text; run-final in-content = ornamental;
+      run-final standalone `Text "\n"` via trailing `\` = explicit).
       **Plus — ⚠⚠ P0, THE HIGHEST SHOW-STOPPING PRIORITY IN THE PROJECT
       (Joseph, 2026-07-19): text must be
       reconstructable from the events alone.** Today prose/freeform Text
