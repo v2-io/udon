@@ -20,13 +20,18 @@ the grammar (`../tools/descent/TODO-DESCENT.md`). Implement toward them, but
 expect a subversion to regenerate them descent-appropriately — don't harden the
 grammar around a guessed spelling the derivation would clean up.
 
-**Fixtures-first gate (Joseph's trade, 2026-07-18):** the alpha.2 EOF bugs below
-are being **documented as fixtures first**. Do **not** touch the grammar to fix
-them until the fixture *finalization* is complete (apply corrections → verify +
-promote the `_wip/` drafts into `v0.9/` → the surviving gate reds become the real
-to-do). Roadmap: README Status + `fixtures/_wip/FINDINGS.md`; rulings:
-`../spec/msc/CHANGELOG.md` alpha.2. The gate being RED on these right now is
-**intended**.
+**EOF generation LANDED (2026-07-18 spike, out of the fixtures-first order by
+Joseph's explicit call).** descent now auto-supplies both EOF halves (delimited
+force-unwind + positional EOF ≡ newline) — design record
+[`../design/eof-descent-classification.md`](../design/eof-descent-classification.md),
+shipped in `../tools/descent/CHANGELOG.md`. It **resolved** the embed
+any-phase-drop and the bare-marker-at-EOF drops (both verified fixed), deleted
+~34 hand `|eof` arms, and normalized `UnterminatedFreeform` → `UnclosedFreeform`.
+Consequence for the alpha.2 **fixture finalization**: the `_wip/` drafts must now
+be verified against the *new* behavior + vocabulary (e.g. `UnclosedFreeform`, and
+the resolved embed/bare-marker reds are green now) — reconcile, don't finalize
+against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; rulings:
+`../spec/msc/CHANGELOG.md` alpha.2.
 
 ## Open
 
@@ -73,21 +78,18 @@ to-do). Roadmap: README Status + `fixtures/_wip/FINDINGS.md`; rulings:
         the *element's* child, which the `/block_directive(:elem_col)`
         route would give directly). *(discuss w/ Joseph)*
 
-- [ ] **`UnclosedEmbedded` dropped when EOF lands outside `embed_content`**
-      (any phase — identity/attrs, not only valueless attr). Pinned RED:
-      `eof_recovery::eof_unclosed_embedded_with_open_attr`. Under the
-      settled framing (`../spec/TODO-EOF-refactor.md`): embed is
-      **delimited** — unexpected EOF whenever the activation is still
-      open, phase irrelevant; anomaly cites entry site (`|{`). Grammar
-      today only arms `|eof` in `embed_content:main`. Implement against
-      that framing (hand-fix interim, or generated delimited unwind).
-
-- [ ] **Bare marker as final byte silently discarded** (data loss: `|` /
-      `@` / `!` / `:` / `!{` at EOF → 0 events; same + `\n` → ordinary
-      events). Pending-guard paths are **positional** default end under
-      `../spec/TODO-EOF-refactor.md` — EOF ≡ newline, **not** unexpected
-      EOF. The 16 no-emit `|eof` arms are the bug sites. Fixture the
-      family once CORE text matches the framing.
+- [ ] **Inline raw / inline directive: content-keeping + correct codes at EOF**
+      (residual after the 2026-07-18 EOF generation). `sameline_raw`
+      (`!{:kind: …}`) at EOF now *warns* (was fully silent) but (a) still
+      **drops its raw body** — a BRACKET whose content is emitted only on close,
+      so the generated force-unwind (Warning + End) doesn't flush the pending
+      MARK — and (b) uses the **wrong code** `UnclosedDirective` (from its
+      `:Directive` return type) instead of `UnclosedInlineRaw`. `sameline_dir_body`
+      (`!{name …}`) likewise warns `UnclosedEmbedded` (via its `embed_content`
+      callee) instead of `UnclosedInlineDirective`. Needs: (1) EOF content-keeping
+      for **accumulating BRACKETs** (emit the pending content before Warning+End),
+      and (2) the right construct-name codes — cleanest via the `|unclosed <Name>`
+      directive (`../tools/descent/TODO-DESCENT.md`).
 
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
@@ -188,15 +190,17 @@ to-do). Roadmap: README Status + `fixtures/_wip/FINDINGS.md`; rulings:
         (per-base validation: `0o9` must fall to BareValue). Design options
         recorded in TODO-DESCENT (row-splice templates the leading
         candidate).
-      - **EOF as a generated concern** — design of record:
-        `../spec/TODO-EOF-refactor.md` (**positional** default end +
-        **delimited** unexpected-EOF unwind from type/function property
-        + entry site; closer language stays in the grammar). Supersedes
-        the aggregate-event sketch in
-        `../design/eof-model-proposal-2026-07.md`. Motivation: ~89 hand
-        `|eof` arms; bugs live where an arm was forgotten. Joseph: *"I've
-        always felt EOF handling in the descent grammar was one of its
-        weakest areas."*
+      - **EOF as a generated concern — LANDED (2026-07-18 spike).** descent
+        now generates both halves (positional default-end / EOF ≡ newline +
+        delimited force-unwind), classifying kind from exit structure — design
+        record `../design/eof-descent-classification.md`, shipped in
+        `../tools/descent/CHANGELOG.md`. ~34 of the ~89 hand `|eof` arms deleted,
+        embed/bare-marker/number-drop bugs fixed, benchmark flat. *Remaining* (see
+        TODO-DESCENT): the `|unclosed <Name>` directive for line-shape/callee
+        closers (freeform, inline forms) + their construct-name codes; EOF
+        content-keeping for accumulating BRACKETs; static-reject; pushdown backend.
+        Joseph's original motivation held: *"I've always felt EOF handling in the
+        descent grammar was one of its weakest areas."*
       - **generator-verified determinism** — descent verifying that every
         state's transitions cover disjoint byte classes, making the grammar
         its own determinism proof; also the real fix for warning-free

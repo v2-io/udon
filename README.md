@@ -227,6 +227,22 @@ unclosed keys; inline `!{…}` codes; empty/whitespace brackets; root-`:x`
 undefined; EOF≡eol edges; …). Warning-code **spellings are provisional** pending
 descent's auto-derivation (see the CHANGELOG guardrail) — do not cement them.
 
+**Update (2026-07-18) — the EOF *generation* landed (out of the fixtures-first
+order, by explicit call).** descent now auto-supplies both EOF halves — delimited
+**force-unwind** (keep content + `Warning(Unclosed<Construct>)` + End, from a
+positional/delimited classification it computes) and positional **EOF ≡ newline**
+(a state reuses its own `\n`/`default` arm) — so the grammar stops hand-writing
+`|eof` arms (~90 → ~56). This **fixed** the embed any-phase-drop, the number-state
+silent-drops, and the bare-marker-at-EOF drops; **normalized** `UnterminatedFreeform`
+→ `UnclosedFreeform`; and the compliance gate improved 2 → 1. Design record:
+[`design/eof-descent-classification.md`](design/eof-descent-classification.md);
+shipped in [`tools/descent/CHANGELOG.md`](tools/descent/CHANGELOG.md); residuals in
+[`core/TODO-CORE-PARSING.md`](core/TODO-CORE-PARSING.md) +
+[`tools/descent/TODO-DESCENT.md`](tools/descent/TODO-DESCENT.md) (the `|unclosed`
+directive; inline-raw/-directive content-keeping + codes; pushdown backend). The
+alpha.2 **fixture finalization** now reconciles against this new behavior +
+vocabulary rather than the pre-spike output.
+
 *Where it stands, and what's next (READ THIS if you're picking up the work):* an
 exhaustive **fixture harvest** — 104 spec-derived draft cases across three agents
 — sits in `core/fixtures/_wip/`, and its guide

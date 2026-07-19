@@ -1,11 +1,18 @@
-# P0 — Static positional/delimited classification of the whole UDON grammar
+# EOF: positional/delimited classification of the UDON grammar (design record)
 
-*Spike deliverable. Every active `core/generator/*.descent.udon` function read
-directly (not reconstructed). Classifies each by the design-of-record rule
-(`spec/TODO-EOF-refactor.md`): **delimited** iff it closes only on a printed
-end-sequence; **positional** iff it has any geometric close (newline / dedent /
-EOF with no anomaly). Semantics (needs-a-value, cardinality) are a third thing,
-out by the litmus.*
+> [!note] **Status (2026-07-18):** this is the design record behind the
+> **generated-EOF work that landed** (descent auto-supplies both EOF halves; see
+> `spec/TODO-EOF-refactor.md` for the design-of-record framing, `../CHANGELOG`
+> and `tools/descent/CHANGELOG.md` for what shipped, and `core/TODO-CORE-PARSING.md`
+> / `tools/descent/TODO-DESCENT.md` for the residuals). Every active
+> `core/generator/*.descent.udon` function was read directly (not reconstructed).
+> The classifier described here is implemented as `descent-rs classify`; the
+> gaps below are annotated where the spike resolved or refined them.
+
+*Classifies each function by the design-of-record rule: **delimited** iff it
+closes only on a printed end-sequence; **positional** iff it has any geometric
+close (newline / dedent / EOF with no anomaly). Semantics (needs-a-value,
+cardinality) are a third thing, out by the litmus.*
 
 ## The generative thesis this grounds
 

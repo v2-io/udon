@@ -123,6 +123,21 @@ edits.
   are valid items — the "Inline Lists" enumeration (numbers/strings/envelopes/
   nested lists) is illustrative, not exhaustive.
 
+### Landed — EOF generation (2026-07-18 spike; out of fixtures-first order, per Joseph)
+descent now **auto-supplies** the EOF handling the rulings above describe:
+delimited constructs **force-unwind** (keep content + `Warning(Unclosed<Construct>)`
++ End) and positional constructs finish on **EOF ≡ newline** — both from a
+positional/delimited classification descent computes (`descent-rs classify`).
+This begins realizing the provisional-names guardrail's promise (auto-derived
+`Unclosed<Construct>` instead of hand-picked): **`UnterminatedFreeform` →
+`UnclosedFreeform`** normalized (registry updated; fixtures upgraded after
+verifying the change was code-name-only). Fixed live: embed any-phase-drop,
+number-state and bare-marker EOF drops. ~34 hand `|eof` arms deleted; gate 2→1;
+benchmark flat. Still hand-picked pending the `|unclosed <Name>` directive: the
+inline `!{…}`/`!{:kind:…}` codes (currently mis-derived) and the callee-scanned
+constructs (`../../core/TODO-CORE-PARSING.md`, `../../tools/descent/TODO-DESCENT.md`).
+Design record: `../../design/eof-descent-classification.md`.
+
 ## [0.9.0-alpha.1] — 2026-07-15
 
 First alpha of the **attribute-model reconception** — the headline change
