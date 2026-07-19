@@ -30,17 +30,19 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       `\`-forced empty text) + the *ornamentation vs text-literal*
       vocabulary; C2 annotation convention note (also ux/TODO-AGENT-UX.md).
       AST-side S6 interpretation → `../core/TODO-PARSER.md`.
-      **Plus (Joseph's catch, 2026-07-19): specify the TEXT RECONSTRUCTION
-      rule** — CORE says "consumers concatenate" but never states the joiner.
-      Actual rule: span-based — content is borrowed from the source, so the
-      host inspects the inter-span gap (contains `\n` → line boundary, join
-      with newline; escape-consumed bytes → same-line split, concatenate).
-      State it, AND name the assumption it rides on: reconstruction requires
-      source access; a source-discarding streaming consumer cannot
-      distinguish adjacent Texts (same-line split vs line boundary) from
-      content alone. Wire-self-sufficiency options (line-boundary marker
-      event, or an adjacency invariant needing the escape path to change)
-      → weigh at the streaming/AST layer, `../core/TODO-PARSER.md`.
+      **Plus — WIRE DEFECT, fix PRE-TAG (Joseph, 2026-07-19): text must be
+      reconstructable from the events alone.** Today prose/freeform Text
+      events exclude their line terminators — newline bytes are consumed
+      with NO event carrying them (a quiet keep-everything violation), so
+      joining requires source-gap inspection ("zero sense whatsoever").
+      Direction: prose Text events INCLUDE their trailing newline (slice
+      contiguous through the terminator — zero-copy intact); reconstruction
+      becomes pure concatenation; BlankLine remains the S6 whitespace-line
+      signal; last-line/sameline tails carry whatever terminator exists
+      (composes with EOF ≡ newline); freeform sweeps in the same pass.
+      Blast radius: text-family grammar fns (consume-then-TERM), most prose
+      fixture expectations, the harness fold, CORE Text-granularity notes.
+      *(exact shape discuss w/ Joseph before the sweep)*
 
 - [ ] **CORE text for the `*{`-reduce-to-text ruling** (ruled 2026-07-19 —
       CHANGELOG alpha.2; the decisions are closed, this is the spec-text
