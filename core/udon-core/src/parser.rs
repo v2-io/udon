@@ -664,7 +664,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Dispatch => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b"", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'|') => {
@@ -713,7 +715,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckAttr => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b":", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -744,7 +748,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckBang => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b"!", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -772,7 +778,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckAt => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b"@", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
@@ -789,7 +797,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckFreeform => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b"`", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -806,7 +816,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckFreeform2 => {
                     if self.eof() {
-                        return;
+                    self.parse_prose_backticks(col, -1, on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -824,7 +836,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckPipe => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, -1, b"|", on_event);
+                    state = State::Eol;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
@@ -857,7 +871,7 @@ impl<'a> Parser<'a> {
         let mut result: i32 = 0;
         loop {
             if self.eof() {
-                return 0;
+                    return result;
             }
             match self.peek() {
                 Some(b' ') => {
@@ -959,7 +973,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Identity => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b) if b == close => {
@@ -996,7 +1010,9 @@ impl<'a> Parser<'a> {
                 }
                 State::QuotedName => {
                     if self.eof() {
-                        return;
+                    self.parse_quoted_name(on_event);
+                    state = State::PostName;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'\'') => {
@@ -1013,7 +1029,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostName => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b) if b == close => {
@@ -1040,7 +1056,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostSuffix => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b) if b == close => {
@@ -1062,7 +1078,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Bracket => {
                     if self.eof() {
-                        return;
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(b"$key"), span: self.span() });
+                    self.parse_value(1, b']', on_event);
+                    state = State::BracketClose;
+                    continue;
                     }
                     match self.peek() {
                         Some(b']') => {
@@ -1080,7 +1099,7 @@ impl<'a> Parser<'a> {
                 }
                 State::BracketClose => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b']') => {
@@ -1095,7 +1114,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostBracket => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b) if b == close => {
@@ -1117,7 +1136,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Class => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'.') => {
@@ -1144,7 +1163,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostClass => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b) if b == close => {
@@ -1304,8 +1323,9 @@ impl<'a> Parser<'a> {
                 }
                 State::SamelineFf1 => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b"`", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -1322,8 +1342,9 @@ impl<'a> Parser<'a> {
                 }
                 State::SamelineFf2 => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b"``", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -1354,8 +1375,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelineAttr => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b":", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -1412,8 +1434,9 @@ impl<'a> Parser<'a> {
                 }
                 State::SamelineBang => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_block_directive(elem_col, on_event);
+                    state = State::PostBlockChild;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -1431,8 +1454,9 @@ impl<'a> Parser<'a> {
                 }
                 State::SamelineNode2 => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b"|", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -1455,8 +1479,10 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelinePipe => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    content_seen = 1;
+                    self.parse_sameline_text(elem_col, b"|", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -1512,8 +1538,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelineSemi => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_line_comment_content(on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -1531,8 +1558,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelineBang => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b"!", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -1550,8 +1578,9 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSamelineAt => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_sameline_text(elem_col, b"@", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
@@ -1788,8 +1817,8 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildDispatch => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    state = State::ProseBase;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'|') => {
@@ -1880,8 +1909,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckBang => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, elem_col, b"!", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -1909,8 +1939,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckAt => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, elem_col, b"@", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'[' || b == b'.' => {
@@ -1927,8 +1958,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckAttr => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, elem_col, b":", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         _ if content_seen == 1 => {
@@ -2007,8 +2039,9 @@ impl<'a> Parser<'a> {
                 }
                 State::BattrBang => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_block_directive(attr_col, on_event);
+                    state = State::AttrLineDone;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -2026,8 +2059,9 @@ impl<'a> Parser<'a> {
                 }
                 State::BattrNode => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_prose(self.col() - 2, elem_col, b"|", on_event);
+                    state = State::AttrLineDone;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -2105,8 +2139,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckFreeform => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, elem_col, b"`", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -2123,8 +2158,10 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckFreeform2 => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    content_seen = 1;
+                    self.parse_prose_backticks(col, elem_col, on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -2144,8 +2181,10 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildPipe => {
                     if self.eof() {
-                        on_event(Event::ElementEnd { span: self.span() });
-                        return;
+                    content_seen = 1;
+                    self.parse_prose(col, elem_col, b"|", on_event);
+                    state = State::AfterContent;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -2215,8 +2254,9 @@ impl<'a> Parser<'a> {
         self.mark();
         loop {
             if self.eof() {
-                on_event(Event::Name { content: self.term(), span: self.span_from_mark() });
-                return;
+                    self.set_term(0);
+                    on_event(Event::Name { content: self.term(), span: self.span_from_mark() });
+                    return;
             }
             match self.peek() {
                 Some(b) if Self::is_xlbl_cont(b) || b == b'/' => {
@@ -2255,8 +2295,9 @@ impl<'a> Parser<'a> {
         self.mark();
         loop {
             if self.eof() {
-                on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                return;
+                    self.set_term(0);
+                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    return;
             }
             match self.peek() {
                 Some(b) if Self::is_xlbl_cont(b) || b == b'/' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
@@ -2321,7 +2362,7 @@ impl<'a> Parser<'a> {
     {
         loop {
             if self.eof() {
-                return;
+                    return;
             }
             match self.peek() {
                 Some(b'?') => {
@@ -2524,7 +2565,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vff1 => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"`");
+                    vstate = self.parse_value(0, b'\0', on_event);
+                    state = State::PostValueRoute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -2542,7 +2586,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vff2 => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"``");
+                    vstate = self.parse_value(0, b'\0', on_event);
+                    state = State::PostValueRoute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -2560,7 +2607,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vbang => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"!");
+                    vstate = self.parse_value(0, b'\0', on_event);
+                    state = State::PostValueRoute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b':' => {
@@ -2582,7 +2632,11 @@ impl<'a> Parser<'a> {
                 }
                 State::Vinterp => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"!");
+                    self.prepend_bytes(b"{");
+                    vstate = self.parse_value(0, b'\0', on_event);
+                    state = State::PostValueRoute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -2631,7 +2685,7 @@ impl<'a> Parser<'a> {
                 }
                 State::KeyNext => {
                     if self.eof() {
-                        return 0;
+                    return result;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -2803,7 +2857,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Open => {
                     if self.eof() {
-                        return;
+                    mode = 3;
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'|') => {
@@ -2854,7 +2911,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Body => {
                     if self.eof() {
-                        return;
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b';') => {
@@ -2894,7 +2954,11 @@ impl<'a> Parser<'a> {
                 }
                 State::Done => {
                     if self.eof() {
-                        return;
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.parse_prose(col, parent_col, b"", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b';') => {
@@ -2935,7 +2999,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Node => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, parent_col, b"|", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -2958,7 +3024,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Bang => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, parent_col, b"!", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -2986,7 +3054,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Fence => {
                     if self.eof() {
-                        return;
+                    self.parse_prose(col, parent_col, b"`", on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -3003,7 +3073,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Fence2 => {
                     if self.eof() {
-                        return;
+                    self.parse_prose_backticks(col, parent_col, on_event);
+                    state = State::LineEnd;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -3164,7 +3236,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vff1 => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"`");
+                    vv = self.parse_value(0, b'\0', on_event);
+                    state = State::Vroute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -3182,7 +3257,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vff2 => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"``");
+                    vv = self.parse_value(0, b'\0', on_event);
+                    state = State::Vroute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
@@ -3200,7 +3278,10 @@ impl<'a> Parser<'a> {
                 }
                 State::Vbang => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"!");
+                    vv = self.parse_value(0, b'\0', on_event);
+                    state = State::Vroute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b':' => {
@@ -3222,7 +3303,11 @@ impl<'a> Parser<'a> {
                 }
                 State::Vinterp => {
                     if self.eof() {
-                        return 0;
+                    self.prepend_bytes(b"!");
+                    self.prepend_bytes(b"{");
+                    vv = self.parse_value(0, b'\0', on_event);
+                    state = State::Vroute;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3458,8 +3543,9 @@ impl<'a> Parser<'a> {
         self.mark();
         loop {
             if self.eof() {
-                on_event(Event::Attr { content: self.term(), span: self.span_from_mark() });
-                return;
+                    self.set_term(0);
+                    on_event(Event::Attr { content: self.term(), span: self.span_from_mark() });
+                    return;
             }
             match self.peek() {
                 Some(b) if Self::is_xlbl_cont(b) || b == b'/' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
@@ -3717,7 +3803,9 @@ impl<'a> Parser<'a> {
         let mut vres: i32 = 0;
         loop {
             if self.eof() {
-                return 0;
+                    self.mark();
+                    vres = self.parse_typed_value(space_term, bracket, on_event);
+                    return vres;
             }
             match self.peek() {
                 Some(b'"') => {
@@ -3966,7 +4054,8 @@ impl<'a> Parser<'a> {
                 }
                 State::MaybeInterp => {
                     if self.eof() {
-                        return 0;
+                    state = State::String;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3982,7 +4071,8 @@ impl<'a> Parser<'a> {
                 }
                 State::MaybeInterp2 => {
                     if self.eof() {
-                        return 0;
+                    state = State::String;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -3998,7 +4088,8 @@ impl<'a> Parser<'a> {
                 }
                 State::MaybeRef => {
                     if self.eof() {
-                        return 0;
+                    state = State::String;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'[') => {
@@ -4158,7 +4249,8 @@ impl<'a> Parser<'a> {
                 }
                 State::KwbColon => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -4174,7 +4266,8 @@ impl<'a> Parser<'a> {
                 }
                 State::KwbPipe => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -4194,7 +4287,8 @@ impl<'a> Parser<'a> {
                 }
                 State::KwbBang => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -4214,7 +4308,8 @@ impl<'a> Parser<'a> {
                 }
                 State::KwbAt => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -4234,7 +4329,8 @@ impl<'a> Parser<'a> {
                 }
                 State::NumSign => {
                     if self.eof() {
-                        return 0;
+                    state = State::Accumulate;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'0') => {
@@ -4597,7 +4693,8 @@ impl<'a> Parser<'a> {
                 }
                 State::NumComplexSign => {
                     if self.eof() {
-                        return 0;
+                    state = State::String;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'0' | b'1' | b'2' | b'3' | b'4' | b'5' | b'6' | b'7' | b'8' | b'9') => {
@@ -4841,7 +4938,8 @@ impl<'a> Parser<'a> {
                 }
                 State::StrbColon => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -4857,7 +4955,8 @@ impl<'a> Parser<'a> {
                 }
                 State::StrbPipe => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -4877,7 +4976,8 @@ impl<'a> Parser<'a> {
                 }
                 State::StrbBang => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -4897,7 +4997,8 @@ impl<'a> Parser<'a> {
                 }
                 State::StrbAt => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         _ if bracket == b'}' => {
@@ -5102,7 +5203,8 @@ impl<'a> Parser<'a> {
                 }
                 State::BlobSemiGlued => {
                     if self.eof() {
-                        return 0;
+                    state = State::Blob;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5136,7 +5238,7 @@ impl<'a> Parser<'a> {
             match state {
                 State::Main => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'|') => {
@@ -5161,7 +5263,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Pipe => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5178,7 +5280,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Bang => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5195,7 +5297,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Semi => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5861,8 +5963,9 @@ impl<'a> Parser<'a> {
             match state {
                 State::Check => {
                     if self.eof() {
-                        on_event(Event::CommentEnd { span: self.span() });
-                        return;
+                    self.mark();
+                    state = State::FirstLine;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -5924,8 +6027,8 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildrenWs => {
                     if self.eof() {
-                        on_event(Event::CommentEnd { span: self.span() });
-                        return;
+                    state = State::CheckContinuation;
+                    continue;
                     }
                     match self.peek() {
                         _ if content_base >= 0 && col >= content_base => {
@@ -5971,8 +6074,8 @@ impl<'a> Parser<'a> {
                 }
                 State::ContContent => {
                     if self.eof() {
-                        on_event(Event::CommentEnd { span: self.span() });
-                        return;
+                    state = State::ContLine;
+                    continue;
                     }
                     match self.peek() {
                         Some(b' ') => {
@@ -6092,9 +6195,9 @@ impl<'a> Parser<'a> {
                 }
                 State::PostIdentity => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
-                        on_event(Event::EmbeddedEnd { span: self.span() });
-                        return;
+                    self.parse_embed_content(on_event);
+                    on_event(Event::EmbeddedEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'}') => {
@@ -6178,9 +6281,10 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckAttr => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedEmbedded"), span: self.span() });
-                        on_event(Event::EmbeddedEnd { span: self.span() });
-                        return;
+                    self.prepend_bytes(b":");
+                    self.parse_embed_content(on_event);
+                    on_event(Event::EmbeddedEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -6261,9 +6365,11 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckPipe => {
                     if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
-                        return;
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b"|");
+                    state = State::Main;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -6285,9 +6391,11 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckSemi => {
                     if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
-                        return;
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b";");
+                    state = State::Main;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -6309,9 +6417,11 @@ impl<'a> Parser<'a> {
                 }
                 State::CheckBang => {
                     if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
-                        return;
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    self.mark();
+                    self.prepend_bytes(b"!");
+                    state = State::Main;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -6333,9 +6443,9 @@ impl<'a> Parser<'a> {
                 }
                 State::MlWs => {
                     if self.eof() {
-                        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedText"), span: self.span() });
-                        return;
+                    self.mark();
+                    state = State::Main;
+                    continue;
                     }
                     match self.peek() {
                         Some(b' ' | b'\t') => {
@@ -6370,8 +6480,8 @@ impl<'a> Parser<'a> {
             match state {
                 State::Dispatch => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -6392,8 +6502,8 @@ impl<'a> Parser<'a> {
                 }
                 State::RawKind => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) => {
@@ -6410,8 +6520,8 @@ impl<'a> Parser<'a> {
                 }
                 State::RawColon => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -6638,8 +6748,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildDispatch => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, line_col, b"", on_event);
+                    state = State::Children;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'|') => {
@@ -6678,8 +6789,9 @@ impl<'a> Parser<'a> {
                 }
                 State::DchildCheckBang => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, line_col, b"!", on_event);
+                    state = State::Children;
+                    continue;
                     }
                     match self.peek() {
                         Some(b':') => {
@@ -6707,8 +6819,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildCheckAttr => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, line_col, b":", on_event);
+                    state = State::Children;
+                    continue;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -6739,8 +6852,9 @@ impl<'a> Parser<'a> {
                 }
                 State::ChildPipe => {
                     if self.eof() {
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_prose(col, line_col, b"|", on_event);
+                    state = State::Children;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'{') => {
@@ -6783,7 +6897,8 @@ impl<'a> Parser<'a> {
     {
         loop {
             if self.eof() {
-                return;
+                    self.parse_sameline_dir_body(on_event);
+                    return;
             }
             match self.peek() {
                 Some(b'{') => {
@@ -6836,9 +6951,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Closing => {
                     if self.eof() {
-                        on_event(Event::Interpolation { content: self.term(), span: self.span_from_mark() });
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInterpolation"), span: self.span() });
-                        return;
+                    self.advance();
+                    state = State::Main;
+                    continue;
                     }
                     match self.peek() {
                         Some(b'}') => {
@@ -6891,9 +7006,8 @@ impl<'a> Parser<'a> {
                 }
                 State::SkipSep => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    state = State::Content;
+                    continue;
                     }
                     match self.peek() {
                         Some(b' ') => {
@@ -6969,9 +7083,9 @@ impl<'a> Parser<'a> {
             match state {
                 State::Name => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_skip_brace_balanced(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_start(b) => {
@@ -6988,9 +7102,9 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterName => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_skip_brace_balanced(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'}') => {
@@ -7012,9 +7126,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Args => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedDirective"), span: self.span() });
-                        on_event(Event::DirectiveEnd { span: self.span() });
-                        return;
+                    self.parse_embed_content(on_event);
+                    on_event(Event::DirectiveEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'}') => {
@@ -7199,8 +7313,9 @@ impl<'a> Parser<'a> {
             match state {
                 State::Main => {
                     if self.eof() {
-                        on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b'[') => {
@@ -7222,8 +7337,9 @@ impl<'a> Parser<'a> {
                 }
                 State::PostKey => {
                     if self.eof() {
-                        on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
-                        return;
+                    self.set_term(0);
+                    on_event(Event::Reference { content: self.term(), span: self.span_from_mark() });
+                    return;
                     }
                     match self.peek() {
                         Some(b) if Self::is_xlbl_cont(b) || b == b'.' => {
