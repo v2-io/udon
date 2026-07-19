@@ -21,7 +21,7 @@ Key properties:
 **Parser behavior notes:**
 
 - **Comments, blank lines, warnings.** Comments, blank lines (a `BlankLine` event), and recoverable anomalies (a `Warning` event) are all emitted as events by the main parser, alongside the structural ones. What consumers do with them (AST inclusion, filtering, etc.) is up to the host.
-- **Text granularity.** A `Text` event carries **no** guarantee of being a complete text run. Escapes and (later) chunk boundaries may split one line's prose into several `Text` events; consumers concatenate. Compliance fixtures express text maximally collapsed per line; the harness folds same-line adjacent Texts (span gap contains no newline) so expectations are rhythm-independent.
+- **Text granularity & reconstruction.** A `Text` event carries **no** guarantee of being a complete text run — text may arrive as any number of fragments (escapes, inline forms, chunk/packet boundaries may all split it). The guarantee is the converse: **the document's text stream is reconstructable by pure in-order concatenation of the text-bearing events** — `Text` / `RawContent` content as-is, with `BlankLine` contributing `"\n"` — no spans, no source access, no gap inspection. To make that hold, **line terminators within text are text**: a text-bearing line's terminator rides its last text event of the line, or a trailing terminator-only `Text "\n"` when an annotation or inline form owns the line's end. Bytes that are *structure* — indentation (dedent-stripped or embed-skipped), markers, consumed escapes, and the terminators of pure-structure lines — are **geometry**, never text (recoverable via spans, a serializer-level concern). Comment content never carries its enclosing line's terminator, so stripping comments preserves line boundaries.
 - **Warnings are codes, not ratified strings.** A `Warning` event's payload is a **warning code** from the table below (PascalCase, matching `ParseErrorCode` style). The human-readable text a host surfaces, and *whether* a given warning is emitted in a given circumstance, are parser/host decisions (menu-vs-knob: the core fixes the code vocabulary; hosts pick voice and verbosity). Event-parser fixtures match codes.
 
 ### Warning codes
@@ -1294,7 +1294,7 @@ The first line was stripped of 6 spaces. When content_base dropped to 3, subsequ
 
 Prose dedentation happens per-line as content is parsed:
 
-- Each line is stripped of `content_base_column` spaces and emitted immediately
+- Each line is stripped of `content_base_column` spaces and emitted immediately, its line terminator included in the `Text` content (the stripped indentation is geometry; the terminator is text — see the reconstruction contract)
 - If a line has fewer leading spaces than content_base, warn and update content_base
 - Earlier lines may have been "over-stripped" compared to later lines
 - This is intentional: the warning signals the inconsistency to the user
@@ -1311,7 +1311,7 @@ Triple-backtick (freeform) blocks preserve exact whitespace - no automatic deden
   ```
 ````
 
-The content inside the backticks is preserved exactly as written.
+The content inside the backticks is preserved exactly as written — on the wire, every body line's `Text` includes its terminator, and a blank body line is `Text "\n"` (freeform is the *exact* mode: no `BlankLine` events, no interpretation layer), so concatenating a freeform's `Text` events reproduces the body byte-for-byte.
 
 ### Implementation
 
@@ -1409,7 +1409,7 @@ Embedded elements can span multiple lines--indentation inside is ignored, and th
    multiple lines} and continues.
 ```
 
-**Multiline content delivery.** Content inside a multiline `|{…}` is emitted as **per-line** `Text` events (continuation indentation skipped), not as one joined string. Consumers that want a single string concatenate.
+**Multiline content delivery.** Content inside a multiline `|{…}` is emitted as **per-line** `Text` events, each carrying its line terminator (continuation indentation is skipped — it is geometry), not as one joined string. Consumers that want a single string concatenate — which, per the reconstruction contract, is exact.
 
 **Prose between embedded siblings.** Intervening prose -- including a single space -- between two `|{…}` forms is real content and is emitted as `Text` (round-trip fidelity). `|nav |{a A} |{b B}` yields `Text " "` between the two embedded elements.
 
