@@ -216,14 +216,15 @@
     - DirectiveEnd
     - ElementEnd
 
-# ⚠ Flag rule 2 re-owns non-keyword material to the continuing scan, and a
+# Flag rule 2 re-owns non-keyword material to the continuing scan, and a
 # guarded '!' is in the boundary marker set — so the raw block is the
 # ELEMENT's child while the flag settles true (the flag analogue of
 # ':a? |beta'; contrast raw_block_node_value_sameline where a PLAIN attr is
 # the raw node). Body rules per the sameline-opened form: raw base = first
-# content line's column, end at the line's structural column.
+# content line's column, end at the line's structural column. (Green since the
+# element's sameline '!' guard was completed to match the block-line contexts.)
 - id: flag_then_raw_block_is_child
-  desc: "⚠ after a flag key, a sameline raw block is the element's child, not the flag's value"
+  desc: "after a flag key, a sameline raw block is the element's child, not the flag's value"
   udon: "|el :go? !:sh:\n  echo hi\n"
   events:
     - ElementStart

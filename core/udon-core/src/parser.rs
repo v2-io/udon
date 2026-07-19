@@ -1563,6 +1563,18 @@ impl<'a> Parser<'a> {
                     continue;
                     }
                     match self.peek() {
+                        Some(b':') => {
+                    content_seen = 1;
+                    self.parse_block_directive(elem_col, on_event);
+                    state = State::PostBlockChild;
+                    continue;
+                        }
+                        Some(b) if Self::is_xlbl_start(b) => {
+                    content_seen = 1;
+                    self.parse_block_directive(elem_col, on_event);
+                    state = State::PostBlockChild;
+                    continue;
+                        }
                         Some(b'{') => {
                     self.advance();
                     self.parse_sameline_directive(on_event);

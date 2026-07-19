@@ -174,7 +174,16 @@
     |c['{']                   | -> | /brace_comment              |>> :post_sameline_inline
     |default                  | /line_comment_content            |>> :after_content
 
+  ; `!` in the sameline scan (CORE "Marker Recognition": `!` marks when
+  ; followed by an identifier or `:`) — the same guard the block-line contexts
+  ; and `:sameline_bang` (value-boundary) already apply: a name / `:` opens a
+  ; block directive or raw block rooted at this element line (a child, so
+  ; content began); `{` opens the inline form; anything else restores the `!`
+  ; as prose. (Was `{`-only — the guard was missing here, so `|el :go? !:sh:`
+  ; wrongly kept `!:sh:` as prose instead of a child raw block.)
   |state[:check_sameline_bang]
+    |c[':']                   | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
+    |c[XLBL_START]            | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
     |c['{']                   | -> | /sameline_directive           |>> :post_sameline_inline
     |default                  | /sameline_text(:elem_col, '!')   |>> :after_content
 
