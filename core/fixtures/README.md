@@ -51,6 +51,17 @@ torture) and densifying edge/combination coverage.
 
 ### Comment conventions in the active group
 
+- **The fold is content-derived (2026-07-19, post text-wire recast).** Since
+  line terminators are text, the rhythm-independence fold merges adjacent
+  Text events exactly when the first does NOT end in `\n` — applied
+  symmetrically to actual AND expected. No spans, no source consultation
+  (the old span-gap fold was the compensator that masked the
+  newline-dropping wire — see `_wip/HARNESS-AUDIT.md`). D3 tolerance: the
+  variation machinery re-terminates lines, so a variation's final
+  text-bearing event also matches expected+`"\n"` (suppressing the captured
+  newline that is really an EOF stand-in). These are HARNESS conventions —
+  the spec carries none of this (only split-freedom + the reconstruction
+  contract).
 - **No red/green status comments.** The gate is the sole authority on whether
   a case passes; per-case status annotations proved to be a drift vector and
   were removed (2026-07-19). Comments explain *why* — the CORE derivation, a
