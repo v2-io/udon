@@ -131,9 +131,10 @@
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Delimiter-awaiting constructs at EOF: captured content + Unclosed* error;
-# End events still flush (CORE EOF table). Errors are events in the stream,
-# never exceptions (CORE "Anomaly posture").
+# Delimiter-awaiting constructs at EOF: captured content + an Unclosed*
+# WARNING (two-level severity — content is kept), then End flushes (CORE
+# "End of input"). Anomalies are events in the stream, never exceptions
+# (CORE "Anomaly posture").
 # ---------------------------------------------------------------------------
 
 - id: eof_unclosed_embedded
@@ -151,11 +152,11 @@
     - EmbeddedEnd
     - ElementEnd
 
-# ⚠ CORE fixes per-construct behavior (content + Error; End flushes) but is
-# silent on MULTIPLICITY when several embeds are open at once. Encoded here
-# as one UnclosedEmbedded per unclosed |{, innermost-first — each construct
-# was individually awaiting its delimiter, and the errors sit where each
-# End flushes (uniform with the single case).
+# CORE "End of input" (alpha.2): nested delimited constructs yield one
+# Unclosed* each, innermost-first — so one UnclosedEmbedded per unclosed |{,
+# where each EmbeddedEnd flushes. Each frame answers against its own entry
+# site, so the order falls out of the stack unwind (uniform with the single
+# case).
 - id: eof_unclosed_embedded_nested
   desc: nested unclosed embeds each error, flushing innermost-first
   udon: "|p |{a x |{b y"
@@ -203,11 +204,10 @@
     - CommentEnd
     - ElementEnd
 
-# ⚠ Same multiplicity reading as eof_unclosed_embedded_nested: the open attr
-# resolves first (innermost expectation — MissingAttributeValue + Nil, per
-# "Attribute Keys and Flags"), then the embed's own delimiter anomaly and
-# EmbeddedEnd flush. Two individually-pinned EOF rules composed; CORE does
-# not order them explicitly.
+# Innermost-first (CORE "End of input"): the open plain attr resolves first
+# (MissingAttributeValue + synthesized Nil, per "Attribute Keys and Flags" —
+# a semantic-at-close check), then the embed's UnclosedEmbedded warning and
+# EmbeddedEnd flush. Two composed EOF rules; the order is the stack unwind.
 - id: eof_unclosed_embedded_with_open_attr
   desc: "⚠ EOF inside |{...} with a valueless plain attr — error+Nil, then UnclosedEmbedded"
   udon: "|p |{a :href"
@@ -224,10 +224,9 @@
     - EmbeddedEnd
     - ElementEnd
 
-# ⚠ CORE's EOF table says "ArrayEnd flushes" after UnclosedArray, so ArrayEnd
-# is encoded here; note arrays.yaml's array_unclosed_is_error (newline-ended)
-# omits ArrayEnd — if the two shapes should agree, that is a spec/fixture
-# reconciliation to raise, but at EOF the table's wording is explicit.
+# CORE "End of input": items so far + UnclosedArray, then ArrayEnd flushes.
+# arrays.yaml's array_unclosed_warns (newline-ended) has the same shape
+# (Warning + ArrayEnd) — for a line-bound array a newline is EOF-equivalent.
 - id: eof_unclosed_array
   desc: EOF inside [...] — items so far + UnclosedArray; ArrayEnd flushes
   udon: "|el :xs [1 2"
@@ -243,11 +242,11 @@
     - ArrayEnd
     - ElementEnd
 
-# ⚠ Nested delimiters at EOF, same innermost-first reading as
-# eof_unclosed_embedded_nested: each open bracket was individually awaiting
-# its `]`, so each errs where its ArrayEnd flushes.
+# Nested delimited at EOF (CORE "End of input"): one Unclosed* each,
+# innermost-first — each open bracket awaited its `]`, so each warns where
+# its ArrayEnd flushes.
 - id: eof_unclosed_array_nested
-  desc: "⚠ nested unclosed arrays each error, innermost-first"
+  desc: "nested unclosed arrays each warn, innermost-first"
   udon: "|el :xs [1 [2"
   root_only: true
   events:
@@ -264,12 +263,12 @@
     - ArrayEnd
     - ElementEnd
 
-# ⚠ Cascade: quoted-string row (StringValue + UnclosedStringValue) inside the
-# array row (items so far + UnclosedArray; ArrayEnd flushes) — innermost
-# first. Item-then-error order matches error_cases.yaml's unclosed-string
-# shape.
+# Cascade (CORE "End of input", innermost-first): the quoted string
+# (StringValue + UnclosedStringValue) inside the array (items + UnclosedArray;
+# ArrayEnd flushes). Content-then-warning matches the string shape in
+# error_cases.yaml.
 - id: eof_unclosed_string_in_unclosed_array
-  desc: "⚠ EOF inside a quoted item inside [...] — both anomalies, innermost-first"
+  desc: "EOF inside a quoted item inside [...] — both warnings, innermost-first"
   udon: "|el :xs [\"a"
   root_only: true
   events:
