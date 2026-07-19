@@ -13,7 +13,14 @@ structure, and dogfood milestones. Not a valve — items that need Joseph carry
       - **Unified compliance gate** — event-level fixtures by default (the
         easiest place to reason about/fix the descent grammar); AST-level
         only where a core-syntax property is genuinely easier to assert
-        there (none exist yet).
+        there (none exist yet). One class already needs a non-event surface:
+        the **document-level incomplete-input result** (alpha.2 two-level
+        severity) is a *result*, not a wire event, so no event fixture can
+        assert it — interior-newline closes are wire-identical to their
+        at-EOF twins yet differ in the result. Needs either a fixture field
+        (`result: incomplete`) or an AST/driver-layer test (the result API
+        itself is `core/TODO-PARSER.md`'s error-reporting item). *(drained
+        from the EOF fixture flags, 2026-07-19)*
       - **CI drift-check** — the in-repo test covers CORE-VERSION /
         CORE_COMPLIANCE / ACTIVE_GROUP; the CI-level assertion that the
         `CORE.md` header and `CHANGELOG.md` top entry match

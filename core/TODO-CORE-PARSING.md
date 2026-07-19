@@ -4,14 +4,14 @@ The event-level parser and the descent grammar (`generator/*.descent.udon`). Hol
 residuals and decompositions — spec *compliance* is proven by the versioned
 fixture groups (see root `TODO-META.md`), not tracked here.
 
-**EOF / positional–delimited framing (mechanism LANDED 2026-07-18):** design of
-record is [`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md) (its
-"Grammar / descent direction" section — formerly cited as "Addendum A": infer
-kind from exit structure). The generation is **implemented in descent** (both
-backends) — see [`../design/eof-descent-classification.md`](../design/eof-descent-classification.md).
-Unexpected EOF only for still-open **delimited** activations; **positional**
-constructs finish on EOF ≡ newline. Remaining pure-EOF-bug items below implement
-against that framing, not the superseded aggregate-event sketch in
+**EOF / positional–delimited framing (LANDED; normative in CORE):** unexpected
+EOF only for still-open **delimited** activations; **positional** constructs
+finish on EOF ≡ newline. The generation is **implemented in descent** (both
+backends). The design records are archived (2026-07-19):
+[`../_archive/TODO-EOF-refactor.md`](../_archive/TODO-EOF-refactor.md) (the why)
+and [`../_archive/eof-descent-classification.md`](../_archive/eof-descent-classification.md)
+(the implemented shape). Remaining pure-EOF-bug items below implement against
+CORE's "End of input", not the superseded aggregate-event sketch in
 `../_archive/eof-model-proposal-2026-07.md`.
 
 **Warning-code names are provisional (2026-07-18):** the alpha.2 `Unclosed*` /
@@ -22,17 +22,12 @@ expect a subversion to regenerate them descent-appropriately — don't harden th
 grammar around a guessed spelling the derivation would clean up.
 
 **EOF generation LANDED (2026-07-18 spike, out of the fixtures-first order by
-Joseph's explicit call).** descent now auto-supplies both EOF halves (delimited
-force-unwind + positional EOF ≡ newline) — design record
-[`../design/eof-descent-classification.md`](../design/eof-descent-classification.md),
-shipped in `../tools/descent/CHANGELOG.md`. It **resolved** the embed
-any-phase-drop and the bare-marker-at-EOF drops (both verified fixed), deleted
-~34 hand `|eof` arms, and normalized `UnterminatedFreeform` → `UnclosedFreeform`.
-Consequence for the alpha.2 **fixture finalization**: the `_wip/` drafts must now
-be verified against the *new* behavior + vocabulary (e.g. `UnclosedFreeform`, and
-the resolved embed/bare-marker reds are green now) — reconcile, don't finalize
-against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; rulings:
-`../spec/msc/CHANGELOG.md` alpha.2.
+Joseph's explicit call), and the fixture densification is DONE (2026-07-19).**
+descent auto-supplies both EOF halves (delimited force-unwind + positional
+EOF ≡ newline) — shipped in `../tools/descent/CHANGELOG.md`; design record
+archived at `../_archive/eof-descent-classification.md`. The 14 genuine
+grammar reds live in `fixtures/_wip/` (banner: `fixtures/_wip/FINDINGS.md`);
+rulings: `../spec/msc/CHANGELOG.md` alpha.2.
 
 ## Open
 
@@ -201,14 +196,17 @@ against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; ruling
         recorded in TODO-DESCENT (row-splice templates the leading
         candidate).
       - **EOF as a generated concern — LANDED (2026-07-18 spike).** descent
-        now generates both halves (positional default-end / EOF ≡ newline +
-        delimited force-unwind), classifying kind from exit structure — design
-        record `../design/eof-descent-classification.md`, shipped in
-        `../tools/descent/CHANGELOG.md`. ~34 of the ~89 hand `|eof` arms deleted,
-        embed/bare-marker/number-drop bugs fixed, benchmark flat. *Remaining* (see
-        TODO-DESCENT): the `|unclosed <Name>` directive for line-shape/callee
-        closers (freeform, inline forms) + their construct-name codes; EOF
-        content-keeping for accumulating BRACKETs; static-reject; pushdown backend.
+        generates both halves (positional default-end / EOF ≡ newline +
+        delimited force-unwind), classifying kind from exit structure — shipped
+        in `../tools/descent/CHANGELOG.md`; design record archived at
+        `../_archive/eof-descent-classification.md`. ~34 hand `|eof` arms
+        deleted; embed/bare-marker/number-drop bugs fixed; the `|unclosed
+        <Name>` directive, caller-owns-name codes, inline-raw content-keeping,
+        and pushdown-backend parity all landed too. *Remaining* (see
+        TODO-DESCENT): entry-site recording (Unclosed* warnings still cite the
+        EOF position, not the opener), the static reject of mixed machines,
+        gap-4 partial-closer restoration, and the durable caller-owns-name-at-
+        frame answer for shared scanners (the identity-key item above).
         Joseph's original motivation held: *"I've always felt EOF handling in the
         descent grammar was one of its weakest areas."*
       - **generator-verified determinism** — descent verifying that every

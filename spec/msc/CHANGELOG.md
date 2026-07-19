@@ -19,7 +19,8 @@ bumps may break).
 
 **EOF handling recast as positional / delimited, plus a two-level severity
 model.** Rulings ratified in conversation (Joseph, 2026-07-17/18); design of
-record: [`../TODO-EOF-refactor.md`](../TODO-EOF-refactor.md). The CORE-text
+record: [`../../_archive/TODO-EOF-refactor.md`](../../_archive/TODO-EOF-refactor.md)
+(archived 2026-07-19). The CORE-text
 rewrite of "End of input" (+ Anomaly posture + Warning codes) is **pending** —
 this entry records the ratified rulings; `../TODO-SPEC-CORE.md` tracks the CORE
 edits.
@@ -159,7 +160,7 @@ number-state and bare-marker EOF drops. ~34 hand `|eof` arms deleted; gate 2→1
 benchmark flat. Still hand-picked pending the `|unclosed <Name>` directive: the
 inline `!{…}`/`!{:kind:…}` codes (currently mis-derived) and the callee-scanned
 constructs (`../../core/TODO-CORE-PARSING.md`, `../../tools/descent/TODO-DESCENT.md`).
-Design record: `../../design/eof-descent-classification.md`.
+Design record: `../../_archive/eof-descent-classification.md` (archived 2026-07-19).
 
 ## [0.9.0-alpha.1] — 2026-07-15
 

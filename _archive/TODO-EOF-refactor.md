@@ -1,25 +1,28 @@
-# TODO — EOF handling: positional / delimited
+# TODO — EOF handling: positional / delimited  *(ARCHIVED design record)*
 
-> **This file is the single design of record for how UDON handles end of
-> input.** It supersedes `../_archive/eof-model-proposal-2026-07.md` (historical
-> exploration — its aggregate-event and residual-buffer vehicles are rejected
-> below; keep only for archaeology). Where any other file in the repo describes
-> EOF differently, this file wins.
+> **ARCHIVED 2026-07-19 — REALIZED.** The model this doc designed is now
+> **normative in CORE** ("End of input" / "Anomaly posture" /
+> "Line-boundedness" / "Emission order"), ruled in the CHANGELOG's alpha.2
+> ledger, and **implemented in descent** (both backends generate the EOF
+> handling from the positional/delimited classification). Where any file
+> describes EOF, **CORE wins now** — this doc is the *why* (the
+> layer-recovery argument, the severity model, the litmus test, the
+> explicitly-rejected alternatives), kept whole for archaeology. It
+> supersedes `eof-model-proposal-2026-07.md` (sibling here; its
+> aggregate-event and residual-buffer vehicles are rejected below).
 >
-> **Status (2026-07-18): LARGELY REALIZED — now a design record, not a to-do.**
-> The framing is **in CORE** (End of input / Anomaly posture / Line-boundedness /
-> Emission order were rewritten to it) AND **in descent** (both backends generate
-> the EOF handling from a positional/delimited classification — landed out of the
-> fixtures-first order by Joseph's explicit call, merged to `main`). So the
-> forward-looking prose below ("collapse that table," "add the row," "delete the
-> ~89 arms") reflects the pre-landing PLAN — much of it is done: ~34 arms deleted,
-> CORE already collapsed to the one rule, embed/gap-9/bare-marker bugs fixed,
-> vocabulary normalized (`UnterminatedFreeform` → `UnclosedFreeform`). The
-> implemented shape + residuals: [`../design/eof-descent-classification.md`](../design/eof-descent-classification.md),
-> `../tools/descent/TODO-DESCENT.md`, `../core/TODO-CORE-PARSING.md`. This doc
-> stays as the design record (the *why* of the layer-recovery); read those three
-> for the *state*. (The **"Grammar / descent direction"** section below is what
-> other trackers used to call "Addendum A.")
+> **Every open item was drained to the lanes at archive time:** the
+> line-boundedness decision + envelope-mention → `spec/TODO-SPEC-CORE.md`;
+> entry-site recording (warnings still cite the EOF position, not the
+> opener — verified 2026-07-19) + static-reject + the per-frame unwind
+> invariant → `tools/descent/TODO-DESCENT.md`; identity-key `$partial-key` +
+> gap-4 partial-closer restoration → `core/TODO-CORE-PARSING.md`; the
+> document-result test surface → root `TODO-META.md` + `core/TODO-PARSER.md`.
+> The forward-looking prose below ("collapse that table," "delete the ~89
+> arms") is the pre-landing PLAN, kept verbatim; the implemented shape is the
+> sibling `eof-descent-classification.md`. (The **"Grammar / descent
+> direction"** section below is what other trackers used to call
+> "Addendum A.")
 
 ## Short form
 

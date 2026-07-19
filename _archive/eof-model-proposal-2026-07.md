@@ -1,7 +1,7 @@
 # EOF as a generated concern — a proposal to descent, motivated by udon
 
 > **Status: historical exploration (2026-07-16) — superseded as design of
-> record by [`../spec/TODO-EOF-refactor.md`](../spec/TODO-EOF-refactor.md)
+> record by [`TODO-EOF-refactor.md`](TODO-EOF-refactor.md) (now also archived here)
 > (2026-07-17).** Probe facts and bug measurements below remain useful;
 > the aggregate-event vehicle, residual-buffer-as-anomaly, and "two facts"
 > framing are **not** what to implement. The settled model:

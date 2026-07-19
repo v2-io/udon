@@ -54,7 +54,7 @@ When input is malformed or surprising, a response falls somewhere on this ladder
 
 ### End of input (EOF)
 
-*(positional/delimited framing + two-level severity ruled 2026-07-17/18; design of record: `TODO-EOF-refactor.md`)*
+*(positional/delimited framing + two-level severity ruled 2026-07-17/18; this section is normative — the design record is archived at `../_archive/TODO-EOF-refactor.md`)*
 
 Every construct closes in one of two ways. A **positional** construct -- element, directive, comment, prose/text block, deferred attribute value, etc. -- takes its extent from *geometry*: end of line, dedent, or EOF. ("Positional" here is about *how a construct closes* -- a different axis from the recognition **Positional Contexts** below (block / sameline / inline / head), which are about *where* a marker is recognized.) A **delimited** construct -- quoted string, `[...]` array, `|{...}` embed, `;{...}` inline comment, `!{{...}}` interpolation, `<...>` envelope, ` ``` ` freeform, identity `[...]`, etc. -- closes only when the parser matches a printed **end-sequence**.
 

@@ -1,13 +1,26 @@
 # EOF: positional/delimited classification of the UDON grammar (design record)
 
-> [!note] **Status (2026-07-18):** this is the design record behind the
-> **generated-EOF work that landed** (descent auto-supplies both EOF halves; see
-> `spec/TODO-EOF-refactor.md` for the design-of-record framing, `../CHANGELOG`
-> and `tools/descent/CHANGELOG.md` for what shipped, and `core/TODO-CORE-PARSING.md`
-> / `tools/descent/TODO-DESCENT.md` for the residuals). Every active
-> `core/generator/*.descent.udon` function was read directly (not reconstructed).
-> The classifier described here is implemented as `descent-rs classify`; the
-> gaps below are annotated where the spike resolved or refined them.
+> [!note] **ARCHIVED 2026-07-19 — a snapshot of 2026-07-18, kept as the
+> implemented-shape record.** Landings AFTER this snapshot that supersede
+> specific lines below: the **`<…>` envelope was extracted** into its own
+> `/envelope` delimited function (commit `e377585` — so the classifier's
+> MIXED count is now **0**, the envelope is **multi-line + content-first**,
+> and Build-status item 4 is DONE); the **inline directive/raw fixes landed**
+> (`|unclosed InlineRaw` + caller-owns-name, commits `071f140`/`d217b8d` —
+> so the table's "wrong code today" / "silently drops" notes for those rows,
+> Build-status item 3's `sameline_raw` residual, and item 7's "await the
+> |unclosed directive" are resolved). Still open, tracked in the lanes:
+> identity-key gap-2 + gap-4 partial-closer (`core/TODO-CORE-PARSING.md`),
+> entry-site recording + static-reject + the per-frame invariant
+> (`tools/descent/TODO-DESCENT.md`). The framing doc is the sibling
+> `TODO-EOF-refactor.md` (also archived); CORE is normative.
+>
+> Original status note (2026-07-18): this is the design record behind the
+> **generated-EOF work that landed** (descent auto-supplies both EOF halves).
+> Every active `core/generator/*.descent.udon` function was read directly
+> (not reconstructed). The classifier described here is implemented as
+> `descent-rs classify`; the gaps below are annotated where the spike
+> resolved or refined them.
 
 *Classifies each function by the design-of-record rule: **delimited** iff it
 closes only on a printed end-sequence; **positional** iff it has any geometric

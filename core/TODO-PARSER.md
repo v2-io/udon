@@ -37,8 +37,8 @@ root `TODO-META.md` — not here.)
       **drops the built tree** (the event layer kept everything; the AST layer
       throws it away), and (b) **warnings are never collected** (handed to the
       builder, which ignores them), so a caller can't see them at all. The
-      two-level severity ruling (`../spec/TODO-EOF-refactor.md` → *Severity — two
-      levels*) sharpens both: every `Unclosed*` is now a **warning** (dropping
+      two-level severity ruling (CORE "End of input"; design record archived at
+      `../_archive/TODO-EOF-refactor.md` → *Severity — two levels*) sharpens both: every `Unclosed*` is now a **warning** (dropping
       warnings would hide unclosed constructs), and the document-level
       incomplete-input is a **result**, not a diagnostic (modeling it as an
       event is the rejected aggregate vehicle). Constraints for the rework —

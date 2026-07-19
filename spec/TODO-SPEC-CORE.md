@@ -7,18 +7,16 @@
 > *Discipline (META-1): read the CORE section before editing or advising on
 > it, and re-grep line numbers — they drift.*
 
-**EOF / positional–delimited (alpha.2 — RULINGS LANDED, do not re-open):** every
-EOF decision is ruled in [`msc/CHANGELOG.md`](msc/CHANGELOG.md) (0.9.0-alpha.2
-"Ruled"); CORE text is rewritten (End of input / Anomaly posture / Line-boundedness
-/ Emission order); and the **descent generation LANDED** (both backends generate
-the EOF handling from a positional/delimited classification — out of the
-fixtures-first order, Joseph's call; see
-[`../design/eof-descent-classification.md`](../design/eof-descent-classification.md)).
-So the next step — the fixture **finalization** (`../core/fixtures/_wip/FINDINGS.md`)
-— now reconciles against the *new* behavior + vocabulary. Design of record:
-[`TODO-EOF-refactor.md`](TODO-EOF-refactor.md) (its "Grammar / descent direction"
-section — formerly cited as "Addendum A"). Warning-code spellings are provisional;
-`UnterminatedFreeform` → `UnclosedFreeform` was the first normalization.
+**EOF / positional–delimited (alpha.2 — REALIZED, do not re-open):** every EOF
+decision is ruled in [`msc/CHANGELOG.md`](msc/CHANGELOG.md) (0.9.0-alpha.2
+"Ruled"); CORE's rewritten sections (End of input / Anomaly posture /
+Line-boundedness / Emission order) are **normative**; the descent generation
+landed (both backends); and the fixture densification is done (2026-07-19 — the
+14 grammar reds live in `../core/fixtures/_wip/`). The design records are
+archived: [`../_archive/TODO-EOF-refactor.md`](../_archive/TODO-EOF-refactor.md)
++ [`../_archive/eof-descent-classification.md`](../_archive/eof-descent-classification.md).
+Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
+`$partial-key` remain hand-picked, pending the shared-identity-scan work).
 
 ---
 
@@ -59,9 +57,7 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
       mixed in) so diffs stay reviewable.
 - [ ] **Silences surfaced by the 2026-07-16 densification** (deliberately
       not fixture-encoded — would be inventing spec): multiple element
-      suffixes (`|field?!`); multi-line `[...]` arrays (only envelopes are
-      stated single-line); unclosed identity bracket at EOF (`|el[unclosed`
-      — not in the EOF table); empty embedded `|{}`; interpolation inside
+      suffixes (`|field?!`); empty embedded `|{}`; interpolation inside
       element keys (deferred to DYNAMICS); rational/complex bare-freeze
       (already tracked in SPEC-OTHER); **whitespace-only lines in prose** —
       CORE says blank lines emit `BlankLine` but never says whether a
@@ -70,27 +66,29 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
       spaces-only lines — consumers treating Text as "has content" will trip
       (side-finding of the archived prose-collision spike,
       `_archive/spikes/prose-collision-2026-07.md`). Each needs a ruling or
-      an explicit deferral. *(discuss w/ Joseph)*
-- [ ] **EOF section rewrite — positional / delimited** (settled 2026-07-17;
-      design of record: [`TODO-EOF-refactor.md`](TODO-EOF-refactor.md)).
-      Collapse "End of input" to: unexpected EOF only for still-open
-      **delimited** activations; **positional** finishes by ordinary end
-      rules; composition = innermost-first (stack). Clarifies positional
-      *context* vs *construct* (text block positional, embed delimited).
-      Turns densification composition ⚠ fixtures into derivations and
-      makes the embed any-phase drop a plain bug. Also folds: unclosed
-      identity `[` (delimited under the framing) and the **two-level severity
-      ruling** (2026-07-18 — every `Unclosed*` → **Warning**; the document-level
-      incomplete-input is a *result*, not a diagnostic; see the EOF doc's
-      *Severity — two levels*). Reconcile CORE's "Anomaly posture" ladder with
-      it (today it calls unclosed constructs an "error event" while insisting
-      they keep everything — the split says which half is which).
-- [ ] **"Positional" / "delimited" terminology audit** (before/with the EOF
-      rewrite). The design of record makes **positional construct** (extent by
-      geometry) and **delimited construct** (printed end-sequence owed) precise
-      terms; CORE already uses both words in *other* senses, so each existing
-      use needs a look — same sense, or a genuinely different thing that should
-      keep a distinct word? Current uses (2026-07-18 grep):
+      an explicit deferral. *(Two of the original silences resolved since:
+      multi-line `[...]` is the Line-boundedness item above; unclosed
+      identity at EOF was ruled — `$partial-key` + `UnclosedIdentityKey`.)*
+      *(discuss w/ Joseph)*
+- [ ] **Line-boundedness — settle the per-construct multi-line question**
+      (drained from the archived EOF design of record at archive time,
+      2026-07-19). CORE "Line-boundedness" deliberately leaves multi-line
+      spanning **undefined** for strings, `[…]` arrays, identity keys,
+      `!{{…}}`, `;{…}`, and the inline `!{…}` forms — current parser behavior
+      varies (strings/interp span; arrays/identity close on the newline) and
+      is pinned only *descriptively* (labeled fixtures + the
+      `exploratory/multi-line.yaml` sandbox, whose emergent-span finding —
+      an inner spanning construct defeats a line-bound container — means
+      container and contents must be decided together). "We expect to make
+      the rest multi-line once the consequences are fully understood."
+      *(discuss w/ Joseph)*
+- [ ] **"Positional" / "delimited" terminology audit.** The EOF recast makes
+      **positional construct** (extent by geometry) and **delimited
+      construct** (printed end-sequence owed) precise terms; CORE already
+      uses both words in *other* senses (a one-clause disambiguation of the
+      main collision landed in "End of input", 2026-07-18), so each existing
+      use needs a look — same sense, or a genuinely different thing that
+      should keep a distinct word? Current uses (2026-07-18 grep):
       - "positional" = **recognition locus** — `## Positional Contexts` (§91:
         block/sameline/inline/head). Different axis from construct-extent; the
         EOF doc's Vocabulary box keeps them distinct — carry that in.
@@ -107,16 +105,6 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
         is *positional*, not delimited).
       Keep / disambiguate-in-place / rename-a-sense is a spec-reasoning call.
       *(discuss w/ Joseph if a rename is wanted)*
-- [ ] **Cleanup opportunities to fold into the EOF pass** (broad notes, not a
-      mandate — take only what the rewrite already touches). The rulings land
-      near the top of CORE (End of input §55, Warning codes §27, Anomaly posture
-      §41), so that neighborhood is open anyway: collapse the per-construct EOF
-      table into the one rule (a net simplification); update the Warning-codes
-      table for the severity relabel and firm up settled "working name" hedges;
-      the terminology audit above. Dovetails with the standing editorial items
-      here (unwrap the hard-wrapped prose; reconsider the guard / Marker-
-      Recognition framing; bare-pipe table fragility) — do those opportunistically
-      where the pass already touches that text, not as a separate sweep.
 - [ ] **Smaller silences from the same pass** (each with a concrete case;
       none encoded): **empty identity bracket** `|el[]` — empty key, or a
       key whose value is the empty list `[]`? (the EOF list has
@@ -198,7 +186,12 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
       immediately after the prefix determines the parse mode **with no
       lookahead**" (Unified Inline Syntax) reads oddly against the Bounded
       Lookahead section's "typically 2-3" chars — a word-level nit (different
-      granularities: one char after the prefix vs. total guard width).
+      granularities: one char after the prefix vs. total guard width); (d) one
+      sentence in "Explicit Typing" that an *unclosed* envelope warns
+      `UnclosedTypeEnvelope` **instead of** (not alongside) `NoDialectsLoaded`
+      — the envelope never completed, so nothing was offered to dialect
+      dispatch; behavior already pinned by fixtures (drained from the EOF
+      fixture flags, 2026-07-19).
 
 ---
 

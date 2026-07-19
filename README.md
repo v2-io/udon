@@ -219,7 +219,8 @@ vs delimited** constructs with **two-level severity** (each per-construct
 `Unclosed*` = a *Warning*, content kept; the document-level "incomplete input" is
 a separate *result*, not a wire event). CORE's "End of input" / "Anomaly posture"
 / "Line-boundedness" / "Emission order" sections are rewritten; the design of
-record is [`spec/TODO-EOF-refactor.md`](spec/TODO-EOF-refactor.md) and **the full
+record is [`_archive/TODO-EOF-refactor.md`](_archive/TODO-EOF-refactor.md)
+(archived 2026-07-19 — realized; CORE is normative) and **the full
 ruling ledger is [`spec/msc/CHANGELOG.md`](spec/msc/CHANGELOG.md) (0.9.0-alpha.2
 "Ruled")** — every EOF decision is there (line-boundedness = multi-line
 deliberately undefined; emission order content→warning→End; `$partial-key` for
@@ -235,7 +236,8 @@ positional/delimited classification it computes) and positional **EOF ≡ newlin
 `|eof` arms (~90 → ~56). This **fixed** the embed any-phase-drop, the number-state
 silent-drops, and the bare-marker-at-EOF drops; **normalized** `UnterminatedFreeform`
 → `UnclosedFreeform`; and the compliance gate improved 2 → 1. Design record:
-[`design/eof-descent-classification.md`](design/eof-descent-classification.md);
+[`_archive/eof-descent-classification.md`](_archive/eof-descent-classification.md)
+(archived 2026-07-19);
 shipped in [`tools/descent/CHANGELOG.md`](tools/descent/CHANGELOG.md); residuals in
 [`core/TODO-CORE-PARSING.md`](core/TODO-CORE-PARSING.md) +
 [`tools/descent/TODO-DESCENT.md`](tools/descent/TODO-DESCENT.md) (the `|unclosed`
