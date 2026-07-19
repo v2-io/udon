@@ -31,28 +31,16 @@
 #   - Empty Text ("") is DROPPED by the harness (blank lines are `BlankLine`,
 #     never Text ""); so no empty-Text events appear below. Empty
 #     Interpolation "" is NOT dropped (only Text is) — it stays on the wire.
-#   - Intra-construct order: content-then-Warning for string / array / embed /
-#     interpolation / inline-comment / freeform; but WARNING-then-content for
-#     the `<...>` envelope (matching its NoDialectsLoaded convention). That
-#     asymmetry is unpinned by CORE — see the FLAGS section at the bottom.
+#   - Intra-construct order: content-then-Warning, uniform across every
+#     delimited construct — string / array / embed / interpolation /
+#     inline-comment / freeform / `<...>` envelope (the envelope was extracted
+#     to its own /envelope fn in e377585 and now emits content-first too).
 #
 # `# red?:` legend:  yes = parser diverges from this CORE expectation today
-# (a documented gap — the deliverable); no = parser already matches;
-# unsure = depends on an unresolved CORE question (see FLAGS).
-
-
-# ---------------------------------------------------------------------------
-# 1. Homogeneous cascades (same delimiter kind nested)
-# ---------------------------------------------------------------------------
-
-# CORE: "nested delimited constructs yield one `Unclosed*` each" — innermost
-# first. array-in-array-in-array holding a string: 1 UnclosedStringValue +
-# 3 UnclosedArray. (The brief's `[[["x` shape.)
-  # red?: no — content-first (envelope extracted to /envelope, commit e377585)
-
-# CORE: closed empty envelope `<>` — recognized, no dialects -> NoDialectsLoaded
-# + the string "<>".
-  # red?: no
+# (a documented gap — the deliverable); no = parser already matches.
+#
+# NOTE (2026-07-19): the green cases from this slice were promoted to
+# v0.9/eof_composition.yaml; only the identity-key reds remain here.
 
 
 # ---------------------------------------------------------------------------
@@ -63,9 +51,9 @@
 # ---------------------------------------------------------------------------
 
 # CORE: `|el[k` never closes its identity bracket -> UnclosedIdentityKey. The
-# $key attr keeps its value; the warning cites the `[` entry site. There is no
-# bracket End event (identity desugars to an attr), so the warning rides at
-# the close, before ElementEnd.
+# partial value desugars under `$partial-key` (NOT `$key` — CORE §302 fail-safe);
+# the warning cites the `[` entry site. There is no bracket End event (identity
+# desugars to an attr), so the warning rides at the close, before ElementEnd.
 - id: eof_unclosed_identity_key_bare
   desc: an unclosed identity `[key` at EOF — value kept + UnclosedIdentityKey
   udon: "|el[k"
@@ -73,7 +61,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - ElementEnd
@@ -92,7 +80,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - ArrayStart
     - [Integer, "1"]
     - [Integer, "2"]

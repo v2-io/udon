@@ -184,7 +184,16 @@
     |c[XLBL_START]                | /name                            |>> :after_name
     |default                  | /skip_brace_balanced             |return  ; malformed
 
+  ; `!{name`<EOF> — a named inline directive whose `}` never arrives. descent
+  ; generates a state's EOF handler from its `default` arm; here that default is
+  ; `/skip_brace_balanced` (silent), so without this arm the unclosed directive
+  ; returned with no warning (only the `:args` path warns, via embed_content's
+  ; own eof). Explicit EOF arm keeps the already-emitted name and warns, mirroring
+  ; freeform's `|eof | Warning(UnclosedFreeform)`. (The NAMELESS `!{`<EOF> — still
+  ; in :name at EOF — is a separate, harder case: ruled to prose `Text "!{"`,
+  ; which can't be emitted after DirectiveStart; tracked as a red.)
   |state[:after_name]
+    |eof                      | Warning(UnclosedInlineDirective) |return
     |c['}']                  | ->                               |return
     |c[' \t']                 | ->                               |>> :args
     |default                  | /skip_brace_balanced             |return

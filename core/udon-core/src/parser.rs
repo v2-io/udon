@@ -7130,7 +7130,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterName => {
                     if self.eof() {
-                    self.parse_skip_brace_balanced(on_event);
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedInlineDirective"), span: self.span() });
                     on_event(Event::DirectiveEnd { span: self.span() });
                     return;
                     }

@@ -334,3 +334,18 @@
   root_only: true
   events:
     - [Text, ""]
+
+# Named inline directive unclosed at EOF (fixed 2026-07-19): `!{inc`<EOF> keeps
+# the name and warns UnclosedInlineDirective. descent generates a state's EOF
+# handler from its `default` arm; sameline_dir_body's :after_name default is the
+# silent `/skip_brace_balanced`, so an explicit `|eof` arm was added to warn
+# (mirrors freeform's `|eof | Warning(UnclosedFreeform)`). Both backends.
+- id: bang_brace_name_eof
+  desc: named inline directive `!{inc` unclosed at EOF — name kept + UnclosedInlineDirective
+  udon: "!{inc"
+  root_only: true
+  events:
+    - DirectiveStart
+    - [Name, "inc"]
+    - [Warning, "UnclosedInlineDirective"]
+    - DirectiveEnd

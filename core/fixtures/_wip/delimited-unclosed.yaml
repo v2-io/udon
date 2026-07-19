@@ -82,7 +82,7 @@
     - [Name, "p"]
     - EmbeddedStart
     - [Name, "a"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - [Warning, "UnclosedEmbedded"]
@@ -129,22 +129,19 @@
 
 
 # ===========================================================================
-# H. IDENTITY BRACKET  [...]   ← THE WHOLLY-NEW SURFACE
-#    CORE "Identity (Keys) and Classification": [key] desugars to :'$key'.
-#    LINE-BOUND (TODO-EOF-refactor "The cut"). Code UnclosedIdentityKey —
-#    NEW, listed in CORE Warning codes but NOT YET emitted by the parser in
-#    ANY phase. Every case here is RED and documents the new consumer surface.
-#    NO wire precedent exists; I follow the content-then-warning shape
-#    (like array/embed) and place the warning before ElementEnd.
+# H. IDENTITY BRACKET  [...]   ← THE WHOLLY-NEW SURFACE (all RULED; still RED)
+#    CORE "Identity (Keys) and Classification". Code UnclosedIdentityKey —
+#    NOT YET emitted by the parser in ANY phase (the hard shared-scanner
+#    parse_element_identity gap-2, core/TODO-CORE-PARSING.md). Every case here
+#    is RED — the grammar-phase target spec.
 #
-#    ⚑ EVENT-SHAPE OPENS for Joseph (new surface — please rule):
-#      (a) When content WAS captured ( |el[k ), is the $key Attr emitted WITH
-#          its partial value AND the warning (I assert yes — keep-everything),
-#          or suppressed? Parser today emits $key/value but no warning.
-#      (b) When NOTHING was captured ( |el[ ), is an EMPTY $key Attr emitted,
-#          or just the warning (I assert: just the warning — nothing arrived)?
-#      (c) Ordering: content, then UnclosedIdentityKey, then ElementEnd (my
-#          choice), or warning first?
+#    RULED (CHANGELOG alpha.2 §1.3; do not re-open):
+#      (a) content captured ( |el[k ) ⇒ the partial value desugars under
+#          **`$partial-key`** (NOT `$key` — CORE §302 fail-safe: a consumer
+#          reading `$key`/resolving a ref then excludes a truncated identity),
+#          kept, + UnclosedIdentityKey. (These fixtures use `$partial-key`.)
+#      (b) nothing captured ( |el[ ) ⇒ just the warning, no attr (du_id_opener_only_eof).
+#      (c) order: content-then-warning (uniform emission-order ruling).
 # ===========================================================================
 
 - id: du_id_opener_only_eof
@@ -169,7 +166,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - ElementEnd
@@ -186,7 +183,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - [Text, "more"]
@@ -201,7 +198,7 @@
   # red?: YES — parser emits $key/"k", no warning.
   events:
     - ElementStart
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - ElementEnd
@@ -218,7 +215,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [StringValue, "abc"]
     - [Warning, "UnclosedStringValue"]
     - [Warning, "UnclosedIdentityKey"]
@@ -235,7 +232,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - ArrayStart
     - [Integer, "1"]
     - [Integer, "2"]
@@ -255,9 +252,9 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
-    - [Warning, "UnclosedTypeEnvelope"]
+    - [Attr, "$partial-key"]
     - [BareValue, "<u64"]
+    - [Warning, "UnclosedTypeEnvelope"]
     - [Warning, "UnclosedIdentityKey"]
     - ElementEnd
 
@@ -275,7 +272,7 @@
     - [Name, "p"]
     - EmbeddedStart
     - [Name, "ref"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "k"]
     - [Warning, "UnclosedIdentityKey"]
     - [Warning, "UnclosedEmbedded"]

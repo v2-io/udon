@@ -47,43 +47,18 @@
 
 # --- Deep dedent-at-EOF: one EOF pops the whole stack, innermost-first ---
 
-# --- THE HEADLINE MODEL GAP: !{ at EOF ------------------------------------
-# See the "CORE MODEL GAPS" block at the bottom. Short version: after `!`'s
-# head guard fails on `{`, the line commits to prose, and in prose `!{` is
-# the inline-directive opener (CORE "Unified Inline Syntax"; DYNAMICS: 2nd
-# char after `!{` != `{`/`:` => directive). An inline directive is DELIMITED
-# (brace-balanced, closes on `}`), so at EOF it is UNCLOSED. But CORE's
-# Warning-codes registry has NO unclosed-inline-directive code, and whether a
-# NAMELESS inline directive is even legal is unspecified. Two defensible
-# readings; I encode the "unclosed delimited construct" reading and flag the
-# missing code as UnclosedInlineDirective (working name — DOES NOT EXIST YET).
+# Nameless inline directive `!{`<EOF> — the last inline-directive red. The
+# UnclosedInlineDirective code now exists (registry) and the NAMED case is fixed
+# (bang_brace_name_eof); only the nameless case remains, ruled to prose.
 - id: bang_brace_eof
-  desc: "!{ at EOF — inline-directive opener, unclosed (MODEL GAP: no warning code exists)"
-  # CORE: "Marker Recognition" (`!{` is a prose-level inline form, not a block
-  # directive) + "Unified Inline Syntax" + DYNAMICS disambiguation. Delimited
-  # => "End of input" unclosed-warning rule applies. BUT the code is
-  # undefined, and a nameless directive's shape is undefined.
-  # ALT reading: treat `!{`<EOF> as literal prose Text "!{" (if a bare opener
-  # with no name/body is not recognized). Joseph to rule.
-  # red?: YES (parser emits 0 events either way — a keep-everything drop).
+  desc: nameless `!{` at EOF — ruled to prose Text "!{" (parser still emits an empty directive)
   udon: "!{"
   root_only: true
+  # red?: YES (still). Ruled (CHANGELOG alpha.2): a NAMELESS `!{`<EOF> is prose
+  # `Text "!{"` — no valid directive ever started (parallel to the bare-marker
+  # family). Parser today emits an empty DirectiveStart/DirectiveEnd. Harder than
+  # the named case (bang_brace_name_eof, now fixed+promoted): DirectiveStart has
+  # already fired by the time we reach sameline_dir_body :name, so restoring prose
+  # means intercepting BEFORE entry (sameline_directive :dispatch on EOF-after-`!{`).
   events:
-    - DirectiveStart
-    - [Warning, "UnclosedInlineDirective"]   # <-- WORKING NAME; code missing from CORE
-    - DirectiveEnd
-
-- id: bang_brace_name_eof
-  desc: "!{inc at EOF — named inline directive, unclosed (MODEL GAP: no warning code)"
-  # CORE: same as bang_brace_eof but with a directive name, so the anonymous
-  # question is moot — the only gap is the missing unclosed code. The parser
-  # DOES recognize the inline directive (emits DirectiveStart / Name inc /
-  # DirectiveEnd) but drops the unclosed warning.
-  # red?: YES — missing the UnclosedInlineDirective warning.
-  udon: "!{inc"
-  root_only: true
-  events:
-    - DirectiveStart
-    - [Name, "inc"]
-    - [Warning, "UnclosedInlineDirective"]   # <-- WORKING NAME; code missing from CORE
-    - DirectiveEnd
+    - [Text, "!{"]

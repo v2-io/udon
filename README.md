@@ -270,13 +270,14 @@ emission order **landed** (commit `e377585`; extracted into its own multi-line
 `/envelope` delimited function, classifier MIXED=0). A **non-gating exploratory
 sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
 (run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
-**What remains** — the 18 genuine reds/ruling-needed kept in `_wip/` as the
-grammar-phase target spec (banner in [`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md)):
-the **identity/reference-key EOF** warning (`UnclosedIdentityKey` + `$partial-key`,
+The three "ruling-needed" cases were ruled and promoted, and the named
+inline-directive EOF gap (`!{inc`<EOF>) was **fixed** (both backends).
+**What remains** — 14 genuine reds kept in `_wip/` as the grammar-phase target
+spec (banner in [`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md)): the
+**identity/reference-key EOF** warning (`UnclosedIdentityKey` + `$partial-key`,
 the shared `parse_element_identity` gap-2 — `|el[k`<EOF> emits `$key` with no
-warning today, `core/TODO-CORE-PARSING.md`); the no-args inline-directive EOF gap
-(`!{inc`<EOF> emits no `UnclosedInlineDirective`); interp partial-closer (gap-4);
-and 3 open rulings.
+warning today, `core/TODO-CORE-PARSING.md`); the *nameless* `!{`<EOF> (ruled to
+prose `Text "!{"`); interp partial-closer (gap-4); and `;{`-in-blob.
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The

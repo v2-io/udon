@@ -58,9 +58,17 @@
 >   `v0.9/eof_positional_bare.yaml`. (Open, non-blocking: the empty node's span
 >   excludes the `\` — a round-trip nicety, `core/TODO-CORE-PARSING.md`.)
 >
-> So **15 genuine grammar reds** remain here (11 identity-key + 2 inline-directive
-> `bang_brace_*` + interp partial-closer + `;{`-in-blob) — the grammar-phase
-> to-do; nothing else.
+> **Grammar-red progress (2026-07-19):** `bang_brace_name_eof` (`!{inc`<EOF>)
+> **fixed + promoted** — descent generates a state's EOF handler from its
+> `default` arm, and `sameline_dir_body`'s `:after_name` default was the silent
+> `/skip_brace_balanced`; an explicit `|eof | Warning(UnclosedInlineDirective)`
+> arm (mirroring freeform) now keeps the name and warns. Both backends;
+> `→ v0.9/eof_positional_bare.yaml`.
+>
+> So **14 genuine grammar reds** remain here — 11 identity-key + the nameless
+> `bang_brace_eof` (ruled to prose `Text "!{"`; harder — DirectiveStart already
+> fired) + interp partial-closer (`du_interp_lone_brace_is_content_eof`) +
+> `;{`-in-blob (`du_ic_in_text_blob_eof`). The grammar-phase to-do; nothing else.
 
 **Status (2026-07-18):** harvest of three parallel spec-grounded agents (delimited-unclosed, positional+bare-marker, composition+edges) — **104 draft cases** in this `_wip/` dir (`delimited-unclosed.yaml`, `positional-and-bare-marker.yaml`, `composition-and-edges.yaml`). Drafts are **not verified case-by-case yet** and are **not run by the harness** (`_wip/` is a sibling of `v0.9/`). Every expectation was derived from CORE, not the parser. **Reds are finds, not failures.**
 
