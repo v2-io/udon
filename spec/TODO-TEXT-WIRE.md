@@ -14,9 +14,12 @@
 
 ## The contract (the one sentence everything serves)
 
-**The document's text stream is reconstructable by pure in-order
-concatenation of the event stream's text-bearing events — no spans, no
-source, no gap inspection.** `fold(events): Text/RawContent → content;
+**Given the FULL event stream, the document's text material is
+reconstructable by pure in-order concatenation of the text-bearing events —
+no spans, no source, no gap inspection.** ("Full stream" softening + the
+ornamentation caveat: Joseph, 2026-07-19 — some dispositions, e.g. trailing
+BlankLines before a dedent, are interpretable only over the whole stream /
+at the AST layer; the event parser never pre-judges them.) `fold(events): Text/RawContent → content;
 BlankLine → "\n"` yields the text. Anything less is the bug.
 
 ## The model — text bytes vs geometry bytes
