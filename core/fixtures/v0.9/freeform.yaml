@@ -126,7 +126,7 @@
     - FreeformEnd
 
 - id: freeform_unclosed_warns
-  desc: unclosed fence errors at EOF, content preserved
+  desc: unclosed fence warns at EOF, content preserved
   udon: "```\nunclosed"
   events:
     - FreeformStart

@@ -117,8 +117,8 @@
     - [Text, " y"]
     - ElementEnd
 
-- id: array_unclosed_is_error
-  desc: an array with no closing bracket ends as an UnclosedArray error
+- id: array_unclosed_warns
+  desc: an array with no closing bracket ends with an UnclosedArray warning; items kept
   udon: "|el :x [1 2\n"
   events:
     - ElementStart
