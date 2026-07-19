@@ -194,3 +194,22 @@ table row is more committed than the spec actually is.
   — a vocabulary decision (CORE line 39 anticipates the normalization);
   (3) partial-closer restoration (B-3) + the positional-tail carve-out is
   already honored (freeform post_close keeps its hand arm). Benchmark: running.
+- **`\n`-arm reuse landed (committed a754cd6):** `eof_run_newline` — a leaf state
+  with no `|eof` arm whose `\n` case RETURNS runs that arm at EOF (guarded on
+  return, so loop states keep dedent-return). Deleted typed_value's 17
+  number-state arms; descent reproduces them (42→Integer, 3.14→Float, 0xFF→
+  Integer). Subsumes the "self-terminating value" TODO (gap-7). Gate 1/478.
+- **MILESTONE: descent auto-supplies BOTH EOF halves; 90→58 arms; gate 2→1.**
+  Delimited force-unwind (quoted/interp/array proven; embed FINDINGS red fixed;
+  B-5 fixed) + positional EOF≡newline (fall-through `eof_run_default` fixes
+  gap-9; leaf `eof_run_newline` deletes redundant arms). Benchmark healthy
+  (~1.09 GiB/s; byte-dispatch hot path untouched — EOF is cold). Rigorous
+  before/after benchmark pair still owed before any merge.
+- **Remaining (clear):** (1) delete the other ~40 redundant leaf arms (prose
+  text/comment — some per-state subtleties, do carefully); (2) irregular
+  delimited codes (embed_content:Text→Embedded, freeform→Unterminated, inline
+  comment/raw/dir) — a **vocabulary decision (Joseph's)**; the derivation is
+  `Unclosed`+ConstructName and normalizes the hand-picked inconsistencies CORE
+  line 39 anticipates; (3) partial-closer restoration (B-3); (4) fold the
+  verified findings + this working mechanism back into the main-line spec/
+  grammar/descent (the integration proper).
