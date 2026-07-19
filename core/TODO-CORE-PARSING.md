@@ -79,18 +79,21 @@ against the pre-spike output. Roadmap still: `fixtures/_wip/FINDINGS.md`; ruling
         the *element's* child, which the `/block_directive(:elem_col)`
         route would give directly). *(discuss w/ Joseph)*
 
-- [ ] **Inline raw / inline directive: content-keeping + correct codes at EOF**
-      (residual after the 2026-07-18 EOF generation). `sameline_raw`
-      (`!{:kind: …}`) at EOF now *warns* (was fully silent) but (a) still
-      **drops its raw body** — a BRACKET whose content is emitted only on close,
-      so the generated force-unwind (Warning + End) doesn't flush the pending
-      MARK — and (b) uses the **wrong code** `UnclosedDirective` (from its
-      `:Directive` return type) instead of `UnclosedInlineRaw`. `sameline_dir_body`
-      (`!{name …}`) likewise warns `UnclosedEmbedded` (via its `embed_content`
-      callee) instead of `UnclosedInlineDirective`. Needs: (1) EOF content-keeping
-      for **accumulating BRACKETs** (emit the pending content before Warning+End),
-      and (2) the right construct-name codes — cleanest via the `|unclosed <Name>`
-      directive (`../tools/descent/TODO-DESCENT.md`).
+- [ ] **Identity / reference key: emit `UnclosedIdentityKey` + `$partial-key`
+      at EOF** (grammar phase; ruled — CORE Identity + End of input, CHANGELOG
+      alpha.2 §1.3). An unclosed `|el[k` / `@el[k` currently keeps the key value
+      but emits **no warning**, and desugars to `$key` — should warn
+      `UnclosedIdentityKey` and desugar to **`$partial-key`** (the fail-safe so a
+      consumer excludes a truncated key). Harder than the inline forms: the block
+      scanner `parse_element_identity` is INTERNAL and **shared** across element /
+      embed / identity, so the identity bracket is a delimited sub-region whose
+      owner is the caller's frame — the per-call-site "one function, both kinds"
+      case (descent classify gap-2), not expressible by the return-type
+      derivation or a single `|unclosed <Name>`. Needs the caller-owns-name
+      pattern extended to the bracket, or a small dedicated key-scan sub-function
+      per owner. The 11 identity-key reds in `fixtures/_wip/` are the target spec.
+      *(The sibling inline-raw / inline-directive EOF codes+content-keeping landed
+      via `|unclosed <Name>` + caller-owns-name — commits 071f140 / d217b8d.)*
 
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes

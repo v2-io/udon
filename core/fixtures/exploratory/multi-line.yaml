@@ -424,29 +424,47 @@
     - DirectiveEnd
     - ElementEnd
 
-# ★ BUG (probe only — do not assert). Unclosed inline directive WITH a
-# trailing newline before EOF: the parser DOUBLES the last text argument
-# ("|p !{if x\n" -> Text "xx"; "|p !{if x\nhello\n" -> Text "x", Text
-# "hellohello") AND emits [Error, "UnclosedText"] — an ERROR (not a Warning,
-# violating the two-level severity ruling) with a code that is NOT in the
-# Warning-codes registry. Contradicts keep-everything (content corrupted) and
-# the ruling that Unclosed* are warnings. See the final report.
-- id: ml_dir_unclosed_trailing_newline_BUG
-  desc: "★ BUG: unclosed !{directive} + trailing newline doubles last arg AND emits Error UnclosedText"
+# FIXED 2026-07-18 (was ★ BUG: doubled the last arg AND emitted an off-registry
+# Error "UnclosedText"). Now correct: one Text "x", then Warning
+# UnclosedInlineDirective — derived via `|unclosed InlineDirective` +
+# caller-owns-name (commits 071f140 / d217b8d). The still-UNDEFINED aspect is
+# the multi-line spanning itself (a directive open across a newline — CORE
+# Line-boundedness leaves inline-directive multi-line deliberately undefined),
+# which is why this stays in the sandbox; recorded as current.
+- id: ml_dir_unclosed_trailing_newline
+  desc: "unclosed !{directive} across a newline at EOF — one arg + UnclosedInlineDirective (spanning still undefined)"
   udon: "|p !{if x\n"
   root_only: true
-  events: []
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - [Warning, "UnclosedInlineDirective"]
+    - DirectiveEnd
+    - ElementEnd
 
-# ★ BUG (probe only). Unclosed inline directive WITHOUT a trailing newline:
-# no doubling, but the anomaly is [Warning, "UnclosedEmbedded"] — a Warning
-# (right severity) with the WRONG code (this is a directive, not an embed;
-# no UnclosedInlineDirective code exists). So the SAME construct yields two
-# different anomaly shapes depending solely on a trailing newline.
-- id: ml_dir_unclosed_no_trailing_newline_BUG
-  desc: "★ BUG: unclosed !{directive}, no trailing newline — Warning UnclosedEmbedded (wrong code)"
+# FIXED 2026-07-18 (was ★ BUG: Warning "UnclosedEmbedded", the shared
+# embed_content scanner's name). Now correct: Warning UnclosedInlineDirective,
+# agreeing with the trailing-newline twin above (the two used to differ solely
+# by a trailing newline). Still-UNDEFINED aspect: the args spanning the newline
+# (Text "x" then Text "hello") — inline-directive multi-line is deliberately
+# undefined; recorded as current.
+- id: ml_dir_unclosed_no_trailing_newline
+  desc: "unclosed !{directive} args across a newline at EOF — UnclosedInlineDirective (spanning still undefined)"
   udon: "|p !{if x\nhello"
   root_only: true
-  events: []
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - [Text, "hello"]
+    - [Warning, "UnclosedInlineDirective"]
+    - DirectiveEnd
+    - ElementEnd
 
 
 # ===========================================================================
@@ -474,14 +492,23 @@
     - DirectiveEnd
     - ElementEnd
 
-# ★ BUG (probe only — do not assert). Unclosed inline raw: the entire raw
-# body is LOST. "|p !{:json: abc"<EOF> (with or without a trailing newline)
-# emits DirectiveStart, name, Raw "", DirectiveEnd — NO RawContent, NO
-# warning. Contrast the closed form, which keeps "abc". This violates
-# keep-everything (total content loss) and emits no anomaly at all. Also a
-# model gap: no UnclosedInlineRaw code exists. See the final report.
-- id: ml_raw_unclosed_drops_content_BUG
-  desc: "★ BUG: unclosed !{:kind: ...} drops ALL content and emits NO warning"
+# FIXED 2026-07-18 (was ★ BUG: dropped the entire raw body + emitted no
+# warning). Now correct keep-everything: RawContent "abc" then Warning
+# UnclosedInlineRaw — the raw body is a CONTENT sub-scan (`sameline_raw_body`,
+# `|unclosed InlineRaw`; commit 071f140). This input is single-line (no
+# spanning), so it is fully DEFINED now — a candidate to graduate into a v0.9
+# gating fixture; recorded here meanwhile.
+- id: ml_raw_unclosed
+  desc: "unclosed !{:kind: ...} at EOF keeps its body + warns UnclosedInlineRaw"
   udon: "|p !{:json: abc"
   root_only: true
-  events: []
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "json"]
+    - [Raw, ""]
+    - [RawContent, "abc"]
+    - [Warning, "UnclosedInlineRaw"]
+    - DirectiveEnd
+    - ElementEnd

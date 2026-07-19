@@ -24,26 +24,6 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
 
 ## Open
 
-- [ ] **CORE contradicts itself on `[...]` array line-boundedness** (found
-      2026-07-18, EOF spike). "End of input" (§66) states line-bound `[...]` /
-      `<...>` **close-with-a-warning on a newline** (and feeds incomplete-input
-      accounting) — which the grammar does (`UnclosedArray`); but
-      "Line-boundedness" (§76) lumps `[...]` into the **"deliberately undefined,
-      may change"** set. Both can't hold. Symptom that array line-boundedness was
-      never actually decided (the EOF design doc calls it "a live UX choice, one
-      flag"). Rule it: array is either line-bound (settle §76) or genuinely
-      undefined (soften §66). Detail: `../design/eof-descent-classification.md`
-      gap-6, which also notes the three "undefined" constructs behave **three
-      ways** today (envelope warns, array warns, **string silently spans** — no
-      `\n` arm), so §76's blanket wording oversells a uniformity that isn't there.
-- [ ] **`UnclosedInlineDirective` / `UnclosedInlineRaw` are ruled but not in the
-      Warning-codes registry table** (found 2026-07-18). The CHANGELOG alpha.2
-      rules both; CORE §39 references the `UnclosedInline*` family in prose but
-      does not enumerate the two rows (the other eight `Unclosed*` are listed).
-      Add them when the codes settle — currently the grammar even *mis-derives*
-      them (`sameline_raw` emits `UnclosedDirective`, `sameline_dir_body` emits
-      `UnclosedEmbedded`; the fix rides the `|unclosed` directive, see
-      `../core/TODO-CORE-PARSING.md` + `../tools/descent/TODO-DESCENT.md`).
 - [ ] **References — structured event encoding** (semantics already in CORE
       "References"). Wire still interim: single `Reference` with raw text after
       `@`. Planned: `ReferenceStart` / `Name` / `Attr "$key"` / `Attr
