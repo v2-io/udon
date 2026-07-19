@@ -49,6 +49,21 @@ group's work: mining `legacy-pre-0.8/` for still-valid regression cases
 (esp. indentation edge cases, prose-dedentation depth, element-name charset
 torture) and densifying edge/combination coverage.
 
+### Comment conventions in the active group
+
+- **No red/green status comments.** The gate is the sole authority on whether
+  a case passes; per-case status annotations proved to be a drift vector and
+  were removed (2026-07-19). Comments explain *why* — the CORE derivation, a
+  non-obvious event shape, or why a change happened when git alone wouldn't
+  make it clear.
+- **Descriptive pins.** A case marked `PINS CURRENT BEHAVIOR (descriptive)`
+  regression-pins today's parser in space where CORE deliberately has **no
+  position** (e.g. the Line-boundedness "deliberately undefined" constructs).
+  It is not a spec claim, and a future ruling may flip it — the label is what
+  licenses that flip without treating it as a compliance break. Undefined
+  behavior explored more broadly (multi-line spanning) lives in
+  `exploratory/`, which never gates.
+
 ## v0.8/ is frozen and released
 
 The `core-v0.8.0` contract (tag of the same name, 2026-07-15): ~233 cases

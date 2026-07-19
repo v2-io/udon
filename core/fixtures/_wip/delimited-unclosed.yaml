@@ -2,9 +2,9 @@
 # DELIMITED CONSTRUCTS UNCLOSED AT EOF (and, for line-bound ones, at an
 # interior newline) — EXHAUSTIVE DRAFT
 #
-# Slice of the alpha.2 EOF refactor. Design of record:
-# spec/TODO-EOF-refactor.md. Governing spec text: CORE.md "End of input
-# (EOF)", "Anomaly posture", "Warning codes".
+# Slice of the alpha.2 EOF refactor. Governing spec text: CORE.md "End of
+# input (EOF)", "Anomaly posture", "Warning codes" (now normative; the design
+# record is archived at _archive/TODO-EOF-refactor.md).
 #
 # THE MODEL (as I derived expectations from):
 #   * Every DELIMITED construct (quoted string, [..] array, |{..} embed,

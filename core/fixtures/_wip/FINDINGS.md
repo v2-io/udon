@@ -1,9 +1,11 @@
 # alpha.2 EOF fixture harvest — findings & rulings needed
 
 > **⚡ SESSION UPDATE (2026-07-19 — densification pass: 86 cases PROMOTED; this
-> dir now holds ONLY the 18 genuine reds/ruling-needed).** The full 104-draft
-> harvest was re-verified case-by-case against the CURRENT parser (a throwaway
-> triage running each draft through the real harness `run_test`). Result:
+> dir now holds ONLY the 14 genuine grammar reds** — 18 at triage time, minus
+> the 3 same-day rulings and the 1 same-day grammar fix, all promoted; see
+> the follow-up notes below. The full 104-draft harvest was re-verified
+> case-by-case against the CURRENT parser (a throwaway triage running each
+> draft through the real harness `run_test`). Result:
 > **82 PASS + 4 PROBE = 86 promoted → `v0.9/`**, split by source into
 > `eof_delimited.yaml` (from delimited-unclosed), `eof_positional_bare.yaml`
 > (from positional-and-bare-marker), `eof_composition.yaml` (from
@@ -19,9 +21,9 @@
 > `[…]`/`<…>`/string on the newline instead of at EOF). This is what lets the
 > promoted cases gate without per-case flags.
 >
-> **The 18 that REMAIN here are genuine grammar reds / open rulings** (verified
-> 2026-07-19, both backends agree — these are the grammar-phase to-do, NOT
-> fixture-bugs):
+> **The reds that REMAIN here are genuine grammar reds** (verified 2026-07-19,
+> both backends agree — these are the grammar-phase to-do, NOT fixture-bugs;
+> 18 as first triaged, 14 after the same-day resolutions below):
 > - **Identity / reference key at EOF (11)** — `du_id_*`,
 >   `eof_unclosed_identity_key_*`, `du_embed_identity_key_open_eof`,
 >   `du_id_in_embedded_eof`. `UnclosedIdentityKey` never fires; the value still

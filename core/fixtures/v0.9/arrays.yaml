@@ -117,6 +117,10 @@
     - [Text, " y"]
     - ElementEnd
 
+# PINS CURRENT BEHAVIOR at the newline (descriptive, not prescriptive): array
+# multi-line is deliberately undefined (CORE "Line-boundedness"); today a
+# newline closes the array with UnclosedArray, and a future ruling may make
+# arrays multi-line. The at-EOF warning itself is ruled (End of input).
 - id: array_unclosed_warns
   desc: an array with no closing bracket ends with an UnclosedArray warning; items kept
   udon: "|el :x [1 2\n"

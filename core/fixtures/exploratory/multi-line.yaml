@@ -4,15 +4,15 @@
 #
 #   *** THIS IS NOT A COMPLIANCE GROUP. NOTHING HERE IS RATIFIED. ***
 #
-# CORE ("Line-boundedness (current version)") locks two constructs MULTI-LINE
-# (|{...} embedded, ``` freeform) — those are OUT OF SCOPE here. For EVERY
-# OTHER delimited construct — <...> typing envelope, "..."/'...' strings,
-# [...] arrays, [...] identity keys, !{{...}} interpolation, ;{...} inline
-# comments, and !{...} / !{:kind:...} inline directive/raw — spanning a
-# newline is *deliberately undefined in this version*: "close them on the
-# line they open." What the parser does at an embedded newline "is not a
-# guarantee and varies — some warn, some silently tolerate it — and either
-# may change."
+# CORE ("Line-boundedness (current version)") locks three constructs
+# MULTI-LINE (|{...} embedded, ``` freeform, and — as of 2026-07-18 — the
+# <...> typing envelope) — those are OUT OF SCOPE here (the envelope's
+# multi-line cases graduated to v0.9/ when it settled). For EVERY OTHER
+# delimited construct — "..."/'...' strings, [...] arrays, [...] identity
+# keys, !{{...}} interpolation, ;{...} inline comments, and !{...} /
+# !{:kind:...} inline directive/raw — spanning a newline is *deliberately
+# undefined in this version*. What the parser does at an embedded newline
+# "varies by construct ... and either may change."
 #
 # THE INVERTED DISCIPLINE (read before editing):
 #   Normal fixtures assert DESIRED behavior from CORE; a mismatch is a parser
@@ -116,9 +116,9 @@
 # A. STRINGS  "..."  /  '...'   →   SILENTLY SPANS (no warning)
 #    A newline is captured as LITERAL content; the closing quote on a later
 #    line closes the string normally. Interior indentation is kept VERBATIM
-#    (no dedent). CORE.md is silent on string line-boundedness (already a
-#    known open: _wip/FINDINGS.md §1.1, TODO-SPEC-CORE) — the parser's de
-#    facto answer is "multi-line, newline = content."
+#    (no dedent). CORE "Line-boundedness" now rules string multi-line
+#    DELIBERATELY UNDEFINED (the current parser spans; "either may change") —
+#    these record the current spanning behavior.
 # ===========================================================================
 
 - id: ml_str_closer_next_line
@@ -200,9 +200,10 @@
   root_only: true
   # CURRENT (exploratory, not ratified): line-bound — newline ≡ EOF for the
   # array; "2]" (indented under el) parses as prose.
-  # ambiguity: this is the current-parser answer to the OPEN UX question
-  # "are arrays multi-line?" (_wip/FINDINGS.md, TODO-EOF-refactor "Open
-  # work"). If arrays become multi-line, this flips to a clean 2-item array.
+  # ambiguity: this is the current-parser answer to the OPEN question
+  # "are arrays multi-line?" (deliberately undefined — CORE Line-boundedness;
+  # settling it is tracked in spec/TODO-SPEC-CORE.md). If arrays become
+  # multi-line, this flips to a clean 2-item array.
   events:
     - ElementStart
     - [Name, "el"]
@@ -237,50 +238,14 @@
 
 
 # ===========================================================================
-# C. TYPING ENVELOPE  <...>   →   MULTI-LINE (2026-07-18)
-#    <...> now SPANS newlines and closes only on the matching '>' or EOF —
-#    uniform with strings/embeds, no longer a line-bound special case. It was
-#    extracted from typed_value into its own /envelope delimited function
-#    (content-first; `|unclosed TypeEnvelope`). Multi-line is still
-#    CORE-"deliberately undefined", so these record CURRENT behavior. The
-#    captured lexeme keeps the opening '<' and the interior newlines verbatim.
+# C. TYPING ENVELOPE  <...>   →   GRADUATED (2026-07-19)
+#    The envelope's multi-line behavior SETTLED (CORE "Line-boundedness",
+#    2026-07-18: spans newlines, closes only on '>' or EOF), so its two cases
+#    here became DEFINED behavior and moved to the gating group:
+#    ml_env_spans_newline_closes_at_bracket → v0.9/typing_envelope.yaml
+#    (envelope_spans_newline); ml_env_never_closed_spans_to_eof →
+#    v0.9/eof_delimited.yaml (du_env_multiline_unclosed_eof).
 # ===========================================================================
-
-- id: ml_env_spans_newline_closes_at_bracket
-  desc: "newline inside <...> is content; the value spans to the '>' on line 2 — clean close"
-  udon: "|el :k <abc\n  def>"
-  root_only: true
-  # CURRENT (exploratory, not ratified): the envelope spans the newline (and the
-  # continuation indentation, verbatim) and closes at the '>' — BareValue
-  # "<abc\n  def>" + NoDialectsLoaded (content-first). Same shape as a multi-line
-  # string/embed.
-  # ambiguity: interior indentation is captured verbatim — a dedent policy, if
-  # ever wanted, is a dialect-layer concern (same open question as multi-line
-  # strings).
-  events:
-    - ElementStart
-    - [Name, "el"]
-    - [Attr, "k"]
-    - [BareValue, "<abc\n  def>"]
-    - [Warning, "NoDialectsLoaded"]
-    - ElementEnd
-
-- id: ml_env_never_closed_spans_to_eof
-  desc: "never-closed envelope spans every following line to EOF, then warns"
-  udon: "|el :k <a\nb\nc"
-  root_only: true
-  # CURRENT (exploratory, not ratified): with no '>', the envelope swallows
-  # "a\nb\nc" all the way to EOF (the multi-line footgun, shared with unclosed
-  # strings/interpolations), then UnclosedTypeEnvelope via the |unclosed
-  # force-unwind. Contrast the retired line-bound behavior, where "b"/"c" were
-  # separate prose lines.
-  events:
-    - ElementStart
-    - [Name, "el"]
-    - [Attr, "k"]
-    - [BareValue, "<a\nb\nc"]
-    - [Warning, "UnclosedTypeEnvelope"]
-    - ElementEnd
 
 
 # ===========================================================================
@@ -404,12 +369,11 @@
 
 # ===========================================================================
 # G. INLINE DIRECTIVE  !{directive ...}   →   spans (per-line Text args) when
-#    closed; ★ BUGGY when unclosed.
+#    closed; unclosed-at-EOF now warns correctly (UnclosedInlineDirective —
+#    the old wrong-code/doubled-arg bugs were fixed 2026-07-18).
 #    CLOSED across lines: each line becomes a separate Text argument, closer
-#    } on a later line closes it. This "works" but is undefined.
-#    UNCLOSED: two DIFFERENT anomaly shapes depending on a trailing newline,
-#    both wrong — see the ★ BUG probes. (Model gap: no UnclosedInlineDirective
-#    code exists — _wip/FINDINGS.md §1.2 / L3.)
+#    } on a later line closes it. This "works" but the SPANNING itself is
+#    deliberately undefined — which is why these stay in the sandbox.
 # ===========================================================================
 
 - id: ml_dir_closed_next_line
@@ -474,10 +438,12 @@
 
 
 # ===========================================================================
-# H. INLINE RAW  !{:kind: ...}   →   spans when closed; ★ BUGGY when unclosed
-#    CLOSED across lines: RawContent keeps the embedded newline; brace-counted
-#    closer } on a later line closes it.
-#    UNCLOSED: ★ ALL raw content is DROPPED and NO warning is emitted.
+# H. INLINE RAW  !{:kind: ...}   →   spans when closed (undefined). The old
+#    unclosed-at-EOF bugs (body dropped, no warning) were fixed 2026-07-18
+#    (`|unclosed InlineRaw` + the RawContent sub-scan); the single-line
+#    unclosed case is now DEFINED and gated at
+#    v0.9/eof_recovery.yaml::eof_unclosed_inline_raw, so it left this
+#    sandbox. Only the multi-line spanning below remains undefined.
 # ===========================================================================
 
 - id: ml_raw_closed_next_line
@@ -498,23 +464,6 @@
     - DirectiveEnd
     - ElementEnd
 
-# FIXED 2026-07-18 (was ★ BUG: dropped the entire raw body + emitted no
-# warning). Now correct keep-everything: RawContent "abc" then Warning
-# UnclosedInlineRaw — the raw body is a CONTENT sub-scan (`sameline_raw_body`,
-# `|unclosed InlineRaw`; commit 071f140). This input is single-line (no
-# spanning), so it is fully DEFINED now — a candidate to graduate into a v0.9
-# gating fixture; recorded here meanwhile.
-- id: ml_raw_unclosed
-  desc: "unclosed !{:kind: ...} at EOF keeps its body + warns UnclosedInlineRaw"
-  udon: "|p !{:json: abc"
-  root_only: true
-  events:
-    - ElementStart
-    - [Name, "p"]
-    - DirectiveStart
-    - [Name, "json"]
-    - [Raw, ""]
-    - [RawContent, "abc"]
-    - [Warning, "UnclosedInlineRaw"]
-    - DirectiveEnd
-    - ElementEnd
+# (ml_raw_unclosed removed 2026-07-19: single-line input — out of this
+#  sandbox's multi-line scope — and its exact input is gated at
+#  v0.9/eof_recovery.yaml::eof_unclosed_inline_raw.)

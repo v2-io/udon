@@ -2,9 +2,10 @@
 # the bare-marker family. Lives in _wip/ (sibling of v0.9/), so the harness
 # does NOT run these; Joseph verifies + merges into v0.9/.
 #
-# Design of record: spec/TODO-EOF-refactor.md. Governing CORE sections:
-# "End of input (EOF)", "Anomaly posture", "Warning codes", "Marker
-# Recognition", "Head Position", "Escape (\)", "Attributes", "Hierarchy".
+# Governing CORE sections (now normative; the design record is archived at
+# _archive/TODO-EOF-refactor.md): "End of input (EOF)", "Anomaly posture",
+# "Warning codes", "Marker Recognition", "Head Position", "Escape (\)",
+# "Attributes", "Hierarchy".
 #
 # METHOD (per brief): every `events:` block is derived from CORE text, NEVER
 # from parser output. The parser was run ONLY to confirm current red/green

@@ -105,3 +105,19 @@
     - [Integer, "3"]
     - ArrayEnd
     - ElementEnd
+
+# Multi-line (settled 2026-07-18; graduated from exploratory/multi-line.yaml
+# once the behavior became defined): a newline inside <...> is content; the
+# value closes at the matching '>'. Interior indentation is captured verbatim
+# for now — a dedent policy, if ever wanted, is a dialect-layer concern.
+- id: envelope_spans_newline
+  desc: newline inside <...> is content; the value closes at the '>' on line 2
+  udon: "|el :k <abc\n  def>"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "el"]
+    - [Attr, "k"]
+    - [BareValue, "<abc\n  def>"]
+    - [Warning, "NoDialectsLoaded"]
+    - ElementEnd

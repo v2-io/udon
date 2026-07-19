@@ -282,10 +282,11 @@
     - ArrayEnd
     - ElementEnd
 
-# ⚠ Envelope row inside the array row. Warning-before-value order follows the
-# envelope convention (typing_envelope.yaml / eof_unclosed_envelope).
+# Envelope row inside the array row — content-first (uniform emission order;
+# the envelope's old warning-first order was retired with the /envelope
+# extraction, e377585), then the array's warning + ArrayEnd, innermost-first.
 - id: eof_unclosed_envelope_in_unclosed_array
-  desc: "⚠ EOF inside <...> inside [...] — envelope warning, then the array error"
+  desc: "EOF inside <...> inside [...] — envelope warning, then the array warning"
   udon: "|el :xs [<5m"
   root_only: true
   events:
@@ -300,25 +301,21 @@
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# <...> typing envelope: single-line, warning-recovered (CORE "Explicit
-# Typing": a newline before the matching > ends the value there — captured
-# text passed through as a string + Warning UnclosedTypeEnvelope; same at
-# EOF per the EOF table).
+# <...> typing envelope: MULTI-LINE (settled 2026-07-18 — spans newlines,
+# closes only on the matching '>' or EOF; CORE "Explicit Typing"), interim
+# string pass-through. Unclosed at EOF: captured text + UnclosedTypeEnvelope,
+# CONTENT-FIRST like every delimited construct (the old warning-first order
+# was retired with the /envelope extraction, e377585).
 # ---------------------------------------------------------------------------
 
-# ⚠ Three readings chosen where CORE is silent on event-level detail:
-# (1) payload — "captured text as string" is encoded as the raw lexical
-#     capture INCLUDING the opening `<` ("<2026-07"), consistent with the
-#     completed-envelope pass-through keeping the full `<...>` form and
-#     with keep-everything;
-# (2) event kind — BareValue, matching the completed-envelope interim
-#     encoding in typing_envelope.yaml;
-# (3) no NoDialectsLoaded alongside — the envelope never completed, so no
-#     value was offered to dialect dispatch; the single UnclosedTypeEnvelope
-#     warning carries the anomaly. Ordering follows the EOF table's
-#     "captured content + warning" (content first), whereas completed
-#     envelopes put NoDialectsLoaded BEFORE the value — flag if that
-#     asymmetry should be unified.
+# Event-level readings, since confirmed by the rulings + pinned by fixtures:
+# (1) payload — the raw lexical capture INCLUDING the opening `<` ("<2026-07"),
+#     consistent with the completed-envelope pass-through and keep-everything;
+# (2) event kind — BareValue, matching the completed-envelope interim encoding
+#     in typing_envelope.yaml;
+# (3) UnclosedTypeEnvelope INSTEAD of NoDialectsLoaded — the envelope never
+#     completed, so nothing was offered to dialect dispatch (a one-sentence
+#     CORE mention is tracked in spec/TODO-SPEC-CORE.md).
 - id: eof_unclosed_envelope
   desc: EOF inside <...> — captured text as string + UnclosedTypeEnvelope warning
   udon: "|el :when <2026-07"
