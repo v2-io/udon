@@ -171,9 +171,26 @@ table row is more committed than the spec actually is.
   dynamics case). This converts the spike from analysis into a working
   generation foundation and demonstrates the north-star (descent auto-supplies
   EOF + derived codes) end-to-end.
-- **Still open (clear + de-risked now):** delete the other delimited fns' hand
-  arms (interpolation/array/comment/raw/dir_body) → the ~75-arm deletion;
-  construct-name convention for the irregular codes (embed_content→Embedded,
-  freeform→Unterminated); migrate the wrong expects_char Error+enum path onto
-  this Warning path (B-5); the positional inject-and-run (gap-9). Benchmark pair
-  owed before merge (EOF cold-path, expected ~nil).
+- **DELIMITED family generalized (committed de41b27):** deleted interpolation
+  (`}}` multi-byte) + array (`]` bracket) hand arms too — auto-generated with
+  correct derived codes. Dropped the `expects_char.is_none()` guard so ALL
+  delimited fns use the Warning force-unwind (retires the wrong expects_char
+  Error+enum path — B-5 fixed for interpolation). quoted+interp+array proven.
+- **BOTH HALVES NOW WORK — positional gap-9 FIXED (committed 2f2522b).** The
+  disciplined descent semantic Joseph pointed at: **EOF ≡ newline + maximal
+  dedent.** A positional state with no `|eof` arm, no `\n` case, a
+  non-self-looping `default` now RUNS that default at EOF (chains to the
+  emitting state) instead of the INTERNAL bare-return that dropped content.
+  New `state.eof_run_default` + template `{% elif %}` branch. Verified: the
+  gap-9 silent-drop family keeps content (`|e :x +`→BareValue("+"),
+  `|e :x abc :`→Text("abc :"), etc.). **Gate 1/478, no regressions**, full
+  suite otherwise green. So descent now auto-supplies BOTH halves: delimited
+  force-unwind + positional fall-through.
+- **Still open (clear + de-risked):** (1) extend `eof_run` to also reuse the
+  `\n` arm → delete the ~55 redundant positional content-emit `|eof` arms (the
+  "terminal behavior expressed once" cleanup — the grammar-discipline story);
+  (2) construct-name code convention → delete the irregular delimited arms
+  (embed_content:Text→Embedded, freeform→Unterminated, inline comment/raw/dir)
+  — a vocabulary decision (CORE line 39 anticipates the normalization);
+  (3) partial-closer restoration (B-3) + the positional-tail carve-out is
+  already honored (freeform post_close keeps its hand arm). Benchmark: running.

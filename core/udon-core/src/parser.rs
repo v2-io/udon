@@ -2700,7 +2700,7 @@ impl<'a> Parser<'a> {
                 }
                 State::PostValue => {
                     if self.eof() {
-                        return 0;
+                    return result;
                     }
                     match self.peek() {
                         Some(b' ' | b'\t') => {
@@ -3774,7 +3774,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
@@ -3894,9 +3894,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Items => {
                     if self.eof() {
-                        on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
-                        on_event(Event::ArrayEnd { span: self.span() });
-                        return;
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedArray"), span: self.span() });
+                    on_event(Event::ArrayEnd { span: self.span() });
+                    return;
                     }
                     match self.peek() {
                         Some(b']') => {
@@ -3929,10 +3929,6 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         loop {
-            if self.eof() {
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return;
-            }
                     on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
                     return;
         }
@@ -5428,8 +5424,7 @@ impl<'a> Parser<'a> {
                 }
                 State::Vafter => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
@@ -5592,8 +5587,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
@@ -5727,8 +5721,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
-                        on_event(Event::Error { code: ParseErrorCode::Unclosed, span: self.span() });
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
@@ -5929,7 +5922,7 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
-                        return;
+                    return;
                     }
                     match self.peek() {
                         Some(b'\n') => {

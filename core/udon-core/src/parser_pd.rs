@@ -5804,11 +5804,6 @@ impl PushdownParser {
                             continue 'st;
                         }
                         EmitBareValueSt::Main => {
-                            if self.pos >= self.buf.len() {
-                                if !self.finished { self.stack.push(Frame::EmitBareValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
-                                continue 'run;
-                            }
                             { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                             continue 'run;
                         }
@@ -5827,7 +5822,6 @@ impl PushdownParser {
                         TypedValueSt::Main => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6308,7 +6302,6 @@ impl PushdownParser {
                         TypedValueSt::NumZero => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Integer { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6372,7 +6365,6 @@ impl PushdownParser {
                         TypedValueSt::NumDec => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Integer { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6432,7 +6424,6 @@ impl PushdownParser {
                         TypedValueSt::NumHex => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Integer { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6466,7 +6457,6 @@ impl PushdownParser {
                         TypedValueSt::NumOct => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Integer { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6500,7 +6490,6 @@ impl PushdownParser {
                         TypedValueSt::NumBin => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Integer { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6534,7 +6523,6 @@ impl PushdownParser {
                         TypedValueSt::NumFloatFrac => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Float { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6584,7 +6572,6 @@ impl PushdownParser {
                         TypedValueSt::NumFloatExp => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Float { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6622,7 +6609,6 @@ impl PushdownParser {
                         TypedValueSt::NumFloatExpDigits => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::Float { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6667,7 +6653,6 @@ impl PushdownParser {
                         TypedValueSt::NumRationalDenom => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6724,7 +6709,6 @@ impl PushdownParser {
                         TypedValueSt::NumComplexImag => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6774,7 +6758,6 @@ impl PushdownParser {
                         TypedValueSt::NumComplexImagFrac => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6819,7 +6802,6 @@ impl PushdownParser {
                         TypedValueSt::NumComplexImagExp => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6857,7 +6839,6 @@ impl PushdownParser {
                         TypedValueSt::NumComplexImagExpD => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }
@@ -6912,7 +6893,6 @@ impl PushdownParser {
                                 }
                                 None => {
                                     if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                    { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                     self.ret = 0;
                                     continue 'run;
                                 }
@@ -6936,7 +6916,6 @@ impl PushdownParser {
                         TypedValueSt::StrBoundary => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
-                                { let (c, sp) = self.take_capture(); on_event(StreamEvent::BareValue { content: c, span: sp }); }
                                 self.ret = 0;
                                 continue 'run;
                             }

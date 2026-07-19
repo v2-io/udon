@@ -102,7 +102,6 @@
 ; MUST be void - uses caller's MARK, not its own
 |function[emit_bare_value]
   |state[:main]
-    |eof                      | BareValue(USE_MARK)              |return
     |default                  | BareValue(USE_MARK)              |return
 
 
@@ -111,7 +110,6 @@
 ; caller's element loop enters BODY mode).
 |function[typed_value:INT]  :space_term :bracket  | MARK | depth = 0 | result = FIN
   |state[:main]
-    |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
@@ -225,7 +223,6 @@
 
   ; === Numbers (self-terminating: space ends them in every mode) ===
   |state[:num_zero]
-    |eof                      | Integer(USE_MARK)                |return
     |c['xX']                  | ->                               |>> :num_hex
     |c['oO']                  | ->                               |>> :num_oct
     |c['bB']                  | ->                               |>> :num_bin
@@ -239,7 +236,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_dec]
-    |eof                      | Integer(USE_MARK)                |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['.']                   | ->                               |>> :num_float_frac
     |c['eE']                  | ->                               |>> :num_float_exp
@@ -252,7 +248,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_hex]
-    |eof                      | Integer(USE_MARK)                |return
     |c[<0-9 a-f A-F '_'>]     | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
     |c[' ']                   | Integer(USE_MARK)                |return
@@ -260,7 +255,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_oct]
-    |eof                      | Integer(USE_MARK)                |return
     |c[<0-7 '_'>]              | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
     |c[' ']                   | Integer(USE_MARK)                |return
@@ -268,7 +262,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_bin]
-    |eof                      | Integer(USE_MARK)                |return
     |c[<0-1 '_'>]              | ->                               |>>
     |c['\n']                  | Integer(USE_MARK)                |return
     |c[' ']                   | Integer(USE_MARK)                |return
@@ -276,7 +269,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_float_frac]
-    |eof                      | Float(USE_MARK)                  |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['eE']                  | ->                               |>> :num_float_exp
     |c['i']                   | -> | Complex(USE_MARK)           |return
@@ -287,7 +279,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_float_exp]
-    |eof                      | Float(USE_MARK)                  |return
     |c['+-']                  | ->                               |>> :num_float_exp_digits
     |c[<0-9>]                  |                                  |>> :num_float_exp_digits
     |c['\n']                  | Float(USE_MARK)                  |return
@@ -296,7 +287,6 @@
     |default                  |                                  |>> :string
 
   |state[:num_float_exp_digits]
-    |eof                      | Float(USE_MARK)                  |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['+-']                  | ->                               |>> :num_complex_sign
@@ -307,7 +297,6 @@
 
   ; === Rational: integer/integer + r (e.g., 1/3r) — provisional ===
   |state[:num_rational_denom]
-    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['r']                   | -> | Rational(USE_MARK)          |return
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -320,7 +309,6 @@
     |c[<0-9>]                 |                                  |>> :num_complex_imag
     |default                  |                                  |>> :string
   |state[:num_complex_imag]
-    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['.']                   | ->                               |>> :num_complex_imag_frac
     |c['eE']                  | ->                               |>> :num_complex_imag_exp
@@ -330,7 +318,6 @@
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
   |state[:num_complex_imag_frac]
-    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['eE']                  | ->                               |>> :num_complex_imag_exp
     |c['i']                   | -> | Complex(USE_MARK)           |return
@@ -339,7 +326,6 @@
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
   |state[:num_complex_imag_exp]
-    |eof                      | BareValue(USE_MARK)              |return
     |c['+-']                  | ->                               |>> :num_complex_imag_exp_d
     |c[<0-9>]                 |                                  |>> :num_complex_imag_exp_d
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -347,7 +333,6 @@
     |c[:bracket]              | BareValue(USE_MARK)              |return
     |default                  |                                  |>> :string
   |state[:num_complex_imag_exp_d]
-    |eof                      | BareValue(USE_MARK)              |return
     |c[<0-9 '_'>]             | ->                               |>>
     |c['i']                   | -> | Complex(USE_MARK)           |return
     |c['\n']                  | BareValue(USE_MARK)              |return
@@ -357,7 +342,6 @@
 
   ; === Bare string (anything not keyword/number) ===
   |state[:string]
-    |eof                      | BareValue(USE_MARK)              |return
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[' ']                   |                                  |>> :string_space
     |c[:bracket]              | BareValue(USE_MARK)              |return
@@ -368,7 +352,6 @@
 
   ; Bare-string boundary: same shape as the keyword boundary (same codes).
   |state[:str_boundary]
-    |eof                      | BareValue(USE_MARK)              |return
     |c[' \t']                 | ->                               |>>
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
