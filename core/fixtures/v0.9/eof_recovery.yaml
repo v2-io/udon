@@ -497,7 +497,7 @@
     - ElementEnd
 
 - id: eof_unclosed_interpolation_value_position
-  desc: EOF inside a whole-value interpolation — captured expression + error
+  desc: EOF inside a whole-value interpolation — captured expression + warning
   udon: "|el :cost !{{price"
   root_only: true
   events:
@@ -506,6 +506,40 @@
     - [Attr, "cost"]
     - [Interpolation, "price"]
     - [Warning, "UnclosedInterpolation"]
+    - ElementEnd
+
+# Inline dynamics forms at EOF (single-line): the brace-delimited `!{name …}`
+# directive and `!{:kind: …}` raw keep their content and warn with their own
+# construct-name codes (descent `|unclosed <Name>` + caller-owns-name; the block
+# `!name` / `!:lang:` forms are positional, never "unclosed"). Multi-line
+# spanning stays undefined — see fixtures/exploratory/multi-line.yaml.
+- id: eof_unclosed_inline_directive
+  desc: "EOF inside !{name …} — args kept + UnclosedInlineDirective; DirectiveEnd flushes"
+  udon: "|p !{if x"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "if"]
+    - [Text, "x"]
+    - [Warning, "UnclosedInlineDirective"]
+    - DirectiveEnd
+    - ElementEnd
+
+- id: eof_unclosed_inline_raw
+  desc: "EOF inside !{:kind: …} — raw body kept + UnclosedInlineRaw; DirectiveEnd flushes"
+  udon: "|p !{:json: abc"
+  root_only: true
+  events:
+    - ElementStart
+    - [Name, "p"]
+    - DirectiveStart
+    - [Name, "json"]
+    - [Raw, ""]
+    - [RawContent, "abc"]
+    - [Warning, "UnclosedInlineRaw"]
+    - DirectiveEnd
     - ElementEnd
 
 - id: eof_directive_line_no_newline
