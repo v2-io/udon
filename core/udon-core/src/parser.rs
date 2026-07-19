@@ -3705,6 +3705,7 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.mark();
                     self.advance();
                     self.set_term(0);

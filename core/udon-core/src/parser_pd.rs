@@ -5927,6 +5927,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    sink!(self, on_event, StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
                                     self.mark();
                                     self.advance_or_pend();
                                     self.set_term(0);

@@ -56,7 +56,7 @@ torture) and densifying edge/combination coverage.
   Text events exactly when the first does NOT end in `\n` — applied
   symmetrically to actual AND expected. No spans, no source consultation
   (the old span-gap fold was the compensator that masked the
-  newline-dropping wire — see `_wip/HARNESS-AUDIT.md`). D3 tolerance: the
+  newline-dropping wire — see `../../_archive/HARNESS-AUDIT-2026-07.md`). D3 tolerance: the
   variation machinery re-terminates lines, so a variation's final
   text-bearing event also matches expected+`"\n"` (suppressing the captured
   newline that is really an EOF stand-in). These are HARNESS conventions —

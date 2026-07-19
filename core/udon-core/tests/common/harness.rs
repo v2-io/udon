@@ -50,7 +50,7 @@ pub fn asserts_empty_text(case: &TestCase) -> bool {
 /// Rhythm-independence fold, derived ENTIRELY from event content — no spans,
 /// no source (the old span-gap/source consultation was the compensator that
 /// masked the newline-dropping wire; see spec/TODO-TEXT-WIRE.md +
-/// _wip/HARNESS-AUDIT.md). Since line terminators are text, adjacent Text
+/// _archive/HARNESS-AUDIT-2026-07.md). Since line terminators are text, adjacent Text
 /// events merge exactly when the first does NOT end in '\n' — a same-line
 /// split (escape, packet boundary) merges; a line boundary stands. Empty
 /// Texts fold away (authorized concatenation; exact cases opt out via

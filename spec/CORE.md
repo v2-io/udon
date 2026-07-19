@@ -665,9 +665,10 @@ Attr "the-attribute" / BareValue "<val>"       (+ NoDialectsLoaded warning)
 Warning (AttributeValueExtendedByTrailingText)
 Attr "the-attribute" / Text "more text on the same line"
 CommentStart / Text " oopsie" / CommentEnd
-Attr "the-attribute" / Text "some more text"
+Attr "the-attribute" / Text "\n"
+Attr "the-attribute" / Text " some more text\n"
 Attr "the-attribute" / Text "even more text and then "
-Attr "the-attribute" / EmbeddedStart / Name "a" / Text "hello" / EmbeddedEnd
+EmbeddedStart / Name "a" / Text "hello" / EmbeddedEnd / Text "\n"
 ...
 ```
 
@@ -676,7 +677,7 @@ Consequences:
 - **No new event types.** There is no `AttrStart`/`AttrEnd`; consumers aggregate repeated keys exactly as they already do for stacking (host views: `attr` = last, `attr_all` = list).
 - **Node value vs flag+child stays unambiguous**: `Attr "a"` followed by `ElementStart` means the element *is* the value; `Attr "a?"` / `BoolTrue` / `ElementStart` means the flag settled and the element is a child.
 - **The only arrays on the wire are literal `[...]`** -- "segment arrays" have no wire form of their own; segmentation is repetition. Provenance (one declaration vs several) is recoverable from spans and interleaved warnings when a host cares.
-- **Segment granularity carries the same non-guarantee as Text granularity** (see Parser behavior notes): fixtures express segments maximally collapsed; the harness folds.
+- **Segment granularity carries the same non-guarantee as Text granularity** (see Parser behavior notes): a segment is never guaranteed to arrive whole; reconstruction is by the same concatenation contract.
 
 *(Working shape: the exact segmentation rhythm is expected to be refined by iterating the grammar and fixtures together -- the wire is deliberately flexible here; see the fixture-authoring posture in `core/fixtures/README.md`.)*
 

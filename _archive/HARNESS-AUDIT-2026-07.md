@@ -1,4 +1,9 @@
 # Adversarial harness audit — comparison-layer knowledge & compensators
+*(ARCHIVED 2026-07-19, same day: every finding was resolved by the text-wire
+recast — the span-gap fold and fabricated-space joiner are deleted, the
+`expects_multiline_content` proxy re-scoped, BlankLine is a tree node, and
+the exploratory recordings were re-recorded post-fold. Kept as the record of
+what the compensators were and how they masked the wire defect.)*
 *(2026-07-19; fresh-eyes Sonnet-5 audit commissioned for the P0 text-wire
 recast — see `spec/TODO-TEXT-WIRE.md`. Lens: every place the test/comparison
 layer rewrites, drops, reorders, tolerates, or consults anything beyond the

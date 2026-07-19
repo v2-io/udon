@@ -166,6 +166,19 @@ never guaranteed complete") + this contract.
   reconstruction — a labeled newline-only line; the S6 AST policy
   (interior → newline, edges → ornamentation) stands unchanged.
 
+### Landed — the text-wire recast (2026-07-19, same day it was found)
+The third-batch contract is **implemented end to end** (grammar both
+backends, harness, all 25 fixture files re-derived spec-first, AST): Text /
+RawContent events carry their line terminators; reconstruction is pure
+in-order concatenation (`BlankLine` ≡ `"\n"`); the harness fold is
+content-derived (the source-consulting span-gap fold — the compensator that
+had masked the defect — is deleted, audit archived at
+`../../_archive/HARNESS-AUDIT-2026-07.md`); the AST's fabricated-space
+joiner is deleted and `BlankLine` is a tree node. Gate green (variations
+included), differential green, bench **+5–8% improved**. Design of record:
+[`../TODO-TEXT-WIRE.md`](../TODO-TEXT-WIRE.md). CORE-text example polish +
+the S-batch landings remain (`../TODO-SPEC-CORE.md`).
+
 ### Ruled (2026-07-19, second batch — the standing-silences clearout; do not re-open)
 - **S1 — element suffixes stack**: `|field?!` ≡ `|field :'$?' true :'$!' true`
   (desugaring implies it; today a second suffix half-parses to prose — grammar

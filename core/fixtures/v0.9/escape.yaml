@@ -102,8 +102,10 @@
 # ---------------------------------------------------------------------------
 # Text events carry NO completeness guarantee (ratified 2026-07-15): an
 # escape (or a chunk boundary) may split a line's prose into several Texts.
-# The harness collapses same-line adjacent Texts before comparing, so these
-# fixtures express text maximally collapsed, independent of emission rhythm.
+# The harness's content-derived fold (spec/TODO-TEXT-WIRE.md; merges adjacent
+# Texts whenever the first doesn't end in "\n") collapses these before
+# comparing, so these fixtures express text maximally collapsed, independent
+# of emission rhythm.
 
 - id: escape_inline_element_opener
   desc: backslash before an inline element opener makes it literal

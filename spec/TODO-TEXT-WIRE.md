@@ -107,7 +107,7 @@ or inline form owns the line's end.
   changes the final text event by one byte (`"x"` → `"x\n"`) — the
   comparison needs a defined final-terminator tolerance (decision D3), or
   those variations assert the appended form.
-- **AUDIT FINDINGS (2026-07-19, `core/fixtures/_wip/HARNESS-AUDIT.md`):**
+- **AUDIT FINDINGS (2026-07-19, `_archive/HARNESS-AUDIT-2026-07.md`):**
   (1) `expects_multiline_content`'s `c.contains('\n')` variation-skip proxy
   MUST be re-scoped to delimited-capture kinds before the wire fix — else
   it silently skips variation coverage for nearly every prose fixture the

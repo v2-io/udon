@@ -213,117 +213,55 @@ are archived — fully drained into the per-area TODO lanes on 2026-07-16 —
 at [_archive/REVIEW-JULY-2026.md](_archive/REVIEW-JULY-2026.md) and
 [_archive/REBOOT-PLAN.md](_archive/REBOOT-PLAN.md).
 
-**Active work (2026-07-18) — CORE `0.9.0-alpha.2`, the EOF recast.** The biggest
-change since alpha.1: end-of-input and its edges were reconceived as **positional
-vs delimited** constructs with **two-level severity** (each per-construct
-`Unclosed*` = a *Warning*, content kept; the document-level "incomplete input" is
-a separate *result*, not a wire event). CORE's "End of input" / "Anomaly posture"
-/ "Line-boundedness" / "Emission order" sections are rewritten; the design of
-record is [`_archive/TODO-EOF-refactor.md`](_archive/TODO-EOF-refactor.md)
-(archived 2026-07-19 — realized; CORE is normative) and **the full
-ruling ledger is [`spec/msc/CHANGELOG.md`](spec/msc/CHANGELOG.md) (0.9.0-alpha.2
-"Ruled")** — every EOF decision is there (line-boundedness = multi-line
-deliberately undefined; emission order content→warning→End; `$partial-key` for
-unclosed keys; inline `!{…}` codes; empty/whitespace brackets; root-`:x`
-undefined; EOF≡eol edges; …). Warning-code **spellings are provisional** pending
-descent's auto-derivation (see the CHANGELOG guardrail) — do not cement them.
+**Where things stand (2026-07-19):** CORE is at **`0.9.0-alpha.2`** and the
+reference parser is **fully green** on the active compliance group (both
+backends, `pushdown_differential` proven), after three major landings across
+2026-07-17→19 — newest first:
 
-**Update (2026-07-18) — the EOF *generation* landed (out of the fixtures-first
-order, by explicit call).** descent now auto-supplies both EOF halves — delimited
-**force-unwind** (keep content + `Warning(Unclosed<Construct>)` + End, from a
-positional/delimited classification it computes) and positional **EOF ≡ newline**
-(a state reuses its own `\n`/`default` arm) — so the grammar stops hand-writing
-`|eof` arms (~90 → ~56). This **fixed** the embed any-phase-drop, the number-state
-silent-drops, and the bare-marker-at-EOF drops; **normalized** `UnterminatedFreeform`
-→ `UnclosedFreeform`; and the compliance gate improved 2 → 1. Design record:
-[`_archive/eof-descent-classification.md`](_archive/eof-descent-classification.md)
-(archived 2026-07-19);
-shipped in [`tools/descent/CHANGELOG.md`](tools/descent/CHANGELOG.md); residuals in
-[`core/TODO-CORE-PARSING.md`](core/TODO-CORE-PARSING.md) +
-[`tools/descent/TODO-DESCENT.md`](tools/descent/TODO-DESCENT.md) (the `|unclosed`
-directive; inline-raw/-directive content-keeping + codes). Both parser backends
-are at parity (recursive + pushdown, `pushdown_differential` green). The
-alpha.2 **fixture finalization** now reconciles against this new behavior +
-vocabulary rather than the pre-spike output.
+1. **The text-wire recast** (2026-07-19, found and fixed the same day): the
+   event wire now carries line terminators as **text** — the document's text
+   material reconstructs by *pure in-order concatenation* of the text-bearing
+   events (`BlankLine` ≡ `"\n"`), with no spans and no source access. The
+   fixture harness's source-consulting fold and the AST's fabricated-space
+   joiner (the two compensators that had masked the newline-dropping wire)
+   are deleted; `BlankLine` is a real tree node; bench **+5–8% improved**.
+   Design of record: [`spec/TODO-TEXT-WIRE.md`](spec/TODO-TEXT-WIRE.md);
+   compensator audit: `_archive/HARNESS-AUDIT-2026-07.md`.
+2. **The alpha.2 fixture densification + red burn-down** (2026-07-19): the
+   104-case EOF harvest triaged and promoted; the identity-key family landed
+   via a new descent mechanism (**HOLD/RELEASE** late-decided-prologue
+   emission — `$key` vs `$partial-key` decided at the close); the nameless
+   `!{` and interpolation partial-closer fixed. **One** grammar red remains
+   (`;{`-in-blob), folded into the `*{` boundary rewrite below.
+3. **The EOF recast** (2026-07-17/18): end-of-input reconceived as
+   positional/delimited with two-level severity; descent **generates** both
+   EOF halves from a classification of the grammar. Design records archived:
+   [`_archive/TODO-EOF-refactor.md`](_archive/TODO-EOF-refactor.md) +
+   [`_archive/eof-descent-classification.md`](_archive/eof-descent-classification.md).
 
-*Where it stands, and what's next (READ THIS if you're picking up the work):*
-**The compliance gate is fully GREEN and CORE is finalized for the recast.** A
-later 2026-07-18 pass — Joseph reopened grammar/descent/spec, sequencing at the
-executor's discretion — resolved the harvest's headline reds *in the grammar*
-and closed the CORE gaps:
-- descent gained a **`|unclosed <Name>`** directive; **inline `!{…}` directive /
-  `!{:kind:…}` raw** at EOF now keep their content and derive
-  `UnclosedInlineDirective` / `UnclosedInlineRaw` (was: dropped body / wrong
-  code). The **sameline `!` guard** was completed (`|el :go? !:sh:` opens a child
-  raw block) — the last standing gate red.
-- **CORE finalized**: the array line-boundedness §66/§76 contradiction resolved,
-  the `UnclosedInline*` registry rows added, `$partial-key` documented,
-  references / interpolations blessed as array items, provisional-names note
-  corrected (codes now derive from the grammar).
+**Every decision is in the rulings ledger** —
+[`spec/msc/CHANGELOG.md`](spec/msc/CHANGELOG.md) `0.9.0-alpha.2` "Ruled"
+(three batches, 2026-07-17→19: EOF + severity; the standing-silences
+clearout S1–S6/C2; the text-wire contract D1–D4, the `*{`-reduce-to-text
+boundary principle, and the final-terminator disposition). **Do not
+re-open ruled items.**
 
-The exhaustive **fixture harvest** (104 draft cases) was triaged and
-**densified 2026-07-19**: the 86 green/probe cases were promoted from
-`core/fixtures/_wip/` into three new `v0.9/` files (`eof_delimited.yaml`,
-`eof_positional_bare.yaml`, `eof_composition.yaml`); backend parity was verified
-first-hand (recursive vs pushdown agree on every case) and the harness's
-variation-skip was generalized from an id-substring proxy to the semantic
-`Unclosed*`-in-expected-events signal. The `<…>` envelope's content-first
-emission order **landed** (commit `e377585`; extracted into its own multi-line
-`/envelope` delimited function, classifier MIXED=0). A **non-gating exploratory
-sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
-(run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
-The three "ruling-needed" cases were ruled and promoted, and the named
-inline-directive EOF gap (`!{inc`<EOF>) was **fixed** (both backends).
-**Update (2026-07-19, later): the red burn-down is COMPLETE but one.** The
-nameless `!{` (→ prose, EOF and EOL twins) and the interp partial-closer
-(`!{{a}` keeps `"a}"`) were grammar fixes; the 11 identity/reference-key reds
-landed via a new descent mechanism — **HOLD/RELEASE emission** (the `$key` vs
-`$partial-key` attr name is a late-decided prologue over the held value
-events; `|el[k`<EOF> now warns `UnclosedIdentityKey` and fails safe under
-`$partial-key`, cascades included). All promoted to `v0.9/`. **What remains**
-— one red: `;{`-in-blob, folded into the newly-RULED `*{`-reduce-to-text
-boundary rewrite (no brace form is ever a boundary marker — CHANGELOG
-2026-07-19; CORE text + grammar tracked in `spec/TODO-SPEC-CORE.md` +
-`core/TODO-CORE-PARSING.md`).
+**The queue to `core-v0.9.0`** (tag gating ruled 2026-07-19 — all four, in
+roughly this order):
 
-**The P0 text-wire recast LANDED (2026-07-19, same day it was found).** The
-event wire now carries line terminators as text: the document's text
-reconstructs by pure in-order concatenation of the events (no spans, no
-source) — the harness's source-consulting fold and the AST's fabricated-space
-joiner are deleted, BlankLine is a tree node, and the gate is green on the
-new contract (bench: +5–8% improved). Design of record:
-`spec/TODO-TEXT-WIRE.md`; audit: `core/fixtures/_wip/HARNESS-AUDIT.md`.
-
-Current state (2026-07-16):
-- **CORE 0.8.0 released — first version with a compliant parser.** The
-  rebooted spec (escape unification, `<…>` typing, numbers/`0d`, identity
-  `key`/`traits`, `@`-inert, warning codes, references as selector tuples)
-  froze and `udon-core` passed its full compliance-fixture group in the same
-  cycle. Tag: `core-v0.8.0`; frozen group: `core/fixtures/v0.8/`. Canonical
-  current version: `spec/CORE-VERSION`.
-- **CORE `0.9.0-alpha.1` — the attribute-model reconception — is written,
-  ratified, and IMPLEMENTED** (2026-07-16): plain attrs always take a value;
-  flags are `:key?`; values may be nodes / text blobs / stacked segments;
-  uniform scan replaces block run-to-EOL; flat stacking wire (every `Attr`
-  carries one value; multiplicity = re-emitted `Attr`). The v0.9 fixture
-  group encodes the model and the parser passes it — gate GREEN
-  (`cd core && cargo test -p udon-core --test canonical compliance_gate`).
-  Rulings ledger: `spec/msc/CHANGELOG.md` (0.9.0-alpha.1 "Ruled"). Remaining before
-  a `core-v0.9.0` tag: fixture densification (EOF/Unclosed* cases, legacy
-  mining, edge combinations) and the residual editorial opens.
-- **The old world is set aside.** Pre-0.8 fixtures → `core/fixtures/legacy-pre-0.8/`
-  (frozen, mining source); pre-0.8 grammar →
-  `core/generator/udon-legacy-pre-0.8.descent.udon` + git tag `grammar-v0.7`.
-- **Live consumers are clean under 0.9** — a differential re-scan
-  (2026-07-16, both parsers, event streams diffed) found zero
-  errors/warnings across all six external documents; see `CONSUMERS.md`.
-
-Next: **fixture densification** now that the spec is settled — promote the
-already-green `_wip` cases into `v0.9/` (coverage) and broaden edge/combination
-coverage; the identity/reference-key EOF warning is the one remaining grammar
-residual; then the `core-v0.9.0` tag. (The alpha.2 EOF recast + the 2026-07-18
-grammar pass + the envelope extraction delivered the EOF work the 2026-07-16
-note called for; the gate is green.)
+1. **The `*{` boundary rewrite** — no inline brace form (`|{` `!{` `;{`) is
+   ever a boundary marker; brace forms commit text mode (ruled; clears the
+   last red). Spec-first: CORE text (`spec/TODO-SPEC-CORE.md`) → fixture
+   re-derivation → grammar (`core/TODO-CORE-PARSING.md`).
+2. **The S-batch CORE text landings** — suffix stacking, empty `|{}`,
+   interp-as-key, the blank-line/ornamentation model + final-terminator
+   disposition (three worked examples), warn-before-disallow Line-boundedness
+   phrasing (`spec/TODO-SPEC-CORE.md`, top item).
+3. **Legacy mining + densification pass** (`TODO-META.md` P0).
+4. Tag. Post-tag: AST error-reporting/diagnostics rework
+   (`core/TODO-PARSER.md`), descent parser-manifest drift-guard
+   (`tools/descent/TODO-DESCENT.md`), then the paths adjudication session
+   (`spec/msc/adjudication-2026-07-paths-and-silences.md`, prepared).
 
 ## How the work is organized
 

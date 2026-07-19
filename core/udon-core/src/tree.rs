@@ -907,7 +907,7 @@ fn push_text_chunk(buf: &mut String, chunk: &str) {
     // Pure concatenation — the wire carries line terminators as text (the
     // reconstruction contract, spec/TODO-TEXT-WIRE.md), so no separator is
     // ever fabricated. (The old heuristic space was byte-fabrication that
-    // compensated for the newline-dropping wire; see _wip/HARNESS-AUDIT.md.)
+    // compensated for the newline-dropping wire; see _archive/HARNESS-AUDIT-2026-07.md.)
     buf.push_str(chunk);
 }
 

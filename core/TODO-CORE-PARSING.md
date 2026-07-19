@@ -101,6 +101,15 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
       kept via no-TERM-until-`}}`-confirmed, so the EOF force-unwind's capture
       includes the consumed partial closer.)*
 
+- [ ] **Root-level nameless `!{` at EOL: terminator micro-gap** (accepted
+      residual of the text-wire recast, 2026-07-19). At document root,
+      `!{`<EOL> emits `Text "!{"` without its terminator (prose contexts emit
+      the D1 trailing `Text "\n"` via their post-inline states; the root's
+      shared `:eol` consumes it as geometry). One malformed edge; the clean
+      fix wants descent's line-discipline feature
+      (`../design/descent-experience-2026-07.md` #1) — fold into the `*{`
+      rewrite if convenient.
+
 - [ ] **Full XID validation for non-ASCII name starts (descent).** The
       documented conservative guard classifies non-ASCII lead bytes
       (0xC2–0xF4) as identifier-start without the `match_xid_start`

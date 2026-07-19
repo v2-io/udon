@@ -13,7 +13,7 @@ a submodule.
    current state, the map of co-located TODO lanes, per-area compliance,
    and how work propagates.
 2. **spec/CORE.md** — the authoritative language specification
-   (0.9.0-alpha.1 in progress; 0.8.0 released and tagged `core-v0.8.0` —
+   (0.9.0-alpha.2 in progress; 0.8.0 released and tagged `core-v0.8.0` —
    canonical version in `spec/CORE-VERSION`; changelog + rulings ledger in
    `spec/msc/CHANGELOG.md`).
 3. **The TODO lane for your area** (table in the README import below) —

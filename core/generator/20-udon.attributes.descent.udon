@@ -431,10 +431,11 @@
     |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |>> :tb_comment_nl
     |default                  |                                  |>> :main
 
-  ; D1: terminator-only Text after a comment that ends the blob line.
+  ; D1: terminator-only Text after a comment that ends the blob line —
+  ; re-attributed (block-attr-line terminators are value segments).
   |state[:tb_comment_nl]
     |eof                      |                                  |return
-    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
+    |c['\n']                  | Attr(USE_SAVED(akey)) | MARK | -> | TERM | Text(USE_MARK) |return
     |default                  |                                  |return
 
 
