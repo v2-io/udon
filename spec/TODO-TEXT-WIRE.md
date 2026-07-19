@@ -61,10 +61,15 @@ or inline form owns the line's end.
 ## Spec changes (CORE)
 
 1. Rewrite the **Text granularity** parser-behavior note into a **Text
-   Reconstruction** contract: the concatenation sentence above; the
-   text/geometry/annotation byte taxonomy; BlankLine ≡ labeled `"\n"`;
-   the annotation-terminator rule. Delete the harness source-gap language
-   from CORE (it describes the cheat).
+   Reconstruction** contract, and ONLY that (Joseph, 2026-07-19: "there
+   shouldn't be *anything* in the spec about fixtures"): (a) text may fire
+   as any number of splits — a Text event is never guaranteed to be the
+   complete text; (b) pure in-order concatenation reconstructs it (the
+   contract sentence above, with the taxonomy / BlankLine ≡ `"\n"` /
+   annotation-terminator rule). The current note's fixture/harness
+   sentences ("fixtures express text maximally collapsed… the harness
+   folds…") LEAVE CORE entirely — test-layer conventions live in
+   `core/fixtures/README.md`, never in the language contract.
 2. Fix the **multiline embedded** bullet ("consumers concatenate" now
    actually works) and **Automatic Prose Dedentation**'s streaming note.
 3. Make **Freeform**'s "preserved exactly" true (all-Text, terminators in).
