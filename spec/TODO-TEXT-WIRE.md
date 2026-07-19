@@ -1,0 +1,139 @@
+# TODO — the text-wire recast: newline-carrying Text (P0 SHOW-STOPPER)
+
+> **Status: DESIGN, awaiting Joseph's calls on the shortlist below; then
+> harness audit → fixtures-first rewrite → grammar sweep → CORE text.**
+> This is the design of record for fixing the project's highest-priority
+> defect (Joseph, 2026-07-19): *the event wire drops the document's
+> newlines.* Prose/freeform/comment/raw Text events exclude their line
+> terminators, so the parser's own output cannot reconstruct the document's
+> text — consumers were silently expected to re-inspect the source, and the
+> fixture harness's source-gap fold ENABLED the bug instead of catching it.
+> Every "keep-everything / no data left behind" claim was false at exactly
+> the byte that carries text's most cognition-load-bearing geometry.
+
+## The contract (the one sentence everything serves)
+
+**The document's text stream is reconstructable by pure in-order
+concatenation of the event stream's text-bearing events — no spans, no
+source, no gap inspection.** `fold(events): Text/RawContent → content;
+BlankLine → "\n"` yields the text. Anything less is the bug.
+
+## The model — text bytes vs geometry bytes
+
+Every input byte is exactly one of:
+
+- **Text bytes** — flowing content, line terminators *within* text
+  included. Always carried in text-bearing events, in source order.
+- **Geometry bytes** — structure: indentation (dedent-stripped or
+  embed-skipped), markers/sigils, consumed escapes (`\` itself), the
+  terminators of *pure-structure* lines (`|el :a 1`'s own newline, a block
+  comment's line). Never text; recoverable via spans (serializer/SourceInfo
+  territory, a different contract).
+- **Annotation bytes** — comment content. Carried in Comment events; never
+  carries the enclosing line's terminator (else stripping comments would
+  re-lose line boundaries — the disease reborn).
+
+**The terminator rule:** a line's terminator is a text byte iff the line
+contributed text-stream content — and it rides the *last text-bearing event
+of that line*, or a trailing terminator-only `Text "\n"` when an annotation
+or inline form owns the line's end.
+
+## Per-construct enumeration (the sweep's checklist)
+
+| Site | New wire | Note |
+|---|---|---|
+| Block prose line | `Text "content\n"` | final line w/o source newline → no `\n` (EOF ≡ newline: structural, and the byte truly absent) |
+| Sameline prose tail | `Text "tail\n"` | same rule |
+| Whitespace past content-base | `Text "  \n"` | Joseph's S6 example reconstructs by pure concat |
+| Blank / non-protruding ws line (prose ctx) | `BlankLine` | **defined as contributing `"\n"`** to reconstruction — a *labeled* newline-only line; S6 AST policy (interior → newline, edges → ornamentation) unchanged |
+| `\`-forced line, newline-terminated | `Text "\n"` (or `"tail\n"`) | resolves Joseph's `hey \` + child question as option (a), now uniform — no special case |
+| `\`-forced at EOF | `Text ""` | unchanged (no terminator byte exists); asserts_empty_text cases stand |
+| Embedded `\|{…}` content lines | `Text "line\n"` | skipped continuation indentation stays geometry |
+| Freeform lines | `Text "line\n"` | exactness contract finally true; **blank lines here become `Text "\n"`, not BlankLine** (decision D2) |
+| Raw block / RawContent lines | `RawContent "line\n"` | code without newlines was the bug at its most glaring |
+| Comment content (block + continuation + sameline) | terminator NOT in comment Text | annotation rule above |
+| Prose line ending in a sameline comment | `Text "Item one "` + Comment + `Text "\n"` | the trailing terminator-only Text (decision D1) |
+| Prose line ending in an inline form | …EmbeddedEnd/`;{…}`/interp + `Text "\n"` | same mechanism |
+| Multi-line deferred attr values | segments each `"…\n"` | value reconstruct = concat; flat wire unchanged |
+| Pure-structure lines | no text event | their terminators are geometry |
+| Delimited captures (strings, envelope, interp) | unchanged | already newline-carrying — the regime the rest now joins |
+
+## Spec changes (CORE)
+
+1. Rewrite the **Text granularity** parser-behavior note into a **Text
+   Reconstruction** contract: the concatenation sentence above; the
+   text/geometry/annotation byte taxonomy; BlankLine ≡ labeled `"\n"`;
+   the annotation-terminator rule. Delete the harness source-gap language
+   from CORE (it describes the cheat).
+2. Fix the **multiline embedded** bullet ("consumers concatenate" now
+   actually works) and **Automatic Prose Dedentation**'s streaming note.
+3. Make **Freeform**'s "preserved exactly" true (all-Text, terminators in).
+4. **Keep-everything** (Anomaly posture): newline bytes now genuinely
+   covered — the claim becomes true.
+5. Fold in the S6 rulings (blank-line model, ornamentation vocabulary,
+   BlankLine span covering its whitespace + terminator).
+
+## Fixture + harness changes
+
+- **Harness de-compensation:** the fold becomes *pure adjacent-Text
+  concatenation* — delete the span-gap/source consultation entirely (safe
+  now: same-line and cross-line adjacency both concat correctly). The
+  empty-Text default fold stays (authorized concatenation — an empty
+  segment folds into a general assertion) since real empties (`Text ""` at
+  EOF) opt into exactness via asserts_empty_text.
+- **Adversarial harness audit FIRST** (fresh eyes, Sonnet-5 delegate ok):
+  every place the comparison rewrites, drops, or consults anything beyond
+  the event stream. Known suspects resolved by this design; the audit
+  proves there are no others.
+- **Fixtures:** every multi-line prose/embed/freeform/comment/raw
+  expectation gains its terminators (spec-first: written from the new CORE
+  text, gate goes honestly red, grammar burns it down). Hundreds of edits,
+  mechanical.
+- **Variation machinery:** the newline-append variation now legitimately
+  changes the final text event by one byte (`"x"` → `"x\n"`) — the
+  comparison needs a defined final-terminator tolerance (decision D3), or
+  those variations assert the appended form.
+
+## AST-layer finding (2026-07-19, answering "how did the AST proceed?")
+
+`tree.rs::push_text_chunk` — the AST's text joiner — **fabricates bytes**: it
+inserts a heuristic space between chunks when neither side has whitespace,
+and silently skips empty chunks. Neither source-cheating nor honest
+loss-propagation: `line1\nline2` → `"line1 line2"` (wrong byte substituted),
+a same-line escape split → `"foo |{bar"` (a space that never existed), empty
+lines vanish. Its tests assert the heuristic's own output. A downstream
+patch over the felt symptom of the missing newlines — delete it in the
+sweep: `collect_text` becomes pure concatenation (+ BlankLine → `"\n"`),
+and `tree_api`/`stream_tree` text tests are re-derived from the new wire.
+
+## Grammar changes (both backends via regen)
+
+Text-family functions switch from return-at-`\n` to consume-then-TERM
+(text, sameline_text, text_backticks, verbatim_text, embed_content,
+freeform lines, blobs, attr_text_verbatim, deferred-body segments); the
+trailing terminator-only `Text "\n"` emission after sameline comments /
+inline forms at EOL (the fiddly part — small added states); comment/raw
+line handling per the table. Bench pair per discipline (perf notes only —
+Joseph: don't over-invest pre-tag).
+
+## Decision shortlist for Joseph
+
+- **D1 — terminator-only trailing `Text "\n"`** after an annotation/inline
+  form that owns a text line's end (byte-honest, in source order; keeps
+  comment-stripping safe). *Recommended: yes.*
+- **D2 — freeform blanks:** `Text "\n"` (pure exactness, no interpretation
+  layer) vs BlankLine. *Recommended: Text — freeform is the exact mode;
+  BlankLine belongs to interpreted prose.*
+- **D3 — variation tolerance:** define EOF-vs-newline twin comparison as
+  "identical modulo one trailing terminator on the final text event," or
+  make appended-newline variations assert the appended form.
+  *Recommended: the explicit tolerance, stated in the harness header.*
+- **D4 — BlankLine ≡ "\n" definition** (keeps S6 intact while making the
+  wire self-sufficient). *Recommended: yes — S6 survives unchanged.*
+
+## Sequence
+
+1. Joseph rules D1–D4 → 2. harness audit + de-compensation → 3. CORE text
+→ 4. fixtures rewritten spec-first (gate red) → 5. grammar sweep to green,
+both backends, differential + bench → 6. only then the `*{` rewrite,
+S-batch landings, mining, tag. **Nothing tags before this.**
