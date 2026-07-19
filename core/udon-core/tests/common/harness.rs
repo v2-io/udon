@@ -220,13 +220,19 @@ pub fn run_with_variations(case: &TestCase, gen: &mut Gen) -> TestResult {
     let is_freeform_test = case.events.iter().any(|e| {
         matches!(e, ExpectedEvent::Bare(s) if s == "FreeformStart")
     });
-    // A case whose expected CONTENT spans a newline (a multi-line capture —
-    // envelope/string/interpolation interiors) is interior-mutation-sensitive:
-    // the blank-line/indent variations land INSIDE the construct and become
-    // part of the captured content, changing the expectation. Same semantic
-    // family as the Unclosed skip: the variation would test a different input.
+    // A case whose expected DELIMITED-CAPTURE content spans a newline
+    // (string/interpolation/envelope-pass-through interiors) is
+    // interior-mutation-sensitive: the blank-line/indent variations land
+    // INSIDE the construct and become part of the captured content, changing
+    // the expectation. Scoped to the delimited-capture event KINDS — not
+    // "any content containing \n" — so that when prose Text events gain
+    // their line terminators (the TODO-TEXT-WIRE recast), ordinary
+    // multi-line prose fixtures do NOT silently lose variation coverage
+    // (HARNESS-AUDIT.md finding #1).
     let expects_multiline_content = case.events.iter().any(|e| {
-        matches!(e, ExpectedEvent::WithContent(_, c) if c.contains('\n'))
+        matches!(e, ExpectedEvent::WithContent(s, c)
+            if c.contains('\n')
+            && matches!(s.as_str(), "StringValue" | "Interpolation" | "BareValue"))
     });
     // A case asserting an empty Text is an exact-comparison case (see
     // `asserts_empty_text`); varying its input could add or remove the very
