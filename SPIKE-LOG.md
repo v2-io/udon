@@ -1,5 +1,39 @@
 # SPIKE LOG — EOF positional/delimited inference in descent
 
+## OUTCOME (read this first)
+descent now **auto-supplies both halves of EOF handling** from a
+positional/delimited classification it computes itself — the spike's question
+answered YES.
+- **Delimited** → generated force-unwind: keep content + `Warning(Unclosed<Construct>)`
+  + End. Proven across closer kinds: `quoted` (`:q` param — invisible to the old
+  single-literal inference), `interpolation` (`}}` multi-byte), `array` (`]`),
+  `embedded`. Fixed the standing **embed any-phase-drop** red; fixed **B-5**
+  (was `Error`, now `Warning`).
+- **Positional** → EOF ≡ newline + maximal dedent: a state runs its own `\n`
+  arm (leaf) or fall-through `default` (lookahead) at EOF. Fixed **gap-9** (real
+  silent content-loss: `|e :x +` etc.).
+- **Scoreboard:** hand `|eof` arms **90 → 58**; compliance gate **2 → 1** (the one
+  red is an unrelated non-EOF `dynamics` case); vocabulary normalized
+  (`UnterminatedFreeform` → `UnclosedFreeform`); grammar de-crufted; the EOF
+  convention now stated ONCE in `00-core`.
+- **Future-safe:** the unwind is strictly per-frame and kind-agnostic (verified),
+  so the coming "positional within delimited" (array-start → positional children
+  → array-end) holds — no delimited-before-positional assumption exists.
+- **Classifier** (report-only): `descent-rs classify` → positional/delimited/mixed,
+  encoding the rule not an answer key (independent check; matches hand + fresh-eyes).
+- **Owed before merge:** rigorous before/after benchmark pair (EOF is cold-path;
+  a spot-run showed ~1.09 GiB/s, hot path untouched).
+- **Next-phase (distinct projects, not quick wins):** (1) a declarative
+  `|unclosed <Name>` directive to replace the last hand delimited-declarations
+  (freeform + the callee-scanned constructs) — the principled "derive
+  Unclosed<Name>"; (2) callee-scanner content-keeping bug-fixes (`sameline_raw`
+  silently drops raw content at EOF; `sameline_dir_body` wrong code) — needs
+  content-keeping for accumulating BRACKETs + the right codes; (3) number-state
+  DRY (a descent state-template feature — the biggest remaining visible cruft);
+  (4) finish deleting the ~40 prose/comment leaf arms (diminishing, per-state care).
+
+---
+
 **Branch:** `spike/eof-descent-inference` (udon) + `spike/eof-inference` (descent submodule).
 **Goal (Joseph, 2026-07-18):** spike descent *first* (out of the usual
 design→spec→fixtures→grammar order) to get the FEEL of the EOF changes coming
