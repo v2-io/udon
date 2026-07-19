@@ -155,8 +155,22 @@ edits.
   syntax deferred to 0.10 with paths/dialects/schema.
 - **Tag gating** (process, not spec): `core-v0.9.0` waits for the final
   legacy-mining pass + densification attempts + the `*{` boundary rewrite.
-- *(S2 — array multi-line — pending one clarification round; see
-  TODO-SPEC-CORE's Line-boundedness item.)*
+- **S2 — line-boundedness for 0.9**: current per-construct behavior is
+  ratified as "close enough to undefined-but-we'll-warn-before-disallowing"
+  — strings/interp span, arrays/identity keys close-with-warning on the
+  newline; multi-line design proper is 0.10 (with paths/dialects; the
+  emergent-span finding means container and contents decide together).
+  Fixtures pinning this space MAY gate but must be framed DESCRIPTIVELY
+  ("PINS CURRENT BEHAVIOR", never prescriptive) so purposefully-unspecified
+  behavior cannot calcify — the label is what licenses a future flip
+  without a compliance break (convention: core/fixtures/README.md).
+- **S6 wire precision** (fact-checked against grammar + probes): prose Text
+  events are LINE-scoped and never contain their own terminator (spans
+  disambiguate same-line fragment splits from line boundaries; hosts join
+  by span); delimited captures carry interior newlines explicitly. A
+  boundary-`\` with an empty tail (`|el :one hey \` + child line) is wire
+  `Text ""` — an empty prose line — interpreted by the S6 AST policy
+  (edge → ornamentation, interior → newline), NOT a special `Text("\n")`.
 
 ### Ruled (2026-07-19; densification pass — do not re-open)
 - **`;{` in value position / at a bare-token boundary → text-blob

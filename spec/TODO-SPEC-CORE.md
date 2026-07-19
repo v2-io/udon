@@ -92,18 +92,14 @@ Warning-code spellings derive from the grammar (only `UnclosedIdentityKey` /
       multi-line `[...]` is the Line-boundedness item above; unclosed
       identity at EOF was ruled — `$partial-key` + `UnclosedIdentityKey`.)*
       *(discuss w/ Joseph)*
-- [ ] **Line-boundedness — settle the per-construct multi-line question**
-      (drained from the archived EOF design of record at archive time,
-      2026-07-19). CORE "Line-boundedness" deliberately leaves multi-line
-      spanning **undefined** for strings, `[…]` arrays, identity keys,
-      `!{{…}}`, `;{…}`, and the inline `!{…}` forms — current parser behavior
-      varies (strings/interp span; arrays/identity close on the newline) and
-      is pinned only *descriptively* (labeled fixtures + the
-      `exploratory/multi-line.yaml` sandbox, whose emergent-span finding —
-      an inner spanning construct defeats a line-bound container — means
-      container and contents must be decided together). "We expect to make
-      the rest multi-line once the consequences are fully understood."
-      *(discuss w/ Joseph)*
+- [ ] **Line-boundedness — 0.9 RESOLVED (ruled 2026-07-19), text landing +
+      0.10 design pointer.** Ruling: current per-construct behavior stands as
+      "undefined, warn-before-disallow"; descriptive pins may gate but never
+      frame as prescriptive (calcification guard — labels + README
+      convention). Land the warn-before-disallow phrasing in CORE
+      Line-boundedness with the S-batch. The multi-line design proper is
+      0.10, co-decided with paths/dialects (the emergent-span finding: an
+      inner spanning construct defeats a line-bound container).
 - [ ] **"Positional" / "delimited" terminology audit.** The EOF recast makes
       **positional construct** (extent by geometry) and **delimited
       construct** (printed end-sequence owed) precise terms; CORE already
