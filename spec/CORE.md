@@ -56,7 +56,7 @@ When input is malformed or surprising, a response falls somewhere on this ladder
 
 *(positional/delimited framing + two-level severity ruled 2026-07-17/18; design of record: `TODO-EOF-refactor.md`)*
 
-Every construct closes in one of two ways. A **positional** construct -- element, directive, comment, prose/text block, deferred attribute value, etc. -- takes its extent from *geometry*: end of line, dedent, or EOF. A **delimited** construct -- quoted string, `[...]` array, `|{...}` embed, `;{...}` inline comment, `!{{...}}` interpolation, `<...>` envelope, ` ``` ` freeform, identity `[...]`, etc. -- closes only when the parser matches a printed **end-sequence**.
+Every construct closes in one of two ways. A **positional** construct -- element, directive, comment, prose/text block, deferred attribute value, etc. -- takes its extent from *geometry*: end of line, dedent, or EOF. ("Positional" here is about *how a construct closes* -- a different axis from the recognition **Positional Contexts** below (block / sameline / inline / head), which are about *where* a marker is recognized.) A **delimited** construct -- quoted string, `[...]` array, `|{...}` embed, `;{...}` inline comment, `!{{...}}` interpolation, `<...>` envelope, ` ``` ` freeform, identity `[...]`, etc. -- closes only when the parser matches a printed **end-sequence**.
 
 **The rule.** At end of input every open construct closes, innermost-first (exactly as a full dedent flushes `End` events): a **positional** construct closes by its ordinary end rule, *silently* -- EOF is newline-equivalent, and a missing final newline is never, by itself, an anomaly. A still-open **delimited** construct is the only thing EOF is "unexpected" for: its captured content is kept, an `Unclosed*` **warning** is emitted citing where the construct **opened**, and its `End` flushes. When several are open they compose by the same unwind; each answers independently against its own entry site, so nested delimited constructs yield one `Unclosed*` each.
 
@@ -65,7 +65,7 @@ Every construct closes in one of two ways. A **positional** construct -- element
 - **Per construct: `Warning`.** Every `Unclosed*` keeps everything that had arrived before EOF -- which may be nothing beyond the opener itself -- so each is a **warning**, emitted in-band as its frame unwinds. (This is why unclosed constructs sit at level (a) of the Anomaly posture, not the error tier.)
 - **Per document: one incomplete-input result.** A delimited construct still open at *true* EOF means the input is **assumed to have been incomplete** -- truncated upstream, or an unfinished intent. That is a defined condition the consuming layer reports as **non-success** (e.g. a non-zero CLI exit / an `Err` result); it is a *result*, not a stream event, and its surface belongs to the AST/host layer (see `../core/TODO-PARSER.md`). Only a frame **open at true EOF** feeds this result: a delimited construct that *closed* before EOF leaves a complete document behind it -- **including** one cut short by an **interior newline**, however this version happens to handle that. (Whether a newline even closes a not-yet-multi-line construct, and whether it warns, is deliberately undefined and varies by construct in this version -- see Line-boundedness. The incomplete-input result does not depend on that: it keys only on what is still open when the input runs out.)
 
-Each delimited construct carries its own `Unclosed<Construct>` **warning** (`UnclosedStringValue`, `UnclosedEmbedded`, `UnclosedFreeform`, …) — a uniform `Unclosed<Construct>` family (the earlier hand-picked `UnterminatedFreeform` was normalized into it). The code vocabulary is in the Warning codes registry above; the per-construct closer and its nuances (e.g. the `<...>` envelope's single-line rule -- see Explicit Typing) belong at each construct's own section, and collecting them there is a deliberate follow-up (`TODO-SPEC-CORE.md`), independent of this normalization.
+Each delimited construct carries its own `Unclosed<Construct>` **warning** (`UnclosedStringValue`, `UnclosedEmbedded`, `UnclosedFreeform`, …) — a uniform `Unclosed<Construct>` family (the earlier hand-picked `UnterminatedFreeform` was normalized into it). The code vocabulary is in the Warning codes registry above; the per-construct closer and its nuances (e.g. the `<...>` envelope's multi-line span, closing only on `>` or EOF -- see Explicit Typing) belong at each construct's own section, and collecting them there is a deliberate follow-up (`TODO-SPEC-CORE.md`), independent of this normalization.
 
 **Emission order.** An unclosed construct emits its kept **content first, then the `Unclosed*` warning, then any bracket `End`** -- `…content… → Unclosed* → End` -- uniform across every delimited construct. The warning annotates the content it follows; this is already what the multi-line embed and freeform do, and the AST layer is order-agnostic (it no-ops on warnings), so nothing downstream depends on it.
 
@@ -309,7 +309,7 @@ The value inside `[...]` follows the normal attribute-value rules -- every type 
 
 What the core fixes is the *rule* -- a bare name is a Unicode identifier (UAX #31 `XID_Start` to start, `XID_Continue` or `-` to continue). *Which Unicode version* those properties resolve against is a **parser / host-language decision**, not a core one: the core says "Unicode identifier," and the host's Unicode support (the reference parser tracks the `unicode-xid` crate's version) pins the exact codepoint set. This is the same core-vs-host split drawn in The Core, and What It Leaves Open.
 
-*(Reference grammar: `XLBL_START` = Unicode `XID_Start`, `XLBL_CONT` = `XID_Continue` + `-`; see `core/generator/10-udon.elements.descent.udon` -- `parse_element_identity`, `name`, `class_name` -- and `tools/descent/characters.md`.)*
+*(Reference grammar: `XLBL_START` = Unicode `XID_Start`, `XLBL_CONT` = `XID_Continue` + `-` + `/`; see `core/generator/10-udon.elements.descent.udon` -- `parse_element_identity`, `name`, `class_name` -- and `tools/descent/characters.md`.)*
 
 ### Element Suffixes
 
@@ -1174,7 +1174,7 @@ UDON automatically strips leading whitespace from prose content based on its con
    - Update content_base to this new (lesser) column
    - Continue as content of same element
 
-**Valid range for indented content:** between parent's `|`+1 (exclusive) and any inline child's `|` (inclusive).
+**Valid range for indented content:** between the parent's `|` (exclusive) and any inline child's `|` (inclusive).
 
 ### Inline Content Freedom
 

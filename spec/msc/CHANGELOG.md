@@ -53,15 +53,18 @@ edits.
   silent); a bare marker as the final byte → positional (EOF ≡ newline → prose),
   not unexpected EOF; an embed open in any phase at EOF → delimited (fixes the
   any-phase drop).
-- **Line-boundedness** (2026-07-18). Embedded `|{…}` and freeform ` ``` ` are
-  locked **multi-line**; every other delimited construct (`<…>`, `"…"`/`'…'`,
-  `[…]` array & identity key, `!{{…}}`, `;{…}`, `!{…}`/`!{:kind:…}`) is
-  **single-line for now, multi-line deliberately undefined** — not yet verified
-  safe across a newline (current parser behavior at a newline varies — some warn
-  like `<…>`, some tolerate — and is not guaranteed). A future version may
-  define multi-line or warn; multi-line meanwhile is at author's risk.
-  (Resolves the string-line-boundedness gap surfaced by the alpha.2 fixture
-  harvest.)
+- **Line-boundedness** (2026-07-18). Embedded `|{…}`, freeform ` ``` `, and — by
+  a later same-day ruling — the `<…>` typing envelope are locked **multi-line**:
+  the envelope spans newlines, closing only on `>` or EOF (it was extracted into
+  its own `/envelope` delimited function, content-first, retiring the earlier
+  single-line rule — the parser now takes everything after `<` up to `>` or EOF).
+  Every **remaining** delimited construct (`"…"`/`'…'`, `[…]` array & identity
+  key, `!{{…}}`, `;{…}`, `!{…}`/`!{:kind:…}`) is **single-line for now, multi-line
+  deliberately undefined** — not yet verified safe across a newline (current
+  parser behavior varies — strings/interpolation span, arrays and identity keys
+  warn on the newline — and is not guaranteed). A future version may define
+  multi-line or warn; multi-line meanwhile is at author's risk. (Resolves the
+  string-line-boundedness gap surfaced by the alpha.2 fixture harvest.)
 - **Unclosed emission order** (2026-07-18). An unclosed delimited construct
   emits its kept **content first, then the `Unclosed*` warning, then any `End`**
   (`…content… → Unclosed* → End`), uniform across the family — matching what
