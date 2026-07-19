@@ -120,13 +120,21 @@ generate_parser() {
     out_tmp=$(mktemp "${TMPDIR:-/tmp}/udon-parser.XXXXXX.rs")
     trace_flag=""; [[ "$trace_mode" == "true" ]] && trace_flag="--trace"
     descent_rs="$DESCENT_DIR/rust/target/release/descent-rs"
+    # ALWAYS (re)build — cargo is a fast no-op when up-to-date but rebuilds when
+    # the descent source changed. Guarding on the binary merely EXISTING (the old
+    # `! -x` check) silently reused a STALE descent-rs after a `tools/descent`
+    # submodule bump → a wrong parser.rs with spurious gate reds that look like a
+    # broken merge. (Bit us 2026-07-18; see the EOF-generation landing.)
+    info "Building descent-rs..."
+    (cd "$DESCENT_DIR/rust" && cargo build --release -p descent-cli) || {
+        rm -f "$out_tmp"
+        error "descent-rs build failed"
+        return 1
+    }
     if [[ ! -x "$descent_rs" ]]; then
-        info "Building descent-rs (first run)..."
-        (cd "$DESCENT_DIR/rust" && cargo build --release -p descent-cli) || {
-            rm -f "$out_tmp"
-            error "descent-rs build failed"
-            return 1
-        }
+        rm -f "$out_tmp"
+        error "descent-rs binary not found at $descent_rs after build"
+        return 1
     fi
     if "$descent_rs" generate "$tmp_file" $trace_flag > "$out_tmp"; then
         mv "$out_tmp" "$OUTPUT_FILE"
