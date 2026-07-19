@@ -12,7 +12,7 @@
     - [Name, "em"]
     - [Text, "emphasis"]
     - EmbeddedEnd
-    - [Text, " here"]
+    - [Text, " here\n"]
     - ElementEnd
 
 - id: embedded_with_attrs_and_content
@@ -27,7 +27,7 @@
     - [Attr, "href"]
     - [Text, "/home here"]
     - EmbeddedEnd
-    - [Text, " to continue."]
+    - [Text, " to continue.\n"]
     - ElementEnd
 
 - id: embedded_with_identity
@@ -45,6 +45,7 @@
     - [BareValue, "external"]
     - [Text, "target"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 - id: multiple_embedded_are_siblings
@@ -64,6 +65,7 @@
     - [Attr, "href"]
     - [Text, "/about About"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 # 0.9: the open attr's prose-shaped blob owns the tail INCLUDING the inline
@@ -88,7 +90,7 @@
     - [Attr, "href"]
     - [Text, " documentation"]
     - EmbeddedEnd
-    - [Text, " for details."]
+    - [Text, " for details.\n"]
     - ElementEnd
 
 # ⚠ CORE fixes that embedded elements span lines with indentation ignored,
@@ -105,10 +107,10 @@
     - [Name, "a"]
     - [Attr, "href"]
     - [BareValue, "/docs"]
-    - [Text, "a link that spans"]
+    - [Text, "a link that spans\n"]
     - [Text, "multiple lines"]
     - EmbeddedEnd
-    - [Text, " and continues."]
+    - [Text, " and continues.\n"]
     - ElementEnd
 
 - id: embedded_anonymous_trait
@@ -123,5 +125,5 @@
     - [BareValue, "warn"]
     - [Text, "heads up"]
     - EmbeddedEnd
-    - [Text, " end"]
+    - [Text, " end\n"]
     - ElementEnd

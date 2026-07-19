@@ -388,7 +388,7 @@
   ; comment. Returns result=3 (text value; may continue on deeper lines). ===
   |state[:blob]
     |eof                      | TERM | Text(USE_MARK) | result = BLOB |return result
-    |c['\n']                  | TERM | Text(USE_MARK) | result = BLOB |return result
+    |c['\n']                  | -> | TERM | Text(USE_MARK) | result = BLOB |return result  ; terminator is text
     |c['{']                   | -> | depth += 1                  |>>
     |c[:bracket]              |                                  |>> :blob_close
     |c[';']                   |                                  |>> :blob_semi
@@ -418,7 +418,7 @@
 
   |state[:blob_after_inline]
     |eof                      | result = BLOB                    |return result
-    |c['\n']                  | result = BLOB                    |return result
+    |c['\n']                  | Attr(USE_SAVED(akey)) | MARK | -> | TERM | Text(USE_MARK) | result = BLOB |return result
     |c[:bracket]              | result = BLOB                    |return result
     |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :blob
 
@@ -432,10 +432,17 @@
 
   |state[:blob_semi_after]
     |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
-    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
-    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |return result
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |>> :blob_comment_nl
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content | result = BLOB |>> :blob_comment_nl
     |c['{']                   | TERM(-2) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :blob
     |default                  |                                  |>> :blob
+
+  ; D1: the framed comment owned the blob line's end — the terminator is
+  ; still text; emit the terminator-only Text "\n" (re-attributed segment).
+  |state[:blob_comment_nl]
+    |eof                      |                                  |return result
+    |c['\n']                  | Attr(USE_SAVED(akey)) | MARK | -> | TERM | Text(USE_MARK) |return result
+    |default                  |                                  |return result
 
   |state[:blob_semi_glued]
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment | MARK |>> :blob

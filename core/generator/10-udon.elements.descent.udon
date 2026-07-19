@@ -88,8 +88,8 @@
   |state[:post_identity]
     |c['\n']                  | ->                               |>> :children
     |c[' \t']                 | ->                               |>> :pre_content
-    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
-    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_newline
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_newline
 
   |state[:pre_content]
     |c['\n']                  | ->                               |>> :children
@@ -103,18 +103,18 @@
     |c[';']                   | ->                               |>> :check_sameline_semi
     |c['!']                   | ->                               |>> :check_sameline_bang
     |c['@']                   | ->                               |>> :check_sameline_at
-    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_content
-    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_content
+    |c[<BS>]                  | -> | content_seen = 1 | /verbatim_text |>> :after_newline
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, <>) |>> :after_newline
 
   ; Sameline fence: attributes keep the scan open, so triple-backticks after
   ; elements/attributes open a freeform block (CORE "Triple-Backtick
   ; Escape"). Fewer than three backticks fall back to sameline text.
   |state[:sameline_ff1]
     |c['`']                   | ->                               |>> :sameline_ff2
-    |default                  | /sameline_text(:elem_col, '`')   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '`')   |>> :after_newline
   |state[:sameline_ff2]
-    |c['`']                   | -> | /freeform                   |>> :after_content
-    |default                  | /sameline_text(:elem_col, '``')  |>> :after_content
+    |c['`']                   | -> | /freeform                   |>> :after_newline
+    |default                  | /sameline_text(:elem_col, '``')  |>> :after_newline
 
   ; Space-separated element-level suffix (CORE "Suffix positions":
   ; `|name[key].trait ?`): one parameterized resolver for ? * + (descent
@@ -123,14 +123,14 @@
   ; A spaced '!' never takes this path — it keeps its dynamics meaning.
   |state[:spaced_suffix_route]
     |if[sfx == FIN]                                              |>> :post_identity
-    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_newline
 
   ; Sameline attr guard: a ':' not followed by a name start / quoted name /
   ; reference bracket is not an attr — fall back to intact text with the
   ; ':' restored (defect #12 data-loss half).
   |state[:check_sameline_attr]
     |c[<XLBL_START SQ>]       | sstate = /sameline_attr          |>> :sameline_attr_after
-    |default                  | /sameline_text(:elem_col, ':')   |>> :after_content
+    |default                  | /sameline_text(:elem_col, ':')   |>> :after_newline
 
   ; Route the sameline-attribute outcome (return-code vocabulary at
   ; /block_attr). A node value (plain :a |beta, code 2) is a VALUE, not a
@@ -138,8 +138,9 @@
   ; children, not values); the boundary codes 5/11/12/13 re-owned trailing
   ; material for the element — children phase.
   |state[:sameline_attr_after]
+    |if[sstate == BLOB]          |                                  |>> :after_newline  ; blob (attr's value) consumed its terminator — line start; attrs not foreclosed
     |if[sstate == NODE]          | ->                                |>> :sameline_node2
-    |if[sstate == REOWNED]          | content_seen = 1                 |>> :pre_content
+    |if[sstate == REOWNED]          | content_seen = 1                 |>> :after_newline  ; re-owned blob consumed its terminator — line start
     |if[sstate == RAW]          | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
     |if[sstate == CHILD]         | content_seen = 1                 |>> :sameline_node2
     |if[sstate == DIRECTIVE]         | content_seen = 1                 |>> :sameline_bang
@@ -157,12 +158,12 @@
   |state[:sameline_node2]
     |c['{']                   | -> | /embedded                   |>> :post_child
     |c[<XLBL_START SQ '[' '.?!*+'>] | /element(COL - 2, :elem_col) |>> :post_block_child
-    |default                  | /sameline_text(:elem_col, '|')   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '|')   |>> :after_newline
 
   |state[:check_sameline_pipe]
     |c['{']                   | -> | content_seen = 1 | /embedded |>> :post_child
     |c[<XLBL_START SQ '[' '.?!*+'>]  | content_seen = 1              |>> :check_sameline_elem_col
-    |default                  | content_seen = 1 | /sameline_text(:elem_col, '|') |>> :after_content
+    |default                  | content_seen = 1 | /sameline_text(:elem_col, '|') |>> :after_newline
 
   ; Check if new element's column requires closing current element first (sibling detection)
   ; Per SPEC: "pop while new_column <= stack_top.base_column". The '|' was
@@ -196,27 +197,29 @@
     |c[':']                   | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
     |c[XLBL_START]            | content_seen = 1 | /block_directive(:elem_col) |>> :post_block_child
     |c['{']                   | -> | /sameline_directive           |>> :post_sameline_inline
-    |default                  | /sameline_text(:elem_col, '!')   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '!')   |>> :after_newline
 
   ; `@` in the sameline scan (0.9: equal footing with `|` — CORE Marker
   ; Recognition): a guarded reference is a reference child of the element;
   ; a failed guard falls back to prose with the '@' restored.
   |state[:check_sameline_at]
     |c[<L XLBL_START '.'>]    | content_seen = 1 | /block_ref     |>> :pre_content
-    |default                  | /sameline_text(:elem_col, '@')   |>> :after_content
+    |default                  | /sameline_text(:elem_col, '@')   |>> :after_newline
 
-  ; After inline directive on sameline - don't skip spaces, they're content now
+  ; After inline directive on sameline - don't skip spaces, they're content now.
+  ; A line end here means the inline form owned the text line's end — the
+  ; terminator is text (D1): emit the terminator-only Text.
   |state[:post_sameline_inline]
-    |c['\n']                  | ->                               |>> :children
-    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |>> :children
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_newline
 
   ; After a sameline embedded child: whitespace before further content is
   ; PROSE (round-trip fidelity — "|nav |{a} |{b}" keeps the separating
   ; space as Text), so it routes through sameline_text like any other tail.
   |state[:post_child]
-    |c['\n']                  | ->                               |>> :children
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |>> :children  ; D1: inline form owned the line's end
     |c['|']                   |                                  |>> :check_post_pipe_col
-    |default                  | /sameline_text(:elem_col, <>)    |>> :after_content
+    |default                  | /sameline_text(:elem_col, <>)    |>> :after_newline
 
   ; Check if '|' is at a sibling/dedent column - if so, let :children handle it
   ; This avoids consuming the '|' before knowing if it belongs to a sibling
@@ -258,12 +261,12 @@
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
     |c['!']                   | ->                               |>> :child_check_bang
-    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c[';']                   | -> | /line_comment               |>> :after_newline
     |c['@']                   | ->                               |>> :child_check_at
     |c['`']                   | ->                               |>> :child_check_freeform
-    |c[<BS>]                  | -> | /verbatim_text              |>> :after_content
+    |c[<BS>]                  | -> | /verbatim_text              |>> :after_newline
     ; For default content (includes space), extra spaces beyond content_base are preserved
-    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_newline
 
   |state[:check_child]
     |if[col <= :elem_col]                                        |return  ; dedent
@@ -283,7 +286,7 @@
     |c['|']                   | ->                               |>> :child_pipe
     |c[':']                   | ->                               |>> :child_check_attr
     |c['!']                   | ->                               |>> :child_check_bang
-    |c[';']                   | -> | /line_comment               |>> :after_content
+    |c[';']                   | -> | /line_comment               |>> :after_newline
     |c['@']                   | ->                               |>> :child_check_at
     |c['`']                   | ->                               |>> :child_check_freeform
     |c[<BS>]                  | ->                               |>> :verbatim_base
@@ -300,28 +303,28 @@
     |default                  |                                  |>> :do_verbatim
 
   |state[:do_verbatim]
-    |default                  | content_seen = 1 | /verbatim_text |>> :after_content
+    |default                  | content_seen = 1 | /verbatim_text |>> :after_newline
 
   ; `!` guard in element children (see document :check_bang)
   |state[:child_check_bang]
-    |c[':']                   | /block_directive(col)            |>> :after_content
-    |c[XLBL_START]            | /block_directive(col)            |>> :after_content
+    |c[':']                   | /block_directive(col)            |>> :after_newline
+    |c[XLBL_START]            | /block_directive(col)            |>> :after_newline
     |c['{']                   | -> | /sameline_directive         |>> :after_content
-    |default                  | /prose(col, :elem_col, '!')      |>> :after_content
+    |default                  | /prose(col, :elem_col, '!')      |>> :after_newline
 
   ; `@` guard in element children (see document :check_at; `.` per 0.9)
   |state[:child_check_at]
     |c[<L XLBL_START '.'>]    | /block_ref                       |>> :after_content
-    |default                  | /prose(col, :elem_col, '@')      |>> :after_content
+    |default                  | /prose(col, :elem_col, '@')      |>> :after_newline
 
   ; Line-initial attr guard (see document :check_attr): failed attr parse
   ; falls back to intact prose with the ':' restored (defect #12).
   ; Phase restriction (CORE "Attributes Before Children"): once any text or
   ; child element has appeared, a line-initial ':' is prose.
   |state[:child_check_attr]
-    |if[content_seen == 1]    | Warning(AttributeAfterChildren) | /prose(col, :elem_col, ':') |>> :after_content
+    |if[content_seen == 1]    | Warning(AttributeAfterChildren) | /prose(col, :elem_col, ':') |>> :after_newline
     |c[<XLBL_START SQ>]       | attr_col = col | astate = /block_attr |>> :attr_after
-    |default                  | /prose(col, :elem_col, ':')      |>> :after_content
+    |default                  | /prose(col, :elem_col, ':')      |>> :after_newline
 
   ; Route the block-attribute outcome. The attribute functions cannot see
   ; this element's locals (descent params are one-way), so /block_attr
@@ -335,7 +338,7 @@
     |if[astate == OPEN]       | amode = MODE_OPEN                |>> :attr_line_done
     |if[astate == BLOB]       | amode = MODE_BODY                |>> :attr_line_done
     |if[astate == NODE]       | amode = MODE_DONE | ->           |>> :battr_node
-    |if[astate == REOWNED]    | content_seen = 1                 |>> :after_content
+    |if[astate == REOWNED]    | content_seen = 1                 |>> :after_newline
     |if[astate == RAW]        | amode = MODE_DONE | /block_directive(attr_col) |>> :attr_line_done
     |if[astate == CHILD]      | content_seen = 1 | amode = MODE_DONE |>> :battr_node
     |if[astate == DIRECTIVE]  | content_seen = 1 | amode = MODE_DONE |>> :battr_bang
@@ -374,21 +377,21 @@
     |default                  | /attr_deferred_body(attr_col, :elem_col, amode) |>> :post_block_child
 
   |state[:do_prose]
-    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_content
+    |default                  | content_seen = 1 | /prose(col, :elem_col, <>) |>> :after_newline
 
   ; Prose handlers go to :after_content to consume trailing \n
   |state[:child_check_freeform]
     |c['`']                   | ->                               |>> :child_check_freeform2
-    |default                  | /prose(col, :elem_col, '`')      |>> :after_content
+    |default                  | /prose(col, :elem_col, '`')      |>> :after_newline
 
   |state[:child_check_freeform2]
-    |c['`']                   | -> | content_seen = 1 | /freeform |>> :after_content
-    |default                  | content_seen = 1 | /prose_backticks(col, :elem_col) |>> :after_content
+    |c['`']                   | -> | content_seen = 1 | /freeform |>> :after_newline
+    |default                  | content_seen = 1 | /prose_backticks(col, :elem_col) |>> :after_newline
 
   |state[:child_pipe]
     |c['{']                   | -> | content_seen = 1 | /embedded |>> :after_child
     |c[<XLBL_START SQ '[' '.?!*+'>] | content_seen = 1 | /element(col, :elem_col) |>> :after_child
-    |default                  | content_seen = 1 | /prose(col, :elem_col, '|') |>> :after_content
+    |default                  | content_seen = 1 | /prose(col, :elem_col, '|') |>> :after_newline
 
   ; After child element/embedded returns - always re-check column for potential dedent
   |state[:after_child]

@@ -286,12 +286,13 @@ boundary rewrite (no brace form is ever a boundary marker — CHANGELOG
 2026-07-19; CORE text + grammar tracked in `spec/TODO-SPEC-CORE.md` +
 `core/TODO-CORE-PARSING.md`).
 
-**⚠⚠ P0 SHOW-STOPPER (2026-07-19, before ANY other 0.9 work): the event wire
-drops the document's newlines.** Prose/freeform Text events exclude their line
-terminators; reconstruction currently requires source-gap inspection — and the
-fixture harness's source-aware fold *enabled* the bug instead of catching it.
-Fix: newline-carrying Text (harness audit first, then the sweep) —
-`spec/TODO-SPEC-CORE.md` (the P0 item). Nothing tags before this.
+**The P0 text-wire recast LANDED (2026-07-19, same day it was found).** The
+event wire now carries line terminators as text: the document's text
+reconstructs by pure in-order concatenation of the events (no spans, no
+source) — the harness's source-consulting fold and the AST's fabricated-space
+joiner are deleted, BlankLine is a tree node, and the gate is green on the
+new contract (bench: +5–8% improved). Design of record:
+`spec/TODO-TEXT-WIRE.md`; audit: `core/fixtures/_wip/HARNESS-AUDIT.md`.
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The

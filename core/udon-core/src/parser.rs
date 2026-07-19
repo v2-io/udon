@@ -665,7 +665,7 @@ impl<'a> Parser<'a> {
                 State::Dispatch => {
                     if self.eof() {
                     self.parse_prose(col, -1, b"", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -703,12 +703,12 @@ impl<'a> Parser<'a> {
                         Some(b'\\') => {
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, -1, b"", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -716,7 +716,7 @@ impl<'a> Parser<'a> {
                 State::CheckAttr => {
                     if self.eof() {
                     self.parse_prose(col, -1, b":", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -727,7 +727,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b":", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -749,7 +749,7 @@ impl<'a> Parser<'a> {
                 State::CheckBang => {
                     if self.eof() {
                     self.parse_prose(col, -1, b"!", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -771,7 +771,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b"!", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -779,7 +779,7 @@ impl<'a> Parser<'a> {
                 State::CheckAt => {
                     if self.eof() {
                     self.parse_prose(col, -1, b"@", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -790,7 +790,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b"@", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -798,7 +798,7 @@ impl<'a> Parser<'a> {
                 State::CheckFreeform => {
                     if self.eof() {
                     self.parse_prose(col, -1, b"`", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -809,7 +809,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b"`", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -817,7 +817,7 @@ impl<'a> Parser<'a> {
                 State::CheckFreeform2 => {
                     if self.eof() {
                     self.parse_prose_backticks(col, -1, on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -829,7 +829,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose_backticks(col, -1, on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -837,7 +837,7 @@ impl<'a> Parser<'a> {
                 State::CheckPipe => {
                     if self.eof() {
                     self.parse_prose(col, -1, b"|", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -854,7 +854,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, -1, b"|", on_event);
-                    state = State::Eol;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -1244,13 +1244,13 @@ impl<'a> Parser<'a> {
                     self.advance();
                     content_seen = 1;
                     self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ => {
                     content_seen = 1;
                     self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1322,13 +1322,13 @@ impl<'a> Parser<'a> {
                     self.advance();
                     content_seen = 1;
                     self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ => {
                     content_seen = 1;
                     self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1336,7 +1336,7 @@ impl<'a> Parser<'a> {
                 State::SamelineFf1 => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b"`", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1347,7 +1347,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"`", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1355,19 +1355,19 @@ impl<'a> Parser<'a> {
                 State::SamelineFf2 => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b"``", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
                     self.advance();
                     self.parse_freeform(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"``", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1380,7 +1380,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1388,7 +1388,7 @@ impl<'a> Parser<'a> {
                 State::CheckSamelineAttr => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b":", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1399,13 +1399,17 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b":", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
                 }
                 State::SamelineAttrAfter => {
                     match self.peek() {
+                        _ if sstate == 3 => {
+                    state = State::AfterNewline;
+                    continue;
+                        }
                         _ if sstate == 2 => {
                     self.advance();
                     state = State::SamelineNode2;
@@ -1413,7 +1417,7 @@ impl<'a> Parser<'a> {
                         }
                         _ if sstate == 5 => {
                     content_seen = 1;
-                    state = State::PreContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ if sstate == 6 => {
@@ -1467,7 +1471,7 @@ impl<'a> Parser<'a> {
                 State::SamelineNode2 => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1484,7 +1488,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1493,7 +1497,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     content_seen = 1;
                     self.parse_sameline_text(elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1512,7 +1516,7 @@ impl<'a> Parser<'a> {
                         _ => {
                     content_seen = 1;
                     self.parse_sameline_text(elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1571,7 +1575,7 @@ impl<'a> Parser<'a> {
                 State::CheckSamelineBang => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b"!", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1595,7 +1599,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"!", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1603,7 +1607,7 @@ impl<'a> Parser<'a> {
                 State::CheckSamelineAt => {
                     if self.eof() {
                     self.parse_sameline_text(elem_col, b"@", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1615,7 +1619,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"@", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1627,13 +1631,16 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
                     self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     state = State::Children;
                     continue;
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1645,7 +1652,10 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
                     self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     state = State::Children;
                     continue;
                         }
@@ -1655,7 +1665,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_sameline_text(elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1796,7 +1806,7 @@ impl<'a> Parser<'a> {
                         Some(b';') => {
                     self.advance();
                     self.parse_line_comment(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         Some(b'@') => {
@@ -1812,13 +1822,13 @@ impl<'a> Parser<'a> {
                         Some(b'\\') => {
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ => {
                     content_seen = 1;
                     self.parse_prose(col, elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1863,7 +1873,7 @@ impl<'a> Parser<'a> {
                         Some(b';') => {
                     self.advance();
                     self.parse_line_comment(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         Some(b'@') => {
@@ -1928,24 +1938,24 @@ impl<'a> Parser<'a> {
                 State::DoVerbatim => {
                     content_seen = 1;
                     self.parse_verbatim_text(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                 }
                 State::ChildCheckBang => {
                     if self.eof() {
                     self.parse_prose(col, elem_col, b"!", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
                         Some(b':') => {
                     self.parse_block_directive(col, on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) => {
                     self.parse_block_directive(col, on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         Some(b'{') => {
@@ -1956,7 +1966,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, elem_col, b"!", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1964,7 +1974,7 @@ impl<'a> Parser<'a> {
                 State::ChildCheckAt => {
                     if self.eof() {
                     self.parse_prose(col, elem_col, b"@", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -1975,7 +1985,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, elem_col, b"@", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -1983,14 +1993,14 @@ impl<'a> Parser<'a> {
                 State::ChildCheckAttr => {
                     if self.eof() {
                     self.parse_prose(col, elem_col, b":", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
                         _ if content_seen == 1 => {
                     on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeAfterChildren"), span: self.span() });
                     self.parse_prose(col, elem_col, b":", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' => {
@@ -2001,7 +2011,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, elem_col, b":", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -2026,7 +2036,7 @@ impl<'a> Parser<'a> {
                         }
                         _ if astate == 5 => {
                     content_seen = 1;
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ if astate == 6 => {
@@ -2158,13 +2168,13 @@ impl<'a> Parser<'a> {
                 State::DoProse => {
                     content_seen = 1;
                     self.parse_prose(col, elem_col, b"", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                 }
                 State::ChildCheckFreeform => {
                     if self.eof() {
                     self.parse_prose(col, elem_col, b"`", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -2175,7 +2185,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, elem_col, b"`", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -2184,7 +2194,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     content_seen = 1;
                     self.parse_prose_backticks(col, elem_col, on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -2192,13 +2202,13 @@ impl<'a> Parser<'a> {
                     self.advance();
                     content_seen = 1;
                     self.parse_freeform(on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                         _ => {
                     content_seen = 1;
                     self.parse_prose_backticks(col, elem_col, on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -2207,7 +2217,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     content_seen = 1;
                     self.parse_prose(col, elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                     }
                     match self.peek() {
@@ -2227,7 +2237,7 @@ impl<'a> Parser<'a> {
                         _ => {
                     content_seen = 1;
                     self.parse_prose(col, elem_col, b"|", on_event);
-                    state = State::AfterContent;
+                    state = State::AfterNewline;
                     continue;
                         }
                     }
@@ -2682,8 +2692,7 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         _ if vstate == 3 => {
                     result = 3;
-                    state = State::PostValue;
-                    continue;
+                    return result;
                         }
                         _ if vstate == 4 => {
                     state = State::Key;
@@ -2773,10 +2782,22 @@ impl<'a> Parser<'a> {
         let mut mode: i32 = mode0;
         let mut col: i32 = 0;
         #[derive(Clone, Copy)]
-        enum State { LineEnd, Line, Ws, Check, Open, Body, Done, Node, Bang, Fence, Fence2, BadAttr, Finish,  }
-        let mut state = State::LineEnd;
+        enum State { Entry, LineEnd, Line, Ws, Check, Open, Body, Done, Node, Bang, Fence, Fence2, BadAttr, Finish,  }
+        let mut state = State::Entry;
         loop {
             match state {
+                State::Entry => {
+                    match self.peek() {
+                        _ if mode == 3 => {
+                    state = State::Line;
+                    continue;
+                        }
+                        _ => {
+                    state = State::LineEnd;
+                    continue;
+                        }
+                    }
+                }
                 State::LineEnd => {
                     if self.eof() {
                     state = State::Finish;
@@ -2883,7 +2904,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     mode = 3;
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -2903,7 +2924,7 @@ impl<'a> Parser<'a> {
                         Some(b';') => {
                     self.advance();
                     self.parse_line_comment(on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         Some(b'`') => {
@@ -2922,13 +2943,13 @@ impl<'a> Parser<'a> {
                     mode = 3;
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     mode = 3;
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -2937,7 +2958,7 @@ impl<'a> Parser<'a> {
                     if self.eof() {
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -2965,13 +2986,13 @@ impl<'a> Parser<'a> {
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -2981,7 +3002,7 @@ impl<'a> Parser<'a> {
                     on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -3009,14 +3030,14 @@ impl<'a> Parser<'a> {
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.advance();
                     self.parse_verbatim_text(on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"AttributeSecondValue"), span: self.span() });
                     on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
                     self.parse_prose(col, parent_col, b"", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -3024,7 +3045,7 @@ impl<'a> Parser<'a> {
                 State::Node => {
                     if self.eof() {
                     self.parse_prose(col, parent_col, b"|", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -3036,12 +3057,12 @@ impl<'a> Parser<'a> {
                         }
                         Some(b) if Self::is_xlbl_start(b) || b == b'\'' || b == b'[' || b == b'.' || b == b'?' || b == b'!' || b == b'*' || b == b'+' => {
                     self.parse_element(col, parent_col, on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     self.parse_prose(col, parent_col, b"|", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -3049,18 +3070,18 @@ impl<'a> Parser<'a> {
                 State::Bang => {
                     if self.eof() {
                     self.parse_prose(col, parent_col, b"!", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
                         Some(b':') => {
                     self.parse_block_directive(col, on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         Some(b) if Self::is_xlbl_start(b) => {
                     self.parse_block_directive(col, on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         Some(b'{') => {
@@ -3071,7 +3092,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, parent_col, b"!", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -3079,7 +3100,7 @@ impl<'a> Parser<'a> {
                 State::Fence => {
                     if self.eof() {
                     self.parse_prose(col, parent_col, b"`", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
@@ -3090,7 +3111,7 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                     self.parse_prose(col, parent_col, b"`", on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -3098,19 +3119,19 @@ impl<'a> Parser<'a> {
                 State::Fence2 => {
                     if self.eof() {
                     self.parse_prose_backticks(col, parent_col, on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                     }
                     match self.peek() {
                         Some(b'`') => {
                     self.advance();
                     self.parse_freeform(on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                         _ => {
                     self.parse_prose_backticks(col, parent_col, on_event);
-                    state = State::LineEnd;
+                    state = State::Line;
                     continue;
                         }
                     }
@@ -3538,6 +3559,7 @@ impl<'a> Parser<'a> {
                 State::Blob => {
                     match self.scan_to2(b'\n', bracket) {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return result;
@@ -3606,13 +3628,14 @@ impl<'a> Parser<'a> {
     {
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Semi, SemiAfter,  }
+        enum State { Main, Semi, SemiAfter, TbCommentNl,  }
         let mut state = State::Main;
         loop {
             match state {
                 State::Main => {
                     match self.scan_to3(b'\n', b';', bracket) {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -3660,17 +3683,36 @@ impl<'a> Parser<'a> {
                     self.set_term(-2);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
-                    return;
+                    state = State::TbCommentNl;
+                    continue;
                         }
                         Some(b'\n') => {
                     self.set_term(-2);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
-                    return;
+                    state = State::TbCommentNl;
+                    continue;
                         }
                         _ => {
                     state = State::Main;
                     continue;
+                        }
+                    }
+                }
+                State::TbCommentNl => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => {
+                    return;
                         }
                     }
                 }
@@ -3692,6 +3734,7 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to6(b'\n', b'|', b'!', b';', b'\\', bracket) {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -3798,10 +3841,20 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
                         Some(b) if b == bracket => {
@@ -4021,7 +4074,7 @@ impl<'a> Parser<'a> {
         let mut result: i32 = 0;
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued,  }
+        enum State { Main, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobCommentNl, BlobSemiGlued,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -5056,6 +5109,7 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     result = 3;
@@ -5165,6 +5219,11 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     result = 3;
                     return result;
                         }
@@ -5208,14 +5267,16 @@ impl<'a> Parser<'a> {
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
                     result = 3;
-                    return result;
+                    state = State::BlobCommentNl;
+                    continue;
                         }
                         Some(b'\n') => {
                     self.set_term(-2);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
                     result = 3;
-                    return result;
+                    state = State::BlobCommentNl;
+                    continue;
                         }
                         Some(b'{') => {
                     self.set_term(-2);
@@ -5229,6 +5290,24 @@ impl<'a> Parser<'a> {
                         _ => {
                     state = State::Blob;
                     continue;
+                        }
+                    }
+                }
+                State::BlobCommentNl => {
+                    if self.eof() {
+                    return result;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    on_event(Event::Attr { content: std::borrow::Cow::Borrowed(&self.input[self.saved_akey.clone()]), span: self.saved_akey.clone() });
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return result;
+                        }
+                        _ => {
+                    return result;
                         }
                     }
                 }
@@ -5361,6 +5440,7 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to5(b'\n', b'|', b'!', b';', b'\\') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -5524,6 +5604,7 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -5622,10 +5703,18 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
                         _ => {
@@ -5658,6 +5747,7 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -5756,10 +5846,18 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
                         _ => {
@@ -5779,7 +5877,7 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         #[derive(Clone, Copy)]
-        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, AfterInline,  }
+        enum State { Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, AfterInline, PostCommentNl,  }
         let mut state = State::Entry;
         loop {
             match state {
@@ -5792,6 +5890,7 @@ impl<'a> Parser<'a> {
                 State::Main => {
                     match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
@@ -5891,13 +5990,15 @@ impl<'a> Parser<'a> {
                     self.set_term(-1);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
-                    return;
+                    state = State::PostCommentNl;
+                    continue;
                         }
                         Some(b' ') => {
                     self.set_term(-1);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     self.parse_line_comment_content(on_event);
-                    return;
+                    state = State::PostCommentNl;
+                    continue;
                         }
                         Some(b'{') => {
                     self.set_term(-1);
@@ -5957,16 +6058,41 @@ impl<'a> Parser<'a> {
                 }
                 State::AfterInline => {
                     if self.eof() {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     return;
                         }
                         _ => {
                     self.mark();
                     state = State::Main;
                     continue;
+                        }
+                    }
+                }
+                State::PostCommentNl => {
+                    if self.eof() {
+                    return;
+                    }
+                    match self.peek() {
+                        Some(b'\n') => {
+                    self.mark();
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                        }
+                        _ => {
+                    return;
                         }
                     }
                 }
@@ -6352,9 +6478,9 @@ impl<'a> Parser<'a> {
                     return;
                         }
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::MlWs;
                     continue;
                         }
@@ -6588,9 +6714,9 @@ impl<'a> Parser<'a> {
                 State::RawSameline => {
                     match self.scan_to1(b'\n') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::RawContent;
                     continue;
                         }
@@ -6610,7 +6736,10 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
                     self.advance();
+                    self.set_term(0);
+                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
                     continue;
                         }
                         Some(b' ') => {
@@ -6641,7 +6770,10 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b'\n') => {
+                    self.mark();
                     self.advance();
+                    self.set_term(0);
+                    on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
                     state = State::RawContent;
                     continue;
                         }
@@ -6678,9 +6810,9 @@ impl<'a> Parser<'a> {
                 State::RawLine => {
                     match self.scan_to1(b'\n') {
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::RawContent { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::RawContent;
                     continue;
                         }
@@ -6742,6 +6874,7 @@ impl<'a> Parser<'a> {
                     match self.peek() {
                         Some(b'\n') => {
                     self.advance();
+                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
                     continue;
                         }
                         Some(b' ') => {
@@ -6913,9 +7046,25 @@ impl<'a> Parser<'a> {
         F: FnMut(Event<'a>),
     {
         self.mark();
-                    self.scan_to1(b'\n');
+        loop {
+            if self.eof() {
                     self.set_term(0);
-        on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+            }
+            match self.peek() {
+                Some(b'\n') => {
+                    self.advance();
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
+                    return;
+                }
+                _ => {
+                    self.scan_to1(b'\n');
+                    continue;
+                }
+            }
+        }
     }
 
     /// Parse sameline_directive
@@ -7224,9 +7373,9 @@ impl<'a> Parser<'a> {
                         _ => {
                     self.mark();
                     self.scan_to1(b'\n');
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::LineStart;
                     continue;
                         }
@@ -7240,8 +7389,10 @@ impl<'a> Parser<'a> {
                     }
                     match self.peek() {
                         Some(b'\n') => {
+                    self.mark();
                     self.advance();
-                    on_event(Event::BlankLine { content: std::borrow::Cow::Borrowed(b""), span: self.span() });
+                    self.set_term(0);
+                    on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
                     continue;
                         }
                         _ => {
@@ -7263,9 +7414,9 @@ impl<'a> Parser<'a> {
                     continue;
                         }
                         Some(b'\n') => {
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::LineStart;
                     continue;
                         }
@@ -7283,9 +7434,9 @@ impl<'a> Parser<'a> {
                 }
                 State::Line => {
                     self.scan_to1(b'\n');
+                    self.advance();
                     self.set_term(0);
                     on_event(Event::Text { content: self.term(), span: self.span_from_mark() });
-                    self.advance();
                     state = State::LineStart;
                     continue;
                 }

@@ -93,6 +93,12 @@ pub enum NodeKind<'a> {
     /// Reference: `@[id]` or `:[ref]`.
     Reference(Cow<'a, str>),
 
+    /// A blank / whitespace-only line (prose context). Contributes "\n" to
+    /// text reconstruction (D4); its edge-vs-interior disposition
+    /// (ornamentation vs newline) is the S6 AST policy, which keeping the
+    /// node makes decidable AND round-trippable.
+    BlankLine,
+
     /// Raw or freeform content block.
     Raw {
         lang: Option<Cow<'a, str>>,
@@ -392,8 +398,9 @@ impl<'doc, 'a: 'doc> Node<'doc, 'a> {
     /// Includes `Text` nodes and `Raw` (freeform/raw block) content;
     /// excludes comments. Adjacent chunks are separated by a single space
     /// unless one side already ends/starts with whitespace, so prose lines
-    /// don't run together ("Hello there" + "second line" ->
-    /// "Hello there second line").
+    /// Reconstructs by PURE CONCATENATION (the wire carries terminators as
+    /// text; BlankLine contributes "\n" per D4). Interpretation of edge
+    /// BlankLines (ornamentation) is a consumer policy layered above this.
     pub fn all_text(&self) -> String {
         let mut result = String::new();
         self.collect_text(&mut result);
@@ -404,6 +411,7 @@ impl<'doc, 'a: 'doc> Node<'doc, 'a> {
         match self.kind() {
             NodeKind::Text(s) => push_text_chunk(buf, s),
             NodeKind::Raw { content, .. } => push_text_chunk(buf, content),
+            NodeKind::BlankLine => buf.push('\n'),
             NodeKind::Comment(_) => {}
             _ => {
                 for child in self.children() {
@@ -813,13 +821,17 @@ impl<'a> TreeBuilder<'a> {
             }
 
             // ---- Blank lines ----
-            // Freeform blocks preserve blank lines as empty content lines.
-            // Elsewhere blank lines are not represented in the tree (yet).
+            // Freeform/raw blocks preserve blank lines as empty content
+            // lines; everywhere else the blank line becomes a BlankLine NODE
+            // (previously dropped — the AST lost paragraph breaks wholesale;
+            // HARNESS-AUDIT.md finding, fixed with the text-wire recast).
             BlankLine { span, .. } => {
                 let current = self.current();
                 if matches!(self.nodes[current.index()].kind, NodeKind::Raw { .. }) {
                     self.append_line_content(current, Cow::Borrowed(""));
                     self.extend_current_span(span.end);
+                } else {
+                    self.push_node(NodeKind::BlankLine, &span);
                 }
             }
 
@@ -892,15 +904,10 @@ impl<'a> TreeBuilder<'a> {
 /// Append a text chunk to `buf`, inserting a single space separator when
 /// neither side supplies whitespace (used by `Node::all_text`).
 fn push_text_chunk(buf: &mut String, chunk: &str) {
-    if chunk.is_empty() {
-        return;
-    }
-    let needs_sep = !buf.is_empty()
-        && !buf.ends_with(|c: char| c.is_whitespace())
-        && !chunk.starts_with(|c: char| c.is_whitespace());
-    if needs_sep {
-        buf.push(' ');
-    }
+    // Pure concatenation — the wire carries line terminators as text (the
+    // reconstruction contract, spec/TODO-TEXT-WIRE.md), so no separator is
+    // ever fabricated. (The old heuristic space was byte-fabrication that
+    // compensated for the newline-dropping wire; see _wip/HARNESS-AUDIT.md.)
     buf.push_str(chunk);
 }
 
@@ -1024,18 +1031,29 @@ mod tests {
     }
 
     #[test]
-    fn test_all_text_separates_lines() {
+    fn test_all_text_reconstructs_lines() {
+        // Pure concatenation — the wire carries the terminators (the
+        // reconstruction contract): no fabricated separators.
         let doc = Document::parse(b"|p\n  Hello there\n  second line\n").unwrap();
         let p = doc.root().first_child().unwrap();
-        assert_eq!(p.all_text(), "Hello there second line");
+        assert_eq!(p.all_text(), "Hello there\nsecond line\n");
     }
 
     #[test]
-    fn test_all_text_no_double_space_around_inline() {
-        // "Hello " already ends with whitespace; no extra separator.
+    fn test_all_text_inline_form_and_terminator() {
+        // Inline form mid-prose; the line's terminator arrives as the D1
+        // trailing Text and survives reconstruction.
         let doc = Document::parse(b"|p Hello |{em world}\n").unwrap();
         let p = doc.root().first_child().unwrap();
-        assert_eq!(p.all_text(), "Hello world");
+        assert_eq!(p.all_text(), "Hello world\n");
+    }
+
+    #[test]
+    fn test_all_text_blank_line_contributes_newline() {
+        // D4: BlankLine is a labeled "\n" — paragraph breaks survive.
+        let doc = Document::parse(b"|p\n  a\n\n  b\n").unwrap();
+        let p = doc.root().first_child().unwrap();
+        assert_eq!(p.all_text(), "a\n\nb\n");
     }
 
     #[test]

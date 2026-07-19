@@ -2,6 +2,11 @@
 # Raw Content", "Unified Inline Syntax"). The core recognizes `!` forms and
 # emits events; the expression language is the DYNAMICS.md dialect and is NOT
 # asserted here — expressions are captured verbatim and unparsed.
+#
+# Text-reconstruction contract (spec/TODO-TEXT-WIRE.md): text-bearing lines
+# (including directive-expression tails and RawContent lines) gain their
+# trailing "\n"; the one EOF-truncated case keeps no terminator (the byte
+# truly isn't in the source).
 
 # ---------------------------------------------------------------------------
 # Block directives: !name at head position, any name, body parsed as UDON
@@ -13,10 +18,10 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "logged_in"]
+    - [Text, "logged_in\n"]
     - ElementStart
     - [Name, "greeting"]
-    - [Text, "Welcome back!"]
+    - [Text, "Welcome back!\n"]
     - ElementEnd
     - DirectiveEnd
 
@@ -26,7 +31,7 @@
   events:
     - DirectiveStart
     - [Name, "frobnicate"]
-    - [Text, "all the things"]
+    - [Text, "all the things\n"]
     - DirectiveEnd
 
 - id: directive_expression_verbatim
@@ -35,10 +40,10 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "age >= 18 and verified"]
+    - [Text, "age >= 18 and verified\n"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "adult"]
+    - [Text, "adult\n"]
     - ElementEnd
     - DirectiveEnd
 
@@ -48,17 +53,17 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "yes"]
+    - [Text, "yes\n"]
     - ElementEnd
     - DirectiveEnd
     - DirectiveStart
     - [Name, "else"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "no"]
+    - [Text, "no\n"]
     - ElementEnd
     - DirectiveEnd
 
@@ -74,7 +79,7 @@
     - [Name, "p"]
     - [Text, "Hello, "]
     - [Interpolation, "user.name"]
-    - [Text, "!"]
+    - [Text, "!\n"]
     - ElementEnd
 
 - id: interpolation_with_filters
@@ -84,6 +89,7 @@
     - ElementStart
     - [Name, "p"]
     - [Interpolation, "name | capitalize"]
+    - [Text, "\n"]
     - ElementEnd
 
 - id: interpolation_empty
@@ -94,7 +100,7 @@
     - [Name, "p"]
     - [Text, "x "]
     - [Interpolation, ""]
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: interpolation_at_head_is_prose_level
@@ -122,7 +128,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
 
 - id: raw_block_sameline_body_then_block
@@ -132,9 +138,9 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo one"]
-    - [RawContent, "echo two"]
-    - [RawContent, "  indented"]
+    - [RawContent, "echo one\n"]
+    - [RawContent, "echo two\n"]
+    - [RawContent, "  indented\n"]
     - DirectiveEnd
 
 - id: raw_block_sameline_body_eof
@@ -157,7 +163,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "make build"]
+    - [RawContent, "make build\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -170,7 +176,7 @@
     - DirectiveStart
     - [Name, "sql"]
     - [Raw, ""]
-    - [RawContent, "SELECT 1"]
+    - [RawContent, "SELECT 1\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -183,9 +189,9 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
-    - [Text, "back to prose"]
+    - [Text, "back to prose\n"]
     - ElementEnd
 
 # "The rest of the line is the body's first content" (ruled 2026-07-16), and
@@ -198,7 +204,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi ; not a comment"]
+    - [RawContent, "echo hi ; not a comment\n"]
     - DirectiveEnd
 
 - id: raw_block_node_value_sameline_body_plus_block
@@ -211,8 +217,8 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "make build"]
-    - [RawContent, "make test"]
+    - [RawContent, "make build\n"]
+    - [RawContent, "make test\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -234,7 +240,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -245,9 +251,9 @@
     - DirectiveStart
     - [Name, "elixir"]
     - [Raw, ""]
-    - [RawContent, "def hello do"]
-    - [RawContent, "  IO.puts(\"world\")"]
-    - [RawContent, "end"]
+    - [RawContent, "def hello do\n"]
+    - [RawContent, "  IO.puts(\"world\")\n"]
+    - [RawContent, "end\n"]
     - DirectiveEnd
 
 - id: raw_block_markers_inert
@@ -257,9 +263,9 @@
     - DirectiveStart
     - [Name, "elixir"]
     - [Raw, ""]
-    - [RawContent, "value |> transform()"]
-    - [RawContent, "; not a comment"]
-    - [RawContent, ":not an attr"]
+    - [RawContent, "value |> transform()\n"]
+    - [RawContent, "; not a comment\n"]
+    - [RawContent, ":not an attr\n"]
     - DirectiveEnd
 
 - id: raw_block_inside_element
@@ -271,7 +277,7 @@
     - DirectiveStart
     - [Name, "sql"]
     - [Raw, ""]
-    - [RawContent, "SELECT * FROM users"]
+    - [RawContent, "SELECT * FROM users\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -291,7 +297,7 @@
     - [Raw, ""]
     - [RawContent, "{\"status\": \"ok\"}"]
     - DirectiveEnd
-    - [Text, " as expected."]
+    - [Text, " as expected.\n"]
     - ElementEnd
 
 - id: inline_raw_regex_braces
@@ -306,7 +312,7 @@
     - [Raw, ""]
     - [RawContent, "[a-z]{3,5}"]
     - DirectiveEnd
-    - [Text, " here"]
+    - [Text, " here\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -327,4 +333,5 @@
     - EmbeddedEnd
     - [Text, " content"]
     - DirectiveEnd
+    - [Text, "\n"]
     - ElementEnd

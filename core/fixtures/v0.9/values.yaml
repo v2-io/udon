@@ -304,7 +304,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "desc"]
-    - [Text, "unquoted text here"]
+    - [Text, "unquoted text here\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------

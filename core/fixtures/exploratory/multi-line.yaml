@@ -233,7 +233,7 @@
     - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
-    - [Text, "2"]
+    - [Text, "2\n"]
     - [Text, "3"]
 
 
@@ -257,7 +257,7 @@
 # ===========================================================================
 
 - id: ml_id_bare_newline_silent
-  desc: "★ newline inside identity [...] silently closes $key (NO UnclosedIdentityKey); rest is prose"
+  desc: "newline inside identity [...] closes with $partial-key + UnclosedIdentityKey (landed 2026-07-19); rest is prose"
   udon: "|el[abc\n  def]"
   root_only: true
   # CURRENT (exploratory, not ratified): $key = "abc" (line 1 only); "def]"
@@ -269,8 +269,9 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Attr, "$key"]
+    - [Attr, "$partial-key"]
     - [BareValue, "abc"]
+    - [Warning, "UnclosedIdentityKey"]
     - [Text, "def]"]
     - ElementEnd
 
@@ -389,7 +390,7 @@
     - [Name, "p"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "a"]
+    - [Text, "a\n"]
     - [Text, "b"]
     - DirectiveEnd
     - ElementEnd
@@ -410,7 +411,7 @@
     - [Name, "p"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - [Warning, "UnclosedInlineDirective"]
     - DirectiveEnd
     - ElementEnd
@@ -430,7 +431,7 @@
     - [Name, "p"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - [Text, "hello"]
     - [Warning, "UnclosedInlineDirective"]
     - DirectiveEnd

@@ -54,7 +54,7 @@
     - [Name, "el"]
     - [Attr, "a?"]
     - BoolTrue
-    - [Text, "it sure is true"]
+    - [Text, "it sure is true\n"]
     - ElementEnd
 
 - id: flag_nonkeyword_snaps_true_prose_reowned
@@ -65,7 +65,7 @@
     - [Name, "el"]
     - [Attr, "a?"]
     - BoolTrue
-    - [Text, "well it sure is true"]
+    - [Text, "well it sure is true\n"]
     - ElementEnd
 
 - id: flag_then_node_is_child

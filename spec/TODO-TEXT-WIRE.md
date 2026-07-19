@@ -1,8 +1,13 @@
 # TODO — the text-wire recast: newline-carrying Text (P0 SHOW-STOPPER)
 
-> **Status: D1–D4 RULED (2026-07-19, CHANGELOG third batch) + harness audit
-> DONE (`core/fixtures/_wip/HARNESS-AUDIT.md`; landmine #1 defused c55a4f5).
-> Executing: CORE text → fixtures-first rewrite → grammar sweep → AST.**
+> **Status: LANDED (2026-07-19, same day) — wire, harness, fixtures, AST.**
+> The gate is fully green on the newline-carrying wire (5 consecutive runs,
+> variations included); pushdown differential green; full workspace suite
+> green; exploratory re-recorded (19/0). Bench pair: +5–8% IMPROVED (the
+> consolidated terminator-inclusive emission is cheaper than the old
+> per-line state hops). Open residuals: the root-nameless-`!{` micro-gap
+> (below), the final-terminator disposition venture (below, near-ruled),
+> and the CORE-text polish items in TODO-SPEC-CORE.
 > This is the design of record for fixing the project's highest-priority
 > defect (Joseph, 2026-07-19): *the event wire drops the document's
 > newlines.* Prose/freeform/comment/raw Text events exclude their line
@@ -59,7 +64,7 @@ or inline form owns the line's end.
 | Prose line ending in a sameline comment | `Text "Item one "` + Comment + `Text "\n"` | the trailing terminator-only Text (decision D1) |
 | Prose line ending in an inline form | …EmbeddedEnd/`;{…}`/interp + `Text "\n"` | same mechanism |
 | Multi-line deferred attr values | segments each `"…\n"` | value reconstruct = concat; flat wire unchanged |
-| Pure-structure lines | no text event | their terminators are geometry |
+| Pure-structure lines | no text event | their terminators are geometry. **Refined during the sweep (a fixture agent's better reading, adopted): "pure-structure" means lines emitting NO text-bearing events** — any Text/RawContent event carries whatever terminator its source line has, uniformly (directive args included: `!if x⏎` → `Text "x\n"`); no per-context carve-outs |
 | Delimited captures (strings, envelope, interp) | unchanged | already newline-carrying — the regime the rest now joins |
 
 ## Spec changes (CORE)
@@ -139,6 +144,35 @@ trailing terminator-only `Text "\n"` emission after sameline comments /
 inline forms at EOL (the fiddly part — small added states); comment/raw
 line handling per the table. Bench pair per discipline (perf notes only —
 Joseph: don't over-invest pre-tag).
+
+## Known micro-residual (accepted, logged)
+
+A ROOT-level nameless `!{` at end-of-line emits `Text "!{"` without its
+terminator (prose contexts emit the D1 trailing `Text "\n"` via their
+post-inline states; the document root's shared `:eol` consumes it as
+geometry). Contract-violating for that one malformed edge; fixing it cleanly
+wants the descent line-discipline feature (experience notes #1) rather than
+another hand-threaded state. Revisit with the `*{` rewrite.
+
+## Final-terminator disposition (Joseph's venture, 2026-07-19 — proposed, near-ruled)
+
+The very FINAL trailing newline of a text run (before dedent/End) is the one
+still-underdefined disposition: ornament (udon-positional) vs inner text.
+Current wire keeps it IN the Text content (`"hi\n"`), so the AST holds the
+byte and the decision is deferrable. Joseph's proposed rule maps onto the
+wire almost for free:
+- **Explicit newline** — `\`-forced with nothing after the `\` → wire
+  `Text "\n"` (already distinct from BlankLine): AST always preserves.
+- **Implicit** — `BlankLine` (S6 policy: interior → newline, edge →
+  ornament) and the final terminator inside an ordinary prose Text
+  (AST may trim as ornament or keep as text — both implementable, byte
+  present either way).
+Scope question (one gap): a NON-blank `\`-forced line (`\hi⏎` →
+`Text "hi\n"`) is wire-indistinguishable from unforced — if forcedness
+must mark THAT line's terminator explicit too, it needs a wire marker;
+if the trailing-`\`-line idiom is the intended explicitness gesture (as
+the S6 discussion suggests), the rule is fully expressible today with no
+wire change. AST-side landing: `core/TODO-PARSER.md` S6 item.
 
 ## Decision shortlist for Joseph
 

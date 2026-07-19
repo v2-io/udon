@@ -5,8 +5,11 @@
 # output. Each case cites the CORE rule it exercises.
 #
 # Event-shape conventions carried over from the legacy group where CORE does
-# not dictate them: Text per line without trailing newline; comments as
-# CommentStart/[Text]/CommentEnd; directives as DirectiveStart/[Name]/...
+# not dictate them: comments as CommentStart/[Text]/CommentEnd; directives as
+# DirectiveStart/[Name]/... Per the text-reconstruction contract
+# (spec/TODO-TEXT-WIRE.md), a text-bearing line's terminator now rides its
+# Text event — every case here ends with a source "\n" on its final line,
+# so Text events carry their trailing "\n".
 
 # ---------------------------------------------------------------------------
 # `|` guard: element only when followed by a letter, `[`, `.`, `{`, or `'`
@@ -25,31 +28,31 @@
   desc: pipe followed by a digit is prose (digit is not a letter)
   udon: "|1 not an element\n"
   events:
-    - [Text, "|1 not an element"]
+    - [Text, "|1 not an element\n"]
 
 - id: pipe_dash_is_prose
   desc: markdown table delimiter row is prose
   udon: "|-\n"
   events:
-    - [Text, "|-"]
+    - [Text, "|-\n"]
 
 - id: pipe_space_is_prose
   desc: pipe followed by space is prose (markdown table row)
   udon: "| a | b |\n"
   events:
-    - [Text, "| a | b |"]
+    - [Text, "| a | b |\n"]
 
 - id: bare_pipe_is_prose
   desc: a lone pipe at end of line is prose
   udon: "|\n"
   events:
-    - [Text, "|"]
+    - [Text, "|\n"]
 
 - id: pipe_equals_is_prose
   desc: pipe followed by punctuation outside the guard set is prose
   udon: "|= cell\n"
   events:
-    - [Text, "|= cell"]
+    - [Text, "|= cell\n"]
 
 - id: pipe_bracket_is_anonymous_element
   desc: pipe followed by [ opens an anonymous element with a key
@@ -88,10 +91,10 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "logged_in"]
+    - [Text, "logged_in\n"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "hi"]
+    - [Text, "hi\n"]
     - ElementEnd
     - DirectiveEnd
 
@@ -99,25 +102,25 @@
   desc: markdown image syntax is prose (guard fails on `[`)
   udon: "![img](pic.jpg)\n"
   events:
-    - [Text, "![img](pic.jpg)"]
+    - [Text, "![img](pic.jpg)\n"]
 
 - id: bang_equals_is_prose
   desc: bang followed by `=` is prose
   udon: "!= not a directive\n"
   events:
-    - [Text, "!= not a directive"]
+    - [Text, "!= not a directive\n"]
 
 - id: bang_paren_is_prose
   desc: bang followed by `(` is prose
   udon: "!(x)\n"
   events:
-    - [Text, "!(x)"]
+    - [Text, "!(x)\n"]
 
 - id: bare_bang_is_prose
   desc: a lone bang is prose
   udon: "!\n"
   events:
-    - [Text, "!"]
+    - [Text, "!\n"]
 
 # `!{...}` at head position is a *prose-level* inline form, not a block
 # directive (CORE "Marker Recognition"; parser previously wrapped this in a
@@ -143,19 +146,19 @@
   desc: at followed by space is prose
   udon: "@ not a reference\n"
   events:
-    - [Text, "@ not a reference"]
+    - [Text, "@ not a reference\n"]
 
 - id: at_punctuation_is_prose
   desc: at followed by punctuation is prose
   udon: "@! nope\n"
   events:
-    - [Text, "@! nope"]
+    - [Text, "@! nope\n"]
 
 - id: email_mid_prose_is_prose
   desc: an @ mid-prose is never a reference (head position only)
   udon: "mail me at a@b.example\n"
   events:
-    - [Text, "mail me at a@b.example"]
+    - [Text, "mail me at a@b.example\n"]
 
 # ---------------------------------------------------------------------------
 # `:` phase restriction: attribute only while the element has no child
@@ -180,9 +183,9 @@
     - [Name, "a"]
     - [Attr, "k"]
     - [BareValue, "v"]
-    - [Text, "some prose"]
+    - [Text, "some prose\n"]
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":later x"]
+    - [Text, ":later x\n"]
     - ElementEnd
 
 - id: colon_after_child_element_is_prose
@@ -195,7 +198,7 @@
     - [Name, "child"]
     - ElementEnd
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":later x"]
+    - [Text, ":later x\n"]
     - ElementEnd
 
 - id: colon_no_name_is_prose
@@ -204,7 +207,7 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, ":-) smiley"]
+    - [Text, ":-) smiley\n"]
     - ElementEnd
 
 - id: colon_space_is_prose
@@ -213,7 +216,7 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, ": not an attr"]
+    - [Text, ": not an attr\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -232,7 +235,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "a | b :-) ! ``` all literal"]
+    - [Text, "a | b :-) ! ``` all literal\n"]
     - ElementEnd
 
 - id: head_reentry_after_prose_line
@@ -241,11 +244,11 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, "some prose"]
+    - [Text, "some prose\n"]
     - ElementStart
     - [Name, "b"]
     - ElementEnd
-    - [Text, "more prose"]
+    - [Text, "more prose\n"]
     - ElementEnd
 
 - id: deeper_than_prose_marker_is_literal
@@ -254,8 +257,8 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, "prose base"]
-    - [Text, "  |not-an-element"]
+    - [Text, "prose base\n"]
+    - [Text, "  |not-an-element\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -272,6 +275,6 @@
     - ElementStart
     - [Name, "b"]
     - [Attr, "k"]
-    - [Text, "v word :notattr"]
+    - [Text, "v word :notattr\n"]
     - ElementEnd
     - ElementEnd

@@ -31,7 +31,7 @@
     - [Name, "the-node"]
     - [Attr, "k"]
     - [StringValue, "v"]
-    - [Text, "more"]
+    - [Text, "more\n"]
     - ElementEnd
     - ElementEnd
 
@@ -60,9 +60,9 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "note"]
-    - [Text, "first line"]
+    - [Text, "first line\n"]
     - [Attr, "note"]
-    - [Text, "second line"]
+    - [Text, "second line\n"]
     - ElementEnd
 
 - id: open_attr_first_line_plus_deeper
@@ -72,9 +72,9 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "also"]
-    - [Text, "this one"]
+    - [Text, "this one\n"]
     - [Attr, "also"]
-    - [Text, "continued deeper"]
+    - [Text, "continued deeper\n"]
     - ElementEnd
 
 - id: deferred_text_blank_line_preserved
@@ -84,10 +84,10 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "body"]
-    - [Text, "line one"]
+    - [Text, "line one\n"]
     - BlankLine
     - [Attr, "body"]
-    - [Text, "line two"]
+    - [Text, "line two\n"]
     - ElementEnd
 
 - id: blob_with_inline_form_segments
@@ -103,6 +103,8 @@
     - [Name, "a"]
     - [Text, "hello"]
     - EmbeddedEnd
+    - [Attr, "the-attribute"]
+    - [Text, "\n"]
     - ElementEnd
 
 # --- Warn + stack (the uniform two-values rule: never error, never drop) ---
@@ -117,7 +119,7 @@
     - [StringValue, "first"]
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "attr"]
-    - [Text, "and here's another one"]
+    - [Text, "and here's another one\n"]
     - ElementEnd
 
 - id: boundary_backslash_block_line_warns_and_stacks
@@ -130,7 +132,7 @@
     - [BareValue, "something"]
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "key"]
-    - [Text, " tail here"]
+    - [Text, " tail here\n"]
     - ElementEnd
 
 - id: deeper_second_value_warns_and_stacks
@@ -144,7 +146,7 @@
     - [Warning, "NoDialectsLoaded"]
     - [Warning, "AttributeSecondValue"]
     - [Attr, "when"]
-    - [Text, "extra deeper text"]
+    - [Text, "extra deeper text\n"]
     - ElementEnd
 
 - id: deeper_comment_under_finished_value_ok
@@ -175,7 +177,7 @@
     - [Attr, "theta"]
     - [Error, "AttributeUnderAttribute"]
     - Nil
-    - [Text, ":first 1"]
+    - [Text, ":first 1\n"]
     - ElementEnd
 
 - id: heterogeneous_stack
@@ -191,7 +193,7 @@
     - [Name, "node"]
     - ElementEnd
     - [Attr, "a"]
-    - [Text, "more text"]
+    - [Text, "more text\n"]
     - ElementEnd
 
 # Same-line tail after an EMBEDDED node value on a deeply indented block
@@ -213,5 +215,5 @@
     - EmbeddedEnd
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "a"]
-    - [Text, "tail here"]
+    - [Text, "tail here\n"]
     - ElementEnd

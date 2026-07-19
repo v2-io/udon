@@ -19,13 +19,13 @@
   ; content; there is no separate info-string rule).
   |state[:opening]
     |c['\n']                  | ->                               |>> :line_start
-    |default                  | MARK | ->['\n'] | TERM | Text(USE_MARK) | -> |>> :line_start
+    |default                  | MARK | ->['\n'] | -> | TERM | Text(USE_MARK) |>> :line_start  ; opening-line tail: terminator is text
 
   ; Start of each content line - MARK immediately, then check content
   ; Blank lines are content: freeform's contract is exact preservation
   ; (defect #15), so they emit BlankLine instead of vanishing.
   |state[:line_start]
-    |c['\n']                  | -> | BlankLine                   |>>  ; blank line preserved
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |>>  ; blank body line = Text "\n" (D2: exact mode)
     |default                  | MARK                             |>> :content
 
   ; Check if line is closing ``` (starts with optional ws then ```)
@@ -33,12 +33,12 @@
   ; letting its newline leak into the next line's Text (defect #15).
   |state[:content]
     |c[' \t']                 | ->                               |>>
-    |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :line_start  ; ws-only line
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |>> :line_start  ; ws-only line, terminator included
     |c['`']                   | ->                               |>> :maybe_end1
     |default                  | ->                               |>> :line
 
   |state[:line]
-    | ->['\n'] | TERM | Text(USE_MARK) | ->                      |>> :line_start
+    | ->['\n'] | -> | TERM | Text(USE_MARK)                      |>> :line_start  ; terminator is text
 
   ; Check for ``` sequence
   |state[:maybe_end1]

@@ -47,19 +47,24 @@ pub fn asserts_empty_text(case: &TestCase) -> bool {
     })
 }
 
-fn collapse_adjacent_text<'a>(events: Vec<Event<'a>>, input: &[u8]) -> Vec<Event<'a>> {
+/// Rhythm-independence fold, derived ENTIRELY from event content — no spans,
+/// no source (the old span-gap/source consultation was the compensator that
+/// masked the newline-dropping wire; see spec/TODO-TEXT-WIRE.md +
+/// _wip/HARNESS-AUDIT.md). Since line terminators are text, adjacent Text
+/// events merge exactly when the first does NOT end in '\n' — a same-line
+/// split (escape, packet boundary) merges; a line boundary stands. Empty
+/// Texts fold away (authorized concatenation; exact cases opt out via
+/// `asserts_empty_text`).
+fn collapse_adjacent_text(events: Vec<Event<'_>>) -> Vec<Event<'_>> {
     let mut out: Vec<Event<'_>> = Vec::with_capacity(events.len());
     for e in events {
-        // A zero-length Text carries no information (blank lines are
-        // BlankLine events, never Text "") — drop it, same convention.
         if matches!(&e, Event::Text { content, .. } if content.is_empty()) {
             continue;
         }
         if let (Some(Event::Text { content: prev_c, span: prev_s }), Event::Text { content, span }) =
             (out.last_mut(), &e)
         {
-            let gap = &input[prev_s.end.min(span.start)..span.start.max(prev_s.end)];
-            if !gap.contains(&b'\n') {
+            if !prev_c.ends_with(b"\n") {
                 let mut merged = prev_c.to_vec();
                 merged.extend_from_slice(content);
                 *prev_c = std::borrow::Cow::Owned(merged);
@@ -70,6 +75,29 @@ fn collapse_adjacent_text<'a>(events: Vec<Event<'a>>, input: &[u8]) -> Vec<Event
         out.push(e);
     }
     out
+}
+
+/// The SAME fold applied to the expected side (symmetry: authors may write
+/// text at any granularity; both sides normalize identically before compare).
+fn collapse_expected(events: &[ExpectedEvent]) -> Vec<String> {
+    let mut out: Vec<ExpectedEvent> = Vec::with_capacity(events.len());
+    for e in events {
+        if matches!(e, ExpectedEvent::WithContent(n, c) if n == "Text" && c.is_empty()) {
+            continue;
+        }
+        if let (
+            Some(ExpectedEvent::WithContent(pn, pc)),
+            ExpectedEvent::WithContent(n, c),
+        ) = (out.last_mut(), e)
+        {
+            if pn == "Text" && n == "Text" && !pc.ends_with('\n') {
+                pc.push_str(c);
+                continue;
+            }
+        }
+        out.push(e.clone());
+    }
+    out.iter().map(format_expected).collect()
 }
 
 /// Format event for comparison (simplified, no spans)
@@ -128,14 +156,15 @@ pub fn run_test(case: &TestCase) -> TestResult {
     // `asserts_empty_text`): the raw events, unfolded, so the empty Text it
     // pins is actually present to match against.
     let raw = collect_events(input);
-    let events = if asserts_empty_text(case) {
-        raw
-    } else {
-        collapse_adjacent_text(raw, input)
-    };
+    let exact = asserts_empty_text(case);
+    let events = if exact { raw } else { collapse_adjacent_text(raw) };
 
     let actual: Vec<String> = events.iter().map(format_event).collect();
-    let expected: Vec<String> = case.events.iter().map(format_expected).collect();
+    let expected: Vec<String> = if exact {
+        case.events.iter().map(format_expected).collect()
+    } else {
+        collapse_expected(&case.events)
+    };
 
     let mut errors = Vec::new();
 
@@ -286,17 +315,36 @@ pub fn run_with_variations(case: &TestCase, gen: &mut Gen) -> TestResult {
     }
 
     // Parse and collect events
-    let events = collapse_adjacent_text(collect_events(&input), &input);
+    let events = collapse_adjacent_text(collect_events(&input));
     let actual: Vec<String> = events.iter().map(format_event).collect();
-    let expected: Vec<String> = case.events.iter().map(format_expected).collect();
+    let expected: Vec<String> = collapse_expected(&case.events);
 
     // For variations, we check that expected events appear in order (subsequence match)
-    // because we may have extra events from the wrapping context
+    // because we may have extra events from the wrapping context.
+    // D3 tolerance (ruled 2026-07-19): the variation machinery re-terminates
+    // every line, so a case whose source ends WITHOUT a newline gains one —
+    // its final text event legitimately carries a "\n" the expectation
+    // (written for the EOF form) lacks. Suppress the captured newline that is
+    // really an EOF stand-in: a Text/RawContent actual also matches
+    // expected-with-"\n"-appended-before-the-closing-quote.
+    let d3_match = |act: &str, exp: &str| -> bool {
+        if act == exp {
+            return true;
+        }
+        if (exp.starts_with("Text \"") || exp.starts_with("RawContent \""))
+            && exp.ends_with('"')
+        {
+            let mut with_nl = exp[..exp.len() - 1].to_string();
+            with_nl.push_str("\\n\"");
+            return act == with_nl;
+        }
+        false
+    };
     let mut errors = Vec::new();
     let mut exp_idx = 0;
 
     for act in &actual {
-        if exp_idx < expected.len() && act == &expected[exp_idx] {
+        if exp_idx < expected.len() && d3_match(act, &expected[exp_idx]) {
             exp_idx += 1;
         }
     }

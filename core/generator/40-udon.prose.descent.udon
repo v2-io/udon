@@ -44,7 +44,7 @@
 |function[verbatim_text]  | MARK
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c['|']                   | ->                               |>> :vpipe
     |c['!']                   | ->                               |>> :vbang
     |c[';']                   | ->                               |>> :vsemi
@@ -95,7 +95,7 @@
 
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   | ->                               |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
@@ -119,9 +119,11 @@
     |default                  |                                  |>> :main
 
 
-  ; After inline construct - only set MARK if more content follows
+  ; After inline construct: more content re-MARKs; a line end here means the
+  ; inline form owned the line's end — the terminator is still text (D1), so
+  ; emit the terminator-only Text "\n" before returning.
   |state[:after_inline]
-    |c['\n']                  |                                  |return  ; at end, no emit
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
     |default                  | MARK                             |>> :main
 
 
@@ -136,7 +138,7 @@
 
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   | ->                               |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
@@ -160,9 +162,11 @@
     |default                  |                                  |>> :main
 
 
-  ; After inline construct - only set MARK if more content follows
+  ; After inline construct: more content re-MARKs; a line end here means the
+  ; inline form owned the line's end — the terminator is still text (D1), so
+  ; emit the terminator-only Text "\n" before returning.
   |state[:after_inline]
-    |c['\n']                  |                                  |return  ; at end, no emit
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
     |default                  | MARK                             |>> :main
 
 
@@ -177,7 +181,7 @@
 
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c['|']                   | ->                               |>> :check_pipe
     |c[';']                   |                                  |>> :check_semi
     |c['!']                   | ->                               |>> :check_bang
@@ -205,8 +209,8 @@
 
   |state[:semi_spaced]
     |eof                      | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
-    |c['\n']                  | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
-    |c[' ']                   | TERM(-1) | Text(USE_MARK) | /line_comment_content |return
+    |c['\n']                  | TERM(-1) | Text(USE_MARK) | /line_comment_content |>> :post_comment_nl
+    |c[' ']                   | TERM(-1) | Text(USE_MARK) | /line_comment_content |>> :post_comment_nl
     |c['{']                   | TERM(-1) | Text(USE_MARK) | -> | /brace_comment |>> :after_inline
     |default                  |                                  |>> :main  ; ";x" — unframed, literal
 
@@ -221,7 +225,17 @@
     |default                  |                                  |>> :main
 
 
-  ; After inline construct - only set MARK if more content follows
+  ; After inline construct: more content re-MARKs; a line end here means the
+  ; inline form owned the line's end — the terminator is still text (D1), so
+  ; emit the terminator-only Text "\n" before returning.
   |state[:after_inline]
-    |c['\n']                  |                                  |return  ; at end, no emit
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
     |default                  | MARK                             |>> :main
+
+  ; After a sameline comment that ends a PROSE line the terminator is still
+  ; text (D1): the comment consumed to (not through) the newline; emit the
+  ; terminator-only Text "\n". At EOF there is no terminator byte.
+  |state[:post_comment_nl]
+    |eof                      |                                  |return
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
+    |default                  |                                  |return

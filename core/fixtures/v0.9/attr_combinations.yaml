@@ -33,7 +33,7 @@
     - [Attr, "on?"]
     - BoolTrue
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: embedded_flag_false_at_brace
@@ -48,7 +48,7 @@
     - [Attr, "on?"]
     - BoolFalse
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: embedded_flag_null_then_content
@@ -64,7 +64,7 @@
     - Nil
     - [Text, "note"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: embedded_flag_nonkeyword_snaps_true
@@ -80,7 +80,7 @@
     - BoolTrue
     - [Text, "maybe"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -128,7 +128,7 @@
     - [Name, "el"]
     - [Attr, "a?"]
     - BoolTrue
-    - [Text, "hello there"]
+    - [Text, "hello there\n"]
     - ElementEnd
 
 # ⚠ An envelope after a flag: `<…>` is "meaningful in value position and
@@ -144,7 +144,7 @@
     - [Name, "el"]
     - [Attr, "f?"]
     - BoolTrue
-    - [Text, "<5m>"]
+    - [Text, "<5m>\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -165,7 +165,7 @@
     - [BareValue, "val"]
     - ElementStart
     - [Name, "node"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - ElementEnd
     - ElementEnd
 
@@ -189,8 +189,8 @@
     - [Attr, "k"]
     - [BareValue, "v"]
     - FreeformStart
-    - [Text, "txt"]
-    - [Text, "body"]
+    - [Text, "txt\n"]
+    - [Text, "body\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -204,7 +204,7 @@
     - [BareValue, "v"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "cond"]
+    - [Text, "cond\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -221,7 +221,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "a"]
-    - [Text, "val :3 more"]
+    - [Text, "val :3 more\n"]
     - ElementEnd
 
 # ⚠ Same reasoning: '|' guards on letter/[/./{/'/suffix — '~' fails, so '|~'
@@ -233,7 +233,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "a"]
-    - [Text, "val |~ x"]
+    - [Text, "val |~ x\n"]
     - ElementEnd
 
 - id: boundary_bang_guard_fails_blob
@@ -243,7 +243,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
-    - [Text, "v != 3"]
+    - [Text, "v != 3\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -270,7 +270,7 @@
     - [Name, "el"]
     - [Attr, "a"]
     - [Reference, "[r]"]
-    - [Text, "tail"]
+    - [Text, "tail\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -330,7 +330,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -344,7 +344,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -361,7 +361,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -377,7 +377,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo |a :b ; c"]
+    - [RawContent, "echo |a :b ; c\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -389,7 +389,7 @@
     - [Name, "el"]
     - [Attr, "code"]
     - FreeformStart
-    - [Text, "    x = 1"]
+    - [Text, "    x = 1\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -406,8 +406,8 @@
     - [Name, "el"]
     - [Attr, "code"]
     - FreeformStart
-    - [Text, "py"]
-    - [Text, "x = 1"]
+    - [Text, "py\n"]
+    - [Text, "x = 1\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -451,13 +451,13 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "body"]
-    - [Text, "seg one"]
+    - [Text, "seg one\n"]
     - BlankLine
     - CommentStart
     - [Text, " a note"]
     - CommentEnd
     - [Attr, "body"]
-    - [Text, "seg two"]
+    - [Text, "seg two\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -476,7 +476,7 @@
     - [Integer, "42"]
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "n"]
-    - [Text, "and more"]
+    - [Text, "and more\n"]
     - ElementEnd
 
 - id: array_first_trailing_text_warns_and_stacks
@@ -492,7 +492,7 @@
     - ArrayEnd
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "xs"]
-    - [Text, "extra"]
+    - [Text, "extra\n"]
     - ElementEnd
 
 - id: envelope_first_trailing_text_warns_and_stacks
@@ -506,7 +506,7 @@
     - [Warning, "NoDialectsLoaded"]
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "t"]
-    - [Text, "tail"]
+    - [Text, "tail\n"]
     - ElementEnd
 
 - id: node_first_deeper_text_warns_and_stacks
@@ -521,7 +521,7 @@
     - ElementEnd
     - [Warning, "AttributeSecondValue"]
     - [Attr, "h"]
-    - [Text, "trailing text"]
+    - [Text, "trailing text\n"]
     - ElementEnd
 
 - id: node_first_second_sibling_node_warns_and_stacks
@@ -551,7 +551,7 @@
     - [Integer, "5"]
     - [Warning, "AttributeSecondValue"]
     - [Attr, "n"]
-    - [Text, "deeper"]
+    - [Text, "deeper\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -575,7 +575,7 @@
     - [Text, "b"]
     - EmbeddedEnd
     - [Attr, "msg"]
-    - [Text, " ; c |{d}"]
+    - [Text, " ; c |{d}\n"]
     - ElementEnd
 
 - id: value_backslash_space_only
@@ -585,7 +585,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
-    - [Text, " tail"]
+    - [Text, " tail\n"]
     - ElementEnd
 
 - id: value_backslash_then_deeper_continuation
@@ -595,9 +595,9 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
-    - [Text, "first ; line"]
+    - [Text, "first ; line\n"]
     - [Attr, "k"]
-    - [Text, "deeper line"]
+    - [Text, "deeper line\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -760,9 +760,9 @@
     - [Name, "el"]
     - [Attr, "a?"]
     - BoolTrue
-    - [Text, "oops"]
+    - [Text, "oops\n"]
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":b 2"]
+    - [Text, ":b 2\n"]
     - ElementEnd
 
 - id: child_element_then_late_colon
@@ -777,7 +777,7 @@
     - [Name, "kid"]
     - ElementEnd
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":b 2"]
+    - [Text, ":b 2\n"]
     - ElementEnd
 
 - id: block_prose_then_late_colon
@@ -786,9 +786,9 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, "some prose"]
+    - [Text, "some prose\n"]
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":b 2"]
+    - [Text, ":b 2\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -812,7 +812,7 @@
     - [Attr, "a"]
     - [Integer, "1"]
     - [Error, "AttributeUnderAttribute"]
-    - [Text, ":b 2"]
+    - [Text, ":b 2\n"]
     - ElementEnd
 
 # ⚠ Same rule under a flag: the flag's value is "always finished at its own
@@ -827,7 +827,7 @@
     - [Attr, "f?"]
     - BoolTrue
     - [Error, "AttributeUnderAttribute"]
-    - [Text, ":x 1"]
+    - [Text, ":x 1\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------

@@ -215,6 +215,7 @@
     - ArrayEnd
     - [Text, "target"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 - id: key_longhand_equivalent
@@ -474,7 +475,7 @@
   desc: underscore cannot start a bare name, so the pipe guard fails to prose
   udon: "|_private\n"
   events:
-    - [Text, "|_private"]
+    - [Text, "|_private\n"]
 
 - id: quoted_name_with_space
   desc: quoting puts otherwise-illegal characters in a name
@@ -492,7 +493,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, "$rest"]
+    - [Text, "$rest\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -519,5 +520,5 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, ".gitignore is a file"]
+    - [Text, ".gitignore is a file\n"]
     - ElementEnd

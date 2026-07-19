@@ -80,7 +80,7 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "logged_in"]
+    - [Text, "logged_in\n"]
     - ElementStart
     - [Name, "greeting"]
     - [Text, "Welcome"]
@@ -106,7 +106,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "note"]
-    - [Text, "line one"]
+    - [Text, "line one\n"]
     - [Attr, "note"]
     - [Text, "line two"]
     - ElementEnd
@@ -117,7 +117,7 @@
   root_only: true
   events:
     - FreeformStart
-    - [Text, "body"]
+    - [Text, "body\n"]
     - FreeformEnd
 
 - id: eof_prose_no_final_newline
@@ -344,7 +344,7 @@
   root_only: true
   events:
     - FreeformStart
-    - [Text, "body line"]
+    - [Text, "body line\n"]
     - [Text, "more body"]
     - [Warning, "UnclosedFreeform"]
     - FreeformEnd

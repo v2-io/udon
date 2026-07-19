@@ -48,7 +48,7 @@
   |state[:main]
     |eof                      | TERM | Text(USE_MARK) | Warning(:uc)             |return
     |c['}']                  | TERM | ->                        |return
-    |c['\n']                  | TERM | Text(USE_MARK) | ->       |>> :ml_ws
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |>> :ml_ws  ; terminator is text
     |c['|']                   | TERM | ->                        |>> :check_pipe
     |c[';']                   | TERM | ->                        |>> :check_semi
     |c['!']                   | TERM | ->                        |>> :check_bang

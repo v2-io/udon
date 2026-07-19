@@ -24,7 +24,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "first"]
-    - [Text, "value with spaces :another x"]
+    - [Text, "value with spaces :another x\n"]
     - ElementEnd
 
 - id: boundary_backslash_closes_value
@@ -35,7 +35,7 @@
     - [Name, "el"]
     - [Attr, "alpha"]
     - [BareValue, "something"]
-    - [Text, " el's text"]
+    - [Text, " el's text\n"]
     - ElementEnd
 
 - id: boundary_framed_semicolon_comment
@@ -82,7 +82,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "alpha"]
-    - [Text, "true story"]
+    - [Text, "true story\n"]
     - ElementEnd
 
 - id: keyword_then_backslash_is_typed
@@ -93,7 +93,7 @@
     - [Name, "el"]
     - [Attr, "alpha"]
     - BoolTrue
-    - [Text, " story"]
+    - [Text, " story\n"]
     - ElementEnd
 
 # Ownership row 2 — finished value, nearest same-line element decompresses
@@ -108,7 +108,7 @@
     - [BareValue, "value"]
     - [Attr, "another"]
     - [StringValue, "with"]
-    - [Text, "some text"]
+    - [Text, "some text\n"]
     - ElementEnd
 
 - id: finished_typed_value_tail_is_element_prose
@@ -119,7 +119,7 @@
     - [Name, "el"]
     - [Attr, "count"]
     - [Integer, "7"]
-    - [Text, "apples"]
+    - [Text, "apples\n"]
     - ElementEnd
 
 # Phase change (CORE "Phase Change and Late ':'", ruled 2026-07-15): a
@@ -134,9 +134,9 @@
     - [Name, "el"]
     - [Attr, "a"]
     - [Integer, "1"]
-    - [Text, "and a tail"]
+    - [Text, "and a tail\n"]
     - [Warning, "AttributeAfterChildren"]
-    - [Text, ":b 2"]
+    - [Text, ":b 2\n"]
     - ElementEnd
 
 # Value-position \ (CORE "Value-Position \", substrate S6 + P3-3): enters
@@ -149,7 +149,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "count"]
-    - [Text, "7 apples"]
+    - [Text, "7 apples\n"]
     - ElementEnd
 
 - id: value_backslash_semicolon_literal
@@ -159,5 +159,5 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
-    - [Text, "a ; b"]
+    - [Text, "a ; b\n"]
     - ElementEnd

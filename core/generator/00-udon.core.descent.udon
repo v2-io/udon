@@ -116,8 +116,8 @@
     |c[';']                   | -> | /line_comment               |>> :line
     |c['@']                   | ->                               |>> :check_at
     |c['`']                   | ->                               |>> :check_freeform
-    |c[<BS>]                  | -> | /verbatim_text              |>> :eol
-    |default                  | /prose(col, -1, <>)              |>> :eol
+    |c[<BS>]                  | -> | /verbatim_text              |>> :line
+    |default                  | /prose(col, -1, <>)              |>> :line
 
   ; Line-initial attr must be followed by a name start, quoted name, or
   ; reference bracket. Anything else falls back to INTACT prose — the
@@ -125,7 +125,7 @@
   ; promotion boundary itself is open decision 9).
   |state[:check_attr]
     |c[<XLBL_START SQ>]       | dstate = /block_attr             |>> :root_attr_check
-    |default                  | /prose(col, -1, ':')             |>> :eol
+    |default                  | /prose(col, -1, ':')             |>> :line
 
   ; Deferred values are not supported at document root (attrs there are
   ; already an edge case) — an open attr resolves immediately.
@@ -141,27 +141,27 @@
     |c[':']                   | /block_directive(col)            |>> :line
     |c[XLBL_START]            | /block_directive(col)            |>> :line
     |c['{']                   | -> | /sameline_directive         |>> :eol
-    |default                  | /prose(col, -1, '!')             |>> :eol
+    |default                  | /prose(col, -1, '!')             |>> :line
 
   ; `@` guard (CORE Marker Recognition, 0.9): reference when followed by `[`,
   ; `.` (trait-only selector, ruled 2026-07-16), or an identifier; otherwise
   ; prose. The payload is the raw text after `@`.
   |state[:check_at]
     |c[<L XLBL_START '.'>]    | /block_ref                       |>> :eol
-    |default                  | /prose(col, -1, '@')             |>> :eol
+    |default                  | /prose(col, -1, '@')             |>> :line
 
   |state[:check_freeform]
     |c['`']                   | ->                               |>> :check_freeform2
-    |default                  | /prose(col, -1, '`')             |>> :eol
+    |default                  | /prose(col, -1, '`')             |>> :line
 
   |state[:check_freeform2]
     |c['`']                   | -> | /freeform                   |>> :line
-    |default                  | /prose_backticks(col, -1)        |>> :eol
+    |default                  | /prose_backticks(col, -1)        |>> :line
 
   |state[:check_pipe]
     |c[<XLBL_START SQ '[' '.?!*+'>]  | /element(col, -1)               |>> :line
     |c['{']                   | -> | /embedded                   |>> :eol
-    |default                  | /prose(col, -1, '|')             |>> :eol
+    |default                  | /prose(col, -1, '|')             |>> :line
 
 
 |function[count_indent:INT]  | result = 0

@@ -19,7 +19,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "author"]
-    - [Text, "Alice Smith"]
+    - [Text, "Alice Smith\n"]
     - ElementEnd
 
 - id: sameline_open_attr_takes_blob
@@ -29,7 +29,7 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "author"]
-    - [Text, "Alice Smith"]
+    - [Text, "Alice Smith\n"]
     - ElementEnd
 
 - id: sameline_quoted_value_with_spaces
@@ -75,6 +75,8 @@
     - CommentStart
     - [Text, " but THIS is a comment"]
     - CommentEnd
+    - [Attr, "note"]
+    - [Text, "\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -137,7 +139,7 @@
     - [Error, "MissingAttributeValue"]
     - Nil
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -201,7 +203,7 @@
     - [Attr, "href"]
     - [BareValue, "/home"]
     - EmbeddedEnd
-    - [Text, " now"]
+    - [Text, " now\n"]
     - ElementEnd
 
 - id: embedded_open_attr_blob_swallows_tail
@@ -218,7 +220,7 @@
     - [Attr, "title"]
     - [Text, "Home here"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: embedded_quoted_value_leaves_content
@@ -236,7 +238,7 @@
     - [StringValue, "Home"]
     - [Text, "here"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 - id: embedded_boundary_backslash_gives_content
@@ -254,7 +256,7 @@
     - [BareValue, "Home"]
     - [Text, " Welcome home!"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -270,5 +272,5 @@
     - [Name, "element"]
     - [Attr, "attr1"]
     - [BareValue, "value1"]
-    - [Text, "child prose here"]
+    - [Text, "child prose here\n"]
     - ElementEnd

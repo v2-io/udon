@@ -529,7 +529,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "hi"]
+    - [Text, "hi\n"]
     - BlankLine
     - ElementEnd
   # (Whether a TRAILING blank belongs inside |p — before its End — vs after
@@ -552,7 +552,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "hi"]
+    - [Text, "hi\n"]
     - ElementEnd
   # PINS CURRENT BEHAVIOR (descriptive): CORE has no ruling — options are
   # (a) drop (current), (b) BlankLine like an empty line, (c) content/warn.
@@ -609,7 +609,7 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - ElementStart
     - [Name, "p"]
     - EmbeddedStart
@@ -631,7 +631,7 @@
     - [Name, "p"]
     - EmbeddedStart
     - [Name, "a"]
-    - [Text, "line1"]
+    - [Text, "line1\n"]
     - [Text, "line2"]
     - [Warning, "UnclosedEmbedded"]
     - EmbeddedEnd
@@ -657,7 +657,7 @@
     - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
-    - [Text, "more prose"]
+    - [Text, "more prose\n"]
   # PINS CURRENT BEHAVIOR (descriptive, not prescriptive): array multi-line is
   # deliberately undefined (CORE Line-boundedness); if arrays become
   # multi-line this case flips. (The document-result distinction — complete

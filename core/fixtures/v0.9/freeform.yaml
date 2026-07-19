@@ -4,13 +4,18 @@
 # begun. Note the 0.8 change: everything after the opening backticks begins
 # the BODY — an info string is just the body's first content, there is no
 # separate info-string rule (the pre-0.8 parser captured it as a Name).
+#
+# Text-reconstruction contract (spec/TODO-TEXT-WIRE.md, D2): freeform is the
+# exact mode, so every body line's terminator rides its Text event, and
+# blank lines inside the fence are `Text "\n"` — NOT BlankLine (BlankLine
+# stays reserved for interpreted prose, D4).
 
 - id: freeform_at_root
   desc: basic fence at document root
   udon: "```\nfreeform content\n```\n"
   events:
     - FreeformStart
-    - [Text, "freeform content"]
+    - [Text, "freeform content\n"]
     - FreeformEnd
 
 - id: freeform_markers_inert
@@ -18,9 +23,9 @@
   udon: "```\n|not-an-element\n:not-an-attr\n; not a comment\n```\n"
   events:
     - FreeformStart
-    - [Text, "|not-an-element"]
-    - [Text, ":not-an-attr"]
-    - [Text, "; not a comment"]
+    - [Text, "|not-an-element\n"]
+    - [Text, ":not-an-attr\n"]
+    - [Text, "; not a comment\n"]
     - FreeformEnd
 
 - id: freeform_exact_whitespace
@@ -30,8 +35,8 @@
     - ElementStart
     - [Name, "code"]
     - FreeformStart
-    - [Text, "  def foo():"]
-    - [Text, "      return 1"]
+    - [Text, "  def foo():\n"]
+    - [Text, "      return 1\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -40,8 +45,8 @@
   udon: "```rust ignore\nfn main() {}\n```\n"
   events:
     - FreeformStart
-    - [Text, "rust ignore"]
-    - [Text, "fn main() {}"]
+    - [Text, "rust ignore\n"]
+    - [Text, "fn main() {}\n"]
     - FreeformEnd
 
 - id: freeform_after_prose_lines
@@ -50,14 +55,14 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, "here is prose"]
+    - [Text, "here is prose\n"]
     - ElementStart
     - [Name, "b"]
-    - [Text, "a child"]
+    - [Text, "a child\n"]
     - ElementEnd
-    - [Text, "and more prose"]
+    - [Text, "and more prose\n"]
     - FreeformStart
-    - [Text, "  in the fence"]
+    - [Text, "  in the fence\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -72,7 +77,7 @@
     - [Attr, "k"]
     - [BareValue, "v"]
     - FreeformStart
-    - [Text, "body line"]
+    - [Text, "body line\n"]
     - FreeformEnd
     - ElementEnd
     - ElementEnd
@@ -83,7 +88,7 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, "but now ``` is literal"]
+    - [Text, "but now ``` is literal\n"]
     - ElementEnd
 
 - id: backticks_deeper_than_prose_are_literal
@@ -92,8 +97,8 @@
   events:
     - ElementStart
     - [Name, "a"]
-    - [Text, "prose base"]
-    - [Text, "  ```"]
+    - [Text, "prose base\n"]
+    - [Text, "  ```\n"]
     - ElementEnd
 
 - id: freeform_closer_any_indent
@@ -103,7 +108,7 @@
     - ElementStart
     - [Name, "code"]
     - FreeformStart
-    - [Text, "  line one"]
+    - [Text, "  line one\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -112,21 +117,21 @@
   udon: "```\nbody\n```   \n"
   events:
     - FreeformStart
-    - [Text, "body"]
+    - [Text, "body\n"]
     - FreeformEnd
 
 - id: freeform_blank_lines_preserved
-  desc: blank lines inside the fence emit BlankLine (round-trip contract)
+  desc: blank lines inside the fence are Text "\n" — exact mode, not BlankLine (D2)
   udon: "```\na\n\nb\n```\n"
   events:
     - FreeformStart
-    - [Text, "a"]
-    - BlankLine
-    - [Text, "b"]
+    - [Text, "a\n"]
+    - [Text, "\n"]
+    - [Text, "b\n"]
     - FreeformEnd
 
 - id: freeform_unclosed_warns
-  desc: unclosed fence warns at EOF, content preserved
+  desc: unclosed fence warns at EOF, content preserved; EOF truncation has no terminator byte to carry
   udon: "```\nunclosed"
   events:
     - FreeformStart
@@ -144,6 +149,6 @@
     - [Name, "b"]
     - ElementEnd
     - FreeformStart
-    - [Text, "  fence is sibling of b, child of a"]
+    - [Text, "  fence is sibling of b, child of a\n"]
     - FreeformEnd
     - ElementEnd

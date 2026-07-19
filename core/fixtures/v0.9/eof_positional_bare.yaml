@@ -34,7 +34,7 @@
     - [Name, "a"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - ElementStart
     - [Name, "b"]
     - ElementEnd
@@ -100,12 +100,12 @@
     - [Text, "x"]
     - DirectiveEnd
 - id: nleq_directive_nl
-  desc: bodiless directive line, WITH trailing newline — identical to nleq_directive_eof
+  desc: bodiless directive line, WITH trailing newline — same shape as nleq_directive_eof, final Text carries the real terminator (D3)
   udon: "!if x\n"
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - DirectiveEnd
 
 - id: nleq_deferred_attr_eof
@@ -117,20 +117,20 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "note"]
-    - [Text, "line one"]
+    - [Text, "line one\n"]
     - [Attr, "note"]
     - [Text, "line two"]
     - ElementEnd
 - id: nleq_deferred_attr_nl
-  desc: deferred attr value body, WITH trailing newline — identical to nleq_deferred_attr_eof
+  desc: deferred attr value body, WITH trailing newline — same shape as nleq_deferred_attr_eof, final Text carries the real terminator (D3)
   udon: "|el\n  :note\n    line one\n    line two\n"
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "note"]
-    - [Text, "line one"]
+    - [Text, "line one\n"]
     - [Attr, "note"]
-    - [Text, "line two"]
+    - [Text, "line two\n"]
     - ElementEnd
 
 

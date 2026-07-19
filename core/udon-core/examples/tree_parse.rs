@@ -78,6 +78,7 @@ fn print_node(node: &udon_core::tree::Node, depth: usize) {
                 }
             }
         }
+        NodeKind::BlankLine => println!("{}BlankLine", indent),
         NodeKind::Comment(s) => {
             println!("{}; {}", indent, s.trim());
         }

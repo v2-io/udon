@@ -35,21 +35,21 @@
 
   |state[:raw_sameline]
     |eof                      | TERM | RawContent(USE_MARK)      |return
-    |c['\n']                  | TERM | RawContent(USE_MARK) | -> |>> :raw_content
+    |c['\n']                  | -> | TERM | RawContent(USE_MARK) |>> :raw_content  ; terminator is text
     |default                  | ->                               |>>
 
   ; Raw content — captured at greater indent, dedented relative to the
   ; FIRST content line's column (raw_base); deeper lines keep their extra
   ; indent as content (CORE "Raw Directives": relative indent preserved).
   |state[:raw_content]
-    |c['\n']                  | ->                               |>>
+    |c['\n']                  | MARK | -> | TERM | RawContent(USE_MARK) |>>  ; blank raw line = RawContent "\n" (exact)
     |c[' ']                   | -> | col = 1                     |>> :raw_ws
     |default                  |                                  |return  ; non-indented, done
 
   |state[:raw_ws]
     |if[raw_base >= 0 && col >= raw_base]                        |>> :raw_at_base
     |c[' ']                   | -> | col += 1                    |>>
-    |c['\n']                  | ->                               |>> :raw_content  ; ws-only line
+    |c['\n']                  | MARK | -> | TERM | RawContent(USE_MARK) |>> :raw_content  ; ws-only raw line = "\n" (indent below base is geometry)
     |default                  |                                  |>> :raw_checkbase
 
   |state[:raw_checkbase]
@@ -62,7 +62,7 @@
 
   |state[:raw_line]
     |eof                      | TERM | RawContent(USE_MARK)      |return
-    |c['\n']                  | TERM | RawContent(USE_MARK) | -> |>> :raw_content
+    |c['\n']                  | -> | TERM | RawContent(USE_MARK) |>> :raw_content  ; terminator is text
     |default                  | ->                               |>>
 
   ; Regular directive - parse condition/args and children
@@ -75,9 +75,12 @@
     |c['\n']                  | ->                               |>> :children
     |default                  | MARK | /directive_args           |>> :children
 
-  ; Children at greater indent
+  ; Children at greater indent. Directive-args consumed their own terminator
+  ; (text), and :after_name consumed the bare directive line's (geometry) —
+  ; so a \n here is a BLANK line (previously swallowed silently: the same
+  ; dropped-newline family).
   |state[:children]
-    |c['\n']                  | ->                               |>>
+    |c['\n']                  | -> | BlankLine                   |>>
     |c[' ']                   | col = /count_indent              |>> :check_child
     |c['\t']                  | /error(NoTabs) | ->['\n'] | ->       |>>
     |default                  | col = COL - 1                    |>> :check_child
@@ -117,8 +120,13 @@
     |default                  | /prose(col, :line_col, '|')      |>> :children
 
 
-; Directive arguments - capture until newline or EOF
-|function[directive_args:Text]  | ->['\n'] | TERM
+; Directive arguments - capture until newline or EOF, terminator included
+; (uniform rule: every Text event carries whatever terminator the source has).
+|function[directive_args:Text]
+  |state[:main]
+    |eof                      | TERM                             |return
+    |c['\n']                  | -> | TERM                        |return
+    |default                  | ->['\n']                         |>>
 
 
 ; Inline dynamics - dispatch based on first char after {

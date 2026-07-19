@@ -179,7 +179,7 @@
     - ElementEnd
     - ElementEnd
     - ElementEnd
-    - [Text, "prose sibling to one"]
+    - [Text, "prose sibling to one\n"]
 
 - id: same_column_is_sibling_not_child
   desc: same column = sibling; one more column = child
@@ -208,22 +208,22 @@
     - [Name, "tr"]
     - ElementStart
     - [Name, "td"]
-    - [Text, "A1"]
+    - [Text, "A1\n"]
     - ElementEnd
     - ElementStart
     - [Name, "td"]
-    - [Text, "A2"]
+    - [Text, "A2\n"]
     - ElementEnd
     - ElementEnd
     - ElementStart
     - [Name, "tr"]
     - ElementStart
     - [Name, "td"]
-    - [Text, "B1"]
+    - [Text, "B1\n"]
     - ElementEnd
     - ElementEnd
     - ElementStart
     - [Name, "caption"]
-    - [Text, "Table 1"]
+    - [Text, "Table 1\n"]
     - ElementEnd
     - ElementEnd

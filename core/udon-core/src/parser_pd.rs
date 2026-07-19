@@ -376,7 +376,7 @@ enum AttrIdentSt { PdEntry, Key, PostKey, PostQkey, PdK130, PdK131, }
 enum BlockAttrSt { PdEntry, Key, KeyRoute, Flag, FlagRoute, ValueStart, Vff1, Vff2, Vbang, Vinterp, PostValueRoute, KeyNext, PostValue, PdK132, PdK133, PdK134, PdK135, PdK136, PdK137, PdK138, PdK139, PdK140, PdK141, PdK142, PdK143, PdK144, PdK145, PdK146, PdK147, PdK148, PdK149, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrDeferredBodySt { PdEntry, LineEnd, Line, Ws, Check, Open, Body, Done, Node, Bang, Fence, Fence2, BadAttr, Finish, PdK150, PdK151, PdK152, PdK153, PdK154, PdK155, PdK156, PdK157, PdK158, PdK159, PdK160, PdK161, PdK162, PdK163, PdK164, PdK165, PdK166, PdK167, PdK168, PdK169, PdK170, PdK171, PdK172, PdK173, PdK174, PdK175, PdK176, PdK177, PdK178, PdK179, PdK180, }
+enum AttrDeferredBodySt { PdEntry, Entry, LineEnd, Line, Ws, Check, Open, Body, Done, Node, Bang, Fence, Fence2, BadAttr, Finish, PdK150, PdK151, PdK152, PdK153, PdK154, PdK155, PdK156, PdK157, PdK158, PdK159, PdK160, PdK161, PdK162, PdK163, PdK164, PdK165, PdK166, PdK167, PdK168, PdK169, PdK170, PdK171, PdK172, PdK173, PdK174, PdK175, PdK176, PdK177, PdK178, PdK179, PdK180, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SamelineAttrSt { PdEntry, Key, KeyRoute, Flag, FlagRoute, ValueStart, Vroute, Vff1, Vff2, Vbang, Vinterp, PdK181, PdK182, PdK183, PdK184, PdK185, PdK186, PdK187, PdK188, PdK189, PdK190, PdK191, PdK192, PdK193, PdK194, PdK195, }
@@ -394,7 +394,7 @@ enum AttrKeySt { PdEntry, Main, }
 enum AttrKeyQuotedSt { PdEntry, Main, PdK200, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, PdK201, PdK202, PdK203, }
+enum AttrTrailingBlobSt { PdEntry, Main, Semi, SemiAfter, TbCommentNl, PdK201, PdK202, PdK203, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum AttrTextVerbatimSt { PdEntry, Main, Pipe, Bang, Semi, AfterInline, PdK204, PdK205, PdK206, PdK207, }
@@ -415,7 +415,7 @@ enum EnvelopeSt { PdEntry, Scan, Check, }
 enum EmitBareValueSt { PdEntry, Main, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum TypedValueSt { PdEntry, Main, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued, PdK214, PdK215, PdK216, PdK217, PdK218, PdK219, PdK220, PdK221, PdK222, PdK223, PdK224, PdK225, PdK226, PdK227, PdK228, PdK229, PdK230, PdK231, PdK232, PdK233, PdK234, PdK235, PdK236, PdK237, PdK238, PdK239, }
+enum TypedValueSt { PdEntry, Main, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobCommentNl, BlobSemiGlued, PdK214, PdK215, PdK216, PdK217, PdK218, PdK219, PdK220, PdK221, PdK222, PdK223, PdK224, PdK225, PdK226, PdK227, PdK228, PdK229, PdK230, PdK231, PdK232, PdK233, PdK234, PdK235, PdK236, PdK237, PdK238, PdK239, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum BsEscapeSt { PdEntry, Main, Pipe, Bang, Semi, }
@@ -436,7 +436,7 @@ enum TextBackticksSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, Af
 enum TextSt { PdEntry, Entry, Main, CheckPipe, CheckSemi, CheckBang, AfterInline, PdK252, PdK253, PdK254, PdK255, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, AfterInline, PdK256, PdK257, PdK258, PdK259, PdK260, PdK261, PdK262, PdK263, PdK264, }
+enum SamelineTextSt { PdEntry, Entry, Main, CheckPipe, CheckPipeElemCol, CheckSemi, SemiSpaced, SemiGlued, CheckBang, AfterInline, PostCommentNl, PdK256, PdK257, PdK258, PdK259, PdK260, PdK261, PdK262, PdK263, PdK264, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum LineCommentSt { PdEntry, Check, FirstLine, Children, ChildrenWs, CheckContinuation, AtContentBase, ContContent, ContLine, PdK265, }
@@ -460,7 +460,7 @@ enum EmbedContentSt { PdEntry, Main, CheckPipe, CheckSemi, CheckBang, MlWs, PdK2
 enum BlockDirectiveSt { PdEntry, Dispatch, RawKind, RawColon, RawEol, RawSameline, RawContent, RawWs, RawCheckbase, RawAtBase, RawLine, AfterName, Condition, Children, CheckChild, ChildDispatch, DchildCheckBang, ChildCheckAttr, DattrCheck, ChildPipe, PdK283, PdK284, PdK285, PdK286, PdK287, PdK288, PdK289, PdK290, PdK291, PdK292, PdK293, PdK294, PdK295, PdK296, PdK297, PdK298, PdK299, PdK300, PdK301, PdK302, PdK303, PdK304, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum DirectiveArgsSt { PdEntry, PdK305, PdK306, }
+enum DirectiveArgsSt { PdEntry, Main, PdK305, PdK306, }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SamelineDirectiveSt { PdEntry, Dispatch, PdK307, PdK308, PdK309, }
@@ -1867,7 +1867,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK4 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK5 => {
@@ -1875,15 +1875,15 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK6 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK7 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK8 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK9 => {
@@ -1892,11 +1892,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK10 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK11 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK12 => {
@@ -1912,11 +1912,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK15 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK16 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK17 => {
@@ -1924,19 +1924,19 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK18 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK19 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK20 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK21 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK22 => {
@@ -1944,11 +1944,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK23 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK24 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                         DocumentSt::PdK25 => {
@@ -1960,7 +1960,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DocumentSt::PdK27 => {
-                            f.st = DocumentSt::Eol;
+                            f.st = DocumentSt::Line;
                             continue 'st;
                         }
                     }
@@ -2599,6 +2599,10 @@ impl PushdownParser {
                         }
                         ElementSt::SamelineAttrAfter => {
                             match self.peek() {
+                                _ if f.sstate == 3 => {
+                                    f.st = ElementSt::AfterNewline;
+                                    continue 'st;
+                                }
                                 _ if f.sstate == 2 => {
                                     self.advance_or_pend();
                                     f.st = ElementSt::SamelineNode2;
@@ -2606,7 +2610,7 @@ impl PushdownParser {
                                 }
                                 _ if f.sstate == 5 => {
                                     f.content_seen = 1;
-                                    f.st = ElementSt::PreContent;
+                                    f.st = ElementSt::AfterNewline;
                                     continue 'st;
                                 }
                                 _ if f.sstate == 6 => {
@@ -2867,7 +2871,10 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
                                     self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     f.st = ElementSt::Children;
                                     continue 'st;
                                 }
@@ -2888,7 +2895,10 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
                                     self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     f.st = ElementSt::Children;
                                     continue 'st;
                                 }
@@ -3305,7 +3315,7 @@ impl PushdownParser {
                                 }
                                 _ if f.astate == 5 => {
                                     f.content_seen = 1;
-                                    f.st = ElementSt::AfterContent;
+                                    f.st = ElementSt::AfterNewline;
                                     continue 'st;
                                 }
                                 _ if f.astate == 6 => {
@@ -3598,11 +3608,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK39 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK40 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK41 => {
@@ -3621,39 +3631,39 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK44 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK45 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK46 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK47 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK48 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK49 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK50 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK51 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK52 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK53 => {
@@ -3662,7 +3672,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK54 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK55 => {
@@ -3686,7 +3696,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK60 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK61 => {
@@ -3698,11 +3708,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK63 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK64 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK65 => {
@@ -3710,7 +3720,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK66 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK67 => {
@@ -3730,7 +3740,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK71 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK72 => {
@@ -3746,11 +3756,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK75 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK76 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK77 => {
@@ -3758,15 +3768,15 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK78 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK79 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK80 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK81 => {
@@ -3790,35 +3800,35 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK85 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK86 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK87 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK88 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK89 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK90 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK91 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK92 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK93 => {
@@ -3826,11 +3836,11 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK94 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK95 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK96 => {
@@ -3838,15 +3848,15 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK97 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK98 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK99 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK100 => {
@@ -3855,7 +3865,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK101 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK102 => {
@@ -3916,31 +3926,31 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK116 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK117 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK118 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK119 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK120 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK121 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK122 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK123 => {
@@ -3952,7 +3962,7 @@ impl PushdownParser {
                             continue 'st;
                         }
                         ElementSt::PdK125 => {
-                            f.st = ElementSt::AfterContent;
+                            f.st = ElementSt::AfterNewline;
                             continue 'st;
                         }
                         ElementSt::PdK126 => {
@@ -4465,8 +4475,8 @@ impl PushdownParser {
                             match self.peek() {
                                 _ if f.vstate == 3 => {
                                     f.result = 3;
-                                    f.st = BlockAttrSt::PostValue;
-                                    continue 'st;
+                                    self.ret = f.result;
+                                    continue 'run;
                                 }
                                 _ if f.vstate == 4 => {
                                     f.st = BlockAttrSt::Key;
@@ -4654,8 +4664,20 @@ impl PushdownParser {
                     if self.pending_skip > 0 { self.stack.push(Frame::AttrDeferredBody(f)); continue 'run; }
                     match f.st {
                         AttrDeferredBodySt::PdEntry => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Entry;
                             continue 'st;
+                        }
+                        AttrDeferredBodySt::Entry => {
+                            match self.peek() {
+                                _ if f.mode == 3 => {
+                                    f.st = AttrDeferredBodySt::Line;
+                                    continue 'st;
+                                }
+                                _ => {
+                                    f.st = AttrDeferredBodySt::LineEnd;
+                                    continue 'st;
+                                }
+                            }
                         }
                         AttrDeferredBodySt::LineEnd => {
                             if self.pos >= self.buf.len() {
@@ -5088,23 +5110,23 @@ impl PushdownParser {
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK154 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK155 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK156 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK157 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK158 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK159 => {
@@ -5112,15 +5134,15 @@ impl PushdownParser {
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK160 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK161 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK162 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK163 => {
@@ -5128,15 +5150,15 @@ impl PushdownParser {
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK164 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK165 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK166 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK167 => {
@@ -5144,23 +5166,23 @@ impl PushdownParser {
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK168 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK169 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK170 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK171 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK172 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK173 => {
@@ -5168,27 +5190,27 @@ impl PushdownParser {
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK174 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK175 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK176 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK177 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK178 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK179 => {
-                            f.st = AttrDeferredBodySt::LineEnd;
+                            f.st = AttrDeferredBodySt::Line;
                             continue 'st;
                         }
                         AttrDeferredBodySt::PdK180 => {
@@ -5738,6 +5760,7 @@ impl PushdownParser {
                         FlagValueSt::Blob => {
                             match self.scan_to2(b'\n', f.bracket) {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     self.ret = f.result;
@@ -5827,6 +5850,7 @@ impl PushdownParser {
                         AttrTrailingBlobSt::Main => {
                             match self.scan_to3(b'\n', b';', f.bracket) {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -5896,14 +5920,34 @@ impl PushdownParser {
                                 }
                             }
                         }
+                        AttrTrailingBlobSt::TbCommentNl => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::AttrTrailingBlob(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    continue 'run;
+                                }
+                            }
+                        }
                         AttrTrailingBlobSt::PdK201 => {
                             continue 'run;
                         }
                         AttrTrailingBlobSt::PdK202 => {
-                            continue 'run;
+                            f.st = AttrTrailingBlobSt::TbCommentNl;
+                            continue 'st;
                         }
                         AttrTrailingBlobSt::PdK203 => {
-                            continue 'run;
+                            f.st = AttrTrailingBlobSt::TbCommentNl;
+                            continue 'st;
                         }
                     }
                     }
@@ -5920,6 +5964,7 @@ impl PushdownParser {
                         AttrTextVerbatimSt::Main => {
                             match self.scan_to6(b'\n', b'|', b'!', b';', b'\\', f.bracket) {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -6034,10 +6079,20 @@ impl PushdownParser {
                         AttrTextVerbatimSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::AttrTextVerbatim(f)); return ParseResult::NeedMoreData; }
+                                sink!(self, on_event, StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
+                                self.mark();
+                                self.advance_or_pend();
+                                self.set_term(0);
+                                sink_cap!(self, on_event, Text);
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    sink!(self, on_event, StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     continue 'run;
                                 }
                                 Some(b) if b == f.bracket => {
@@ -7537,6 +7592,7 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     f.result = 3;
@@ -7659,6 +7715,11 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    sink!(self, on_event, StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     f.result = 3;
                                     self.ret = f.result;
                                     continue 'run;
@@ -7729,6 +7790,28 @@ impl PushdownParser {
                                 _ => {
                                     f.st = TypedValueSt::Blob;
                                     continue 'st;
+                                }
+                            }
+                        }
+                        TypedValueSt::BlobCommentNl => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::TypedValue(f)); return ParseResult::NeedMoreData; }
+                                self.ret = f.result;
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    sink!(self, on_event, StreamEvent::Attr { content: std::borrow::Cow::Borrowed(&self.saved.akey.0), span: self.saved.akey.1.clone() });
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
+                                    self.ret = f.result;
+                                    continue 'run;
+                                }
+                                _ => {
+                                    self.ret = f.result;
+                                    continue 'run;
                                 }
                             }
                         }
@@ -7853,13 +7936,13 @@ impl PushdownParser {
                         }
                         TypedValueSt::PdK236 => {
                             f.result = 3;
-                            self.ret = f.result;
-                            continue 'run;
+                            f.st = TypedValueSt::BlobCommentNl;
+                            continue 'st;
                         }
                         TypedValueSt::PdK237 => {
                             f.result = 3;
-                            self.ret = f.result;
-                            continue 'run;
+                            f.st = TypedValueSt::BlobCommentNl;
+                            continue 'st;
                         }
                         TypedValueSt::PdK238 => {
                             self.mark();
@@ -7977,6 +8060,7 @@ impl PushdownParser {
                         VerbatimTextSt::Main => {
                             match self.scan_to5(b'\n', b'|', b'!', b';', b'\\') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -8190,6 +8274,7 @@ impl PushdownParser {
                         TextBackticksSt::Main => {
                             match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -8297,10 +8382,18 @@ impl PushdownParser {
                         TextBackticksSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::TextBackticks(f)); return ParseResult::NeedMoreData; }
+                                self.mark();
+                                self.advance_or_pend();
+                                self.set_term(0);
+                                sink_cap!(self, on_event, Text);
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     continue 'run;
                                 }
                                 _ => {
@@ -8346,6 +8439,7 @@ impl PushdownParser {
                         TextSt::Main => {
                             match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -8453,10 +8547,18 @@ impl PushdownParser {
                         TextSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::Text(f)); return ParseResult::NeedMoreData; }
+                                self.mark();
+                                self.advance_or_pend();
+                                self.set_term(0);
+                                sink_cap!(self, on_event, Text);
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     continue 'run;
                                 }
                                 _ => {
@@ -8502,6 +8604,7 @@ impl PushdownParser {
                         SamelineTextSt::Main => {
                             match self.scan_to5(b'\n', b'|', b';', b'!', b'\\') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
                                     continue 'run;
@@ -8686,16 +8789,42 @@ impl PushdownParser {
                         SamelineTextSt::AfterInline => {
                             if self.pos >= self.buf.len() {
                                 if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                self.mark();
+                                self.advance_or_pend();
+                                self.set_term(0);
+                                sink_cap!(self, on_event, Text);
                                 continue 'run;
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     continue 'run;
                                 }
                                 _ => {
                                     self.mark();
                                     f.st = SamelineTextSt::Main;
                                     continue 'st;
+                                }
+                            }
+                        }
+                        SamelineTextSt::PostCommentNl => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::SamelineText(f)); return ParseResult::NeedMoreData; }
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.mark();
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    continue 'run;
                                 }
                             }
                         }
@@ -8715,10 +8844,12 @@ impl PushdownParser {
                             continue 'run;
                         }
                         SamelineTextSt::PdK260 => {
-                            continue 'run;
+                            f.st = SamelineTextSt::PostCommentNl;
+                            continue 'st;
                         }
                         SamelineTextSt::PdK261 => {
-                            continue 'run;
+                            f.st = SamelineTextSt::PostCommentNl;
+                            continue 'st;
                         }
                         SamelineTextSt::PdK262 => {
                             f.st = SamelineTextSt::AfterInline;
@@ -9190,9 +9321,9 @@ impl PushdownParser {
                                     continue 'run;
                                 }
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
-                                    self.advance_or_pend();
                                     f.st = EmbedContentSt::MlWs;
                                     continue 'st;
                                 }
@@ -9450,9 +9581,9 @@ impl PushdownParser {
                         BlockDirectiveSt::RawSameline => {
                             match self.scan_to1(b'\n') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, RawContent);
-                                    self.advance_or_pend();
                                     f.st = BlockDirectiveSt::RawContent;
                                     continue 'st;
                                 }
@@ -9474,7 +9605,10 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
                                     self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, RawContent);
                                     f.st = BlockDirectiveSt::RawContent;
                                     continue 'st;
                                 }
@@ -9508,7 +9642,10 @@ impl PushdownParser {
                                     continue 'st;
                                 }
                                 Some(b'\n') => {
+                                    self.mark();
                                     self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, RawContent);
                                     f.st = BlockDirectiveSt::RawContent;
                                     continue 'st;
                                 }
@@ -9545,9 +9682,9 @@ impl PushdownParser {
                         BlockDirectiveSt::RawLine => {
                             match self.scan_to1(b'\n') {
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, RawContent);
-                                    self.advance_or_pend();
                                     f.st = BlockDirectiveSt::RawContent;
                                     continue 'st;
                                 }
@@ -9614,6 +9751,7 @@ impl PushdownParser {
                             match self.peek() {
                                 Some(b'\n') => {
                                     self.advance_or_pend();
+                                    sink!(self, on_event, StreamEvent::BlankLine { content: std::borrow::Cow::Borrowed(&b""[..]), span: self.gspan() });
                                     f.st = BlockDirectiveSt::Children;
                                     continue 'st;
                                 }
@@ -9908,8 +10046,28 @@ impl PushdownParser {
                     if self.pending_skip > 0 { self.stack.push(Frame::DirectiveArgs(f)); continue 'run; }
                     match f.st {
                         DirectiveArgsSt::PdEntry => {
-                            f.st = DirectiveArgsSt::PdK305;
+                            f.st = DirectiveArgsSt::Main;
                             continue 'st;
+                        }
+                        DirectiveArgsSt::Main => {
+                            if self.pos >= self.buf.len() {
+                                if !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
+                                self.set_term(0);
+                                sink_cap!(self, on_event, Text);
+                                continue 'run;
+                            }
+                            match self.peek() {
+                                Some(b'\n') => {
+                                    self.advance_or_pend();
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
+                                    continue 'run;
+                                }
+                                _ => {
+                                    f.st = DirectiveArgsSt::PdK305;
+                                    continue 'st;
+                                }
+                            }
                         }
                         DirectiveArgsSt::PdK305 => {
                             if self.scan_to1(b'\n').is_none() && !self.finished { self.stack.push(Frame::DirectiveArgs(f)); return ParseResult::NeedMoreData; }
@@ -9917,9 +10075,8 @@ impl PushdownParser {
                             continue 'st;
                         }
                         DirectiveArgsSt::PdK306 => {
-                            self.set_term(0);
-                            sink_cap!(self, on_event, Text);
-                            continue 'run;
+                            f.st = DirectiveArgsSt::Main;
+                            continue 'st;
                         }
                     }
                     }
@@ -10299,8 +10456,10 @@ impl PushdownParser {
                             }
                             match self.peek() {
                                 Some(b'\n') => {
+                                    self.mark();
                                     self.advance_or_pend();
-                                    sink!(self, on_event, StreamEvent::BlankLine { content: std::borrow::Cow::Borrowed(&b""[..]), span: self.gspan() });
+                                    self.set_term(0);
+                                    sink_cap!(self, on_event, Text);
                                     f.st = FreeformSt::LineStart;
                                     continue 'st;
                                 }
@@ -10325,9 +10484,9 @@ impl PushdownParser {
                                     continue 'st;
                                 }
                                 Some(b'\n') => {
+                                    self.advance_or_pend();
                                     self.set_term(0);
                                     sink_cap!(self, on_event, Text);
-                                    self.advance_or_pend();
                                     f.st = FreeformSt::LineStart;
                                     continue 'st;
                                 }
@@ -10414,9 +10573,9 @@ impl PushdownParser {
                             continue 'st;
                         }
                         FreeformSt::PdK321 => {
+                            self.advance_or_pend();
                             self.set_term(0);
                             sink_cap!(self, on_event, Text);
-                            self.advance_or_pend();
                             f.st = FreeformSt::LineStart;
                             continue 'st;
                         }
@@ -10426,9 +10585,9 @@ impl PushdownParser {
                             continue 'st;
                         }
                         FreeformSt::PdK323 => {
+                            self.advance_or_pend();
                             self.set_term(0);
                             sink_cap!(self, on_event, Text);
-                            self.advance_or_pend();
                             f.st = FreeformSt::LineStart;
                             continue 'st;
                         }

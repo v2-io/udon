@@ -1,7 +1,10 @@
 # Prose content and automatic dedentation (CORE "Prose Content", "Automatic
 # Prose Dedentation"). Prose is opaque text — Markdown inside it survives
 # verbatim. Blank lines emit BlankLine events (CORE Overview parser-behavior
-# note); consumers decide what to do with them.
+# note); consumers decide what to do with them. Per the text-reconstruction
+# contract (spec/TODO-TEXT-WIRE.md, CHANGELOG third batch), a text-bearing
+# line's terminator rides its Text event — every case below ends with a
+# source "\n" on its final line, so every Text event gains a trailing "\n".
 
 - id: sameline_prose
   desc: sameline content is emitted directly, no content-base established
@@ -9,14 +12,14 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "Hello world"]
+    - [Text, "Hello world\n"]
     - ElementEnd
 
 - id: root_prose_line
   desc: prose at document root
   udon: "Just some prose\n"
   events:
-    - [Text, "Just some prose"]
+    - [Text, "Just some prose\n"]
 
 - id: markdown_passes_through
   desc: markdown formatting in prose is opaque text
@@ -24,7 +27,7 @@
   events:
     - ElementStart
     - [Name, "article"]
-    - [Text, "This has **bold** and `code` and # is not special."]
+    - [Text, "This has **bold** and `code` and # is not special.\n"]
     - ElementEnd
 
 - id: markdown_list_lines
@@ -33,8 +36,8 @@
   events:
     - ElementStart
     - [Name, "article"]
-    - [Text, "- item one"]
-    - [Text, "- item two"]
+    - [Text, "- item one\n"]
+    - [Text, "- item two\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -47,9 +50,9 @@
   events:
     - ElementStart
     - [Name, "section"]
-    - [Text, "**The great indent**"]
-    - [Text, "This content is inner,"]
-    - [Text, "and continues"]
+    - [Text, "**The great indent**\n"]
+    - [Text, "This content is inner,\n"]
+    - [Text, "and continues\n"]
     - ElementEnd
 
 - id: deep_continuation_indent
@@ -58,8 +61,8 @@
   events:
     - ElementStart
     - [Name, "later-part"]
-    - [Text, "This stuff is inner"]
-    - [Text, "and aligned with This"]
+    - [Text, "This stuff is inner\n"]
+    - [Text, "and aligned with This\n"]
     - ElementEnd
 
 - id: extra_spaces_preserved
@@ -68,8 +71,8 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, "base line"]
-    - [Text, "    four extra spaces"]
+    - [Text, "base line\n"]
+    - [Text, "    four extra spaces\n"]
     - ElementEnd
 
 - id: inconsistent_dedent_warns_and_rebases
@@ -81,13 +84,13 @@
     - ElementStart
     - [Name, "on-line-child"]
     - ElementEnd
-    - [Text, "first-line-of-prose"]
+    - [Text, "first-line-of-prose\n"]
     - [Warning, "InconsistentIndentation"]
-    - [Text, "but what about this"]
-    - [Text, "no new warning"]
-    - [Text, "    four extra spaces"]
+    - [Text, "but what about this\n"]
+    - [Text, "no new warning\n"]
+    - [Text, "    four extra spaces\n"]
     - [Warning, "InconsistentIndentation"]
-    - [Text, "new warning here"]
+    - [Text, "new warning here\n"]
     - ElementEnd
 
 - id: dedent_to_element_column_is_sibling
@@ -96,10 +99,10 @@
   events:
     - ElementStart
     - [Name, "element-bigger"]
-    - [Text, "first line"]
-    - [Text, "second line"]
+    - [Text, "first line\n"]
+    - [Text, "second line\n"]
     - ElementEnd
-    - [Text, "sibling prose"]
+    - [Text, "sibling prose\n"]
 
 # ---------------------------------------------------------------------------
 # Prose interleaving with structure (head re-entry each line)
@@ -111,30 +114,30 @@
   events:
     - ElementStart
     - [Name, "article"]
-    - [Text, "Before the quote."]
+    - [Text, "Before the quote.\n"]
     - ElementStart
     - [Name, "blockquote"]
-    - [Text, "Nested content."]
+    - [Text, "Nested content.\n"]
     - ElementEnd
-    - [Text, "Back to prose."]
+    - [Text, "Back to prose.\n"]
     - ElementEnd
 
 - id: blank_line_between_prose
-  desc: blank lines are emitted as BlankLine events
+  desc: blank lines are emitted as BlankLine events; BlankLine contributes "\n" to reconstruction (D4)
   udon: "|article\n  first paragraph\n\n  second paragraph\n"
   events:
     - ElementStart
     - [Name, "article"]
-    - [Text, "first paragraph"]
+    - [Text, "first paragraph\n"]
     - BlankLine
-    - [Text, "second paragraph"]
+    - [Text, "second paragraph\n"]
     - ElementEnd
 
 - id: blank_lines_at_root
-  desc: blank lines at root each emit BlankLine
+  desc: blank lines at root each emit BlankLine; BlankLine contributes "\n" to reconstruction (D4)
   udon: "one\n\n\ntwo\n"
   events:
-    - [Text, "one"]
+    - [Text, "one\n"]
     - BlankLine
     - BlankLine
-    - [Text, "two"]
+    - [Text, "two\n"]

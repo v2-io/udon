@@ -117,8 +117,11 @@
 
   ; A text-blob value may continue on deeper lines (BODY mode, code 3);
   ; scalar values are finished (DONE zone, code 0 -> caller maps to 4).
+  ; BLOB returns immediately: the blob consumed its terminator (text), so
+  ; falling into :post_value would misread the NEXT line's indentation as
+  ; same-line trailing material (spurious AttributeValueExtendedByTrailingText).
   |state[:post_value_route]
-    |if[vstate == BLOB]       | result = BLOB                    |>> :post_value
+    |if[vstate == BLOB]       | result = BLOB                    |return result
     |if[vstate == NEXT_KEY]                                      |>> :key
     |if[vstate == CHILD]      | result = CHILD                   |return result
     |if[vstate == DIRECTIVE]  | result = DIRECTIVE               |return result
@@ -164,8 +167,17 @@
 ; of the dedented line (col <= :attr_col) for the caller's children loop.
 |function[attr_deferred_body]  :attr_col :parent_col :mode0  | mode = :mode0
 
-  ; End of a body line — or a mid-line return from a nested construct:
-  ; consume the newline, or re-derive the column and re-check.
+  ; Entry: a BODY-mode entry means the attr line ended in a text blob, whose
+  ; terminator the blob CONSUMED (terminators are text) — we are at a fresh
+  ; line already, so a \n here is a blank line (:line). Other modes arrive
+  ; with the structure line's terminator pending (:line_end consumes it as
+  ; geometry).
+  |state[:entry]
+    |if[mode == MODE_BODY]                                       |>> :line
+    |default                                                     |>> :line_end
+
+  ; End of a STRUCTURE line — or a mid-line return from a nested construct:
+  ; consume the pending terminator (geometry), or re-derive the column.
   |state[:line_end]
     |eof                      |                                  |>> :finish
     |c['\n']                  | ->                               |>> :line
@@ -198,11 +210,11 @@
   |state[:open]
     |c['|']                   | mode = MODE_DONE | ->            |>> :node
     |c[':']                   | /error(attribute_under_attribute) | Nil | -> |>> :bad_attr
-    |c[';']                   | -> | /line_comment               |>> :line_end
+    |c[';']                   | -> | /line_comment               |>> :line
     |c['`']                   | mode = MODE_DONE | ->            |>> :fence
     |c['!']                   | mode = MODE_DONE | ->            |>> :bang
-    |c[<BS>]                  | mode = MODE_BODY | -> | /verbatim_text |>> :line_end
-    |default                  | mode = MODE_BODY | /prose(col, :parent_col, <>) |>> :line_end
+    |c[<BS>]                  | mode = MODE_BODY | -> | /verbatim_text |>> :line
+    |default                  | mode = MODE_BODY | /prose(col, :parent_col, <>) |>> :line
 
   ; BODY: further segments of the same text value, key re-emitted per
   ; segment from its SAVE(akey) capture.
@@ -210,40 +222,40 @@
     |c[';']                   | -> | /line_comment               |>> :line_end
     |c[':']                   | /error(attribute_under_attribute) | -> |>> :bad_attr
     |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | mode = MODE_DONE | -> |>> :node
-    |c[<BS>]                  | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line_end
-    |default                  | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line_end
+    |c[<BS>]                  | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line
+    |default                  | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line
 
   ; DONE: the uniform two-values rule — warn + stack as a further segment.
   |state[:done]
     |c[';']                   | -> | /line_comment               |>> :line_end
     |c[':']                   | /error(attribute_under_attribute) | -> |>> :bad_attr
     |c['|']                   | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> |>> :node
-    |c[<BS>]                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line_end
-    |default                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line_end
+    |c[<BS>]                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | -> | /verbatim_text |>> :line
+    |default                  | Warning(AttributeSecondValue) | Attr(USE_SAVED(akey)) | /prose(col, :parent_col, <>) |>> :line
 
   ; A node as the value (or as a warned further segment): recurse into the
   ; ordinary element / embedded machinery — the node owns its interior.
   |state[:node]
     |c['{']                   | -> | /embedded                   |>> :line_end
-    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :parent_col) |>> :line_end
-    |default                  | /prose(col, :parent_col, '|')    |>> :line_end
+    |c[<XLBL_START SQ '[' '.?!*+'>] | /element(col, :parent_col) |>> :line
+    |default                  | /prose(col, :parent_col, '|')    |>> :line
 
   ; `!` guard (see document :check_bang): a raw block or directive line
   ; within the body; a failed guard is prose with the '!' restored.
   |state[:bang]
-    |c[':']                   | /block_directive(col)            |>> :line_end
-    |c[XLBL_START]            | /block_directive(col)            |>> :line_end
+    |c[':']                   | /block_directive(col)            |>> :line
+    |c[XLBL_START]            | /block_directive(col)            |>> :line
     |c['{']                   | -> | /sameline_directive         |>> :line_end
-    |default                  | /prose(col, :parent_col, '!')    |>> :line_end
+    |default                  | /prose(col, :parent_col, '!')    |>> :line
 
   ; Triple-backtick fence as the (or a further) value node; fewer than
   ; three backticks fall back to prose.
   |state[:fence]
     |c['`']                   | ->                               |>> :fence2
-    |default                  | /prose(col, :parent_col, '`')    |>> :line_end
+    |default                  | /prose(col, :parent_col, '`')    |>> :line
   |state[:fence2]
-    |c['`']                   | -> | /freeform                   |>> :line_end
-    |default                  | /prose_backticks(col, :parent_col) |>> :line_end
+    |c['`']                   | -> | /freeform                   |>> :line
+    |default                  | /prose_backticks(col, :parent_col) |>> :line
 
   ; The offending ':'-line after AttributeUnderAttribute is kept as prose
   ; (keep-everything posture; recovery shape is an open supplement item)
@@ -368,7 +380,7 @@
   ; Snapped true; the material is prose-equivalent Text to end-of-line.
   |state[:blob]
     |eof                      | TERM | Text(USE_MARK)            |return result
-    |c['\n']                  | TERM | Text(USE_MARK)            |return result
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return result  ; terminator is text
     |c[:bracket]              | TERM | Text(USE_MARK)            |return result
     |default                  | ->                               |>>
 
@@ -404,7 +416,7 @@
 |function[attr_trailing_blob]  :bracket  | MARK
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c[:bracket]              | TERM | Text(USE_MARK)            |return
     |c[';']                   |                                  |>> :semi
     |default                  | ->                               |>>
@@ -415,9 +427,15 @@
 
   |state[:semi_after]
     |eof                      | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
-    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
-    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |return
+    |c[' ']                   | TERM(-2) | Text(USE_MARK) | /line_comment_content |>> :tb_comment_nl
+    |c['\n']                  | TERM(-2) | Text(USE_MARK) | /line_comment_content |>> :tb_comment_nl
     |default                  |                                  |>> :main
+
+  ; D1: terminator-only Text after a comment that ends the blob line.
+  |state[:tb_comment_nl]
+    |eof                      |                                  |return
+    |c['\n']                  | MARK | -> | TERM | Text(USE_MARK) |return
+    |default                  |                                  |return
 
 
 ; attr_text_verbatim - value-position `\` (CORE "Value-Position \"): the
@@ -429,7 +447,7 @@
 |function[attr_text_verbatim]  :bracket  | MARK
   |state[:main]
     |eof                      | TERM | Text(USE_MARK)            |return
-    |c['\n']                  | TERM | Text(USE_MARK)            |return
+    |c['\n']                  | -> | TERM | Text(USE_MARK)       |return  ; terminator is text
     |c[:bracket]              | TERM | Text(USE_MARK)            |return
     |c['|']                   | ->                               |>> :pipe
     |c['!']                   | ->                               |>> :bang
@@ -451,6 +469,6 @@
     |default                  |                                  |>> :main
 
   |state[:after_inline]
-    |c['\n']                  |                                  |return
+    |c['\n']                  | Attr(USE_SAVED(akey)) | MARK | -> | TERM | Text(USE_MARK) |return
     |c[:bracket]              |                                  |return
     |default                  | Attr(USE_SAVED(akey)) | MARK     |>> :main

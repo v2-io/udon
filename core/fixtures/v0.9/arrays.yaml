@@ -114,7 +114,7 @@
     - ArrayEnd
     - [Text, "tail"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
 
 # PINS CURRENT BEHAVIOR at the newline (descriptive, not prescriptive): array

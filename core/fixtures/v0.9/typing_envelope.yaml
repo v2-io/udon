@@ -75,7 +75,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "a < b and <tag> stay prose"]
+    - [Text, "a < b and <tag> stay prose\n"]
     - ElementEnd
 
 - id: envelope_in_sameline_position

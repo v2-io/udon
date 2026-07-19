@@ -7,6 +7,10 @@
 # Genuinely-uncertain readings are marked with `# ⚠` comments explaining the
 # reasoning. Sources per section are noted; skipped legacy files/areas are
 # reported in the mining report, not here.
+#
+# Text-reconstruction contract (spec/TODO-TEXT-WIRE.md): text-bearing lines
+# gain their trailing "\n"; whole-line block comments (no prose preceding
+# them on the same line) stay geometry-terminated — no trailing Text event.
 
 # ===========================================================================
 # Deep / ragged indentation and the pop rule (CORE "Hierarchy": "pop while
@@ -88,12 +92,12 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "first prose"]
+    - [Text, "first prose\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "child"]
+    - [Text, "child\n"]
     - ElementEnd
-    - [Text, "second prose"]
+    - [Text, "second prose\n"]
     - ElementEnd
 
 - id: prose_after_child_below_base_warns_and_rebases
@@ -102,13 +106,13 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "first prose"]
+    - [Text, "first prose\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "child"]
+    - [Text, "child\n"]
     - ElementEnd
     - [Warning, "InconsistentIndentation"]
-    - [Text, "second prose"]
+    - [Text, "second prose\n"]
     - ElementEnd
 
 - id: sameline_content_then_child_then_prose
@@ -117,12 +121,12 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "sameline"]
+    - [Text, "sameline\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "child"]
+    - [Text, "child\n"]
     - ElementEnd
-    - [Text, "after child"]
+    - [Text, "after child\n"]
     - ElementEnd
 
 - id: sameline_then_child_then_prose_shrinks
@@ -131,14 +135,14 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "sameline"]
+    - [Text, "sameline\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "child"]
+    - [Text, "child\n"]
     - ElementEnd
-    - [Text, "first"]
+    - [Text, "first\n"]
     - [Warning, "InconsistentIndentation"]
-    - [Text, "second"]
+    - [Text, "second\n"]
     - ElementEnd
 
 # ⚠ Legacy expected InconsistentIndentation between each pair here. CORE
@@ -181,7 +185,7 @@
     - [Name, "el"]
     - [Attr, "attr"]
     - [BareValue, "value"]
-    - [Text, "prose"]
+    - [Text, "prose\n"]
     - ElementEnd
 
 - id: prose_at_every_level_of_deep_nesting
@@ -190,19 +194,19 @@
   events:
     - ElementStart
     - [Name, "div"]
-    - [Text, "div text"]
+    - [Text, "div text\n"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "p text"]
+    - [Text, "p text\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "em text"]
+    - [Text, "em text\n"]
     - ElementEnd
-    - [Text, "after em"]
+    - [Text, "after em\n"]
     - ElementEnd
-    - [Text, "after p"]
+    - [Text, "after p\n"]
     - ElementEnd
-    - [Text, "after div"]
+    - [Text, "after div\n"]
 
 - id: alternating_prose_and_children_at_base
   desc: prose and child elements alternate at the same column with no warnings
@@ -210,17 +214,17 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "prose 1"]
+    - [Text, "prose 1\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "em1"]
+    - [Text, "em1\n"]
     - ElementEnd
-    - [Text, "prose 2"]
+    - [Text, "prose 2\n"]
     - ElementStart
     - [Name, "strong"]
-    - [Text, "strong1"]
+    - [Text, "strong1\n"]
     - ElementEnd
-    - [Text, "prose 3"]
+    - [Text, "prose 3\n"]
     - ElementEnd
 
 # ===========================================================================
@@ -405,7 +409,7 @@
     - [Name, "b"]
     - ElementStart
     - [Name, "c"]
-    - [Text, "text for c"]
+    - [Text, "text for c\n"]
     - ElementEnd
     - ElementEnd
     - ElementEnd
@@ -426,6 +430,7 @@
     - EmbeddedEnd
     - EmbeddedEnd
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 - id: adjacent_embedded_no_text_between
@@ -442,6 +447,7 @@
     - [Name, "b"]
     - [Text, "two"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 - id: pipe_space_literal_between_embeds
@@ -459,6 +465,7 @@
     - [Name, "a"]
     - [Text, "About"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 - id: extra_closing_brace_is_prose
@@ -471,7 +478,7 @@
     - [Name, "a"]
     - [Text, "text"]
     - EmbeddedEnd
-    - [Text, "} more"]
+    - [Text, "} more\n"]
     - ElementEnd
 
 - id: embedded_with_suffix
@@ -486,6 +493,7 @@
     - BoolTrue
     - [Text, "optional"]
     - EmbeddedEnd
+    - [Text, "\n"]
     - ElementEnd
 
 # ===========================================================================
@@ -565,7 +573,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, ":-) ok"]
+    - [Text, ":-) ok\n"]
     - ElementEnd
 
 # ===========================================================================
@@ -691,13 +699,13 @@
     - [Name, "el"]
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "x"]
+    - [Text, "x\n"]
     - ElementStart
     - [Name, "p"]
-    - [Text, "yes"]
+    - [Text, "yes\n"]
     - ElementEnd
     - DirectiveEnd
-    - [Text, "after"]
+    - [Text, "after\n"]
     - ElementEnd
 
 # ===========================================================================
@@ -711,9 +719,9 @@
   udon: "```\na\n   \nb\n```\n"
   events:
     - FreeformStart
-    - [Text, "a"]
-    - [Text, "   "]
-    - [Text, "b"]
+    - [Text, "a\n"]
+    - [Text, "   \n"]
+    - [Text, "b\n"]
     - FreeformEnd
 
 # Inline-element column recording (the pipe's own column, not pipe+1) —
@@ -726,7 +734,7 @@
     - [Name, "aX"]
     - ElementStart
     - [Name, "b"]
-    - [Text, "c"]
+    - [Text, "c\n"]
     - ElementEnd
     - ElementEnd
 
@@ -745,7 +753,7 @@
     - [Name, "aé"]
     - ElementStart
     - [Name, "b"]
-    - [Text, "c"]
+    - [Text, "c\n"]
     - ElementEnd
     - ElementEnd
 
@@ -784,7 +792,7 @@
     - [BareValue, "myid"]
     - [Attr, "$?"]
     - BoolTrue
-    - [Text, ".cls"]
+    - [Text, ".cls\n"]
     - ElementEnd
 
 - id: bare_colon_line_is_prose
@@ -793,7 +801,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, ":"]
+    - [Text, ":\n"]
     - ElementEnd
 
 - id: colon_guard_fallback_inside_directive
@@ -802,8 +810,8 @@
   events:
     - DirectiveStart
     - [Name, "if"]
-    - [Text, "cond"]
-    - [Text, ":-) ok"]
+    - [Text, "cond\n"]
+    - [Text, ":-) ok\n"]
     - DirectiveEnd
 
 - id: block_prose_framed_semicolon_literal
@@ -812,7 +820,7 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, "this is prose of el ; but this is not a comment"]
+    - [Text, "this is prose of el ; but this is not a comment\n"]
     - ElementEnd
 
 # ⚠ Same reasoning as attr_line_does_not_set_prose_base above: the
@@ -831,7 +839,7 @@
     - CommentStart
     - [Text, " a comment"]
     - CommentEnd
-    - [Text, "prose"]
+    - [Text, "prose\n"]
     - ElementEnd
 
 # ⚠ Placement by stream order (CORE: comments, blank lines, and warnings are
@@ -861,12 +869,12 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, "first"]
+    - [Text, "first\n"]
     - ElementStart
     - [Name, "em"]
-    - [Text, "child"]
+    - [Text, "child\n"]
     - ElementEnd
-    - [Text, "|not element"]
+    - [Text, "|not element\n"]
     - ElementEnd
 
 - id: full_identity_attrs_and_block_prose
@@ -881,5 +889,5 @@
     - [BareValue, "featured"]
     - [Attr, "author"]
     - [BareValue, "Joseph"]
-    - [Text, "body prose"]
+    - [Text, "body prose\n"]
     - ElementEnd

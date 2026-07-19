@@ -2,6 +2,14 @@
 # Every expectation here is derived from spec/CORE.md 0.9.0-alpha.1 text
 # (sections cited per block); nothing traced from parser output. Cases that
 # rest on a reading rather than an explicit spec sentence carry a ⚠ comment.
+#
+# Text-reconstruction contract (spec/TODO-TEXT-WIRE.md): text-bearing lines
+# gain their trailing "\n". A block comment that owns its whole line (no
+# prose/attribute-value text preceding it) contributes no text-stream
+# content, so its terminator stays geometry — no trailing Text event; that
+# only happens (D1) when a comment follows actual prose text on the SAME
+# line. Attribute/reference lines are structure, not text, so they never
+# gain a terminator either way.
 
 # ---------------------------------------------------------------------------
 # Comments × structure (CORE "Comments": uniform continuation, ratified
@@ -21,7 +29,7 @@
     - [Text, "|x"]
     - [Text, "```"]
     - CommentEnd
-    - [Text, "live prose"]
+    - [Text, "live prose\n"]
     - ElementEnd
 
 # ⚠ CORE never states outright that a sameline comment leaves the attribute
@@ -78,7 +86,7 @@
   events:
     - ElementStart
     - [Name, "li"]
-    - [Text, "end; not a comment"]
+    - [Text, "end; not a comment\n"]
     - ElementEnd
 
 - id: adjacent_inline_comments
@@ -94,7 +102,7 @@
     - CommentStart
     - [Text, "c2"]
     - CommentEnd
-    - [Text, " b"]
+    - [Text, " b\n"]
     - ElementEnd
 
 - id: empty_inline_comment
@@ -106,7 +114,7 @@
     - [Text, "a "]
     - CommentStart
     - CommentEnd
-    - [Text, " b"]
+    - [Text, " b\n"]
     - ElementEnd
 
 # After an InconsistentIndentation rebase the NEW column is the prose base,
@@ -118,13 +126,13 @@
   events:
     - ElementStart
     - [Name, "el"]
-    - [Text, "deep prose"]
+    - [Text, "deep prose\n"]
     - [Warning, "InconsistentIndentation"]
-    - [Text, "shallow rebases"]
+    - [Text, "shallow rebases\n"]
     - CommentStart
     - [Text, " comment at the new base"]
     - CommentEnd
-    - [Text, "more prose"]
+    - [Text, "more prose\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -137,7 +145,7 @@
   desc: leading backslash makes a would-be block directive line prose
   udon: "\\!if logged_in\n"
   events:
-    - [Text, "!if logged_in"]
+    - [Text, "!if logged_in\n"]
 
 - id: forced_tail_inline_forms_fire_framed_semicolon_does_not
   desc: in a \-forced tail, |{...} and ;{...} still fire but ' ; ' is literal
@@ -154,7 +162,7 @@
     - CommentStart
     - [Text, "note"]
     - CommentEnd
-    - [Text, " more ; still prose"]
+    - [Text, " more ; still prose\n"]
     - ElementEnd
 
 - id: forced_tail_inline_opener_still_escapable
@@ -163,7 +171,7 @@
   events:
     - ElementStart
     - [Name, "p"]
-    - [Text, " see |{em b} raw"]
+    - [Text, " see |{em b} raw\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -176,8 +184,8 @@
   udon: "```\nbody\n``` not the closer\n```\n"
   events:
     - FreeformStart
-    - [Text, "body"]
-    - [Text, "``` not the closer"]
+    - [Text, "body\n"]
+    - [Text, "``` not the closer\n"]
     - FreeformEnd
 
 # ⚠ CORE fixes exact capture inside the fence but does not say whether a
@@ -190,9 +198,9 @@
   udon: "```\na\n   \nb\n```\n"
   events:
     - FreeformStart
-    - [Text, "a"]
-    - [Text, "   "]
-    - [Text, "b"]
+    - [Text, "a\n"]
+    - [Text, "   \n"]
+    - [Text, "b\n"]
     - FreeformEnd
 
 # CORE "Value Kinds": a node value may be "|element, !:lang: raw block, or a
@@ -206,7 +214,7 @@
     - [Name, "el"]
     - [Attr, "script"]
     - FreeformStart
-    - [Text, "line one"]
+    - [Text, "line one\n"]
     - FreeformEnd
     - ElementEnd
 
@@ -225,9 +233,9 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
-    - [Text, "back to prose"]
+    - [Text, "back to prose\n"]
     - ElementEnd
 
 # Resolved 2026-07-16 (CORE "Inline Raw Content" closing para): a raw block
@@ -243,7 +251,7 @@
     - DirectiveStart
     - [Name, "sh"]
     - [Raw, ""]
-    - [RawContent, "echo hi"]
+    - [RawContent, "echo hi\n"]
     - DirectiveEnd
     - ElementEnd
 
@@ -259,7 +267,7 @@
     - ElementStart
     - [Name, "p"]
     - [Interpolation, " {\"a\":1"]
-    - [Text, "} tail"]
+    - [Text, "} tail\n"]
     - ElementEnd
 
 - id: interpolation_spaced_inner_braces_capture_whole
@@ -269,7 +277,7 @@
     - ElementStart
     - [Name, "p"]
     - [Interpolation, " {\"a\":1} "]
-    - [Text, " ok"]
+    - [Text, " ok\n"]
     - ElementEnd
 
 # CORE "Value Kinds" lists !{{...}} as an attribute value kind. (Impl note
@@ -342,7 +350,7 @@
     - [Attr, "ref"]
     - [Reference, "[asdf].hey"]
     - [Reference, "another[xyz]"]
-    - [Text, "That there is a reference child."]
+    - [Text, "That there is a reference child.\n"]
     - ElementEnd
 
 # ---------------------------------------------------------------------------
@@ -361,5 +369,5 @@
     - [Name, "em"]
     - [Text, "keep | and : and @ and \"q\" here"]
     - EmbeddedEnd
-    - [Text, " y"]
+    - [Text, " y\n"]
     - ElementEnd
