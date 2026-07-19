@@ -285,29 +285,14 @@
     - ElementEnd
 
 # ---------------------------------------------------------------------------
-# Typing envelope edge (CORE "Explicit Typing": envelopes are single-line —
-# resolved 2026-07-16; newline before > = string + UnclosedTypeEnvelope)
+# Typing envelope + newlines: <...> is now MULTI-LINE (2026-07-18) — it spans
+# newlines and closes only on the matching > or EOF, uniform with the other
+# delimited constructs. Multi-line is CORE-"deliberately undefined", so the
+# newline behavior is RECORDED (non-gating) in
+# fixtures/exploratory/multi-line.yaml (ml_env_*), not pinned here. (The old
+# single-line "newline warns and closes" gating case was retired with this
+# change.)
 # ---------------------------------------------------------------------------
-
-# ⚠ Two readings not pinned by CORE: (1) whether the pass-through string
-# keeps the opening `<` — encoded WITH it, matching the closed-envelope
-# pass-through ("the full <...> lexical form, untouched") and losing no
-# bytes; (2) whether NoDialectsLoaded ALSO fires — encoded without it, since
-# the envelope never completed and UnclosedTypeEnvelope already carries the
-# anomaly. Warning-before-value order follows typing_envelope.yaml.
-- id: envelope_unclosed_at_newline_warns
-  desc: a newline before the matching > ends the value as a string plus warning
-  udon: "|el :when <7:02pm\n|next\n"
-  events:
-    - ElementStart
-    - [Name, "el"]
-    - [Attr, "when"]
-    - [Warning, "UnclosedTypeEnvelope"]
-    - [BareValue, "<7:02pm"]
-    - ElementEnd
-    - ElementStart
-    - [Name, "next"]
-    - ElementEnd
 
 # ---------------------------------------------------------------------------
 # References × head position and boundaries (CORE "References (`@`)",

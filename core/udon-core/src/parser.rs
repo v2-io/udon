@@ -3935,6 +3935,60 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parse envelope -> BareValue
+    fn parse_envelope<F>(&mut self, on_event: &mut F)
+    where
+        F: FnMut(Event<'a>),
+    {
+        self.mark();
+        let mut depth: i32 = 0;
+        #[derive(Clone, Copy)]
+        enum State { Scan, Check,  }
+        let mut state = State::Scan;
+        loop {
+            match state {
+                State::Scan => {
+                    match self.scan_to3(b'\n', b'<', b'>') {
+                        Some(b'<') => {
+                    self.advance();
+                    depth += 1;
+                    continue;
+                        }
+                        Some(b'>') => {
+                    self.advance();
+                    depth -= 1;
+                    state = State::Check;
+                    continue;
+                        }
+                        Some(b'\n') => {
+                            self.advance();
+                        }
+                        None => {
+                            on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                            on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedTypeEnvelope"), span: self.span() });
+                            return;
+                        }
+                        _ => unreachable!("scan_to only returns target chars"),
+                    }
+                }
+                State::Check => {
+                    match self.peek() {
+                        _ if depth == 0 => {
+                    self.set_term(0);
+                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
+                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"NoDialectsLoaded"), span: self.span() });
+                    return;
+                        }
+                        _ => {
+                    state = State::Scan;
+                    continue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /// Parse emit_bare_value
     fn parse_emit_bare_value<F>(&mut self, on_event: &mut F)
     where
@@ -3955,7 +4009,7 @@ impl<'a> Parser<'a> {
         let mut result: i32 = 0;
                     self.mark();
         #[derive(Clone, Copy)]
-        enum State { Main, Envelope, EnvCheck, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued,  }
+        enum State { Main, MaybeInterp, MaybeInterp2, MaybeRef, RefIdent, RefTail, Accumulate, AccumSpace, KwBoundary, KwbColon, KwbPipe, KwbBang, KwbAt, NumSign, NumZero, NumDec, NumHex, NumOct, NumBin, NumFloatFrac, NumFloatExp, NumFloatExpDigits, NumRationalDenom, NumComplexSign, NumComplexImag, NumComplexImagFrac, NumComplexImagExp, NumComplexImagExpD, String, StringSpace, StrBoundary, StrbColon, StrbPipe, StrbBang, StrbAt, Blob, BlobClose, BlobPipe, BlobBang, BlobAfterInline, BlobSemi, BlobSemiAfter, BlobSemiGlued,  }
         let mut state = State::Main;
         loop {
             match state {
@@ -3978,10 +4032,8 @@ impl<'a> Parser<'a> {
                     return 0;
                         }
                         Some(b'<') => {
-                    self.advance();
-                    depth += 1;
-                    state = State::Envelope;
-                    continue;
+                    self.parse_envelope(on_event);
+                    return 0;
                         }
                         Some(b'@') => {
                     self.advance();
@@ -4015,47 +4067,6 @@ impl<'a> Parser<'a> {
                         _ => {
                     self.advance();
                     state = State::String;
-                    continue;
-                        }
-                    }
-                }
-                State::Envelope => {
-                    match self.scan_to3(b'\n', b'<', b'>') {
-                        Some(b'\n') => {
-                    self.set_term(0);
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedTypeEnvelope"), span: self.span() });
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return 0;
-                        }
-                        Some(b'<') => {
-                    self.advance();
-                    depth += 1;
-                    continue;
-                        }
-                        Some(b'>') => {
-                    self.advance();
-                    depth -= 1;
-                    state = State::EnvCheck;
-                    continue;
-                        }
-                        None => {
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"UnclosedTypeEnvelope"), span: self.span() });
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return 0;
-                        }
-                        _ => unreachable!("scan_to only returns target chars"),
-                    }
-                }
-                State::EnvCheck => {
-                    match self.peek() {
-                        _ if depth == 0 => {
-                    self.set_term(0);
-                    on_event(Event::Warning { content: std::borrow::Cow::Borrowed(b"NoDialectsLoaded"), span: self.span() });
-                    on_event(Event::BareValue { content: self.term(), span: self.span_from_mark() });
-                    return 0;
-                        }
-                        _ => {
-                    state = State::Envelope;
                     continue;
                         }
                     }

@@ -118,8 +118,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "$key"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<u64:0xf902>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: key_typed_array_tuple_with_trait_and_suffix

@@ -48,6 +48,30 @@
     |default | /value(1, ']')                                     |>>
 
 
+; Explicit-typing envelope <...> (CORE "Explicit Typing") — its OWN delimited
+; construct (closer '>', <>-balanced for nesting), uniform with every other
+; delimited value rather than a sub-region of typed_value. MULTI-LINE like the
+; other delimited constructs: a newline inside <...> is ordinary content, and
+; the value closes only at the matching '>' (or, unclosed, at EOF — named by
+; `|unclosed TypeEnvelope`). Not foreclosing multi-line: most typed values will
+; want it (Joseph, 2026-07-18), and it keeps the classifier clean (delimited,
+; not the old MIXED line-bound machine). INTERIM: no dialect layer yet, so the
+; value passes through as a string — the full <...> lexeme, opening '<'
+; included — CONTENT-FIRST, then a warning (NoDialectsLoaded on a clean close,
+; UnclosedTypeEnvelope at EOF; content-first falls out of the CONTENT return
+; type). Entered with the cursor AT the opening '<' (the auto-MARK includes it).
+|function[envelope:BareValue] | depth = 0
+  |unclosed TypeEnvelope
+  |state[:scan]
+    |c['<']                   | -> | depth += 1                  |>>
+    |c['>']                   | -> | depth -= 1                  |>> :check
+    |default                  | ->                               |>>   ; newlines are content (multi-line)
+
+  |state[:check]
+    |if[depth == 0]           | TERM | BareValue(USE_MARK) | Warning(NoDialectsLoaded) |return
+    |default                  |                                  |>> :scan
+
+
 ; --- Typed-value scanner (formerly values.desc) ---
 ;
 ; PROVIDES:
@@ -107,7 +131,7 @@
     |c['\n']                  | BareValue(USE_MARK)              |return
     |c[' ']                   | BareValue(USE_MARK)              |return
     |c[:bracket]              | BareValue(USE_MARK)              |return
-    |c['<']                   | -> | depth += 1                  |>> :envelope
+    |c['<']                   | /envelope                        |return  ; delimited construct — see /envelope
     |c['@']                   | ->                               |>> :maybe_ref
     |c['!']                   | ->                               |>> :maybe_interp
     |c['0']                   | ->                               |>> :num_zero
@@ -115,21 +139,6 @@
     |c['+-']                  | ->                               |>> :num_sign
     |LETTER                   | ->                               |>> :accumulate
     |default                  | ->                               |>> :string
-
-  ; === Explicit-typing envelope <...> (CORE "Explicit Typing") ===
-  ; INTERIM: recognized (<>-balanced, single-line) but Warning + string
-  ; pass-through until the dialect layer lands. A newline before the
-  ; matching '>' is UnclosedTypeEnvelope (CORE: envelopes are single-line).
-  |state[:envelope]
-    |eof                      | Warning(UnclosedTypeEnvelope) | BareValue(USE_MARK) |return
-    |c['\n']                  | TERM | Warning(UnclosedTypeEnvelope) | BareValue(USE_MARK) |return
-    |c['<']                   | -> | depth += 1                  |>>
-    |c['>']                   | -> | depth -= 1                  |>> :env_check
-    |default                  | ->                               |>>
-
-  |state[:env_check]
-    |if[depth == 0]           | TERM | Warning(NoDialectsLoaded) | BareValue(USE_MARK) |return
-    |default                  |                                  |>> :envelope
 
   ; === Interpolation in value position (CORE Value Kinds) ===
   ; !{{...}} is a first-class value; anything else after '!' is text.

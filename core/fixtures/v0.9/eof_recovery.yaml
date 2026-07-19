@@ -293,8 +293,8 @@
     - [Name, "el"]
     - [Attr, "xs"]
     - ArrayStart
-    - [Warning, "UnclosedTypeEnvelope"]
     - [BareValue, "<5m"]
+    - [Warning, "UnclosedTypeEnvelope"]
     - [Warning, "UnclosedArray"]
     - ArrayEnd
     - ElementEnd
@@ -327,22 +327,13 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [Warning, "UnclosedTypeEnvelope"]
     - [BareValue, "<2026-07"]
+    - [Warning, "UnclosedTypeEnvelope"]
     - ElementEnd
 
-- id: envelope_newline_before_close
-  desc: envelopes are single-line — a newline before > ends the value with a warning, parse continues
-  udon: "|el :when <7:02\nprose after\n"
-  root_only: true
-  events:
-    - ElementStart
-    - [Name, "el"]
-    - [Attr, "when"]
-    - [Warning, "UnclosedTypeEnvelope"]
-    - [BareValue, "<7:02"]
-    - ElementEnd
-    - [Text, "prose after"]
+# (The single-line "envelope newline before close" case was retired 2026-07-18:
+# <...> is now multi-line — spans newlines, closes on > or EOF. Its newline
+# behavior is recorded in fixtures/exploratory/multi-line.yaml, not gated here.)
 
 # ---------------------------------------------------------------------------
 # Unclosed freeform fence (CORE EOF table: body so far + Warning

@@ -11,8 +11,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<2026-07-11>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: envelope_shorthand_duration
@@ -22,8 +22,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "dur"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: envelope_type_labelled
@@ -33,8 +33,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "size"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<u64:0xf902>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: envelope_dialect_and_type_labelled
@@ -44,8 +44,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "span"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<temporal:interval:2026-01/2026-06>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: envelope_nested_balanced
@@ -55,8 +55,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "q"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<r: <i: 3 -7> 0d83.23>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
 - id: envelope_quoted_literal_stays_string
@@ -85,8 +85,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "when"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<2026-07-11>"]
+    - [Warning, "NoDialectsLoaded"]
     - [Attr, "n"]
     - [Integer, "1"]
     - ElementEnd
@@ -100,8 +100,8 @@
     - [Name, "el"]
     - [Attr, "xs"]
     - ArrayStart
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
+    - [Warning, "NoDialectsLoaded"]
     - [Integer, "3"]
     - ArrayEnd
     - ElementEnd

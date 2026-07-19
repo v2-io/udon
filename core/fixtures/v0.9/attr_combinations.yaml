@@ -425,8 +425,8 @@
     - [Attr, "a"]
     - [Reference, "[r]"]
     - [Attr, "a"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
+    - [Warning, "NoDialectsLoaded"]
     - [Attr, "a"]
     - ArrayStart
     - [Integer, "1"]
@@ -502,8 +502,8 @@
     - ElementStart
     - [Name, "el"]
     - [Attr, "t"]
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<v>"]
+    - [Warning, "NoDialectsLoaded"]
     - [Warning, "AttributeValueExtendedByTrailingText"]
     - [Attr, "t"]
     - [Text, "tail"]
@@ -718,8 +718,8 @@
     - [Name, "el"]
     - [Attr, "xs"]
     - ArrayStart
-    - [Warning, "NoDialectsLoaded"]
     - [BareValue, "<5m>"]
+    - [Warning, "NoDialectsLoaded"]
     - [StringValue, "a b"]
     - ArrayStart
     - [Integer, "1"]

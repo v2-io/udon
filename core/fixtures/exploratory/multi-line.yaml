@@ -237,44 +237,50 @@
 
 
 # ===========================================================================
-# C. TYPING ENVELOPE  <...>   →   LINE-BOUND, WARNS  (already enforced)
-#    This is the ONE construct whose single-line-ness CORE already ENFORCES
-#    (a newline warns UnclosedTypeEnvelope — see CORE "Explicit Typing").
-#    Captured lexeme INCLUDES the opening "<". Rest of line 2 → prose.
+# C. TYPING ENVELOPE  <...>   →   MULTI-LINE (2026-07-18)
+#    <...> now SPANS newlines and closes only on the matching '>' or EOF —
+#    uniform with strings/embeds, no longer a line-bound special case. It was
+#    extracted from typed_value into its own /envelope delimited function
+#    (content-first; `|unclosed TypeEnvelope`). Multi-line is still
+#    CORE-"deliberately undefined", so these record CURRENT behavior. The
+#    captured lexeme keeps the opening '<' and the interior newlines verbatim.
 # ===========================================================================
 
-- id: ml_env_bare_newline_soft_closes
-  desc: "newline inside <...> ends the value with UnclosedTypeEnvelope; rest of line 2 is prose"
+- id: ml_env_spans_newline_closes_at_bracket
+  desc: "newline inside <...> is content; the value spans to the '>' on line 2 — clean close"
   udon: "|el :k <abc\n  def>"
   root_only: true
-  # CURRENT (exploratory, not ratified — though the newline-warns rule IS
-  # ratified for <...>): captured "<abc" (incl the "<"), "def>" is prose.
-  # ambiguity: the captured value keeps the literal "<" — an artifact of
-  # pass-through, worth confirming when envelopes get a real dialect layer.
+  # CURRENT (exploratory, not ratified): the envelope spans the newline (and the
+  # continuation indentation, verbatim) and closes at the '>' — BareValue
+  # "<abc\n  def>" + NoDialectsLoaded (content-first). Same shape as a multi-line
+  # string/embed.
+  # ambiguity: interior indentation is captured verbatim — a dedent policy, if
+  # ever wanted, is a dialect-layer concern (same open question as multi-line
+  # strings).
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
-    - [Warning, "UnclosedTypeEnvelope"]
-    - [BareValue, "<abc"]
-    - [Text, "def>"]
+    - [BareValue, "<abc\n  def>"]
+    - [Warning, "NoDialectsLoaded"]
     - ElementEnd
 
-- id: ml_env_never_closed_lines_become_prose
-  desc: "never-closed envelope: value is only line-1's capture; following lines are prose"
+- id: ml_env_never_closed_spans_to_eof
+  desc: "never-closed envelope spans every following line to EOF, then warns"
   udon: "|el :k <a\nb\nc"
   root_only: true
-  # CURRENT (exploratory, not ratified): warns at the first newline, keeps
-  # "<a"; "b" and "c" are root-level Text after ElementEnd.
+  # CURRENT (exploratory, not ratified): with no '>', the envelope swallows
+  # "a\nb\nc" all the way to EOF (the multi-line footgun, shared with unclosed
+  # strings/interpolations), then UnclosedTypeEnvelope via the |unclosed
+  # force-unwind. Contrast the retired line-bound behavior, where "b"/"c" were
+  # separate prose lines.
   events:
     - ElementStart
     - [Name, "el"]
     - [Attr, "k"]
+    - [BareValue, "<a\nb\nc"]
     - [Warning, "UnclosedTypeEnvelope"]
-    - [BareValue, "<a"]
     - ElementEnd
-    - [Text, "b"]
-    - [Text, "c"]
 
 
 # ===========================================================================
