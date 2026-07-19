@@ -25,12 +25,13 @@
 >   shared (element/embed/identity), the per-call-site "one function, both kinds"
 >   case (descent classify gap-2). Tracked in `core/TODO-CORE-PARSING.md`; the
 >   identity reds here are the target spec.
-> - **`<…>` envelope emission order** is still warning-first (the lone
->   emission-order outlier); the clean fix extracts `<…>` into its own
->   `/envelope` delimited function (design-doc gap-3), after which it derives
->   content-first for free. Not yet done.
+> - **`<…>` envelope emission order** — ✅ DONE (commit `e377585`): extracted
+>   into its own multi-line `/envelope` delimited function; content-first on
+>   clean close (`NoDialectsLoaded`) and at EOF (`UnclosedTypeEnvelope`),
+>   classifier MIXED=0. Verified 2026-07-19.
 > - **Promote the ~83 already-green `_wip` cases into `v0.9/`** for regression
->   coverage (pure coverage; keeps the gate green).
+>   coverage (pure coverage; keeps the gate green) — this is the densification
+>   step now in progress (2026-07-19).
 >
 > **Before promoting, re-verify each draft's `red?:` note against the CURRENT
 > parser** — the harvest's notes predate all of the above, so many "reds" are

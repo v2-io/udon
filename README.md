@@ -264,11 +264,15 @@ The exhaustive **fixture harvest** (104 draft cases) still sits in
 [`FINDINGS.md`](core/fixtures/_wip/FINDINGS.md); a **non-gating exploratory
 sandbox** for undefined multi-line behavior is in `core/fixtures/exploratory/`
 (run: `cargo test -p udon-core --test exploratory -- --ignored --nocapture`).
+The `<…>` envelope's content-first emission order **landed** (commit `e377585`):
+`<…>` was extracted into its own multi-line `/envelope` delimited function, so
+the classifier is MIXED=0 and both the clean-close (`NoDialectsLoaded`) and the
+at-EOF (`UnclosedTypeEnvelope`) cases emit content-first (verified 2026-07-19).
 **What remains** (documented, not blocking): promote the ~83 already-green
-`_wip` cases into `v0.9/` for regression coverage; the **identity/reference-key
+`_wip` cases into `v0.9/` for regression coverage; and the **identity/reference-key
 EOF** warning (`UnclosedIdentityKey` + `$partial-key` — the harder shared
-`parse_element_identity` case, `core/TODO-CORE-PARSING.md`); and the `<…>`
-envelope's content-first emission order (extract `/envelope`, design-doc gap-3).
+`parse_element_identity` case, still unimplemented: `|el[k`<EOF> emits `$key`
+with no warning today — `core/TODO-CORE-PARSING.md`).
 
 Current state (2026-07-16):
 - **CORE 0.8.0 released — first version with a compliant parser.** The
@@ -294,11 +298,12 @@ Current state (2026-07-16):
   (2026-07-16, both parsers, event streams diffed) found zero
   errors/warnings across all six external documents; see `CONSUMERS.md`.
 
-Next: promote the remaining already-green `_wip` cases into `v0.9/` (coverage),
-then the identity/reference-key EOF warning + the `<…>` envelope emission-order
-cleanup (both above), then remaining densification and the `core-v0.9.0` tag.
-(The alpha.2 EOF recast + the 2026-07-18 grammar pass delivered the
-EOF-densification the 2026-07-16 note called for, and the gate is green.)
+Next: **fixture densification** now that the spec is settled — promote the
+already-green `_wip` cases into `v0.9/` (coverage) and broaden edge/combination
+coverage; the identity/reference-key EOF warning is the one remaining grammar
+residual; then the `core-v0.9.0` tag. (The alpha.2 EOF recast + the 2026-07-18
+grammar pass + the envelope extraction delivered the EOF work the 2026-07-16
+note called for; the gate is green.)
 
 ## How the work is organized
 
