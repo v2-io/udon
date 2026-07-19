@@ -189,6 +189,17 @@ section — formerly cited as "Addendum A"). Warning-code spellings are provisio
       bind a document's filename designator to its pragma (its dialects + schema).
       *(discuss w/ Joseph)*
 
+- [ ] **Cosmetic completeness items** (from the 2026-07-18 CORE consistency
+      audit; low priority, not contradictions): (a) the `NoTabs` error code is
+      named in "Strict Whitespace" but catalogued in no registry (error-code
+      vocabulary is deliberately un-catalogued working-names for now); (b)
+      `CommentMissingFollowingSpace` is in the Warning-codes table but never
+      described or exampled in the Comments section; (c) "the character
+      immediately after the prefix determines the parse mode **with no
+      lookahead**" (Unified Inline Syntax) reads oddly against the Bounded
+      Lookahead section's "typically 2-3" chars — a word-level nit (different
+      granularities: one char after the prefix vs. total guard width).
+
 ---
 
 *(History lives in git and `msc/CHANGELOG.md` — the 0.8 silence-migration

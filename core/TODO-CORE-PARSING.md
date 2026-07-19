@@ -12,7 +12,7 @@ backends) — see [`../design/eof-descent-classification.md`](../design/eof-desc
 Unexpected EOF only for still-open **delimited** activations; **positional**
 constructs finish on EOF ≡ newline. Remaining pure-EOF-bug items below implement
 against that framing, not the superseded aggregate-event sketch in
-`../design/eof-model-proposal-2026-07.md`.
+`../_archive/eof-model-proposal-2026-07.md`.
 
 **Warning-code names are provisional (2026-07-18):** the alpha.2 `Unclosed*` /
 `UnclosedInline*` / `$partial-key` spellings are hand-picked working names,

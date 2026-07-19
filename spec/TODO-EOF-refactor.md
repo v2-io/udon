@@ -1,7 +1,7 @@
 # TODO — EOF handling: positional / delimited
 
 > **This file is the single design of record for how UDON handles end of
-> input.** It supersedes `../design/eof-model-proposal-2026-07.md` (historical
+> input.** It supersedes `../_archive/eof-model-proposal-2026-07.md` (historical
 > exploration — its aggregate-event and residual-buffer vehicles are rejected
 > below; keep only for archaeology). Where any other file in the repo describes
 > EOF differently, this file wins.
