@@ -33,6 +33,30 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
 
 ## Open
 
+- [ ] **`|{…}`-led block-prose line silently swallows following same-column
+      structure** (found 2026-07-19 by the example-modernization pass;
+      independently reproduced). A block-prose line whose first non-space content
+      is an inline `|{…}` element followed by trailing prose text corrupts the
+      enclosing element's prose content-base: subsequent lines at the **same
+      column** that should be structure (an attribute `:key`, a child `|el`) are
+      silently consumed as prose Text — **no warning**, a keep-everything
+      violation (structure lost). Minimal repro:
+
+      ```udon
+      |parent
+        |{em x} trailing words
+        |child a real child
+      ```
+
+      → the wire is `…EmbeddedEnd / Text / Text`; `|child` never emits
+      `ElementStart`. Control (a plain-prose middle line in place of the
+      `|{…}`-led one) parses `|child` correctly, isolating the cause to the
+      `|{…}`-led prose line's content-base handling. **Left alone for now**
+      (Joseph, 2026-07-19): the workaround is trivial (don't begin a block-prose
+      line with `|{`), the affected example was rewrapped, and the attribute-value
+      wire recast / likely parser rewrite is expected to rework this path anyway.
+      Kept here with the repro so the finding isn't lost.
+
 - [ ] **Empty forced-text span excludes the consumed `\` (round-trip nicety).**
       Ruled 2026-07-19: `:a \`<EOF> is a kept empty-string value and a lone `\`
       line is kept empty prose — the parser emits the (empty) `Text` correctly
