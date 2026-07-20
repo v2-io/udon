@@ -1,0 +1,60 @@
+# Clean-room snippets stripped from v0.9/hierarchy.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: hierarchy1052
+  udon: "|one |two |three\n"
+- id: hierarchy1053
+  udon: |
+    |one
+         |two
+              |three
+- id: hierarchy1054
+  udon: |
+    |one |two |three
+      |alpha
+- id: hierarchy1055
+  udon: |
+    |one |two |three
+         |alpha
+- id: hierarchy1056
+  udon: |
+    |one |two |three
+            |alpha
+- id: hierarchy1057
+  udon: |
+    |one |two |three
+              |alpha
+- id: hierarchy1058
+  udon: |
+    |one |two |three
+           |alpha
+         |beta
+- id: hierarchy1059
+  udon: |
+    |one |two |three
+      |alpha
+         |beta
+- id: hierarchy1060
+  udon: |
+    |a |b |c |d
+             |child-of-c
+       |child-of-a
+- id: hierarchy1061
+  udon: |
+    |one
+      |two
+        |three
+          |four
+    prose sibling to one
+- id: hierarchy1062
+  udon: |
+    |parent
+      |child
+      |sibling
+       |inside
+- id: hierarchy1063
+  udon: |
+    |table |tr |td A1
+               |td A2
+           |tr |td B1
+      |caption Table 1

@@ -1,0 +1,72 @@
+# Clean-room snippets stripped from v0.9/eof_positional_bare.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: eof-positional-bare930
+  udon: |-
+    |a
+      |b
+        |c
+          |d
+- id: eof-positional-bare931
+  udon: |-
+    |a
+      !if x
+        |b
+- id: eof-positional-bare932
+  udon: |-
+    |a
+      |b
+        :note
+          deep text
+- id: eof-positional-bare933
+  udon: ''
+- id: eof-positional-bare934
+  udon: "|div"
+- id: eof-positional-bare935
+  udon: "|div\n"
+- id: eof-positional-bare936
+  udon: "!if x"
+- id: eof-positional-bare937
+  udon: "!if x\n"
+- id: eof-positional-bare938
+  udon: |-
+    |el
+      :note
+        line one
+        line two
+- id: eof-positional-bare939
+  udon: |
+    |el
+      :note
+        line one
+        line two
+- id: eof-positional-bare940
+  udon: "|"
+- id: eof-positional-bare941
+  udon: "@"
+- id: eof-positional-bare942
+  udon: "!"
+- id: eof-positional-bare943
+  udon: ":"
+- id: eof-positional-bare944
+  udon: ";"
+- id: eof-positional-bare945
+  udon: "```"
+- id: eof-positional-bare946
+  udon: "|{"
+- id: eof-positional-bare947
+  udon: "|el :"
+- id: eof-positional-bare948
+  udon: "|el @"
+- id: eof-positional-bare949
+  udon: "\\|"
+- id: eof-positional-bare950
+  udon: "|el :count \\7 apples"
+- id: eof-positional-bare951
+  udon: "|el :count \\"
+- id: eof-positional-bare952
+  udon: "\\"
+- id: eof-positional-bare953
+  udon: "!{inc"
+- id: eof-positional-bare954
+  udon: "!{"

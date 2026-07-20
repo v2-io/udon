@@ -1,0 +1,212 @@
+# Clean-room snippets stripped from v0.9/legacy_mined.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: legacy-mined1136
+  udon: |
+    |a
+     |b
+- id: legacy-mined1137
+  udon: |
+    |a
+     |b
+      |c
+       |d
+        |e
+         |f
+    |z
+- id: legacy-mined1138
+  udon: |
+    |a
+      |b
+        |c
+      |d
+- id: legacy-mined1139
+  udon: |
+    |a
+      :attr value
+    |b
+- id: legacy-mined1140
+  udon: |
+    |p
+      first prose
+      |em child
+      second prose
+- id: legacy-mined1141
+  udon: |
+    |p
+      first prose
+      |em child
+     second prose
+- id: legacy-mined1142
+  udon: |
+    |p sameline
+       |em child
+       after child
+- id: legacy-mined1143
+  udon: |
+    |p sameline
+       |em child
+       first
+      second
+- id: legacy-mined1144
+  udon: |
+    |alpha
+        |a
+       |b
+      |c
+- id: legacy-mined1145
+  udon: |
+    |el
+        :attr value
+      prose
+- id: legacy-mined1146
+  udon: |
+    |div
+      div text
+      |p
+        p text
+        |em
+          em text
+        after em
+      after p
+    after div
+- id: legacy-mined1147
+  udon: |
+    |p
+      prose 1
+      |em em1
+      prose 2
+      |strong strong1
+      prose 3
+- id: legacy-mined1148
+  udon: "|acme/widget\n"
+- id: legacy-mined1149
+  udon: "|σελίδα\n"
+- id: legacy-mined1150
+  udon: "|要素\n"
+- id: legacy-mined1151
+  udon: "|élan\n"
+- id: legacy-mined1152
+  udon: "|foo٣\n"
+- id: legacy-mined1153
+  udon: "|x-\n"
+- id: legacy-mined1154
+  udon: "|'a |b :c'\n"
+- id: legacy-mined1155
+  udon: "|'special-name'[id7]\n"
+- id: legacy-mined1156
+  udon: "|'weird name'?\n"
+- id: legacy-mined1157
+  udon: "|el.θέμα\n"
+- id: legacy-mined1158
+  udon: "|el.ns/kind\n"
+- id: legacy-mined1159
+  udon: "|el :'my key' value\n"
+- id: legacy-mined1160
+  udon: "|el :'$custom' 5\n"
+- id: legacy-mined1161
+  udon: "|[k].t\n"
+- id: legacy-mined1162
+  udon: "|.opt?\n"
+- id: legacy-mined1163
+  udon: "|? :k v\n"
+- id: legacy-mined1164
+  udon: "|a |b |c text for c\n"
+- id: legacy-mined1165
+  udon: "|p |{a |{b |{c deep}}}\n"
+- id: legacy-mined1166
+  udon: "|p |{a one}|{b two}\n"
+- id: legacy-mined1167
+  udon: "|nav |{a Home} | |{a About}\n"
+- id: legacy-mined1168
+  udon: "|p |{a text}} more\n"
+- id: legacy-mined1169
+  udon: "|form |{field? optional}\n"
+- id: legacy-mined1170
+  udon: "|div ; just a comment\n"
+- id: legacy-mined1171
+  udon: ";no space\n"
+- id: legacy-mined1172
+  udon: ";\n"
+- id: legacy-mined1173
+  udon: |
+    |el
+      :data foo;bar ; this is comment
+- id: legacy-mined1174
+  udon: "|el :key val\\;ue ; real comment\n"
+- id: legacy-mined1175
+  udon: |
+    |el
+      :-) ok
+- id: legacy-mined1176
+  udon: "|el :at 2024-01-15T10:30:00Z\n"
+- id: legacy-mined1177
+  udon: "|el :x 12ab :y 3\n"
+- id: legacy-mined1178
+  udon: "|el :matrix [[1 2] [3 4]]\n"
+- id: legacy-mined1179
+  udon: "|el :deep [[[1]]]\n"
+- id: legacy-mined1180
+  udon: '|el :tricky ["[x]" "]" "["]
+
+    '
+- id: legacy-mined1181
+  udon: "|el :v [a.b 1.2.3 v2.0]\n"
+- id: legacy-mined1182
+  udon: "|div :class !{{computed_class}}\n"
+- id: legacy-mined1183
+  udon: |
+    |el
+      !if x
+        |p yes
+      after
+- id: legacy-mined1184
+  udon: "```\na\n   \nb\n```\n"
+- id: legacy-mined1185
+  udon: |
+    |aX |b
+         c
+- id: legacy-mined1186
+  udon: |
+    |aé |b
+         c
+- id: legacy-mined1187
+  udon: |
+    |parent
+      |child
+       ; inside child
+- id: legacy-mined1188
+  udon: "|field[myid]? .cls\n"
+- id: legacy-mined1189
+  udon: |
+    |el
+      :
+- id: legacy-mined1190
+  udon: |
+    !if cond
+      :-) ok
+- id: legacy-mined1191
+  udon: |
+    |el
+      this is prose of el ; but this is not a comment
+- id: legacy-mined1192
+  udon: |
+    |el
+        ; a comment
+      prose
+- id: legacy-mined1193
+  udon: |
+    |p
+      |a
+
+      |b
+- id: legacy-mined1194
+  udon: |
+    |p
+      first
+      |em child
+      \|not element
+- id: legacy-mined1195
+  udon: |
+    |article[intro].featured :author Joseph
+      body prose

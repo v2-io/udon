@@ -1,0 +1,69 @@
+# Clean-room snippets stripped from v0.9/attr_structured.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: attr-structured777
+  udon: "|el :a |beta\n"
+- id: attr-structured778
+  udon: '|el :a |the-node :k "v" more
+
+    '
+- id: attr-structured779
+  udon: |
+    |api
+      :headers
+        |header :name a :value b
+- id: attr-structured780
+  udon: |
+    |el
+      :note
+        first line
+        second line
+- id: attr-structured781
+  udon: |
+    |el
+      :also this one
+        continued deeper
+- id: attr-structured782
+  udon: |
+    |el
+      :body
+        line one
+
+        line two
+- id: attr-structured783
+  udon: |
+    |el
+      :the-attribute \ some text and then |{a hello}
+- id: attr-structured784
+  udon: |
+    |el
+      :attr "first" and here's another one
+- id: attr-structured785
+  udon: |
+    |el
+      :key something \ tail here
+- id: attr-structured786
+  udon: |
+    |el
+      :when <7:02pm>
+        extra deeper text
+- id: attr-structured787
+  udon: |
+    |el
+      :omega <val>
+        ; just a note, not a second value
+- id: attr-structured788
+  udon: |
+    |el
+      :theta
+        :first 1
+- id: attr-structured789
+  udon: |
+    |el
+      :a 1
+      :a |node
+      :a more text
+- id: attr-structured790
+  udon: |
+    |el
+            :a |{em x} tail here

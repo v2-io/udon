@@ -1,0 +1,83 @@
+# Clean-room snippets stripped from v0.8/markers.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: markers616
+  udon: "|div\n"
+- id: markers617
+  udon: "|1 not an element\n"
+- id: markers618
+  udon: "|-\n"
+- id: markers619
+  udon: "| a | b |\n"
+- id: markers620
+  udon: "|\n"
+- id: markers621
+  udon: "|= cell\n"
+- id: markers622
+  udon: "|[k]\n"
+- id: markers623
+  udon: "|.some-trait\n"
+- id: markers624
+  udon: "|'weird name'\n"
+- id: markers625
+  udon: |
+    !if logged_in
+      |p hi
+- id: markers626
+  udon: "![img](pic.jpg)\n"
+- id: markers627
+  udon: "!= not a directive\n"
+- id: markers628
+  udon: "!(x)\n"
+- id: markers629
+  udon: "!\n"
+- id: markers630
+  udon: "!{{greeting}}\n"
+- id: markers631
+  udon: "@[key]\n"
+- id: markers632
+  udon: "@ not a reference\n"
+- id: markers633
+  udon: "@! nope\n"
+- id: markers634
+  udon: 'mail me at a@b.example
+
+    '
+- id: markers635
+  udon: |
+    |a
+      :k v
+- id: markers636
+  udon: |
+    |a
+      :k v
+      some prose
+      :later x
+- id: markers637
+  udon: |
+    |a
+      |child
+      :later x
+- id: markers638
+  udon: |
+    |a
+      :-) smiley
+- id: markers639
+  udon: |
+    |a
+      : not an attr
+- id: markers640
+  udon: "|p a | b :-) ! ``` all literal\n"
+- id: markers641
+  udon: |
+    |a
+      some prose
+      |b
+      more prose
+- id: markers642
+  udon: |
+    |a
+      prose base
+        |not-an-element
+- id: markers643
+  udon: "|a |b :k v word :notattr\n"

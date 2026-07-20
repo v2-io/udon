@@ -1,0 +1,74 @@
+# Clean-room snippets stripped from v0.8/freeform.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: freeform556
+  udon: |
+    ```
+    freeform content
+    ```
+- id: freeform557
+  udon: |
+    ```
+    |not-an-element
+    :not-an-attr
+    ; not a comment
+    ```
+- id: freeform558
+  udon: |
+    |code
+      ```
+      def foo():
+          return 1
+      ```
+- id: freeform559
+  udon: |
+    ```rust ignore
+    fn main() {}
+    ```
+- id: freeform560
+  udon: |
+    |a
+      here is prose
+      |b a child
+      and more prose
+      ```
+      in the fence
+      ```
+- id: freeform561
+  udon: |
+    |a |b :k v ```
+    body line
+    ```
+- id: freeform562
+  udon: "|a but now ``` is literal\n"
+- id: freeform563
+  udon: |
+    |a
+      prose base
+        ```
+- id: freeform564
+  udon: |
+    |code
+      ```
+      line one
+    ```
+- id: freeform565
+  udon: "```\nbody\n```   \n"
+- id: freeform566
+  udon: |
+    ```
+    a
+
+    b
+    ```
+- id: freeform567
+  udon: |-
+    ```
+    unclosed
+- id: freeform568
+  udon: |
+    |a
+      |b
+      ```
+      fence is sibling of b, child of a
+      ```

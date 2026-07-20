@@ -1,0 +1,78 @@
+# Clean-room snippets stripped from v0.8/comments.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: comments496
+  udon: "; file header comment\n"
+- id: comments497
+  udon: |
+    |pre
+      return x; // semicolon is literal
+- id: comments498
+  udon: 'use x; do y
+
+    '
+- id: comments499
+  udon: "|li Item one ; TODO expand\n"
+- id: comments500
+  udon: "|li Item one ;still prose\n"
+- id: comments501
+  udon: "|li ratio 1;2 done\n"
+- id: comments502
+  udon: "|li trailing wins ;\n"
+- id: comments503
+  udon: |
+    |el
+      :key value ; comment
+- id: comments504
+  udon: "|el :k v ; trailing comment\n"
+- id: comments505
+  udon: "|p x |{em a; b} y\n"
+- id: comments506
+  udon: |
+    ; This would be a comment
+      this is still part of the comment
+    prose after
+- id: comments507
+  udon: |
+    |parent
+      |child
+    ; closes both
+    |sibling
+- id: comments508
+  udon: |
+    |element
+      Some prose content
+       ; one column past the prose base
+      More prose content
+- id: comments509
+  udon: |
+    |element
+      Some prose content
+      ; a comment at the base
+      More prose content
+- id: comments510
+  udon: |
+    |element
+      some prose to begin with
+      ; Start the comment
+        |another-element
+           and its prose
+- id: comments511
+  udon: |
+    ; silence this
+      |broken :attr
+      :stray x
+    |live
+- id: comments512
+  udon: |
+    |parent
+      |child
+      ; sibling of child
+- id: comments513
+  udon: "|p This has ;{TODO fix wording} some text that continues.\n"
+- id: comments514
+  udon: "|p a ;{note {inner} ok} b\n"
+- id: comments515
+  udon: "\\; This line starts with a semicolon in the output\n"
+- id: comments516
+  udon: "|el :key and-this;-is-ok rest is prose\n"

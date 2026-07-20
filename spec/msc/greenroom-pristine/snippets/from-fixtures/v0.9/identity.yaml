@@ -1,0 +1,87 @@
+# Clean-room snippets stripped from v0.9/identity.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: identity1064
+  udon: "|foo[myid]\n"
+- id: identity1065
+  udon: "|item[1]\n"
+- id: identity1066
+  udon: '|item["01"]
+
+    '
+- id: identity1067
+  udon: "|el[[12 'asdf']]\n"
+- id: identity1068
+  udon: "|item[abc-123]\n"
+- id: identity1069
+  udon: "|item[3.14]\n"
+- id: identity1070
+  udon: "|item['a b :c']\n"
+- id: identity1071
+  udon: "|item[true]\n"
+- id: identity1072
+  udon: "|el[<u64:0xf902>]\n"
+- id: identity1073
+  udon: "|el[[12 'asdf']].t?\n"
+- id: identity1074
+  udon: "|el :'$key' [12 'asdf']\n"
+- id: identity1075
+  udon: "|phase :'$key' 9 :'$key' scribal\n"
+- id: identity1076
+  udon: "|el[[1 [2 3]]]\n"
+- id: identity1077
+  udon: "|el[!{{computed}}]\n"
+- id: identity1078
+  udon: "|p see |{ref[[1 'a']] target}\n"
+- id: identity1079
+  udon: "|el :'$key' 3890\n"
+- id: identity1080
+  udon: "|el.featured\n"
+- id: identity1081
+  udon: "|el.a.b\n"
+- id: identity1082
+  udon: "|article[intro].featured.draft\n"
+- id: identity1083
+  udon: "|el.'ns.kind'\n"
+- id: identity1084
+  udon: "|field?\n"
+- id: identity1085
+  udon: "|field[name]!\n"
+- id: identity1086
+  udon: "|field[name]*\n"
+- id: identity1087
+  udon: "|field[name]+\n"
+- id: identity1088
+  udon: "|name?[key]\n"
+- id: identity1089
+  udon: "|name?[key].trait\n"
+- id: identity1090
+  udon: "|name[key].trait ?\n"
+- id: identity1091
+  udon: "|el.bar?\n"
+- id: identity1092
+  udon: "|el.bar ?\n"
+- id: identity1093
+  udon: "|el?.bar\n"
+- id: identity1094
+  udon: "|[k]\n"
+- id: identity1095
+  udon: "|.some-trait :adapter pg\n"
+- id: identity1096
+  udon: "|?\n"
+- id: identity1097
+  udon: "|my-element\n"
+- id: identity1098
+  udon: "|h1_x\n"
+- id: identity1099
+  udon: "|café\n"
+- id: identity1100
+  udon: "|_private\n"
+- id: identity1101
+  udon: "|'weird name' :k v\n"
+- id: identity1102
+  udon: "|el$rest\n"
+- id: identity1103
+  udon: "|field[name]?\n"
+- id: identity1104
+  udon: "|p .gitignore is a file\n"

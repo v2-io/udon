@@ -1,0 +1,54 @@
+# Clean-room snippets stripped from v0.8/dynamics_syntax.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: dynamics-syntax517
+  udon: |
+    !if logged_in
+      |greeting Welcome back!
+- id: dynamics-syntax518
+  udon: "!frobnicate all the things\n"
+- id: dynamics-syntax519
+  udon: |
+    !if age >= 18 and verified
+      |p adult
+- id: dynamics-syntax520
+  udon: |
+    !if x
+      |p yes
+    !else
+      |p no
+- id: dynamics-syntax521
+  udon: "|p Hello, !{{user.name}}!\n"
+- id: dynamics-syntax522
+  udon: "|p !{{name | capitalize}}\n"
+- id: dynamics-syntax523
+  udon: "|p x !{{}} y\n"
+- id: dynamics-syntax524
+  udon: |
+    |el
+      !{{content}}
+- id: dynamics-syntax525
+  udon: |
+    !:elixir:
+      def hello do
+        IO.puts("world")
+      end
+- id: dynamics-syntax526
+  udon: |
+    !:elixir:
+      value |> transform()
+      ; not a comment
+      :not an attr
+- id: dynamics-syntax527
+  udon: |
+    |example
+      !:sql:
+        SELECT * FROM users
+- id: dynamics-syntax528
+  udon: '|p The response was !{:json: {"status": "ok"}} as expected.
+
+    '
+- id: dynamics-syntax529
+  udon: "|p match !{:regex: [a-z]{3,5}} here\n"
+- id: dynamics-syntax530
+  udon: "|p !{include |{em emphasized} content}\n"

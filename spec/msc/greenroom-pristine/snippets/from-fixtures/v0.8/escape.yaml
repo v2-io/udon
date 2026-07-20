@@ -1,0 +1,52 @@
+# Clean-room snippets stripped from v0.8/escape.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: escape536
+  udon: "\\|element\n"
+- id: escape537
+  udon: "\\:not-an-attr\n"
+- id: escape538
+  udon: "\\@name see this\n"
+- id: escape539
+  udon: "\\```not a fence\n"
+- id: escape540
+  udon: "\\; literal semicolon line\n"
+- id: escape541
+  udon: "\\![img](pic.jpg)\n"
+- id: escape542
+  udon: "\\\\path\\to\n"
+- id: escape543
+  udon: "\\\\hello\n"
+- id: escape544
+  udon: "'|element\n"
+- id: escape545
+  udon: "|element |another :val [234 19] \\ how wonderful ; it is\n"
+- id: escape546
+  udon: "|p see \\|{em x}\n"
+- id: escape547
+  udon: "|p price \\!{cost}\n"
+- id: escape548
+  udon: "|p show \\!{{expr}}\n"
+- id: escape549
+  udon: "|p wink \\;{x}\n"
+- id: escape550
+  udon: "|p Windows path C:\\Users\\me\n"
+- id: escape551
+  udon: "|p wrap this line \\\n"
+- id: escape552
+  udon: "|a hello \\world\n"
+- id: escape553
+  udon: |
+    |element
+      \  start some prose
+- id: escape554
+  udon: |
+    |element
+      \  start some prose
+        \some more prose
+- id: escape555
+  udon: |
+    |el
+       \     indented output,
+             deeper line needs no marker,
+          smaller indent still past base

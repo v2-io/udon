@@ -1,0 +1,13 @@
+# Clean-room snippets stripped from v0.9/error_cases.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: error-cases993
+  udon: "|el\n\t|child\n"
+- id: error-cases994
+  udon: '|el :val "unclosed'
+- id: error-cases995
+  udon: "|el :val 'unclosed"
+- id: error-cases996
+  udon: "|p total is !{{count"
+- id: error-cases997
+  udon: "|a\n  |b\n\t|c\n"

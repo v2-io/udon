@@ -1,0 +1,31 @@
+# Clean-room snippets stripped from v0.8/references.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: references656
+  udon: |
+    |page
+      @[header]
+- id: references657
+  udon: |
+    |project
+      @license[mit]
+- id: references658
+  udon: |
+    |doc
+      @footer
+- id: references659
+  udon: "|project :license @[mit]\n"
+- id: references660
+  udon: |
+    |license[mit]
+      MIT License
+    |project
+      :license @[mit]
+- id: references661
+  udon: |
+    |p
+      @[mit].trait
+- id: references662
+  udon: |
+    |db
+      :[base-db]

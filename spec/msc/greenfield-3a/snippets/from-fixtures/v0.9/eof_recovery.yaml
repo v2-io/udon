@@ -1,0 +1,108 @@
+# Clean-room snippets stripped from v0.9/eof_recovery.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: eof-recovery955
+  udon: "|div"
+- id: eof-recovery956
+  udon: |-
+    |a
+      |b
+        |c
+- id: eof-recovery957
+  udon: |-
+    |el
+      :k v
+- id: eof-recovery958
+  udon: "; note"
+- id: eof-recovery959
+  udon: |-
+    |a
+      ; start of comment
+        still part of the comment
+- id: eof-recovery960
+  udon: |-
+    !if logged_in
+      |greeting Welcome
+- id: eof-recovery961
+  udon: |-
+    !:sh:
+      echo hi
+- id: eof-recovery962
+  udon: |-
+    |el
+      :note
+        line one
+        line two
+- id: eof-recovery963
+  udon: |-
+    ```
+    body
+    ```
+- id: eof-recovery964
+  udon: "|p hello worl"
+- id: eof-recovery965
+  udon: "|p some |{em abc"
+- id: eof-recovery966
+  udon: "|p |{a x |{b y"
+- id: eof-recovery967
+  udon: "|p a ;{note"
+- id: eof-recovery968
+  udon: "|p a ;{note {inner"
+- id: eof-recovery969
+  udon: "|p |{a :href"
+- id: eof-recovery970
+  udon: "|el :xs [1 2"
+- id: eof-recovery971
+  udon: "|el :xs [1 [2"
+- id: eof-recovery972
+  udon: '|el :xs ["a'
+- id: eof-recovery973
+  udon: "|el :xs [<5m"
+- id: eof-recovery974
+  udon: "|el :when <2026-07"
+- id: eof-recovery975
+  udon: |-
+    ```
+    body line
+    more body
+- id: eof-recovery976
+  udon: |-
+    |code
+      ```
+      x = 1
+- id: eof-recovery977
+  udon: "|el :key"
+- id: eof-recovery978
+  udon: |-
+    |el
+      :note
+- id: eof-recovery979
+  udon: "|el :k valu"
+- id: eof-recovery980
+  udon: "|el :n 42"
+- id: eof-recovery981
+  udon: "|el :n 3.14"
+- id: eof-recovery982
+  udon: "|el :flag true"
+- id: eof-recovery983
+  udon: "|el :ready?"
+- id: eof-recovery984
+  udon: "|el :note some trailing words"
+- id: eof-recovery985
+  udon: |-
+    |el
+      :k "unclosed
+- id: eof-recovery986
+  udon: "|el :cost !{{price"
+- id: eof-recovery987
+  udon: "|p !{if x"
+- id: eof-recovery988
+  udon: "|p !{:json: abc"
+- id: eof-recovery989
+  udon: "!if x"
+- id: eof-recovery990
+  udon: "|el?[k].t"
+- id: eof-recovery991
+  udon: "@[k]"
+- id: eof-recovery992
+  udon: "|p hi ; note"

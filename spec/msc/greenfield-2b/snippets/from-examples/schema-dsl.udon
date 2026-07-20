@@ -1,0 +1,256 @@
+; UDON Schema Definition Language
+; A schema for defining UDON document schemas — in UDON
+
+; ============================================================
+; Example 1: Simple user schema
+; ============================================================
+
+|schema[user]
+  :title User Account
+  :description A registered user in the system
+
+  |str[username]!
+    :min 3
+    :max 32
+    :pattern ^[a-z][a-z0-9_]*$
+    :description Lowercase alphanumeric, starts with letter
+
+  |str[email]!
+    :format email
+
+  |str[display_name]?
+    :max 100
+
+  |int[age]?
+    :min 0
+    :max 150
+
+  |bool[verified]
+    :default false
+
+  |str[role]!
+    :enum [admin moderator user guest]
+    :default user
+
+  |arr[tags]?
+    |str :max 20
+
+  |obj[profile]?
+    |str[bio]? :max 500
+    |str[avatar_url]? :format uri
+    |arr[links]?
+      |obj
+        |str[label]!
+        |str[url]! :format uri
+
+
+; ============================================================
+; Example 2: The ELI Component schema (from taxonomy)
+; ============================================================
+
+|schema[eli-component]
+  :title ELI Taxonomy Component
+
+  |str[name]!
+    :pattern ^[A-Z][A-Z_]*$
+    :description Component name in SCREAMING_CASE
+
+  |int[visibility]!
+    :enum [1 2 3]
+    :description 1=sealed, 2=restricted, 3=open
+
+  |int[authority]!
+    :enum [1 2 3]
+    :description 1=system, 2=sovereign, 3=collective
+
+  |int[distinctiveness]!
+    :enum [1 2 3]
+    :description 1=unique, 2=derived, 3=canonical
+
+  |str[description]!
+
+  |arr[subcomponents]?
+    |ref component
+
+
+; ============================================================
+; Example 3: API endpoint definition
+; ============================================================
+
+|schema[api-endpoint]
+  |str[method]!
+    :enum [GET POST PUT PATCH DELETE]
+
+  |str[path]!
+    :pattern ^/
+
+  |str[description]?
+
+  |obj[request]?
+    |str[content_type]
+      :default application/json
+    |any[body]?
+      :description Request body schema
+
+  |obj[response]!
+    |int[status]!
+      :min 100
+      :max 599
+    |str[content_type]
+      :default application/json
+    |any[body]?
+      :description Response body schema
+
+  |arr[errors]?
+    |obj
+      |int[status]!
+      |str[code]!
+      |str[message]!
+
+
+; ============================================================
+; Example 4: Configuration file schema
+; ============================================================
+
+|schema[database-config]
+
+  |str[adapter]!
+    :enum [postgres mysql sqlite]
+
+  |str[host]!
+    :default localhost
+
+  |int[port]!
+    :min 1
+    :max 65535
+
+  |str[database]!
+
+  |str[username]?
+  |str[password]?
+
+  |obj[pool]?
+    |int[size]
+      :default 5
+      :min 1
+      :max 100
+    |int[timeout]
+      :default 5000
+      :description Milliseconds
+    |int[overflow]?
+      :default 2
+
+  |bool[ssl]
+    :default false
+
+  |obj[ssl_options]?
+    :when ssl  ; Only valid when ssl=true
+    |str[ca_cert]?
+    |str[client_cert]?
+    |str[client_key]?
+
+
+; ============================================================
+; Schema composition examples
+; ============================================================
+
+; Union type: string or integer
+|schema[string-or-int]
+  |one_of
+    |str
+    |int
+
+; Must satisfy all (intersection)
+|schema[positive-even-integer]
+  |all_of
+    |int :min 1
+    |int :multiple_of 2
+
+; At least one match
+|schema[contact-info]
+  |any_of
+    |str[email] :format email
+    |str[phone] :pattern ^\+?[0-9\-\s]+$
+    |str[address]
+
+; Negation
+|schema[not-empty-string]
+  |str
+    |is_not :enum ["" " "]
+
+
+; ============================================================
+; Type reference and reuse
+; ============================================================
+
+|schema[organization]
+  |str[name]!
+  |arr[members]!
+    |ref user           ; References the user schema above
+  |ref[owner] user      ; Named reference
+
+
+; ============================================================
+; The meta-schema: schema for schemas
+; ============================================================
+
+|schema[udon-schema]
+  :title UDON Schema Definition
+  :description Schema for defining UDON schemas
+
+  |str[title]?
+  |str[description]?
+
+  |arr[properties]?
+    |obj
+      |str[name]!
+      |str[type]!
+        :enum [str int num bool arr obj any ref one_of any_of all_of is_not]
+      |bool[required]
+        :default false
+      |any[default]?
+      |str[description]?
+
+      ; Type-specific constraints
+      |int[min]?
+      |int[max]?
+      |int[min_length]?
+      |int[max_length]?
+      |str[pattern]?
+      |str[format]?
+        :enum [email uri date datetime time uuid]
+      |arr[enum]?
+      |int[multiple_of]?
+
+      ; For arrays
+      |ref[items] udon-schema
+
+      ; For objects
+      |arr[properties]?
+        |ref udon-schema
+
+
+; ============================================================
+; DSL Conventions
+; ============================================================
+
+; |type[name]!   = required field named "name" of type "type"
+; |type[name]?   = optional field
+; |type[name]    = optional (? is default, like schemacop)
+; |type          = anonymous/inline type (for array items)
+
+; Core types:
+;   str, int, num, bool, arr, obj, any, nil
+
+; Composition:
+;   one_of, any_of, all_of, is_not, ref
+
+; Common constraints:
+;   :min, :max           (numbers)
+;   :min_length, :max    (strings, using :max for both)
+;   :pattern             (regex)
+;   :format              (semantic: email, uri, date, etc.)
+;   :enum                (allowed values list)
+;   :default             (default value)
+;   :multiple_of         (divisibility)
+;   :when                (conditional presence)

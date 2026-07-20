@@ -1,0 +1,79 @@
+# Clean-room snippets stripped from exploratory/multi-line.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: multi-line002
+  udon: |-
+    |el :xs ["a
+    b" 2]
+- id: multi-line003
+  udon: |-
+    |el :xs [!{{a
+    b}} 2]
+- id: multi-line004
+  udon: |-
+    |el["a
+    b"]
+- id: multi-line005
+  udon: |-
+    |el :k "abc
+    def"
+- id: multi-line006
+  udon: |-
+    |el :k "abc
+      def"
+- id: multi-line007
+  udon: |-
+    |el :k "a
+
+    b"
+- id: multi-line008
+  udon: |-
+    |el :k "ab
+    cd" trailing
+- id: multi-line009
+  udon: |-
+    |el :xs [1
+      2]
+- id: multi-line010
+  udon: |-
+    |el :xs [1
+    2
+    3
+- id: multi-line011
+  udon: |-
+    |el[abc
+      def]
+- id: multi-line012
+  udon: |-
+    |p !{{a
+    b}}
+- id: multi-line013
+  udon: |-
+    |p !{{a
+      b}}
+- id: multi-line014
+  udon: |
+    |p !{{a
+    b
+- id: multi-line015
+  udon: |-
+    |p a ;{note
+    more}
+- id: multi-line016
+  udon: |-
+    |p ;{line1
+          deep indent}
+- id: multi-line017
+  udon: |-
+    |p !{if a
+    b}
+- id: multi-line018
+  udon: "|p !{if x\n"
+- id: multi-line019
+  udon: |-
+    |p !{if x
+    hello
+- id: multi-line020
+  udon: |-
+    |p !{:json: abc
+    def}

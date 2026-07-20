@@ -1,0 +1,29 @@
+# Clean-room snippets stripped from v0.8/arrays.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: arrays471
+  udon: "|server :ports [8080 8443 9000]\n"
+- id: arrays472
+  udon: "|el :mixed [1 two 3.0 true]\n"
+- id: arrays473
+  udon: '|el :quoted ["hello world" foo bar]
+
+    '
+- id: arrays474
+  udon: "|el :empty []\n"
+- id: arrays475
+  udon: |
+    |el
+      :tags [api public]
+- id: arrays476
+  udon: '|el :x ["x"y]
+
+    '
+- id: arrays477
+  udon: '|el :x ["x""y"]
+
+    '
+- id: arrays478
+  udon: "|p x |{a :v [1}2] tail} y\n"
+- id: arrays479
+  udon: "|el :x [1 2\n"

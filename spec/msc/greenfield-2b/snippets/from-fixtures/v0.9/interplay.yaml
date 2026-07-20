@@ -1,0 +1,95 @@
+# Clean-room snippets stripped from v0.9/interplay.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: interplay1112
+  udon: |
+    |el
+      ; commented out
+        ```
+        |x
+        ```
+      live prose
+- id: interplay1113
+  udon: |
+    |el ; note
+      :a 1
+- id: interplay1114
+  udon: |
+    |el
+      :a 1
+      ; between
+      :b 2
+- id: interplay1115
+  udon: "|el :r @[k] ; note\n"
+- id: interplay1116
+  udon: "|li end; not a comment\n"
+- id: interplay1117
+  udon: "|p a ;{c1};{c2} b\n"
+- id: interplay1118
+  udon: "|p a ;{} b\n"
+- id: interplay1119
+  udon: |
+    |el
+        deep prose
+      shallow rebases
+      ; comment at the new base
+      more prose
+- id: interplay1120
+  udon: "\\!if logged_in\n"
+- id: interplay1121
+  udon: "|p \\ tail |{em x} and ;{note} more ; still prose\n"
+- id: interplay1122
+  udon: "|p \\ see \\|{em b} raw\n"
+- id: interplay1123
+  udon: |
+    ```
+    body
+    ``` not the closer
+    ```
+- id: interplay1124
+  udon: "```\na\n   \nb\n```\n"
+- id: interplay1125
+  udon: |
+    |el :script ```
+    line one
+    ```
+- id: interplay1126
+  udon: |
+    |x
+      !:sh:
+        echo hi
+      back to prose
+- id: interplay1127
+  udon: |
+    |el :script !:sh:
+      echo hi
+- id: interplay1128
+  udon: '|p !{{ {"a":1}}} tail
+
+    '
+- id: interplay1129
+  udon: '|p !{{ {"a":1} }} ok
+
+    '
+- id: interplay1130
+  udon: "|el :cost !{{price * 2}}\n"
+- id: interplay1131
+  udon: |
+    |p
+      @.realized
+- id: interplay1132
+  udon: |
+    |p
+      @license[mit].realized
+- id: interplay1133
+  udon: "|el :a 1 @[x]\n"
+- id: interplay1134
+  udon: |
+    |el
+      :ref @[asdf].hey
+      @another[xyz]
+      That there is a reference child.
+- id: interplay1135
+  udon: '|p x |{em keep | and : and @ and "q" here} y
+
+    '

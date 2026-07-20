@@ -1,0 +1,7 @@
+# Clean-room snippets stripped from _wip/delimited-unclosed.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: delimited-unclosed001
+  udon: |-
+    |el
+      :note text ;{c

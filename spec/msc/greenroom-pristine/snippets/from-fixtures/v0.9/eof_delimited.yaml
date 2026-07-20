@@ -1,0 +1,84 @@
+# Clean-room snippets stripped from v0.9/eof_delimited.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: eof-delimited895
+  udon: '|el :k "'
+- id: eof-delimited896
+  udon: "|el :k '"
+- id: eof-delimited897
+  udon: '|el :k "abc'
+- id: eof-delimited898
+  udon: |-
+    |el :k "abc
+    def
+- id: eof-delimited899
+  udon: "|el :xs ["
+- id: eof-delimited900
+  udon: |-
+    |el :x [1
+      2]
+- id: eof-delimited901
+  udon: "|el :xs [1"
+- id: eof-delimited902
+  udon: "|p |{"
+- id: eof-delimited903
+  udon: "|p |{a"
+- id: eof-delimited904
+  udon: "|p |{a :href"
+- id: eof-delimited905
+  udon: "|p |{a :ready?"
+- id: eof-delimited906
+  udon: "|p |{a :href /home"
+- id: eof-delimited907
+  udon: "|p |{a x"
+- id: eof-delimited908
+  udon: "|p a ;{"
+- id: eof-delimited909
+  udon: "|p |{em x ;{note"
+- id: eof-delimited910
+  udon: "|p !{{"
+- id: eof-delimited911
+  udon: "|el :xs [!{{x"
+- id: eof-delimited912
+  udon: "|el :when <"
+- id: eof-delimited913
+  udon: "|el :xs [<"
+- id: eof-delimited914
+  udon: |-
+    |el :k <a
+    b
+    c
+- id: eof-delimited915
+  udon: "```"
+- id: eof-delimited916
+  udon: "```rust"
+- id: eof-delimited917
+  udon: |-
+    |a |b :k v ```
+    body
+- id: eof-delimited918
+  udon: '|el :xs ["'
+- id: eof-delimited919
+  udon: "@el[k"
+- id: eof-delimited920
+  udon: "|p !{{a}"
+- id: eof-delimited921
+  udon: "|el["
+- id: eof-delimited922
+  udon: "|el[k"
+- id: eof-delimited923
+  udon: |-
+    |el[k
+    more
+- id: eof-delimited924
+  udon: "|[k"
+- id: eof-delimited925
+  udon: '|el["abc'
+- id: eof-delimited926
+  udon: "|el[[1 2"
+- id: eof-delimited927
+  udon: "|el[<u64"
+- id: eof-delimited928
+  udon: "|p |{a[k"
+- id: eof-delimited929
+  udon: "|p |{ref[k"

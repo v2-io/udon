@@ -1,0 +1,80 @@
+# Clean-room snippets stripped from v0.9/escape.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: escape998
+  udon: "\\|element\n"
+- id: escape999
+  udon: "\\:not-an-attr\n"
+- id: escape1000
+  udon: "\\@name see this\n"
+- id: escape1001
+  udon: "\\```not a fence\n"
+- id: escape1002
+  udon: "\\; literal semicolon line\n"
+- id: escape1003
+  udon: "\\![img](pic.jpg)\n"
+- id: escape1004
+  udon: "\\\\path\\to\n"
+- id: escape1005
+  udon: "\\\\hello\n"
+- id: escape1006
+  udon: "'|element\n"
+- id: escape1007
+  udon: "|element |another :val [234 19] \\ how wonderful ; it is\n"
+- id: escape1008
+  udon: "|p see \\|{em x}\n"
+- id: escape1009
+  udon: "|p price \\!{cost}\n"
+- id: escape1010
+  udon: "|p show \\!{{expr}}\n"
+- id: escape1011
+  udon: "|p wink \\;{x}\n"
+- id: escape1012
+  udon: "|p Windows path C:\\Users\\me\n"
+- id: escape1013
+  udon: "|p wrap this line \\\n"
+- id: escape1014
+  udon: "|a hello \\world\n"
+- id: escape1015
+  udon: |
+    |element
+      \  start some prose
+- id: escape1016
+  udon: |
+    |element
+      \  start some prose
+        \some more prose
+- id: escape1017
+  udon: |
+    |el
+       \     indented output,
+             deeper line needs no marker,
+          smaller indent still past base
+- id: escape1018
+  udon: |-
+    |p
+      text \
+- id: escape1019
+  udon: |-
+    |p
+      text \|
+- id: escape1020
+  udon: |-
+    |p
+      text \!
+- id: escape1021
+  udon: |-
+    |p
+      text \;
+- id: escape1022
+  udon: "|p text \\|"
+- id: escape1023
+  udon: "|el :note some words \\"
+- id: escape1024
+  udon: "|el :note some words \\|"
+- id: escape1025
+  udon: "|el :note some words \\!"
+- id: escape1026
+  udon: "|el :note some words \\;"
+- id: escape1027
+  udon: "|el :k \\seven \\|"

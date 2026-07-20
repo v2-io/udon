@@ -1,0 +1,61 @@
+# Clean-room snippets stripped from v0.8/identity.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: identity581
+  udon: "|foo[myid]\n"
+- id: identity582
+  udon: "|item[1]\n"
+- id: identity583
+  udon: '|item["01"]
+
+    '
+- id: identity584
+  udon: "|item[abc-123]\n"
+- id: identity585
+  udon: "|el :'$key' 3890\n"
+- id: identity586
+  udon: "|el.featured\n"
+- id: identity587
+  udon: "|el.a.b\n"
+- id: identity588
+  udon: "|article[intro].featured.draft\n"
+- id: identity589
+  udon: "|el.'ns.kind'\n"
+- id: identity590
+  udon: "|field?\n"
+- id: identity591
+  udon: "|field[name]!\n"
+- id: identity592
+  udon: "|field[name]*\n"
+- id: identity593
+  udon: "|field[name]+\n"
+- id: identity594
+  udon: "|name?[key]\n"
+- id: identity595
+  udon: "|name?[key].trait\n"
+- id: identity596
+  udon: "|name[key].trait ?\n"
+- id: identity597
+  udon: "|el.bar?\n"
+- id: identity598
+  udon: "|el.bar ?\n"
+- id: identity599
+  udon: "|el?.bar\n"
+- id: identity600
+  udon: "|[k]\n"
+- id: identity601
+  udon: "|.some-trait :adapter pg\n"
+- id: identity602
+  udon: "|?\n"
+- id: identity603
+  udon: "|my-element\n"
+- id: identity604
+  udon: "|h1_x\n"
+- id: identity605
+  udon: "|café\n"
+- id: identity606
+  udon: "|_private\n"
+- id: identity607
+  udon: "|'weird name' :k v\n"
+- id: identity608
+  udon: "|el$rest\n"

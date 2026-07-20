@@ -1,0 +1,75 @@
+# Clean-room snippets stripped from v0.8/values.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: values672
+  udon: "|el :n 42\n"
+- id: values673
+  udon: "|el :n 1_000_000\n"
+- id: values674
+  udon: "|el :n 0xFF\n"
+- id: values675
+  udon: "|el :n 0xFF_FF\n"
+- id: values676
+  udon: "|el :n 0o755\n"
+- id: values677
+  udon: "|el :n 0b1010\n"
+- id: values678
+  udon: "|el :n 0d42\n"
+- id: values679
+  udon: "|el :n 0D42\n"
+- id: values680
+  udon: "|el :n 0755\n"
+- id: values681
+  udon: "|el :n -17\n"
+- id: values682
+  udon: "|el :n +5\n"
+- id: values683
+  udon: "|el :x 3.14\n"
+- id: values684
+  udon: "|el :x 1e10\n"
+- id: values685
+  udon: "|el :x 1.5e-3\n"
+- id: values686
+  udon: "|el :x 1_000.5\n"
+- id: values687
+  udon: "|el :x -2.5\n"
+- id: values688
+  udon: "|el :enabled true\n"
+- id: values689
+  udon: "|el :debug false\n"
+- id: values690
+  udon: "|el :x TRUE\n"
+- id: values691
+  udon: "|el :x True\n"
+- id: values692
+  udon: "|el :v null\n"
+- id: values693
+  udon: "|el :v nil\n"
+- id: values694
+  udon: "|el :v ~\n"
+- id: values695
+  udon: '|el :name "quoted string"
+
+    '
+- id: values696
+  udon: "|el :name 'single quotes'\n"
+- id: values697
+  udon: '|el :n "42"
+
+    '
+- id: values698
+  udon: '|el :truthy "true"
+
+    '
+- id: values699
+  udon: |
+    |el
+      :desc unquoted text here
+- id: values700
+  udon: "|el :date 2026-07-11\n"
+- id: values701
+  udon: "|el :at 14:30:00\n"
+- id: values702
+  udon: "|el :ttl 5m\n"
+- id: values703
+  udon: "|el :len P1Y2M\n"

@@ -1,0 +1,27 @@
+# Clean-room snippets stripped from v0.9/typing_envelope.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: typing-envelope1243
+  udon: "|el :when <2026-07-11>\n"
+- id: typing-envelope1244
+  udon: "|el :dur <5m>\n"
+- id: typing-envelope1245
+  udon: "|el :size <u64:0xf902>\n"
+- id: typing-envelope1246
+  udon: "|el :span <temporal:interval:2026-01/2026-06>\n"
+- id: typing-envelope1247
+  udon: "|el :q <r: <i: 3 -7> 0d83.23>\n"
+- id: typing-envelope1248
+  udon: '|el :x "<not a type>"
+
+    '
+- id: typing-envelope1249
+  udon: "|p a < b and <tag> stay prose\n"
+- id: typing-envelope1250
+  udon: "|el :when <2026-07-11> :n 1\n"
+- id: typing-envelope1251
+  udon: "|el :xs [<5m> 3]\n"
+- id: typing-envelope1252
+  udon: |-
+    |el :k <abc
+      def>

@@ -1,0 +1,64 @@
+# Clean-room snippets stripped from v0.9/prose.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: prose1224
+  udon: "|p Hello world\n"
+- id: prose1225
+  udon: 'Just some prose
+
+    '
+- id: prose1226
+  udon: |
+    |article
+      This has **bold** and `code` and # is not special.
+- id: prose1227
+  udon: |
+    |article
+      - item one
+      - item two
+- id: prose1228
+  udon: |
+    |section **The great indent**
+      This content is inner,
+      and continues
+- id: prose1229
+  udon: |
+    |later-part This stuff is inner
+                and aligned with This
+- id: prose1230
+  udon: |
+    |el
+      base line
+          four extra spaces
+- id: prose1231
+  udon: |
+    |the-parent |on-line-child
+          first-line-of-prose
+       but what about this
+       no new warning
+           four extra spaces
+      new warning here
+- id: prose1232
+  udon: |
+    |element-bigger first line
+      second line
+    sibling prose
+- id: prose1233
+  udon: |
+    |article
+      Before the quote.
+      |blockquote
+        Nested content.
+      Back to prose.
+- id: prose1234
+  udon: |
+    |article
+      first paragraph
+
+      second paragraph
+- id: prose1235
+  udon: |
+    one
+
+
+    two

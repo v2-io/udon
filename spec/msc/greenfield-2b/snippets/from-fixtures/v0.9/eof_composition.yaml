@@ -1,0 +1,105 @@
+# Clean-room snippets stripped from v0.9/eof_composition.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: eof-composition853
+  udon: '|el :m [[["x'
+- id: eof-composition854
+  udon: "|p |{a |{b |{c"
+- id: eof-composition855
+  udon: '|el :m [[1 "a'
+- id: eof-composition856
+  udon: "|p |{a x !{{expr"
+- id: eof-composition857
+  udon: "|p |{a x ;{note"
+- id: eof-composition858
+  udon: "|p |{a :xs [1 2"
+- id: eof-composition859
+  udon: '|p |{a :k "v'
+- id: eof-composition860
+  udon: "|p |{a :k !{{x"
+- id: eof-composition861
+  udon: '|el :k? "v'
+- id: eof-composition862
+  udon: "|el :k? [1 2"
+- id: eof-composition863
+  udon: "|el :k? |{a x"
+- id: eof-composition864
+  udon: "|el :ok? :xs [1"
+- id: eof-composition865
+  udon: |-
+    |el :body ```
+    code
+- id: eof-composition866
+  udon: |-
+    |el :script !:sh:
+      make
+- id: eof-composition867
+  udon: |-
+    |el
+      :a 1
+      :a [2
+- id: eof-composition868
+  udon: "|p |{a"
+- id: eof-composition869
+  udon: "|el :m ["
+- id: eof-composition870
+  udon: "|el :m []"
+- id: eof-composition871
+  udon: "|p a ;{"
+- id: eof-composition872
+  udon: "|p a ;{}"
+- id: eof-composition873
+  udon: "|el :i !{{"
+- id: eof-composition874
+  udon: "|el :i !{{}}"
+- id: eof-composition875
+  udon: "|el :e <"
+- id: eof-composition876
+  udon: "```"
+- id: eof-composition877
+  udon: |-
+    ```
+    ```
+- id: eof-composition878
+  udon: "|el :k \\x"
+- id: eof-composition879
+  udon: "|p abc\\"
+- id: eof-composition880
+  udon: "|el :r <r: <i: 3"
+- id: eof-composition881
+  udon: "|p x !{{expr"
+- id: eof-composition882
+  udon: ";{foo"
+- id: eof-composition883
+  udon: "|p hi\n\n"
+- id: eof-composition884
+  udon: "|p hi\n   "
+- id: eof-composition885
+  udon: "|p hi   "
+- id: eof-composition886
+  udon: |-
+    |a
+      |b
+        |c :xs [1
+- id: eof-composition887
+  udon: |-
+    !if x
+      |p |{a y
+- id: eof-composition888
+  udon: |-
+    |p |{a line1
+       line2
+- id: eof-composition889
+  udon: |
+    |el :xs [1 2
+    more prose
+- id: eof-composition890
+  udon: "|el :m [!{{x"
+- id: eof-composition891
+  udon: "|el :k \\"
+- id: eof-composition892
+  udon: "|el :e <>"
+- id: eof-composition893
+  udon: "|el[k"
+- id: eof-composition894
+  udon: "|el[[1 2"

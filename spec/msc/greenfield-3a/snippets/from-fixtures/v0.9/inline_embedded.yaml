@@ -1,0 +1,20 @@
+# Clean-room snippets stripped from v0.9/inline_embedded.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: inline-embedded1105
+  udon: "|p This has |{em emphasis} here\n"
+- id: inline-embedded1106
+  udon: "|p Click |{a :href /home here} to continue.\n"
+- id: inline-embedded1107
+  udon: "|p see |{ref[r1].external target}\n"
+- id: inline-embedded1108
+  udon: "|nav |{a :href / Home} |{a :href /about About}\n"
+- id: inline-embedded1109
+  udon: "|p See |{a :href /doc the |{em official} documentation} for details.\n"
+- id: inline-embedded1110
+  udon: |
+    |p This has |{a :href /docs
+       a link that spans
+       multiple lines} and continues.
+- id: inline-embedded1111
+  udon: "|p tag |{.warn heads up} end\n"

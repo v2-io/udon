@@ -1,0 +1,178 @@
+# Clean-room snippets stripped from v0.9/attr_combinations.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: attr-combinations726
+  udon: "|p x |{cb :on?} y\n"
+- id: attr-combinations727
+  udon: "|p x |{cb :on? false} y\n"
+- id: attr-combinations728
+  udon: "|p x |{cb :on? null note} y\n"
+- id: attr-combinations729
+  udon: "|p x |{cb :on? maybe} y\n"
+- id: attr-combinations730
+  udon: |
+    |el
+      :a? true
+      :b? null
+- id: attr-combinations731
+  udon: "|el :a? :a? false\n"
+- id: attr-combinations732
+  udon: |
+    |el
+      :a? hello there
+- id: attr-combinations733
+  udon: "|el :f? <5m>\n"
+- id: attr-combinations734
+  udon: "|el :a val |node x\n"
+- id: attr-combinations735
+  udon: "|el :a val @[r]\n"
+- id: attr-combinations736
+  udon: |
+    |el :k v ```txt
+    body
+    ```
+- id: attr-combinations737
+  udon: "|el :k v !if cond\n"
+- id: attr-combinations738
+  udon: "|el :a val :3 more\n"
+- id: attr-combinations739
+  udon: "|el :a val |~ x\n"
+- id: attr-combinations740
+  udon: "|el :k v != 3\n"
+- id: attr-combinations741
+  udon: "|el :ref @el[k].trait\n"
+- id: attr-combinations742
+  udon: "|el :a @[r] tail\n"
+- id: attr-combinations743
+  udon: "|el :w |node?[k].t\n"
+- id: attr-combinations744
+  udon: "|el :w |node[k].t?\n"
+- id: attr-combinations745
+  udon: |
+    |el :script !:sh:
+      echo hi
+- id: attr-combinations746
+  udon: |
+    |el
+      :script
+        !:sh:
+          echo hi
+- id: attr-combinations747
+  udon: |
+    |el
+      :script
+        !:sh: echo hi
+- id: attr-combinations748
+  udon: "|el :script !:sh: echo |a :b ; c\n"
+- id: attr-combinations749
+  udon: |
+    |el
+      :code
+        ```
+        x = 1
+        ```
+- id: attr-combinations750
+  udon: |
+    |el :code ```py
+    x = 1
+    ```
+- id: attr-combinations751
+  udon: "|el :a @[r] :a <5m> :a [1]\n"
+- id: attr-combinations752
+  udon: |
+    |el
+      :body
+        seg one
+
+        ; a note
+        seg two
+- id: attr-combinations753
+  udon: |
+    |el
+      :n 42 and more
+- id: attr-combinations754
+  udon: |
+    |el
+      :xs [1 2] extra
+- id: attr-combinations755
+  udon: |
+    |el
+      :t <v> tail
+- id: attr-combinations756
+  udon: |
+    |el
+      :h
+        |hdr
+        trailing text
+- id: attr-combinations757
+  udon: |
+    |el
+      :h
+        |a
+        |b
+- id: attr-combinations758
+  udon: |
+    |el
+      :n 5
+        deeper
+- id: attr-combinations759
+  udon: |
+    |el
+      :msg \a |{em b} ; c \|{d}
+- id: attr-combinations760
+  udon: "|el :k \\ tail\n"
+- id: attr-combinations761
+  udon: |
+    |el
+      :k \first ; line
+        deeper line
+- id: attr-combinations762
+  udon: |
+    |el
+      :a 1 :b? :c "x" :d @[r]
+- id: attr-combinations763
+  udon: "|el :a/b!c*d+e 1\n"
+- id: attr-combinations764
+  udon: "|el :req! yes\n"
+- id: attr-combinations765
+  udon: "|el!\n"
+- id: attr-combinations766
+  udon: "|el :'$!' true\n"
+- id: attr-combinations767
+  udon: "|el :'$!'\n"
+- id: attr-combinations768
+  udon: "|el.a :'$traits' b\n"
+- id: attr-combinations769
+  udon: '|el :xs [<5m> "a b" [1 2]]
+
+    '
+- id: attr-combinations770
+  udon: '|el :q ["x"y] :r ["a""b"]
+
+    '
+- id: attr-combinations771
+  udon: |
+    |el :a? oops
+      :b 2
+- id: attr-combinations772
+  udon: |
+    |el :a 1
+      |kid
+      :b 2
+- id: attr-combinations773
+  udon: |
+    |el
+      some prose
+      :b 2
+- id: attr-combinations774
+  udon: |
+    |el
+      :a 1
+        :b 2
+- id: attr-combinations775
+  udon: |
+    |el
+      :f?
+        :x 1
+- id: attr-combinations776
+  udon: "|el :k ; note\n"

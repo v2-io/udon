@@ -1,0 +1,84 @@
+# Clean-room snippets stripped from v0.9/dynamics_syntax.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: dynamics-syntax830
+  udon: |
+    !if logged_in
+      |greeting Welcome back!
+- id: dynamics-syntax831
+  udon: "!frobnicate all the things\n"
+- id: dynamics-syntax832
+  udon: |
+    !if age >= 18 and verified
+      |p adult
+- id: dynamics-syntax833
+  udon: |
+    !if x
+      |p yes
+    !else
+      |p no
+- id: dynamics-syntax834
+  udon: "|p Hello, !{{user.name}}!\n"
+- id: dynamics-syntax835
+  udon: "|p !{{name | capitalize}}\n"
+- id: dynamics-syntax836
+  udon: "|p x !{{}} y\n"
+- id: dynamics-syntax837
+  udon: |
+    |el
+      !{{content}}
+- id: dynamics-syntax838
+  udon: "!:sh: echo hi\n"
+- id: dynamics-syntax839
+  udon: |
+    !:sh: echo one
+      echo two
+        indented
+- id: dynamics-syntax840
+  udon: "!:sh: echo hi"
+- id: dynamics-syntax841
+  udon: "|el :script !:sh: make build\n"
+- id: dynamics-syntax842
+  udon: |
+    |example
+      !:sql: SELECT 1
+- id: dynamics-syntax843
+  udon: |
+    |x
+      !:sh: echo hi
+      back to prose
+- id: dynamics-syntax844
+  udon: "!:sh: echo hi ; not a comment\n"
+- id: dynamics-syntax845
+  udon: |
+    |el :script !:sh: make build
+      make test
+- id: dynamics-syntax846
+  udon: |
+    |el :go? !:sh:
+      echo hi
+- id: dynamics-syntax847
+  udon: |
+    !:elixir:
+      def hello do
+        IO.puts("world")
+      end
+- id: dynamics-syntax848
+  udon: |
+    !:elixir:
+      value |> transform()
+      ; not a comment
+      :not an attr
+- id: dynamics-syntax849
+  udon: |
+    |example
+      !:sql:
+        SELECT * FROM users
+- id: dynamics-syntax850
+  udon: '|p The response was !{:json: {"status": "ok"}} as expected.
+
+    '
+- id: dynamics-syntax851
+  udon: "|p match !{:regex: [a-z]{3,5}} here\n"
+- id: dynamics-syntax852
+  udon: "|p !{include |{em emphasized} content}\n"

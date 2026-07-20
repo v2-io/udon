@@ -1,0 +1,58 @@
+# Clean-room snippets stripped from v0.9/attributes.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: attributes791
+  udon: |
+    |el
+      :author Alice Smith
+- id: attributes792
+  udon: "|el :author Alice Smith\n"
+- id: attributes793
+  udon: '|el :author "Alice Smith"
+
+    '
+- id: attributes794
+  udon: "|el :key1 value1 :key2 value2\n"
+- id: attributes795
+  udon: |
+    |el
+      :url https://example.com/path?q=1;s=2
+- id: attributes796
+  udon: |
+    |el
+      :note this has a semicolon too ; but THIS is a comment
+- id: attributes797
+  udon: |
+    |el
+      :bttr 2 :cttr 3
+- id: attributes798
+  udon: "|button :disabled :type submit\n"
+- id: attributes799
+  udon: |
+    |config
+      :debug
+- id: attributes800
+  udon: "|p x |{input :required} y\n"
+- id: attributes801
+  udon: "|el :x 1 :x 2\n"
+- id: attributes802
+  udon: "|el :x [1 2] :x [3]\n"
+- id: attributes803
+  udon: |
+    |el
+      :tag a
+      :tag b
+- id: attributes804
+  udon: "|p go |{a :href /home} now\n"
+- id: attributes805
+  udon: "|p x |{a :href /home :title Home here} y\n"
+- id: attributes806
+  udon: '|p x |{a :href /home :title "Home" here} y
+
+    '
+- id: attributes807
+  udon: "|p x |{a :href /home :title Home \\ Welcome home!} y\n"
+- id: attributes808
+  udon: |
+    |element :attr1 value1
+      child prose here

@@ -1,0 +1,55 @@
+# Clean-room snippets stripped from v0.8/attributes.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: attributes480
+  udon: |
+    |el
+      :author Alice Smith
+- id: attributes481
+  udon: "|el :author Alice Smith\n"
+- id: attributes482
+  udon: '|el :author "Alice Smith"
+
+    '
+- id: attributes483
+  udon: "|el :key1 value1 :key2 value2\n"
+- id: attributes484
+  udon: |
+    |el
+      :url https://example.com/path?q=1;s=2
+- id: attributes485
+  udon: |
+    |el
+      :note this has a semicolon too ; but THIS is a comment
+- id: attributes486
+  udon: |
+    |el
+      :bttr 2 :cttr 3
+- id: attributes487
+  udon: "|button :disabled :type submit\n"
+- id: attributes488
+  udon: |
+    |config
+      :debug
+- id: attributes489
+  udon: "|el :x 1 :x 2\n"
+- id: attributes490
+  udon: "|el :x [1 2] :x [3]\n"
+- id: attributes491
+  udon: |
+    |el
+      :tag a
+      :tag b
+- id: attributes492
+  udon: "|p go |{a :href /home} now\n"
+- id: attributes493
+  udon: "|p x |{input :required} y\n"
+- id: attributes494
+  udon: |
+    |api
+      :headers
+        |header :name a :value b
+- id: attributes495
+  udon: |
+    |element :attr1 value1
+      child prose here
