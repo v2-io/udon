@@ -1,0 +1,121 @@
+; =============================================================================
+; Recognition-trace corpus — value-acquisition / ownership / phase / doors
+; Each case is separated by a `; --- id: …` banner. Not one document: a pack.
+; Expectations: expectations.md (same directory). Event model: 00-event-model.md
+; =============================================================================
+
+; --- id: T01-open-vs-finished-tail ---
+; Ownership row 1 vs row 2 on an element-rooted line
+|el :first value :another with some text
+|el :first value :another "with" some text
+
+; --- id: T02-inline-brace-principle ---
+; Brace form never finishes a bare token; trailing :a is text
+|el :n value |{em x} :a 1
+
+; --- id: T03-flow-start-brace-and-empty ---
+|el :n |{em x}
+|el :n ;{}
+
+; --- id: T04-stack-vs-list ---
+|el :x 1 :x 2
+|el :x [1 2]
+
+; --- id: T05-warn-ingest-block-line ---
+|el
+  :attr "first" and here's another one
+
+; --- id: T06-warn-ingest-deeper ---
+|el
+  :when <7:02pm>
+    extra deeper text
+
+; --- id: T07-value-backslash ---
+|el :count \7 apples ; not a comment
+
+; --- id: T08-flow-then-framed-comment ---
+|el
+  :title The full title goes here ; TODO
+
+; --- id: T09-one-way-door ---
+|api :headers |header :name Content-Type :value application/json
+
+; --- id: T10-one-way-door-timeout-trap ---
+|api :headers |header :k v :timeout 30
+
+; --- id: T11-node-trailing-prose ---
+|el :a |the-node :k "v" more
+
+; --- id: T12-node-vs-flow-pair ---
+|el :x |em hi
+|el :x |{em hi}
+
+; --- id: T13-attr-under-attr ---
+|el
+  :theta
+    :first 1
+
+; --- id: T14-flag-reown ---
+|el :a?
+|el :a? false
+|el :a? |beta
+|el :a? well it sure is true
+
+; --- id: T15-keyword-boundary ---
+|el :alpha true
+|el :alpha true story
+|el :alpha true \ story
+
+; --- id: T16-failed-number-fallthrough ---
+|el :x 12ab :y 3
+|el :x 12ab more
+
+; --- id: T17-phase-late-colon ---
+|el :a 1 tail
+  :b 2
+
+; --- id: T18-missing-plain-value ---
+|button :disabled :type submit
+
+; --- id: T19-sameline-nest-columns ---
+|one |two |three
+  |alpha
+
+; --- id: T20-dual-attr-block-line ---
+|el
+  :a 1 :b 2
+
+; --- id: T21-partial-key ---
+|user[trunc
+
+; --- id: T22-multiline-string-D1 ---
+; Greenfield D1: delimited MAY span lines
+|el :msg "line one
+line two"
+
+; --- id: T23-multiline-list-D1 ---
+|el :ports [
+  8080
+  8443
+]
+
+; --- id: T24-root-attr-D3 ---
+:orphan 1
+
+; --- id: T25-empty-flow-semicolon-in-prose ---
+|p a ;{c1};{c2} b
+|p end; not a comment
+
+; --- id: T26-flag-suffix-vs-trait ---
+|el.bar?
+|el.bar ?
+|el?.bar
+
+; --- id: T27-deferred-node ---
+|el
+  :beta
+    |veni-vidi-vici :working 1234
+
+; --- id: T28-interplay-comment-then-attrs ---
+|el ; note
+  :a 1

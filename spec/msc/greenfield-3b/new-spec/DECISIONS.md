@@ -168,6 +168,22 @@ Omitted on purpose; post-spec grammar/parser rewrite will own that layer.
 
 ---
 
+## D16 — Grammar companion file  **[ORG]** (peer revision)
+
+**Source:** greenfield-3a’s three-pillar split; Gemini feedback that CORE’s
+mechanical rules are thorough but heavy, and that `pop while` must be easy to
+find.
+
+**Decision:** Add non-normative [GRAMMAR.md](GRAMMAR.md) as a scannable
+implementer extract. CORE remains authoritative (including an explicit
+`pop while new_column <= stack_top.base_column` spelling in §3.2). On conflict,
+CORE wins.
+
+**Impact:** None on document bytes; improves dual-track reading (parser vs
+Host/ADM).
+
+---
+
 ## Not changed (user-facing behavior held)
 
 - Marker set and Guards (including `|` Markdown table safety)

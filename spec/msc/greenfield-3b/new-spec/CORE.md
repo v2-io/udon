@@ -98,13 +98,24 @@ possible. Chunk boundaries are not end of input.
 ### 3.2 Nesting Rule
 
 Open structural items (Elements, block Directives, block Comments as geometric
-participants, block Verbatim) form a stack, each with a **Base Column**.
+participants, block Verbatim) form a stack, each with a **Base Column** (the
+column of the item’s introducing marker, e.g. the `|` of an Element).
 
 When a new structural line begins at column `c`:
 
 1. While the stack is non-empty and `c ≤ top.base_column`, close the top item.
 2. Open the new item as a child of the new top (or as a Document top-level item
    if the stack is empty).
+
+In implementer form (equivalent):
+
+```text
+pop while new_column <= stack_top.base_column
+then push the new item under the resulting top
+```
+
+A non-normative scannable restatement of this rule and related mechanics lives
+in [GRAMMAR.md](GRAMMAR.md).
 
 Consequences:
 
@@ -839,6 +850,6 @@ second silent recognition mode.
 
 ## Appendix B — Implementer note: Nesting Rule (non-normative)
 
-An implementation may maintain an explicit stack and “pop while
-`new_column ≤ top.base_column`.” That phrasing is an implementation technique
-for §3.2, not a second normative API.
+The `pop while new_column <= stack_top.base_column` formula in §3.2 is the
+canonical mechanical spelling of the Nesting Rule. See also [GRAMMAR.md](GRAMMAR.md)
+for a full implementer-oriented extract (always subordinate to this document).

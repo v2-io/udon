@@ -5,6 +5,13 @@ Every formal noun used in this suite is defined here. Synonyms from older
 material that are **retired** are listed at the end so they do not re-enter
 the contract by accident.
 
+**Policy:** mechanical / recognizer terms (Structure Position, Line Scan,
+Bare Token Boundary, Nesting Rule, …) are defined here so CORE can use them
+precisely, but they **SHOULD NOT** be the primary vocabulary of pedagogy or
+Host-facing API docs. Prefer Element, Attribute, Content, Value, Document.
+See [GRAMMAR.md](GRAMMAR.md) for the implementer-oriented restatement of
+mechanical rules.
+
 Terms are sorted case-insensitively within groups.
 
 ---

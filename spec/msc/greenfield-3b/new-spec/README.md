@@ -3,25 +3,37 @@
 **Universal Document & Object Notation**  
 Working label: *greenfield-3b rewrite* (clean-room reorganization of the scrubbed 0.9 material).
 
-This directory is a **middle-pillar** language specification: the legal contract
-between the notation and anyone who implements or consumes it. It is not a
-parser design document, not a tutorial, and not a grammar for a generator —
-though companion notes for those roles may live beside it.
+This directory is primarily a **middle-pillar** language specification: the
+legal contract between the notation and anyone who implements or consumes it.
+A short **Grammar** companion restates mechanical rules for implementers;
+pedagogy is optional and separate.
 
 ## How to read this suite
 
+### Fast paths
+
+| If you are… | Read first |
+|-------------|------------|
+| Building a recognizer / parser | [GRAMMAR.md](GRAMMAR.md) → [CORE.md](CORE.md) for anything GRAMMAR points at |
+| Building an AST / Host / round-trip tools | [MODEL.md](MODEL.md) → [SEMANTICS.md](SEMANTICS.md) → [CORE.md](CORE.md) |
+| Learning the language as an author | [pedagogy/tour.md](pedagogy/tour.md) → [GLOSSARY.md](GLOSSARY.md) |
+| Auditing greenfield deltas | [DECISIONS.md](DECISIONS.md) → [OPEN.md](OPEN.md) |
+
+### Full order (normative spine)
+
 | Order | File | Role |
 |------:|------|------|
-| 1 | [GLOSSARY.md](GLOSSARY.md) | Canonical vocabulary. If a term is capitalized as a formal noun elsewhere, it lives here. |
-| 2 | [MODEL.md](MODEL.md) | Abstract Document Model (ADM): what a document *is*, independent of surface spelling. |
-| 3 | [CORE.md](CORE.md) | Normative language contract: geometry, markers, elements, attributes, values, extent, anomalies. |
-| 4 | [SEMANTICS.md](SEMANTICS.md) | Semantic equivalence and round-trip: when two documents mean the same thing. |
-| 5 | [dialects/](dialects/) | What non-core types and dynamics *mean* (syntax recognized in CORE; meaning here). |
-| 6 | [layers/markdown.md](layers/markdown.md) | How UDON relates to Markdown (above the parse). |
-| — | [DECISIONS.md](DECISIONS.md) | **[GREENFIELD]** choices where the source was open, provisional, or reorganized — read this when something differs from the scrubbed input. |
-| — | [OPEN.md](OPEN.md) | Intentionally unfinished items (pragmas, doc schema, formal grammar, …). |
-| — | [pedagogy/](pedagogy/) | Non-normative teaching material (optional parallel track). |
-| — | [`../work/`](../work/) | Working notes, inventories, synonym audits. |
+| 1 | [GLOSSARY.md](GLOSSARY.md) | Canonical vocabulary. Formal nouns live here. |
+| 2 | [MODEL.md](MODEL.md) | Abstract Document Model — what a document *is*. |
+| 3 | [CORE.md](CORE.md) | Normative language contract (authoritative). |
+| 4 | [SEMANTICS.md](SEMANTICS.md) | Equivalence and round-trip. |
+| 5 | [dialects/](dialects/) | Meaning of non-core types and dynamics. |
+| 6 | [layers/markdown.md](layers/markdown.md) | Markdown relationship (above the parse). |
+| — | [GRAMMAR.md](GRAMMAR.md) | *Non-normative* scannable mechanics (CORE wins on conflict). |
+| — | [DECISIONS.md](DECISIONS.md) | **[GREENFIELD]** pins and reasoning. |
+| — | [OPEN.md](OPEN.md) | Intentionally unfinished items. |
+| — | [pedagogy/](pedagogy/) | Non-normative teaching. |
+| — | [`../work/`](../work/) | Inventories, cross-checks, revision notes. |
 
 ## Design stance (one paragraph)
 
@@ -43,14 +55,21 @@ and is not a conformance claim.
 
 - Event streams, wire encodings, and emission order (intentionally omitted;
   expected to be redesigned after this contract stabilizes).
-- A formal grammar (EBNF/PEG). Geometry and recognition rules are stated
-  in prose with enough precision for a future grammar pass.
+- A formal EBNF/PEG grammar (GRAMMAR.md is prose mechanics, not a generator
+  input). Geometry and recognition rules are precise enough for a future
+  grammar pass.
 - The live parser, fixtures outside this clean-room tree, or project TODOs.
 
 ## Marker legend
 
-- **Normative** body text is the contract.
-- *Non-normative* sections are labelled as such (rationale, examples, pedagogy).
+- **Normative** body text is the contract (MODEL, CORE, SEMANTICS, dialects
+  where marked).
+- *Non-normative* sections are labelled as such (GRAMMAR, pedagogy, rationale).
 - **[GREENFIELD]** marks a deliberate choice that either specifies something
   the source left open, renames a concept, or (rarely) adjusts surface
   behavior — always justified in [DECISIONS.md](DECISIONS.md).
+
+## Peer revision
+
+Incorporated feedback from greenfield-3a (Gemini) and reverse-audit lessons:
+see [../work/peer-revision.md](../work/peer-revision.md).
