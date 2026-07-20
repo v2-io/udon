@@ -1,0 +1,145 @@
+# UDON jargon — extracted from the scrubbed spec (greenfield-2a: CORE.md, DYNAMICS.md, TIME-SPEC.md)
+# Format:  term | one-line definition
+# Sorted case-insensitively; one line per term so it stays alphabetizable.
+# Symbol-prefixed / version-suffixed terms ($key, $traits, $partial-key, temporal@1) are grouped at the end.
+
+Absent | an attribute key not present at all — distinct from nil (present, no value) and false.
+all_attributes | host view listing every attribute in document order, including the $-designated ones (the round-trip / "exactly what's there" view).
+Anomaly posture | the ladder of responses to malformed input, from warn-and-keep-everything down to error-and-reject; the core parser commits to warn-and-keep wherever one exists.
+Anonymous element | an element with no name — such as a `|` followed directly by a key, trait, or suffix (`|[k]`, `|.trait`, `|?`).
+AST layer / AST builder | the layer above the streaming parser that assembles a whole tree and applies configured drop/halt/reject policy.
+Attribute | a labeled edge from the parent's perspective (`:key value`); the label is the parent's, and values under one key stack in source order.
+Automatic Prose Dedentation | stripping each prose line's leading whitespace down to the content-base column, so source can be indented while output stays clean.
+Bare name | an element name or `.trait` that is a Unicode identifier (XID_Start to start, XID_Continue/-// to continue).
+Bare-token boundary | the point after an unquoted value token where the next non-space character decides single-token value vs. start of a flow value.
+base_column | the column where an element's `|` sits; the pop-while nesting rule compares against it.
+Baseline dialect | the Liquid-style `!` expression/control-flow language specified in DYNAMICS.md; a host may substitute another.
+block (context) | a construct on its own indented line (e.g. `:key value` as a child line of an element).
+Block attribute | an attribute written on its own indented line under its element.
+Block comment | a line starting with `;`; it participates in the indent/dedent hierarchy.
+Block prose | prose that sets an indent-column for continuation and preserves literal semicolons.
+Block-line start | head position at the beginning of a line, at a structural column.
+Boolean | `true` / `false` (lowercase only); a bare keyword typed only when it finishes alone at a boundary.
+Boundary marker | a block-form marker (`:`, `\`, a fence, block-form `|`/`@`/`!`, or a framed ` ; `) that ends a bare token; no inline brace form is ever one.
+Bounded lookahead | the language constraint that every guard resolves in a few characters, single-level, with no deep backtracking.
+Bracket mode | inside `|{…}`, the state where only brace-form nesting is allowed — no `|name` block form.
+Child / Children | the positional, heterogeneous, self-named array of sub-elements under an element (a child names what it *is*).
+Classification | the `.trait` sugar — what kinds of thing an element is; plural, stackable, order-preserved.
+Collecting | a block-attribute line's property of remaining the line's value-collector even after its value is finished.
+Column rules | greater column = child (push), same column = sibling, lesser column = dedent (pop).
+Complex | (provisional) a bare complex number (`3+4i`, `5i`); a candidate to move into a `<…>` standard-types dialect.
+Composite type | a typed value whose components are themselves typed (e.g. `<r: <i: 3 -7> 0d83.23>`); nesting stays `<>`-balanced (forward-looking).
+Constraint | what a value is *allowed* or *required* to be (cardinality, vocabularies) — a schema's job, never core.
+Consumer | any layer that consumes the parse (host, AST builder, schema, app), deciding projection, constraint, and resolution.
+Content-base (content_base_column) | the column where an element's indented prose starts, used to dedent its subsequent lines.
+Control flow | block directives of the baseline dialect such as `!if` / `!elif` / `!else` / `!unless` / `!for` / `!let` / `!include` (the parser accepts any directive name).
+Date | (temporal) an ISO calendar date `YYYY-MM-DD` (or `YYYY-MM`, a YearMonth).
+DateTime | (temporal) an ISO combined date+time with optional timezone offset, `T`-separated.
+Deferred block | a value's body carried on the deeper indented lines beneath its key/attribute line rather than sameline — a plain multi-line value, or a node or raw block deferred below the line (spec also: "deferred attribute value", "deferred block form").
+Delimited construct | a construct that closes only on a matched printed end-sequence — e.g. string, array, `|{…}`, `;{…}`, `!{{…}}`, `<…>`, fence, identity `[…]`.
+Dialect | a layer that says what an exotic (non-core) value *means / types*, e.g. `temporal@1`; distinct from a schema.
+Directive | a `!name …` dynamic form whose meaning is host-provided (`!if`, `!for`, …); body parsed as UDON.
+Document layer / Document builder | the consumer that assembles a whole tree and enforces document-wide rules like duplicate-definition policy.
+Duplicate definition | two elements of the same type sharing a key; a document-layer concern, defaulting to error.
+Duration | (temporal) an ISO 8601 (`P…`) or shorthand (`5m`, `2h`) length of time.
+Dynamics | the `!` family (directives, interpolation, verbatim); core recognizes the syntax, a dialect gives it meaning.
+Element | the structural backbone — nothing but a name + ordered attributes + children (`|name`).
+Embed | loose term for an embedded delimited value construct such as a string or a `<…>` envelope.
+End of input (EOF) | where every open construct closes innermost-first — geometric ones silently, delimited-but-open ones with a warning.
+Envelope (typing envelope) | the `<…>` form carrying a dialect-typed value in value position, closing at the matching `>`.
+Error | an anomaly level where something is lost (vs. a warning, where content is kept).
+Escape (`\`) | at head position, consumes itself and forces the rest of the line to prose; its four uses are fixed by position alone.
+Exotic typing | what non-core value patterns *mean* — a dialect's job (recognition and typing).
+Explicit typing | writing a non-core type inside a `<…>` envelope instead of relying on bare recognition.
+Expression grammar | the deliberately simple Liquid-style language inside directives and interpolations.
+False | an attribute whose value is boolean `false` — distinct from nil and absent.
+Fence (triple-backtick fence) | ``` that captures its body byte-exact, with no dedent and no marker interpretation.
+Filter | a `| name args` transform inside an interpolation (`!{{value | capitalize}}`).
+Flag key | an attribute key ending in `?`, selecting boolean/presence semantics (`:ready?`).
+Flag suffix | a trailing `?` / `!` / `*` / `+` on an element, desugaring to a designated boolean attribute (`|el?` → `:'$?' true`); the element-side counterpart of a flag key.
+Float | a decimal number carrying a fractional part and/or an exponent (`3.14`, `1.5e-3`).
+Flow value (text flow / flow) | the one prose-shaped content model — a sequence of text and inline-form segments that resolves to text.
+Frozen core scalar set | the closed set of types recognized bare from syntax alone; nothing is ever added to bare recognition.
+Geometric construct | a construct taking its extent from geometry (end of line, dedent, or EOF) — e.g. element, directive, comment, deferred value, block verbatim.
+Guard | the few-character lookahead that recognizes a marker at head position.
+head (context) | the state, re-entered every line, where the parser has not yet decided marker vs. prose and where all markers and `\` are recognized.
+Head position | see head — the block-line start plus the sameline scan.
+Host | the environment consuming UDON that supplies projection, dialects, and reference/mixin resolution.
+Host views | the recommended accessors over the attribute substrate: `all_attributes` plus the `key`/`traits`/`attributes` ergonomic split.
+Identity | the `[key]` sugar — what makes an element uniquely itself, referenceable via `@`.
+Incomplete-input result | the per-document non-success condition when a delimited construct is still open at true EOF.
+inline (context) | a construct within prose/text flow (`;{…}`, `!{…}`, `|{…}`).
+Inline comment | `;{…}`, the only way to comment within prose; brace-counted.
+Inline directive | `!{directive …}`, an inline dynamic with a UDON-parsed body.
+Inline element | the `|{…}` brace form appearing within prose; brace-balanced, and once entered stays in bracket mode.
+Inline list | a `[…]` list value — space-delimited, each item typed independently, no flow values inside.
+Inline raw | `!{:kind: …}`, inline verbatim content, brace-counted.
+Inline UDON | using `|{…}` inline elements in prose where Markdown could serve (discouraged for simple formatting).
+Inline-brace principle | no inline brace form (`|{`, `!{`, `;{`, `@{`) is ever a boundary marker; meeting one commits a flow value.
+Integer | a whole number in decimal / hex / octal / binary (`42`, `0xFF`, `0o755`, `0b1010`); `_` allowed between digits.
+Interpolation | `!{{expr}}`, an unparsed expression that the host evaluates.
+Keep-everything | the parser's commitment to capture all bytes, warning rather than dropping wherever a coherent keep exists.
+Key | see Identity; the value of the `$key` attribute.
+Keyword | a bare `true`/`false`/`null`/`nil`, typed only when it finishes alone at a boundary (else it is flow-value text).
+Label ladder | the envelope's specificity levels: unlabelled `<…>`, type-labelled `<type:…>`, dialect-and-type-labelled `<dialect:type:…>`.
+Line comment | a `;` comment at document root, after attribute values, or at the prose base column.
+Line-boundedness | which delimited constructs may span newlines in this version vs. which are deliberately undefined across a newline.
+List | a `[…]` value — space-delimited, each item typed independently by the normal value rules.
+Marker | a head-position special-start character: `|`, `:`, `!`, `;`, `@`, or triple-backtick.
+Menu vs. knob | the core fixes an option-space and default while a consumer picks within it; a consumer may not invent an option outside the menu.
+Mixin | an experimental host behavior where an anonymous trait-only element's attributes are inherited by elements carrying its trait.
+Multi-line value | see Deferred block — a value whose body is on the deeper lines under its key.
+Multi-segment value | an attribute value that is an ordered array of segments (from stacking or trailing-text ingest).
+Nil | the value `null`/`nil` (both equivalent) — key present with explicitly no value.
+Node | an element treated as a value or as a tree node.
+Node value | an attribute whose value is a node, written in block form (`:headers |header …`); the brace form is text, not a node.
+Ownership | the priority rules deciding whether trailing text belongs to an open attribute, the nearest element on the line, or ordinary prose.
+Phase change | once an element enters its children phase, a later ancestor-column `:` is prose (with a warning), not an attribute.
+Positional Contexts | the recognition-context vocabulary: block, sameline, inline, head.
+Pragma | a planned in-document declaration binding a document to its dialects, schema, and expected host-interpreter version.
+Prefix | one of the four line-start structural characters `|`, `:`, `!`, `;` (with `@` and the fence as further head-position markers).
+Projection | how a host turns a validated string into a native value (a date string into a Date).
+Prose | any line not starting with a marker — text belonging to the parent element.
+Rational | (provisional) a bare rational number (`1/3r`, `22/7r`); a candidate to move into a `<…>` standard-types dialect.
+Raw base | the first content line's column of a raw block, used to strip its body's indentation.
+Raw directive / raw block | `!:lang:`, block verbatim content captured opaquely and handed to the host.
+Recognition priority | (temporal) the order in which a bare value is tested (boolean, nil, temporal, number, string).
+Reference | `@…`, an inert selector tuple `(element, key, traits)` the parser recognizes but a host resolves.
+RelativeTime | (temporal) a signed offset from a reference point (`+30d`, `-1h`).
+Resolution modes | how a host may resolve a reference — such as transclude, merge attributes, or leave inert.
+sameline (context) | a construct on the element definition line.
+Sameline attribute | an attribute on the element definition line.
+Sameline comment | a whitespace-framed ` ; ` comment, the one marker allowed after a line has committed to prose.
+Sameline decompress | a trailing tail after an element line's attributes becoming that element's content.
+Sameline prose | prose on the element line that does not set an indent-column.
+Sameline scan | the run along an element line through elements and attributes, looking for the next marker.
+Scalar | the value kind covering quoted string, number, `true`/`false`/`null`/`nil` alone, `[…]` list, and `<…>` envelope.
+Schema | what is *allowed* or *required* (cardinality, vocabularies) — constraint's home, never core.
+Segment | one piece of a flow value — text, interpolation, or an inline element.
+Selector | the `(element, key, traits)` tuple a reference resolves against; traits are selection criteria, not augmentation of the target.
+Shorthand duration | (temporal) configuration-style durations like `30s`, `5m`, `1mo`.
+Specially-designated attributes | ordinary `$`-name attributes the sugar targets (`$key`, `$traits`, `$?`, …); designated, not reserved.
+Stack | the parser's element stack driving nesting via pop-while new_column <= top.base_column.
+Stacking | the uniform rule that repeated same-key attributes accumulate as an ordered list, not last-wins.
+Streaming parser | the stateless, incremental parser layer (below the AST/Document builder) that cannot track document-wide state.
+Strict whitespace | spaces-only in indentation; a tab in indentation is an error, a tab elsewhere is ordinary content.
+String | a quoted (`"…"` / `'…'`) value, or the bare fallback for unquoted single-token text.
+Sugar / desugaring | the rewrite of `[key]`, `.trait`, and the suffixes into ordinary designated attributes.
+Syntactic typing | determining a value's type from its syntax, not by sniffing its content.
+Terminator | the context-specific character set that ends a bare (unquoted) token (space, newline, and sometimes `]` / `}`).
+Text mode | the state a value-position `\` (or a forced-prose `\`) enters, making the material literal flow-value text with no sameline-comment affordance.
+The Scan | the uniform left-to-right pass that collects each attribute's value then continues for the owner, on sameline and block lines alike.
+Time | (temporal) an ISO time of day `HH:MM[:SS[.nnn]]`.
+Trait | see Classification; a `.trait` value stacked into `$traits`.
+Transclude | a reference-resolution mode that inserts the referenced element's structure and content.
+True | a flag key present bare (`:debug?`), or any key with an explicit `true`.
+Truthiness | the dialect rule that only `false` and `nil`/`null` are falsy; `""`, `0`, and `[]` are truthy.
+Typed value | a value carrying a dialect type via the `<…>` envelope; bare values are only the frozen core scalars (or a string).
+Value Kinds | the set an attribute value can be: Scalar, Reference, Interpolation, Node, or Flow value.
+Value-position `\` | a `\` where a value is expected, entering text mode so the value becomes a flow value.
+Verbatim | content never UDON-parsed — one family (block `!:lang:`, fence, inline `!{:kind:…}`) carrying a form and optional label around an opaque body.
+Warning | an anomaly level where content is kept; it marks that something may not match the author's intent.
+$key | the specially-designated attribute the `[key]` identity sugar targets.
+$partial-key | the fail-safe attribute an unclosed identity key desugars to (instead of `$key`), so a consumer never acts on a truncated identity.
+$traits | the specially-designated attribute the `.trait` classification sugar stacks into.
+temporal@1 | the first standard dialect; all temporal values require the `<…>` envelope (a bare date is just a string).

@@ -1,0 +1,35 @@
+# Clean-room snippets stripped from v0.9/attr_boundary.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: attr-boundary713
+  udon: "|el :first value :another x\n"
+- id: attr-boundary714
+  udon: "|el :first value with spaces :another x\n"
+- id: attr-boundary715
+  udon: "|el :alpha something \\ el's text\n"
+- id: attr-boundary716
+  udon: "|el :alpha something ; a comment\n"
+- id: attr-boundary717
+  udon: "|el :url https://x.com :role foo\n"
+- id: attr-boundary718
+  udon: "|el :alpha true\n"
+- id: attr-boundary719
+  udon: "|el :alpha true story\n"
+- id: attr-boundary720
+  udon: "|el :alpha true \\ story\n"
+- id: attr-boundary721
+  udon: '|el :first value :another "with" some text
+
+    '
+- id: attr-boundary722
+  udon: "|el :count 7 apples\n"
+- id: attr-boundary723
+  udon: |
+    |el :a 1 and a tail
+      :b 2
+- id: attr-boundary724
+  udon: "|el :count \\7 apples\n"
+- id: attr-boundary725
+  udon: |
+    |el
+      :k \a ; b

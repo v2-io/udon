@@ -1,0 +1,25 @@
+# Clean-room snippets stripped from v0.9/flags.yaml — udon only, no expected
+# events/descriptions. Decide the event stream from the spec alone.
+---
+- id: flags1028
+  udon: "|el :a?\n"
+- id: flags1029
+  udon: "|el :ready? false\n"
+- id: flags1030
+  udon: "|el :ready? nil\n"
+- id: flags1031
+  udon: "|button :disabled? :type submit\n"
+- id: flags1032
+  udon: "|el :a? true it sure is true\n"
+- id: flags1033
+  udon: "|el :a? well it sure is true\n"
+- id: flags1034
+  udon: "|el :a? |beta\n"
+- id: flags1035
+  udon: "|el :'ready?'\n"
+- id: flags1036
+  udon: "|el :'$?'\n"
+- id: flags1037
+  udon: "|el :is?it 1\n"
+- id: flags1038
+  udon: "|el :address/street 123\n"

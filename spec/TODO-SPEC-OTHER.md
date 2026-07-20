@@ -39,3 +39,35 @@ composite/standard types. (Core-spec edits live in `TODO-SPEC-CORE.md`.)
       (they span spec ↔ grammar ↔ fixtures ↔ learning artifacts). Noted here
       because how the companion specs relate to CORE and to the
       learning/cheat-sheet layer is part of that picture.
+- [ ] **Sanctioned callout vocabulary (spec-authoring convention)** — a fixed
+      set of Obsidian callouts that mark the *normative status* of each block in
+      CORE and the companion specs, replacing ad-hoc prose hedges
+      ("(descriptive, not a calcified rule)", "(ratified …)", section-level
+      "(Non-Normative)", …) with an explicit, agent-legible tag — the label word
+      states intent more clearly than the prose it replaces. Ratified set
+      (Joseph, 2026-07-19):
+    - `> [!example] IDIOMATIC` — **normative**: the correct, desirable grammar (the right way to write it).
+    - `> [!failure] AVOID` — **normative**: "this won't do what you expect," or a *necessary* foot-gun consequence of the prescriptive grammar.
+    - `> [!attention] UNDEFINED BEHAVIOR: …` — the explicit declaration that something is undefined / unspecified.
+    - `> [!caution] CURRENT BEHAVIOR` — **non-normative**: a present, descriptive observation that is *not* prescriptive and is likely to change (and/or may later fall under UNDEFINED). The most important one — it keeps current-parser behavior from silently calcifying into grammar.
+
+      Authoring rules: CAPS title on the callout line; a blank line **before and
+      after** every callout (Obsidian needs it, especially adjacent to lists or
+      fences); body and any code fence are `>`-quoted. Caveat specific to this
+      spec: UDON is whitespace-significant, so a `udon` fence inside a callout is
+      `>`-prefixed on every line — fine for reading/derivation, but anything that
+      *extracts* examples byte-exact must strip `> ` uniformly (and handle a blank
+      body line, which Obsidian renders as a bare `>`); round-trip-test before
+      relying on that. Wider palette available if ever needed (neutral → severe):
+      note / info / tip / success / question / warning / caution / attention /
+      failure / danger / bug / ….
+
+      **Status:** pilot landed in `spec/msc/greenfield-2a/spec/CORE.md` — one
+      exemplar of each type (IDIOMATIC on the Configuration example, AVOID on the
+      node-value one-way-door, UNDEFINED on the document-root attribute, CURRENT
+      BEHAVIOR on the inline-comment whitespace). Next: a full sweep across CORE +
+      DYNAMICS + TIME-SPEC — a **per-block judgment pass, not mechanical** (not
+      every `udon` fence is IDIOMATIC; a style *preference* is not an AVOID
+      foot-gun — those likely want `[!tip]` or plain prose). Then decide what to
+      backport to the source `CORE.md`. Cross-cuts the spec-organization thread in
+      `../TODO-META.md`. *(discuss w/ Joseph)*
