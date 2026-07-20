@@ -431,8 +431,8 @@ An attribute's value is one of these kinds -- or an **ordered array** of them (s
 | **Scalar** | quoted string, number, `true`/`false`/`null`/`nil` alone, `[...]` list, `<...>` envelope |
 | **Reference** | `@...` (a selector; inert at core, like every reference) |
 | **Interpolation** | `!{{...}}` (host-evaluated; see DYNAMICS) |
-| **Node** | `|element`, `!:lang:` raw block, or a freeform fence -- the value *is* that node |
-| **Text blob** | prose-shaped trailing text (below) |
+| **Node** | block-form `|element`, `!:lang:` raw block, or a freeform fence -- the value *is* that node (the inline brace form `|{…}` is **text**, not a node -- see Node Values) |
+| **Text blob** | prose-shaped text, including any value that begins with or contains an inline brace form (`|{…}` / `!{…}` / `;{…}`) -- see below |
 
 Types live on the **map side** -- attribute values and array items. The `<...>` envelope is meaningful in value position and nowhere in free prose; children detect their own content. A block `!directive` as a node value is deferred to the DYNAMICS companion, not core.
 
@@ -453,12 +453,16 @@ A `:` (passing its guard) enters attribute mode. After each key the parser colle
   :a 1 :b 2      ; a = 1, b = 2  (two attributes; 0.8 made b part of a's string)
 ```
 
-Most value shapes announce their extent by their first character -- a digit or sign commits to a number, `"`/`'` to a string, `<` to an envelope, `[` to a list, `@` to a reference, `|` to a node -- and self-terminate. A committed token that goes wrong mid-way, like `12ab`, falls through to being an ordinary bare token -- token-local, no unbounded lookahead -- and the boundary rule below then applies at its end exactly as for a letter-first token (`:x 12ab :y 3` gives `x = "12ab"`, `y = 3`; `:x 12ab more` gives the blob `"12ab more"`). The interesting case is a bare word, where UDON must decide between "short scalar value" and "the start of running text." The rule:
+Most value shapes announce their extent by their first character -- a digit or sign commits to a number, `"`/`'` to a string, `<` to an envelope, `[` to a list, `@` to a reference, block-form `|name` to a node (but `|{…}` opens an inline segment of a text blob -- the inline-brace principle below) -- and self-terminate. A committed token that goes wrong mid-way, like `12ab`, falls through to being an ordinary bare token -- token-local, no unbounded lookahead -- and the boundary rule below then applies at its end exactly as for a letter-first token (`:x 12ab :y 3` gives `x = "12ab"`, `y = 3`; `:x 12ab more` gives the blob `"12ab more"`). The interesting case is a bare word, where UDON must decide between "short scalar value" and "the start of running text." The rule:
 
 **A bare value token holds the sameline scan provisionally open at its boundary. The next non-space character decides:**
 
-- **A head-position marker** -- `:` (next attribute), `\` (force-prose), a guarded `|`, a guarded `@`, a framed ` ; ` comment, a fence, a guarded `!` -- means the token **finished as a single-token value** and the scan continues, exactly as if the token had been quoted. (The boundary marker set is the sameline-scan marker set; `@` sits on equal footing with `|` -- ruled 2026-07-15.)
-- **Plain text** means the line has committed: the bare token was the *beginning of a text blob*, which runs to the end of the line (or a framed ` ; ` comment) and belongs to whoever the ownership rules say (next section).
+- **A block-form marker** -- `:` (next attribute), `\` (force-prose), a fence, a *block-form* `|` (`|name` / `|[key]` / `|.trait`), a *block-form* `@` (`@name` / `@[key]` / `@.trait`), a *block-form* `!` (`!name` / `!:lang:`), or a framed ` ; ` comment -- means the token **finished as a single-token value** and the scan continues, exactly as if the token had been quoted. (`@` sits on equal footing with `|` -- ruled 2026-07-15.)
+- **Anything else** -- plain text, *or an inline brace form* -- commits the line to a **text blob** that begins with this token, runs to the end of the line (or a framed ` ; ` comment), and belongs to whoever the ownership rules say (next section).
+
+**The inline-brace principle** (ruled 2026-07-19). *No inline brace form is ever a boundary marker or a mode exit.* The brace forms -- `|{…}` (embedded), the `!{…}` family (inline directive, raw `!{:kind:…}`, and interpolation `!{{…}}`), `;{…}` (inline comment), and the anticipated `@{…}` inline reference -- are **prose-level** forms. Meeting one at a bare-token boundary does **not** finish the value: it commits the text blob, and the brace form fires *within* the blob as an inline segment, exactly as it would in prose (`;{…}` contributing nothing to the value's text, the way an inline comment does not add text to a paragraph). So `:n value |{em x} :a 1` makes the whole of `value |{em x} :a 1` the blob value of `n` -- the `|{…}` is inline text, and once the blob has committed the trailing `:a 1` is literal text too (`:n value |{em x} :a 1` ≡ `:n value \|{em x} :a 1`). To bind an element *as* a node value instead, use the block form and drop the braces (`:n |em x`; see Node Values). This is why the boundary-marker set above is **block-form markers only**.
+
+*(One subtlety at the `;` boundary: a `;` finishes the token as a framed sameline comment only when it is followed by a space or end of line -- the frame. `;{` is the inline-comment brace form (commits the blob per the principle); an unframed `;` followed by other text -- `value ;x` -- is literal and also commits the blob (`"value ;x…"`), since it is neither a framed comment nor a brace form.)*
 
 One character of lookahead at one decision point -- the same shape as every other guard (see Bounded Lookahead).
 
@@ -474,6 +478,10 @@ One character of lookahead at one decision point -- the same shape as every othe
 |el :alpha something \ el's text and this ; is prose too
 |el :alpha something ; a comment   ; framed ' ; ' at the boundary -> comment
 |el :url https://x.com :role foo   ; url = "https://x.com" (boundary is ':')
+; next: an inline brace form at the boundary commits the blob (it is NOT a
+; boundary marker) -- n = "value " + |{em x} + " :a 1" (all one blob value);
+; there is no separate :a attribute:
+|el :n value |{em x} :a 1
 ```
 
 **Keywords and the boundary.** `true` / `false` / `null` / `nil` are typed only when the token finishes alone -- that is, when the boundary shows a marker or end-of-line. If plain text follows, the keyword was just the first word of a blob:
@@ -490,8 +498,9 @@ One character of lookahead at one decision point -- the same shape as every othe
 
 A text blob is **prose-shaped**, the same family as element prose -- not a second literal-only dialect:
 
-- Inline forms fire: `|{...}`, `!{...}`, `;{...}`, with the normal prose `\` escapes for those openers.
-- A trailing whitespace-framed ` ; ` is a sameline comment, **except** on a value-`\` line (below).
+- Inline forms fire: `|{...}`, `!{...}`, `;{...}`, with the normal prose `\` escapes for those openers. `;{…}` contributes nothing to the value's text (it is a comment, not a value segment), exactly as in prose.
+- A trailing whitespace-framed ` ; ` is a sameline comment, **except** on a value-`\` line (below). (A brace-committed blob keeps the framed ` ; ` affordance -- it is an ordinary prose-shaped blob; only `\`-forced text gives it up.)
+- **A blob can also *begin* with an inline brace form in value position** (the inline-brace principle, above): `:n |{em x}`, `:n !{inc x}`, `:n ;{note}` each commit the blob at the value's start rather than being a node value or a comment-that-ends-nothing. In particular `:n ;{}` is the **empty-string value** `:n ""` (the blob's text is empty and the `;{}` adds nothing) -- **not** a missing value.
 - The event stream may deliver a blob as a sequence of segments (Text, Interpolation, Embedded, ...) under the one key; hosts may flatten text-reducible segments.
 
 #### Whose Text Is This? (Ownership)
@@ -555,7 +564,7 @@ The first line's extent is the **rest of the physical line**, and that line give
 
 ### Node Values
 
-An attribute's value may be a node -- the attribute *is* that element (or raw block, or fence), with **no anonymous wrapper**:
+An attribute's value may be a node -- the attribute *is* that element (or raw block, or fence), with **no anonymous wrapper**. A node value is written in the **block form** -- `|name`, not the inline brace form `|{…}`:
 
 ```udon
 |api :headers |header :name Content-Type :value application/json
@@ -572,6 +581,7 @@ An attribute's value may be a node -- the attribute *is* that element (or raw bl
 - **No attribute-under-attribute.** A deeper line that is itself `:key` directly under an attribute (not inside a node value) is an **error** (`AttributeUnderAttribute`, working name) -- maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
 - The preferred, warning-free shape is **one node per declaration**; stack the key to add more. A second sibling node at the value's depth is the ingest-with-warning case below.
 - **The node value is a one-way door on its line** -- worth a beginner's caution: once the node opens, there is no way back to the outer element on that line. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*, not to `api` -- almost certainly not what was meant. Put the outer element's attributes *before* the node-valued one, or move the node to a deferred block.
+- **Block form binds a node; the brace form is text.** A node value is the *block* form `|name`. The inline **brace form** `|{…}` in value position is **not** a node value -- it is an inline segment of a *text blob* (the inline-brace principle; see The Scan and Text-Blob Values). So `:x |em hi` gives `x` the `|em` node, while `:x |{em hi}` gives `x` the text-blob value whose sole segment is an inline `|em`. The distinction is the one teachable rule: *drop the braces to bind an element as the value; keep them to inline it as text.*
 
 ### Multi-Segment Values and Stacking
 
@@ -652,7 +662,36 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
 
 ### Event Encoding (0.9 Wire)
 
-The wire stays **flat** (ratified in direction 2026-07-16): every `Attr` event carries exactly **one** value -- a scalar event, or one bracketed construct (Element, Embedded, Raw, Freeform, Array) -- and **all multiplicity is expressed by re-emitting the `Attr`**. Author-written stacking, warn+stack ingestion, multi-line text segments, and inline forms inside a text blob are one wire mechanism, because they are one semantic:
+> **⚠️ DERATIFIED 2026-07-19 (Joseph).** The "flat wire" below is **no longer the
+> contract** — it is retained here only as the record of what is being replaced.
+> **Why:** the flat wire carries an attribute's value extent *implicitly* — the
+> value's end is inferred from the *absence* of a re-emitted `Attr` (and from
+> `BareValue`-vs-`Text`), so the event stream cannot, on its own, distinguish an
+> attribute's value from the owning element's child content (see the W5 case:
+> `|el :v1 hey` + a deeper `more text` line + a `|child` line — ownership rides
+> entirely on what is *not* emitted). This forces every consumer to re-run the
+> indent/dedent/attr-vs-child logic the parser already ran, degrades the event
+> parser toward a lexer, and made samelines/attributes disproportionately painful.
+> The leaky mixed-interpolation edges (`:href !{{base}}/x` silently attributing
+> `/x` to the element) were symptoms of the same defect.
+>
+> **Corrected intent (Joseph, restated):** *an `Attr` is always followed by
+> exactly its value, and that value is a **self-delimiting** unit — a single
+> scalar event, or an explicitly bracketed construct — so there is never
+> ambiguity about where the value ends.* The original ratification was of that
+> intent; the "infer the extent from re-emit presence" mechanism was an agent's
+> later substitution that lost it.
+>
+> **Replacement direction (to be ratified):** an explicit value bracket
+> (working: `AttrValueEnd`, with the `Attr` as the implicit start) so a
+> multi-segment/blob value is a delimited group. This also removes the
+> empty-`Text ""`-for-present-empty workaround and the blob-segment-vs-stacked-
+> assignment conflation. Design note in progress: `msc/brownfield/wire-value-model-2026-07.md`.
+> The reconstruction contract is unaffected (the bracket is structural, not
+> text-bearing). Everything from here to the end of this section describes the
+> **old, deratified** shape.
+
+The (deratified) wire stayed **flat**: every `Attr` event carried exactly **one** value -- a scalar event, or one bracketed construct (Element, Embedded, Raw, Freeform, Array) -- and **all multiplicity was expressed by re-emitting the `Attr`**. Author-written stacking, warn+stack ingestion, multi-line text segments, and inline forms inside a text blob were one wire mechanism, because they are one semantic:
 
 ```text
 |el
@@ -1844,5 +1883,5 @@ Two consequences:
 
 ## Implementation Notes (Non-Normative)
 
-- Whole-value interpolation is implemented in the parser (an attribute value or `[key]` that *is* `!{{...}}` emits an Interpolation event — verified 2026-07-16). **Mixed** literal+interpolation values (`pre!{{x}}post`) are not: the token parses as one bare string. The multi-part wire shape is an open decision (DYNAMICS.md's old `ArrayStart` sketch predates — and contradicts — the 0.9 flat wire); see `core/TODO-CORE-PARSING.md`.
+- Whole-value interpolation is implemented in the parser (an attribute value or `[key]` that *is* `!{{...}}` emits an Interpolation event — verified 2026-07-16). **Mixed** literal+interpolation values (`pre!{{x}}post`, or a leading `!{{base}}/path`) are a **text blob**: the wire is re-emitted `Attr` segments (`Text` / `Interpolation` / `Text` …), the same flat mechanism as any blob (see Event Encoding), with whole-value `!{{x}}` the one-segment degenerate (wire-compatible with today's `Attr` / `Interpolation`). This wire is **ruled** (2026-07-19) — a consequence of the inline-brace principle (see The Scan) — closing the earlier open decision; DYNAMICS.md's old `ArrayStart` sketch predates and contradicts the 0.9 flat wire and is superseded. The *grammar* does not yet fire the interpolation mid-token (a glued `pre!{{x}}post` still parses as one bare string); that implementation is tracked in `core/TODO-CORE-PARSING.md`.
 - Raw directives and freeform blocks are parsed as specified, but host behavior (highlighting, execution, etc.) is host-defined.

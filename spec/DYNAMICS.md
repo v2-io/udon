@@ -94,10 +94,13 @@ even if they started parsing as numbers:
 this)* This section's `ArrayStart` + alternating `StringValue`/`Interpolation`
 + `ArrayEnd` encoding predates and **contradicts** CORE 0.9's ratified flat
 wire (only literal `[…]` arrays on the wire; all multiplicity = re-emitted
-`Attr`). The flat-wire-consistent shape would be re-emitted `Attr` segments,
-like text blobs — the ruling is pending (see `core/TODO-CORE-PARSING.md`,
-"Interpolation: multi-part values"). Whole-value interpolation is already
-implemented; mixed multi-part is not (verified 2026-07-16).
+`Attr`). The correct shape is **ruled** (2026-07-19, by CORE's inline-brace
+principle): a mixed literal+interpolation value is a **text blob** — re-emitted
+`Attr` segments (`Text` / `Interpolation` / `Text` …), whole-value `!{{x}}`
+being the one-segment degenerate. See CORE "The Scan and the Bare-Token
+Boundary" and the Implementation Notes. Whole-value interpolation is
+implemented; the mid-token firing for a glued `pre!{{x}}post` is the remaining
+grammar work (`core/TODO-CORE-PARSING.md`, "Interpolation: multi-part values").
 
 ### Expression Grammar
 

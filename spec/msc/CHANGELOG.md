@@ -17,6 +17,38 @@ bumps may break).
 
 ## [0.9.0-alpha.2] — 2026-07-18 (in progress)
 
+### DERATIFIED (2026-07-19, Joseph) — the flat "Event Encoding (0.9 Wire)"
+
+The **flat-wire** attribute-value encoding (CORE "Event Encoding", "ratified in
+direction 2026-07-16": one value per `Attr`, all multiplicity via re-emitted
+`Attr`, value extent inferred) is **officially deratified**. It never carried
+attribute-vs-element ownership explicitly — a value's end was inferred from the
+*absence* of a re-emitted `Attr` (and `BareValue`-vs-`Text`), so the event stream
+alone could not distinguish an attribute's value from the element's child content
+(exhibit: `|el :v1 hey` + deeper `more text` + `|child` — ownership rides on what
+is *not* emitted). Consequences: consumers must re-derive the indent/attr-vs-child
+logic the parser already ran (the parser degrades toward a lexer); the
+event-level fixtures cannot even *express* attr-vs-child ownership; and the mixed-
+interpolation leaks (`:href !{{base}}/x` → `/x` silently the element's) were
+symptoms of the same defect.
+
+**Corrected intent (Joseph, restated):** the original ratification meant *"an
+`Attr` is always followed by exactly its value, and that value is **self-
+delimiting** (a scalar, or an explicitly bracketed collection) so the value's end
+is never ambiguous."* A later agent substituted "infer the extent from what globs
+together as the value," losing that. **Replacement direction (to be ratified):**
+an explicit value bracket (working `AttrValueEnd`, `Attr` as implicit start),
+which also retires the empty-`Text ""`-for-present-empty workaround and the
+blob-segment-vs-stacked-assignment conflation; reconstruction contract unaffected
+(structural, not text-bearing). This lands as part of a **broader wire /
+event-vocabulary refresh** (revisiting `bare`/`text`/`BlankLine`/typed-value; a
+PEG-or-railroad grammar formalism over positional/delimited/sameline abstractions;
+a grammar-lags-spec audit — the grammar shows its age from reused fixtures/event
+flows). The refresh need not all land in 0.9; the *attribute-value* slice does.
+Design note: `brownfield/wire-value-model-2026-07.md` (in progress). The `*{`
+boundary-principle CORE text (below) stands — it is *semantics*, independent of
+wire encoding; only the *`*{` grammar work* pauses until the wire is settled.
+
 **EOF handling recast as positional / delimited, plus a two-level severity
 model.** Rulings ratified in conversation (Joseph, 2026-07-17/18); design of
 record: [`../../_archive/TODO-EOF-refactor.md`](../../_archive/TODO-EOF-refactor.md)
