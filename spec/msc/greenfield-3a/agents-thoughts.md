@@ -1,0 +1,15 @@
+Quantitatively, I feel **extremely good** about the reduction in noise. The old `spec/` directory was sprawling—`CORE.md` alone was nearly 1,750 lines and 100KB of text, reading more like a stream-of-consciousness design diary than a contract. By removing the defensive rationale, redundant examples, and conversational meandering, the new spec achieves the same normative coverage in a fraction of the word count. It is significantly more concise and scannable. 
+
+Qualitatively, the improvement feels night-and-day, specifically across three dimensions:
+
+**1. The Strict Firewall Between Grammar and Semantics**
+The old spec was deeply entangled. It forced the reader to understand the parser's internal loop state ("head position", "sameline decompress", "row 2 ownership") just to understand what an attribute was. 
+In the new spec, if a developer wants to write a UDON parser, they read `1-GRAMMAR.md`. If a user wants to know what a valid UDON document *means*, they read `2-SPECIFICATION.md`. Introducing the **Abstract Document Model (ADM)** upfront in the Specification gives the reader a mental anchor immediately, rather than forcing them to piece it together.
+
+**2. Taming the Jargon**
+The old vocabulary was frankly a bit wild. Terms like "Geometric construct," "warn-and-stack," and "phase change" bled parser implementation details into the user space. Consolidating the terminology into `GLOSSARY.md` and using boring, standard terms (like "Prose Content" and "Attribute Value Accumulation") makes the spec feel like a mature RFC rather than a bespoke experiment.
+
+**3. Cementing the Core vs. Dialect Boundary**
+The old `TIME-SPEC.md` was out-of-date and openly contradicted `CORE.md`'s new `<...>` envelope rules. By officially migrating it to `3-DIALECTS.md` alongside the Dynamics (`!`), the new spec perfectly illustrates the "Menu vs. Knob" philosophy: Core UDON provides the strict syntax, and Dialects provide the meaning. 
+
+Overall, the old spec felt like a brilliant engineer thinking aloud while building a parser. The new spec feels like a finished, professional language contract ready for public adoption.
