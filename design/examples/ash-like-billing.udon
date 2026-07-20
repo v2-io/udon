@@ -22,7 +22,7 @@
     |actions
       |create[register]
         :accept [email name]
-        |validate :email-format
+        |validate :email-format?
 
       |read[by-email]
         :get true
@@ -52,8 +52,8 @@
     |actions
       |create[issue]
         :accept [customer-id currency]
-        |change :set-issued-at
-        |change :set-due-date
+        |change :set-issued-at?
+        |change :set-due-date?
 
         ; Escape hatch for a non-trivial due-date rule
         !:ex:
@@ -67,12 +67,12 @@
 
       |update[mark-paid]
         :accept [paid-at]
-        |authorize :accounting-only
+        |authorize :accounting-only?
 
     |policies
       |policy[accounting-only]
         :effect allow
-        |when :actor-role == :accountant
+        |when :actor-role == accountant
 
     |calculations
       |calc[total-amount].money
@@ -110,7 +110,7 @@
     |actions
       |create[start]
         :accept [customer-id plan]
-        |change :set-renewal-date
+        |change :set-renewal-date?
 
         ; Escape hatch for plan-specific renewal logic
         !:ex:
@@ -123,4 +123,4 @@
 
       |update[cancel]
         :accept []
-        |change :set-status-canceled
+        |change :set-status-canceled?

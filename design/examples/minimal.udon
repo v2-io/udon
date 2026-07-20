@@ -3,14 +3,14 @@
 ; === CORE PATTERNS ===
 
 |element[key].trait :attr value
-|element[key].trait :attr value Content on same line
+|element[key].trait :attr value \ Content on same line
 |element[key].trait :attr value |child Child content here
 |element
   |child
   Prose content with |{em inline elements} and !{{interpolation}}.
 
 ; Inline elements embed structure in prose:
-|p Prose with |{em emphasis}, |{strong bold}, and |{a :href /doc links}.
+|p Prose with |{em emphasis}, |{strong bold}, and |{a :href /doc \ links}.
 |p Nested: |{strong This is |{em very} important}.
 |p With attrs: |{a :href /x :title "Tooltip" click here}.
 |p Inline comments: text ;{comment stripped or passed through} more text.
@@ -29,8 +29,8 @@
   :number      42               ; integer
   :float       3.14             ; float
   :bool        true             ; boolean (also: false)
-  :null        nil              ; nil (also: null, ~)
-  :flag                         ; true (no value = flag)
+  :null        nil              ; nil (also: null)
+  :flag?                        ; true (flag key — presence alone means true)
   :list        [one two three "with spaces"]
   :empty       []
   :mixed       [42 true "hi" nil]
@@ -38,7 +38,9 @@
   ; Structured attribute with children:
   :headers
     |header :name Content-Type :value application/json
-  :inline-val  |{limit :requests 100 :window 60s}
+  ; A node value binds via the block form (no braces — braces would make
+  ; this a text blob instead, see CORE.md "Node Values")
+  :inline-val  |limit :requests 100 :window <60s>
 
 ; === ELEMENTS ===
 
@@ -53,9 +55,9 @@
 |service.reusable.logging :name mine ; multiple mixins
 
 ; Element suffixes become quoted attributes:
-|functional?             ; == |functional :'?' true
+|functional?             ; == |functional :'$?' true
 |field?[opt]             ; suffix before id
-|children[clist]+        ; == |children[clist] :'+' true
+|children[clist]+        ; == |children[clist] :'$+' true
 
 ; === REFERENCES ===
 
@@ -111,7 +113,9 @@
 
 ; Triple backtick for raw blocks:
 |example
-  Normal UDON here, then: ```
-|this is literal, not an element
-:this too
-``` Back to UDON.
+  Normal UDON here, then:
+  ```
+  |this is literal, not an element
+  :this too
+  ```
+  Back to UDON.

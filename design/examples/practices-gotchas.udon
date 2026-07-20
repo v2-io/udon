@@ -21,14 +21,17 @@
         |p This has **bold** and `inline code`.
 
         ; Use inline elements only when needed
-        |p See |{a :href /docs the docs} for details.
+        |p See |{a :href /docs \ the docs} for details.
 
     |tip[attributes-vs-children]
-      Use attributes for typed scalars and children for structure, order,
-      repetition, or prose.
+      Ask whose name it is. An attribute is a labeled edge from the
+      *parent's* perspective (its value can be a scalar, a text blob, or
+      even a node); a child names *what it is* and is positional. Use
+      attributes for "my X" relationships and children for structure,
+      order, repetition, or prose.
 
       !:udon:
-        ; Attributes: typed scalars (same-key assignments stack, in order)
+        ; Attributes: labeled edges (same-key assignments stack, in order)
         |message :timestamp "2025-01-15" :priority 3
           Body text here
 
@@ -116,7 +119,7 @@
 
       !:udon:
         |config
-          :debug         ; true (flag present)
+          :debug?        ; true (flag present)
           :verbose false ; false
           :timeout nil   ; explicit nil
           ; :cache is absent

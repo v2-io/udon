@@ -43,8 +43,8 @@
     |actions
       |create[open]
         :accept [subject body priority requester-email]
-        |validate :priority
-        |change :set-due-date
+        |validate :priority?
+        |change :set-due-date?
 
         ; SLA timing (priority-dependent) is easier in code
         !:ex:
@@ -62,16 +62,16 @@
 
       |update[assign]
         :accept [assignee-id]
-        |authorize :agents-only
+        |authorize :agents-only?
 
       |update[close]
         :accept []
-        |change :set-status-closed
+        |change :set-status-closed?
 
     |policies
       |policy[agents-only]
         :effect allow
-        |when :actor-role == :agent
+        |when :actor-role == agent
 
     |validations
       |validation[priority]
@@ -95,7 +95,7 @@
     |actions
       |create[post]
         :accept [ticket-id author-email body internal]
-        |change :touch-ticket
+        |change :touch-ticket?
 
         !:ex:
           def change(changeset, _opts, _ctx) do

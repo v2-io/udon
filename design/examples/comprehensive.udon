@@ -33,7 +33,7 @@
     :host    db.example.com
     :port    5432
     :pool    10
-    :ssl
+    :ssl?
 
     |credentials
       :username !{{env.DB_USER}}
@@ -53,12 +53,11 @@
 
   ; Absent vs nil vs false demonstration
   |nil-test
-    :flag-present           ; true (flag with no value)
+    :flag-present?           ; true (flag key, presence alone means true)
     :explicit-true   true   ; true
     :explicit-false  false  ; false
     :null-value      null   ; nil (JSON style)
     :nil-value       nil    ; nil (Ruby style)
-    :tilde-value     ~      ; nil (YAML style)
     ; :absent-key is not here — it's absent, not nil
 
 ; ----------------------------------------------------------------------------
@@ -67,14 +66,14 @@
 
 |schema[user]
   :description "User account schema"
-  |field[id]!                     :type integer :auto-increment
-  |field[email]!                  :type string  :format email :unique
+  |field[id]!                     :type integer :auto-increment?
+  |field[email]!                  :type string  :format email :unique?
   |field[name]?                   :type string  :max-length 100
   |field[roles]*                  :type string  :enum [admin user guest]
   |field[primary-role]+           :type string
   ; Suffix position variations
   |field?[optional-with-id]       :type string
-  |field[another-id]? .searchable :type string
+  |field[another-id].searchable ? :type string
 
 ; ----------------------------------------------------------------------------
 ; DOCUMENT — Prose-centric usage with embedded structure
@@ -82,7 +81,9 @@
 
 |article[welcome-guide]
   :author Joseph Wecker
-  :date 2025-12-22
+  :date <2025-12-22>  ; typed envelope -- no temporal dialect loaded yet in
+                       ; this version, so it passes through as the string
+                       ; "<2025-12-22>" plus a NoDialectsLoaded warning
   :tags [udon tutorial documentation]
   :status published
 
@@ -90,18 +91,18 @@
 
   UDON is a **unified notation** for data, documents, and configuration.
   The key insight: most real content is |{em mixed}—not purely data
-  |{em or} purely prose, but |{dfn :id mixed-content mixed content} where
+  or |{em purely} prose, but |{dfn :id mixed-content \ mixed content} where
   structure appears |{ul inline} exactly where it's needed. ;{TODO: improve this wording}
 
   Consider this paragraph: it contains |{abbr :title "Application Programming Interface" API}
-  references, |{a :href #getting-started internal links}, and even
-  |{data :value 42 :type metric a structured data point} all flowing
+  references, |{a :href #getting-started \ internal links}, and even
+  a |{data :value 42 :type metric \ a structured data point} all flowing
   naturally within the prose.
 
   ## Why Another Format?
 
   Existing formats force uncomfortable trade-offs. See the comparison
-  in |{a :href #format-comparison Table 1} below:
+  in |{a :href #format-comparison \ Table 1} below:
 
   |table[format-comparison]   ; Obviously this could just be a markdown table instead, but demoing more structure
     |tr      |{th Format}     |{th Prose} |{th Data}  |{th Inline}
@@ -117,7 +118,9 @@
 
   |blockquote
     :source "Ancient Proverb"
-    :cited-by |{a :href https://example.com Source}
+    ; A node value binds via the block form (no braces -- braces would make
+    ; this a text blob instead of the |a node itself, see CORE.md "Node Values")
+    :cited-by |a :href https://example.com \ Source
 
     The best notation is the one that gets out of your way
     while keeping your data safe.
@@ -128,7 +131,7 @@
     ### Your First UDON File
 
     Here's what makes UDON special—you can explain things in natural
-    prose while embedding |{code :lang udon |server :host localhost}
+    prose while embedding |{code :lang udon "|server :host localhost"}
     inline, or break out to a full example:
 
     !:udon:
@@ -142,12 +145,13 @@
 
     ### Escaping Special Characters
 
-    Sometimes you need literal prefix characters:
+    Sometimes you need literal prefix characters. `\` at head position is
+    the sole escape — it forces the rest of the line to prose:
 
-    '|this is not an element — it's prose starting with a pipe
-    ':this is not an attribute — just text with a colon
-    ';this is not a comment — semicolons in prose
-    ''and this shows a literal apostrophe
+    \|this is not an element — it's prose starting with a pipe
+    \:this is not an attribute — just text with a colon
+    \;this is not a comment — semicolons in prose
+    \\literal backslash
 
     Back to normal prose here.
 
@@ -163,14 +167,14 @@
     |p Prose with |{em emphasis}, |{strong |{em nested} formatting}, and
        |{a :href /doc :title "Full documentation" the |{em official} docs}.
 
-    The first uses |{code |element} for structural nesting. The second
+    The first uses |{code "|element"} for structural nesting. The second
     uses |{code "|{element}"} for inline content within prose—crucial
-    for |{dfn :id mixed-content-def documents where structure and prose
+    for |{dfn :id mixed-content-def \ documents where structure and prose
     are interwoven}.
 
     ### Navigation Example
 
-    |nav.main |{a :href / Home} |{a :href /about About} |{a :href /docs Docs} |{a :href /contact Contact}
+    |nav.main |{a :href / \ Home} |{a :href /about \ About} |{a :href /docs \ Docs} |{a :href /contact \ Contact}
 
     ### Code Samples
 
@@ -235,9 +239,9 @@
         !else
           |section.guest
             |p Welcome, guest!
-            |a :href /login Please sign in
+            |a :href /login \ Please sign in
             |span or
-            |a :href /register create an account
+            |a :href /register \ create an account
 
         !let featured = posts | where "featured" true | first
           !if featured
@@ -248,7 +252,12 @@
         |section.posts
           !for post in posts
             |article :id post-!{{post.id}}
-              |h3 |a :href /posts/!{{post.id}} !{{post.title}}
+              ; the \ marks where the href value ends -- without it the
+              ; trailing !{{post.title}} would glue onto href's blob instead
+              ; of becoming the link's own content (no inline brace form is
+              ; ever a boundary marker, see CORE.md "The Scan and the
+              ; Bare-Token Boundary")
+              |h3 |a :href /posts/!{{post.id}} \ !{{post.title}}
               |p.meta
                 By !{{post.author.name}} on !{{post.date | format "%Y-%m-%d"}}
               |p !{{post.excerpt}}
@@ -264,29 +273,35 @@
   :path /api/users
   :auth required
 
-  :headers
-    |header :name Content-Type :value application/json
-    |header :name X-API-Version :value "2025-01"
-    |header :name Authorization :value Bearer !{{token}}
+  ; Each :headers line stacks another |header node onto the same key --
+  ; the warning-free way to get more than one node value under one
+  ; attribute (see CORE.md "Node Values": one node per declaration,
+  ; stack the key to add more)
+  :headers |header :name Content-Type :value application/json
+  :headers |header :name X-API-Version :value "2025-01"
+  :headers |header :name Authorization :value Bearer !{{token}}
 
-  :request-body
-    |field[email] :type string :required
-    |field[password] :type string :required :min-length 8
-    |field[name] :type string
+  :request-body |field[email] :type string :required?
+  :request-body |field[password] :type string :required? :min-length 8
+  :request-body |field[name] :type string
 
-  :responses
-    |response :status 201 :description "User created"
-    |response :status 400 :description "Validation error"
-    |response :status 409 :description "Email already exists"
+  :responses |response :status 201 :description "User created"
+  :responses |response :status 400 :description "Validation error"
+  :responses |response :status 409 :description "Email already exists"
 
 ; ----------------------------------------------------------------------------
 ; REFERENCES — ID references for reuse
 ; ----------------------------------------------------------------------------
 
-; Two forms of ID reference:
+; Two forms of reuse:
 ;   @[id] — Inert reference to the element (a typed pointer; resolution,
 ;           if any, is tooling-layer — the parser never inserts)
-;   :[id] — Merge only attributes from that element
+;   .trait (mixin) — a mixin-aware host may fold a matching anonymous
+;           trait-only element's attributes into a target that carries
+;           the same trait (see CORE.md "Mixins"). This replaces the old
+;           `:[id]` attribute-merge syntax, which is removed in 0.9 --
+;           merging is now this host-resolution mode, matched by trait
+;           rather than by a specific id.
 
 |license[mit]
   MIT License
@@ -318,16 +333,23 @@
   :dependencies
     |dep :name udon-parser :version "~> 0.7"
 
-; :[id] — Attribute merge (like mixin but via ID)
-|.db-defaults[base-db]
+; Mixin — an anonymous, trait-only element carrying shared attributes
+|.db-defaults
   :adapter postgres
   :host localhost
   :pool 5
   :timeout 30
 
-; Merge base-db attributes, then override/add specific ones
-|database[dev]  :[base-db] :database myapp_dev  :pool  2
-|database[prod] :[base-db] :database myapp_prod :pool 20 :ssl
+; A mixin-aware host folds db-defaults' attributes into any element
+; carrying the same trait; override/add specific ones per element
+|database[dev].db-defaults
+  :database myapp_dev
+  :pool 2
+
+|database[prod].db-defaults
+  :database myapp_prod
+  :pool 20
+  :ssl?
 
 ; ----------------------------------------------------------------------------
 ; EMBEDDED ELEMENTS AND EDGE CASES
@@ -340,7 +362,7 @@
   |p Multiple: |{em one}, |{strong two}, and |{code three}.
   |p With attributes: |{a :href /foo :title "Link title" click here} works.
   |p Nested: |{strong This is |{em very} important} stuff.
-  |p Complex: See |{a :href /doc the |{em official} |{code API} docs} for details.
+  |p Complex: See |{a :href /doc \ the |{em official} |{code API} docs} for details.
 
   ; --- Inline comments (;{...}) ---
   |p This text has ;{an inline comment here} that the parser emits but renderers may strip.
@@ -361,7 +383,9 @@
     :single      [only-one]
 
   ; --- Deeply nested structure ---
-  |level-1 |level-2 |level-3 |level-4 :deep true Finally at the bottom!
+  ; the \ finishes :deep's value at "true" (a bare boolean) so the rest of
+  ; the line becomes level-4's own prose, matching the expanded form below
+  |level-1 |level-2 |level-3 |level-4 :deep true \ Finally at the bottom!
 
   ; Same thing expanded:
   |level-1
@@ -377,42 +401,49 @@
 
 |doc[api-guide].technical
   :version 2.1.0
-  :last-updated 2025-12-22
+  :last-updated <2025-12-22>
   :authors ["Joseph Wecker" "Contributors"]
 
   ## Authentication
 
   All API requests require a bearer token. Obtain one from the
-  |{a :href /oauth OAuth endpoint} using your |{code client_id} and
+  OAuth |{a :href /oauth endpoint} using your |{code client_id} and
   |{code client_secret}.
 
   |endpoint[auth-token] :method POST :path /oauth/token
-    :rate-limit |{limit :requests 10 :window 60s}
+    ; a node value binds via the block form, not braces -- see the
+    ; :rate-limit note further down for the full explanation
+    :rate-limit |limit :requests 10 :window <60s>
 
-    Request an access token. Returns |{code :type response token} valid
+    Request an access token. Returns |{code :type response \ token} valid
     for |{duration :seconds 3600 one hour}.
 
-  Token format: |{code Bearer <token>}. Include in the
-  |{code Authorization} header of all subsequent requests.
+  Token format: |{code Bearer <token>}. Include
+  the |{code Authorization} header on all subsequent requests.
 
   ## User Endpoints
 
   The |{code /users} resource supports full |{abbr :title "Create, Read, Update, Delete" CRUD}
-  operations. All responses include |{field :name _links :type object HAL-style links}.
+  operations. All responses include |{field :name _links :type object \ HAL-style links}.
 
   |endpoint[create-user] :method POST :path /users
     :auth required
-    :rate-limit |{limit :requests 100 :window 60s}
+    ; A node value binds via the block form (no braces -- |{limit ...}
+    ; would make this a text blob rather than the |limit node itself,
+    ; see CORE.md "Node Values" / "The Scan and the Bare-Token Boundary")
+    :rate-limit |limit :requests 100 :window <60s>
 
-    Creates a new user. The |{field :name email :required} field must be
+    Creates a new user. The |{field :name email :required?} field must be
     unique. Optional fields include |{field :name name}, |{field :name avatar_url},
     and |{field :name metadata :type object}.
 
     |example :type request
-      |{code-block :lang json {"email": "alice@example.com", "name": "Alice"}}
+      ; the \ finishes :lang's value at "json" so the JSON body is the
+      ; code-block's own content, not part of the lang attribute
+      |{code-block :lang json \ {"email": "alice@example.com", "name": "Alice"}}
 
     |example :type response :status 201
-      |{code-block :lang json {"id": "usr_abc123", "email": "alice@example.com"}}
+      |{code-block :lang json \ {"id": "usr_abc123", "email": "alice@example.com"}}
 
     Possible errors:
       |error :code 400 validation failed,
@@ -420,20 +451,23 @@
 
   ## Rate Limiting
 
-  All endpoints are rate-limited. When you exceed the limit, the API returns
-  |{status :code 429 Too Many Requests} with a |{header :name Retry-After}
+  All endpoints are rate-limited. When you exceed the limit, the API
+  returns |{status :code 429 Too Many Requests} with a |{header :name Retry-After}
   header indicating seconds until the limit resets.
 
+  ; It is assumed that inlines like |{..} are processed before any
+  ; markdown rendering/processing. A leading "| " is already always literal
+  ; prose (pipe-space preserves Markdown table compatibility), so no
+  ; leading apostrophe is needed to keep these rows out of element parsing.
   Current limits by tier:
-  '| Tier       | Requests/min | Burst    |
-  '|------------|--------------|----------|
-  '| Free       | |{n 60}      | |{n 10}  |  ; It is assumed that inlines like |{..} are
-  '| Pro        | |{n 600}     | |{n 100} |  ;   processed before any markdown rendering/processing
-  '| Enterprise | |{n 6000}    | |{n 1000}|
+  | Tier       | Requests/min | Burst    |
+  |------------|--------------|----------|
+  | Free       | |{n 60}      | |{n 10}  |
+  | Pro        | |{n 600}     | |{n 100} |
+  | Enterprise | |{n 6000}    | |{n 1000}|
 
-
-  For higher limits, |{a :href /contact contact sales} or see the
-  |{a :href /docs/enterprise Enterprise documentation}.
+  For higher limits, |{a :href /contact \ contact sales} or see the
+  |{a :href /docs/enterprise \ Enterprise documentation}.
 
 ; ----------------------------------------------------------------------------
 ; TRIPLE-BACKTICK ESCAPE (Rare — for edge cases only)
@@ -442,13 +476,14 @@
 |raw-example
   :description "Sometimes you need to break free of indentation"
 
-  Here's content that uses the rare triple-backtick escape ```
+  Here's content that uses the rare triple-backtick escape:
+  ```
 This content ignores indentation rules entirely.
     We can start wherever we want.
   Go back to column 0.
 |this-pipe-is-literal-text-not-an-element
 :this-colon-too
-```
+  ```
 
   Back to normal UDON parsing now.
 

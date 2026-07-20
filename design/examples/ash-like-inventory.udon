@@ -19,7 +19,7 @@
     |actions
       |create[register]
         :accept [sku name category]
-        |validate :sku-format
+        |validate :sku-format?
 
       |read[by-sku]
         :get true
@@ -57,8 +57,8 @@
     |actions
       |update[adjust]
         :accept [delta reason]
-        |validate :non-negative
-        |change :apply-adjustment
+        |validate :non-negative?
+        |change :apply-adjustment?
 
         ; Escape hatch for concurrency-safe adjustment
         !:ex:
@@ -92,7 +92,7 @@
     |actions
       |create[record]
         :accept [product-id warehouse-id delta reason]
-        |change :set-occurred-at
+        |change :set-occurred-at?
 
         !:ex:
           def change(changeset, _opts, _ctx) do
@@ -103,4 +103,4 @@
     |policies
       |policy[ops-only]
         :effect allow
-        |when :actor-role == :ops
+        |when :actor-role == ops

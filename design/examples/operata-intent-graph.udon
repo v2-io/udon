@@ -26,17 +26,17 @@
       |edge[prepares]
         :from child
         :to parent
-        :when :relationship == prepares
+        :when relationship == prepares
 
       |edge[decomposes]
         :from child
         :to parent
-        :when :relationship == decomposes
+        :when relationship == decomposes
 
       |edge[supports]
         :from child
         :to parent
-        :when :relationship == supports
+        :when relationship == supports
 
     |queries
       |query[ready]
@@ -52,7 +52,7 @@
           |all[preparations]
             :edge prepares
             :direction inbound
-            :predicate :status == realized
+            :predicate status == realized
 
       |query[blocked]
         :description "Active intents with unmet preparatory children"
@@ -65,14 +65,14 @@
           |any[unsatisfied]
             :edge prepares
             :direction inbound
-            :predicate :status != realized
+            :predicate status != realized
 
       |query[critical-path]
         :description "Longest preparatory chain for an intent"
         :return [intent depth]
 
         |input
-          :intent-id
+          :intent-id?
 
         |graph-walk
           :edge prepares
@@ -97,12 +97,12 @@
         :return [intent score]
 
         |pipeline
-          |from :ready
+          |from :ready?
           |join :by-owner "current_actor"
           |score
             :base 100
-            :subtract :age-days
-            :boost-if :relationship == prepares
+            :subtract age-days
+            :boost-if relationship == prepares
 
           |order
             :score desc

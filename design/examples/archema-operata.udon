@@ -22,7 +22,7 @@
       |timestamps
 
     |actions
-      |defaults [create read update destroy]
+      |defaults :actions [create read update destroy]
 
       |update[archive]
         :description "Archive this effort for future reference"
@@ -61,13 +61,13 @@
       |timestamps
 
     |actions
-      |defaults [create read update destroy]
+      |defaults :actions [create read update destroy]
 
       |update[claim]
         :description "Signal that you're working on this intent"
         :arguments [claimer]
-        |change :set-claimed-by !{claimer}
-        |change :set-claimed-at !{now}
+        |change :set-claimed-by !{{claimer}}
+        |change :set-claimed-at !{{now}}
 
       |update[release]
         :description "Release your claim on this intent"
@@ -149,7 +149,7 @@
       |timestamps
 
     |actions
-      |defaults [create read update destroy]
+      |defaults :actions [create read update destroy]
 
       |update[mark-propagate]
         :description "Mark this learning as needing propagation upward"
@@ -189,17 +189,17 @@
       |timestamps
 
     |actions
-      |defaults [create read update destroy]
+      |defaults :actions [create read update destroy]
 
       |create[declare]
         :description "Declare a new focus perspective"
         :arguments [name focus-effort-id focus-intent-id rationale owner-type]
-        |change :set-declared-at !{now}
+        |change :set-declared-at !{{now}}
 
       |update[refocus]
         :description "Shift focus to a different effort or intent"
         :arguments [focus-effort-id focus-intent-id rationale]
-        |change :set-declared-at !{now}
+        |change :set-declared-at !{{now}}
 
       |update[archive]
         :description "Archive this perspective (no longer current)"
