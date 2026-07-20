@@ -33,6 +33,17 @@ rulings: `../spec/msc/CHANGELOG.md` alpha.2.
 
 ## Open
 
+> **⚠ PAUSED — attribute-value wire reconception (2026-07-19).** The flat
+> "Event Encoding (0.9 Wire)" was **DERATIFIED** (CORE banner + CHANGELOG): it
+> carried a value's extent only implicitly, so the stream couldn't separate a
+> value from element content. The replacement is an explicit value bracket
+> (`AttrStart`/`AttrEnd`), still to be ratified. **Do not implement grammar on
+> the flat wire** — the `*{` boundary rewrite, the blob re-emit machinery, the
+> last `;{`-in-blob red (below), and the mixed-interpolation implementation all
+> ride on this and wait for it. The `*{` **semantics** in CORE stand
+> (encoding-independent). Full arc + loose ends:
+> `../spec/msc/brownfield/DIRECTION-2026-07-19.md`.
+
 - [ ] **`|{…}`-led block-prose line silently swallows following same-column
       structure** (found 2026-07-19 by the example-modernization pass;
       independently reproduced). A block-prose line whose first non-space content

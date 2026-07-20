@@ -213,6 +213,14 @@ are archived — fully drained into the per-area TODO lanes on 2026-07-16 —
 at [_archive/REVIEW-JULY-2026.md](_archive/REVIEW-JULY-2026.md) and
 [_archive/REBOOT-PLAN.md](_archive/REBOOT-PLAN.md).
 
+> **⚠ Direction pivoted later the same day (2026-07-19 PM).** The flat
+> attribute-value **wire was deratified** (see CORE "Event Encoding" +
+> CHANGELOG) and the tag path below is **on hold** pending a value-bracket wire
+> reconception, now being explored via clean-room spec re-derivations
+> (`spec/msc/greenfield-*`). The status and "queue to `core-v0.9.0`" in this
+> section predate that pivot — read them as the *parser* state, not the current
+> plan. Handoff: **`spec/msc/brownfield/DIRECTION-2026-07-19.md`**.
+
 **Where things stand (2026-07-19):** CORE is at **`0.9.0-alpha.2`** and the
 reference parser is **fully green** on the active compliance group (both
 backends, `pushdown_differential` proven), after three major landings across
