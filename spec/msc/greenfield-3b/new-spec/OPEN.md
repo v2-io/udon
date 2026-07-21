@@ -14,11 +14,13 @@ unfinished rather than silently fixed.
 | O7 | Reference path syntax | Successor to selector tuples |
 | O8 | Inline control-flow Dynamics | Not in baseline |
 | O9 | Formal grammar | Deferred; Nesting Rule + Guards are prose-precise for now |
-| O10 | Conformance fixture suite | Tied to this contract version; multi-line cases per D1 |
-| O11 | Float semantic equality | Bit vs decimal spelling — Host profile? |
+| O10 | Conformance fixture suite | Tied to this contract version; multi-line cases per D1 rows |
+| O11 | Float semantic equality | Bit vs decimal spelling — Host profile? Soft in SEMANTICS |
 | O12 | Comment whitespace around `;{…}` | Preserve vs collapse framing spaces |
 | O13 | Mixins | Remain experimental Host behavior |
 | O14 | Intervals / RRULE / IANA in temporal@1 | temporal.md §10 |
+| **O15** | **In-string escapes** | **Fork after Fable:** (A) none / other quote — *interim in CORE*; (B) `\\`+delimiter quote; (C) doubling (collides with list `["x""y"]`). See DECISIONS D7. |
+| **O16** | **Multi-line `;{…}` / `!{…}` / `!{:…}`** | **Split from D1:** document-swallow failure mode; decide with dialect/inline work. Identity already line-bound (D1). |
 
 When an open item is closed, record the decision in DECISIONS.md (or a
 changelog) and delete or shrink the row here.

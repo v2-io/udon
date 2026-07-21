@@ -334,9 +334,10 @@ relationship to parent ⇒ Attribute; what the thing is ⇒ child Element.
 Attributes appear **sameline**, **block**, or inside Inline Elements. Value
 grammar is uniform; terminators and tail ownership differ by context (§6.6).
 
-**[GREENFIELD]** An Attribute at Document root (no owning Element) is an
-**Error**. The line is kept as Document-level Text (including the leading `:`)
-so bytes are not lost. Do not rely on free-floating Attributes.
+**[GREENFIELD]** An Attribute at Document root (no owning Element) is a
+**Warning**. The line is kept as Document-level Text (including the leading `:`)
+so bytes are not lost — nothing is lost, so severity is Warning, not Error
+(§14.1). Do not rely on free-floating Attributes.
 
 ### 6.2 Keys and Flag Keys
 
@@ -358,7 +359,7 @@ After `:key?`, examine the next token in value position:
 2. **Anything else** (bare word, `|node`, `:next`, end of line, …) → the flag
    is **true**, and that material is **re-owned** by the continuing Line Scan
    (never the flag’s body). No multi-segment warning for this re-owning.
-3. Deeper lines under a finished flag follow the finished-value multi-segment
+3. Deeper lines under a finished flag follow the finished-value warned-extension
    rule (§6.7).
 
 ### 6.3 Value Kinds
@@ -399,11 +400,17 @@ A bare word is decided by:
 **Bare Token Boundary.** After an unquoted token, the next non-space character:
 
 - **Boundary Marker** → token finishes as a single-token value; scan continues.
-  Boundary Markers are block-form Markers (`:`, block `|`, block `@`, block `!`,
-  Fence, value-position or boundary `\`) and framed sameline ` ; `.
+  Boundary Markers are *guard-confirmed* block-form Markers (`:`, block `|`,
+  block `@`, block `!`, Fence), value-position or boundary `\`, and framed
+  sameline ` ; `.
 - **Anything else**, including an **inline brace form** → commit a **Flow Value**
   beginning with this token, running to end of line or framed comment (unless
   value-`\` text mode, §6.5 / §9).
+
+A character that *looks* like a marker but **fails its Guard** (§4) is not a
+Boundary Marker — it is ordinary text and commits Flow together with the bare
+token (e.g. `:k v != 3` after bare `v`, or `:x :3` where `:3` fails the key
+guard). Fixtures that probe `:3`, `|~`, `!=` rely on this clause.
 
 **Inline-Brace Principle.** `|{` `!{` `;{` (and anticipated `@{`) are never
 Boundary Markers. They commit Flow Value and participate as inline segments.
@@ -425,9 +432,10 @@ When a Flow Value starts, owner priority:
 | 3 | Else | Ordinary column ownership (not an Error) |
 
 **Collecting:** on an **Attribute-Rooted Line**, the Attribute remains collector
-even after its value is finished; further same-line material is multi-segment
-ingested with Warning (§6.7). On an **Element-Rooted Line**, a finished
-Attribute never collects the tail — the Element takes it (sameline decompress).
+even after its value is finished; further same-line material is a **further
+assignment** under that key with Warning (§6.7). On an **Element-Rooted Line**,
+a finished Attribute never collects the tail — the Element takes it (sameline
+decompress).
 
 #### Deferred Value (multi-line body)
 
@@ -458,7 +466,7 @@ Owner rules unchanged.
 | Context | Extra bare terminators | Tail after finished value |
 |---------|------------------------|---------------------------|
 | Element-rooted line | (space, newline) | Element Content |
-| Attribute-rooted line | (space, newline) | multi-segment + Warning |
+| Attribute-rooted line | (space, newline) | further assignment + Warning |
 | Inside `\|{…}` | `}` unconsumed | Inline Element content |
 | List item | `]` unconsumed | *(no tails)* |
 
@@ -473,7 +481,7 @@ comments inside `|{…}` are not required).
 **List items:** no Flow Values; quote strings with spaces. `}` is not a List
 terminator. Quoted item end allows adjacent items: `["x"y]` is two items.
 
-### 6.7 Stacking and multi-segment ingest
+### 6.7 Stacking and warned extension
 
 Same Key repeated ⇒ ordered Stacking of assignments (heterogeneous Values
 allowed). Orthogonal to List literals:
@@ -484,8 +492,9 @@ allowed). Orthogonal to List literals:
 ```
 
 After a value is finished, additional material under that Key on an
-Attribute-Rooted Line (same line or deeper) is ingested as further segments /
-stacked values with a **Warning**, never silently dropped. Flags are exempt
+Attribute-Rooted Line (same line or deeper) is kept as a **further
+`AttributeAssignment`** under that key, with a **Warning** — never a nested
+multi-segment Value kind, never silently dropped (MODEL §4). Flags are exempt
 from same-line extension (Flag rule re-owns instead).
 
 Preferred warning-free multi-value style: write the Key again (Stacking) or use
@@ -658,9 +667,12 @@ spellings are ordinary bare strings / Flow Values if they appear unquoted.
 newlines are content. Unclosed at end of input → Warning + Incomplete Input
 flag (§13).
 
-Escape sequences inside quotes: `\\` `\"` or `\'` (matching delimiter) MUST be
-recognized; other `\` + char is literal pair unless a future revision extends
-the set (Host MUST NOT invent Core escapes).
+**Interior escapes (interim — OPEN O15).** This suite does **not** define Core
+escapes inside quotes: a string closes at the next unescaped occurrence of its
+own quote character; interior bytes including `\` pass through. To embed one
+quote kind, use the other (`"it's"` / `'say "hi"'`). Host MUST NOT invent Core
+escapes. See [DECISIONS.md](DECISIONS.md) D7 / [OPEN.md](OPEN.md) O15 for the
+fork (positional purity vs minimal `\\`/`\"` vs doubling).
 
 Unquoted bare text that is not another scalar is a string or Flow Value per
 §6.4.
@@ -765,11 +777,17 @@ what is written. Conformant systems need not implement mixins.
 
 ### 13.2 Multi-line policy
 
-**[GREENFIELD]** All Delimited Constructs MAY span multiple lines. Interior
-newlines are content (or item whitespace inside Lists) unless a construct’s
-section says otherwise. Geometric Constructs already span by geometry.
+**[GREENFIELD — per construct, see D1]** Geometric Constructs already span by
+geometry. Delimited forms:
 
-This replaces the source’s “deliberately undefined for most delimited forms.”
+| Construct | Cross-line |
+|-----------|------------|
+| `\|{…}`, Fence, Envelope | **Multi-line** (settled; interior newline is content) |
+| Quoted strings, Lists, Interpolation `!{{…}}` | **Multi-line** in this suite (lists: newlines are item whitespace) |
+| Identity `[…]` and reference selector keys | **Line-bound**: a newline before `]` closes as unclosed identity → `$partial-key` (or partial selector, §12) + Warning — does **not** swallow following lines. Protects the fail-safe (D1). |
+| `;{…}`, `!{…}`, `!{:…}` | **Deliberately open** (OPEN O16): do not rely on either reading |
+
+Unclosed multi-line forms at true EOF still Warning + Incomplete Input (§13.3).
 
 ### 13.3 End of input
 
@@ -794,7 +812,13 @@ Streaming chunk boundaries are not EOF.
 | Severity | Meaning |
 |----------|---------|
 | **Warning** | Content kept; may not match author intent |
-| **Error** | Loss or illegal geometry (e.g. tab in indent); recognition continues |
+| **Error** | Something was **lost**, or a required value is **genuinely absent** as written (see below); recognition continues |
+
+**Loss vs keep.** If every source byte is represented in the ADM (as structure
+or Text), severity MUST be Warning unless a more specific rule names Error for
+*absent intended value* (plain `:key` with no value material → assignment with
+Nil + Error: the value the author needed is not present, even though the key
+slot is kept). Root-level `:attr` loses nothing → **Warning** only (D3).
 
 ### 14.2 Keep-Everything
 
@@ -811,10 +835,11 @@ second silent recognition mode.
 | Situation | Severity | Keep shape |
 |-----------|----------|------------|
 | Unclosed delimited | Warning (+ Incomplete at EOF) | Partial content |
-| Unclosed identity `[` | Warning | `$partial-key` |
-| Trailing text on Attribute-rooted finished value | Warning | Multi-segment / stack |
+| Unclosed identity `[` | Warning | `$partial-key` (or line-bound close, §13.2) |
+| Trailing text on Attribute-rooted finished value | Warning | Further stacked assignment under that key |
 | Late `:` after Content Phase | Warning | Text |
-| Plain `:key` missing value | Error | Attribute with Nil |
+| Plain `:key` missing value | Error | Attribute with Nil (intended value absent) |
+| Root-level `:key` | Warning | Document-level Text |
 | Attribute under Attribute | Error | Text ingest into open value |
 | Tab in indentation | Error | Best-effort line keep |
 | Inconsistent prose indent | Warning | Rebase Content Base |

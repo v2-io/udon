@@ -537,7 +537,7 @@ elem_end
 
 ---
 
-## T21 — `$partial-key`
+## T21 — `$partial-key` (line-bound identity, post-Fable D1)
 
 ```udon
 |user[trunc
@@ -552,9 +552,27 @@ elem_end
 doc_end
 ```
 
+**Also (editing accident — fail-safe lives):**
+
+```udon
+|user[trunc
+|next
+```
+
+```text
+; line 1: newline closes identity as partial (line-bound), does NOT swallow |next
+elem_start name=user
+  attr key=$partial-key value=Str("trunc")
+  warn code=unclosed_identity
+elem_end
+elem_start name=next
+elem_end
+; document complete unless other open delimited frames
+```
+
 ---
 
-## T22 — Multi-line string (D1)
+## T22 — Multi-line string (D1 strings row)
 
 ```udon
 |el :msg "line one

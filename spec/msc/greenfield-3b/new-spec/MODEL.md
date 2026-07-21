@@ -135,9 +135,13 @@ Value =
   | Interpolation
   | NodeValue
   | FlowValue
-  | MultiSegment    ; ordered list of Value, from stacking-adjacent ingest
-                    ; or warn-ingest of trailing material under one key
 ```
+
+**Multiplicity has one channel.** Stacking and warned extension (material after
+a finished value on an attribute-rooted line, or a deeper second value under a
+finished key) are always **further `AttributeAssignment`s** under the same key,
+in source order — never a nested multi-segment Value kind. Round-trip tools
+emit repeated `:key` (or equivalent longhand), not a collapsed list.
 
 ### 4.1 Scalar
 
@@ -206,9 +210,15 @@ Flow Values and Element prose share one text model.
 ```
 Reference =
   name:    Name | absent
-  key:     Value | absent     ; from […]; may be $partial-key path on failure
+  key:     Value | absent     ; from […] when closed
   traits:  ordered list of string
+  partial: boolean            ; true if the selector key bracket never closed
 ```
+
+When `partial` is true, `key` holds the captured-so-far value (if any). This is
+**not** modeled as a `$partial-key` attribute on a phantom element — the
+fail-safe lives on the selector so resolvers exclude incomplete references the
+same way `$partial-key` excludes incomplete element identity (CORE §5 / §12).
 
 Core does not resolve References. Host resolution modes (menu): `transclude` |
 `merge-attributes` | `leave-inert` (default inert at Core).
@@ -245,7 +255,7 @@ for a “data-only” view; that is a view, not the ADM default.
 
 ---
 
-## 6. Text
+## 6. Text and the text law
 
 ```
 Text = string   ; may include newlines; prose dedentation already applied
@@ -254,6 +264,27 @@ Text = string   ; may include newlines; prose dedentation already applied
 
 Markdown constructs inside Text are **not** modeled by Core; they remain
 characters. See [layers/markdown.md](layers/markdown.md).
+
+### 6.1 The text law (normative invariant)
+
+**Document text reconstructs by pure in-order concatenation of every `Text`
+node (and every Flow text segment after inline comments are dropped), with no
+fabricated join characters and no re-consultation of the source.**
+
+Consequences (stated elsewhere as rules; derived here):
+
+1. Each prose line’s line terminator is part of Text; indentation stripped by
+   dedentation is geometry, not Text (CORE §7).
+2. A blank line between two text lines of the same flow is Text (a newline);
+   ornamental blanks at pure structure boundaries MAY be dropped by a
+   normalizing Document layer (SEMANTICS §2.7).
+3. Inline comments contribute no Text; surrounding whitespace is ordinary Text
+   unless a Host normalizes later.
+4. Verbatim bodies are exact bytes (each body line keeps its terminator).
+5. Adjacent pure Text segments MAY be flattened; concatenation is associative.
+
+A future wire/event encoding is adequate only if this invariant is recoverable
+from it.
 
 ---
 

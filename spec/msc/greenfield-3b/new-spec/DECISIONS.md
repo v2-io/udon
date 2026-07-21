@@ -9,24 +9,37 @@ Items that only reorganize language are marked **[ORG]**.
 
 ---
 
-## D1 — Multi-line delimited constructs  **[BEHAVIOR]**
+## D1 — Multi-line delimited constructs  **[BEHAVIOR]** *(revised after Fable)*
 
 **Source:** CORE left most delimited constructs “deliberately undefined” across
 newlines; only `|{…}`, Fence, and `<…>` were settled multi-line. Joseph noted
 single-line-only decisions would not last.
 
-**Decision:** All Delimited Constructs MAY span multiple lines. Interior
-newlines are content (Lists: whitespace between items). Unclosed at true EOF
-still Warning + Incomplete Input.
+**Original pin (withdrawn as a single atom):** all delimited forms multi-line.
 
-**Impact:** Documents that break strings, arrays, identity keys, interpolations,
-or inline comments across lines become defined (legal) rather than
-at-your-own-risk. Recognizers that previously closed arrays/keys at newline will
-need to follow this contract when reimplemented.
+**Revised decision — per-construct rows** (ratify separately):
 
-**Reasoning:** Uniform extent model (geometric vs delimited only); matches
-envelope/inline element; enables multi-line typed and structured values without
-a second exception list.
+| Construct | Multi-line? | Notes |
+|-----------|-------------|--------|
+| Inline element `\|{…}` | **Yes** (settled) | Already source-settled |
+| Fence | **Yes** (settled) | Already source-settled |
+| Envelope `<…>` | **Yes** (settled) | Already source-settled |
+| Quoted strings | **Yes** (this suite) | Structured values want it; see also D7/O15 |
+| Lists `[…]` | **Yes** (this suite) | Newlines = item whitespace |
+| Interpolation `!{{…}}` | **Yes** (this suite) | Prefer multi-line over silent close |
+| Identity `[…]` / ref selector key | **Line-bound** (this suite) | Protects `$partial-key` fail-safe; unclosed at newline → `$partial-key` + Warning, not swallow-to-EOF |
+| Inline comment `;{…}` | **Open** — [OPEN O16](OPEN.md) | Failure mode is document-swallow; decide with dialect/inline work |
+| Inline directive/verbatim `!{…}` / `!{:…}` | **Open** — [OPEN O16](OPEN.md) | Same concern |
+
+**Impact of the revision:** An editing accident `|el[k` + next structural line
+again yields `$partial-key` (fail-safe lives). Unclosed `;{` / `!{{` are *not*
+yet licensed to consume the rest of the document; until O16 closes, treat
+cross-line as at-your-own-risk for those forms only.
+
+**Reasoning (Fable):** Uniformity is purchasable without making identity and
+inline-comment typos misfile the remainder of a stream. Geometric vs delimited
+stays the taxonomy; line-bound is a *close rule for specific delimited forms*,
+not a third extent kind.
 
 ---
 
@@ -46,16 +59,18 @@ Envelope + Dialect better than eternal bare growth.
 
 ---
 
-## D3 — Root-level attributes  **[BEHAVIOR]**
+## D3 — Root-level attributes  **[BEHAVIOR]** *(severity refined after Fable)*
 
 **Source:** Undefined (parser free-floating attribute; “do not rely”).
 
-**Decision:** Error; keep line as Document-level Text including `:`.
+**Decision:** **Warning** (not Error); keep line as Document-level Text
+including `:`. Nothing is lost — severity tracks loss (§14.1).
 
-**Impact:** No portable meaning for top-level `:key`. Bytes preserved.
+**Impact:** No portable meaning for top-level `:key`. Bytes preserved. Hosts
+that want hard-fail may promote via Consumer policy.
 
 **Reasoning:** Attributes are edges of Elements; root edges without a node are
-not in the ADM. Error + keep beats silent free-float.
+not in the ADM. Keep-everything + “Error means loss” forbids Error here.
 
 ---
 
@@ -92,13 +107,24 @@ the language.
 
 ---
 
-## D7 — Strings and Lists multi-line escapes  **[BEHAVIOR]** (subset of D1)
+## D7 — In-string escapes  **[BEHAVIOR → OPEN]** *(re-opened after Fable)*
 
-**Decision:** Quoted strings multi-line with newline-as-content. Minimal Core
-escapes: `\\` and delimiter quote only.
+**Original pin:** `\\` and matching `\"`/`\'` inside quoted strings.
 
-**Reasoning:** Avoid underspecified `\n` wars; Hosts may interpret more in
-Dialects later. Keeps Core small.
+**Status now:** **Withdrawn as a closed pin.** Multi-line strings remain under
+D1 (strings row). Interior escape policy is **[OPEN O15](OPEN.md)** — genuine
+fork:
+
+| Option | Pros | Cons |
+|--------|------|------|
+| A — positional purity: no interior escapes; use the other quote kind | Keeps §9 “`\` is position only”; `C:\Users\new` stays literal | Cannot embed both quote kinds in one string without Host convention |
+| B — Core minimal: `\\` + delimiter quote only (old D7) | Expresses any string in one quote kind | Fifth, non-positional use of `\`; mixed `\n` literal-pair surprises |
+| C — doubling only (`""` inside `"`) | No backslash story | Collides with list adjacent-quoted items `["x""y"]` = two items |
+
+**This suite’s interim posture (not a ratification claim):** Option **A** —
+no interior Core escapes; contain one quote kind with the other. Aligns with
+Fable/2a and preserves positional `\`. Marked interim in CORE §11.3 until O15
+closes.
 
 ---
 
@@ -181,6 +207,24 @@ CORE wins.
 
 **Impact:** None on document bytes; improves dual-track reading (parser vs
 Host/ADM).
+
+---
+
+## D17 — Fable pass tightenings  **[ORG]** / light **[BEHAVIOR]**
+
+Peer review (`feedback-fable.md`, 2026-07-20). Applied:
+
+| Item | Change |
+|------|--------|
+| D1 | Split per-construct; identity line-bound; inline `;{`/`!{` open (O16) |
+| D7 | Re-opened as O15; interim Option A (no interior string escapes) |
+| D3 severity | Root attr → Warning (nothing lost) |
+| MODEL MultiSegment | Dropped; warned extension = further assignment only |
+| MODEL text law | Stated once; scattered clauses are consequences |
+| Bare-token boundary | Guard-failing marker chars are not boundaries |
+| Reference fail-safe | Selector carries partial flag, not `$partial-key` attribute path |
+| GRAMMAR markers | `\` removed from marker table (positional only) |
+| SEMANTICS integers | Cross-pointer: base-normalized equivalence ≠ byte round-trip |
 
 ---
 

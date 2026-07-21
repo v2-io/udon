@@ -45,10 +45,15 @@ compare equal to their sugar forms.
 Integer values compare by mathematical value and signedness, not base spelling:
 `255` ≡ `0xFF` ≡ `0b11111111` for Core semantic equivalence.
 
+**Not round-trip-safe by design.** A faithful serializer (§3.1) MAY re-emit any
+base spelling; Core semantic equivalence deliberately ignores base. Do not use
+§2 alone as a byte-identity or recognition-identity check — see the layer table
+in §1.
+
 **Not normalized:** Float decimal spelling that would change IEEE-adjacent
 representation concerns — compare by the recognized literal string if Hosts
 need bit-exact floats; Core semantic equivalence treats `1.0` and `1.00` as
-equal Float values when both recognized as Float.
+equal Float values when both recognized as Float (OPEN O11: soft).
 
 ### 2.4 List vs stacking — NOT collapsed
 
@@ -131,8 +136,8 @@ Serializers MUST NOT:
 
 - Collapse stacking into Lists or vice versa
 - Promote `$partial-key` to `$key`
-- Drop multi-segment Values without an explicit Host “repair” mode that records
-  Anomalies
+- Collapse warned-extension / stacked assignments into a single List Value
+  without an explicit Host “repair” mode that records Anomalies
 - Reorder Attributes or Content
 
 ---

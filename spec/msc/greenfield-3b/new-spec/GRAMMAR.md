@@ -67,10 +67,13 @@ Markers fire only in **Structure Position**:
 | `@` | next is `[` `.` or ident |
 | `;` | context-dependent (see CORE §8) |
 | `` ``` `` | three backticks at Structure Position |
-| `\` | positional — see §5 |
 
-Failed guard → character is ordinary Text. First bare prose word **commits the
-line to prose** (Markers literal), except framed sameline ` ; `.
+`\` is **not** a Marker (it never begins structure); its effect is positional
+only — see §5 and CORE §9.
+
+Failed guard → character is ordinary Text (and at a bare-token boundary, not a
+Boundary Marker — CORE §6.4). First bare prose word **commits the line to
+prose** (Markers literal), except framed sameline ` ; `.
 
 ---
 
@@ -78,8 +81,10 @@ line to prose** (Markers literal), except framed sameline ` ; `.
 
 After an unquoted value token, look at the next non-space character:
 
-1. **Block-form Boundary Marker** (`:`, block `|`/`@`/`!`, Fence, boundary `\`,
-   framed ` ; `) → finish as **single-token value**; continue scan.
+1. **Guard-confirmed** block-form Boundary Marker (`:`, block `|`/`@`/`!`,
+   Fence, boundary `\`, framed ` ; `) → finish as **single-token value**;
+   continue scan. A marker-looking char that fails its guard is *not* a
+   boundary (`:3`, `|~`, `!=` → flow with the bare token).
 2. **Anything else**, including inline brace forms → commit **Flow Value**
    from this token to EOL (or framed comment).
 
@@ -112,7 +117,7 @@ Leading `\\` at Structure Position → one literal `\`.
 When Flow / trailing text starts:
 
 1. Open Attribute still needs value **or** is **collecting** (Attribute-rooted
-   line) → that Attribute (multi-segment + Warning if value already finished).
+   line) → that Attribute (further assignment + Warning if value already finished).
 2. Else nearest Element on the line → Element Content (Content Phase).
 3. Else ordinary column owner (not an Error).
 
@@ -140,7 +145,7 @@ Fence bodies: **no** prose dedent (byte-exact).
 | Kind | Closes on |
 |------|-----------|
 | **Geometric** | EOL, dedent, or EOF (silent at EOF) |
-| **Delimited** | matching end-sequence; **MAY span lines** ([DECISIONS](DECISIONS.md) D1) |
+| **Delimited** | matching end-sequence; multi-line **per construct** ([DECISIONS](DECISIONS.md) D1) — identity `[…]` is line-bound |
 
 At true EOF, close innermost-first:
 

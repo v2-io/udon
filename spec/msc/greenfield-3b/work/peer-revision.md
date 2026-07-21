@@ -42,3 +42,21 @@ door, not by deleting ownership/EOF/sugar edge rules.
 - `new-spec/GLOSSARY.md` (vocabulary policy)
 - `new-spec/DECISIONS.md` (D16)
 - `work/peer-revision.md` (this file)
+
+---
+
+## Fable pass (2026-07-20)
+
+Source: [`../feedback-fable.md`](../feedback-fable.md) (greenfield-2a author).
+
+**Agreed and applied:** split D1; re-open D7 as O15 (interim no interior escapes);
+root attr → Warning; drop MODEL MultiSegment; text law in MODEL §6.1; guard-fail
+at bare-token boundary; reference `partial` flag; GRAMMAR `\` not a marker;
+SEMANTICS integer cross-pointer; O16 for inline multi-line.
+
+**Held as praise, no code change:** SEMANTICS as distinctive contribution;
+DECISIONS tagging; coverage/auditability.
+
+**Convergence Fable flagged (stable under re-derivation):** rational/complex out
+of bare; comment content-base strip; forest document; attr-under-attr error+text;
+inline verbatim as flow segment.

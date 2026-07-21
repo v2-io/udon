@@ -57,7 +57,7 @@ Terms are sorted case-insensitively within groups.
 | Term | Definition |
 |------|------------|
 | **Value** | What an Attribute assignment carries. One of the **Value Kinds**. |
-| **Value Kind** | Scalar, Reference, Interpolation, Node Value, or Flow Value — or an ordered array of segments under one Key (via Stacking or multi-segment ingest). |
+| **Value Kind** | Scalar, Reference, Interpolation, Node Value, or Flow Value. Multiplicity under one Key is multiple assignments (Stacking / warned extension), not a nested Value kind. |
 | **Scalar** | Quoted string, number, boolean, nil, List, or typing Envelope. |
 | **Frozen Core Scalar Set** | The closed set of types recognized bare from syntax alone. Nothing is ever added to bare recognition. |
 | **List** | A `[…]` value: space-delimited items, each typed by the normal value rules. No Flow Values inside. |
@@ -65,7 +65,7 @@ Terms are sorted case-insensitively within groups.
 | **Label Ladder** | Envelope specificity: unlabelled `<…>`, type-labelled `<type:…>`, dialect-and-type-labelled `<dialect:type:…>`. |
 | **Node Value** | An Attribute value that *is* an Element, Verbatim block, or Fence (block form, no anonymous wrapper). |
 | **Flow Value** | A prose-shaped value: a sequence of Text and inline-form segments that resolves to text after Consumer processing. |
-| **Segment** | One piece of a Flow Value or of a multi-segment attribute assignment (text, interpolation, inline element, …). |
+| **Segment** | One piece of a Flow Value (text, interpolation, inline element, …). |
 | **Stacking** | Repeated same-Key attributes accumulate as an ordered list of assignments, never last-wins. Orthogonal to List literals. |
 | **Absent / Nil / False / True** | Four distinct presence states for attributes — see CORE. |
 | **Syntactic Typing** | Type is determined by syntax, not by sniffing string content. |
@@ -98,7 +98,7 @@ Terms are sorted case-insensitively within groups.
 | Term | Definition |
 |------|------------|
 | **Element-Rooted Line** | A line that contains an Element. After a finished Attribute value, trailing material becomes that Element’s Content. |
-| **Attribute-Rooted Line** | A line rooted by `:key` with no Element on it. The Attribute remains the line’s collector; trailing material after a finished value is multi-segment ingested with a Warning. |
+| **Attribute-Rooted Line** | A line rooted by `:key` with no Element on it. The Attribute remains the line’s collector; trailing material after a finished value is a further assignment under that key with a Warning. |
 | **Ownership** | Priority rules deciding who receives trailing text: open Attribute needing/collecting a value; else nearest Element on the line; else ordinary column ownership. |
 | **Deferred Value** | A value body on deeper indented lines under a Key that finished the key line without a complete value. |
 | **Geometric Construct** | Extent from geometry: end of line, dedent, or end of input. |
