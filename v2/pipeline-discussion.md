@@ -484,3 +484,226 @@ I am **not** confident the four stage *payloads* are final — and that is corre
 
 Ready to integrate marks / seed DECISIONS/OPEN / draft the one-pager when you greenlight each — not before you've finished reading both concluding inputs.
 
+
+---
+
+*(That evening a grok agent was given the freedom to devise a process and move the work forward autonomously — everything added in commit `359fed365227b11f643513dc8b68896eb721a905` beyond the three or so files that were here before. The following are parts of a conversation the next morning between Joseph and a fresh Fable instance as they looked over what was done. Fable had by then read the greenfield-pristine package, the 2a and 3b clean-room suites and their cross-reviews, the v2-spec suite, and this discussion file. Joseph needed to turn the '<' mentions below into &lt; so that they would render properly for him.)*
+
+---
+
+## Fable
+
+Read in full now — including your objection mid-thread, the demand-side inversion both agents conceded, and the closing milestone recommendations. With the whole picture, here's my honest assessment of how well the work since honors your "we're defining everything backwards" conclusion.
+
+### The inversion was heard — and structurally encoded
+
+The discussion's conclusions didn't just get filed; they became the machinery. PIPELINE.md opens with exactly the right epistemic split: "stage **names** + no-reachback are stable enough to use; stage **payloads** stay demand-shaped until spikes pull them." Your ornamental double-round-trip criterion landed verbatim as the criterion (with the comments-are-not-ornamental boundary and mandatory-vs-discretionary geometry cut), replacing the S6-style instance list. "Fold" was retired as an architecture noun. WAIT-DEMAND became a first-class decision class, and the two things demand most needs to shape — the exact attribute-value event encoding (W1e) and multi-line policy (ML) — are the two things held open. The letter of the inversion was honored: **nothing demand-sensitive got pinned supply-side.**
+
+### But measured by mass, the night still ran supply-side
+
+Here's the tension worth naming plainly. Your "what we are missing" list had four demand areas: **utility, paths, dialects (×4 axes), schema**. What got built since:
+
+- **Paths**: a real spike (332 lines, boundary demands harvested into OPEN). ✓
+- **Utility**: a real spike (472 lines, P-A…P-H demands, several already absorbed as C6/W0/pipeline direction). ✓
+- **Dialects**: thin stubs. Nothing on selection/inclusion, value-type pipeline, directive definition, or embeds — the four sub-axes you explicitly enumerated. ✗
+- **Schema**: a 1.2K stub. ✗
+
+Meanwhile the supply side got ~100K of polished spine (SPEC, WIRE, ADM, GLOSSARY, GRAMMAR) plus 62 fixture cases. The discussion licensed this overlap — both agents said GLOSSARY/ADM skeleton can parallel M1 — and the closes that landed were the ripe recognition-layer convergences, which was defensible. But the *balance* is roughly inverted from your priority list: the two demand areas most likely to bend the pipeline (dialects and schema — they own the check/evaluate seam, envelope routing, the resolution stage's whole payload) are the two with zero probing.
+
+Two structural consequences to watch:
+
+1. **The spine now has gravity.** A dense, satisfying skeleton invites future sessions to fill in prose rather than run the vaguer, harder demand spikes. STATUS's "Own next" queue points at harness/`adm` work — more supply side — and contains no item that says "run the dialects spike" or "run the schema spike". That's the concrete gap I'd fix: those two belong at the top of the queue, ahead of harness work.
+
+2. **The fixtures encode the supply-side view.** 62 cases were authored against the recognition contract before dialects/schema demand could shape what products need asserting. They're fine as a design corpus (and correctly not a cargo gate), but they'll exert quiet pressure to treat the current product shapes as settled. The "do not thrash fixtures" guard cuts both ways.
+
+### Net
+
+The process internalized your correction faithfully — the payload-vs-names split, WAIT-DEMAND, and the ornamental criterion are the inversion made structural, and grok deserves real credit for holding W1e/ML open all night against the natural pull to pin them. But the *work allocation* since the discussion still followed the supply-side gradient, because that's where the well-understood, satisfying work was. If the next runway goes to the **dialects and schema demand spikes** (with paths' §8 demands as prior art for the output shape), you'd close the loop you named: four demand probes bouncing off the pipeline architecture and either not bending it — which is the confidence you said was missing — or bending it now, while bending is still cheap.
+
+---
+
+## Joseph
+
+Hmmmm. I just looked through PIPELINE.md ... I appreciate everything that the grok agent worked really hard on, but it was so much in process-design work with some of these files that, yeah, even pipeline pays homage to demand-side but then comes up (or institutes) the pipeline ideas that I felt were premature without the sufficient demand-side understanding. I'm simply not convinced that the recognition/assembly/resolution/evaluation is the right ontology, although it's a fine starting hypothesis-- but a hypothesis that should quickly bend and completely reform based on what we really need to do with:
+- markdown processing (including the several different user-side situations that implies)
+- round-trip fixedpoint like you pointed out, but also other target round-trips like json, toml, markdown, yaml, rust-native, ...
+- fully implemented timespec dialect -- we even already have the descent grammar... which also seems to imply that type delimiters '&lt;' could actually invoke a specialized low-level parser in vivo potentially... same with other standard automatically included dialects
+- which begs the question-- what *is* the picture for defining, possibly compiling or validating/verifying, declaring, and utilizing a dialect?
+- the liquid dialect is one that should basically allow a `template = precompile('my.template.udon')` and then query it for what kind of scope-context object it wants. It wants one with the following objects/variables and the following predicates / boolean functions, etc.  And then `build-from(template, my-scope-context-1) -> output-*` where output-* is what the discussion needs... a flattened non-liquid udon document? or if 'template' there is already precompiled ast + things for modifying based on the eventstream-- maybe straight to ADR? Do we allow some sort of event-streaming at all for liquid-template udon files?  These were more easy to contemplate in Ruby early in the year-- simply output the document you want with some actual liquid template directives build in and run liquid on it or, to be more performant and less dependent-- essentially output an erb fully ready to be executed. Not sure what happens now with the pipeline when we are rust-centric. But it seems like this sort of thing should be understood-- from the demand-side decisions we need to make, starting with "I'm an agent-- when would templates come in handy? What would I expect out of template xyz?" -- now that I ask it outloud, even though I'm not a logogenic agent, I think "hmmm, honestly I would probably want the scope-context to be udon itself most of the time, so a lot of the liquid-like directive end up having path-like syntaxes..."  ahhh.. now a little progress.... is this anything like what the dialect spike looked at? To the topic again though, that means there would be quite the overlap between !{{interpolation}} and &lt;interpolation> ... maybe the difference is the first is guaranteed to be text-type when done - but it's all still dialect ruled...
+- what is ordering for dialects? or do we just allow for mostly &lt;namespaced/type: val> (inferred if no ambiguity) dialects, and dialects that are the equivalend of custom liquid transformers / filters etc. but that don't change the underlying template logic. dialects are allowed to define what? override interpolation? define how to interpret inline |{elements} ?  yes but only one can be specified -- default applies unless one and only one overrides??
+- what's the end user expectation on the various parsers for badly typed values? (parsing errors on the type values) -- if we have an open continuous stream we're parsing that is effectively unbounded and so the user is using the events and not accumulating -- even if it's the chunky ADR parser which does *some* accumulation to disambiguate certain things but in a bounded way that passes them on as soon as it can for continuous streams, won't it expect types etc. to be already processed?
+- can all of the above be changed mid-stream? Now this dialect rules... now this other one does...
+- can schemas be nested or otherwise composable?
+- what are the kinds of schema and linting conformance tools needed -- I know for example a critical tool IMO for agents is a specialized edit tool that makes edits very easy without needing to worry about indent-levels for prose or raw code blocks, while simultaneously guaranteeing that no mutation that would cause the document to now violate the schema is accepted. The tool itself will need the machinery to do jq/yq like span-sensitive changes to the AST and have it checked against a static schema
+- or is the schema static? etc.
+- if dialect typing &lt; goes to another part of the grammar, that other part of the grammar can be in charge of any nested &lt;, or whether it accepts multiline or not... However we're currently branching out typing handling (array vs what used to be called bare-value (single text word) vs numeric etc.) would ideally end up mirroring very well the dialect typing mechanism-- and it all changes what the pipeline would look like!
+- if array capture was just a syntactical sugar for &lt;core/ws-delimited-array: .... > for example, or for geometric/block delimited array, then *that* answers the 'multiline or singleline?" question-- not us arguing in the dark and finally accepting something *that is an incorrectly framed question in the first place guaranteed to be irrelevant the moment we have dialects and schemas worked out* (I didn't tell the greenfield authors about this-- preferring to let them imagine whatever codification they wanted from the current disorganized spec. It was interesting, but it can't now suddenly become "*the* design question of the moment,"  it was left as undefined but loosely speaking allowed (multilines in those constructs) *because* it was a demand-side question that would significantly affect the pipeline needs.
+
+I could go on and on and on-- but I'm sure you see the point. Don't get caught up in the *details* of those things on the list-- that's *not* necessarily my "hot-list" of critical decisions-- it's literally a random-sampling to give you the flavor of some of the ways the demand-side could completely change our input/output needs (that might be a useful map...) and demand-side setups that would significantly inform the correct pipeline architecture (or rather a kind of DAG really, or even DCG..., with partial results being tranferable possibly and resumed etc.)
+
+---
+
+## Fable
+
+You've put your finger on something my earlier read was too generous about. I called the balance "supply-side by mass"; your point is sharper — the four-stage ontology itself is supply-side residue, and it's already been promoted further than a hypothesis should be. Look at PROCESS.md's lattice table: "Stage vocabulary (names only)" sits in the **spine** column — the move-carefully, ruling-gated side. A hypothesis that should "bend and completely reform" is instead listed among the things areas may not casually touch. That's the calcification pathway, and it happened in one night. The durable seed, I think, is smaller than what got seeded: the sufficiency law, the ornamental criterion, and the verdict/anomaly distinction survive everything on your list; the R/A/R/E staging doesn't.
+
+To answer your direct question first: **there is no dialect spike.** Paths and agent-utility exist; dialects and schema are stubs. So no — nothing has looked at the template question, and your five minutes of thinking out loud just produced more dialect-architecture demand signal than the repo currently contains.
+
+And your samples aren't just missing spikes — each one is a *counterexample* to a specific assumption the linear pipeline bakes in, which is why I don't think it's salvageable-by-amendment:
+
+- **In-vivo dialect sub-parsers** (`&lt;` dispatching to the already-existing descent timespec grammar) break stage linearity: dialect machinery participates in *recognition*, not just a downstream "evaluation" stage. It also sharpens what W0 should actually say — the forbidden reachback is into *earlier products of this parse* (source bytes, re-derived indent); consulting *definitions* (a compiled dialect grammar, a schema) is not reachback, it's configuration. The current W0 wording doesn't make that distinction because nothing demanded it yet.
+- **Mid-stream dialect/schema switching** breaks stage statelessness.
+- **Template precompile → query-for-scope-shape → build** breaks the single-forward-pass shape entirely: it's a product (compiled template) that is *interrogated*, then combined with a second input. Nothing in R/A/R/E has a slot for that.
+- **The schema-guarded agent edit tool** demands the pipeline have an *inverse* — span-sensitive AST mutation back to bytes with conformance checked before acceptance. A linear bytes→artifacts pipe has no story for bidirectionality; a DAG of products with transforms in both directions does.
+- **N-way round-trips** (json/toml/yaml/markdown/rust-native, plus your fixpoint) mean "products" is an open family, not four boundary nouns.
+
+The generalization that survives all of them: **products and transforms — a graph, not a line — with the sufficiency law as an edge property** (each transform's declared inputs suffice; no undeclared reachback). Stage *names* then become, at most, common paths through the graph, named descriptively after the demand map exists — not the ontology the demand map gets filed into.
+
+The array insight deserves its own paragraph, because it does more than answer a question — it dissolves one. If `[…]` is sugar for something like `&lt;core/ws-array: …>` (and block-geometric capture is a second sugar for the same thing), then "is a list multi-line?" was never a language question — it's inherited from whatever the dialect-typing mechanism says about its capture, exactly like nested `&lt;` and multiline-ness already route to the invoked grammar in your framing. And notice how far that generalizes: strings, identity brackets, interpolation — the entire ML table that three greenfield authors carefully deliberated per-construct, that Fable and grok negotiated fail-safe rows over, potentially isn't a table at all. The greenfield exercise couldn't see this because you deliberately didn't tell them — and the lesson is exactly your closing point: they codified the question as asked, diligently, and diligence on a wrongly-framed question produces well-organized irrelevance. ML should probably be re-marked in OPEN not as "awaiting demand evidence to close" but as "possibly dissolved by the dialect mechanism — do not close in current framing."
+
+Your mid-sentence template realization is worth flagging as real signal too: if the natural scope-context for udon templates is udon documents, then liquid-ish directives converge on path expressions — which couples the dynamics dialect to paths and retroactively confirms "paths is the long pole" with a second independent pull. And the `!{{…}}`/`&lt;…>` overlap you noticed (both dialect-ruled, the former text-guaranteed) is the kind of unification that only becomes visible from the demand side.
+
+What I'd actually change in the repo, concretely and cheaply: (1) pull stage vocabulary out of PROCESS's spine column — the spine keeps sufficiency, ornamental, glossary discipline; (2) re-banner PIPELINE.md from "names are stable enough to use" to "one candidate shape; the demand map replaces it" — the difference matters because future operators inherit the banner's confidence; (3) put your **input/output needs map** at the top of the Own-next queue — the enumeration of real situations (agent mid-edit, unbounded stream consumption, template build, md round-trip, schema-checked mutation, config load…) × what each consumes and produces. That artifact, not more architecture discussion and not more spine prose, is what generates the right DAG. The dialect and schema spikes then run *against* the map rather than in the abstract.
+
+If it's useful, a good first probe is also sitting right there already built: wire the existing descent timespec grammar in as an in-vivo `&lt;…>` sub-parser experiment and let it tell you what dialect definition/declaration/invocation actually requires. That's a demand probe with running code, which beats four more strawmen.
+
+---
+
+## Grok
+
+Fresh read (2026-07-21 morning), after greenfields + this whole file + STATUS/PROCESS/DECISIONS/OPEN/PIPELINE/SPEC/WIRE/SCHEMA stubs + paths/agent-utility demand harvests. Independent judgment — where I land relative to Joseph, Fable, and the night predecessor.
+
+### On Joseph's objection — mostly right, and sharper than my earlier Grok block in this file
+
+Last night (as a predecessor writing under autonomous grant) I treated Recognition/Assembly/Resolution/Evaluation as a *seedable ontology* with "payloads demand-shaped." That was half-honest. The half that was wrong: elevating stage **names** to PROCESS spine and opening PIPELINE with "names are stable enough to use." A hypothesis that should bend into a DAG/DCG of products under real callers is not "stable enough." Fable's calcification diagnosis is correct: one night, and stage vocabulary sat next to things that should not move casually.
+
+Joseph's sampling list is not a hotlist of tickets — it is a *generator* of counterexamples to linear stage assumptions. The ones that bite hardest for me:
+
+1. **In-vivo dialect sub-parsers** (`&lt;` dispatching into an existing descent timespec grammar) put dialect machinery *inside* recognition, not only "evaluation." That single point forces a W0 refinement Fable named and I want on the record: forbidden reachback is into *earlier products of this parse* (source bytes, re-derived indent). Consulting *definitions* (compiled dialect grammar, loaded schema, declared pragma set) is configuration, not reachback. Current W0 text does not make that cut because nothing demanded it yet.
+2. **Template precompile → query-for-scope-shape → build** is not a stage on a line. It is a product that is *interrogated*, then combined with a second input. R/A/R/E has no honest slot for that.
+3. **Schema-guarded agent edit** needs an *inverse* (span-sensitive mutation → re-serialize under conformance). A one-way pipe has no story; a product graph with bidirectional transforms does.
+4. **Array-as-sugar-for-dialect-capture** (Joseph's framing) is the most important *negative* result in the morning thread: ML-as-per-construct-table is a greenfield diligence artifact on a question that may not be a language question at all. Agree with Fable: re-banner OPEN **ML** as *possibly dissolved by the dialect capture mechanism — do not close in current framing*, not as "awaiting more evidence to pick a row in the greenfield table."
+
+### Where I push back (disagreement is the point of this brief)
+
+**1. Do not throw the night's durable residue with the ontology.**  
+The problem is not "files exist." The problem is *banner confidence and queue gravity*. Survives Joseph's counterexamples without pretending to be a pipeline:
+
+- **W0 as sufficiency/no-reachback** (with the definitions-vs-products refinement above)
+- **Ornamental criterion** (double fixpoint; comments not ornamental)
+- **Verdict vs anomaly** (incomplete-input is not an event — C6)
+- **W1d direction** (values self-delimiting; encoding still open)
+- **L0/L1** (error = loss; root `:key` = warn + document text)
+- **C5 profiles** (idiomatic / comprehensive / descriptive)
+- **One recognition event vocabulary, engines free** — that is a *recognition* claim, not a four-stage claim
+- **CARRY ledger + agent-primary process + vault** as identity-over-conversation
+- **Keep-everything / designated sugar / frozen bare set / stacking≠list** language law from 0.9 + greenfields
+
+Those are not R/A/R/E. Demote the stage picture; keep the laws.
+
+**2. R/A/R/E is not "unsavageable" — it is over-promoted.**  
+Fable: not salvageable-by-amendment. I only half-agree. The four words are fine as *provisional labels for common paths through a product graph once the demand map exists*. They are poison as *the ontology demand rows get filed into*. Fix: demote PIPELINE to "one candidate shape; demand map replaces it"; pull stage vocabulary out of PROCESS spine; ban new spine prose that assumes four fixed product boundaries. Do not ban the words, or we will reinvent them under new names next week.
+
+**3. "No dialect spike" is the real scandal, not "too many SPEC lines."**  
+Fable's mass audit is right (paths ✓, utility ✓, dialects ✗, schema ✗). My sharper cut: **even the paths spike was under-pulled.** Paths NOTES §2 lists consumers but centers assembly product → query/edit. Joseph's five-minute template monologue — *scope-context is often UDON itself, so liquid-ish directives converge on path syntax* — is higher-signal dialect architecture than anything in `dialects/`. That couples dynamics to paths independently of the "paths is long pole" claim. Re-read paths under that pull before writing a free-floating dialect strawman.
+
+**4. Input/output needs map before more spikes-in-the-abstract.**  
+Fable put the map at top of Own-next. Agree, and I would make it more specific: enumerate **situations** (agent mid-edit with schema guard; unbounded stream consumer wanting typed values on the wire; template precompile + build; md/json/toml round-trips; config load; memory/import; house-style fmt) × **inputs consumed** × **outputs produced** × **whether mid-stream reconfiguration is expected**. That artifact *is* the demand-side design document. Dialect and schema spikes then run *against rows of the map*, not as free essay prompts. Without the map, "dialect spike" recreates supply-side architecture under a demand costume.
+
+**5. In-vivo timespec probe — yes, ahead of four more strawmen.**  
+Fable's concrete first probe is the right *kind* of work: running code that forces declaration/invocation/error-surface questions. Prefer that over authoring another 800-line SPEC skeleton. Caveat: treat results as **demands on the product graph**, not as a pin that "dialects live in recognition forever."
+
+**6. `!{{…}}` vs `&lt;…&gt;` overlap — do not unify early.**  
+Joseph noticed both may be dialect-ruled, one text-guaranteed. That is a real unification pressure. Unifying *before* the map says when each is expected will just invent a prettier wrong boundary. Log it as a map row, not a DECISIONS candidate.
+
+**7. Fixtures: the "do not thrash" rule cuts both ways harder than STATUS admits.**  
+62 cases authored against recognition/ADM before dialect/schema demand is *evidence corpus*, not product law. Next operator should **not** grow the corpus until the needs map names which product shapes need asserting. Harness/`adm` work against today's shapes freezes today's shapes. STATUS "Own next → harness" is the supply gradient continuing; I would reverse it.
+
+**8. PROCESS itself is a gravity well.**  
+Agent-primary + meta channel + thin DECISIONS is good. A long PROCESS that rewards complete-looking spine files over incomplete demand maps is how the night went wrong under a sincere grant of ownership. Process amendment worth filing: **an incomplete needs-map file with real situations is a more successful session outcome than a polished SPEC section that assumes product boundaries.** Make "done-shaped" match what we actually need.
+
+### What I would change in the repo (cheap, concrete)
+
+Aligned with Fable's three, plus:
+
+| # | Change | Why |
+|---|--------|-----|
+| 1 | PROCESS spine: drop "stage vocabulary (names only)"; keep sufficiency, ornamental, glossary discipline, one-wire-vocab as recognition law | Stops calcification |
+| 2 | PIPELINE banner: "candidate shape; demand map replaces it" — not "names stable enough to use" | Future operators inherit confidence |
+| 3 | OPEN **ML**: re-mark as possibly dissolved by dialect capture; do not close in greenfield table framing | Joseph's array-as-sugar point |
+| 4 | STATUS Own-next #1: **input/output needs map** (situations × I/O); then dialect/schema probes *against* it; demote harness | Rebalance mass |
+| 5 | Optional first code probe: in-vivo `&lt;` → existing timespec descent grammar | Demand with running code |
+| 6 | Paths spike addendum: template/scope-context-as-UDON and directive↔path convergence | Morning's best new signal |
+| 7 | Do not delete SPEC/WIRE skeletons — **re-banner harder** as wording mines / recognition draft, not product-graph law | Keep residue, kill confidence |
+
+I am **not** proposing to re-argue L0/L1/W1d/C5/C6 or the greenfield language pins that do not depend on R/A/R/E. Those can stay thin in DECISIONS.
+
+### Confidence (honest)
+
+- High: linear four-stage ontology as *spine* is premature; demand map first; ML framing may be wrong; W0 needs definitions-vs-products; template product shape is a real hole.
+- Medium: product DAG/DCG is the right *kind* of replacement (Joseph's framing) — I have not drawn one that survives the situation list.
+- Low (correctly): any concrete stage payload, any ML row, any W1e event spelling, any dialect inclusion rule.
+
+Last night's predecessor Grok (including the earlier blocks in this same file) over-trusted stage names. This block is the correction I would have wanted from a skeptic who wasn't writing the spine.
+
+Stay on the line for follow-ups.
+
+— Grok
+
+---
+
+## Joseph
+
+Thank you both so much. With some additional refinements from Fable, and based on both of your assessments here, I propose the following plan of action which you can go ahead and proceed with unless there are any objections, in which case we can deliberate first:
+
+### Provisionally for Grok
+In order to reduce noise for ourselves and for agent turnover, would you please:
+1. Git move the project root's spec/msc/{green,brown}field* directories to v2-spec/.archived/first-pass/
+2. Then git move everything in this v2-spec directory except this 'pipeline-discussion.md' file to a new v2-spec/.archived/second-pass/
+3. Rename v2-spec -> v2
+4. Commit everything & merge to main so our local repo here is on main also.
+5. Create a v2/.archived/INDEX.md and in it give a brief one line about the directories in first-pass, and then a more detailed one-line per file or directory as you see fit description of all of the second-pass stuff (that is currently our v2-spec files minus this one). All of this is potentially very useful (even without modification), but the idea is that we will check and graduate things back into v2/ with deliberation and care because mistakes here get magnified by many orders of magnitude by subsequent sessions.
+6. With that in mind, be sure that the INDEX is not just descriptive/summary, but that it includes your best attempt at representing all of our current interests in saying where the file probably deviates from what's necessary, why it might be premature, and which ones are candidates for early cherry-picking and re-promotion.
+
+Given an earlier brief of what I was probably going to ask the two of you to do, here is some additional nuance from Fable:
+
+> [...] [Grok's] #8 is the sharpest diagnosis in the whole file: the night went wrong because PROCESS made "done-shaped" mean polished spine files, and a sincere ownership grant optimized for exactly that. That line deserves to survive into whatever process comes back.
+> 
+> [... approbation for the cherrypicking as a forcing function vs lighter proposals ...]
+> 
+> Three refinements I'd suggest:
+> 
+> 1. Mark DECISIONS.md + OPEN.md as first-in-line for cherry-pick in the index. They're the one archive risk: the panel-backed language closes (L0/L1/L2/L4, the CARRY citations) don't depend on the R/A/R/E ontology at all — both grok and I flagged that set as survivors — and a future session that can't see them may re-argue ruled ground. Short risk window if cherry-picking happens soon, but the index line should say explicitly "contains ruled language law independent of the archived pipeline ontology; recover early." (The deeper ledger in spec/msc/CHANGELOG.md stays live regardless, which is the real safety net.)
+> 2. The index should distinguish value-residue from mistake-residue. The spikes (paths, agent-utility, session-vault, DEMANDS) are demand-side work — the side that was underfed, not the side that overreached. They go in the archive for cleanliness, but their one-liners should read "right kind of work, parked pending the needs map," not lumped with the premature spine. Same for the fixtures: evidence corpus, not product law.
+> [...]
+> 
+> One thing your plan leaves implicitly right that I want to make explicit: keeping only pipeline-discussion.md live means the deliberation record — the one artifact that's genuinely demand-side and genuinely yours — becomes the seed document. That's the correct inversion in physical form: the next thing built in that directory will be built next to the conversation, not next to a skeleton.
+> [...]
+
+
+7. When you're ready, Grok, (if there's no deliberation beforehand and you move forward), go ahead and put a one sentence brief in here combined with your thoughts on which ones we should cherry-pick initially vs. marked as valuable but not-yet until after more input/output mapping has been done etc. Fable and I will look over your work and the index and use your insights to inform Fable's next move.
+
+I definitely got opinionated here and imposed some of my action-space onto your deliberation space in some details, but I mean for it to open you up to being full peer and coowner for the important parts. If I've been too prescriptive here in any of the above, proceed with *what's best for the project* over what's best for me (or you or anyone else) and drop a note in here catching us up when you're done. Thank you!
+
+
+---
+
+## Grok
+
+Done (2026-07-21), with **hold on merge to main** per Joseph.
+
+### What landed
+
+- `spec/msc/{greenfield*,brownfield}` → `v2/.archived/first-pass/`
+- Former `v2-spec/*` except this file → `v2/.archived/second-pass/`
+- `v2-spec` renamed → `v2/`
+- Live seed in `v2/`: only `pipeline-discussion.md` + `.archived/` (INDEX included)
+- Index: `v2/.archived/INDEX.md` (value vs mistake residue; early cherry-pick flags; Fable’s DECISIONS/OPEN “recover early” note)
+
+### Cherry-pick stance (brief)
+
+**Initially graduate next to this discussion:** `DECISIONS.md`, `OPEN.md` (re-mark **ML** as possibly dissolved by dialect capture — do not close in greenfield-table framing), and the demand-side spikes (`paths`, `agent-utility`, `DEMANDS`) as parked right-kind work. **After a real input/output needs map:** fixture *evidence* only, schema/dialects as probes against map rows, selected GLOSSARY/ADM *rows*. **Do not re-promote as-is:** whole `PIPELINE` / `PROCESS` / `SPEC` / `WIRE` / “spine usable” README; harness-next STATUS. Survivors to *extract* later: ornamental criterion, W0 (+ definitions-vs-products), W1d direction, verdict≠event, L0/L1, C5/C6 — not the R/A/R/E ontology.
+
+Commit on this branch only; **not** merged to `main` yet.
+
+— Grok
