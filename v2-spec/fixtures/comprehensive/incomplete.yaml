@@ -1,0 +1,287 @@
+# Comprehensive 0.10 probes — incomplete-input wire-twins (R2, C6)
+# Profile: comprehensive (gate material). Design targets from SPEC/DECISIONS.
+# Incomplete-input is a document verdict, NOT an event.
+# Event spellings provisional. No harness yet.
+
+# ---------------------------------------------------------------------------
+# Strings — closed control lives in idiomatic/happy.yaml (str_closed_complete)
+# ---------------------------------------------------------------------------
+
+- id: str_double_unclosed_eof
+  profile: comprehensive
+  desc: double-quote opened, true EOF — keep + Warning + incomplete-input
+  udon: '|el :k "abc'
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { string: abc } }
+          content: []
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+  notes: "NO IncompleteInput event on the stream (C6)."
+
+- id: str_single_unclosed_eof
+  profile: comprehensive
+  desc: single-quote opened, true EOF
+  udon: "|el :k 'abc"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { string: abc } }
+          content: []
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+
+- id: str_opener_only_eof
+  profile: comprehensive
+  desc: quote opened nothing captured — empty string + Warning + incomplete
+  udon: '|el :k "'
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { string: "" } }
+          content: []
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+
+# ---------------------------------------------------------------------------
+# Lists (delimited)
+# ---------------------------------------------------------------------------
+
+- id: list_closed_control
+  profile: comprehensive
+  desc: closed list control twin
+  udon: "|el :xs [1 2]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: xs
+              value: { list: [{ int: 1 }, { int: 2 }] }
+
+- id: list_unclosed_eof
+  profile: comprehensive
+  desc: list opened, true EOF — keep items + Warning + incomplete-input
+  udon: "|el :xs [1 2"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: xs
+              value: { list: [{ int: 1 }, { int: 2 }] }
+  anomalies:
+    - { severity: warning, about: unclosed-list }
+
+# ---------------------------------------------------------------------------
+# Inline element braces |{…} (delimited)
+# ---------------------------------------------------------------------------
+
+- id: inline_el_closed_control
+  profile: comprehensive
+  desc: closed inline element in content
+  udon: "|p has |{em x} here\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "has "
+            - inline_element: { name: em, content: [{ text: x }] }
+            - text: " here"
+
+- id: inline_el_unclosed_eof
+  profile: comprehensive
+  desc: "|{ opened, true EOF — keep + Warning + incomplete-input"
+  udon: "|p has |{em x"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "has "
+            - inline_element:
+                name: em
+                content:
+                  - text: x
+  anomalies:
+    - { severity: warning, about: unclosed-inline-element }
+
+# ---------------------------------------------------------------------------
+# Empty inline {} closed (R19) vs unclosed
+# ---------------------------------------------------------------------------
+
+- id: empty_inline_el_closed
+  profile: comprehensive
+  desc: empty |{} valid empty anonymous embedded (R19)
+  udon: "|p |{}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - inline_element: { name: null, content: [] }
+
+- id: empty_inline_el_unclosed_eof
+  profile: comprehensive
+  desc: "|{ at EOF with nothing — incomplete-input"
+  udon: "|p |{"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-inline-element }
+
+# ---------------------------------------------------------------------------
+# Geometric closes do NOT flip result (R2 contrast)
+# ---------------------------------------------------------------------------
+
+- id: geometric_element_eof_complete
+  profile: comprehensive
+  desc: open element at EOF closes silently — result complete
+  udon: "|a\n  |b\n    |c"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: a
+          content:
+            - element:
+                name: b
+                content:
+                  - element: { name: c, content: [] }
+  anomalies: []
+
+- id: geometric_block_attr_eof_complete
+  profile: comprehensive
+  desc: finished block attr at EOF coherent — complete (not incomplete)
+  udon: "|el\n  :k v"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { bare: v } }
+  anomalies: []
+
+# ---------------------------------------------------------------------------
+# Unclosed delimited + geometric open still incomplete once
+# ---------------------------------------------------------------------------
+
+- id: mixed_unclosed_string_nested_els
+  profile: comprehensive
+  desc: nested els open + unclosed string at EOF → incomplete-input once
+  udon: "|a\n  |b :k \"x"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+  notes: "Warnings on geometric unclosed do not apply; string drives incomplete."
+
+# ---------------------------------------------------------------------------
+# Type envelope unclosed (when recognized as delimited)
+# ---------------------------------------------------------------------------
+
+- id: envelope_unclosed_eof
+  profile: comprehensive
+  desc: "< opened without closer at EOF → incomplete-input"
+  udon: "|el :t <foo"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-type-envelope }
+  notes: >
+    Empty <> interim BareValue+NoDialectsLoaded is a different case (R13);
+    this case is opener-with-payload still open at EOF.
+
+# ---------------------------------------------------------------------------
+# Interpolation !{{…}} (delimited)
+# ---------------------------------------------------------------------------
+
+- id: interp_closed_control
+  profile: comprehensive
+  desc: closed interpolation in prose
+  udon: "|p hi !{{name}}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "hi "
+            - interpolation: "name"
+
+- id: interp_unclosed_eof
+  profile: comprehensive
+  desc: "!{{ opened, true EOF — keep + Warning + incomplete-input"
+  udon: "|p hi !{{name"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-interpolation }
+  notes: "Lone } is content until }} (R13 micro-batch); only }} closes."
+
+- id: interp_lone_brace_still_open_eof
+  profile: comprehensive
+  desc: "!{{a} at EOF — single } is content; still incomplete"
+  udon: "|p !{{a}"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-interpolation }
+
+# ---------------------------------------------------------------------------
+# Fence (delimited body — closer missing)
+# ---------------------------------------------------------------------------
+
+- id: fence_closed_control
+  profile: comprehensive
+  desc: closed fence control
+  udon: |
+    |el
+      ```
+      body
+      ```
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - fence: { body_contains: "body" }
+
+- id: fence_unclosed_eof
+  profile: comprehensive
+  desc: fence opened, no closer at EOF → incomplete-input
+  udon: "|el\n  ```\n  body"
+  result: incomplete-input
+  root_only: true
+  anomalies:
+    - { severity: warning, about: unclosed-fence }
+
+# ---------------------------------------------------------------------------
+# Canonical home for incomplete-input wire-twins (eof_verdict.yaml removed in
+# dedup 2026-07-21). Pair closed controls in idiomatic/happy or this file.
+

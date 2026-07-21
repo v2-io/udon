@@ -1,0 +1,45 @@
+# Idiomatic smoke — one idea per case. ADM-first.
+
+- id: idiomatic_element_attr_prose
+  profile: idiomatic
+  desc: named element, one attr, prose child
+  udon: |
+    |note :author Ada
+      Hello
+  result: complete
+  adm:
+    content:
+      - element:
+          name: note
+          attrs:
+            - { key: author, value: { string: Ada } }
+          content:
+            - { text: "Hello\n" }
+
+- id: idiomatic_sugar_identity_trait
+  profile: idiomatic
+  desc: "[key] and .trait desugar to designated attrs"
+  udon: "|user[1].admin\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: user
+          attrs:
+            - { key: "$key", value: { integer: 1 } }
+            - { key: "$traits", value: { string: admin } }
+          content: []
+
+- id: idiomatic_stacking_two_assignments
+  profile: idiomatic
+  desc: same key twice is two Assignments not a list
+  udon: "|el :t a :t b\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: t, value: { string: a } }
+            - { key: t, value: { string: b } }
+          content: []

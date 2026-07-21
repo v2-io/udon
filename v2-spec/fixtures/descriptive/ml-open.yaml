@@ -1,0 +1,99 @@
+# Descriptive 0.10 probes — OPEN ML only (non-normative)
+# Profile: descriptive — MUST NOT gate a version. open: ML required.
+# Strawmen evidence: ../OPEN-ML-STRAWMEN.md. Do not promote without DECISIONS.
+
+- id: ml_str_newline_inside_unclosed
+  profile: descriptive
+  open: ML
+  desc: "newline inside \"...\" at EOF — multi-line policy unfrozen (R3)"
+  udon: "|el :k \"abc\ndef"
+  result: incomplete-input
+  root_only: true
+  notes: >
+    0.9 descriptive pin spanned newline as content. 0.10 must not treat this
+    as comprehensive law until OPEN ML closes. When closed, reclassify to
+    comprehensive with explicit line-bound vs multi-line expectation.
+
+- id: ml_list_newline_items_unclosed
+  profile: descriptive
+  open: ML
+  desc: list with interior newlines, unclosed at EOF — policy unfrozen
+  udon: |
+    |el :xs [1
+    2
+  result: incomplete-input
+  root_only: true
+  notes: >
+    3b strawman treated newlines as item ws; 0.9 left multi-line undefined.
+    Interior-close twin (closing ] after newlines) needs ML pin before gate.
+
+- id: ml_list_newline_closed_interior
+  profile: descriptive
+  open: ML
+  desc: list multi-line then closed — wire-twin partner of unclosed (policy open)
+  udon: |
+    |el :xs [1
+    2]
+  result: complete
+  notes: >
+    If events match an unclosed-at-EOF twin after ML settles multi-line,
+    only result differs (C6 wire-twin). Until then both stay descriptive.
+
+- id: ml_list_newline_close_then_sibling_attr
+  profile: descriptive
+  open: ML
+  desc: "array \"closed\" by interior newline then :next — 0.9 provisional posture"
+  udon: |
+    |el :xs [1 2
+    :next 1
+  result: complete
+  anomalies:
+    - { severity: warning, note: "array closed by newline (provisional — not 0.10 law)" }
+  notes: >
+    Moved from comprehensive/eof_verdict — interior-newline list close is OPEN ML.
+    Gate material must not assert this until SPEC §14.2 pins lists.
+
+- id: ml_inline_el_multiline_unclosed
+  profile: descriptive
+  open: ML
+  desc: "|{ spans newline then EOF — multi-line for inline el is greenfield lean multi"
+  udon: |
+    |p |{em
+    x
+  result: incomplete-input
+  root_only: true
+  notes: "2a/3a/3b lean multi for |{…}; still WAIT-DEMAND for 0.10 pin."
+
+- id: ml_identity_bracket_newline
+  profile: descriptive
+  open: ML
+  desc: identity [ with newline before ] — strawmen disagree line-bound vs multi
+  udon: |
+    |el[abc
+    ]
+  result: complete
+  notes: >
+    3b lean line-bound → $partial-key on first line; 3a multi. Do not gate.
+    See OPEN-ML-STRAWMEN identity row + OPEN S3 adjacency for keys.
+
+- id: ml_string_closed_cross_line
+  profile: descriptive
+  open: ML
+  desc: quoted string with interior newline then closed (3b lean multi-line)
+  udon: |
+    |el :s "line one
+    line two"
+  result: complete
+  notes: >
+    If ML pins strings multi-line, ADM is one string with embedded newline;
+    if line-bound, different law. Was multiline_strawman.yaml.
+
+- id: ml_identity_open_then_sibling_attr
+  profile: descriptive
+  open: ML
+  desc: "identity bracket open across newline then :a (3b lean → $partial-key)"
+  udon: |
+    |el[k
+    :a 1
+  result: complete
+  notes: "3b strawman: newline before ] → $partial-key + Warning, not swallow."

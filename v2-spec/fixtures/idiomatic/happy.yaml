@@ -1,0 +1,110 @@
+# Idiomatic 0.10 probes — happy path / teaching shapes
+# Profile: idiomatic (gate material). Design targets from SPEC/DECISIONS.
+# Event spellings provisional (OPEN W1e). No harness yet.
+
+- id: el_bare_name
+  profile: idiomatic
+  desc: bare element name closes silently at EOF (geometric)
+  udon: "|div\n"
+  result: complete
+  adm:
+    content:
+      - element: { name: div, attrs: [], content: [] }
+  anomalies: []
+
+# key/trait sugar + stacking: see smoke.yaml (no duplicate here)
+
+- id: str_closed_complete
+  profile: idiomatic
+  desc: closed string value (control twin for incomplete.yaml)
+  udon: "|el :k \"abc\"\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { string: abc } }
+          content: []
+
+- id: deferred_value_deeper_prose
+  profile: idiomatic
+  desc: key alone on line; deeper lines form value body
+  udon: |
+    |el
+      :note
+        first line
+        second line
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: note
+              value:
+                flow_text: "first line\nsecond line\n"
+          content: []
+  # ML may refine line-bound constructs later; deferred *path* is closed.
+
+- id: flag_true_reown_tail
+  profile: idiomatic
+  desc: ":ready? → true; following material re-owned by continuing scan"
+  udon: "|el :ready? yes\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: "ready?", value: { bool: true } }
+          content:
+            - text: "yes"
+  # Flag rule re-owns; not warned extension of the flag value (SPEC §6.3).
+
+- id: list_closed
+  profile: idiomatic
+  desc: closed list value
+  udon: "|el :xs [1 2]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: xs
+              value:
+                list: [{ int: 1 }, { int: 2 }]
+          content: []
+
+- id: node_value_block_element
+  profile: idiomatic
+  desc: block |em in value position is Node Value (not Flow)
+  udon: "|el :x |em hi\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: x
+              value:
+                node:
+                  element:
+                    name: em
+                    content:
+                      - text: "hi"
+          content: []
+
+- id: empty_forced_text
+  profile: idiomatic
+  desc: "empty forced-text :a \\ → empty string (R13)"
+  udon: "|el :a \\\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { string: "" } }
+          content: []

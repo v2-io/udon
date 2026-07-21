@@ -1,39 +1,36 @@
-# v2-spec/ — greenfield replacement charter
+# v2-spec/ — greenfield 0.10 suite (in progress)
 
-**Status:** pre-authoring. This directory is the **charter** for replacing the
-accreted `spec/` + entangled wire/grammar stack with a fresh suite, not a
-brownfield merge into live CORE.
+**Status:** M0→M1. Process live; ledgers + suite **skeletons** seeded; full polish not claimed.  
+**Operators:** agents. **Steward:** Joseph (STEWARD gates / veto only).
 
 | Document | Role |
 |----------|------|
-| **[RULING-TABLE.md](RULING-TABLE.md)** | Joseph rules in one sitting. Draft grok; Fable stress-check **integrated**. |
-| [RULING-TABLE-delta-fable.md](RULING-TABLE-delta-fable.md) | Stress-check audit trail (findings folded into the table). |
-| *(next)* suite | SPEC / ADM / GLOSSARY / WIRE / SEMANTICS / DECISIONS / OPEN — **after** rulings |
+| **[STATUS.md](STATUS.md)** | Program front door + handoff |
+| **[PROCESS.md](PROCESS.md)** | Agent-primary process (provisional) |
+| **[PROCESS-FEEDBACK.md](PROCESS-FEEDBACK.md)** | Always-open meta channel |
+| **[DECISIONS.md](DECISIONS.md)** | Thin present ledger |
+| **[OPEN.md](OPEN.md)** | Live questions only |
+| **[SPEC.md](SPEC.md)** | Surface → ADM (skeleton) |
+| **[FIXTURES.md](FIXTURES.md)** | C5/C6 fixture design notes |
+| [fixtures/](fixtures/) | 0.10 YAML design corpus (~59 cases; not cargo gate) |
+| [WARNING-CODES.md](WARNING-CODES.md) | Working anomaly codes (**W4**) |
+| [SCHEMA.md](SCHEMA.md) | Schema layer stub (not Core) |
+| **[ADM.md](ADM.md)** | Abstract document model (skeleton) |
+| **[GLOSSARY.md](GLOSSARY.md)** | Vocabulary (skeleton) |
+| **[WIRE.md](WIRE.md)** | Event stream / sufficiency (skeleton) |
+| **[PIPELINE.md](PIPELINE.md)** | Stages + ornamental criterion |
+| **[SEMANTICS.md](SEMANTICS.md)** | Equivalence layers (skeleton) |
+| **[GRAMMAR.md](GRAMMAR.md)** | Non-normative mechanical extract |
+| [dialects/](dialects/) | Thin dialect pointers |
+| [spikes/](spikes/) | paths · agent-utility · session-vault · DEMANDS |
+| [ORACLE-DELTAS.md](ORACLE-DELTAS.md) | Intentional 0.10 vs live parser/CORE |
+| [OPEN-ML-STRAWMEN.md](OPEN-ML-STRAWMEN.md) | Multi-line evidence only (not law) |
+| [pedagogy/OUTLINE.md](pedagogy/OUTLINE.md) | Teaching ladder (P4) |
+| [RULING-TABLE.md](RULING-TABLE.md) | Intake archaeology + C0–C5 marks |
+| [pipeline-discussion.md](pipeline-discussion.md) | Deliberation record |
 
-## Principles (locked before authoring)
+**How to read the suite:** DECISIONS → GLOSSARY/ADM → SPEC → WIRE. OPEN for holes. Spikes/vault for intent and demands. Live `../spec/CORE.md` is oracle/record, not this suite’s master.
 
-1. **Greenfield the forum.** Old CORE text, flat-wire vocabulary, and
-   reconciliation-to-accretion die. Old suite → `_archive/` as record.
-2. **Carry decisions, not substrate.** CHANGELOG "Ruled" entries seed
-   DECISIONS (cited). Fixtures are evidence. Live silences enter OPEN.
-3. **Clean room was an instrument once.** Authoring is maximum context,
-   rulings non-negotiable, freshness only on wording/organization.
-4. **Three contracts, written separately:** language (surface→ADM), wire
-   (ADM→events, under the sufficiency law), implementation (descent).
-5. **Parser as differential oracle** until new fixtures pass; then not
-   authority.
+**After context compaction:** do **not** trust the chat summary. Reorient from [STATUS.md](STATUS.md) (banner at top) → PROCESS → DECISIONS/OPEN → primary files. Disk beats compaction.
 
-## Inputs (non-negotiable for authoring agents)
-
-- This ruling table (filled)
-- `spec/msc/CHANGELOG.md` "Ruled" sections (cite into DECISIONS)
-- Clean rooms: `spec/msc/greenfield-2a|3a|3b/new-spec/` (organization + wording)
-- Fixture corpus as mining only (`core/fixtures/`)
-- `tools/descent` capability wishlist (not current grammar text as law)
-
-## Stress-check
-
-Done (2026-07-20): Fable verified completeness against 2a OPEN, TODO-SPEC-CORE
-silences, the wire shortlist, TODO-META's incomplete-input gap, and the full
-CHANGELOG (all batches). Integrated — see the table's §8 integration log.
-The table is ready for Joseph's sitting.
+**Primary users:** agents (generation, stream, tools, memory).

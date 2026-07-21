@@ -1,0 +1,179 @@
+; sketches.udon — toy document + provisional path strings for the paths spike
+; NOT law. Spelling follows adjudication-2026-07 provisional + scenario habits.
+; Bare paths appear only inside quoted strings or comments so this file
+; remains ordinary UDON under today's CORE.
+
+|sketch-pack[paths-spike]
+  :purpose explore addressing without pinning syntax
+  :date 2026-07-21
+
+  |note[principles]
+    Paths want to look like linearized UDON. References today are one
+    segment. Tools want depth. Embeddability is the hard constraint.
+
+  ; --- toy document the paths below pretend to address ---------------
+
+  |config[app]
+    |database[primary]
+      :host db.example.com
+      :pool 20
+    |database[analytics]
+      :host analytics.example.com
+    |cache[redis]
+      :url redis://localhost
+
+  |user[alice].admin
+    :email alice@example.com
+  |user[bob]
+    :email bob@example.com
+
+  |order[123]
+    :customer @user[alice]
+    :sku SKU-9
+
+  |el :x 1 :x 2
+    stacked attribute on purpose
+
+  |api
+    :headers
+      |header[auth] :value Bearer token
+      |header[content-type] :value application/json
+
+  |.defaults
+    :adapter pg
+
+  |step[1]
+    integer key, not position
+  |step["1"]
+    string key "1" — distinct from integer 1
+
+  |intent[42]
+    :status open
+  |intent["0042"]
+    :status legacy-string-key
+
+  |process[valve]?
+    :health amber
+    :fed-by @process[finding-routing]
+    :fed-by @process[decision-surfacing]
+  |process[finding-routing]
+    :health green
+  |process[decision-surfacing]
+    :health green
+
+  |section.intro
+    prose lives here and currently has no path segment
+
+  ; --- path catalogue (strings only) --------------------------------
+
+  |paths[structural]
+    :note root-to-leaf navigation
+    |example :path "|config[app]|database[primary]:host"
+      expect scalar db.example.com under at()
+    |example :path "|config[app]|*"
+      direct children of config
+    |example :path "|api:headers|header[auth]:value"
+      into node-valued attribute then child element
+
+  |paths[relational]
+    :note workhorse shape from day-in-the-life scenarios
+    |example :path "||database[primary]"
+      type-scoped key lookup any depth
+    |example :path "||user[alice].admin"
+      key plus trait AND-filter
+    |example :path "||promise.capability"
+      trait filter without key (scenario shape)
+    |example :path "||.defaults"
+      anonymous-only if mirror-document reading wins
+    |example :path "||*.defaults"
+      any element with trait defaults
+
+  |paths[identity-purity]
+    :note P1 collision site — do not treat integers as positions
+    |example :path "||step[1]"
+      integer key 1
+    |example :path '||step["1"]'
+      string key
+    |example :path "||intent[42]"
+      distinct from intent with string key "0042"
+    |example :path '||intent["0042"]'
+    |counterexample :path "|user[0]"
+      stale doc meant "first user"; under identity purity this is key 0
+
+  |paths[wildcards]
+    |example :path "||user[*]:email"
+    |example :path "||[primary]"
+      any element with key primary
+    |example :path "|config[app]|*[*]"
+      all named children with any key — spelling may be wrong; probe later
+
+  |paths[references]
+    :note in-doc vs tool follow
+    |example :path "@user[alice]"
+      definition lookup / single-segment ref (live CORE shape)
+    |example :path "@user[alice]:email"
+      if multi-segment refs allowed later
+    |example :path "||order[123]:customer@"
+      follow attr ref to definition
+    |example :path "||order[123]:customer@:email"
+      follow then attribute
+    |example :path "||process[valve]:fed-by@"
+      stacked ref attr — at() vs all() diverge
+    |example :path "||process[valve]:fed-by@:health"
+    |example :path "||*:fed-by@"
+      every fed-by follow (scenario multi-agent shape)
+    |awkward :path "||*:*@"
+      wildcard attr segment compose follow — confirm if intended
+
+  |paths[stacked-attrs]
+    |example :path "||el:x"
+      at() last-value vs all() every assignment — open reading
+    |example :path "||process[valve]:fed-by"
+      at expects last assignment in host-scalar view; all fans out
+
+  |paths[edit-tool]
+    :note ops from test/scenarios — tool law candidates, not core
+    |example :path "||intent[42]:status" :op set
+    |example :path "||process[valve]:'$key'" :op set
+      rename identity via designated attr
+    |example :path "||promise[ore-and-soil]:'$traits'" :op add-value
+      stack a trait; sugar-aware serialize may want .trait form
+    |gap :path "(none)" :want "address third prose paragraph under section.intro"
+      P7 — positional API on parent children may be enough for v1
+
+  |paths[embeddability]
+    :note how paths might appear as values someday
+    |example :path-as-string "||intent[42]:status"
+      today's only safe embedding
+    |example :path-as-dialect "<path:||intent[42]:status>"
+      self-delimiting future; interior free
+    |counterexample :path-as-bare ||intent[42]:status
+      would parse as structure, not a path value — do not do this today
+
+  |paths[multiple-keys]
+    :note OPEN S3 — under-exercised; spelling is pure guess
+    |hypothetical :surface "|phase[9][scribal]"
+    |hypothetical :path "||phase[9][scribal]"
+    |question uniqueness "(type, key) or (type, key-tuple)?"
+
+  |paths[deliberate-absences]
+    :note not bugs unless demand insists
+    |absent parent-step ".."
+    |absent predicate "[?(:in = x)]"
+    |absent glob "|foo*"
+    |absent positional-index-as-identity-syntax
+    |absent suffix-flag-filter "|process[valve]?"
+      document has ?; path may not see $? today
+
+  |at-all-contract
+    :at "exactly one match or error"
+    :all "explicitly plural — empty set is a result, not an error?"
+    :note empty-set policy for all() not settled; at() empty = PathNotFound candidate
+
+  |error-vocabulary-draft
+    :note from scenario corpus — names not ratified
+    |code PathNotFound
+    |code PathNotUnique
+    |code ReferencePlural
+    |code PreconditionFailed
+    |code SchemaViolation

@@ -1,0 +1,289 @@
+# Comprehensive 0.10 probes — ownership, severity, designated sugar edges
+# Profile: comprehensive (gate material). Design targets from SPEC/DECISIONS.
+# Event spellings provisional (OPEN W1e). No harness yet.
+
+# ---------------------------------------------------------------------------
+# Tail ownership (SPEC §6.5)
+# ---------------------------------------------------------------------------
+
+- id: own_el_finished_attr_tail_content
+  profile: comprehensive
+  desc: "element-rooted line; finished :a; \"rest\" is element content"
+  udon: "|el :a 1 rest\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { int: 1 } }
+          content:
+            - text: "rest"
+  anomalies: []
+
+- id: own_attr_rooted_warned_extension
+  profile: comprehensive
+  desc: attribute-rooted finished value; further material stacks + Warning
+  udon: |
+    |el
+      :a 1 more
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { int: 1 } }
+            - { key: a, value: { bare: more } }
+          content: []
+  anomalies:
+    - { severity: warning, about: warned-extension }
+
+- id: own_el_two_attrs_then_content
+  profile: comprehensive
+  desc: two finished attrs on element-rooted line; tail is content
+  udon: "|el :a 1 :b 2 tail\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { int: 1 } }
+            - { key: b, value: { int: 2 } }
+          content:
+            - text: "tail"
+
+# ---------------------------------------------------------------------------
+# Root-level :key (L1)
+# ---------------------------------------------------------------------------
+
+- id: root_attr_is_document_text
+  profile: comprehensive
+  desc: "no owning element — Warning + document Text including ':'"
+  udon: ":orphan v\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - text: ":orphan v\n"
+  anomalies:
+    - { severity: warning, about: root-level-attribute }
+  # MUST NOT be a free-floating Attribute in ADM (L1).
+
+# ---------------------------------------------------------------------------
+# Attr-under-attr (L6)
+# ---------------------------------------------------------------------------
+
+- id: attr_under_attr_is_text_of_open_value
+  profile: comprehensive
+  desc: "deeper :k under open attr → Error; line is Text of open value"
+  udon: |
+    |el
+      :outer
+        :inner x
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: outer
+              value:
+                # exact flow bytes include the deeper line (keep-everything)
+                flow_text_contains: ":inner x"
+          content: []
+  anomalies:
+    - { severity: error, about: attr-under-attr }
+
+# ---------------------------------------------------------------------------
+# Unclosed identity (R5) — geometric close; result complete unless ML reclassifies
+# ---------------------------------------------------------------------------
+
+- id: unclosed_key_partial
+  profile: comprehensive
+  desc: missing ]; $partial-key not $key
+  udon: "|el[abc\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: "$partial-key", value: { bare: abc } }
+          content: []
+  anomalies:
+    - { severity: warning, about: unclosed-identity-key }
+  notes: >
+    If unclosed [ is later classified delimited under OPEN ML, re-check result.
+    Consumers MUST NOT treat $partial-key as identity (R5).
+
+# ---------------------------------------------------------------------------
+# Tab indent (L4, L0) — intentional oracle delta vs live CORE line-lost
+# ---------------------------------------------------------------------------
+
+- id: tab_indent_kept_warning
+  profile: comprehensive
+  desc: tab in indent kept as text of owner; Warning; not line-lost
+  udon: "|el\n\tprose\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - text_contains: "prose"
+  anomalies:
+    - { severity: warning, about: tab-in-indentation }
+  notes: "ORACLE-DELTAS L4 — live CORE Error+line-lost is refused."
+
+# ---------------------------------------------------------------------------
+# Plain missing value (R6, L0)
+# ---------------------------------------------------------------------------
+
+- id: plain_key_missing_value_nil_error
+  profile: comprehensive
+  desc: "plain :key with no value → Nil + Error (absent intended value)"
+  udon: "|el :k\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: k, value: { nil: true } }
+          content: []
+  anomalies:
+    - { severity: error, about: missing-attribute-value }
+
+# ---------------------------------------------------------------------------
+# Inline-brace never boundary (R4)
+# ---------------------------------------------------------------------------
+
+- id: bare_then_inline_el_is_flow
+  profile: comprehensive
+  desc: after bare token, |{ is Flow segment not new attr boundary
+  udon: "|el :n value |{em x} :a 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: n
+              value:
+                flow:
+                  - text: "value "
+                  - inline_element: { name: em, content: [{ text: x }] }
+                  - text: " :a 1"
+          content: []
+  # Single assignment under n; trailing ":a 1" is text inside the flow.
+
+- id: keyword_alone_types_else_flow
+  profile: comprehensive
+  desc: true alone at boundary types; true story is flow
+  udon: "|el :a true :b true story\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { bool: true } }
+            - { key: b, value: { flow_text: "true story" } }
+          content: []
+
+# ---------------------------------------------------------------------------
+# Content Phase / late : (SPEC §6.9)
+# ---------------------------------------------------------------------------
+
+- id: late_colon_after_content_is_text
+  profile: comprehensive
+  desc: "line-initial : after Content Phase → Text + Warning"
+  udon: |
+    |el
+      prose first
+      :late v
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs: []
+          content:
+            - text_contains: "prose first"
+            - text_contains: ":late v"
+  anomalies:
+    - { severity: warning, about: late-attribute-after-content }
+
+# ---------------------------------------------------------------------------
+# Stacking vs list (R6, R9)
+# ---------------------------------------------------------------------------
+
+- id: stack_vs_list_shape
+  profile: comprehensive
+  desc: ":x 1 :x 2 is two assignments; :x [1 2] is one list"
+  udon: |
+    |a :x 1 :x 2
+    |b :x [1 2]
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          attrs:
+            - { key: x, value: { int: 1 } }
+            - { key: x, value: { int: 2 } }
+      - element:
+          name: b
+          attrs:
+            - key: x
+              value: { list: [{ int: 1 }, { int: 2 }] }
+
+# ---------------------------------------------------------------------------
+# Empty closed identity / brackets (R16)
+# ---------------------------------------------------------------------------
+
+- id: empty_key_brackets_nil
+  profile: comprehensive
+  desc: empty closed identity brackets → nil key (not empty list)
+  udon: "|el[]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: "$key", value: { nil: true } }
+          content: []
+
+- id: empty_array_value
+  profile: comprehensive
+  desc: "[ ] → empty array value"
+  udon: "|el :xs [ ]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: xs, value: { list: [] } }
+          content: []
+
+# ---------------------------------------------------------------------------
+# Multiple flag suffixes (R18)
+# ---------------------------------------------------------------------------
+
+- id: multi_suffix_stack
+  profile: comprehensive
+  desc: "|field?! stacks $? and $!"
+  udon: "|field?!\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: field
+          attrs:
+            - { key: "$?", value: { bool: true } }
+            - { key: "$!", value: { bool: true } }
+          content: []

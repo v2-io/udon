@@ -1,0 +1,212 @@
+# Closed-law edges already pinned in DECISIONS/SPEC (not OPEN ML).
+# Profile: comprehensive. Design targets — not parser traces.
+
+# ---------------------------------------------------------------------------
+# In-string escapes (L2)
+# ---------------------------------------------------------------------------
+
+- id: l2_no_instring_escape_backslash
+  profile: comprehensive
+  desc: backslash inside quotes is literal content (no Core in-string escapes)
+  udon: '|el :s "a\nb"\n'
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: s, value: { string: "a\\nb" } }
+          content: []
+  notes: "L2 — embed other quote kind for quotes; \\ is not an escape."
+
+- id: l2_embed_other_quote
+  profile: comprehensive
+  desc: double-quoted string may contain single quote literally
+  udon: "|el :s \"it's\"\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: s, value: { string: "it's" } }
+          content: []
+
+# ---------------------------------------------------------------------------
+# Empty block verbatim body (S8)
+# ---------------------------------------------------------------------------
+
+- id: s8_empty_same_line_verbatim_body
+  profile: comprehensive
+  desc: "!:label: with empty same-line body → empty body (not 'no body')"
+  udon: |
+    |el
+      !:python:
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - verbatim: { label: python, body: "" }
+  notes: "S8"
+
+# ---------------------------------------------------------------------------
+# Framed comment inside |{} out (R20)
+# ---------------------------------------------------------------------------
+
+- id: r20_bare_semicolon_literal_in_inline_el
+  profile: comprehensive
+  desc: "bare ; inside |{…} is literal (framed ; comment out for now)"
+  udon: "|p |{em a;b}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - inline_element:
+                name: em
+                content:
+                  - text: "a;b"
+  notes: "R20 — framed ' ; ' inside |{} out; bare ; literal."
+
+# ---------------------------------------------------------------------------
+# Nameless !{ at EOF → prose Text (R13)
+# ---------------------------------------------------------------------------
+
+- id: r13_nameless_brace_bang_at_eof_is_text
+  profile: comprehensive
+  desc: "nameless !{ at EOF → prose Text \"!{\" not unclosed directive shell"
+  udon: "|p !{"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "!{"
+  anomalies: []
+  notes: "R13 micro-batch — not incomplete-input (not a delimited open construct)."
+
+# ---------------------------------------------------------------------------
+# Empty <> interim (R13)
+# ---------------------------------------------------------------------------
+
+- id: r13_empty_envelope_interim
+  profile: comprehensive
+  desc: empty <> → BareValue + NoDialectsLoaded posture
+  udon: "|el :t <>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: t, value: { bare: "<>" } }  # or envelope empty — packaging TBD with dialects
+          content: []
+  anomalies:
+    - { severity: warning, about: no-dialects-loaded }
+  notes: "R13 interim; exact ADM field packaging with dialects later (S12)."
+
+# ---------------------------------------------------------------------------
+# Reference inert (S14 / W3 interim raw)
+# ---------------------------------------------------------------------------
+
+- id: ref_inert_selector
+  profile: comprehensive
+  desc: "@name[key].trait recognized; Core does not resolve"
+  udon: "|el :x @licence[mit].realized\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: x
+              value:
+                reference:
+                  name: licence
+                  key: mit
+                  traits: [realized]
+          content: []
+  notes: "S14 keep tuple; W3 interim raw wire OK until structured refs demanded."
+
+# ---------------------------------------------------------------------------
+# Structure-position escape (SPEC §9)
+# ---------------------------------------------------------------------------
+
+- id: escape_structure_position_rest_is_text
+  profile: comprehensive
+  desc: "\\ at Structure Position → rest of line is Text"
+  udon: "|el\n  \\|not-a-child\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - text: "|not-a-child\n"
+  notes: "Consumed \\ occupies no column for Content Base."
+
+# ---------------------------------------------------------------------------
+# Comment sameline framed
+# ---------------------------------------------------------------------------
+
+- id: sameline_framed_comment_stripped
+  profile: comprehensive
+  desc: "whitespace-framed ; comment on element line does not enter model text"
+  udon: "|el :a 1 ; note\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - { key: a, value: { int: 1 } }
+          content: []
+  # Comment node or stripped — SEMANTICS; content of el has no "note" text.
+
+# ---------------------------------------------------------------------------
+# Inline raw in value position (S11)
+# ---------------------------------------------------------------------------
+
+- id: s11_inline_raw_value_is_flow_segment
+  profile: comprehensive
+  desc: "inline raw !{:kind:…} in value position → Flow segment (not Node value)"
+  udon: "|el :v !{:code:x}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          attrs:
+            - key: v
+              value:
+                flow:
+                  - inline_verbatim: { label: code, body: "x" }
+          content: []
+  notes: "S11 / R4 inline-brace — value is Flow with InlineVerbatim segment."
+
+# ---------------------------------------------------------------------------
+# Comment continuation content-base strip (L7)
+# ---------------------------------------------------------------------------
+
+- id: l7_comment_continuation_content_base
+  profile: comprehensive
+  desc: "deeper lines under line comment are comment until dedent; strip = content-base"
+  udon: |
+    |el
+      ; note
+        cont body
+      |child
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - comment: { body: "note\ncont body" }
+            - element: { name: child, content: [] }
+  notes: "L7 — first continuation sets strip column. Must not become Text of el; |child is sibling content."
