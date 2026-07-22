@@ -73,7 +73,7 @@ place it on all three without decoding apparatus:
    generates"); the frontmatter carries it as machinery (below) so an
    auditor can sort by it.
 
-**How the three axes interact (the part that was conflated).** Strength is
+**How the three axes interact.** Strength is
 not a fourth register and register is not a strength grade — they cross.
 Only the two *truth-apt* registers take a strength rung: a **derived** claim
 is exact / conditional / robust-qualitative / discussion-grade depending on
@@ -136,13 +136,11 @@ without apparatus:
   the later priority stages weigh capabilities *against one another*
   instead of inheriting a verdict. A card whose territory genuinely
   lacks one of the fields says so rather than manufacturing content —
-  the register discipline applies inside cards too. (Chapters written
-  before this convention landed carry their ideas as ✦-marked bullets —
-  same register, older dress; a retrofit is mapped in the coverage
-  notes. And that this report had to *invent* a typographic convention
-  to mark a claim's register is itself a small demand datum for the
-  notation work: registers-on-content is exactly what a
-  structure-and-prose format could carry natively.)
+  the register discipline applies inside cards too. And that a report
+  like this must *invent* a typographic convention to mark a claim's
+  register is itself a small demand datum for the notation work:
+  registers-on-content is exactly what a structure-and-prose format
+  could carry natively.
 
 **The frontmatter machinery (what an auditor can sort by).** Each chapter's
 frontmatter carries the three axes as fields, so the report is
@@ -158,15 +156,11 @@ experience:
   chapters whose headline claim is truth-apt (derived or evidenced). A
   `decided` or purely `proposed` chapter omits it (nothing to grade), and
   in-body claims that diverge from the headline carry their rung in prose.
+- `stage:` — draft maturity, a wholly separate thing from all three axes.
 
-This replaces the older overloaded `status:` string, which mixed genre-count
-("4-tier"), strength ("theorem-grade-conditional"), and maturity
-("ratified-practice") into one field and so could not be sorted on any single
-axis. Chapters migrated in the current deepening cycle carry the split fields;
-the rest carry the convention forward as their window comes up (the change is
-a schema exemplar landed here plus a carry-forward note, not a silent
-whole-report rewrite). `stage:` continues to carry draft maturity, which is a
-fourth and wholly separate thing from all three axes.
+The three axes are separate fields precisely so an auditor can sort on any
+one of them alone — genre without strength, strength without genre — which a
+single blended status label cannot support.
 
 If a passage seems to argue hard for something that needed no argument,
 treat it as a defect in this report and flag it.

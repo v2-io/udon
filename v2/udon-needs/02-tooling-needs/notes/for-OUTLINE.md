@@ -54,6 +54,18 @@ it means:
   migration in one mechanical pass rather than window-by-window, since it is
   low-judgment once the convention is fixed. Either works; naming the choice.
 
+## Layer-split residual I surfaced rather than edited (counter-register)
+
+Sweeping my chapters for body revision-memoir (per Joseph's live correction),
+one pre-existing item in counter-register is borderline and I left it for a
+judgment call: rows 10 and 11 open with "(dissent entered by a GPT-family /
+Gemini-family reviewer, 2026-07-22)". The *model-family* attribution is
+load-bearing **content** (the intro says these rows exist to show what
+out-of-ecosystem evidence looks like), but the "dissent entered by … on
+2026-07-22" framing is process-memoir. Disentangling the two — keep the
+family, drop the entry-event date/verb — is a small rewrite of prose I didn't
+author; flagging for the next window rather than doing it unilaterally.
+
 ## Vocabulary the report now owns (for consistency in later windows)
 
 The strength ladder is **exact / conditional / robust-qualitative / measured /
