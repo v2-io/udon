@@ -73,7 +73,7 @@ directions.
 
 - **For UDON:** the serializer-and-spans substrate sits on the build
   path *before* any edit tool — and its wire-side prerequisites are
-  already decided in the [[DECISIONS| design ledger]]: value extents
+  already decided in the [[DECISIONS.md|design ledger]]: value extents
   explicit on the wire, text reconstructable by pure concatenation. The
   open design work — sugar-aware round-trip (does `$traits` write back
   as `.trait`?), where emit-style profiles live — belongs to the

@@ -90,7 +90,7 @@ the early design material, where several passes treated file-scope as
 the default and cross-document addressing as an open question awaiting
 permission. When the question finally reached the project's owner, the
 answer was a confirmation of the obvious, now on record in the
-[[DECISIONS| #decisions]]: documents are in scope. The
+[[DECISIONS.md|design ledger]]: documents are in scope. The
 inherited-assumption story is worth its ink because it is a live hazard:
 tooling built during the file-scoped habit may still hard-code it.
 
@@ -135,9 +135,9 @@ ahead should mine it whole.
 the small in-document reference form exactly as it is rather than grow it
 feature-by-feature toward a path language: each incremental field would
 be a constraint the eventual language must honor or break, debt without a
-design ([[DECISIONS| #decisions]]). And one question is simply *open*: an
+design (recorded in the [[DECISIONS.md|design ledger]]). And one question is simply *open*: an
 element can carry more than one key, and how addressing treats that is
-undecided ([[OPEN| #open]]). Everything else — the syntax,
+undecided (carried in the [[OPEN.md|open-questions ledger]]). Everything else — the syntax,
 the verbs, whether positional access ever becomes language rather than
 tooling — is deliberately unclaimed: this report maps the demand and
 declines to design.

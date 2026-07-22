@@ -57,7 +57,7 @@ parse result for every purpose.
   hand an interrupted generation to a successor as a partial tree plus
   verdict, instead of as a puzzle.
 - **UDON has already decided the substrate pieces.** Three standing
-  decisions in the [[DECISIONS| design ledger]] carry directly:
+  decisions in the [[DECISIONS.md|design ledger]] carry directly:
   incompleteness is a *verdict on the document*, not an event in the
   stream — a consumer reads it as a result, and no amount of clever
   stream-processing recovers it if the format doesn't say it; each

@@ -96,7 +96,7 @@ write gate can consume.
   schemas be nested or otherwise composable?"); *evolution* — declared
   renames, read-time translation, schema history — is a first-class
   demand from the family that has lived without it. And the job
-  separation already ruled in the [[DECISIONS| design ledger]] —
+  separation already ruled in the [[DECISIONS.md|design ledger]] —
   dialects say what a value *means*, schemas say what is *allowed*,
   never trading jobs — is precisely what keeps the guessing-tax catalog
   unreproducible in UDON.

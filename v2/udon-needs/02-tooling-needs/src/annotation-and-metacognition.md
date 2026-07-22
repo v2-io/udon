@@ -86,7 +86,7 @@ undecided; this chapter carries the demand and guards that boundary.
   (see Honest edges), plus the question of which marker annotations should
   use — the general designator question is on record as undecided. Until a
   decision is
-  recorded in the [[DECISIONS| design ledger]], conventions carry the
+  recorded in the [[DECISIONS.md|design ledger]], conventions carry the
   practice and real use accumulates the evidence — deliberately.
 - **For the harness — don't wait for syntax.** The practice is available
   now, and this report itself runs on it: status fields in chapter
