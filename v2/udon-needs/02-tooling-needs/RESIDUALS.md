@@ -215,9 +215,14 @@ person who has never seen this project; every concept taught at arrival;
 provenance (ruling IDs, quotes, source names) drops to frontmatter or
 source notes. Joseph's model rewrite (cross-document scope) is in the
 addressing bridge's "What is already decided" paragraph — match it.
-Self-test before committing: walk the bridge line by line asking Joseph's
-question — "am I supposed to already know this?" — and teach or footnote
-anything that fails.
+Self-test before committing — bar raised again same day: not "would a
+cold reader know this" but **"is every referent decodable from this page
+alone?"** (the estate's own author could not decode "ledger" or "the
+scenario sample's document-scope lean" — the prose was assuming the
+writing agent's session context, below even the owner's threshold). And
+where a finding came from a lived situation, **show the situation** — the
+one-or-two-sentence scene (the agent, the reference, the file edge) is
+simultaneously the evidence and the pedagogy.
 
 **Remaining work, exact:**
 1. Fresh-page rewrites of the remaining 26 bridges (Part IV's two are

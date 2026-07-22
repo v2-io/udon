@@ -40,10 +40,12 @@ collisions between them, is the first thing the
 **What the evidence already pins.** Four findings, each argued in full in
 the exploration:
 
-1. **Agents address relationally, not positionally.** In a day of
-   realistic document work, nearly every query began "find the element
-   with this key, at any depth" — the tree served as storage, not as the
-   mental model. (One day's sample, and the exploration says so — but it
+1. **Agents address relationally, not positionally.** A set of
+   walkthroughs followed an agent through a full day of realistic
+   document work — reading unfamiliar files, making guarded edits,
+   coordinating with a second writer. Nearly every query in that day
+   began "find the element with this key, at any depth" — the tree
+   served as storage, not as the mental model. (One day's sample, and the exploration says so — but it
    inverts the XPath-style assumption that root-to-leaf navigation comes
    first.)
 2. **Asking-for-one and asking-for-many are different questions.** A
@@ -73,10 +75,15 @@ length, and captures) — the shape a span-precise edit substrate needs,
 and otherwise absent from the ecosystem.
 
 **What is already decided, and what is genuinely open.** Three boundary
-decisions frame the design space. First: a path language could plausibly
-stop at the edge of a single document — cross-file hops left to the tools
-that open files — and the day-in-the-life studies leaned that way. That
-boundary has been ruled out as a permanent assumption: cross-document
+decisions frame the design space. First, the question of where a path
+stops. Picture the situation that raises it: an agent is working through
+a document, follows a reference, and the reference points at material
+that lives in *another file*. Does the path language itself express that
+hop — or does the path stop at the file's edge, with "open the other
+document, then path within it" left to the tool driving the session? The
+walkthroughs of realistic agent workdays consistently took the second
+view, and a path language could plausibly stop there forever. But that
+boundary has been ruled out as a *permanent* assumption: cross-document
 addressing is in scope for the eventual design, so a tool that hard-codes
 "paths never leave this file" into its workflows would be built on sand.
 Second: UDON documents can already point at their own elements with a
