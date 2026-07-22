@@ -45,6 +45,12 @@ runs through four subphases, per Joseph's framing (2026-07-21, verbatim):
   the union's assembly provenance), grok pass bookkeeping, and the
   quarantined first sweep (see its README before touching).
 - **`GATHERING-INDEX.md`** — the running front door / state of the phase.
+- **`02-provenanced/LEDGER.md`** — append-only extraction ledger: one line
+  per target *visit* (date · disposition · output · by · note), dry visits
+  included. The quick view of what's accumulating in 02 with no
+  reconciliation script: TARGET-FILES is the plan, the ledger is the
+  actuals, their diff is the remaining work. Append-only by design —
+  parallel agents' appends don't collide where edits would.
 
 ## Frontmatter template for `02-provenanced/` files
 

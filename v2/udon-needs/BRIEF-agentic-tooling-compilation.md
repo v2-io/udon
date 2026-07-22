@@ -64,6 +64,71 @@ frontmatter `status:`):
   reconciled registry) — already-integrated secondary documents; register
   and cross-link them, don't decompose or re-derive them
 
+## The vision — what signal looks like (read this before touching any target)
+
+Every target row is legitimate, but a row can't tell you what to take from
+it. The question you hold at every source is not *"what does this file
+contain?"* but:
+
+> **"What does this artifact witness about what agents — and the humans
+> working with and through them — actually need from their tools:
+> notations, interfaces, harnesses, memory and context systems, feedback
+> loops, guardrails — what they reached for, struggled with, built,
+> abandoned, wished for, or proved?"**
+
+The scope is deliberately the *whole* of agentic tooling, not just the
+notation slice: this compilation serves two consumers (see §purposes),
+and the harness programme's needs — how a tool presents itself to an
+agent, what an edit/observation/refusal should carry, what makes a loop
+or a memory system trustworthy, what the human on the other side needs
+to steer and verify — are first-class extraction targets even where they
+have no obvious UDON hook. Capture the need at its own altitude; whether
+UDON, the harness, or both answer it is a downstream question that
+belongs to synthesis, not to extraction. Human-side demand counts the
+same as agent-side: authoring ergonomics, review and steering surfaces,
+trust-and-verification needs, the places humans got bottlenecked or
+burned are witness material too.
+
+We are compiling *demand evidence and design wisdom*, not content. The
+same file can be gold or noise depending on which question you ask it:
+
+- `~/src/_ref/udon/misc/udon.vim` (2011) — **noise as a copy** (nobody
+  needs the vimscript); **signal as one witness line**: "editor support
+  was a day-one ambition." One sentence + provenance, done.
+- `~/src/_ref/udon/doc/objectives.asciidoc` — **copy it whole**: it *is*
+  a demand statement (the 2011 utility-priority matrix).
+- A 4,491-line executable — **characterize the mechanisms** that embody
+  the ideology (which tools it builds, how the loop treats the agent),
+  not the plumbing.
+- An abandoned JSON edit tool whose code raises "Deprecated" — the
+  **abandonment is the finding**; capture why it was abandoned.
+- A `.attic/` of failed syntax experiments — verify it exists, then ask
+  *what was being reached for*; the reach is the signal even where the
+  experiment failed.
+- A TODO file — the *unmet wants* in it are signal; the project
+  bookkeeping around them is not.
+
+So there are really three extraction outcomes, not two: **[COPY]** (the
+artifact is itself the evidence), **[CHARACTERIZE]** (the evidence must be
+distilled from something too big or too indirect to copy), and — implicit
+in many L/M rows — **[WITNESS]**: the artifact's *existence or shape* is
+the evidence, captured as a line or two in a commentary file. Many
+low-priority rows should resolve as witness lines, not documents. When
+unsure which a row wants, that's a judgment you're trusted with — and
+"this row yielded one sentence" is a perfectly successful extraction.
+Lean toward the concrete: **prefer copies/excerpts wherever the source
+allows** — the artifact travels, and higher-level views can be built over
+copies later but never the reverse; characterization is for when copying
+is genuinely the wrong move, not a default. And record every visit —
+including dry ones — as an appended line in `01-ideation/02-provenanced/LEDGER.md`
+(format at its top; append-only, never edit existing lines).
+
+What is *never* signal here: syntax law (ruled elsewhere), implementation
+detail for its own sake, project-management residue, and anything that
+merely restates what the compilation already carries *without adding a
+new context or era* (restatement across contexts IS wanted — it shows
+evolution; verbatim redundancy is not).
+
 ## Quality bars (each learned the hard way today — the record is in scratch/)
 
 - **Vetted**: nothing enters the compilation you haven't read or seen a
