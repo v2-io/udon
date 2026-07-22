@@ -15,47 +15,48 @@ sources:
 
 # The demand: schema-guarded structural mutation
 
-**Claim.** The clearest single demand in the entire compilation: an edit
-surface where an agent mutates a document **structurally** (span-sensitive,
-addressed by path, indentation and escaping owned by the tool), with the
-mutation **validated inside the write** — no change is accepted that would
-make the document violate its declared schema — and refused mutations
-returning law-rich, menu-shaped errors. This is precisely what no shipping
-tool provides (#edit-representation-landscape: all text-level, no validity
-guarantees), and every kind of evidence this report holds asks for it —
-design intent, the shipping ecosystem's gap, a measured wound, the formal
-theory, and (through the ease-gradient account below) agents' own
-testimony.
+**Claim.** The clearest single demand in this entire report: an edit
+surface where an agent mutates a document **structurally** — the target
+named by a path, spans spliced precisely, indentation and escaping owned
+by the tool — with the mutation **validated inside the write**: no
+change is accepted that would make the document violate its declared
+schema, and a refused mutation returns a law-rich, menu-shaped error and
+touches nothing. The previous chapter established that no shipping tool
+provides this — every shipped editor works at the text level with no
+validity guarantee. Every kind of evidence this report holds asks for
+it.
 
 ## The demand, witness by witness
 
-- **The design of record:** Joseph, during the deliberations that
-  reoriented the v2 effort (2026-07): "a
-  critical tool IMO for agents is a specialized edit tool that makes edits
-  very easy without needing to worry about indent-levels for prose or raw
-  code blocks, while simultaneously guaranteeing that no mutation that would
+- **Stated directly by the project's owner** during the deliberations
+  that reoriented this design effort (mid-2026): "a critical tool IMO
+  for agents is a specialized edit tool that makes edits very easy
+  without needing to worry about indent-levels for prose or raw code
+  blocks, while simultaneously guaranteeing that no mutation that would
   cause the document to now violate the schema is accepted. The tool
-  itself will need the machinery to do jq/yq like span-sensitive changes
-  to the AST and have it checked against a static schema."
-  The same demand runs through the wider design corpus: zoetica's semantic-storage design (doc-03: the
-  document store validates structure at the write boundary, and its signum
-  companion makes the schema declaration part of the document's own
-  identity), autopax INSTRUMENTA ("make invalid states unrepresentable"),
-  and the agentic-ux principles' write-path rules — validate inside the
-  write, not post-hoc; one-call resolution over edit→check→revert loops;
-  the file's own declared schema governs ("declared ≠ theater").
-- **The shipping ecosystem (the gap, and the near-misses):** the whole
-  fuzzy-ladder apparatus is compensation for unguaranteed text edits;
-  qwen-code bolts on *post*-edit secret-scanning (guard-after, the weaker
-  form); yq demonstrates structural path-assignment without schema guard;
-  Obsidian's linter admits its rules don't compose. Nobody has the
+  itself will need the machinery to do jq/yq like span-sensitive
+  changes to the AST and have it checked against a static schema." The
+  same demand runs through years of his design work in other dress: a
+  document store that validates structure at the write boundary, with
+  the schema declaration part of the document's own identity; a
+  pattern-language whose first layer is "make invalid states
+  unrepresentable"; write-path rules that insist on validating *inside*
+  the write rather than after it, on one-call resolution rather than
+  edit-check-revert loops, and on the file's own declared schema
+  governing ("declared ≠ theater").
+- **The shipping ecosystem has the gap and the near-misses.** The whole
+  tolerance-ladder apparatus is compensation for unguaranteed text
+  edits. One harness bolts secret-scanning onto edits *after* they land
+  (guard-after — the weaker form). The yq tool demonstrates structural
+  path-assignment with no schema guard. A popular linter's own
+  maintainers admit its rules don't compose. Nobody has the
   validated-transaction shape.
-- **The empirical stress test (Dec 2025 — [the YAML stress test](../reports/yaml-stress-test.md) reproduces it whole):** the
-  measured cost of guarantee-free mutation. Three agents, adversarial
-  protocol: Agent A writes valid data, Agent B introduces a specific
-  corruption, Agent C — with 100% context turnover and no human — attempts
-  recovery. The six scenarios and their outcomes, absorbed whole
-  (the YAML stress test's recovery scenarios, verbatim table):
+- **The measured wound** (December 2025; [the YAML stress
+  test](../reports/yaml-stress-test.md) reproduces it whole). Three
+  agents, an adversarial protocol: one writes valid data, a second
+  introduces a specific corruption, a third — fresh context, no human —
+  attempts recovery. Six corruption scenarios; their outcomes, verbatim
+  from the test:
 
   | Corruption | Recoverable? | Method | Without backup |
   |---|---|---|---|
@@ -66,10 +67,10 @@ testimony.
   | Partial update | ✓ | binary-search salvage OR backup | ⚠ maybe, loses data |
   | Circular reference (anchor misuse) | ✓ | backup, after cycle detection | ✗ failed |
 
-  Headline numbers: **recovery drops from ~100% to 16% (1/6) without
-  backup infrastructure** — and the one failure backups don't fix is the
-  quiet one. **Duplicate keys parse cleanly**: the parser raises nothing,
-  last-value-wins, and the earlier values are silently gone —
+  Headline: **recovery drops from ~100% to 16% — one scenario in six —
+  without backup infrastructure.** And the one failure backups don't
+  fix is the quiet one. Duplicate keys parse cleanly: the parser raises
+  nothing, the last value wins, the earlier values are silently gone —
 
   ```yaml
   - id: "task-1"
@@ -78,42 +79,41 @@ testimony.
     name: "Implement feature Y"   # parses fine; X is lost forever
   ```
 
-  "Can agent detect this? NO — YAML parser doesn't warn about duplicates.
-  Can agent recover? NO — earlier values are gone forever. Human
-  intervention required: YES (to notice data inconsistency)." The stress test's
-  four resulting requirements are a build-list for compensating
-  infrastructure — (1) backup/WAL before every write, (2) a validation
-  layer after every read, (3) salvage heuristics, (4) human escalation —
-  ~500 lines built around a format that did nothing to help. The demand
-  stated from the wound side: every scenario a schema-checking write gate
-  refuses at the door is a scenario the next agent never has to recover
-  from — and the undetectable one (duplicate keys) is refusable *only*
-  at the door, because after the write there is nothing left to detect.
-  (UDON's stacking law is the other half of this defense: same-key
-  assignments are *kept, in order*, by CORE law — silent last-wins is the
-  YAML behavior UDON already refuses.)
-- **Lived, adjacent:** Architectus's ease-gradient account — chaining
-  unverified str_replace edits was the easiest available path and "broke
-  minimal-sapientia 3 times." The tool's own audience asking for the
-  verified path to be the easy path — the schema-guarded-mutation question
-  in first person.
-- **The theory:** schemas convert interpretive observations into pass/fail — the
-  low-A move (#tools-are-observation-infrastructure); typed response/write
-  boundaries are the W₂ separation mechanism; and refusal atomicity is an
-  epistemic requirement (#errors-that-teach).
-- **External research:** published tool-failure measurements point at the
-  same absence from outside: malformed-call and fabricated-parameter
-  failures are attributed to insufficient schema grounding (small models:
-  ~68% omission / ~32% malformation — carried with its scope in
-  #structured-output-two-mechanisms), and the largest execution-failure
-  subcategory in the 2026 MCP fault-taxonomy study is schema-serialization
-  mismatch. The outside world keeps rediscovering that ungrounded
-  structure is where agent writes break.
+  "Can agent detect this? NO — YAML parser doesn't warn about
+  duplicates. Can agent recover? NO — earlier values are gone forever.
+  Human intervention required: YES (to notice data inconsistency)." The
+  team's four resulting requirements — backup before every write,
+  validation after every read, salvage heuristics, human escalation —
+  amount to ~500 lines of infrastructure built around a format that did
+  nothing to help. Read from the wound side, the demand is exact: every
+  scenario a schema-checking write gate refuses at the door is a
+  scenario the next agent never has to recover from — and the
+  undetectable one is refusable *only* at the door, because after the
+  write there is nothing left to detect. (UDON's own attribute law is
+  the other half of this defense: repeated keys are *kept, in order*,
+  by core rule — the silent last-wins that destroyed task X is the
+  behavior UDON already refuses.)
+- **Lived, adjacently.** An agent's own post-mortem of a system it
+  broke three times: chaining unverified edits "was the easiest path."
+  The tool's own audience asking for the verified path to be the easy
+  path — this chapter's demand, in first person.
+- **The theory.** A schema converts an interpretive observation ("does
+  this look right?") into a pass/fail one — the sharpest-signal move
+  the [observation chapter](tools-are-observation-infrastructure.md)
+  prices; a typed write boundary is one of its two separation
+  mechanisms; and the [refusal chapter](errors-that-teach.md) makes
+  atomicity of refusals an epistemic requirement, not politeness.
+- **External research keeps rediscovering the absence from outside:**
+  malformed-call and fabricated-parameter failures attributed to
+  insufficient schema grounding (the
+  [structured-output chapter](structured-output-two-mechanisms.md)
+  carries the numbers and their scope), and the largest
+  execution-failure subcategory in a 2026 fault-taxonomy study of the
+  Model Context Protocol ecosystem is schema-serialization mismatch.
 
 ## The shape the evidence pins (and what stays open)
 
-Pinned by evidence (the design corpus's build order and its edit-tool
-proposal, consistent across sources):
+Pinned — consistent across the design sources:
 
 ```text
 re-resolve path against current file → mutate assembly model
@@ -121,27 +121,63 @@ re-resolve path against current file → mutate assembly model
 → span-splice write   — one atomic transaction; refusal mutates nothing
 ```
 
-with the staged v0 honestly available: syntax-valid + indent-correct +
-atomic first, schema conformance next (the design-of-record critical path:
-paths → schema → serializer/round-trip+spans → edit v0 → conformance v1).
+with a staged first version honestly available: syntax-valid,
+indent-correct, atomic first; schema conformance next.
 
-Open, deliberately — questions the design work ahead must decide: whether the schema is static or
-composable/nested — Joseph's own open questions from the source turn:
-"can schemas be nested or otherwise composable?… or is the schema
-static?" (pipeline-discussion, same morning list as the edit-tool quote);
-the path language itself (#addressing-is-the-long-pole); the
-inverse/serialization substrate (#round-trip-and-span-splice); and where
-guard strictness lives — the soft/hard guarantees dial from the design
-corpus (profiles *casual / careful / critical*: same notation, different
-enforcement), with the agent edit tool as the **careful** gatekeeper for
-writes that flow through agents.
+Open, deliberately — the design work ahead must decide: whether the
+schema is static or composable ("can schemas be nested or otherwise
+composable?… or is the schema static?" — the owner's own open
+questions, from the same discussion as the edit-tool demand); the path
+language itself (the [addressing chapter](addressing-is-the-long-pole.md));
+the serialization substrate that makes span-splicing exact (the
+[round-trip chapter](round-trip-and-span-splice.md)); and where guard
+strictness lives — the design work sketches enforcement *profiles*
+(casual / careful / critical: same notation, different strictness),
+with the agent edit tool as the careful gatekeeper.
 
-**Who reads this and when:** UDON reads it as the flagship utility its
-the design decisions ahead must enable (it pulls paths, schema, spans, and
-round-trip all at once — which is *why* it's the long-pole customer).
-The harness reads it as the write-path contract for any document-shaped
-state agents maintain (memory files, tracking docs, AXIOMATA-class
-artifacts) — where "schema" may be the harness's own invariants rather than
-a UDON schema. Divergence to keep visible: the harness needs this for
-*plain-markdown-era* artifacts too; a UDON-only tool leaves its present
-corpus unguarded.
+## What this opens (ideas, not designs)
+
+- **One guard, three doors.** The same conformance engine could stand
+  at generation time (grammar/schema-constrained emission), at edit
+  time (this chapter's transaction), and at review time (batch CI
+  checking) — one schema, three enforcement points, so a document is
+  guarded whether it was born, changed, or merged into shape. Nothing
+  requires three separate validators; nobody has built the unified one.
+- **Refusals that carry the repair.** A guarded refusal knows exactly
+  which constraint failed. It could return the *nearest conforming
+  version* of the attempted edit as a diff — "not this, but here is
+  the closest thing that would be accepted." The refusal chapter's
+  error-as-menu, upgraded to error-as-counteroffer.
+- **Schema-aware merge.** Two agents editing the same document
+  concurrently is a documented collision class. Structural mutation
+  suggests structural *merge*: both edits applied to the model (not
+  the text), conformance checked on the merged result, conflicts
+  reported in path vocabulary rather than diff hunks. The multi-writer
+  problem inherits the guard.
+- **Guarding the markdown-era estate.** The harness's divergence note
+  below has an answering idea: conventions-as-schema. The harness's
+  existing plain-markdown artifacts follow implicit rules; stated as a
+  lightweight schema, the same write gate could guard them *today*,
+  before any notation migration — which would also measure how much
+  guarding is worth, on the corpus that motivated it.
+
+**Who reads this and when:** UDON reads it as the flagship utility the
+design decisions ahead must enable — it pulls paths, schema, spans, and
+round-trip at once, which is *why* it is the long-pole customer. The
+harness reads it as the write-path contract for any document-shaped
+state agents maintain (memory files, tracking documents,
+identity-defining files), where "schema" may be the harness's own
+invariants rather than a UDON schema. Divergence to keep visible: the
+harness needs this for its *plain-markdown-era* artifacts too — a
+UDON-only tool leaves its present corpus unguarded.
+
+## Honest edges
+
+The demand's breadth is real but its legs differ in kind: the owner's
+design line is decided intent; the stress test is one measured protocol
+on one format; the first-person account is adjacent (it asks for
+verification-made-easy, not for schemas by name); and the external
+studies indict ungrounded structure generally, not this design
+specifically. No one has yet built the guarded transaction and measured
+what it saves — that experiment is the point of the design work this
+chapter exists to inform.
