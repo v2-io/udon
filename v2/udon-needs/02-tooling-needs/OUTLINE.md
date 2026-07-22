@@ -75,7 +75,7 @@ harness consumes the same evidence for its edit-tool choices.*
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| III | Finding | [#edit-representation-landscape](src/edit-representation-landscape.md) | All shipping edits are text-level with no validity guarantee; format choice is empirically decisive (T5: 14→57% pass@1); the fuzzy-match ladder is the one true independent convergence; tool-call editing abandoned in this lineage, alive elsewhere (counter-register row 11) | drafted |
+| III | Finding | [#edit-representation-landscape](src/edit-representation-landscape.md) | All shipping edits are text-level with no validity guarantee; format choice is empirically decisive (externally measured: 14→57% pass@1); the fuzzy-match ladder is the one true independent convergence; tool-call editing abandoned in this lineage, alive elsewhere (counter-register row 11) | drafted |
 | III | Demand | [#schema-guarded-mutation](src/schema-guarded-mutation.md) | The documented gap: span-sensitive structural mutation, validated inside the write, atomic, with tool-owned geometry — the compilation's single clearest demand on UDON | drafted |
 | III | Principle | [#freshness-and-atomicity](src/freshness-and-atomicity.md) | Read-before-edit as enforced gate; paths re-resolve at write time; pre-patch evaluation (CAS); multi-site edits as one transaction; multi-writer collision is lived | drafted |
 | III | Demand | [#round-trip-and-span-splice](src/round-trip-and-span-splice.md) | Edit substrate ≠ whole-file fmt: byte identity for untouched spans, model identity for the change, ornamental as a separate profile; N-way round-trips are an open product family | drafted |

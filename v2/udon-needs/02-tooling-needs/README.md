@@ -40,10 +40,12 @@ Frontmatter fields:
   integration).
 - `evidence:` — which tiers ground it (T1 first-principles ideology · T2
   in-vivo shipped practice · T3 lived agent testimony · T4 formal theory ·
-  T5 external published evidence). **Cross-tier is the gold standard**; the
+  T5 external published evidence — codes are auditor apparatus; body prose
+  speaks in plain words). **Agreement across kinds is the gold standard**; the
   corpus is mostly one author, so within-tier agreement is coherence, not
-  corroboration, and T2 vote-counts are lineage-corrected per
-  [`tier2-lineage.md`](../01-ideation/02-provenanced/syntheses/tier2-lineage.md).
+  corroboration, and shipped-practice counts are corrected for descent
+  (the analysis is reproduced in
+  [Appendix B](appendices/appendix-b-shipping-practice.md)).
 - `status:` — the claim's epistemic standing (`cross-tier-convergent`,
   `theorem-grade-conditional`, `lineage-corrected-survivorship`, `singleton`,
   `contested`, `unmeasured-claim`, …). This is about *truth*, not progress.
@@ -67,7 +69,7 @@ visible and any of them can be picked up independently.
 drafted segments did *not* absorb, known gaps, and the bolt-on points for the
 pieces Joseph expects to spot as the monograph comes together.
 
-Quality bars are the BRIEF's, unchanged: vetted (no claim from an unread
+Standing quality bars, unchanged: vetted (no claim from an unread
 source), provenance always, restatement-with-annotation over verbatim
 duplication, convergence discipline, honest coverage, and
 transported-judgments-are-stale (a judgment inherited from an upstream
