@@ -110,3 +110,38 @@ ordering; the slug carries identity; re-ordering is an outline edit only.
   thesis qualifier, paths-necessity spike question). OUTLINE stages all
   → drafted; priorities re-scoped end-to-end. No review finding rejected
   across all five reviews.
+
+### 2026-07-22 standalone-ownership pass (post-Joseph-first-read)
+
+Joseph's first-read verdict on the initial draft: segments read as
+summaries pointing at material rather than carrying it — "if the source
+material were deleted, the report is useless right now, instead of the
+report superseding and owning everything." That sentence is now the
+acceptance test for every segment. This pass:
+
+- **Rewrote** `addressing-is-the-long-pole` whole (the cited exemplar of
+  the failure): D1–D9 demand table and the embeddability stress table
+  absorbed verbatim-grade; dead-ends, §10 floor, and the relational-first
+  finding quoted and explained on the page.
+- **Expanded** `schema-guarded-mutation`: the six-scenario recovery table
+  absorbed whole; the S8 mis-cite fixed to Joseph's actual open questions;
+  zoetica/T5 shorthand expanded; UDON's stacking law connected as the
+  duplicate-key defense.
+- **Fixed** counter-register rows 1 (SAR experiment now described, not
+  named) and 4 (weight scoped by row 11 instead of contradicting it).
+- **Audited all 30 segments** against the standalone test. Finding,
+  recorded honestly: the review-folded spine and back half largely pass —
+  content stated on the page with citations as provenance — and the
+  failure Joseph sampled was concentrated in `addressing` (the one
+  demand-spine segment no reviewer had rewritten) plus absorbed-evidence
+  gaps in the flagship. Remaining known distance from full ownership:
+  segments cite digest cluster IDs (C-numbers) and external-landscape
+  finding numbers as provenance shorthand after stating their content —
+  acceptable under the absorb-then-cite rule, but a reader-facing pass
+  replacing residual ID-speak with plain descriptions in running prose
+  would tighten Parts II and VII further; and the deepest primaries
+  (QUICK-TOOLING whole, THE-PATTERN whole, the udon-agentic catalog)
+  are absorbed at claim-and-quote grade, not reproduced-appendix grade —
+  if Joseph's read still finds segments leaning outward, the next
+  escalation is appendix-grade reproduction of the three or four
+  crown sources inside the report.
