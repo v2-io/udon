@@ -20,7 +20,7 @@ description that is a teaching surface** — the description carries the
 tool's law and usage wisdom, not just its signature, with longer guidance
 split into a separate file. Around that anatomy, a small set of
 micro-tools recurs with near-verbatim rules. The copying-vs-invention
-accounting from the [methods chapter](method-evidence-tiers.md) applies
+accounting from the [[method-evidence-tiers| #method-evidence-tiers]] applies
 hard here: most of the uniformity is convention-adoption of one or two
 influential designs — reported below as survivorship (nothing displaced
 them in years of intense iteration), never as independent votes.
@@ -28,7 +28,7 @@ them in years of intense iteration), never as independent votes.
 ## The converged shapes
 
 Per-harness detail for all of these lives in
-[the shipping-practice report](../reports/shipping-practice.md).
+[[shipping-practice| the shipping-practice report]].
 
 - **Ask-the-user:** one to four questions, each with two to four options,
   a recommended option first, and always a free-text escape. Probably a
@@ -38,7 +38,7 @@ Per-harness detail for all of these lives in
   And published measurement supplies the reason such an affordance is
   load-bearing: when a required parameter is missing, models tend to
   *fabricate a plausible value* rather than stop and ask (the
-  [structured-output chapter](structured-output-two-mechanisms.md)
+  [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]
   carries that result) — so a cheap, structured way to ask is a direct
   counter to a measured failure.
 - **The todo list:** the most uniform micro-convention in the landscape —
@@ -65,19 +65,19 @@ Per-harness detail for all of these lives in
   all eight. The codified rule — constrain by tool-set, never by
   instructions — has two origins and one lesson: prose does not bound a
   capable agent; capability does. (The
-  [delegation chapter](delegation-as-tooling.md) carries the briefing
+  [[delegation-as-tooling| #delegation-as-tooling]] carries the briefing
   half of this territory.)
 - **Instruction files:** a per-directory file of standing instructions
   (commonly `AGENTS.md`), nearest-file-wins. One live disagreement,
   unresolved: a single harness treats these files as *untrusted data*
   with injection-precedence rules, while the rest of the ecosystem treats
   them as authoritative instruction — see the
-  [counter-register](counter-register.md), which carries it as a
+  [[counter-register| #counter-register]], which carries it as a
   security-relevant open question.
 - **Description as teaching surface:** stated explicitly in the 2025
   design work and visible throughout the shipping ecosystem — the
   description field is where a tool teaches its law *before* the first
-  refusal; the [refusal chapter](errors-that-teach.md) is the ex-post
+  refusal; the [[errors-that-teach| #errors-that-teach]] is the ex-post
   half of the same channel.
 
 ## What it generates

@@ -37,7 +37,7 @@ is itself a document, "insert the value of X" is a path expression. Two
 independent examinations of this territory arrived at the same sentence:
 everything bottoms out on addressing. The full consumer map, with the
 collisions between them, is the first thing the
-[addressing exploration](../reports/addressing-exploration.md) lays out.
+[[addressing-exploration| addressing exploration]] lays out.
 
 **What the evidence already pins.** Four findings, each argued in full in
 the exploration:
@@ -90,7 +90,7 @@ the early design material, where several passes treated file-scope as
 the default and cross-document addressing as an open question awaiting
 permission. When the question finally reached the project's owner, the
 answer was a confirmation of the obvious, now on record in the
-[[DECISIONS.md|design ledger]]: documents are in scope. The
+[[DECISIONS| #decisions]]: documents are in scope. The
 inherited-assumption story is worth its ink because it is a live hazard:
 tooling built during the file-scoped habit may still hard-code it.
 
@@ -135,15 +135,15 @@ ahead should mine it whole.
 the small in-document reference form exactly as it is rather than grow it
 feature-by-feature toward a path language: each incremental field would
 be a constraint the eventual language must honor or break, debt without a
-design ([[DECISIONS.md|ledger]]). And one question is simply *open*: an
+design ([[DECISIONS| #decisions]]). And one question is simply *open*: an
 element can carry more than one key, and how addressing treats that is
-undecided ([[OPEN.md|open questions]]). Everything else — the syntax,
+undecided ([[OPEN| #open]]). Everything else — the syntax,
 the verbs, whether positional access ever becomes language rather than
 tooling — is deliberately unclaimed: this report maps the demand and
 declines to design.
 
 **Where to go from here.** Read the
-[addressing exploration](../reports/addressing-exploration.md) whole — it
+[[addressing-exploration| addressing exploration]] whole — it
 is the deepest single treatment of this territory. Its nine provisional
 boundary demands (§8) are the demand floor; its trap list (§9) records
 the dead ends already found so the design work ahead does not rediscover
@@ -151,7 +151,7 @@ them as ideas; its open questions (§10) are the sharpest current
 statement of what any future path language has to answer — starting with
 the load-bearing one: *what is the smallest in-document reference form
 that is still a true subset of the full path language?* The
-[agent-utility exploration](../reports/agent-utility-exploration.md) §3
+[[agent-utility-exploration| agent-utility exploration]] §3
 independently corroborates the dependency map from the tool side.
 
 **Who reads this and when:** whoever takes up path-language design starts

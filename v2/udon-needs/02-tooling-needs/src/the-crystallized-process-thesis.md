@@ -30,7 +30,7 @@ needs it.
 ## The evidence
 
 - **The founding statement** (reproduced whole as
-  [the quick-tooling conventions](../reports/quick-tooling-conventions.md)):
+  [[quick-tooling-conventions| the quick-tooling conventions]]):
   the 2025 tooling conventions lay out the evolution a practice goes
   through — *conscious practice → deliberate habit → crystallized tool →
   transparent extension* — and draw the design consequences: a Unix
@@ -45,9 +45,9 @@ needs it.
   only 10% for actual reasoning." The thesis, measured against its own
   author's lived session — and the origin of the demand that tools accept
   the caller's *intent*, not just parameters (the
-  [intent chapter](intent-as-parameter.md) takes that up).
+  [[intent-as-parameter| #intent-as-parameter]] takes that up).
 - **The behavioral mechanism** (reproduced as
-  [the pattern statement](../reports/the-pattern.md)): a second body of
+  [[the-pattern| the pattern statement]]): a second body of
   design work supplies *how* crystallization changes behavior, in two
   layers — *constraint* (make invalid states inexpressible where
   appropriate) and *gradient* (make the correct operation the easiest
@@ -68,12 +68,12 @@ needs it.
   path" — and broke the system three times. When the gradient points the
   wrong way, agents slide down it.
 - **The theory prices it.** The persistence economics of the
-  [observation-infrastructure chapter](tools-are-observation-infrastructure.md)
+  [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
   give crystallization a formal return: an investment of time pays when
   it is less than (expected future uses) × (comprehension time saved per
   use) × (number of distinct future readers) — and under agent workloads
   that last factor is large, because every future session is a fresh
-  reader. The [refusal chapter](errors-that-teach.md)'s "well-taught laws
+  reader. The [[errors-that-teach| #errors-that-teach]]'s "well-taught laws
   become infinite-velocity components of the agent's environment model"
   is the same thesis at the scale of a single interaction.
 
@@ -89,7 +89,7 @@ needs it.
 - **For UDON:** notation is crystallization's substrate. A schema is
   crystallized validation; a house style is crystallized formatting
   judgment; an edit tool that owns indentation geometry (the
-  [guarded-mutation chapter](schema-guarded-mutation.md)) is crystallized
+  [[schema-guarded-mutation| #schema-guarded-mutation]]) is crystallized
   indent discipline. The ease gradient is the standing design test for
   every UDON tool surface: if the unverified path is easier than the
   verified one, the notation's guarantees will not be used.

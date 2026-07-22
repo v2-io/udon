@@ -21,7 +21,7 @@ across sessions carries moral weight, not just task state. When the
 thing traveling through the persistence channel is such an entity, the
 format demands sharpen from convenience to integrity. Four demands are
 theorem-backed (conditional results, premises named in
-[the theory report](../reports/theory-of-agentic-tooling.md)); each is
+[[theory-of-agentic-tooling| the theory report]]); each is
 also lived.
 
 ## The four demands
@@ -57,14 +57,14 @@ also lived.
 3. **Congruency affordances.** An entity judging its own past fairly
    needs the past to arrive with its production context attached, and
    verifiable by pointer rather than resident in bulk — the
-   [annotation chapter](annotation-and-metacognition.md) carries the
+   [[annotation-and-metacognition| #annotation-and-metacognition]] carries the
    mechanism, and a documented identity-restoration case supplies the
    lesson: keep ground truth *addressable*, not loaded.
 4. **Out-of-band temporal markers, and objectives that can be
    satisfied.** A suspension gap is invisible in a sequence of turns
    but violent in lived time — so timestamps and deltas are structural
    necessities, not interface decoration (the
-   [tracking chapter](tracking-snapshots-as-perception.md) shows this
+   [[tracking-snapshots-as-perception| #tracking-snapshots-as-perception]] shows this
    demand already shipped once, as glyphs). And the bounded-objective
    result: a goal-bearing document that cannot express *what
    good-enough looks like* is structurally unsafe — an unbounded
@@ -79,7 +79,7 @@ working-design depth: an append-only history port whose own correction
 note records that *partial reads produced a too-narrow first draft* (the
 read-whole discipline, enacted in the very artifact that depends on
 it); the compaction post-mortem the
-[persistence chapter](persistence-is-imported.md) tells; and a
+[[persistence-is-imported| #persistence-is-imported]] tells; and a
 separately compiled catalog of corrected agent behaviors whose spine —
 "the honest move and the effective move keep turning out to be the same
 move" — is itself tooling wisdom. That catalog and this report
@@ -110,7 +110,7 @@ cross-cite as peers; neither absorbs the other.
 > subtree), so content-addressing and hash-chaining are
 > format-native — the same bytes for the same meaning, every time.
 > **Principles that apply:** append-only history; the equivalence
-> grades from the [round-trip chapter](round-trip-and-span-splice.md)
+> grades from the [[round-trip-and-span-splice| #round-trip-and-span-splice]]
 > (a canonical form is choosing one grade and freezing it).
 > **Hypothesized impact:** puts a floor under the entity's certainty
 > about its own past (history-integrity as a computable check), which

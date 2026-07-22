@@ -57,12 +57,12 @@ system: "agents ARE documentation, not code that implements behavior."
   environments, two of them shipped, is genuine re-derivation of one
   idea against three different walls.
 - **The philosophical spine** (reproduced in
-  [the pattern statement](../reports/the-pattern.md)): traditional
+  [[the-pattern| the pattern statement]]): traditional
   documentation and code drift apart; a *compiled* document cannot —
   "documentation is always current — it IS the implementation." Its
   extended-mind framing — the document as cognitive scaffolding, part
   of the agent's mind rather than external storage — is the
-  [persistence chapter](persistence-is-imported.md)'s reinjection
+  [[persistence-is-imported| #persistence-is-imported]]'s reinjection
   channel, said with feeling.
 - **The theory prices it.** Minimum implementation time is bounded
   below by the time to transmit the distinguishing information, given
@@ -85,7 +85,7 @@ system: "agents ARE documentation, not code that implements behavior."
   *governed-edit* requirement from the configuration side: the
   markdown-agent design treats editing the agent's own document as a
   transaction — validate, back up, swap, roll back — which is the
-  [guarded-mutation chapter](schema-guarded-mutation.md)'s demand
+  [[schema-guarded-mutation| #schema-guarded-mutation]]'s demand
   arriving by another road.
 - **For the harness:** agent definitions, skills, procedures, and
   output contracts are one document class, and the 2025 protocol's
@@ -94,7 +94,7 @@ system: "agents ARE documentation, not code that implements behavior."
   less-elaborated variants of the same knowledge: progressive
   disclosure carried in the metadata. The counter-weight to hold: the
   one measured comprehension experiment
-  ([counter-register](counter-register.md), row 1) failed to reproduce
+  ([[counter-register| #counter-register]], row 1) failed to reproduce
   on one model family — density and structure are the evidenced wins;
   notational elegance is not yet one.
 
@@ -112,7 +112,7 @@ system: "agents ARE documentation, not code that implements behavior."
   itself out of scope, the way a well-designed tool refuses out-of-law
   calls.
 - ✦ **The tool whose definition is its document.** This chapter and the
-  [tool-anatomy chapter](tool-definition-anatomy.md) converge from two
+  [[tool-definition-anatomy| #tool-definition-anatomy]] converge from two
   sides: if a tool's contract is a structured document and documents
   can compile to behavior, then a tool registry is a directory of
   documents — authored, diffed, schema-checked, and projected to

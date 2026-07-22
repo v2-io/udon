@@ -73,7 +73,7 @@ directions.
 
 - **For UDON:** the serializer-and-spans substrate sits on the build
   path *before* any edit tool — and its wire-side prerequisites are
-  already decided in the [[DECISIONS.md|design ledger]]: value extents
+  already decided in the [[DECISIONS| #decisions]]: value extents
   explicit on the wire, text reconstructable by pure concatenation. The
   open design work — sugar-aware round-trip (does `$traits` write back
   as `.trait`?), where emit-style profiles live — belongs to the
@@ -84,7 +84,7 @@ directions.
   explicit act. Human review of agent edits depends on exactly this:
   a reviewer can trust a three-line diff, and cannot trust a
   three-hundred-line reformat with an edit hidden inside it (the
-  [steering chapter](steering-and-verification-surfaces.md) picks this
+  [[steering-and-verification-surfaces| #steering-and-verification-surfaces]] picks this
   up).
 
 ## What this opens (ideas, not designs)

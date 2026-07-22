@@ -40,7 +40,7 @@ different strengths; the support behind each, at a glance):
 
 ## The evidence
 
-**From the formal theory (conditional theorems; [the theory report](../reports/theory-of-agentic-tooling.md) reproduces the
+**From the formal theory (conditional theorems; [[theory-of-agentic-tooling| the theory report]] reproduces the
 theory survey whole, with each result's premises):**
 
 - **The κ×A bias law** — belief bias in a coupled (LLM) agent is bounded by
@@ -104,13 +104,13 @@ theory survey whole, with each result's premises):**
   knowing the tool's action-mechanism — the map from "I called this" to
   "that happened" (the theory's condition C3) — which is an *interface
   property*, established by precise action semantics and law-teaching
-  refusals (the [next chapter's](errors-that-teach.md) subject).
+  refusals (the [[errors-that-teach| #errors-that-teach]] subject).
 
 **From shipping practice (the same physics instantiated, mostly without
 the theory):** the ecosystem's converged "prefer dedicated tool over shell
 equivalent" tables (7 sources, near-verbatim: Read not cat, Edit not sed —
 "keeps raw stdout out of the conversation") are A-reduction in the wild;
-the entire context-management machinery ([a later chapter](context-economy.md)) is the
+the entire context-management machinery ([[context-economy| #context-economy]]) is the
 description-length budget handled empirically.
 
 **From the first-principles design work:** a 2025 statement of design
@@ -145,5 +145,5 @@ claims, not this one.)
 The theory results are conditional (their named sub-scopes travel with
 them); the persistence framing transfers to real harnesses only insofar as
 "drift" is meaningful for the task environment. Nothing here says structure is
-sufficient — see the [counter-evidence chapter](counter-register.md) — structured modes
+sufficient — see the [[counter-register| #counter-register]] — structured modes
 change the error profile rather than removing it.

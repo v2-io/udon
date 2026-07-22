@@ -70,8 +70,8 @@ diffs, use-the-product verification, bidirectional steering).
 ## What each design probe inherits (questions, not answers)
 
 **The paths probe** inherits the
-[addressing chapter](addressing-is-the-long-pole.md) whole, with
-[the addressing exploration](../reports/addressing-exploration.md) as
+[[addressing-is-the-long-pole| #addressing-is-the-long-pole]] whole, with
+[[addressing-exploration| the addressing exploration]] as
 its deep context. Decisive questions: the smallest in-document
 reference form that is a *true* subset of the full path language;
 where paths terminate in every value context (the forced
@@ -105,7 +105,7 @@ for dialect-typed captures — the reframe that may dissolve the
 multi-line question entirely rather than answer it.
 
 **The schema probe** runs *against* the
-[guarded-mutation chapter](schema-guarded-mutation.md)'s transaction
+[[schema-guarded-mutation| #schema-guarded-mutation]]'s transaction
 shape: static versus composable or nested (the owner's own open
 question); what conformance means on a *partial* document (compose
 with the verdict channel); the guard's failure vocabulary as schema

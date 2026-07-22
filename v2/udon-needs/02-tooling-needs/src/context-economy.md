@@ -53,7 +53,7 @@ because they fail differently and route to different repairs.
 4. **Compact the conversation itself.** Two shapes ship: a structured
    state snapshot framed as the agent's *only* memory going forward,
    and first-person handoff notes. This family is where the
-   [persistence chapter](persistence-is-imported.md)'s warning bites
+   [[persistence-is-imported| #persistence-is-imported]]'s warning bites
    hardest — compaction that *replaces* history rather than pointing at
    it produced the false-confidence failure documented there.
 
@@ -74,10 +74,10 @@ design physics, the same split the persistence chapter draws.
   honest frame for the size-comparison pitch. Spilled and deferred
   artifacts are documents an agent re-enters *cold*, so self-describing
   structure and stable addressing (the
-  [addressing chapter](addressing-is-the-long-pole.md)) are what make a
+  [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]) are what make a
   parked artifact usable rather than merely stored. And a standardized
   focused-subtree-plus-breadcrumb payload (the
-  [read-path chapter](progressive-disclosure-read-path.md)) is the
+  [[progressive-disclosure-read-path| #progressive-disclosure-read-path]]) is the
   notation-side complement of family 3: relevance-shaped delivery
   without the extra model.
 
@@ -87,7 +87,7 @@ design physics, the same split the persistence chapter draws.
 > **What:** a caller-declared token budget on every tool call, letting
 > each tool pick preview depth, spill threshold, and pruning
 > aggression per call instead of shipping one global compromise. (The
-> [headless-contract chapter](headless-io-contract.md)'s
+> [[headless-io-contract| #headless-io-contract]]'s
 > agent-identification idea supplies the channel.)
 > **Principles that apply:** the joint budget above; crystallized
 > process (the tool absorbs a decision the agent now makes by

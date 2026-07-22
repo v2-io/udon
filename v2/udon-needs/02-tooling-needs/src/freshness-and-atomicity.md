@@ -31,7 +31,7 @@ applies or fully refuses.
   typed error, dedicated modules — across at least eight of the
   fourteen harnesses examined: a hard invariant, not a prompt
   suggestion. The sharpest shipped statement is the hash-anchored
-  editor from the [edit-landscape chapter](edit-representation-landscape.md):
+  editor from the [[edit-representation-landscape| #edit-representation-landscape]]:
   its anchors are valid only for the file state at read time, and **one
   stale anchor rejects the whole batch** — freshness and atomicity as a
   single mechanism. One other harness lifts the same concern to its
@@ -44,12 +44,12 @@ applies or fully refuses.
   multi-agent editing is a present condition, not a future scenario.
 - **Designed.** The 2025–26 design work states the re-resolution rule
   verbatim ("paths re-resolve at write time; never trust cache over
-  file"), and [the addressing exploration](../reports/addressing-exploration.md)
+  file"), and [[addressing-exploration| the addressing exploration]]
   hardens it into a composition rule: path evaluation for a whole patch
   runs against the *pre-patch* tree, compare-and-swap style, so a batch
   of edits shares one consistent addressing frame instead of each edit
   shifting the ground under the next.
-- **Derived.** The [refusal chapter](errors-that-teach.md) already
+- **Derived.** The [[errors-that-teach| #errors-that-teach]] already
   established that a failed operation must not half-apply — atomicity is
   what keeps the lesson of a refusal unconfounded. And the theory's
   analysis of forked, divergent copies of one artifact gives the deep
@@ -60,7 +60,7 @@ applies or fully refuses.
 ## What it generates
 
 - **For UDON's edit substrate:** the transaction in the
-  [guarded-mutation chapter](schema-guarded-mutation.md) inherits all
+  [[schema-guarded-mutation| #schema-guarded-mutation]] inherits all
   three invariants, and the failure vocabulary must keep **stale** (the
   file changed since you read it) distinct from **not found** and **not
   unique** — the repairs differ: re-read, versus re-derive the address,

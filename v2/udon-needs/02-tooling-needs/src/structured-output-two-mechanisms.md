@@ -49,8 +49,8 @@ one.
 - **The edit-side echo:** one prominent tool tried routing file edits
   through structured tool-call arguments and abandoned the mechanism
   after models kept mangling the arguments (the
-  [edit-landscape chapter](edit-representation-landscape.md) tells that
-  story, and the [counter-register](counter-register.md) scopes it by
+  [[edit-representation-landscape| #edit-representation-landscape]] tells that
+  story, and the [[counter-register| #counter-register]] scopes it by
   ecosystem). Same lesson: pushing content *into* structure moved the
   failure; it didn't eliminate it.
 
@@ -63,9 +63,9 @@ one.
   failure), fabricated parameters (a cheap structured way to ask is the
   evidence-backed answer), and wrong-but-well-formed content — the
   validation-passes-but-it's-false failure the
-  [counter-register](counter-register.md) documents.
+  [[counter-register| #counter-register]] documents.
 - **For UDON:** two implications, pulling in different directions. The
-  case the [observation chapter](tools-are-observation-infrastructure.md)
+  case the [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
   makes for sharp formats is about *reading* — observation design — and
   survives this chapter untouched. But any claim that structured
   **emission** improves reliability must be scoped by the benchmark
@@ -95,7 +95,7 @@ one.
   The clarification loop becomes mechanical instead of hoped-for.
 - ✦ **Emission-constrained streaming.** If UDON emission were
   grammar-constrained, a stream would be valid *at every prefix* — which
-  is the [streaming chapter](streaming-and-partial-documents.md)'s
+  is the [[streaming-and-partial-documents| #streaming-and-partial-documents]]'s
   territory arriving from the generation side. Whether the two
   mechanisms compose (constrained decode + incremental consumption) is
   an experiment nobody has run, in any notation.

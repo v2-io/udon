@@ -26,13 +26,13 @@ without pinning the size. And across all of it, *every* shipping
 approach edits at the text level, with **no validity guarantee** for the
 artifact being edited. That absence is the gap this whole part of the
 report converges on (the
-[guarded-mutation chapter](schema-guarded-mutation.md)).
+[[schema-guarded-mutation| #schema-guarded-mutation]]).
 
 ## The landscape
 
 Fourteen real harnesses were examined at source level; copying and
-invention are distinguished throughout ([the shipping-practice
-report](../reports/shipping-practice.md) carries the full examination).
+invention are distinguished throughout ([[shipping-practice| the shipping-practice
+report]] carries the full examination).
 Three paradigms ship today:
 
 1. **Exact find-and-replace** — old text, new text; fail loudly on zero
@@ -69,7 +69,7 @@ negative result is family- and era-scoped, not a law: in the
 Gemini/Antigravity ecosystem, tool-call editing with schema validation
 at the tool layer is the successful default (a dissent from a
 Gemini-family reviewer, carried in the
-[counter-register](counter-register.md)). The honest statement: in the
+[[counter-register| #counter-register]]). The honest statement: in the
 Claude/OpenAI-lineage world examined here, text-dialect editing won and
 one team's abandonment of the alternative is on record; elsewhere the
 alternative is alive. Its second half: five separate sources show
@@ -93,12 +93,12 @@ contract as model-agnostic.**
 ## The lived and theoretical anchors
 
 An agent's own account of editing without the loud-refusal shape shows
-the failure directly (the [refusal chapter](errors-that-teach.md)
+the failure directly (the [[errors-that-teach| #errors-that-teach]]
 carries it). The theory explains *why* representation dominates: the
 edit channel is action and observation at once — it is how the agent
 acts on the artifact *and* how it learns whether its model of the
 artifact was right, so its ambiguity is priced twice (the
-[observation chapter](tools-are-observation-infrastructure.md)).
+[[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]).
 
 ## What it generates
 
@@ -107,10 +107,10 @@ artifact was right, so its ambiguity is priced twice (the
   emit it correctly) while adding the thing no shipping tool has:
   **validity guarantees**. The ladder exists because text addressing is
   brittle; stable structural addressing (the
-  [addressing chapter](addressing-is-the-long-pole.md)) attacks the
+  [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]) attacks the
   cause rather than cushioning the symptom. The hash-anchor batch is
   prior art for freshness semantics (the
-  [freshness chapter](freshness-and-atomicity.md)); grammar-constrained
+  [[freshness-and-atomicity| #freshness-and-atomicity]]); grammar-constrained
   patch emission is prior art for making the representation itself
   impossible to mis-emit.
 - **For the harness:** adopt the ladder consciously — it is the

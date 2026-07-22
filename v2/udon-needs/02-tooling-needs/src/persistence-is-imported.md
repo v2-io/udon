@@ -28,8 +28,8 @@ channel, and no tuning of in-session behavior substitutes for it.*
 
 ## The evidence
 
-- **The formal result** (exact under its argued commitments; [the theory
-  report](../reports/theory-of-agentic-tooling.md) §4 carries the full
+- **The formal result** (exact under its argued commitments; [[theory-of-agentic-tooling| the theory
+  report]] §4 carries the full
   statement): with lossy context turnover and no reinjection, geometric
   decay to zero — nothing about good in-session behavior transfers across
   the boundary on its own. The companion engineering results point the
@@ -106,7 +106,7 @@ channel, and no tuning of in-session behavior substitutes for it.*
 
 **Who reads this and when:** the harness programme's continuity
 infrastructure treats this claim as its foundation (the
-[continuity chapter](continuity-infrastructure.md) carries that
+[[continuity-infrastructure| #continuity-infrastructure]] carries that
 extension, including the integrity and attestation demands this chapter
 doesn't decide); UDON reads it as the top-priority format use-case. No
 divergence on the claim itself.

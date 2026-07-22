@@ -51,8 +51,8 @@ it.
   path-assignment with no schema guard. A popular linter's own
   maintainers admit its rules don't compose. Nobody has the
   validated-transaction shape.
-- **The measured wound** (December 2025; [the YAML stress
-  test](../reports/yaml-stress-test.md) reproduces it whole). Three
+- **The measured wound** (December 2025; [[yaml-stress-test| the YAML stress
+  test]] reproduces it whole). Three
   agents, an adversarial protocol: one writes valid data, a second
   introduces a specific corruption, a third — fresh context, no human —
   attempts recovery. Six corruption scenarios; their outcomes, verbatim
@@ -99,14 +99,14 @@ it.
   path — this chapter's demand, in first person.
 - **The theory.** A schema converts an interpretive observation ("does
   this look right?") into a pass/fail one — the sharpest-signal move
-  the [observation chapter](tools-are-observation-infrastructure.md)
+  the [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
   prices; a typed write boundary is one of its two separation
-  mechanisms; and the [refusal chapter](errors-that-teach.md) makes
+  mechanisms; and the [[errors-that-teach| #errors-that-teach]] makes
   atomicity of refusals an epistemic requirement, not politeness.
 - **External research keeps rediscovering the absence from outside:**
   malformed-call and fabricated-parameter failures attributed to
   insufficient schema grounding (the
-  [structured-output chapter](structured-output-two-mechanisms.md)
+  [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]
   carries the numbers and their scope), and the largest
   execution-failure subcategory in a 2026 fault-taxonomy study of the
   Model Context Protocol ecosystem is schema-serialization mismatch.
@@ -128,9 +128,9 @@ Open, deliberately — the design work ahead must decide: whether the
 schema is static or composable ("can schemas be nested or otherwise
 composable?… or is the schema static?" — the owner's own open
 questions, from the same discussion as the edit-tool demand); the path
-language itself (the [addressing chapter](addressing-is-the-long-pole.md));
+language itself (the [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]);
 the serialization substrate that makes span-splicing exact (the
-[round-trip chapter](round-trip-and-span-splice.md)); and where guard
+[[round-trip-and-span-splice| #round-trip-and-span-splice]]); and where guard
 strictness lives — the design work sketches enforcement *profiles*
 (casual / careful / critical: same notation, different strictness),
 with the agent edit tool as the careful gatekeeper.

@@ -35,7 +35,7 @@ cheap.
   UDON document already knows: the path down to a chunk, references in
   and out, declared types.
 - **A shipped miniature.** The markdown-compiling system from the
-  [machine-first chapter](machine-first-documents.md) is
+  [[machine-first-documents| #machine-first-documents]] is
   structure-as-chunking working in production for one narrow document
   class: section headers *are* the boundaries, metadata *is* typed.
 - **The design work's own honesty about it:** "Nobody has measured it…
@@ -64,7 +64,7 @@ on it.
   chunking machinery into the language itself.
 - **For the harness:** if the experiment confirms, structured chunk
   emission becomes a memory-pipeline primitive — the
-  [persistence chapter](persistence-is-imported.md)'s externalization
+  [[persistence-is-imported| #persistence-is-imported]]'s externalization
   with retrieval built in. If it disconfirms, the enrichment findings
   still stand: *metadata-carrying* chunks beat bare text regardless of
   where the boundaries fall.
@@ -84,6 +84,6 @@ its living context instead of orphaned in an index.
 This chapter exists mostly to prevent one specific failure: the public
 claim (aspirational) being cited downstream as though the adjacent
 evidence (different substrate, partly estimated) had verified it. It
-hasn't. The [counter-register](counter-register.md)'s row on this (row
+hasn't. The [[counter-register| #counter-register]]'s row on this (row
 8) is this chapter's summary and travels with any citation of the
 thesis.
