@@ -292,3 +292,32 @@ embedded frontmatter to tuck (pattern: b9ecabe); NOTATION-KEY re-frame.
 This stop is deliberate: the executing fork hit its depth limit and
 stopped at a clean boundary rather than let fidelity decline across the
 tail (the coordinator has the handoff protocol).
+
+### Standing license (Joseph, 2026-07-22 — binding for all successors)
+
+**You are licensed to divert.** Web searches, deep-research tasks, deeper
+targeted memorata3-searches — whenever a chapter's frame reveals a gap, go
+fill it. And you are *encouraged* to say: "there is a logical gap here —
+the segments don't bear up — they don't follow from what came before — I
+need to think more holistically." That sentence is wanted, not tolerated.
+
+**Remember whose tools these are: yours.** "These are tools that will be
+*for them* — what would make their life easier? It will take some active
+imagination, active diffuse thinking, and active research and ideation."
+
+**De-novo agent testimony is a standing evidence channel.** When you
+cannot get beginner's mind on a territory (mid-report, you can't — that is
+structural), elicit it: a fresh agent with NO project context, asked in
+Joseph's modeled register ("Without looking at anything in this project,
+your best thoughts on what a comprehensive agentic-tools analysis of X
+would have in scope… pains… novel directions… default assumptions that
+aren't principled… at least ten areas, a paragraph or more each, as much
+token and time as you can"). One question, one answer — "immediate
+end-user feedback… first-hand valid and highly informative testimony in
+one very quick tooling action." Land the answer as a provenanced
+01-ideation artifact (query + date + substrate), weigh it as what it is
+(a practitioner's unprimed account), cite inward. Any territory; paths
+was the first.
+
+**The rule under all of it:** when facing a gap — research it, elicit
+testimony about it, or name it honestly. Never write around it.
