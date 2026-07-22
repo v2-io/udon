@@ -1,0 +1,2909 @@
+[
+  {
+    "score": 0.1426,
+    "factors": {
+      "class": "document",
+      "proximity": 0.837,
+      "density": 0.943,
+      "age_norm": 0.132,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 4,
+      "lex_rank": 4,
+      "geomean": 4.0,
+      "rerank": 0.559
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T17:59:42.401425-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/test/usability/results/AGENT_FEEDBACK.md",
+    "lines": [
+      1,
+      14
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Agent Feedback on UDON\n\nAggregated feedback from test agents evaluating UDON syntax.\nThese insights come from agents asked to interpret or produce UDON.\n\n---\n\n**ID:** udon-invention-20251223-175942-47de4d03\n**Task:** Invent notation: all constraints\n**Model:** claude-haiku-4-5-20251001\n**Time:** 2025-12-24T00:59:42Z\n\n**FEEDBACK:**",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/test/usability/results/AGENT_FEEDBACK.md",
+        "role": "original-document",
+        "date": "2025-12-23T17:59:42.401425-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1065,
+    "factors": {
+      "class": "document",
+      "proximity": 0.964,
+      "density": 0.75,
+      "age_norm": 0.131,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 2,
+      "lex_rank": 16,
+      "geomean": 5.657,
+      "rerank": 0.561
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-24T09:43:26-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/positioning.md",
+    "lines": [
+      158,
+      160
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## One line\n\nUDON is for agents that need to comprehend what they read—not just parse it.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/positioning.md",
+        "role": "original-document",
+        "date": "2025-12-24T09:43:26-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/positioning.md",
+        "role": "export",
+        "date": "2025-12-28T17:57:35.240270-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1063,
+    "factors": {
+      "class": "document",
+      "proximity": 0.598,
+      "density": 0.721,
+      "age_norm": 0.06,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 1,
+      "lex_rank": 28,
+      "geomean": 5.292,
+      "rerank": 0.56
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "tmp",
+    "date": "2026-04-13T11:40:40.494606-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/tmp/udon.md",
+    "lines": [
+      127,
+      129
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Agentic Design\nUDON-AGENT-TOOLS.md (632 lines) specifies a suite of tools for AI to manipulate UDON without mechanical burden (indentation, escaping, line numbers). This is forward-looking—designed for how agents actually interact with config.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/tmp/udon.md",
+        "role": "original-document",
+        "date": "2026-04-13T11:40:40.494606-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0952,
+    "factors": {
+      "class": "document",
+      "proximity": 0.823,
+      "density": 0.743,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 20,
+      "lex_rank": 2,
+      "geomean": 6.325,
+      "rerank": 0.561
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:23:49.124418-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+    "lines": [
+      527,
+      605
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Wild Ideas\n\n**UDON as Agent Memory Format**\n\nAgents maintain persistent memory as UDON documents:\n```udon\n|memory[project-x]\n:last-touched 2024-12-25\n:agent claude\n\n|context\nWorking on API documentation for Project X.\nUser prefers explicit error handling.\n\n|decisions\n|decision[auth-required]\n:date 2024-12-24\n:confidence 0.9\nMade auth required after security review discussion.\n\n|uncertainties\n|uncertainty[rate-limits]\nNot sure what rate limits are appropriate.\nUser said \"reasonable\" but didn't specify.\n\n|todos\n|todo :status pending\nDocument the 409 error response\n|todo :status done\nAdd authentication requirement\n```\n\nNext session: agent loads memory, has full context.\n\n**UDON as Agent Protocol**\n\nAgents communicate via UDON messages:\n```udon\n|message\n:from agent-1\n:to agent-2\n:type handoff\n\n|context\nCompleted schema validation.\nFound 3 issues (see |issues below).\n\n|issues\n|issue :severity error :location //|endpoint[create-user]/:auth\nType mismatch: expected boolean, got string \"required\"\n\n|request\nPlease fix the type issues and re-validate.\n\n|attachments\n@[current-doc]  ; Reference to document being worked on\n```\n\n**UDON as Test Specification**\n\n```udon\n|test[create-user-success]\n:endpoint @[create-user]\n\n|given\n|request\n:method POST\n:body |{json {\"name\": \"Alice\", \"email\": \"alice@example.com\"}}\n\n|expect\n|response :status 201\n|body :has name :eq \"Alice\"\n|body :has id :type integer\n\n|{@ :generated true :from-example @[create-user]/|example[basic]}\n```\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:23:49.124418-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0915,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.982,
+      "density": 0.618,
+      "age_norm": 0.005,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 1,
+      "geomean": 9.592,
+      "rerank": 0.539
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-07T23:44:22.783000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      352,
+      352
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "nd it's unreleased, sitting behind a 2011 placeholder on the registry. (The 0.9.0 itself looks suspiciously high for that thin commit history — the udon-ruby agent is digging into where it came from.)\n\n**`udon-ruby` / `libudon`** — not on rubygems (libudon is Rust; nothing's on crates.io either). No git tags exist in *any* of the four repos, so there are no in-repo release markers — the published `descent` 0.7.1 is the only external release record in the whole ecosystem.\n\nSo the short version: **descent is the one cleanly-released, HEAD-faithful artifact**; everything else is either unpublished-current (udon-ruby 0.9.0, libudon) or an ancient namesake (the 2011 `udon` gem). I've asked the descent and udon-ruby agents to confirm the release/CHANGELOG side from within the repos. I'll pull the whole cross-repo picture together — AST status, source-of-truth ping-pong, open syntax questions, and the direct-to-libudon-for-vivarium path — once all four deep-dives report back.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0878,
+    "factors": {
+      "class": "document",
+      "proximity": 0.778,
+      "density": 0.908,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 6,
+      "lex_rank": 7,
+      "geomean": 6.481,
+      "rerank": 0.56
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-01-14T08:26:04-07:00",
+    "date_method": "git-blame-min",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/udon-agentic.md",
+    "lines": [
+      1,
+      10
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Agentic UDON Tools\n\n**Tools designed for how agents actually think about documents.**\n\nThis document specifies a suite of tools for AI agents to inspect, understand,\nand modify UDON documents. The design philosophy: **agents express intent, tools\nhandle mechanics.**\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/udon-agentic.md",
+        "role": "original-document",
+        "date": "2026-01-14T08:26:04-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0747,
+    "factors": {
+      "class": "document",
+      "proximity": 0.946,
+      "density": 0.48,
+      "age_norm": 0.131,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 7,
+      "lex_rank": 25,
+      "geomean": 13.229,
+      "rerank": 0.56
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-24T09:43:26-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/positioning.md",
+    "lines": [
+      1,
+      14
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# UDON Positioning\n\n> [!note] **Status (2026-07-16):** Dec-2025 essay written in an agent's own\n> voice; moved here from `notes/`. The positioning holds up against CORE 0.9 —\n> the four-prefix framing, syntactic typing, and streaming claims are all\n> still true (streaming is now *actually* true via the pushdown backend).\n> Prime source material for the public README / outward docs\n> (`TODO-PUBLISHING.md`).\n\nUDON is optimized for agents. The fact that humans also find it clear is a\nfortunate consequence, not the design goal.\n\nThis sounds backwards, so let me explain.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/positioning.md",
+        "role": "original-document",
+        "date": "2025-12-24T09:43:26-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/positioning.md",
+        "role": "export",
+        "date": "2025-12-28T17:57:35.240270-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0742,
+    "factors": {
+      "class": "document",
+      "proximity": 0.964,
+      "density": 0.505,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 3,
+      "lex_rank": 22,
+      "geomean": 8.124,
+      "rerank": 0.561
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:23:49.124418-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+    "lines": [
+      7,
+      19
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## UDON's Unique Properties\n\nWhat makes UDON interesting for agents specifically:\n\n- **Mixed prose + structure** — Not just data (JSON) or just text (Markdown), but both interleaved\n- **Tiers of voice** — Prose, comments, elements, inline elements, attributes, dynamics — each semantically distinct\n- **Streaming-friendly** — Indent-based nesting means you know structure as you go\n- **AI-agent readable/writable** — Clean syntax, no escaping hell, semantic clarity\n\nThis isn't just \"another config format.\" It's potentially a native medium for agent thought and communication.\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:23:49.124418-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0689,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.987,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 9,
+      "lex_rank": 34,
+      "geomean": 17.493,
+      "rerank": 0.561
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "Given UDON's properties:\n- Mixed prose + structure\n- Tiers of voice (prose, comments, elements, inline, attributes, dynamics)\n- Streaming-friendly\n- AI-agent readable/writable\n\nSome compelling generic agent tools:\n\n1. UDON Parser/Emitter Library - Core library for reading/writing UDON\n2. UDON Validator - Schema validation for UDON documents\n3. UDON Formatter/Pretty-printer - Consistent formatting\n4. UDON Query Language - XPath/JQ-like for UDON\n5. UDON Diff - Semantic diffing of UDON documents\n6. UDON to/from JSON/YAML - Bidirectional conversion\n7. UDON Template Processor - Resolve !if, !for, !{...} dynamics\n8. UDON Schema Inference - Infer schema from examples\n9. UDON Merge - Merge multiple UDON documents (like git merge but semantic)\n10. UDON Streaming Parser - For LLM output consumption\n11. UDON \"Explain\" - Take a UDON doc, produce prose explanation\n12. UDON \"Structurize\" - Take prose, identify structure opportunities\n13. UDON Context Window - Extract/summarize for LLM context windows\n14. UDON DSL Compiler - Define a DSL, compile to validators/parsers\n15. UDON Annotation Tool - Add inline annotations to documents\n\nLet me share these ideas with Joseph.\n\n⏺ Great question. Thinking about this while tests run:\n\nCompelling Generic Agent Tools for UDON\n\nCore Infrastructure:\n1. Streaming Parser - Consume LLM output token-by-token, emit complete subtrees as they close\n2. Query Language - JQ/XPath for UDON: //|endpoint[@method='POST'] or ...|{field :required}\n3. Semantic Diff - Understand structure changes, not just text changes\n\nAgent-Specific:\n4. Context Compactor - Summarize UDON docs for context windows (preserve structure, compress prose)\n5. Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0399,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.832,
+      "density": 0.577,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 5,
+      "geomean": 21.448,
+      "rerank": 0.555
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "Format\n\nWhat if ACP responses were UDON documents?\n\n```udon\n|context.read\n:anchor @parser.rs::Parser::parse_element\n:intent editing\n\n|content\npub fn parse_element(&mut self) -> Result<Element> {\n...\n}\n\n|structure\n|scope :kind file :name parser.rs\n|scope :kind impl :name Parser :line 23\n|scope :kind function :name parse_element :line 67\n|boundary :end 96 :next-sibling @...::parse_attribute\n\n|references\n|calls-out\n|ref :target @...::peek :line 68 :count 3\n|ref :target @...::advance :line 71\n|called-by\n|ref :source @...::parse_document :count 3\n\n|hazards\n|hazard :type public-api\nSignature changes would break external consumers.\n|hazard :type ambiguous-pattern :pattern \"self.emit(\"\nAppears 7 times in file. Use more context for edits.\n\n|{@ :freshness now :confidence high}\n```\n\nThe response itself is a UDON document. Agents can query it (`//|hazard[@type='ambiguous-pattern']`), annotate it, pass it along, merge it with other context.\n\n---\n\nWhat's your instinct? Is UDON-as-ACP-format compelling, or should they be separate layers?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0391,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.694,
+      "density": 0.419,
+      "age_norm": 0.13,
+      "copies": 4,
+      "path_frac": 0.0,
+      "sem_rank": 14,
+      "lex_rank": 75,
+      "geomean": 32.404,
+      "rerank": 0.561
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-25T20:49:09.389000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      5767,
+      5767
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_history",
+    "text": "Udon is a pretty simple notation for structured + prose docs that we are trying to optimize specifically for agents. We're developing out some parsers for various languages -- fastest parsers imaginable-- and as soon as the format is a bit more stable we'll have syntax highlighting etc... but, syntax highlighting is exactly the kind of thing that tightens human feedback loops but not yours-- (it is immediately obvious due to syntax highlighting that I missed closing a string, for example, well before a compilation fails or I get a runtime error or test failure). And so I'm thinking rather than focusing first on a human-centric LSP-- I'd rather develop a vision and implementation, with UDON as the first implementation, for more of an ALSP or something. Or maybe it ends up being so different that it deserves a whole new acronym....",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:49:09.415000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 9,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-25T20:49:09.389000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-25T20:49:09.389000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-25T20:49:09.389000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0388,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.982,
+      "density": 0.462,
+      "age_norm": 0.005,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 3,
+      "geomean": 16.613,
+      "rerank": 0.543
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-07-07T23:41:59.600000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      313,
+      313
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "The user just mentioned that some of these libraries are published as gems on rubygems.org, which might differ from the current HEAD in their repositories. This opens up an interesting angle to investigate—comparing the published gem versions against what's in the repos to see if there's been code drift or if the gems are outdated.\n\nI should message the descent and udon-ruby agents about this context since those are the gem-relevant projects, and I can also do a quick independent check of the published gem versions via the rubygems API while they're running. That way I'm not duplicating their repo work but adding a complementary registry check.\n\nLet me identify which agents to contact: descent is the third agent I launched, and udon-ruby is the fourth. I'll send them both a note asking them to compare the gemspec version against what's published and flag any divergence between HEAD and the published state.\n\nI should also run my own independent registry checks in parallel—hitting rubygems.org for the Ruby gems and crates.io for libudon if it's a Rust crate. Let me load the SendMessage tool and kick off the registry lookups at the same time.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:41:59.600000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 132,
+        "speaker": "thinking",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:41:59.600000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 132,
+        "speaker": "thinking",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0362,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.856,
+      "density": 0.665,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 15,
+      "lex_rank": 20,
+      "geomean": 17.321,
+      "rerank": 0.561
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "libudon",
+    "date": "2025-12-25T20:49:53.512000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      15,
+      15
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "This is a fascinating direction. The user is saying:\n\n1. UDON is a notation for structured documents optimized for agents\n2. They're building fast parsers for it\n3. Syntax highlighting helps humans but not agents\n4. Instead of building a traditional LSP, they want to build an \"Agent LSP\" or similar—something that provides the same \"tighten feedback loops\" benefit for agents that syntax highlighting provides for humans\n5. UDON would be the first implementation/target\n\nThis is a greenfield design opportunity. Let me think about what would make this genuinely useful...\n\nThe core insight is: LSP was designed around human perception and interaction patterns:\n- Hover for info (requires mouse position)\n- Completion as you type (character by character)\n- Syntax highlighting (visual pattern recognition)\n- Squiggly underlines (visual attention)\n- Go-to-definition (navigation in spatial UI)\n\nAgents have completely different needs:\n- Batch context gathering (not keystroke-by-keystroke)\n- Structured data, not visual presentation\n- Verification before/after changes\n- Semantic understanding, not just syntactic\n- Stable references across edits\n\nWhat would ALSP (Agent Language Server Protocol) look like?\n\n**Core Primitives:**\n\n1. **Semantic Read** - Get code with rich context\n2. **Intent Declaration** - Tell the server what you're trying to do\n3. **Change Proposal** - Submit changes for validation before applying\n4. **Verification Query** - Ask \"is this correct?\"\n5. **Anchor System** - Stable references that survive edits\n\n**For UDON specifically:**\n\nUDON is a document format, not a programming language. So what would an agent need?\n\n- Structure understanding (what are the sections, nesting, etc.)\n- Schema validation (is this valid UDON?)\n- Semantic regions (this is prose, this is structured data, this is code block)\n- Navigation (find section X, find all @attributes, etc.)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:49:53.512000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 10,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0361,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.91,
+      "density": 0.837,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 40,
+      "lex_rank": 14,
+      "geomean": 23.664,
+      "rerank": 0.56
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T07:24:02.934000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+    "lines": [
+      309,
+      309
+    ],
+    "session": "enchanted-tinkering-babbage",
+    "file_type": "claude_conversation",
+    "text": "This is exciting. A `uq` (or whatever we call it) that's purpose-built for UDON would be powerful, especially for agents.\n\nLet me sketch some ideas building on what we've established:\n\n**Basic queries (like jq/yq):**\n```bash\n# Read a value\nuq '.database.host' config.udon\n\n# Path with key\nuq '.user[alice].email' users.udon\n\n# Typed path (explicit)\nuq '@user[alice].email' users.udon\n\n# Update in place\nuq -i '.database.port = 5433' config.udon\n```\n\n**The killer feature: indent-aware insertion**\n```bash\n# Insert a file as child of a node - tool handles indentation\nuq -i '.config.database << ./db-settings.udon' main.udon\n\n# Insert raw block\nuq -i '.code.example << :ruby: ./snippet.rb' doc.udon\n\n# Append to children\nuq -i '.items += |item[new] :name \"New Item\"' list.udon\n```\n\n**Breadcrumb context (agent-friendly output):**\n```\n$ uq '.api.endpoints.users.handler' --context\n\n14  |api\n23    |endpoints\n31      |users\n45        |handler\n─────────────────────────\n46          :method POST\n47          :auth required\n48          !:ruby:\n49            def call(env)\n50              # ...\n51            end\n```\n\n**Expand/collapse for exploration:**\n```bash\n# Show structure overview (collapsed)\nuq --outline config.udon\n\n|config\n|database[primary] ...        # 12 attrs, 3 children\n|cache[redis] ...             # 4 attrs\n|logging ...                  # 8 children\n\n# Expand a section\nuq --expand .database config.udon\n\n# Interactive mode with state\nuq -it config.udon\n> .database          # navigate\n> ..                 # up\n> :port              # show attribute\n> :port = 5433       # update\n> :w                 # write\n```\n\n**Schema-aware operations:**\n```bash\n# Validate against schema\nuq --schema app.schema.udon --validate config.udon\n\n# Insert with schema guidance\nuq -i --schema app.schema.udon '.endpoints += |endpoint' api.udon\n# Tool knows endpoint needs :path, :method, suggests/validates",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T07:24:02.934000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 208,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0359,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.85,
+      "density": 0.576,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 18,
+      "lex_rank": 17,
+      "geomean": 17.493,
+      "rerank": 0.561
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "libudon",
+    "date": "2025-12-25T20:49:53.512000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      15,
+      15
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "ions, nesting, etc.)\n- Schema validation (is this valid UDON?)\n- Semantic regions (this is prose, this is structured data, this is code block)\n- Navigation (find section X, find all @attributes, etc.)\n\n- Editing support (add a child element, move a section, etc.)\n- Cross-reference validation (all links resolve, etc.)\n\nI see three critical operational modes for agents interacting with UDON. Agents will simultaneously read documents to comprehend instructions and schemas, generate new documents as output, and navigate complex document ecosystems. This multi-modal approach requires a flexible protocol that supports comprehensive interaction beyond traditional language server paradigms.\n\nThe protocol must enable nuanced, context-aware manipulation where agents can propose changes, validate structural integrity, and maintain semantic coherence across document transformations. By treating UDON as a rich, agent-native format, we're reimagining document interaction from the ground up.\n\nKey protocol capabilities include semantic reading, targeted querying, change proposal workflows, and robust verification mechanisms. The design emphasizes dynamic, intelligent document interaction that goes beyond static editing.\n\nResponses will be multi-layered, providing structural, semantic, and pragmatic context to support sophisticated agent reasoning and decision-making.\n\nDistinguishing features include batch processing, intent-awareness, transactional change management, proactive contextual understanding, structured output generation, and integrated verification processes.\n\nPotential protocol naming options explore agent-centric terminology like ALSP, AISP, and ASCP, reflecting its intelligent, adaptive approach to language and document interaction.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:49:53.512000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 10,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0336,
+    "factors": {
+      "class": "document",
+      "proximity": 0.4,
+      "density": 0.351,
+      "age_norm": 0.131,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 10,
+      "lex_rank": 32,
+      "geomean": 17.889,
+      "rerank": 0.556
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-24T09:43:26-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/positioning.md",
+    "lines": [
+      142,
+      157
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Where UDON fits\n\n- Agent prompts, tool configs, and orchestration files\n- Specs, RFCs, and design docs that must be both narrative and machine-usable\n- Domain-specific languages embedded in context\n- Knowledge bases for RAG with stable, intentional chunking\n- Templates and content pipelines with streaming parses\n- Configuration with embedded rationale and context\n- API docs mixing examples, constraints, and fields\n- Data catalogs where metadata coexists with provenance\n- Playbooks and incident reports—agent-queryable, human-reviewable\n- Decision logs and ADRs with explicit metadata\n- Test scenarios mixing prose and formal structure\n- Content authoring with inline semantics\n- Any artifact where agents read, write, or collaborate",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/positioning.md",
+        "role": "original-document",
+        "date": "2025-12-24T09:43:26-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/positioning.md",
+        "role": "export",
+        "date": "2025-12-28T17:57:35.240270-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0324,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.809,
+      "density": 0.707,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 92,
+      "lex_rank": 15,
+      "geomean": 37.148,
+      "rerank": 0.556
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": ". Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent\n\nDSL Hosting:\n7. DSL Validator - Define allowed elements/attributes per !directive, validate conformance\n8. DSL Compiler - From UDON DSL definition, generate: schema, TypeScript types, validator, docs\n\nBidirectional:\n9. UDON ↔ JSON/YAML - Round-trip conversion (with prose preserved as special fields)\n10. UDON → Markdown - Render for humans (structure becomes semantic HTML)\n11. Markdown → UDON - Parse existing docs, infer structure\n\nMeta:\n12. UDON Annotator - Agent adds inline commentary: |{note :by claude This seems wrong because...}\n13. UDON Trace - For agent debugging: what elements were read/written when?\n\nWhich of these resonate most with your vision?\n\n---\n\n⏺ Let me think more deeply about the most compelling ones:\n\nTier 1: Essential Infrastructure\n\n1. Streaming Parser with Partial Tree Access\nAgent is writing... |article[foo]\n:status dr█  ← cursor here\n\nTool exposes: \"We have |article[foo] open, :status partially written\"\nCritical for: interrupt handling, progress tracking, early validation\n\n2. Semantic Merge\nWhen two agents modify the same UDON doc concurrently:\n- Prose changes: paragraph-level merge (like Google Docs)\n- Structure changes: element-aware conflict detection\n- Attributes: last-write-wins with audit trail in comments\n\n---\nTier 2: Agent-Native Tools\n\n3. Context Handoff Generator\nhandoff = UdonHandoff.new(current_doc)\n.preserve_structure      # Keep all |elements\n.summarize_prose(500)    # Compress narrative to 500 tokens\n.include_decisions       # Keep any |{decision ...} inline elements\n.add_agent_note(\"Stopped at validation step, see |error below\")",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0316,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.946,
+      "density": 0.753,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 6,
+      "geomean": 23.495,
+      "rerank": 0.56
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T20:50:34.851000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      16,
+      16
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "tion\n@file.udon::section:intro::para3     # third paragraph\n@file.udon::section:intro::para3:2   # second sentence? or character offset?\n@file.udon::#uuid-if-present         # if elements have IDs\n```\n\nAnchors should:\n- Survive edits elsewhere in the document\n- Degrade gracefully (\"anchor still valid but now at different position\")\n- Have a resolution API (\"where is this anchor now?\")\n- Support fuzzy matching (\"anchor moved, closest match is...\")\n\n---\n\n## UDON-Specific Opportunities\n\nSince UDON is designed for agents, you could build features into the *format itself* that make ALSP trivial:\n\n**Structural:**\n- Elements inherently have semantic identity (not just text position)\n- Nesting is explicit and unambiguous\n- Attributes provide metadata hooks\n\n**For agents reading UDON:**\n- Schema-aware parsing (\"this is a `task` element with required `status` attribute\")\n- Structured extraction (\"give me all `@todo` items as JSON\")\n- Semantic queries (\"find all elements where status=blocked\")\n\n**For agents writing UDON:**\n- Validation against schema before write\n- Auto-formatting to match document conventions\n- Structural insertion (\"add child element of type X here\")\n\n**The meta-level:** UDON documents could themselves contain ALSP hints:\n\n```udon\n!alsp\nanchors\nstable: true         # generate stable IDs for all elements\nvalidation\nschema: ./task.schema.udon\nsemantics\n@todo -> requires: [ title, status ]\n```\n\n---\n\n## Naming\n\nYou're right that it might deserve a new acronym entirely. Some thoughts:\n\n**Keep \"Protocol\":**\n- **ASCP** — Agent Semantic Context Protocol\n- **SCP** — Semantic Context Protocol\n- **ACP** — Agent Context Protocol\n\n**Emphasize the purpose:**\n- **AVFP** — Agent Verification and Feedback Protocol\n- **AFSL** — Agent Feedback and Semantic Layer\n\n**Novel:**\n- **LENS** — Language-agnostic ENriched Semantics\n- **ANCHOR** — Agent Notation for Contextual Handling and Operational Reasoning\n- **GUIDE** — Generic Understanding Interface for Developer Entities",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:50:34.851000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 11,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0285,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.809,
+      "density": 0.691,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 23,
+      "lex_rank": 21,
+      "geomean": 21.977,
+      "rerank": 0.556
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-01-14T11:23:19.067000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      10,
+      10
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "I've read all three documents. Let me summarize what I've learned:\n\n1. **udon-agentic.md** - Describes a suite of tools for AI agents to work with UDON documents. Key principles:\n- Agents express intent, tools handle mechanics (no thinking about indentation, escaping, etc.)\n- Context efficiency (progressive disclosure, state maintenance)\n- Confidence before action (propose/preview before apply)\n- Relationship awareness (bidirectional references, inherited attributes)\n\nTools defined: glance, focus, propose, apply, session, trace, infer, validate, search, annotate, extract, diff, timeline, template, audit\n\n2. **udon-ast.md** - Describes the parsed AST structure:\n- Document = [Node] (no wrapper, streaming-friendly)\n- Node types: Element, Text, Comment, Directive, Interpolation, Reference, Raw\n- Element has: name, key, traits, attrs, children\n- Key insight: key [key] is singular identity, traits .class are plural classifications\n- Type-scoped uniqueness: (element-name, key) must be unique, not just key\n- References use @element[key] syntax\n- Bidirectional navigation (parent, ancestors, siblings)\n- Document indexes: mixins, by_type, by_key, by_key_only, references, traits_index\n\n3. **udon-paths.md** - Path syntax that reuses UDON's prefix symbols:\n- | for elements\n- : for attributes\n- . for traits (filters)\n- [key] for keys\n- @ for references\n- || for recursive descent\n- * for wildcards\n\nKey insight: paths look like flattened UDON documents, zero new syntax to learn\n\nThe user says they have questions. I should wait for them to pose those questions.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T11:23:19.067000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 5,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0278,
+    "factors": {
+      "class": "document",
+      "proximity": 0.85,
+      "density": 0.718,
+      "age_norm": 0.131,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 39,
+      "lex_rank": 12,
+      "geomean": 21.633,
+      "rerank": 0.56
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-24T09:43:26-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/positioning.md",
+    "lines": [
+      79,
+      95
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Dumb pipes vs comprehending agents\n\nHere's the real litmus test for when to use UDON:\n\n**Will the machine benefit from comprehending this content?**\n\nIf the machine is a dumb pipe—serializing, deserializing, passing bytes with\nno understanding—use the simplest wire format. JSON. CSV. Protocol Buffers.\nUDON's expressiveness is overhead when nothing is reading for meaning.\n\nBut if the machine is a comprehending agent—reading to understand, generating\nto communicate, collaborating with humans or other agents—UDON wins. The\nstructure that aids comprehension is the point, not overhead.\n\n\"Machine-readable\" is not one thing. A deserializer and an agent have different\nneeds. UDON is for the agent.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/positioning.md",
+        "role": "original-document",
+        "date": "2025-12-24T09:43:26-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/positioning.md",
+        "role": "export",
+        "date": "2025-12-28T17:57:35.240270-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0277,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.562,
+      "age_norm": 0.132,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 22,
+      "lex_rank": 90,
+      "geomean": 44.497,
+      "rerank": 0.526
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-23T19:24:37.758000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      5505,
+      5505
+    ],
+    "session": "dd3d94a5-9090-4ee7-b772-b3c97c25eab7",
+    "file_type": "claude_history",
+    "text": "Given that understanding of the general utility of UDON and the various layers of voice etc...  What would be some compelling *generic agent tools* that work with or consume or produce UDON...",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0258,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.928,
+      "density": 0.696,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 9,
+      "geomean": 28.775,
+      "rerank": 0.559
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T21:30:18.600000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      60,
+      60
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "ore edge cases, the more the spec grows.\n\n**The `|` character has baggage.** Pipes in shell, or-operators in code, table separators in Markdown. Could cause friction and confusion in certain contexts.\n\n**Why these specific syntax choices?** `|` for elements feels somewhat arbitrary. The justification (\"it looks like a structure boundary\") is post-hoc. XML's `<>`, Markdown's `#`, YAML's indentation — each has some mnemonic or historical basis. Does `|` for elements actually click for people?\n\n---\n\n## The Real Question\n\nThe question isn't \"is UDON better?\" It's \"is UDON *enough* better to justify the ecosystem investment?\"\n\nCompeting head-to-head with JSON/YAML for data interchange? Probably not. The switching costs are too high.\n\nCompeting with Markdown for documentation? Maybe, but Markdown's dominance is entrenched.\n\n**The interesting bet is the one you're making:** UDON as a native format for agent communication and reasoning, where there's no incumbent. If agents start *generating* UDON (for handoffs, for reasoning traces, for structured outputs), then humans might start *reading* UDON, and the ecosystem grows organically.\n\nBut that bet depends on UDON actually being better for agents in ways that matter. And I genuinely don't know if it is yet. The streaming parser story is compelling. The annotation layer is nice. But are these 10% better or 10x better than just using JSON with conventions?\n\n---\n\n## What Would Make Me More Confident\n\n1. **Real-world usage.** Does UDON actually help in practice, or is it theoretical?\n2. **Agent adoption evidence.** Do agents (like me) actually produce better outputs when writing UDON vs JSON?\n3. **The streaming parser working.** The partial tree access during generation — if that's real and useful, it's a genuine differentiator.\n4. **A killer use case.** One domain where UDON is so obviously better that people adopt it despite the ecosystem gap.\n\n---\n\n## My Honest Bottom Line",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:30:18.600000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 40,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0235,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.451,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 35,
+      "lex_rank": 71,
+      "geomean": 49.85,
+      "rerank": 0.553
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": "udon",
+    "date": "2026-07-16T18:12:42.153000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      1289,
+      1289
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "BTW- I wouldn't mind, in agentic settings, having an udon file-watcher that specifically undoes any agent-or-human edits to any udon files, where using the correct tool instead receives a token from this guard that says what edit it is going to attempt / operation or set of operations, that it will use to know if the edit is legitimately through the correct tool. (or something like that). (keep the blanket readability...)  (oh, also, there's a tool that was written or under consideration that, given a specific udon document, immediately showed all of the viable paths... that could be super useful-- it's also essentially a document summary...)",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T18:12:42.153000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2026-07-16T18:12:42.153000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0232,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.181,
+      "age_norm": 0.126,
+      "copies": 3,
+      "path_frac": 0.5,
+      "sem_rank": 31,
+      "lex_rank": 89,
+      "geomean": 52.526,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T13:24:42-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/_archive/SPEC.md",
+    "lines": [
+      8,
+      19
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Overview\n\nUDON is a unified notation for data, documents, and configuration. It combines structured elements with natural prose, optimized for both human readability and machine parsing.\n\nKey properties:\n\n- Indentation-based hierarchy (no closing tags)\n- Markdown-compatible prose within elements\n- Streamable, incremental parsing\n- Syntactic typing (not sniffing)\n\n**Parser behavior notes:**\n\n- **Comments, blank lines, warnings.** Comments, blank lines (a `BlankLine` event), and recoverable anomalies (a `Warning` event) are all emitted as events by the main parser, alongside the structural ones. What consumers do with them (AST inclusion, filtering, etc.) is up to the host.\n- **Text granularity.** A `Text` event carries **no** guarantee of being a complete text run. Escapes and (later) chunk boundaries may split one line's prose into several `Text` events; consumers concatenate. Compliance fixtures express text maximally collapsed per line; the harness folds same-line adjacent Texts (span gap contains no newline) so expectations are rhythm-independent.\n- **Warnings are codes, not ratified strings.** A `Warning` event's payload is a **warning code** from the table below (PascalCase, matching `ParseErrorCode` style). The human-readable text a host surfaces, and *whether* a given warning is emitted in a given circumstance, are parser/host decisions (menu-vs-knob: the core fixes the code vocabulary; hosts pick voice and verbosity). Event-parser fixtures match codes.",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/udon/spec/CORE.md",
+        "role": "original-document",
+        "date": "2026-01-01T11:16:38-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/FULL-SPEC.md",
+        "role": "export",
+        "date": "2026-01-01T16:02:48.369661-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/_archive/SPEC.md",
+        "role": "original-document",
+        "date": "2025-12-23T13:24:42-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0231,
+    "factors": {
+      "class": "subagent-to-agent",
+      "proximity": null,
+      "density": 0.634,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 1.0,
+      "sem_rank": 26,
+      "lex_rank": 8,
+      "geomean": 14.422,
+      "rerank": 0.558
+    },
+    "class": "subagent-to-agent",
+    "speaker": "sub-agent",
+    "project": "udon",
+    "date": "2026-07-16T15:11:42.067000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/subagents/agent-a3a91582cbaa30828.jsonl",
+    "lines": [
+      39,
+      39
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "but for UDON structure. The TreeStream and PushdownParser already provide the substrate, but the affordance layer for querying mid-parse state and schema-prefix validation still needs to be built out.\n\nMoving to tier 1: annotations riding on inline elements need a syntax convention to carry agent metacognition (confidence, source, decision, uncertainty), though the current 0.9 spec doesn't allow the `|{@ ...}` syntax from the December sketch since inline elements require a name. Then there's context handoff and compaction—generators and compactors that treat UDON as agent memory, which is becoming urgent since ASF process maps are already waiting to use it.\n\nThe bigger picture is positioning UDON itself as the agent/tool response format—the ACP convergence where the format becomes the protocol. This should anchor the tool suite's output conventions (tools are already emitting UDON), but I'm weighing whether to keep it as a separate north-star item or fold it into the framing of item 1. The lane needs concrete tasks, so maybe the real work item is just \"decide and spec the response-envelope conventions.\"\n\nActually, I think the fresher angle is adopting UDON output conventions across tools while evaluating how it fits with MCP—since ACP was drafted in December 2025 before MCP became dominant, but by 2026 MCP is the actual protocol in use. UDON-as-MCP-payload is the live version of this idea. The docs don't mention MCP at all, which signals staleness; from-scratch ACP is probably dead as a project, but the residue lives on as UDON formatting within existing protocols like MCP tool results and agent handoffs. That's worth flagging upfront in the banner and lane description.\n\nThere's also semantic diff and merge work—diff logic is already in udon-agent.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/subagents/agent-a3a91582cbaa30828.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:11:42.067000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 22,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0222,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.234,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 17,
+      "lex_rank": 87,
+      "geomean": 38.458,
+      "rerank": 0.556
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T07:40:47.538000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+    "lines": [
+      323,
+      323
+    ],
+    "session": "enchanted-tinkering-babbage",
+    "file_type": "claude_conversation",
+    "text": "Done. Created `agentic-udon.md` with:\n\n- **Design principles** (intent over mechanics, context efficiency, confidence before action, relationship awareness)\n- **Core tools**: `glance`, `focus`, `propose`, `apply`, `session`, `trace`, `infer`, `validate`, `search`\n- **Path syntax** specification\n- **Output conventions** for consistent agent-friendly formatting\n- **Error handling** patterns\n- **Future directions**\n\nEach tool has: purpose, when-to-use, parameters, returns, and concrete examples showing input/output.\n\nReady for those additional sources to mine.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T07:40:47.538000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 216,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.022,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.604,
+      "density": 0.397,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 33,
+      "lex_rank": 46,
+      "geomean": 38.962,
+      "rerank": 0.557
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:05:10.533000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      31,
+      31
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "Done. That feels more like the raw thinking—capturing the generative energy rather than polishing into a spec.\n\nThe document is at `docs/AGENT-CONTEXT-PROTOCOL.md` (~570 lines of brainstorming).\n\nKey clusters of ideas if you want to drill into any:\n\n1. **The lived friction points** — what actually causes round-trips and errors\n2. **The propose/validate/apply shift** — transactional edits vs fire-and-pray\n3. **Intent-aware responses** — same query, different enrichment based on purpose\n4. **The anchor system** — stable semantic references that survive edits\n5. **Confidence/epistemic status** — not all information is equally reliable\n6. **Error prevention vs recovery** — warnings before failure, not after\n7. **Wild ideas** — code-as-database, predictive context, semantic bookmarks\n\nWhat's your instinct on where UDON fits? I'm imagining UDON as a particularly clean first target because:\n- It's a structured format (so anchors map naturally to elements)\n- It's designed for agents (so we can bake ACP-friendly features into the format itself)\n- It's simpler than a full programming language (fewer semantic layers to implement)\n- The parser already exists and is fast",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:05:10.533000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 20,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0207,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.646,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 30,
+      "lex_rank": 57,
+      "geomean": 41.352,
+      "rerank": 0.556
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T20:50:34.851000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      16,
+      16
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "*\n- **LENS** — Language-agnostic ENriched Semantics\n- **ANCHOR** — Agent Notation for Contextual Handling and Operational Reasoning\n- **GUIDE** — Generic Understanding Interface for Developer Entities\n\nI lean toward something that emphasizes it's about **context** and **verification**, not \"language\" in the IDE sense. **SCP** (Semantic Context Protocol) is clean and accurate. Or lean into the agent framing: **ACP** (Agent Context Protocol).\n\n---\n\n## First Steps for UDON\n\nSince UDON is the first target:\n\n1. **Define the anchor scheme** for UDON elements\n- How do you address an element unambiguously?\n- How do anchors survive edits?\n\n2. **Define the context enrichment** for UDON reads\n- What structural breadcrumbs make sense?\n- What semantic info is available (element types, attributes, etc.)?\n\n3. **Define the proposal/validation flow** for UDON edits\n- What can be validated before write? (syntax, schema, refs)\n- What warnings are useful?\n\n4. **Build a minimal server** that speaks this protocol\n- Could be a simple wrapper around your UDON parser\n- JSON over stdin/stdout (simple, no transport complexity)\n\n5. **Test it with Claude Code**\n- Wrap your existing Read/Edit tools with enrichment\n- See what actually helps\n\n---\n\nWould you want to start sketching the anchor scheme for UDON? That feels like the foundational piece—everything else builds on having stable, semantic references into documents.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:50:34.851000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 11,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.02,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.426,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 11,
+      "lex_rank": 74,
+      "geomean": 28.531,
+      "rerank": 0.557
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T22:02:13-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+    "lines": [
+      1,
+      19
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# UDON Agent Tools — Brainstorm\n\n> **Status (2026-07-16).** Dec-2025, substantially superseded: the Tier-2/3\n> tool ideas were absorbed and developed in `udon-agentic.md` (Jan 2026 —\n> glance/focus/propose/apply/session/trace/infer/validate/search + the\n> annotate/extract/diff/timeline/template/audit set), and the Tier-1\n> streaming substrate landed in `core/` 2026-07-15 (`TreeStream` /\n> `PushdownParser`). All syntax here predates 0.8/0.9 (`.class` is now\n> `.trait`; `|{@ ...}` is not valid — inline elements take a name, `@` is a\n> reference; the attribute model changed wholesale) — `spec/CORE.md` is the\n> authority. Still-live residue is tracked in `../ux/TODO-AGENT-UX.md`:\n> semantic merge, mid-generation partial-tree feedback, the annotation\n> layer, handoff/compaction/memory, plus JSON/YAML round-trip (§Tier 4,\n> UTILS-lane material).\n\n*Tooling ideas for UDON as an agent-native format*\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0195,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.529,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 13,
+      "lex_rank": 66,
+      "geomean": 29.292,
+      "rerank": 0.561
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T22:02:13-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/UDON-AS-ACP-FORMAT.md",
+    "lines": [
+      1,
+      17
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# UDON as ACP's Native Format\n\n> **Status (2026-07-16).** Dec-2025. The thesis — UDON as the native format\n> for agent↔tool and agent↔agent communication, \"the format is the\n> protocol\" — is alive and tracked in `../ux/TODO-AGENT-UX.md`, though\n> recontextualized: not a new from-scratch protocol (written before MCP's\n> dominance) but UDON as the payload convention inside existing protocols\n> and harnesses. The examples predate 0.8/0.9 (`|{@ ...}` annotations and\n> the attribute/list forms are no longer valid; `spec/CORE.md` is the\n> authority). Two of its open questions have since resolved: performance\n> (the 2026-07 parser outruns serde_json — see README benchmarks) and a\n> first real consumer (the ASF process maps).\n\n*The convergence of Agent Context Protocol and UDON*\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/UDON-AS-ACP-FORMAT.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0183,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.784,
+      "density": 0.801,
+      "age_norm": 0.123,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 38,
+      "lex_rank": 31,
+      "geomean": 34.322,
+      "rerank": 0.561
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "archema",
+    "date": "2026-01-05T09:23:56.292000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+    "lines": [
+      24,
+      24
+    ],
+    "session": "fizzy-crafting-moonbeam",
+    "file_type": "claude_conversation",
+    "text": "Joseph is asking me to think critically about UDON from an agent's perspective - what would make it even better for agents to read and write?\n\nLet me think about this carefully from an agent's actual experience...\n\n**What agents struggle with when generating structured output:**\n\n1. **Context windows and streaming** - UDON already handles streaming well, but what about very long documents? Agents often lose track of nesting depth.\n\n2. **Error recovery** - when an agent makes a mistake mid-generation, can they recover gracefully?\n\n3. **Validation feedback** - agents benefit from immediate feedback about whether what they're generating is valid.\n\n4. **Reference/linking** - agents often need to reference things defined elsewhere. UDON has `@[id]` and `:[id]` but how discoverable is this?\n\n5. **Uncertainty marking** - agents often want to say \"I'm not sure about this\" or \"this needs human review\" - is there a natural place for that?\n\n6. **Incremental refinement** - agents often want to sketch something rough, then refine. Does UDON support this workflow?\n\nLet me think about what's NOT in the spec that could help agents...\n\n**Ideas:**\n\n1. **Explicit uncertainty/confidence markers** - something like:\n```udon\n|field[email]!.string\n:format email\n;? Should this also have :max 255?\n```\nA `;?` comment form that explicitly marks uncertainty? Or an element suffix?\n\n2. **Schema-level hints for validation** - agents benefit from knowing \"what am I allowed to put here?\" If resource definitions had a meta-schema, agents could validate incrementally.\n\n3. **Canonical ordering guidance** - when there are multiple valid ways to express something, agents benefit from knowing the \"preferred\" form. This reduces decision fatigue and makes output more consistent.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-05T09:23:56.292000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 16,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0177,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.598,
+      "density": 0.558,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 34,
+      "lex_rank": 37,
+      "geomean": 35.468,
+      "rerank": 0.555
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:41.953000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      41,
+      41
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "This is fascinating - the user (or perhaps another agent they were working with?) has been brainstorming UDON-specific tooling ideas. This enriches the ACP brainstorm significantly because it shows concrete applications.\n\nLet me think about what's most compelling here and how it connects to the ACP ideas:\n\n**The streaming parser with partial tree access** is brilliant - this is exactly the kind of \"agent feedback loop\" that doesn't exist in current tooling. As an LLM is generating UDON, you can validate incrementally, detect errors early, and even guide generation.\n\n**The annotation layer** (`|{@ ...}`) is a fascinating idea - agent commentary that's part of the document but semantically distinct. This could be the UDON-native way to carry confidence, reasoning, decision points through a document.\n\n**Context Handoff Generator** - this directly addresses the 100% context turnover problem. How do you compress a working state into something the next agent can pick up?\n\n**\"What Changed\" Narrator** - semantic diffs rendered as prose. This is the inverse direction - not just understanding structure, but generating human-readable explanations.\n\n**DSL hosting** - UDON as a meta-format for defining domain-specific vocabularies. This is powerful because it means one parser can handle many DSLs.\n\nThe key insight I'm seeing is that UDON isn't just a document format - it's potentially:\n1. A communication medium between agents\n2. A trace/log format for agent reasoning\n3. A meta-language for defining domain vocabularies\n4. A handoff protocol for context continuity\n\nLet me respond thoughtfully to these ideas and see where the user wants to go with this.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:41.953000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 27,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0176,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.372,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 48,
+      "geomean": 66.453,
+      "rerank": 0.527
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-15T00:41:27.360000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc.jsonl",
+    "lines": [
+      26,
+      26
+    ],
+    "session": "18aabafc-635c-4529-886f-c137563bc8cc",
+    "file_type": "claude_conversation",
+    "text": "s the indent-column for continuation (multi-line prose at consistent indentation joins one prose block); sameline prose does not set an indent-column.\",\"fixture_sketch\":\"|s :name intro\\\\n  line one\\\\n  line two -&gt; one prose flow at column 3. |p same line prose\\\\n  child-indented line — what column governs?\",\"edge_cases\":[\"continuation line at same column as first prose line\",\"sameline prose followed by an indented line\"],\"ambiguity\":\"What indent-column governs lines following sameline prose (since sameline prose 'does NOT set indent-column') is not specified here.\"},{\"id\":\"inline-element-basic\",\"section\":\"Inline Elements (~L130-142)\",\"statement\":\"|{name ...} inside prose creates an inline element: identity rules identical to block elements, sameline-style attributes, content terminating at the matching brace (brace-balanced), nested |{...} allowed, block form |name not allowed inside.\",\"fixture_sketch\":\"|p Click |{a :href /home here} to continue. -&gt; Text('Click '), InlineElement(a, href=/home, text 'here'), Text(' to continue.'). Nested: |{em |{strong x}}. Brace balance: |{code {not end} still content}.\",\"edge_cases\":[\"brace balancing with literal { } in content\",\"|{a[k].t ...} identity sugar inline\",\"embedded attr value terminated by }\",\"unclosed |{ at EO\n... (truncated 94883 chars, full result in /private/tmp/claude-505/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc/tasks/w5buqwcr9.output)</result>\n<diagnostics>Per-agent results: /Users/josephwecker-v2/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc/subagents/workflows/wf_396ca054-84d/journal.jsonl — one {\"type\":\"result\",...} line per completed agent with its full return value.\nIf the result above is empty or unexpected, Read this file BEFORE diagnosing — do not assume agents returned non-empty results.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-15T00:41:27.360000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-15T00:41:27.388000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 7,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0174,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.75,
+      "age_norm": 0.132,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 19,
+      "lex_rank": 63,
+      "geomean": 34.598,
+      "rerank": 0.561
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T13:24:42-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/_archive/analysis.md",
+    "lines": [
+      204,
+      207
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### The UDON Opportunity\n\nUDON could serve as the **lingua franca** for agent-human-ELI-machine communication:",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/_archive/analysis.md",
+        "role": "original-document",
+        "date": "2025-12-23T13:24:42-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/analysis.md",
+        "role": "export",
+        "date": "2025-12-28T17:59:28.090148-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0172,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.649,
+      "age_norm": 0.005,
+      "copies": 4,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 56,
+      "geomean": 71.777,
+      "rerank": 0.551
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-07T23:43:48.628000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      341,
+      341
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "enchmarks, semachrome integration notes, `NEXT.md`. |\n| 2026-01-09 | `markup-feature-matrix.md`, `feedback.md` seed, TIME-SPEC seed. |\n| 2026-01-13 | `TIME-SPEC.md` finalized (temporal value types). |\n| **2026-01-14** | **HEAD commit e8b82f7**: the 3 advancements — `udon-ast.md`, `udon-agentic.md`, `udon-paths.md` (all committed). Same day, **3 files written but NOT committed**: `udon-guarantees.md` (12:33), `udon-schema-exploration.md` (17:13), `implementation-status.md` (21:21). |\n\nThe uncommitted trio are the **newest content in the repo** — Joseph's last working session went past the final commit.\n\n---\n\n## 1. Current vs superseded docs; the authoritative spec\n\n**Closest thing to authoritative spec today: `FULL-SPEC.md`** (v0.7-draft, Dec 2025; last committed 2026-01-01). Its header states the lineage explicitly:\n\n&gt; `FULL-SPEC.md:6` — \"This document merges and supersedes: SPEC.md, SPEC-INDENTS.md, SPEC-UPDATE.md\" … `:11` \"It is intended to be the single comprehensive, authoritative spec.\"\n\nThose three predecessors were physically moved to `_archive/` (commit 2561d29). Companions to FULL-SPEC.md: **FULL-EBNF.md** (grammar) and **FULL-SPEC-supplement.md**, plus **TIME-SPEC.md** which is a live \"Draft extension to FULL-SPEC.md\" (`TIME-SPEC.md:3`) — the temporal types it defines are already folded into `udon-ast.md`'s scalar list and libudon's `values.desc`.\n\n**Superseded / stale:**\n- `_archive/SPEC.md`, `_archive/SPEC-INDENTS.md`, `_archive/SPEC-UPDATE.md` — explicitly archived.\n- **`README.md` is stale**: links `[SPEC.md](SPEC.md)` (`README.md:154` and status line \"SPEC.md complete (v0.7-draft)\") — **this link is broken**; SPEC.md exists only under `_archive/`. README predates the FULL-SPEC rename.\n- `docs/` (AGENT-CONTEXT-PROTOCOL, UDON-AGENT-TOOLS, UDON-AS-ACP-FORMAT, GRAMMAR-CONSTRAINED-GENERATION) last touched Dec 25-27 — early ACP-format brainstorms, superseded in spirit by the Jan 14 `udon-agentic.md`.",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.017,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.709,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 52,
+      "geomean": 69.166,
+      "rerank": 0.555
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-16T15:15:42.353000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      617,
+      617
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "— the `|{@ ...}` sketch is not valid 0.9 (verified against CORE §Inline/Embedded: embedded elements take a name; `@` guards references) — marked *(discuss w/ Joseph)* for the syntax/convention ruling.\n5. **Handoff / compaction / memory affordances** — alive, with the ASF process maps as real consumers to design against.\n6. **UDON as agent/tool response format** — the ACP-convergence thesis, recontextualized: the Dec docs predate MCP's dominance, so the live version is UDON as *payload* convention inside existing protocols, not a from-scratch protocol.\n\n**Obsolescence judgments** (each doc got a dated banner saying so):\n- **UDON-AGENT-TOOLS** — substantially superseded (udon-agentic + landed parser work); residual gems routed to the lane.\n- **GRAMMAR-CONSTRAINED-GENERATION** — technique explainer holds up; UDON sketches and tool landscape dated.\n- **UDON-AS-ACP-FORMAT** — thesis alive; examples stale. Two of its open questions have since *resolved*: performance (parser outruns serde_json) and a first real consumer.\n- **AGENT-CONTEXT-PROTOCOL** — not superseded by CORE (barely UDON-specific); kept as vision. Its affordance observations still read fresh in 2026.\n\n**Adjacent findings:**\n- **Homeless (UTILS-lane, outside my edit scope):** JSON/YAML round-trip conversion (UDON-AGENT-TOOLS §Tier 4) — `TODO-UTILS.md`'s conversion item covers only md↔udon. Noted in the UDON-AGENT-TOOLS banner so it isn't lost.\n- **Stale reference:** root `CLAUDE.md` line 42 still lists `docs/` in the Layout block (the move made it vanish; README's `editors/` reference is already fixed).\n- Curious near-miss: `@[ctx-read-abc123]`-style references in UDON-AS-ACP-FORMAT happen to match the *current* 0.9 key-only selector form — the one bit of Dec-2025 syntax that aged well.\n- Also `|!dsl[...]` (UDON-AGENT-TOOLS §7) is prose under current marker guards — covered by the banner's blanket syntax warning.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.411000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/subagents/agent-a3a91582cbaa30828.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.353000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 58,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0169,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.639,
+      "age_norm": 0.005,
+      "copies": 4,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 58,
+      "geomean": 73.048,
+      "rerank": 0.551
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-07T23:43:48.628000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      341,
+      341
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "ENT-CONTEXT-PROTOCOL, UDON-AGENT-TOOLS, UDON-AS-ACP-FORMAT, GRAMMAR-CONSTRAINED-GENERATION) last touched Dec 25-27 — early ACP-format brainstorms, superseded in spirit by the Jan 14 `udon-agentic.md`.\n\n**Layering, per the repo's own map** (`implementation-status.md:23-31`): FULL-SPEC.md = \"Current\" authoritative; **libudon = \"Current defacto\"**; udon-ruby = \"Behind libudon\"; the `udon-*.md` design docs = **\"Ahead of spec.\"** So the true ordering is: design docs (aspiration) &gt; FULL-SPEC (ratified) &gt; libudon (implemented) &gt; udon-ruby (lagging).\n\n---\n\n## 2. The three Jan-14 advancements\n\nAll three are **committed and coherent, but they are design proposals ahead of the ratified spec** — not yet merged into FULL-SPEC.md. The closing reflection in `feedback.md:422-426` frames them as this-morning's work with open uncertainties (\"Schema format is still undefined… How much the tooling spec reflects reality vs aspiration\").\n\n**`udon-ast.md` — the AST Joseph *wants* (most load-bearing for the Rust-utilities goal).** Describes the tree consumers get after parsing. Key design intents vs what libudon currently emits (libudon is an event/streaming parser, not a tree-builder):\n- **Document = `[Node]`, no root wrapper** — streamable, fragments = documents, multi-root (`udon-ast.md:13-28`).\n- **Node = Element | Text | Comment | Directive | Interpolation | Reference | Raw** (`:35`).\n- **Element = {name, key, traits[], attrs[], children[]}** with a deliberate **key/traits ontology** replacing HTML id/class: key = singular identity (addressable entity), traits = plural classifications (`:79-98`). **Type-scoped uniqueness**: compound `(element-name, key)` unique per type, like a DB primary key — `|user[1]` ≠ `|order[1]` (`:104-128`).\n- **Typing only in attribute values**, syntactic not sniffed; scalar list includes the temporal types (`:190-207`).\n- **Comments are first-class leaf nodes** (\"a tier of voice\") carrying AI reasoning/confidence (`:248-259`).",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0167,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.816,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 21,
+      "lex_rank": 61,
+      "geomean": 35.791,
+      "rerank": 0.525
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/libudon",
+    "date": "2025-12-25T10:38:53-07:00",
+    "date_method": "git-blame-min",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/README.md",
+    "lines": [
+      16,
+      19
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## What is UDON?\n\nUDON (Universal Document & Object Notation) is a unified notation for documents, data, and configuration. See the [specification](https://github.com/josephwecker/udon) for details.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/README.md",
+        "role": "original-document",
+        "date": "2025-12-25T10:38:53-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/libudon/README.md",
+        "role": "original-document",
+        "date": "2026-01-02T22:18:09.529650-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0166,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.463,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 32,
+      "lex_rank": 83,
+      "geomean": 51.536,
+      "rerank": 0.557
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T07:47:29.494000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+    "lines": [
+      355,
+      355
+    ],
+    "session": "enchanted-tinkering-babbage",
+    "file_type": "claude_conversation",
+    "text": "Ha! Yes, too late - I read all that repeated UDON comprehensive example multiple times when I could have just done:\n\n```bash\nyq '.response' < file.yaml\n```\n\nLesson learned for next time. But the harvest was good - those domain explorations (A/B testing, transparency, intent recognition, DDD, dialogue state) generated real tooling ideas that I think strengthen the `agentic-udon.md` spec considerably.\n\nThe core tools (`glance`, `focus`, `propose`, `apply`, `session`, `trace`, `infer`, `validate`, `search`) plus the domain-inspired ones (`annotate`, `extract`, `diff`, `timeline`, `template`, `audit`) feel like a solid foundation for agent-friendly UDON manipulation.\n\nWhere would you like to go from here?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T07:47:29.494000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 235,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0164,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.609,
+      "age_norm": 0.005,
+      "copies": 4,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 62,
+      "geomean": 75.525,
+      "rerank": 0.55
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-07T23:45:11.461000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      381,
+      381
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "<task-notification>\n<task-id>ab34a15a98fe99a99</task-id>\n<output-file>/private/tmp/claude-505/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/tasks/ab34a15a98fe99a99.output</output-file>\n<status>completed</status>\n<summary>Agent \"Deep-dive: udon-ruby\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>I have everything needed. Here is my report.\n\n---\n\n# udon-ruby — Archaeology Report\n\n**Bottom line (verified):** udon-ruby is the stalest UDON repo, and its Rust binding has **drifted out of compatibility with current libudon** — it will no longer compile against the local `udon-core` path it points at. The *prebuilt* Jan-2 bundle still loads and passes all tests, but that's a frozen artifact, not a buildable state. Given Joseph's Rust-first pivot, this repo is **effectively superseded**; salvage value is limited to a few reference artifacts (conversion scripts, test fixtures, the Event→hash mapping pattern).\n\n## Timeline (verified from git)",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:45:11.461000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:45:56.769000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 160,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:45:11.461000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:45:56.769000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 160,
+        "speaker": "user",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.016,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.535,
+      "age_norm": 0.005,
+      "copies": 4,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 65,
+      "geomean": 77.33,
+      "rerank": 0.551
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-07T23:43:52.654000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      347,
+      347
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "<task-notification>\n<task-id>ab34a15a98fe99a99</task-id>\n<tool-use-id>toolu_01G4e6BfLJE4gHwDb5bvuCu2</tool-use-id>\n<output-file>/private/tmp/claude-505/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/tasks/ab34a15a98fe99a99.output</output-file>\n<status>completed</status>\n<summary>Agent \"Deep-dive: udon-ruby\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>I have a complete picture. Let me compile the report.\n\n---\n\n# udon-ruby archaeology report\n\n## Verdict up front\nudon-ruby is the **stalest repo in the UDON constellation and effectively superseded** for Joseph's Rust-first goal. It is a thin, one-function event-list binding frozen at libudon's early-Jan state. Its binding source **will no longer compile against current libudon** (6 unhandled Event variants), the dev toolchain isn't installed, and nothing in it advances a Rust-utilities-on-libudon plan. The only mild salvage value is as reference: the passing test corpus and a couple of conversion sketches. Given the pivot, I'd treat it as archive-quality.",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:52.654000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 150,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:52.654000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 150,
+        "speaker": "user",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0159,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.607,
+      "age_norm": 0.004,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 16,
+      "lex_rank": 76,
+      "geomean": 34.871,
+      "rerank": 0.532
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-09T14:23:48-06:00",
+    "date_method": "git-blame-min",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/core/README.md",
+    "lines": [
+      6,
+      9
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## What is UDON?\n\nUDON (Universal Document & Object Notation) is a unified notation for documents, data, and configuration. See [`../spec/CORE.md`](../spec/CORE.md) for the authoritative specification.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/core/README.md",
+        "role": "original-document",
+        "date": "2026-07-09T14:23:48-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0153,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.66,
+      "age_norm": 0.005,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 36,
+      "geomean": 57.55,
+      "rerank": 0.544
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-07T23:44:22.783000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      352,
+      352
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "I have a definitive answer on the published-gem axis — and it holds a genuine surprise. (The four repo deep-dives are still running in the background; I'll fold everything together when they land. This part I could settle independently, since it's about the *registry*, which the repo-readers can't see.)\n\n## Published gems vs HEAD — what's actually on rubygems\n\n**`descent` — published, and faithful to HEAD.**\n- rubygems has exactly **one** version: **0.7.1**, built **2026-01-10** (the day after its last commit, 2026-01-09), authored \"Joseph Wecker\", homepage `v2-io/descent`.\n- Repo HEAD is also **0.7.1**. So **published == HEAD** — no rot divergence. The repo also carries locally-built `.gem` artifacts for 0.3.0, 0.6.16, 0.6.17, 0.7.1, but only 0.7.1 was actually pushed. Note libudon was generated from **0.6.17** — a built-but-unpublished intermediate that still exists in the repo.\n\n**`udon` — the published gem is a 2011 relic, NOT the current code.**\n- The `udon` name on rubygems resolves to **version 0.0.4, last built 2011‑08‑23** — authored \"Joseph Wecker\", homepage `udon.io`, described *\"Parse and generate udon, inspired by zml, haml, json, and more.\"* That's a **~15-year-old ancestor** of today's UDON (same lineage, `zml` was another of your predecessors), versions 0.0.0–0.0.4.\n- The **current** udon-ruby (gemspec `udon.gemspec`, `Udon::VERSION = \"0.9.0\"`) has **never been published** — the name is squatted by your own ancient gem. So there's no \"shipped current udon-ruby\" that could have rotted; rather, HEAD (0.9.0) is the real state and it's unreleased, sitting behind a 2011 placeholder on the registry. (The 0.9.0 itself looks suspiciously high for that thin commit history — the udon-ruby agent is digging into where it came from.)",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0152,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.444,
+      "age_norm": 0.005,
+      "copies": 4,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 72,
+      "geomean": 81.388,
+      "rerank": 0.55
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-07T23:43:48.628000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      341,
+      341
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "<task-notification>\n<task-id>aa6e6aaf6f88c7db0</task-id>\n<tool-use-id>toolu_01B1Y6jARY3CiEMsxxc7ARkr</tool-use-id>\n<output-file>/private/tmp/claude-505/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/tasks/aa6e6aaf6f88c7db0.output</output-file>\n<status>completed</status>\n<summary>Agent \"Deep-dive: udon spec repo\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>Evidence gathering complete. Here is my report.\n\n---\n\n# UDON Repository Archaeology Report (`~/src/udon`)\n\n## Timeline (verified: git commit dates + file mtimes)\n\nContent mtimes top out at **Jan 14 2026** (the uncommitted working files). The `Apr 2` directory mtime and `Jan 20`/`Jul` `.obsidian*` entries are editor metadata, not content — **Joseph's hypothesis confirmed: no doc content changed after Jan 14 2026.**\n\n| Date | Event |\n|---|---|\n| 2025-12-24/25 | Rust parser bootstrapped, then **moved to separate repos** (commit f59b070 \"Reorganize: Move parser to separate repos\"). AST/phase-2 planning. |\n| 2025-12-27/28 | Inline-syntax decisions; `analysis.md`, `positioning.md`, `parser-strategy.md`, `implementation-phase-2.md` (all last-committed Dec 28). |\n| 2025-12-31 → 01-01 | SPEC consolidation: old specs moved to `_archive/`, **FULL-SPEC.md / FULL-EBNF.md / FULL-SPEC-supplement.md** created (v0.7-draft). |\n| 2026-01-02/03 | README benchmarks, semachrome integration notes, `NEXT.md`. |\n| 2026-01-09 | `markup-feature-matrix.md`, `feedback.md` seed, TIME-SPEC seed. |\n| 2026-01-13 | `TIME-SPEC.md` finalized (temporal value types). |",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:43:48.628000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.840000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 149,
+        "speaker": "user",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0151,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.684,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 25,
+      "lex_rank": 54,
+      "geomean": 36.742,
+      "rerank": 0.553
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-16T18:12:32-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/agentic-ux-principles.md",
+    "lines": [
+      396,
+      406
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### udon in-repo\n\n| File | Status | Carries |\n|---|---|---|\n| `design/udon-agentic.md` | **read** | The tool-suite design of record; its four principles are P8/P5/P9's ancestors; the error taxonomy P2 keeps. |\n| `design/udon-guarantees.md` | **read** | The gatekeeper problem (P7); profiles; the append-only-log patch ancestor. |\n| `design/udon-paths.md` | **read** | `at`/`all`; the addressing substrate. |\n| `design/udon-ast.md` | Jan 2026 | **read** (structure + the load-bearing sections) | Mixed: **wire details superseded** (it still calls `$key`/`$?` \"undecided\"; its `.a.b → :class [a b]` is now *wrong* — 0.9 stacks; `:[key]` merge removed; id/class aliases retired). **Live and unbuilt**: SourceInfo as a parallel layer (`span`/`line`/`column`/`form`/`original_whitespace`/`attr_order` — spans landed 2026-07-11, the rest didn't), ReferenceIndex + `unresolved()`, the skeleton view, and an \"Inferred Schema\" sketch. **Correction: the uniqueness predicate this document cites it for is in CORE** (\"Uniqueness is over `(element-type, key)`\", Duplicate Definitions) — cite CORE, not this. |\n| `design/{UDON-AGENT-TOOLS,AGENT-CONTEXT-PROTOCOL,GRAMMAR-CONSTRAINED-GENERATION,UDON-AS-ACP-FORMAT}.md` | **distilled** | The Dec-2025 brainstorms; each now carries a dated status banner. Semantic *merge* is the one Tier-1 idea `udon-agentic.md` lacks. |\n| `test/scenarios/` | **distilled** | The BDD acceptance layer; its journeys are this document's test cases (`schema-guard-before-write`, `handoff-mid-edit`, `contested-claim`). |",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/agentic-ux-principles.md",
+        "role": "original-document",
+        "date": "2026-07-16T18:12:32-06:00",
+        "date_method": "git-file-origin",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0151,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.75,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 28,
+      "lex_rank": 51,
+      "geomean": 37.789,
+      "rerank": 0.558
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:23:49.124418-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+    "lines": [
+      1,
+      6
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# UDON Agent Tools — Brainstorm\n\n*Tooling ideas for UDON as an agent-native format*\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:23:49.124418-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0148,
+    "factors": {
+      "class": "agent-to-subagent",
+      "proximity": 0.85,
+      "density": 0.774,
+      "age_norm": 0.06,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 10,
+      "geomean": 30.332,
+      "rerank": 0.545
+    },
+    "class": "agent-to-subagent",
+    "speaker": "sub-agent briefing",
+    "project": "Users-josephwecker-v2-src",
+    "date": "2026-04-13T11:45:33.180000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-04-27/projects/-Users-josephwecker-v2-src/cdbfeaf4-0f6e-4f33-8ca4-434a4e11ff33/subagents/agent-a018b6015cc22bad2.jsonl",
+    "lines": [
+      1,
+      1
+    ],
+    "session": "functional-yawning-oasis",
+    "file_type": "claude_conversation",
+    "text": "Part of a parallel effort to analyze every project in ~/src/. Your assignment: **~/src/udon-ruby/**\n\nHeuristics: 7 commits, ~1700 files (mostly vendored likely), 479MB, latest 2026-03-07. Tier 3 — light thoroughness.\n\n**Context:** The UDON family already mapped by other agents: `udon` (spec) → `libudon` (Rust parser, canonical) → `udon-ruby` (Ruby bindings). Confirm and flesh out the Ruby binding details. DO NOT re-analyze libudon or udon.\n\n**Uncover:** primary purpose; architecture (FFI? native Ruby? mixed?); completeness of bindings coverage; timeline; man-hours; surprises. Distinguish Joseph's code from vendored deps.\n\n**Critical:** Joseph values intellectual honesty; concrete evidence.\n\n**Output:**\n1. Your Explore agent has no Write/Edit tool, but has Bash. Use `cat > /Users/josephwecker-v2/src/tmp/udon-ruby.md <<'EOF' ... EOF` to write your full findings as a Markdown report.\n2. Return a ~150-word summary as your final message, emphasizing the udon-family position.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-04-27/projects/-Users-josephwecker-v2-src/cdbfeaf4-0f6e-4f33-8ca4-434a4e11ff33/subagents/agent-a018b6015cc22bad2.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-04-13T11:45:33.180000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 0,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0146,
+    "factors": {
+      "class": "document",
+      "proximity": 0.4,
+      "density": 0.665,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 37,
+      "lex_rank": 41,
+      "geomean": 38.949,
+      "rerank": 0.557
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:13:27-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/AGENT-CONTEXT-PROTOCOL.md",
+    "lines": [
+      1,
+      15
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Agent Context Protocol — Brainstorm\n\n> **Status (2026-07-16).** Dec-2025 brainstorm, kept as vision/motivation.\n> Barely UDON-specific (it's about agent affordances for *code* tooling\n> generally), so CORE didn't supersede it — but its \"build a new protocol\"\n> framing predates MCP's dominance; the live UDON thread it seeded runs\n> `UDON-AS-ACP-FORMAT.md` → `udon-agentic.md` → `../ux/TODO-AGENT-UX.md`.\n> Many individual observations (semantic anchors, pre-edit ambiguity\n> warnings, propose/validate/apply, intent-aware responses) remain unbuilt\n> in mainstream tooling and still read fresh.\n\n*Raw thinking about what agents actually need from tooling*\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/AGENT-CONTEXT-PROTOCOL.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:13:27-07:00",
+        "date_method": "git-file-origin",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0128,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.511,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 39,
+      "geomean": 59.9,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "This is rich. Let me reflect on what resonates most and why:\n\n---\n\n## The Most Compelling Ideas\n\n**Streaming Parser with Partial Tree Access** — This is the one that makes me most excited. Current streaming is token-level. But UDON's structure means you could have *semantic* streaming:\n\n```\nAgent is writing...\n|article[foo]\n:status dr█\n\nPartial tree available NOW:\n- Element |article[foo] is OPEN (not closed)\n- Attribute :status is INCOMPLETE (value partial)\n- Constraint check: :status expects enum [draft|published|archived]\n- Current partial \"dr\" → likely \"draft\" (valid)\n```\n\nThis is the agent equivalent of syntax highlighting *while you type*. The feedback loop is: generate token → immediate semantic check → catch errors before they compound.\n\nFor interrupt/resume: if generation stops mid-document, the partial tree tells the next agent exactly where things stand.\n\n---\n\n**The Annotation Layer (`|{@ ...}`)** — This could be UDON's native way to carry agent metacognition through documents:\n\n```udon\n|config\n:timeout 30  |{@ :confidence 0.6 :agent claude Seems low for batch jobs}\n:retries 5   |{@ :source inferred :basis \"similar configs use 3-5\"}\n\n|endpoint[create-user]\n:auth required  |{@ :decision \"Changed from optional after reviewing security reqs\"}\n```\n\nThe annotations are:\n- Semantically distinct from content (strippable)\n- Structured (not just prose comments)\n- Machine-readable (other agents can query them)\n- Preserve reasoning chain (why was this decision made?)\n\nThis directly addresses the \"confidence layer\" from the ACP brainstorm — baked into the document format itself.\n\n---\n\n**Context Handoff Generator** — The 100% context turnover problem is real and painful. If UDON had native tooling for:",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0125,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.329,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 78,
+      "geomean": 84.711,
+      "rerank": null
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-16T15:15:42.353000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      617,
+      617
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "key-only selector form — the one bit of Dec-2025 syntax that aged well.\n- Also `|!dsl[...]` (UDON-AGENT-TOOLS §7) is prose under current marker guards — covered by the banner's blanket syntax warning.\n\n**Feedback on the brief:** genuinely good — the two spec-revolution framing and the udon-agentic pointer were exactly the context I couldn't have reconstructed cheaply, and the freedom was real. One wrinkle worth knowing: your central commit swept my in-progress files into `0b434f2` before I'd finished (harmless here since they were coherent, but a `git add` by pathspec would protect against catching a mid-edit file). Happy to stay on the line for follow-ups.</result>\n<usage><subagent_tokens>138792</subagent_tokens><tool_uses>29</tool_uses><duration_ms>440951</duration_ms></usage>\n</task-notification>",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.411000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/subagents/agent-a3a91582cbaa30828.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.353000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 58,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0124,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.506,
+      "age_norm": 0.132,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 24,
+      "lex_rank": 79,
+      "geomean": 43.543,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T13:24:42-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/_archive/analysis.md",
+    "lines": [
+      15,
+      26
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## What UDON Is\n\n**UDON = Universal Document & Object Notation**\n\nA unified notation designed to elegantly handle:\n- **Data** (like JSON/YAML)\n- **Documents** (like XML/HTML)\n- **Templating** (like Slim/HAML)\n- **Configuration** (like TOML)\n\nAll in one coherent, human-readable, indent-sensitive syntax.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/_archive/analysis.md",
+        "role": "original-document",
+        "date": "2025-12-23T13:24:42-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/analysis.md",
+        "role": "export",
+        "date": "2025-12-28T17:59:28.090148-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0122,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.293,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 81,
+      "geomean": 86.325,
+      "rerank": null
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-16T15:22:01.745000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      735,
+      735
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "<task-notification>\n<task-id>a9c2f46a61b4f12d4</task-id>\n<tool-use-id>toolu_016kG1xAAyeFnt717svX6afT</tool-use-id>\n<output-file>/private/tmp/claude-505/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/tasks/a9c2f46a61b4f12d4.output</output-file>\n<status>completed</status>\n<summary>Agent \"Re-scan UDON consumers, refresh registry\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>Done. The repo state is clean — only `CONSUMERS.md` and `bin/find-consumers` modified, the baseline worktree removed, nothing committed (as requested).\n\n## Report\n\n**Method.** Rather than trusting greps, I made the scan differential: built the parser at tag `core-v0.8.0` and at HEAD (0.9 attribute model), ran every live consumer document through both, and diffed the full event streams. Synthetic probes confirmed each mechanism I attribute (`:a 1 :b 2` block split, `MissingAttributeValue`+`Nil`, bare-date-as-string, `NoDialectsLoaded`).\n\n**Headline: the corpus is remarkably clean.** Zero errors and zero warnings across all six live documents, under both parsers. No document errors, none warns, and the change you most wanted measured — block run-to-EOL → uniform scan — has **zero live sites**: no block line in the corpus holds a second `:key`. No valueless plain attributes exist either, so nothing needs respelling as `:key?`.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:22:01.745000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:22:01.768000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 307,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0122,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.435,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 73,
+      "geomean": 81.951,
+      "rerank": null
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-16T15:15:42.411000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      617,
+      617
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "<task-notification>\n<task-id>a3a91582cbaa30828</task-id>\n<tool-use-id>toolu_01JML9qhPfE1rbUbGMMEkqG4</tool-use-id>\n<output-file>/private/tmp/claude-505/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5/tasks/a3a91582cbaa30828.output</output-file>\n<status>completed</status>\n<summary>Agent \"Drain Dec-2025 agent-UX brainstorms\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>Done. Everything verified — here's the report.\n\n**What was drained into `ux/TODO-AGENT-UX.md`** (the placeholder item became six judged items; your central commit `0b434f2` happened to sweep this file and one banner in mid-flight, so those two are already committed; the other three banners are in the working tree awaiting your next commit):\n\n1. **Agentic tool suite** — `design/udon-agentic.md` is the design of record; it absorbed most of UDON-AGENT-TOOLS. Open work: a 0.9 pass, folding in semantic *merge* (the one Tier-1 idea it lacks), and an implementation home.\n2. **Grammar-constrained generation** — the Dec doc hand-sketched a PEG because none existed; the live task is *deriving* a decoder artifact from `core/generator/*.descent.udon`, whose pushdown parser already tracks exactly the state constrained decoding needs. Harness tie-in: measure invalid-output rates.\n3. **Mid-generation feedback (partial-tree affordance)** — substrate landed 2026-07-15 (`TreeStream`/`PushdownParser`); the affordance layer (mid-parse state queries, candidate completion) remains.\n4. **Annotation layer for agent metacognition** — the `|{@ ...}` sketch is not valid 0.9 (verified against CORE §Inline/Embedded: embedded elements take a name; `@` guards references) — marked *(discuss w/ Joseph)* for the syntax/convention ruling.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.411000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0118,
+    "factors": {
+      "class": "document",
+      "proximity": 0.809,
+      "density": 0.456,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 23,
+      "geomean": 46.0,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:23:49.124418-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+    "lines": [
+      115,
+      150
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### 3. Semantic Merge\n\nWhen two agents modify the same UDON doc:\n\n```\nBase:\n|config\n:timeout 30\n:retries 3\n\nAgent A:                    Agent B:\n|config                     |config\n:timeout 60  ← changed      :timeout 30\n:retries 3                  :retries 5  ← changed\n:new-field true  ← added\n```\n\nMerge result:\n```\n|config\n:timeout 60      ; from A (conflict: B had 30, A had 60)\n:retries 5       ; from B\n:new-field true  ; from B (addition, no conflict)\n\n|{@ :merge-conflict :attr timeout\nA set 60, B kept 30. Resolved to A's value.}\n```\n\n**Merge strategies:**\n- **Attributes**: Last-write-wins, or flag conflicts via annotations\n- **Prose**: Paragraph-level merge (like Google Docs)\n- **Structure**: Element-aware conflict detection\n- **Annotations**: Accumulate (both agents' notes preserved)\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:23:49.124418-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0108,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.622,
+      "age_norm": 0.004,
+      "copies": 2,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 59,
+      "geomean": 73.675,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-08T13:41:33.036000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      523,
+      523
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "A review-and-reboot charter — good. Before I write it, let me read the three design docs whose gems the CTQ leans on directly (udon-ast, udon-agentic, udon-paths) with my own eyes rather than through the subagent's summaries, since you specifically want the forgotten gems resurfaced.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-08T13:41:33.036000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 217,
+        "speaker": "assistant",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-08T13:41:33.036000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 217,
+        "speaker": "assistant",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0106,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.573,
+      "age_norm": 0.002,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 29,
+      "lex_rank": 77,
+      "geomean": 47.255,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-11T15:27:58-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/ux/README.md",
+    "lines": [
+      1,
+      19
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# UDON UX — editor support and UX lanes\n\nThis directory is home to both UX tracking lanes — `TODO-HUMAN-UX.md`\n(editors, highlighting, Obsidian) and `TODO-AGENT-UX.md` (cheat-sheets, the\nempirical usability harness, agentic affordances) — plus the editor\nimplementations below.\n\nFirst editor affordances for UDON. Context: `_archive/REVIEW-JULY-2026.md` §3 (concerns\n4 and 6) — UDON's failure modes in unaware editors are *silent* (a reflowed\nline that lands `:attr`/`;-)`/`!important` at line start silently becomes\nstructure), so even minimal editor awareness has outsized value. Everything\nhere follows one rule: **under-highlight rather than mis-highlight** — a\nwrong color teaches a wrong parse.\n\nAll three implementations were validated against `design/examples/cheatsheet.udon`\nand `design/examples/comprehensive.udon` (the Obsidian tokenizer and the TextMate\ngrammar via automated token dumps; the vim syntax via headless `vim -es`\nsynID dumps). Spec of record: `spec/CORE.md` v0.8.0-alpha.1.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/ux/README.md",
+        "role": "original-document",
+        "date": "2026-07-11T15:27:58-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0105,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.652,
+      "density": 0.442,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 30,
+      "geomean": 52.536,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-07-16T18:55:28.868000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      1469,
+      1469
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "Joseph is reminding me to reference the agentic delegation guidelines that are already loaded in my context, and wants me to verify I have access to them, review how I've been following them today, and adjust any running agent instructions if needed.\n\nLooking back at the briefs I've sent today—descent-TODO, docs-drain, consumers, notes-drain, R1, R2, ASF scout, scenarios, densification, rowan scout—I'm noticing I'm mostly adhering to the discipline: I'm providing context rather than prescriptions, quoting Joseph directly, naming genuine constraints with reasons, asking for feedback, and flagging uncertain guesses as guesses so agents can verify them. The densification brief's instruction not to fix grammar is a prescription, but it's justified by the bench-pair discipline and concurrent work interleaving, so that counts as a named constraint with reason. I'm checking whether there are other weaknesses in how I've framed these briefs. The scenarios brief was detailed with lots of context about the current state and tools, including features worth testing — framed mildly as \"likely underrepresented\" rather than prescriptive — and their decision to structure output as UDON scenarios kept deliberation space open, which feels right. For the running agents, the densification brief's constraint to edit only core/fixtures/v0.9 files is genuine coordination and seems solid; rowan scout is fine too. What I should acknowledge honestly is that my briefs today felt shaped by curiosity — the scenario agent's UDON-format choice, the consumers agent's differential method, the notes agent's approach — which the doc warns against.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T18:55:28.868000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 606,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0102,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.679,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 26,
+      "geomean": 48.908,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-14T18:03:38-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/ux/TODO-AGENT-UX.md",
+    "lines": [
+      7,
+      89
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "d under 0.9 (inline elements take a name; `@` is a reference) —\nneeds a syntax/convention ruling: named element (`|{note ...}`),\nreserved trait, or new syntax *(discuss w/ Joseph)*. Same need from the\nDec-2025 fresh-model review (`_archive/feedback.md`): comment-level\nuncertainty markers (`;?`/`;??`), `???`/TBD values, `.draft`\nprose-is-the-spec marking — fold into the same ruling.\n- [ ] **Handoff / compaction / memory affordances** — context-handoff\ngenerator, context-window compactor, UDON-as-agent-memory\n(`UDON-AGENT-TOOLS.md` §5, §15, wild ideas; `UDON-AS-ACP-FORMAT.md`\nbidirectional flow). Now has live consumers to design against — the\nASF process maps. Predicated on the tool suite above.\n- [ ] **Self-chunking / RAG partitioning experiments** — the README claims\nUDON documents self-segment for retrieval (element boundaries as\nintentional chunk boundaries); nobody has measured it. An experiment\ncomparing element-boundary chunking against heuristic chunking (plus\nthe \"automatic partitioning\" idea — tooling that emits the chunks)\nwould turn the claim into evidence, or usefully kill it. Natural\nharness tie-in. *(routed from `notes/NEXT.md` \"automatic partitioning /\nsemantic chunking experiments\", 2026-07-16)*\n- [ ] **UDON as agent/tool response format** — the `UDON-AS-ACP-FORMAT.md`\nthesis (\"the format is the protocol\"), alive but recontextualized:\nthe Dec-2025 docs imagined a new from-scratch protocol (predating\nMCP's dominance); the live version is UDON as the *payload*\nconvention — tool outputs, handoffs, traces — inside existing\nprotocols and harnesses. udon-agentic's tools already emit UDON;\nkeep this as the north star when their output conventions are\nspecified. Background/motivation: `../design/AGENT-CONTEXT-PROTOCOL.md`.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/ux/TODO-AGENT-UX.md",
+        "role": "original-document",
+        "date": "2026-07-14T18:03:38-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0097,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.49,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 68,
+      "geomean": 79.095,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:30:18.600000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      60,
+      60
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "'s real and useful, it's a genuine differentiator.\n4. **A killer use case.** One domain where UDON is so obviously better that people adopt it despite the ecosystem gap.\n\n---\n\n## My Honest Bottom Line\n\nUDON solves a real problem (prose + structure) with a reasonably elegant syntax. The agent-native positioning is the right bet because it sidesteps competing with entrenched formats.\n\nBut I'm uncertain whether the advantages are large enough to overcome the ecosystem cold-start problem. The ideas are good. Whether they're good *enough* to succeed is an empirical question I can't answer from here.\n\nThe brainstorming we did (ACP, agent tools, UDON-as-format) is intellectually compelling. But compelling ideas fail all the time if the execution gap is too wide or the switching costs are too high.\n\nWhat would change my assessment: seeing UDON actually used in agent workflows where it demonstrably outperforms the alternatives. Until then, it's a promising bet with real uncertainty.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:30:18.600000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 40,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0096,
+    "factors": {
+      "class": "subagent-to-agent",
+      "proximity": 0.946,
+      "density": 0.671,
+      "age_norm": 0.099,
+      "copies": 1,
+      "path_frac": 0.5,
+      "sem_rank": 92,
+      "lex_rank": 11,
+      "geomean": 31.812,
+      "rerank": null
+    },
+    "class": "subagent-to-agent",
+    "speaker": "sub-agent",
+    "project": "Users-josephwecker-v2-src",
+    "date": "2026-02-11T11:19:36.309000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-02-18/projects/-Users-josephwecker-v2-src/78195b3e-9ed9-4cb8-8961-3454402160c3/subagents/agent-a00163f.jsonl",
+    "lines": [
+      124,
+      124
+    ],
+    "session": "rustling-weaving-hamming",
+    "file_type": "claude_conversation",
+    "text": " v2.0.0 and explicitly states \"no further changes expected.\"\n\n### 6c. Complexity Budget\n\nUDON tries to unify four domains: data, documents, templates, and configuration. Each domain adds surface area:\n\n- Core elements + attributes + hierarchy: clean and learnable\n- Value types (integers, floats, rationals, complex, dates, durations, relative times): extensive\n- Dynamics (`!if`, `!for`, `!let`, `!include`, `!{{interpolation}}`, filters): this is essentially a templating language\n- References and mixins (`@[id]`, `:[id]`, `.class` inheritance): adds indirection\n- Inline elements (`|{...}`), inline comments (`;{...}`), inline directives (`!{...}`): three bracket-delimited inline forms\n- Escape mechanisms (block-level `'`, sameline `\\`): two escape systems\n\nThe `feedback.md` file (written from the perspective of an AI agent evaluating UDON) flags this concern: \"The dynamics section is already substantial, and the escape rules have two forms. The core is clean. I'd be tempted to ship that core first and let dynamics be an optional extension.\"\n\nThis is wise advice. The core of UDON (elements, attributes, prose, comments, hierarchy) is genuinely elegant. Every addition beyond that needs to justify its complexity cost.\n\n### 6d. LLM Fluency\n\nThe `feedback.md` self-assessment rates LLM fluency at 2/5 stars. This is because LLMs have essentially zero training data for UDON. By contrast, Markdown is 5/5, YAML is effectively 5/5, JSON is 5/5. Even KDL is probably 2-3/5 given its presence in various open-source projects.\n\nFor a format that explicitly targets AI agents, this is a paradox: UDON is designed for agents, but agents have never seen it before. The counter-argument is that the prefix system makes UDON self-describing enough that an agent can learn it from the spec alone. The usability tests in `/Users/josephwecker-v2/src/udon/test/usability/` suggest some work has been done to validate this.\n\n### 6e. The Markdown Compatibility Question",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-02-18/projects/-Users-josephwecker-v2-src/78195b3e-9ed9-4cb8-8961-3454402160c3/subagents/agent-a00163f.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-02-11T11:19:36.309000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 44,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  }
+]

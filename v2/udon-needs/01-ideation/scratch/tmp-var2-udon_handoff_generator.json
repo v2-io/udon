@@ -1,0 +1,1709 @@
+[
+  {
+    "score": 0.3285,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.567,
+      "density": 0.75,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 1,
+      "lex_rank": 5,
+      "geomean": 2.236,
+      "rerank": 0.509
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      5307,
+      5316
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:15:04am Bash(git add generator/udon.machin…) → [main 432e141] Impl…",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 659,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1529,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.796,
+      "density": 1.0,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 1,
+      "geomean": 7.874,
+      "rerank": 0.556
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "Given UDON's properties:\n- Mixed prose + structure\n- Tiers of voice (prose, comments, elements, inline, attributes, dynamics)\n- Streaming-friendly\n- AI-agent readable/writable\n\nSome compelling generic agent tools:\n\n1. UDON Parser/Emitter Library - Core library for reading/writing UDON\n2. UDON Validator - Schema validation for UDON documents\n3. UDON Formatter/Pretty-printer - Consistent formatting\n4. UDON Query Language - XPath/JQ-like for UDON\n5. UDON Diff - Semantic diffing of UDON documents\n6. UDON to/from JSON/YAML - Bidirectional conversion\n7. UDON Template Processor - Resolve !if, !for, !{...} dynamics\n8. UDON Schema Inference - Infer schema from examples\n9. UDON Merge - Merge multiple UDON documents (like git merge but semantic)\n10. UDON Streaming Parser - For LLM output consumption\n11. UDON \"Explain\" - Take a UDON doc, produce prose explanation\n12. UDON \"Structurize\" - Take prose, identify structure opportunities\n13. UDON Context Window - Extract/summarize for LLM context windows\n14. UDON DSL Compiler - Define a DSL, compile to validators/parsers\n15. UDON Annotation Tool - Add inline annotations to documents\n\nLet me share these ideas with Joseph.\n\n⏺ Great question. Thinking about this while tests run:\n\nCompelling Generic Agent Tools for UDON\n\nCore Infrastructure:\n1. Streaming Parser - Consume LLM output token-by-token, emit complete subtrees as they close\n2. Query Language - JQ/XPath for UDON: //|endpoint[@method='POST'] or ...|{field :required}\n3. Semantic Diff - Understand structure changes, not just text changes\n\nAgent-Specific:\n4. Context Compactor - Summarize UDON docs for context windows (preserve structure, compress prose)\n5. Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1017,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 2,
+      "lex_rank": 26,
+      "geomean": 7.211,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3108,
+      3111
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:52:28am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +8, -8)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 331,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0847,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 3,
+      "lex_rank": 25,
+      "geomean": 8.66,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3102,
+      3105
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:52:18am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 329,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0767,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.742,
+      "density": 0.843,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 2,
+      "geomean": 11.136,
+      "rerank": 0.549
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:25:05.176000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      56,
+      56
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "Done. Created two companion documents:\n\n**`docs/UDON-AGENT-TOOLS.md`** (~600 lines)\n- The tiered tool ideas (essential infrastructure → agent-native → DSL enablement → interop)\n- Streaming parser with partial tree access (elaborated)\n- Annotation layer (`|{@ ...}`) design\n- Context handoff generator\n- Query language sketches\n- DSL definition format\n- Wild ideas (UDON as memory, protocol, test specs)\n- Implementation priority\n\n**`docs/UDON-AS-ACP-FORMAT.md`** (~300 lines)\n- The convergence insight\n- Side-by-side comparison (JSON approach vs UDON approach)\n- Why it works (self-describing, annotatable, diffable, handoffable, streamable)\n- Bidirectional flow examples (requests, responses, handoffs, explanations)\n- What it enables (unified tooling, composable context, traceable reasoning)\n- The meta-level elegance (format describes itself)\n- Open questions and evolution path\n\nAll three docs (`AGENT-CONTEXT-PROTOCOL.md`, `UDON-AGENT-TOOLS.md`, `UDON-AS-ACP-FORMAT.md`) are now in `docs/` and reference each other conceptually. They're all in brainstorm style — capturing ideas rather than specifying implementations.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:25:05.176000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 37,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0587,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 4,
+      "lex_rank": 39,
+      "geomean": 12.49,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4913,
+      4916
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:09:36am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +22, -22)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 601,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0576,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 6,
+      "lex_rank": 27,
+      "geomean": 12.728,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3114,
+      3117
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:52:35am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 333,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0541,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.837,
+      "density": 0.81,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 62,
+      "lex_rank": 8,
+      "geomean": 22.271,
+      "rerank": 0.559
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": ". Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent\n\nDSL Hosting:\n7. DSL Validator - Define allowed elements/attributes per !directive, validate conformance\n8. DSL Compiler - From UDON DSL definition, generate: schema, TypeScript types, validator, docs\n\nBidirectional:\n9. UDON ↔ JSON/YAML - Round-trip conversion (with prose preserved as special fields)\n10. UDON → Markdown - Render for humans (structure becomes semantic HTML)\n11. Markdown → UDON - Parse existing docs, infer structure\n\nMeta:\n12. UDON Annotator - Agent adds inline commentary: |{note :by claude This seems wrong because...}\n13. UDON Trace - For agent debugging: what elements were read/written when?\n\nWhich of these resonate most with your vision?\n\n---\n\n⏺ Let me think more deeply about the most compelling ones:\n\nTier 1: Essential Infrastructure\n\n1. Streaming Parser with Partial Tree Access\nAgent is writing... |article[foo]\n:status dr█  ← cursor here\n\nTool exposes: \"We have |article[foo] open, :status partially written\"\nCritical for: interrupt handling, progress tracking, early validation\n\n2. Semantic Merge\nWhen two agents modify the same UDON doc concurrently:\n- Prose changes: paragraph-level merge (like Google Docs)\n- Structure changes: element-aware conflict detection\n- Attributes: last-write-wins with audit trail in comments\n\n---\nTier 2: Agent-Native Tools\n\n3. Context Handoff Generator\nhandoff = UdonHandoff.new(current_doc)\n.preserve_structure      # Keep all |elements\n.summarize_prose(500)    # Compress narrative to 500 tokens\n.include_decisions       # Keep any |{decision ...} inline elements\n.add_agent_note(\"Stopped at validation step, see |error below\")",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0495,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 5,
+      "lex_rank": 44,
+      "geomean": 14.832,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      5962,
+      5965
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:23:33am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 741,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0462,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 7,
+      "lex_rank": 36,
+      "geomean": 15.875,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4595,
+      4598
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:00:54am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +8, -8)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 529,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0415,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 13,
+      "lex_rank": 24,
+      "geomean": 17.664,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3096,
+      3099
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:52:12am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 327,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0407,
+    "factors": {
+      "class": "document",
+      "proximity": 0.809,
+      "density": 0.758,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 3,
+      "geomean": 13.638,
+      "rerank": 0.554
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-14T18:03:38-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/ux/TODO-AGENT-UX.md",
+    "lines": [
+      7,
+      89
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "d under 0.9 (inline elements take a name; `@` is a reference) —\nneeds a syntax/convention ruling: named element (`|{note ...}`),\nreserved trait, or new syntax *(discuss w/ Joseph)*. Same need from the\nDec-2025 fresh-model review (`_archive/feedback.md`): comment-level\nuncertainty markers (`;?`/`;??`), `???`/TBD values, `.draft`\nprose-is-the-spec marking — fold into the same ruling.\n- [ ] **Handoff / compaction / memory affordances** — context-handoff\ngenerator, context-window compactor, UDON-as-agent-memory\n(`UDON-AGENT-TOOLS.md` §5, §15, wild ideas; `UDON-AS-ACP-FORMAT.md`\nbidirectional flow). Now has live consumers to design against — the\nASF process maps. Predicated on the tool suite above.\n- [ ] **Self-chunking / RAG partitioning experiments** — the README claims\nUDON documents self-segment for retrieval (element boundaries as\nintentional chunk boundaries); nobody has measured it. An experiment\ncomparing element-boundary chunking against heuristic chunking (plus\nthe \"automatic partitioning\" idea — tooling that emits the chunks)\nwould turn the claim into evidence, or usefully kill it. Natural\nharness tie-in. *(routed from `notes/NEXT.md` \"automatic partitioning /\nsemantic chunking experiments\", 2026-07-16)*\n- [ ] **UDON as agent/tool response format** — the `UDON-AS-ACP-FORMAT.md`\nthesis (\"the format is the protocol\"), alive but recontextualized:\nthe Dec-2025 docs imagined a new from-scratch protocol (predating\nMCP's dominance); the live version is UDON as the *payload*\nconvention — tool outputs, handoffs, traces — inside existing\nprotocols and harnesses. udon-agentic's tools already emit UDON;\nkeep this as the north star when their output conventions are\nspecified. Background/motivation: `../design/AGENT-CONTEXT-PROTOCOL.md`.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/ux/TODO-AGENT-UX.md",
+        "role": "original-document",
+        "date": "2026-07-14T18:03:38-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0404,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 11,
+      "lex_rank": 30,
+      "geomean": 18.166,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3138,
+      3141
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:53:07am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 341,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.04,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 12,
+      "lex_rank": 28,
+      "geomean": 18.33,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3126,
+      3129
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:52:53am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +9, -9)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 337,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0384,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.603,
+      "density": 0.766,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 6,
+      "geomean": 19.287,
+      "rerank": 0.556
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "nce layer\" from the ACP brainstorm — baked into the document format itself.\n\n---\n\n**Context Handoff Generator** — The 100% context turnover problem is real and painful. If UDON had native tooling for:\n\n```ruby\nhandoff = UdonHandoff.new(current_state)\n.preserve_structure           # All |elements stay\n.summarize_prose(max: 500)    # Compress narrative\n.keep_elements(\".decision\")   # Preserve anything with .decision class\n.keep_annotations(:high_confidence)\n.add_continuation_point(\"Stopped at validation, see |error[validation-failed]\")\n```\n\nThen agent-to-agent handoff becomes a structured protocol, not a lossy prose summary.\n\n---\n\n**\"What Changed\" Narrator** — This is the inverse of semantic diff:\n\n```\nInput: two UDON versions\nOutput: prose explanation\n\n\"The |endpoint[create-user] now requires authentication\n(:auth changed from 'optional' to 'required'). Rate limit\nincreased 10→100. New error response |error[409] was added\nto document conflicts.\"\n```\n\nThis is agent→human communication. The agent understands the semantic diff internally; the narrator renders it for humans who don't want to read structured diffs.\n\n---\n\n## What This Suggests About UDON's Role\n\nUDON isn't just a document format. It's potentially:\n\n1. **Communication medium between agents** — Structured handoffs, shared state\n2. **Trace format for agent reasoning** — Annotations preserve decision chains\n3. **Meta-language for DSLs** — Define vocabularies, get validators/types free\n4. **Streaming protocol** — Partial trees during generation, interrupt/resume\n\nThe ACP brainstorm was about enriching tool responses. But UDON could be the *format* those responses come in — and the format agents use to communicate with each other.\n\n---\n\n## A Thought: UDON as ACP's Native Format\n\nWhat if ACP responses were UDON documents?\n\n```udon\n|context.read\n:anchor @parser.rs::Parser::parse_element\n:intent editing\n\n|content\npub fn parse_element(&mut self) -> Result<Element> {\n...\n}",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0367,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 10,
+      "lex_rank": 40,
+      "geomean": 20.0,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4925,
+      4929
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:10:00am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +22, -22)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 605,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0363,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.348,
+      "density": 0.727,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 15,
+      "geomean": 30.496,
+      "rerank": 0.534
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "udon",
+    "date": "2026-07-16T15:15:42.411000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      617,
+      617
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "— the `|{@ ...}` sketch is not valid 0.9 (verified against CORE §Inline/Embedded: embedded elements take a name; `@` guards references) — marked *(discuss w/ Joseph)* for the syntax/convention ruling.\n5. **Handoff / compaction / memory affordances** — alive, with the ASF process maps as real consumers to design against.\n6. **UDON as agent/tool response format** — the ACP-convergence thesis, recontextualized: the Dec docs predate MCP's dominance, so the live version is UDON as *payload* convention inside existing protocols, not a from-scratch protocol.\n\n**Obsolescence judgments** (each doc got a dated banner saying so):\n- **UDON-AGENT-TOOLS** — substantially superseded (udon-agentic + landed parser work); residual gems routed to the lane.\n- **GRAMMAR-CONSTRAINED-GENERATION** — technique explainer holds up; UDON sketches and tool landscape dated.\n- **UDON-AS-ACP-FORMAT** — thesis alive; examples stale. Two of its open questions have since *resolved*: performance (parser outruns serde_json) and a first real consumer.\n- **AGENT-CONTEXT-PROTOCOL** — not superseded by CORE (barely UDON-specific); kept as vision. Its affordance observations still read fresh in 2026.\n\n**Adjacent findings:**\n- **Homeless (UTILS-lane, outside my edit scope):** JSON/YAML round-trip conversion (UDON-AGENT-TOOLS §Tier 4) — `TODO-UTILS.md`'s conversion item covers only md↔udon. Noted in the UDON-AGENT-TOOLS banner so it isn't lost.\n- **Stale reference:** root `CLAUDE.md` line 42 still lists `docs/` in the Layout block (the move made it vanish; README's `editors/` reference is already fixed).\n- Curious near-miss: `@[ctx-read-abc123]`-style references in UDON-AS-ACP-FORMAT happen to match the *current* 0.9 key-only selector form — the one bit of Dec-2025 syntax that aged well.\n- Also `|!dsl[...]` (UDON-AGENT-TOOLS §7) is prose under current marker guards — covered by the banner's blanket syntax warning.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T15:15:42.411000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0341,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 8,
+      "lex_rank": 58,
+      "geomean": 21.541,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      8980,
+      8983
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:41:06am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +25, -5)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 1111,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.033,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 9,
+      "lex_rank": 55,
+      "geomean": 22.249,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      8185,
+      8190
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:30:43am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +12, -9)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 1031,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0314,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.603,
+      "density": 0.566,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 12,
+      "geomean": 27.276,
+      "rerank": 0.556
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "This is rich. Let me reflect on what resonates most and why:\n\n---\n\n## The Most Compelling Ideas\n\n**Streaming Parser with Partial Tree Access** — This is the one that makes me most excited. Current streaming is token-level. But UDON's structure means you could have *semantic* streaming:\n\n```\nAgent is writing...\n|article[foo]\n:status dr█\n\nPartial tree available NOW:\n- Element |article[foo] is OPEN (not closed)\n- Attribute :status is INCOMPLETE (value partial)\n- Constraint check: :status expects enum [draft|published|archived]\n- Current partial \"dr\" → likely \"draft\" (valid)\n```\n\nThis is the agent equivalent of syntax highlighting *while you type*. The feedback loop is: generate token → immediate semantic check → catch errors before they compound.\n\nFor interrupt/resume: if generation stops mid-document, the partial tree tells the next agent exactly where things stand.\n\n---\n\n**The Annotation Layer (`|{@ ...}`)** — This could be UDON's native way to carry agent metacognition through documents:\n\n```udon\n|config\n:timeout 30  |{@ :confidence 0.6 :agent claude Seems low for batch jobs}\n:retries 5   |{@ :source inferred :basis \"similar configs use 3-5\"}\n\n|endpoint[create-user]\n:auth required  |{@ :decision \"Changed from optional after reviewing security reqs\"}\n```\n\nThe annotations are:\n- Semantically distinct from content (strippable)\n- Structured (not just prose comments)\n- Machine-readable (other agents can query them)\n- Preserve reasoning chain (why was this decision made?)\n\nThis directly addresses the \"confidence layer\" from the ACP brainstorm — baked into the document format itself.\n\n---\n\n**Context Handoff Generator** — The 100% context turnover problem is real and painful. If UDON had native tooling for:",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0312,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 24,
+      "lex_rank": 23,
+      "geomean": 23.495,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      2852,
+      2855
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:48:25am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +185, -185)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 297,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0311,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 18,
+      "lex_rank": 31,
+      "geomean": 23.622,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3144,
+      3147
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:53:13am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 343,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.029,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 22,
+      "lex_rank": 29,
+      "geomean": 25.259,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3132,
+      3135
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:53:00am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 339,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0289,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 15,
+      "lex_rank": 43,
+      "geomean": 25.397,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      5947,
+      5953
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:23:23am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 737,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0287,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 31,
+      "lex_rank": 21,
+      "geomean": 25.515,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      2609,
+      2612
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:43:17am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +17, -5)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 261,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0283,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.507,
+      "density": 0.663,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 11,
+      "geomean": 26.115,
+      "rerank": 0.544
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T21:30:18.600000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      60,
+      60
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "ore edge cases, the more the spec grows.\n\n**The `|` character has baggage.** Pipes in shell, or-operators in code, table separators in Markdown. Could cause friction and confusion in certain contexts.\n\n**Why these specific syntax choices?** `|` for elements feels somewhat arbitrary. The justification (\"it looks like a structure boundary\") is post-hoc. XML's `<>`, Markdown's `#`, YAML's indentation — each has some mnemonic or historical basis. Does `|` for elements actually click for people?\n\n---\n\n## The Real Question\n\nThe question isn't \"is UDON better?\" It's \"is UDON *enough* better to justify the ecosystem investment?\"\n\nCompeting head-to-head with JSON/YAML for data interchange? Probably not. The switching costs are too high.\n\nCompeting with Markdown for documentation? Maybe, but Markdown's dominance is entrenched.\n\n**The interesting bet is the one you're making:** UDON as a native format for agent communication and reasoning, where there's no incumbent. If agents start *generating* UDON (for handoffs, for reasoning traces, for structured outputs), then humans might start *reading* UDON, and the ecosystem grows organically.\n\nBut that bet depends on UDON actually being better for agents in ways that matter. And I genuinely don't know if it is yet. The streaming parser story is compelling. The annotation layer is nice. But are these 10% better or 10x better than just using JSON with conventions?\n\n---\n\n## What Would Make Me More Confident\n\n1. **Real-world usage.** Does UDON actually help in practice, or is it theoretical?\n2. **Agent adoption evidence.** Do agents (like me) actually produce better outputs when writing UDON vs JSON?\n3. **The streaming parser working.** The partial tree access during generation — if that's real and useful, it's a genuine differentiator.\n4. **A killer use case.** One domain where UDON is so obviously better that people adopt it despite the ecosystem gap.\n\n---\n\n## My Honest Bottom Line",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:30:18.600000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 40,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0262,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 14,
+      "lex_rank": 56,
+      "geomean": 28.0,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      8193,
+      8196
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:30:52am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 1033,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0254,
+    "factors": {
+      "class": "document",
+      "proximity": 0.571,
+      "density": 0.718,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 62,
+      "lex_rank": 9,
+      "geomean": 23.622,
+      "rerank": 0.533
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:23:49.124418-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+    "lines": [
+      527,
+      605
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Wild Ideas\n\n**UDON as Agent Memory Format**\n\nAgents maintain persistent memory as UDON documents:\n```udon\n|memory[project-x]\n:last-touched 2024-12-25\n:agent claude\n\n|context\nWorking on API documentation for Project X.\nUser prefers explicit error handling.\n\n|decisions\n|decision[auth-required]\n:date 2024-12-24\n:confidence 0.9\nMade auth required after security review discussion.\n\n|uncertainties\n|uncertainty[rate-limits]\nNot sure what rate limits are appropriate.\nUser said \"reasonable\" but didn't specify.\n\n|todos\n|todo :status pending\nDocument the 409 error response\n|todo :status done\nAdd authentication requirement\n```\n\nNext session: agent loads memory, has full context.\n\n**UDON as Agent Protocol**\n\nAgents communicate via UDON messages:\n```udon\n|message\n:from agent-1\n:to agent-2\n:type handoff\n\n|context\nCompleted schema validation.\nFound 3 issues (see |issues below).\n\n|issues\n|issue :severity error :location //|endpoint[create-user]/:auth\nType mismatch: expected boolean, got string \"required\"\n\n|request\nPlease fix the type issues and re-validate.\n\n|attachments\n@[current-doc]  ; Reference to document being worked on\n```\n\n**UDON as Test Specification**\n\n```udon\n|test[create-user-success]\n:endpoint @[create-user]\n\n|given\n|request\n:method POST\n:body |{json {\"name\": \"Alice\", \"email\": \"alice@example.com\"}}\n\n|expect\n|response :status 201\n|body :has name :eq \"Alice\"\n|body :has id :type integer\n\n|{@ :generated true :from-example @[create-user]/|example[basic]}\n```\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:23:49.124418-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/UDON-AGENT-TOOLS.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0252,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 16,
+      "lex_rank": 53,
+      "geomean": 29.12,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      7629,
+      7632
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:18:35am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +8, -7)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 955,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0252,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 17,
+      "lex_rank": 50,
+      "geomean": 29.155,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      6449,
+      6452
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:33:54am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +5, -5)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 823,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0247,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 40,
+      "lex_rank": 22,
+      "geomean": 29.665,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      2628,
+      2631
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:43:40am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +17, -4)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 267,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0241,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 29,
+      "lex_rank": 32,
+      "geomean": 30.463,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3156,
+      3159
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:53:29am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +6, -6)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 347,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0239,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 27,
+      "lex_rank": 35,
+      "geomean": 30.741,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4589,
+      4592
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:00:45am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +9, -8)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 527,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0234,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 32,
+      "lex_rank": 41,
+      "geomean": 36.222,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4939,
+      4942
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:10:17am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +17, -17)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 609,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0233,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 30,
+      "lex_rank": 33,
+      "geomean": 31.464,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      3162,
+      3165
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "4:53:37am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +4, -4)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 349,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0229,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 19,
+      "lex_rank": 54,
+      "geomean": 32.031,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      7641,
+      7670
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:19:06am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +6, -5)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 959,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0224,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 21,
+      "lex_rank": 51,
+      "geomean": 32.726,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      7591,
+      7594
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:17:43am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +5, -3)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 945,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0216,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 34,
+      "lex_rank": 34,
+      "geomean": 34.0,
+      "rerank": 0.5
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      4398,
+      4408
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "5:57:10am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +42, -26)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 491,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0214,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 26,
+      "lex_rank": 45,
+      "geomean": 34.205,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      5974,
+      5977
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "6:23:48am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +6, -6)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 745,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0214,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": null,
+      "density": 0.542,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 20,
+      "lex_rank": 59,
+      "geomean": 34.351,
+      "rerank": 0.501
+    },
+    "class": "agent-to-human",
+    "speaker": "Assistant",
+    "project": "_ref/libudon",
+    "date": "2025-12-27T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+    "lines": [
+      9047,
+      9050
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "7:42:10am Edit(/Users/josephwecker-v2/src/libud…/udon.machine, +1, -1)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-28-morning.md",
+        "role": "curated-full",
+        "date": "2025-12-27T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": 1125,
+        "speaker": "Assistant",
+        "alive": true
+      }
+    ]
+  }
+]

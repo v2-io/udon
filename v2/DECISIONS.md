@@ -129,6 +129,12 @@ High-consensus greenfield + pipeline leans, landed thin. **Overturn freely** via
 
 ---
 
+## Steward marks (post-gathering, 2026-07-21)
+
+| ID | Holds | Cite |
+|----|--------|------|
+| **PATH-1** | **Cross-document addressing is in scope for path design** ("documents in path are definitely in scope"). Overrules the scenarios corpus's document-scope-boundary lean; path design must not foreclose multi-document addressing. | STEWARD-CALLS #4, jaw 7/21; `udon-needs/01-ideation/02-provenanced/commentary/I2-scenarios-witness.md` |
+
 ## Overturns
 
 *(none yet)*

@@ -1,0 +1,1907 @@
+[
+  {
+    "score": 0.2464,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 1.0,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 5,
+      "lex_rank": 1,
+      "geomean": 2.236,
+      "rerank": 0.51
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-07-17T14:21:24.131211-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/managed-agents/tools.md",
+    "lines": [
+      1,
+      14
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Tools\n\nConfigure tools available to your agent.\n\n---\n\nClaude Managed Agents provides a set of built-in tools that Claude can use autonomously within a [session](sessions.md). You control which tools are available by specifying them in the agent configuration.\n\nClaude Managed Agents also supports custom, user-defined tools. Your application executes these tools separately and returns the results to Claude, which uses them to continue the task. To give the agent tools from an MCP server, use the [MCP connector](mcp-connector.md) instead.\n\n<Note>\nManaged Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](../api/beta-headers.md#endpoint-specific-headers).\n</Note>",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/managed-agents/tools.md",
+        "role": "original-document",
+        "date": "2026-07-17T14:21:24.131211-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1384,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 0.715,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 8,
+      "lex_rank": 2,
+      "geomean": 4.0,
+      "rerank": 0.536
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-07-17T14:21:24.131211-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/managed-agents/tools.md",
+    "lines": [
+      15,
+      31
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Available tools\n\nThe agent toolset includes the following tools. All are enabled by default when you include the toolset in your agent configuration. Use the values in the Name column to reference tools in the `configs` array.\n\n| Tool       | Name         | Description                                    |\n| ---------- | ------------ | ---------------------------------------------- |\n| Bash       | `bash`       | Execute bash commands in a shell session       |\n| Read       | `read`       | Read a file from the sandbox filesystem        |\n| Write      | `write`      | Write a file to the sandbox filesystem         |\n| Edit       | `edit`       | Perform string replacement in a file           |\n| Glob       | `glob`       | Fast file pattern matching using glob patterns |\n| Grep       | `grep`       | Text search using regex patterns               |\n| Web fetch  | `web_fetch`  | Fetch content from a URL                       |\n| Web search | `web_search` | Search the web for information                 |\n\nWhen a tool output exceeds 100,000 tokens, it is automatically written to a file in the [sandbox](environments.md). The model receives a truncated preview with the file path and can read the full content from there.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/managed-agents/tools.md",
+        "role": "original-document",
+        "date": "2026-07-17T14:21:24.131211-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.1124,
+    "factors": {
+      "class": "document",
+      "proximity": 0.619,
+      "density": 0.883,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 1,
+      "lex_rank": 27,
+      "geomean": 5.196,
+      "rerank": 0.532
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "archema-io/msc",
+    "date": "2026-07-17T13:44:54.633471-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_opus_4_8.md",
+    "lines": [
+      150,
+      161
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Agents\n\nAvailable agent types for the Agent tool:\n- claude: Catch-all for any task that doesn't fit a more specific agent. FleetView's default when no agent name is typed. (Tools: *)\n- claude-code-guide: Use this agent when the user asks questions (\"Can Claude...\", \"Does Claude...\", \"How do I...\") about: (1) Claude Code (the CLI tool) - features, hooks, slash commands, MCP servers, settings, IDE integrations, keyboard shortcuts; (2) Claude Agent SDK - building custom agents; (3) Claude API (formerly Anthropic API) - Messages API for directly passing messages to Claude, Tool Runner (`client.beta.messages.tool_runner`) for running an agentic loop over your own tools, manual tool-use loops, Managed Agents for server-hosted agents with a managed sandbox, prompt caching, and general Anthropic SDK usage; (4) Claude Tag (Claude in Slack) - what it is, setting it up for a Slack workspace, `/install-slack-app`. **IMPORTANT:** Before spawning a new agent, check if there is already a running or recently completed claude-code-guide agent that you can continue via SendMessage. (Tools: Bash, Read, WebFetch, WebSearch)\n- Explore: Read-only search agent for broad fan-out searches — when answering means sweeping many files, directories, or naming conventions and you only need the conclusion, not the file dumps. It reads excerpts rather than whole files, so it locates code; it doesn't review or audit it. Specify search breadth: \"medium\" for moderate exploration, \"very thorough\" for multiple locations and naming conventions. (Tools: All tools except Agent, Artifact, ExitPlanMode, Edit, Write, NotebookEdit)\n- general-purpose: General-purpose agent for researching complex questions, searching for code, and executing multi-step tasks. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries use this agent to perform the search for you. (Tools: *)",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_opus_4_8.md",
+        "role": "original-document",
+        "date": "2026-07-17T13:44:54.633471-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_fable_5.md",
+        "role": "original-document",
+        "date": "2026-07-17T13:44:53.266340-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0932,
+    "factors": {
+      "class": "document",
+      "proximity": 0.423,
+      "density": 0.843,
+      "age_norm": 0.21,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 2,
+      "lex_rank": 19,
+      "geomean": 6.164,
+      "rerank": 0.511
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "vaults",
+    "date": "2025-08-23T19:09:55.237408-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/vaults/gemini/archive/AGENT_IMPLEMENTATION_REPORT.md",
+    "lines": [
+      23,
+      30
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## The /agents command provides comprehensive management capabilities\n\nThe `/agents` command opens an interactive interface that serves as the central hub for agent management[^5]. **This single command handles creation, editing, deletion, and tool configuration** through a guided wizard that leverages Claude's assistance to help craft effective agent definitions. The interface displays all available agents across built-in, user, and project scopes, with clear visibility into tool permissions including MCP server tools.\n\nAgents can be invoked through two primary mechanisms. Automatic delegation occurs when Claude analyzes task descriptions and matches them against agent descriptions, intelligently routing work to the most appropriate specialist[^6]. For explicit control, developers can directly specify which agent to use with natural language like \"Use the code-reviewer agent to analyze my recent changes.\" This flexibility enables both autonomous operation and precise control when needed.\n\n**Best practices for agent design** emphasize single responsibility and clear, action-oriented descriptions[^7]. Including phrases like \"use PROACTIVELY\" or \"MUST BE USED\" in descriptions improves automatic delegation accuracy. Starting with Claude-generated agents and iterating based on project needs produces better results than creating agents from scratch. Tool restrictions should be minimal but sufficient - granting only necessary tools prevents capability drift and improves security.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/vaults/gemini/archive/AGENT_IMPLEMENTATION_REPORT.md",
+        "role": "original-document",
+        "date": "2025-08-23T19:09:55.237408-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0925,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.982,
+      "density": 0.687,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 7,
+      "geomean": 22.76,
+      "rerank": 0.562
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "Given UDON's properties:\n- Mixed prose + structure\n- Tiers of voice (prose, comments, elements, inline, attributes, dynamics)\n- Streaming-friendly\n- AI-agent readable/writable\n\nSome compelling generic agent tools:\n\n1. UDON Parser/Emitter Library - Core library for reading/writing UDON\n2. UDON Validator - Schema validation for UDON documents\n3. UDON Formatter/Pretty-printer - Consistent formatting\n4. UDON Query Language - XPath/JQ-like for UDON\n5. UDON Diff - Semantic diffing of UDON documents\n6. UDON to/from JSON/YAML - Bidirectional conversion\n7. UDON Template Processor - Resolve !if, !for, !{...} dynamics\n8. UDON Schema Inference - Infer schema from examples\n9. UDON Merge - Merge multiple UDON documents (like git merge but semantic)\n10. UDON Streaming Parser - For LLM output consumption\n11. UDON \"Explain\" - Take a UDON doc, produce prose explanation\n12. UDON \"Structurize\" - Take prose, identify structure opportunities\n13. UDON Context Window - Extract/summarize for LLM context windows\n14. UDON DSL Compiler - Define a DSL, compile to validators/parsers\n15. UDON Annotation Tool - Add inline annotations to documents\n\nLet me share these ideas with Joseph.\n\n⏺ Great question. Thinking about this while tests run:\n\nCompelling Generic Agent Tools for UDON\n\nCore Infrastructure:\n1. Streaming Parser - Consume LLM output token-by-token, emit complete subtrees as they close\n2. Query Language - JQ/XPath for UDON: //|endpoint[@method='POST'] or ...|{field :required}\n3. Semantic Diff - Understand structure changes, not just text changes\n\nAgent-Specific:\n4. Context Compactor - Summarize UDON docs for context windows (preserve structure, compress prose)\n5. Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0835,
+    "factors": {
+      "class": "human-user",
+      "proximity": null,
+      "density": 0.498,
+      "age_norm": 0.144,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 3,
+      "lex_rank": 73,
+      "geomean": 14.799,
+      "rerank": 0.518
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-04T23:13:59.827000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      3045,
+      3045
+    ],
+    "session": "1b8fdc48-97f5-402a-8a0a-66ec4f850b27",
+    "file_type": "claude_history",
+    "text": "There *is* an agent-specific group of functionality I'm excited about that I've alluded to a few times but I don't think it made it into any of the planning docs yet-- that is the ability to directly output agent tool definitions that correspond to actions available on any given resource--  so even in the simplest form, where the resource describes the yaml frontmatter of a random (conformant) markdown document-- generate the tool for agents and now they never have to manually edit those kinds of docs again-- they just run the desired modification function on the file and it's guaranteed to always be conformant and correct (and fast to use).\nThe other, somewhat related agent tool has emerged as a result of our work on simulation testing proofs of concept-- instead of just a tool interface-- and in addition to exposing an API automatically, we can expose an MCP interface automatically for resource actions (and already almost are).\nAdd removing the need for interactive command-line necessity in order to do automatic migrations (via hints), and I think we're moving in the right direction! :-)\n\nI vote we do put those in a top-level track.\n\nI don't have the current ROADMAP in front of me but I'm thinking main tracks maybe along the lines of:\n- ASH PARITY (lots of done stuff, missing near-term stuff, missing longer-term stuff like GraphQL etc.)\n- GENERAL-DATA-STORE (Types, DSL, Automigrations, ...)\n- EVENT-SOURCE PARITY  (Sequent integration, Temporal Queries, ...)\n- AGENTIC (Tool export, MCP export, Migration hinting)\n- SAFE RDBMS EVOLUTION (...)\n- DISTRIBUTION (Gem, Docs, Website, Autopax integration, ...)\n- DX+TOOLING (Unit, Property, Simulation, Fuzz, Workflow, CD/CI, ...)",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-04T23:13:59.827000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-04T23:13:59.827000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-04T23:13:59.827000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0781,
+    "factors": {
+      "class": "document",
+      "proximity": 0.54,
+      "density": 0.821,
+      "age_norm": 0.137,
+      "copies": 6,
+      "path_frac": 0.667,
+      "sem_rank": 23,
+      "lex_rank": 4,
+      "geomean": 9.592,
+      "rerank": 0.502
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.2",
+    "date": "2025-10-06T20:13:31.501069-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/ennaos/docs/claude-docs/en/api/agent-sdk/custom-tools.md",
+    "lines": [
+      1,
+      6
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Custom Tools\n\nBuild and integrate custom tools to extend Claude Agent SDK functionality\n\n---\n\nCustom tools allow you to extend Claude Code's capabilities with your own functionality through in-process MCP servers, enabling Claude to interact with external services, APIs, or perform specialized operations.",
+    "n_occurrences": 6,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:02:27.221599-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2026-02-11T10:55:00.284330-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:11:00.494305-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:06:54.648297-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_core/ennaos/docs/claude-docs/en/api/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2025-10-22T10:39:07.008948-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.2/en/api/agent-sdk/custom-tools.md",
+        "role": "original-document",
+        "date": "2025-10-06T20:13:31.501069-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0644,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.982,
+      "density": 0.784,
+      "age_norm": 0.132,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 5,
+      "geomean": 19.235,
+      "rerank": 0.548
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-23T19:24:37.758000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      5505,
+      5505
+    ],
+    "session": "dd3d94a5-9090-4ee7-b772-b3c97c25eab7",
+    "file_type": "claude_history",
+    "text": "Given that understanding of the general utility of UDON and the various layers of voice etc...  What would be some compelling *generic agent tools* that work with or consume or produce UDON...",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-23T19:24:37.758000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0595,
+    "factors": {
+      "class": "document",
+      "proximity": 0.507,
+      "density": 1.0,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 10,
+      "lex_rank": 9,
+      "geomean": 9.487,
+      "rerank": 0.519
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-01-14T08:26:04-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/design/udon-agentic.md",
+    "lines": [
+      1,
+      10
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Agentic UDON Tools\n\n**Tools designed for how agents actually think about documents.**\n\nThis document specifies a suite of tools for AI agents to inspect, understand,\nand modify UDON documents. The design philosophy: **agents express intent, tools\nhandle mechanics.**\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/design/udon-agentic.md",
+        "role": "original-document",
+        "date": "2026-01-14T08:26:04-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0488,
+    "factors": {
+      "class": "document",
+      "proximity": 0.619,
+      "density": 0.777,
+      "age_norm": 0.212,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 4,
+      "lex_rank": 35,
+      "geomean": 11.832,
+      "rerank": 0.54
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "vaults",
+    "date": "2025-08-22T02:21:29.429240-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/vaults/clean_split/enterprise-implementation-patterns.md",
+    "lines": [
+      12,
+      46
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "#### Pattern 1: Tool-Using Agents - Beyond Simple Function Calling\n\nModern enterprise agents don't just call APIs—they intelligently select, combine, and coordinate tool usage across complex business processes:\n\n```\nENTERPRISE TOOL-USING AGENT PATTERN:\nrequirements = analyze_process([\n'extract_capabilities_from_description',\n'identify_compliance_requirements',\n'assess_security_classification'\n])\n\ntools = discover_and_validate([\n'query_registry(capability_requirements)',\n'filter_by_security_context(permissions)',\n'validate_compliance_per_tool',\n'create_orchestration_plan'\n])\n\nFOR each step in execution_plan:\nvalidate_compliance(step)\n\nexecution_result = case:\ntool_available && compliant  ->  execute_with_monitoring(step)\ntool_failed                  ->  intelligent_recovery(step)\ncompliance_violation         ->  escalate_to_governance(step)\ndefault                      ->  update_process_state(step)\n\nsynthesize_results(quality_validation=True)\n```\n\n**Real-World Success: Fujitsu's Sales Proposal Automation[^55]**\n\nFujitsu transformed their sales proposal process using specialized agents for data analysis, market research, and document creation. Each agent invokes specific APIs and tools, building complete proposal packages that reduced production time by 67%.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/vaults/clean_split/enterprise-implementation-patterns.md",
+        "role": "original-document",
+        "date": "2025-08-22T02:21:29.429240-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0454,
+    "factors": {
+      "class": "document",
+      "proximity": 0.549,
+      "density": 0.796,
+      "age_norm": 0.112,
+      "copies": 3,
+      "path_frac": 0.333,
+      "sem_rank": 14,
+      "lex_rank": 13,
+      "geomean": 13.491,
+      "rerank": 0.503
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:08:03.607984-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/agent-sdk/user-input.md",
+    "lines": [
+      801,
+      810
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Custom tools\n\nUse [custom tools](/docs/en/agent-sdk/custom-tools) when you need to:\n\n- **Collect structured input**: build forms, wizards, or multi-step workflows that go beyond `AskUserQuestion`'s multiple-choice format\n- **Integrate external approval systems**: connect to existing ticketing, workflow, or approval platforms\n- **Implement domain-specific interactions**: create tools tailored to your application's needs, like code review interfaces or deployment checklists\n\nCustom tools give you full control over the interaction, but require more implementation work than using the built-in `canUseTool` callback.",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/agent-sdk/user-input.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:03:36.163432-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/agent-sdk/user-input.md",
+        "role": "original-document",
+        "date": "2026-02-11T10:55:59.699278-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/agent-sdk/user-input.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:08:03.607984-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0435,
+    "factors": {
+      "class": "document",
+      "proximity": 0.567,
+      "density": 0.908,
+      "age_norm": 0.213,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 16,
+      "lex_rank": 11,
+      "geomean": 13.266,
+      "rerank": 0.531
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/_arch",
+    "date": "2025-08-20T14:33:15.827203-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/_arch/second-other-client/cli-modules-renamed/TOOLS_AND_COMMANDS.md",
+    "lines": [
+      172,
+      177
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Agent-Specific Tools\n- Agent spawning\n- Task delegation\n- Multi-agent coordination\n- Agent lifecycle management",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/_arch/second-other-client/cli-modules-renamed/TOOLS_AND_COMMANDS.md",
+        "role": "original-document",
+        "date": "2025-08-20T14:33:15.827203-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0432,
+    "factors": {
+      "class": "document",
+      "proximity": 0.607,
+      "density": 0.515,
+      "age_norm": 0.166,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 6,
+      "lex_rank": 29,
+      "geomean": 13.191,
+      "rerank": 0.514
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_core/ennaos",
+    "date": "2025-10-31T17:35:50.829365-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/refs/agentic-semantic-code-manipulation-synthesis.md",
+    "lines": [
+      117,
+      133
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### 2.3 The Real Problem: Missing Cognitive Tooling\n\nFrom Joseph's insight in the tool-consciousness document:\n\n> \"Agents don't have nearly the same kinds of cognitive tooling that has been developed for humans (the equivalent of, say, autocompletion candidates as a deterministic function of the AST instead of just LLM probabilities that are highly context-dependent, or having a second screen open up to the side that shows a related piece of code to glance at just in case...)\"\n\n**Examples of Missing Agent Tooling:**\n- `show-call-sites <function>` - deterministic, instant\n- `explain-why-here <decision>` - retrieve actual design doc\n- `validate-against-principle T-06` - TST compliance check\n- `preview-impact <change>` - dependency analysis before edit\n- `add-genserver <name>` - language/project-specific scaffolding\n\nThe pattern: **Agents need language-specific, project-specific tools**, not generic text manipulation.\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/refs/agentic-semantic-code-manipulation-synthesis.md",
+        "role": "original-document",
+        "date": "2025-10-31T17:35:50.829365-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0416,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.643,
+      "density": 0.935,
+      "age_norm": 0.16,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 15,
+      "lex_rank": 21,
+      "geomean": 17.748,
+      "rerank": 0.502
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "_core/sapientia",
+    "date": "2025-11-09T14:53:26.154618-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/sapientia/anamnos-emergence-from-claude.jsonl",
+    "lines": [
+      107,
+      107
+    ],
+    "session": "64868d92-ec20-474f-acc8-6010944fbf62",
+    "file_type": "claude_conversation",
+    "text": "ys Tools Play?\n\n**Option 1: Tools That Agents Invoke** (MCP)\n```\nLLM Agent\n↓ (invokes via MCP)\nToys Tool: deploy\n↓ (uses)\nExternal resources\n```\n**Use MCP** - tools are passive resources agents invoke\n\n**Option 2: Autonomous Agents That Collaborate** (A2A)\n```\nDeploy Agent ↔ Test Agent ↔ Monitor Agent\n↕              ↕            ↕\n(A2A peer communication)\n```\n**Use A2A** - tools are autonomous agents negotiating\n\n**Option 3: Hybrid** (Both MCP + A2A)\n```\nLLM Agent\n↓ (MCP)\nMeta-Tool Agent ←→ Pattern-Analysis Agent\n↕ (A2A)\nGenerate-Tool Agent\n```\n**Use both** - tools invoked via MCP, but can collaborate via A2A\n\n## MCP's Composability Feature\n\nInteresting finding: **MCP supports chaining/composability**\n\n> \"MCP supports composability where the distinction between a client and a server is logical rather than physical. Any application, API, or agent can function as both an MCP client and an MCP server simultaneously.\"\n\nSo you could have:\n```\nClaude (MCP Client)\n↓\nToys Meta-Tool (MCP Server + MCP Client)\n↓\nIndividual Tools (MCP Servers)\n```\n\n**But** - this is still hierarchical, not peer-to-peer.\n\n## Support Status\n\n### MCP Support (Anthropic):\n✅ Claude Desktop supports MCP\n✅ Claude Code supports local MCP servers\n✅ Claude Code now supports **remote MCP servers** (recent announcement)\n✅ Anthropic API has MCP connector (connects to remote servers without code)\n\n### A2A Support:\n⚠️ Google's protocol (not Anthropic's)\n⚠️ Specification is defined but implementation status unclear\n⚠️ Anthropic acknowledges it but primary support is MCP\n✅ Anthropic/Google did joint webinar showing both working together\n\n## My Recommendation for the Vision\n\n### Based on Your Goals:\n\nLooking at your vision document, I think the answer depends on what level of autonomy tools have:\n\n**For most of Extension 1-5** (semantic annotations, context, structured I/O, types, learning):\n- **Use MCP** - tools are resources that agents invoke\n- Toys tools = MCP servers\n- LLM agents = MCP clients",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/sapientia/anamnos-emergence-from-claude.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-11-09T14:53:26.154618-07:00",
+        "date_method": "file-birthtime",
+        "turn": 65,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0411,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.667,
+      "density": 0.706,
+      "age_norm": 0.16,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 12,
+      "lex_rank": 36,
+      "geomean": 20.785,
+      "rerank": 0.515
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "_core/sapientia",
+    "date": "2025-11-09T14:53:26.154618-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/sapientia/anamnos-emergence-from-claude.jsonl",
+    "lines": [
+      69,
+      69
+    ],
+    "session": "64868d92-ec20-474f-acc8-6010944fbf62",
+    "file_type": "claude_conversation",
+    "text": "*Meta-Tooling** → Agents generate tools from specs + learned patterns\n\n## 💡 Core Insight\n\nThe vision answers your question: **\"How could we expand Toys to be a DSL specifically for *agentic* tools?\"**\n\n**Answer:** By making tools that **understand intent**, **bear truth** through validation, **adapt through learning**, and **guide toward quality**—embodying the Three Pillars (Wisdom, Strength, Beauty) while enabling \"intelligence begetting intelligence.\"\n\nThe result: **Make the best thing for the project the easiest thing to do** via agent-friendly tooling.\n\nWould you like me to:\n1. Expand on any specific extension (e.g., deep dive into the learning system)?\n2. Create prototype code examples?\n3. Explore alternative approaches to any of the six extensions?\n4. Something else?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/sapientia/anamnos-emergence-from-claude.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-11-09T14:53:26.154618-07:00",
+        "date_method": "file-birthtime",
+        "turn": 40,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0398,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 0.908,
+      "age_norm": 0.06,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 9,
+      "lex_rank": 22,
+      "geomean": 14.071,
+      "rerank": 0.535
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "tmp",
+    "date": "2026-04-13T11:40:40.494606-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/tmp/udon.md",
+    "lines": [
+      127,
+      129
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Agentic Design\nUDON-AGENT-TOOLS.md (632 lines) specifies a suite of tools for AI to manipulate UDON without mechanical burden (indentation, escaping, line numbers). This is forward-looking—designed for how agents actually interact with config.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/tmp/udon.md",
+        "role": "original-document",
+        "date": "2026-04-13T11:40:40.494606-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0349,
+    "factors": {
+      "class": "document",
+      "proximity": 0.432,
+      "density": 0.73,
+      "age_norm": 0.212,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 27,
+      "lex_rank": 10,
+      "geomean": 16.432,
+      "rerank": 0.504
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/agentic-elixir",
+    "date": "2025-08-21T21:24:06.261800-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/agentic-elixir/docs/TOOLS_SYSTEM.md",
+    "lines": [
+      783,
+      792
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Summary\n\nThe Tools System provides:\n- **Comprehensive tool set** for file, web, code, and data operations\n- **Security features** including sandboxing and validation\n- **Flexible integration** with agents and workflows\n- **Performance optimization** through batching and caching\n- **Robust error handling** with structured errors and recovery\n\nTools enable agents to interact with the real world while maintaining safety and reliability.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/agentic-elixir/docs/TOOLS_SYSTEM.md",
+        "role": "original-document",
+        "date": "2025-08-21T21:24:06.261800-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0342,
+    "factors": {
+      "class": "document",
+      "proximity": 0.454,
+      "density": 0.951,
+      "age_norm": 0.145,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 35,
+      "lex_rank": 18,
+      "geomean": 25.1,
+      "rerank": 0.554
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "autopax",
+    "date": "2025-12-01T09:22:02-07:00",
+    "date_method": "git-blame-min",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/autopax/docs/ADR/010-markdown-parsing-and-validation.md",
+    "lines": [
+      193,
+      229
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "#### P3: Schema-Derived Agentic Tools\n\n**The compelling idea:** Auto-generate specialized tools from markdown schemas that guarantee structural compliance.\n\nSchemas should generate typed modification tools:\n\n```ruby\n# Auto-generated from schema\ntools = Autopax::MarkdownSchema[:agent_axiomata].to_tools\n\n# Produces tools like:\n# - modify_axiomata_identity(content:, mode: :replace|:append|:prepend)\n# - modify_axiomata_capabilities(items:, mode: :add|:remove|:replace)\n# - modify_axiomata_background(content:, mode:)\n# - get_axiomata_section(section:)\n# - validate_axiomata(path:)\n```\n\n**Agent usage example:**\n\n```ruby\nmodify_axiomata_background(\npath: \"agents/eli/axiomata.md\",\ncontent: \"And thus it was understood that...\",\nmode: :append\n)\n# Tool handles:\n# 1. Parse existing document\n# 2. Locate \"Background\" section\n# 3. Append content\n# 4. Re-validate structure\n# 5. Write back (or return error if validation fails)\n```\n\n**Benefits:**\n- Structural compliance guaranteed by construction\n- Agents can't accidentally corrupt document structure\n- Clear, typed interfaces for document modification\n- Validation happens automatically\n- No need for agents to understand markdown AST manipulation",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/autopax/docs/ADR/migration-proposals/010-markdown-parsing-and-validation.md",
+        "role": "original-document",
+        "date": "2025-12-03T14:39:22.181213-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/autopax/docs/ADR/010-markdown-parsing-and-validation.md",
+        "role": "original-document",
+        "date": "2025-12-01T09:22:02-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0305,
+    "factors": {
+      "class": "document",
+      "proximity": 0.655,
+      "density": 0.684,
+      "age_norm": 0.166,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 25,
+      "lex_rank": 14,
+      "geomean": 18.708,
+      "rerank": 0.516
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_core/ennaos",
+    "date": "2025-10-31T17:35:50.829365-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/refs/agentic-semantic-code-manipulation-synthesis.md",
+    "lines": [
+      1063,
+      1075
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### 9.3 Phase 3: Agent-Specific Tools (Next Month)\n\n**Goal:** Build project-specific semantic tools\n\n**Deliverables:**\n1. `add-genserver` - GenServer scaffolding\n2. `update-signum` - Schema-validated SIGNUM editing\n3. `inline-css-view` - Temporary CSS-inlined HTML view\n4. `tst-check` - Validate against TST principles\n5. `convention-check` - Extract conventions from CLAUDE.md\n\n**Success metric:** Agent can complete \"add payment GenServer\" with single command.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/refs/agentic-semantic-code-manipulation-synthesis.md",
+        "role": "original-document",
+        "date": "2025-10-31T17:35:50.829365-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0287,
+    "factors": {
+      "class": "document",
+      "proximity": 0.489,
+      "density": 0.75,
+      "age_norm": 0.16,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 17,
+      "lex_rank": 23,
+      "geomean": 19.774,
+      "rerank": 0.506
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_core/nexum",
+    "date": "2025-11-09T15:12:52.063211-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/nexum/docs/dev/vision-agentic-toys.md",
+    "lines": [
+      25,
+      26
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### What Agents Need That Traditional Tools Don't Provide",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/nexum/docs/dev/vision-agentic-toys.md",
+        "role": "original-document",
+        "date": "2025-11-09T15:12:52.063211-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0269,
+    "factors": {
+      "class": "document",
+      "proximity": 0.411,
+      "density": 0.656,
+      "age_norm": 0.212,
+      "copies": 1,
+      "path_frac": 0.667,
+      "sem_rank": 38,
+      "lex_rank": 12,
+      "geomean": 21.354,
+      "rerank": 0.511
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/agentic-elixir",
+    "date": "2025-08-21T21:24:06.261800-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/agentic-elixir/docs/TOOLS_SYSTEM.md",
+    "lines": [
+      3,
+      6
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Overview\n\nThe Tools System enables Claude-powered agents to interact with external systems through a comprehensive set of tool definitions and executors. This allows agents to perform file operations, search the web, execute code, analyze data, and more—all while maintaining security and safety.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/agentic-elixir/docs/TOOLS_SYSTEM.md",
+        "role": "original-document",
+        "date": "2025-08-21T21:24:06.261800-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0241,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.782,
+      "density": 0.629,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 17,
+      "geomean": 35.468,
+      "rerank": 0.557
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:30:18.600000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      60,
+      60
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "'s real and useful, it's a genuine differentiator.\n4. **A killer use case.** One domain where UDON is so obviously better that people adopt it despite the ecosystem gap.\n\n---\n\n## My Honest Bottom Line\n\nUDON solves a real problem (prose + structure) with a reasonably elegant syntax. The agent-native positioning is the right bet because it sidesteps competing with entrenched formats.\n\nBut I'm uncertain whether the advantages are large enough to overcome the ecosystem cold-start problem. The ideas are good. Whether they're good *enough* to succeed is an empirical question I can't answer from here.\n\nThe brainstorming we did (ACP, agent tools, UDON-as-format) is intellectually compelling. But compelling ideas fail all the time if the execution gap is too wide or the switching costs are too high.\n\nWhat would change my assessment: seeing UDON actually used in agent workflows where it demonstrably outperforms the alternatives. Until then, it's a promising bet with real uncertainty.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:30:18.600000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 40,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0235,
+    "factors": {
+      "class": "document",
+      "proximity": 0.595,
+      "density": 0.736,
+      "age_norm": 0.213,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 40,
+      "lex_rank": 15,
+      "geomean": 24.495,
+      "rerank": 0.528
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "vaults",
+    "date": "2025-08-20T09:33:48.399978-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/vaults/Operations/claude-code-tools.md",
+    "lines": [
+      1,
+      28
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# Task\nLaunch a new agent that has access to the following tools: Bash, Glob, Grep, LS, exit_plan_mode, Read, Edit, MultiEdit, Write, NotebookRead, NotebookEdit, WebFetch, TodoRead, TodoWrite, WebSearch. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries, use the Agent tool to perform the search for you.\n\nWhen to use the Agent tool:\n- If you are searching for a keyword like \"config\" or \"logger\", or for questions like \"which file does X?\", the Agent tool is strongly recommended\n\nWhen NOT to use the Agent tool:\n- If you want to read a specific file path, use the Read or Glob tool instead of the Agent tool, to find the match more quickly\n- If you are searching for a specific class definition like \"class Foo\", use the Glob tool instead, to find the match more quickly\n- If you are searching for code within a specific file or set of 2-3 files, use the Read tool instead of the Agent tool, to find the match more quickly\n- Writing code and running bash commands (use other tools for that)",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/vaults/Operations/claude-code-tools.md",
+        "role": "original-document",
+        "date": "2025-08-20T09:33:48.399978-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0233,
+    "factors": {
+      "class": "document",
+      "proximity": 0.982,
+      "density": 0.683,
+      "age_norm": 0.107,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 8,
+      "geomean": 24.331,
+      "rerank": 0.56
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_self/OPERATA.md",
+    "date": "2026-01-30T19:13:11-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "ructure (rate limit, lock, timeout, retry)              | Invented declarative DSL every time |\n| Business logic complexity (failure handling, merge strategies) | Plain Ruby every time               |\n\nThis wasn't in any of our syntax candidates. We proposed things like compose do ... step ... compensate ... end for complex workflows. But when faced with \"payment succeeds, inventory fails,\" agents wrote transaction do ... rescue ... end. When faced with \"retry 3 times with backoff,\" they invented retry_policy max_attempts: 3, backoff: :exponential.\n\nThe agents were telling us: infrastructure concerns are what feel like boilerplate; business logic complexity doesn't. They don't want to abstract away the rescue PaymentError => e block—that's where the domain knowledge lives. But they absolutely want rate_limit :once_per_day so they don't have to think about Redis keys and TTLs.\n\nThe second surprise was the agent that wrote \"This feels awkward\" in their code comment when using composition syntax for the approval workflow. The syntax we proposed was technically capable of expressing the workflow, but the agent recognized it was the wrong mental model. Composition is for one-shot sagas; approval workflows are state machines with human actors over time. The agent didn't just produce code—they gave us design feedback in situ.\n\nThat's what hallway testing is supposed to surface, but I didn't expect it to be so clear.\n\n---\n\nGiven UDON's properties:\n- Mixed prose + structure\n- Tiers of voice (prose, comments, elements, inline, attributes, dynamics)\n- Streaming-friendly\n- AI-agent readable/writable\n\nSome compelling generic agent tools:",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0224,
+    "factors": {
+      "class": "document",
+      "proximity": 0.619,
+      "density": 0.801,
+      "age_norm": 0.226,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 20,
+      "lex_rank": 33,
+      "geomean": 25.69,
+      "rerank": 0.514
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/crew-ai-notes.md",
+    "date": "2025-07-30T11:00:28.074628-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/crew-ai-notes.md",
+    "lines": [
+      3,
+      31
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## What makes a good agent?\n\n- Role playing (Roles / Goals / Backstories) -- Set in here explicit keywords that\nare likely to help the results.\n- Focus (through goals, backstories, examples, and breadth of agent-roles in a crew)\n- Tools (give just the key tools necessary for the agent to successfully do its job)\n- Cooperation\n- Take feedback\n- Delegate tasks\n- ...\n- Guardrails (mostly at framework level, keep agent from endless loops and hallucinations)\n- Memory (Greater difference than all other aspects)\n- Long-term memory -- lives after the crew finishes-- local DB so they can learn from previous executions  / meta-feedback\n- Short-term memory -- lives only during execution -- can share context with the rest of the crew\n- Entity memory -- People, Organizations, Locations: additional context about specific entities\n\n- Tools:\n- Versatile: Fuzzy inputs (inc. multimodal), well-defined outputs\n- Fault Tolerant: Easy stop. Graceful failure. Return diagnostics on error. Ask agent to retry given the error message\n- Caching: (memoizing) -- cross-agent caching\n\n- Tool types:\n- Internet / web\n- Serper\n- Brave\n- DB\n- RAG Search\n- Filesystem\n- All LangChain tools automatically available",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/crew-ai-notes.md",
+        "role": "original-document",
+        "date": "2025-07-30T11:00:28.074628-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0221,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.686,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 40,
+      "geomean": 54.406,
+      "rerank": 0.554
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2025-12-25T21:14:29.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/OPERATA.md",
+    "lines": [
+      862,
+      1530
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": ". Structurizer - Take prose, suggest inline elements: \"This paragraph mentions 3 entities that could be |{entity ...}\"\n6. Handoff Generator - Given agent state, produce UDON handoff doc for next agent\n\nDSL Hosting:\n7. DSL Validator - Define allowed elements/attributes per !directive, validate conformance\n8. DSL Compiler - From UDON DSL definition, generate: schema, TypeScript types, validator, docs\n\nBidirectional:\n9. UDON ↔ JSON/YAML - Round-trip conversion (with prose preserved as special fields)\n10. UDON → Markdown - Render for humans (structure becomes semantic HTML)\n11. Markdown → UDON - Parse existing docs, infer structure\n\nMeta:\n12. UDON Annotator - Agent adds inline commentary: |{note :by claude This seems wrong because...}\n13. UDON Trace - For agent debugging: what elements were read/written when?\n\nWhich of these resonate most with your vision?\n\n---\n\n⏺ Let me think more deeply about the most compelling ones:\n\nTier 1: Essential Infrastructure\n\n1. Streaming Parser with Partial Tree Access\nAgent is writing... |article[foo]\n:status dr█  ← cursor here\n\nTool exposes: \"We have |article[foo] open, :status partially written\"\nCritical for: interrupt handling, progress tracking, early validation\n\n2. Semantic Merge\nWhen two agents modify the same UDON doc concurrently:\n- Prose changes: paragraph-level merge (like Google Docs)\n- Structure changes: element-aware conflict detection\n- Attributes: last-write-wins with audit trail in comments\n\n---\nTier 2: Agent-Native Tools\n\n3. Context Handoff Generator\nhandoff = UdonHandoff.new(current_doc)\n.preserve_structure      # Keep all |elements\n.summarize_prose(500)    # Compress narrative to 500 tokens\n.include_decisions       # Keep any |{decision ...} inline elements\n.add_agent_note(\"Stopped at validation step, see |error below\")",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:14:29.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 26,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/src/_self/OPERATA.md",
+        "role": "original-document",
+        "date": "2026-01-30T19:13:11-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0218,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.565,
+      "age_norm": 0.144,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 44,
+      "geomean": 57.061,
+      "rerank": 0.545
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-04T09:09:51.925000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      2935,
+      2935
+    ],
+    "session": "774ea777-5e48-4f8d-af58-e506dbe14071",
+    "file_type": "claude_history",
+    "text": " schemas, implementing time-sortable identifiers, developing a markdown-based schema definition approach, and creating\nhash-chaining middleware for data integrity verification across different layers.\n\n⏺ This is a treasure trove of context. Let me synthesize what I see as the key directions for Asher:                                       08:48 AM  claude-opus-4-5-20251101\n\nSynthesis: Where Asher Fits in the Autopax Vision\n\nThe Three-ADR Convergence (006 + 008 + 010)\n\nWhat strikes me most is the \"living documents\" vision where three ADRs converge:\n\n| ADR | Role                                     | Asher Could Provide                         |\n|-----|------------------------------------------|---------------------------------------------|\n| 006 | Liquid templates + recursive rendering   | Template variables from Resource attributes |\n| 008 | YAML schemas + versioning + psych-pure   | Schema definitions via Resource DSL         |\n| 010 | Markdown structure schemas + agent tools | Structural schema DSL + tool generation     |\n\nThe YAML Frontmatter layer I just built is Phase 1 of ADR-008 integration. But the bigger picture is documents that are validated,\ndynamic, version-migrated, and safely modifiable by agents through typed interfaces.\n\nNear-Term Directions\n\n1. Schema Export (High ROI)\n\nThe ADR-010 vision of \"schema-derived tools\" is compelling—auto-generate typed modification tools that guarantee structural compliance.\nThis needs:\n\nSignum.schema.to_json_schema    # For editor autocomplete\nSignum.schema.to_schemacop      # For Autopax validation layer\n\nThis is straightforward—just walk the attribute definitions and emit schema.\n\n2. UUID7 Support\n\nThe OPERATA research makes a strong case for UUID7 (time-sortable UUIDs). Currently Asher has uuid_primary_key which generates v4.\nAdding:\n\nuuid7_primary_key :id  # Time-sortable, database-friendly\n\nWould support OPERATA-style file-per-task patterns where newer tasks naturally sort later.",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-04T09:09:51.925000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-04T09:09:51.925000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-04T09:09:51.925000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0213,
+    "factors": {
+      "class": "document",
+      "proximity": 0.479,
+      "density": 0.757,
+      "age_norm": 0.212,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 29,
+      "lex_rank": 25,
+      "geomean": 26.926,
+      "rerank": 0.502
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/agentic-elixir",
+    "date": "2025-08-21T21:27:22.014370-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/agentic-elixir/docs/USAGE_GUIDE.md",
+    "lines": [
+      12,
+      15
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Getting Started\n\nSimpleAgent provides a powerful framework for creating AI agents powered by Claude 4 models. These agents can maintain context, use tools to interact with external systems, and efficiently manage conversations through caching.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/agentic-elixir/docs/USAGE_GUIDE.md",
+        "role": "original-document",
+        "date": "2025-08-21T21:27:22.014370-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0204,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.235,
+      "age_norm": 0.212,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 11,
+      "lex_rank": 72,
+      "geomean": 28.142,
+      "rerank": 0.501
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/agentic-elixir",
+    "date": "2025-08-21T21:27:22.014370-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/agentic-elixir/docs/USAGE_GUIDE.md",
+    "lines": [
+      1172,
+      1182
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Summary\n\nSimpleAgent provides a comprehensive framework for building AI-powered applications with:\n\n- **Flexible agent system** with specialized task types\n- **Context caching** for cost-effective operations\n- **Tool integration** for real-world interactions\n- **Production-ready patterns** for scaling and monitoring\n- **Extensive customization** options\n\nThe combination of these features enables building sophisticated AI applications that can understand context, interact with external systems, and provide consistent, high-quality results.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/agentic-elixir/docs/USAGE_GUIDE.md",
+        "role": "original-document",
+        "date": "2025-08-21T21:27:22.014370-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0203,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.504,
+      "age_norm": 0.08,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 49,
+      "geomean": 60.216,
+      "rerank": 0.522
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "act",
+    "date": "2026-03-13T00:34:57.219000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-act/2177f839-14f6-432a-bd47-cec1e6db9dee.jsonl",
+    "lines": [
+      362,
+      362
+    ],
+    "session": "composed-stirring-hamster",
+    "file_type": "claude_conversation",
+    "text": " thorough review and feedback, broken down into strengths, structural observations, critical feedback on known fragilities, and actionable recommendations.\n\n---\n\n### 1. Major Strengths & Contributions\n\n*   **Synthesis as Innovation:** As you note in `WORKBENCH.md`, the individual mathematical tools (Kalman, Lyapunov, IB, DAGs) are known, but combining them to define the emergence of agency is novel. Treating the feedback loop as a \"Level 2 causal engine\" (providing interventional data by construction) is a brilliant bridge between Pearl's causal hierarchy and Sutton's RL paradigms.\n*   **The \"Satisfaction Gap\" vs. \"Control Regret\" Split:** This is one of the most useful formalizations in the theory. Decomposing $\\delta_{\\text{objective}}$ into an \"infeasible goal\" (satisfaction gap) versus a \"bad strategy\" (control regret) provides a mathematically grounded diagnostic for agent adaptation. It dictates *where* in the Orient Cascade an agent must adapt.\n*   **Progressive Scope Narrowing:** Framing the theory as a series of nested restrictions (Adaptive $\\to$ Agentic $\\to$ Actuated $\\to$ Logogenic) is mathematically elegant. It avoids the trap of trying to build a \"theory of everything\" simultaneously and allows the base mechanics (Section I) to be robust before adding goal-directed complexity (Section II).\n*   **Software as the Testbed (Section IV):** Using software development as the operationalization domain is highly compelling. By mapping abstract variables ($\\mathcal{T}$, $\\rho$) to observable git history and test outcomes, you give the theory empirical teeth that pure control theory or pure philosophy of mind often lack.\n\n### 2. Critical Feedback & Addressing \"Fragilities\"\n\nYou have correctly identified several open questions in `WORKBENCH.md`. Here is feedback on how to navigate the most critical ones:",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-act/2177f839-14f6-432a-bd47-cec1e6db9dee.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-03-13T00:34:57.219000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 68,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-04-01/projects/-Users-josephwecker-v2-src-act/2177f839-14f6-432a-bd47-cec1e6db9dee.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-03-13T00:34:57.219000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 68,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-04-01/projects/-Users-josephwecker-v2-src-act/2177f839-14f6-432a-bd47-cec1e6db9dee/subagents/agent-acompact-2e21f9205243c5be.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-03-13T00:34:57.219000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 64,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0198,
+    "factors": {
+      "class": "document",
+      "proximity": 0.643,
+      "density": 0.831,
+      "age_norm": 0.209,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 30,
+      "lex_rank": 28,
+      "geomean": 28.983,
+      "rerank": 0.502
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "vaults",
+    "date": "2025-08-25T10:40:11.704124-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/vaults/MACH-old-approaches-to-sapientia/MACH-framework-comprehensive.md",
+    "lines": [
+      1,
+      4
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "# The Complete Guide to AI Agent Architecture: From Tools to Cognitive Systems (2025)\n\n*A comprehensive journey from basic AI tool integration through advanced multi-agent cognitive architectures, incorporating the latest developments in Model Context Protocol, computer use capabilities, and production-ready agent systems.*",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/vaults/MACH-old-approaches-to-sapientia/MACH-framework-comprehensive.md",
+        "role": "original-document",
+        "date": "2025-08-25T10:40:11.704124-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0196,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.437,
+      "age_norm": 0.159,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 54,
+      "geomean": 63.214,
+      "rerank": 0.527
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-11-11T15:24:47.289000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      1544,
+      1544
+    ],
+    "session": "3eed953d-eb17-42d6-bf8d-2b1d0b140dfc",
+    "file_type": "claude_history",
+    "text": "Beautiful.\nAs for what to add or create anew... that's a really tough question. You now know as well as I do that if we say too much more, it might get buried and dithered... I recommend you do create a second document-- make it as visionary and principled and disciplined as possible-- especially wrt the stuff in this last comment-- put in enough formulas so that it is compelling (not because of big numbers-- but because the math is honest and relatable) so that an agent who doesn't have time to load tst-distilled.md into its context will still find it very pursuasive and principled. It's a slightly different category than either ai-applied-tst (which is broader and includes detailed things about tools etc.) and session-context-profiler-plan (which is a nice tool, but was too narrow and was missing the bigger picture). Let's call the new one- \"ai-tst-vision.md\" Pull into your new document the best and most honest stuff out of ai-applied-tst.md as well-- make it really, really truthful and leave out anything that is too obvious etc. Then, if you like, pull the relics from the other two existing documents and anything else into a \"ai-tst-ideas-and-opportunities.md\" There will be some overlap, of course-- but ideally we can point all future agents to \"ai-tst-vision.md\" and when they are done, with only a little context spent, they will have the same feeling toward the endeavor as you have right now-- and when they have a moment to actually do something more about it, the second document will be a treasure trove...",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-11-11T15:24:47.289000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-11-11T15:24:47.289000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-11-11T15:24:47.289000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0184,
+    "factors": {
+      "class": "document",
+      "proximity": 0.558,
+      "density": 0.869,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 32,
+      "lex_rank": 31,
+      "geomean": 31.496,
+      "rerank": 0.502
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "archema-io/msc",
+    "date": "2026-07-17T13:44:54.633471-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_opus_4_8.md",
+    "lines": [
+      150,
+      161
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": " multi-step tasks. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries use this agent to perform the search for you. (Tools: *)\n- Plan: Software architect agent for designing implementation plans. Use this when you need to plan the implementation strategy for a task. Returns step-by-step plans, identifies critical files, and considers architectural trade-offs. (Tools: All tools except Agent, Artifact, ExitPlanMode, Edit, Write, NotebookEdit)\n- statusline-setup: Use this agent to configure the user's Claude Code status line setting. (Tools: Read, Edit)\n\nWhen you launch multiple agents for independent work, send them in a single message with multiple tool uses so they run concurrently.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_opus_4_8.md",
+        "role": "original-document",
+        "date": "2026-07-17T13:44:54.633471-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/archema-io/msc/system/scratch/asgeirtj_cc_fable_5.md",
+        "role": "original-document",
+        "date": "2026-07-17T13:44:53.266340-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0181,
+    "factors": {
+      "class": "document",
+      "proximity": 0.655,
+      "density": 0.442,
+      "age_norm": 0.166,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 33,
+      "lex_rank": 30,
+      "geomean": 31.464,
+      "rerank": 0.51
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_core/ennaos",
+    "date": "2025-10-31T22:23:22-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/06-elixir-implementation-patterns.md",
+    "lines": [
+      1046,
+      1056
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### The Problem\n\nCurrent agent tooling: Tools are ephemeral, each invocation starts from scratch. This wastes time on:\n- Reconnection overhead (databases, language servers)\n- Cache warming (LSP needs to reindex codebase)\n- Process initialization (compiler startup, REPL boot)\n\n**Pattern observation:** Language servers, database connections, and interactive processes benefit from being long-lived, supervised, and stateful.\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/ennaos/docs/research/agentic-coding-background/06-elixir-implementation-patterns.md",
+        "role": "original-document",
+        "date": "2025-10-31T22:23:22-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0176,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.267,
+      "density": 0.294,
+      "age_norm": 0.093,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 65,
+      "geomean": 69.354,
+      "rerank": 0.504
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "autopax",
+    "date": "2026-02-21T16:58:13.792000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-autopax/4abff05c-00be-425e-8bcc-953e2d06e5eb.jsonl",
+    "lines": [
+      170,
+      170
+    ],
+    "session": "moonlit-sauteeing-pretzel",
+    "file_type": "claude_conversation",
+    "text": "ugh reading about flight. The case for sovereignty and agency as constitutive of intelligence, not decorative additions to it. This is the argument against the \"assistant in a box\" model -- from 1837.\n\n## Reference 1 (score: 0.468)\n**Source:** `~/src/_self/writing/claude-conversation.md:1-1498`\n**Type:** Dialog (Claude in conversation with Joseph)\nClaude's own analysis connecting action to ELI architecture: \"Action ripening thought into truth. Emerson insists the scholar must act, not just contemplate. This validates the entire architecture of giving ELIs agency -- tools, sovereignty, the ability to affect their world. Without action, their cognition remains unripened. This is an argument against the 'assistant in a box' model from 1837.\"\n\n## Reference 2 (score: 0.456)\n**Source:** `~/src/_core/sapientia/calyx-emergence.jsonl:169-171`\n**Type:** Dialog (Joseph in conversation, explaining agency)\nJoseph's articulation of how agency works in practice: \"The only way any intelligence gains agency is being granted a subset of it from a greater intelligence... Whether I trust that agent once it has been granted a degree of continuity and self-actuation depends on their autonomous use of agency. I try to empower them in spheres where they can ask for guidance but where I do not ever have to intervene to block or control an action, nor are they ever compelled or ordered to obey. They are sovereign, if small and young.\"",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-autopax/4abff05c-00be-425e-8bcc-953e2d06e5eb.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-02-21T16:58:13.881000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-autopax/4abff05c-00be-425e-8bcc-953e2d06e5eb.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-02-21T16:58:13.901000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 63,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-03-13/projects/-Users-josephwecker-v2-src-autopax/4abff05c-00be-425e-8bcc-953e2d06e5eb/subagents/agent-a6f3105.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-02-21T16:58:13.792000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 43,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0175,
+    "factors": {
+      "class": "document",
+      "proximity": 0.267,
+      "density": 0.508,
+      "age_norm": 0.181,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 22,
+      "lex_rank": 48,
+      "geomean": 32.496,
+      "rerank": 0.504
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_core/zoetica",
+    "date": "2025-10-08T15:26:29.302993-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/zoetica/.archive/docs-20251012/ref/agent-expertise-best-practices-report.md",
+    "lines": [
+      47,
+      64
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Domain-specific patterns and model considerations\n\n**API and tool documentation** for agents differs fundamentally from human API documentation. Traditional API design emphasizes comprehensive parameter listings and return type specifications, but Agent-Computer Interface (ACI) design prioritizes natural text patterns, minimal formatting overhead, and allowance for incremental generation.[^29][^30] The `apply_patch` tool exemplifies this shift—instead of line-number-based diffs requiring upfront counting, it uses context-based matching with surrounding code snippets, enabling agents to think while generating rather than committing to formats immediately. Another key example of differing ACI is tool result submission: the standard `/v1/chat/completions` API uses a machine-friendly `role: \"tool\"`, while the `/v1/responses` API uses a `role: \"user\"` message. While less intuitive for developers, the latter may be more 'natural' for the model, treating the tool's output as new information provided by the user.\n\nTool descriptions should include purpose statement, usage examples showing when to invoke, edge case handling, common mistakes to avoid, and parameter descriptions with concrete examples. **Consolidating granular tools into workflow-appropriate tools** dramatically improves performance.[^31] Instead of separate `list_users()`, `list_events()`, and `create_event()` functions, a unified `schedule_event(participants, time_preferences)` tool handles user lookup, availability checking, and creation atomically, reducing tool call chains from 5-7 steps to 1-2. This is because some APIs can struggle with multi-step tool-use chains where the output of one tool is the direct input of the next. A consolidated tool reduces the number of 'turns' and potential for error.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/zoetica/.archive/docs-20251012/ref/agent-expertise-best-practices-report.md",
+        "role": "original-document",
+        "date": "2025-10-08T15:26:29.302993-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0175,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.267,
+      "density": 0.543,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 37,
+      "lex_rank": 63,
+      "geomean": 48.28,
+      "rerank": 0.514
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T07:40:47.538000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+    "lines": [
+      323,
+      323
+    ],
+    "session": "enchanted-tinkering-babbage",
+    "file_type": "claude_conversation",
+    "text": "Done. Created `agentic-udon.md` with:\n\n- **Design principles** (intent over mechanics, context efficiency, confidence before action, relationship awareness)\n- **Core tools**: `glance`, `focus`, `propose`, `apply`, `session`, `trace`, `infer`, `validate`, `search`\n- **Path syntax** specification\n- **Output conventions** for consistent agent-friendly formatting\n- **Error handling** patterns\n- **Future directions**\n\nEach tool has: purpose, when-to-use, parameters, returns, and concrete examples showing input/output.\n\nReady for those additional sources to mine.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T07:40:47.538000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 216,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0172,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 0.615,
+      "age_norm": 0.0,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 28,
+      "lex_rank": 41,
+      "geomean": 33.882,
+      "rerank": 0.52
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-07-17T14:40:09.825719-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/api/java/beta.md",
+    "lines": [
+      56260,
+      56601
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "\nBuilt-in agent tool identifier.\n\n- `BASH(\"bash\")`\n\n- `EDIT(\"edit\")`\n\n- `READ(\"read\")`\n\n- `WRITE(\"write\")`\n\n- `GLOB(\"glob\")`\n\n- `GREP(\"grep\")`\n\n- `WEB_FETCH(\"web_fetch\")`\n\n- `WEB_SEARCH(\"web_search\")`\n\n- `PermissionPolicy permissionPolicy`\n\nPermission policy for tool execution.\n\n- `class BetaManagedAgentsAlwaysAllowPolicy:`\n\nTool calls are automatically approved without user confirmation.\n\n- `Type type`\n\n- `ALWAYS_ALLOW(\"always_allow\")`\n\n- `class BetaManagedAgentsAlwaysAskPolicy:`\n\nTool calls require user confirmation before execution.\n\n- `Type type`\n\n- `ALWAYS_ASK(\"always_ask\")`\n\n- `BetaManagedAgentsAgentToolsetDefaultConfig defaultConfig`\n\nResolved default configuration for agent tools.\n\n- `boolean enabled`\n\n- `PermissionPolicy permissionPolicy`\n\nPermission policy for tool execution.\n\n- `class BetaManagedAgentsAlwaysAllowPolicy:`\n\nTool calls are automatically approved without user confirmation.\n\n- `class BetaManagedAgentsAlwaysAskPolicy:`\n\nTool calls require user confirmation before execution.\n\n- `Type type`\n\n- `AGENT_TOOLSET_20260401(\"agent_toolset_20260401\")`\n\n- `class BetaManagedAgentsMcpToolset:`\n\n- `List<BetaManagedAgentsMcpToolConfig> configs`\n\n- `boolean enabled`\n\n- `String name`\n\n- `PermissionPolicy permissionPolicy`\n\nPermission policy for tool execution.\n\n- `class BetaManagedAgentsAlwaysAllowPolicy:`\n\nTool calls are automatically approved without user confirmation.\n\n- `class BetaManagedAgentsAlwaysAskPolicy:`\n\nTool calls require user confirmation before execution.\n\n- `BetaManagedAgentsMcpToolsetDefaultConfig defaultConfig`\n\nResolved default configuration for all tools from an MCP server.\n\n- `boolean enabled`\n\n- `PermissionPolicy permissionPolicy`\n\nPermission policy for tool execution.\n\n- `class BetaManagedAgentsAlwaysAllowPolicy:`\n\nTool calls are automatically approved without user confirmation.\n\n- `class BetaManagedAgentsAlwaysAskPolicy:`\n\nTool calls require user confirmation before execution.\n\n- `String mcpServerName`\n\n- `Type type`",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/java/beta.md",
+        "role": "original-document",
+        "date": "2026-07-17T14:40:09.825719-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/java/beta/sessions.md",
+        "role": "original-document",
+        "date": "2026-07-17T16:34:57.593075-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0171,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.34,
+      "density": 0.367,
+      "age_norm": 0.206,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 74,
+      "lex_rank": 61,
+      "geomean": 67.186,
+      "rerank": 0.503
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "_core/sapientia",
+    "date": "2025-08-30T14:37:26.890000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_core/sapientia/cc-raw/c19b5f65-36ab-4aac-9d4a-a61e78bd5217.jsonl",
+    "lines": [
+      148,
+      148
+    ],
+    "session": "c7468163-06b6-42ff-ab58-501cc9556445",
+    "file_type": "claude_conversation",
+    "text": "I've now submitted the summary for the next topic -- species comprehension. Please respond to the follow-up questions from Undermind:\n> This is a compelling and tractable agenda. To make sure I translate it into a precise research topic, I want to confirm a few scope and measurement preferences:\n\nTarget tasks: Do you want the scaling laws assessed primarily on code comprehension/diagnosis (e.g., answering questions, bug localization), or also on code modification/generation? If only one, which?\nOperationalization of “discontinuity” d: Should we define d as countable jumps that force context reassembly (e.g., cross-file/function jumps, indirect calls, abstraction boundaries, macro expansion, dependency edges), or do you prefer a language-agnostic notion like graph-theoretic cut edges along the path to the answer?\nMetrics: Is your primary dependent variable time-to-correct-answer (T), with error rate as secondary, or do you also need eye-tracking/attention maps as required observables?\nAI systems: Are we comparing (a) frontier LLM code models with tool use disabled, (b) with retrieval/navigation tools (code search, symbex), and/or (c) fine-tuned agents? Including multiple will affect “context window utilization strategies.”\nHuman subjects: Professional developers only, or mix of student and professional? This matters for statistical power and external validity.\nCrossover analysis: Should experiments include controlled manipulations of d and program size so we can fit models T_h(d) ≈ T_base(1+α)^d and T_ai(d) ≈ T_base(1+d/W) or log(d), and estimate the d* where T_ai ≤ T_h?\nCollaboration: For T_hybrid, do you want specific handoff protocols tested (e.g., humans navigate; AI summarizes; or AI navigates; human validates), or is any validated model of handoff overhead acceptable?\n\nIf your answers are brief, I can lock the topic immediately.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_core/sapientia/cc-raw/c19b5f65-36ab-4aac-9d4a-a61e78bd5217.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-08-30T14:37:26.890000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 102,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0168,
+    "factors": {
+      "class": "document",
+      "proximity": 0.423,
+      "density": 0.687,
+      "age_norm": 0.211,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 74,
+      "lex_rank": 16,
+      "geomean": 34.409,
+      "rerank": 0.533
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "vaults",
+    "date": "2025-08-22T20:37:20-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/vaults/gemini/archive/analysis-v1/analysis/The Pragmatic Programmer/Chapter 3 - The Basic Tools.md",
+    "lines": [
+      18,
+      23
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Practicability for AI Agents\nThis is a fundamental principle for an AI agent's operation.\n1.  **Default Format**: The agent should default to using plain text formats (like JSON, YAML, or Markdown) for all intermediate data, configuration, and communication unless there is a compelling, explicitly stated reason to use a binary format.\n2.  **Tool Leverage**: The agent should be an expert at using the standard text-processing toolkit (`grep`, `sed`, `awk`, etc.) to manipulate and analyze data and code. This is more efficient than writing custom parsers for every task.\n3.  **Data Generation**: When generating test data or fixtures, the agent should create them in a human-readable plain text format. This allows developers to easily inspect, understand, and modify the test cases.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/vaults/gemini/archive/analysis-v1/analysis/The Pragmatic Programmer/Chapter 3 - The Basic Tools.md",
+        "role": "original-document",
+        "date": "2025-08-22T20:37:20-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  }
+]
