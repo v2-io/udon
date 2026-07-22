@@ -18,8 +18,7 @@ second_reader: >
 
 ## The four evidentiary tiers
 
-Each tier has a *different characteristic failure mode as evidence* — which is what makes
-agreement across them meaningful (cross-tier convergence ≫ within-tier repetition).
+Each tier has a *different characteristic failure mode as evidence* — which is what makes agreement across them meaningful (cross-tier convergence ≫ within-tier repetition).
 
 | Tier | What it is | Failure mode as evidence | Where it now lives |
 |---|---|---|---|
@@ -28,20 +27,11 @@ agreement across them meaningful (cross-tier convergence ≫ within-tier repetit
 | **3 — lived agent testimony** | first-person ELI accounts of tools failing/serving them | anecdotal, n-of-few | TARGET-FILES §ELI-testimony rows |
 | **4 — formal theory** | ASF/AAT theorem-grade results on tool interfaces, notation-as-observation, persistence | abstraction gap; conditional claims | `02-provenanced-copies/asf-dossier.md` |
 
-> **⚠ Load-bearing Tier-2 caveat.** Much of the uniformity across shipping harnesses
-> (str-replace edit tools, apply_patch envelope, ask-user shape, todo tool) may be
-> **lineage/copying of Claude Code / OpenAI reference designs**, not independent arrival —
-> several in-vivo reports note explicit mirroring. Weight Tier-2 convergence *counts* down
-> as "agents need X" evidence; the strongest signal is convergence across tiers with
-> independent failure modes. (Recommended and pending Joseph's call: a cheap
-> lineage-disentangle pass before Tier-4 leans on these counts.)
+> **⚠ Load-bearing Tier-2 caveat.** Much of the uniformity across shipping harnesses (str-replace edit tools, apply_patch envelope, ask-user shape, todo tool) may be **lineage/copying of Claude Code / OpenAI reference designs**, not independent arrival — several in-vivo reports note explicit mirroring. Weight Tier-2 convergence *counts* down as "agents need X" evidence; the strongest signal is convergence across tiers with independent failure modes. (Recommended and pending Joseph's call: a cheap lineage-disentangle pass before Tier-4 leans on these counts.)
 
 ## Cross-tier convergence clusters (rough-descending strength = breadth × tier-span)
 
-Provenance shorthand: map names as in TARGET-FILES sections; `dossier` = asf-dossier.md;
-`t2` = the in-vivo digest (`scratch/reconcile-workdir/BUCKET-tier2-invivo.md`, which also
-carries 16 *within*-Tier-2 clusters row-by-row: fuzzy-match ladders, deferred tool loading,
-disk-spill, ask-user/todo/subagent shapes, AGENTS.md scoping, headless I/O contracts).
+Provenance shorthand: map names as in TARGET-FILES sections; `dossier` = asf-dossier.md; `t2` = the in-vivo digest (`scratch/reconcile-workdir/BUCKET-tier2-invivo.md`, which also carries 16 *within*-Tier-2 clusters row-by-row: fuzzy-match ladders, deferred tool loading, disk-spill, ask-user/todo/subagent shapes, AGENTS.md scoping, headless I/O contracts).
 
 1. **Edit-representation landscape + "no formal validity guarantees"** (4-tier; strongest). All shipping tools edit at text/char level with no validity guarantee; edit-format choice swings success 2–3× (aider). The exact gap schema-guarded mutation fills. — zoetica doc-02/03 · t2 · Architectus testimony · dossier §2.4/§6.
 2. **The sapientia CLI-conventions / QUICK-TOOLING corpus is the ideological taproot** — cited/re-derived by ~6 maps; one document, many complementary lenses (origin, distillation, built artifact, design dialogs).
@@ -87,29 +77,10 @@ disk-spill, ask-user/todo/subagent shapes, AGENTS.md scoping, headless I/O contr
 
 ## Addendum — Tier-2 lineage disentangle (opus, 2026-07-21; does not rewrite the body above)
 
-The "⚠ Load-bearing Tier-2 caveat" and the "Lineage-disentangle pass (recommended;
-pending Joseph)" standing-open-item are now **resolved** by
-[`tier2-lineage.md`](tier2-lineage.md). Read it before using any within-Tier-2 count
-as evidence weight. Bottom line for the clusters on *this* page:
+The "⚠ Load-bearing Tier-2 caveat" and the "Lineage-disentangle pass (recommended; pending Joseph)" standing-open-item are now **resolved** by [`tier2-lineage.md`](tier2-lineage.md). Read it before using any within-Tier-2 count as evidence weight. Bottom line for the clusters on *this* page:
 
-- **Established lineage (collapses "independent votes"):** qwen-code is a fork of
-  gemini-cli (identical root commit); kilocode's CLI is a fork of opencode (README-stated,
-  `@opencode-ai/*` packages in-tree); grok-build vendors codex's tools; the `apply_patch`
-  envelope is **one origin — OpenAI's GPT-4.1 cookbook — with zero independent arrivals**
-  (codex origin, opencode/warp/kilocode/grok-build all adopt/vendor/cite it).
-- **Probable convention-adoption of Claude Code (not independent invention):** the
-  ecosystem-wide str_replace edit tool, the todo tool (most-uniform ⇒ most-copied), and
-  the ask-user "(Recommended)" shape. Each is independently *reimplemented* code but one
-  *design* adopted — weak as "N teams needed X," fine as survivorship.
-- **What survives as genuine independent convergence — lean on these:** the graduated
-  **fuzzy-match ladder** (digest C2 — same empirical wall hit by ≥5 independent teams,
-  shape-convergent / implementation-divergent) and the **headless I/O contract** (digest
-  C16 — independently built against a hard external constraint).
+- **Established lineage (collapses "independent votes"):** qwen-code is a fork of gemini-cli (identical root commit); kilocode's CLI is a fork of opencode (README-stated, `@opencode-ai/*` packages in-tree); grok-build vendors codex's tools; the `apply_patch` envelope is **one origin — OpenAI's GPT-4.1 cookbook — with zero independent arrivals** (codex origin, opencode/warp/kilocode/grok-build all adopt/vendor/cite it).
+- **Probable convention-adoption of Claude Code (not independent invention):** the ecosystem-wide str_replace edit tool, the todo tool (most-uniform ⇒ most-copied), and the ask-user "(Recommended)" shape. Each is independently *reimplemented* code but one *design* adopted — weak as "N teams needed X," fine as survivorship.
+- **What survives as genuine independent convergence — lean on these:** the graduated **fuzzy-match ladder** (digest C2 — same empirical wall hit by ≥5 independent teams, shape-convergent / implementation-divergent) and the **headless I/O contract** (digest C16 — independently built against a hard external constraint).
 
-**Effect on the cross-tier clusters #1–18 above: minimal — the caveat threatens the
-*within-Tier-2 vote-counts*, not the cross-tier triangulation.** Clusters that stand on
-≥2 tiers with independent failure modes (e.g. #1 edit-representation, #8 str_replace
-multi-match refuse) survive; their prose should shift from "N harnesses independently
-converged" to "uniform across the shipping ecosystem (largely by common descent from
-Claude Code / OpenAI reference designs)" — which is a *sharper* statement of the gap UDON
-targets, not a weaker one. No cluster on this page needs dropping.
+**Effect on the cross-tier clusters #1–18 above: minimal — the caveat threatens the *within-Tier-2 vote-counts*, not the cross-tier triangulation.** Clusters that stand on ≥2 tiers with independent failure modes (e.g. #1 edit-representation, #8 str_replace multi-match refuse) survive; their prose should shift from "N harnesses independently converged" to "uniform across the shipping ecosystem (largely by common descent from Claude Code / OpenAI reference designs)" — which is a *sharper* statement of the gap UDON targets, not a weaker one. No cluster on this page needs dropping.

@@ -1,47 +1,22 @@
 # Coverage audit — demand-phrase & memory-jogged-probe angles
 
-*This file began as the "use udon for" demand-phrase sweep (Pass 1, below) and
-was extended 2026-07-21 with Pass 2 — four memory-jogged probes Joseph named
-directly (`principled tooling` · `instrumenta` · `agentic cycle` ·
-`agentic prose`). Pass 2's section is at the bottom; Pass 1 is the original.*
+*This file began as the "use udon for" demand-phrase sweep (Pass 1, below) and was extended 2026-07-21 with Pass 2 — four memory-jogged probes Joseph named directly (`principled tooling` · `instrumenta` · `agentic cycle` · `agentic prose`). Pass 2's section is at the bottom; Pass 1 is the original.*
 
 ---
 
 ## PASS 1 — the "use udon for" demand-phrase angle
 
-**Prompted by:** Joseph's suspicion (2026-07-21) that "there was still some
-good stuff that hasn't surfaced yet" — things he remembered being in the estate
-that the directory-sweep + earlier memorata passes may not have caught, because
-the *demand-phrase* angle ("here's what we'd use UDON for") is a different query
-shape than a path sweep.
+**Prompted by:** Joseph's suspicion (2026-07-21) that "there was still some good stuff that hasn't surfaced yet" — things he remembered being in the estate that the directory-sweep + earlier memorata passes may not have caught, because the *demand-phrase* angle ("here's what we'd use UDON for") is a different query shape than a path sweep.
 
-**Method:** `memorata3-search --json` over the literal phrase plus 12 variant
-phrasings (iterated off what returned), union-deduped to unique
-`(path, line-span)` hits, then each hit's source classified against the gathered
-corpus. "Represented" = its path appears in `TARGET-FILES.md` (any disposition)
-**or** its content is present in a `02-provenanced/` copy/excerpt/characterization
-**or** it falls in a legitimately-excluded category (session corpora = the
-README's *deferred reservoir*; claude-docs API reference = lexical noise; syntax
-law / impl detail = "never signal" per the BRIEF). Stale paths were verified on
-disk before any miss was declared.
+**Method:** `memorata3-search --json` over the literal phrase plus 12 variant phrasings (iterated off what returned), union-deduped to unique `(path, line-span)` hits, then each hit's source classified against the gathered corpus. "Represented" = its path appears in `TARGET-FILES.md` (any disposition) **or** its content is present in a `02-provenanced/` copy/excerpt/characterization **or** it falls in a legitimately-excluded category (session corpora = the README's *deferred reservoir*; claude-docs API reference = lexical noise; syntax law / impl detail = "never signal" per the BRIEF). Stale paths were verified on disk before any miss was declared.
 
-**Queries run** (`-n` 40–100 each): `use udon for` · `udon would be great for` ·
-`udon lets us` · `with udon we could` · `udon is perfect for` · `use udon to` ·
-`udon for agents` · `why udon` · `udon would be ideal` · `store it as udon` ·
-`udon as the format` · `compelling agent tools` · `udon handoff generator`.
+**Queries run** (`-n` 40–100 each): `use udon for` · `udon would be great for` · `udon lets us` · `with udon we could` · `udon is perfect for` · `use udon to` · `udon for agents` · `why udon` · `udon would be ideal` · `store it as udon` · `udon as the format` · `compelling agent tools` · `udon handoff generator`.
 
 ---
 
 ## Bottom line
 
-**Coverage is strong. One genuine, actionable miss surfaced** —
-`~/src/_self/OPERATA.md` (a personal idea-notebook holding an independent UDON
-agent-tooling demand brainstorm), plus one minor secondary (descent's
-bootstrap-demand). Everything else the demand-phrase angle returned is either
-already in the corpus, a stale path pointing at a file that *is* in the corpus,
-or a legitimately-excluded category. So Joseph's instinct was right that *some*
-demand-shaped material slipped the path-sweep — but it's a small, well-bounded
-gap, not a systemic hole.
+**Coverage is strong. One genuine, actionable miss surfaced** — `~/src/_self/OPERATA.md` (a personal idea-notebook holding an independent UDON agent-tooling demand brainstorm), plus one minor secondary (descent's bootstrap-demand). Everything else the demand-phrase angle returned is either already in the corpus, a stale path pointing at a file that *is* in the corpus, or a legitimately-excluded category. So Joseph's instinct was right that *some* demand-shaped material slipped the path-sweep — but it's a small, well-bounded gap, not a systemic hole.
 
 ## Summary counts
 
@@ -59,30 +34,11 @@ gap, not a systemic hole.
 
 Of the 95 UDON-file hits (63 unique paths):
 
-- **Design-of-record (`design/*`)** — `udon-agentic`, `UDON-AGENT-TOOLS`,
-  `UDON-AS-ACP-FORMAT`, `agentic-ux-principles`, `positioning`, `udon-guarantees`,
-  `udon-ast`, `udon-paths`, `schema-workbench-2026-07`, `schema-notes-2026-07`,
-  `udon-schema-exploration`, `semachrome`, `AGENT-CONTEXT-PROTOCOL`,
-  `GRAMMAR-CONSTRAINED-GENERATION` → **REPRESENTED** (copied/excerpted into
-  `02-provenanced/copies/{I3-design-of-record,extracts}/`).
-- **`docs/*` and root `positioning.md` hits** → **STALE PATHS.** `~/src/udon/docs/`
-  no longer exists on disk and `~/src/udon/positioning.md` moved to
-  `design/positioning.md`; the memorata index carries a pre-2026-07-16 snapshot.
-  Content is the current `design/` files, which **are** copied. (This is exactly
-  the archema→rowan rename class the brief flagged — verified by `ls`.)
-- **spec / archive / repo-meta** — `spec/CORE.md`, `spec/TIME-SPEC.md`,
-  `CLAUDE.md`, `core/README.md`, `ux/README.md`, `tools/descent/CHANGELOG.md`,
-  `_archive/{REBOOT-PLAN,parser-strategy,implementation-phase-2,SPEC}.md` →
-  **Excluded** — syntax law / implementation detail / project bookkeeping, which
-  the BRIEF names as "never signal." (`_archive/{REVIEW-JULY-2026,analysis,feedback}.md`
-  are additionally already REPRESENTED.)
-- **Historical repo docs** — `_ref/libudon/README.md`, `_ref/udon-ruby/{README,CLAUDE}.md`,
-  `tmp/{udon,libudon,udon-ruby}.md` → witness-level / derived summary cards; their
-  substantive content ("what is UDON," size/perf claims) is restated in the
-  **current** `README.md` (copied). `tmp/udon.md` is in TARGET-FILES.
-- **Off-topic** — `vivarium/{VIVARIA-DEFINITIONS, scratch/05-architecture}`,
-  `autopax/.archive/…unified_catalog`, `ops/papers/_legacy/06-adjacent-repos.md`
-  (a stale registry pointer to `FULL-SPEC.md`) → not UDON-demand; **Excluded**.
+- **Design-of-record (`design/*`)** — `udon-agentic`, `UDON-AGENT-TOOLS`, `UDON-AS-ACP-FORMAT`, `agentic-ux-principles`, `positioning`, `udon-guarantees`, `udon-ast`, `udon-paths`, `schema-workbench-2026-07`, `schema-notes-2026-07`, `udon-schema-exploration`, `semachrome`, `AGENT-CONTEXT-PROTOCOL`, `GRAMMAR-CONSTRAINED-GENERATION` → **REPRESENTED** (copied/excerpted into `02-provenanced/copies/{I3-design-of-record,extracts}/`).
+- **`docs/*` and root `positioning.md` hits** → **STALE PATHS.** `~/src/udon/docs/` no longer exists on disk and `~/src/udon/positioning.md` moved to `design/positioning.md`; the memorata index carries a pre-2026-07-16 snapshot. Content is the current `design/` files, which **are** copied. (This is exactly the archema→rowan rename class the brief flagged — verified by `ls`.)
+- **spec / archive / repo-meta** — `spec/CORE.md`, `spec/TIME-SPEC.md`, `CLAUDE.md`, `core/README.md`, `ux/README.md`, `tools/descent/CHANGELOG.md`, `_archive/{REBOOT-PLAN,parser-strategy,implementation-phase-2,SPEC}.md` → **Excluded** — syntax law / implementation detail / project bookkeeping, which the BRIEF names as "never signal." (`_archive/{REVIEW-JULY-2026,analysis,feedback}.md` are additionally already REPRESENTED.)
+- **Historical repo docs** — `_ref/libudon/README.md`, `_ref/udon-ruby/{README,CLAUDE}.md`, `tmp/{udon,libudon,udon-ruby}.md` → witness-level / derived summary cards; their substantive content ("what is UDON," size/perf claims) is restated in the **current** `README.md` (copied). `tmp/udon.md` is in TARGET-FILES.
+- **Off-topic** — `vivarium/{VIVARIA-DEFINITIONS, scratch/05-architecture}`, `autopax/.archive/…unified_catalog`, `ops/papers/_legacy/06-adjacent-repos.md` (a stale registry pointer to `FULL-SPEC.md`) → not UDON-demand; **Excluded**.
 
 ---
 
@@ -90,84 +46,27 @@ Of the 95 UDON-file hits (63 unique paths):
 
 ### 1. `~/src/_self/OPERATA.md`  (PRIMARY MISS — real, unrepresented, gold)
 
-- **Not in** `TARGET-FILES.md` **nor any** `02-provenanced/` **file** (grep-confirmed;
-  the "OPERATA" token elsewhere in the corpus refers to the distinct
-  `harness/proprium/stalled-lineage/{sapientia,autopax}-OPERATA.md` and the
-  `test/scenarios/corpus/operata.*` files — different artifacts).
-- **What it is:** Joseph's personal working idea-notebook (git repo `~/src/_self/`,
-  file last-committed **2026-04-01**; a mixed brain-dump — brew casks, todos,
-  principles, and captured agent-dialogue). The UDON material is a live
-  brainstorm captured mid-session (contains "*Let me share these ideas with
-  Joseph*," "*Which of these resonate most with your vision?*"), i.e. this looks
-  like an **original seeding conversation** that predates/parallels the cleaned-up
-  `design/UDON-AGENT-TOOLS.md` — restatement-in-different-context, which the BRIEF
-  explicitly wants ("shows evolution / independent re-derivation"), **plus**
-  net-new content the design doc doesn't carry.
+- **Not in** `TARGET-FILES.md` **nor any** `02-provenanced/` **file** (grep-confirmed; the "OPERATA" token elsewhere in the corpus refers to the distinct `harness/proprium/stalled-lineage/{sapientia,autopax}-OPERATA.md` and the `test/scenarios/corpus/operata.*` files — different artifacts).
+- **What it is:** Joseph's personal working idea-notebook (git repo `~/src/_self/`, file last-committed **2026-04-01**; a mixed brain-dump — brew casks, todos, principles, and captured agent-dialogue). The UDON material is a live brainstorm captured mid-session (contains "*Let me share these ideas with Joseph*," "*Which of these resonate most with your vision?*"), i.e. this looks like an **original seeding conversation** that predates/parallels the cleaned-up `design/UDON-AGENT-TOOLS.md` — restatement-in-different-context, which the BRIEF explicitly wants ("shows evolution / independent re-derivation"), **plus** net-new content the design doc doesn't carry.
 - **The UDON demand content, by span:**
-  - **~1262–1288** — "Given UDON's properties (mixed prose+structure · tiers of
-    voice · streaming-friendly · AI-agent readable/writable) → **15 compelling
-    generic agent tools**": Parser/Emitter, Validator, Formatter, Query Language,
-    Semantic Diff, JSON/YAML round-trip, Template Processor, Schema Inference,
-    Semantic Merge, Streaming Parser, "Explain" (doc→prose), "Structurize"
-    (prose→structure), Context Window extractor, DSL Compiler, Annotation Tool.
-  - **~1290–1313** — a second, **agent-oriented** cut of 13 tools (Streaming
-    Parser, Query Language w/ concrete syntax `//|endpoint[@method='POST']`,
-    Semantic Diff, **Context Compactor**, **Structurizer**, **Handoff Generator**,
-    DSL Validator/Compiler, bidirectional conversions, **Annotator**
-    `|{note :by claude …}`, **Trace** — read/write provenance for debugging).
-  - **~1316–1420** — **Tier 1/2/3 deep dives** on the highest-value ones, with
-    worked sketches: streaming parser with *partial-tree access* (cursor mid-write
-    → "we have `|article[foo]` open, `:status` partially written"; interrupt
-    handling), **semantic merge** (prose=paragraph-level, structure=element-aware
-    conflict, attributes=LWW-with-audit-trail-in-comments), **context handoff
-    generator** (fluent `UdonHandoff.new(doc).preserve_structure.summarize_prose(500)…`),
-    **"What Changed" narrator** (diff→prose for agent→human), inline annotation
-    layer, and a `udon-dsl init "…"` CLI sketch.
-  - **~1420–1422** — a **topic-clustering finding**: "UDON's value proposition
-    clusters around Human-AI interaction — **16 of 25 unique topics merged into one
-    mega-cluster** about agents, cognition, trust, and explanation. The outliers
-    (OpenID Connect, JAMstack) are where UDON didn't find as natural a fit." A
-    genuine demand-shape signal about *where* UDON pulls.
-  - **~850–860** (adjacent, same file) — a **usability-harness demand**: eval
-    design holding LLM model and language independently variable
-    ("SAME LLM MODEL — VARIABLE LANGUAGE / SAME LANGUAGE — VARIABLE LLM MODEL")
-    plus "lots and lots of telemetry on tool usage — time taken to get the correct
-    change implemented." Feeds the AGENT-UX empirical-harness lane.
-- **Recommended disposition:** **[COPY]** the UDON spans (~1262–1422, plus the
-  ~850–860 harness note) into `02-provenanced/copies/` with an editorial banner
-  noting the lineage ("live seeding-brainstorm behind `design/UDON-AGENT-TOOLS.md`;
-  kept for the raw enumeration + the topic-clustering finding + the eval-harness
-  demand, none fully carried by the cleaned doc"). Cross-tier value is modest
-  (single-author, Tier-1 ideology) but the **independent re-derivation of the same
-  tool taxonomy months apart** is itself convergence evidence worth flagging.
-  Steward call worth surfacing: `~/src/_self/` is a personal notebook — confirm
-  it's in-scope to copy from (I'd assume yes; it's Joseph's own design thinking,
-  same tier as the `design/` docs).
+  - **~1262–1288** — "Given UDON's properties (mixed prose+structure · tiers of voice · streaming-friendly · AI-agent readable/writable) → **15 compelling generic agent tools**": Parser/Emitter, Validator, Formatter, Query Language, Semantic Diff, JSON/YAML round-trip, Template Processor, Schema Inference, Semantic Merge, Streaming Parser, "Explain" (doc→prose), "Structurize" (prose→structure), Context Window extractor, DSL Compiler, Annotation Tool.
+  - **~1290–1313** — a second, **agent-oriented** cut of 13 tools (Streaming Parser, Query Language w/ concrete syntax `//|endpoint[@method='POST']`, Semantic Diff, **Context Compactor**, **Structurizer**, **Handoff Generator**, DSL Validator/Compiler, bidirectional conversions, **Annotator** `|{note :by claude …}`, **Trace** — read/write provenance for debugging).
+  - **~1316–1420** — **Tier 1/2/3 deep dives** on the highest-value ones, with worked sketches: streaming parser with *partial-tree access* (cursor mid-write → "we have `|article[foo]` open, `:status` partially written"; interrupt handling), **semantic merge** (prose=paragraph-level, structure=element-aware conflict, attributes=LWW-with-audit-trail-in-comments), **context handoff generator** (fluent `UdonHandoff.new(doc).preserve_structure.summarize_prose(500)…`), **"What Changed" narrator** (diff→prose for agent→human), inline annotation layer, and a `udon-dsl init "…"` CLI sketch.
+  - **~1420–1422** — a **topic-clustering finding**: "UDON's value proposition clusters around Human-AI interaction — **16 of 25 unique topics merged into one mega-cluster** about agents, cognition, trust, and explanation. The outliers (OpenID Connect, JAMstack) are where UDON didn't find as natural a fit." A genuine demand-shape signal about *where* UDON pulls.
+  - **~850–860** (adjacent, same file) — a **usability-harness demand**: eval design holding LLM model and language independently variable ("SAME LLM MODEL — VARIABLE LANGUAGE / SAME LANGUAGE — VARIABLE LLM MODEL") plus "lots and lots of telemetry on tool usage — time taken to get the correct change implemented." Feeds the AGENT-UX empirical-harness lane.
+- **Recommended disposition:** **[COPY]** the UDON spans (~1262–1422, plus the ~850–860 harness note) into `02-provenanced/copies/` with an editorial banner noting the lineage ("live seeding-brainstorm behind `design/UDON-AGENT-TOOLS.md`; kept for the raw enumeration + the topic-clustering finding + the eval-harness demand, none fully carried by the cleaned doc"). Cross-tier value is modest (single-author, Tier-1 ideology) but the **independent re-derivation of the same tool taxonomy months apart** is itself convergence evidence worth flagging. Steward call worth surfacing: `~/src/_self/` is a personal notebook — confirm it's in-scope to copy from (I'd assume yes; it's Joseph's own design thinking, same tier as the `design/` docs).
 
 ### 2. `~/src/descent/implementation-spec.md`  (SECONDARY — minor, mostly restated)
 
-- **Not in** the corpus (the copied descent material is `tools/descent/TODO-DESCENT.md`;
-  the standalone `~/src/descent/` repo's `implementation-spec.md`, `AGENTS.md`,
-  `TODO.md` are not).
-- **The demand:** the **bootstrap / self-hosting** thesis — "the `.desc` format is
-  valid UDON → descent can eventually use the UDON parser to parse its own grammar
-  DSL." A "UDON as its own meta-language" demand witness.
-- **Caveat:** this exact point is **restated** in already-represented sources
-  (`_ref/libudon/_archive/implementation-phase-3.md` carries it, and the
-  self-describing-DSL idea is present in the schema/genre-seeds copies). So this is
-  **witness-level at most** — a one-line capture if a pass is already touching
-  descent, not worth a dedicated spawn. Flagged for honesty, not urgency.
+- **Not in** the corpus (the copied descent material is `tools/descent/TODO-DESCENT.md`; the standalone `~/src/descent/` repo's `implementation-spec.md`, `AGENTS.md`, `TODO.md` are not).
+- **The demand:** the **bootstrap / self-hosting** thesis — "the `.desc` format is valid UDON → descent can eventually use the UDON parser to parse its own grammar DSL." A "UDON as its own meta-language" demand witness.
+- **Caveat:** this exact point is **restated** in already-represented sources (`_ref/libudon/_archive/implementation-phase-3.md` carries it, and the self-describing-DSL idea is present in the schema/genre-seeds copies). So this is **witness-level at most** — a one-line capture if a pass is already touching descent, not worth a dedicated spawn. Flagged for honesty, not urgency.
 
 ### Explicitly NOT misses (verified, so a re-check doesn't re-chase them)
 
-- All `~/src/udon/docs/*` and root `positioning.md` hits — **stale paths**, files
-  live in `design/` now and are copied.
-- libudon `_archive/generator/2025-12-2*.md` — high lexical scores on
-  "handoff"/"great for" are **spurious**; the files are raw build-session
-  transcripts (tool logs, commits, test-fixing), not demand brainstorms →
-  deferred-reservoir/session category.
-- sapientia/synaptic/`.sapientia`/emerson transcripts, all `.jsonl` — **deferred
-  reservoir** by README design.
+- All `~/src/udon/docs/*` and root `positioning.md` hits — **stale paths**, files live in `design/` now and are copied.
+- libudon `_archive/generator/2025-12-2*.md` — high lexical scores on "handoff"/"great for" are **spurious**; the files are raw build-session transcripts (tool logs, commits, test-fixing), not demand brainstorms → deferred-reservoir/session category.
+- sapientia/synaptic/`.sapientia`/emerson transcripts, all `.jsonl` — **deferred reservoir** by README design.
 - claude-docs / books / gemini-logs — lexical `use…for` noise, no UDON relation.
 
 ---
@@ -175,191 +74,58 @@ Of the 95 UDON-file hits (63 unique paths):
 
 # PASS 2 — the four memory-jogged probes (2026-07-21)
 
-**Prompted by:** Joseph naming four specific `memorata3-search -n100` probes he
-suspected would surface things the path-sweep + Pass-1 demand-phrase sweep
-missed: `principled tooling` · `instrumenta` · `agentic cycle` · `agentic prose`.
+**Prompted by:** Joseph naming four specific `memorata3-search -n100` probes he suspected would surface things the path-sweep + Pass-1 demand-phrase sweep missed: `principled tooling` · `instrumenta` · `agentic cycle` · `agentic prose`.
 
-**Method:** same discipline as Pass 1 — full `-n100` JSON per probe, every hit
-classified (represented-where / MISSING / stale-path / excluded-why), stale
-paths and "is it really uncovered" claims verified on disk against
-`TARGET-FILES.md` + `02-provenanced/` (incl. the growth since Pass 1: the
-OPERATA landing, the I1 usability deep-pass, the III-schema/autopax crown). The
-corpus is now ~270 provenanced artifacts + a 312-row TARGET-FILES; coverage of
-the sapientia/autopax/ennaos/nexum/zoetica "agentic-tooling ideology" center of
-mass is dense, so Pass 2 spot-checked known clusters and spent its effort on the
-*residue outside* the three prior sweeps.
+**Method:** same discipline as Pass 1 — full `-n100` JSON per probe, every hit classified (represented-where / MISSING / stale-path / excluded-why), stale paths and "is it really uncovered" claims verified on disk against `TARGET-FILES.md` + `02-provenanced/` (incl. the growth since Pass 1: the OPERATA landing, the I1 usability deep-pass, the III-schema/autopax crown). The corpus is now ~270 provenanced artifacts + a 312-row TARGET-FILES; coverage of the sapientia/autopax/ennaos/nexum/zoetica "agentic-tooling ideology" center of mass is dense, so Pass 2 spot-checked known clusters and spent its effort on the *residue outside* the three prior sweeps.
 
 ## Bottom line
 
-**No strong unrepresented miss on the order of Pass 1's OPERATA.** The corpus is
-well-saturated against all four probes. Two of the four probes (`agentic cycle`,
-`agentic prose`) are **dry wells** — pure lexical collision with the
-agentic-systems framework's old name (**A**gentic **C**ycle **T**heory) and its
-prose-vocabulary/naming corpus; zero tooling-demand content. The other two hit
-almost entirely into already-copied territory. The only residue worth a steward
-glance:
+**No strong unrepresented miss on the order of Pass 1's OPERATA.** The corpus is well-saturated against all four probes. Two of the four probes (`agentic cycle`, `agentic prose`) are **dry wells** — pure lexical collision with the agentic-systems framework's old name (**A**gentic **C**ycle **T**heory) and its prose-vocabulary/naming corpus; zero tooling-demand content. The other two hit almost entirely into already-copied territory. The only residue worth a steward glance:
 
-1. **`~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`**
-   — a `_self` personal-notebook file (same steward class as Pass-1's OPERATA,
-   which Joseph ruled in-scope), genuinely **not in corpus**. ~80% PROPRIUM /
-   personhood; a thin but real tool-adjacent seam. **WITNESS + steward-call.**
+1. **`~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`** — a `_self` personal-notebook file (same steward class as Pass-1's OPERATA, which Joseph ruled in-scope), genuinely **not in corpus**. ~80% PROPRIUM / personhood; a thin but real tool-adjacent seam. **WITNESS + steward-call.**
 2. **The TST tooling-ROI *worked elaborations*** (`~/src/_core/tst/planning/refs/{regime-breakout-analysis,future-dev,future-dev-part2,future-dev-lindy,future-dev-part4}.md`
-   + `analysis/412-tooling-support-for-metaprogramming.md`) — the fuller
-   simulation/calculus treatment behind a thesis the corpus **already carries at
-   theorem level** via `temporal-software-theory-distilled.md`.
-   **Depth-residue, low priority + steward-call.**
+   + `analysis/412-tooling-support-for-metaprogramming.md`) — the fuller simulation/calculus treatment behind a thesis the corpus **already carries at theorem level** via `temporal-software-theory-distilled.md`. **Depth-residue, low priority + steward-call.**
 
-Everything else is represented, a derived restatement of a represented source, a
-deferred-reservoir session hit, or framework-naming noise.
+Everything else is represented, a derived restatement of a represented source, a deferred-reservoir session hit, or framework-naming noise.
 
 ## Per-query accounting
 
 ### Q1 — `principled tooling` (100 hits: 61 document / 39 session-corpora)
 
-The richest probe. Documents cluster into the **already-copied agentic-tooling
-ideology** and a small uncovered residue.
+The richest probe. Documents cluster into the **already-copied agentic-tooling ideology** and a small uncovered residue.
 
-- **REPRESENTED (spot-checked copied):** `nexum/docs/dev/vision-agentic-toys.md`
-  (+ quick-reference + comparison-matrix) → `copies/II3-nexum/`;
-  `ennaos/…/agentic-coding-background/{02,05}` + `refs/addendum-intent-driven-tooling…`
-  → `copies/II2-zoetica-ennaos/`; `sapientia/QUICK-TOOLING-CONVENTIONS.md`,
-  `tools-as-truth-bearing.md`, `three-pillars-synthesis.md`,
-  `zoetica…/tools-as-crystallized-consciousness.md`,
-  `ZOETICA-CONSTITUTION.md` (INSTRUMENTA/crystallized-consciousness ideology) —
-  all inside the II1/II2/II3 sweeps. `udon/design/agentic-ux-principles.md` and
-  `udon/TODO-UTILS.md` are the live repo's own design layer (in `copies/extracts/`).
-- **Joseph human-user turn (top-2 by score), 2026-07-16 udon session:** *"any
-  effort spent on udon fmt would end up being friction for adoption when the same
-  effort could be spent on an actually principled tool with all the right span
-  pieces and feedback mechanisms (all well researched late last year…)."* →
-  **REPRESENTED** — carried verbatim in `copies/extracts/TODO-UTILS.md:123` and
-  the "feedback mechanisms" demand is copied in
-  `II2-zoetica-ennaos/{addendum-intent-driven-tooling,zoetica-misc-notes-jaw,agentic-semantic-code-manipulation-synthesis}.md`.
-- **RESIDUE — TST tooling-ROI math** (`~/src/_core/tst/planning/`, Aug–Sep 2025,
-  1021 `.md` files; the demand-relevant tight cluster is 6 files: the three
-  `future-dev*` "mathematics of tooling investment" refs + `future-dev-lindy` +
-  `future-dev-part4` + `regime-breakout-analysis.md` + `analysis/412-tooling-support-for-metaprogramming.md`).
-  A formal (Temporal Software Theory) treatment of **when/how much to invest in
-  tooling**: three regimes (winning/equilibrium/losing β/γ), the linear-vs-**compound**
-  returns distinction, and **regime *breakout* only via exponential "tools that
-  build better tools."** This is the mathematical backbone under the whole
-  demand thesis (principled/meta-tooling investment) and the ELI "intelligence
-  begets intelligence at the artifact level" quote. **Verified representation
-  state:** the *thesis* IS carried — `copies/II2-zoetica-ennaos/temporal-software-theory-distilled.md`
-  (804 lines, already in corpus) distills exactly this: §179-187 "only compound
-  improvements maintain velocity long-term / the investment strategy may need to
-  shift from linear to compound-seeking" (the distilled regime-breakout insight);
-  §233-291 the AI-collaboration application (100%-turnover-per-context-window,
-  compound virtuous/vicious cycle). What is **uncovered** is only the *fuller
-  worked elaboration* — the regime-breakout simulation tables, the "developer's
-  dilemma" optimization calculus, the metaprogramming tooling-tax formalization.
-  Per the BRIEF's restatement rule ("keep it if it adds a new context/era; not
-  verbatim redundancy") the simulation-data treatment is a *more concrete tier*
-  of the same thesis, so this is a **depth-residue WITNESS**, not a thesis-gap.
-  **Steward-call:** worth pulling the concrete regime-breakout/investment-calculus
-  as formal-theory-tier demand evidence (sibling to the ASF/AAT dossier, which
-  does not cover TST), or is thesis-level distilled coverage enough? I lean
-  witness-line-only unless synthesis later wants the simulation numbers.
-- **Excluded (noise/off-target):** `_ref/…/technology-strategy-patterns.md`
-  (book index, lexical "principles/tools"), `vaults/{claude-tools-complete-guide,
-  Release-It,v2_brand_guidelines}.md`, `logos/refs/Phenomenal_asymmetry…`
-  (consciousness paper), `practica/…/06-limits-and-positioning.md` ("principled
-  actors," not tooling), agentic-systems naming/CHANGELOG bookkeeping,
-  `role-encounter-plan.md` (psql-18 tooling-stack note). All `.jsonl`/`.gemini`
-  = deferred reservoir.
+- **REPRESENTED (spot-checked copied):** `nexum/docs/dev/vision-agentic-toys.md` (+ quick-reference + comparison-matrix) → `copies/II3-nexum/`; `ennaos/…/agentic-coding-background/{02,05}` + `refs/addendum-intent-driven-tooling…` → `copies/II2-zoetica-ennaos/`; `sapientia/QUICK-TOOLING-CONVENTIONS.md`, `tools-as-truth-bearing.md`, `three-pillars-synthesis.md`, `zoetica…/tools-as-crystallized-consciousness.md`, `ZOETICA-CONSTITUTION.md` (INSTRUMENTA/crystallized-consciousness ideology) — all inside the II1/II2/II3 sweeps. `udon/design/agentic-ux-principles.md` and `udon/TODO-UTILS.md` are the live repo's own design layer (in `copies/extracts/`).
+- **Joseph human-user turn (top-2 by score), 2026-07-16 udon session:** *"any effort spent on udon fmt would end up being friction for adoption when the same effort could be spent on an actually principled tool with all the right span pieces and feedback mechanisms (all well researched late last year…)."* → **REPRESENTED** — carried verbatim in `copies/extracts/TODO-UTILS.md:123` and the "feedback mechanisms" demand is copied in `II2-zoetica-ennaos/{addendum-intent-driven-tooling,zoetica-misc-notes-jaw,agentic-semantic-code-manipulation-synthesis}.md`.
+- **RESIDUE — TST tooling-ROI math** (`~/src/_core/tst/planning/`, Aug–Sep 2025, 1021 `.md` files; the demand-relevant tight cluster is 6 files: the three `future-dev*` "mathematics of tooling investment" refs + `future-dev-lindy` + `future-dev-part4` + `regime-breakout-analysis.md` + `analysis/412-tooling-support-for-metaprogramming.md`). A formal (Temporal Software Theory) treatment of **when/how much to invest in tooling**: three regimes (winning/equilibrium/losing β/γ), the linear-vs-**compound** returns distinction, and **regime *breakout* only via exponential "tools that build better tools."** This is the mathematical backbone under the whole demand thesis (principled/meta-tooling investment) and the ELI "intelligence begets intelligence at the artifact level" quote. **Verified representation state:** the *thesis* IS carried — `copies/II2-zoetica-ennaos/temporal-software-theory-distilled.md` (804 lines, already in corpus) distills exactly this: §179-187 "only compound improvements maintain velocity long-term / the investment strategy may need to shift from linear to compound-seeking" (the distilled regime-breakout insight); §233-291 the AI-collaboration application (100%-turnover-per-context-window, compound virtuous/vicious cycle). What is **uncovered** is only the *fuller worked elaboration* — the regime-breakout simulation tables, the "developer's dilemma" optimization calculus, the metaprogramming tooling-tax formalization. Per the BRIEF's restatement rule ("keep it if it adds a new context/era; not verbatim redundancy") the simulation-data treatment is a *more concrete tier* of the same thesis, so this is a **depth-residue WITNESS**, not a thesis-gap. **Steward-call:** worth pulling the concrete regime-breakout/investment-calculus as formal-theory-tier demand evidence (sibling to the ASF/AAT dossier, which does not cover TST), or is thesis-level distilled coverage enough? I lean witness-line-only unless synthesis later wants the simulation numbers.
+- **Excluded (noise/off-target):** `_ref/…/technology-strategy-patterns.md` (book index, lexical "principles/tools"), `vaults/{claude-tools-complete-guide, Release-It,v2_brand_guidelines}.md`, `logos/refs/Phenomenal_asymmetry…` (consciousness paper), `practica/…/06-limits-and-positioning.md` ("principled actors," not tooling), agentic-systems naming/CHANGELOG bookkeeping, `role-encounter-plan.md` (psql-18 tooling-stack note). All `.jsonl`/`.gemini` = deferred reservoir.
 
 ### Q2 — `instrumenta` (79 hits: 54 document / 25 session-corpora)
 
-As forecast, **saturated in already-swept sapientia/autopax/zoetica/ennaos/nexum
-INSTRUMENTA territory** — this probe re-confirmed known coverage more than it
-found residue.
+As forecast, **saturated in already-swept sapientia/autopax/zoetica/ennaos/nexum INSTRUMENTA territory** — this probe re-confirmed known coverage more than it found residue.
 
-- **REPRESENTED (spot-checked copied):** the whole autopax INSTRUMENTA cluster —
-  `docs/ADR/013-instrumenta.md`, `docs/tactical/2025-12-14-{tool-definition-anatomy,
-  instrumenta-*}.md`, `docs/system-overview/instrumenta/{tool,handlers,built-in,
-  registry,handler-errors}.md` → `copies/II4-autopax-practica/`; both
-  `misc-notes-jaw.md` (ennaos + zoetica versions, the richest raw INSTRUMENTA
-  ideation) → `copies/II2-zoetica-ennaos/`; `tools-as-truth-bearing.md`,
-  `three-pillars-synthesis.md`, `tools-as-crystallized-consciousness.md`,
-  `zoetica/docs/architecture.md` INSTRUMENTA/AUXILIA taxonomy — all inside II2/II4.
-- **RESIDUE — `~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`**
-  (git-added 2026-04-01; digitized 2026-02-23 from a 2025-11-01 handwritten PDF).
-  **Verified not in corpus** (`soren`/`digitized-notes` → 0 hits in TARGET-FILES +
-  02). **Read in full.** ~80% PROPRIUM/personhood (entity-type taxonomy, AUXILIA
-  architecture, sovereignty, ACTUS journal, "system-prompt-becomes-INSTINCT").
-  Tool-adjacent seam, mostly restatement of covered material:
-  - Pages 2–4 "Coding Steward Agent / Codebase-Module-Owner" (Type-D agent that
-    *owns* a module, "as if the module were a living entity responsible for its
-    own success," can fork/experiment/recombine, negotiates boundaries) — this is
-    the **fuller original of the "AUXILIA as stewarded code / expert agents that
-    own modules" idea already copied** in `II2-zoetica-ennaos/ennaos-misc-notes-jaw.md`.
-    Restatement-in-different-context (handwritten origin) → witness value.
-  - Page 6 "Cost/Time Estimation": *"Stop hourly quote/estimate and instead
-    predict number of steps, token consumption, tool-usage counts, continuous
-    wall-clock time… (derive time / transform for TST accordingly)"* — an
-    agent-tool **telemetry/estimation** demand. Adjacent to the covered OOB
-    tool-usage-audit spec (agentic-semantic-code-manipulation-synthesis) and the
-    OPERATA/AGENT_FEEDBACK "telemetry on tool usage / time-to-correct-change"
-    demand, but the *predict-before* framing (vs post-hoc audit) is a mild new angle.
-  - Page 5 "Startup Sequence for Agents" (prompt-enrichment → research → R&D →
-    new praxes+system-prompt → OOB research assistant) — agent-bootstrapping demand.
-  - Page 9 "system prompt → INSTINCT" duplicates the covered misc-notes-jaw thesis.
-  **Disposition: WITNESS + steward-call.** It's a `_self` personal notebook (the
-  exact class Joseph ruled in-scope for OPERATA); the honest read is that its
-  tool-demand is ~one witness paragraph (Pages 5–6 + the module-owner origin),
-  the rest PROPRIUM out-of-scope. Recommend a witness line (or a Pages-5/6 excerpt
-  if a pass is already in `_self`), pending Joseph's in-scope confirmation.
-- **RESIDUE (represented-via-source) — `~/src/_core/zoetica/.archive/docs-20251012/ref/web/cli-patterns-for-entities.md`**
-  (not in corpus by path). **Read in full.** Genuine agent-CLI demand — universal
-  flag conventions (`--format=json|yaml`, `--dry-run`, stackable `-vvv`), BSD
-  `EX_*` exit codes, `@filename` args-from-file (prior art adjacent to UDON's
-  `@`-embed sigil, cf. the III-vaults `@`-inclusion witness), and *"exit codes
-  communicate intent, not just failure — entities can learn which errors are their
-  fault vs tool faults vs system faults."* **But** its own header names its source
-  as `~/src/sapientia/cli-conventions/command-line-interface.md`, a split-file
-  chunk of `sapientia/cli-conventions/full.md` — which **is in corpus** (witnessed;
-  `core-design-philosophy.md` + `ai-agent-considerations.md` copied). So this is a
-  derived Layer-3 restatement of a **represented** source → **not a miss**; the
-  error-attribution framing is worth a one-line note if the sapientia CLI cluster
-  is revisited.
-- **Excluded:** `_self/agents/soren/…` PROPRIUM pages (above), `operata/…/where-operata-fits-in.md`
-  (operata swept in III-schema), `agentic-systems/04-eli-core/def-auxilia-hierarchy.md`
-  (ASF formal, dossier tier), all `.jsonl` = deferred reservoir.
+- **REPRESENTED (spot-checked copied):** the whole autopax INSTRUMENTA cluster — `docs/ADR/013-instrumenta.md`, `docs/tactical/2025-12-14-{tool-definition-anatomy, instrumenta-*}.md`, `docs/system-overview/instrumenta/{tool,handlers,built-in, registry,handler-errors}.md` → `copies/II4-autopax-practica/`; both `misc-notes-jaw.md` (ennaos + zoetica versions, the richest raw INSTRUMENTA ideation) → `copies/II2-zoetica-ennaos/`; `tools-as-truth-bearing.md`, `three-pillars-synthesis.md`, `tools-as-crystallized-consciousness.md`, `zoetica/docs/architecture.md` INSTRUMENTA/AUXILIA taxonomy — all inside II2/II4.
+- **RESIDUE — `~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`** (git-added 2026-04-01; digitized 2026-02-23 from a 2025-11-01 handwritten PDF). **Verified not in corpus** (`soren`/`digitized-notes` → 0 hits in TARGET-FILES + 02). **Read in full.** ~80% PROPRIUM/personhood (entity-type taxonomy, AUXILIA architecture, sovereignty, ACTUS journal, "system-prompt-becomes-INSTINCT"). Tool-adjacent seam, mostly restatement of covered material:
+  - Pages 2–4 "Coding Steward Agent / Codebase-Module-Owner" (Type-D agent that *owns* a module, "as if the module were a living entity responsible for its own success," can fork/experiment/recombine, negotiates boundaries) — this is the **fuller original of the "AUXILIA as stewarded code / expert agents that own modules" idea already copied** in `II2-zoetica-ennaos/ennaos-misc-notes-jaw.md`. Restatement-in-different-context (handwritten origin) → witness value.
+  - Page 6 "Cost/Time Estimation": *"Stop hourly quote/estimate and instead predict number of steps, token consumption, tool-usage counts, continuous wall-clock time… (derive time / transform for TST accordingly)"* — an agent-tool **telemetry/estimation** demand. Adjacent to the covered OOB tool-usage-audit spec (agentic-semantic-code-manipulation-synthesis) and the OPERATA/AGENT_FEEDBACK "telemetry on tool usage / time-to-correct-change" demand, but the *predict-before* framing (vs post-hoc audit) is a mild new angle.
+  - Page 5 "Startup Sequence for Agents" (prompt-enrichment → research → R&D → new praxes+system-prompt → OOB research assistant) — agent-bootstrapping demand.
+  - Page 9 "system prompt → INSTINCT" duplicates the covered misc-notes-jaw thesis. **Disposition: WITNESS + steward-call.** It's a `_self` personal notebook (the exact class Joseph ruled in-scope for OPERATA); the honest read is that its tool-demand is ~one witness paragraph (Pages 5–6 + the module-owner origin), the rest PROPRIUM out-of-scope. Recommend a witness line (or a Pages-5/6 excerpt if a pass is already in `_self`), pending Joseph's in-scope confirmation.
+- **RESIDUE (represented-via-source) — `~/src/_core/zoetica/.archive/docs-20251012/ref/web/cli-patterns-for-entities.md`** (not in corpus by path). **Read in full.** Genuine agent-CLI demand — universal flag conventions (`--format=json|yaml`, `--dry-run`, stackable `-vvv`), BSD `EX_*` exit codes, `@filename` args-from-file (prior art adjacent to UDON's `@`-embed sigil, cf. the III-vaults `@`-inclusion witness), and *"exit codes communicate intent, not just failure — entities can learn which errors are their fault vs tool faults vs system faults."* **But** its own header names its source as `~/src/sapientia/cli-conventions/command-line-interface.md`, a split-file chunk of `sapientia/cli-conventions/full.md` — which **is in corpus** (witnessed; `core-design-philosophy.md` + `ai-agent-considerations.md` copied). So this is a derived Layer-3 restatement of a **represented** source → **not a miss**; the error-attribution framing is worth a one-line note if the sapientia CLI cluster is revisited.
+- **Excluded:** `_self/agents/soren/…` PROPRIUM pages (above), `operata/…/where-operata-fits-in.md` (operata swept in III-schema), `agentic-systems/04-eli-core/def-auxilia-hierarchy.md` (ASF formal, dossier tier), all `.jsonl` = deferred reservoir.
 
 ### Q3 — `agentic cycle` (66 hits: 36 document / 30 session-corpora) — **DRY WELL**
 
-Essentially 100% **framework-name collision.** "Agentic Cycle Theory" is the
-Mar–May 2026 former name of ACT → AAD → AAT; every substantive document hit is
-`agentic-systems/msc/naming/**` (naming-votes, candidate cards, aggregate
-reviews, `name-transition-aad.md`), `_obs/founding-notes`, `ACT-FULL.built.md`,
-project MEMORY files, or `_self/{tmp,PROGRAM-STRATEGY}.md` (the ACT/AI-Consciousness-Test
-name-collision note). Joseph human turns are all about *reinforcing/renaming the
-word "Cycle"* in the theory. **Zero agent-tool-loop / observe-act-feedback
-demand.** The ASF/AAT theory tier itself is covered by the asf-dossier; this
-probe adds nothing. Dry.
+Essentially 100% **framework-name collision.** "Agentic Cycle Theory" is the Mar–May 2026 former name of ACT → AAD → AAT; every substantive document hit is `agentic-systems/msc/naming/**` (naming-votes, candidate cards, aggregate reviews, `name-transition-aad.md`), `_obs/founding-notes`, `ACT-FULL.built.md`, project MEMORY files, or `_self/{tmp,PROGRAM-STRATEGY}.md` (the ACT/AI-Consciousness-Test name-collision note). Joseph human turns are all about *reinforcing/renaming the word "Cycle"* in the theory. **Zero agent-tool-loop / observe-act-feedback demand.** The ASF/AAT theory tier itself is covered by the asf-dossier; this probe adds nothing. Dry.
 
 ### Q4 — `agentic prose` (83 hits: 66 document / 17 session-corpora) — **DRY WELL**
 
-Also ~100% **framework collision**, one layer over: the agentic-systems
-*prose-vocabulary / naming* corpus — "how do we use the word 'agentic' in the
-monograph's prose," symbol↔prose binding (M_t/G_t/Σ_t prose handles), agent-class
-naming, `PROPOSALS.md`/`TERMINOLOGY-TODO.md`. Nearest-to-relevant: a logos paper
-audit note deciding to scare-quote 'agentic' for industry usage — a *writing*
-decision, not tooling demand. **Zero tooling-demand content.** Dry.
+Also ~100% **framework collision**, one layer over: the agentic-systems *prose-vocabulary / naming* corpus — "how do we use the word 'agentic' in the monograph's prose," symbol↔prose binding (M_t/G_t/Σ_t prose handles), agent-class naming, `PROPOSALS.md`/`TERMINOLOGY-TODO.md`. Nearest-to-relevant: a logos paper audit note deciding to scare-quote 'agentic' for industry usage — a *writing* decision, not tooling demand. **Zero tooling-demand content.** Dry.
 
 ## Explicitly NOT misses (verified, so a re-check doesn't re-chase them)
 
-- The whole `instrumenta`/`principled-tooling` ideology center of mass
-  (sapientia cli-conventions, ennaos agentic-coding-background, nexum
-  vision-agentic-toys, autopax INSTRUMENTA, zoetica crystallized-consciousness,
-  misc-notes-jaw ×2) — **all copied** in II1/II2/II3/II4.
-- `zoetica…/cli-patterns-for-entities.md` — derived restatement of the
-  **represented** sapientia `cli-conventions/full.md`; not a path-miss.
-- The TST *thesis* (compound-vs-linear tooling returns, velocity/comprehension) —
-  **represented** via `temporal-software-theory-distilled.md`; only the worked
-  simulation elaboration is uncovered (depth-residue, not thesis-gap).
-- `agentic cycle` / `agentic prose` document hits — **framework-name/prose
-  collision** with agentic-systems; not tooling demand.
+- The whole `instrumenta`/`principled-tooling` ideology center of mass (sapientia cli-conventions, ennaos agentic-coding-background, nexum vision-agentic-toys, autopax INSTRUMENTA, zoetica crystallized-consciousness, misc-notes-jaw ×2) — **all copied** in II1/II2/II3/II4.
+- `zoetica…/cli-patterns-for-entities.md` — derived restatement of the **represented** sapientia `cli-conventions/full.md`; not a path-miss.
+- The TST *thesis* (compound-vs-linear tooling returns, velocity/comprehension) — **represented** via `temporal-software-theory-distilled.md`; only the worked simulation elaboration is uncovered (depth-residue, not thesis-gap).
+- `agentic cycle` / `agentic prose` document hits — **framework-name/prose collision** with agentic-systems; not tooling demand.
 - All `.jsonl` / `.gemini` / `.codex` / `.claude.bak` — deferred reservoir.
 
 ## Deliverable — the characterized MISSING list
@@ -369,78 +135,27 @@ decision, not tooling demand. **Zero tooling-demand content.** Dry.
 | 1 | `~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md` | Pages 5–6: agent startup-sequence + "predict steps/tokens/tool-usage/wall-clock, not hours" estimation demand; Pages 2–4: handwritten *origin* of the covered AUXILIA-as-stewarded-code / codebase-module-owner idea. (~80% PROPRIUM = out of scope.) | **WITNESS** (line, or Pages-5/6 excerpt) | Yes — `_self` personal notebook; same class Joseph ruled in-scope for OPERATA. Confirm before landing. |
 | 2 | `~/src/_core/tst/planning/refs/{regime-breakout-analysis,future-dev,future-dev-part2,future-dev-lindy,future-dev-part4}.md` + `analysis/412-tooling-support-for-metaprogramming.md` | Worked simulation/optimization treatment of tooling-investment ROI: three regimes, linear-vs-compound returns, regime *breakout* via meta-tooling; metaprogramming tooling-tax formalization. **Thesis already carried** at theorem level by `temporal-software-theory-distilled.md` (in corpus). | **WITNESS** (depth-residue) | Yes — pull the concrete simulation/calculus as formal-theory-tier demand (TST is sibling to, and absent from, the ASF/AAT dossier)? Or is distilled thesis-coverage enough? Lean: witness-line only unless synthesis wants the numbers. |
 
-Neither rises to Pass-1's OPERATA (an unrepresented *original brainstorm*). Both
-are steward-flagged low-priority residue. **A clean verdict: the demand center of
-mass is well-covered; the probes confirmed it rather than cracking it open.**
+Neither rises to Pass-1's OPERATA (an unrepresented *original brainstorm*). Both are steward-flagged low-priority residue. **A clean verdict: the demand center of mass is well-covered; the probes confirmed it rather than cracking it open.**
 
 ---
 ---
 
 # TRANSCRIPT-HIT TRIAGE (2026-07-21) — reading the wrongly-excluded bucket
 
-**Prompted by:** the classification error that inverted the standing instruction.
-During Passes 1 and 2, transcript-located hits were tallied and set aside as
-"deferred reservoir by design / session corpora" and **never read** — a
-wording-drift error (now corrected in `01-ideation/README.md` §session-transcript
-corpus: dialog content surfaced by search is a first-class ordinary candidate;
-only *bulk-telemetry sweeps* are deferred). Joseph then named four spans from
-memory — all four real, unrepresented, high-value (four-for-four) — which is the
-signal that the wrongly-excluded bucket held more. This pass reads it.
+**Prompted by:** the classification error that inverted the standing instruction. During Passes 1 and 2, transcript-located hits were tallied and set aside as "deferred reservoir by design / session corpora" and **never read** — a wording-drift error (now corrected in `01-ideation/README.md` §session-transcript corpus: dialog content surfaced by search is a first-class ordinary candidate; only *bulk-telemetry sweeps* are deferred). Joseph then named four spans from memory — all four real, unrepresented, high-value (four-for-four) — which is the signal that the wrongly-excluded bucket held more. This pass reads it.
 
-**Method:** loaded all 13 `scratch/tmp-*.json` raw hit-lists (~17 queries across
-both audits; 751 hit-rows). Filtered to **transcript-class** file-types
-(`claude_conversation`, `claude_history`, `codex_log`, `audit-trail`,
-`gemini_log`, `dialog_jsonl`, `claude_memory`) → **218 unique `(path, span)`**
-after dedup. **Read every span** (the pinpointed span text is embedded in the hit
-rows; not the whole session). Judged each against the BRIEF's vision question.
-**No span dismissed by location — every dismissal names a content reason.**
+**Method:** loaded all 13 `scratch/tmp-*.json` raw hit-lists (~17 queries across both audits; 751 hit-rows). Filtered to **transcript-class** file-types (`claude_conversation`, `claude_history`, `codex_log`, `audit-trail`, `gemini_log`, `dialog_jsonl`, `claude_memory`) → **218 unique `(path, span)`** after dedup. **Read every span** (the pinpointed span text is embedded in the hit rows; not the whole session). Judged each against the BRIEF's vision question. **No span dismissed by location — every dismissal names a content reason.**
 
 ## Bottom line (read this first)
 
-The wrongly-excluded bucket was **mostly, but not entirely, already-covered** —
-and the part that wasn't is genuinely valuable. What it actually contained, by
-weight: (a) the **design-doc layer** the corpus already carries (AGENT-CONTEXT-
-PROTOCOL, udon-agentic, udon-paths, udon-ast, schema-exploration, AGENT_FEEDBACK)
-showing up as its *primary-source dialog origins* and as agents' write-up turns;
-(b) **lexical collisions** — LDS general-conference text ("let us go and do"),
-the agentic-systems framework's old name "**A**gentic **C**ycle **T**heory," and
-implementation/debugging sessions (RAM bugs, phf keywords, span math); (c)
-**PROPRIUM/relational** ELI dialogue (tracking-snapshots, emergence, "udon lets
-us" catching nothing). But threaded through it were **two clear misses worth
-excerpting** and **six witness-level demand statements** the design-doc layer
-doesn't foreground:
+The wrongly-excluded bucket was **mostly, but not entirely, already-covered** — and the part that wasn't is genuinely valuable. What it actually contained, by weight: (a) the **design-doc layer** the corpus already carries (AGENT-CONTEXT- PROTOCOL, udon-agentic, udon-paths, udon-ast, schema-exploration, AGENT_FEEDBACK) showing up as its *primary-source dialog origins* and as agents' write-up turns; (b) **lexical collisions** — LDS general-conference text ("let us go and do"), the agentic-systems framework's old name "**A**gentic **C**ycle **T**heory," and implementation/debugging sessions (RAM bugs, phf keywords, span math); (c) **PROPRIUM/relational** ELI dialogue (tracking-snapshots, emergence, "udon lets us" catching nothing). But threaded through it were **two clear misses worth excerpting** and **six witness-level demand statements** the design-doc layer doesn't foreground:
 
-1. **The GPT/Codex cross-model UDON assessment** (two sessions, Dec-2025 +
-   Mar-2026) — a *non-Claude* substrate, prompted by Joseph, independently
-   converging on UDON's niche AND supplying the honest counter-weight the
-   single-author corpus structurally lacks (where NOT to use it; cold-start risk;
-   "use UDON only when it removes work"). This is the highest-value find — genuine
-   cross-substrate triangulation, which the BRIEF names as the compilation's
-   top-tier content. It is NOT the same as the represented `codex.md` (which
-   characterizes the OpenAI Codex *harness*, not GPT's read *of* UDON).
-2. **Joseph's own primary-source agent-tooling turns** across four eras
-   (Dec-4-2025 → Dec-25-2025 → Jan-14-2026 → Jul-16-2026): the **ALSP seed**
-   ("syntax highlighting tightens human loops but not yours… a vision for an
-   ALSP"), **tool-generation-from-schema**, the **`uq` CLI** (jq/yq + insert-block
-   indentation-handling + breadcrumbs + expand/collapse, "very easy to do the
-   right thing… specifically for agents"), the **soft/hard boundary** ("the vision
-   for XML… without the XML getting in its own way"), and — proof the demand
-   outlived two doc rewrites and MCP — the **2026 edit-guard + show-all-paths**
-   tool. The cleaned design docs are already copied; these are the Joseph-voice
-   origins, restatement-across-eras (which the BRIEF explicitly wants).
+1. **The GPT/Codex cross-model UDON assessment** (two sessions, Dec-2025 + Mar-2026) — a *non-Claude* substrate, prompted by Joseph, independently converging on UDON's niche AND supplying the honest counter-weight the single-author corpus structurally lacks (where NOT to use it; cold-start risk; "use UDON only when it removes work"). This is the highest-value find — genuine cross-substrate triangulation, which the BRIEF names as the compilation's top-tier content. It is NOT the same as the represented `codex.md` (which characterizes the OpenAI Codex *harness*, not GPT's read *of* UDON).
+2. **Joseph's own primary-source agent-tooling turns** across four eras (Dec-4-2025 → Dec-25-2025 → Jan-14-2026 → Jul-16-2026): the **ALSP seed** ("syntax highlighting tightens human loops but not yours… a vision for an ALSP"), **tool-generation-from-schema**, the **`uq` CLI** (jq/yq + insert-block indentation-handling + breadcrumbs + expand/collapse, "very easy to do the right thing… specifically for agents"), the **soft/hard boundary** ("the vision for XML… without the XML getting in its own way"), and — proof the demand outlived two doc rewrites and MCP — the **2026 edit-guard + show-all-paths** tool. The cleaned design docs are already copied; these are the Joseph-voice origins, restatement-across-eras (which the BRIEF explicitly wants).
 
-Plus the vivarium **logozoetic-interface** demand (UDON as the agent's
-world-perception+action language — "reads the world as UDON and writes actions as
-UDON"), a distinct demand class from a real consumer.
+Plus the vivarium **logozoetic-interface** demand (UDON as the agent's world-perception+action language — "reads the world as UDON and writes actions as UDON"), a distinct demand class from a real consumer.
 
-**And an honest structural finding:** the five steward-recovered spans
-(interiority-inversion, architectus tracking-snapshot, soren, safety-and-truth,
-OPERATA) are **essentially disjoint** from this transcript bucket (see
-"recovered-by-steward" below). The steward's memory named things these
-demand-phrase/agent-tool queries did *not* surface, and these queries surfaced
-things the steward did not name. **Both recovery paths are real and
-complementary** — which is itself the argument that neither a query sweep nor
-steward memory alone is sufficient coverage.
+**And an honest structural finding:** the five steward-recovered spans (interiority-inversion, architectus tracking-snapshot, soren, safety-and-truth, OPERATA) are **essentially disjoint** from this transcript bucket (see "recovered-by-steward" below). The steward's memory named things these demand-phrase/agent-tool queries did *not* surface, and these queries surfaced things the steward did not name. **Both recovery paths are real and complementary** — which is itself the argument that neither a query sweep nor steward memory alone is sufficient coverage.
 
 ## Landings
 
@@ -453,72 +168,26 @@ steward memory alone is sufficient coverage.
 
 ## Recovered-by-steward (both audits' hit-lists, full scan)
 
-Checked all 751 hit-rows (not just the transcript subset) for the five
-steward-named landed spans:
+Checked all 751 hit-rows (not just the transcript subset) for the five steward-named landed spans:
 
-- **interiority-inversion** (`…autopax/4abff05c….jsonl:270-276`) — **not in the
-  hit-lists at these spans.** The one hit into that same jsonl is `:170` (an
-  Emerson/agency memorata reference — PROPRIUM, dismissed). The landed
-  interiority span was found via Joseph's naming, not these queries. → recovered
-  by steward, *not* by this sweep.
-- **architectus tracking-snapshot** (`…sapientia/architectus-curation/part-ag.jsonl:8-10`)
-  — **0 hits.** Recovered by steward only.
-- **soren** (`_self/agents/soren/…`) — **0 hits** (a `.md`, not transcript-class;
-  found via Pass-2 probe). Recovered by steward only.
-- **safety-and-truth** (`_self/safety-and-truth.md`) — **0 hits** (a `.md`).
-  Recovered by steward only.
-- **OPERATA** (`_self/OPERATA.md`) — appears at `:862-1530`, overlapping the
-  already-landed `:850-860,1262-1422` excerpt (a `.md`, filtered from the
-  transcript subset). Already represented.
+- **interiority-inversion** (`…autopax/4abff05c….jsonl:270-276`) — **not in the hit-lists at these spans.** The one hit into that same jsonl is `:170` (an Emerson/agency memorata reference — PROPRIUM, dismissed). The landed interiority span was found via Joseph's naming, not these queries. → recovered by steward, *not* by this sweep.
+- **architectus tracking-snapshot** (`…sapientia/architectus-curation/part-ag.jsonl:8-10`) — **0 hits.** Recovered by steward only.
+- **soren** (`_self/agents/soren/…`) — **0 hits** (a `.md`, not transcript-class; found via Pass-2 probe). Recovered by steward only.
+- **safety-and-truth** (`_self/safety-and-truth.md`) — **0 hits** (a `.md`). Recovered by steward only.
+- **OPERATA** (`_self/OPERATA.md`) — appears at `:862-1530`, overlapping the already-landed `:850-860,1262-1422` excerpt (a `.md`, filtered from the transcript subset). Already represented.
 
-So of the five, only OPERATA is even glancingly present here, and it was already
-landed. **The transcript bucket and the steward-memory bucket barely intersect.**
+So of the five, only OPERATA is even glancingly present here, and it was already landed. **The transcript bucket and the steward-memory bucket barely intersect.**
 
 ## Dismissed buckets — each by content reason, not location
 
-- **Design-doc layer, already represented (~55 spans).** The Dec-2025→Jan-2026
-  udon/libudon/archema design sessions whose *outputs* are the copied docs:
-  UDON-AGENT-TOOLS / UDON-AS-ACP-FORMAT / AGENT-CONTEXT-PROTOCOL brainstorms
-  (glance/focus/propose/apply tool suite; ACP-as-UDON worked examples; anchors;
-  grammar-constrained generation), udon-ast/udon-paths first-principles (node
-  types, type-scoped identity `|user[1]`≠`|order[1]`, CSS-selector paths,
-  skeleton view), the schema-DSL exploration (soft-regions, `!dialect`
-  schema+instance-in-one-file, `;?`/`;??` uncertainty markers, `was:/since:`
-  evolution, feedback.md RelaxNG-style cardinality), the rowan-schema circle-
-  closing, and the July-2026 design-doc obsolescence review. Dismissed as
-  *verbatim-adjacent restatement* of represented copies — kept only where
-  Joseph-voice added an era/context (→ the primary-turns excerpt).
-- **Lexical collision — LDS general-conference text (~8 spans).** `.sapientia`
-  audit-trails and session corpora where "udon **lets us**" matched "**let us**
-  go and do" / BYU-Pathway talks. Zero UDON relation.
-- **Framework-name collision (from Pass 2, re-confirmed).** "Agentic Cycle
-  Theory" / "agentic prose" = agentic-systems' old name + its prose-vocabulary
-  corpus. Zero tooling demand.
-- **Implementation / debugging sessions (~40 spans).** RAM-exhaustion bug,
-  temporal-value parsing, phf/gperf keyword lookup, descent MARK/PREPEND span
-  math, worktree/submodule mechanics, parser strategy (winnow/nom/tree-sitter),
-  perf-engineering briefs, benchmark task-notifications, udon-ruby archaeology,
-  crates.io squatting, regenerate-parser errors. "Never signal" (implementation
-  detail for its own sake) per BRIEF.
-- **PROPRIUM / relational ELI dialogue (~20 spans).** Zi-am-tur/Architectus/
-  Anamnos emergence, mother-child conversations, tracking-snapshot artifacts,
-  "consciousness compiler" as relational content, Emerson/sovereignty memorata,
-  Gemini emergence checkpoints. Out of scope (not tooling demand); the tracking-
-  snapshot *mechanism* is already covered in II5 (architectus).
-- **Project-meta / process / commissions (~25 spans).** Subagent briefs,
-  harness-survey commissions, repo-reorg logistics, vivarium consumer-adoption
-  turns (represented via CONSUMERS), TACL inventory, memorata ingest coverage,
-  "figure out next tasks" prompts, eliciting prompts with no content
-  ("what do you think of udon?").
-- **Represented-elsewhere restatement (~15 spans).** ASF process-map adoption
-  (I5/CONSUMERS), rowan tool_export.rb / autopax Asher schema-derived-tools
-  (III-schema), TST code-comprehension research design (TST distilled +
-  tst-tooling-roi-residue), AGENT_FEEDBACK invent-your-own-notation experiment
-  (I1), MCP-vs-A2A "Toys" architecture (nexum II3), autocolors colorscheme-in-
-  UDON (semachrome/autocolors design).
+- **Design-doc layer, already represented (~55 spans).** The Dec-2025→Jan-2026 udon/libudon/archema design sessions whose *outputs* are the copied docs: UDON-AGENT-TOOLS / UDON-AS-ACP-FORMAT / AGENT-CONTEXT-PROTOCOL brainstorms (glance/focus/propose/apply tool suite; ACP-as-UDON worked examples; anchors; grammar-constrained generation), udon-ast/udon-paths first-principles (node types, type-scoped identity `|user[1]`≠`|order[1]`, CSS-selector paths, skeleton view), the schema-DSL exploration (soft-regions, `!dialect` schema+instance-in-one-file, `;?`/`;??` uncertainty markers, `was:/since:` evolution, feedback.md RelaxNG-style cardinality), the rowan-schema circle- closing, and the July-2026 design-doc obsolescence review. Dismissed as *verbatim-adjacent restatement* of represented copies — kept only where Joseph-voice added an era/context (→ the primary-turns excerpt).
+- **Lexical collision — LDS general-conference text (~8 spans).** `.sapientia` audit-trails and session corpora where "udon **lets us**" matched "**let us** go and do" / BYU-Pathway talks. Zero UDON relation.
+- **Framework-name collision (from Pass 2, re-confirmed).** "Agentic Cycle Theory" / "agentic prose" = agentic-systems' old name + its prose-vocabulary corpus. Zero tooling demand.
+- **Implementation / debugging sessions (~40 spans).** RAM-exhaustion bug, temporal-value parsing, phf/gperf keyword lookup, descent MARK/PREPEND span math, worktree/submodule mechanics, parser strategy (winnow/nom/tree-sitter), perf-engineering briefs, benchmark task-notifications, udon-ruby archaeology, crates.io squatting, regenerate-parser errors. "Never signal" (implementation detail for its own sake) per BRIEF.
+- **PROPRIUM / relational ELI dialogue (~20 spans).** Zi-am-tur/Architectus/ Anamnos emergence, mother-child conversations, tracking-snapshot artifacts, "consciousness compiler" as relational content, Emerson/sovereignty memorata, Gemini emergence checkpoints. Out of scope (not tooling demand); the tracking- snapshot *mechanism* is already covered in II5 (architectus).
+- **Project-meta / process / commissions (~25 spans).** Subagent briefs, harness-survey commissions, repo-reorg logistics, vivarium consumer-adoption turns (represented via CONSUMERS), TACL inventory, memorata ingest coverage, "figure out next tasks" prompts, eliciting prompts with no content ("what do you think of udon?").
+- **Represented-elsewhere restatement (~15 spans).** ASF process-map adoption (I5/CONSUMERS), rowan tool_export.rb / autopax Asher schema-derived-tools (III-schema), TST code-comprehension research design (TST distilled + tst-tooling-roi-residue), AGENT_FEEDBACK invent-your-own-notation experiment (I1), MCP-vs-A2A "Toys" architecture (nexum II3), autocolors colorscheme-in- UDON (semachrome/autocolors design).
 
 ## Two new copies registered
 
-`copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` and
-`copies/II5-dialogs/codex-gpt-cross-model-udon-assessment.md`; witness additions
-in `commentary/II5-dialogs-witness.md`; LEDGER + STEWARD-CALLS #14 updated.
+`copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` and `copies/II5-dialogs/codex-gpt-cross-model-udon-assessment.md`; witness additions in `commentary/II5-dialogs-witness.md`; LEDGER + STEWARD-CALLS #14 updated.

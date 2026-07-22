@@ -33,21 +33,12 @@ why_included: >
 
 # Tier-2 lineage map — copying vs. independent arrival across the 17 harnesses
 
-> **Who this is for and why.** Phase-2 synthesizers, before Tier-4 theory leans on
-> "N harnesses agree" as evidence weight; and the harness programme, which cares
-> about the lineage picture in its own right. The one-line takeaway: **the shipping
-> uniformity is mostly one-design-adopted-widely, not many-teams-arriving-
-> independently.** That does *not* zero out Tier-2's value — survivorship-by-adoption
-> is still real evidence — but it changes the *kind* of claim the counts support
-> (see "How to reread the counts" at the end).
+> **Who this is for and why.** Phase-2 synthesizers, before Tier-4 theory leans on "N harnesses agree" as evidence weight; and the harness programme, which cares about the lineage picture in its own right. The one-line takeaway: **the shipping uniformity is mostly one-design-adopted-widely, not many-teams-arriving- independently.** That does *not* zero out Tier-2's value — survivorship-by-adoption is still real evidence — but it changes the *kind* of claim the counts support (see "How to reread the counts" at the end).
 
 ## Confidence tiers used
 
-- **ESTABLISHED** — documentary proof: identical root-commit hash, an explicit
-  README/attribution fork statement, a vendored source subtree present in-repo, or a
-  direct citation URL to the origin.
-- **PROBABLE** — strong circumstantial: near-verbatim convention text across
-  unrelated codebases with a known common influence, but no direct copy provable.
+- **ESTABLISHED** — documentary proof: identical root-commit hash, an explicit README/attribution fork statement, a vendored source subtree present in-repo, or a direct citation URL to the origin.
+- **PROBABLE** — strong circumstantial: near-verbatim convention text across unrelated codebases with a known common influence, but no direct copy provable.
 - **UNKNOWN** — couldn't be settled from the trees; stated as such.
 
 ---
@@ -66,35 +57,20 @@ why_included: >
 
 **Genuinely independent origins (no fork/vendor lineage found):**
 
-- **aider** — oldest repo in the set (Aider-AI/aider, history to Aug 2024). Its
-  SEARCH/REPLACE block dialect and its per-model `edit_format` A/B-tuning table are
-  its *own* early contribution, predating most of the ecosystem. The single strongest
-  "independent arrival" node for edit-format-as-a-tunable-variable thinking. Its
-  abandonment of tool-call-based editing (`RuntimeError("Deprecated")`) is
-  independent primary evidence, not downstream of anyone.
-- **gemini-cli** — Google first-party original; its LLM-as-repair-layer
-  (`llm-edit-fixer.ts`) is unique and independent.
+- **aider** — oldest repo in the set (Aider-AI/aider, history to Aug 2024). Its SEARCH/REPLACE block dialect and its per-model `edit_format` A/B-tuning table are its *own* early contribution, predating most of the ecosystem. The single strongest "independent arrival" node for edit-format-as-a-tunable-variable thinking. Its abandonment of tool-call-based editing (`RuntimeError("Deprecated")`) is independent primary evidence, not downstream of anyone.
+- **gemini-cli** — Google first-party original; its LLM-as-repair-layer (`llm-edit-fixer.ts`) is unique and independent.
 - **codex** — OpenAI first-party; the *origin* of apply_patch, not a copier.
-- **claude-code** — the *origin/influence node* for str_replace, ask-user, todo,
-  ToolSearch, subagent shapes; upstream of the copies, not a copier.
-- **kimi-code** — own monorepo; adopts Claude-Code-family *conventions* (ask-user,
-  todo) in independently-written code; its `ToolAccesses` declared-resource
-  concurrency model is unique.
-- **mistral-vibe** — own hexagonal-architecture build; no fork/vendor evidence; its
-  numbered instruction-hierarchy is its own. str-replace is convention-adoption in
-  independent code.
-- **minimax-cli** — thin client, no edit tool at all; its reverse-direction schema
-  export is unique. Independent.
-- **warp** — own Rust harness; *adopts* OpenAI's V4A apply-patch (cited) but its
-  3-tier fuzzy matcher and the rest are its own.
+- **claude-code** — the *origin/influence node* for str_replace, ask-user, todo, ToolSearch, subagent shapes; upstream of the copies, not a copier.
+- **kimi-code** — own monorepo; adopts Claude-Code-family *conventions* (ask-user, todo) in independently-written code; its `ToolAccesses` declared-resource concurrency model is unique.
+- **mistral-vibe** — own hexagonal-architecture build; no fork/vendor evidence; its numbered instruction-hierarchy is its own. str-replace is convention-adoption in independent code.
+- **minimax-cli** — thin client, no edit tool at all; its reverse-direction schema export is unique. Independent.
+- **warp** — own Rust harness; *adopts* OpenAI's V4A apply-patch (cited) but its 3-tier fuzzy matcher and the rest are its own.
 
 ---
 
 ## Part 2 — Cluster-by-cluster reweighting (digest C1–C16)
 
-Reading key: **raw** = the vote-count the digest reports · **independent** = how many
-survive as separate arrivals after collapsing forks/vendored-copies/single-origin
-adoptions · **verdict** on what kind of evidence it is.
+Reading key: **raw** = the vote-count the digest reports · **independent** = how many survive as separate arrivals after collapsing forks/vendored-copies/single-origin adoptions · **verdict** on what kind of evidence it is.
 
 | Digest cluster | Raw | Independent | Lineage verdict |
 |---|---|---|---|
@@ -120,110 +96,50 @@ adoptions · **verdict** on what kind of evidence it is.
 
 ## Part 3 — Effect on the cross-TIER clusters (CONVERGENCES.md #1–18)
 
-**Key point for phase-2: the lineage caveat mostly does *not* threaten the cross-tier
-clusters — it threatens the within-Tier-2 vote-counts.** The cross-tier clusters
-(#1–18 in CONVERGENCES.md) triangulate across tiers whose failure modes are
-*independent* (ideology can be aspirational; shipped practice can be lineage;
-testimony can be n-of-few; theory can have an abstraction gap). Lineage only
-compromises the *Tier-2 leg*. Where a cluster stands on ≥2 tiers, discounting the
-Tier-2 leg to "one influential design" still leaves the triangulation intact.
+**Key point for phase-2: the lineage caveat mostly does *not* threaten the cross-tier clusters — it threatens the within-Tier-2 vote-counts.** The cross-tier clusters (#1–18 in CONVERGENCES.md) triangulate across tiers whose failure modes are *independent* (ideology can be aspirational; shipped practice can be lineage; testimony can be n-of-few; theory can have an abstraction gap). Lineage only compromises the *Tier-2 leg*. Where a cluster stands on ≥2 tiers, discounting the Tier-2 leg to "one influential design" still leaves the triangulation intact.
 
 Concretely:
 
-- **#1 edit-representation landscape / "no validity guarantees"** — its Tier-2 leg is
-  exactly the C1/C3 material that collapses. But it also stands on zoetica (ideology),
-  Architectus testimony (Tier-3), and dossier §2.4/§6 (theory). **The cross-tier claim
-  survives; drop the "many harnesses independently agree" framing and keep "the whole
-  shipping ecosystem edits at text/char level with no validity guarantee" — which is
-  true precisely *because* they share lineage.** The uniformity is real; its cause is
-  common-descent, and that's arguably a *stronger* statement of the gap UDON targets.
-- **#8 str_replace multi-match HARD-REFUSE** — the "4-tier lock" is its strength:
-  built (sapientia) + theorized (dossier §2.4) + shown-failing (Architectus) are the
-  independent legs. The Tier-2 leg (that shipping tools refuse multi-match) is
-  Claude-Code-convention-adopted, but the *other three legs are independent* — so this
-  remains the best worked example. Just don't add "and N harnesses independently
-  invented it."
-- **#17 tool-definition anatomy** and **#18 agent-mode auto-detection** — #18's Tier-2
-  leg (C16) survives as genuine independent convergence (hard external constraint);
-  #17 is partly convention-spread but multiply-tiered.
+- **#1 edit-representation landscape / "no validity guarantees"** — its Tier-2 leg is exactly the C1/C3 material that collapses. But it also stands on zoetica (ideology), Architectus testimony (Tier-3), and dossier §2.4/§6 (theory). **The cross-tier claim survives; drop the "many harnesses independently agree" framing and keep "the whole shipping ecosystem edits at text/char level with no validity guarantee" — which is true precisely *because* they share lineage.** The uniformity is real; its cause is common-descent, and that's arguably a *stronger* statement of the gap UDON targets.
+- **#8 str_replace multi-match HARD-REFUSE** — the "4-tier lock" is its strength: built (sapientia) + theorized (dossier §2.4) + shown-failing (Architectus) are the independent legs. The Tier-2 leg (that shipping tools refuse multi-match) is Claude-Code-convention-adopted, but the *other three legs are independent* — so this remains the best worked example. Just don't add "and N harnesses independently invented it."
+- **#17 tool-definition anatomy** and **#18 agent-mode auto-detection** — #18's Tier-2 leg (C16) survives as genuine independent convergence (hard external constraint); #17 is partly convention-spread but multiply-tiered.
 
-**Net:** no cross-tier cluster needs to be *dropped*; several need their prose changed
-from "independently converged across N harnesses" to "uniform across the shipping
-ecosystem (largely by common descent from Claude Code / OpenAI reference designs)."
-The uniformity-by-descent is itself a finding worth stating plainly.
+**Net:** no cross-tier cluster needs to be *dropped*; several need their prose changed from "independently converged across N harnesses" to "uniform across the shipping ecosystem (largely by common descent from Claude Code / OpenAI reference designs)." The uniformity-by-descent is itself a finding worth stating plainly.
 
 ---
 
 ## Part 4 — How to reread the Tier-2 counts (the practical rule for phase-2)
 
-1. **Never cite a raw harness-count as "N independent votes" for these clusters:**
-   C1 (str-replace), C3 (apply_patch), C12 (ask-user), C14 (todo), C15 (AGENTS.md).
-   These are *one design adopted*, not many arrivals. For C3 in particular, the honest
-   count of independent arrivals is **one** (OpenAI).
-2. **Collapse these fork pairs to one wherever they co-occur in a count:**
-   `kilocode ≡ opencode` (Kilo CLI is an opencode fork) and `qwen-code ≡ gemini-cli`
-   (fork, pre-divergence infrastructure). grok-build's codex-derived tools are `≡ codex`.
-3. **Two clusters survive as genuine independent convergence — lean on these:**
-   **C2** (the graduated fuzzy-match ladder — independently reinvented against the same
-   empirical fact that LLM `old_string` is almost-but-not-byte-exact) and **C16**
-   (headless I/O contract — independently built against a hard external constraint).
-   These are "many teams hit the same wall and built the same shape" — the evidence
-   type the caveat was worried about losing, here genuinely present.
-4. **The most-uniform clusters are the most-copied, not the most-needed.** C14 (todo)
-   being "near word-for-word across teams" is a *tell of copying*, not of deep need.
-   Invert the intuition: suspiciously-verbatim uniformity ⇒ lineage; independent
-   arrivals show *shape*-convergence with *implementation* divergence (that's C2).
-5. **Uniformity-by-descent is still a real finding** — "the entire shipping ecosystem
-   edits at text/char level with no formal validity guarantee, because they all descend
-   from two reference designs that made that choice" is a legitimate and arguably
-   *sharper* statement of the gap than "N teams independently chose it." Use that
-   framing; don't silently inflate it into independent corroboration.
+1. **Never cite a raw harness-count as "N independent votes" for these clusters:** C1 (str-replace), C3 (apply_patch), C12 (ask-user), C14 (todo), C15 (AGENTS.md). These are *one design adopted*, not many arrivals. For C3 in particular, the honest count of independent arrivals is **one** (OpenAI).
+2. **Collapse these fork pairs to one wherever they co-occur in a count:** `kilocode ≡ opencode` (Kilo CLI is an opencode fork) and `qwen-code ≡ gemini-cli` (fork, pre-divergence infrastructure). grok-build's codex-derived tools are `≡ codex`.
+3. **Two clusters survive as genuine independent convergence — lean on these:** **C2** (the graduated fuzzy-match ladder — independently reinvented against the same empirical fact that LLM `old_string` is almost-but-not-byte-exact) and **C16** (headless I/O contract — independently built against a hard external constraint). These are "many teams hit the same wall and built the same shape" — the evidence type the caveat was worried about losing, here genuinely present.
+4. **The most-uniform clusters are the most-copied, not the most-needed.** C14 (todo) being "near word-for-word across teams" is a *tell of copying*, not of deep need. Invert the intuition: suspiciously-verbatim uniformity ⇒ lineage; independent arrivals show *shape*-convergence with *implementation* divergence (that's C2).
+5. **Uniformity-by-descent is still a real finding** — "the entire shipping ecosystem edits at text/char level with no formal validity guarantee, because they all descend from two reference designs that made that choice" is a legitimate and arguably *sharper* statement of the gap than "N teams independently chose it." Use that framing; don't silently inflate it into independent corroboration.
 
 ---
 
 ## Method / evidence log
 
-**Approach.** For each of the 17 repos: `git remote -v`, root-commit and HEAD
-(`git log --reverse`), README/attribution grep for fork/vendor statements, in-repo
-grep for the origin's names/subtrees, and direct diff where a fork was suspected.
-Web search was available but **not needed** — every verdict above is settled from the
-trees, in-repo attributions, and citation URLs already committed in the code.
+**Approach.** For each of the 17 repos: `git remote -v`, root-commit and HEAD (`git log --reverse`), README/attribution grep for fork/vendor statements, in-repo grep for the origin's names/subtrees, and direct diff where a fork was suspected. Web search was available but **not needed** — every verdict above is settled from the trees, in-repo attributions, and citation URLs already committed in the code.
 
 **Established-tier evidence (documentary):**
-- qwen-code ⟵ gemini-cli: identical root SHA `add233c5043264d47ecc6d3339a383f41a241ae8`
-  in both repos; qwen README §157.
-- kilocode-CLI ⟵ opencode: kilocode README L171; `@opencode-ai/*` package scopes;
-  `packages/opencode/` subtree; `edit.ts` 65/750-line diff.
-- grok-build vendors codex: `crates/codegen/xai-grok-tools/src/implementations/codex/…`
-  subtree (apply_patch, read_file, grep_files, list_dir).
-- apply_patch ⟵ OpenAI: opencode `apply_patch.txt` = OpenAI envelope verbatim; warp
-  `crates/ai/src/diff_validation/mod.rs:30` cites the cookbook URL; codex
-  `codex-rs/apply-patch/` reference impl.
+- qwen-code ⟵ gemini-cli: identical root SHA `add233c5043264d47ecc6d3339a383f41a241ae8` in both repos; qwen README §157.
+- kilocode-CLI ⟵ opencode: kilocode README L171; `@opencode-ai/*` package scopes; `packages/opencode/` subtree; `edit.ts` 65/750-line diff.
+- grok-build vendors codex: `crates/codegen/xai-grok-tools/src/implementations/codex/…` subtree (apply_patch, read_file, grep_files, list_dir).
+- apply_patch ⟵ OpenAI: opencode `apply_patch.txt` = OpenAI envelope verbatim; warp `crates/ai/src/diff_validation/mod.rs:30` cites the cookbook URL; codex `codex-rs/apply-patch/` reference impl.
 
 **Probable-tier (convention-imitation, no code-copy provable):**
-- str_replace/`text_editor` naming confined to `claude-docs` + warp's *bundled
-  Anthropic skills*; every harness's str-replace is independently-written code →
-  imitation of Claude Code's design, not vendoring.
-- ask-user "(Recommended)" near-verbatim across opencode + kimi-code (unrelated
-  codebases, different languages) → common Claude-Code ancestor, not direct copy.
+- str_replace/`text_editor` naming confined to `claude-docs` + warp's *bundled Anthropic skills*; every harness's str-replace is independently-written code → imitation of Claude Code's design, not vendoring.
+- ask-user "(Recommended)" near-verbatim across opencode + kimi-code (unrelated codebases, different languages) → common Claude-Code ancestor, not direct copy.
 
-**Genuinely independent (no lineage found):** aider (own SEARCH/REPLACE, 2024 origin),
-gemini-cli (Google original), codex (OpenAI original), claude-code (the influence
-node), kimi-code, mistral-vibe, minimax-cli, warp (own harness, adopts one cited format).
+**Genuinely independent (no lineage found):** aider (own SEARCH/REPLACE, 2024 origin), gemini-cli (Google original), codex (OpenAI original), claude-code (the influence node), kimi-code, mistral-vibe, minimax-cli, warp (own harness, adopts one cited format).
 
 **Unknowns / not chased (honest gaps):**
-- The *timing* of who-adopted-str_replace-first among the non-Anthropic harnesses
-  isn't pinned — the origin (Claude Code) is clear, the adoption order isn't, and it
-  doesn't change the weighting. Left UNKNOWN.
-- Whether kimi-code's deferred-tool-loading (C7) is truly independent of Claude Code's
-  ToolSearch or a convention-adoption — its code is independent but the idea's
-  provenance isn't provable from the tree. Marked PROBABLE-partial, not established.
-- `warp`'s actual JSON tool schemas live in an external unvendored proto (dry well by
-  design per its map) — lineage of its *schemas* (vs its cited V4A format) is UNKNOWN.
-- obsidian-help/obsidian-linter/yq are prior-art, not harnesses; excluded from the
-  copying analysis (they share no lineage with the agent-harness set).
+- The *timing* of who-adopted-str_replace-first among the non-Anthropic harnesses isn't pinned — the origin (Claude Code) is clear, the adoption order isn't, and it doesn't change the weighting. Left UNKNOWN.
+- Whether kimi-code's deferred-tool-loading (C7) is truly independent of Claude Code's ToolSearch or a convention-adoption — its code is independent but the idea's provenance isn't provable from the tree. Marked PROBABLE-partial, not established.
+- `warp`'s actual JSON tool schemas live in an external unvendored proto (dry well by design per its map) — lineage of its *schemas* (vs its cited V4A format) is UNKNOWN.
+- obsidian-help/obsidian-linter/yq are prior-art, not harnesses; excluded from the copying analysis (they share no lineage with the agent-harness set).
 
-**Repos examined at the SHAs in frontmatter `paths:`.** Fork/vendor findings are
-stable against those pins; live repos may advance.
+**Repos examined at the SHAs in frontmatter `paths:`.** Fork/vendor findings are stable against those pins; live repos may advance.
 
 *— lineage-disentangle pass, 2026-07-21.*

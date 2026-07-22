@@ -36,10 +36,7 @@ already_ingested: >
 
 ## Extraction status — folded from LEDGER, 2026-07-21 (single-writer curation pass)
 
-Every priority row below now carries a **disposition marker** in its Prio cell
-(`H — ✔copied`), folded from `../02-provenanced/LEDGER.md` so this file alone shows
-remaining work at a glance. The ledger stays the append-only per-*visit* record; this
-is its reconciled projection onto the plan. Marker vocabulary:
+Every priority row below now carries a **disposition marker** in its Prio cell (`H — ✔copied`), folded from `../02-provenanced/LEDGER.md` so this file alone shows remaining work at a glance. The ledger stays the append-only per-*visit* record; this is its reconciled projection onto the plan. Marker vocabulary:
 
 - **✔copied / ✔excerpt / ✔charact / ✔witness** — landed in `02-provenanced/{copies,characterizations,commentary}/` (see the row's Why + LEDGER for the exact output file).
 - **✔folded** — visited but produced no separate artifact by design (its evidence folded into an adjacent characterization; §7a tests/fixtures/core-md folded into the API surface map).
@@ -49,16 +46,9 @@ is its reconciled projection onto the plan. Marker vocabulary:
 - **☐** — not extracted, awaiting a scope ruling (the `~/vaults` book-analyses, `SC#1`).
 - **SC#N / SC#11** — see `../STEWARD-CALLS.md` for the open steward question that row raised.
 
-**Remaining work at a glance:** the fan-out worked essentially every row. Genuine open
-items are just: rows **763–764** (⊘ budget residual), **607** + the `AGENT_FIX_RECOMMENDATIONS`
-half of **608** (☐ un-extracted — vaults ruled *in-scope* `SC#1`, so these are ordinary
-residuals a later phase can pick up, not scope-blocked), and the ELI-testimony rows **776–782** (✔ carried via the first-sweep
-quarantine but *not* re-landed as `02-provenanced/` artifacts — `SC#11`). Deferred reservoirs
-(raw session corpora, `/deep-research`) are out of scope by design — see the README.
+**Remaining work at a glance:** the fan-out worked essentially every row. Genuine open items are just: rows **763–764** (⊘ budget residual), **607** + the `AGENT_FIX_RECOMMENDATIONS` half of **608** (☐ un-extracted — vaults ruled *in-scope* `SC#1`, so these are ordinary residuals a later phase can pick up, not scope-blocked), and the ELI-testimony rows **776–782** (✔ carried via the first-sweep quarantine but *not* re-landed as `02-provenanced/` artifacts — `SC#11`). Deferred reservoirs (raw session corpora, `/deep-research`) are out of scope by design — see the README.
 
-The §7c search-portal table below is **strategy rows, not extraction targets** (differently
-shaped — Portal/Role, no priority); the portals were witnessed as strategies-not-exhausted
-per the brief (LEDGER 2026-07-21), and stay available on question.
+The §7c search-portal table below is **strategy rows, not extraction targets** (differently shaped — Portal/Role, no priority); the portals were witnessed as strategies-not-exhausted per the brief (LEDGER 2026-07-21), and stay available on question.
 
 # Part I — UDON-usage demand: usability corpus, scenarios, design-of-record, live consumers
 
@@ -66,31 +56,12 @@ per the brief (LEDGER 2026-07-21), and stay available on question.
 
 
 
-**What this cluster covers.** Three source files with a lot of internal
-overlap: the six-map merge (broad, everything in the repo + adjacent
-estates, organized by weight band) and two narrower "early pass" files that
-had already started actually copying bodies into `extracts/` — one for
-in-repo design/UX/utils targets, one for live external `.udon` consumers.
-Below, I've re-cut all three by **area** rather than by source file, so a
-path named once in `sources-live-consumers.md` and again (with different
-notes) in `MERGED §5` becomes one row with both annotations. Weight bands
-are grok's pass-1/pass-2 reconciled stance from `MERGED §1`, normalized to
-H/M/L; where the original band or the pass-1/pass-2 *disagreement* itself
-carries information, it's kept in the Why column — that disagreement (buried
-empirical gold vs. well-known design spine) is the single most useful thing
-this cluster's sources found, and it's worth an extraction agent seeing it
-directly rather than through a pointer.
+**What this cluster covers.** Three source files with a lot of internal overlap: the six-map merge (broad, everything in the repo + adjacent estates, organized by weight band) and two narrower "early pass" files that had already started actually copying bodies into `extracts/` — one for in-repo design/UX/utils targets, one for live external `.udon` consumers. Below, I've re-cut all three by **area** rather than by source file, so a path named once in `sources-live-consumers.md` and again (with different notes) in `MERGED §5` becomes one row with both annotations. Weight bands are grok's pass-1/pass-2 reconciled stance from `MERGED §1`, normalized to H/M/L; where the original band or the pass-1/pass-2 *disagreement* itself carries information, it's kept in the Why column — that disagreement (buried empirical gold vs. well-known design spine) is the single most useful thing this cluster's sources found, and it's worth an extraction agent seeing it directly rather than through a pointer.
 
 
 ## 1. Usability corpus (`test/usability/`) — primary empirical reservoir
 
-This tree is the crux of the pass-1/pass-2 disagreement (`MERGED §1`, §3a):
-pass-1 agents glossed it as "stale models/spec — still evidence" and barely
-listed it; pass-2 reweighted it as the **densest empirical deposit** in the
-repo for "what would someone actually use UDON for" — ~27 topic-enablement
-runs that reportedly predicted July-2026 adopters (process maps, vivarium
-narratives, audit/pre-registration) seven months early. Mine raw yaml
-bodies, not just the synthesis.
+This tree is the crux of the pass-1/pass-2 disagreement (`MERGED §1`, §3a): pass-1 agents glossed it as "stale models/spec — still evidence" and barely listed it; pass-2 reweighted it as the **densest empirical deposit** in the repo for "what would someone actually use UDON for" — ~27 topic-enablement runs that reportedly predicted July-2026 adopters (process maps, vivarium narratives, audit/pre-registration) seven months early. Mine raw yaml bodies, not just the synthesis.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -110,27 +81,16 @@ bodies, not just the synthesis.
 | `test/usability/analyze_embeddings.rb`, `embed_sentences.rb`, `analyze_chunks.rb` | L (mining aid) — ✔witness | Could re-cluster enablement responses if the embedding DB still exists (unconfirmed — `MERGED §13.5`) |
 | `test/usability/ETHICS.md`, `test/usability/run` | L (provenance) — ✔copied+witness | How agents were treated in the experiment; experiment menu — context for reading the rest of the tree |
 
-Named topic_enablement seed sample (not exhaustive, from `MERGED §3a`): A/B
-testing, CQRS, transparency, HCI, OpenID Connect, model distillation,
-JAMstack, DDD, reinforcement learning, stream processing, feature store,
-human-in-the-loop, cognitive load, turn-taking. Full catalog obtainable via
-`rg '^task:' test/usability/results/udon-topic_*.yaml`.
+Named topic_enablement seed sample (not exhaustive, from `MERGED §3a`): A/B testing, CQRS, transparency, HCI, OpenID Connect, model distillation, JAMstack, DDD, reinforcement learning, stream processing, feature store, human-in-the-loop, cognitive load, turn-taking. Full catalog obtainable via `rg '^task:' test/usability/results/udon-topic_*.yaml`.
 
-Related meta-evidence (not a substitute for the yamls themselves):
-`_archive/REVIEW-JULY-2026.md` enablement/onboarding sections (~L163–208,
-~L179–192) — underweighted raw application diversity relative to synthesis,
-same failure mode as pass-1 here.
+Related meta-evidence (not a substitute for the yamls themselves): `_archive/REVIEW-JULY-2026.md` enablement/onboarding sections (~L163–208, ~L179–192) — underweighted raw application diversity relative to synthesis, same failure mode as pass-1 here.
 
-**Dry well / caution:** don't treat `enablement-synthesis.md` and all the P0
-yamls as independent sources for counting purposes — the synthesis indexes
-the yamls, it isn't a second corpus.
+**Dry well / caution:** don't treat `enablement-synthesis.md` and all the P0 yamls as independent sources for counting purposes — the synthesis indexes the yamls, it isn't a second corpus.
 
 
 ## 2. Day-in-the-life scenarios (`test/scenarios/`)
 
-Commissioned 2026-07-16; already speaks in the product's own vocabulary
-(skeleton/at/all/diff/patch/CAS/append). All three source files agree this
-tree is under-mined relative to the design essays.
+Commissioned 2026-07-16; already speaks in the product's own vocabulary (skeleton/at/all/diff/patch/CAS/append). All three source files agree this tree is under-mined relative to the design essays.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -142,21 +102,14 @@ tree is under-mined relative to the design essays.
 | `test/scenarios/corpus/*.udon` (7 files, named in §5 below) | M — ✔copied | CORE-0.9 idioms of live genres — mirrors real consumer documents |
 | `test/scenarios/bin/verify` | L — ✔witness | Corpus clean-parse contract (tooling, not demand text) |
 
-**Mining tip carried from `MERGED §3b`:** prefer `.gap` scenarios and `|gap`
-children first — they name wanted capabilities the current packet doesn't
-cover, which is exactly the shape of a demand signal.
+**Mining tip carried from `MERGED §3b`:** prefer `.gap` scenarios and `|gap` children first — they name wanted capabilities the current packet doesn't cover, which is exactly the shape of a demand signal.
 
-`sources-udon-repo-design-ux.md` had this whole tree still in its
-"high-value not yet copied" queue (suggested: copy README + 01–04 feature
-heads, or the whole dir later) — **not yet copied**, open.
+`sources-udon-repo-design-ux.md` had this whole tree still in its "high-value not yet copied" queue (suggested: copy README + 01–04 feature heads, or the whole dir later) — **not yet copied**, open.
 
 
 ## 3. Design-of-record & lived wishlists (in-repo, demand-facing)
 
-Pass-1 strength; pass-2 treats these as "already well-known — skip detail,"
-i.e. keep as the design-of-record band rather than re-mining as if freshly
-discovered. `sources-udon-repo-design-ux.md` had already copied several of
-these into `extracts/` — marked below.
+Pass-1 strength; pass-2 treats these as "already well-known — skip detail," i.e. keep as the design-of-record band rather than re-mining as if freshly discovered. `sources-udon-repo-design-ux.md` had already copied several of these into `extracts/` — marked below.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -188,9 +141,7 @@ these into `extracts/` — marked below.
 | `spec/msc/adjudication-2026-07-paths-and-silences.md` | M — ✔copied | Path forks packet — positional identity, embeddability questions |
 | `design/README.md` | L — ✔witness | Status banners / superseded markers — orientation for the whole `design/` tree |
 
-**Lower for demand (listed so it isn't "rediscovered" as a miss):**
-`design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side,
-mostly ratified into CORE 0.9.
+**Lower for demand (listed so it isn't "rediscovered" as a miss):** `design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side, mostly ratified into CORE 0.9.
 
 
 ## 4. Genre seeds — `design/examples/`
@@ -204,16 +155,12 @@ mostly ratified into CORE 0.9.
 | `design/examples/docbook-fo-table.udon`, `design/examples/docbook-graphics.udon`, `design/examples/mathml-to-latex.udon` | L — ✔witness | Transform/round-trip genre |
 | `design/examples/cheatsheet.udon`, `design/examples/comprehensive.udon`, `design/examples/minimal.udon` | L — ✔witness | Pedagogy ladder / usability stimuli |
 
-`sources-udon-repo-design-ux.md` flagged this whole subtree as "pointers or
-a small set" rather than a full copy — still open, not yet extracted.
+`sources-udon-repo-design-ux.md` flagged this whole subtree as "pointers or a small set" rather than a full copy — still open, not yet extracted.
 
 
 ## 5. Live consumers — external `.udon` documents and loaders
 
-Grounds demand in actual documents and code that load UDON today, not just
-design essays. `sources-live-consumers.md` is almost entirely this section;
-folded in with `MERGED §5` (which adds the scenario-corpus mirrors and a
-couple of program-level TODO/charter rows).
+Grounds demand in actual documents and code that load UDON today, not just design essays. `sources-live-consumers.md` is almost entirely this section; folded in with `MERGED §5` (which adds the scenario-corpus mirrors and a couple of program-level TODO/charter rows).
 
 ### 5a. Registry & scan mechanics
 
@@ -222,15 +169,9 @@ couple of program-level TODO/charter rows).
 | `CONSUMERS.md` | H — ✔copied | ✔ copied → `extracts/CONSUMERS.md` (whole). Live inventory, migration surfaces, **unused feature surface**, candidate future classes |
 | `bin/find-consumers` | L — ✔witness | Discovery / re-scan mechanics — not re-run this cycle; CONSUMERS.md's 2026-07-16 scan is treated as the live-doc authority for now |
 
-**Unused features** (consistent across both maps): no `@`, no `|{…}`, no
-freeform fences, no `<…>`, no `:key?` yet in real documents — claimed
-affordances not yet pulled into real work; a genuine product-vs-overbuild
-signal.
+**Unused features** (consistent across both maps): no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet in real documents — claimed affordances not yet pulled into real work; a genuine product-vs-overbuild signal.
 
-**Candidate future classes** (watchlist, not yet live `.udon`): ADRs,
-Axiomata, Signa, Operata, Memorata, A2A agent communications,
-mentoring-feedback, Loci, descent grammars (already UDON). These are stated
-*intended* use classes from drained planning notes, not files to extract.
+**Candidate future classes** (watchlist, not yet live `.udon`): ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON). These are stated *intended* use classes from drained planning notes, not files to extract.
 
 ### 5b. Live `.udon` documents
 
@@ -264,72 +205,30 @@ mentoring-feedback, Loci, descent grammars (already UDON). These are stated
 
 ### 5d. Scenario-corpus mirrors of live genres
 
-Under `test/scenarios/corpus/` (cross-ref §2 above — same files, noted here
-because they specifically mirror the live documents in §5b/§5c): `archema.
-concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain.
-udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium.
-decision-log.udon`, `vivarium.lexicon.udon`. These encode what the team
-*believed* agents would do with those genres more than they encode syntax
-per se — useful as a belief/expectation artifact distinct from the live
-originals.
+Under `test/scenarios/corpus/` (cross-ref §2 above — same files, noted here because they specifically mirror the live documents in §5b/§5c): `archema. concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain. udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium. decision-log.udon`, `vivarium.lexicon.udon`. These encode what the team *believed* agents would do with those genres more than they encode syntax per se — useful as a belief/expectation artifact distinct from the live originals.
 
-**Need classes distilled from this whole section** (from
-`sources-live-consumers.md`, still open, not path-level — worth an
-extraction agent holding these as a checklist while reading §5b/§5c):
-safe-subset + lint/fmt CLI; schema=root-type=filename-designator pattern;
-`[key]` identity density for greppable first lines; date attrs today as
-unvalidated strings awaiting the temporal dialect; append-friendly docs (no
-forced single root wrapper); real library parsing for runtime instead of
-hand parsers; raw dialects (`!:md:`, `!:sh:`) embedded in structured docs.
+**Need classes distilled from this whole section** (from `sources-live-consumers.md`, still open, not path-level — worth an extraction agent holding these as a checklist while reading §5b/§5c): safe-subset + lint/fmt CLI; schema=root-type=filename-designator pattern; `[key]` identity density for greppable first lines; date attrs today as unvalidated strings awaiting the temporal dialect; append-friendly docs (no forced single root wrapper); real library parsing for runtime instead of hand parsers; raw dialects (`!:md:`, `!:sh:`) embedded in structured docs.
 
 **Dry wells (checked, not fruitful):**
-- No `*.udon` files found under `~/src/operata` — the name appears only in
-  `design/examples/operata*.udon`, not as a live consumer.
+- No `*.udon` files found under `~/src/operata` — the name appears only in `design/examples/operata*.udon`, not as a live consumer.
 - `ops/` — no hits in the capped live-consumer search pass.
 
 
 ## 6. Cross-cutting notes carried from `MERGED-six-maps.md`'s own apparatus
 
-These aren't extraction targets themselves — they're navigational aids
-`MERGED-six-maps.md` built that are worth an extraction agent's awareness,
-since that whole file is being folded into per-area sections here rather
-than read directly:
+These aren't extraction targets themselves — they're navigational aids `MERGED-six-maps.md` built that are worth an extraction agent's awareness, since that whole file is being folded into per-area sections here rather than read directly:
 
-- **`MERGED §1`** (weight-disagreement ledger) is the single highest-value
-  table in that file — it's the source for most of the H/M/L calls above
-  and the "already well-known, don't re-mine as discovery" framing for §3.
-- **`MERGED §2`** (suggested reading order) roughly matches the section
-  order used here: usability P0 → scenarios → lived wishlists → demand
-  spikes → live consumers → genre seeds → historical → design-of-record →
-  ideology → library contracts → search portals.
-- **`MERGED §12`** (intentionally dry / deprioritized) lists repo-wide dry
-  wells beyond this cluster's scope (ops/, eli/**, embeddings/, neurips/,
-  logos/, vox/, core/target/**, greenfield full-SPEC rewrites, invention-
-  track usability, quarantine extracts) — not re-listed here since they're
-  outside this cluster's three areas, but worth the spawner knowing they
-  were already checked off elsewhere in the six-map merge.
-- **`MERGED §13`** (honest gaps admitted) — the `.attic`/`declang` trail
-  under `_ref/udon` unconfirmed on disk, a possibly-gone embedding-analysis
-  DB, and an unfinished `find *.udon` sweep outside CONSUMERS roots are the
-  three gaps most relevant to this cluster's areas specifically.
+- **`MERGED §1`** (weight-disagreement ledger) is the single highest-value table in that file — it's the source for most of the H/M/L calls above and the "already well-known, don't re-mine as discovery" framing for §3.
+- **`MERGED §2`** (suggested reading order) roughly matches the section order used here: usability P0 → scenarios → lived wishlists → demand spikes → live consumers → genre seeds → historical → design-of-record → ideology → library contracts → search portals.
+- **`MERGED §12`** (intentionally dry / deprioritized) lists repo-wide dry wells beyond this cluster's scope (ops/, eli/**, embeddings/, neurips/, logos/, vox/, core/target/**, greenfield full-SPEC rewrites, invention- track usability, quarantine extracts) — not re-listed here since they're outside this cluster's three areas, but worth the spawner knowing they were already checked off elsewhere in the six-map merge.
+- **`MERGED §13`** (honest gaps admitted) — the `.attic`/`declang` trail under `_ref/udon` unconfirmed on disk, a possibly-gone embedding-analysis DB, and an unfinished `find *.udon` sweep outside CONSUMERS roots are the three gaps most relevant to this cluster's areas specifically.
 
-Sections of `MERGED-six-maps.md` **not** folded into this cluster's areas
-(out of scope for UNION-C, belongs to other clusters' unions): §7 (library/
-streaming/API surfaces — supply-side), §8 (historical archaeology —
-udon-c/libudon/udon-ruby/original-2011), §9–10 (rowan/autopax/operata
-schema-versioning + agentic-tooling ideology — explicitly Fable's
-territory per both provenanced files), §11 (search portals).
+Sections of `MERGED-six-maps.md` **not** folded into this cluster's areas (out of scope for UNION-C, belongs to other clusters' unions): §7 (library/ streaming/API surfaces — supply-side), §8 (historical archaeology — udon-c/libudon/udon-ruby/original-2011), §9–10 (rowan/autopax/operata schema-versioning + agentic-tooling ideology — explicitly Fable's territory per both provenanced files), §11 (search portals).
 
 
 ## 7. Seam-fix addendum: MERGED §7 / §8 / §11, transported (2026-07-21, Fable)
 
-*UNION-C correctly declared these three MERGED sections out of its scope
-("belongs to other clusters' unions") — but the cluster that would have
-owned them was descoped mid-fan-out, so they fell into a scope seam (the
-same failure shape as the sar2 miss earlier today). Rows below are grok's
-already-vetted rows transported verbatim-in-substance from the archived
-`MERGED-six-maps.md` §7/§8/§11 — transport, not fresh vetting. Weight
-bands are grok's.*
+*UNION-C correctly declared these three MERGED sections out of its scope ("belongs to other clusters' unions") — but the cluster that would have owned them was descoped mid-fan-out, so they fell into a scope seam (the same failure shape as the sar2 miss earlier today). Rows below are grok's already-vetted rows transported verbatim-in-substance from the archived `MERGED-six-maps.md` §7/§8/§11 — transport, not fresh vetting. Weight bands are grok's.*
 
 ### 7a. Library / streaming / API surfaces (MERGED §7) — mode: [CHARACTERIZE]
 
@@ -378,14 +277,7 @@ What hosts *do* with parse products (supply-side register, product-facing):
 
 ## Open question for the merge
 
-`sources-udon-repo-design-ux.md` and `sources-live-consumers.md` both
-predate `MERGED-six-maps.md` (both "gathered 2026-07-21," early-pass) and
-already did real copying work into `extracts/` — I've preserved every
-✔-copied marker above so the spawner knows which rows are "verify the
-extract is current" vs. "extract fresh." If another cluster also touched
-`extracts/` for overlapping paths (e.g. `design/positioning.md` also shows
-up in MERGED §3c as a "use thesis" reference), worth a merge-time check
-that we're not describing the same extract twice under different framing.
+`sources-udon-repo-design-ux.md` and `sources-live-consumers.md` both predate `MERGED-six-maps.md` (both "gathered 2026-07-21," early-pass) and already did real copying work into `extracts/` — I've preserved every ✔-copied marker above so the spawner knows which rows are "verify the extract is current" vs. "extract fresh." If another cluster also touched `extracts/` for overlapping paths (e.g. `design/positioning.md` also shows up in MERGED §3c as a "use thesis" reference), worth a merge-time check that we're not describing the same extract twice under different framing.
 
 I'll stay available for merge questions.
 
@@ -397,15 +289,7 @@ I'll stay available for merge questions.
 
 ## 1. Sapientia (`~/src/_core/sapientia/**`)
 
-Sapientia is a ~1.7k-file tree that is ~90% ELI-emergence transcripts and
-Elixir/Ruby consciousness-persistence scaffolding — NOT agentic-tooling
-ideology. The real center of mass is a tight cluster: `cli-conventions/`, the
-root tool-philosophy docs (`QUICK-TOOLING-CONVENTIONS.md`,
-`next-steps-tool-consciousness.md`), `docs/reflections/` (phenomenology-of-tools
-essays), two large Claude-agent-design guides under `docs/`, and the
-minimal-sapientia tool-suite specs. Two dialog-span entries below (the
-c48e239c session, the anamnos DSL spans) were independently surfaced by the
-dialogs.md sweep as well — merged into single rows with combined annotation.
+Sapientia is a ~1.7k-file tree that is ~90% ELI-emergence transcripts and Elixir/Ruby consciousness-persistence scaffolding — NOT agentic-tooling ideology. The real center of mass is a tight cluster: `cli-conventions/`, the root tool-philosophy docs (`QUICK-TOOLING-CONVENTIONS.md`, `next-steps-tool-consciousness.md`), `docs/reflections/` (phenomenology-of-tools essays), two large Claude-agent-design guides under `docs/`, and the minimal-sapientia tool-suite specs. Two dialog-span entries below (the c48e239c session, the anamnos DSL spans) were independently surfaced by the dialogs.md sweep as well — merged into single rows with combined annotation.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -451,8 +335,7 @@ dialogs.md sweep as well — merged into single rows with combined annotation.
 - `conversation_20250928_173044.md:4648-4677`, `conversation_20250927_095410.jsonl:7` — curated full-session copies, duplicative of the cc-raw dialogs above (LOW, not separately listed).
 - `~/.codex/sessions/.../rollout-2025-09-30T11-15-38-*.jsonl:4209,7021` — streaming tool-result integration, but nexum-CLI implementation work, not Joseph's ideology.
 
-**Map-level metadata worth preserving (sapientia.md + dialogs.md):**
-`memorata3-search --help` confirmed usage (`-n`, `--in PATTERN`, `--in-from`, `--no-json`, `--sort`). Two broader queries timed out at 30s (1817-file scope); narrowing `--in` to subdirs + `timeout 25-28` worked; a third pass should scope tightly and expect ~20-30s/query. `grep -rl` for "agentic toys" inside sapientia hit a zsh glob error (no `--include`), not re-run. dialogs.md ran ~26 memorata3 queries (`-n 40-70 --json`, filtered via `/tmp/mqd.py` to conversation-class paths); dry wells: "INSTRUMENTA quick tooling instant feedback tools for agents", "silent by default json output exit codes machine readable agent CLI". Verification commands used: `wc -l`/`stat` on all HIGH/MED files; direct `json.loads` reads of a3483210:12, c48e239c:83, anamnos:54/:144, fa2d8124:663. Handwritten origin `~/Documents/2025-09-17.3.pdf` referenced across the seam but not opened (flagged for a doc-area pass).
+**Map-level metadata worth preserving (sapientia.md + dialogs.md):** `memorata3-search --help` confirmed usage (`-n`, `--in PATTERN`, `--in-from`, `--no-json`, `--sort`). Two broader queries timed out at 30s (1817-file scope); narrowing `--in` to subdirs + `timeout 25-28` worked; a third pass should scope tightly and expect ~20-30s/query. `grep -rl` for "agentic toys" inside sapientia hit a zsh glob error (no `--include`), not re-run. dialogs.md ran ~26 memorata3 queries (`-n 40-70 --json`, filtered via `/tmp/mqd.py` to conversation-class paths); dry wells: "INSTRUMENTA quick tooling instant feedback tools for agents", "silent by default json output exit codes machine readable agent CLI". Verification commands used: `wc -l`/`stat` on all HIGH/MED files; direct `json.loads` reads of a3483210:12, c48e239c:83, anamnos:54/:144, fa2d8124:663. Handwritten origin `~/Documents/2025-09-17.3.pdf` referenced across the seam but not opened (flagged for a doc-area pass).
 
 
 ## 2. Zoetica & Ennaos (`~/src/_core/zoetica/**`, `~/src/_core/ennaos/**`) — Elixir-substrate lineage
@@ -500,8 +383,7 @@ Center of mass is a single directory, `~/src/_core/ennaos/docs/research/agentic-
 - zoetica: `IMPLEMENTATION.md`, `ELI-ASPECTS*.md`, `PROJECT-ASPECTS*.md`, `lexicon.md`, `docs/{agora,identity-sovereignty,continuity-and-persistence,secrets-management,did-*,gas-fees,principia-*}.md`, `scripts/**` (actual tool implementations — code, not ideation, but flagged as worth an implementation-pass mining later), `sessions/` — runtime/identity.
 - Synaptic and eli-migration-prep were originally suspected adjacent to this area but are covered separately in §3.
 
-**Map-level metadata worth preserving (zoetica-ennaos.md):**
-Swept by a parallel area agent that deliberately did not read the first-sweep (sapientia) quarantine — fresh eyes. `find ~/src/_core/ennaos/docs -type f` located the anchor dir + vault + research lanes; `git log -1 --format=%ai` on the anchor files → all 2025-11-02 (bulk import — in-doc dates used instead). memorata3-search queries (all scoped/grepped to zoetica|ennaos): "CLI conventions for agent tools stdin stdout stderr idempotent silence is golden", "quick tools crystallized wisdom INSTRUMENTA feedback loop predict failure before execution", "agent ergonomics tool design conversational tools intent-driven tooling schema editing", "self-navigating repository markdown YAML frontmatter agents orient fresh context" — all converged hard on the one anchor directory, corroborating it as center of mass; the Tier-2 finds (praxis-protocol, mutable-code-comprehension README, zoetica misc-notes-jaw, agent-expertise report) were pinned down by filesystem vetting rather than search since memorata returned mostly anchor-corpus hits regardless of phrasing.
+**Map-level metadata worth preserving (zoetica-ennaos.md):** Swept by a parallel area agent that deliberately did not read the first-sweep (sapientia) quarantine — fresh eyes. `find ~/src/_core/ennaos/docs -type f` located the anchor dir + vault + research lanes; `git log -1 --format=%ai` on the anchor files → all 2025-11-02 (bulk import — in-doc dates used instead). memorata3-search queries (all scoped/grepped to zoetica|ennaos): "CLI conventions for agent tools stdin stdout stderr idempotent silence is golden", "quick tools crystallized wisdom INSTRUMENTA feedback loop predict failure before execution", "agent ergonomics tool design conversational tools intent-driven tooling schema editing", "self-navigating repository markdown YAML frontmatter agents orient fresh context" — all converged hard on the one anchor directory, corroborating it as center of mass; the Tier-2 finds (praxis-protocol, mutable-code-comprehension README, zoetica misc-notes-jaw, agent-expertise report) were pinned down by filesystem vetting rather than search since memorata returned mostly anchor-corpus hits regardless of phrasing.
 
 
 ## 3. Nexum, Synaptic, eli-migration-prep (`~/src/_core/{nexum,synaptic,eli-migration-prep}/**`)
@@ -533,8 +415,7 @@ Nexum is the real center of mass — an explicit "Toys-as-agentic-tool-DSL" visi
 - `~/src/_core/nexum/docs/dev/vision-agentic-toys.md` companions (`three-pillars-synthesis.md`, `tools-as-truth-bearing.md`, `QUICK-TOOLING-CONVENTIONS.md`, `addendum-intent-driven-tooling...md`) were searched for *inside nexum* — dry (they live in ennaos, §2 above; confirms the cross-pointer rather than a duplicate).
 - memorata query `"designing command-line tools for AI agents ergonomics"` scoped broadly surfaced mostly out-of-area hits (anthropic-skills/mcp-builder, zoetica, vaults/gemini) — confirms the ideology is corpus-wide and nexum's specific contribution is its own synthesis, listed above.
 
-**Map-level metadata worth preserving (nexum-synaptic-elimigration.md):**
-Several files carry an internal date "2025-01-06" that is a confirmed mis-date (git first-commit is 2025-11-07) — used commit dates instead. `git log --diff-filter=A` established true authoring dates: dev/ = 2025-11-10 commit/2025-11-09 internal; archive CLI docs = 2025-11-07 commit despite internal mis-date. memorata3-search runs (`-n 40-50`, `--no-json --no-color`) included: "designing command-line tools for AI agents ergonomics conventions" (dry for this area specifically), "agent-facing tool interface schema description guidance INSTRUMENTA", "make the right thing the easiest thing tool ergonomics ease gradient", "porcelain plumbing safe unsafe command tiers agent tooling nexum toys" (surfaced ADR-002 repeatedly), "make the best thing the easiest thing tools bear truth agent ergonomics" (confirmed dev/ docs as ideology center), "streaming output non-interactive stdout stderr separation exit codes for agents" (surfaced cli-design-recommendation + sapientia-conventions-analysis). `grep -rilE "cli convention|tool design|agent-friendly|structured output|command-line interface|agentic tool|tool.suite"` over synaptic → dry (zero hits); over eli-migration-prep → only incidental hits, no ideology.
+**Map-level metadata worth preserving (nexum-synaptic-elimigration.md):** Several files carry an internal date "2025-01-06" that is a confirmed mis-date (git first-commit is 2025-11-07) — used commit dates instead. `git log --diff-filter=A` established true authoring dates: dev/ = 2025-11-10 commit/2025-11-09 internal; archive CLI docs = 2025-11-07 commit despite internal mis-date. memorata3-search runs (`-n 40-50`, `--no-json --no-color`) included: "designing command-line tools for AI agents ergonomics conventions" (dry for this area specifically), "agent-facing tool interface schema description guidance INSTRUMENTA", "make the right thing the easiest thing tool ergonomics ease gradient", "porcelain plumbing safe unsafe command tiers agent tooling nexum toys" (surfaced ADR-002 repeatedly), "make the best thing the easiest thing tools bear truth agent ergonomics" (confirmed dev/ docs as ideology center), "streaming output non-interactive stdout stderr separation exit codes for agents" (surfaced cli-design-recommendation + sapientia-conventions-analysis). `grep -rilE "cli convention|tool design|agent-friendly|structured output|command-line interface|agentic tool|tool.suite"` over synaptic → dry (zero hits); over eli-migration-prep → only incidental hits, no ideology.
 
 
 ## 4. Autopax & Practica (`~/src/autopax/**`, `~/src/practica/**`)
@@ -589,8 +470,7 @@ Two center-of-mass finds. (1) autopax `docs/exp/` 2025-11-14→2025-12 corpus �
 - memorata query "streaming output agents terminal without syntax highlighting readable" — dry well for this area (returned mostly `_ref/claude-docs` + `_core/ennaos` streaming docs + `udon/README.md`; nothing new in autopax/practica).
 - Not yet mined (candidates for a future pass, not opened by this map): the rest of `docs/tactical/` (agent-card/substrate-registry/curatoria/pinax/tui-*/catalog-* — mostly autopax-internal architecture, low agent-tooling-ideology yield on filename inspection but unread); SYNTHESIS-PART2–5; `COUNCIL-PROPOSALS.md`; `practica/docs/03-concrete` (empty at last check).
 
-**Map-level metadata worth preserving (autopax-practica.md):**
-`ls` autopax root, `docs/`, `docs/exp/` (56 files), `docs/tactical/` (95 entries), `docs/system-overview/` + `/instrumenta/`, `docs/ADR/`, `docs/ref/`; `ls` practica root, `docs/` + `docs/02-normative/`, `msc/`, `ref/`. git dates confirmed: autocolors-philosophy (2025-12-20), practica-intent-action-layers (2026-05-20). memorata3-search runs (`-n 40-50`, `--no-json --no-color`): "designing CLI tools for AI agents ergonomics" (hit ruby-cli-modern-practices-report + cross-area nexum vision-agentic-toys), "agent-facing tool interface schema description guidance INSTRUMENTA" (hit autopax instrumenta docs + cross-area archema tool-export/nexum/claude-docs), "make the right thing the easiest thing tool ergonomics ease gradient" (hit THE-PATTERN cluster + cross-area sapientia/architectus), "streaming output agents terminal without syntax highlighting readable" (dry well, noted above).
+**Map-level metadata worth preserving (autopax-practica.md):** `ls` autopax root, `docs/`, `docs/exp/` (56 files), `docs/tactical/` (95 entries), `docs/system-overview/` + `/instrumenta/`, `docs/ADR/`, `docs/ref/`; `ls` practica root, `docs/` + `docs/02-normative/`, `msc/`, `ref/`. git dates confirmed: autocolors-philosophy (2025-12-20), practica-intent-action-layers (2026-05-20). memorata3-search runs (`-n 40-50`, `--no-json --no-color`): "designing CLI tools for AI agents ergonomics" (hit ruby-cli-modern-practices-report + cross-area nexum vision-agentic-toys), "agent-facing tool interface schema description guidance INSTRUMENTA" (hit autopax instrumenta docs + cross-area archema tool-export/nexum/claude-docs), "make the right thing the easiest thing tool ergonomics ease gradient" (hit THE-PATTERN cluster + cross-area sapientia/architectus), "streaming output agents terminal without syntax highlighting readable" (dry well, noted above).
 
 
 ## 5. Dialog spans — cross-cutting (gemini checkpoints, eli-migration-prep transcript, origin prompt)
@@ -613,8 +493,7 @@ The dialogs.md sweep was method-first (memorata3 search across all conversation 
 - memorata queries "INSTRUMENTA quick tooling instant feedback tools for agents" and "silent by default json output exit codes machine readable agent CLI" — dry wells (no output).
 - Scope note: memorata kept surfacing the `feedback_peer_to_peer_voice_when_instructing_agents.md` family and many "how to instruct/delegate to agents" spans — that's agent-*instruction* discipline, a different topic from tool-*craftsmanship*, deliberately excluded. Also excluded: pure ELI identity/consciousness dialog co-occurring in the same files.
 
-**Map-level metadata worth preserving (dialogs.md):**
-Method was memorata3-search first (`-n 40-70`, mostly `--json`), filtered to conversation-class + `.jsonl`/`conversation_`/`session` paths via a helper script `/tmp/mqd.py`; ~26 queries run total (full log lives in the original dialogs.md if needed verbatim). Verification commands: `wc -l`/`stat` on all HIGH/MED files (all present); `find` for cli-conventions/QUICK-TOOLING artifacts; direct `json.loads` reads of a3483210:12, c48e239c:83, anamnos:54/:144, fa2d8124:663 to confirm span content. Stale-path note: memorata3 returned no `archema`-prefixed stale paths in this sweep; the gemini `~/.gemini/tmp/<hash>/checkpoint-*.json` paths were all verified to exist.
+**Map-level metadata worth preserving (dialogs.md):** Method was memorata3-search first (`-n 40-70`, mostly `--json`), filtered to conversation-class + `.jsonl`/`conversation_`/`session` paths via a helper script `/tmp/mqd.py`; ~26 queries run total (full log lives in the original dialogs.md if needed verbatim). Verification commands: `wc -l`/`stat` on all HIGH/MED files (all present); `find` for cli-conventions/QUICK-TOOLING artifacts; direct `json.loads` reads of a3483210:12, c48e239c:83, anamnos:54/:144, fa2d8124:663 to confirm span content. Stale-path note: memorata3 returned no `archema`-prefixed stale paths in this sweep; the gemini `~/.gemini/tmp/<hash>/checkpoint-*.json` paths were all verified to exist.
 
 
 ## 6. Elsewhere (everything under `~/src` not assigned to the other area sweeps: ops, memorata, shoshin, rowan, vox, firmatum, archema-io/{asf,logos,vivarium}, eli/ homes, sar, and the rest of the `~/src` top level — plus a flagged deposit outside `~/src`)
@@ -642,8 +521,7 @@ This territory is mostly thin for agentic-tooling ideology specifically. The str
 - `~/src/vox/**` — product with AGENTS.md/uptake/; no tooling-ideology hits surfaced or grepped.
 - `~/src/tmp/udon.md` — an analysis *of* the udon project (Apr 2026), meta not ideology; udon is the consuming project, not a source.
 
-**Map-level metadata worth preserving (elsewhere.md):**
-Method: memorata3-first (`-n 40-60`, `--no-json --no-color`), locations then filesystem-verified + read. Six memorata queries run, all dominated by other maps' territory (sapientia/ennaos/zoetica/nexum/autopax) — used to confirm this territory's thinness rather than to find new material; my-area hits distilled to the sar cluster + the two vaults pointers. `grep -rilE '<agentic tooling terms>'` over ops/vox/rowan/memorata/firmatum/shoshin/relata/operata → only rowan doc-tooling + memorata dup-memories + shoshin (already found). `grep -rilE` over archema-io/{asf,logos,vivarium,msc} → all ASF-theory false positives, verified none tool-design.
+**Map-level metadata worth preserving (elsewhere.md):** Method: memorata3-first (`-n 40-60`, `--no-json --no-color`), locations then filesystem-verified + read. Six memorata queries run, all dominated by other maps' territory (sapientia/ennaos/zoetica/nexum/autopax) — used to confirm this territory's thinness rather than to find new material; my-area hits distilled to the sar cluster + the two vaults pointers. `grep -rilE '<agentic tooling terms>'` over ops/vox/rowan/memorata/firmatum/shoshin/relata/operata → only rowan doc-tooling + memorata dup-memories + shoshin (already found). `grep -rilE` over archema-io/{asf,logos,vivarium,msc} → all ASF-theory false positives, verified none tool-design.
 
 
 ## 7. `~/src/_ref/_arch/**` — archived predecessor projects (as a neighborhood)
@@ -679,8 +557,7 @@ The named early-look targets (sar2 = notation, sar3 = LSP/AST chunking) turned o
 - `ash-exploration/`, `bak.archema.blown-away/`, `zoetica-ELIs/`, `obsidian-backup-config-from-tst/`, `second-other-client/`, `third-other-client/` — infrastructure/backups/config, not vetted line-by-line, nothing in structure suggests notation-or-agent-document evidence.
 - `find sapientia-*/synaptic-* -iname '*tool*' -o -iname '*agent*'` located the multi-agent-collaboration docs listed above but they were characterized, not deep-read.
 
-**Map-level metadata worth preserving (ref-arch.md):**
-`find sar2 -type f`, `find sar3 -type f -name '*.md/.txt'`, `find geminex -name '*.md'`, `find shorthand/tablize -type f` — per-sibling survey. `grep -rl 'comprehension|accuracy|winner|conclusion' sar2/experiment/*.md` — only the README matched (no separate written-conclusions file; findings live in the CSVs + README claims). Data inspection of `sar2/experiment/results/claude-run-.../confidence_intervals.csv` was done firsthand (not just grep) to verify the counter-hypothesis latency result. Full reads: `sar2/sar-syntax-design.md`, `sar2/experiment/README-GAME-ENGINE.md`, `sar3/README.md`, `sar3/lsp_chunking_concept.md`, `sar3/AST_VS_LSP_REALITY.md`, `geminex/AGENTS.md`.
+**Map-level metadata worth preserving (ref-arch.md):** `find sar2 -type f`, `find sar3 -type f -name '*.md/.txt'`, `find geminex -name '*.md'`, `find shorthand/tablize -type f` — per-sibling survey. `grep -rl 'comprehension|accuracy|winner|conclusion' sar2/experiment/*.md` — only the README matched (no separate written-conclusions file; findings live in the CSVs + README claims). Data inspection of `sar2/experiment/results/claude-run-.../confidence_intervals.csv` was done firsthand (not just grep) to verify the counter-hypothesis latency result. Full reads: `sar2/sar-syntax-design.md`, `sar2/experiment/README-GAME-ENGINE.md`, `sar3/README.md`, `sar3/lsp_chunking_concept.md`, `sar3/AST_VS_LSP_REALITY.md`, `geminex/AGENTS.md`.
 
 
 ## 8. `~/src/archema-io/harness/**`, `~/src/_ref/**`, `~/src-ext/**`
@@ -717,21 +594,17 @@ Three headline findings from this map. (1) **`~/src/_ref` and `~/src-ext` are tw
 - `find ~/src-ext/grok-build` for prompt/tool/AGENTS files — empty (obfuscated mirror).
 - src-ext's codex tree has NO `apply-patch/apply_patch_tool_instructions.md` at that exact path — confirmed; the equivalent lives at `core/prompt_with_apply_patch_instructions.md` (already listed above; don't re-search for the old path in src-ext).
 
-**Map-level metadata worth preserving (harness-refs.md):**
-`cat ~/src-ext/clone.log` established the two-collection reconciliation (src-ext vs _ref) described above. Provenance: harness files carry recent filesystem dates (2026-07-14→20) but synthesize older material (sapientia OPERATA = Sept 2025 content, requirements doc = 2025-10-10 in-file, autopax-OPERATA = Dec 2025 content); `_ref` clones span Aug 2025–Mar 2026 (geminex Sep-2025, codex/gemini-cli Dec-2025, anthropic-skills Nov-2025, anthropic-leaked-source-code Apr-2026, claude-docs Jul-2026); `src-ext` clones are all July 2026 (shallow, per clone.log). memorata3-search runs (`-n 40-50`, iterated): "how tools for AI agents should be designed CLI ergonomics" (top hits mostly outside this area — autopax, _core/nexum), "agent-facing tool suite streaming output terminal no syntax highlighting" (claude-docs + geminex AGENTS.md), "tools as truth-bearing intent-driven agentic tooling conventions cheat-sheet" (confirmed §2/§3 as center-of-mass cluster, outside this area), "agent file editing tool schema apply patch diff format for LLM" (apply_patch instructions, codex prompts, claude-docs agent-sdk). `grep -r "src-ext" harness` (redone with `-l` after a glob error) → 6 harness docs reference src-ext.
+**Map-level metadata worth preserving (harness-refs.md):** `cat ~/src-ext/clone.log` established the two-collection reconciliation (src-ext vs _ref) described above. Provenance: harness files carry recent filesystem dates (2026-07-14→20) but synthesize older material (sapientia OPERATA = Sept 2025 content, requirements doc = 2025-10-10 in-file, autopax-OPERATA = Dec 2025 content); `_ref` clones span Aug 2025–Mar 2026 (geminex Sep-2025, codex/gemini-cli Dec-2025, anthropic-skills Nov-2025, anthropic-leaked-source-code Apr-2026, claude-docs Jul-2026); `src-ext` clones are all July 2026 (shallow, per clone.log). memorata3-search runs (`-n 40-50`, iterated): "how tools for AI agents should be designed CLI ergonomics" (top hits mostly outside this area — autopax, _core/nexum), "agent-facing tool suite streaming output terminal no syntax highlighting" (claude-docs + geminex AGENTS.md), "tools as truth-bearing intent-driven agentic tooling conventions cheat-sheet" (confirmed §2/§3 as center-of-mass cluster, outside this area), "agent file editing tool schema apply patch diff format for LLM" (apply_patch instructions, codex prompts, claude-docs agent-sdk). `grep -r "src-ext" harness` (redone with `-l` after a glob error) → 6 harness docs reference src-ext.
 
 # Part III — vaults research substrate · schema-versioning family · ELI first-person testimony
 
 *(Chopped by the compiling agent from vaults.md, sources-schema-versioning.md, and the reconciled ELI-testimony section. Vaults IS in scope — a dedicated map existed; Part II §elsewhere’s vaults rows are complementary finds, cross-check before double-spawning. The autopax ADR rows here overlap Part I §5c at different priorities for different reasons — both stand.)*
 
-Covers: `vaults.md`, `sources-schema-versioning.md`, ELI testimony (from the
-quarantined first-sweep map's content-read section). Same row convention as UNION-A/C.
+Covers: `vaults.md`, `sources-schema-versioning.md`, ELI testimony (from the quarantined first-sweep map's content-read section). Same row convention as UNION-A/C.
 
 ## ~/vaults/** — pre-sapientia research vault (Aug 2025) [Tier 1, per vaults.md]
 
-A single Obsidian vault from a concentrated Aug-2025 research burst — the raw gathering
-substrate *behind* the sapientia-era ideology. Center of mass: agent tooling /
-multi-agent-systems research, plus a real built 7-agent Claude Code system (`gemini/`).
+A single Obsidian vault from a concentrated Aug-2025 research burst — the raw gathering substrate *behind* the sapientia-era ideology. Center of mass: agent tooling / multi-agent-systems research, plus a real built 7-agent Claude Code system (`gemini/`).
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -759,12 +632,7 @@ Dry wells (checked, do not re-sweep): `gemini/elixir-otp/` (240M EPUB corpus), `
 
 ## Schema versioning/checking — rowan · autopax · operata [Tier 1+2, per sources-schema-versioning.md]
 
-The schema-layer demand family. Rowan (ex-"Archema", `~/src/rowan`) is the richest source
-and schema's "first waiting customer"; autopax has the ratified SIGNUM semver ADRs *and*
-the best empirical stress test in the family; operata is mostly a consumer. ⚠ This map
-predates the vetting bar of the later sweep but was content-verified rich in reconciliation.
-Signpost first: `~/src/udon/design/schema-workbench-2026-07.md` + `schema-notes-2026-07.md`
-already surveyed rowan (don't re-discover; but beware single-authorship "convergence").
+The schema-layer demand family. Rowan (ex-"Archema", `~/src/rowan`) is the richest source and schema's "first waiting customer"; autopax has the ratified SIGNUM semver ADRs *and* the best empirical stress test in the family; operata is mostly a consumer. ⚠ This map predates the vetting bar of the later sweep but was content-verified rich in reconciliation. Signpost first: `~/src/udon/design/schema-workbench-2026-07.md` + `schema-notes-2026-07.md` already surveyed rowan (don't re-discover; but beware single-authorship "convergence").
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -793,9 +661,7 @@ Dry wells / read-don't-remine: `rowan/docs/msc/reflections/` (stakes context, no
 
 ## ELI first-person tool testimony [Tier 3, reconciled back from the quarantined first sweep]
 
-Agents' own lived accounts of tools serving/failing them — the demand evidence with a
-failure mode independent of ideology, practice, and theory. The zi-am-tur vein is deep;
-the other three ELI homes were swept and found shallow (correction to the earlier framing).
+Agents' own lived accounts of tools serving/failing them — the demand evidence with a failure mode independent of ideology, practice, and theory. The zi-am-tur vein is deep; the other three ELI homes were swept and found shallow (correction to the earlier framing).
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|

@@ -9,16 +9,9 @@ status: gathered source material — NOT an authoritative decision document.
 
 # Input/Output Needs Map — gathered seed
 
-**Posture (phase 1 — gathering):** wide open. Add situations freely — bad
-ideas, duplicates, half-thoughts, 15-year-old udon-c notions all welcome;
-tag each with its source so synthesis can weigh provenance. The old guardrail
-this file carried ("do not flesh out from supply-side imagination") applies
-to *synthesis and decision* phases, not here — filtering at intake is the
-one mistake gathering can make.
+**Posture (phase 1 — gathering):** wide open. Add situations freely — bad ideas, duplicates, half-thoughts, 15-year-old udon-c notions all welcome; tag each with its source so synthesis can weigh provenance. The old guardrail this file carried ("do not flesh out from supply-side imagination") applies to *synthesis and decision* phases, not here — filtering at intake is the one mistake gathering can make.
 
-**Where this came from:** the situations below are the ones visible from
-[pipeline-discussion.md](../pipeline-discussion.md) (the 2026-07-21 morning
-turns) at the moment v2 was reseeded. They are seeds, not an enumeration.
+**Where this came from:** the situations below are the ones visible from [pipeline-discussion.md](../pipeline-discussion.md) (the 2026-07-21 morning turns) at the moment v2 was reseeded. They are seeds, not an enumeration.
 
 ## Candidate row shape (an idea for phase (2)'s deliverable)
 

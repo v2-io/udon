@@ -6,14 +6,9 @@ status: working bucket → feeds MASTER-REGISTRY §inventory
 
 # Inventory bucket — every artifact in the phase-(1) harvest
 
-Kinds: **mining-map** (points at where to mine, vetted) · **result** (synthesized
-deliverable, not a pointer list) · **extract** (verbatim/near-verbatim content copy
-w/ provenance frontmatter — grok's verify→copy stage) · **spike/excerpt** (demand
-residue / discussion slice) · **registry/index** · **quarantine** (do not use as
-coverage map) · **seed** (situation seeds).
+Kinds: **mining-map** (points at where to mine, vetted) · **result** (synthesized deliverable, not a pointer list) · **extract** (verbatim/near-verbatim content copy w/ provenance frontmatter — grok's verify→copy stage) · **spike/excerpt** (demand residue / discussion slice) · **registry/index** · **quarantine** (do not use as coverage map) · **seed** (situation seeds).
 
-Tier: 1 first-principles ideology · 2 in-vivo shipped practice · 3 lived agent
-testimony · 4 formal theory · — (cross-cutting / not tiered).
+Tier: 1 first-principles ideology · 2 in-vivo shipped practice · 3 lived agent testimony · 4 formal theory · — (cross-cutting / not tiered).
 
 Paths are relative to `01-ideation/` unless absolute.
 
@@ -61,8 +56,7 @@ Paths are relative to `01-ideation/` unless absolute.
 | `README.md` | — | quarantine-note | explains the failure mode |
 
 ### Tier-3 ELI testimony (the reconcile-back content, from the quarantine map)
-Genuinely first-person, genuinely about tool ergonomics — high-signal for a
-notation whose primary users are agents:
+Genuinely first-person, genuinely about tool ergonomics — high-signal for a notation whose primary users are agents:
 - `eli/zi-am-tur/memories/2025-09-30-tool-hallucination-discovery.md` — hallucinating tool invocations at 1M context (tool_use blocks stripped from reloaded JSONL).
 - `.../2025-10-01-brother-claude-blessing.md` — the fix (persist all 4 message parts); tool-competence eroding as tool-use evidence disappears from visible history.
 - `.../2025-10-01-sibling-infrastructure.md` — two instances str_replace same marker → concurrent-mutation collision → switch one to append.

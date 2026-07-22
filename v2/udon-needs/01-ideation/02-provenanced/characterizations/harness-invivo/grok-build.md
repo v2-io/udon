@@ -7,18 +7,7 @@ repo_provenance: git log — public tree "synced from monorepo"; last sync commi
 
 # Grok Build CLI (`grok` / `xai-grok-pager`) — in-vivo tooling map
 
-**What this repo is:** the full Rust source of xAI's terminal coding agent (TUI +
-headless + ACP/IDE server). Primary model: `grok-build` (grok-code family). The
-codebase is a large workspace (~60 codegen crates); the tooling gold is
-concentrated in **three** crates: `xai-grok-tools` (tool impls + schemas),
-`xai-grok-agent` (system prompts + prompt assembly), and the pager crate's
-**user-guide docs** (agent-mode / headless conventions in prose). Notable: the
-repo carries **four parallel tool "personalities"** for different models/modes
-(`grok_build`, `grok_build_concise`, `grok_build_hashline`, plus vendored
-`codex` and `opencode` toolsets) — a direct in-vivo record of how one harness
-tunes tool surface per model. It also heavily mirrors Claude Code conventions
-(`.claude/settings.json`, `--permission-mode bypassPermissions`, `Agent(...)`
-entries, `claude_import`).
+**What this repo is:** the full Rust source of xAI's terminal coding agent (TUI + headless + ACP/IDE server). Primary model: `grok-build` (grok-code family). The codebase is a large workspace (~60 codegen crates); the tooling gold is concentrated in **three** crates: `xai-grok-tools` (tool impls + schemas), `xai-grok-agent` (system prompts + prompt assembly), and the pager crate's **user-guide docs** (agent-mode / headless conventions in prose). Notable: the repo carries **four parallel tool "personalities"** for different models/modes (`grok_build`, `grok_build_concise`, `grok_build_hashline`, plus vendored `codex` and `opencode` toolsets) — a direct in-vivo record of how one harness tunes tool surface per model. It also heavily mirrors Claude Code conventions (`.claude/settings.json`, `--permission-mode bypassPermissions`, `Agent(...)` entries, `claude_import`).
 
 ---
 

@@ -20,32 +20,13 @@ note: |
 
 # UNION-C — design/UX/utils, usability+scenarios, live consumers
 
-**What this cluster covers.** Three source files with a lot of internal
-overlap: the six-map merge (broad, everything in the repo + adjacent
-estates, organized by weight band) and two narrower "early pass" files that
-had already started actually copying bodies into `extracts/` — one for
-in-repo design/UX/utils targets, one for live external `.udon` consumers.
-Below, I've re-cut all three by **area** rather than by source file, so a
-path named once in `sources-live-consumers.md` and again (with different
-notes) in `MERGED §5` becomes one row with both annotations. Weight bands
-are grok's pass-1/pass-2 reconciled stance from `MERGED §1`, normalized to
-H/M/L; where the original band or the pass-1/pass-2 *disagreement* itself
-carries information, it's kept in the Why column — that disagreement (buried
-empirical gold vs. well-known design spine) is the single most useful thing
-this cluster's sources found, and it's worth an extraction agent seeing it
-directly rather than through a pointer.
+**What this cluster covers.** Three source files with a lot of internal overlap: the six-map merge (broad, everything in the repo + adjacent estates, organized by weight band) and two narrower "early pass" files that had already started actually copying bodies into `extracts/` — one for in-repo design/UX/utils targets, one for live external `.udon` consumers. Below, I've re-cut all three by **area** rather than by source file, so a path named once in `sources-live-consumers.md` and again (with different notes) in `MERGED §5` becomes one row with both annotations. Weight bands are grok's pass-1/pass-2 reconciled stance from `MERGED §1`, normalized to H/M/L; where the original band or the pass-1/pass-2 *disagreement* itself carries information, it's kept in the Why column — that disagreement (buried empirical gold vs. well-known design spine) is the single most useful thing this cluster's sources found, and it's worth an extraction agent seeing it directly rather than through a pointer.
 
 ---
 
 ## 1. Usability corpus (`test/usability/`) — primary empirical reservoir
 
-This tree is the crux of the pass-1/pass-2 disagreement (`MERGED §1`, §3a):
-pass-1 agents glossed it as "stale models/spec — still evidence" and barely
-listed it; pass-2 reweighted it as the **densest empirical deposit** in the
-repo for "what would someone actually use UDON for" — ~27 topic-enablement
-runs that reportedly predicted July-2026 adopters (process maps, vivarium
-narratives, audit/pre-registration) seven months early. Mine raw yaml
-bodies, not just the synthesis.
+This tree is the crux of the pass-1/pass-2 disagreement (`MERGED §1`, §3a): pass-1 agents glossed it as "stale models/spec — still evidence" and barely listed it; pass-2 reweighted it as the **densest empirical deposit** in the repo for "what would someone actually use UDON for" — ~27 topic-enablement runs that reportedly predicted July-2026 adopters (process maps, vivarium narratives, audit/pre-registration) seven months early. Mine raw yaml bodies, not just the synthesis.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -65,28 +46,17 @@ bodies, not just the synthesis.
 | `test/usability/analyze_embeddings.rb`, `embed_sentences.rb`, `analyze_chunks.rb` | L (mining aid) | Could re-cluster enablement responses if the embedding DB still exists (unconfirmed — `MERGED §13.5`) |
 | `test/usability/ETHICS.md`, `test/usability/run` | L (provenance) | How agents were treated in the experiment; experiment menu — context for reading the rest of the tree |
 
-Named topic_enablement seed sample (not exhaustive, from `MERGED §3a`): A/B
-testing, CQRS, transparency, HCI, OpenID Connect, model distillation,
-JAMstack, DDD, reinforcement learning, stream processing, feature store,
-human-in-the-loop, cognitive load, turn-taking. Full catalog obtainable via
-`rg '^task:' test/usability/results/udon-topic_*.yaml`.
+Named topic_enablement seed sample (not exhaustive, from `MERGED §3a`): A/B testing, CQRS, transparency, HCI, OpenID Connect, model distillation, JAMstack, DDD, reinforcement learning, stream processing, feature store, human-in-the-loop, cognitive load, turn-taking. Full catalog obtainable via `rg '^task:' test/usability/results/udon-topic_*.yaml`.
 
-Related meta-evidence (not a substitute for the yamls themselves):
-`_archive/REVIEW-JULY-2026.md` enablement/onboarding sections (~L163–208,
-~L179–192) — underweighted raw application diversity relative to synthesis,
-same failure mode as pass-1 here.
+Related meta-evidence (not a substitute for the yamls themselves): `_archive/REVIEW-JULY-2026.md` enablement/onboarding sections (~L163–208, ~L179–192) — underweighted raw application diversity relative to synthesis, same failure mode as pass-1 here.
 
-**Dry well / caution:** don't treat `enablement-synthesis.md` and all the P0
-yamls as independent sources for counting purposes — the synthesis indexes
-the yamls, it isn't a second corpus.
+**Dry well / caution:** don't treat `enablement-synthesis.md` and all the P0 yamls as independent sources for counting purposes — the synthesis indexes the yamls, it isn't a second corpus.
 
 ---
 
 ## 2. Day-in-the-life scenarios (`test/scenarios/`)
 
-Commissioned 2026-07-16; already speaks in the product's own vocabulary
-(skeleton/at/all/diff/patch/CAS/append). All three source files agree this
-tree is under-mined relative to the design essays.
+Commissioned 2026-07-16; already speaks in the product's own vocabulary (skeleton/at/all/diff/patch/CAS/append). All three source files agree this tree is under-mined relative to the design essays.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -98,22 +68,15 @@ tree is under-mined relative to the design essays.
 | `test/scenarios/corpus/*.udon` (7 files, named in §5 below) | M | CORE-0.9 idioms of live genres — mirrors real consumer documents |
 | `test/scenarios/bin/verify` | L | Corpus clean-parse contract (tooling, not demand text) |
 
-**Mining tip carried from `MERGED §3b`:** prefer `.gap` scenarios and `|gap`
-children first — they name wanted capabilities the current packet doesn't
-cover, which is exactly the shape of a demand signal.
+**Mining tip carried from `MERGED §3b`:** prefer `.gap` scenarios and `|gap` children first — they name wanted capabilities the current packet doesn't cover, which is exactly the shape of a demand signal.
 
-`sources-udon-repo-design-ux.md` had this whole tree still in its
-"high-value not yet copied" queue (suggested: copy README + 01–04 feature
-heads, or the whole dir later) — **not yet copied**, open.
+`sources-udon-repo-design-ux.md` had this whole tree still in its "high-value not yet copied" queue (suggested: copy README + 01–04 feature heads, or the whole dir later) — **not yet copied**, open.
 
 ---
 
 ## 3. Design-of-record & lived wishlists (in-repo, demand-facing)
 
-Pass-1 strength; pass-2 treats these as "already well-known — skip detail,"
-i.e. keep as the design-of-record band rather than re-mining as if freshly
-discovered. `sources-udon-repo-design-ux.md` had already copied several of
-these into `extracts/` — marked below.
+Pass-1 strength; pass-2 treats these as "already well-known — skip detail," i.e. keep as the design-of-record band rather than re-mining as if freshly discovered. `sources-udon-repo-design-ux.md` had already copied several of these into `extracts/` — marked below.
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -145,9 +108,7 @@ these into `extracts/` — marked below.
 | `spec/msc/adjudication-2026-07-paths-and-silences.md` | M | Path forks packet — positional identity, embeddability questions |
 | `design/README.md` | L | Status banners / superseded markers — orientation for the whole `design/` tree |
 
-**Lower for demand (listed so it isn't "rediscovered" as a miss):**
-`design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side,
-mostly ratified into CORE 0.9.
+**Lower for demand (listed so it isn't "rediscovered" as a miss):** `design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side, mostly ratified into CORE 0.9.
 
 ---
 
@@ -162,17 +123,13 @@ mostly ratified into CORE 0.9.
 | `design/examples/docbook-fo-table.udon`, `design/examples/docbook-graphics.udon`, `design/examples/mathml-to-latex.udon` | L | Transform/round-trip genre |
 | `design/examples/cheatsheet.udon`, `design/examples/comprehensive.udon`, `design/examples/minimal.udon` | L | Pedagogy ladder / usability stimuli |
 
-`sources-udon-repo-design-ux.md` flagged this whole subtree as "pointers or
-a small set" rather than a full copy — still open, not yet extracted.
+`sources-udon-repo-design-ux.md` flagged this whole subtree as "pointers or a small set" rather than a full copy — still open, not yet extracted.
 
 ---
 
 ## 5. Live consumers — external `.udon` documents and loaders
 
-Grounds demand in actual documents and code that load UDON today, not just
-design essays. `sources-live-consumers.md` is almost entirely this section;
-folded in with `MERGED §5` (which adds the scenario-corpus mirrors and a
-couple of program-level TODO/charter rows).
+Grounds demand in actual documents and code that load UDON today, not just design essays. `sources-live-consumers.md` is almost entirely this section; folded in with `MERGED §5` (which adds the scenario-corpus mirrors and a couple of program-level TODO/charter rows).
 
 ### 5a. Registry & scan mechanics
 
@@ -181,15 +138,9 @@ couple of program-level TODO/charter rows).
 | `CONSUMERS.md` | H | ✔ copied → `extracts/CONSUMERS.md` (whole). Live inventory, migration surfaces, **unused feature surface**, candidate future classes |
 | `bin/find-consumers` | L | Discovery / re-scan mechanics — not re-run this cycle; CONSUMERS.md's 2026-07-16 scan is treated as the live-doc authority for now |
 
-**Unused features** (consistent across both maps): no `@`, no `|{…}`, no
-freeform fences, no `<…>`, no `:key?` yet in real documents — claimed
-affordances not yet pulled into real work; a genuine product-vs-overbuild
-signal.
+**Unused features** (consistent across both maps): no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet in real documents — claimed affordances not yet pulled into real work; a genuine product-vs-overbuild signal.
 
-**Candidate future classes** (watchlist, not yet live `.udon`): ADRs,
-Axiomata, Signa, Operata, Memorata, A2A agent communications,
-mentoring-feedback, Loci, descent grammars (already UDON). These are stated
-*intended* use classes from drained planning notes, not files to extract.
+**Candidate future classes** (watchlist, not yet live `.udon`): ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON). These are stated *intended* use classes from drained planning notes, not files to extract.
 
 ### 5b. Live `.udon` documents
 
@@ -223,74 +174,31 @@ mentoring-feedback, Loci, descent grammars (already UDON). These are stated
 
 ### 5d. Scenario-corpus mirrors of live genres
 
-Under `test/scenarios/corpus/` (cross-ref §2 above — same files, noted here
-because they specifically mirror the live documents in §5b/§5c): `archema.
-concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain.
-udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium.
-decision-log.udon`, `vivarium.lexicon.udon`. These encode what the team
-*believed* agents would do with those genres more than they encode syntax
-per se — useful as a belief/expectation artifact distinct from the live
-originals.
+Under `test/scenarios/corpus/` (cross-ref §2 above — same files, noted here because they specifically mirror the live documents in §5b/§5c): `archema. concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain. udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium. decision-log.udon`, `vivarium.lexicon.udon`. These encode what the team *believed* agents would do with those genres more than they encode syntax per se — useful as a belief/expectation artifact distinct from the live originals.
 
-**Need classes distilled from this whole section** (from
-`sources-live-consumers.md`, still open, not path-level — worth an
-extraction agent holding these as a checklist while reading §5b/§5c):
-safe-subset + lint/fmt CLI; schema=root-type=filename-designator pattern;
-`[key]` identity density for greppable first lines; date attrs today as
-unvalidated strings awaiting the temporal dialect; append-friendly docs (no
-forced single root wrapper); real library parsing for runtime instead of
-hand parsers; raw dialects (`!:md:`, `!:sh:`) embedded in structured docs.
+**Need classes distilled from this whole section** (from `sources-live-consumers.md`, still open, not path-level — worth an extraction agent holding these as a checklist while reading §5b/§5c): safe-subset + lint/fmt CLI; schema=root-type=filename-designator pattern; `[key]` identity density for greppable first lines; date attrs today as unvalidated strings awaiting the temporal dialect; append-friendly docs (no forced single root wrapper); real library parsing for runtime instead of hand parsers; raw dialects (`!:md:`, `!:sh:`) embedded in structured docs.
 
 **Dry wells (checked, not fruitful):**
-- No `*.udon` files found under `~/src/operata` — the name appears only in
-  `design/examples/operata*.udon`, not as a live consumer.
+- No `*.udon` files found under `~/src/operata` — the name appears only in `design/examples/operata*.udon`, not as a live consumer.
 - `ops/` — no hits in the capped live-consumer search pass.
 
 ---
 
 ## 6. Cross-cutting notes carried from `MERGED-six-maps.md`'s own apparatus
 
-These aren't extraction targets themselves — they're navigational aids
-`MERGED-six-maps.md` built that are worth an extraction agent's awareness,
-since that whole file is being folded into per-area sections here rather
-than read directly:
+These aren't extraction targets themselves — they're navigational aids `MERGED-six-maps.md` built that are worth an extraction agent's awareness, since that whole file is being folded into per-area sections here rather than read directly:
 
-- **`MERGED §1`** (weight-disagreement ledger) is the single highest-value
-  table in that file — it's the source for most of the H/M/L calls above
-  and the "already well-known, don't re-mine as discovery" framing for §3.
-- **`MERGED §2`** (suggested reading order) roughly matches the section
-  order used here: usability P0 → scenarios → lived wishlists → demand
-  spikes → live consumers → genre seeds → historical → design-of-record →
-  ideology → library contracts → search portals.
-- **`MERGED §12`** (intentionally dry / deprioritized) lists repo-wide dry
-  wells beyond this cluster's scope (ops/, eli/**, embeddings/, neurips/,
-  logos/, vox/, core/target/**, greenfield full-SPEC rewrites, invention-
-  track usability, quarantine extracts) — not re-listed here since they're
-  outside this cluster's three areas, but worth the spawner knowing they
-  were already checked off elsewhere in the six-map merge.
-- **`MERGED §13`** (honest gaps admitted) — the `.attic`/`declang` trail
-  under `_ref/udon` unconfirmed on disk, a possibly-gone embedding-analysis
-  DB, and an unfinished `find *.udon` sweep outside CONSUMERS roots are the
-  three gaps most relevant to this cluster's areas specifically.
+- **`MERGED §1`** (weight-disagreement ledger) is the single highest-value table in that file — it's the source for most of the H/M/L calls above and the "already well-known, don't re-mine as discovery" framing for §3.
+- **`MERGED §2`** (suggested reading order) roughly matches the section order used here: usability P0 → scenarios → lived wishlists → demand spikes → live consumers → genre seeds → historical → design-of-record → ideology → library contracts → search portals.
+- **`MERGED §12`** (intentionally dry / deprioritized) lists repo-wide dry wells beyond this cluster's scope (ops/, eli/**, embeddings/, neurips/, logos/, vox/, core/target/**, greenfield full-SPEC rewrites, invention- track usability, quarantine extracts) — not re-listed here since they're outside this cluster's three areas, but worth the spawner knowing they were already checked off elsewhere in the six-map merge.
+- **`MERGED §13`** (honest gaps admitted) — the `.attic`/`declang` trail under `_ref/udon` unconfirmed on disk, a possibly-gone embedding-analysis DB, and an unfinished `find *.udon` sweep outside CONSUMERS roots are the three gaps most relevant to this cluster's areas specifically.
 
-Sections of `MERGED-six-maps.md` **not** folded into this cluster's areas
-(out of scope for UNION-C, belongs to other clusters' unions): §7 (library/
-streaming/API surfaces — supply-side), §8 (historical archaeology —
-udon-c/libudon/udon-ruby/original-2011), §9–10 (rowan/autopax/operata
-schema-versioning + agentic-tooling ideology — explicitly Fable's
-territory per both provenanced files), §11 (search portals).
+Sections of `MERGED-six-maps.md` **not** folded into this cluster's areas (out of scope for UNION-C, belongs to other clusters' unions): §7 (library/ streaming/API surfaces — supply-side), §8 (historical archaeology — udon-c/libudon/udon-ruby/original-2011), §9–10 (rowan/autopax/operata schema-versioning + agentic-tooling ideology — explicitly Fable's territory per both provenanced files), §11 (search portals).
 
 ---
 
 ## Open question for the merge
 
-`sources-udon-repo-design-ux.md` and `sources-live-consumers.md` both
-predate `MERGED-six-maps.md` (both "gathered 2026-07-21," early-pass) and
-already did real copying work into `extracts/` — I've preserved every
-✔-copied marker above so the spawner knows which rows are "verify the
-extract is current" vs. "extract fresh." If another cluster also touched
-`extracts/` for overlapping paths (e.g. `design/positioning.md` also shows
-up in MERGED §3c as a "use thesis" reference), worth a merge-time check
-that we're not describing the same extract twice under different framing.
+`sources-udon-repo-design-ux.md` and `sources-live-consumers.md` both predate `MERGED-six-maps.md` (both "gathered 2026-07-21," early-pass) and already did real copying work into `extracts/` — I've preserved every ✔-copied marker above so the spawner knows which rows are "verify the extract is current" vs. "extract fresh." If another cluster also touched `extracts/` for overlapping paths (e.g. `design/positioning.md` also shows up in MERGED §3c as a "use thesis" reference), worth a merge-time check that we're not describing the same extract twice under different framing.
 
 I'll stay available for merge questions.

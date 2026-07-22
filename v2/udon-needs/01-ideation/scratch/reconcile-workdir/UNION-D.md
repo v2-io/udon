@@ -1,13 +1,10 @@
 # UNION-D — rows chopped by the compiling agent (sources held fully in context)
 
-Covers: `vaults.md`, `sources-schema-versioning.md`, ELI testimony (from the
-quarantined first-sweep map's content-read section). Same row convention as UNION-A/C.
+Covers: `vaults.md`, `sources-schema-versioning.md`, ELI testimony (from the quarantined first-sweep map's content-read section). Same row convention as UNION-A/C.
 
 ## ~/vaults/** — pre-sapientia research vault (Aug 2025) [Tier 1, per vaults.md]
 
-A single Obsidian vault from a concentrated Aug-2025 research burst — the raw gathering
-substrate *behind* the sapientia-era ideology. Center of mass: agent tooling /
-multi-agent-systems research, plus a real built 7-agent Claude Code system (`gemini/`).
+A single Obsidian vault from a concentrated Aug-2025 research burst — the raw gathering substrate *behind* the sapientia-era ideology. Center of mass: agent tooling / multi-agent-systems research, plus a real built 7-agent Claude Code system (`gemini/`).
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -35,12 +32,7 @@ Dry wells (checked, do not re-sweep): `gemini/elixir-otp/` (240M EPUB corpus), `
 
 ## Schema versioning/checking — rowan · autopax · operata [Tier 1+2, per sources-schema-versioning.md]
 
-The schema-layer demand family. Rowan (ex-"Archema", `~/src/rowan`) is the richest source
-and schema's "first waiting customer"; autopax has the ratified SIGNUM semver ADRs *and*
-the best empirical stress test in the family; operata is mostly a consumer. ⚠ This map
-predates the vetting bar of the later sweep but was content-verified rich in reconciliation.
-Signpost first: `~/src/udon/design/schema-workbench-2026-07.md` + `schema-notes-2026-07.md`
-already surveyed rowan (don't re-discover; but beware single-authorship "convergence").
+The schema-layer demand family. Rowan (ex-"Archema", `~/src/rowan`) is the richest source and schema's "first waiting customer"; autopax has the ratified SIGNUM semver ADRs *and* the best empirical stress test in the family; operata is mostly a consumer. ⚠ This map predates the vetting bar of the later sweep but was content-verified rich in reconciliation. Signpost first: `~/src/udon/design/schema-workbench-2026-07.md` + `schema-notes-2026-07.md` already surveyed rowan (don't re-discover; but beware single-authorship "convergence").
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|
@@ -69,9 +61,7 @@ Dry wells / read-don't-remine: `rowan/docs/msc/reflections/` (stakes context, no
 
 ## ELI first-person tool testimony [Tier 3, reconciled back from the quarantined first sweep]
 
-Agents' own lived accounts of tools serving/failing them — the demand evidence with a
-failure mode independent of ideology, practice, and theory. The zi-am-tur vein is deep;
-the other three ELI homes were swept and found shallow (correction to the earlier framing).
+Agents' own lived accounts of tools serving/failing them — the demand evidence with a failure mode independent of ideology, practice, and theory. The zi-am-tur vein is deep; the other three ELI homes were swept and found shallow (correction to the earlier framing).
 
 | Target path | Prio | Why / what to extract |
 |---|---|---|

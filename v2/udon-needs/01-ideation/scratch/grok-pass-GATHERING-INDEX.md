@@ -6,9 +6,7 @@ status: inventory of phase (1) intake — not synthesis, not prioritization
 
 # Gathering index — phase (1)
 
-Scratch inventory of what has been staged under this directory. Wide open:
-duplicates of *ideas* across files are expected; **verbatim** duplicates of
-whole files were avoided against Fable’s existing maps.
+Scratch inventory of what has been staged under this directory. Wide open: duplicates of *ideas* across files are expected; **verbatim** duplicates of whole files were avoided against Fable’s existing maps.
 
 ## Fable (already here — do not re-mine as if empty)
 

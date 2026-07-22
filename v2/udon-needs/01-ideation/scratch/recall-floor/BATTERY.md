@@ -1,18 +1,8 @@
 # Recall-floor battery — the checkable lexical net over the estate
 
-**Built 2026-07-21.** Purpose: make "did we look at X?" answerable by `grep`
-instead of by trust. ~20 territory-sweep agents plus semantic audits never
-checked the *union* of their territories against the estate; one plain
-`rg -li 'principled tool'` then surfaced ~10 unaccounted files. This battery is
-the broad lexical net whose design bet is: **a relevant file that matches NO
-query is the failure mode** — recall over precision, breadth of net over
-cleverness of any single mesh. Relevance of the residual is deliberately **not**
-judged here (that is the next phase's job); the product is the checkable
-work-list.
+**Built 2026-07-21.** Purpose: make "did we look at X?" answerable by `grep` instead of by trust. ~20 territory-sweep agents plus semantic audits never checked the *union* of their territories against the estate; one plain `rg -li 'principled tool'` then surfaced ~10 unaccounted files. This battery is the broad lexical net whose design bet is: **a relevant file that matches NO query is the failure mode** — recall over precision, breadth of net over cleverness of any single mesh. Relevance of the residual is deliberately **not** judged here (that is the next phase's job); the product is the checkable work-list.
 
-Reproducible: `bash run-battery.sh` regenerates every `hits/hits-*.txt`;
-`python3 build-union.py` rebuilds `UNION*.txt`. Both are the source of truth for
-what follows.
+Reproducible: `bash run-battery.sh` regenerates every `hits/hits-*.txt`; `python3 build-union.py` rebuilds `UNION*.txt`. Both are the source of truth for what follows.
 
 ## Roots searched
 
@@ -23,10 +13,7 @@ what follows.
 
 ## Exclusion patterns (mechanically-obvious noise only)
 
-Applied identically to `find` (dir-name `-prune`) and `rg` (`--glob '!…'`). Every
-pattern is a build/dependency/VCS artifact directory — the named set
-(`node_modules .git target/ deps/ binary`) plus its exact analogs in the other
-toolchains present in the estate:
+Applied identically to `find` (dir-name `-prune`) and `rg` (`--glob '!…'`). Every pattern is a build/dependency/VCS artifact directory — the named set (`node_modules .git target/ deps/ binary`) plus its exact analogs in the other toolchains present in the estate:
 
 | Pattern | Why (mechanical) |
 |---|---|
@@ -39,22 +26,13 @@ toolchains present in the estate:
 | `.venv/` `venv/` `__pycache__/` `.mypy_cache/` | Python build/env |
 | `dist/` `build/` | generic build output |
 
-Binary content is auto-skipped by `rg` (content queries only; `find` filename
-queries don't read content, so binary artifacts can still surface by name — the
-`_build/` exclusion is what removes the compiled-`.beam` filename noise). No
-other exclusions: no relevance/topic/location filtering, no `.gitignore`
-respect (see below).
+Binary content is auto-skipped by `rg` (content queries only; `find` filename queries don't read content, so binary artifacts can still surface by name — the `_build/` exclusion is what removes the compiled-`.beam` filename noise). No other exclusions: no relevance/topic/location filtering, no `.gitignore` respect (see below).
 
-**`rg` recall flags:** `-li --no-ignore --hidden -F`. `--no-ignore` deliberately
-does **not** respect `.gitignore` — a gitignored file can be exactly the
-un-accounted-for one. `--hidden` searches dotfiles/dirs (`.git` re-excluded by
-glob). `-F` = fixed-string, `-i` = case-insensitive, `-l` = paths only.
+**`rg` recall flags:** `-li --no-ignore --hidden -F`. `--no-ignore` deliberately does **not** respect `.gitignore` — a gitignored file can be exactly the un-accounted-for one. `--hidden` searches dotfiles/dirs (`.git` re-excluded by glob). `-F` = fixed-string, `-i` = case-insensitive, `-l` = paths only.
 
 ## Filename queries (`find -iname`, case-insensitive)
 
-Seed set from the brief, extended from the corpus's own vocabulary
-(`instrumenta`, `operata`, `praxes` are project terms; `needs`/`demand` are the
-demand-side framing).
+Seed set from the brief, extended from the corpus's own vocabulary (`instrumenta`, `operata`, `praxes` are project terms; `needs`/`demand` are the demand-side framing).
 
 | slug | `-iname` pattern | hits |
 |---|---|---|
@@ -78,10 +56,7 @@ demand-side framing).
 
 ## Content queries (`rg -li -F`, fixed strings, case-insensitive)
 
-Seed set from the brief plus the corpus's own category vocabulary (mined from
-`02-provenanced/**` frontmatter `categories:` and `TARGET-FILES.md` section
-headings: `harness-facing`, `edit-representation`, `cross-tier`,
-`orchestrator-worker`, `self-chunking`, `demand-side`, `propose-apply`, etc.).
+Seed set from the brief plus the corpus's own category vocabulary (mined from `02-provenanced/**` frontmatter `categories:` and `TARGET-FILES.md` section headings: `harness-facing`, `edit-representation`, `cross-tier`, `orchestrator-worker`, `self-chunking`, `demand-side`, `propose-apply`, etc.).
 
 | slug | literal string | hits |
 |---|---|---|
@@ -128,13 +103,11 @@ headings: `harness-facing`, `edit-representation`, `cross-tier`,
 | patch-tool | `patch tool` | 56 |
 | diff-tool | `diff tool` | 65 |
 
-**59 queries total** (17 filename + 42 content). Per-query raw path lists:
-`hits/hits-fn-<slug>.txt` and `hits/hits-ct-<slug>.txt`.
+**59 queries total** (17 filename + 42 content). Per-query raw path lists: `hits/hits-fn-<slug>.txt` and `hits/hits-ct-<slug>.txt`.
 
 ## Union & classification
 
-`UNION.txt` — deduplicated union, one row per unique path,
-`<class>\t<path>\t<comma-separated matched-query-slugs>`.
+`UNION.txt` — deduplicated union, one row per unique path, `<class>\t<path>\t<comma-separated matched-query-slugs>`.
 
 | | count |
 |---|---|
@@ -143,37 +116,18 @@ headings: `harness-facing`, `edit-representation`, `cross-tier`,
 | already-in-corpus | 219 |
 | **needs-disposition** | **16,329** |
 
-Per-class lists split out: `UNION-corpus-own.txt`,
-`UNION-already-in-corpus.txt`, `UNION-needs-disposition.txt`.
+Per-class lists split out: `UNION-corpus-own.txt`, `UNION-already-in-corpus.txt`, `UNION-needs-disposition.txt`.
 
-**Classification rules** (conservative — when in doubt, needs-disposition, so
-the work-list is never falsely marked "covered"):
+**Classification rules** (conservative — when in doubt, needs-disposition, so the work-list is never falsely marked "covered"):
 
-1. **corpus-own** — path under `~/src/udon/v2/` (this compilation effort,
-   including `01-ideation/`, `.archived/`, quarantines, and this
-   `recall-floor/` dir itself). The corpus matching itself; not a candidate.
-2. **already-in-corpus** — path is *greppable* (as absolute, `~`-form, or
-   udon-repo-relative) inside the three accounting surfaces the brief names:
-   `01-reconciled-target-files/TARGET-FILES.md`, `02-provenanced/LEDGER.md`,
-   and all of `02-provenanced/**`.
+1. **corpus-own** — path under `~/src/udon/v2/` (this compilation effort, including `01-ideation/`, `.archived/`, quarantines, and this `recall-floor/` dir itself). The corpus matching itself; not a candidate.
+2. **already-in-corpus** — path is *greppable* (as absolute, `~`-form, or udon-repo-relative) inside the three accounting surfaces the brief names: `01-reconciled-target-files/TARGET-FILES.md`, `02-provenanced/LEDGER.md`, and all of `02-provenanced/**`.
 3. **needs-disposition** — everything else. The checkable work-list.
 
 ### Caveats on the classification (read before trusting a "covered" verdict)
 
-- **already-in-corpus is a floor, not a ceiling.** Many accounting entries use
-  wildcards (`test/usability/results/udon-realistic-*.yaml`), directory globs
-  (`~/src/_core/sapientia/**`), or line-span/annotation suffixes. A concrete
-  file under such an entry will *not* substring-match and therefore lands in
-  needs-disposition even though its territory was swept. This is the safe
-  failure direction (over-inclusion of the work-list), but it means the
-  needs-disposition set contains an unknown number of already-swept files. The
-  next phase should expect that and can intersect against the maps' directory
-  globs to shrink it.
-- **The net is intentionally wide.** Broad queries (`agentic` 3149, `multi-agent`
-  2367, `mcp tool` 1625, `tool-use` 1577, `feedback loop` 1719) dominate the
-  union; ~5,200 of the residual is under `~/src-ext/` (external tool clones —
-  aider/opencode/codex/kilocode/etc.), where these strings saturate. Recall was
-  the mandate; precision is downstream.
+- **already-in-corpus is a floor, not a ceiling.** Many accounting entries use wildcards (`test/usability/results/udon-realistic-*.yaml`), directory globs (`~/src/_core/sapientia/**`), or line-span/annotation suffixes. A concrete file under such an entry will *not* substring-match and therefore lands in needs-disposition even though its territory was swept. This is the safe failure direction (over-inclusion of the work-list), but it means the needs-disposition set contains an unknown number of already-swept files. The next phase should expect that and can intersect against the maps' directory globs to shrink it.
+- **The net is intentionally wide.** Broad queries (`agentic` 3149, `multi-agent` 2367, `mcp tool` 1625, `tool-use` 1577, `feedback loop` 1719) dominate the union; ~5,200 of the residual is under `~/src-ext/` (external tool clones — aider/opencode/codex/kilocode/etc.), where these strings saturate. Recall was the mandate; precision is downstream.
 
 ## Recall validation
 
@@ -182,8 +136,6 @@ The battery re-catches every file class named in the motivating incident:
 - `principled tool` content query: **46 hits** (the seed command).
 - `~/src/_ref/_arch/synaptic-cultivator/**` — 23 paths in the union.
 - `~/src/_ref/_arch/geminex/AGENTS.md` — present.
-- `~/src-ext/sapientia.snapshot-backup/curated-sessions/**` (curated jsonl/dialog
-  set) — present.
+- `~/src-ext/sapientia.snapshot-backup/curated-sessions/**` (curated jsonl/dialog set) — present.
 
-No non-permission errors during the sweep (system-dir `Permission denied` lines
-only; logged to `battery-stderr.log`).
+No non-permission errors during the sweep (system-dir `Permission denied` lines only; logged to `battery-stderr.log`).

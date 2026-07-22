@@ -9,24 +9,14 @@ method: each cluster names the same idea/source arrived at by ≥2 independent m
 
 # Convergence bucket — where independent sources agree
 
-Provenance shorthand for maps: `sap`=sapientia.md · `zo`=zoetica-ennaos.md ·
-`nx`=nexum-synaptic-elimigration.md · `ap`=autopax-practica.md ·
-`hr`=harness-refs.md · `el`=elsewhere.md · `di`=dialogs.md · `ra`=ref-arch.md ·
-`va`=vaults.md · `sbb`=sapientia-bin-buildout.md · `sv`=sources-schema-versioning.md ·
-`dos`=asf-dossier.md · `eli`=quarantined ELI-testimony section (tier 3) ·
-`t2`=harness-invivo/* (tier 2, 17 maps) · `gk`=grok MERGED-six-maps.md ·
-`nm`=needs-map.md.
+Provenance shorthand for maps: `sap`=sapientia.md · `zo`=zoetica-ennaos.md · `nx`=nexum-synaptic-elimigration.md · `ap`=autopax-practica.md · `hr`=harness-refs.md · `el`=elsewhere.md · `di`=dialogs.md · `ra`=ref-arch.md · `va`=vaults.md · `sbb`=sapientia-bin-buildout.md · `sv`=sources-schema-versioning.md · `dos`=asf-dossier.md · `eli`=quarantined ELI-testimony section (tier 3) · `t2`=harness-invivo/* (tier 2, 17 maps) · `gk`=grok MERGED-six-maps.md · `nm`=needs-map.md.
 
 Order is rough-descending by strength (breadth × tier-span).
 
 ---
 
 ## C1 — The edit-representation landscape + "no formal validity guarantees" (STRONGEST; 4-tier)
-The recurring finding that agent file-editing splits into whole-file / unified-diff /
-SEARCH-REPLACE-block / apply_patch-envelope / AST, that edit-format choice swings
-success rate 2–3× (Aider), and that *all* shipping tools operate at text/char level
-with **no formal validity guarantee** — which is exactly the gap UDON's
-schema-guarded mutation is positioned to fill.
+The recurring finding that agent file-editing splits into whole-file / unified-diff / SEARCH-REPLACE-block / apply_patch-envelope / AST, that edit-format choice swings success rate 2–3× (Aider), and that *all* shipping tools operate at text/char level with **no formal validity guarantee** — which is exactly the gap UDON's schema-guarded mutation is positioned to fill.
 - **T1 ideology:** `zo` doc-02 (current-agentic-tool-landscape: Cursor/Aider/Windsurf/Codex/Claude edit formats, Aider's 2–3× finding), `zo` agentic-editing-tools-report, doc-03 formal-methods (make invalid states unrepresentable).
 - **T2 in-vivo:** `hr` codex `apply_patch` envelope ("easy to parse, safe to apply"), aider `*_prompts.py` family (editblock/udiff/patch/wholefile), anthropic-leaked `FileEditTool`; **the 17 `t2` per-repo maps are the primary in-vivo layer — see BUCKET-tier2-invivo for the cross-tool table.**
 - **T3 testimony:** `eli` Architectus chained-unverified-str_replace → "broke minimal-sapientia 3×" (verify-before-chain); `eli` Zi-am-tur sibling concurrent str_replace collision.
@@ -35,11 +25,7 @@ schema-guarded mutation is positioned to fill.
 > This is the single most-corroborated demand in the harvest and the clearest UDON differentiator.
 
 ## C2 — The sapientia CLI-conventions / QUICK-TOOLING corpus is the ideological taproot (6+ maps)
-One body of work ("CLI Tool Conventions" → "Quick-Tooling Conventions — crystallized
-wisdom") is cited or re-derived by nearly every ideology map. Verbatim duplication
-exists (copies in multiple trees) — but each map adds *different context* (origin,
-distillation, application, the built artifact, the design dialog), which is the
-"restated-in-different-context = keep" case.
+One body of work ("CLI Tool Conventions" → "Quick-Tooling Conventions — crystallized wisdom") is cited or re-derived by nearly every ideology map. Verbatim duplication exists (copies in multiple trees) — but each map adds *different context* (origin, distillation, application, the built artifact, the design dialog), which is the "restated-in-different-context = keep" case.
 - Origin/home: `sap` (`cli-conventions/` 39 files + `QUICK-TOOLING-CONVENTIONS.md`).
 - Copy in the ennaos anchor: `zo` (`refs/QUICK-TOOLING-CONVENTIONS.md`).
 - Distilled: `nx` (`sapientia-conventions-analysis.md`), `ap` (cites "Sapientia's 37 CLI convention documents").
@@ -49,15 +35,13 @@ distillation, application, the built artifact, the design dialog), which is the
 > Dedup note: the *document* is one source; the ~6 map-references are complementary lenses, all worth keeping as pointers.
 
 ## C3 — ennaos `docs/research/agentic-coding-background/**` is the synthesized center of mass (3–4 maps, incl. Joseph's calibration flag)
-Independently flagged as *the* anchor by the map that owns it and by two maps that
-don't. Joseph's own calibration example ("all very relevant").
+Independently flagged as *the* anchor by the map that owns it and by two maps that don't. Joseph's own calibration example ("all very relevant").
 - Owner: `zo` (6 numbered syntheses + ~21-file `refs/` corpus).
 - Flagged from outside area: `nx` (cross-pointer), `hr` ("REAL center of mass is OUTSIDE my dirs"), `ap` (cross-ref).
 - `gk` §10b.
 
 ## C4 — The 60/30/6/4 model-tier distribution (Joseph's signature; ideology + dialog)
-"Most friction is missing *crystallized process*, not missing intelligence"
-(60% deterministic Ruby / 30% Haiku / 6% Sonnet / 4% Opus).
+"Most friction is missing *crystallized process*, not missing intelligence" (60% deterministic Ruby / 30% Haiku / 6% Sonnet / 4% Opus).
 - `sap` (next-steps-tool-consciousness), `zo` (doc-05, QUICK-TOOLING), `nx` (agentic-toys-quick-reference quotes it), `di` (#2 a3483210:12, checkpoint-resonance:87), `hr`.
 - First spoken in dialog: `zo` compressed-session ~Sept 18; `di` traces the seam.
 

@@ -6,19 +6,11 @@ status: current — reflects the completed 2026-07-21 extraction fan-out (~270 p
 
 # Phase (1) gathering — front door
 
-**Read me first.** The 2026-07-21 extraction fan-out is **done**: ~30 mining-spot maps
-were dissolved into one target union, then ~16 parallel agents worked its rows into
-**~270 provenanced artifacts** under `02-provenanced/`. This index is the map of what
-landed and where the (few) open items are. If you're a phase-(2) synthesis agent, orient
-here, then read [`../BRIEF-agentic-tooling-compilation.md`](../BRIEF-agentic-tooling-compilation.md)
-(the standing brief — purposes, tiers, quality bars) and
-[`02-provenanced/syntheses/CONVERGENCES.md`](02-provenanced/syntheses/CONVERGENCES.md)
-(the four evidentiary tiers + 18 cross-tier clusters — the highest-value content).
+**Read me first.** The 2026-07-21 extraction fan-out is **done**: ~30 mining-spot maps were dissolved into one target union, then ~16 parallel agents worked its rows into **~270 provenanced artifacts** under `02-provenanced/`. This index is the map of what landed and where the (few) open items are. If you're a phase-(2) synthesis agent, orient here, then read [`../BRIEF-agentic-tooling-compilation.md`](../BRIEF-agentic-tooling-compilation.md) (the standing brief — purposes, tiers, quality bars) and [`02-provenanced/syntheses/CONVERGENCES.md`](02-provenanced/syntheses/CONVERGENCES.md) (the four evidentiary tiers + 18 cross-tier clusters — the highest-value content).
 
 ## The plan / actuals / ledger triad
 
-Three files hold the state; their relationship *is* the tracking system (no reconcile
-script — the diff is read by eye, and as of this pass it's folded into the plan itself):
+Three files hold the state; their relationship *is* the tracking system (no reconcile script — the diff is read by eye, and as of this pass it's folded into the plan itself):
 
 | File | Role |
 |---|---|
@@ -28,10 +20,7 @@ script — the diff is read by eye, and as of this pass it's folded into the pla
 
 ## What `02-provenanced/` holds, by genre (~270 artifacts)
 
-Genre carries **trust level**: a verbatim copy can't be wrong about its source; a
-characterization can; a synthesis carries its own reading-log provenance; commentary is
-witness-line evidence. Frontmatter template + provenance conventions live in
-[`README.md`](README.md).
+Genre carries **trust level**: a verbatim copy can't be wrong about its source; a characterization can; a synthesis carries its own reading-log provenance; commentary is witness-line evidence. Frontmatter template + provenance conventions live in [`README.md`](README.md).
 
 ### `copies/` — 220 verbatim files/spans (with provenance frontmatter)
 
@@ -68,18 +57,11 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 
 ## Steward calls — open questions for Joseph
 
-**[`STEWARD-CALLS.md`](STEWARD-CALLS.md)** (at the `01-ideation` root) collects the
-questions the fan-out agents surfaced-not-guessed — vaults scope, Tier-2 lineage
-disentangle, path-boundary rulings, the SAR alignment-speed counter-result, the
-ELI-testimony-not-landed gap, and more. Each links to the witness file with full context.
-Rulings get marked inline; a later curation pass sweeps resolved rows out. TARGET-FILES
-markers cite these as `SC#N`.
+**[`STEWARD-CALLS.md`](STEWARD-CALLS.md)** (at the `01-ideation` root) collects the questions the fan-out agents surfaced-not-guessed — vaults scope, Tier-2 lineage disentangle, path-boundary rulings, the SAR alignment-speed counter-result, the ELI-testimony-not-landed gap, and more. Each links to the witness file with full context. Rulings get marked inline; a later curation pass sweeps resolved rows out. TARGET-FILES markers cite these as `SC#N`.
 
 ## Deferred reservoirs — available on question, not swept
 
-Two sources deliberately **not** mined in the fan-out (reach for them when a specific
-question wants an answer, don't sweep now) — full rationale in [`README.md`](README.md)
-§"Deferred reservoirs":
+Two sources deliberately **not** mined in the fan-out (reach for them when a specific question wants an answer, don't sweep now) — full rationale in [`README.md`](README.md) §"Deferred reservoirs":
 
 - **Raw session corpora** (`~/.claude/projects/**`, `~/.sapientia/`, cc-raw jsonls, session-vault) — question-shaped empirics: edit-tool failure rates across model generations, retry-cascade shapes, the year-long evolution of harness+model tool-use capability.
 - **External landscape via `/deep-research`** — commissioned per-question when synthesis hits a claim wanting outside corroboration.
