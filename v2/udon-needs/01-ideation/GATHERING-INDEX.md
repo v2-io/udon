@@ -40,7 +40,7 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 | `extracts/` (grok early pass, in-repo design/consumer) | 14 | `II2-zoetica-ennaos/` | 34 |
 | `discussion-excerpts/` (3 Joseph pipeline-discussion turns) | 3 | `II3-nexum/` | 14 |
 | `I1-usability/` | 6 | `II4-autopax-practica/` | 43 |
-| `I2-scenarios/` (incl. 7-file `corpus/` mirror) | 12 | `II5-dialogs/` | 5 |
+| `I2-scenarios/` (incl. 7-file `corpus/` mirror) | 12 | `II5-dialogs/` | 7 |
 | `I3-design-of-record/` | 12 | `II6-elsewhere/` | 6 |
 | `I4-genre-seeds/` | 7 | `II7-ref-arch/` | 10 |
 | `I5-live-consumers/` | 7 | `II8-harness-refs/` | 7 |
@@ -48,6 +48,8 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 | `II1-sapientia/` | 14 | `III-vaults/` | 8 |
 
 3 added 2026-07-21 (SC#8 deep-pass): `conversation-system-tool-execution-state-machine.md` + `mach-framework-mechanisms.md` (harness-facing verbatim excerpts of the two named residuals, full-body-read) + `active-salience-src-and-consciousness-compiler-vision.md` (gem hunt: Joseph's hand-written GCM/SRC notation = UDON+harness prior art).
+
+2 added 2026-07-21 (transcript-hit triage — the wrongly-location-excluded bucket, read span-by-span): `II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` (Joseph's own Dec-2025→Jul-2026 agent-tooling turns: ALSP seed, tool-gen-from-schema, `uq` CLI, soft/hard boundary, 2026 edit-guard — primary-source origins behind the represented design docs) + `II5-dialogs/codex-gpt-cross-model-udon-assessment.md` (**cross-substrate**: a GPT-family model's independent UDON demand-fit read + the counter-weight the single-author corpus lacks). Full accounting: `scratch/use-udon-for-audit.md` §Transcript-hit triage.
 
 ### `characterizations/` — 30 extraction-by-report
 

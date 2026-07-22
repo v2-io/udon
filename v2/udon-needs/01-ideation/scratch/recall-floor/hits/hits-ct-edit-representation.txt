@@ -1,0 +1,7 @@
+/Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/MASTER-REGISTRY.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/harness-invivo/aider.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/I1-usability-enablement-corpus.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II8-harness-refs/edit-format-schemas.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/BRIEF-agentic-tooling-compilation.md

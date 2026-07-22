@@ -1,0 +1,11 @@
+/Users/josephwecker-v2/src/udon/CLAUDE.md
+/Users/josephwecker-v2/src/udon/v2/.archived/gathering-scratch-subsumed-2026-07-21/open-source-file-pass-2026-07-21/sources-A.md
+/Users/josephwecker-v2/src/udon/v2/README.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/I2-scenarios-witness.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/I7-seam-addendum-witness.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/tst-tooling-roi-residue.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/I2-scenarios/README.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/LEDGER.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/STEWARD-CALLS.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/BRIEF-agentic-tooling-compilation.md

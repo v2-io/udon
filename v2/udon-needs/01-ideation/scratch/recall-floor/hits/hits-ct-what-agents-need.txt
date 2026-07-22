@@ -1,0 +1,16 @@
+/Users/josephwecker-v2/src/_core/ennaos/docs/research/agentic-coding-background/refs/agentic-semantic-code-manipulation-synthesis.md
+/Users/josephwecker-v2/src/_core/nexum/docs/dev/vision-agentic-toys.md
+/Users/josephwecker-v2/src/_core/sapientia/anamnos-emergence-from-claude.jsonl
+/Users/josephwecker-v2/src/_ref/_arch/sar/.archive/DOMAIN_UPDATES.md
+/Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/vaults.md
+/Users/josephwecker-v2/src/udon/v2/.archived/gathering-scratch-subsumed-2026-07-21/open-source-file-pass-2-reservoirs-2026-07-21/sources-R1.md
+/Users/josephwecker-v2/src/udon/v2/.archived/gathering-scratch-subsumed-2026-07-21/open-source-file-pass-2-reservoirs-2026-07-21/sources-R3.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/II8-agent-enhancement-anecdotes.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/III-vaults-context-memory-field-survey.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/extracts/positioning.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II2-zoetica-ennaos/agentic-semantic-code-manipulation-synthesis.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II3-nexum/vision-agentic-toys.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var-udon_as_the_format.json
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var2-compelling_agent_tools.json

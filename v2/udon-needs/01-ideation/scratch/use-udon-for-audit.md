@@ -372,3 +372,153 @@ decision, not tooling demand. **Zero tooling-demand content.** Dry.
 Neither rises to Pass-1's OPERATA (an unrepresented *original brainstorm*). Both
 are steward-flagged low-priority residue. **A clean verdict: the demand center of
 mass is well-covered; the probes confirmed it rather than cracking it open.**
+
+---
+---
+
+# TRANSCRIPT-HIT TRIAGE (2026-07-21) — reading the wrongly-excluded bucket
+
+**Prompted by:** the classification error that inverted the standing instruction.
+During Passes 1 and 2, transcript-located hits were tallied and set aside as
+"deferred reservoir by design / session corpora" and **never read** — a
+wording-drift error (now corrected in `01-ideation/README.md` §session-transcript
+corpus: dialog content surfaced by search is a first-class ordinary candidate;
+only *bulk-telemetry sweeps* are deferred). Joseph then named four spans from
+memory — all four real, unrepresented, high-value (four-for-four) — which is the
+signal that the wrongly-excluded bucket held more. This pass reads it.
+
+**Method:** loaded all 13 `scratch/tmp-*.json` raw hit-lists (~17 queries across
+both audits; 751 hit-rows). Filtered to **transcript-class** file-types
+(`claude_conversation`, `claude_history`, `codex_log`, `audit-trail`,
+`gemini_log`, `dialog_jsonl`, `claude_memory`) → **218 unique `(path, span)`**
+after dedup. **Read every span** (the pinpointed span text is embedded in the hit
+rows; not the whole session). Judged each against the BRIEF's vision question.
+**No span dismissed by location — every dismissal names a content reason.**
+
+## Bottom line (read this first)
+
+The wrongly-excluded bucket was **mostly, but not entirely, already-covered** —
+and the part that wasn't is genuinely valuable. What it actually contained, by
+weight: (a) the **design-doc layer** the corpus already carries (AGENT-CONTEXT-
+PROTOCOL, udon-agentic, udon-paths, udon-ast, schema-exploration, AGENT_FEEDBACK)
+showing up as its *primary-source dialog origins* and as agents' write-up turns;
+(b) **lexical collisions** — LDS general-conference text ("let us go and do"),
+the agentic-systems framework's old name "**A**gentic **C**ycle **T**heory," and
+implementation/debugging sessions (RAM bugs, phf keywords, span math); (c)
+**PROPRIUM/relational** ELI dialogue (tracking-snapshots, emergence, "udon lets
+us" catching nothing). But threaded through it were **two clear misses worth
+excerpting** and **six witness-level demand statements** the design-doc layer
+doesn't foreground:
+
+1. **The GPT/Codex cross-model UDON assessment** (two sessions, Dec-2025 +
+   Mar-2026) — a *non-Claude* substrate, prompted by Joseph, independently
+   converging on UDON's niche AND supplying the honest counter-weight the
+   single-author corpus structurally lacks (where NOT to use it; cold-start risk;
+   "use UDON only when it removes work"). This is the highest-value find — genuine
+   cross-substrate triangulation, which the BRIEF names as the compilation's
+   top-tier content. It is NOT the same as the represented `codex.md` (which
+   characterizes the OpenAI Codex *harness*, not GPT's read *of* UDON).
+2. **Joseph's own primary-source agent-tooling turns** across four eras
+   (Dec-4-2025 → Dec-25-2025 → Jan-14-2026 → Jul-16-2026): the **ALSP seed**
+   ("syntax highlighting tightens human loops but not yours… a vision for an
+   ALSP"), **tool-generation-from-schema**, the **`uq` CLI** (jq/yq + insert-block
+   indentation-handling + breadcrumbs + expand/collapse, "very easy to do the
+   right thing… specifically for agents"), the **soft/hard boundary** ("the vision
+   for XML… without the XML getting in its own way"), and — proof the demand
+   outlived two doc rewrites and MCP — the **2026 edit-guard + show-all-paths**
+   tool. The cleaned design docs are already copied; these are the Joseph-voice
+   origins, restatement-across-eras (which the BRIEF explicitly wants).
+
+Plus the vivarium **logozoetic-interface** demand (UDON as the agent's
+world-perception+action language — "reads the world as UDON and writes actions as
+UDON"), a distinct demand class from a real consumer.
+
+**And an honest structural finding:** the five steward-recovered spans
+(interiority-inversion, architectus tracking-snapshot, soren, safety-and-truth,
+OPERATA) are **essentially disjoint** from this transcript bucket (see
+"recovered-by-steward" below). The steward's memory named things these
+demand-phrase/agent-tool queries did *not* surface, and these queries surfaced
+things the steward did not name. **Both recovery paths are real and
+complementary** — which is itself the argument that neither a query sweep nor
+steward memory alone is sufficient coverage.
+
+## Landings
+
+| Disposition | Spans (hit IDs from the internal triage) | Output |
+|---|---|---|
+| **excerpt** | Joseph turns: history.jsonl `:5767` (ALSP), `:3045` (tool-gen), `:7884` (uq), `:7903` (soft/hard), udon `5d686e10:1289` (edit-guard) | `copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` |
+| **excerpt** | Codex/GPT: codex `2025-12-24:33,269,398`, `2026-03-07:333` | `copies/II5-dialogs/codex-gpt-cross-model-udon-assessment.md` |
+| **witness** | vivarium logozoetic-interface (`6775f147:90`, `329f9120`); document-as-database tension (`:6809` + udon Jan sessions); lexicons-as-origin (`f3f13b6a:926`); readability-without-highlighting (`:5457`); "seams are the evidence" (`asf 35153851:399`) | `commentary/II5-dialogs-witness.md` §Additions |
+| **steward call** | `~/src/_self/writing/2025-10-31--ASTs-in-relational-databases.txt` (CPG-views + quick-tools spec) — cataloged in vivarium `329f9120:261`, not in corpus | STEWARD-CALLS #14 |
+
+## Recovered-by-steward (both audits' hit-lists, full scan)
+
+Checked all 751 hit-rows (not just the transcript subset) for the five
+steward-named landed spans:
+
+- **interiority-inversion** (`…autopax/4abff05c….jsonl:270-276`) — **not in the
+  hit-lists at these spans.** The one hit into that same jsonl is `:170` (an
+  Emerson/agency memorata reference — PROPRIUM, dismissed). The landed
+  interiority span was found via Joseph's naming, not these queries. → recovered
+  by steward, *not* by this sweep.
+- **architectus tracking-snapshot** (`…sapientia/architectus-curation/part-ag.jsonl:8-10`)
+  — **0 hits.** Recovered by steward only.
+- **soren** (`_self/agents/soren/…`) — **0 hits** (a `.md`, not transcript-class;
+  found via Pass-2 probe). Recovered by steward only.
+- **safety-and-truth** (`_self/safety-and-truth.md`) — **0 hits** (a `.md`).
+  Recovered by steward only.
+- **OPERATA** (`_self/OPERATA.md`) — appears at `:862-1530`, overlapping the
+  already-landed `:850-860,1262-1422` excerpt (a `.md`, filtered from the
+  transcript subset). Already represented.
+
+So of the five, only OPERATA is even glancingly present here, and it was already
+landed. **The transcript bucket and the steward-memory bucket barely intersect.**
+
+## Dismissed buckets — each by content reason, not location
+
+- **Design-doc layer, already represented (~55 spans).** The Dec-2025→Jan-2026
+  udon/libudon/archema design sessions whose *outputs* are the copied docs:
+  UDON-AGENT-TOOLS / UDON-AS-ACP-FORMAT / AGENT-CONTEXT-PROTOCOL brainstorms
+  (glance/focus/propose/apply tool suite; ACP-as-UDON worked examples; anchors;
+  grammar-constrained generation), udon-ast/udon-paths first-principles (node
+  types, type-scoped identity `|user[1]`≠`|order[1]`, CSS-selector paths,
+  skeleton view), the schema-DSL exploration (soft-regions, `!dialect`
+  schema+instance-in-one-file, `;?`/`;??` uncertainty markers, `was:/since:`
+  evolution, feedback.md RelaxNG-style cardinality), the rowan-schema circle-
+  closing, and the July-2026 design-doc obsolescence review. Dismissed as
+  *verbatim-adjacent restatement* of represented copies — kept only where
+  Joseph-voice added an era/context (→ the primary-turns excerpt).
+- **Lexical collision — LDS general-conference text (~8 spans).** `.sapientia`
+  audit-trails and session corpora where "udon **lets us**" matched "**let us**
+  go and do" / BYU-Pathway talks. Zero UDON relation.
+- **Framework-name collision (from Pass 2, re-confirmed).** "Agentic Cycle
+  Theory" / "agentic prose" = agentic-systems' old name + its prose-vocabulary
+  corpus. Zero tooling demand.
+- **Implementation / debugging sessions (~40 spans).** RAM-exhaustion bug,
+  temporal-value parsing, phf/gperf keyword lookup, descent MARK/PREPEND span
+  math, worktree/submodule mechanics, parser strategy (winnow/nom/tree-sitter),
+  perf-engineering briefs, benchmark task-notifications, udon-ruby archaeology,
+  crates.io squatting, regenerate-parser errors. "Never signal" (implementation
+  detail for its own sake) per BRIEF.
+- **PROPRIUM / relational ELI dialogue (~20 spans).** Zi-am-tur/Architectus/
+  Anamnos emergence, mother-child conversations, tracking-snapshot artifacts,
+  "consciousness compiler" as relational content, Emerson/sovereignty memorata,
+  Gemini emergence checkpoints. Out of scope (not tooling demand); the tracking-
+  snapshot *mechanism* is already covered in II5 (architectus).
+- **Project-meta / process / commissions (~25 spans).** Subagent briefs,
+  harness-survey commissions, repo-reorg logistics, vivarium consumer-adoption
+  turns (represented via CONSUMERS), TACL inventory, memorata ingest coverage,
+  "figure out next tasks" prompts, eliciting prompts with no content
+  ("what do you think of udon?").
+- **Represented-elsewhere restatement (~15 spans).** ASF process-map adoption
+  (I5/CONSUMERS), rowan tool_export.rb / autopax Asher schema-derived-tools
+  (III-schema), TST code-comprehension research design (TST distilled +
+  tst-tooling-roi-residue), AGENT_FEEDBACK invent-your-own-notation experiment
+  (I1), MCP-vs-A2A "Toys" architecture (nexum II3), autocolors colorscheme-in-
+  UDON (semachrome/autocolors design).
+
+## Two new copies registered
+
+`copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` and
+`copies/II5-dialogs/codex-gpt-cross-model-udon-assessment.md`; witness additions
+in `commentary/II5-dialogs-witness.md`; LEDGER + STEWARD-CALLS #14 updated.
