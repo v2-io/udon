@@ -64,7 +64,7 @@ machine verdict** a write gate can consume.
   execution subcategory is schema-serialization mismatch (wrappers
   unparseable by clients, breaking every invocation), and configuration
   dominates real-world tool faults overall. The outside world's tool
-  failures concentrate exactly where this segment's demands point.
+  failures concentrate exactly where this chapter's demands point.
 - **The theory's slot:** schemas convert interpretive observations into
   pass/fail (the low-A move); typed write boundaries are the W₂
   separation mechanism; and a validation verdict is only consumable by a
@@ -91,7 +91,7 @@ machine verdict** a write gate can consume.
 The family is heavily single-author on the design side; the genuinely
 independent legs are the external fault data and the stress test's
 adversarial protocol (self-run but measured). Three of the schema-family
-source documents were read at depth for this segment; roughly thirteen
+source documents were read at depth for this chapter; roughly thirteen
 siblings were not and may hold counter-detail (the revision ledger
 carries this). Schema *composition* (nested? composable?) has no evidence
 either way — genuinely open, correctly left to the schema design work ahead.

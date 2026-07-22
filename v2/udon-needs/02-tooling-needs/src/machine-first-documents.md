@@ -45,7 +45,7 @@ documentation, not code that implements behavior."
   understand its purpose"); gemini's *shipped* `agents/*.md` with an
   output-contract template enforced by a 39KB linter — schema on agent
   *output*, machine-checked; and the sapientia Elixir consciousness
-  compiler, where `## ` headers are the segment boundaries, frontmatter is
+  compiler, where `## ` headers are the chapter boundaries, frontmatter is
   the typed metadata, and the parsed document compiles to a running
   GenServer *by a transformation a human can replay by hand* ("documents
   become alive… zero magic"). Same author throughout — coherence, not

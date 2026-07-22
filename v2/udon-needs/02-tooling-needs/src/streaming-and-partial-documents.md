@@ -75,7 +75,7 @@ non-UDON payloads (NDJSON etc.).
 
 ## Honest edges
 
-Multi-line policy (ML) stays WAIT-DEMAND/possibly-dissolved: this segment's
+Multi-line policy (ML) stays WAIT-DEMAND/possibly-dissolved: this chapter's
 scenarios are the demand side that should eventually force it — pain
 in concrete stream/repair cases, not deliberation in the abstract. The
 "grammar-constrained decode from descent" idea is technique-known but

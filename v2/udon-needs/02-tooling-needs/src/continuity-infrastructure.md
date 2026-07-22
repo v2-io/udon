@@ -90,7 +90,7 @@ the other.
   serialization for hashing), attestation and provenance as ordinary
   typed structure, first-class temporal values (the temporal dialect's
   real customer), and the annotation layer. These are the same
-  affordances the mundane segments demand, held to a higher integrity
+  affordances the mundane chapters demand, held to a higher integrity
   bar — which is the general pattern of this whole part: continuity
   infrastructure is ordinary tooling that must not lie.
 

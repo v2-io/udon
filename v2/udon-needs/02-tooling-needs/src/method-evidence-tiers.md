@@ -52,12 +52,12 @@ in different ways — which is exactly what makes their agreement meaningful:
 3. **A claim's status is limited by its weakest *necessary* premise** — not
    by the mere presence of a weaker supporting source (that would punish
    honest inclusion of thin evidence), and not laundered upward by a strong
-   source that supports only part of the claim. Each segment says which
+   source that supports only part of the claim. Each chapter says which
    part of its claim each kind of evidence actually carries. And the
    characteristic failure of synthesis writing — firming up caveats the
    sources stated carefully — is named here so it can be checked: where a
    source said "conditional," "single-repo," or "2024-era numbers," the
-   segment says so too.
+   chapter says so too.
 4. **Counter-evidence rides adjacent to the claims it qualifies**
    (#counter-register), never in a footnote graveyard.
 5. **Theory results are conditional theorems, not vibes** — and the

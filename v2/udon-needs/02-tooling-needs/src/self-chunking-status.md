@@ -14,7 +14,7 @@ sources:
 
 # Self-chunking: pre-tested nearby, unmeasured at home
 
-**Claim.** UDON's public thesis that documents "self-segment for
+**Claim.** UDON's public thesis that documents "self-chapter for
 retrieval" — element boundaries as intentional chunk boundaries, no
 sliding windows — is **plausible, supported by adjacent evidence, and
 unmeasured for UDON itself**. The honest status is claim-or-kill, and the
@@ -33,7 +33,7 @@ experiment is cheap.
   breadcrumbs, refs-in/out, and schema type info, all recoverable from
   the assembly product plus paths.
 - **The shipped miniature:** the sapientia document parser's whole design
-  — `##` headers ARE the segment boundaries, frontmatter IS the typed
+  — `##` headers ARE the chapter boundaries, frontmatter IS the typed
   metadata (#machine-first-documents) — is structure-as-chunking working
   in production for one narrow document class.
 - **The design corpus's own honesty:** "Nobody has measured it… If true,
@@ -67,8 +67,8 @@ after tooling is built on it.
 
 ## Honest edges
 
-This segment exists mostly to prevent a specific failure: the README
+This chapter exists mostly to prevent a specific failure: the README
 claim (aspirational) being cited downstream as if the adjacent evidence
 (different substrate, partly estimated) had verified it. It hasn't.
-Counter-register row 8 is this segment's summary and travels with any
+Counter-register row 8 is this chapter's summary and travels with any
 citation of the thesis.

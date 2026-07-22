@@ -18,7 +18,7 @@ sources:
 **What this is.** The port plan for the report's second consumer:
 `~/src/archema-io/harness/` receives this monograph as the programme's
 consolidated statement on agentic tooling (BRIEF §purpose 2). This
-segment says what transfers as-is, what re-bases, what the harness
+chapter says what transfers as-is, what re-bases, what the harness
 already owns, and how the two bodies of work relate — written last,
 against the drafted whole.
 
@@ -56,9 +56,9 @@ harness's risk register as much as this report's.
   demands stated at their own altitude: the edit-tool transaction shape
   and its failure vocabulary (III), payload conventions and read-path
   shapes (IV), the document-class findings (V). A harness reader takes
-  the *demand statements* (bolded in each segment) and the "for the
+  the *demand statements* (bolded in each chapter) and the "for the
   harness" halves; the notation-specific machinery (envelopes, `$`-sugar,
-  recognition products) stays UDON's. Where a segment's judgment presumes
+  recognition products) stays UDON's. Where a chapter's judgment presumes
   UDON's charter (e.g. "the format layer should afford X"), re-judge
   against the harness's — this report's own quality bar (judgments carry
   their author's charter and date) applied to itself.
@@ -88,7 +88,7 @@ merge.
 Per the ruled deep-copy-on-pull pattern: when the harness takes this
 report, it takes a **copy with provenance** (source path + commit +
 date), not a live mount — the two programs then diverge deliberately,
-cross-citing. The segments' `sources:` chains resolve within this repo;
+cross-citing. The chapters' `sources:` chains resolve within this repo;
 the port should carry the NOTATION-KEY and the counter-register with it
 unconditionally (a copy that sheds its dissent register regresses to
 exactly the confident-synthesis failure mode both programs' methods

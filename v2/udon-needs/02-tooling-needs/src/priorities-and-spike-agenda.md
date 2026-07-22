@@ -12,7 +12,7 @@ depends: [schema-guarded-mutation, addressing-is-the-long-pole, streaming-and-pa
 
 **Scope note:** first drafted against the spine (2026-07-22 AM), revised
 same day after the full back half landed — the ranking below survived the
-back-half segments unchanged (they thickened its legs: crystallized-process
+back-half chapters unchanged (they thickened its legs: crystallized-process
 under #5, typing/evolution under the schema probe, continuity under #4).
 Priorities here are
 *demand-strength* rankings (how many independent kinds of evidence ask,
@@ -76,7 +76,7 @@ dialect-typed captures — the reframe that may dissolve ML entirely.
 shape: static vs composable/nested; what conformance means on a partial
 document (compose with verdicts); the guard's failure vocabulary as schema
 output; versioning/migration demand (the rowan/autopax/operata family —
-planned segment); and the soft/hard profile dial as schema *strictness*
+planned chapter); and the soft/hard profile dial as schema *strictness*
 rather than schema *shape*. External anchor: schema-serialization mismatch
 as the dominant real-world tool-fault class.
 
@@ -100,7 +100,7 @@ gathered corpus is a risk to fund against, not evidence of low importance.
 
 ## The cross-cutting probe discipline (learned the hard way)
 
-Spikes run against *scenarios from this report's segments* (S1–S12 +
+Spikes run against *scenarios from this report's chapters* (S1–S12 +
 the affordance tables), not free essay prompts; their outputs are demands
 on the product graph, never pins (the night-spine lesson, now twice paid
 for). And each probe should name what would *falsify* its favorite shape —

@@ -160,7 +160,7 @@ report, and its thinnest evidence base (named as such).*
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
 | VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what the design probes ahead (paths, dialects, schema, value typing) should each answer, stated as questions the evidence makes concrete | drafted |
-| VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which segments are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
+| VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which chapters are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
 
 ## The body — the reports themselves
 

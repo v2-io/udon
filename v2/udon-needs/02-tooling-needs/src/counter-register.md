@@ -15,10 +15,10 @@ sources:
 
 # The counter-register: evidence against our own theses
 
-Kept as a first-class segment so the monograph cannot quietly firm up its
+Kept as a first-class chapter so the monograph cannot quietly firm up its
 own caveats. Each row names the thesis it qualifies and where the full
 context lives. **A downstream decision that touches one of these theses
-should cite the counter-row, not just the supporting segment.**
+should cite the counter-row, not just the supporting chapter.**
 
 | # | Counter-evidence | Qualifies | Weight |
 |---|---|---|---|

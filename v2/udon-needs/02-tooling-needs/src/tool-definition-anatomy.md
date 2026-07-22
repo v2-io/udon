@@ -79,7 +79,7 @@ as independent votes.
 ## Honest edges
 
 Uniformity here is the most descent-inflated in the whole landscape — this
-segment deliberately makes no "N teams independently needed X" claim. And the
+chapter deliberately makes no "N teams independently needed X" claim. And the
 anatomy is JSON-schema-shaped because the vendors' APIs are; whether that
 shape is *right* (vs merely installed) is untested — the BFCL/omission
 findings suggest the description/grounding layer, not the schema syntax, is

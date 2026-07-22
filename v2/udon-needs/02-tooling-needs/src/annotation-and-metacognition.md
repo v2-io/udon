@@ -20,7 +20,7 @@ own cognition** — confidence, decision-vs-draft status, uncertainty,
 provenance — attached to content but not *of* it: queryable when wanted,
 strippable when not, and never polluting the material it annotates. The
 demand recurs from tooling ergonomics up to identity infrastructure, and
-its syntax is deliberately unruled — this segment carries the demand and
+its syntax is deliberately unruled — this chapter carries the demand and
 guards the boundary.
 
 ## The evidence
@@ -63,7 +63,7 @@ guards the boundary.
   ordinary attributes), and (d) *layered* — a stripped document remains
   valid and means the same thing. Until ruled: conventions in house
   styles, evidence accumulating in real use — exactly the WAIT-DEMAND
-  posture, and this segment is the demand side of that wait.
+  posture, and this chapter is the demand side of that wait.
 - **For the harness:** don't wait for syntax — the *practice* is
   available now (this very corpus's frontmatter status/verdict fields,
   the LEDGER's dispositions, the dossier's tier labels are all annotation-

@@ -108,5 +108,5 @@ surfaces; no divergence.
 
 The theory's own scope note travels with this: in-loop diagnostics (per
 event) and cross-session imports (per boundary) are deliberately distinct
-channels with different design physics — this segment is the in-loop half;
+channels with different design physics — this chapter is the in-loop half;
 #persistence-is-imported is the other.

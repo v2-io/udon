@@ -56,7 +56,7 @@ dialect binding is per-document, per-scope, or per-event.
 ## What it generates
 
 - **For UDON:** the dialects probe (#priorities-and-spike-agenda) owns
-  this; the segment exists so that work inherits the demand in its
+  this; the chapter exists so that work inherits the demand in its
   original force rather than a paraphrase. Two boundaries already firm
   enough to state: the core recognizes `!` syntax and carries expressions
   unparsed (ruled — a conformant parser needs no dialect), so the
@@ -76,7 +76,7 @@ dialect binding is per-document, per-scope, or per-event.
 ## Honest edges
 
 Single-source (one author, one morning), zero implementations, no
-scenario corpus — by far the thinnest evidence base of any demand segment,
+scenario corpus — by far the thinnest evidence base of any demand chapter,
 carried at design-of-record weight because it is the project owner's stated
 product vision and because its *structural* consequences (the graph, the
 paths coupling) were independently ratified by two other substrates in

@@ -27,7 +27,7 @@ guarantees, and design decisions that conflate them inherit the wrong one.
   decoding (Anthropic `strict`, codex `--output-schema`, grammar-constrained
   patch emission) vs formatter-class serialization (one harness's own
   honest engineering log makes the distinction itself). Not conflating
-  them is this segment's thesis.
+  them is this chapter's thesis.
 - **The contrarian external result (medium confidence — it survived two
   of three adversarial checks):** structured
   function-calling modes produced substantially *more* incorrect calls than
@@ -52,7 +52,7 @@ guarantees, and design decisions that conflate them inherit the wrong one.
   (fail-plausible, #counter-register).
 - **For UDON:** two implications. (a) The κ×A case for sharp formats
   (#tools-are-observation-infrastructure) is about *observation* design and
-  survives this segment untouched — but any claim that structured **emission**
+  survives this chapter untouched — but any claim that structured **emission**
   improves reliability must be scoped by the BFCL result; the honest pitch
   is verifiability-of-output, not error-elimination. (b) Grammar-constrained
   generation of UDON (from the descent grammar) would be the strong-guarantee
