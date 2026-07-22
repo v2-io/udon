@@ -39,10 +39,14 @@ One cycle:
 2. Each division goes to one agent, who works it deeply (below).
 3. When all divisions land: cross-assignment notes are distributed and
    integrated, the OUTLINE is updated from accepted structural suggestions,
-   and the cycle's coordinator reconciles. (Integration is *replacement*:
-   when deepening refuted something, the old claim is deleted, never kept
-   softened-with-a-pointer; a claim's label tracks its current truth-status,
-   not its novelty.)
+   and the cycle's coordinator reconciles — under the full "When a claim
+   looks wrong" discipline below (integration is replacement; a note whose
+   recorded suggestion was a soften gets the strengthening attempt anyway —
+   the note's framing does not bind the direction), plus one guard from the
+   asf routing SOP that bites at exactly this step: the **regression
+   check** — corrected truth is usually *messier* than what it replaced,
+   so "the old version reads better" is a body-signal to check provenance
+   (was this deliberately corrected away?), never a reason to restore.
 4. **Shift the window offset by one** and iterate — boundary discontinuities
    the last cycle couldn't see from inside a division become interior to
    someone's assignment.
@@ -78,11 +82,10 @@ and then some**. Within your assigned chapters, directly: pull in additional
 nuance and side-reports from the corpus, run the deep research, do the
 de-novo user-voice surveying, verify claims at their sources, build rigor
 and epistemic honesty into what's there, add and refine capability cards,
-strengthen the ideation. When a claim looks overclaimed, **attempt to
-strengthen it first** — verify at the source, find the stronger statement
-that is actually true — and soften only when the strengthening attempt has
-honestly failed (what's usually been discovered is an inconsistency, and
-the strengthened form is usually reachable). Beyond your chapters, propose
+strengthen the ideation. When a claim looks overclaimed, the discipline in
+"When a claim looks wrong" below governs — read it before your first
+adjustment; it is the part of this work most often done badly by capable
+agents. Beyond your chapters, propose
 freely: reorganizations of the outline, additional chapters, splits, better
 foundational work that should precede your territory. The one mechanical
 boundary: **direct edits stay inside your assigned chapters** — dedicated
@@ -115,6 +118,73 @@ no search could reach (the project-root ⊤ precedent arrived exactly that
 way); his reading is an elicitation instrument, and this file is how you
 aim it. *Who reads it and when:* Joseph, whenever he next reads; entries
 should stand alone the way everything else here must.
+
+## When a claim looks wrong (the discipline with teeth)
+
+This is the estate's hardest-won epistemic method, compressed here because
+you need it on this page; the full texture lives in
+`~/.claude/memory/epistemic-discipline/{strengthen-before-soften,integration-is-replacement}.md`
+and `~/src/archema-io/asf/doc/sop/audit.sop/routing.sop.md` (readable by
+any substrate) — worked examples, scars, and calibration data included.
+
+**Strengthen before softening.** When a claim seems overclaimed, there are
+two ways to discharge the inconsistency: strengthen the work until the
+strong claim is true, or weaken the claim to match the work — and only one
+of them produces a discovery. The strong claim was asserted because
+somebody's mental picture was pointing at something real; that's where the
+strengthening attempt aims. Attempt it *first*, always — verify at the
+source, tighten the argument, find the stronger statement that holds —
+and fall back to softening only when the attempt has honestly failed.
+Empirically, across many cycles: the strengthening usually *succeeds*, and
+softening recommendations consistently underestimate what's reachable.
+
+**The disguise to refuse.** The most seductive form of the failure frames
+the soften as honesty: *"'measured' is too strong — 'estimated' is more
+honest"*; *"this isn't a weakening, just verbal precision."* One word
+changes, the artifact becomes strictly honest, the task disappears — very
+appealing to everyone involved. **That framing carries no weight on the
+discharge direction.** If the substituted word is weaker, it is a
+weakening, whoever proposed it and however it was labeled. The valuable
+part of such a finding is the *inconsistency it names*; preserve that as a
+strengthening target, not a word-swap.
+
+**A shrug is not an attempt.** "I looked and don't see how to strengthen
+it" after thirty seconds is the attempt not fitting your working cadence,
+not the attempt failing. The reliable move: take the claim into genuine
+focused mode (or hand it to a dedicated agent with no time pressure and
+license to push). Four honest completion states: strengthened *past* the
+claim (happens more than you'd predict); strengthened *to* it; a **no-go**
+— you can say structurally *why* it cannot hold, which is itself a
+discovery, often as valuable as success; or "failed, and I can't say why"
+— which is not a result but an alarm: re-attempt, escalate, or say so in
+the steward channel. Document failed attempts either way; the failure
+record keeps future agents from re-dying on the same hill.
+
+**When a claim actually falls (the no-go protocol, scaled to this
+report).** A refuted claim is *false*, and a false claim has no honest
+weakened form — after a no-go, the downgrade option the original finding
+suggested is *also* dead. What happens instead: the chapter never lies
+about itself, even transiently (mark the claim false in place the moment
+you know, not quietly in notes); dependents get found and flagged —
+including outside your division, via that chapter's notes file, since a
+falsified claim's dependents are one hop from lying too; and the no-go
+itself is **present truth that belongs in the chapter** when a competent
+reader would otherwise assume we simply missed the obvious route — state
+what is false and *why*, in domain voice. Then the replacement: the old
+claim is deleted, not kept-softened-with-a-pointer.
+
+**Labels track truth, not history.** If your deepening lands something
+verified/exact, label it at that strength — *new* and *different-from-
+what-was-there* are not reasons to down-tier, and the honest tier already
+carries its own defeasibility (don't pay for humility twice). Two ghost
+rules, both directions: the body never argues with its own past ("this is
+not a weakening," "previously claimed" — that voice belongs in the
+revision log; the urge to write it is the tell the ghost isn't gone), *and*
+a canonical no-go is not a ghost to exile — only redundant
+project-autobiography demotes to history; the domain truth stays on the
+page. And the recursive check: don't under-name your own result — if you
+proved something, "I found a limitation" is false modesty; state it at
+strength and let it stand where it can be attacked.
 
 ## The one thing held above everything
 
