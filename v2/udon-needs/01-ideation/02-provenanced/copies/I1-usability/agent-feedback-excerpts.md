@@ -1,7 +1,11 @@
 ---
 source: UDON repo — test/usability/results/AGENT_FEEDBACK.md (aggregated first-person FEEDBACK blocks from test agents, Dec 2025)
 gathered: 2026-07-21
-status: gathered — thematic excerpt (verbatim blocks selected + indexed); the full file is larger and repetitive across the invention track — sampled per the target-file guidance ("sample for what I wanted / what hurt, not a use-catalog")
+status: gathered — thematic excerpt (verbatim blocks selected + indexed). SUPERSEDED as the primary artifact by the whole-file copy `AGENT_FEEDBACK-full.md` in this same directory (per STEWARD-CALLS #7 — the "sample, not whole dump" call was overruled: originals wanted). This file keeps an honest, narrower role: a curated thematic index INTO the full copy — start here for the recurring themes, read `AGENT_FEEDBACK-full.md` for every block + the Judge/Validated-score tail this excerpt omits.
+supersedes_note: >
+  Read `AGENT_FEEDBACK-full.md` (whole 827-line original) for the complete
+  testimony and the machine-scoring tail; this excerpt covers only the FEEDBACK
+  blocks at source lines 9-279 and drops the Judge-scores/Validated-scores half.
 paths:
   - test/usability/results/AGENT_FEEDBACK.md:9-279
 source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693

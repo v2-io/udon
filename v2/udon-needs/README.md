@@ -118,7 +118,20 @@ separate process constitution:
 - **Parallel work.** Decision work especially often runs at several levels at
   once: upstream suggests; downstream decides with fuller context.
 - **Downstream constraint.** Later stages aren’t “done” until they have what
-  they need from upstream to adjudicate.
+  they need from upstream to adjudicate. Stated at full strength (ratified
+  2026-07-21): **a later phase inherits its validity from the completed
+  prior phase.** Synthesis over an incomplete gathering doesn’t produce a
+  partial thesis — it produces a *confidently wrong* one, because the
+  absence isn’t visible from downstream; no amount of later effort
+  substitutes for a missing input (this is the sufficiency law, W0, wearing
+  process clothes). Two corollaries for practice: (a) value-judgments like
+  “weak signal, skip it” exercised during gathering are a later phase’s
+  judgment being spent early — during (1), the bar is the vision question,
+  not anticipated synthesis-worth (the SC#7 overrule is the canonical
+  incident); (b) before a phase is declared complete, probe it with
+  **question-shaped audits** (e.g. the `memorata3 "use udon for"` coverage
+  audit) from a few independent angles — completeness can’t be proven, but
+  “the obvious things are done” can be checked rather than assumed.
 - **Non-permanent.** Right shape *for now*; likely simplifies once a v2 core
   already covers a large share of needed functionality.
 - **Future-proofing.** Downstream may synthesize lower-priority needs via
