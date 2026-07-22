@@ -144,6 +144,18 @@ udon-needs scenarios corpus, 03-modifying).
 envelope spelling (`<r:…>`, `<c:…>`, composition, nesting) belongs to a
 standard-types dialect that doesn't exist yet.
 
+## S4-SCOPE — `InconsistentIndentation` scope (prose-only?)
+
+**What:** whether the shallow-line warning fires for prose lines only or
+also for comment-continuation lines. This suite's prose and Appendix B
+describe the prose-**and**-continuation extent — **inherited from live
+CORE's registry, not ratified**: OPEN.md's S4 (a steward/fact question
+about grammar intent) is still open. The description here is the current
+state of the code/spec text; do not cite it as settling S4.
+
+**Closes when:** the S4 steward call lands (then OPEN.md's row closes with
+a cite and this item disappears).
+
 ## S9 — BlankLine placement at structural seams
 
 **What:** exact placement of blank-line nodes relative to dedents at

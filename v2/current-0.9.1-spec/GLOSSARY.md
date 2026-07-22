@@ -35,7 +35,8 @@ tooling messages, or documentation.
 - **Flag suffix** — trailing `?` `!` `*` `+` on element identity, desugared
   to a designated boolean attribute; suffixes stack. (CORE §5.4.)
 - **Node** — any unit that can appear in content: element, text, comment,
-  verbatim, directive, interpolation, reference, blank line. (MODEL §2.)
+  verbatim, directive, reference, blank line. (Interpolations appear only
+  as flow segments and values — MODEL §2.)
 - **Node value** — an attribute value that *is* a node (block-form element,
   block verbatim, or fence), no wrapper. (CORE §6.8.)
 - **Reference** — `@…`: an inert selector `(name?, key?, traits)` naming an
@@ -152,6 +153,14 @@ tooling messages, or documentation.
   UDON; meaning is a dialect's. (CORE §9.)
 - **Incomplete-input** — the document result when a delimited extent was
   open at true end of input. (CORE §13.3; MODEL §1.)
+
+- **ADM / Abstract Document Model** — the Document Model (MODEL.md); one
+  pillar, two names. "ADM" is the term used by defining-udon §5, the
+  DECISIONS charter (C3/C5), and the greenfield drafts; this suite's prose
+  says "the model" / "Document Model." Formal synonyms — not a retirement.
+- **Recognizer / Recognition** — the conformance target of this suite: the
+  layer performing surface recognition (source text → the ADM plus
+  anomalies), below every Consumer. (CORE §1.)
 
 ## Anomalies and layers
 

@@ -1,6 +1,9 @@
-# The UDON Document Model
+# The UDON Document Model (ADM)
 
-**Status:** normative. Defines what recognition produces — the information a
+**Status:** normative. This is the **ADM** — the Abstract Document Model of
+`defining-udon.md` §5, the DECISIONS charter (C3/C5), and the prior drafts;
+"Document Model" and "ADM" name the same pillar. Defines what recognition
+produces — the information a
 consumer may rely on. Surface syntax is [CORE.md](CORE.md); equivalence is
 [SEMANTICS.md](SEMANTICS.md).
 
@@ -34,8 +37,14 @@ Document = {
 
 ```
 Node = Element | Text | Comment | Verbatim | Directive
-     | Interpolation | Reference | BlankLine
+     | Reference | BlankLine
 ```
+
+Interpolations are deliberately **not** a top-level Node kind: a
+line-initial `!{{…}}` fails the `!` block guard (identifier or `:` required)
+and is flow text whose sole segment is the interpolation — interpolations
+surface only as flow **Segments** (§4) and as whole attribute values /
+identity keys (Value kinds).
 
 `BlankLine` is a recognition-layer node for blank/whitespace-only lines not
 protruding past a content base (CORE §7.4); it contributes `"\n"` to text

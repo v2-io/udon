@@ -17,9 +17,15 @@ cites its ruling; nothing below is this suite's invention.
 | 7 | Multi-line for remaining delimited forms | "deliberately undefined" per-construct table (the greenfields then closed it per-construct) | Same openness, **reframed as a carve-out with its dissolution reason** (dialect-capture sugar); explicit do-not-close-per-construct | OPEN **ML** re-mark (2026-07-21) |
 | 8 | Event/wire encoding in the spec | CORE carried an "Event Encoding" section (flat wire) | **Absent from the spec suite** — flat wire deratified; successor (W0/W1d) lives in the v2 ledger; MODEL §6 carries the adequacy test any future wire must pass | **R8** |
 | 9 | Anomaly severity framing | Ladder + per-case calls | **Error = loss** (or genuinely-absent intended value) as the checkable rule; representative table re-derived under it | **L0** |
-| 10 | Vocabulary | head position / blob / embedded / freeform / raw-as-noun | **Structure Position / Line Scan / flow / inline element / verbatim family** + retired-terms table | **N-pos, N-scan, D4** (3b) |
 
-Organizational (no behavior surface): the suite adopts the three-pillar
+Organizational (no behavior surface): the vocabulary rename — head position
+/ blob / embedded / freeform / raw-as-noun → **Structure Position / Line
+Scan / flow / inline element / verbatim family**, with GLOSSARY's
+retired-terms table (per DECISIONS **N-pos**/**N-scan**, plus
+**greenfield-3b DECISIONS §D4** "Vocabulary stabilization" — an [ORG]
+greenfield decision adopted under charter C1/C3's tactical-deference, *not*
+a Joseph ruling, and distinct from the CHANGELOG's unrelated "D4" BlankLine
+ruling). Likewise the suite adopts the three-pillar
 split (defining-udon.md) — GLOSSARY + MODEL + CORE + SEMANTICS + CARVEOUTS
 as the specification pillar; pedagogy an outline stub; no grammar document
 (the Nesting Rule's mechanical spelling stays in CORE §2.1). Rulings R1–R21

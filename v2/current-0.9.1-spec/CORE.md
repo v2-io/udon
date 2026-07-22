@@ -16,6 +16,9 @@ must carry.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are per RFC 2119.
 
+*New to UDON? Appendix A is a one-screen annotated surface map — reading it
+first makes the density below land easier.*
+
 ---
 
 ## 1. Conformance
@@ -278,7 +281,7 @@ attribute keys have wider continue-sets; see below and §6.2.)
   interior uses the normal value rules (§11): `[1]` is integer `1`,
   `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`. An
   interpolation may be the whole key: `|div[!{{id}}]` → `$key` carries the
-  interpolation, host-evaluated (ruled S5).
+  interpolation, host-evaluated (ruled — CHANGELOG S5).
 - **Traits `.trait`** — what *kinds* of thing it is; plural, stackable,
   order-preserved. A bare trait is an identifier whose continue-set also
   includes `? ! * +` (so `.foo?` is the trait `foo?`); other characters
@@ -333,7 +336,7 @@ Positions — after the name, after the key, or space-separated at the end:
 |name[key]?                  |name[key].trait ?
 ```
 
-**Suffixes stack**: `|field?!` ≡ `|field :'$?' true :'$!' true` (ruled S1).
+**Suffixes stack**: `|field?!` ≡ `|field :'$?' true :'$!' true` (ruled — CHANGELOG S1).
 
 Because suffix characters are trait characters, a suffix touching a trait
 belongs to the trait:
@@ -364,7 +367,7 @@ Within flow, `|{…}` opens an inline element:
   terminator; the opener line's terminator belongs to the form when its
   line ends inside the braces. Consumers concatenate for a single string —
   exact by the text law.
-- **Empty `|{}`** is a valid, empty anonymous inline element (ruled S4).
+- **Empty `|{}`** is a valid, empty anonymous inline element (ruled — CHANGELOG S4; distinct from OPEN.md's S4).
 - Intervening text between sibling inline forms — including a single
   space — is real content (round-trip fidelity).
 - An inline element is a child of its containing element, sibling to the
@@ -724,7 +727,7 @@ opener makes it literal (§4).
 
 ### 7.4 Blank and whitespace-only lines (the two-layer model)
 
-Ruled S6 (2026-07-19):
+Ruled — CHANGELOG S6 (2026-07-19):
 
 - A blank line whose whitespace does **not** protrude past the prose
   content base is a **blank line** at the recognition layer (whitespace
@@ -975,7 +978,7 @@ Lowercase only, typed only when alone at the boundary (§6.4). `null` ≡
 
 `[…]` in value position: items space-delimited, each typed independently by
 the **full** value rules — numbers, strings, envelopes, nested lists,
-references, and interpolations are all valid items (ruled §1.8; the
+references, and interpolations are all valid items (ruled — CHANGELOG §1.8 / DECISIONS R17; the
 enumeration is illustrative, the rule uniform). No flow values inside a
 list — a bare item is one token; quote items with spaces. A quoted item's
 closing quote ends it: `["x"y]` and `["x""y]` are two items each, like
@@ -1168,10 +1171,15 @@ never a chunk boundary.
 
 **Error = loss** (ruled L0) is mechanically checkable: if every
 author-visible byte is represented in the model as structure or text,
-severity MUST be Warning — unless a more specific rule names Error for an
-*absent intended value* (the one current case: plain `:key` with no value →
-assignment with Nil + Error, §6.2). An Error MUST NOT halt recognition;
-nothing after an error point may be silently discarded.
+severity MUST be Warning — unless a more specific rule names Error because
+something the author *intended* is genuinely absent from the model even
+though the bytes survive. Two current cases carry that justification:
+plain `:key` with no value → assignment with Nil + Error (§6.2 — the
+intended **value** is absent), and attribute-under-attribute → text of the
+open value + Error (§6.8, ruled R6/L6 — the intended **nested-attribute
+structure** is absent; the bytes survive only as flat text). An Error MUST
+NOT halt recognition; nothing after an error point may be silently
+discarded.
 
 ### 14.2 Keep-Everything
 
@@ -1253,7 +1261,7 @@ differ.
 
 | Code | Situation (§) | Severity |
 |---|---|---|
-| `InconsistentIndentation` | prose or comment-continuation line under the content base but still inside the owner (§7.2 r4); a line at/left of the owner's column is an ordinary dedent, not this | Warning |
+| `InconsistentIndentation` | prose or comment-continuation line under the content base but still inside the owner (§7.2 r4); a line at/left of the owner's column is an ordinary dedent, not this. *Scope note: the comment-continuation extent follows live CORE but is pending the open S4 steward call (OPEN.md; CARVEOUTS §S4-SCOPE)* | Warning |
 | `NoDialectsLoaded` | envelope recognized, no dialects bound; lexical pass-through (§11.6) | Warning |
 | `AttributeValueExtendedByTrailingText` | same-line warned extension on a block attribute line (§6.7) | Warning |
 | `AttributeSecondValue` | deeper second value under a finished key (§6.7) | Warning |

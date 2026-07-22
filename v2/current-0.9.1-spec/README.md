@@ -9,7 +9,9 @@ coherent suite, organized per `defining-udon.md`'s pillar discipline.
 Version **0.9.1**: essentially 0.9, with the ledgered rulings landed in
 prose and the deliberately-open questions carrying their reasons.
 
-**Authority.** This suite is the working base for all v2-route work. The
+**Authority.** This suite is the working base for all v2-route work
+(steward mark **C7**, `../DECISIONS.md`: the 0.9.1 consolidation is the
+baseline; the C0–C2 0.10 design line is unchanged and builds on it). The
 old route (`spec/CORE.md` + companions) is the published 0.9.0-alpha.2
 record — no work continues there, and it will be archived when v2 becomes
 the main route. Behavior differences between this suite and the old text
@@ -22,7 +24,7 @@ new rulings land in `../DECISIONS.md` and get folded into this prose.
 
 | File | Role |
 |---|---|
-| [CORE.md](CORE.md) | **Normative.** Surface recognition + core semantics — the contract. |
+| [CORE.md](CORE.md) | **Normative.** Surface recognition + core semantics — the contract. *(Fresh readers: its Appendix A one-screen surface map is the on-ramp — read it first.)* |
 | [MODEL.md](MODEL.md) | **Normative.** What recognition produces; the text law and its adequacy test. |
 | [GLOSSARY.md](GLOSSARY.md) | **Normative.** Every formal term; retired synonyms. |
 | [SEMANTICS.md](SEMANTICS.md) | **Normative.** When two documents mean the same; round-trip rules. |
