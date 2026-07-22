@@ -1,8 +1,12 @@
 ---
 slug: self-chunking-status
 type: finding
-evidence: [T1, T2-adjacent]
-status: unmeasured-claim (UDON-specific) + adjacent positive pre-test; claim-or-kill experiment specified
+register: evidenced
+support-kind: [design, measured]
+strength: hypothesis   # UDON's own self-chunking claim is UNMEASURED. Max attainable: measured - the evidence-action that moves it is running the specified claim-or-kill experiment, not further argument
+convergent: —   # NOT ARMED: the adjacent code-retrieval study supports parsing-based chunking in general, not this notation's version - it is not a second leg for the specific claim
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: udon-primary
 depends: [machine-first-documents]

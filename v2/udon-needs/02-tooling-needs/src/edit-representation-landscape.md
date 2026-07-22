@@ -1,8 +1,12 @@
 ---
 slug: edit-representation-landscape
 type: finding
-evidence: [T2, T5, T3, T4]
-status: cross-tier-convergent; T2 counts lineage-corrected
+register: evidenced
+support-kind: [observational, measured, testimonial, theoretic]
+strength: robust-qualitative   # headline consequentiality is robust-qualitative; the 14%->57% swing is measured (fine-tuned 7B-class) and the 2-3x figure is second-hand
+convergent: [observational, measured, testimonial, theoretic]   # the no-validity-guarantee leg is an ABSENCE claim across all shipped editors, which descent does not undermine; measured-ext and testimonial are independent
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [errors-that-teach, method-evidence-tiers]
@@ -150,3 +154,20 @@ find-and-replace is weak evidence of *optimality* — it is strong
 evidence only that it is good enough to survive under current model
 capabilities, within a sample heavy in one lineage; the first look at
 another lineage immediately produced the counter-example above.
+
+## Working Notes
+
+**A reusable principle surfaced while tagging this chapter's legs, which may
+belong in the methods chapter rather than here.** Descent-correction (the
+discipline of discounting agreement that is really one design copied) applies to
+*agreement* claims but **not to absence claims**. This chapter's strongest
+observational leg is that *no* shipping editor provides a validity guarantee —
+and even if all fourteen inherited their edit tool from a single ancestor, the
+absence is still universal across the sampled ecosystem. Copying explains why
+they all do the same thing; it does not manufacture a gap none of them fill.
+
+So this chapter's `convergent:` legs include `observational` at full weight,
+which looks inconsistent with the descent-discounting applied elsewhere until
+the agreement/absence distinction is stated. If a future pass agrees this
+generalises, it wants a sentence in the methods chapter's descent-correction
+discipline; routing unclear, so parking it here.

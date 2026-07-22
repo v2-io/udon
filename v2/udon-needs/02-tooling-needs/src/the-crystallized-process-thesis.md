@@ -1,8 +1,12 @@
 ---
 slug: the-crystallized-process-thesis
 type: finding
-evidence: [T1, T2, T4]
-status: estate-thesis with shipped-practice echoes (single-author caveat on the T1 core; the T2 echo is structural, not citation)
+register: evidenced
+support-kind: [design, observational, theoretic]
+strength: robust-qualitative   # the thesis direction is robust; the quantified 60/30/6/4 distribution is HEURISTIC (estate-stated, unmeasured)
+convergent: [design, observational]   # theoretic merges with design as one estate leg (single-author caveat); the shipped echo is structural rather than citation, so it is a weak but genuine second failure mode
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure]
@@ -135,3 +139,20 @@ friction is crystallizable — is better supported than its numbers. And
 the thesis carries its own disconfirmer: crystallization is
 right-sizing, not maximal tooling — a tool nobody needed is the
 over-engineering face of the same coin.
+
+## Working Notes
+
+**Two calibration notes on this chapter's evidence, both open.**
+
+1. **The 60/30/6/4 distribution is `heuristic`, not `measured`.** It is stated
+   in the estate design work as a considered proportion, not derived from a
+   labelled task corpus. The chapter presents it as "the quantified form" of the
+   thesis, which is fair as long as nobody downstream treats the four numbers as
+   measurements. The evidence-action that would promote it: classify a real task
+   sample against the four buckets and report the actual split. That is a cheap
+   experiment and would move this from `heuristic` toward `measured`.
+2. **The shipped-practice leg is structural, not citational** — harnesses behave
+   *as if* the thesis were true (they encode process into tools) without anyone
+   citing it. That is a real but weak independent signal: it is consistent with
+   the thesis and also with several other explanations. I armed the lock on it;
+   a stricter reading would not.

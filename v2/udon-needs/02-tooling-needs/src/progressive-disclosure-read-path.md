@@ -1,8 +1,12 @@
 ---
 slug: progressive-disclosure-read-path
 type: demand
-evidence: [T1, T2]
-status: estate-convergent (T1 design-of-record) with T2 context-economy echo
+register: evidenced
+support-kind: [design, observational]
+strength: robust-qualitative   # an estate design-of-record direction
+convergent: —   # NOT ARMED: estate-convergent only. The observational support is a thin echo of the context-economy material, not an independent arrival - two facets of one author's position do not arm the lock
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted (fresh-page bridge rewrite, 2026-07-22)
 consumers: both
 depends: [addressing-is-the-long-pole, context-economy]
@@ -75,3 +79,18 @@ usability study that exists predates these designs). The session view
 assumes a single writer; under concurrent writers it survives only via
 the re-resolve-at-commit rule the previous chapter describes — stated in
 the design, enforced by no code yet.
+
+## Working Notes
+
+**The convergence lock is deliberately NOT armed here, and that call is worth
+challenging.** Both legs — the design-of-record and the read-path echo in the
+context-economy material — trace to the same author's position, so under the
+failure-mode-independence key they are two facets of one estate leg, not two
+independent arrivals. The direction still looks right; it simply has one
+independent source rather than two.
+
+What would arm it: a shipped progressive-disclosure read surface in a harness
+nobody here influenced (an outline/skeleton-then-focus read tool), or de-novo
+agent testimony that the glance→focus shape is what they reach for unprompted.
+Either would be a genuinely independent failure mode. If someone finds one, the
+lock arms as `[design, observational]` or `[design, testimonial]`.

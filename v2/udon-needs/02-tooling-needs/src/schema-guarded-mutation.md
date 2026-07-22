@@ -1,8 +1,12 @@
 ---
 slug: schema-guarded-mutation
 type: demand
-evidence: [T1, T2, T4, T5, T3-adjacent]
-status: cross-tier-convergent (the report's strongest demand; 4 tiers direct, T3 via the ease-gradient account)
+register: evidenced
+support-kind: [design, observational, theoretic, measured, synthetic]
+strength: robust-qualitative   # the report's strongest demand; every kind of evidence here asks for it
+convergent: [design, observational, measured, synthetic]   # theoretic merges with design as one estate leg; the absence-of-guarantee observation, external fault data, and the stress-test runs each fail differently
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both (udon-primary)
 depends: [edit-representation-landscape, errors-that-teach]

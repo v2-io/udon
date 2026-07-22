@@ -1,8 +1,12 @@
 ---
 slug: intent-as-parameter
 type: demand
-evidence: [T1, T2, T4]
-status: cross-tier-convergent (T1 case study + T2 shipped mechanism + T4 slot)
+register: evidenced
+support-kind: [design, observational, theoretic]
+strength: robust-qualitative   # a lived origin, a shipped mechanism, and a formal slot agree on direction
+convergent: [design, observational]   # theoretic merges with design as one estate leg; the shipped mechanism is the independent leg
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [errors-that-teach, freshness-and-atomicity, the-crystallized-process-thesis]

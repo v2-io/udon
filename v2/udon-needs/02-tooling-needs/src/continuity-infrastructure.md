@@ -1,10 +1,14 @@
 ---
 slug: continuity-infrastructure
 type: demand
-evidence: [T4, T3, T1]
-status: theorem-grade-conditional core (named premises) + lived testimony; harness-workshop record within-programme
+register: [derived, evidenced]
+support-kind: [theoretic, testimonial, design]
+strength: conditional   # four demands are theorem-backed; premises named and travelling
+convergent: [theoretic, testimonial]   # design shares the theory's author (one estate leg); lived testimony is independent
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
-consumers: harness-primary (udon: the format affordances)
+consumers: "harness-primary (udon: the format affordances)"
 depends: [persistence-is-imported, annotation-and-metacognition]
 sources:
   - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md  # §4.3, §7

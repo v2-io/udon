@@ -1,8 +1,12 @@
 ---
 slug: harness-handover-map
 type: synthesis
-evidence: [all]
-status: written last, against the drafted whole (2026-07-22)
+register: decided
+support-kind: —
+strength: —   # a port map routes and decides; its claims inherit from the chapters it maps
+convergent: —   # synthesis over other chapters; carries no independent evidence of its own
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: harness
 depends: [priorities-and-spike-agenda, continuity-infrastructure, method-evidence-tiers]

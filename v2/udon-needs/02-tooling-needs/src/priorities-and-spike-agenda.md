@@ -1,8 +1,12 @@
 ---
 slug: priorities-and-spike-agenda
 type: synthesis
-evidence: [all]
-status: synthesis over drafted chapters; a balance sheet for downstream weighing, not a verdict
+register: decided
+support-kind: —
+strength: —   # a balance sheet for downstream weighing, not a verdict; ranks rather than evidences
+convergent: —   # synthesis over the drafted chapters; carries no independent evidence of its own
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [schema-guarded-mutation, addressing-is-the-long-pole, streaming-and-partial-documents, persistence-is-imported, context-economy]

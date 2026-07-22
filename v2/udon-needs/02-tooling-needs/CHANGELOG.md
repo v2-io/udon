@@ -78,3 +78,25 @@ Append-only.
   counter-register recognized as already a leg-table. · Why: epistemology step 1
   (my two leg-tables + exemplar frontmatter). The bulk cross-reference conversion
   to `[[stem| #tag]]` across all 30 chapters is B's step-2 sweep.
+
+- 2026-07-22 · all 30 chapters (pilot A, epistemology step 2 — inherited from
+  pilot B after session loss) · Frontmatter migrated to the ratified schema:
+  `register:` / `support-kind:` / `strength:` / `convergent:` / `verified:`
+  present on every chapter; `evidence: [T…]` and the overloaded `status:` string
+  retired. `convergent:` legs assigned under the failure-mode-independence key,
+  not by counting evidence codes — the systematic consequence being that the
+  design work and the formal theory **share an author** and therefore count as
+  one estate leg, which un-arms or reduces several locks (tracking-snapshots'
+  "built / designed / theorized" is one leg, not three; progressive-disclosure is
+  not armed at all). Three pre-existing unquoted-colon `consumers:` values fixed
+  so all frontmatter parses as YAML. · Why: the schema is only worth having if it
+  is honest and machine-auditable; both required per-chapter judgment rather than
+  a code-to-kind mapping.
+
+- 2026-07-22 · five chapters (pilot A) · `## Working Notes` added to
+  progressive-disclosure-read-path, templates-and-dynamics-demand,
+  tracking-snapshots-as-perception, the-crystallized-process-thesis,
+  edit-representation-landscape · recording the non-obvious leg calls, what would
+  change each, and one unrouted principle (descent-correction applies to
+  agreement claims but not to absence claims — may belong in the methods
+  chapter). · Why: these are judgments a later agent should be able to challenge.

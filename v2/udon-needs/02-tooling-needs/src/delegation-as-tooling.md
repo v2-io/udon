@@ -1,8 +1,12 @@
 ---
 slug: delegation-as-tooling
 type: principle
-evidence: [T2, T1, T3]
-status: converged-shape (T2, lineage-annotated) + ideology-reaching-practice (the briefing register)
+register: evidenced
+support-kind: [observational, design, testimonial]
+strength: robust-qualitative   # two disciplines crossing into shipped practice; direction holds, no magnitude
+convergent: [observational, design, testimonial]   # observational leg is lineage-annotated (partial descent risk), still an independent failure mode from the estate design and the testimony
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: harness-primary
 depends: [tool-definition-anatomy, steering-and-verification-surfaces]

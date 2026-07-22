@@ -1,8 +1,12 @@
 ---
 slug: tracking-snapshots-as-perception
 type: finding
-evidence: [T1, T2, T4]
-status: cross-tier-convergent (built 2025 / designed 2025 / theorized exact)
+register: evidenced
+support-kind: [design, observational, theoretic]
+strength: robust-qualitative   # designed perception; the theory later derived why it is structural
+convergent: [design, observational]   # 'built 2025 / designed 2025 / theorized' are THREE FACETS OF ONE ESTATE LEG (same author), not three independent arrivals; the shipped-practice leg is the only independent failure mode
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: harness-primary
 depends: [persistence-is-imported, context-economy]
@@ -135,3 +139,19 @@ the temporal-coherence *rationale* — the ecosystem built it for token
 budgets, so the perceptual framing rests on the design work and the
 theory. No measurements exist of snapshot-driven behavior change (the
 third card above is the honest response).
+
+## Working Notes
+
+**"Built 2025 / designed 2025 / theorized" is one estate leg, not three.** All
+three facets — the running implementation, the written specification, and the
+later formal derivation — come from the same author, so they corroborate each
+other the way a person's notebook corroborates their memoir. The convergence
+that *does* count here is with shipped practice elsewhere (context-injection
+frames appearing in harnesses built independently), which is the second and only
+independent failure mode.
+
+This is a tightening, not a doubt about the content: designed-perception is one
+of the more compelling ideas in this report, and the theory derivation genuinely
+adds explanatory depth. It just is not third-party confirmation. If someone can
+point at an independently-invented tracking-snapshot surface (or agent testimony
+about missing one), that is the leg that would make this properly multi-kind.

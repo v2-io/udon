@@ -1,8 +1,12 @@
 ---
 slug: headless-io-contract
 type: finding
-evidence: [T2, T1]
-status: genuine-independent-convergence (survives lineage correction)
+register: evidenced
+support-kind: [observational, design]
+strength: robust-qualitative   # a converged contract shape; direction firm, no magnitude
+convergent: [observational, design]   # one of only two patterns certified as GENUINE INDEPENDENT ARRIVAL (survives the descent correction) - the observational leg is at full weight here
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [method-evidence-tiers]

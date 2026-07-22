@@ -1,7 +1,12 @@
 ---
 slug: context-economy
 type: finding
-evidence: [T2, T4, T5]          # genre only; see method-evidence-tiers "three axes"
+register: evidenced
+support-kind: [observational, theoretic, measured]
+strength: robust-qualitative   # four-families finding holds across harnesses; DL-budget backbone conditional; numbers measured-with-caveats (marked in prose)
+convergent: [observational, theoretic, measured]   # external measurement + shipped practice + theory; the 2000-line/50KB thresholds carry descent risk, the >85% and 5K->250K figures are measured-ext
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 register: evidenced             # the four families are observed in shipping practice + external measurement; the budget-is-structural backbone is derived from conditional theory; cards are proposed
 strength: robust-qualitative    # the four-distinct-families finding holds across harnesses; the DL-budget backbone is conditional (theory, named premises) and the numeric thresholds/measurements are measured-with-caveats — all marked in prose
 stage: drafted

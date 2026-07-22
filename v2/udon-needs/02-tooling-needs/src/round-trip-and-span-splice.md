@@ -1,10 +1,14 @@
 ---
 slug: round-trip-and-span-splice
 type: demand
-evidence: [T1, T2]
-status: estate-convergent demand; product family deliberately open
+register: [evidenced, decided]
+support-kind: [design, observational]
+strength: robust-qualitative   # the two-guarantee demand holds from several directions; product family deliberately open
+convergent: [design, observational]   # estate design plus shipped-tool behavior as an independent failure mode
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
-consumers: udon-primary (harness: edit-tool substrate requirements)
+consumers: "udon-primary (harness: edit-tool substrate requirements)"
 depends: [schema-guarded-mutation, freshness-and-atomicity]
 sources:
   - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §4 read whole

@@ -1,7 +1,12 @@
 ---
 slug: templates-and-dynamics-demand
 type: demand
-evidence: [T1, T3]              # T1 owner's design vision; T3 de-novo end-user testimony (cross-lineage, unprimed)
+register: evidenced
+support-kind: [design, testimonial]
+strength: robust-qualitative   # structural consequences carry independent legs; product-shape specifics remain heuristic (owner's vision, marked in prose)
+convergent: [design, testimonial]   # TWO kinds, not three: the owner's vision and the de-novo testimony are independent, but multiple testimonial sources are same-kind and raise strength rather than arming the lock
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 register: evidenced             # owner's stated product vision + independent practitioner testimony; ideation section is proposed
 strength: robust-qualitative    # STRUCTURAL consequences (product-graph, addressing-coupling, two-site split, failed-eval-as-state) now carry three independent legs; product-shape SPECIFICS remain heuristic/owner's-vision (marked in prose)
 stage: drafted
@@ -284,3 +289,20 @@ nearly free; under the present Rust-centric implementation the cost question
 is real and unexplored. And the de-novo testimony, though independent, is
 still a single unmeasured voice: it corroborates *that* agents want these
 shapes, not *how much* any one of them improves an outcome.
+
+## Working Notes
+
+**Leg count revised down from three to two kinds — flagging because the agent
+who made the original call cannot defend it.** The earlier assessment held that
+the structural consequences carry "three independent legs." Under the ratified
+failure-mode key, multiple *testimonial* sources (however cross-lineage the
+substrates) are one kind with one shared blind spot: they raise the strength of
+the testimonial leg, they do not arm a third lock position. So the lock here
+reads `[design, testimonial]` — two kinds, genuinely independent of each other.
+
+This is not a claim the underlying evidence got weaker; the de-novo testimony is
+real and valuable and cross-substrate. It is only that "independent voices" and
+"independent kinds" are different quantities, and the lock counts the second.
+Worth a second opinion — if the third leg was actually of a different kind
+(observational, from a shipped template system) rather than a second testimonial,
+the lock should read three and I have mis-tagged it.

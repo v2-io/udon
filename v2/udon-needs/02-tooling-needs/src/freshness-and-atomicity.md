@@ -1,8 +1,12 @@
 ---
 slug: freshness-and-atomicity
 type: principle
-evidence: [T2, T3, T1, T4]
-status: cross-tier-convergent (read-gate universal in T2; collision lived in T3)
+register: evidenced
+support-kind: [observational, testimonial, design, theoretic]
+strength: robust-qualitative   # three invariants recur across every kind of evidence touching writing
+convergent: [observational, testimonial, design]   # theoretic merges with design as one estate leg; read-gate is universal in shipped practice, collision is lived
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [edit-representation-landscape]

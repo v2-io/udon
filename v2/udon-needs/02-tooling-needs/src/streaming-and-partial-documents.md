@@ -1,8 +1,12 @@
 ---
 slug: streaming-and-partial-documents
 type: demand
-evidence: [T1, T2, T4]
-status: cross-tier-convergent (partial-is-normal); product shapes open
+register: [evidenced, decided]
+support-kind: [design, observational, theoretic]
+strength: robust-qualitative   # partial-is-normal holds across kinds; product shapes deliberately open
+convergent: [design, observational]   # theoretic merges with design as one estate leg
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both (udon-primary on format; harness on transport)
 depends: [tools-are-observation-infrastructure]

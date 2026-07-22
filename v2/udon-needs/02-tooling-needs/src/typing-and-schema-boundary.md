@@ -1,7 +1,12 @@
 ---
 slug: typing-and-schema-boundary
 type: demand
-evidence: [T1, T2, T4, T5]      # genre only; see method-evidence-tiers "three axes"
+register: evidenced
+support-kind: [synthetic, observational, design, measured, theoretic]
+strength: robust-qualitative   # a convergent direction across independent kinds; individual legs measured/conditional (marked in prose)
+convergent: [synthetic, observational, measured, design]   # theoretic merges with design as one estate leg; the stress-test runs, the production catalog, and external fault data each fail differently
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 register: evidenced             # the four demands are evidenced by cross-kind convergence; the ideation section is proposed
 strength: robust-qualitative    # a convergent direction across independent evidence kinds; individual legs measured/conditional (marked in prose)
 stage: drafted

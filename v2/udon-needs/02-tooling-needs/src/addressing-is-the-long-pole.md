@@ -1,8 +1,12 @@
 ---
 slug: addressing-is-the-long-pole
 type: demand
-evidence: [T1, T2, T3]
-status: cross-tier-convergent (demand); all syntax questions deliberately open
+register: [evidenced, decided]
+support-kind: [design, observational, testimonial]
+strength: robust-qualitative   # a convergent demand direction; syntax questions deliberately open (decided)
+convergent: [design, observational, testimonial]   # three distinct failure modes: estate design, shipped practice, lived testimony
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted (bridge form, 2026-07-22 — absorbed tables now live in the promoted report)
 consumers: both (udon-primary)
 depends: [schema-guarded-mutation, freshness-and-atomicity]

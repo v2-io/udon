@@ -1,10 +1,14 @@
 ---
 slug: structured-output-two-mechanisms
 type: finding
-evidence: [T2, T5]
-status: cross-tier-convergent, with a load-bearing distinction the sources themselves flag
+register: [derived, evidenced]
+support-kind: [observational, measured]
+strength: robust-qualitative   # the two-mechanism distinction is derived from how each works; the sources themselves flag it
+convergent: [observational, measured]   # shipped practice + external benchmark data, independent failure modes
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
-consumers: harness-primary (udon: payload/schema design input)
+consumers: "harness-primary (udon: payload/schema design input)"
 depends: [tools-are-observation-infrastructure]
 sources:
   - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C9, Part D.3

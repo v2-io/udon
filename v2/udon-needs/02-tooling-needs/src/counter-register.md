@@ -3,6 +3,7 @@ slug: counter-register
 type: counterposition
 register: evidenced      # each row is an observation/result that cuts against a thesis
 support-kind: [observational, testimonial, measured, synthetic]  # per-row; named in each row's description
+convergent: —          # a register of counter-rows, not a convergent claim; each row's own weight is its rung
 strength: mixed          # per-row; the Weight column carries each row's rung on the ladder — this chapter IS a leg-table
 stage: drafted
 consumers: both

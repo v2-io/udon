@@ -1,8 +1,12 @@
 ---
 slug: invocation-paradigms
 type: finding
-evidence: [T2, T5]
-status: 3-way-convergent (code mode; incl. one official vendor instance) + lineage-annotated shapes
+register: evidenced
+support-kind: [observational, measured]
+strength: robust-qualitative   # three coexisting paradigms; the choice is conditional on model and workload, not settled
+convergent: [observational, measured]   # shipped practice + external measurement; shapes are lineage-annotated
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: harness-primary
 depends: [tool-definition-anatomy, context-economy, structured-output-two-mechanisms]

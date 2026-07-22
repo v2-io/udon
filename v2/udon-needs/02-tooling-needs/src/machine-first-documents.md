@@ -1,8 +1,12 @@
 ---
 slug: machine-first-documents
 type: finding
-evidence: [T1, T2, T4]
-status: re-derived across estate contexts + substrate-diverse shipped instances (same-author caveat carried; substrate diversity is the real signal)
+register: evidenced
+support-kind: [design, observational, theoretic]
+strength: robust-qualitative   # the same conclusion re-reached across estate contexts and substrates
+convergent: [design, observational]   # the estate re-derivations share one author (single-author caveat carried); SUBSTRATE DIVERSITY in the shipped instances is the real independent signal
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [persistence-is-imported, tools-are-observation-infrastructure]

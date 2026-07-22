@@ -1,8 +1,12 @@
 ---
 slug: steering-and-verification-surfaces
 type: demand
-evidence: [T2, T5, T1, T3]
-status: convergent demand; thinnest evidence base in this report (named skew — fund against it)
+register: evidenced
+support-kind: [observational, measured, design, testimonial]
+strength: robust-qualitative   # three needs converge; the thinnest evidence base in the report, named as such
+convergent: [observational, measured, testimonial]   # design merges as estate; thin but genuinely multi-kind
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [counter-register, tool-definition-anatomy]

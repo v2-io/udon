@@ -1,8 +1,12 @@
 ---
 slug: tool-definition-anatomy
 type: finding
-evidence: [T2, T1, T4]
-status: lineage-corrected-survivorship (shapes) + cross-tier (description-as-teaching)
+register: evidenced
+support-kind: [observational, design, theoretic]
+strength: robust-qualitative   # the anatomy is agreed across the ecosystem; reported as survivorship, never as independent votes
+convergent: [observational, design]   # the shape uniformity is convention-adoption of one or two designs (descent-echo, carried as survivorship not as a vote); description-as-teaching is the cross-kind part
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: harness-primary
 depends: [errors-that-teach, method-evidence-tiers]

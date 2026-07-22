@@ -1,8 +1,12 @@
 ---
 slug: persistence-is-imported
 type: finding
-evidence: [T4, T2, T3, T1]
-status: theorem-grade-conditional (T4 core, exact under argued commitments) + cross-tier-convergent
+register: [derived, evidenced]
+support-kind: [theoretic, observational, testimonial, design]
+strength: conditional   # the core is an exact result under argued commitments; the conditions travel
+convergent: [theoretic, observational, testimonial]   # design merges with theoretic as one estate leg; shipped practice and lived testimony are independent
+verified:
+  - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
 stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure]
