@@ -97,12 +97,16 @@ instruction. The actual rule:
   **ordinary candidate**: read it, judge it against the vision question,
   land/witness/dismiss-with-reason. There is no transcript class exclusion.
   Never classify a search-surfaced span as excluded *by location*.
-- **What IS deferred** is the *bulk-telemetry dimension* of those same
-  files: systematic sweeps over full tool-usage mechanics (failure-result
-  rates, retry cascades, capability evolution across a year of Anthropic
-  models). That's question-shaped empirical work — commissioned when a
-  specific question wants it — not because it's out of scope, but because
-  an unsweepable volume needs a question to bound it.
+- **What IS deferred** is a different thing entirely — an **empirical
+  statistical analysis over the `tool_use`/`tool_result` records** of those
+  sessions (failure-result rates, retry cascades, capability evolution
+  across a year of Anthropic models). Note the disjointness: **memorata3
+  does not even index tool-use lines** — it indexes conversational text —
+  so a memorata3 hit is *by construction* dialog content and can never
+  belong to this deferred class. The two aren't slices of one search
+  space; they're different data planes needing different methods (jq/
+  scripts vs. semantic search). The telemetry analysis is commissioned
+  when a specific question bounds it.
 - **External landscape via /deep-research** — commissioned per-question
   (first commission landed 2026-07-21: `02-provenanced/syntheses/external-landscape-2026-07.md`).
 
