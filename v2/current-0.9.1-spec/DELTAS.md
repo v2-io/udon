@@ -1,0 +1,29 @@
+# DELTAS — 0.9.0-alpha.2 → 0.9.1
+
+The complete list of places where this consolidation **changes or pins
+behavior** relative to the live `spec/CORE.md` (0.9.0-alpha.2) + its
+CHANGELOG rulings. Everything not listed here is consolidation of existing
+law (reorganized, renamed, or restated — no behavior change). Each row
+cites its ruling; nothing below is this suite's invention.
+
+| # | Area | 0.9.0-alpha.2 said | 0.9.1 says | Ruling |
+|---|---|---|---|---|
+| 1 | Tab in indentation | Error; the line is dropped | **Warning**; line kept best-effort as text of the current owner | **L4** (2026-07-21) |
+| 2 | Root-level `:key` | Undefined (parser emitted a free-floating attribute; "do not rely") | **Warning**; kept as document-level text incl. the `:`; no phantom owner in the model | **L1** |
+| 3 | In-string escapes | Deliberately undefined | **None, ever**: a string closes at the next same-quote; embed the other kind; `\` interior is content | **L2** |
+| 4 | Rational / complex literals | Grammar recognized bare `1/3r` / `3+4i` "parser-decided, not frozen" | **Not bare scalars**; future standard-types dialect via envelope; unquoted they are ordinary strings/flow | **L5** reaffirming **R21** |
+| 5 | Attr-under-attr keep shape | "kept as element prose *(needs a ruling)*" (alpha.1 fixture-pinned) | Kept as **text of the open value** + Error | **L6** |
+| 6 | Comment continuation strip | Content-base shape *(alternative "verbatim from comment column" flagged as needing a ruling)* | **Content-base shape**, ruled | **L7** |
+| 7 | Multi-line for remaining delimited forms | "deliberately undefined" per-construct table (the greenfields then closed it per-construct) | Same openness, **reframed as a carve-out with its dissolution reason** (dialect-capture sugar); explicit do-not-close-per-construct | OPEN **ML** re-mark (2026-07-21) |
+| 8 | Event/wire encoding in the spec | CORE carried an "Event Encoding" section (flat wire) | **Absent from the spec suite** — flat wire deratified; successor (W0/W1d) lives in the v2 ledger; MODEL §6 carries the adequacy test any future wire must pass | **R8** |
+| 9 | Anomaly severity framing | Ladder + per-case calls | **Error = loss** (or genuinely-absent intended value) as the checkable rule; representative table re-derived under it | **L0** |
+| 10 | Vocabulary | head position / blob / embedded / freeform / raw-as-noun | **Structure Position / Line Scan / flow / inline element / verbatim family** + retired-terms table | **N-pos, N-scan, D4** (3b) |
+
+Organizational (no behavior surface): the suite adopts the three-pillar
+split (defining-udon.md) — GLOSSARY + MODEL + CORE + SEMANTICS + CARVEOUTS
+as the specification pillar; pedagogy an outline stub; no grammar document
+(the Nesting Rule's mechanical spelling stays in CORE §2.1). Rulings R1–R21
+and the S-batch (S1, S4, S5, S6, S8, S11, S13–S18, final-terminator,
+`*{`-principle, `;{}`-empty-string, empty-brackets, EOF≡eol+dedent,
+nameless-`!{`, empty-forced-text) are **landed in the prose** rather than
+left as changelog reading — that is consolidation, not change.
