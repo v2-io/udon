@@ -193,3 +193,45 @@ should shrink to a true bridge); the recommended exemplar is Part IV
 (addressing) or Part III (mutation), done end-to-end so Joseph can feel
 the delta; (3) bridge cross-refs still say "Appendix A–E" — retarget to
 `reports/*`; (4) the by-degrees pass now applies to bridges specifically.
+
+
+### 2026-07-22 anthology inversion — spine landed; bridge standard raised
+
+Landed this pass (commits 2647cb7…b9ecabe): OUTLINE restructured as the
+spine (body-vs-bridge architecture stated up top; reports/ table with
+per-Part "Opens into" lines); README front door rewritten (apparatus
+quarantined below the auditors line); all Appendix A–E cross-refs
+retargeted to reports/* by name; process-vocabulary sweep round 1
+(spike/phase-3/steward/gathering out of reader prose); **Part IV
+end-to-end as the exemplar** — both bridges (addressing, read-path) plus
+the promoted addressing report reading clean.
+
+**The bridge standard, raised mid-pass by Joseph (binding for all
+remaining bridge work):** absorption and patch-in-place edits do NOT fix
+the register — a passage can carry all its content and still assume the
+reader. Bridges get **fresh-page rewrites from the reader's zero**: close
+the current text, hold the facts, write as if explaining to a smart
+person who has never seen this project; every concept taught at arrival;
+provenance (ruling IDs, quotes, source names) drops to frontmatter or
+source notes. Joseph's model rewrite (cross-document scope) is in the
+addressing bridge's "What is already decided" paragraph — match it.
+Self-test before committing: walk the bridge line by line asking Joseph's
+question — "am I supposed to already know this?" — and teach or footnote
+anything that fails.
+
+**Remaining work, exact:**
+1. Fresh-page rewrites of the remaining 26 bridges (Part IV's two are
+   done and are the pattern; the two synthesis chapters and the methods/
+   counter-register chapters count — they are reader-facing too).
+2. Vocabulary classes for the sweep, expanded: process words
+   (spike/probe-context, phase-N, gathering, extraction, steward, lane,
+   arc) AND provenance-speak in prose (ledger, "ruled X", DECISIONS/OPEN
+   row IDs, "the corpus", "design corpus", "scenario sample/corpus",
+   "design of record") — grep shows ~a dozen bridges still carry the
+   second class; the fix is the fresh-page rewrite, not substitution.
+3. The six remaining promoted reports: embedded gathered-frontmatter
+   blocks tucked to auditor comments (pattern applied to
+   addressing-exploration.md, b9ecabe).
+4. NOTATION-KEY: re-frame as pure auditor apparatus or fold what readers
+   need into bridges — its gloss table still teaches codes readers should
+   no longer meet.
