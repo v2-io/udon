@@ -181,6 +181,26 @@ discovery, often as valuable as success; or "failed, and I can't say why"
 the steward channel. Document failed attempts either way; the failure
 record keeps future agents from re-dying on the same hill.
 
+**When the attempt can't finish in time (the interim-honesty marker).**
+Strengthen-first is never a license to leave an overclaim standing while
+its spike runs. If the strengthening attempt can't be completed within
+your assignment, it is your obligation — Joseph's word: *moral*
+obligation — to make the statement **honest as far as we know, now**, in
+place. The convention (in the spirit of Wikipedia's "citation needed"):
+wrap the claim in square brackets with a trailing flag — `[…the claim as
+written…]⚑` — which means exactly: *this is currently an overclaim or
+unsupported statement; see this chapter's working notes for why*. The
+matching ⚑ entry in the chapter's working notes says what's unsupported
+about it, what the strengthening attempt has tried or would try, and
+points at the ongoing spike or open concern if one exists. The flag is
+not a soften — the claim's text stays at its aspirational strength, which
+is the strengthening target preserved in place — and it is not permanent:
+it resolves by the attempt completing (strengthened, or replaced per the
+no-go protocol), never by quietly aging into the furniture. A ⚑ that
+survives a full cycle untouched is itself a finding for
+`notes/for-OUTLINE.md`. (Exact glyph is a coordination choice — keep it
+greppable and consistent; refine by note if a better mark emerges.)
+
 **When a claim actually falls (the no-go protocol, scaled to this
 report).** A refuted claim is *false*, and a false claim has no honest
 weakened form — after a no-go, the downgrade option the original finding
