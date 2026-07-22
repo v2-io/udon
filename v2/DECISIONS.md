@@ -135,6 +135,12 @@ High-consensus greenfield + pipeline leans, landed thin. **Overturn freely** via
 |----|--------|------|
 | **PATH-1** | **Cross-document addressing is in scope for path design** ("documents in path are definitely in scope"). Overrules the scenarios corpus's document-scope-boundary lean; path design must not foreclose multi-document addressing. | STEWARD-CALLS #4, jaw 7/21; `udon-needs/01-ideation/02-provenanced/commentary/I2-scenarios-witness.md` |
 
+## Steward marks (three-arc fork, 2026-07-21/22 evening session)
+
+| ID | Holds | Cite |
+|----|--------|------|
+| **C7** | **`v2/current-0.9.1-spec/` is the consolidation *baseline*, not the C0/C2 successor.** Joseph forked three arcs: (1) a 0.9.1-consolidation suite as the clean base of operations ("a base of operations that is not crufty… doesn't require sending agents to 4 different places"), consolidating current law + best greenfield organization + defining-udon pillars, with carve-outs carrying their demand-side reasons; (2) the `udon-needs/02-tooling-needs/` synthesis monograph; (3) informed spikes after 1+2. **C0–C2's 0.10 greenfield-replacement line is unchanged** — 0.9.1 is the floor it launches from. No work continues on the 0.9.0-alpha.x route; old `spec/` remains record/oracle until cutover ("I need to not worry right now about oracles or gates"). | jaw, this session (2026-07-21/22); relayed by Fable-parent. Resolves review-B finding M1 (`current-0.9.1-spec/.reviews/review-B.md`). |
+
 ## Overturns
 
 *(none yet)*
