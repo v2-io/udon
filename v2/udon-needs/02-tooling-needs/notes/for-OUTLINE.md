@@ -154,3 +154,50 @@ typing → templates → annotation is a sensible progression (typed values →
 computed/dynamic values → metacognitive residue); context-economy opens VI
 cleanly. The only genuine structural pressure is the annotation↔continuity
 seam above — a finding, not a default "structure held."
+
+---
+
+## Outline-evolution proposals (coordinator, 2026-07-22, from Joseph's read-questions)
+
+### Proposed chapter: code-indexing-and-navigation-paradigms (Part IV-adjacent)
+
+Joseph asked whether the report covers how harnesses *index and interact
+with* code distinct from editing — LSP, tree-sitter, semantic pre-indexing.
+It does not; verified gap (report grep + corpus check, 2026-07-22). The
+corpus HAS the threads, characterized but never synthesized: aider's
+tree-sitter repo-map (~100 .scm tag-query files, definitions/references,
+read-only framing — flagged MEDIUM-HIGH in its in-vivo map), Claude Code's
+LSPTool, grok-build's lsp/ implementation, sar3's LSP-chunking concept.
+The extraction lens (edit/context/I-O) never looked here — phase-inheritance
+law in action. Chapter shape: the three paradigms as a support-kind-style
+taxonomy — **tree-sitter static-parse** (fast, universal, no type knowledge)
+/ **LSP live-server** (always-fresh, language-semantic, heavyweight,
+per-language) / **embedding pre-indexed** (fuzzy recall, staleness risk;
+closed-source examples not in corpus — needs deep-research) — each with its
+freshness guarantee, failure mode, and repair. Read-side twin of
+addressing: repo-maps and LSP indexes are how agents address code *today*;
+a tree-sitter query and a UDON path are both structural addressing; LSP
+`references` ≈ the `all()` verb. Extraction targets: the three in-vivo
+sections above + sar3; commission deep-research for closed-source indexers.
+Sequence: after the current epistemology implementation lands.
+
+### Proposed survey: the tooling ecosystem — skills, plugins, MCP tools (Joseph, 2026-07-22)
+
+"A general survey of tooling-related skills available out there, plugins,
+and especially mcp tools." Territory the corpus barely touches (the in-vivo
+maps note MCP *plumbing* — Claude Code's MCPTool/McpAuthTool, deferred
+loading of MCP schemas — but nothing surveys the *ecosystem*: what tools
+exist, their categories and quality distribution, what agents actually get
+offered, registries and discovery, the skills/plugin systems across
+harnesses and their design differences). Shape: primarily a deep-research
+commission (external landscape, Tier-5-style: MCP registries/marketplaces,
+skill ecosystems, plugin architectures per harness) + a re-mine of the
+in-vivo maps' plugin/skill/MCP sections + de-novo agent testimony ("what
+tools do you wish were offered to you? what's in your MCP roster that's
+noise?"). Feeds: tool-definition-anatomy (the anatomy at ecosystem scale),
+invocation-paradigms (deferred loading exists BECAUSE of ecosystem bloat),
+context-economy, and the harness handover (roster curation is a harness
+design decision). Likely lands as a new report in reports/ + a bridge
+chapter, rather than a chapter alone — it's survey-mass, not synthesis-mass.
+Sequence: deep-research can run parallel to anything (external, no
+collisions); synthesis after epistemology implementation.
