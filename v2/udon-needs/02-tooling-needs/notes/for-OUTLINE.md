@@ -201,3 +201,83 @@ design decision). Likely lands as a new report in reports/ + a bridge
 chapter, rather than a chapter alone — it's survey-mass, not synthesis-mass.
 Sequence: deep-research can run parallel to anything (external, no
 collisions); synthesis after epistemology implementation.
+
+---
+
+## The coming segmentation (Joseph, 2026-07-22) — record of the lean, not yet an action
+
+**The principle, in his words:** ASF's "secret sauce" was religiously breaking a
+section/chapter/topic into its **individual constituent claims**, allowing only
+afterword discussion-grade and introduction-grade segments alongside them —
+"because the claims could harden or be fixed independently, while their
+organization and dependency chain could be reorganized independently."
+
+**Status: coming, deliberately not yet.** Joseph: there is "some advantage to
+staying broad-topical" while we are still rearranging at that level of
+abstraction and "only starting to cement" — but he expects to feel compelled to
+split "within the next few days." Recorded now so the work between here and
+there is done in a way that makes the split cheap rather than expensive.
+
+**What the target shape is** (read from `#asf/aat/` OUTLINE + three segments):
+
+- A **chapter is a container**, not a file — an OUTLINE heading plus a table of
+  segments. Segments are the files. Our current chapter==file state is
+  transitional; after the split each of our chapter-files becomes a Chapter
+  holding N claim segments plus its glosses. *"Chapter" survives as the
+  container word and "segment" becomes the file word — so nothing needs
+  renaming now.*
+- **Claim segments** carry exactly one claim: frontmatter (type/status/depends/
+  stage) → title → one-paragraph summary → `## Formal Expression` (with
+  claim-level tags) → `## Epistemic Status` → `## Discussion` → `## Working
+  Notes`. Self-contained.
+- **Intro-gloss segments** (`type: discussion`, `status: discussion-grade`, light
+  `depends`, no formal-expression/epistemic-status sections) open a chapter:
+  recap the prior chapter, frame what is coming, and close with a roadmap naming
+  the segments that follow in order. Their Working Notes say plainly that they
+  carry no formal claim.
+- **Discussion-gloss segments** (`impl-*`) close a chapter: the consequences that
+  do not sit beside any single derivation, with a heavy `depends` list on the
+  claims they discuss.
+
+**The forward-reference rule, corrected by Joseph** (an earlier reading of mine
+was wrong — the rule is about *dependency*, not mention):
+
+- A segment **may** note a downstream segment to anticipate a question that
+  downstream segment addresses.
+- It **may not** repeat the downstream segment's claim in a way that might not
+  stay evergreen.
+- It **absolutely may not rely on** a downstream segment — with one exception:
+  **appendices may be depended on in reverse** ("for the details, the derivation
+  this relies on is in appendix segment xyz").
+
+**What our claims will be, when split** (Joseph named the kinds): independent
+empirical measurements · independent user-voice aggregations · independent
+capability cards · plus the observational-convergence claims, each carrying its
+own descent correction.
+
+**Why this does not threaten the by-degrees pedagogy.** By-degrees prose is
+order-*dependent*; claim segments are order-*independent*. ASF resolves the
+tension by division of labor — **connective tissue lives in the gloss segments;
+claims are self-contained** — which is exactly why the intro-gloss is the one
+place forward-pointing prose belongs. Our bridges are *already* intro-gloss
+segments structurally (they orient, they hand off, they close with a roadmap),
+so the split is an **extraction of the claims currently embedded in bridge
+prose**, not a rewrite of the bridges.
+
+**Cheapest preparation between now and then** (do this; do not split yet):
+
+1. **Finish the leg-tables** wherever a chapter carries ≥3 load-bearing claims at
+   mixed strength (five by the R3 census). A leg-table *is the split manifest in
+   embryo* — it already enumerates a chapter's constituent claims with kind and
+   strength.
+2. **Keep connective prose at each bridge's opening and closing**, not woven
+   through the claim material, so extraction is a clean cut.
+3. **Keep capability cards self-contained** — they port to claim segments nearly
+   as-is.
+4. **Readiness signal:** the split gets cheap when a deepening cycle ends with
+   *"we looked and the structure held"* as a genuine finding rather than a
+   default. While the outline is still gaining chapters (two proposed today), a
+   claim-split would mean re-homing segments repeatedly.
+
+**What we lack that the target shape has:** the `impl-*` chapter-end discussion
+form. Our "Honest edges" is its much smaller cousin.
