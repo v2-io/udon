@@ -151,7 +151,7 @@ separate process constitution:
 |------|------|
 | [`pipeline-discussion.md`](pipeline-discussion.md) | Full deliberation record (primary historical source) |
 | [`01-ideation/`](01-ideation/) | Scratch staging for (1): usage scenarios, agentic/utility ideas, library-consumer situations, mined snippets — any phase |
-| [`02-tooling-needs/`](02-tooling-needs/) | **Phase (2) — the agentic-tooling monograph**: ASF-style outline + segments synthesizing 01-ideation for both consumers (UDON decisions + the archema-io/harness handover); seeded 2026-07-22, core spine drafted, remainder planned rows |
+| [`02-tooling-needs/`](02-tooling-needs/) | **Phase (2) — the agentic-tooling report**: an anthology (seven deep reports as the body, 30 by-degrees bridge chapters, OUTLINE spine) synthesizing 01-ideation for both consumers. Complete first draft; deepening cycle 1 landed a ratified three-axis epistemology. Destination expected: a new group inside ASF **02-TST**. Start at its `RESIDUALS.md` §0 or `OUTLINE.md`. |
 | [`01-ideation/needs-map.md`](01-ideation/needs-map.md) | Early gathered seed (situations visible from the discussion at reseed); one input among many for (2), not a mandate |
 
 Phase (2)’s main synthesis document will likely be some modification of that

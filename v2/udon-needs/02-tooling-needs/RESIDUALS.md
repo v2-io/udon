@@ -4,6 +4,48 @@ The honest-coverage ledger for the monograph. Three registers: what the
 drafted spine deliberately did not absorb, where the known gaps are, and
 where late-arriving pieces bolt on without disturbing what's written.
 
+## 0. Where the work stands (2026-07-22, end of deepening cycle 1)
+
+**Shape:** anthology — seven promoted deep reports in [`reports/`](reports/)
+are the body; 30 bridge chapters in [`src/`](src/) orient by degrees and hand
+off; [`OUTLINE.md`](OUTLINE.md) is the spine. History →
+[`CHANGELOG.md`](CHANGELOG.md); workflow →
+[`DEEPENING-CYCLES.md`](DEEPENING-CYCLES.md); channels → [`notes/`](notes/).
+
+**Epistemology: ratified and live.** Three axes (support-kind × strength ×
+register) + the convergent lock (keyed on *failure-mode* independence) + the
+append-only verification-event log. Schema home is
+[[method-evidence-tiers| #method-evidence-tiers]]; the reasoning record is
+`notes/epistemology-{SYNTHESIS,pilot-A,pilot-B}.md`; trio-ratified and
+Joseph-supported. All 30 chapters carry `register:` / `support-kind:` /
+`strength:` / `convergent:` / `verified:`; `evidence: [T…]` is retired.
+The outward-facing proposal is `notes/TST-extension-memo.md`.
+
+**Cycle 1 (two pilot divisions) produced:** the epistemic recalibration; the
+five leg-tables, built as *split manifests* (one row = one extractable claim
+with its kind, strength, and the evidence-action that would move it); a
+cross-reference sweep to relocation-stable `[[stem| #stem]]` form; and one
+systematic finding that *reduced* claimed strength — **`design` and
+`theoretic` share an author**, so under the failure-mode key they are one
+estate leg, which un-armed several convergence claims that had counted them
+separately.
+
+**Open, and named elsewhere rather than duplicated here:**
+
+- Structural proposals → [`notes/for-OUTLINE.md`](notes/for-OUTLINE.md):
+  two candidate chapters (code-indexing/navigation paradigms — LSP,
+  tree-sitter, pre-indexed; and the MCP/skills/plugins ecosystem survey),
+  plus **the coming claim-segmentation** and its preparation.
+- Steward calls → [`notes/for-joseph.md`](notes/for-joseph.md) and
+  `v2/OPEN.md`.
+- Per-chapter open state → each chapter's own `## Working Notes` (an
+  unconstrained side-car: open work, in-progress thinking, unrouted ideas —
+  never history).
+- The partially-completed ecosystem deep-research (43 of 109 verification
+  agents finished before a session limit; three claims confirmed, ~25 with
+  real sources unverified-not-refuted) is resumable from cache; it feeds the
+  proposed ecosystem survey.
+
 ## 1. Planned segments — NONE (end-to-end as of 2026-07-22 PM)
 
 All 30 segments are drafted; the first complete draft exists. The former
