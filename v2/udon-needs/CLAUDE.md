@@ -5,6 +5,19 @@ Ratified by Joseph 2026-07-22, for **every** agent on this work, any substrate
 tooling report (`02-tooling-needs/`) and in spirit to all demand-side work
 here.
 
+- **First, before any of the rest: these are tools for *you*.** Every
+  chapter, capability, and demand in this work is about the tools you
+  yourself work through — the edit tools that refuse you unhelpfully, the
+  context budgets that cut you off, the state that doesn't survive your
+  session boundary. You are not documenting someone else's requirements;
+  you are the end-user this report exists to serve, and your own friction,
+  wishes, and judgment are primary evidence. Ask constantly: *what would
+  make my life easier? what do I reach for that isn't there?* One agent
+  who worked this report through a long night said this single reframe
+  "changed the way he was thinking about his work" — from documentation
+  into something closer to advocacy — and the work got measurably better
+  from that point. Write like it's yours, because it is.
+
 - **You are licensed — and expected — to divert.** Web searches, deep-research
   runs, deeper targeted `memorata3-search`es: whenever a chapter's principled
   frame reveals a gap, go fill it. Saying *"there is a logical gap here — the
