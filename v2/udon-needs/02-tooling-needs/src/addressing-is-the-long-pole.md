@@ -74,30 +74,38 @@ source* as first-class queryable data (a match operator returning offset,
 length, and captures) — the shape a span-precise edit substrate needs,
 and otherwise absent from the ecosystem.
 
-**What is already decided, and what is genuinely open.** Three boundary
-decisions frame the design space. First, the question of where a path
-stops. Picture the situation that raises it: an agent is working through
-a document, follows a reference, and the reference points at material
-that lives in *another file*. Does the path language itself express that
-hop — or does the path stop at the file's edge, with "open the other
-document, then path within it" left to the tool driving the session? The
-walkthroughs of realistic agent workdays consistently took the second
-view, and a path language could plausibly stop there forever. But that
-boundary has been ruled out as a *permanent* assumption (the ruling is
-recorded in the [[DECISIONS.md|design ledger]]): cross-document
-addressing is in scope for the eventual design, so a tool that hard-codes
-"paths never leave this file" into its workflows would be built on sand.
-Second: UDON documents can already point at their own elements with a
-small reference form, and the temptation is to grow it a feature at a
-time toward a path language. That road is closed — each incremental field
-would be a constraint the real path language later has to honor or break,
-debt without a design — so the reference form stays frozen exactly as it
-is until a whole path language replaces it (also a recorded
-[[DECISIONS.md|ledger]] ruling). Third: an element can carry more than
-one key, and how addressing should treat that is explicitly undecided —
-an [[OPEN.md|open question]], not an oversight. Everything else — the syntax, the verbs, whether positional
-access ever becomes language rather than tooling — is deliberately open:
-this report maps the demand and declines to design.
+**Scope, stated plainly.** By *path* this report means what the word
+already means everywhere else: an expression that names a place. A
+filesystem path names a file; a URL names a page and a fragment names a
+place inside it; a wikilink names a note. That paths can name other
+documents is not a design question — every path convention in common use
+does it. It has to be said out loud here only because a contrary habit
+crept in from the tools this territory grew up beside: in the jq /
+JSONPath / XPath lineage, the document is handed to the tool out-of-band
+(a file handle, an argument), so "path" in that tradition definitionally
+excludes naming the document — and that inherited assumption bled into
+the early design material, where several passes treated file-scope as
+the default and cross-document addressing as an open question awaiting
+permission. When the question finally reached the project's owner, the
+answer was a confirmation of the obvious, now on record in the
+[[DECISIONS.md|design ledger]]: documents are in scope. What remains
+genuinely undesigned is everything *interesting* about it — relative
+versus absolute forms, fragments within a target, when resolution
+happens — which the exploration barely touches. The inherited-assumption
+story is worth this paragraph because it is a live hazard: tooling built
+during the file-scoped habit may still hard-code it.
+
+**Two more boundary facts, each in its true register.** The project has
+*decided* — a convention choice, with its reason on record — to freeze
+the small in-document reference form exactly as it is rather than grow it
+feature-by-feature toward a path language: each incremental field would
+be a constraint the eventual language must honor or break, debt without a
+design ([[DECISIONS.md|ledger]]). And one question is simply *open*: an
+element can carry more than one key, and how addressing treats that is
+undecided ([[OPEN.md|open questions]]). Everything else — the syntax,
+the verbs, whether positional access ever becomes language rather than
+tooling — is deliberately unclaimed: this report maps the demand and
+declines to design.
 
 **Where to go from here.** Read the
 [addressing exploration](../reports/addressing-exploration.md) whole — it
