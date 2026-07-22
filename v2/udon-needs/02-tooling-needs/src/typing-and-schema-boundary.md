@@ -1,8 +1,9 @@
 ---
 slug: typing-and-schema-boundary
 type: demand
-evidence: [T1, T2, T4, T5]
-status: cross-tier-convergent (empirical stress test + design family + external fault data + theory slot)
+evidence: [T1, T2, T4, T5]      # genre only; see method-evidence-tiers "three axes"
+register: evidenced             # the four demands are evidenced by cross-kind convergence; the ideation section is proposed
+strength: robust-qualitative    # a convergent direction across independent evidence kinds; individual legs measured/conditional (marked in prose)
 stage: drafted
 consumers: both (udon-primary)
 depends: [schema-guarded-mutation, structured-output-two-mechanisms]
@@ -66,12 +67,20 @@ write gate can consume.
   outlive their schemas — which is *all* agent memory and every
   tracking document — this is the difference between versioning as
   metadata and versioning as a working mechanism.
-- **The external anchor.** In a 2026 fault-taxonomy study of the Model
-  Context Protocol ecosystem, the largest execution-failure subcategory
-  is schema-serialization mismatch — wrappers whose output their own
-  clients cannot parse — and configuration dominates real-world tool
-  faults overall. The outside world's failures concentrate exactly
-  where this chapter's demands point.
+- **The external anchor.** The first large-scale fault taxonomy of the
+  Model Context Protocol ecosystem — 407 labeled issues drawn from 385
+  server repositories, 2026 — found two things this chapter's demands
+  predict. Configuration faults *dominate* the whole population (the three
+  configuration categories together account for the clear majority of
+  issues); and the single largest *execution*-fault subcategory is
+  tool-call/execution errors, inside which the emblematic case is
+  schema-serialization mismatch: wrappers whose serialized output their
+  own clients cannot parse, breaking *every* invocation until explicit
+  fields were exposed. Neither failure is the model being wrong; both are
+  the format-and-schema layer being unguarded. The outside world's
+  failures concentrate exactly where this chapter's demands point —
+  measured, at the conditions of one study of Python-SDK servers, and
+  named as such.
 - **The theory's slot.** A schema converts an interpretive observation
   into a pass/fail one — the sharpest-signal move the
   [observation chapter](tools-are-observation-infrastructure.md)
@@ -100,29 +109,80 @@ write gate can consume.
 
 ## What this opens (ideas, not designs)
 
-- ✦ **A taxonomy of the undetectable.** The duplicate-key failure matters
-  because it is *invisible at the format layer* — the format's own
-  parser blesses the corruption. Every format has such a set; nobody
-  has enumerated them side by side. A catalog of
-  what-each-format-cannot-see would turn format selection for agent
-  state from taste into risk assessment.
-- ✦ **The guessing-tax catalog as a portable test suite.** The
-  architecture record's gotcha table is executable: feed each row to
-  any candidate format and score silent retypes. A standing
-  "Norway suite" would let every notation — UDON included — *prove*
-  its typing discipline rather than assert it.
-- ✦ **Evolution in both directions.** Read-time translation as designed
-  is forward-only: new schema reads old documents. The inverse has
-  real uses in an agent estate — old tools reading newer documents
-  during staged rollouts. Whether `was:`-style declarations can be run
-  backwards (or paired with `becomes:`) is a design question with a
-  concrete payoff: no flag-day anywhere in a fleet of agents.
-- ✦ **Documents that know their schema version.** If schema history is
-  versioned, a document stamped with the schema version it was written
-  under makes every future read *self-locating* in that history — the
-  read-time translator knows exactly which upcasters apply, and
-  staleness of the document against its schema becomes a checkable
-  fact rather than a discovery.
+> [!capability] A taxonomy of the undetectable
+> **What:** a side-by-side catalog of what each candidate format's own
+> parser *cannot see* — the duplicate-key silent-discard is YAML's
+> entry, but every format has a set of corruptions it blesses. Enumerate
+> them per format so choosing a format for agent state becomes risk
+> assessment, not taste.
+> **Principles that apply:** an observation that resolves sharply is a
+> bias-reduction instrument; the failure the format can't surface is
+> pure observation ambiguity handed to the agent.
+> **Hypothesized impact:** collapses observation ambiguity A on the
+> read channel toward its floor — the residual A that no schema can
+> remove because the *parser* won't report it — making that irreducible
+> floor an explicit, chooseable quantity per format instead of a latent
+> hazard.
+> **In tension with:** format familiarity (the most-blessed corruptions
+> tend to live in the most-installed formats); the catalog dates as
+> parsers change.
+> **Potential downsides:** a "clean" score invites false confidence —
+> undetectable-set-empty is a claim about the parser, not the data.
+
+> [!capability] The guessing-tax catalog as a portable test suite
+> **What:** the production gotcha table (bare `1.0`→float, `01234`→octal,
+> `yes`→bool, ISO-string→date) is executable — feed each row to any
+> candidate format and score the silent retypes. A standing "Norway
+> suite" any notation, UDON included, runs to *prove* its typing
+> discipline rather than assert it.
+> **Principles that apply:** conformance as a machine verdict; a demand
+> stated as a checklist a write gate can consume.
+> **Hypothesized impact:** turns "no silent retype" from an asserted
+> design property into a measured one — the strongest thing a typing
+> discipline can carry, an adversarial pass/fail with observation
+> ambiguity A ≈ 0 on the retype question.
+> **In tension with:** suites ossify — a format can pass every known row
+> and still retype something nobody thought to test.
+> **Potential downsides:** a green suite is evidence of discipline on
+> the *tested* inputs only; it is not a proof of the general property.
+
+> [!capability] Evolution in both directions
+> **What:** read-time schema translation as designed is forward-only
+> (new schema reads old documents). Agent estates also need the inverse —
+> old tools reading *newer* documents during a staged rollout. Whether a
+> declared rename can be run backwards (or paired with a `becomes:`
+> forward marker) is the open question; the payoff is no flag-day
+> anywhere in a fleet.
+> **Principles that apply:** durable state must survive the boundary of
+> the writer's own version, not just its own context; schema as a
+> versioned object.
+> **Hypothesized impact:** strengthens the reinjection channel across a
+> heterogeneous fleet — a document written by a newer agent stays
+> reloadable by an older one, so version skew stops severing the
+> externalize-then-reload path that is the *only* cross-boundary
+> persistence there is.
+> **In tension with:** bidirectional translation can be lossy (a new
+> field has no old home); every added direction is more upcaster surface
+> to keep correct.
+> **Potential downsides:** backward translation that silently drops
+> new-only data reintroduces exactly the duplicate-key failure class one
+> layer up.
+
+> [!capability] Documents that know their schema version
+> **What:** a document stamped with the schema version it was written
+> under makes every future read *self-locating* in the schema history —
+> the read-time translator knows exactly which upcasters apply, and
+> staleness against the current schema becomes a checkable fact.
+> **Principles that apply:** provenance as first-class data; a parked or
+> re-entered document is read cold and must describe itself.
+> **Hypothesized impact:** drives observation ambiguity A toward zero on
+> the "is this document current?" question — today an agent *infers*
+> staleness (high A); a version stamp makes it a lookup (A ≈ 0) — and
+> lowers comprehension time on cold re-entry after context turnover.
+> **In tension with:** a stamp is metadata that can go stale itself if
+> hand-edited; it costs a reserved field every document must carry.
+> **Potential downsides:** a *wrong* stamp is worse than none — it routes
+> the translator to the wrong upcasters with full confidence.
 
 ## Honest edges
 

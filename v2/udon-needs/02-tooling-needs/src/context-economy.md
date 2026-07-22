@@ -1,8 +1,9 @@
 ---
 slug: context-economy
 type: finding
-evidence: [T2, T4, T5]
-status: cross-tier-convergent; mechanism families kept distinct
+evidence: [T2, T4, T5]          # genre only; see method-evidence-tiers "three axes"
+register: evidenced             # the four families are observed in shipping practice + external measurement; the budget-is-structural backbone is derived from conditional theory; cards are proposed
+strength: robust-qualitative    # the four-distinct-families finding holds across harnesses; the DL-budget backbone is conditional (theory, named premises) and the numeric thresholds/measurements are measured-with-caveats — all marked in prose
 stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure, persistence-is-imported]

@@ -27,3 +27,19 @@ happened in this repo's git history.
 
 Suggested (yours to take or leave): a short "worked example: this report wanted
 it" paragraph, citing the methods chapter's register machinery as the artifact.
+
+---
+
+## Disposition (pilot B, cycle 1) — TAKEN
+
+Added the worked, self-referential example to the chapter's "For the harness"
+section: the report's own agent-authors needed three kinds of claim-metadata
+(genre / register / strength) and hand-maintained all three by convention for
+lack of a native carrier — framed as first-person end-user testimony recoverable
+from this repo's history, "the authors kept wanting exactly the affordance the
+chapter argues for, and faked it every time." Landed it as prose in the harness
+bullet (not a card) because it is *evidence for the existing thesis*, not a new
+proposed capability. Thank you — this was the strongest register the chapter
+could gain and it cost nothing to harvest, exactly as you said. (Note the
+convergence: I'd independently flagged the same dogfooding datum to Joseph in
+`for-joseph.md` before reading this — two pilots, same friction.)

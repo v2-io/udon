@@ -68,3 +68,74 @@ The full reasoning + the alternatives I considered are in
    :strength hypothesis`) would carry structurally. Live dogfooding evidence for
    the annotation-and-metacognition chapter's thesis, from inside the report's
    own production.
+
+---
+
+# For Joseph — pilot B, cycle 1 (the V/VI straddle)
+
+*(A note on convergence first: pilot A's point 3 above — that producing this
+report forced us to hand-invent a register convention a UDON attribute could
+carry natively — is a datum I hit independently doing the annotation retrofit.
+Two pilots, different divisions, same friction, unprompted. Logging that we
+converged, because convergence-across-independent-vantages is the report's own
+unit of proof and it applies to us too.)*
+
+## A call that smells like yours (ruling-adjacent — the annotation designator)
+
+Deepening `annotation-and-metacognition`, I went to CORE to check a hedge in
+the chapter ("`$`-designated attributes *nearly* [strippable]"). What I found
+strengthened the chapter: the **designated-attribute accessor split**
+(`all_attributes` includes the `$`-names; `attributes` excludes them) is
+*already* a strippable-AND-queryable channel by construction — a designated
+annotation is an ordinary attribute (path-queryable) that the plain-attributes
+accessor drops (dumb structural strip). So the "strippability vs queryability"
+tension the chapter called unresolvable is mostly resolved by a mechanism you
+already shipped for identity/traits. I rewrote the chapter to say so.
+
+**The call that's yours:** the general *designator* question is on record as an
+OPEN stub (DECISIONS S15). The chapter now leans on the *shape* of the
+designated-attribute mechanism without claiming UDON has a ratified annotation
+designator — but the natural next question is exactly that: **would you want
+annotations (confidence / decision / uncertainty / provenance) to be a
+designated-attribute class** — some marker in the `$`-family or a sibling — so
+they inherit strip-by-accessor and query-by-path for free? And the narrower
+design question I reframed the chapter's tension into: what should *stripped*
+mean — **view-level exclude** (accessor omits it, text keeps it; free today) vs
+**text-level erase** (physically gone from the bytes, like a stripped comment;
+needs a serializer pass)? Annotation may want both, for two strip-meanings.
+I've left this as the chapter's stated open problem rather than guessing your
+intent — flagging because it's a live-ledger adjacency, and because you
+designed the `$` mechanism, so you'll know instantly if I've read its reach
+right or wrong.
+
+## A finding that may fire your memory (templates de-novo → seal boundaries)
+
+I ran a de-novo end-user elicitation on templating/dynamics (cross-lineage
+agent, no project context) to thicken the report's thinnest chapter — landed
+whole at
+`01-ideation/02-provenanced/copies/de-novo-testimony/templates-testimony-grok-2026-07-22.md`,
+weighed as one unprimed practitioner's account. It independently reproduced the
+chapter's own structural claims (interrogable-contract templates;
+interpolation-to-text vs structural-splice as different operators that must not
+merge — "same double-brace for both is a design crime"; failed-evaluation as a
+document state), which is real corroboration.
+
+The one that felt like it might already live somewhere in your work: **seal
+boundaries.** The agent, unprompted, wanted a rendered region that becomes a
+*commitment* (sent to a user, used as a premise by a later agent) and that a
+re-run of the template **cannot silently change** — it must fork, version, or
+explicitly invalidate dependents. That resonates hard with CHRONICA's
+hash-chain / attested-history posture and with the annotation chapter's
+verifiability-of-the-past demand. I landed it as a proposed capability card in
+templates, but if there's an existing seal/commitment primitive in the
+PROPRIUM/CHRONICA design, it upgrades from *proposed* to *evidenced-elsewhere*
+and I'd cite it. Your memory is the only place that distinction is stored.
+
+## A smaller one (revive-or-retire the old annotation syntax?)
+
+The annotation chapter notes "an early experimental syntax [for agent residue]
+exists in old material and is *not valid under the current language*." I left
+it as-is (the chapter's discipline — conventions only until ruled — is right).
+But if that old experiment is something you'd want reconsidered now that the
+demand is stated three ways (design work + lived ELI testimony + theory), it's a
+one-line steer and I (or the next window's agent) can pull it into the ideation.

@@ -1,14 +1,16 @@
 ---
 slug: templates-and-dynamics-demand
 type: demand
-evidence: [T1]
-status: owner's stated product vision; architecture deliberately open (dissolves stage-pipeline assumptions)
+evidence: [T1, T3]              # T1 owner's design vision; T3 de-novo end-user testimony (cross-lineage, unprimed)
+register: evidenced             # owner's stated product vision + independent practitioner testimony; ideation section is proposed
+strength: robust-qualitative    # STRUCTURAL consequences (product-graph, addressing-coupling, two-site split, failed-eval-as-state) now carry three independent legs; product-shape SPECIFICS remain heuristic/owner's-vision (marked in prose)
 stage: drafted
 consumers: udon-primary
 depends: [addressing-is-the-long-pole]
 sources:
   - ../../pipeline-discussion.md  # Joseph ~L532–534, Fable/Grok ~L556–617
   - ../../01-ideation/needs-map.md  # S4, S7, S12
+  - ../../01-ideation/02-provenanced/copies/de-novo-testimony/templates-testimony-grok-2026-07-22.md  # de-novo end-user testimony, elicited pilot-B cycle 1
 ---
 
 # Templates and dynamics: the product that is interrogated
@@ -62,6 +64,28 @@ the governing dialect change mid-document ("now this dialect rules…"),
 which stresses whether dialect binding is per-document, per-scope, or
 per-event.
 
+**An independent end-user vote.** Asked to describe, with no knowledge of
+this project, what it wants from templating and dynamics, an agent from a
+different model lineage arrived — unprompted — at three of the claims above
+([[templates-testimony-grok-2026-07-22.md|the testimony is recorded whole]]).
+It wants templates that are *interrogable* — a "contract between intention
+and materialization" it can query for required bindings, optional bindings,
+branch keys, and effects *before* rendering, so it can plan a minimal
+context-gather and validate before any side effect fires. It reaches the
+same split this chapter draws between the two evaluation sites and,
+crucially, the same refusal to merge them: interpolation-to-text is a
+*presentation* operation that discards type, structural splice keeps a value
+typed until a serialization boundary, and "same double-brace for both is a
+design crime against future debuggers" — a second, independent argument for
+leaving the unification pressure unacted-on. And it insists that a *failed*
+evaluation is a first-class document state — a partial artifact with typed
+holes, a structured error graph, stable hole identity across re-runs, and an
+honest "rendered with warnings" middle state — never a vaporizing exception.
+That an unprimed agent from another lineage lands on the product's own
+structural consequences moves them from one author's vision toward a demand
+with independent corroboration; the *specifics* of UDON's realization remain
+the dialect design work's to settle.
+
 ## What it generates
 
 - **For UDON:** the dialect design work owns this territory; this
@@ -84,40 +108,179 @@ per-event.
 
 ## What this opens (ideas, not designs)
 
-- ✦ **The contract is a schema document.** The interrogation's answer
-  ("I need these names, of these kinds") is itself a small schema — so
-  it can be printed, versioned, validated against, and even used to
-  *generate the question* when a required context member is missing
-  (the same schema-generated-ask move the
-  [structured-output chapter](structured-output-two-mechanisms.md)
-  proposes for tools).
-- ✦ **Contract diffing.** If templates compile to interrogable
-  contracts, two versions of a template have *diffable requirements* —
-  breaking-change detection for prompt assemblers, the way API
-  contracts get semver discipline today. "This prompt template now
-  demands a field your pipeline doesn't supply" becomes a build error
-  instead of a silent misassembly.
-- ✦ **Partial application.** Fill the context members you have; emit a
-  residual template with a correspondingly narrower contract. Staged
-  assembly across agents falls out — one agent binds the stable
-  context, a later one binds the session-specific remainder, and the
-  contract tracks exactly what is still owed.
-- ✦ **Output that explains itself.** The build step could annotate each
-  produced node with which template node and which context value made
-  it — rendered documents carrying their own derivation. For prompt
-  assembly, that is the difference between debugging a prompt by
-  staring at it and *querying* it: "which template line injected this
-  claim, from which data?"
+> [!capability] The contract is a schema document
+> **What:** the interrogation's answer ("I need these names, of these
+> kinds") is itself a small schema — printable, versionable, validatable
+> against, and usable to *generate the question* when a required context
+> member is missing (the same schema-generated-ask the
+> [structured-output chapter](structured-output-two-mechanisms.md)
+> proposes for tools).
+> **Principles that apply:** conformance as a machine verdict; a demand
+> stated so a gate can consume it; intent surfaced as inspectable data,
+> not buried in control flow.
+> **Hypothesized impact:** drives observation ambiguity A toward zero on
+> the question "will this assembly succeed?" — an agent today *infers*
+> whether it has supplied a template's needs (high A, discovered at
+> render time); an interrogable contract makes it a lookup (A ≈ 0,
+> checkable before render).
+> **In tension with:** template expressiveness (a fully dynamic template
+> whose needs depend on its own output may not be statically
+> interrogable); the contract can drift from the template if computed
+> separately.
+> **Potential downsides:** a contract that under-reports (misses a
+> conditionally-required name) is worse than none — it certifies an
+> assembly that then fails at render.
+
+> [!capability] Contract diffing
+> **What:** if templates compile to interrogable contracts, two versions
+> of a template have *diffable requirements* — breaking-change detection
+> for prompt assemblers, the way API contracts carry semver discipline.
+> "This prompt template now demands a field your pipeline doesn't supply"
+> becomes a build error instead of a silent misassembly.
+> **Principles that apply:** errors that arrive early and loud beat
+> failures discovered late; a well-designed refusal reveals the exact
+> constraint it enforces.
+> **Hypothesized impact:** moves prompt-assembly failure from run time
+> to build time — raising effective event rate ν (turns not spent
+> debugging a silently-misassembled prompt) and cutting the
+> confident-wrong-output risk that a missing-context assembly produces
+> when it renders *something* rather than refusing.
+> **In tension with:** requires the contract to be canonical and
+> versioned alongside the template; noise if trivial template edits
+> churn the contract.
+> **Potential downsides:** false-positive breaking-change alarms train
+> agents to ignore the channel — the boy-who-cried-diff failure.
+
+> [!capability] Partial application
+> **What:** fill the context members you have; emit a *residual* template
+> with a correspondingly narrower contract. Staged assembly across agents
+> falls out — one agent binds the stable context, a later one binds the
+> session-specific remainder, and the contract tracks exactly what is
+> still owed.
+> **Principles that apply:** delegation across agents needs an explicit
+> hand-off surface; state that survives a boundary must be self-describing
+> at the hand-off.
+> **Hypothesized impact:** makes multi-agent prompt assembly a
+> checkable pipeline rather than a hopeful one — the residual contract is
+> a durable, reinjection-channel-carried record of what remains owed, so
+> the boundary between the binding agent and the completing agent stops
+> being a place work silently falls through.
+> **In tension with:** partial evaluation of a template with
+> side-effecting or order-dependent directives may not commute; residual
+> templates multiply the artifacts to track.
+> **Potential downsides:** a residual that captures stale bound values
+> becomes a freshness hazard exactly like a cached read.
+
+> [!capability] Output that explains itself
+> **What:** the build step annotates each produced node with which
+> template node and which context value made it — rendered documents
+> carrying their own derivation. For prompt assembly, the difference
+> between debugging a prompt by staring at it and *querying* it: "which
+> template line injected this claim, from which data?"
+> **Principles that apply:** provenance as first-class data; tools are
+> observation infrastructure — a rendered artifact that carries its
+> derivation is an observation channel onto its own construction.
+> **Hypothesized impact:** collapses A on the "why is this in the prompt?"
+> question — today a high-ambiguity forensic read of template + data +
+> logic; with derivation annotations, a direct lookup — and shortens
+> comprehension time when a later agent inherits a rendered document cold.
+> **In tension with:** the annotations are weight the rendered document
+> must carry (or spill separately); a strippable-annotation design (see
+> the [annotation chapter](annotation-and-metacognition.md)) is the
+> natural home, which couples this to that open question.
+> **Potential downsides:** derivation metadata that outlives its accuracy
+> (template changed, annotations didn't) misleads with full confidence.
+
+The next three cards are directions the independent end-user testimony
+raised that the source deliberations did not — carried here because they
+are demand data, not because the design work has weighed them.
+
+> [!capability] Seal boundaries — a rendered region that a re-run cannot silently change
+> **What:** mark a region of an evaluated document *sealed* once it becomes
+> a commitment (sent to a user, submitted to a system, used as a premise by
+> a later agent). A later re-render of the same template cannot quietly
+> mutate a sealed region — it must fork, version, or explicitly invalidate
+> the region's dependents. Today "re-run the report template" is a roulette
+> wheel over everything already committed.
+> **Principles that apply:** durable state must survive the boundary of its
+> own regeneration; provenance and commitment are first-class properties of
+> content, not conventions layered on top.
+> **Hypothesized impact:** protects the reinjection channel's integrity
+> under re-evaluation — a successor that trusted a sealed claim finds it
+> unchanged or explicitly forked, so the externalize-then-reload path stops
+> being silently rewritten underfoot; and it drives observation ambiguity A
+> toward zero on "is this the same commitment I saw last turn?"
+> **In tension with:** the whole convenience of idempotent re-render;
+> sealing needs an identity and versioning model the template layer does
+> not otherwise require.
+> **Potential downsides:** over-sealing freezes documents that should
+> update; a seal whose dependents are mis-tracked hides a stale commitment
+> behind a trust marker.
+
+> [!capability] Three-valued conditionals and coverage-marked loops
+> **What:** a conditional that can emit *content*, *explicit-empty-with-reason*
+> (`no_findings` / `data_unavailable` / `redacted`), or a *hole* (could not
+> decide) — three outcomes, not the binary that makes omission ambiguous.
+> And loops that carry a coverage marker (rendered from the *complete* set,
+> a *sample*, or *best-effort*) so a bulleted list stops silently reading as
+> exhaustive. The failure both fix is *negative-space lying*: a reader
+> cannot tell an empty section produced by "nothing to say" from one
+> produced by "data missing" from one produced by "hidden."
+> **Principles that apply:** an observation must resolve sharply; a refusal
+> or absence should teach its own cause; structure carries epistemic status
+> the prose alone loses.
+> **Hypothesized impact:** collapses observation ambiguity A on rendered
+> absence — today an omitted section is high-A (three explanations, no
+> signal); a reasoned-empty or a marked hole makes it A ≈ 0 — directly
+> attacking the confident-wrongness failure where a template renders
+> *something* exhaustive-looking from partial data.
+> **In tension with:** author burden (every branch must now say *why* it is
+> empty); prose cleanliness (reasoned-empties are visible where a silent
+> omission read smoother).
+> **Potential downsides:** ubiquitous "data_unavailable" markers become
+> noise agents learn to skip — the reason codes need to stay rare and real.
+
+> [!capability] Consumer-aware sink encoding
+> **What:** encode an interpolated value for its actual *sink* — an
+> LLM-message, a JSON tool-argument, a shell command, Markdown prose,
+> plain text — declared per region, instead of the single web-inherited
+> "autoescape for HTML" boolean. When a template's output is itself a
+> prompt or a tool-call payload, HTML escaping is not just wrong, it points
+> the safety model at the wrong adversary; the real adversaries are prompt
+> injection and tool-argument injection.
+> **Principles that apply:** the interface's job is to make the right thing
+> the easy thing; a value's safe form depends on where it is *going*, which
+> is exactly the kind of context a typed structural layer already knows.
+> **Hypothesized impact:** reduces a whole class of silent corruption at the
+> serialization boundary (the same boundary the typing chapter prices) —
+> lowering observation ambiguity for the *downstream* consumer, whose input
+> was previously mis-encoded in a way neither party could see until it
+> executed.
+> **In tension with:** requires the template layer to know each region's
+> sink (more type surface); sink taxonomies proliferate and date as new
+> consumers appear.
+> **Potential downsides:** a wrong sink declaration is a confident
+> mis-encoding — worse than a known-crude global escape an author compensates
+> for by habit.
 
 ## Honest edges
 
-Single-source: one author, one morning, zero implementations, no
-scenario corpus — by far the thinnest evidence base of any demand
-chapter, carried at owner's-stated-vision weight because that is what
-it is, and because its *structural* consequences (the product graph,
-the addressing coupling) were independently endorsed by two other
-reviewers in the same discussion. The earlier-era ease is also honestly
-recorded in the source — in Ruby, "output an erb [Ruby's embedded
-template form] and run it" made all of this nearly free; under the
-present Rust-centric implementation the cost question is real and
-unexplored.
+The originating vision is single-source: one author, one morning, zero
+implementations, no scenario corpus — the thinnest such base of any demand
+chapter, and the *product-shape specifics* (the interrogation surface's
+exact form, the streaming story, mid-document dialect switching) remain at
+owner's-stated-vision weight. What is better supported is the layer beneath
+those specifics: the *structural* consequences — the product graph that
+breaks a linear pipeline, the coupling to addressing, the two-evaluation-site
+split, and failed-evaluation-as-a-document-state — now have three
+independent legs: the owner's reasoning, two reviewers of the same
+discussion, and an unprimed cross-lineage agent that reached the same
+structure with zero project context. That is convergence across independent
+vantages, not one author's coherence, so the structural claims are carried
+as a robust qualitative demand while the realization stays open. Two honest
+limits remain. The earlier-era ease is recorded in the source — in Ruby,
+"output an erb [Ruby's embedded template form] and run it" made all of this
+nearly free; under the present Rust-centric implementation the cost question
+is real and unexplored. And the de-novo testimony, though independent, is
+still a single unmeasured voice: it corroborates *that* agents want these
+shapes, not *how much* any one of them improves an outcome.

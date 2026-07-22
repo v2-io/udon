@@ -73,3 +73,72 @@ heuristic / hypothesis / discussion-grade** (ASF's own five, plus *measured* and
 *hypothesis* for this report's empirical and proposed claims). Later windows
 should tag headline claims from this fixed list, not invent adjacent words
 ("theorem-grade" → *conditional*; "high confidence" → the rung that fits).
+
+---
+
+# Notes for the OUTLINE (cycle 1, pilot B — the V/VI straddle)
+
+Division: `typing-and-schema-boundary` (V), `templates-and-dynamics-demand`
+(V), `annotation-and-metacognition` (V), `context-economy` (VI). The Part
+boundary falls inside my window by design; that vantage surfaced two seams
+and confirmed pilot A's convention-propagation.
+
+## The V/VI seam was a *format* discontinuity — healed, and it validates the window
+
+Reading straight through in OUTLINE order, the three Part V chapters carried
+their ideation as `✦`-bullets while the Part VI chapter (context-economy)
+carried full `> [!capability]` cards — the register visibly changed shape
+mid-window with no reason a reader could see. That is the known ✦→card
+retrofit item, sitting exactly on my part boundary. **Healed:** the three
+Part V chapters are retrofitted to cards (impact fields enriched with named
+theory quantities, not mechanically converted). Reported as a *finding* because
+it is direct evidence FOR the rolling-window mechanism — a seam invisible from
+inside either Part alone was obvious to an agent reading across the boundary.
+The retrofit remains open for the other pre-card chapters (Parts I–III, V, VII).
+
+## A *substantive* V/VI seam still open — annotation ↔ continuity-infrastructure
+
+`annotation-and-metacognition` (V) and `continuity-infrastructure` (VI) share
+one demand and state it from two sides without cross-reference. Annotation's
+"identity-grade form" section and its **congruency-reader** card are about
+provenance-for-re-reading-your-own-past and verifiability-of-the-past — which
+is continuity-infrastructure's stated territory (attestation, congruency
+affordances, temporal markers). Annotation itself says its demand "recurs …
+all the way up to identity infrastructure." **Proposal (PROPOSED, downstream
+decides), for a future window holding both:** either (a) move annotation's
+identity-grade half toward VI and keep V's annotation chapter about the
+*ergonomic* residue (confidence / decision / draft), or (b) keep the split but
+wire an explicit cross-reference so the congruency demand is stated *once* and
+consumed twice rather than derived twice with drift risk. I could not act
+(continuity is outside my division); also left in
+`notes/for-continuity-infrastructure.md`. This is the substantive-seam kind
+the window exists for; the format seam above would have been caught anyway —
+worth distinguishing the two kinds (see my workflow feedback, point 1).
+
+## Convention propagation — I applied pilot A's three-axis migration to my four
+
+Adopted pilot A's `status:`→`register:`+`strength:` split on all four chapters
+as in-cycle application. Rungs assigned: typing = robust-qualitative;
+templates = robust-qualitative (structural claims, after de-novo corroboration)
+with product-shape specifics still heuristic; annotation = robust-qualitative;
+context-economy = robust-qualitative (conditional-theory backbone + measured
+numbers). Reconcile against pilot A's ladder at the coordinator step if any
+rung reads off. This is the second half of the propagation pilot A named —
+definition in their division, application in mine.
+
+## Templates is no longer the evidence tail of Part V
+
+A de-novo end-user elicitation (cross-lineage, no project context;
+`01-ideation/02-provenanced/copies/de-novo-testimony/templates-testimony-grok-2026-07-22.md`)
+independently reproduced the templates chapter's structural consequences and
+added report-novel directions. Its structural claims now carry three
+independent legs (owner + two same-discussion reviewers + one unprimed
+cross-lineage agent). No reorder proposed, but if a future pass ranks Part V
+internally by evidence weight, templates has moved up from clear-thinnest.
+
+## Within-window order held
+
+typing → templates → annotation is a sensible progression (typed values →
+computed/dynamic values → metacognitive residue); context-economy opens VI
+cleanly. The only genuine structural pressure is the annotation↔continuity
+seam above — a finding, not a default "structure held."
