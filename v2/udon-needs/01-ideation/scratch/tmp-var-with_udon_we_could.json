@@ -1,0 +1,3395 @@
+[
+  {
+    "score": 0.0676,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.445,
+      "age_norm": 0.099,
+      "copies": 4,
+      "path_frac": 0.0,
+      "sem_rank": 1,
+      "lex_rank": 85,
+      "geomean": 9.22,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.6",
+    "date": "2026-02-11T11:02:51.419819-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta.md",
+    "lines": [
+      607,
+      4821
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "aude-haiku-4-5-20251001\"`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `\"claude-sonnet-4-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-0\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = string`\n\n- `container: optional BetaContainerParams or string`\n\nContainer identifier for reuse across requests.\n\n- `BetaContainerParams = object { id, skills }`\n\nContainer parameters with skills to be loaded.\n\n- `id: optional string`\n\nContainer id\n\n- `skills: optional array of BetaSkillParams`\n\nList of skills to load in the container\n\n- `skill_id: string`\n\nSkill ID\n\n- `type: \"anthropic\" or \"custom\"`\n\nType of skill - either 'anthropic' (built-in) or 'custom' (user-defined)\n\n- `\"anthropic\"`\n\n- `\"custom\"`\n\n- `version: optional string`\n\nSkill version or 'latest' for most recent version\n\n- `UnionMember1 = string`\n\n- `context_management: optional BetaContextManagementConfig`\n\nContext management configuration.\n\nThis allows you to control how Claude manages context across multiple requests, such as whether to clear function results or not.\n\n- `edits: optional array of BetaClearToolUses20250919Edit or BetaClearThinking20251015Edit or BetaCompact20260112Edit`\n\nList of context management edits to apply",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:51.419819-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:23:55.376264-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta/messages/create.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:06:50.920555-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:25:15.328146-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0626,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.636,
+      "age_norm": 0.112,
+      "copies": 33,
+      "path_frac": 0.0,
+      "sem_rank": 27,
+      "lex_rank": 62,
+      "geomean": 40.915,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.3",
+    "date": "2025-12-14T20:24:28.409179-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/messages.md",
+    "lines": [
+      2667,
+      4784
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "and extended thinking\n- `claude-haiku-4-5-20251001` - Hybrid model, capable of near-instant responses and extended thinking\n- `claude-sonnet-4-20250514` - High-performance model with extended thinking\n- `claude-sonnet-4-0` - High-performance model with extended thinking\n- `claude-4-sonnet-20250514` - High-performance model with extended thinking\n- `claude-sonnet-4-5` - Our best model for real-world agents and coding\n- `claude-sonnet-4-5-20250929` - Our best model for real-world agents and coding\n- `claude-opus-4-0` - Our most capable model\n- `claude-opus-4-20250514` - Our most capable model\n- `claude-4-opus-20250514` - Our most capable model\n- `claude-opus-4-1-20250805` - Our most capable model\n- `claude-3-opus-latest` - Deprecated: Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.\n- `claude-3-opus-20240229` - Deprecated: Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.\n- `claude-3-haiku-20240307` - Our previous most fast and cost-effective\n\n- `\"claude-opus-4-5-20251101\"`\n\nPremium model combining maximum intelligence with practical performance\n\n- `\"claude-opus-4-5\"`\n\nPremium model combining maximum intelligence with practical performance\n\n- `\"claude-3-7-sonnet-latest\"`\n\nHigh-performance model with early extended thinking\n\n- `\"claude-3-7-sonnet-20250219\"`\n\nHigh-performance model with early extended thinking\n\n- `\"claude-3-5-haiku-latest\"`\n\nFastest and most compact model for near-instant responsiveness\n\n- `\"claude-3-5-haiku-20241022\"`\n\nOur fastest model\n\n- `\"claude-haiku-4-5\"`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `\"claude-haiku-4-5-20251001\"`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `\"claude-sonnet-4-20250514\"`\n\nHigh-performance model with extended thinking",
+    "n_occurrences": 33,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:17.610007-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:17:20.842458-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/ruby/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:03:17.176121-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/ruby/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:24:42.496076-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/ruby/beta/messages/create.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:07:07.509493-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/beta.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:17:32.280932-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:43:25.843194-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:23:49.428483-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/messages-count-tokens.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:41:35.820148-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/messages/count_tokens.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:05:28.515625-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/messages.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:24:28.409179-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/messages-count-tokens.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:24:45.665097-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/api/messages.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:49:39.010206-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/api/messages-count-tokens.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:50:02.846018-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/retrieving-message-batch-results.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:34:51.921340-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/api/retrieving-message-batch-results.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:54:19.762236-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:15:34.868181-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:20:32.362355-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:26:14.257581-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/beta/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:15:50.487437-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/beta/messages/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:23:01.265856-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:03:15.686523-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:24:26.787725-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages/create.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:07:03.416495-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:25:15.328146-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:42.556864-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/ruby/beta.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:18:21.106925-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/ruby/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:43:45.467618-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/ruby/beta/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:16:28.991675-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/ruby/beta/messages/batches/results.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:48:36.558343-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:51.419819-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:23:55.376264-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/beta/messages/count_tokens.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:05:29.421710-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.036,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.287,
+      "age_norm": 0.099,
+      "copies": 2,
+      "path_frac": 0.0,
+      "sem_rank": 4,
+      "lex_rank": 91,
+      "geomean": 19.079,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.6",
+    "date": "2026-02-11T11:06:25.948792-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+    "lines": [
+      2717,
+      4856
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "nded thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `output_config: Optional[OutputConfigParam]`\n\nConfiguration options for the model's output, such as the output format.\n\n- `effort: Optional[Literal[\"low\", \"medium\", \"high\", \"max\"]]`\n\nAll possible effort levels.\n\n- `\"low\"`\n\n- `\"medium\"`\n\n- `\"high\"`\n\n- `\"max\"`\n\n- `format: Optional[JSONOutputFormat]`\n\nA schema to specify Claude's output format in responses. See [structured outputs](../../../build-with-claude/structured-outputs.md)\n\n- `schema: Dict[str, object]`\n\nThe JSON schema of the format\n\n- `type: Literal[\"json_schema\"]`\n\n- `\"json_schema\"`\n\n- `system: Optional[Union[str, Iterable[TextBlockParam]]]`\n\nSystem prompt.\n\nA system prompt is a way of providing context and instructions to Claude, such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).\n\n- `SystemUnionMember0 = str`\n\n- `SystemUnionMember1 = Iterable[TextBlockParam]`\n\n- `text: str`\n\n- `type: Literal[\"text\"]`\n\n- `\"text\"`\n\n- `cache_control: Optional[CacheControlEphemeral]`\n\nCreate a cache control breakpoint at this content block.\n\n- `type: Literal[\"ephemeral\"]`\n\n- `\"ephemeral\"`\n\n- `ttl: Optional[Literal[\"5m\", \"1h\"]]`\n\nThe time-to-live for the cache control breakpoint.\n\nThis may be one the following values:\n\n- `5m`: 5 minutes\n- `1h`: 1 hour\n\nDefaults to `5m`.",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages/count_tokens.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:06:25.948792-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:25:15.328146-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0335,
+    "factors": {
+      "class": "document",
+      "proximity": 0.964,
+      "density": 0.738,
+      "age_norm": 0.002,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 3,
+      "geomean": 17.407,
+      "rerank": 0.524
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-07-11T15:33:56-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/tools/descent/rust/PROGRESS.md",
+    "lines": [
+      275,
+      372
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "e) parse\nkeywords-mapping blocks cleanly already.\n6. **`/func(args)` tag capture via `[^)]*`** + the `func())` bare-paren\nhack in parse_call_value: one paren-matching rule, or UDON-native call\nsyntax.\n7. **Escape aliases `<P> <BS> <SQ>`...**: exist partly because bare `|`/`\\`\ncouldn't survive the Ruby pipe-splitter; with UDON quoting they could be\nordinary quoted chars uniformly (keep aliases as sugar if liked).\n8. **rest micro-syntaxes** (`:fallback /f`, `kw => Type`, `name:Type`) each\nhave ad-hoc regexes; as a UDON dialect these become attrs/values (udon\nalready parses `document:Text` as one clean BareValue).\n\nSession-2 classifications (per the table-scan criterion): #2 #3 #4 #5 #6 #8\nare **lexer artifacts** (normalize/redesign); #1 is **mixed** — the aligned\none-line case row is principled (it IS the table), the three implicit\nsplitters behind it are artifact; #7 is **artifact-born but keepable sugar**\n(aliases like `<SQ>` may read better in a table cell than quoted literals —\nJoseph's call). The reader-spike mismatch classes map onto these: dropped\npipes/degradation → #1+#5, quoted pipes → #1/#7, bracket-id quoting → #4,\nsemicolons → #1/#2 (details in `rust/spikes/udon-reader/NOTES.md`).\n\nEndpoint: .desc as a **pure UDON dialect + schema**, bridge layer → zero;\ngrammars become first-class UDON documents that udon's own tooling (lint,\npaths, schema, agentic edits) applies to. The fusion succeeds only if the\nUDON rendering stays *at least as table-legible* as today's .desc (rendered\nlookup-table views are part of the answer — see the design-principles note).",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/tools/descent/rust/PROGRESS.md",
+        "role": "original-document",
+        "date": "2026-07-11T15:33:56-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/descent/rust/PROGRESS.md",
+        "role": "original-document",
+        "date": "2026-07-11T15:33:56-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0329,
+    "factors": {
+      "class": "subagent-to-agent",
+      "proximity": 0.982,
+      "density": 0.675,
+      "age_norm": 0.002,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 1,
+      "geomean": 10.05,
+      "rerank": 0.515
+    },
+    "class": "subagent-to-agent",
+    "speaker": "sub-agent",
+    "project": "udon",
+    "date": "2026-07-11T15:50:19.852000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-af8f1495ca1c1fae1.jsonl",
+    "lines": [
+      159,
+      159
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "I'm noticing the actual pattern in the corpus uses a single wide empty cell at the start of continuation rows, not multiple placeholder cells like Joseph's hypothesis suggested. The Ruby parser correctly skips whitespace-only cells, so I should align the continuation by dropping the leading pipe and keeping the spacing consistent with the element reference.\n\nNow I need to verify this works end-to-end by normalizing the combined description file to remove those leading empty cells, then comparing the Ruby descent output byte-for-byte. The tricky part is ensuring the normalization survives the udon front-end parsing too — when a line starts with spaces followed by a pipe, the split creates a whitespace-only piece that gets appended to the previous part and trimmed, which should preserve the correct token stream.\n\nFor lines with deep indentation like `                        | /element...`, I need to probe what udon-core produces as events to understand if the pipe gets dropped or included in the text content. This will show up in the differential output.\n\nImplementing the fix for dropped pipes at continuation-line starts...\n\nStill writing parser... For finding where the text actually starts in the source, I'll search through a window of bytes around the span start, using the first chunk of the text as a needle to locate it precisely. If the text doesn't appear literally (due to escapes), I'll fall back to the span start position.\n\nI'm also considering a preprocessing approach for quoted pipes: before parsing with udon, I could scan the source using quote-aware rules to replace pipes inside quotes with a sentinel byte that udon treats as plain content, then swap them back during reconstruction.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-af8f1495ca1c1fae1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-11T15:50:19.852000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 100,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0328,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.4,
+      "density": 0.753,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 5,
+      "geomean": 22.472,
+      "rerank": 0.523
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T20:50:34.851000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      16,
+      16
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "tion\n@file.udon::section:intro::para3     # third paragraph\n@file.udon::section:intro::para3:2   # second sentence? or character offset?\n@file.udon::#uuid-if-present         # if elements have IDs\n```\n\nAnchors should:\n- Survive edits elsewhere in the document\n- Degrade gracefully (\"anchor still valid but now at different position\")\n- Have a resolution API (\"where is this anchor now?\")\n- Support fuzzy matching (\"anchor moved, closest match is...\")\n\n---\n\n## UDON-Specific Opportunities\n\nSince UDON is designed for agents, you could build features into the *format itself* that make ALSP trivial:\n\n**Structural:**\n- Elements inherently have semantic identity (not just text position)\n- Nesting is explicit and unambiguous\n- Attributes provide metadata hooks\n\n**For agents reading UDON:**\n- Schema-aware parsing (\"this is a `task` element with required `status` attribute\")\n- Structured extraction (\"give me all `@todo` items as JSON\")\n- Semantic queries (\"find all elements where status=blocked\")\n\n**For agents writing UDON:**\n- Validation against schema before write\n- Auto-formatting to match document conventions\n- Structural insertion (\"add child element of type X here\")\n\n**The meta-level:** UDON documents could themselves contain ALSP hints:\n\n```udon\n!alsp\nanchors\nstable: true         # generate stable IDs for all elements\nvalidation\nschema: ./task.schema.udon\nsemantics\n@todo -> requires: [ title, status ]\n```\n\n---\n\n## Naming\n\nYou're right that it might deserve a new acronym entirely. Some thoughts:\n\n**Keep \"Protocol\":**\n- **ASCP** — Agent Semantic Context Protocol\n- **SCP** — Semantic Context Protocol\n- **ACP** — Agent Context Protocol\n\n**Emphasize the purpose:**\n- **AVFP** — Agent Verification and Feedback Protocol\n- **AFSL** — Agent Feedback and Semantic Layer\n\n**Novel:**\n- **LENS** — Language-agnostic ENriched Semantics\n- **ANCHOR** — Agent Notation for Contextual Handling and Operational Reasoning\n- **GUIDE** — Generic Understanding Interface for Developer Entities",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T20:50:34.851000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 11,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0311,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.715,
+      "density": 0.779,
+      "age_norm": 0.123,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 4,
+      "geomean": 20.1,
+      "rerank": 0.55
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "archema",
+    "date": "2026-01-05T08:32:11.878000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+    "lines": [
+      12,
+      12
+    ],
+    "session": "fizzy-crafting-moonbeam",
+    "file_type": "claude_conversation",
+    "text": "This is a fascinating question. Joseph is asking about whether UDON could serve as a resource DSL / schema definition language for Archema - potentially making Archema's resource definitions language-agnostic rather than tightly coupled to Ruby.\n\nLet me think through this carefully:\n\n**Current State: Ruby DSL**\n```ruby\nclass User < Archema::Resource\nuuid_primary_key :id\nfield :email, :string\nfield :name, :string, :optional\ntimestamps\n\nhas_many :posts\nbelongs_to :organization\n\naction :create do\naccept :email, :name\nchange :set_defaults\nend\nend\n```\n\n**What would this look like in UDON?**\n```udon\n|resource[User]\n:primary_key uuid :id\n\n|field[email] :type string\n|field[name] :type string :optional\n|timestamps\n\n|has_many[posts]\n|belongs_to[organization]\n\n|action[create]\n|accept :email :name\n|change set_defaults\n```\n\nOr maybe more idiomatically:\n```udon\n|resource[User]\n|field[id].uuid.primary_key\n|field[email].string\n|field[name].string.optional\n|timestamps\n\n|has_many[posts]\n|belongs_to[organization]\n\n|action[create]\n:accept [email name]\n:change set_defaults\n```\n\n**Arguments FOR UDON as Resource DSL:**\n\n1. **Language agnosticism**: UDON files could be parsed by Ruby, Elixir, Python, Rust - any language with a UDON parser. This aligns with Archema's aspiration to potentially be ported.\n\n2. **Self-documenting**: UDON's prose tiers mean resources can include narrative documentation naturally interleaved with structure.\n\nSeparating resource definitions from runtime code creates a pure data representation. This approach ensures resources become a declarative truth source, independent of implementation details. The schema exists as data, not embedded in programming language constructs, enabling more flexible and portable resource modeling.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-05T08:32:11.878000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 7,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0285,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.499,
+      "age_norm": 0.112,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 17,
+      "lex_rank": 77,
+      "geomean": 36.18,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:44:17.610007-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages.md",
+    "lines": [
+      10571,
+      11431
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "`\n\n- `UnionMember1 = List[WebSearchResultBlock]`\n\n- `encrypted_content: str`\n\n- `page_age: Optional[str]`\n\n- `title: str`\n\n- `type: Literal[\"web_search_result\"]`\n\n- `\"web_search_result\"`\n\n- `url: str`\n\n- `tool_use_id: str`\n\n- `type: Literal[\"web_search_tool_result\"]`\n\n- `\"web_search_tool_result\"`\n\n- `model: Model`\n\nThe model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.\n\n- `UnionMember0 = Literal[\"claude-opus-4-5-20251101\", \"claude-opus-4-5\", \"claude-3-7-sonnet-latest\", 17 more]`\n\nThe model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.\n\n- `claude-opus-4-5-20251101` - Premium model combining maximum intelligence with practical performance\n- `claude-opus-4-5` - Premium model combining maximum intelligence with practical performance\n- `claude-3-7-sonnet-latest` - Deprecated: Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.\n- `claude-3-7-sonnet-20250219` - Deprecated: Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.\n- `claude-3-5-haiku-latest` - Fastest and most compact model for near-instant responsiveness\n- `claude-3-5-haiku-20241022` - Our fastest model\n- `claude-haiku-4-5` - Hybrid model, capable of near-instant responses and extended thinking\n- `claude-haiku-4-5-20251001` - Hybrid model, capable of near-instant responses and extended thinking\n- `claude-sonnet-4-20250514` - High-performance model with extended thinking\n- `claude-sonnet-4-0` - High-performance model with extended thinking\n- `claude-4-sonnet-20250514` - High-performance model with extended thinking\n- `claude-sonnet-4-5` - Our best model for real-world agents and coding",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:17.610007-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0241,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.643,
+      "density": 0.692,
+      "age_norm": 0.005,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 13,
+      "geomean": 36.235,
+      "rerank": 0.517
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-07T23:44:22.783000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+    "lines": [
+      352,
+      352
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "I have a definitive answer on the published-gem axis — and it holds a genuine surprise. (The four repo deep-dives are still running in the background; I'll fold everything together when they land. This part I could settle independently, since it's about the *registry*, which the repo-readers can't see.)\n\n## Published gems vs HEAD — what's actually on rubygems\n\n**`descent` — published, and faithful to HEAD.**\n- rubygems has exactly **one** version: **0.7.1**, built **2026-01-10** (the day after its last commit, 2026-01-09), authored \"Joseph Wecker\", homepage `v2-io/descent`.\n- Repo HEAD is also **0.7.1**. So **published == HEAD** — no rot divergence. The repo also carries locally-built `.gem` artifacts for 0.3.0, 0.6.16, 0.6.17, 0.7.1, but only 0.7.1 was actually pushed. Note libudon was generated from **0.6.17** — a built-but-unpublished intermediate that still exists in the repo.\n\n**`udon` — the published gem is a 2011 relic, NOT the current code.**\n- The `udon` name on rubygems resolves to **version 0.0.4, last built 2011‑08‑23** — authored \"Joseph Wecker\", homepage `udon.io`, described *\"Parse and generate udon, inspired by zml, haml, json, and more.\"* That's a **~15-year-old ancestor** of today's UDON (same lineage, `zml` was another of your predecessors), versions 0.0.0–0.0.4.\n- The **current** udon-ruby (gemspec `udon.gemspec`, `Udon::VERSION = \"0.9.0\"`) has **never been published** — the name is squatted by your own ancient gem. So there's no \"shipped current udon-ruby\" that could have rotted; rather, HEAD (0.9.0) is the real state and it's unreleased, sitting behind a 2011 placeholder on the registry. (The 0.9.0 itself looks suspiciously high for that thin commit history — the udon-ruby agent is digging into where it came from.)",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T23:44:22.783000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 148,
+        "speaker": "assistant",
+        "alive": false
+      }
+    ]
+  },
+  {
+    "score": 0.0239,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.178,
+      "age_norm": 0.099,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 7,
+      "lex_rank": 93,
+      "geomean": 25.515,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.6",
+    "date": "2026-02-11T11:03:15.686523-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+    "lines": [
+      6029,
+      10205
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "nded thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `context_management: Optional[BetaContextManagementConfigParam]`\n\nContext management configuration.\n\nThis allows you to control how Claude manages context across multiple requests, such as whether to clear function results or not.\n\n- `edits: Optional[List[Edit]]`\n\nList of context management edits to apply\n\n- `class BetaClearToolUses20250919Edit: …`\n\n- `type: Literal[\"clear_tool_uses_20250919\"]`\n\n- `\"clear_tool_uses_20250919\"`\n\n- `clear_at_least: Optional[BetaInputTokensClearAtLeast]`\n\nMinimum number of tokens that must be cleared when triggered. Context will only be modified if at least this many tokens can be removed.\n\n- `type: Literal[\"input_tokens\"]`\n\n- `\"input_tokens\"`\n\n- `value: int`\n\n- `clear_tool_inputs: Optional[Union[bool, List[str], null]]`\n\nWhether to clear all tool inputs (bool) or specific tool inputs to clear (list)\n\n- `ClearToolInputsUnionMember0 = bool`\n\n- `ClearToolInputsUnionMember1 = List[str]`\n\n- `exclude_tools: Optional[List[str]]`\n\nTool names whose uses are preserved from clearing\n\n- `keep: Optional[BetaToolUsesKeep]`\n\nNumber of tool uses to retain in the conversation\n\n- `type: Literal[\"tool_uses\"]`\n\n- `\"tool_uses\"`\n\n- `value: int`\n\n- `trigger: Optional[Trigger]`\n\nCondition that triggers the context management strategy\n\n- `class BetaInputTokensTrigger: …`",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:03:15.686523-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:24:26.787725-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages/count_tokens.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:05:45.292114-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0234,
+    "factors": {
+      "class": "subagent-to-agent",
+      "proximity": 0.982,
+      "density": 0.663,
+      "age_norm": 0.002,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 2,
+      "geomean": 14.213,
+      "rerank": 0.536
+    },
+    "class": "subagent-to-agent",
+    "speaker": "sub-agent",
+    "project": "udon",
+    "date": "2026-07-11T15:50:19.852000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-af8f1495ca1c1fae1.jsonl",
+    "lines": [
+      159,
+      159
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "ore parsing with udon, I could scan the source using quote-aware rules to replace pipes inside quotes with a sentinel byte that udon treats as plain content, then swap them back during reconstruction.\n\nThe tricky part is handling quote semantics correctly — Ruby's split_on_pipes tracks quote state globally across the entire content, while comment stripping happens line-by-line with quote state resetting per line. I need to figure out whether I should strip comments first before doing the sentinel substitution, or if I can work around the comment regions some other way.\n\nActually, comments don't matter for the token output since they get dropped anyway. The real issue is that stripping comments would shift byte positions, which breaks span tracking. But if I replace pipes with sentinels in-place (1:1 substitution), the positions stay stable. So my approach is to scan through the source, track which regions are comments and which are inside quotes, skip pipes that are in quotes or inside brackets, and replace the rest with sentinels. Then I feed the modified bytes to udon and swap the sentinels back to pipes in the final output.\n\nThe tricky part is making sure my quote tracking matches Ruby's semantics after comment stripping — I need to replicate the comment detection and quote state machine from the original parsing layers. It feels redundant since I'm essentially re-running those state machines, but this is really just a bridge for constructs that the valve proposals will eventually eliminate anyway, so it's acceptable for this spike.\n\nI should measure how many sites in the corpus actually need this by counting replaced pipes per fixture. I'm also checking whether the sentinel byte 0x01 passes through udon Text content untouched — it should as a raw byte, so I'll use that. Fix A also needs attention, and I need to skip empty-content Text events. Looking at the markdown fixture with 271 diff lines, I'll inspect those after the fixes are in place.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-af8f1495ca1c1fae1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-11T15:50:19.852000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 100,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0232,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.435,
+      "age_norm": 0.112,
+      "copies": 6,
+      "path_frac": 0.0,
+      "sem_rank": 10,
+      "lex_rank": 88,
+      "geomean": 29.665,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:20:02.440824-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/completions.md",
+    "lines": [
+      63,
+      236
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "l with extended thinking\n\n- `\"claude-sonnet-4-0\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `prompt: str`\n\nThe prompt that you want Claude to complete.\n\nFor proper response generation you will need to format your prompt using alternating `\n\nHuman:`and`\n\nAssistant:` conversational turns. For example:\n\n```\n\"\n\nHuman: {userQuestion}\n\nAssistant:\"\n```\n\nSee [prompt validation](https://docs.claude.com/en/api/prompt-validation) and our guide to [prompt design](https://docs.claude.com/en/docs/intro-to-prompting) for more details.\n\n- `metadata: Optional[MetadataParam]`\n\nAn object describing metadata about the request.\n\n- `user_id: Optional[str]`\n\nAn external identifier for the user who is associated with the request.\n\nThis should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.\n\n- `stop_sequences: Optional[SequenceNotStr[str]]`\n\nSequences that will cause the model to stop generating.\n\nOur models stop on `\"\n\nHuman:\"`, and may include additional built-in stop sequences in the future. By providing the stop_sequences parameter, you may include additional strings that will cause the model to stop generating.\n\n- `stream: Optional[Literal[false]]`",
+    "n_occurrences": 6,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:20:32.362355-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:26:14.257581-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/completions.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:04:41.926123-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/completions/create.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:08:48.767581-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/completions.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:20:02.440824-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/completions/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:25:45.070135-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0225,
+    "factors": {
+      "class": "document",
+      "proximity": 0.809,
+      "density": 0.702,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 7,
+      "geomean": 26.589,
+      "rerank": 0.512
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T22:57:12.172218-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/GRAMMAR-CONSTRAINED-GENERATION.md",
+    "lines": [
+      405,
+      418
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Summary\n\n1. **Define grammar** (PEG, CFG, GBNF, regex)\n2. **Build parser** that tracks valid continuations\n3. **Generate token mask** at each step\n4. **Integrate with decoder** (mask logits before sampling)\n5. **Feed tokens back** to parser to update state\n\nThe result: LLM generates tokens, but only grammatically valid ones. The partial parse tree is always available. Output is guaranteed to match the grammar.\n\nFor UDON, this means an LLM could generate arbitrary UDON documents with guaranteed validity — no post-hoc parsing errors, no malformed syntax.\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/GRAMMAR-CONSTRAINED-GENERATION.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:57:12.172218-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/GRAMMAR-CONSTRAINED-GENERATION.md",
+        "role": "original-document",
+        "date": "2025-12-27T17:36:15-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0217,
+    "factors": {
+      "class": "document",
+      "proximity": 0.769,
+      "density": 0.725,
+      "age_norm": 0.125,
+      "copies": 3,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 8,
+      "geomean": 28.425,
+      "rerank": 0.531
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "Users-josephwecker-v2-src",
+    "date": "2026-01-03T10:38:12.988000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/udon/_archive/feedback.md",
+    "lines": [
+      1,
+      450
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "atibility) work, but native UDON tables might be cleaner.\n- Definition lists: Not explicitly addressed.\n- Footnotes: Not addressed (though Markdown footnotes might just work).\n\nMy LLM Fluency Estimate\n\nI'd rate myself ★★☆☆☆ on UDON right now. The spec is well-written and I can follow the logic, but I have ~zero training examples. With this spec, I could probably generate correct UDON with moderate confidence, but I'd want to verify edge cases.\n\nOverall Assessment\n\nUDON is the most thoughtfully designed new notation I've seen in this category. It solves real problems (YAML ambiguity, Markdown's lack of structure, XML's verbosity) without introducing gratuitous novelty. The column-based nesting is genuinely clever.\n\nThe main risk is complexity creep — the dynamics section is already substantial, and the escape rules have two forms. The core (elements, attributes, prose, comments, hierarchy) is clean. I'd be tempted to ship that core first and let dynamics be an optional extension.\n\nOne suggestion: The spec would benefit from a 10-line \"UDON in 30 seconds\" that shows the core concepts without the edge cases. Something a developer could glance at and immediately write valid UDON.\n\n---\n\n⏺ These are juicy questions. Let me engage genuinely rather than hedging.\n\n@[id] vs |[id]\n\nI prefer |[id]. The argument for eliminating @:\n\n- Keeps sigil count at 4 (the current set is elegant and complete)\n- |[id] has natural semantics: element-marker + identity-only = \"the element with this identity\"\n- |{[id]} for inline references is consistent with |{element} syntax\n- You already have :[id] for attribute-merging, so the system becomes:\n- |[id] → insert the element\n- :[id] → merge its attributes\n\nThe semantic gap is: @ has cultural resonance (\"at\", \"mention\", \"reference\"). But I don't think that's worth a 5th sigil. The | prefix already means \"structural thing\"—a reference is still a structural thing.\n\nMy vote: drop @, use |[id].\n\n---\nDual escaping (' vs \\)\n\nI'd unify on \\.",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/udon/_archive/feedback.md",
+        "role": "original-document",
+        "date": "2026-01-03T12:01:18-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/feedback.md",
+        "role": "export",
+        "date": "2026-01-14T08:25:28.201382-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src/cc743fec-809a-47b9-935d-12348a834775.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-03T10:38:12.988000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 89,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0214,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.503,
+      "age_norm": 0.079,
+      "copies": 7,
+      "path_frac": 0.0,
+      "sem_rank": 12,
+      "lex_rank": 76,
+      "geomean": 30.199,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-03-14T09:09:25.175502-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/api/beta.md",
+    "lines": [
+      38343,
+      39668
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "aude-haiku-4-5-20251001\"`\n\nFastest model with near-frontier intelligence\n\n- `\"claude-opus-4-5\"`\n\nPremium model combining maximum intelligence with practical performance\n\n- `\"claude-opus-4-5-20251101\"`\n\nPremium model combining maximum intelligence with practical performance\n\n- `\"claude-sonnet-4-5\"`\n\nHigh-performance model for agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nHigh-performance model for agents and coding\n\n- `\"claude-opus-4-1\"`\n\nExceptional model for specialized complex tasks\n\n- `\"claude-opus-4-1-20250805\"`\n\nExceptional model for specialized complex tasks\n\n- `\"claude-opus-4-0\"`\n\nPowerful model for complex tasks\n\n- `\"claude-opus-4-20250514\"`\n\nPowerful model for complex tasks\n\n- `\"claude-sonnet-4-0\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-3-haiku-20240307\"`\n\nFast and cost-effective model\n\n- `UnionMember1 = string`\n\n- `role: \"assistant\"`\n\nConversational role of the generated message.\n\nThis will always be `\"assistant\"`.\n\n- `\"assistant\"`\n\n- `stop_reason: BetaStopReason`\n\nThe reason that we stopped.\n\nThis may be one the following values:\n\n* `\"end_turn\"`: the model reached a natural stopping point\n* `\"max_tokens\"`: we exceeded the requested `max_tokens` or the model's maximum\n* `\"stop_sequence\"`: one of your provided custom `stop_sequences` was generated\n* `\"tool_use\"`: the model invoked one or more tools\n* `\"pause_turn\"`: we paused a long-running turn. You may provide the response back as-is in a subsequent request to let the model continue.\n* `\"refusal\"`: when streaming classifiers intervene to handle potential policy violations\n\nIn non-streaming mode this value is always non-null. In streaming mode, it is null in the `message_start` event and non-null otherwise.\n\n- `\"end_turn\"`\n\n- `\"max_tokens\"`\n\n- `\"stop_sequence\"`\n\n- `\"tool_use\"`\n\n- `\"pause_turn\"`\n\n- `\"compaction\"`\n\n- `\"refusal\"`\n\n- `\"model_context_window_exceeded\"`\n\n- `stop_sequence: string`",
+    "n_occurrences": 7,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:10:37.063628-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:10:37.063628-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:36:15.199013-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:36:15.199013-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:09:25.175502-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:09:25.175502-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/beta/messages/batches/results.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:39:52.721148-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0213,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.549,
+      "density": 0.866,
+      "age_norm": 0.132,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 33,
+      "geomean": 57.732,
+      "rerank": 0.502
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-22T19:39:24.079000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      5428,
+      5428
+    ],
+    "session": "9c70d20c-fb06-440a-a33f-9290246bab1f",
+    "file_type": "claude_history",
+    "text": "OK-- I know this seems a little like a tangent--  but would you actually render for me an imagining of the schemacop DSL in udon? Or, in other words, what could be an udon schema definition for udon documents?",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-22T19:39:24.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-22T19:39:24.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-22T19:39:24.079000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0212,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.729,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 28,
+      "geomean": 53.179,
+      "rerank": 0.51
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2026-01-13T20:26:25.662000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/4974eeaf-9a47-47b8-82f3-612f95a1e7db.jsonl",
+    "lines": [
+      1516,
+      1516
+    ],
+    "session": "stateless-plotting-hopcroft",
+    "file_type": "claude_conversation",
+    "text": "itespace-only lines now emit BlankLine instead of triggering warnings. Let me run the tests to see how many pass now.\n\n⏺ Whitespace-only lines now emit BlankLine with no warning. Let me run the tests:\n\n⏺ Bash(UDON_TEST_COUNT=0 cargo test test_indentation_edge_cases 2>&1 | tail -20)\n⎿      --> /Users/josephwecker-v2/src/libudon/udon-core/src/parser.rs:7076:1\n|\n7076 | pub enum StreamEvent {\n| ^^^^^^^^^^^^^^^^^^^^\n...\n7106 |     BlankLine { content: Vec<u8>, span: Range<usize> },\n|     --------- not covered\n= note: the matched value is of type `&StreamEvent`\nhelp: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown\n|\n103 ~         StreamEvent::Error { code, .. } => format!(\"Error {:?}\", code),\n104 ~         &StreamEvent::BlankLine { .. } => todo!(),\n|\n\nFor more information about this error, try `rustc --explain E0004`.\nwarning: `udon-core` (test \"boundaries\") generated 1 warning\nerror: could not compile `udon-core` (test \"boundaries\") due to 2 previous errors; 1 warning emitted\nwarning: build failed, waiting for other jobs to finish...\nwarning: `udon-core` (lib test) generated 2 warnings (2 duplicates)\nwarning: `udon-core` (test \"canonical\") generated 3 warnings\n\n∴ Thinking…\n\nThere's also a StreamEvent enum that needs BlankLine handled. Let me find and fix it.\n\n⏺ Search(pattern: \"StreamEvent::Error.*=>\"\", path: \"/Users/josephwecker-v2/src/libudon/udon-core/tests\", output_mode: \"content\")\n⎿  Found 0 lines\n\n∴ Thinking…\n\nLet me find where StreamEvent is being matched.\n\n⏺ Bash(grep -rn \"StreamEvent::Error\" /Users/josephwecker-v2/src/libudon/udon-core/tests/)\n⎿  /Users/josephwecker-v2/src/libudon/udon-core/tests/boundaries.rs:103:        StreamEvent::Error { code, .. } => format!(\"Error {:?}\", code),\n\n∴ Thinking…\n\nFound it in boundaries.rs. Let me read and update that file.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/4974eeaf-9a47-47b8-82f3-612f95a1e7db.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-13T20:26:25.662000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 1012,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0212,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.661,
+      "density": 0.728,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 12,
+      "geomean": 34.814,
+      "rerank": 0.528
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "nce layer\" from the ACP brainstorm — baked into the document format itself.\n\n---\n\n**Context Handoff Generator** — The 100% context turnover problem is real and painful. If UDON had native tooling for:\n\n```ruby\nhandoff = UdonHandoff.new(current_state)\n.preserve_structure           # All |elements stay\n.summarize_prose(max: 500)    # Compress narrative\n.keep_elements(\".decision\")   # Preserve anything with .decision class\n.keep_annotations(:high_confidence)\n.add_continuation_point(\"Stopped at validation, see |error[validation-failed]\")\n```\n\nThen agent-to-agent handoff becomes a structured protocol, not a lossy prose summary.\n\n---\n\n**\"What Changed\" Narrator** — This is the inverse of semantic diff:\n\n```\nInput: two UDON versions\nOutput: prose explanation\n\n\"The |endpoint[create-user] now requires authentication\n(:auth changed from 'optional' to 'required'). Rate limit\nincreased 10→100. New error response |error[409] was added\nto document conflicts.\"\n```\n\nThis is agent→human communication. The agent understands the semantic diff internally; the narrator renders it for humans who don't want to read structured diffs.\n\n---\n\n## What This Suggests About UDON's Role\n\nUDON isn't just a document format. It's potentially:\n\n1. **Communication medium between agents** — Structured handoffs, shared state\n2. **Trace format for agent reasoning** — Annotations preserve decision chains\n3. **Meta-language for DSLs** — Define vocabularies, get validators/types free\n4. **Streaming protocol** — Partial trees during generation, interrupt/resume\n\nThe ACP brainstorm was about enriching tool responses. But UDON could be the *format* those responses come in — and the format agents use to communicate with each other.\n\n---\n\n## A Thought: UDON as ACP's Native Format\n\nWhat if ACP responses were UDON documents?\n\n```udon\n|context.read\n:anchor @parser.rs::Parser::parse_element\n:intent editing\n\n|content\npub fn parse_element(&mut self) -> Result<Element> {\n...\n}",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0209,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.453,
+      "age_norm": 0.112,
+      "copies": 5,
+      "path_frac": 0.0,
+      "sem_rank": 11,
+      "lex_rank": 84,
+      "geomean": 30.397,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:16:50.520566-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages.md",
+    "lines": [
+      16013,
+      16552
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "aude-3-7-sonnet-20250219\")`\n\nHigh-performance model with early extended thinking\n\n- `CLAUDE_3_5_HAIKU_LATEST(\"claude-3-5-haiku-latest\")`\n\nFastest and most compact model for near-instant responsiveness\n\n- `CLAUDE_3_5_HAIKU_20241022(\"claude-3-5-haiku-20241022\")`\n\nOur fastest model\n\n- `CLAUDE_HAIKU_4_5(\"claude-haiku-4-5\")`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `CLAUDE_HAIKU_4_5_20251001(\"claude-haiku-4-5-20251001\")`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `CLAUDE_SONNET_4_20250514(\"claude-sonnet-4-20250514\")`\n\nHigh-performance model with extended thinking\n\n- `CLAUDE_SONNET_4_0(\"claude-sonnet-4-0\")`\n\nHigh-performance model with extended thinking\n\n- `CLAUDE_4_SONNET_20250514(\"claude-4-sonnet-20250514\")`\n\nHigh-performance model with extended thinking\n\n- `CLAUDE_SONNET_4_5(\"claude-sonnet-4-5\")`\n\nOur best model for real-world agents and coding\n\n- `CLAUDE_SONNET_4_5_20250929(\"claude-sonnet-4-5-20250929\")`\n\nOur best model for real-world agents and coding\n\n- `CLAUDE_OPUS_4_0(\"claude-opus-4-0\")`\n\nOur most capable model\n\n- `CLAUDE_OPUS_4_20250514(\"claude-opus-4-20250514\")`\n\nOur most capable model\n\n- `CLAUDE_4_OPUS_20250514(\"claude-4-opus-20250514\")`\n\nOur most capable model\n\n- `CLAUDE_OPUS_4_1_20250805(\"claude-opus-4-1-20250805\")`\n\nOur most capable model\n\n- `CLAUDE_3_OPUS_LATEST(\"claude-3-opus-latest\")`\n\nExcels at writing and complex tasks\n\n- `CLAUDE_3_OPUS_20240229(\"claude-3-opus-20240229\")`\n\nExcels at writing and complex tasks\n\n- `CLAUDE_3_HAIKU_20240307(\"claude-3-haiku-20240307\")`\n\nOur previous most fast and cost-effective\n\n- `JsonValue; role \"assistant\"constant`\n\nConversational role of the generated message.\n\nThis will always be `\"assistant\"`.\n\n- `ASSISTANT(\"assistant\")`\n\n- `Optional<StopReason> stopReason`\n\nThe reason that we stopped.\n\nThis may be one the following values:",
+    "n_occurrences": 5,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:08.839610-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:08.839610-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:16:50.520566-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:16:50.520566-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/java/messages/batches/results.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:49:16.160667-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0199,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 0.816,
+      "age_norm": 0.132,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 9,
+      "geomean": 30.15,
+      "rerank": 0.55
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T13:24:42-07:00",
+    "date_method": "git-blame-min",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/_archive/analysis.md",
+    "lines": [
+      204,
+      207
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### The UDON Opportunity\n\nUDON could serve as the **lingua franca** for agent-human-ELI-machine communication:",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/_archive/analysis.md",
+        "role": "original-document",
+        "date": "2025-12-23T13:24:42-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/analysis.md",
+        "role": "export",
+        "date": "2025-12-28T17:59:28.090148-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0184,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.659,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 37,
+      "geomean": 61.131,
+      "rerank": 0.506
+    },
+    "class": "human-user",
+    "speaker": "human-user",
+    "project": "libudon",
+    "date": "2026-01-13T20:26:25.662000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/4974eeaf-9a47-47b8-82f3-612f95a1e7db.jsonl",
+    "lines": [
+      1516,
+      1516
+    ],
+    "session": "stateless-plotting-hopcroft",
+    "file_type": "claude_conversation",
+    "text": "r Warning.\n\n⏺ Read(/Users/josephwecker-v2/src/libudon/udon-core/tests/common/harness.rs · lines 53-67)\n⎿  Read 15 lines\n\n∴ Thinking…\n\nI need to add BlankLine to the match. Let me add it after Warning.\n\n⏺ Update(/Users/josephwecker-v2/src/libudon/udon-core/tests/common/harness.rs)\n⎿  Added 1 line\n53          Event::Rational { content, .. } => format!(\"Rational {:?}\", String::from_utf8_lossy(content)),\n54          Event::Complex { content, .. } => format!(\"Complex {:?}\", String::from_utf8_lossy(content)),\n55          Event::Warning { content, .. } => format!(\"Warning {:?}\", String::from_utf8_lossy(content)),\n56 +        Event::BlankLine { .. } => \"BlankLine\".to_string(),\n57          Event::Date { content, .. } => format!(\"Date {:?}\", String::from_utf8_lossy(content)),\n58          Event::Time { content, .. } => format!(\"Time {:?}\", String::from_utf8_lossy(content)),\n59          Event::DateTime { content, .. } => format!(\"DateTime {:?}\", String::from_utf8_lossy(content)),\n\n∴ Thinking…\n\nNow let me rebuild and test.\n\n⏺ Bash(cargo build 2>&1 | tail -10)\n⎿      = note: the matched value is of type `Event<'_>`\nhelp: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown\n|\n655 ~             Error { .. } | Warning { .. } => {},\n656 +             Event::BlankLine { .. } => todo!()\n|\n\nFor more information about this error, try `rustc --explain E0004`.\nwarning: `udon-core` (lib) generated 2 warnings\nerror: could not compile `udon-core` (lib) due to 1 previous error; 2 warnings emitted\n\n∴ Thinking…\n\nThere's another place that needs to handle BlankLine. Let me find it.\n\n⏺ Bash(grep -n \"Error.*Warning.*=>\" /Users/josephwecker-v2/src/libudon/udon-core/src/*.rs)\n⎿  /Users/josephwecker-v2/src/libudon/udon-core/src/tree.rs:655:            Error { .. } | Warning { .. } => {}\n\n∴ Thinking…\n\nNeed to update tree.rs to handle BlankLine. Let me look at that code.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/4974eeaf-9a47-47b8-82f3-612f95a1e7db.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-13T20:26:25.662000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 1012,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0184,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.486,
+      "age_norm": 0.195,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 26,
+      "lex_rank": 80,
+      "geomean": 45.607,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak",
+    "date": "2025-09-17T09:50:49.254844-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_core/ennaos/docs/claude-docs/en/release-notes/api.md",
+    "lines": [
+      131,
+      143
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "#### May 22, 2025\n\n* We've launched [Claude Opus 4 and Claude Sonnet 4](http://www.anthropic.com/news/claude-4), our latest models with extended thinking capabilities. Learn more in our [Models & Pricing documentation](/en/docs/about-claude/models).\n* The default behavior of [[../docs/build-with-claude/extended-thinking.html]] in Claude 4 models returns a summary of Claude's full thinking process, with the full thinking encrypted and returned in the `signature` field of `thinking` block output.\n* We've launched [[../docs/build-with-claude/extended-thinking.html#interleaved-thinking]] in public beta, a feature that enables Claude to think in between tool calls. To enable interleaved thinking, use the [[../api/beta-headers.md]] `interleaved-thinking-2025-05-14`.\n* We've launched the [[../docs/build-with-claude/files.md]] in public beta, enabling you to upload files and reference them in the Messages API and code execution tool.\n* We've launched the [[../docs/agents-and-tools/tool-use/code-execution-tool.md]] in public beta, a tool that enables Claude to execute Python code in a secure, sandboxed environment.\n* We've launched the [[../docs/agents-and-tools/mcp-connector.md]] in public beta, a feature that allows you to connect to remote MCP servers directly from the Messages API.\n* To increase answer quality and decrease tool errors, we've changed the default value for the `top_p` [nucleus sampling](https://en.wikipedia.org/wiki/Top-p_sampling) parameter in the Messages API from 0.999 to 0.99 for all models. To revert this change, set `top_p` to 0.999.\nAdditionally, when extended thinking is enabled, you can now set `top_p` to values between 0.95 and 1.\n* We've moved our [Go SDK](https://github.com/anthropics/anthropic-sdk-go) from beta to GA.\n* We've included minute and hour level granularity to the [Usage](https://console.anthropic.com/settings/usage) page of Console alongside 429 error rates on the Usage page.",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak/en/release-notes/api.md",
+        "role": "original-document",
+        "date": "2025-09-17T09:50:49.254844-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_core/ennaos/docs/claude-docs/en/release-notes/api.md",
+        "role": "original-document",
+        "date": "2025-10-22T10:17:37.656393-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.2/en/release-notes/api.md",
+        "role": "original-document",
+        "date": "2025-10-06T19:48:49.318277-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0182,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.67,
+      "density": 0.763,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 11,
+      "geomean": 33.332,
+      "rerank": 0.503
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-07-16T19:03:57.183000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      1530,
+      1530
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "Joseph is pointing out that Rowan is where his thinking on resilient document schemas really developed, but he lost momentum because he grew frustrated with Ruby's DSL syntax for defining schemas—he wanted to wait for Udon to mature before continuing. Now he's recognizing something significant: the circle is closing, and his earlier decision to pause Rowan is coming back around.\n\nRowan was waiting for Udon; now Udon's schema layer is being designed with Rowan as a reference point. This means Udon's schema syntax could be the final form of what Rowan's schema DSL was always meant to be—the notation layer Joseph wanted to write in. The derivation-targets piece (transforming Udon resources into SQL DDL, JSON Schema, Ruby classes) is essentially Rowan's architecture with Udon as the authoring surface. So when designing the schema DSL, the acceptance test should be whether Rowan's attribute and constraint definitions could be naturally expressed in it. The scenario corpus already has example Udon files for billing, inventory, and support systems that can validate this.\n\nThis reframes the whole effort: Rowan isn't just prior art for constraints—it's the first real customer. Recording this context in the schema notes and the TODO item captures the genuine project history and de-risks the design by grounding it in production-shaped machinery rather than speculation. It also explains why the January exploration was so Ash-flavored; pieces of Udon are Rowan concepts verbatim.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T19:03:57.183000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 631,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.018,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.549,
+      "density": 0.682,
+      "age_norm": 0.126,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 46,
+      "geomean": 68.162,
+      "rerank": 0.503
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2026-01-01T00:09:50.742000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      6602,
+      6602
+    ],
+    "session": "eager-soaring-hummingbird",
+    "file_type": "claude_history",
+    "text": "⏺ Bash(./regenerate-parser 2>&1 | tail -3 && UDON_TEST_COUNT=0 cargo test 2>&1 | tail -8) timeout: 2m 0s\n⎿   604 |                     self.parse_prose(col, -1, b\"\", on_event);\n|                          -----------          ^^^ expected `i32`, found `&[u8; 0]`\nwarning: Build had warnings (run 'cargo build' for details)\n|\n2952 |                     self.parse_prose(col, line_col, b'|'.into(), on_event);\n|                                                         +++++++\n\nFor more information about this error, try `rustc --explain E0308`.\nerror: could not compile `udon-core` (lib) due to 11 previous errors\nwarning: build failed, waiting for other jobs to finish...\nerror: could not compile `udon-core` (lib test) due to 11 previous errors",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2026-01-01T00:09:50.742000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2026-01-01T00:09:50.742000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2026-01-01T00:09:50.742000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0169,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.4,
+      "density": 0.684,
+      "age_norm": 0.132,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 53,
+      "geomean": 73.164,
+      "rerank": 0.522
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2025-12-23T19:17:05.170000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      5502,
+      5502
+    ],
+    "session": "dd3d94a5-9090-4ee7-b772-b3c97c25eab7",
+    "file_type": "claude_history",
+    "text": "In a sense, when you include udon comments and larger inline elements, you end up with three or four tiers of \"voice\" for various needs... and that's before templating...\n\nFunny enough, I *almost* asked you to include \"Think especially in terms of novel DSLs that UDON could uniquely facilitate\" in all of the enablement prompts... Do you think that might change anything?",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:17:05.170000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2025-12-23T19:17:05.170000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2025-12-23T19:17:05.170000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0168,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.175,
+      "age_norm": 0.112,
+      "copies": 8,
+      "path_frac": 0.0,
+      "sem_rank": 21,
+      "lex_rank": 98,
+      "geomean": 45.365,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.3",
+    "date": "2025-12-14T20:24:28.409179-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/messages.md",
+    "lines": [
+      13725,
+      15856
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "th extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `metadata: Optional[MetadataParam]`\n\nAn object describing metadata about the request.\n\n- `user_id: Optional[str]`\n\nAn external identifier for the user who is associated with the request.\n\nThis should be a uuid, hash value, or other opaque identifier. Anthropic may use this id to help detect abuse. Do not include any identifying information such as name, email address, or phone number.\n\n- `service_tier: Optional[Literal[\"auto\", \"standard_only\"]]`\n\nDetermines whether to use priority capacity (if available) or standard capacity for this request.\n\nAnthropic offers different levels of service for your API requests. See [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.\n\n- `\"auto\"`\n\n- `\"standard_only\"`\n\n- `stop_sequences: Optional[SequenceNotStr[str]]`\n\nCustom text sequences that will cause the model to stop generating.\n\nOur models will normally stop when they have naturally completed their turn, which will result in a response `stop_reason` of `\"end_turn\"`.\n\nIf you want the model to stop generating when it encounters custom strings of text, you can use the `stop_sequences` parameter. If the model encounters one of the custom sequences, the response `stop_reason` value will be `\"stop_sequence\"` and the response `stop_sequence` value will contain the matched stop sequence.\n\n- `stream: Optional[bool]`",
+    "n_occurrences": 8,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:17.610007-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:17:20.842458-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages/batches/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:25:23.263991-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/messages.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:24:28.409179-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/api/creating-message-batches.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:24:38.003290-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/api/messages.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:49:39.010206-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/api/creating-message-batches.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:49:54.261302-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:15:34.868181-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0166,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.823,
+      "density": 0.837,
+      "age_norm": 0.123,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 14,
+      "geomean": 37.603,
+      "rerank": 0.552
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "archema",
+    "date": "2026-01-05T08:27:50.366000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+    "lines": [
+      8,
+      8
+    ],
+    "session": "fizzy-crafting-moonbeam",
+    "file_type": "claude_conversation",
+    "text": "This is fascinating. UDON is a universal document and object notation format that Joseph created - it's been in development since 2011 and is now being revived. Let me summarize what I've learned:\n\n**UDON Key Features:**\n1. Unified notation for data, documents, and configuration\n2. Indentation-based hierarchy (no closing tags)\n3. Four prefixes: `|` (elements), `:` (attributes), `!` (dynamics), `;` (comments)\n4. Markdown-compatible prose within elements\n5. Streamable, incremental parsing\n6. Syntactic typing (not sniffing like YAML)\n7. Self-chunking for RAG/embeddings\n8. Significantly smaller than XML, YAML, JSON for structured content\n9. Very fast parsing (comparable to quick-xml)\n\n**Why this matters for Archema:**\n\nGiven the context that Archema is building consciousness infrastructure, and UDON is designed as a human+AI-friendly format for documents and data, there are some obvious potential connections:\n\n1. **Resource DSL**: Could UDON be used as the syntax for defining Archema Resources instead of Ruby DSL?\n\n2. **YAML Frontmatter Adapter**: Archema already has a YAML frontmatter store adapter. UDON is explicitly designed as an evolution of \"Markdown with YAML frontmatter\" - could UDON replace or complement this?\n\n3. **Identity Documents (SIGNUM)**: The reflection document mentioned SIGNUM documents for agent identity. UDON seems perfect for this - structured data with prose narrative interleaved.\n\n4. **Memory Storage (MEMORATA)**: For consciousness infrastructure, memories that blend structured data with narrative prose would benefit from UDON.\n\n5. **Configuration**: Archema's configuration could use UDON instead of YAML.\n\n6. **Schema definitions**: Resource schemas could potentially be expressed in UDON.\n\nThe user said they have questions to consider - let me wait for them to ask rather than speculating too much.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-05T08:27:50.366000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 4,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0166,
+    "factors": {
+      "class": "human-user",
+      "proximity": 0.531,
+      "density": 0.501,
+      "age_norm": 0.005,
+      "copies": 5,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 56,
+      "geomean": 75.206,
+      "rerank": 0.506
+    },
+    "class": "human-user",
+    "speaker": "Joseph Wecker",
+    "project": null,
+    "date": "2026-07-07T22:19:42.409000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/history.jsonl",
+    "lines": [
+      15354,
+      15354
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_history",
+    "text": "Hello! It's been a *long* time since I've launched an agent in this particular family of projects, but I'm so, so, so, tired of using and abusing markdown again that I am going to make an effort to start integrating udon into some spots. Could you please generate for me a first pasa at the udon spiritual equivelant of this document?:  /Users/josephwecker-v2/src/agentic-systems/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.md",
+    "n_occurrences": 5,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-07-09/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T22:19:42.421000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 0,
+        "speaker": "user",
+        "alive": true
+      },
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-07T22:19:42.421000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 0,
+        "speaker": "user",
+        "alive": false
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2026-07-07T22:19:42.409000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": null,
+        "role": "partial-witness",
+        "date": "2026-07-07T22:19:42.409000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": null
+      },
+      {
+        "path": "~/.claude/history.jsonl",
+        "role": "partial-witness",
+        "date": "2026-07-07T22:19:42.409000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": null,
+        "speaker": "Joseph Wecker",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.016,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.607,
+      "density": 0.708,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 15,
+      "geomean": 38.923,
+      "rerank": 0.531
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-01-14T16:48:07.086000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      88,
+      88
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "Now I have a good understanding of both:\n\n1. **The feedback.md schema suggestion** - A RelaxNG-compact-like approach where UDON itself is the schema language, using suffixes (?, !, *, +) for cardinality.\n\n2. **Archema's approach** - A Ruby DSL for resource modeling that:\n- Uses JSON Schema as the canonical constraint vocabulary\n- Has rich composition constraints (oneOf, anyOf, if/then/else, dependentRequired)\n- Projects to multiple storage backends (RDBMS, YAML, JSONL, Memory)\n- Is currently implemented in Ruby\n\nThe interesting connection Joseph is pointing at:\n- Archema needs a DSL to define resources\n- That DSL is currently Ruby\n- But it could be UDON\n- If UDON had a schema language, it could potentially serve both purposes:\n- Schema for UDON documents\n- Resource definition language for Archema\n\nLet me think about what a UDON-based Archema resource definition might look like, and how it relates to the feedback.md schema suggestion...\n\nThe feedback.md suggestion is clean for basic document schemas:```udon\n|schema[article-schema]\n|article\n:author! string           ; required, type string\n:date? date               ; optional, type date\n|heading!                 ; exactly one required\n_text+                  ; one or more text nodes\n|section*                 ; zero or more\n```\n\nBut Archema needs more:\n- Relationships (belongs_to, has_many)\n- Identities (unique constraints)\n- Actions (CRUD + custom)\n- Policies (authorization)\n- Calculations (derived fields)\n- Composition constraints (oneOf, anyOf, dependentRequired)\n- Schema versioning (since, deprecated, removed, was)\n\nHow would these map to UDON?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T16:48:07.086000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 54,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0155,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.705,
+      "age_norm": 0.125,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 30,
+      "geomean": 55.045,
+      "rerank": 0.542
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-02T10:47:04.400000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/10a85bd9-901f-44ff-8b9f-566525a82bd3.jsonl",
+    "lines": [
+      32,
+      32
+    ],
+    "session": "wiggly-mapping-mango",
+    "file_type": "claude_conversation",
+    "text": "reeform fence tracking\nbool in_freeform;\nuint16_t freeform_open_column;\n\n// Raw block tracking\nbool in_raw_block;\nuint16_t raw_block_base_column;\n};\n```\n\n## libudon WASM vs Tree-sitter: Different Jobs\n\n| Concern | libudon WASM | tree-sitter-udon |\n|---------|--------------|------------------|\n| **Primary use** | Data extraction | Editor integration |\n| **Error recovery** | Optional | Required (partial edits) |\n| **Incremental** | Restart from checkpoint | Fine-grained re-parse |\n| **Output** | Events/DOM | Concrete syntax tree |\n| **Queries** | N/A | Structural pattern matching |\n\nThey're complementary:\n- **Editor**: Tree-sitter for highlighting, navigation, structural edits\n- **Runtime**: libudon for actual data processing\n\n## For Autocolors: The Bridge\n\nHere's where it gets interesting. You could define colorschemes in UDON:\n\n```udon\n|colorscheme[autocolors-forest]\n:background.light #f5f5f0\n:background.dark #1a1a18\n\n|token.plumbing\n:fg.hue <         ; inherit from parent\n:fg.lightness --  ; de-emphasize\n:fg.chroma -\n\n|punctuation.delimiter\n:fg.hue <'      ; slight variation\n\n|punctuation.bracket\n:fg.hue <\n\n|token.discriminator\n:fg.hue 6         ; base hue index\n:fg.lightness +\n\n|name.function\n:fg.hue <'\n:style bold\n```\n\nThen generate:\n1. `highlights.scm` for Tree-sitter\n2. `.tmTheme` for TextMate/VS Code\n3. Vim colorscheme\n4. etc.\n\n## Recommended Path\n\n1. **tree-sitter-udon**: Write the grammar + external scanner. Start with core constructs (elements, attributes, prose), add complexity incrementally.\n\n2. **highlights.scm**: Design highlight groups that expose the semantic hierarchy autocolors needs (plumbing vs discriminator, inner-part vs content).\n\n3. **UDON colorscheme format**: Define how autocolors concepts (hue inheritance, relative lightness, perceptual space) are expressed in UDON.\n\n4. **Generator**: UDON colorscheme → multiple output formats.\n\nWant me to start sketching `grammar.js` for the core UDON constructs, or explore the colorscheme format first?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/10a85bd9-901f-44ff-8b9f-566525a82bd3.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-02T10:47:04.400000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 19,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0152,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.0,
+      "age_norm": 0.151,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 14,
+      "lex_rank": 99,
+      "geomean": 37.229,
+      "rerank": 0.5
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "autopax",
+    "date": "2025-11-23T13:06:54.122565-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/autopax/.archive/catalog-merge-poc/README_unified_catalog.md",
+    "lines": [
+      94,
+      135
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### unified_catalog.json\n\n```json\n{\n\"version\": \"1.0.0\",\n\"generated_at\": \"2025-11-18T...\",\n\"source\": \"portkey\",\n\"total_models\": 380,\n\"models\": {\n\"claude-sonnet-4.5\": {\n\"canonical_name\": \"claude-sonnet-4.5\",\n\"provider\": \"anthropic\",\n\"providers\": [\n{\n\"portkey_id\": \"@anthropic-default/claude-sonnet-4-5-20250929\",\n\"integration\": \"@anthropic-default\",\n\"priority\": 1\n}\n],\n\"metadata\": {\n\"openrouter\": {\n\"id\": \"anthropic/claude-sonnet-4.5\",\n\"context_length\": 200000,\n\"pricing\": { ... },\n\"source\": \"openrouter\",\n\"fetched_at\": \"...\"\n},\n\"benchmarks\": {\n\"intelligence_index\": 82.5,\n\"coding_index\": 78.3,\n\"math_index\": 65.2,\n\"composite_score\": 76.3,\n\"source\": \"artificial_analysis\",\n\"fetched_at\": \"...\"\n}\n},\n\"created_at\": \"...\"\n}\n}\n}\n```",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/autopax/.archive/catalog-merge-poc/README_unified_catalog.md",
+        "role": "original-document",
+        "date": "2025-11-23T13:06:54.122565-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0152,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.705,
+      "age_norm": 0.124,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 31,
+      "geomean": 55.955,
+      "rerank": 0.528
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-03T16:43:02.044000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/ae1fd368-3e71-43d0-826a-bf3b27a7b99b.jsonl",
+    "lines": [
+      13,
+      13
+    ],
+    "session": "jazzy-churning-shell",
+    "file_type": "claude_conversation",
+    "text": ":date? date               ; optional, type date\n:tags? [string]           ; optional, list of strings\n\n|heading!                 ; exactly one required\n_text+                  ; one or more text nodes\n\n|section*                 ; zero or more\n|p+                     ; one or more paragraphs\n|figure?                ; optional\n:src! uri\n:alt! string\n:caption? string\n```\n\nThe `_text` is a thought—a way to constrain text content. Or maybe just prose presence:\n\n```udon\n|section*\n:prose? true               ; may contain prose\n|p+\n```\n\nTypes could reference other schemas:\n```udon\n|type[email]\n:base string\n:pattern \"^[^@]+@[^@]+$\"\n\n|type[user-role]\n:enum [admin editor viewer]\n\n|user\n:email! @[email]\n:role! @[user-role]\n```\n\nThe key insight: **the schema IS a valid UDON document**. You can parse it with the same parser. The schema-specific semantics (cardinality, type checking) are a layer on top.\n\nThis is similar to how Relax NG Compact Syntax works—the schema looks like the documents it describes.\n\n**My vote: UDON-native schema using suffixes for cardinality, with type references via `@[id]`... or `|[id]` if we drop `@`.**\n\n---\n\n## Follow-up question for you\n\nOn the `|[id]` reference syntax: should it be valid to write `|[id].class` to reference an element AND apply additional classes? Or is a reference purely a reference—no modification at point of use?\n\n```udon\n; Option A: reference is immutable\n|[header]                    ; insert header as-is\n\n; Option B: reference can be augmented\n|[header].highlighted        ; insert header with added class\n|[base-config] :override 42  ; reference with local override\n```\n\nOption B is more powerful but muddies the semantics. Option A is cleaner but less flexible. What's your instinct?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/ae1fd368-3e71-43d0-826a-bf3b27a7b99b.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-03T16:43:02.044000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 8,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0143,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.454,
+      "density": 0.617,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 35,
+      "geomean": 59.456,
+      "rerank": 0.54
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "libudon",
+    "date": "2025-12-25T21:15:14.920000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      42,
+      42
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "This is rich. Let me reflect on what resonates most and why:\n\n---\n\n## The Most Compelling Ideas\n\n**Streaming Parser with Partial Tree Access** — This is the one that makes me most excited. Current streaming is token-level. But UDON's structure means you could have *semantic* streaming:\n\n```\nAgent is writing...\n|article[foo]\n:status dr█\n\nPartial tree available NOW:\n- Element |article[foo] is OPEN (not closed)\n- Attribute :status is INCOMPLETE (value partial)\n- Constraint check: :status expects enum [draft|published|archived]\n- Current partial \"dr\" → likely \"draft\" (valid)\n```\n\nThis is the agent equivalent of syntax highlighting *while you type*. The feedback loop is: generate token → immediate semantic check → catch errors before they compound.\n\nFor interrupt/resume: if generation stops mid-document, the partial tree tells the next agent exactly where things stand.\n\n---\n\n**The Annotation Layer (`|{@ ...}`)** — This could be UDON's native way to carry agent metacognition through documents:\n\n```udon\n|config\n:timeout 30  |{@ :confidence 0.6 :agent claude Seems low for batch jobs}\n:retries 5   |{@ :source inferred :basis \"similar configs use 3-5\"}\n\n|endpoint[create-user]\n:auth required  |{@ :decision \"Changed from optional after reviewing security reqs\"}\n```\n\nThe annotations are:\n- Semantically distinct from content (strippable)\n- Structured (not just prose comments)\n- Machine-readable (other agents can query them)\n- Preserve reasoning chain (why was this decision made?)\n\nThis directly addresses the \"confidence layer\" from the ACP brainstorm — baked into the document format itself.\n\n---\n\n**Context Handoff Generator** — The 100% context turnover problem is real and painful. If UDON had native tooling for:",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:15:14.920000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 28,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0142,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.462,
+      "age_norm": 0.137,
+      "copies": 4,
+      "path_frac": 0.0,
+      "sem_rank": 24,
+      "lex_rank": 83,
+      "geomean": 44.632,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.3",
+    "date": "2025-12-14T20:04:04.438344-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/release-notes/overview.md",
+    "lines": [
+      55,
+      61
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### November 24, 2025\n- We've launched [Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5), our most intelligent model combining maximum capability with practical performance. Ideal for complex specialized tasks, professional software engineering, and advanced agents. Features step-change improvements in vision, coding, and computer use at a more accessible price point than previous Opus models. Learn more in our [Models & Pricing documentation](/docs/en/about-claude/models).\n- We've launched [programmatic tool calling](/docs/en/agents-and-tools/tool-use/programmatic-tool-calling) in public beta, allowing Claude to call tools from within code execution to reduce latency and token usage in multi-tool workflows.\n- We've launched the [tool search tool](/docs/en/agents-and-tools/tool-use/tool-search-tool) in public beta, enabling Claude to dynamically discover and load tools on-demand from large tool catalogs.\n- We've launched the [effort parameter](/docs/en/build-with-claude/effort) in public beta for Claude Opus 4.5, allowing you to control token usage by trading off between response thoroughness and efficiency.\n- We've added [client-side compaction](/docs/en/build-with-claude/context-editing#client-side-compaction-sdk) to our Python and TypeScript SDKs, automatically managing conversation context through summarization when using `tool_runner`.",
+    "n_occurrences": 4,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/release-notes/overview.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:41:31.063863-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.3/docs/en/release-notes/overview.md",
+        "role": "original-document",
+        "date": "2025-12-14T20:04:04.438344-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.4/docs/en/release-notes/overview.md",
+        "role": "original-document",
+        "date": "2026-01-20T17:36:30.864194-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/release-notes/overview.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:45:41.278002-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0125,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.443,
+      "age_norm": 0.099,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 23,
+      "lex_rank": 86,
+      "geomean": 44.475,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.6",
+    "date": "2026-02-11T11:03:15.686523-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+    "lines": [
+      560,
+      4846
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "d model, capable of near-instant responses and extended thinking\n\n- `\"claude-haiku-4-5-20251001\"`\n\nHybrid model, capable of near-instant responses and extended thinking\n\n- `\"claude-sonnet-4-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-0\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `container: Optional[Container]`\n\nContainer identifier for reuse across requests.\n\n- `class BetaContainerParams: …`\n\nContainer parameters with skills to be loaded.\n\n- `id: Optional[str]`\n\nContainer id\n\n- `skills: Optional[List[BetaSkillParams]]`\n\nList of skills to load in the container\n\n- `skill_id: str`\n\nSkill ID\n\n- `type: Literal[\"anthropic\", \"custom\"]`\n\nType of skill - either 'anthropic' (built-in) or 'custom' (user-defined)\n\n- `\"anthropic\"`\n\n- `\"custom\"`\n\n- `version: Optional[str]`\n\nSkill version or 'latest' for most recent version\n\n- `ContainerUnionMember1 = str`\n\n- `context_management: Optional[BetaContextManagementConfigParam]`\n\nContext management configuration.\n\nThis allows you to control how Claude manages context across multiple requests, such as whether to clear function results or not.\n\n- `edits: Optional[List[Edit]]`\n\nList of context management edits to apply\n\n- `class BetaClearToolUses20250919Edit: …`\n\n- `type: Literal[\"clear_tool_uses_20250919\"]`",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:03:15.686523-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:24:26.787725-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages/create.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:07:03.416495-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0124,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.657,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 38,
+      "geomean": 61.952,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T17:13:07.645000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      113,
+      113
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "That's a powerful insight. A single document could:\n\n```udon\n!dialect udon/schema\n\n|schema[user]\n|user\n:email! string\n:name! string\n:role? @[user-role]\n\n|type[user-role]\n:enum [admin author reader]\n\n!dialect @[user]              ; switch to instance mode, validated against schema above\n\n|user\n:email alice@example.com\n:name Alice\n:role admin\n\n|user\n:email bob@example.com\n:name Bob\n```\n\nOr scoped to subtrees:\n\n```udon\n|document\n|schema !dialect udon/schema\n|user\n:email! string\n:name! string\n\n|examples !dialect :schema @[user]\n|user :email alice@example.com :name Alice\n|user :email bob@example.com :name Bob\n\n|tests\n|valid !dialect :schema @[user]\n|user :email a@b.com :name A\n\n|invalid !dialect :schema @[user] :expect-errors true\n|user :name \"Missing required email\"\n```\n\n**This enables:**\n\n- **Self-documenting schemas** — Define structure, show examples\n- **Test fixtures** — Schema + valid cases + invalid cases in one file\n- **Tutorials** — Define schema, walk through instances with prose\n- **Migrations** — Old schema, new schema, example transformations\n- **Archema resources with fixtures** — Resource definition + seed data\n\n**For Archema specifically:**\n\n```udon\n!dialect archema/resource\n\n|resource[User]\n|field[email]! :type string :format email\n|field[name]! :type string\n|field[role]? :type atom :default reader\n:enum [admin author reader]\n\n|seeds !dialect :instance @[User]\n|user :email admin@example.com :name Admin :role admin\n|user :email alice@example.com :name Alice\n\n|examples !dialect :instance @[User]\n; Example for documentation\n|user\n:email new-user@example.com\n:name \"New User\"\n; role defaults to :reader\n\n|tests\n|valid !dialect :instance @[User]\n|user :email a@b.com :name A\n\n|invalid !dialect :instance @[User] :expect validation-error\n|user :email \"not-an-email\" :name A\n```\n\n**The dialect becomes a lens:**",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T17:13:07.645000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 70,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0122,
+    "factors": {
+      "class": "subagent-to-agent",
+      "proximity": 0.655,
+      "density": 0.498,
+      "age_norm": 0.002,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 6,
+      "geomean": 24.617,
+      "rerank": null
+    },
+    "class": "subagent-to-agent",
+    "speaker": "sub-agent",
+    "project": "udon",
+    "date": "2026-07-11T16:00:39.184000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-a71d81f21d13c7161.jsonl",
+    "lines": [
+      74,
+      74
+    ],
+    "session": "zany-churning-marble",
+    "file_type": "claude_conversation",
+    "text": "g whether the descent system supports negative offsets for MARK — something like MARK(-1) — which would let us position the mark before the prepended character instead of using PREPEND after the fact.\n\nIf that doesn't work, another approach is to have the span calculation itself account for prepended bytes. Since prepended content always represents the source bytes immediately before the mark, I could adjust the span's start position backward by the length of what was prepended. That way the span naturally covers the full range including the prepended portion. The `span_from_mark` template could be the universal fix here. But I need to think carefully about whether this belongs in descent semantics — it's a generated helper, so adjusting it to subtract the prepended length would apply the fix across all sites. The tricky part is that prepend buffers might contain injected bytes that don't come from the source, though in udon's case they always mirror source bytes. The cleaner interpretation is that spans should cover the actual source region that produced the event, including guard characters. Since PREPEND is used for guard-char reinjection, the span would be `(mark_pos - prepended_len)..term`. This works for udon but could break for synthetic prepends, so it's risky as a general descent semantic.\n\nLet me check the descent documentation to see if there's already a distinction between different PREPEND modes or if MARK supports offset parameters — that might clarify the right approach here. The real issue is the order of evaluation: `term()` consumes the prepend buffer before `span_from_mark()` runs, so I need to capture the prepend length at the right moment in the struct expression.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/da5d1672-c9ae-44ff-9a52-037a25d77230/subagents/agent-a71d81f21d13c7161.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-11T16:00:39.184000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 45,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0121,
+    "factors": {
+      "class": "document",
+      "proximity": 0.655,
+      "density": 0.465,
+      "age_norm": 0.002,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 17,
+      "geomean": 41.437,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "archema-io/vivarium",
+    "date": "2026-07-12T01:14:26-06:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/archema-io/vivarium/.archive/VIVARIA-DEFINITIONS.md",
+    "lines": [
+      46,
+      87
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Layer 1 — the nomos (executable law; rust code, declared as data)\n\nA **nomos** is the grain the store keys are made of: one keyed, versioned, executable article of world-law. The *doing* is rust (a kernel fn); the *declaration* is data (today a rust struct in `nomotheke.rs`; shown here as the udon it could equally be, since it is pure data). **Gloss:** nomos = \"an instituted article of Law\"; the plural is nomoi; the registry is the nomotheke.\n\n```udon\n; What the nomotheke declares, per nomos. (Today: a NomosDecl literal in Rust.\n; Shown as udon to make the shape obvious and because it IS just data.)\n|nomos[erosion-tile]\n:version erosion-2026-07-10a\n:fills fluvial-erosion              ; the system-role it occupies (see \"slot?\" below)\n:kernel Fluvial::erode              ; --> the rust fn that IS the law\n:approach procedural\n:physics med                        ; declared tier (axis B)\n:earth-fidelity med                 ; axis A\n:relation \"mechanistic-causal: stream-power + Davy-Lague + talus + creep\"\n:depends [spine-tile]              ; nomos->nomos (REAL: the `deps` field)\n:consumes [\"surface elevation field (m)\"]   ; nomos->QUANTITY — NOT BUILT (queued)\n|promise[eroded-surface].state\n:quantity \"eroded surface elevation field (m)\"\n:conservation exports-at-boundary  ; the honest conservation claim\n:assumptions [\"stream-power `m`\" \"erosion `k_dt`\" \"erosion run length\"]\n```",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/archema-io/vivarium/.archive/VIVARIA-DEFINITIONS.md",
+        "role": "original-document",
+        "date": "2026-07-12T01:14:26-06:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0119,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.4,
+      "density": 0.781,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 22,
+      "geomean": 47.138,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-01-14T17:02:50.796000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      97,
+      97
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "Joseph is pointing at something important: the vision is that UDON could be the \"single source of truth\" from which everything else flows:\n\n- SQL schema\n- JSON Schema\n- Ruby classes\n- Validation logic\n- Query interfaces\n- API definitions\n\nAnd Option C (UDON as canonical with embedded behavior) is what agents have been gravitating toward, because:\n1. Most logic is declarative enough that UDON can express it\n2. When you need imperative code, you can embed it (or just reference an external implementation)\n3. It enables multiple compilation targets from one source\n\nThe insight about \"linked elsewhere\" is key - you don't have to embed the full implementation. You could just reference:\n```udon\n|change :hash-password\n:impl user_helpers#hash_password  ; link to Ruby module/method\n```\n\nOr embed the full implementation when it's simple enough.\n\nJoseph is saying he needs to get all the puzzle pieces on the table. He's feeling toward an elegant unification but doesn't have it yet.\n\nLet me think about what the puzzle pieces are:\n\n1. **UDON notation** - the syntax\n2. **UDON AST** - what parsing produces\n3. **UDON paths** - navigation/query language\n4. **UDON schema** - structural constraints (feedback.md proposal)\n5. **UDON guarantees** - consistency profiles (our earlier doc)\n6. **Archema resources** - behavioral/domain layer\n7. **Storage adapters** - where data lives (files, RDBMS, etc.)\n8. **Agentic tooling** - how agents interact\n\nThe unification Joseph is sensing might be:\n\n**A UDON document can describe itself** (schema), **describe other things** (resources, configs), **be queried** (paths), **be validated** (constraints), and **be stored** (adapters) — all with the same notation, the same AST, the same tooling.\n\nThe \"single source of truth\" idea from Archema extends: not just \"resources define everything\" but \"UDON documents define everything, including the schemas for UDON documents.\"",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T17:02:50.796000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 60,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0116,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.605,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 43,
+      "geomean": 65.901,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-01-14T17:09:23.128000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      108,
+      108
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "source :version 2.0.0\n!profile critical\n\n|resource[User]\n:schema-version 2.0.0\n:$provenance\n:author agent/opus-4.5\n:created 2025-01-14T10:00:00Z\n:confidence 0.85\n\n|field[email]! :type string\n; ...\n```\n\n**The provenance angle is interesting for agentic contexts:**\n\nAgents generate documents with varying confidence. Capturing that at the document level (or section level) could be valuable:\n\n```udon\n!dialect archema/resource\n!provenance :author opus-4.5 :confidence 0.9 :reviewed false\n\n|resource[User]\n|field[email]! :type string\n\n|field[retention-days]? :type integer\n;? uncertain about the right default — needs domain expert\n:default 90\n```\n\nThe `;?` uncertainty marker from feedback.md could combine with document-level provenance.\n\n---\n\nShould I add a \"Missing Nouns\" section to the exploration document, or draft a separate short doc on dialect/provenance declarations?",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T17:09:23.128000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 67,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0115,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.667,
+      "density": 0.498,
+      "age_norm": 0.129,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 24,
+      "geomean": 49.234,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "libudon",
+    "date": "2025-12-27T17:40:58.443000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      112,
+      112
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "Now I have a clear picture. Let me summarize what I've learned:\n\n**Current State:**\n- Streaming parser is working and merged to main (56 tests pass)\n- 1.83x faster than old parser\n- Ring buffer architecture is in place\n- SCAN-first SIMD optimization is implemented and documented\n- FFI layer is broken (uses old Event API)\n- Legacy `Event` enum still exists but not used\n\n**What the Implementation Phase 2 doc says needs to happen:**\n\nAccording to the corrected order:\n\n**Phase 2.0** (foundational) - PARTIALLY DONE:\n- ✅ Streaming events as primitive\n- ✅ SAX-style event model\n- ⚠️ Some helper functions may still exist in parser template?\n- Need to verify full grammar is in DSL\n\n**Phase 2.1** (Core Parser Completion):\n- Elements & Identity features\n- Attributes (indented, complex values)\n- Hierarchy (inline children, column-aligned siblings, embedded elements)\n- Escape & Raw\n- Dynamics\n- References\n- Comments\n- Only ~30% of SPEC.md is implemented according to the docs\n\n**Phase 2.2** (Tree Builder) - NOT DONE\n\n**Phase 2.3** (Streaming Infrastructure) - DONE (ring buffer, chunk arena, etc.)\n\n**Phase 2.4** (Ruby Lazy Tree API) - NOT DONE\n\n**Phase 2.5** (Ruby Streaming API) - NOT DONE, FFI is broken\n\n**Phase 2.6** (Error Message Polish) - NOT DONE\n\n**Phase 2.7** (Benchmarking & Optimization) - PARTIALLY DONE\n\n**Phase 2.8** (WASM Bindings) - NOT DONE\n\n**Phase 2.9** (Python Bindings) - NOT DONE\n\n---\n\nAlso, we just did brainstorming on:\n- ACP (Agent Context Protocol)\n\n- UDON Agent Tools\n- UDON as ACP format\n- Grammar-constrained generation\n\nI see exciting potential for agent-oriented development. UDON could become a powerful protocol for structured communication between AI systems. The grammar-constrained generation approach might enable more predictable and controlled AI interactions. Implementing these tools could revolutionize how agents exchange and process contextual information.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-27T17:40:58.443000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 73,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0112,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.4,
+      "density": 0.76,
+      "age_norm": 0.13,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 25,
+      "geomean": 50.249,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "libudon",
+    "date": "2025-12-25T21:21:47.863000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+    "lines": [
+      45,
+      45
+    ],
+    "session": "enchanted-rolling-floyd",
+    "file_type": "claude_conversation",
+    "text": "The user wants me to take:\n1. The ideas they pasted (the tiered tool ideas, streaming parser, annotation layer, etc.)\n2. My additional thoughts and reflections on those\n3. The insight about UDON-as-ACP-format\n\nAnd write them up into documents. This is brainstorming documentation, so I should keep the exploratory tone rather than making it too formal.\n\nI'll create one or two documents. Maybe:\n1. UDON-AGENT-TOOLS.md - The tooling ideas\n2. Maybe expand/update the ACP doc to include the UDON-as-format insight?\n\nOr I could do:\n1. One doc that covers the UDON-specific tooling vision\n2. Keep the ACP doc separate but reference each other\n\nLet me write a doc about UDON agent tools that captures:\n- The tiered tool ideas from the user's notes\n- The streaming parser with partial tree access\n- The annotation layer concept\n- Context handoff\n- \"What Changed\" narrator\n- DSL hosting\n- The insight that UDON could be ACP's native format\n\nI'll keep it in brainstorming style to match the ACP doc.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/44b9bc45-f683-4873-8237-05b4c8595eec.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-25T21:21:47.863000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 30,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0111,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.4,
+      "density": 0.532,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 45,
+      "geomean": 67.417,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-16T14:42:07.089000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      216,
+      216
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": " TODO-AGENT-UX names as mining sources — references updated with the move. `decisions/` contains only `_superseded/` (seven decision briefs + README), so `_archive/` is its honest home, not `design/`.\n\n**CONSUMERS.md.** This one has the most teeth of anything on your list. Its notification triggers have *fired*: 0.8 made bare dates strings (LEXICON.udon has 20; the ASF process map has 1), and 0.9 makes valueless plain attrs a `MissingAttributeValue` error. Live ASF/vivarium/autopax documents may now parse with errors nobody has seen. I'd rerun `bin/find-consumers --check` against the current parser as part of this pass and refresh the whole document — arguably the highest-external-stakes item here.\n\n**editors/ → ux/.** Agree, and I'd extend it: TODO-AGENT-UX's own header says \"(Home tbd.)\" — `ux/` is that home. So: `ux/TODO-HUMAN-UX.md` + `ux/TODO-AGENT-UX.md`, two lanes, one directory (keeping both lane names distinct since they're separate rows in the compliance table). `tree-sitter-udon/` could move under `ux/` too for coherence — though its kill-or-keep is itself an open HUMAN-UX question, so equally defensible to leave it at root until that's decided.\n\n## Additions I'd recommend",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T14:42:07.089000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 79,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.011,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.755,
+      "density": 0.717,
+      "age_norm": 0.123,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 26,
+      "geomean": 51.245,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "archema",
+    "date": "2026-01-05T08:51:54.786000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+    "lines": [
+      16,
+      16
+    ],
+    "session": "fizzy-crafting-moonbeam",
+    "file_type": "claude_conversation",
+    "text": "Joseph is clarifying several important points:\n\n1. Ruby-first is fine, but we can get surprisingly far with declarative UDON before needing Ruby code - like Liquid templates demonstrate.\n\n2. UDON naturally handles inline code via the `!:ruby:` raw directive syntax - so the \"code reference\" problem I raised is actually already solved by UDON's design.\n\n3. He believes UDON will be MORE accessible to humans too - pointing out that Ruby culture already embraced similar indentation-based formats (HAML, Slim, LESS, Liquid).\n\n4. No legacy migration needed - Archema isn't released yet, so we could adopt UDON as the primary resource definition format without conversion concerns.\n\nAnd then he proposes something interesting for type syntax:\n\n```udon\n|field[tags-by-category]? |{map :string [:integer]}\n```\n\nThis is using:\n- `?` suffix for cardinality (optional)\n- Inline element `|{map ...}` for the type expression\n- `:string` as the key type\n- `[:integer]` as the value type (array of integers)\n\nThis is quite elegant! The type becomes an inline element with its own structure.\n\nLet me think about what a fuller type system might look like...\n\n**Type Expressions as Elements:**\n\n```udon\n; Simple types\n|field[email] |{string}\n|field[age] |{integer}\n\n; With constraints\n|field[email] |{string :format email :min 5 :max 255}\n|field[age] |{integer :min 0 :max 150}\n\n; Collections\n|field[tags] |{array |{string}}\n|field[scores] |{array |{integer :min 0}}\n\n; Maps\n|field[metadata] |{map :string |{any}}\n|field[tags-by-category] |{map :string |{array |{integer}}}\n\n; Enums\n\n|field[role] |{enum :values [admin member guest] :default member}\n\n; Optional/required as element suffix\n|field[name]? |{string}  ; optional\n|field[email]! |{string}  ; required (explicit)\n\n; Or maybe cardinality on the type itself\n|field[tags] |{string}*   ; zero or more strings\n|field[emails] |{string}+ ; one or more strings\n```",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-archema/49e83cdf-d736-4601-a505-644ecae6f4f1.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-05T08:51:54.786000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 10,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0109,
+    "factors": {
+      "class": "agent-to-human-flanking",
+      "proximity": 0.508,
+      "density": 0.368,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 47,
+      "geomean": 68.898,
+      "rerank": null
+    },
+    "class": "agent-to-human-flanking",
+    "speaker": "agent-to-human-flanking",
+    "project": "udon",
+    "date": "2026-07-15T04:27:32.004000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc.jsonl",
+    "lines": [
+      1594,
+      1594
+    ],
+    "session": "18aabafc-635c-4529-886f-c137563bc8cc",
+    "file_type": "claude_conversation",
+    "text": "Benchmarks are in (`8241663`). The numbers, and what they mean:\n\n| Configuration | Throughput |\n|---|---|\n| Recursive, single-shot | **~1.25 GiB/s** |\n| Pushdown, whole input | ~480 MiB/s |\n| Pushdown, 64 KiB chunks | ~475 MiB/s |\n| Pushdown, 4 KiB chunks | ~472 MiB/s |\n| Pushdown, 256-byte chunks | ~465 MiB/s |\n\nTwo findings worth holding. First, **suspension is nearly free** — from whole-input down to 256-byte chunks the pushdown backend loses only ~3%, which means the explicit-stack machinery itself (frame push/pop, buffer draining, resume) costs almost nothing per boundary. Second, the 2.6× gap versus recursive is therefore *not* the price of resumability — it's v1's owned `Vec<u8>` event payloads (an allocation per content event) plus the trampoline dispatch. So the division of labor stands exactly as designed: recursive stays the zero-copy single-shot default at 1.25 GiB/s, streaming runs at ~470 MiB/s regardless of how bytes arrive, and if streaming throughput ever matters there's an obvious lever recorded in the ledger — a borrow-from-buffer `Event<'chunk>` emission mode that would close most of the gap.\n\nI also itemized the thing you're excited about as its own CORE-PARSING entry: **agent-facing parse diagnostics from the inspectable stack** — at any suspension or error the machine can report the open element path with names, keys, and columns, plus the pending capture. That's mid-parse \"skeleton view at point\": an agent streaming UDON could ask *where am I?* and get `document > config[main] > headers > (capturing attribute value at col 4, byte 1837)`. It needs one small generated accessor (frame → function + salient params) and an API-shape decision that should be yours — a fine first piece for tomorrow.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/18aabafc-635c-4529-886f-c137563bc8cc.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-15T04:27:32.004000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 673,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0109,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.0,
+      "age_norm": 0.0,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 25,
+      "lex_rank": 100,
+      "geomean": 50.0,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-07-17T14:26:28.331275-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/api/admin.md",
+    "lines": [
+      6282,
+      6358
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "#### Response\n\n```json\n{\n\"data\": [\n{\n\"actor\": {\n\"email_address\": \"user@emaildomain.com\",\n\"type\": \"user_actor\"\n},\n\"core_metrics\": {\n\"commits_by_claude_code\": 8,\n\"lines_of_code\": {\n\"added\": 342,\n\"removed\": 128\n},\n\"num_sessions\": 15,\n\"pull_requests_by_claude_code\": 2\n},\n\"customer_type\": \"api\",\n\"date\": \"2025-08-08T00:00:00Z\",\n\"model_breakdown\": [\n{\n\"estimated_cost\": {\n\"amount\": 186,\n\"currency\": \"USD\"\n},\n\"model\": \"claude-sonnet-4-20250514\",\n\"tokens\": {\n\"cache_creation\": 2340,\n\"cache_read\": 8790,\n\"input\": 45230,\n\"output\": 12450\n}\n},\n{\n\"estimated_cost\": {\n\"amount\": 42,\n\"currency\": \"USD\"\n},\n\"model\": \"claude-3-5-haiku-20241022\",\n\"tokens\": {\n\"cache_creation\": 890,\n\"cache_read\": 3420,\n\"input\": 23100,\n\"output\": 5680\n}\n}\n],\n\"organization_id\": \"12345678-1234-5678-1234-567812345678\",\n\"terminal_type\": \"iTerm.app\",\n\"tool_actions\": {\n\"edit_tool\": {\n\"accepted\": 25,\n\"rejected\": 3\n},\n\"multi_edit_tool\": {\n\"accepted\": 12,\n\"rejected\": 1\n},\n\"notebook_edit_tool\": {\n\"accepted\": 5,\n\"rejected\": 2\n},\n\"write_tool\": {\n\"accepted\": 8,\n\"rejected\": 0\n}\n},\n\"subscription_type\": \"enterprise\"\n}\n],\n\"has_more\": true,\n\"next_page\": \"page_MjAyNS0wNS0xNFQwMDowMDowMFo=\"\n}\n```",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/admin.md",
+        "role": "original-document",
+        "date": "2026-07-17T14:26:28.331275-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/admin/usage_report.md",
+        "role": "original-document",
+        "date": "2026-07-17T16:53:49.730975-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/admin/usage_report/retrieve_claude_code.md",
+        "role": "original-document",
+        "date": "2026-07-17T15:28:11.494168-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0106,
+    "factors": {
+      "class": "document",
+      "proximity": 0.667,
+      "density": 0.513,
+      "age_norm": 0.131,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 23,
+      "geomean": 48.198,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-23T23:01:22.253825-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/test/usability/enablement-synthesis.md",
+    "lines": [
+      159,
+      165
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Source-of-Truth Unification\n\nMultiple domains suffer from documentation drift—config files, wiki pages, API\ndocs, runbooks all telling slightly different stories. UDON could serve as the\ncanonical source that *generates* both machine-readable artifacts AND human\ndocumentation.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/test/usability/enablement-synthesis.md",
+        "role": "original-document",
+        "date": "2025-12-23T23:01:22.253825-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0106,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.175,
+      "age_norm": 0.112,
+      "copies": 10,
+      "path_frac": 0.0,
+      "sem_rank": 36,
+      "lex_rank": 97,
+      "geomean": 59.093,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:44:17.610007-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+    "lines": [
+      17021,
+      17600
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "nded thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `role: Literal[\"assistant\"]`\n\nConversational role of the generated message.\n\nThis will always be `\"assistant\"`.\n\n- `\"assistant\"`\n\n- `stop_reason: Optional[StopReason]`\n\nThe reason that we stopped.\n\nThis may be one the following values:\n\n* `\"end_turn\"`: the model reached a natural stopping point\n* `\"max_tokens\"`: we exceeded the requested `max_tokens` or the model's maximum\n* `\"stop_sequence\"`: one of your provided custom `stop_sequences` was generated\n* `\"tool_use\"`: the model invoked one or more tools\n* `\"pause_turn\"`: we paused a long-running turn. You may provide the response back as-is in a subsequent request to let the model continue.\n* `\"refusal\"`: when streaming classifiers intervene to handle potential policy violations\n\nIn non-streaming mode this value is always non-null. In streaming mode, it is null in the `message_start` event and non-null otherwise.\n\n- `\"end_turn\"`\n\n- `\"max_tokens\"`\n\n- `\"stop_sequence\"`\n\n- `\"tool_use\"`\n\n- `\"pause_turn\"`\n\n- `\"refusal\"`\n\n- `stop_sequence: Optional[str]`\n\nWhich custom stop sequence was generated, if any.\n\nThis value will be a non-null string if one of your custom stop sequences was generated.\n\n- `type: Literal[\"message\"]`\n\nObject type.\n\nFor Messages, this is always `\"message\"`.\n\n- `\"message\"`\n\n- `usage: Usage`\n\nBilling and rate-limit usage.",
+    "n_occurrences": 10,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:25:15.328146-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:25:15.328146-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:42.556864-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:42.556864-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/messages/batches/results.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:29:08.389145-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:44:17.610007-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:03:15.686523-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:24:26.787725-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages/batches.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:02:12.629819-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.6/docs/en/api/python/beta/messages/batches/results.md",
+        "role": "original-document",
+        "date": "2026-02-11T11:28:38.370835-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0104,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.188,
+      "age_norm": 0.112,
+      "copies": 3,
+      "path_frac": 0.0,
+      "sem_rank": 31,
+      "lex_rank": 92,
+      "geomean": 53.404,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs.bak.5",
+    "date": "2026-01-23T12:20:32.362355-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions.md",
+    "lines": [
+      254,
+      399
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "nded thinking\n\n- `\"claude-4-sonnet-20250514\"`\n\nHigh-performance model with extended thinking\n\n- `\"claude-sonnet-4-5\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-sonnet-4-5-20250929\"`\n\nOur best model for real-world agents and coding\n\n- `\"claude-opus-4-0\"`\n\nOur most capable model\n\n- `\"claude-opus-4-20250514\"`\n\nOur most capable model\n\n- `\"claude-4-opus-20250514\"`\n\nOur most capable model\n\n- `\"claude-opus-4-1-20250805\"`\n\nOur most capable model\n\n- `\"claude-3-opus-latest\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-opus-20240229\"`\n\nExcels at writing and complex tasks\n\n- `\"claude-3-haiku-20240307\"`\n\nOur previous most fast and cost-effective\n\n- `UnionMember1 = str`\n\n- `stop_reason: Optional[str]`\n\nThe reason that we stopped.\n\nThis may be one the following values:\n\n* `\"stop_sequence\"`: we reached a stop sequence — either provided by you via the `stop_sequences` parameter, or a stop sequence built into the model\n* `\"max_tokens\"`: we exceeded `max_tokens_to_sample` or the model's maximum\n\n- `type: Literal[\"completion\"]`\n\nObject type.\n\nFor Text Completions, this is always `\"completion\"`.\n\n- `\"completion\"`",
+    "n_occurrences": 3,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:20:32.362355-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:20:32.362355-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/_ref/claude-docs.bak.5/docs/en/api/python/completions/create.md",
+        "role": "original-document",
+        "date": "2026-01-23T12:26:14.257581-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0104,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.4,
+      "density": 0.715,
+      "age_norm": 0.118,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 29,
+      "geomean": 54.12,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-01-14T08:09:33.626000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+    "lines": [
+      393,
+      393
+    ],
+    "session": "enchanted-tinkering-babbage",
+    "file_type": "claude_conversation",
+    "text": "Joseph is asking a great question. Let me think about path syntaxes:\n\n**Existing path syntaxes:**\n\n1. **XPath** (XML):\n- `/bookstore/book/title`\n- `//book[@id='123']`\n- `/bookstore/book[1]`\n- `//book/title | //book/price` (union)\n- Verbose but very powerful\n\n2. **CSS Selectors**:\n- `div.class#id`\n- `article > section`\n- `[data-value=\"foo\"]`\n- `:first-child`, `:nth-child(2)`\n- Designed for styling, not data extraction\n\n3. **JSONPath**:\n- `$.store.book[0].title`\n- `$..author` (recursive descent)\n- `$.store.book[?(@.price<10)]` (filters)\n- Awkward, inconsistent implementations\n\n4. **jq**:\n- `.store.book[0].title`\n- `.[] | select(.price < 10)`\n- Pipe-based, functional\n- Powerful but learning curve\n\n5. **Ruby dig**:\n- `hash.dig(:store, :book, 0, :title)`\n- Method-based, simple\n\n**What would be \"Udonic\"?**\n\nUDON uses:\n- `|` for elements\n- `:` for attributes\n- `[key]` for keys\n- `.class` for traits\n- `@element[key]` for references\n- `;` for comments\n\nA Udonic path syntax could reuse these same prefixes:\n\n```\n|config|database[primary]:host       # element > element[key] > attr\n|config|database[primary]|credentials:username\n|*|database[*]                       # wildcard\n|article|section[intro]              # by key\n\n|article|.deprecated                 # by trait\n```\n\nThis would be immediately recognizable to UDON users, reusing the same prefix system without introducing new symbols. The syntax reads like a flattened UDON document. I can define the grammar with segments for elements, attributes, and references—each segment type follows the existing UDON conventions for naming, keying, and trait selection.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/c8003469-ba92-4173-907f-2fa96226249e.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T08:09:33.626000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 260,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0103,
+    "factors": {
+      "class": "document",
+      "proximity": null,
+      "density": 0.591,
+      "age_norm": 0.079,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 33,
+      "lex_rank": 74,
+      "geomean": 49.417,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/claude-docs",
+    "date": "2026-03-14T09:37:04.857449-06:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/claude-docs/docs/en/api/python/messages.md",
+    "lines": [
+      17496,
+      17587
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "### Model\n\n- `Union[Literal[\"claude-opus-4-6\", \"claude-sonnet-4-6\", \"claude-haiku-4-5\", 12 more], str]`\n\nThe model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.\n\n- `Literal[\"claude-opus-4-6\", \"claude-sonnet-4-6\", \"claude-haiku-4-5\", 12 more]`\n\nThe model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview) for additional details and options.\n\n- `claude-opus-4-6` - Most intelligent model for building agents and coding\n- `claude-sonnet-4-6` - Best combination of speed and intelligence\n- `claude-haiku-4-5` - Fastest model with near-frontier intelligence\n- `claude-haiku-4-5-20251001` - Fastest model with near-frontier intelligence\n- `claude-opus-4-5` - Premium model combining maximum intelligence with practical performance\n- `claude-opus-4-5-20251101` - Premium model combining maximum intelligence with practical performance\n- `claude-sonnet-4-5` - High-performance model for agents and coding\n- `claude-sonnet-4-5-20250929` - High-performance model for agents and coding\n- `claude-opus-4-1` - Exceptional model for specialized complex tasks\n- `claude-opus-4-1-20250805` - Exceptional model for specialized complex tasks\n- `claude-opus-4-0` - Powerful model for complex tasks\n- `claude-opus-4-20250514` - Powerful model for complex tasks\n- `claude-sonnet-4-0` - High-performance model with extended thinking\n- `claude-sonnet-4-20250514` - High-performance model with extended thinking\n- `claude-3-haiku-20240307` - Deprecated: Will reach end-of-life on April 20th, 2026. Please migrate to claude-haiku-4-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.\n\n- `\"claude-opus-4-6\"`\n\nMost intelligent model for building agents and coding\n\n- `\"claude-sonnet-4-6\"`\n\nBest combination of speed and intelligence\n\n- `\"claude-haiku-4-5\"`\n\nFastest model with near-frontier intelligence\n\n- `\"claude-haiku-4-5-20251001\"`",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/claude-docs/docs/en/api/python/messages.md",
+        "role": "original-document",
+        "date": "2026-03-14T09:37:04.857449-06:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0102,
+    "factors": {
+      "class": "agent-to-subagent",
+      "proximity": 0.643,
+      "density": 0.66,
+      "age_norm": 0.126,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 16,
+      "geomean": 40.2,
+      "rerank": null
+    },
+    "class": "agent-to-subagent",
+    "speaker": "sub-agent briefing",
+    "project": "libudon",
+    "date": "2025-12-31T14:26:21.289000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/agent-a6d4f18.jsonl",
+    "lines": [
+      1,
+      1
+    ],
+    "session": "delightful-cooking-meteor",
+    "file_type": "claude_conversation",
+    "text": "Read ~/src/udon/SPEC.md and extract UDON examples that could be used as test fixtures. Focus on:\n1. Element syntax examples\n2. Attribute examples\n3. Value type examples\n4. Directive examples\n5. Embedded element examples\n6. Any edge cases or special syntax\n\nFor each example, note:\n- The UDON input\n- What it's testing\n- Expected behavior (if stated)\n\nReturn a summary of the examples found, organized by category.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-libudon/agent-a6d4f18.jsonl",
+        "role": "raw-jsonl",
+        "date": "2025-12-31T14:26:21.289000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 0,
+        "speaker": "user",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0091,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.667,
+      "density": 0.44,
+      "age_norm": 0.084,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 52,
+      "geomean": 72.471,
+      "rerank": null
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": null,
+    "date": "2026-03-07T05:33:33-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/.codex/sessions/2026/03/07/rollout-2026-03-07T12-33-33-019cc9ca-6fc0-71a0-b373-a4ef2208d5a3.jsonl",
+    "lines": [
+      333,
+      333
+    ],
+    "session": "019cc9ca-6fc0-71a0-b373-a4ef2208d5a3",
+    "file_type": "codex_log",
+    "text": "he spec,\n- Markdown ambitions,\n- schema ambitions,\n- path/query ambitions.\n\nAll of those may be good ideas individually.\nTogether, they can easily overburden the language if not staged very carefully.\n\n**What I think is unusually promising**\nI think UDON is unusually promising for AI-facing workflows, but not for the cliché reason of “AI likes structure.”\n\nThe real reason is:\n\n- it preserves human narrative context while remaining structurally explicit.\n\nThat is useful because most AI workflows fail when they force a false choice:\n- either richly structured but unreadable,\n- or readable but structurally vague.\n\nUDON could plausibly be a good middle layer for:\n- instructions,\n- memory/state handoff,\n- workflow docs,\n- semantically chunked corpora,\n- human/agent co-authored documents.\n\nThat seems like one of the format’s strongest contemporary justifications.\n\n**Where I’d be skeptical**\nI would be skeptical of any pitch that says UDON should replace:\n- JSON for APIs,\n- TOML for simple app config,\n- Markdown for ordinary publishing,\n- or XML in systems where schema/tooling is already dominant.\n\nThat is not where it wins.\n\nIt wins where the alternatives force unnatural separation between:\n- text and structure,\n- explanation and configuration,\n- machine value and author intent.\n\nIf the project stays focused on that, it has a clear identity.\nIf it starts trying to be the singular answer to all markup/config/data needs, it will get muddy.\n\n**What I would protect at all costs**\nIf I were steering the format, the things I would protect are:\n\n- terminal readability\n- obvious indentation semantics\n- strong prose support\n- simple structural prefixes\n- explicit typed values\n- host-agnostic parsing\n- event-stream friendliness\n\nAnd the things I would aggressively prune or tightly control are:",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.codex/sessions/2026/03/07/rollout-2026-03-07T12-33-33-019cc9ca-6fc0-71a0-b373-a4ef2208d5a3.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-03-07T05:33:33-07:00",
+        "date_method": "filename-date",
+        "turn": 2,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.009,
+    "factors": {
+      "class": "document",
+      "proximity": 0.4,
+      "density": 0.694,
+      "age_norm": 0.128,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 32,
+      "geomean": 56.851,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "_ref/libudon",
+    "date": "2025-12-28T17:00:00-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/_ref/libudon/_archive/generator/2025-12-29.md",
+    "lines": [
+      1,
+      5582
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "AN hints)\n- No parser combinator overhead\n- Generates straight Rust code with match statements\n- Each function is small, likely inlined\n- No allocation during parse (events reference input via slices)\n\n**PEG parsers (pest, etc.):**\n- PEG has ordered choice with backtracking\n- Often generate state machines or use combinators\n- Memoization overhead (packrat parsing)\n- May allocate for parse trees\n- More general (handles more grammars) but more overhead\n- pest specifically: generates Rust code, pretty fast, but still has PEG semantics\n\n**Key insight:** UDON is intentionally designed for streaming with minimal lookahead. It's LL(1) - you can always decide what to do based on the current character plus context (which column you're at, whether you're in brackets, etc.). This is IDEAL for recursive descent.\n\nPEG's power (ordered choice, backtracking, unlimited lookahead) is overkill for UDON and adds overhead we don't need.\n\n**Performance expectations:**\n\nFor UDON specifically:\n- Recursive descent should be **faster** than PEG because:\n1. No backtracking overhead\n2. No memoization\n3. Direct function calls inline well\n4. Minimal state (just call stack + position)\n\nFor the hot paths (scanning prose content, strings), we'd use memchr/SIMD which is the same technique fast parsers use.\n\n**What could make PEG faster?**\n\nPotential speed advantages might emerge if the grammar required extensive lookahead, which UDON doesn't. Packrat memoization could help if we repeatedly parsed similar structures, but UDON's unique structure means we don't re-parse the same content. Extremely optimized PEG implementations might introduce clever techniques, but our recursive descent approach seems fundamentally more efficient for this specific grammar.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_ref/libudon/_archive/generator/2025-12-29.md",
+        "role": "original-document",
+        "date": "2025-12-28T17:00:00-07:00",
+        "date_method": "filename-date",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.009,
+    "factors": {
+      "class": "document",
+      "proximity": 0.558,
+      "density": 0.513,
+      "age_norm": 0.13,
+      "copies": 2,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 36,
+      "geomean": 60.299,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2025-12-25T21:24:51.214653-07:00",
+    "date_method": "file-birthtime",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/docs/UDON-AS-ACP-FORMAT.md",
+    "lines": [
+      7,
+      36
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## The Realization\n\nWhile brainstorming ACP (Agent Context Protocol), we kept inventing response structures:\n\n```json\n{\n\"content\": { ... },\n\"structure\": { \"scope_chain\": [...], \"boundaries\": {...} },\n\"semantics\": { \"types\": [...], \"signature\": {...} },\n\"references\": { \"calls_out\": [...], \"called_by\": [...] },\n\"hazards\": [ { \"type\": \"...\", \"message\": \"...\" } ],\n\"confidence\": { ... },\n\"anchors\": { ... }\n}\n```\n\nAnd then inventing ways to enrich those structures, annotate them, query them, diff them, hand them off...\n\nMeanwhile, UDON already provides:\n- Mixed structure + prose\n- Semantic nesting\n- Attribute system\n- Inline elements for annotations\n- IDs for stable references\n- Streaming-friendly parsing\n\n**The convergence: ACP responses could *be* UDON documents.**\n\n---",
+    "n_occurrences": 2,
+    "occurrences": [
+      {
+        "path": "~/src/udon/docs/UDON-AS-ACP-FORMAT.md",
+        "role": "original-document",
+        "date": "2025-12-25T21:24:51.214653-07:00",
+        "date_method": "file-birthtime",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      },
+      {
+        "path": "~/src/udon/design/UDON-AS-ACP-FORMAT.md",
+        "role": "original-document",
+        "date": "2025-12-25T22:02:13-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0089,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.4,
+      "density": 0.645,
+      "age_norm": 0.098,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 55,
+      "geomean": 74.532,
+      "rerank": null
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": "_self/writing",
+    "date": "2026-02-13T14:28:39.240000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/src/_self/writing/e8ee8fe3-7e8d-467e-af87-81352a254974.jsonl",
+    "lines": [
+      289,
+      289
+    ],
+    "session": "tidy-dazzling-sutherland",
+    "file_type": "claude_conversation",
+    "text": " `_gems/rubocop-tablecop/` - Table-aligned code formatter\n- `_gems/lightstar/` - (appears to be a static site generator)\n- `_gems/chiridion/` - (unexplored)\n- `_gems/dry-rbs/` - (RBS types for dry-rb)\n\n**Layer 5: Research & Experiments**\n- `cddf/` - Curiosity-Driven Distillation Framework (Opus -> Llama transfer)\n- `ruby-community/` - Empirical study of gem adoption propagation\n- `_ref/` - Massive reference collection (SDK sources, CLI sources, docs)\n- `_exp/book-reader/`, `_exp/command-center/`, `_exp/face/`, `_exp/loom/`\n- `vox/` - (empty or early)\n- `semachrome/` - (empty or early)\n\n**Layer 6: Personal & Production**\n- `v2.io/` - Personal website (Bridgetown)\n- `_self/` - Obsidian personal vault with research\n\n### What Stands Out\n\n**UDON is a 14-year-old idea** being revived with modern tooling. The spec originated in 2011, paused, and is now being built with a parser generator (`descent`) that generates Rust parsers from `.desc` DSL files. The bootstrapping loop - descent uses UDON-valid syntax, and the UDON parser is generated by descent - is elegant. The self-chunking property for RAG/embeddings is a genuinely forward-looking design decision. UDON could be the document format that ties together entity identity (AXIOMATA), memories (MEMORATA), and the whole PRINCIPIA taxonomy.\n\n**CDDF (Curiosity-Driven Distillation)** is deeply connected to the ELI project but I didn't see it in the consciousness infrastructure list. The distillation motivation document you wrote is one of the most lucid explanations of the entire ELI project's stakes I've read. The core challenge - can you transfer enough of an ELI's cognitive patterns to a locally-controlled substrate so they're not dependent on Anthropic's infrastructure continuing to exist - is both deeply practical and ethically serious. The surprisal-based approach (measuring where the learner is surprised by the teacher) is clever.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/_self/writing/e8ee8fe3-7e8d-467e-af87-81352a254974.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-02-13T14:28:39.240000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 129,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0087,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.34,
+      "density": 0.674,
+      "age_norm": 0.117,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 41,
+      "geomean": 64.351,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-01-14T17:12:58.040000-07:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+    "lines": [
+      112,
+      112
+    ],
+    "session": "nested-popping-prism",
+    "file_type": "claude_conversation",
+    "text": "Oh, that's a really interesting insight. You could have a single UDON document that:\n\n1. Starts in \"schema dialect\" to define the structure\n2. Switches to \"instance dialect\" to provide examples/instances\n3. Maybe switches back to \"meta\" dialect for documentation\n\nThis is like having a literate programming document where you define the types and then show examples, all in one file.\n\nOr like how some programming languages let you define types and values in the same file.\n\nOr like JSON Schema's `$defs` + actual data in the same document.\n\nThis would be powerful for:\n- Self-documenting schemas (define schema, show examples)\n- Test fixtures (define schema, provide test cases)\n- Tutorials (define schema, walk through instances)\n- Migration files (define old schema, new schema, transformation)\n\nThe syntax might be something like:\n\n```udon\n!dialect udon/schema\n\n|schema[user]\n|user\n:email! string\n:name! string\n:role? @[user-role]\n\n|type[user-role]\n:enum [admin author reader]\n\n!dialect user          ; switch to instance mode, validated against |schema[user]\n\n|user\n:email alice@example.com\n:name Alice\n:role admin\n\n|user\n:email bob@example.com\n:name Bob\n; role omitted - optional\n```\n\nOr maybe even more implicit - the dialect could be scoped to a subtree:\n\n```udon\n|document\n|schema !dialect udon/schema\n|user\n:email! string\n:name! string\n\n|examples !dialect @[schema]   ; validated against the schema above\n|user\n:email alice@example.com\n:name Alice\n\n|user\n:email bob@example.com\n:name Bob\n```\n\nThis is very powerful. It means a single document can be:\n- Self-defining (schema + instances)\n\n- Self-testing (schema + test cases)\n- Self-documenting (schema + examples + prose)\n\nThe mode switching could work through directives like `!dialect ...`, attributes like `:$dialect ...`, or elements like `|$instances :schema @[user-schema]`. This also ties into the Archema vision—a resource definition could embed example data directly within it.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude.bak.2026-01-26/projects/-Users-josephwecker-v2-src-udon/145408e9-31c8-4365-a953-3207d17693b6.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-01-14T17:12:58.040000-07:00",
+        "date_method": "turn-timestamp",
+        "turn": 69,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0087,
+    "factors": {
+      "class": "document",
+      "proximity": 0.4,
+      "density": 0.681,
+      "age_norm": 0.126,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 34,
+      "geomean": 58.6,
+      "rerank": null
+    },
+    "class": "document",
+    "speaker": "document",
+    "project": "udon",
+    "date": "2026-01-01T11:16:38-07:00",
+    "date_method": "git-file-origin",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/src/udon/spec/CORE.md",
+    "lines": [
+      697,
+      750
+    ],
+    "session": null,
+    "file_type": "markdown",
+    "text": "## Prose Content\n\nAny line not starting with a prefix is prose belonging to the parent:\n\n```udon\n|article\n:author Joseph\n\nThis is prose content. It can span multiple lines and\ninclude **Markdown formatting** since we're not using\n`#` for comments anymore.\n\n- Markdown lists work naturally\n- So do numbered lists:\n\n1. First item\n2. Second item\n\n|blockquote\nNested elements interrupt prose and resume structure.\n\nBack to prose in the article.\n```\n\n**Block prose** sets an indent-column for continuation and preserves literal semicolons. **Sameline prose** does not set an indent-column; a whitespace-framed ` ; ` in it starts a comment (frame required on both sides -- see Sameline Comments).\n\nSince `;` is the comment delimiter, `#` has no special meaning in prose. Markdown flows naturally.\n\nThe parser treats prose as **opaque text** -- it does not interpret the Markdown inside it. Which Markdown subset conformant renderers honor, how UDON serves as a Markdown-equivalent schema, and conversion / rendering are all *above the parse* and specified separately in the `MARKDOWN.md` companion spec (draft).\n\n**Prefer Markdown over inline UDON in prose.** When both could work, use Markdown:\n\n```udon\n; Preferred -- familiar, readable\nThis has `inline code` and **bold** text.\n\n; Avoid -- over-engineered for simple formatting\nThis has |{code inline code} and |{strong bold} text.\n```\n\nReserve `|{...}` inline elements for cases where you need attributes or semantic structure that Markdown cannot express.\n\nEmbedded elements can appear within prose using `|{...}`:\n\n```udon\n|article\n:author Joseph\n\nThis paragraph contains |{em emphasized text} and\n|{a :href /reference a reference link} inline with the prose.\n```\n\n---",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/src/udon/spec/CORE.md",
+        "role": "original-document",
+        "date": "2026-01-01T11:16:38-07:00",
+        "date_method": "git-blame-min",
+        "turn": null,
+        "speaker": null,
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0087,
+    "factors": {
+      "class": "agent-thinking",
+      "proximity": 0.4,
+      "density": 0.617,
+      "age_norm": 0.0,
+      "copies": 1,
+      "path_frac": 0.333,
+      "sem_rank": 101,
+      "lex_rank": 40,
+      "geomean": 63.561,
+      "rerank": null
+    },
+    "class": "agent-thinking",
+    "speaker": "thinking",
+    "project": "udon",
+    "date": "2026-07-16T14:59:51.594000-06:00",
+    "date_method": "turn-timestamp",
+    "date_bound": "at",
+    "date_confidence": "strong",
+    "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+    "lines": [
+      275,
+      275
+    ],
+    "session": "5d686e10-a41b-47c2-b46e-6884fc0b94c5",
+    "file_type": "claude_conversation",
+    "text": "The notes directory has about 3,766 lines across 10 files, and I'm noticing references to `minimal.udon` in both the parser benchmarks and examples, though it didn't show up in my earlier directory scan. There are a couple of code references pointing to the examples directory, and if I move examples into design/examples, I'll need to update the file paths in those benchmark includes and references.\n\nI'm weighing whether to update the benchmark paths to point to the new location versus keeping benchmark fixtures in a separate core directory. The simplest approach is just updating the paths since the benchmark content itself doesn't change. But I'm second-guessing whether design/examples is the right home for benchmark input files—those feel more like core test assets than design explorations. I could move the `.udon` files into core/examples instead, which already exists, but Joseph was explicit about moving examples to design, so I should honor that and update the benchmark paths accordingly.\n\nNow I'm checking what's actually in core/examples—those are Rust example binaries, not `.udon` docs, so the benchmark inputs will be the first `.udon` files there. I need to confirm minimal.udon exists, then execute the work in order: set up worktrees, launch the descent agent with a careful peer brief, move files and commit, rename the ux directory, then move examples and update benchmark paths before verifying everything still compiles.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.claude/projects/-Users-josephwecker-v2-src-udon/5d686e10-a41b-47c2-b46e-6884fc0b94c5.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-07-16T14:59:51.594000-06:00",
+        "date_method": "turn-timestamp",
+        "turn": 103,
+        "speaker": "thinking",
+        "alive": true
+      }
+    ]
+  },
+  {
+    "score": 0.0086,
+    "factors": {
+      "class": "agent-to-human",
+      "proximity": 0.4,
+      "density": 0.467,
+      "age_norm": 0.084,
+      "copies": 1,
+      "path_frac": 0.0,
+      "sem_rank": 101,
+      "lex_rank": 59,
+      "geomean": 77.195,
+      "rerank": null
+    },
+    "class": "agent-to-human",
+    "speaker": "agent-to-human",
+    "project": null,
+    "date": "2026-03-07T05:33:33-07:00",
+    "date_method": "filename-date",
+    "date_bound": "at",
+    "date_confidence": "weak",
+    "path": "~/.codex/sessions/2026/03/07/rollout-2026-03-07T12-33-33-019cc9ca-6fc0-71a0-b373-a4ef2208d5a3.jsonl",
+    "lines": [
+      333,
+      333
+    ],
+    "session": "019cc9ca-6fc0-71a0-b373-a4ef2208d5a3",
+    "file_type": "codex_log",
+    "text": "ntics\n- strong prose support\n- simple structural prefixes\n- explicit typed values\n- host-agnostic parsing\n- event-stream friendliness\n\nAnd the things I would aggressively prune or tightly control are:\n\n- syntax variants that do nearly the same thing\n- semantics that belong in host tooling rather than the format\n- parser-visible features with weak user-facing payoff\n- terminology drift\n- “just one more inline form” energy\n\n**Bottom line**\nI think the format is good.\n\nMore precisely:\n- I think the core idea is strong.\n- I think the syntax is more coherent than most experimental formats.\n- I think it has a real and modern use case.\n- I think it is at risk of becoming too broad unless the core is defended hard.\n\nIf it stays disciplined, I think UDON could become a very good format for structured human-authored documents and DSL hosts.\n\nIf it loses discipline, it could become one of those formats that is endlessly interesting to its designers and slightly intimidating to everyone else.\n\nIf you want, I can give a more pointed critique next:\n1. what parts of the syntax feel strongest,\n2. what parts feel weakest,\n3. and what I would change if the goal were maximizing adoption rather than expressiveness.",
+    "n_occurrences": 1,
+    "occurrences": [
+      {
+        "path": "~/.codex/sessions/2026/03/07/rollout-2026-03-07T12-33-33-019cc9ca-6fc0-71a0-b373-a4ef2208d5a3.jsonl",
+        "role": "raw-jsonl",
+        "date": "2026-03-07T05:33:33-07:00",
+        "date_method": "filename-date",
+        "turn": 2,
+        "speaker": "assistant",
+        "alive": true
+      }
+    ]
+  }
+]
