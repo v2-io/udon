@@ -73,7 +73,7 @@ machine verdict** a write gate can consume.
 
 ## What it generates
 
-- **For UDON:** the schema spike's inherited agenda
+- **For UDON:** the schema probe's inherited agenda
   (#priorities-and-spike-agenda) gains the lifecycle leg: static-vs-
   composable is not the only axis — *evolution* (was:/upcast/history) is a
   first-class demand from the family that has lived without it. And the
@@ -94,4 +94,4 @@ adversarial protocol (self-run but measured). Three of the schema-family
 source documents were read at depth for this segment; roughly thirteen
 siblings were not and may hold counter-detail (the revision ledger
 carries this). Schema *composition* (nested? composable?) has no evidence
-either way — genuinely open, correctly deferred to the phase-3 spike.
+either way — genuinely open, correctly left to the schema design work ahead.

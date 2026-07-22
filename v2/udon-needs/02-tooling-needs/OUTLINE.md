@@ -101,8 +101,7 @@ harness consumes the same evidence for its edit-tool choices.*
 ## *Part IV* — Addressing and query
 
 *Scope: paths as the long pole — almost every agentic affordance bottoms out
-on stable structural addressing. UDON-primary; feeds the phase-3 paths spike
-directly. Ordering note: Part III (mutation) precedes this part by demand
+on stable structural addressing. UDON-primary; the direct brief for the path-language design work ahead. Ordering note: Part III (mutation) precedes this part by demand
 strength — it is the customer; addressing is what it consumes — but the
 build dependency runs the other way, and #priorities states it: addressing
 first, mutation on top of it.*
@@ -126,7 +125,7 @@ to standardize on."*
 |---|------|-----|-------|-------|
 | V | Finding | [#machine-first-documents](src/machine-first-documents.md) | Independently re-derived across the estate: documents as the agent-facing medium (docs-as-codebase, llms.txt lineage, agents-are-documents); shared notation as compression against the binding constraint | drafted |
 | V | Finding | [#self-chunking-status](src/self-chunking-status.md) | Structure-as-chunking is pre-tested (sar3: parsing-based beats naive) but UDON's own claim is unmeasured; claim-or-kill experiment specified | drafted |
-| V | Demand | [#typing-and-schema-boundary](src/typing-and-schema-boundary.md) | What the yaml-spike and schema family demand: syntactic typing, no silent retype, schema-vs-dialect separation, versioned schemas; external corroboration (schema-serialization faults dominate MCP failures) | drafted |
+| V | Demand | [#typing-and-schema-boundary](src/typing-and-schema-boundary.md) | What the YAML stress test and the schema-design corpus demand: syntactic typing, no silent retype, schema-vs-dialect separation, versioned schemas; external corroboration (schema-serialization faults dominate MCP failures) | drafted |
 | V | Demand | [#templates-and-dynamics-demand](src/templates-and-dynamics-demand.md) | The template product shape (precompile → interrogate scope → build), scope-context-as-UDON pulling directives toward paths, `!{{…}}`/`<…>` unification pressure | drafted |
 | V | Demand | [#annotation-and-metacognition](src/annotation-and-metacognition.md) | Strippable, queryable agent residue (confidence, decision, uncertainty); syntax deliberately open — convention experiments only until ruled | drafted |
 
@@ -156,11 +155,11 @@ report, and its thinnest evidence base (named as such).*
 | VII | Demand | [#steering-and-verification-surfaces](src/steering-and-verification-surfaces.md) | What humans need to steer and verify agent work: review surfaces, trust boundaries (AGENTS.md trusted-vs-untrusted is live), fail-plausible as the failure testing can't catch | drafted |
 | VII | Principle | [#delegation-as-tooling](src/delegation-as-tooling.md) | Subagent shape converged (isolated context, resumable ID, capability-by-tool-omission); briefing discipline appears in shipped prompts ("brief it like a colleague") — ideology reaching practice | drafted |
 
-## *Part VIII* — Synthesis: priorities and the spike agenda
+## *Part VIII* — Synthesis: priorities and the design agenda
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what phase-3's informed spikes (paths, dialects, schema, value typing) should each probe, stated as questions the evidence makes concrete | drafted |
+| VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what the design probes ahead (paths, dialects, schema, value typing) should each answer, stated as questions the evidence makes concrete | drafted |
 | VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which segments are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
 
 ## The body — the reports themselves

@@ -29,7 +29,7 @@ guards the boundary.
   confidence, source, decision, uncertainty — without polluting content."
   The December-era `|{@ ...}` form is *not valid under 0.9*; the standing
   rule: host conventions only (traits, named note elements, out-of-band
-  sidecars) until a steward ruling — exploration must not invent core
+  sidecars) until it is ruled — experiments must not invent core
   syntax. Same family: the `;?`/TBD/`.draft` markers from
   older feedback, and the design-of-record `annotate` tool (span-level
   entity/comment/review/confidence annotations over prose — the

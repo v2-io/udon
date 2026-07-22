@@ -2,7 +2,7 @@
 slug: steering-and-verification-surfaces
 type: demand
 evidence: [T2, T5, T1, T3]
-status: convergent demand; thinnest-covered part of the gathering (named skew — fund against it)
+status: convergent demand; thinnest evidence base in this report (named skew — fund against it)
 stage: drafted
 consumers: both
 depends: [counter-register, tool-definition-anatomy]

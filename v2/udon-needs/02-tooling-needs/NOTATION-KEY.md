@@ -26,8 +26,8 @@ a segment and it isn't here, that's a defect — flag it.
 | **T1–T5** | The five evidence tiers (see [#method-evidence-tiers](src/method-evidence-tiers.md)): ideology / shipped practice / lived testimony / formal theory / external research. |
 | **C1–C16** | Cross-tool convergence clusters in the shipping-practice examination ([shipping practice](reports/shipping-practice.md)) — C1 str-replace, C2 fuzzy ladder, C7 deferred loading, C16 headless contract, …. Auditor apparatus; body prose does not use these codes. |
 | **Cluster #1–18** | The cross-evidence agreement clusters in the source apparatus (CONVERGENCES) — a different numbering than C1–C16. Auditor apparatus only. |
-| **P-A … P-H** | Provisional proposals from the [agent-utility spike](../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md) §8 (stage products, verdict channel, edit binding, …). Proposals, not law. |
-| **D1 … D9** | Provisional boundary demands from the [paths spike](../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md) §8. |
+| **P-A … P-H** | Provisional proposals from the [agent-utility exploration](../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md) §8 (stage products, verdict channel, edit binding, …). Proposals, not law. |
+| **D1 … D9** | Provisional boundary demands from the [addressing exploration](../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md) §8. |
 | **S1 … S12** | The twelve gathered situations in [needs-map.md](../01-ideation/needs-map.md) (S1 agent-edit-under-schema-guard … S12 mid-stream reconfiguration). |
 | **R1 …, W0/W1d, L0 …, C5/C6, S3/S12/S14 …, ML, PATH-1** | Ruled rows in [`v2/DECISIONS.md`](../../DECISIONS.md) and live questions in [`v2/OPEN.md`](../../OPEN.md) — the UDON language ledger. W0 = sufficiency/no-reachback at product boundaries; W1d = self-delimiting value extents; L0 = error-means-loss severity; C6 = recognition-verdict fixtures; ML = the (possibly dissolved) multi-line question. |
 | **SC#N** | Steward calls in [STEWARD-CALLS.md](../01-ideation/STEWARD-CALLS.md) — questions surfaced to Joseph during gathering, with his rulings inline. |

@@ -55,7 +55,7 @@ testimony.
   protocol: Agent A writes valid data, Agent B introduces a specific
   corruption, Agent C — with 100% context turnover and no human — attempts
   recovery. The six scenarios and their outcomes, absorbed whole
-  (yaml-spike RECOVERY_SCENARIOS, verbatim table):
+  (the YAML stress test's recovery scenarios, verbatim table):
 
   | Corruption | Recoverable? | Method | Without backup |
   |---|---|---|---|
@@ -80,7 +80,7 @@ testimony.
 
   "Can agent detect this? NO — YAML parser doesn't warn about duplicates.
   Can agent recover? NO — earlier values are gone forever. Human
-  intervention required: YES (to notice data inconsistency)." The spike's
+  intervention required: YES (to notice data inconsistency)." The stress test's
   four resulting requirements are a build-list for compensating
   infrastructure — (1) backup/WAL before every write, (2) a validation
   layer after every read, (3) salvage heuristics, (4) human escalation —
@@ -125,7 +125,7 @@ with the staged v0 honestly available: syntax-valid + indent-correct +
 atomic first, schema conformance next (the design-of-record critical path:
 paths → schema → serializer/round-trip+spans → edit v0 → conformance v1).
 
-Open, deliberately (feeds phase-3 spikes): whether the schema is static or
+Open, deliberately — questions the design work ahead must decide: whether the schema is static or
 composable/nested — Joseph's own open questions from the source turn:
 "can schemas be nested or otherwise composable?… or is the schema
 static?" (pipeline-discussion, same morning list as the edit-tool quote);
@@ -137,7 +137,7 @@ enforcement), with the agent edit tool as the **careful** gatekeeper for
 writes that flow through agents.
 
 **Who reads this and when:** UDON reads it as the flagship utility its
-phase-3/4 decisions must enable (it pulls paths, schema, spans, and
+the design decisions ahead must enable (it pulls paths, schema, spans, and
 round-trip all at once — which is *why* it's the long-pole customer).
 The harness reads it as the write-path contract for any document-shaped
 state agents maintain (memory files, tracking docs, AXIOMATA-class

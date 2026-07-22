@@ -66,7 +66,7 @@ harness's risk register as much as this report's.
   strength for a notation program*. The harness's near-term ROI ordering
   is closer to the cross-substrate dissent recorded there: teaching
   refusals, staleness-as-failure-class, partial-output honesty, and the
-  yaml-spike mitigations (backup-before-write, post-read validation) are
+  the YAML stress test's mitigations (backup-before-write, post-read validation) are
   shippable against the harness's *current markdown estate* without
   waiting for any UDON milestone.
 

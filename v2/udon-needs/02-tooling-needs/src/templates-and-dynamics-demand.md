@@ -46,7 +46,7 @@ stage line:
    just invent a prettier wrong boundary" — the panel's concurrence).
 
 Adjacent open questions the same turns raised, inherited by the dialects
-spike: can any of this stream (does a template-bearing document have an
+probe: can any of this stream (does a template-bearing document have an
 event-level story at all, or is precompile-then-build inherently
 batch?); what does the *failed* evaluation surface look like (a dynamics
 error is a first-class anomaly, not a host exception); and mid-stream
@@ -55,15 +55,15 @@ dialect binding is per-document, per-scope, or per-event.
 
 ## What it generates
 
-- **For UDON:** the dialects spike (#priorities-and-spike-agenda) owns
-  this; the segment exists so the spike inherits the demand in its
+- **For UDON:** the dialects probe (#priorities-and-spike-agenda) owns
+  this; the segment exists so that work inherits the demand in its
   original force rather than a paraphrase. Two boundaries already firm
   enough to state: the core recognizes `!` syntax and carries expressions
   unparsed (ruled — a conformant parser needs no dialect), so the
   template product is *entirely* a dialect/host construction; and
   whatever the scope-interrogation surface becomes, it is a schema-shaped
   answer ("this template requires these names, these predicates") — the
-  schema spike should be in the room.
+  schema probe should be in the room.
 - **For the harness:** templates are its prompt-assembly and
   report-generation substrate (the theory's frame: prompt assembly *is* the
   reconstruction mechanism — a template with an interrogable scope
@@ -77,7 +77,7 @@ dialect binding is per-document, per-scope, or per-event.
 
 Single-source (one author, one morning), zero implementations, no
 scenario corpus — by far the thinnest evidence base of any demand segment,
-carried at design-of-record weight because it is the steward's stated
+carried at design-of-record weight because it is the project owner's stated
 product vision and because its *structural* consequences (the graph, the
 paths coupling) were independently ratified by two other substrates in
 the same discussion. The Ruby-era ease ("output an erb and run it") is
