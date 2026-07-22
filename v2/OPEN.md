@@ -1,8 +1,10 @@
 # OPEN — live questions only
 
-**Status:** 2026-07-21 (graduated from `.archived/second-pass/` same day; ML
-re-framed per [pipeline-discussion.md](udon-needs/pipeline-discussion.md)). Closed →
-[DECISIONS.md](DECISIONS.md).
+**Status:** 2026-07-22. Closed → [DECISIONS.md](DECISIONS.md). Language
+carve-outs with their demand-side reasons now also live in
+[`current-0.9.1-spec/CARVEOUTS.md`](current-0.9.1-spec/CARVEOUTS.md) — that
+register is the fuller statement for anything spec-shaped; rows here are the
+ledger-level index.
 
 ---
 
@@ -39,6 +41,17 @@ Provisional proposals from spikes — **re-open in spikes**, promote to DECISION
 | paths **D9** (`at`/`all` convention) | Host/tool — not Core OPEN |
 
 Still provisional (no pin): paths D2–D6, D8; agent-utility P-C, P-E–P-H; **P-G**/**ML** wait on demand scenarios.
+
+---
+
+## Open from the 2026-07-22 session
+
+| ID | Question | Class | Notes |
+|----|----------|-------|--------|
+| **N-jargon** | Are `Structure Position` / `Line Scan` parser-jargon bleeding into the user-facing spec, against `defining-udon.md`'s isolation principle? A cross-substrate reviewer (agy/Gemini) argued yes and proposed author-centric names. The names are ledger-ruled (**N-pos**, **N-scan**), so overturning is a steward call. | STEWARD | `current-0.9.1-spec/.reviews/STEWARD-FLAGS.md`; review-agy finding 1 |
+| **IND-2** | Should the spec name a default indentation unit for *automated generation* (not human authoring)? New demand evidence: without one, different tools pick different defaults and thrash a file's indentation across agents. Sharpens the existing **IND** row rather than replacing it. | STEWARD | review-agy finding 3; attached to IND |
+| **FIX-FRAME** | The 0.9.1 suite added a suite-level MUST NOT on fixtures that pin the interim multi-line behavior as *language* behavior (only "PINS CURRENT PARSER" framing allowed). It edges normative and is flagged for ratification-or-revert. | STEWARD | `current-0.9.1-spec/DELTAS.md` organizational paragraph; review-grok L2 |
+| **SEG-SPLIT** | When do the tooling report's chapters split into constituent claim segments (ASF style)? Joseph expects to feel compelled "within the next few days"; the readiness signal is a deepening cycle ending with *"the structure held"* as a finding. | steward-timed | `udon-needs/02-tooling-needs/notes/for-OUTLINE.md` §"The coming segmentation" |
 
 ---
 
