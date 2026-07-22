@@ -86,7 +86,7 @@ undecided; this chapter carries the demand and guards that boundary.
   (see Honest edges), plus the question of which marker annotations should
   use — the general designator question is on record as undecided. Until a
   decision is
-  recorded in the [[DECISIONS| #decisions]], conventions carry the
+  recorded in the [[DECISIONS| design ledger]], conventions carry the
   practice and real use accumulates the evidence — deliberately.
 - **For the harness — don't wait for syntax.** The practice is available
   now, and this report itself runs on it: status fields in chapter
@@ -193,7 +193,7 @@ time.
 > the training corpus never drift apart, and each consumer's channel carries
 > exactly its signal and no more (lower A per consumer).
 > **In tension with:** a view system needs the per-region sink model the
-> [[templates-and-dynamics-demand| #templates-and-dynamics-demand]] also reaches for —
+> [[templates-and-dynamics-demand| templates chapter]] also reaches for —
 > shared machinery, shared open questions; projections can silently
 > contradict on facts they share unless a consistency check binds them.
 > **Potential downsides:** more projections, more surfaces to get wrong; a

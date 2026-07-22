@@ -27,7 +27,7 @@ only a human *using the product* notices.
 ## The evidence
 
 - **Verification is the load-bearing need — measured, externally.** In
-  the production system the [[counter-register| #counter-register]]
+  the production system the [[counter-register| counter-register]]
   documents, about 70% of silent failures were caught by a human
   observing the product as a user, and essentially none by its 4,286
   tests — "audits are regression engines, not prediction engines." The
@@ -53,12 +53,12 @@ only a human *using the product* notices.
   choice presentation beat open-ended asking wherever it landed. Its
   complement is propose-before-apply: a preview product carrying the
   diff, the validation result, the side-effects, and the confidence
-  (the [[progressive-disclosure-read-path| #progressive-disclosure-read-path]] carries
+  (the [[progressive-disclosure-read-path| read-path chapter]] carries
   the product shape).
 - **Trust boundaries are genuinely unsettled.** Most of the ecosystem
   treats per-directory instruction files as authoritative; one harness
   treats them as *untrusted data* under injection-precedence rules
-  (the [[counter-register| #counter-register]], row 6). Security-
+  (the [[counter-register| counter-register]], row 6). Security-
   relevant, unresolved — a harness must choose, and say what it chose.
 - **The bootstrapping datum.** A source-level survey of the shipping
   CLIs (conducted within this research programme) records the tools
@@ -110,7 +110,7 @@ only a human *using the product* notices.
 > **What:** a diff product built for the human reviewer of agent work:
 > structural (what changed, in path vocabulary), provenance-carrying
 > (who/what session), and intent-anchored (the
-> [[intent-as-parameter| #intent-as-parameter]]'s stated purpose shown
+> [[intent-as-parameter| intent chapter]]'s stated purpose shown
 > beside the change, so the reviewer checks the diff *against* it).
 > **Principles that apply:** byte-preserving mutation (reformat noise
 > is review poison); intent as the verification anchor.
@@ -141,7 +141,7 @@ only a human *using the product* notices.
 > document edits never settles into its own loop — the same
 > trust-as-temporal-respect the theory demands of composite minds).
 > **Potential downsides:** live edits race agent writes (the
-> [[freshness-and-atomicity| #freshness-and-atomicity]]'s multi-writer
+> [[freshness-and-atomicity| freshness chapter]]'s multi-writer
 > problem, now with the human as second writer — leases apply to
 > people too).
 

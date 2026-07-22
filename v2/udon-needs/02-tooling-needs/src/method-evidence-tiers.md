@@ -105,7 +105,7 @@ can tell which without apparatus:
 - **Decided** — someone chose: a scope call, a convention, a project ruling.
   Decisions are legitimate — design runs on them — but they are never dressed
   up as derivations. Where the project's owner made a call, the text says so
-  plainly (usually a link to the [[DECISIONS| #decisions]] ledger) rather than
+  plainly (usually a link to the [[DECISIONS| design ledger]]) rather than
   manufacturing an argument that arrives where the decision already stood; and
   where a decision merely confirmed something obvious, the text says *that*.
 - **Proposed** — an idea, generated here. This report is not only an

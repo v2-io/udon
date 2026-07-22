@@ -32,9 +32,9 @@ premises), shipping practice (survivorship, corrected for who copied
 whom), agents' own accounts, first-principles design work (largely one
 author, so agreement within it is coherence, not corroboration), and
 external published measurement. Agreement *across* kinds is the standard
-of proof; the methods bridge ([What this report counts as
-evidence](src/method-evidence-tiers.md)) explains the discipline, and the
-[counter-register](src/counter-register.md) keeps the evidence *against*
+of proof; the methods bridge ([[method-evidence-tiers| What this report counts as
+evidence]]) explains the discipline, and the
+[[counter-register| counter-register]] keeps the evidence *against*
 our own theses adjacent to the claims it qualifies.
 
 ---

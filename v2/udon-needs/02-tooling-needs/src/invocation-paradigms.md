@@ -21,15 +21,15 @@ turning out to be conditional on model and workload, not a solved
 default.
 
 1. **One JSON call per tool per turn — the installed base.** Every
-   loaded schema costs context (the [[context-economy| #context-economy]]'s
+   loaded schema costs context (the [[context-economy| context chapter]]'s
    deferred-loading machinery exists to blunt this); every call is a
    round-trip; and the arguments arrive as streamed JSON fragments the
    harness must reassemble and guard — the standing tax the
-   [[streaming-and-partial-documents| #streaming-and-partial-documents]] documents.
+   [[streaming-and-partial-documents| streaming chapter]] documents.
    The reliability burden sits on the model's schema adherence, which is
    exactly where external measurement located the error profile:
    omitted fields and fabricated parameters (the
-   [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]).
+   [[structured-output-two-mechanisms| structured-output chapter]]).
 2. **Code mode — tools as a callable API in a sandbox.** The model
    writes a small program that calls host tools as functions. Two
    harnesses built it independently (one parsing the model's JavaScript
@@ -43,7 +43,7 @@ default.
    window at all. What it costs: the reliability burden moves to
    *program correctness* inside a sandbox, and per-step observability
    has to be rebuilt — the teaching refusal that fired once per tool
-   call (the [[errors-that-teach| #errors-that-teach]]) now fires inside a
+   call (the [[errors-that-teach| refusal chapter]]) now fires inside a
    program run, where nobody is watching unless the sandbox makes them
    able to.
 3. **Grammar-constrained freeform.** In one harness, the input to the
@@ -56,7 +56,7 @@ Deferred tool loading — register tools by name only, fetch a schema when
 first needed — cuts across all three paradigms; it is what makes large
 tool catalogs viable at all. (Most of the ecosystem inherited it from
 one origin, with two or three teams plausibly arriving independently —
-the [[context-economy| #context-economy]] tells that history.)
+the [[context-economy| context chapter]] tells that history.)
 
 ## What it generates
 
@@ -74,7 +74,7 @@ the [[context-economy| #context-economy]] tells that history.)
   more valuable there, not less. And constrained freeform is the shipped
   precedent for grammar-constrained *UDON emission* — the same guarantee
   tier applied to the notation itself; the
-  [[structured-output-two-mechanisms| #structured-output-two-mechanisms]] names
+  [[structured-output-two-mechanisms| structured-output chapter]] names
   the experiment.
 
 ## What this opens (ideas, not designs)
@@ -93,7 +93,7 @@ the [[context-economy| #context-economy]] tells that history.)
 - ✦ **A measured router.** The rival-suites experiment generalizes: a
   harness could route invocation paradigm *per task class* from its own
   measured outcomes rather than by fashion — the same move the
-  [[the-crystallized-process-thesis| #the-crystallized-process-thesis]]
+  [[the-crystallized-process-thesis| crystallized-process chapter]]
   proposes for model-tier routing, applied one level down.
 
 ## Honest edges

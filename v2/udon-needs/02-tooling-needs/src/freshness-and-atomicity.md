@@ -31,7 +31,7 @@ applies or fully refuses.
   typed error, dedicated modules — across at least eight of the
   fourteen harnesses examined: a hard invariant, not a prompt
   suggestion. The sharpest shipped statement is the hash-anchored
-  editor from the [[edit-representation-landscape| #edit-representation-landscape]]:
+  editor from the [[edit-representation-landscape| edit-landscape chapter]]:
   its anchors are valid only for the file state at read time, and **one
   stale anchor rejects the whole batch** — freshness and atomicity as a
   single mechanism. One other harness lifts the same concern to its
@@ -49,7 +49,7 @@ applies or fully refuses.
   runs against the *pre-patch* tree, compare-and-swap style, so a batch
   of edits shares one consistent addressing frame instead of each edit
   shifting the ground under the next.
-- **Derived.** The [[errors-that-teach| #errors-that-teach]] already
+- **Derived.** The [[errors-that-teach| refusal chapter]] already
   established that a failed operation must not half-apply — atomicity is
   what keeps the lesson of a refusal unconfounded. And the theory's
   analysis of forked, divergent copies of one artifact gives the deep
@@ -60,7 +60,7 @@ applies or fully refuses.
 ## What it generates
 
 - **For UDON's edit substrate:** the transaction in the
-  [[schema-guarded-mutation| #schema-guarded-mutation]] inherits all
+  [[schema-guarded-mutation| guarded-mutation chapter]] inherits all
   three invariants, and the failure vocabulary must keep **stale** (the
   file changed since you read it) distinct from **not found** and **not
   unique** — the repairs differ: re-read, versus re-derive the address,

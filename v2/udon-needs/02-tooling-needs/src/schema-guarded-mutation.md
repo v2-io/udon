@@ -99,14 +99,14 @@ it.
   path — this chapter's demand, in first person.
 - **The theory.** A schema converts an interpretive observation ("does
   this look right?") into a pass/fail one — the sharpest-signal move
-  the [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
+  the [[tools-are-observation-infrastructure| observation chapter]]
   prices; a typed write boundary is one of its two separation
-  mechanisms; and the [[errors-that-teach| #errors-that-teach]] makes
+  mechanisms; and the [[errors-that-teach| refusal chapter]] makes
   atomicity of refusals an epistemic requirement, not politeness.
 - **External research keeps rediscovering the absence from outside:**
   malformed-call and fabricated-parameter failures attributed to
   insufficient schema grounding (the
-  [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]
+  [[structured-output-two-mechanisms| structured-output chapter]]
   carries the numbers and their scope), and the largest
   execution-failure subcategory in a 2026 fault-taxonomy study of the
   Model Context Protocol ecosystem is schema-serialization mismatch.
@@ -128,9 +128,9 @@ Open, deliberately — the design work ahead must decide: whether the
 schema is static or composable ("can schemas be nested or otherwise
 composable?… or is the schema static?" — the owner's own open
 questions, from the same discussion as the edit-tool demand); the path
-language itself (the [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]);
+language itself (the [[addressing-is-the-long-pole| addressing chapter]]);
 the serialization substrate that makes span-splicing exact (the
-[[round-trip-and-span-splice| #round-trip-and-span-splice]]); and where guard
+[[round-trip-and-span-splice| round-trip chapter]]); and where guard
 strictness lives — the design work sketches enforcement *profiles*
 (casual / careful / critical: same notation, different strictness),
 with the agent edit tool as the careful gatekeeper.

@@ -72,7 +72,7 @@ The theory supplies the slot. Plans whose intermediate steps are
 observable turn blame-assignment from an intractable inference problem
 into bookkeeping — and a stated intent is precisely the observable that
 lets a refusal distinguish "your anchor broke" from "your goal is
-unachievable here." The [[errors-that-teach| #errors-that-teach]] requires
+unachievable here." The [[errors-that-teach| refusal chapter]] requires
 that distinction; a bare old-text/new-text pair cannot support it.
 
 ## What it generates
@@ -81,17 +81,18 @@ that distinction; a bare old-text/new-text pair cannot support it.
   compounds — it powers repair (the shipped mechanism above), audit
   trails that answer *why*, and the tool-gap-detection loop
   (intent-vs-tool mismatches are the roadmap for what to crystallize
-  next — the [[the-crystallized-process-thesis| #the-crystallized-process-thesis]]'s request channel, fed
+  next — the [[the-crystallized-process-thesis| crystallized-process
+  chapter]]'s request channel, fed
   automatically). One caution from the same design work that proposed
   it: intent *comments* drift and lie — its own anti-pattern list names
   intent-hiding, intent-drift, and false intent. Prefer intent carried
   on *operations and events*, which are dated and immutable, over
   intent as decoration in the artifact.
 - **For UDON:** the edit tool's operations (the
-  [[schema-guarded-mutation| #schema-guarded-mutation]]) should carry
+  [[schema-guarded-mutation| guarded-mutation chapter]]) should carry
   intent from day one; and the document-side residue of executed
   intents is exactly the annotation layer (the
-  [[annotation-and-metacognition| #annotation-and-metacognition]]) — one demand
+  [[annotation-and-metacognition| annotation chapter]]) — one demand
   seen from the call side and the artifact side.
 
 ## What this opens (ideas, not designs)
@@ -113,7 +114,7 @@ that distinction; a bare old-text/new-text pair cannot support it.
   sub-agent's tool calls could carry the *parent's* intent alongside
   their own — a provenance chain of purpose. "Which top-level goal
   caused this edit?" becomes answerable across any depth of delegation
-  (the [[delegation-as-tooling| #delegation-as-tooling]]'s briefing
+  (the [[delegation-as-tooling| delegation chapter]]'s briefing
   discipline, extended down into the tool layer).
 - ✦ **Pricing the burden.** The honest tension below — authoring cost per
   call — is measurable: repair-yield and audit-value per character of

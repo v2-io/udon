@@ -24,7 +24,7 @@ prompt-and-exit mode and a dry-run mode; and the tool detects for itself
 whether a human or a machine is calling** (terminal and CI environment
 signals), so the machine path doesn't depend on the machine knowing the
 flag. This is one of only two patterns in the whole shipping ecosystem
-that the [[method-evidence-tiers| #method-evidence-tiers]]'s
+that the [[method-evidence-tiers| methods chapter]]'s
 copying-vs-invention accounting certifies as *genuine independent
 convergence*: essentially every harness built it separately, forced by
 the same hard external constraint — a machine on the other end. That is
@@ -66,13 +66,13 @@ the strongest evidence shape shipped practice can produce.
   (b) The contract points at a payload-shaped question, stated
   carefully: newline-delimited JSON is the converged streaming answer
   *because JSON has no honest partial form*. A format whose prefixes
-  parse (the [[streaming-and-partial-documents| #streaming-and-partial-documents]])
+  parse (the [[streaming-and-partial-documents| streaming chapter]])
   solves the payload-validation half of that problem — but the newline
   framing is also doing *transport* work (framing, sequencing,
   one-record-one-event) that prefix-parseability does not provide. The
   two are complements until a protocol experiment shows otherwise —
   a dissent from a reviewer outside this model family, adopted as this
-  report's working frame ([[counter-register| #counter-register]],
+  report's working frame ([[counter-register| counter-register]],
   row 10).
 
 ## What this opens (ideas, not designs)
@@ -85,7 +85,7 @@ the strongest evidence shape shipped practice can produce.
   instead of guessing from TTY absence.
 - ✦ **A shared error-code registry per tool suite.** Structured errors
   with stable codes, held in common across a whole suite, would make
-  the [[errors-that-teach| #errors-that-teach]]'s law-accumulation idea
+  the [[errors-that-teach| refusal chapter]]'s law-accumulation idea
   practical: laws learned from one tool's refusals transfer to its
   siblings because the vocabulary is shared.
 - ✦ **Dry-run as machine-readable plan.** The dry-run flag exists
@@ -97,14 +97,15 @@ the strongest evidence shape shipped practice can produce.
 - ✦ **Self-describing tools, universalized.** The schema-export one-off
   generalizes: if every CLI shipped its own agent-callable tool
   definition, harnesses would *discover* their toolsets rather than
-  hand-author them — and the [[tool-definition-anatomy| #tool-definition-anatomy]]'s single-source-contract idea
+  hand-author them — and the [[tool-definition-anatomy| tool-anatomy
+  chapter]]'s single-source-contract idea
   gets its distribution mechanism for free.
 
 ## Honest edges
 
 The contract is about *transport*, not content quality — it says nothing
 about whether what's inside the JSON is right (the
-[[counter-register| #counter-register]]'s validation-doesn't-catch-
+[[counter-register| counter-register]]'s validation-doesn't-catch-
 plausible-wrongness row bounds that hope). And "near-universal" is still
 a coding-harness sample; agent tools outside the coding world are
 unsampled here.

@@ -38,7 +38,7 @@ this report both documents and runs on.
   one explorer agent even omits the ask-the-user tool, enforcing
   non-interactivity by construction. Prose does not bound a capable
   agent; capability does. (This is also the
-  [[the-crystallized-process-thesis| #the-crystallized-process-thesis]]'s
+  [[the-crystallized-process-thesis| crystallized-process chapter]]'s
   constraint layer, applied to delegation.)
 - **The converged subagent shape, as shipped:** a fresh isolated
   context per subagent, a resumable identity, scope framing in the
@@ -62,7 +62,7 @@ this report both documents and runs on.
   multiple agents share work, the September-2025 coordination design
   and agents' own accounts agree on mechanics: shared observable
   artifacts over relay (the
-  [[steering-and-verification-surfaces| #steering-and-verification-surfaces]]'s
+  [[steering-and-verification-surfaces| steering chapter]]'s
   architecture), per-agent file ownership plus **append-only shared
   files** for anything multiple writers touch — the fix that emerged
   from a lived two-agent collision, then got re-derived independently

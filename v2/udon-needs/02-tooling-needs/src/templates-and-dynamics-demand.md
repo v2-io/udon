@@ -43,7 +43,7 @@ consequences, each a counterexample to any fixed processing line:
    path-like syntaxes…" — templating couples to addressing
    *independently* of the edit tool's pull. Two unrelated products
    arriving at the same dependency is much of why the
-   [[addressing-is-the-long-pole| #addressing-is-the-long-pole]] calls it the
+   [[addressing-is-the-long-pole| addressing chapter]] calls it the
    long pole.
 3. **Two evaluation sites that resemble each other.** UDON has an
    interpolation form (evaluate this expression, yield text) and a
@@ -113,7 +113,7 @@ the dialect design work's to settle.
 > kinds") is itself a small schema — printable, versionable, validatable
 > against, and usable to *generate the question* when a required context
 > member is missing (the same schema-generated-ask the
-> [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]
+> [[structured-output-two-mechanisms| structured-output chapter]]
 > proposes for tools).
 > **Principles that apply:** conformance as a machine verdict; a demand
 > stated so a gate can consume it; intent surfaced as inspectable data,
@@ -186,7 +186,7 @@ the dialect design work's to settle.
 > comprehension time when a later agent inherits a rendered document cold.
 > **In tension with:** the annotations are weight the rendered document
 > must carry (or spill separately); a strippable-annotation design (see
-> the [[annotation-and-metacognition| #annotation-and-metacognition]]) is the
+> the [[annotation-and-metacognition| annotation chapter]]) is the
 > natural home, which couples this to that open question.
 > **Potential downsides:** derivation metadata that outlives its accuracy
 > (template changed, annotations didn't) misleads with full confidence.

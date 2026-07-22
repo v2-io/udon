@@ -45,7 +45,7 @@ needs it.
   only 10% for actual reasoning." The thesis, measured against its own
   author's lived session — and the origin of the demand that tools accept
   the caller's *intent*, not just parameters (the
-  [[intent-as-parameter| #intent-as-parameter]] takes that up).
+  [[intent-as-parameter| intent chapter]] takes that up).
 - **The behavioral mechanism** (reproduced as
   [[the-pattern| the pattern statement]]): a second body of
   design work supplies *how* crystallization changes behavior, in two
@@ -68,12 +68,12 @@ needs it.
   path" — and broke the system three times. When the gradient points the
   wrong way, agents slide down it.
 - **The theory prices it.** The persistence economics of the
-  [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
+  [[tools-are-observation-infrastructure| observation-infrastructure chapter]]
   give crystallization a formal return: an investment of time pays when
   it is less than (expected future uses) × (comprehension time saved per
   use) × (number of distinct future readers) — and under agent workloads
   that last factor is large, because every future session is a fresh
-  reader. The [[errors-that-teach| #errors-that-teach]]'s "well-taught laws
+  reader. The [[errors-that-teach| refusal chapter]]'s "well-taught laws
   become infinite-velocity components of the agent's environment model"
   is the same thesis at the scale of a single interaction.
 
@@ -89,7 +89,7 @@ needs it.
 - **For UDON:** notation is crystallization's substrate. A schema is
   crystallized validation; a house style is crystallized formatting
   judgment; an edit tool that owns indentation geometry (the
-  [[schema-guarded-mutation| #schema-guarded-mutation]]) is crystallized
+  [[schema-guarded-mutation| guarded-mutation chapter]]) is crystallized
   indent discipline. The ease gradient is the standing design test for
   every UDON tool surface: if the unverified path is easier than the
   verified one, the notation's guarantees will not be used.

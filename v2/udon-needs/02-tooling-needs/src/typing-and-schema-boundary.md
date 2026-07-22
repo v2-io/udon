@@ -30,7 +30,8 @@ write gate can consume.
 ## The evidence, wound by wound
 
 - **The measured wound.** The six-scenario adversarial recovery test
-  (told in full in the [[schema-guarded-mutation| #schema-guarded-mutation]]; reproduced whole as
+  (told in full in the [[schema-guarded-mutation| guarded-mutation
+  chapter]]; reproduced whole as
   [[yaml-stress-test| the YAML stress test]]) bottom-lined
   YAML for agent-written documents: recoverable only with ~500 lines of
   custom backup, validation, and salvage infrastructure — and its worst
@@ -82,10 +83,10 @@ write gate can consume.
   named as such.
 - **The theory's slot.** A schema converts an interpretive observation
   into a pass/fail one — the sharpest-signal move the
-  [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
+  [[tools-are-observation-infrastructure| observation chapter]]
   prices; and a conformance verdict is only consumable by a write gate
   if it is machine-shaped — codes, addresses, counts — which is the
-  [[errors-that-teach| #errors-that-teach]]'s requirement arriving at the
+  [[errors-that-teach| refusal chapter]]'s requirement arriving at the
   schema layer.
 
 ## What it generates
@@ -95,7 +96,7 @@ write gate can consume.
   schemas be nested or otherwise composable?"); *evolution* — declared
   renames, read-time translation, schema history — is a first-class
   demand from the family that has lived without it. And the job
-  separation already ruled in the [[DECISIONS| #decisions]] —
+  separation already ruled in the [[DECISIONS| design ledger]] —
   dialects say what a value *means*, schemas say what is *allowed*,
   never trading jobs — is precisely what keeps the guessing-tax catalog
   unreproducible in UDON.

@@ -6,7 +6,7 @@ collected here for reference), and the auditor apparatus — source-index
 codes that appear only in metadata and source notes, never in body prose.
 If body prose ever leans on a code from the second half, that is a defect — flag it.
 
-## Theory quantities (ASF/AAT — full treatment reproduced in [the theory report](reports/theory-of-agentic-tooling.md))
+## Theory quantities (ASF/AAT — full treatment reproduced in [[theory-of-agentic-tooling| the theory report]])
 
 | Symbol | One-line meaning |
 |---|---|
@@ -26,8 +26,8 @@ If body prose ever leans on a code from the second half, that is a defect — fl
 
 | Prefix | What it indexes |
 |---|---|
-| **T1–T5** | The five evidence tiers (see [#method-evidence-tiers](src/method-evidence-tiers.md)): ideology / shipped practice / lived testimony / formal theory / external research. |
-| **C1–C16** | Cross-tool convergence clusters in the shipping-practice examination ([shipping practice](reports/shipping-practice.md)) — C1 str-replace, C2 fuzzy ladder, C7 deferred loading, C16 headless contract, …. Auditor apparatus; body prose does not use these codes. |
+| **T1–T5** | The five evidence tiers (see [[method-evidence-tiers| #method-evidence-tiers]]): ideology / shipped practice / lived testimony / formal theory / external research. |
+| **C1–C16** | Cross-tool convergence clusters in the shipping-practice examination ([[shipping-practice| shipping practice]]) — C1 str-replace, C2 fuzzy ladder, C7 deferred loading, C16 headless contract, …. Auditor apparatus; body prose does not use these codes. |
 | **Cluster #1–18** | The cross-evidence agreement clusters in the source apparatus (CONVERGENCES) — a different numbering than C1–C16. Auditor apparatus only. |
 | **P-A … P-H** | Provisional proposals from the [agent-utility exploration](../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md) §8 (stage products, verdict channel, edit binding, …). Proposals, not law. |
 | **D1 … D9** | Provisional boundary demands from the [addressing exploration](../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md) §8. |

@@ -52,11 +52,12 @@ parse result for every purpose.
   written; surface anomalies early, before five hundred more tokens
   compound a mistake; validate a prefix against a schema or an enum
   while there is still time to change course; generate with the grammar
-  enforcing validity (the [[structured-output-two-mechanisms| #structured-output-two-mechanisms]]'s strong mechanism); and
+  enforcing validity (the [[structured-output-two-mechanisms| structured-output
+  chapter]]'s strong mechanism); and
   hand an interrupted generation to a successor as a partial tree plus
   verdict, instead of as a puzzle.
 - **UDON has already decided the substrate pieces.** Three standing
-  decisions in the [[DECISIONS| #decisions]] carry directly:
+  decisions in the [[DECISIONS| design ledger]] carry directly:
   incompleteness is a *verdict on the document*, not an event in the
   stream — a consumer reads it as a result, and no amount of clever
   stream-processing recovers it if the format doesn't say it; each
@@ -75,7 +76,7 @@ parse result for every purpose.
 Generation wants **soft recovery** mid-stream — keep everything, warn,
 continue, because half a document is worth more than none. Careful
 writes want **hard, mutation-free refusal** — the
-[[schema-guarded-mutation| #schema-guarded-mutation]]'s territory,
+[[schema-guarded-mutation| guarded-mutation chapter]]'s territory,
 where half an edit is worse than none. Same language, opposite postures,
 selected by stage and stakes. The tooling mistake would be letting
 either posture colonize the other.
@@ -91,7 +92,7 @@ either posture colonize the other.
   declare what their payload format guarantees mid-stream:
   parses-at-every-prefix, or guard-the-parse. Consumers would pick
   buffering strategy mechanically instead of by folklore. (The
-  [[counter-register| #counter-register]]'s transport dissent stands
+  [[counter-register| counter-register]]'s transport dissent stands
   unchanged: this classifies *payloads*; framing, sequencing, and
   cancellation remain the transport's job.)
 - ✦ **Interruption as a document.** If a partial tree plus its verdict is

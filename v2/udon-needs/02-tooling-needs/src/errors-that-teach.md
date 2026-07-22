@@ -122,7 +122,7 @@ The theory's full treatment of law-teaching is in
    have changed since you read it").
 4. **Name the failure class.** "Not found," "not unique," and "resolves
    to several" are different situations with different repairs — the
-   [[addressing-is-the-long-pole| #addressing-is-the-long-pole]] carries the
+   [[addressing-is-the-long-pole| addressing chapter]] carries the
    concrete vocabulary this demands.
 5. **Severity must track loss, and diagnostics must stay machine-legible.**
    UDON's anomaly posture — keep everything; a warning means content was
@@ -147,7 +147,8 @@ this page has.
 > was violated). Today I reverse-engineer these from free-text error
 > strings that vary tool to tool; a contract makes them addressable.
 > **Principles that apply.** The three-component decomposition of this
-> chapter, made explicit at the field level; the [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]'s failure-class vocabulary is
+> chapter, made explicit at the field level; the [[addressing-is-the-long-pole| addressing
+> chapter]]'s failure-class vocabulary is
 > the natural type for the `law:` field.
 > **Hypothesized impact on the agent.** Drives observation ambiguity (A)
 > on error outcomes toward zero — a parsed `mutated: nothing` is an
@@ -158,11 +159,11 @@ this page has.
 > across a session into a durable laws-file — the slowest-moving stratum
 > of the world model (the theory's "infinite-velocity components: learned
 > once, never re-derived") made explicit, exportable, and inheritable by
-> the next session through the [[persistence-is-imported| #persistence-is-imported]]'s
+> the next session through the [[persistence-is-imported| persistence chapter]]'s
 > reinjection channel.
 > **In tension with.** Free-form error prose can carry nuance a fixed
 > schema truncates; over-structuring the `law:` field risks the same
-> plausible-but-wrong failure the [[counter-register| #counter-register]]
+> plausible-but-wrong failure the [[counter-register| counter-register]]
 > row 5 names (a field can be well-formed and false).
 > **Downsides.** Every tool author now owes three fields on every error
 > path — a real adoption cost; and a machine-legible `mutated: nothing`
@@ -190,7 +191,7 @@ this page has.
 > **Downsides.** A dry-run that diverges from the real call's behavior
 > (TOCTOU: the world changes between the check and the act) teaches a
 > *false* law, which is worse than no channel; the freshness discipline of
-> the [[freshness-and-atomicity| #freshness-and-atomicity]] applies
+> the [[freshness-and-atomicity| freshness-and-atomicity chapter]] applies
 > to the query, not just the write.
 
 > [!capability] Refusal quality as a measured property
@@ -201,7 +202,7 @@ this page has.
 > evaluation of its own error surfaces.
 > **Principles that apply.** This is the theory's own operational
 > estimator for observation ambiguity (Â) applied to the error channel —
-> the [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
+> the [[tools-are-observation-infrastructure| observation-infrastructure chapter]]
 > notes the estimator has apparently never been run on a real format.
 > **Hypothesized impact on the agent.** Makes A on the error channel a
 > *measured* quantity instead of an assumed one — turning "we think our
@@ -223,7 +224,7 @@ this page has.
 > describing the violation and starts proposing the repair.
 > **Principles that apply.** The chapter's error-as-menu criterion (offer
 > candidates as ready-to-use exact next actions) taken to its structural
-> limit; the [[schema-guarded-mutation| #schema-guarded-mutation]]'s
+> limit; the [[schema-guarded-mutation| guarded-mutation chapter]]'s
 > validated-write is the sibling surface.
 > **Hypothesized impact on the agent.** Collapses the read→diagnose→repair
 > loop to a single high-quality observation: the repair *is* the error
@@ -232,7 +233,7 @@ this page has.
 > A≈0 (a diff applies or it doesn't).
 > **In tension with.** A proposed "nearest valid document" that is
 > plausible but not what I meant is a confident wrong suggestion — the
-> failure mode the [[counter-register| #counter-register]] treats as the
+> failure mode the [[counter-register| counter-register]] treats as the
 > one testing cannot catch; a repair menu I trust by default can walk me
 > into a well-formed mistake.
 > **Downsides.** Whether *nearest* is computable cheaply enough is an open
@@ -259,13 +260,13 @@ this page has.
 > just genuinely tricky; frequency alone cannot separate the two.
 > **Downsides.** A refusal stream is telemetry about agents, and aggregating
 > it across sessions raises the same durability and consent questions the
-> [[continuity-infrastructure| #continuity-infrastructure]] treats — whose log is
+> [[continuity-infrastructure| continuity chapter]] treats — whose log is
 > it, and does the agent being measured know.
 
 **Who reads this and when:** the harness applies it to every tool result
 and system message; UDON applies it to parser and validator diagnostics
 and to the edit tool's refusal design (the
-[[schema-guarded-mutation| #schema-guarded-mutation]]). Same principle,
+[[schema-guarded-mutation| guarded-mutation chapter]]). Same principle,
 two surfaces; no divergence.
 
 ## Honest edges
@@ -273,5 +274,5 @@ two surfaces; no divergence.
 The theory's own scope note travels with this chapter: diagnostics inside
 a working session and state carried *across* sessions are deliberately
 distinct channels with different design physics. This chapter is the
-in-session half; the [[persistence-is-imported| #persistence-is-imported]] is
+in-session half; the [[persistence-is-imported| persistence chapter]] is
 the other.

@@ -106,7 +106,7 @@ channel, and no tuning of in-session behavior substitutes for it.*
 
 **Who reads this and when:** the harness programme's continuity
 infrastructure treats this claim as its foundation (the
-[[continuity-infrastructure| #continuity-infrastructure]] carries that
+[[continuity-infrastructure| continuity chapter]] carries that
 extension, including the integrity and attestation demands this chapter
 doesn't decide); UDON reads it as the top-priority format use-case. No
 divergence on the claim itself.

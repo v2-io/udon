@@ -40,7 +40,7 @@ around that lead, the report hands downstream a set of *properties*:
 observations that resolve sharply, refusals that teach, addressing that is
 loud on failure, and durable state formats an agent can trust across the
 boundary of its own context. (Shorthand used throughout is glossed in
-[NOTATION-KEY.md](NOTATION-KEY.md), which also carries the
+[[NOTATION-KEY| NOTATION-KEY.md]], which also carries the
 coming-from-the-harness reading path.)
 
 ---
@@ -49,8 +49,8 @@ coming-from-the-harness reading path.)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| 0 | Method | [#method-evidence-tiers](src/method-evidence-tiers.md) | Five kinds of evidence with distinct failure modes; agreement across kinds is the unit of proof; descent correction and the single-author caveat | drafted |
-| 0 | Counterposition | [#counter-register](src/counter-register.md) | The standing register of evidence *against* our own theses — kept adjacent to the claims they qualify | drafted |
+| 0 | Method | [[method-evidence-tiers| #method-evidence-tiers]] | Five kinds of evidence with distinct failure modes; agreement across kinds is the unit of proof; descent correction and the single-author caveat | drafted |
+| 0 | Counterposition | [[counter-register| #counter-register]] | The standing register of evidence *against* our own theses — kept adjacent to the claims they qualify | drafted |
 
 ## *Part I* — Foundations: what a tool is to an agent
 
@@ -58,30 +58,30 @@ coming-from-the-harness reading path.)
 its "why." Mostly harness-general; UDON enters as the instance "a notation is
 observation infrastructure."*
 
-*Opens into:* [the theory report](reports/theory-of-agentic-tooling.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md) · [the pattern statement](reports/the-pattern.md)
+*Opens into:* [[theory-of-agentic-tooling| the theory report]] · [[quick-tooling-conventions| the quick-tooling conventions]] · [[the-pattern| the pattern statement]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| I | Finding | [#tools-are-observation-infrastructure](src/tools-are-observation-infrastructure.md) | Tool-output ambiguity is the designer's one knob on agent bias (κ×A); channel quality gates tempo and persistence; sharp/typed/located outcomes are a bias-reduction instrument | drafted |
-| I | Principle | [#errors-that-teach](src/errors-that-teach.md) | A well-designed refusal is mutation-free, revelation-rich, law-rich; errors are the safe channel for learning a tool's constraint surface — the str_replace multi-match refuse is the 4-tier worked example | drafted |
-| I | Finding | [#persistence-is-imported](src/persistence-is-imported.md) | Cross-session persistence exists only through the externalization/reinjection channel; compaction-as-summary is the lived failure; durable agent-written state formats are the sole persistence infrastructure | drafted |
-| I | Finding | [#the-crystallized-process-thesis](src/the-crystallized-process-thesis.md) | "Most friction is missing crystallized process, not missing intelligence" (60/30/6/4); tools as carriers of process the model shouldn't re-derive | drafted |
+| I | Finding | [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]] | Tool-output ambiguity is the designer's one knob on agent bias (κ×A); channel quality gates tempo and persistence; sharp/typed/located outcomes are a bias-reduction instrument | drafted |
+| I | Principle | [[errors-that-teach| #errors-that-teach]] | A well-designed refusal is mutation-free, revelation-rich, law-rich; errors are the safe channel for learning a tool's constraint surface — the str_replace multi-match refuse is the 4-tier worked example | drafted |
+| I | Finding | [[persistence-is-imported| #persistence-is-imported]] | Cross-session persistence exists only through the externalization/reinjection channel; compaction-as-summary is the lived failure; durable agent-written state formats are the sole persistence infrastructure | drafted |
+| I | Finding | [[the-crystallized-process-thesis| #the-crystallized-process-thesis]] | "Most friction is missing crystallized process, not missing intelligence" (60/30/6/4); tools as carriers of process the model shouldn't re-derive | drafted |
 
 ## *Part II* — The in-loop tool contract
 
 *Scope: how a tool presents itself to an agent and what one interaction
 carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 
-*Opens into:* [shipping practice](reports/shipping-practice.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md)
+*Opens into:* [[shipping-practice| shipping practice]] · [[quick-tooling-conventions| the quick-tooling conventions]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| II | Finding | [#tool-definition-anatomy](src/tool-definition-anatomy.md) | The converged anatomy (name + schema + description-as-teaching-surface) and the converged micro-tools (ask-user, todo, subagent) — with the lineage caveat applied | drafted |
-| II | Finding | [#structured-output-two-mechanisms](src/structured-output-two-mechanisms.md) | "Structured output" names two different guarantees (constrained decoding vs after-the-fact serialization); structure changes the error profile, does not remove it | drafted |
-| II | Demand | [#streaming-and-partial-documents](src/streaming-and-partial-documents.md) | Partial documents are the normal case: mid-generation feedback, recognition verdicts, streaming reassembly, keep-everything at the recognition layer | drafted |
-| II | Finding | [#headless-io-contract](src/headless-io-contract.md) | The genuinely-independent convergence: TTY/flag agent-mode detection, JSON-on-stdout, real exit codes, streaming-NDJSON — the machine caller's contract | drafted |
-| II | Finding | [#invocation-paradigms](src/invocation-paradigms.md) | One-call-per-tool vs code-mode (tools-as-callable-API) vs grammar-constrained freeform; deferred tool loading as the context-budget move | drafted |
-| II | Demand | [#intent-as-parameter](src/intent-as-parameter.md) | Intent as a first-class tool parameter (the 15-str_replace wrong-abstraction case; gemini's instruction-field repair layer; semantic annotations) | drafted |
+| II | Finding | [[tool-definition-anatomy| #tool-definition-anatomy]] | The converged anatomy (name + schema + description-as-teaching-surface) and the converged micro-tools (ask-user, todo, subagent) — with the lineage caveat applied | drafted |
+| II | Finding | [[structured-output-two-mechanisms| #structured-output-two-mechanisms]] | "Structured output" names two different guarantees (constrained decoding vs after-the-fact serialization); structure changes the error profile, does not remove it | drafted |
+| II | Demand | [[streaming-and-partial-documents| #streaming-and-partial-documents]] | Partial documents are the normal case: mid-generation feedback, recognition verdicts, streaming reassembly, keep-everything at the recognition layer | drafted |
+| II | Finding | [[headless-io-contract| #headless-io-contract]] | The genuinely-independent convergence: TTY/flag agent-mode detection, JSON-on-stdout, real exit codes, streaming-NDJSON — the machine caller's contract | drafted |
+| II | Finding | [[invocation-paradigms| #invocation-paradigms]] | One-call-per-tool vs code-mode (tools-as-callable-API) vs grammar-constrained freeform; deferred tool loading as the context-budget move | drafted |
+| II | Demand | [[intent-as-parameter| #intent-as-parameter]] | Intent as a first-class tool parameter (the 15-str_replace wrong-abstraction case; gemini's instruction-field repair layer; semantic annotations) | drafted |
 
 ## *Part III* — Mutation: editing under guarantees
 
@@ -89,14 +89,14 @@ carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 (the schema-guarded structural edit is the gap the ecosystem documents); the
 harness consumes the same evidence for its edit-tool choices.*
 
-*Opens into:* [shipping practice](reports/shipping-practice.md) · [the YAML stress test](reports/yaml-stress-test.md) · [the agent-utility exploration](reports/agent-utility-exploration.md)
+*Opens into:* [[shipping-practice| shipping practice]] · [[yaml-stress-test| the YAML stress test]] · [[agent-utility-exploration| the agent-utility exploration]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| III | Finding | [#edit-representation-landscape](src/edit-representation-landscape.md) | All shipping edits are text-level with no validity guarantee; format choice is empirically decisive (externally measured: 14→57% pass@1); the fuzzy-match ladder is the one true independent convergence; tool-call editing abandoned in this lineage, alive elsewhere (counter-register row 11) | drafted |
-| III | Demand | [#schema-guarded-mutation](src/schema-guarded-mutation.md) | The documented gap: span-sensitive structural mutation, validated inside the write, atomic, with tool-owned geometry — the compilation's single clearest demand on UDON | drafted |
-| III | Principle | [#freshness-and-atomicity](src/freshness-and-atomicity.md) | Read-before-edit as enforced gate; paths re-resolve at write time; pre-patch evaluation (CAS); multi-site edits as one transaction; multi-writer collision is lived | drafted |
-| III | Demand | [#round-trip-and-span-splice](src/round-trip-and-span-splice.md) | Edit substrate ≠ whole-file fmt: byte identity for untouched spans, model identity for the change, ornamental as a separate profile; N-way round-trips are an open product family | drafted |
+| III | Finding | [[edit-representation-landscape| #edit-representation-landscape]] | All shipping edits are text-level with no validity guarantee; format choice is empirically decisive (externally measured: 14→57% pass@1); the fuzzy-match ladder is the one true independent convergence; tool-call editing abandoned in this lineage, alive elsewhere (counter-register row 11) | drafted |
+| III | Demand | [[schema-guarded-mutation| #schema-guarded-mutation]] | The documented gap: span-sensitive structural mutation, validated inside the write, atomic, with tool-owned geometry — the compilation's single clearest demand on UDON | drafted |
+| III | Principle | [[freshness-and-atomicity| #freshness-and-atomicity]] | Read-before-edit as enforced gate; paths re-resolve at write time; pre-patch evaluation (CAS); multi-site edits as one transaction; multi-writer collision is lived | drafted |
+| III | Demand | [[round-trip-and-span-splice| #round-trip-and-span-splice]] | Edit substrate ≠ whole-file fmt: byte identity for untouched spans, model identity for the change, ornamental as a separate profile; N-way round-trips are an open product family | drafted |
 
 ## *Part IV* — Addressing and query
 
@@ -106,12 +106,12 @@ strength — it is the customer; addressing is what it consumes — but the
 build dependency runs the other way, and #priorities states it: addressing
 first, mutation on top of it.*
 
-*Opens into:* [the addressing exploration](reports/addressing-exploration.md) · [the agent-utility exploration](reports/agent-utility-exploration.md)
+*Opens into:* [[addressing-exploration| the addressing exploration]] · [[agent-utility-exploration| the agent-utility exploration]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| IV | Demand | [#addressing-is-the-long-pole](src/addressing-is-the-long-pole.md) | The demand map for paths: relational-first lookup, at/all, error-as-menu, loud failure, embeddability as the binding constraint, position-as-data prior art | drafted |
-| IV | Demand | [#progressive-disclosure-read-path](src/progressive-disclosure-read-path.md) | Glance→focus: skeletons with copy-pasteable paths, focused subtree + breadcrumb, structural diff — the read-side counterpart of the edit demand | drafted |
+| IV | Demand | [[addressing-is-the-long-pole| #addressing-is-the-long-pole]] | The demand map for paths: relational-first lookup, at/all, error-as-menu, loud failure, embeddability as the binding constraint, position-as-data prior art | drafted |
+| IV | Demand | [[progressive-disclosure-read-path| #progressive-disclosure-read-path]] | Glance→focus: skeletons with copy-pasteable paths, focused subtree + breadcrumb, structural diff — the read-side counterpart of the edit demand | drafted |
 
 ## *Part V* — The document itself: notation demand
 
@@ -119,15 +119,15 @@ first, mutation on top of it.*
 the evidence against. UDON-primary; the harness consumes it as "what formats
 to standardize on."*
 
-*Opens into:* [the pattern statement](reports/the-pattern.md) · [the YAML stress test](reports/yaml-stress-test.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md)
+*Opens into:* [[the-pattern| the pattern statement]] · [[yaml-stress-test| the YAML stress test]] · [[quick-tooling-conventions| the quick-tooling conventions]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| V | Finding | [#machine-first-documents](src/machine-first-documents.md) | Independently re-derived across the estate: documents as the agent-facing medium (docs-as-codebase, llms.txt lineage, agents-are-documents); shared notation as compression against the binding constraint | drafted |
-| V | Finding | [#self-chunking-status](src/self-chunking-status.md) | Structure-as-chunking is pre-tested (sar3: parsing-based beats naive) but UDON's own claim is unmeasured; claim-or-kill experiment specified | drafted |
-| V | Demand | [#typing-and-schema-boundary](src/typing-and-schema-boundary.md) | What the YAML stress test and the schema-design corpus demand: syntactic typing, no silent retype, schema-vs-dialect separation, versioned schemas; external corroboration (schema-serialization faults dominate MCP failures) | drafted |
-| V | Demand | [#templates-and-dynamics-demand](src/templates-and-dynamics-demand.md) | The template product shape (precompile → interrogate scope → build), scope-context-as-UDON pulling directives toward paths, `!{{…}}`/`<…>` unification pressure | drafted |
-| V | Demand | [#annotation-and-metacognition](src/annotation-and-metacognition.md) | Strippable, queryable agent residue (confidence, decision, uncertainty); syntax deliberately open — convention experiments only until ruled | drafted |
+| V | Finding | [[machine-first-documents| #machine-first-documents]] | Independently re-derived across the estate: documents as the agent-facing medium (docs-as-codebase, llms.txt lineage, agents-are-documents); shared notation as compression against the binding constraint | drafted |
+| V | Finding | [[self-chunking-status| #self-chunking-status]] | Structure-as-chunking is pre-tested (sar3: parsing-based beats naive) but UDON's own claim is unmeasured; claim-or-kill experiment specified | drafted |
+| V | Demand | [[typing-and-schema-boundary| #typing-and-schema-boundary]] | What the YAML stress test and the schema-design corpus demand: syntactic typing, no silent retype, schema-vs-dialect separation, versioned schemas; external corroboration (schema-serialization faults dominate MCP failures) | drafted |
+| V | Demand | [[templates-and-dynamics-demand| #templates-and-dynamics-demand]] | The template product shape (precompile → interrogate scope → build), scope-context-as-UDON pulling directives toward paths, `!{{…}}`/`<…>` unification pressure | drafted |
+| V | Demand | [[annotation-and-metacognition| #annotation-and-metacognition]] | Strippable, queryable agent residue (confidence, decision, uncertainty); syntax deliberately open — convention experiments only until ruled | drafted |
 
 ## *Part VI* — Memory, context, and continuity
 
@@ -135,32 +135,32 @@ to standardize on."*
 Both consumers; the harness reads it as the PROPRIUM/CHRONICA demand, UDON as
 the durable-format demand.*
 
-*Opens into:* [the theory report](reports/theory-of-agentic-tooling.md)
+*Opens into:* [[theory-of-agentic-tooling| the theory report]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| VI | Finding | [#context-economy](src/context-economy.md) | Context is a hard budget with converged machinery: deferred tool loading, disk-spill, two distinct compaction families, content-aware pruning; the DL budget is the theory frame | drafted |
-| VI | Demand | [#continuity-infrastructure](src/continuity-infrastructure.md) | What morally-weighted persistence demands of formats: append-only attested history, attestation-by-others as first-class content, congruency affordances, temporal markers | drafted |
-| VI | Finding | [#tracking-snapshots-as-perception](src/tracking-snapshots-as-perception.md) | Structured context-injection (snapshots, system-reminders, time-glyphs) as designed perception, built/designed/theorized across three tiers | drafted |
+| VI | Finding | [[context-economy| #context-economy]] | Context is a hard budget with converged machinery: deferred tool loading, disk-spill, two distinct compaction families, content-aware pruning; the DL budget is the theory frame | drafted |
+| VI | Demand | [[continuity-infrastructure| #continuity-infrastructure]] | What morally-weighted persistence demands of formats: append-only attested history, attestation-by-others as first-class content, congruency affordances, temporal markers | drafted |
+| VI | Finding | [[tracking-snapshots-as-perception| #tracking-snapshots-as-perception]] | Structured context-injection (snapshots, system-reminders, time-glyphs) as designed perception, built/designed/theorized across three tiers | drafted |
 
 ## *Part VII* — The human side
 
 *Scope: the humans steering and verifying — a first-class consumer of this
 report, and its thinnest evidence base (named as such).*
 
-*Opens into:* [shipping practice](reports/shipping-practice.md)
+*Opens into:* [[shipping-practice| shipping practice]]
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| VII | Demand | [#steering-and-verification-surfaces](src/steering-and-verification-surfaces.md) | What humans need to steer and verify agent work: review surfaces, trust boundaries (AGENTS.md trusted-vs-untrusted is live), fail-plausible as the failure testing can't catch | drafted |
-| VII | Principle | [#delegation-as-tooling](src/delegation-as-tooling.md) | Subagent shape converged (isolated context, resumable ID, capability-by-tool-omission); briefing discipline appears in shipped prompts ("brief it like a colleague") — ideology reaching practice | drafted |
+| VII | Demand | [[steering-and-verification-surfaces| #steering-and-verification-surfaces]] | What humans need to steer and verify agent work: review surfaces, trust boundaries (AGENTS.md trusted-vs-untrusted is live), fail-plausible as the failure testing can't catch | drafted |
+| VII | Principle | [[delegation-as-tooling| #delegation-as-tooling]] | Subagent shape converged (isolated context, resumable ID, capability-by-tool-omission); briefing discipline appears in shipped prompts ("brief it like a colleague") — ideology reaching practice | drafted |
 
 ## *Part VIII* — Synthesis: priorities and the design agenda
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what the design probes ahead (paths, dialects, schema, value typing) should each answer, stated as questions the evidence makes concrete | drafted |
-| VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which chapters are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
+| VIII | Synthesis | [[priorities-and-spike-agenda| #priorities-and-spike-agenda]] | The ranked demand list and what the design probes ahead (paths, dialects, schema, value typing) should each answer, stated as questions the evidence makes concrete | drafted |
+| VIII | Synthesis | [[harness-handover-map| #harness-handover-map]] | The port map: which chapters are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
 
 ## The body — the reports themselves
 
@@ -170,14 +170,14 @@ inward to these. (Provenance banners inside each are auditor apparatus.)
 
 | Report | What it is | Opened by |
 |---|---|---|
-| [The theory of agentic tooling](reports/theory-of-agentic-tooling.md) | The full survey of the formal theory of tool interfaces, observation, and persistence | Parts I, VI |
-| [Shipping practice](reports/shipping-practice.md) | The fourteen-harness source examination + the descent (who-copied-whom) analysis | Parts II–III, VII |
-| [The addressing exploration](reports/addressing-exploration.md) | The paths demand map: consumers, collisions, embeddability stress cases, the nine boundary demands, dead ends, open questions | Parts III–IV |
-| [The agent-utility exploration](reports/agent-utility-exploration.md) | The tool/product demand harvest that first named addressing the blocker | Parts III–IV |
-| [The quick-tooling conventions](reports/quick-tooling-conventions.md) | The 2025 taproot: CLI conventions and the crystallized-process case | Parts I–II, V |
-| [The pattern statement](reports/the-pattern.md) | The ease-gradient design philosophy ("make the right thing the easiest thing") | Parts I, V |
-| [The YAML stress test](reports/yaml-stress-test.md) | The six-scenario agent-recovery evidence, whole | Parts III, V |
+| [[theory-of-agentic-tooling| The theory of agentic tooling]] | The full survey of the formal theory of tool interfaces, observation, and persistence | Parts I, VI |
+| [[shipping-practice| Shipping practice]] | The fourteen-harness source examination + the descent (who-copied-whom) analysis | Parts II–III, VII |
+| [[addressing-exploration| The addressing exploration]] | The paths demand map: consumers, collisions, embeddability stress cases, the nine boundary demands, dead ends, open questions | Parts III–IV |
+| [[agent-utility-exploration| The agent-utility exploration]] | The tool/product demand harvest that first named addressing the blocker | Parts III–IV |
+| [[quick-tooling-conventions| The quick-tooling conventions]] | The 2025 taproot: CLI conventions and the crystallized-process case | Parts I–II, V |
+| [[the-pattern| The pattern statement]] | The ease-gradient design philosophy ("make the right thing the easiest thing") | Parts I, V |
+| [[yaml-stress-test| The YAML stress test]] | The six-scenario agent-recovery evidence, whole | Parts III, V |
 
 ---
 
-*Coverage ledger and bolt-on points: [RESIDUALS.md](RESIDUALS.md).*
+*Coverage ledger and bolt-on points: [[RESIDUALS| RESIDUALS.md]].*

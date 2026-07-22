@@ -26,7 +26,7 @@ without pinning the size. And across all of it, *every* shipping
 approach edits at the text level, with **no validity guarantee** for the
 artifact being edited. That absence is the gap this whole part of the
 report converges on (the
-[[schema-guarded-mutation| #schema-guarded-mutation]]).
+[[schema-guarded-mutation| guarded-mutation chapter]]).
 
 ## The landscape
 
@@ -69,7 +69,7 @@ negative result is family- and era-scoped, not a law: in the
 Gemini/Antigravity ecosystem, tool-call editing with schema validation
 at the tool layer is the successful default (a dissent from a
 Gemini-family reviewer, carried in the
-[[counter-register| #counter-register]]). The honest statement: in the
+[[counter-register| counter-register]]). The honest statement: in the
 Claude/OpenAI-lineage world examined here, text-dialect editing won and
 one team's abandonment of the alternative is on record; elsewhere the
 alternative is alive. Its second half: five separate sources show
@@ -93,12 +93,12 @@ contract as model-agnostic.**
 ## The lived and theoretical anchors
 
 An agent's own account of editing without the loud-refusal shape shows
-the failure directly (the [[errors-that-teach| #errors-that-teach]]
+the failure directly (the [[errors-that-teach| refusal chapter]]
 carries it). The theory explains *why* representation dominates: the
 edit channel is action and observation at once — it is how the agent
 acts on the artifact *and* how it learns whether its model of the
 artifact was right, so its ambiguity is priced twice (the
-[[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]).
+[[tools-are-observation-infrastructure| observation chapter]]).
 
 ## What it generates
 
@@ -107,10 +107,10 @@ artifact was right, so its ambiguity is priced twice (the
   emit it correctly) while adding the thing no shipping tool has:
   **validity guarantees**. The ladder exists because text addressing is
   brittle; stable structural addressing (the
-  [[addressing-is-the-long-pole| #addressing-is-the-long-pole]]) attacks the
+  [[addressing-is-the-long-pole| addressing chapter]]) attacks the
   cause rather than cushioning the symptom. The hash-anchor batch is
   prior art for freshness semantics (the
-  [[freshness-and-atomicity| #freshness-and-atomicity]]); grammar-constrained
+  [[freshness-and-atomicity| freshness chapter]]); grammar-constrained
   patch emission is prior art for making the representation itself
   impossible to mis-emit.
 - **For the harness:** adopt the ladder consciously — it is the
