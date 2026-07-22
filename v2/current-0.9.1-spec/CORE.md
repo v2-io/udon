@@ -1,6 +1,8 @@
 # UDON Core Specification
 
-**Universal Document & Object Notation — 0.9.1 (consolidation)** **Status:** normative for surface recognition and core semantics. **Companions:** [GLOSSARY.md](GLOSSARY.md) (vocabulary) · [MODEL.md](MODEL.md) (what recognition produces) · [SEMANTICS.md](SEMANTICS.md) (equivalence) · [CARVEOUTS.md](CARVEOUTS.md) (deliberately unspecified, with reasons) · [DELTAS.md](DELTAS.md) (behavior changes vs 0.9.0-alpha.2, ledgered) · [RATIONALE.md](RATIONALE.md) (non-normative why).
+**Universal Document & Object Notation — 0.9.1 (consolidation)**  
+**Status:** normative for surface recognition and core semantics.  
+**Companions:** [GLOSSARY.md](GLOSSARY.md) (vocabulary) · [MODEL.md](MODEL.md) (what recognition produces) · [SEMANTICS.md](SEMANTICS.md) (equivalence) · [CARVEOUTS.md](CARVEOUTS.md) (deliberately unspecified, with reasons) · [DELTAS.md](DELTAS.md) (behavior changes vs 0.9.0-alpha.2, ledgered) · [RATIONALE.md](RATIONALE.md) (non-normative why).
 
 This document is the contract for how UDON source text maps to the model in MODEL.md. It does not teach style (pedagogy is a separate pillar), define an event/wire encoding (deliberately absent — see README), or specify Host projection, Schema constraint, or Dialect meaning beyond what recognition must carry.
 
