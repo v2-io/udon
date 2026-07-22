@@ -13,7 +13,8 @@ section when a bridge points here.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: ASF/AAT corpus read (~/src/archema-io/asf/, branch state 2026-07-21)
 gathered: 2026-07-21, two passes (see asf-dossier-reading-log.md for per-file coverage)
 status: dossier — theory perspective
@@ -31,7 +32,8 @@ note: >
   most developed formal treatment of agentic tooling anywhere in Joseph's
   estate. Provenance — what was read whole vs skimmed vs not reached, and
   the correction history — lives in asf-dossier-reading-log.md.
----
+- - -
+-->
 
 # ASF/AAT dossier — the theory behind agentic tooling
 

@@ -1,7 +1,10 @@
-# Notation key — the shorthand this report leans on
+# Notation key — vocabulary and apparatus
 
-One line each, with where the full definition lives. If you hit a symbol in
-a segment and it isn't here, that's a defect — flag it.
+Two jobs: the theory vocabulary that capability cards and theory passages
+name their quantities in (taught in plain words at first use in chapters;
+collected here for reference), and the auditor apparatus — source-index
+codes that appear only in metadata and source notes, never in body prose.
+If body prose ever leans on a code from the second half, that is a defect — flag it.
 
 ## Theory quantities (ASF/AAT — full treatment reproduced in [the theory report](reports/theory-of-agentic-tooling.md))
 
@@ -9,15 +12,15 @@ a segment and it isn't here, that's a defect — flag it.
 |---|---|
 | **κ** (kappa) | Architectural coupling: how much the agent's goals are wired into its processing of observations. For LLMs κ ≈ 1 *by construction* (one forward pass does both) — not improvable by design. |
 | **A** | Observation ambiguity: the fraction of an observation's meaning left open to goal-bendable interpretation. A test pass/fail has A ≈ 0; "does this look right?" has high A. The designer's knob. |
-| **κ×A law** | Bias in the agent's beliefs is bounded by κ times A (a conditional theorem with named premises — dossier §2.1). Since κ is stuck, reduce A. |
+| **κ×A law** | Bias in the agent's beliefs is bounded by κ times A (a conditional theorem with named premises — theory report §2.1). Since κ is stuck, reduce A. |
 | **Level-1 / Level-2** | Pearl's causal rungs: correlational data ("what co-occurs") vs interventional data ("what happens when I *do* X"). A chat window is L1; a tool loop is L2 — if the gates hold. |
 | **do()** | Pearl's intervention operator — the formal way of saying an action *sets* a variable rather than observes it. Every tool call is a do(). |
 | **C3 (the known-mechanism gate)** | The condition that upgrades tool-loop data to genuine Level-2: the agent must know the map from decision to executed action. An interface property (precise semantics + teaching refusals). |
 | **T, ν, η\*** | Adaptive tempo = event rate (ν) × update quality (η\*), summed over channels. η\* collapses under channel noise: you can't outrun a bad channel by looping faster. |
 | **ρ / persistence condition** | Environmental drift rate; an agent persists only while T > ρ/‖δ_critical‖ — tempo must beat drift. Below it, the agent doesn't slow down, it stops being viable. |
-| **DL budget** | The context window as a joint description-length budget: strategy + world-model + task spec share one capacity (dossier obs-context-turnover). Why compactness is structural, not cosmetic. |
+| **DL budget** | The context window as a joint description-length budget: strategy + world-model + task spec share one capacity (theory report, context-turnover treatment). Why compactness is structural, not cosmetic. |
 | **W₁ / W₂** | The two wrapping regimes for making a coupled LLM behave like a separated agent: W₁ = separate goal-blind calls (structural guarantee), W₂ = one call with typed response fields routing belief vs strategy (behavioral guarantee). Typed response schemas *are* the W₂ mechanism. |
-| **Reinjection channel** | The externalize-then-reload path (files, tracking docs, summaries) that is provably the *only* way information survives session turnover (dossier §4.1). |
+| **Reinjection channel** | The externalize-then-reload path (files, tracking docs, summaries) that is provably the *only* way information survives session turnover (theory report §4.1). |
 
 ## Corpus and ledger indices
 

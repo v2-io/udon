@@ -77,7 +77,7 @@ the 21 ranked corrected-behaviors), its incident-class findings (date-is-load-
 bearing; incident→fix doesn't stick; harness-enforceable routing;
 misattributed-substrate-bugs), and the proprium port specs. Where this
 report and the taxonomy converge from opposite sides — INC-4's
-harness-enforceable category ↔ #the-crystallized-process-thesis;
+harness-enforceable category ↔ [the crystallized-process chapter](the-crystallized-process-thesis.md);
 its summary-not-sufficient behavior ↔ [the persistence chapter](persistence-is-imported.md)'s compaction wound;
 its refuse-as-teaching examples ↔ [the refusal chapter](errors-that-teach.md) — the convergence
 itself is the finding, and both artifacts should cite it rather than

@@ -10,7 +10,8 @@ bridge says what has and hasn't been tested since.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: ennaos agentic-coding-background/refs — QUICK-TOOLING-CONVENTIONS (ennaos copy of the sapientia root doc)
 gathered: 2026-07-21
 status: gathered (verbatim whole-file copy; a copy of this also lives in sapientia — see Part II §1)
@@ -23,7 +24,8 @@ why_included: >
   PLUS embed correctness-wisdom; composability that preserves conversation state; "silence is golden unless
   teaching/protecting"; fail-fast but *predict failure before execution*; idempotency by design; a three-pillars
   (Wisdom/Strength/Beauty) gate on every tool. Reads as a direct spec for how an agent-facing CLI should behave.
----
+- - -
+-->
 
 # Quick-Tooling Conventions
 

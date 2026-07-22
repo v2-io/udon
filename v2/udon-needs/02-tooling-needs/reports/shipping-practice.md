@@ -12,7 +12,8 @@ what the first one's counts mean; read them together, and treat any
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: read-across of the 17 harness-invivo characterizations (not a primary-source read)
 gathered: 2026-07-21
 status: synthesis — digest of secondary artifacts; provenance traces back to harness-invivo/<name>.md
@@ -20,7 +21,8 @@ paths:
   - 02-provenanced/characterizations/harness-invivo/*.md
 categories: [tier-2, in-vivo-practice, cross-map-digest, edit-formats, tool-schemas]
 why_included: phase-2 aid — cross-map patterns over the 17 shipped-harness maps; reopen the named map for exact line numbers/dates
----
+- - -
+-->
 
 # BUCKET — Tier 2: In-vivo shipped practice
 
@@ -167,7 +169,8 @@ Shape: `*** Begin Patch` / `*** Add|Delete|Update File:` / `@@ [scope marker]` /
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: lineage-disentangle pass over the 17 harness-invivo repos (git histories, in-repo attributions, README fork statements, vendored subtrees, citation URLs)
 gathered: 2026-07-21
 status: synthesis — verdicts confidence-tiered (established / probable / unknown); an honest "unknown" is preferred to a manufactured tree
@@ -198,7 +201,8 @@ why_included: >
   ask-user uniformity is convention-adoption of Claude Code, not independent invention.
   What survives reweighting is the cross-TIER triangulation and a genuinely-independent
   fuzzy-match-ladder convergence.
----
+- - -
+-->
 
 # Tier-2 lineage map — copying vs. independent arrival across the 17 harnesses
 

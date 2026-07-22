@@ -10,7 +10,8 @@ conclusions. Watch scenario 4 — the silent one is the argument.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: autopax operata-yaml-spike (autopax/docs/tactical/2025-12-03-operata-yaml-spike-v2/RECOVERY_SCENARIOS.md) — Dec 2025 empirical stress test of YAML+yq for document/schema storage
 gathered: 2026-07-21
 status: gathered (verbatim copy of v2 adversarial doc)
@@ -20,7 +21,8 @@ source_commit: 033af13 (autopax); yaml-spike dir last touched a6942e8 2025-12-04
 categories: [schema-versioning, schema-validation, empirical-stress-test, yaml-failure-modes, agent-recovery, cross-tier-convergence]
 why_included: >
   v2 adversarial review
----
+- - -
+-->
 
 # Recovery Scenarios: Can Agents Recover from Corruption?
 
@@ -568,7 +570,8 @@ For OPERATA (single-user, local files, human-editable):
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: autopax operata-yaml-spike (autopax/docs/tactical/2025-12-03-operata-yaml-spike-v2/VERDICT_UPDATED.md) — Dec 2025 empirical stress test of YAML+yq for document/schema storage
 gathered: 2026-07-21
 status: gathered (verbatim copy of v2 adversarial doc)
@@ -578,7 +581,8 @@ source_commit: 033af13 (autopax); yaml-spike dir last touched a6942e8 2025-12-04
 categories: [schema-versioning, schema-validation, empirical-stress-test, yaml-failure-modes, agent-recovery, cross-tier-convergence]
 why_included: >
   v2 adversarial review
----
+- - -
+-->
 
 # Verdict: YAML + yq for OPERATA Storage (Adversarial Review)
 

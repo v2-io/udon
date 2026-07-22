@@ -10,7 +10,8 @@ densest single page of agent-facing demand in this book.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: second-pass agent-utility demand spike (Grok, night of 2026-07-20/21); free-form NOTES
 gathered: 2026-07-21
 status: gathered source material — NOT an authoritative decision document
@@ -26,9 +27,9 @@ categories:
   - paths-dependency
   - P-A-through-P-H
 why_included: Highest-density in-repo demand residue for agent surfaces (generate/stream/edit/payload/fmt). Not yet present in gathering; needs-map only *cites* it. Older design docs restated here against pipeline vocabulary — keep both this and the design originals when they differ in texture.
----
+- - -
+-->
 
-> **Why gathered:** Highest-density in-repo demand residue for agent surfaces (generate/stream/edit/payload/fmt). Not yet present in gathering; needs-map only *cites* it. Older design docs restated here against pipeline vocabulary — keep both this and the design originals when they differ in texture.
 
 # Agent-utility notes
 

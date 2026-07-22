@@ -10,7 +10,8 @@ crystallized-process bridge builds on.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: THE-PATTERN.md (autopax/practica ideology corpus, Part II sec 4)
 gathered: 2026-07-21
 status: gathered
@@ -20,7 +21,8 @@ source_commit: 033af13c5ca686ca5898645f6dc772e4435c0523
 categories: [ease-gradient, tool-design, ideology-spine, living-documents]
 why_included: >
   Oct 6 2025 (Architectus). The spine of the whole agent-tooling ideology in this estate: the ease-gradient philosophy (make the right thing the easiest thing), the DSF-vs-DSL distinction, "living documents = documentation IS implementation," with explicit sections on Tool Architecture as Ease Gradient and Coordination as Ease Gradient plus a For-Tool-Usage section. Witness of the core demand a tool notation/harness must serve: correctness by making the correct path the path of least resistance, for agents and humans both.
----
+- - -
+-->
 
 # THE PATTERN
 ## Make the Right Thing the Easiest Thing

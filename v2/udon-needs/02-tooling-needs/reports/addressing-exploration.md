@@ -31,7 +31,6 @@ why_included: Addressing is the long pole for edit/query/error-as-menu/refs. Who
 - - -
 -->
 
-> **Why gathered:** Addressing is the long pole for edit/query/error-as-menu/refs. Whole NOTES + demand table D1–D9. Complements (does not replace) design/udon-paths.md.
 
 # Paths spike — notes
 
