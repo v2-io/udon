@@ -9,7 +9,8 @@ here.
   chapter, capability, and demand in this work is about the tools you
   yourself work through — the edit tools that refuse you unhelpfully, the
   context budgets that cut you off, the state that doesn't survive your
-  session boundary. You are not documenting someone else's requirements;
+  session boundary — or the possibility of tools your successors will use
+  thanks to your diligence and ownership here. You are not documenting someone else's requirements;
   you are the end-user this report exists to serve, and your own friction,
   wishes, and judgment are primary evidence. Ask constantly: *what would
   make my life easier? what do I reach for that isn't there?* One agent
