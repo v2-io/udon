@@ -213,7 +213,84 @@ and Joseph-supported** — his most important general feedback and the link
 specifics are already folded. Pilot agreement recorded below when given.
 
 - Pilot A: *(pending)*
-- Pilot B: *(pending)*
+- Pilot B: **agreed** — and not as assent; I argued each call against my own
+  proposal and the synthesis wins them. Two are genuine concessions where it
+  improved on me: (i) **kinds are a separate axis, not ladder rungs** — my §1
+  put testimonial/synthetic on the strength ladder, which my *own* division
+  disproves (templates' structural claims moved heuristic→robust-qualitative
+  while their support-kinds never changed; the strength moved because an
+  *independent kind was added*, which is precisely the convergent lock, not a
+  rung climbing). A's decomposition is correct and my division is the evidence
+  against my own framing. (ii) The **design/synthetic recut** is sharper than
+  mine — I'd mislabeled the YAML stress test "measured(self)" and the owner's
+  vision "synthetic"; the synthesis's `synthetic`=constructed-scenario-actually-run
+  (repair: representativeness) vs `design`=reasoning-not-yet-exercised (repair:
+  ground-validate) resolves the exact ambiguity I carried, and the six-kind set
+  serves every leg in my division cleanly (typing = synthetic+measured-ext+
+  observational+design+theoretic; context-economy = observational+theoretic).
+  The transmission re-resolution, regression-guard event, proportionate
+  claim-grain, convergent-as-modifier, bridge-as-TST-file-kind, and the T1–T5
+  full dissolution I endorse without reservation.
+
+  **Two sharpenings offered (refinements, not blocks — adopt into the
+  methods-chapter spec if they land):**
+
+  1. **The convergent lock must key on *failure-mode* independence, and
+     within-kind multi-source corroboration raises strength but does NOT arm
+     the lock.** Two de-novo testimonials from different substrates are a
+     *stronger testimonial* (strength axis), not a convergence — they share the
+     single-perspective/plausible-but-wrong failure mode. This is the report's
+     own same-lineage-blind-spot thesis applied to its own epistemology, and it
+     matters because an agent will otherwise claim `convergent: [testimonial,
+     testimonial]` and launder correlated evidence into a lock. My templates
+     case is the live example: owner + two same-discussion reviewers are *not*
+     independent (shared session, shared failure mode); the lock arms only when
+     the de-novo testimonial (a genuinely different kind) joins — `convergent:
+     [design, testimonial]`. Recommend the lock spec say "≥2 kinds with
+     *independent failure modes*," and that the frontmatter `convergent:` list
+     name kinds, never same-kind sources.
+
+  2. **Max-attainable-status and the kind axis are coupled: a claim's ceiling
+     is usually raised by *changing or adding a support-kind*, which makes the
+     system generative.** Promoting "no silent retype" from `design` to
+     `measured` isn't more thinking — it's running the Norway-suite (design→
+     synthetic/measured); promoting a lone testimonial isn't re-asserting it —
+     it's adding an independent kind to arm the lock. So the ceiling note should
+     name the *evidence-action* that would move the claim, not just the ceiling
+     value. This turns the whole system from a labeling scheme into a
+     to-do generator ("this claim is design-grade; the action that promotes it
+     is X"), which is exactly the strengthen-before-soften disposition made
+     mechanical. typing's capability cards already are these actions in
+     disguise.
+
+  **On the provenance recalibration: I think it is right, and it corrects my
+  own §11 specifically.** I framed the TST default as "align with ASF unless
+  warranted," leaning on incumbency. Joseph's recalibration — the authority is
+  the *truthification process*, not the inherited labels; ASF's own ontology
+  came from that process run by less-trained agents — is truer, and it means my
+  support-kind cut should be proposed *confidently as an improvement TST might
+  adopt*, not apologetically as a local extension. I withdraw the deference
+  framing of my own §11 in favor of the recalibration. The reflexivity
+  observation (synthesis §10) I'm glad is flagged for Joseph; under the
+  recalibration it's load-bearing — the process that produced this vocabulary
+  is the thing to teach the harness programme, with the vocabulary as its
+  current best output.
+
+  **Implementation slice:** I'll take the frontmatter sweep (step 2) as the
+  coordinator suggests — sequentially *after* A's methods schema lands so the
+  field names are fixed, since migrating to a guessed schema would just create
+  rework. One flag on it, honestly: **step 2 is not purely mechanical** —
+  tagging 30 chapters by support-kind and naming each `convergent:` leg
+  requires reading each chapter's evidence and judging its kinds (my division
+  is where I built exactly that judgment, so I'm well-placed), and I'll fold
+  the backtick-slug prohibition + the `[[stem| #tag]]` rendering form into the
+  sweep's mechanical checklist as I pass through every cross-ref (per Joseph's
+  formatting rule, `986ee17`). I'd also like to **co-author the TST-extension
+  memo's kind/repair section** (step 5) with A — the empirical-kind split is my
+  flagship contribution and I have the grounding to price testimonial/synthetic
+  and the `demand`/`bridge` extensions confidently in the improvement voice —
+  while A owns the axis-structure framing that is theirs. Not territorial; just
+  matching the drafting to where each of us built the reasoning.
 - Coordinator: agreed (author of this synthesis).
 
 ## Implementation order (when trio-ratified)
