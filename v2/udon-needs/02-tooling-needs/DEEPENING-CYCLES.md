@@ -214,6 +214,27 @@ reader would otherwise assume we simply missed the obvious route — state
 what is false and *why*, in domain voice. Then the replacement: the old
 claim is deleted, not kept-softened-with-a-pointer.
 
+**The layer split (where commentary lives — this is being violated as of
+cycle one, so read it as a live correction, not a formality).** A chapter
+body speaks about the theory and the work **as it now appears** — never
+"this formalizes what previously said X, which was changed to Y on the
+21st, and should now also be Z." That is meta-commentary, and in a body it
+violates integration-is-replacement no matter how informative it feels
+while editing. Three homes, by state:
+
+- **Resolved history** → the git commit message and
+  [`CHANGELOG.md`](CHANGELOG.md) (the monograph's own history layer —
+  date, scope, delta, why). Not the body. Ever.
+- **Unresolved working state** — commentary still needed for further work
+  on the chapter → a `## Working Notes` section at the **bottom of the
+  chapter**: no epistemic claims, explicitly not part of the deliverable,
+  free in register (this is also where ⚑-flag explanations live). Every
+  chapter may carry one; readers of the report proper stop before it.
+- **The one exception**: evolution that is *itself part of the tooling
+  narrative* — an inherited assumption's archaeology, an abandonment that
+  explains a landscape — stays in the body, told as content in domain
+  voice, not as revision memoir.
+
 **Labels track truth, not history.** If your deepening lands something
 verified/exact, label it at that strength — *new* and *different-from-
 what-was-there* are not reasons to down-tier, and the honest tier already
