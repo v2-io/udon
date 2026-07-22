@@ -1,14 +1,12 @@
 ---
 slug: templates-and-dynamics-demand
 type: demand
-register: evidenced
+register: evidenced   # owner's stated product vision + independent practitioner testimony; ideation section is proposed
 support-kind: [design, testimonial]
-strength: robust-qualitative   # structural consequences carry independent legs; product-shape specifics remain heuristic (owner's vision, marked in prose)
+strength: robust-qualitative   # STRUCTURAL consequences (product-graph, addressing-coupling, two-site split, failed-eval-as-state) now carry three independent legs; product-shape SPECIFICS remain heuristic/owner's-vision (marked in prose)
 convergent: [design, testimonial]   # TWO kinds, not three: the owner's vision and the de-novo testimony are independent, but multiple testimonial sources are same-kind and raise strength rather than arming the lock
 verified:
   - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
-register: evidenced             # owner's stated product vision + independent practitioner testimony; ideation section is proposed
-strength: robust-qualitative    # STRUCTURAL consequences (product-graph, addressing-coupling, two-site split, failed-eval-as-state) now carry three independent legs; product-shape SPECIFICS remain heuristic/owner's-vision (marked in prose)
 stage: drafted
 consumers: udon-primary
 depends: [addressing-is-the-long-pole]

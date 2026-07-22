@@ -1,14 +1,12 @@
 ---
 slug: context-economy
 type: finding
-register: evidenced
+register: evidenced   # the four families are observed in shipping practice + external measurement; the budget-is-structural backbone is derived from conditional theory; cards are proposed
 support-kind: [observational, theoretic, measured]
-strength: robust-qualitative   # four-families finding holds across harnesses; DL-budget backbone conditional; numbers measured-with-caveats (marked in prose)
+strength: robust-qualitative   # the four-distinct-families finding holds across harnesses; the DL-budget backbone is conditional (theory, named premises) and the numeric thresholds/measurements are measured-with-caveats — all marked in prose
 convergent: [observational, theoretic, measured]   # external measurement + shipped practice + theory; the 2000-line/50KB thresholds carry descent risk, the >85% and 5K->250K figures are measured-ext
 verified:
   - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
-register: evidenced             # the four families are observed in shipping practice + external measurement; the budget-is-structural backbone is derived from conditional theory; cards are proposed
-strength: robust-qualitative    # the four-distinct-families finding holds across harnesses; the DL-budget backbone is conditional (theory, named premises) and the numeric thresholds/measurements are measured-with-caveats — all marked in prose
 stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure, persistence-is-imported]
@@ -29,6 +27,22 @@ is an information-rate result, not folklore. Shipping practice, without
 citing any of that, has built a whole economy against the same budget —
 in **four distinct mechanism families that must not be merged**,
 because they fail differently and route to different repairs.
+
+**What each leg carries.** This chapter makes several load-bearing claims at
+different strengths; each stands on its own support, and each has its own way of
+being moved:
+
+| Claim | Support-kind | Strength | What would move it |
+|---|---|---|---|
+| The window is one joint budget paying for plan, world-model, and task; window limits ceiling sustainable plan complexity | theoretic (transmitted) | conditional (its named premises) | check the premises hold for real harness workloads |
+| "Context-stuffing helps to a point, then degrades" is an information-rate result, not folklore | theoretic (transmitted) | conditional | as above |
+| Four mechanism families exist and are distinct — they fail differently and route to different repairs | observational | robust-qualitative | find a harness whose mechanism collapses two families, or show one family's failure is a special case of another |
+| Deferred tool loading: one origin plus two-or-three independent rediscoveries | observational | robust-qualitative (descent-corrected — not five votes) | trace the two suspected-independent arrivals to a common ancestor, or confirm their independence at source |
+| Deferred loading yields >85% token reduction on tool definitions; accuracy degrades past 30–50 loaded tools | measured (ext) | measured — at the cited conditions | re-measure on other tool populations; the degradation threshold especially |
+| A production tool response inflated 5K → 250K tokens | measured (ext) | measured (single published incident) | corroborate with further incidents, or bound how often it happens |
+| ~2000 lines / ~50KB are the spill thresholds that recur | observational | heuristic — one ecosystem's shared-lineage defaults, not derived constants | check whether independently-built harnesses land near the same numbers |
+| Capture, triage, and processing are separable stages; triage can read signal statistics without content | theoretic (transmitted) | conditional | as above |
+| Whether structure-aware pruning beats question-driven small-model pruning | — | open (unmeasured) | the natural experiment, once structured payloads exist in a real harness loop |
 
 ## The four families
 

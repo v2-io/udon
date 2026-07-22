@@ -1,14 +1,12 @@
 ---
 slug: annotation-and-metacognition
 type: demand
-register: evidenced
+register: evidenced   # the demand recurs across design work, lived testimony, theory; the syntax boundary is a decided-open question; ideation is proposed
 support-kind: [design, testimonial, theoretic]
-strength: robust-qualitative   # a direction recurring across independent kinds; no magnitude claimed
+strength: robust-qualitative   # a direction that recurs across independent evidence kinds, no magnitude claimed
 convergent: [design, testimonial]   # theoretic shares the design work's author (one estate leg); testimonial is independent
 verified:
   - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
-register: evidenced             # the demand recurs across design work, lived testimony, theory; the syntax boundary is a decided-open question; ideation is proposed
-strength: robust-qualitative    # a direction that recurs across independent evidence kinds, no magnitude claimed
 stage: drafted
 consumers: both
 depends: [persistence-is-imported, intent-as-parameter]

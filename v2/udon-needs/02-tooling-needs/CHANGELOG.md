@@ -100,3 +100,22 @@ Append-only.
   change each, and one unrouted principle (descent-correction applies to
   agreement claims but not to absence claims — may belong in the methods
   chapter). · Why: these are judgments a later agent should be able to challenge.
+
+- 2026-07-22 · context-economy · typing-and-schema-boundary ·
+  edit-representation-landscape · tools-are-observation-infrastructure (pilot A)
+  · Leg-tables added (the R3 census completed), built as **split manifests**:
+  one row per extractable claim carrying its support-kind, strength, and the
+  evidence-action that would move it — so the coming claim-segmentation can lift
+  each row into its own segment. observation-infrastructure's earlier table
+  upgraded to the same four-column shape. edit-representation's table states the
+  agreement/absence asymmetry that lets its `observational` leg sit at full
+  weight. · Why: a leg-table is the split manifest in embryo; building them this
+  way costs nothing now and saves the split later.
+
+- 2026-07-22 · four chapters (pilot A) · Duplicate `register:`/`strength:` keys
+  removed from annotation-and-metacognition, context-economy,
+  templates-and-dynamics-demand, typing-and-schema-boundary — the migration had
+  added canonical fields alongside pre-existing ones, and YAML last-wins meant
+  the older values were silently overriding. Values agreed in all four cases;
+  the richer comments were kept. · Why: a duplicate key in machine-auditable
+  frontmatter is a silent-wrong-answer defect, not a cosmetic one.

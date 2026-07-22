@@ -29,14 +29,15 @@ throughput or ergonomics quantity.
 **What each leg carries** (this chapter makes several load-bearing claims at
 different strengths; the support behind each, at a glance):
 
-| Claim | Support-kind | Strength |
-|---|---|---|
-| Bias is bounded by κ×A; A is the one designer knob | theoretic (transmitted, [[scope-channel-collapse| #asf/llm/scope-channel-collapse]]) | conditional (its premises) |
-| Tempo gates adaptation; a bad channel can't be out-iterated | theoretic (transmitted) | conditional |
-| Persistence needs tempo above the environment's drift | theoretic (transmitted) | conditional |
-| Every tool call is a do() intervention; the upgrade is gated on known action-mechanism | theoretic (transmitted) | conditional |
-| The ecosystem's "prefer dedicated tool over shell" tables are A-reduction in the wild | observational | robust-qualitative |
-| The 2025 design principles lay down the same rules years earlier | design | robust-qualitative (shares the theory's author — coherence, not corroboration) |
+| Claim | Support-kind | Strength | What would move it |
+|---|---|---|---|
+| Bias is bounded by κ×A; A is the one designer knob | theoretic (transmitted, [[scope-channel-collapse| #asf/llm/scope-channel-collapse]]) | conditional (its premises) | check the premises hold for real tool loops; or re-check our carriage against the source |
+| Tempo gates adaptation; a bad channel can't be out-iterated | theoretic (transmitted) | conditional | as above |
+| Persistence needs tempo above the environment's drift | theoretic (transmitted) | conditional | as above; plus whether "drift" is meaningful for a given task environment |
+| Every tool call is a do() intervention; the upgrade is gated on known action-mechanism | theoretic (transmitted) | conditional | as above |
+| The ecosystem's "prefer dedicated tool over shell" tables are A-reduction in the wild | observational | robust-qualitative | descent-correct the seven sources; find a harness that prefers raw shell and thrives |
+| The 2025 design principles lay down the same rules years earlier | design | robust-qualitative (shares the theory's author — coherence, not corroboration) | an independent designer arriving at the same rules would convert this into a second failure mode |
+| The ambiguity estimator has apparently never been run on a real format | observational | heuristic (an absence, at this report's search depth) | run it — which is the chapter's proposed experiment |
 
 ## The evidence
 

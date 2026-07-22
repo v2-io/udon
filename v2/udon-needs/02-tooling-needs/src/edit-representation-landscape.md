@@ -32,6 +32,28 @@ artifact being edited. That absence is the gap this whole part of the
 report converges on (the
 [[schema-guarded-mutation| guarded-mutation chapter]]).
 
+**What each leg carries.** The claims here sit at noticeably different
+strengths, and conflating them would overstate the weakest and understate the
+sharpest:
+
+| Claim | Support-kind | Strength | What would move it |
+|---|---|---|---|
+| Edit-format choice swings task success 14% → 57% | measured (ext) | measured — fine-tuned 7B-class models; frontier numbers will differ | replicate at frontier scale; the caveat is the whole scope |
+| The most-used editing tool's own benchmarks show 2–3× variation | measured (ext) | heuristic — reaches this report second-hand; direction corroborated, size unpinned | obtain the primary benchmark and pin the figure |
+| Edit representation is *the* most consequential interface choice | derived (from the two above) | robust-qualitative | show another interface choice with a larger measured swing |
+| **Every** shipping approach edits at the text level with no validity guarantee | observational | robust-qualitative — an **absence** claim across the sampled ecosystem | find one shipping editor that validates inside the write |
+| The graduated fuzzy-match ladder is a genuine independent convergence | observational | robust-qualitative (survives descent correction) | trace the independent arrivals to a shared ancestor |
+| Tool-call/JSON editing was abandoned in this lineage but is alive and primary elsewhere | observational | measured within each ecosystem, scoped by [[counter-register| the counter-register]] row 11 | sample more ecosystems; the scoping is the finding |
+| Format choice is per-model-family, not model-agnostic | observational + measured (ext) | robust-qualitative | a model-agnostic format that wins everywhere would refute it |
+
+Note the asymmetry in the fourth row, because it governs how the descent
+correction applies here: descent-discounting bites on claims of *agreement*
+(many tools doing the same thing may be one design copied), but not on claims of
+*absence*. Even if every sampled editor inherited its edit tool from one
+ancestor, the missing validity guarantee is still missing everywhere — copying
+explains why they all do the same thing; it does not manufacture a gap none of
+them fill.
+
 ## The landscape
 
 Fourteen real harnesses were examined at source level; copying and
@@ -166,8 +188,12 @@ and even if all fourteen inherited their edit tool from a single ancestor, the
 absence is still universal across the sampled ecosystem. Copying explains why
 they all do the same thing; it does not manufacture a gap none of them fill.
 
-So this chapter's `convergent:` legs include `observational` at full weight,
-which looks inconsistent with the descent-discounting applied elsewhere until
-the agreement/absence distinction is stated. If a future pass agrees this
-generalises, it wants a sentence in the methods chapter's descent-correction
-discipline; routing unclear, so parking it here.
+The distinction is now stated in this chapter's leg-table note, which is where it
+was needed to justify `observational` sitting at full weight in `convergent:`
+here. **Still open:** whether it generalises enough to belong in the methods
+chapter's descent-correction discipline as a standing rule. My instinct is yes —
+it is a property of the claim's logical shape, not of this chapter's subject —
+but it is the methods chapter's owner's call whether the discipline gains a
+clause or stays as worked instances. Other absence-claims in the report that
+would inherit it: the guarded-mutation chapter's "no shipping tool provides
+this," and any future "nothing yet built does X" in a capability card.

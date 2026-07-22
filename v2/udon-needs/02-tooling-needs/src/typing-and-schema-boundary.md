@@ -1,14 +1,12 @@
 ---
 slug: typing-and-schema-boundary
 type: demand
-register: evidenced
+register: evidenced   # the four demands are evidenced by cross-kind convergence; the ideation section is proposed
 support-kind: [synthetic, observational, design, measured, theoretic]
-strength: robust-qualitative   # a convergent direction across independent kinds; individual legs measured/conditional (marked in prose)
+strength: robust-qualitative   # a convergent direction across independent evidence kinds; individual legs measured/conditional (marked in prose)
 convergent: [synthetic, observational, measured, design]   # theoretic merges with design as one estate leg; the stress-test runs, the production catalog, and external fault data each fail differently
 verified:
   - 2026-07-22 · frontmatter-migration · pilot-A · axes assigned from the chapter's claim; convergent legs audited under the failure-mode-independence key
-register: evidenced             # the four demands are evidenced by cross-kind convergence; the ideation section is proposed
-strength: robust-qualitative    # a convergent direction across independent evidence kinds; individual legs measured/conditional (marked in prose)
 stage: drafted
 consumers: both (udon-primary)
 depends: [schema-guarded-mutation, structured-output-two-mechanisms]
@@ -31,6 +29,20 @@ the format layer** (not bolted-on linting), **schema as a versioned,
 evolving object** (renames and type changes with read-time translation,
 not one-shot migrations), and **conformance as a machine verdict** a
 write gate can consume.
+
+**What each leg carries.** Four wounds, four kinds of evidence, four different
+ways of being wrong — which is what makes their agreement worth something:
+
+| Claim | Support-kind | Strength | What would move it |
+|---|---|---|---|
+| YAML is recoverable for agent-written state only with substantial custom salvage infrastructure | synthetic (six-scenario adversarial run) | measured at the scenarios' conditions | show the scenarios are unrepresentative of real agent writing, or re-run against a wider corpus |
+| Duplicate keys silently discard data and are **undetectable at the format layer** | synthetic | exact (detection rate zero — a property of the parser, not a statistic) | find a conforming parser that surfaces it |
+| YAML's type-guessing corrupts real values (`1.0`→float, `01234`→octal, `yes`→bool, ISO dates→objects) | observational (production catalog) | measured — each accident documented as it bit | none needed; these are demonstrable at a prompt |
+| Agents over-quote defensively as a trained response to that guessing | observational | robust-qualitative | measure quoting behavior across model families |
+| Documents outlive their schemas, and file-based state gets no migration path | design | robust-qualitative | a shipped format with working read-time schema translation would raise this to observational |
+| Declaring renames on the field with read-time translation makes schema change as safe as code change | design | heuristic (a proposed mechanism, exercised in one estate design) | build it and run a real rename across a branch merge |
+| Configuration faults dominate the MCP fault population; tool-call/execution is the largest execution subcategory | measured (ext) | measured — 407 labeled issues, 385 repos, 2026 | replicate on a later or different ecosystem snapshot |
+| The four demands follow from the wounds | derived | robust-qualitative | show a wound whose repair is not one of the four, or a demand no wound motivates |
 
 ## The evidence, wound by wound
 
