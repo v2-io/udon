@@ -20,6 +20,43 @@ a submodule.
 > the lane table describe the **0.9 parser/spec line**, which remains the
 > live oracle — valid for core/ work, but not the current plan.
 
+## Working on the tooling report (`v2/udon-needs/02-tooling-needs/`) — standing license & mandate
+
+Ratified by Joseph 2026-07-22, for **every** agent on this work, any substrate
+(Claude, grok, codex, gemini/agy, …):
+
+- **You are licensed — and expected — to divert.** Web searches, deep-research
+  runs, deeper targeted `memorata3-search`es: whenever a chapter's principled
+  frame reveals a gap, go fill it. Saying *"there is a logical gap here — the
+  segments don't bear up — they don't follow from what came before — I need to
+  think more holistically"* is encouraged, not tolerated. Never write around a
+  missing understanding: research it, elicit testimony about it, or name it
+  plainly as open.
+- **De-novo agent testimony is a first-class evidence channel.** The report's
+  end-users are agents — *you*. When you can't get beginner's mind on a
+  territory (mid-project, you can't — that's structural), spawn a quick fresh
+  agent with **no project context** and ask what it would hope a comprehensive
+  analysis of that territory covers, what pains it knows, what novel directions
+  it sees — license a long answer (10+ areas, a paragraph or more each). One
+  question = immediate first-hand end-user feedback, cheaper than writing
+  around the gap. This is accumulated estate practice, not a novelty — the
+  report's own `src/delegation-as-tooling.md` chapter is its home, and the
+  corpus holds prior results of it; check the prior before calling anything new.
+- **This is still an ideation phase.** Phase (2) is "Additional Ideation,
+  Consolidation, Normalization, & Synthesis" — think and wonder, don't just
+  organize. Open possibility spaces (mark ideas as *proposed*, never pinned —
+  downstream decides). Remember these tools are being designed *for you*: what
+  would make your life easier?
+- **The quality bars** (each learned from Joseph's reads; details + worked
+  exemplars mapped in `02-tooling-needs/RESIDUALS.md`): standalone ownership
+  (source corpus gone → report still delivers) · mental-model-by-degrees (a
+  chapter assumes only its depends-chain; every referent decodable from the
+  page alone) · apparatus invisible (reader never learns there was a gathering
+  process; `[[FILE.md|plain word]]` wikilinks for legitimate external leans,
+  substance on-page wherever the harness reader depends on it) · honest
+  registers (derived / evidenced / decided / proposed, each in its own voice —
+  never a fiat call costumed as an argued principle).
+
 1. **README → Status + How the work is organized** (imported below) — the
    current state, the map of co-located TODO lanes, per-area compliance,
    and how work propagates.
