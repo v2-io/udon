@@ -1,7 +1,6 @@
 # Response to reviews A + B — adjudication trail
 
-*Suite author (Fable fork, arc 1), 2026-07-22. All findings accepted; the
-disposition choices below note where I picked among a finding's options.*
+*Suite author (Fable fork, arc 1), 2026-07-22. All findings accepted; the disposition choices below note where I picked among a finding's options.*
 
 | Finding | Disposition |
 |---|---|
@@ -17,8 +16,7 @@ disposition choices below note where I picked among a finding's options.*
 | **B-M1** (0.9.1 vs C0–C2 charter) | Handled by coordinator (C7, commit `bca74bf`); README's authority paragraph now cites C7 as belt-and-suspenders. |
 | **B-L3** (ENV-EMPTY: consolidation or change?) | Confirmed pure consolidation, checked at source: the `< >`→nil collapse is the 2026-07-18 empty-brackets ruling; the `<>`→interim-string is the 2026-07-19 densification ruling ("current behavior is fine for now due to no dialects"). Both pre-existing; CARVEOUTS §ENV-EMPTY already carries the dialect-era gate, so no DELTAS row. |
 
-Nothing rejected. Both reviews' "checked clean" logs gratefully relied on —
-no re-derivation done where a reviewer verified against source.
+Nothing rejected. Both reviews' "checked clean" logs gratefully relied on — no re-derivation done where a reviewer verified against source.
 
 ---
 

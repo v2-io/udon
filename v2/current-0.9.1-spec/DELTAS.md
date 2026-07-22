@@ -1,10 +1,6 @@
 # DELTAS — 0.9.0-alpha.2 → 0.9.1
 
-The complete list of places where this consolidation **changes or pins
-behavior** relative to the live `spec/CORE.md` (0.9.0-alpha.2) + its
-CHANGELOG rulings. Everything not listed here is consolidation of existing
-law (reorganized, renamed, or restated — no behavior change). Each row
-cites its ruling; nothing below is this suite's invention.
+The complete list of places where this consolidation **changes or pins behavior** relative to the live `spec/CORE.md` (0.9.0-alpha.2) + its CHANGELOG rulings. Everything not listed here is consolidation of existing law (reorganized, renamed, or restated — no behavior change). Each row cites its ruling; nothing below is this suite's invention.
 
 | # | Area | 0.9.0-alpha.2 said | 0.9.1 says | Ruling |
 |---|---|---|---|---|
@@ -20,25 +16,6 @@ cites its ruling; nothing below is this suite's invention.
 | 10 | Equivalence / serializer contract | none — 0.9 specified the text law and selected desugarings, but no whole-document equivalence relation or serializer requirements | **SEMANTICS.md**: a newly specified comparison + serializer contract (equivalence layers, normalization list, serializer MUST NOTs). No source-recognition change — it constrains consumers/serializers, not what source text means | Charter **C3** (SEMANTICS named a day-one component); **S17**/**S9** boundaries respected |
 | 11 | Unicode identifier portability | UAX #31 vocabulary with no version statement (silent cross-implementation fork) | Recognizers MUST declare their Unicode data version; non-ASCII identifiers are non-portable across declared versions (§5.2; CARVEOUTS §UNI). A version pin is a future ruling, not invented here | consolidation-surfaced (codex review); no prior ruling |
 
-One suite-scope addition for Joseph's eye (grok L2, coordinator-endorsed):
-CORE §13.2's caution now carries an explicit sentence that fixtures/tools
-treating the current-parser multi-line table as *language* behavior are
-non-conformant with the suite's scope claim — S2's own descriptive-framing
-rule made enforceable. It constrains fixture *framing*, not source
-meaning; flagged here because it edges normative.
+One suite-scope addition for Joseph's eye (grok L2, coordinator-endorsed): CORE §13.2's caution now carries an explicit sentence that fixtures/tools treating the current-parser multi-line table as *language* behavior are non-conformant with the suite's scope claim — S2's own descriptive-framing rule made enforceable. It constrains fixture *framing*, not source meaning; flagged here because it edges normative.
 
-Organizational (no behavior surface): the vocabulary rename — head position
-/ blob / embedded / freeform / raw-as-noun → **Structure Position / Line
-Scan / flow / inline element / verbatim family**, with GLOSSARY's
-retired-terms table (per DECISIONS **N-pos**/**N-scan**, plus
-**greenfield-3b DECISIONS §D4** "Vocabulary stabilization" — an [ORG]
-greenfield decision adopted under charter C1/C3's tactical-deference, *not*
-a Joseph ruling, and distinct from the CHANGELOG's unrelated "D4" BlankLine
-ruling). Likewise the suite adopts the three-pillar
-split (defining-udon.md) — GLOSSARY + MODEL + CORE + SEMANTICS + CARVEOUTS
-as the specification pillar; pedagogy an outline stub; no grammar document
-(the Nesting Rule's mechanical spelling stays in CORE §2.1). Rulings R1–R21
-and the S-batch (S1, S4, S5, S6, S8, S11, S13–S18, final-terminator,
-`*{`-principle, `;{}`-empty-string, empty-brackets, EOF≡eol+dedent,
-nameless-`!{`, empty-forced-text) are **landed in the prose** rather than
-left as changelog reading — that is consolidation, not change.
+Organizational (no behavior surface): the vocabulary rename — head position / blob / embedded / freeform / raw-as-noun → **Structure Position / Line Scan / flow / inline element / verbatim family**, with GLOSSARY's retired-terms table (per DECISIONS **N-pos**/**N-scan**, plus **greenfield-3b DECISIONS §D4** "Vocabulary stabilization" — an [ORG] greenfield decision adopted under charter C1/C3's tactical-deference, *not* a Joseph ruling, and distinct from the CHANGELOG's unrelated "D4" BlankLine ruling). Likewise the suite adopts the three-pillar split (defining-udon.md) — GLOSSARY + MODEL + CORE + SEMANTICS + CARVEOUTS as the specification pillar; pedagogy an outline stub; no grammar document (the Nesting Rule's mechanical spelling stays in CORE §2.1). Rulings R1–R21 and the S-batch (S1, S4, S5, S6, S8, S11, S13–S18, final-terminator, `*{`-principle, `;{}`-empty-string, empty-brackets, EOF≡eol+dedent, nameless-`!{`, empty-forced-text) are **landed in the prose** rather than left as changelog reading — that is consolidation, not change.
