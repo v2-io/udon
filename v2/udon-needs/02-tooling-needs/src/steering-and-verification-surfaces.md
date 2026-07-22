@@ -16,80 +16,141 @@ sources:
 # What the human on the other side needs
 
 **Claim.** The human steering and verifying agent work is a first-class
-tool consumer — an explicit charge of this report — and the evidence,
-thin as it is on this side, converges on three needs: **structured
-decision surfaces** (not free-text interrogation), **explicit trust
-boundaries** (currently a live disagreement), and above all
-**verification surfaces matched to the fail-plausible reality**, because
-the one failure class nothing mechanical catches is the one only a human
-using the product notices.
+tool consumer, and the evidence — thin on this side, and this chapter
+says so plainly — converges on three needs: **structured decision
+surfaces** (not free-text interrogation), **explicit trust boundaries**
+(currently a live disagreement in shipping practice), and above all
+**verification surfaces matched to the plausible-wrongness reality**,
+because the one failure class nothing mechanical catches is the one
+only a human *using the product* notices.
 
 ## The evidence
 
-- **Verification is the load-bearing need (measured externally):** the production runtime
-  study — ~70% of silent failures were caught by *a human observing the
-  product as a user*, and ~none by 4,286 tests ex-ante ("audits are
-  regression engines, not prediction engines"); the distinctive
-  fail-plausible mode turns internal errors into confident, coherent
-  false output (an HTTP error log synthesized into a fabricated
-  analysis). Medium confidence (single system), echoed contemporaneously
-  — and it inverts the usual priority: the human surface is not the
-  fallback after automation, it is the *only* catch for the failure
-  class automation creates.
-- **Observability as architecture (sapientia, Sept 2025):** the
-  coordination design made human steering a filesystem property —
-  observable markdown work streams, a shared todo.md attention anchor,
-  "Joseph can `tail -f` these files to watch agents think in real-time"
-  and intervene *by editing their documents*. The named failure it
-  solved is still current: the mediated pattern ("main instance becomes
-  mediator/translator… telephone game") that hides subagent work from
-  the human. Steering-by-shared-artifact beats steering-by-relay.
-- **Structured decision surfaces (shipped everywhere):** the converged
-  ask-user shape (1–4 questions, 2–4 options, "(Recommended)", always an
-  Other escape) — one influential design adopted across the ecosystem,
-  i.e. survivorship: structured choice presentation beat free-text asking
-  wherever it landed. Its complement is dry-run/propose-before-apply
-  (#progressive-disclosure-read-path's `propose` returning diff +
-  validation + side-effects + confidence) — the human-reviewable preview
-  as a first-class product.
-- **Trust boundaries are unsettled (a live disagreement in shipping
-  practice):** AGENTS.md
-  as authoritative instruction (the ecosystem consensus) vs untrusted
-  reference data with injection-precedence rules (kimi-code's dissent,
-  #counter-register row 6). Security-relevant and unresolved; a harness
-  must *choose* and say so.
-- **The bootstrapping datum (from the source-level census of shipping
-  CLIs):** the tools are increasingly
-  built *by* agents (bot fleets filing/reviewing/merging PRs; agent-
-  written spec folders preceding implementation) — so the human-
-  verification surface is becoming review-of-agent-work all the way
-  down, which raises the stakes on diff legibility, provenance, and
-  the fail-plausible catch rather than lowering them.
+- **Verification is the load-bearing need — measured, externally.** In
+  the production system the [counter-register](counter-register.md)
+  documents, about 70% of silent failures were caught by a human
+  observing the product as a user, and essentially none by its 4,286
+  tests — "audits are regression engines, not prediction engines." The
+  distinctive failure mode turns internal errors into confident,
+  coherent, *false* output (an HTTP error log synthesized into a
+  fabricated analysis). Medium confidence, one system — but it inverts
+  the usual priority: the human surface is not the fallback after
+  automation; it is the **only** catch for the failure class automation
+  creates.
+- **Observability as architecture (September 2025).** The programme's
+  multi-agent coordination design made human steering a *filesystem
+  property*: agents work in observable markdown streams anchored by a
+  shared task list, so the human can watch them think in real time
+  ("Joseph can `tail -f` these files") and intervene *by editing the
+  documents they are working from*. The failure it was built against is
+  still everywhere: the relay pattern, where a lead agent becomes
+  "mediator/translator… telephone game," and the human loses sight of
+  the actual work. Steering by shared artifact beats steering by relay.
+- **Structured decision surfaces, shipped everywhere.** The converged
+  ask-the-user shape — a few questions, a few options each, a
+  recommended one, always a free-text escape — is one influential
+  design adopted ecosystem-wide: survivorship evidence that structured
+  choice presentation beat open-ended asking wherever it landed. Its
+  complement is propose-before-apply: a preview product carrying the
+  diff, the validation result, the side-effects, and the confidence
+  (the [read-path chapter](progressive-disclosure-read-path.md) carries
+  the product shape).
+- **Trust boundaries are genuinely unsettled.** Most of the ecosystem
+  treats per-directory instruction files as authoritative; one harness
+  treats them as *untrusted data* under injection-precedence rules
+  (the [counter-register](counter-register.md), row 6). Security-
+  relevant, unresolved — a harness must choose, and say what it chose.
+- **The bootstrapping datum.** A source-level survey of the shipping
+  CLIs (conducted within this research programme) records the tools
+  increasingly being built *by* agents — bot fleets filing, reviewing,
+  and merging changes; agent-written specification folders preceding
+  implementation. Human verification is becoming review-of-agent-work
+  all the way down, which raises the stakes on diff legibility,
+  provenance, and the plausible-wrongness catch rather than lowering
+  them.
 
 ## What it generates
 
-- **For the harness:** fund the human surface as the fail-plausible
-  control: propose/dry-run previews everywhere mutation exists;
-  work-in-observable-artifacts over relay reporting; explicit
-  instruction-trust policy; and agent-work diffs designed for human
-  reading (structural diffs, provenance). Authoring ergonomics, review
-  bottlenecks, and trust-and-verification needs are under-sampled in this
-  report's evidence — treat that absence as missing data, not low demand.
+- **For the harness:** fund the human surface as the plausible-
+  wrongness control, not as UX polish — propose/dry-run previews
+  wherever mutation exists; work in observable artifacts instead of
+  relay reports; an explicit, stated instruction-trust policy; and
+  agent-work diffs designed for human reading. Authoring ergonomics
+  and review bottlenecks are under-sampled in this report's evidence —
+  treat that absence as missing data, not as low demand.
 - **For UDON:** the human is the second reader of every agent-facing
-  design in this report: skeletons, structural diffs, and provenance
-  annotations are dual-consumer surfaces by construction ("crystal clear
-  even without syntax highlighting" is the human-side clause of the
-  original thesis). Steering-by-editing-shared-documents — the tail -f
-  pattern — is a *document-format* use case: the human edits the same
+  design in this report. Skeletons, structural diffs, and provenance
+  annotations are dual-consumer surfaces by construction — "crystal
+  clear even without syntax highlighting" is the human-side clause of
+  the notation's original thesis. And steering-by-editing-shared-
+  documents is a *document-format* use case: the human edits the very
   artifact the agent reads, which is the whole two-audience bet.
+
+## What this opens (ideas, not designs)
+
+> [!capability] Scheduled use-the-product verification
+> **What:** the fail-plausible catch made a budgeted ritual — sampled
+> sessions where a human (or a deliberately naive agent) *uses* the
+> product rather than auditing its internals, on a cadence scaled to
+> mutation volume.
+> **Principles that apply:** validation catches malformation, not
+> plausible wrongness; the human surface as the only known control.
+> **Hypothesized impact:** adds the one observation channel with
+> access to the failure class tests structurally miss — in the
+> theory's terms, a channel whose error profile is *independent* of
+> the automated channels, which is precisely the condition under which
+> adding a channel adds real tempo rather than redundancy.
+> **In tension with:** cost (human attention is the scarcest budget in
+> the loop); the crystallization instinct (this is deliberately
+> uncrystallized watching).
+> **Potential downsides:** sampling can miss; ritualized "use it for
+> five minutes" degrades into the checkbox it was invented to replace.
+
+> [!capability] The review-grade diff
+> **What:** a diff product built for the human reviewer of agent work:
+> structural (what changed, in path vocabulary), provenance-carrying
+> (who/what session), and intent-anchored (the
+> [intent chapter](intent-as-parameter.md)'s stated purpose shown
+> beside the change, so the reviewer checks the diff *against* it).
+> **Principles that apply:** byte-preserving mutation (reformat noise
+> is review poison); intent as the verification anchor.
+> **Hypothesized impact:** cuts comprehension time per review — the
+> cost the theory multiplies by every future reader — and gives the
+> plausible-wrongness check something concrete to check against;
+> hypothesis: reviewer catch-rate rises when the claimed purpose sits
+> beside the actual change.
+> **In tension with:** diff-tool inertia (line diffs are universal
+> infrastructure).
+> **Potential downsides:** a bad structural diff is worse than a good
+> line diff; intent display invites rubber-stamping "matches stated
+> intent" without asking if the intent was right.
+
+> [!capability] Bidirectional steering documents
+> **What:** the `tail -f` pattern completed: agents treat their own
+> briefs and working documents as *live* — watching for mid-flight
+> human edits as first-class steering input, with the edit surfaced to
+> the agent as an event rather than discovered on next read.
+> **Principles that apply:** steering by shared artifact; documents as
+> the human-agent interface.
+> **Hypothesized impact:** provides exactly the out-of-band intent
+> channel the theory's objective-capture analysis says recovery
+> requires — a correction path that does not route through the channel
+> being corrected. Steering latency drops from
+> whenever-the-agent-rereads to now.
+> **In tension with:** interiority (an agent constantly interrupted by
+> document edits never settles into its own loop — the same
+> trust-as-temporal-respect the theory demands of composite minds).
+> **Potential downsides:** live edits race agent writes (the
+> [freshness chapter](freshness-and-atomicity.md)'s multi-writer
+> problem, now with the human as second writer — leases apply to
+> people too).
 
 ## Honest edges
 
-This is the report's thinnest evidentiary base and the outline says so:
-this part rests on one external case study (medium confidence), one
-Sept-2025 design, survivorship-grade shipped shapes, and a census aside.
-Late-arriving evidence is expected here, and the report's revision
-protocol welcomes it.
-What's *absent* outright: any human-subject evidence (review-time
-measurements, steering-error rates) — everything is builder-side
-reasoning about the human, not observation of one.
+This is the report's thinnest evidentiary base: one external case study
+(medium confidence), one September-2025 design, survivorship-grade
+shipped shapes, and a survey aside. Late-arriving evidence is expected
+here and the coverage notes welcome it. What is absent outright: any
+human-subject measurement — review times, steering-error rates,
+catch-rates. Everything above is builder-side reasoning about the
+human, not observation of one.
