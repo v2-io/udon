@@ -66,6 +66,18 @@ out-of-ecosystem evidence looks like), but the "dissent entered by … on
 family, drop the entry-event date/verb — is a small rewrite of prose I didn't
 author; flagging for the next window rather than doing it unilaterally.
 
+## Destination shift consequence for harness-handover-map (Part VIII)
+
+Joseph updated the second-consumer destination mid-cycle: the handover is now
+expected to land **inside ASF as a new group within 02-TST**, not as a
+standalone archema transfer. Consequence for `harness-handover-map` (not my
+division): its reader is now *ASF's/TST's reader*, not an external archema
+recipient — the chapter's framing, "what transfers as-is vs re-based," should be
+rewritten from that perspective (the port is now into a sibling corpus that
+shares vocabulary, so the transmission-fidelity story changes — inherited
+results become live `depends:` edges, not frozen quotes). Flagging for whoever
+takes Part VIII. Full reasoning in `notes/epistemology-pilot-A.md` §0.1.
+
 ## Vocabulary the report now owns (for consistency in later windows)
 
 The strength ladder is **exact / conditional / robust-qualitative / measured /
