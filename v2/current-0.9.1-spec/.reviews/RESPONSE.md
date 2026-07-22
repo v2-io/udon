@@ -52,3 +52,11 @@ no re-derivation done where a reviewer verified against source.
 | **L2** (fixture-pinning MUST NOT) | Applied per coordinator endorsement **and flagged**: DELTAS org paragraph notes it edges normative; STEWARD-FLAGS §4 records the one-revert undo. |
 | **L1** (promote N-pos/N-scan into DELTAS table) | **Declined**: the org paragraph now carries the full provenance story including the non-ruling status; putting org-only rows back into the behavior table would recreate the exact table-vs-paragraph tension review-A flagged (A-F6). |
 | **D3** (don't rush grammar pillar) | Recorded as third-party support in STEWARD-FLAGS §3. |
+
+## Round 4 — coordinator verification pass (Appendix C precision)
+
+| Item | Disposition |
+|---|---|
+| Vignette 2 taught newline-close as settled | Fixed: the newline-close route is now marked descriptive (§13.2/ML); only the `$partial-key` fail-safe itself is stated as law. |
+| Vignette 3 two-readings ambiguity | **Verified against the record — my rendering was wrong.** Fixture `core/fixtures/v0.9/attr_structured.yaml` `attr_under_attr_error` (`\|el` / `:theta` / deeper `:first 1`) shows the open key's deferred body opening and the deeper `:key` line being the attr-under-attr case — not a fresh attribute of the element. Vignette rebuilt on an unambiguous example (`\|server :host` closed by dedent → MissingAttributeValue; `\|db` block `:port` + deeper `:nested 1` → AttributeUnderAttribute with the L6 keep-shape), with the did-not-happen reading called out. The keep-shape shown follows **L6** (text of the open value); the alpha.1 fixture's older element-prose keep is the already-ledgered DELTAS row 5 divergence, not new. |
+| The spec finding (both readings constructible from §6.2/§6.5) | Fixed in the normative text: §6.2's "nothing indented under it" clause now states that deeper lines open the deferred body *instead* (no missing-value Error), routing to §6.5/§6.8; §6.5 states sameline/block uniformity and that a `:key` first body line is the §6.8 error, never a new element attribute. The distinction is now derivable, not folklore. |

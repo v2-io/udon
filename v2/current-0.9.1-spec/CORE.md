@@ -421,9 +421,14 @@ is just a character. The alignment with suffix sugar is by construction:
 flag key.
 
 **Plain keys always take a value.** A plain `:key` with no value material —
-end of line with nothing indented under it, or a context terminator — is an
-**Error**; the assignment still stands with value **Nil** (the shape never
-carries less than the source suggested; the Error explains the Nil).
+end of line with **nothing indented under it**, or a context terminator —
+is an **Error**; the assignment still stands with value **Nil** (the shape
+never carries less than the source suggested; the Error explains the Nil).
+The "nothing indented under it" clause is load-bearing: when deeper lines
+*do* follow, the key's **deferred body opens instead** (§6.5) and no
+missing-value Error fires — what those deeper lines then are (value body,
+node value, or the attribute-under-attribute error) is decided by §6.5 and
+§6.8, never by re-reading them as fresh attributes of the element.
 Presence flags are spelled with `?`:
 
 ```udon
@@ -551,9 +556,13 @@ asymmetry is the whole difference between the two contexts.
 ; first="value"; another="with"; el tail "some text"    (row 2)
 ```
 
-**Deferred values.** If a key line ends with no finished value, the deeper
-lines under it are the value's body, under ordinary column and content-base
-rules — a multi-line flow value, or a node:
+**Deferred values.** If a key ends its line with no finished value —
+**sameline and block attributes uniformly** — the deeper lines under it
+are the value's body, under ordinary column and content-base rules: a
+multi-line flow value, or a node. While that body is open, the attribute
+owns it (ownership row 1); a first body line that is itself `:key` is the
+attribute-under-attribute error (§6.8), not a new attribute of the
+element:
 
 ```udon
 |el
@@ -1349,16 +1358,18 @@ Document { result: complete, anomalies: [Warning UnclosedIdentityKey @1:6] }
 ```
 
 The truncated key lands under `$partial-key`, so nothing that reads
-`$key` or resolves `@[jw]` acts on it — and the newline closed the
-bracket, so the rest of the document parsed normally. (Had the input
-*ended* inside a delimited construct, `result` would be
-`incomplete-input`.)
+`$key` or resolves `@[jw]` acts on it. (Under this version's *current
+behavior* the newline closes the bracket and the rest of the document
+parses normally — that route is descriptive, §13.2/ML; the `$partial-key`
+fail-safe itself is law. Had the input *ended* inside a delimited
+construct, `result` would be `incomplete-input`.)
 
 **3. The two non-loss Errors** (§14.1 — intended value / structure absent,
 bytes kept):
 
 ```udon
 |server :host
+|db
   :port
     :nested 1
 ```
@@ -1366,12 +1377,19 @@ bytes kept):
 ```text
 Document { result: complete,
            anomalies: [Error MissingAttributeValue @1:9,
-                       Error AttributeUnderAttribute @3:5] }
-└ Element server
-    attributes: host=Nil · port="​:nested 1\n"
+                       Error AttributeUnderAttribute @4:5] }
+├ Element server
+│   attributes: host=Nil
+└ Element db
+    attributes: port=":nested 1\n"   (text of the open value — L6)
 ```
 
-`host` stands with Nil (the intended value is absent); the misplaced
-`:nested 1` line survives as text of `port`'s open value (the intended
-nested-attribute structure is absent). Recognition continued; every byte
-is in the model.
+`host` had no value material and nothing indented under it (the dedent to
+`|db` closed server), so it stands with Nil — the intended value is
+absent. `port` ended its line with no value, so its **deferred body
+opened** — and the body's first line is itself `:key`, the
+attribute-under-attribute case: the line survives as text of `port`'s
+open value while the intended nested-attribute *structure* is absent.
+Recognition continued; every byte is in the model. (Note what did *not*
+happen: a deeper `:key` under an open-valued attribute is never a fresh
+attribute of the element — the open value collects first. §6.5/§6.8.)
