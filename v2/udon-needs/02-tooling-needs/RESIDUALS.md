@@ -329,3 +329,29 @@ Chapters from context-economy onward use cards; the 15 chapters
 fresh-paged before the ratification carry ✦-bullets — same register,
 older dress. Retrofit them to cards (mechanical; enrich impact fields
 with named quantities while there).
+
+### 2026-07-22 bridge run complete (continuation fork) — state at clean stop
+
+All 26 queue chapters fresh-paged to the four bars + ideation register
+(runs 3–26; Part IV + methods + observation-infrastructure were the
+predecessor's exemplars). Landed along the way, from steward input
+mid-run: the project-root anchor evidence (¤ demand + verified ⊤
+precedent, provenanced + taught in addressing); the de-novo testimony
+channel (first yield: Gemini paths testimony, 12 areas, landed +
+cited); delegation chapter's beginner's-mind section with honest estate
+history; the `[!capability]` card convention (ratified form: what /
+principles / hypothesized impact in named theory quantities / tensions
+/ downsides) — defined in methods, used from context-economy onward;
+priorities reframed as balance sheet (demand ranking + capability
+inventory + probe questions + carried dissents); NOTATION-KEY reframed
+vocabulary+apparatus; all 7 reports' embedded frontmatter tucked to
+auditor comments; final register sweep grep-clean.
+
+**Open, exactly:** (1) the ✦→capability-card retrofit of the 15
+chapters fresh-paged before the card convention landed (mechanical +
+impact-field enrichment; mapped above); (2) codex de-novo paths
+testimony still running at stop time — land it beside the Gemini one
+when it completes (same provenance pattern); (3) the by-degrees
+self-test has been applied per-chapter by its author — a cold
+*cross-chapter* read in OUTLINE order by fresh eyes remains the right
+final verification, per the report's own cold-reader lesson.
