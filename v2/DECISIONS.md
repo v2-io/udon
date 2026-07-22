@@ -141,6 +141,21 @@ High-consensus greenfield + pipeline leans, landed thin. **Overturn freely** via
 |----|--------|------|
 | **C7** | **`v2/current-0.9.1-spec/` is the consolidation *baseline*, not the C0/C2 successor.** Joseph forked three arcs: (1) a 0.9.1-consolidation suite as the clean base of operations ("a base of operations that is not crufty… doesn't require sending agents to 4 different places"), consolidating current law + best greenfield organization + defining-udon pillars, with carve-outs carrying their demand-side reasons; (2) the `udon-needs/02-tooling-needs/` synthesis monograph; (3) informed spikes after 1+2. **C0–C2's 0.10 greenfield-replacement line is unchanged** — 0.9.1 is the floor it launches from. No work continues on the 0.9.0-alpha.x route; old `spec/` remains record/oracle until cutover ("I need to not worry right now about oracles or gates"). | jaw, this session (2026-07-21/22); relayed by Fable-parent. Resolves review-B finding M1 (`current-0.9.1-spec/.reviews/review-B.md`). |
 
+## Steward marks (2026-07-22 — conventions ruled in session)
+
+These are **cross-cutting authoring conventions**, not language law; they bind
+any agent writing in this estate's markdown corpora (and are echoed in
+`udon-needs/CLAUDE.md` for the agents who work there).
+
+| ID | Holds | Cite |
+|----|--------|------|
+| **X1** | **Segment references** are written `[[stem\| #stem]]` — no path, no filename suffix, one space after the pipe so Obsidian renders the display as a tag. Cross-corpus into ASF: `[[stem\| #asf/{aat,tst,llm,eli}/stem]]`. Future namespaces as needed (`#logos/…`, `#vivia/…`, harness later). Relocation-stable by construction: the reference keeps working if the corpus is interned into ASF. Implies archema-global stem uniqueness — acceptable; collisions are self-evident in a flat `src/`. | jaw 2026-07-22; settles the `volume:slug` row ASF's FORMAT left TBD |
+| **X2** | **`#` is a canonicity marker, not a link style — reserved for canonical segments only.** Project documents (ledgers, specs, companions) take the plain form with a prose label: `[[DECISIONS.md\|design ledger]]`. Suffix optional there; the load-bearing difference is the absence of `#`. | jaw 2026-07-22 |
+| **X3** | **Never wrap a slug in back-ticks when a reference is meant** — a backticked slug "is the worst of all worlds": renders poorly, invisible to tag statistics and search, not clickable, cannot jump. Code-ticks are for literal code and literal syntax examples only. | jaw 2026-07-22 |
+| **X4** | **`## Working Notes` is an unconstrained in-file side-car.** Not canonical, not part of any deliverable, and **not bound by the rules that bind body prose** — a note may repeat a downstream claim, rely on a downstream segment, and discuss anything at any length. It is for open work, in-progress thinking, and ideas whose routing and disposition aren't clear yet. The single prohibition: it is **not a historical log** — that is git and the relevant CHANGELOG. | jaw 2026-07-22 |
+| **X5** | **Body prose may point at a downstream segment** to anticipate a question that segment addresses; it **may not** restate that segment's claim in a form that might not stay evergreen, and it **may not rely on** it — with one exception, **appendix segments may be depended on in reverse** ("the derivation this relies on is in appendix segment xyz"). Working Notes are exempt (X4). | jaw 2026-07-22, correcting an over-tight reading |
+| **X6** | **Terminology:** a **chapter** is a container (an outline heading plus its table of segments); a **segment** is a file carrying one claim. Corpora where chapter currently equals file are transitional and need no renaming — the words survive the eventual split. | jaw 2026-07-22 |
+
 ## Overturns
 
 *(none yet)*
