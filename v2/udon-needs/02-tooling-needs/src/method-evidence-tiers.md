@@ -28,6 +28,25 @@ in different ways — which is exactly what makes their agreement meaningful:
 | T4 | Formal theory (ASF/AAT): theorem-grade results with named premises | abstract; conditional on those premises |
 | T5 | External published research (2026 sweep, adversarially verified) | outside-view; benchmark-era caveats |
 
+**Three registers, kept distinct.** Besides where a claim's support comes
+from, every claim here is exactly one of three kinds, and the prose is
+written so you can tell which without apparatus:
+
+- **Derived** — it follows from common knowledge or stated premises, and
+  the reasoning is on the page.
+- **Evidenced** — observation, measurement, or testimony supports it,
+  cited where it stands.
+- **Decided** — someone chose: a scope call, a convention, a project
+  ruling. Decisions are legitimate — design runs on them — but they are
+  never dressed up as derivations. Where the project's owner made a call,
+  the text says so plainly (usually with a link to the
+  [[DECISIONS.md|design ledger]]) rather than manufacturing an argument
+  that arrives where the decision already stood; and where a decision
+  merely confirmed something obvious, the text says *that*.
+
+If a passage seems to argue hard for something that needed no argument,
+treat it as a defect in this report and flag it.
+
 **The discipline this report holds itself to:**
 
 1. **Agreement across kinds of evidence is the unit of proof.** Most of the
@@ -59,7 +78,7 @@ in different ways — which is exactly what makes their agreement meaningful:
    source said "conditional," "single-repo," or "2024-era numbers," the
    chapter says so too.
 4. **Counter-evidence rides adjacent to the claims it qualifies**
-   (#counter-register), never in a footnote graveyard.
+   (the [counter-evidence chapter](counter-register.md)), never in a footnote graveyard.
 5. **Theory results are conditional theorems, not vibes** — and the
    conditions travel with every use (the bias bound's named sub-scopes; the
    deliberation threshold's drift assumption).
