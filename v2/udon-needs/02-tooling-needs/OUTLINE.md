@@ -2,9 +2,21 @@
 
 *What agents — and the humans working with and through them — actually need
 from their tools: notations, interfaces, harnesses, memory and context
-systems, feedback loops, guardrails. Synthesized from the 2026-07-21 gathering
-(~290 provenanced artifacts, five evidentiary tiers). Segment files in
-`src/`; per-segment status in frontmatter; this outline is the single spine.*
+systems, feedback loops, guardrails.*
+
+**How this report is built — an anthology with a spine.** The substance
+lives in seven deep, self-contained **reports** ([`reports/`](reports/)):
+a survey of the formal theory, an examination of fourteen shipping
+harnesses, two demand explorations, two foundational design documents,
+and a stress test. Each stands alone and is worth reading whole. Around
+them, short **bridge chapters** ([`src/`](src/)) do what the reports
+individually cannot: orient a reader by degrees, carry the findings that
+only emerge *across* reports (convergences, counter-evidence,
+priorities), and hand the reader into the right report at the right
+moment. This outline is the spine: each Part below lists its bridges and
+names the body reports they open into. A bridge that merely summarizes
+its report has failed; a bridge succeeds when the reader arrives at the
+report ready to use it.
 
 **The one-paragraph thesis.** Tools are an agent's observation channels and
 its action semantics at once, and the evidence from every tier says the same
@@ -46,6 +58,8 @@ coming-from-the-harness reading path.)
 its "why." Mostly harness-general; UDON enters as the instance "a notation is
 observation infrastructure."*
 
+*Opens into:* [the theory report](reports/theory-of-agentic-tooling.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md) · [the pattern statement](reports/the-pattern.md)
+
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
 | I | Finding | [#tools-are-observation-infrastructure](src/tools-are-observation-infrastructure.md) | Tool-output ambiguity is the designer's one knob on agent bias (κ×A); channel quality gates tempo and persistence; sharp/typed/located outcomes are a bias-reduction instrument | drafted |
@@ -57,6 +71,8 @@ observation infrastructure."*
 
 *Scope: how a tool presents itself to an agent and what one interaction
 carries. Harness-primary; UDON enters where payloads/schemas are documents.*
+
+*Opens into:* [shipping practice](reports/shipping-practice.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
@@ -72,6 +88,8 @@ carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 *Scope: the largest and strongest demand cluster in the evidence. UDON-primary
 (the schema-guarded structural edit is the gap the ecosystem documents); the
 harness consumes the same evidence for its edit-tool choices.*
+
+*Opens into:* [shipping practice](reports/shipping-practice.md) · [the YAML stress test](reports/yaml-stress-test.md) · [the agent-utility exploration](reports/agent-utility-exploration.md)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
@@ -89,6 +107,8 @@ strength — it is the customer; addressing is what it consumes — but the
 build dependency runs the other way, and #priorities states it: addressing
 first, mutation on top of it.*
 
+*Opens into:* [the addressing exploration](reports/addressing-exploration.md) · [the agent-utility exploration](reports/agent-utility-exploration.md)
+
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
 | IV | Demand | [#addressing-is-the-long-pole](src/addressing-is-the-long-pole.md) | The demand map for paths: relational-first lookup, at/all, error-as-menu, loud failure, embeddability as the binding constraint, position-as-data prior art | drafted |
@@ -99,6 +119,8 @@ first, mutation on top of it.*
 *Scope: what the evidence says a notation for agents should be — including
 the evidence against. UDON-primary; the harness consumes it as "what formats
 to standardize on."*
+
+*Opens into:* [the pattern statement](reports/the-pattern.md) · [the YAML stress test](reports/yaml-stress-test.md) · [the quick-tooling conventions](reports/quick-tooling-conventions.md)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
@@ -114,6 +136,8 @@ to standardize on."*
 Both consumers; the harness reads it as the PROPRIUM/CHRONICA demand, UDON as
 the durable-format demand.*
 
+*Opens into:* [the theory report](reports/theory-of-agentic-tooling.md)
+
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
 | VI | Finding | [#context-economy](src/context-economy.md) | Context is a hard budget with converged machinery: deferred tool loading, disk-spill, two distinct compaction families, content-aware pruning; the DL budget is the theory frame | drafted |
@@ -124,6 +148,8 @@ the durable-format demand.*
 
 *Scope: the humans steering and verifying — a first-class consumer of this
 report, and its thinnest evidence base (named as such).*
+
+*Opens into:* [shipping practice](reports/shipping-practice.md)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
@@ -137,20 +163,21 @@ report, and its thinnest evidence base (named as such).*
 | VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what phase-3's informed spikes (paths, dialects, schema, value typing) should each probe, stated as questions the evidence makes concrete | drafted |
 | VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which segments are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
 
-## Appendices — the crown sources, reproduced whole
+## The body — the reports themselves
 
-The report owns its evidence: the highest-density sources are reproduced
-inside it, and segments cite inward. (Each appendix carries its own
-provenance; the surrounding frontmatter and file citations within are
-auditor apparatus.)
+The report's evidence is not summarized from elsewhere; it is *here*,
+whole, each report self-contained with its own on-ramp. Bridges cite
+inward to these. (Provenance banners inside each are auditor apparatus.)
 
-| | Carries | Feeds |
+| Report | What it is | Opened by |
 |---|---|---|
-| [A — The formal theory](appendices/appendix-a-theory.md) | The full ASF/AAT survey of tool-interface theory | Parts I, VI |
-| [B — Shipping practice](appendices/appendix-b-shipping-practice.md) | The fourteen-harness source examination + the descent analysis | Parts II–III, VII |
-| [C — The demand explorations](appendices/appendix-c-demand-explorations.md) | The addressing and agent-utility exploration notes, whole | Parts III–IV |
-| [D — The taproot documents](appendices/appendix-d-taproot.md) | The 2025 tooling conventions + the pattern-language statement | Parts I, V |
-| [E — The YAML stress test](appendices/appendix-e-yaml-stress.md) | The six-scenario agent-recovery evidence, whole | Parts III, V |
+| [The theory of agentic tooling](reports/theory-of-agentic-tooling.md) | The full survey of the formal theory of tool interfaces, observation, and persistence | Parts I, VI |
+| [Shipping practice](reports/shipping-practice.md) | The fourteen-harness source examination + the descent (who-copied-whom) analysis | Parts II–III, VII |
+| [The addressing exploration](reports/addressing-exploration.md) | The paths demand map: consumers, collisions, embeddability stress cases, the nine boundary demands, dead ends, open questions | Parts III–IV |
+| [The agent-utility exploration](reports/agent-utility-exploration.md) | The tool/product demand harvest that first named addressing the blocker | Parts III–IV |
+| [The quick-tooling conventions](reports/quick-tooling-conventions.md) | The 2025 taproot: CLI conventions and the crystallized-process case | Parts I–II, V |
+| [The pattern statement](reports/the-pattern.md) | The ease-gradient design philosophy ("make the right thing the easiest thing") | Parts I, V |
+| [The YAML stress test](reports/yaml-stress-test.md) | The six-scenario agent-recovery evidence, whole | Parts III, V |
 
 ---
 
