@@ -7,9 +7,9 @@ stage: drafted
 consumers: both
 depends: [method-evidence-tiers]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C16
-  - ../01-ideation/02-provenanced/syntheses/tier2-lineage.md        # C16 survivor
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md          # cluster 18
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C16
+  - ../../01-ideation/02-provenanced/syntheses/tier2-lineage.md        # C16 survivor
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md          # cluster 18
 ---
 
 # The headless I/O contract — the machine caller's Bill of Rights
@@ -52,11 +52,14 @@ shape Tier 2 can produce.
   tool, validators) inherits the contract verbatim — including that
   *diagnostics* (anomalies, verdicts) belong on the structured channel with
   stable codes, which meshes with the two-level severity model. (b) The
-  contract names a document-shaped hole: NDJSON is the converged streaming
-  answer because JSON has no honest partial form — a format whose prefixes
-  parse (#streaming-and-partial-documents) can serve the same role natively;
-  whether that's a real advantage or a nice-to-have is measurable, and
-  shouldn't be claimed before measured.
+  contract points at a document-shaped question, stated carefully: NDJSON
+  is the converged streaming answer because JSON has no honest partial
+  form. A format whose prefixes parse (#streaming-and-partial-documents)
+  solves the *payload-validation* half of that problem -- but NDJSON is
+  also doing *transport* work (framing, sequencing, one-record-one-event)
+  that prefix parseability does not provide, so the two are complements
+  until a protocol experiment shows otherwise (a cross-substrate
+  practitioner dissent, logged as #counter-register row 10).
 
 ## Honest edges
 

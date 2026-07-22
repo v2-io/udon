@@ -7,9 +7,9 @@ stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure, persistence-is-imported]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C7, C8, C11, SWE-Pruner singleton
-  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md  # obs-context-turnover DL budget; §4.2
-  - ../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # finding 7 (response-size hazard)
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C7, C8, C11, SWE-Pruner singleton
+  - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md  # obs-context-turnover DL budget; §4.2
+  - ../../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # finding 7 (response-size hazard)
 ---
 
 # Context is a hard budget, and the ecosystem built an economy around it

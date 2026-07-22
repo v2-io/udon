@@ -7,8 +7,8 @@ stage: drafted
 consumers: harness-primary (udon: payload/schema design input)
 depends: [tools-are-observation-infrastructure]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C9, Part D.3
-  - ../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 3, 4
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C9, Part D.3
+  - ../../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 3, 4
 ---
 
 # "Structured output" names two different guarantees

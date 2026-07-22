@@ -7,10 +7,10 @@ stage: drafted
 consumers: both (udon-primary)
 depends: [edit-representation-landscape, errors-that-teach]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 1, 9; singleton yaml-spike
-  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §2, P-C
-  - ../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 4, 7
-  - ../01-ideation/pipeline-discussion.md context (S1; Joseph ~L537)
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 1, 9; singleton yaml-spike
+  - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §2, P-C
+  - ../../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 4, 7
+  - ../../pipeline-discussion.md  # S1 context; Joseph ~L537
 ---
 
 # The demand: schema-guarded structural mutation
@@ -31,8 +31,9 @@ tier asking for it *by name* through the ease-gradient account below.
   critical tool IMO for agents is a specialized edit tool that makes edits
   very easy without needing to worry about indent-levels for prose or raw
   code blocks, while simultaneously guaranteeing that no mutation that would
-  cause the document to now violate the schema is accepted… jq/yq-like
-  span-sensitive changes to the AST checked against a static schema."
+  cause the document to now violate the schema is accepted. The tool
+  itself will need the machinery to do jq/yq like span-sensitive changes
+  to the AST and have it checked against a static schema."
   Convergent T1 stratum: zoetica doc-03/signum, autopax INSTRUMENTA ("make
   invalid states unrepresentable"), the agentic-ux principles (validate
   inside the write, not post-hoc; one-call resolution over

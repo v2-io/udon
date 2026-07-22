@@ -7,9 +7,9 @@ stage: drafted
 consumers: harness-primary
 depends: [errors-that-teach, method-evidence-tiers]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 17; clusters on ask-user/todo
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C12, C13, C14, C15
-  - ../01-ideation/02-provenanced/syntheses/tier2-lineage.md
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 17; clusters on ask-user/todo
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C12, C13, C14, C15
+  - ../../01-ideation/02-provenanced/syntheses/tier2-lineage.md
 ---
 
 # Tool-definition anatomy and the converged micro-tools

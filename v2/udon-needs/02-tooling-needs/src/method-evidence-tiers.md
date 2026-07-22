@@ -6,9 +6,9 @@ status: ratified-practice
 stage: drafted
 consumers: both
 sources:
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md
-  - ../01-ideation/02-provenanced/syntheses/tier2-lineage.md
-  - ../BRIEF-agentic-tooling-compilation.md
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md
+  - ../../01-ideation/02-provenanced/syntheses/tier2-lineage.md
+  - ../../BRIEF-agentic-tooling-compilation.md
 ---
 
 # Method: the five tiers and what counts as proof
@@ -31,7 +31,13 @@ what makes agreement across them meaningful:
    one author; agreement across his projects is coherence, not corroboration.
    A claim marked `cross-tier-convergent` stands on ≥2 tiers with independent
    failure modes.
-2. **T2 vote-counts are lineage-corrected.** The disentangle
+2. **T2 vote-counts are lineage-corrected -- and survivorship still
+   carries positive design weight.** Uniformity-by-descent is weak
+   evidence that agents *need* X, but strong evidence that X is what
+   current models are trained against: for a harness choosing defaults,
+   "str_replace-shaped tools are what the ecosystem's models expect" is a
+   real design input, not merely a deflated count. The correction changes
+   what the count *means*, not whether it matters. The disentangle
    ([tier2-lineage](../../01-ideation/02-provenanced/syntheses/tier2-lineage.md),
    Part 4 rules) established: `apply_patch` is one origin (OpenAI cookbook)
    with zero independent arrivals; str_replace/todo/ask-user shapes are
@@ -40,9 +46,13 @@ what makes agreement across them meaningful:
    *sharper* statement of the gap a new design targets, not N independent
    votes. The two survivors as genuine independent convergence — the
    fuzzy-match ladder and the headless I/O contract — carry full weight.
-3. **Claims inherit the tier of their weakest source**, and synthesis
-   firming up caveats its sources stated carefully is this genre's named
-   characteristic failure (ASF's own audit finding). Where a source said
+3. **A claim's status is limited by its weakest *necessary* premise** --
+   not by the mere presence of a weaker supporting source (which would
+   punish honest inclusion of thin evidence), and not laundered upward by
+   a strong source that supports only part of the claim. Segments say
+   which subclaim each tier actually carries. And synthesis firming up
+   caveats its sources stated carefully is this genre's named
+   characteristic failure (ASF's own audit finding): where a source said
    "conditional," "single-repo," or "2024-era numbers," the segment says so.
 4. **Counter-evidence rides adjacent to the claims it qualifies**
    (#counter-register), not in a footnote graveyard.

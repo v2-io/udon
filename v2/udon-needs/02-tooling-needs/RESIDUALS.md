@@ -4,38 +4,39 @@ The honest-coverage ledger for the monograph. Three registers: what the
 drafted spine deliberately did not absorb, where the known gaps are, and
 where late-arriving pieces bolt on without disturbing what's written.
 
-## 1. Planned segments (claims stated, primaries not yet synthesized)
+## 1. Planned segments — NONE (end-to-end as of 2026-07-22 PM)
 
-The OUTLINE's `planned` rows each carry claim + sources. The synthesis pass
-for each means: read the listed `01-ideation` artifacts (and through them
-the primaries where load-bearing), draft in the segment shape, update the
-outline row. They are independent — any can be picked up alone. Highest
-leverage next, in my judgment: **#machine-first-documents** and
-**#typing-and-schema-boundary** (both feed the schema/dialects spikes),
-then **#continuity-infrastructure** (the harness handover's center of
-gravity, with the SC#15 deep-copy license waiting on it).
+All 30 segments are drafted; the first complete draft exists. The former
+planned-row mechanism stands ready for any *new* segment a later phase
+adds (state claim + sources in an outline row, draft against primaries).
 
 ## 2. Corpus territory the drafted spine touched thinly
 
-- **Tier-1 ideology primaries** — the drafted segments cite T1 through the
-  gathered copies/characterizations and the CONVERGENCES clusters; the
-  deep-read synthesis of the taproot corpus (cli-conventions/QUICK-TOOLING,
-  ennaos agentic-coding-background, the 60/30/6/4 stratum) is the
-  #the-crystallized-process-thesis row. Until it lands, T1 is
-  under-represented relative to its share of the corpus — a *known skew*,
-  the opposite of the usual risk (over-weighting the single author).
+- **Tier-1 ideology primaries** — the back-half pass read QUICK-TOOLING
+  whole plus THE-PATTERN, intent-surfacing, the addendum's case-study
+  half, udon-agentic body, tracking-snapshot spec (head), praxis-protocol
+  (head), and the multi-agent coordination doc; the earlier T1 skew is
+  substantially closed. Still unread at depth: the ennaos
+  agentic-coding-background research reports (6 numbered files), the
+  remaining addendum sections (§3–8), zoetica PRAXES, and the dialogs
+  corpus — none currently load-bearing for a drafted claim.
 - **Tier-3 ELI testimony** — cited at witness level (Architectus,
   Zi-am-tur) via the characterization; the per-account synthesis belongs to
   #continuity-infrastructure + #annotation-and-metacognition. The
   respectful-read banner on `III-eli-testimony.md` applies.
-- **The harness workshop deep-copies** (corrected-behavior dossier L1
-  entries, CLI census) — licensed by SC#15, deliberately *not* pulled yet;
-  #harness-handover-map is written last and pulls them at need. The census
-  outranks external-landscape where they disagree (read-the-code beats
+- **The harness workshop deep-copies** — SC#15 pull executed 2026-07-22:
+  dossier TAXONOMY + CLI census landed at
+  `01-ideation/02-provenanced/copies/harness-workshop/` (ledger lines
+  appended). The individual L1 entries and `.verify.md` files remain
+  named-not-copied — pull when a claim needs them. The census outranks
+  external-landscape where they disagree (read-the-code beats
   deep-research).
 - **I1 usability result-bodies** (footgun catalog, non-monotone context
-  finding) — feeds #self-chunking-status and the eventual house-style
-  discussion; not yet synthesized.
+  finding) — still unsynthesized; #self-chunking-status names its task
+  briefs as experiment seeds, but the footgun catalog awaits the
+  house-style discussion. The III-schema family: 3 of ~19 files read at
+  depth this pass (yaml-spike recovery, ADR-008 head, rowan evolution
+  head); the rest re-vet at point of use per the gathering flag.
 - **Vaults/MACH, consciousness-compiler, soren, dialogs primary turns** —
   registered, cited in outline rows, unsynthesized.
 
@@ -92,3 +93,20 @@ ordering; the slug carries identity; re-ordering is an outline edit only.
   (B#6/A#4); worktree incident landed as provenanced artifact + anchor
   swap in tool-definition-anatomy (A#6); AND/OR worked numbers added to
   tool-definition-anatomy (A#3). No audit finding rejected.
+
+- **2026-07-22 (back half, end-to-end):** all 15 remaining segments
+  drafted against primary reads (QUICK-TOOLING, THE-PATTERN,
+  intent-surfacing, addendum §1–2, udon-agentic body, tracking-snapshot
+  spec, multi-agent coordination, yaml-spike RECOVERY, ADR-008, rowan
+  evolution, sar3 chunking, vaults lineage + consciousness-compiler
+  characterizations, ELI testimony, harness TAXONOMY + census). SC#15
+  deep-copy executed; worktree incident provenanced. Cross-substrate
+  reviews folded: codex (paths sweep + resolve check, T4↔T2 triangle fix,
+  weakest-necessary-premise method wording, transport-vs-payload recast +
+  counter-register row 10), grok (pipeline-discussion path fix, quote
+  exactness, thesis absolutes cut, survivorship-positive-weight in
+  method, sequencing dissents in VIII), agy (tool-call-editing dissent →
+  counter-register row 11 + landscape scoping, in-session/cross-session
+  thesis qualifier, paths-necessity spike question). OUTLINE stages all
+  → drafted; priorities re-scoped end-to-end. No review finding rejected
+  across all five reviews.

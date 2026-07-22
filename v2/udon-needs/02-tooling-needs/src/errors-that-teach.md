@@ -7,10 +7,10 @@ stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.4
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 8, 15
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C1, C2, C6
-  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §2 principles
+  - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.4
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 8, 15
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C1, C2, C6
+  - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §2 principles
 ---
 
 # A well-designed refusal is mutation-free, revelation-rich, and law-rich

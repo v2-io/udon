@@ -7,10 +7,10 @@ stage: drafted
 consumers: both
 depends: [errors-that-teach, method-evidence-tiers]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # Part A, C1–C4, Part C, Part D.1
-  - ../01-ideation/02-provenanced/syntheses/tier2-lineage.md
-  - ../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 1, 2
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 1
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # Part A, C1–C4, Part C, Part D.1
+  - ../../01-ideation/02-provenanced/syntheses/tier2-lineage.md
+  - ../../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 1, 2
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 1
 ---
 
 # The edit-representation landscape: text-level, guarantee-free, and empirically decisive
@@ -50,10 +50,17 @@ the edit. The convergent insight: LLM-emitted `old_string` is reliably
 wall and built the same-shaped tolerance rather than trusting exact match or
 falling back to whole-file.
 
-**The abandonment that explains the landscape:** aider tried tool-call
-(JSON-function) editing and killed it (`RuntimeError("Deprecated")`) —
-models mangled structured arguments. The ecosystem's convergence on
-prompt-dialect editing is the residue of that negative result, not taste.
+**The abandonment that shaped this landscape -- scoped honestly:** aider
+tried tool-call (JSON-function) editing and killed it
+(`RuntimeError("Deprecated")`) -- models of that era mangled structured
+arguments -- and within the ecosystem sampled here, prompt-dialect editing
+is what everyone ships. But the negative result is family- and era-scoped,
+not a law: the Gemini/Antigravity ecosystem ships tool-call editing with
+tool-layer schema validation as its default, successfully (cross-substrate
+dissent, #counter-register row 11). The honest statement: in the
+Claude/OpenAI-lineage ecosystem this corpus samples, prompt-dialect editing
+won and at least one team's abandonment of the alternative is on record;
+elsewhere the alternative is alive.
 Model-conditional routing (per-model edit formats, per-model prompts, 5
 sources) is the second half of that lesson: **no shipping harness treats the
 edit contract as model-agnostic.**
@@ -97,5 +104,7 @@ channel whose ambiguity the κ×A law prices (#tools-are-observation-infrastruct
 
 Nobody in Tier 2 addresses multi-file atomic transactions except hashline's
 batch semantics (named gap, carried in RESIDUALS). And the uniformity of
-str-replace is weak evidence of *optimality* — it is strong evidence only
-that it is good enough to survive under current model capabilities.
+str-replace is weak evidence of *optimality* -- it is strong evidence only
+that it is good enough to survive under current model capabilities, within
+a corpus whose Tier-2 sample is Claude/OpenAI-lineage-heavy (row 11's
+dissent is what sampling another lineage immediately surfaced).

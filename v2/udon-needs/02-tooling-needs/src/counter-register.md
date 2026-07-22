@@ -7,10 +7,10 @@ stage: drafted
 consumers: both
 depends: [method-evidence-tiers]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # singletons
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # Part D
-  - ../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 3, 5, 6
-  - ../01-ideation/STEWARD-CALLS.md  # #6
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # singletons
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # Part D
+  - ../../01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md  # findings 3, 5, 6
+  - ../../01-ideation/STEWARD-CALLS.md  # #6
 ---
 
 # The counter-register: evidence against our own theses
@@ -32,5 +32,10 @@ should cite the counter-row, not just the supporting segment.**
 | 8 | **Self-chunking is unmeasured** for UDON specifically — sar3's pre-test supports parsing-based chunking generally; UDON's own claim has no measurement. Claim-or-kill experiment specified in #self-chunking-status. | The README-level self-chunking pitch | Absence-of-evidence row: the thesis is live, the *claim* is currently over-dressed |
 | 9 | **One-shot tool constraint** — tools can't call back mid-execution (dialogs + anamnos): interactive-confirmation and mid-edit-clarification designs must survive this reality or state their transport assumption. | Any design assuming conversational tools | Realism check; transport-dependent |
 
-Rows 1–2 and 8 are UDON-facing; 3–7 and 9 harness-facing; all travel with
-both consumers under the BRIEF's say-so-where-they-diverge rule.
+| 10 | **Prefix-parseable ≠ streaming transport** (codex review, 2026-07-22 -- cross-substrate practitioner dissent): a format whose partial payloads parse honestly does not thereby provide framing, sequencing, cancellation, or multiplexing; NDJSON solves transport, prefix-parsing solves payload validation, and neither replaces the other absent a protocol experiment. | Any "UDON can serve the NDJSON role natively" claim (#headless-io-contract, #streaming-and-partial-documents) | Practitioner-architecture reasoning, no measurement either way; adopted as the working framing |
+| 11 | **Tool-call JSON editing is not universally abandoned** (agy/Gemini-ecosystem review, 2026-07-22 -- cross-substrate dissent): structured tool-call editing with schema validation at the tool layer is the default, successful, primary edit modality in the Gemini/Antigravity ecosystem; the aider abandonment is best read as an artifact of specific model families and eras, not a law. | #edit-representation-landscape's abandonment framing | Materially scopes a Tier-2 conclusion; first genuinely cross-substrate counter-weight in the register |
+
+Rows 1–2 and 8 are UDON-facing; 3–7 and 9–11 harness-facing (10–11 carry
+cross-substrate attribution -- the independent counter-weight this
+single-estate corpus otherwise lacks); all travel with both consumers under
+the BRIEF's say-so-where-they-diverge rule.

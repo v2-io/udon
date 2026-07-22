@@ -10,11 +10,11 @@ depends: [schema-guarded-mutation, addressing-is-the-long-pole, streaming-and-pa
 
 # Priorities, and what the informed spikes should probe
 
-**Standing caveat:** this synthesis is drawn from the *drafted* spine; the
-planned segments (dialects/templates, typing/schema-boundary, machine-first
-documents, continuity, human-side) will thicken it and may reorder the
-tail. It exists now because phase-3 spikes were the stated need and the
-drafted evidence already constrains them hard. Priorities here are
+**Scope note:** first drafted against the spine (2026-07-22 AM), revised
+same day after the full back half landed — the ranking below survived the
+back-half segments unchanged (they thickened its legs: crystallized-process
+under #5, typing/evolution under the schema spike, continuity under #4).
+Priorities here are
 *demand-strength* rankings (breadth × tier-span × measured cost of absence),
 not implementation sequencing — that adjudication belongs downstream
 (phase 3/4 per the flow's own rule).
@@ -52,7 +52,11 @@ probe); relational-first vs tree-first as primary mental model
 (stress-test the one-day sample against prose-heavy and append-only docs).
 Ruled constraints in: PATH-1 (cross-document in scope), S14 (no incremental
 tuple growth). Failure vocabulary (NotFound/NotUnique/Plural/Stale) is part
-of the deliverable, not polish.
+of the deliverable, not polish. One question added by cross-substrate
+review (agy): are paths strictly *necessary* for guarded mutation, or one
+targeting mechanism among several (exact-match or line-range targeting plus
+a post-edit schema check would deliver a weaker-but-sooner guard)? The
+spike should answer it rather than assume the dependency.
 
 **Dialects spike** — the least-fed area relative to its leverage (the
 morning correction's "real scandal"). The demand-side entry points now on
@@ -79,6 +83,18 @@ what demand still has to shape: unlabelled-dispatch ordering under multiple
 dialects, nested-envelope routing (S12), and the recognition-time vs
 resolution-time typing split for stream consumers (S2's question). Runs
 jointly with the dialects spike or immediately after its probe.
+
+## Sequencing dissents worth carrying (cross-substrate, 2026-07-22)
+
+Two product-strategy positions from the external reviews, carried visibly
+rather than adjudicated here: (a) **near-term ROI first** -- teaching
+refusals, partial-document honesty, and a distinct staleness failure class
+are shippable improvements *before* the paths+schema program lands; the
+demand ranking above is a strength ordering, not a build order that defers
+all value behind the long pole. (b) **The human-verification surface is
+load-bearing, not garnish** -- fail-plausible (#counter-register row 5) is
+the failure class nothing mechanical catches, so Part VII's thinness in the
+gathered corpus is a risk to fund against, not evidence of low importance.
 
 ## The cross-cutting spike discipline (from this corpus's own history)
 

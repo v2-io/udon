@@ -7,9 +7,9 @@ stage: drafted
 consumers: both
 depends: [method-evidence-tiers]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.1–2.3, §3
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 5, 6, 11
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C5, C11
+  - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.1–2.3, §3
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 5, 6, 11
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C5, C11
 ---
 
 # Tools are an agent's observation infrastructure — and their quality is existential
@@ -85,7 +85,10 @@ DL-budget constraint handled empirically.
 observation ambiguity toward zero (codes, counts, paths — not interpretive
 prose in the result channel)." Cross-tier with T4 this is the corpus's
 strongest foundations-level convergence; noted honestly: T1 and T4 share an
-author, so the load-bearing independence is T4↔T2↔T5, not T1↔T4.
+author, so the load-bearing independence here is **T4↔T2** -- the theory and
+the shipped ecosystem arriving at the same rules separately -- with T1 as
+same-author resonance. (No T5 source directly tests the bias law itself;
+external evidence corroborates neighboring claims, not this one.)
 
 ## What it generates
 

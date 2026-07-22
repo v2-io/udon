@@ -7,11 +7,11 @@ stage: drafted
 consumers: both (udon-primary; feeds the phase-3 paths spike directly)
 depends: [schema-guarded-mutation, freshness-and-atomicity]
 sources:
-  - ../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md  # whole; D1–D9; §10 questions
-  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §3
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # yq singleton
-  - ../01-ideation/02-provenanced/copies/I2-scenarios/  # scenario journeys (spelling provisional)
-  - v2/DECISIONS.md PATH-1; v2/OPEN.md S3, S14
+  - ../../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md  # whole; D1–D9; §10 questions
+  - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §3
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # yq singleton
+  - ../../01-ideation/02-provenanced/copies/I2-scenarios/  # scenario journeys (spelling provisional)
+  - ../../../DECISIONS.md  # rows: PATH-1; v2/OPEN.md S3, S14
 ---
 
 # Addressing is the long pole

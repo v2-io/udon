@@ -7,10 +7,10 @@ stage: drafted
 consumers: both (udon-primary on format; harness on transport)
 depends: [tools-are-observation-infrastructure]
 sources:
-  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §1, §5, P-A/P-B
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C10
-  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md  # §2.5 obs-context-turnover; §4.2
-  - v2/DECISIONS.md R2, C6, W0, W1d
+  - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §1, §5, P-A/P-B
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C10
+  - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md  # §2.5 obs-context-turnover; §4.2
+  - ../../../DECISIONS.md  # rows: R2, C6, W0, W1d
 ---
 
 # Partial documents are the normal case

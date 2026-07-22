@@ -7,10 +7,10 @@ stage: drafted
 consumers: both
 depends: [edit-representation-landscape]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C6, hashline singleton, kimi ToolAccesses
-  - ../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md  # D5, D6
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 14 (multi-writer)
-  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # P-C
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C6, hashline singleton, kimi ToolAccesses
+  - ../../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md  # D5, D6
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # cluster 14 (multi-writer)
+  - ../../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # P-C
 ---
 
 # Freshness and atomicity: edits bind to the file as it is *now*

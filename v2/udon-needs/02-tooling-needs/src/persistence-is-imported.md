@@ -7,10 +7,10 @@ stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure]
 sources:
-  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §4.1, §4.2, §2.5
-  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 12, 13
-  - ../01-ideation/02-provenanced/characterizations/recall-floor-archema-harness.md  # INTERPRES compaction note
-  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C11
+  - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §4.1, §4.2, §2.5
+  - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 12, 13
+  - ../../01-ideation/02-provenanced/characterizations/recall-floor-archema-harness.md  # INTERPRES compaction note
+  - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C11
 ---
 
 # Cross-session persistence is imported, never intrinsic
