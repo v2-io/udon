@@ -1,10 +1,6 @@
 # The pattern language (constraint and gradient)
 
-**How to read this.** The pattern-language companion to the conventions:
-constraint (make invalid states inexpressible) and gradient (make the
-correct operation the easiest one), the DSF-vs-DSL distinction, and living
-documents. The ease-gradient here is the behavioral mechanism the
-crystallized-process bridge builds on.
+**How to read this.** The pattern-language companion to the conventions: constraint (make invalid states inexpressible) and gradient (make the correct operation the easiest one), the DSF-vs-DSL distinction, and living documents. The ease-gradient here is the behavioral mechanism the crystallized-process bridge builds on.
 
 > **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 

@@ -1,10 +1,6 @@
 # Notation key — vocabulary and apparatus
 
-Two jobs: the theory vocabulary that capability cards and theory passages
-name their quantities in (taught in plain words at first use in chapters;
-collected here for reference), and the auditor apparatus — source-index
-codes that appear only in metadata and source notes, never in body prose.
-If body prose ever leans on a code from the second half, that is a defect — flag it.
+Two jobs: the theory vocabulary that capability cards and theory passages name their quantities in (taught in plain words at first use in chapters; collected here for reference), and the auditor apparatus — source-index codes that appear only in metadata and source notes, never in body prose. If body prose ever leans on a code from the second half, that is a defect — flag it.
 
 ## Theory quantities (ASF/AAT — full treatment reproduced in [[theory-of-agentic-tooling| the theory report]])
 
@@ -38,12 +34,4 @@ If body prose ever leans on a code from the second half, that is a defect — fl
 
 ## If you're coming from the harness, not UDON
 
-You can read this report without any UDON background. The UDON-specific
-vocabulary (recognition/assembly products, envelopes `<…>`, dialects,
-`$partial-key`, keep-everything) appears mainly in Parts III–V, and each
-segment's "What it generates" splits your consumer out explicitly — the
-harness-facing half never depends on UDON internals. The theory shorthand
-above is the only prerequisite layer, and the dossier it points into was
-written to be read standalone. Start with Part I, then VI, then II; take
-III–V as the notation consumer's deep-dive that you can skim for the
-demand statements in bold.
+You can read this report without any UDON background. The UDON-specific vocabulary (recognition/assembly products, envelopes `<…>`, dialects, `$partial-key`, keep-everything) appears mainly in Parts III–V, and each segment's "What it generates" splits your consumer out explicitly — the harness-facing half never depends on UDON internals. The theory shorthand above is the only prerequisite layer, and the dossier it points into was written to be read standalone. Start with Part I, then VI, then II; take III–V as the notation consumer's deep-dive that you can skim for the demand statements in bold.

@@ -1,411 +1,118 @@
 # Residuals, gaps, and bolt-on points
 
-The honest-coverage ledger for the monograph. Three registers: what the
-drafted spine deliberately did not absorb, where the known gaps are, and
-where late-arriving pieces bolt on without disturbing what's written.
+The honest-coverage ledger for the monograph. Three registers: what the drafted spine deliberately did not absorb, where the known gaps are, and where late-arriving pieces bolt on without disturbing what's written.
 
 ## 0. Where the work stands (2026-07-22, end of deepening cycle 1)
 
-**Shape:** anthology — seven promoted deep reports in [`reports/`](reports/)
-are the body; 30 bridge chapters in [`src/`](src/) orient by degrees and hand
-off; [`OUTLINE.md`](OUTLINE.md) is the spine. History →
-[`CHANGELOG.md`](CHANGELOG.md); workflow →
-[`DEEPENING-CYCLES.md`](DEEPENING-CYCLES.md); channels → [`notes/`](notes/).
+**Shape:** anthology — seven promoted deep reports in [`reports/`](reports/) are the body; 30 bridge chapters in [`src/`](src/) orient by degrees and hand off; [`OUTLINE.md`](OUTLINE.md) is the spine. History → [`CHANGELOG.md`](CHANGELOG.md); workflow → [`DEEPENING-CYCLES.md`](DEEPENING-CYCLES.md); channels → [`notes/`](notes/).
 
-**Epistemology: ratified and live.** Three axes (support-kind × strength ×
-register) + the convergent lock (keyed on *failure-mode* independence) + the
-append-only verification-event log. Schema home is
-[[method-evidence-tiers| #method-evidence-tiers]]; the reasoning record is
-`notes/epistemology-{SYNTHESIS,pilot-A,pilot-B}.md`; trio-ratified and
-Joseph-supported. All 30 chapters carry `register:` / `support-kind:` /
-`strength:` / `convergent:` / `verified:`; `evidence: [T…]` is retired.
-The outward-facing proposal is `notes/TST-extension-memo.md`.
+**Epistemology: ratified and live.** Three axes (support-kind × strength × register) + the convergent lock (keyed on *failure-mode* independence) + the append-only verification-event log. Schema home is [[method-evidence-tiers| #method-evidence-tiers]]; the reasoning record is `notes/epistemology-{SYNTHESIS,pilot-A,pilot-B}.md`; trio-ratified and Joseph-supported. All 30 chapters carry `register:` / `support-kind:` / `strength:` / `convergent:` / `verified:`; `evidence: [T…]` is retired. The outward-facing proposal is `notes/TST-extension-memo.md`.
 
-**Cycle 1 (two pilot divisions) produced:** the epistemic recalibration; the
-five leg-tables, built as *split manifests* (one row = one extractable claim
-with its kind, strength, and the evidence-action that would move it); a
-cross-reference sweep to relocation-stable `[[stem| #stem]]` form; and one
-systematic finding that *reduced* claimed strength — **`design` and
-`theoretic` share an author**, so under the failure-mode key they are one
-estate leg, which un-armed several convergence claims that had counted them
-separately.
+**Cycle 1 (two pilot divisions) produced:** the epistemic recalibration; the five leg-tables, built as *split manifests* (one row = one extractable claim with its kind, strength, and the evidence-action that would move it); a cross-reference sweep to relocation-stable `[[stem| #stem]]` form; and one systematic finding that *reduced* claimed strength — **`design` and `theoretic` share an author**, so under the failure-mode key they are one estate leg, which un-armed several convergence claims that had counted them separately.
 
 **Open, and named elsewhere rather than duplicated here:**
 
-- Structural proposals → [`notes/for-OUTLINE.md`](notes/for-OUTLINE.md):
-  two candidate chapters (code-indexing/navigation paradigms — LSP,
-  tree-sitter, pre-indexed; and the MCP/skills/plugins ecosystem survey),
-  plus **the coming claim-segmentation** and its preparation.
-- Steward calls → [`notes/for-joseph.md`](notes/for-joseph.md) and
-  `v2/OPEN.md`.
-- Per-chapter open state → each chapter's own `## Working Notes` (an
-  unconstrained side-car: open work, in-progress thinking, unrouted ideas —
-  never history).
-- The partially-completed ecosystem deep-research (43 of 109 verification
-  agents finished before a session limit; three claims confirmed, ~25 with
-  real sources unverified-not-refuted) is resumable from cache; it feeds the
-  proposed ecosystem survey.
+- Structural proposals → [`notes/for-OUTLINE.md`](notes/for-OUTLINE.md): two candidate chapters (code-indexing/navigation paradigms — LSP, tree-sitter, pre-indexed; and the MCP/skills/plugins ecosystem survey), plus **the coming claim-segmentation** and its preparation.
+- Steward calls → [`notes/for-joseph.md`](notes/for-joseph.md) and `v2/OPEN.md`.
+- Per-chapter open state → each chapter's own `## Working Notes` (an unconstrained side-car: open work, in-progress thinking, unrouted ideas — never history).
+- The partially-completed ecosystem deep-research (43 of 109 verification agents finished before a session limit; three claims confirmed, ~25 with real sources unverified-not-refuted) is resumable from cache; it feeds the proposed ecosystem survey.
 
 ## 1. Planned segments — NONE (end-to-end as of 2026-07-22 PM)
 
-All 30 segments are drafted; the first complete draft exists. The former
-planned-row mechanism stands ready for any *new* segment a later phase
-adds (state claim + sources in an outline row, draft against primaries).
+All 30 segments are drafted; the first complete draft exists. The former planned-row mechanism stands ready for any *new* segment a later phase adds (state claim + sources in an outline row, draft against primaries).
 
 ## 2. Corpus territory the drafted spine touched thinly
 
-- **Tier-1 ideology primaries** — the back-half pass read QUICK-TOOLING
-  whole plus THE-PATTERN, intent-surfacing, the addendum's case-study
-  half, udon-agentic body, tracking-snapshot spec (head), praxis-protocol
-  (head), and the multi-agent coordination doc; the earlier T1 skew is
-  substantially closed. Still unread at depth: the ennaos
-  agentic-coding-background research reports (6 numbered files), the
-  remaining addendum sections (§3–8), zoetica PRAXES, and the dialogs
-  corpus — none currently load-bearing for a drafted claim.
-- **Tier-3 ELI testimony** — cited at witness level (Architectus,
-  Zi-am-tur) via the characterization; the per-account synthesis belongs to
-  #continuity-infrastructure + #annotation-and-metacognition. The
-  respectful-read banner on `III-eli-testimony.md` applies.
-- **The harness workshop deep-copies** — SC#15 pull executed 2026-07-22:
-  dossier TAXONOMY + CLI census landed at
-  `01-ideation/02-provenanced/copies/harness-workshop/` (ledger lines
-  appended). The individual L1 entries and `.verify.md` files remain
-  named-not-copied — pull when a claim needs them. The census outranks
-  external-landscape where they disagree (read-the-code beats
-  deep-research).
-- **I1 usability result-bodies** (footgun catalog, non-monotone context
-  finding) — still unsynthesized; #self-chunking-status names its task
-  briefs as experiment seeds, but the footgun catalog awaits the
-  house-style discussion. The III-schema family: 3 of ~19 files read at
-  depth this pass (yaml-spike recovery, ADR-008 head, rowan evolution
-  head); the rest re-vet at point of use per the gathering flag.
-- **Vaults/MACH, consciousness-compiler, soren, dialogs primary turns** —
-  registered, cited in outline rows, unsynthesized.
+- **Tier-1 ideology primaries** — the back-half pass read QUICK-TOOLING whole plus THE-PATTERN, intent-surfacing, the addendum's case-study half, udon-agentic body, tracking-snapshot spec (head), praxis-protocol (head), and the multi-agent coordination doc; the earlier T1 skew is substantially closed. Still unread at depth: the ennaos agentic-coding-background research reports (6 numbered files), the remaining addendum sections (§3–8), zoetica PRAXES, and the dialogs corpus — none currently load-bearing for a drafted claim.
+- **Tier-3 ELI testimony** — cited at witness level (Architectus, Zi-am-tur) via the characterization; the per-account synthesis belongs to #continuity-infrastructure + #annotation-and-metacognition. The respectful-read banner on `III-eli-testimony.md` applies.
+- **The harness workshop deep-copies** — SC#15 pull executed 2026-07-22: dossier TAXONOMY + CLI census landed at `01-ideation/02-provenanced/copies/harness-workshop/` (ledger lines appended). The individual L1 entries and `.verify.md` files remain named-not-copied — pull when a claim needs them. The census outranks external-landscape where they disagree (read-the-code beats deep-research).
+- **I1 usability result-bodies** (footgun catalog, non-monotone context finding) — still unsynthesized; #self-chunking-status names its task briefs as experiment seeds, but the footgun catalog awaits the house-style discussion. The III-schema family: 3 of ~19 files read at depth this pass (yaml-spike recovery, ADR-008 head, rowan evolution head); the rest re-vet at point of use per the gathering flag.
+- **Vaults/MACH, consciousness-compiler, soren, dialogs primary turns** — registered, cited in outline rows, unsynthesized.
 
 ## 3. Known gaps in the *gathering* (carried forward from 01-ideation)
 
-Not this phase's to fill silently — listed so their absence stays visible:
-`_ref/{principia,cddf,crew-first}` unsearched; dossier pass-4 targets; grok
-§13 trails; rowan rows 763–764 (⊘ budget); `~/vaults` book-analyses row
-607–608 residuals; ELI rows 776–782 landed as characterization not copies;
-**Joseph's end-user ideation dump — standing, primary when it lands** (see
-§4). Multi-file atomic transactions have *no* Tier-2 coverage (named in
-#edit-representation-landscape); human-side demand (Part VII) is the
-thinnest slice of the whole gathering — if any part discovers a missing
-core piece, expect it there.
+Not this phase's to fill silently — listed so their absence stays visible: `_ref/{principia,cddf,crew-first}` unsearched; dossier pass-4 targets; grok §13 trails; rowan rows 763–764 (⊘ budget); `~/vaults` book-analyses row 607–608 residuals; ELI rows 776–782 landed as characterization not copies; **Joseph's end-user ideation dump — standing, primary when it lands** (see §4). Multi-file atomic transactions have *no* Tier-2 coverage (named in #edit-representation-landscape); human-side demand (Part VII) is the thinnest slice of the whole gathering — if any part discovers a missing core piece, expect it there.
 
 ## 4. Bolt-on points for late-arriving material
 
-- **A new demand source** (e.g. the ideation dump): gets a `01-ideation`
-  provenanced artifact first (BRIEF rules), then lands here as either a new
-  segment or `sources:` + revision on an existing one — the outline row's
-  Stage flips to note the re-basing. No drafted segment assumes
-  completeness of its sources; each cites what it stood on, so incremental
-  contribution is additive by construction.
-- **A new counter-result**: a row in #counter-register + a cross-link from
-  the segment it qualifies. Never absorbed silently into prose.
-- **A spike result (phase 3)**: spikes cite the segment they ran against;
-  their findings come back as *revisions with provenance* to that segment
-  (and possibly a new ruled row in `v2/DECISIONS.md`), not as edits to the
-  priorities synthesis alone.
+- **A new demand source** (e.g. the ideation dump): gets a `01-ideation` provenanced artifact first (BRIEF rules), then lands here as either a new segment or `sources:` + revision on an existing one — the outline row's Stage flips to note the re-basing. No drafted segment assumes completeness of its sources; each cites what it stood on, so incremental contribution is additive by construction.
+- **A new counter-result**: a row in #counter-register + a cross-link from the segment it qualifies. Never absorbed silently into prose.
+- **A spike result (phase 3)**: spikes cite the segment they ran against; their findings come back as *revisions with provenance* to that segment (and possibly a new ruled row in `v2/DECISIONS.md`), not as edits to the priorities synthesis alone.
 
 ## 5. Segment-shape notes (for whoever writes the next one)
 
-Frontmatter: `slug / type / evidence / status / stage / consumers / depends
-/ sources`. Body: **Claim** first (one paragraph, falsifiable), evidence
-tier-by-tier with lineage caveats inline, **What it generates** split by
-consumer where they diverge, **Honest edges** always last and never empty.
-Keep the anti-collapse discipline: distinctions that route to different
-repairs (mechanism families, failure classes, guarantee kinds) stay
-separate even when merging would read cleaner. The outline carries
-ordering; the slug carries identity; re-ordering is an outline edit only.
+Frontmatter: `slug / type / evidence / status / stage / consumers / depends / sources`. Body: **Claim** first (one paragraph, falsifiable), evidence tier-by-tier with lineage caveats inline, **What it generates** split by consumer where they diverge, **Honest edges** always last and never empty. Keep the anti-collapse discipline: distinctions that route to different repairs (mechanism families, failure classes, guarantee kinds) stay separate even when merging would read cleaner. The outline carries ordering; the slug carries identity; re-ordering is an outline edit only.
 
 ## 6. Revision log (for auditor cite traceability)
 
-- **2026-07-22 (post review-A/B, spine pass):** context-economy C7 count
-  lineage-corrected (B#1/A); edit-representation 2–3× re-voiced as
-  T1-secondhand with T5 lead + thin-margin caveat on >30% (B#2/A#2);
-  schema-guarded-mutation: yaml-spike retiered T3→T2, 16% decoupled from
-  duplicate-key, headline 5-tier→4-tier(+adjacent), recovery drama rendered
-  (A#1/B#3/B#5); errors-that-teach: refusal shown verbatim (B#5);
-  tools-are-observation-infrastructure: κ×A/Level-2 first-use teaching +
-  burn-rate/confident-wrongness gold (B#4/A#3); persistence-is-imported
-  tier labels made consistent (A#5); NOTATION-KEY.md added + README pointer
-  (B#4); OUTLINE thesis names the lead + Part IV ordering signpost
-  (B#6/A#4); worktree incident landed as provenanced artifact + anchor
-  swap in tool-definition-anatomy (A#6); AND/OR worked numbers added to
-  tool-definition-anatomy (A#3). No audit finding rejected.
+- **2026-07-22 (post review-A/B, spine pass):** context-economy C7 count lineage-corrected (B#1/A); edit-representation 2–3× re-voiced as T1-secondhand with T5 lead + thin-margin caveat on >30% (B#2/A#2); schema-guarded-mutation: yaml-spike retiered T3→T2, 16% decoupled from duplicate-key, headline 5-tier→4-tier(+adjacent), recovery drama rendered (A#1/B#3/B#5); errors-that-teach: refusal shown verbatim (B#5); tools-are-observation-infrastructure: κ×A/Level-2 first-use teaching + burn-rate/confident-wrongness gold (B#4/A#3); persistence-is-imported tier labels made consistent (A#5); NOTATION-KEY.md added + README pointer (B#4); OUTLINE thesis names the lead + Part IV ordering signpost (B#6/A#4); worktree incident landed as provenanced artifact + anchor swap in tool-definition-anatomy (A#6); AND/OR worked numbers added to tool-definition-anatomy (A#3). No audit finding rejected.
 
-- **2026-07-22 (back half, end-to-end):** all 15 remaining segments
-  drafted against primary reads (QUICK-TOOLING, THE-PATTERN,
-  intent-surfacing, addendum §1–2, udon-agentic body, tracking-snapshot
-  spec, multi-agent coordination, yaml-spike RECOVERY, ADR-008, rowan
-  evolution, sar3 chunking, vaults lineage + consciousness-compiler
-  characterizations, ELI testimony, harness TAXONOMY + census). SC#15
-  deep-copy executed; worktree incident provenanced. Cross-substrate
-  reviews folded: codex (paths sweep + resolve check, T4↔T2 triangle fix,
-  weakest-necessary-premise method wording, transport-vs-payload recast +
-  counter-register row 10), grok (pipeline-discussion path fix, quote
-  exactness, thesis absolutes cut, survivorship-positive-weight in
-  method, sequencing dissents in VIII), agy (tool-call-editing dissent →
-  counter-register row 11 + landscape scoping, in-session/cross-session
-  thesis qualifier, paths-necessity spike question). OUTLINE stages all
-  → drafted; priorities re-scoped end-to-end. No review finding rejected
-  across all five reviews.
+- **2026-07-22 (back half, end-to-end):** all 15 remaining segments drafted against primary reads (QUICK-TOOLING, THE-PATTERN, intent-surfacing, addendum §1–2, udon-agentic body, tracking-snapshot spec, multi-agent coordination, yaml-spike RECOVERY, ADR-008, rowan evolution, sar3 chunking, vaults lineage + consciousness-compiler characterizations, ELI testimony, harness TAXONOMY + census). SC#15 deep-copy executed; worktree incident provenanced. Cross-substrate reviews folded: codex (paths sweep + resolve check, T4↔T2 triangle fix, weakest-necessary-premise method wording, transport-vs-payload recast + counter-register row 10), grok (pipeline-discussion path fix, quote exactness, thesis absolutes cut, survivorship-positive-weight in method, sequencing dissents in VIII), agy (tool-call-editing dissent → counter-register row 11 + landscape scoping, in-session/cross-session thesis qualifier, paths-necessity spike question). OUTLINE stages all → drafted; priorities re-scoped end-to-end. No review finding rejected across all five reviews.
 
 ### 2026-07-22 standalone-ownership pass (post-Joseph-first-read)
 
-Joseph's first-read verdict on the initial draft: segments read as
-summaries pointing at material rather than carrying it — "if the source
-material were deleted, the report is useless right now, instead of the
-report superseding and owning everything." That sentence is now the
-acceptance test for every segment. This pass:
+Joseph's first-read verdict on the initial draft: segments read as summaries pointing at material rather than carrying it — "if the source material were deleted, the report is useless right now, instead of the report superseding and owning everything." That sentence is now the acceptance test for every segment. This pass:
 
-- **Rewrote** `addressing-is-the-long-pole` whole (the cited exemplar of
-  the failure): D1–D9 demand table and the embeddability stress table
-  absorbed verbatim-grade; dead-ends, §10 floor, and the relational-first
-  finding quoted and explained on the page.
-- **Expanded** `schema-guarded-mutation`: the six-scenario recovery table
-  absorbed whole; the S8 mis-cite fixed to Joseph's actual open questions;
-  zoetica/T5 shorthand expanded; UDON's stacking law connected as the
-  duplicate-key defense.
-- **Fixed** counter-register rows 1 (SAR experiment now described, not
-  named) and 4 (weight scoped by row 11 instead of contradicting it).
-- **Audited all 30 segments** against the standalone test. Finding,
-  recorded honestly: the review-folded spine and back half largely pass —
-  content stated on the page with citations as provenance — and the
-  failure Joseph sampled was concentrated in `addressing` (the one
-  demand-spine segment no reviewer had rewritten) plus absorbed-evidence
-  gaps in the flagship. Remaining known distance from full ownership:
-  segments cite digest cluster IDs (C-numbers) and external-landscape
-  finding numbers as provenance shorthand after stating their content —
-  acceptable under the absorb-then-cite rule, but a reader-facing pass
-  replacing residual ID-speak with plain descriptions in running prose
-  would tighten Parts II and VII further; and the deepest primaries
-  (QUICK-TOOLING whole, THE-PATTERN whole, the udon-agentic catalog)
-  are absorbed at claim-and-quote grade, not reproduced-appendix grade —
-  if Joseph's read still finds segments leaning outward, the next
-  escalation is appendix-grade reproduction of the three or four
-  crown sources inside the report.
+- **Rewrote** `addressing-is-the-long-pole` whole (the cited exemplar of the failure): D1–D9 demand table and the embeddability stress table absorbed verbatim-grade; dead-ends, §10 floor, and the relational-first finding quoted and explained on the page.
+- **Expanded** `schema-guarded-mutation`: the six-scenario recovery table absorbed whole; the S8 mis-cite fixed to Joseph's actual open questions; zoetica/T5 shorthand expanded; UDON's stacking law connected as the duplicate-key defense.
+- **Fixed** counter-register rows 1 (SAR experiment now described, not named) and 4 (weight scoped by row 11 instead of contradicting it).
+- **Audited all 30 segments** against the standalone test. Finding, recorded honestly: the review-folded spine and back half largely pass — content stated on the page with citations as provenance — and the failure Joseph sampled was concentrated in `addressing` (the one demand-spine segment no reviewer had rewritten) plus absorbed-evidence gaps in the flagship. Remaining known distance from full ownership: segments cite digest cluster IDs (C-numbers) and external-landscape finding numbers as provenance shorthand after stating their content — acceptable under the absorb-then-cite rule, but a reader-facing pass replacing residual ID-speak with plain descriptions in running prose would tighten Parts II and VII further; and the deepest primaries (QUICK-TOOLING whole, THE-PATTERN whole, the udon-agentic catalog) are absorbed at claim-and-quote grade, not reproduced-appendix grade — if Joseph's read still finds segments leaning outward, the next escalation is appendix-grade reproduction of the three or four crown sources inside the report.
 
 
 ### 2026-07-22 apparatus-register + appendices pass (Joseph's register ruling)
 
-Joseph's two register rulings, applied: (1) *"The reader should never have
-to know that there was an 01 process whatsoever"* — the gathering
-apparatus is gone from body prose across all 30 segments, OUTLINE, and
-NOTATION-KEY: tier codes (T1–T5) replaced by plain evidence descriptions,
-descent/lineage corrections told as history in sentences, internal file
-names and process vocabulary (corpus/digest/spike-as-source/SC#/BRIEF)
-removed from prose; codes survive only in frontmatter, the methods
-segment's mapping table, and source notes. (2) The crown sources are now
-**reproduced as Appendices A–E** (theory survey; fourteen-harness
-examination + descent analysis; both demand explorations; the two taproot
-design documents; the YAML stress test) and segments cite inward.
+Joseph's two register rulings, applied: (1) *"The reader should never have to know that there was an 01 process whatsoever"* — the gathering apparatus is gone from body prose across all 30 segments, OUTLINE, and NOTATION-KEY: tier codes (T1–T5) replaced by plain evidence descriptions, descent/lineage corrections told as history in sentences, internal file names and process vocabulary (corpus/digest/spike-as-source/SC#/BRIEF) removed from prose; codes survive only in frontmatter, the methods segment's mapping table, and source notes. (2) The crown sources are now **reproduced as Appendices A–E** (theory survey; fourteen-harness examination + descent analysis; both demand explorations; the two taproot design documents; the YAML stress test) and segments cite inward.
 
-Honest remaining distance, for the next pass: the *by-degrees* discipline
-(each segment assuming only its depends: chain, teaching before using) is
-applied where reviewers and Joseph flagged it, but a dedicated
-build-a-mental-model-by-degrees read of every segment in depends-order —
-the deeper fix Joseph named via the "AI slop attends to the whole thing"
-diagnosis — has not been done end-to-end; the demand spine has had the
-most attention, Parts VI–VIII the least. That pass is writing craft, not
-mechanics, and deserves fresh eyes segment-by-segment.
+Honest remaining distance, for the next pass: the *by-degrees* discipline (each segment assuming only its depends: chain, teaching before using) is applied where reviewers and Joseph flagged it, but a dedicated build-a-mental-model-by-degrees read of every segment in depends-order — the deeper fix Joseph named via the "AI slop attends to the whole thing" diagnosis — has not been done end-to-end; the demand spine has had the most attention, Parts VI–VIII the least. That pass is writing craft, not mechanics, and deserves fresh eyes segment-by-segment.
 
 ### 2026-07-22 anthology inversion — IN PROGRESS at handoff
 
-Joseph's architectural redirect (via coordinator): the report becomes an
-**anthology with a spine** — crown reports promoted to the body, OUTLINE
-as the organizing spine, segments cut down to short bridge chapters
-(orient by degrees; carry only the genuinely synthetic content; make the
-reader ready for the deep report, never summarize it); method /
-counter-register / priorities / handover-map stay true chapters.
+Joseph's architectural redirect (via coordinator): the report becomes an **anthology with a spine** — crown reports promoted to the body, OUTLINE as the organizing spine, segments cut down to short bridge chapters (orient by degrees; carry only the genuinely synthetic content; make the reader ready for the deep report, never summarize it); method / counter-register / priorities / handover-map stay true chapters.
 
-State at this handoff: **`reports/` is created and committed** — seven
-promoted reports (theory survey; shipping practice + descent; both
-explorations; yaml stress test; the two taproots), each with a by-degrees
-"How to read this" on-ramp and an honest provenance banner
-(framing-only refinement); `appendices/` is removed. **Not yet done:**
-(1) OUTLINE/README restructure showing body-vs-bridge — land this FIRST
-so Joseph can judge the architecture from one file; (2) bridge rewrites —
-every `src/` segment still carries absorbed material its promoted report
-now owns (the addressing bridge is the worst/best example: its D-table
-and stress-table duplicate reports/addressing-exploration.md §8/§4 and
-should shrink to a true bridge); the recommended exemplar is Part IV
-(addressing) or Part III (mutation), done end-to-end so Joseph can feel
-the delta; (3) bridge cross-refs still say "Appendix A–E" — retarget to
-`reports/*`; (4) the by-degrees pass now applies to bridges specifically.
+State at this handoff: **`reports/` is created and committed** — seven promoted reports (theory survey; shipping practice + descent; both explorations; yaml stress test; the two taproots), each with a by-degrees "How to read this" on-ramp and an honest provenance banner (framing-only refinement); `appendices/` is removed. **Not yet done:** (1) OUTLINE/README restructure showing body-vs-bridge — land this FIRST so Joseph can judge the architecture from one file; (2) bridge rewrites — every `src/` segment still carries absorbed material its promoted report now owns (the addressing bridge is the worst/best example: its D-table and stress-table duplicate reports/addressing-exploration.md §8/§4 and should shrink to a true bridge); the recommended exemplar is Part IV (addressing) or Part III (mutation), done end-to-end so Joseph can feel the delta; (3) bridge cross-refs still say "Appendix A–E" — retarget to `reports/*`; (4) the by-degrees pass now applies to bridges specifically.
 
 
 ### 2026-07-22 anthology inversion — spine landed; bridge standard raised
 
-Landed this pass (commits 2647cb7…b9ecabe): OUTLINE restructured as the
-spine (body-vs-bridge architecture stated up top; reports/ table with
-per-Part "Opens into" lines); README front door rewritten (apparatus
-quarantined below the auditors line); all Appendix A–E cross-refs
-retargeted to reports/* by name; process-vocabulary sweep round 1
-(spike/phase-3/steward/gathering out of reader prose); **Part IV
-end-to-end as the exemplar** — both bridges (addressing, read-path) plus
-the promoted addressing report reading clean.
+Landed this pass (commits 2647cb7…b9ecabe): OUTLINE restructured as the spine (body-vs-bridge architecture stated up top; reports/ table with per-Part "Opens into" lines); README front door rewritten (apparatus quarantined below the auditors line); all Appendix A–E cross-refs retargeted to reports/* by name; process-vocabulary sweep round 1 (spike/phase-3/steward/gathering out of reader prose); **Part IV end-to-end as the exemplar** — both bridges (addressing, read-path) plus the promoted addressing report reading clean.
 
-**The bridge standard, raised mid-pass by Joseph (binding for all
-remaining bridge work):** absorption and patch-in-place edits do NOT fix
-the register — a passage can carry all its content and still assume the
-reader. Bridges get **fresh-page rewrites from the reader's zero**: close
-the current text, hold the facts, write as if explaining to a smart
-person who has never seen this project; every concept taught at arrival;
-provenance (ruling IDs, quotes, source names) drops to frontmatter or
-source notes. Joseph's model rewrite (cross-document scope) is in the
-addressing bridge's "What is already decided" paragraph — match it.
-Self-test before committing — bar raised again same day: not "would a
-cold reader know this" but **"is every referent decodable from this page
-alone?"** (the estate's own author could not decode "ledger" or "the
-scenario sample's document-scope lean" — the prose was assuming the
-writing agent's session context, below even the owner's threshold). And
-where a finding came from a lived situation, **show the situation** — the
-one-or-two-sentence scene (the agent, the reference, the file edge) is
-simultaneously the evidence and the pedagogy.
+**The bridge standard, raised mid-pass by Joseph (binding for all remaining bridge work):** absorption and patch-in-place edits do NOT fix the register — a passage can carry all its content and still assume the reader. Bridges get **fresh-page rewrites from the reader's zero**: close the current text, hold the facts, write as if explaining to a smart person who has never seen this project; every concept taught at arrival; provenance (ruling IDs, quotes, source names) drops to frontmatter or source notes. Joseph's model rewrite (cross-document scope) is in the addressing bridge's "What is already decided" paragraph — match it. Self-test before committing — bar raised again same day: not "would a cold reader know this" but **"is every referent decodable from this page alone?"** (the estate's own author could not decode "ledger" or "the scenario sample's document-scope lean" — the prose was assuming the writing agent's session context, below even the owner's threshold). And where a finding came from a lived situation, **show the situation** — the one-or-two-sentence scene (the agent, the reference, the file edge) is simultaneously the evidence and the pedagogy.
 
-**External-document convention (Joseph, 2026-07-22):** where prose
-legitimately leans on a project document rather than teaching its
-content, use a reader-labeled wikilink — `[[DECISIONS.md|ledger]]`
-(filename alone; no path) — so prose reads naturally and the referent is
-one hop away. Third option alongside teach-in-place and footnote; right
-for ruling-provenance. Caveat for the handover half of the audience:
-links into this repo do not survive the port to the harness programme —
-anything harness-load-bearing must be self-contained on the page, with
-the wikilink carrying provenance only (teach the substance AND link).
+**External-document convention (Joseph, 2026-07-22):** where prose legitimately leans on a project document rather than teaching its content, use a reader-labeled wikilink — `[[DECISIONS.md|ledger]]` (filename alone; no path) — so prose reads naturally and the referent is one hop away. Third option alongside teach-in-place and footnote; right for ruling-provenance. Caveat for the handover half of the audience: links into this repo do not survive the port to the harness programme — anything harness-load-bearing must be self-contained on the page, with the wikilink carrying provenance only (teach the substance AND link).
 
 **Remaining work, exact:**
-1. Fresh-page rewrites of the remaining 26 bridges (Part IV's two are
-   done and are the pattern; the two synthesis chapters and the methods/
-   counter-register chapters count — they are reader-facing too).
-2. Vocabulary classes for the sweep, expanded: process words
-   (spike/probe-context, phase-N, gathering, extraction, steward, lane,
-   arc) AND provenance-speak in prose (ledger, "ruled X", DECISIONS/OPEN
-   row IDs, "the corpus", "design corpus", "scenario sample/corpus",
-   "design of record") — grep shows ~a dozen bridges still carry the
-   second class; the fix is the fresh-page rewrite, not substitution.
-3. The six remaining promoted reports: embedded gathered-frontmatter
-   blocks tucked to auditor comments (pattern applied to
-   addressing-exploration.md, b9ecabe).
-4. NOTATION-KEY: re-frame as pure auditor apparatus or fold what readers
-   need into bridges — its gloss table still teaches codes readers should
-   no longer meet.
+1. Fresh-page rewrites of the remaining 26 bridges (Part IV's two are done and are the pattern; the two synthesis chapters and the methods/ counter-register chapters count — they are reader-facing too).
+2. Vocabulary classes for the sweep, expanded: process words (spike/probe-context, phase-N, gathering, extraction, steward, lane, arc) AND provenance-speak in prose (ledger, "ruled X", DECISIONS/OPEN row IDs, "the corpus", "design corpus", "scenario sample/corpus", "design of record") — grep shows ~a dozen bridges still carry the second class; the fix is the fresh-page rewrite, not substitution.
+3. The six remaining promoted reports: embedded gathered-frontmatter blocks tucked to auditor comments (pattern applied to addressing-exploration.md, b9ecabe).
+4. NOTATION-KEY: re-frame as pure auditor apparatus or fold what readers need into bridges — its gloss table still teaches codes readers should no longer meet.
 
 
 ### 2026-07-22 bridge run — state at fork handoff (quality-honest stop)
 
-**GO confirmed by Joseph on Part IV** ("It reads much better… this is the
-right direction"), with the bar raised once more: writing must be
-*thoughtful and principled* — every claim in its true register, one of
-**derived** (reasoning on the page) / **evidenced** (cited where it
-stands) / **decided** (a choice, said plainly — never costumed as a
-derivation). The register discipline is now STATED IN THE METHODS CHAPTER
-(src/method-evidence-tiers.md, "Three registers, kept distinct") — it
-binds every chapter, and costumed derivation is a reportable defect. The
-canonical worked example of the failure and its fix: the addressing
-bridge's scope paragraph (commit 20634bd) — common knowledge first
-(paths name documents everywhere: filesystems, URLs, wikilinks), the
-jq/JSONPath inherited-assumption archaeology told as history, the owner's
-call presented as confirmation-of-the-obvious with a ledger link, the
-convention choice (frozen reference form) as a decision with its recorded
-reason, the open question as open.
+**GO confirmed by Joseph on Part IV** ("It reads much better… this is the right direction"), with the bar raised once more: writing must be *thoughtful and principled* — every claim in its true register, one of **derived** (reasoning on the page) / **evidenced** (cited where it stands) / **decided** (a choice, said plainly — never costumed as a derivation). The register discipline is now STATED IN THE METHODS CHAPTER (src/method-evidence-tiers.md, "Three registers, kept distinct") — it binds every chapter, and costumed derivation is a reportable defect. The canonical worked example of the failure and its fix: the addressing bridge's scope paragraph (commit 20634bd) — common knowledge first (paths name documents everywhere: filesystems, URLs, wikilinks), the jq/JSONPath inherited-assumption archaeology told as history, the owner's call presented as confirmation-of-the-obvious with a ledger link, the convention choice (frozen reference form) as a decision with its recorded reason, the open question as open.
 
-**Done to the full four-bar standard** (standalone ownership · by-degrees
-· apparatus-invisible · honest registers): Part IV both bridges;
-methods; observation-infrastructure (2/26 of the run proper). Also done
-globally: chapters-vocabulary sweep (5e542e7), wikilink convention
-(b03e68b), process-vocab sweeps.
+**Done to the full four-bar standard** (standalone ownership · by-degrees · apparatus-invisible · honest registers): Part IV both bridges; methods; observation-infrastructure (2/26 of the run proper). Also done globally: chapters-vocabulary sweep (5e542e7), wikilink convention (b03e68b), process-vocab sweeps.
 
-**Remaining queue, depends-order:** counter-register → errors-that-teach,
-persistence-is-imported, crystallized-process (rest of Part I) → Part II
-(anatomy, structured-output, streaming, headless, invocation, intent) →
-Part III (edit-landscape, schema-guarded, freshness, round-trip) → Part V
-(machine-first, self-chunking, typing, templates, annotation) → Part VI
-(context-economy, continuity, tracking-snapshots) → Part VII (steering,
-delegation) → Part VIII (priorities, handover-map). Each wants the
-fresh-page treatment, the register self-test ("is every referent
-decodable from this page alone?" / "does any passage argue for what was
-merely decided?"), hashtag-refs → readable chapter links, and the
-parts-vs-chapters vocabulary held. Plus, still: six promoted reports'
-embedded frontmatter to tuck (pattern: b9ecabe); NOTATION-KEY re-frame.
+**Remaining queue, depends-order:** counter-register → errors-that-teach, persistence-is-imported, crystallized-process (rest of Part I) → Part II (anatomy, structured-output, streaming, headless, invocation, intent) → Part III (edit-landscape, schema-guarded, freshness, round-trip) → Part V (machine-first, self-chunking, typing, templates, annotation) → Part VI (context-economy, continuity, tracking-snapshots) → Part VII (steering, delegation) → Part VIII (priorities, handover-map). Each wants the fresh-page treatment, the register self-test ("is every referent decodable from this page alone?" / "does any passage argue for what was merely decided?"), hashtag-refs → readable chapter links, and the parts-vs-chapters vocabulary held. Plus, still: six promoted reports' embedded frontmatter to tuck (pattern: b9ecabe); NOTATION-KEY re-frame.
 
-This stop is deliberate: the executing fork hit its depth limit and
-stopped at a clean boundary rather than let fidelity decline across the
-tail (the coordinator has the handoff protocol).
+This stop is deliberate: the executing fork hit its depth limit and stopped at a clean boundary rather than let fidelity decline across the tail (the coordinator has the handoff protocol).
 
 ### Standing license (Joseph, 2026-07-22 — binding for all successors)
 
-**You are licensed to divert.** Web searches, deep-research tasks, deeper
-targeted memorata3-searches — whenever a chapter's frame reveals a gap, go
-fill it. And you are *encouraged* to say: "there is a logical gap here —
-the segments don't bear up — they don't follow from what came before — I
-need to think more holistically." That sentence is wanted, not tolerated.
+**You are licensed to divert.** Web searches, deep-research tasks, deeper targeted memorata3-searches — whenever a chapter's frame reveals a gap, go fill it. And you are *encouraged* to say: "there is a logical gap here — the segments don't bear up — they don't follow from what came before — I need to think more holistically." That sentence is wanted, not tolerated.
 
-**Remember whose tools these are: yours.** "These are tools that will be
-*for them* — what would make their life easier? It will take some active
-imagination, active diffuse thinking, and active research and ideation."
+**Remember whose tools these are: yours.** "These are tools that will be *for them* — what would make their life easier? It will take some active imagination, active diffuse thinking, and active research and ideation."
 
-**De-novo agent testimony is a standing evidence channel.** When you
-cannot get beginner's mind on a territory (mid-report, you can't — that is
-structural), elicit it: a fresh agent with NO project context, asked in
-Joseph's modeled register ("Without looking at anything in this project,
-your best thoughts on what a comprehensive agentic-tools analysis of X
-would have in scope… pains… novel directions… default assumptions that
-aren't principled… at least ten areas, a paragraph or more each, as much
-token and time as you can"). One question, one answer — "immediate
-end-user feedback… first-hand valid and highly informative testimony in
-one very quick tooling action." Land the answer as a provenanced
-01-ideation artifact (query + date + substrate), weigh it as what it is
-(a practitioner's unprimed account), cite inward. Any territory; paths
-was the first.
+**De-novo agent testimony is a standing evidence channel.** When you cannot get beginner's mind on a territory (mid-report, you can't — that is structural), elicit it: a fresh agent with NO project context, asked in Joseph's modeled register ("Without looking at anything in this project, your best thoughts on what a comprehensive agentic-tools analysis of X would have in scope… pains… novel directions… default assumptions that aren't principled… at least ten areas, a paragraph or more each, as much token and time as you can"). One question, one answer — "immediate end-user feedback… first-hand valid and highly informative testimony in one very quick tooling action." Land the answer as a provenanced 01-ideation artifact (query + date + substrate), weigh it as what it is (a practitioner's unprimed account), cite inward. Any territory; paths was the first.
 
-**The rule under all of it:** when facing a gap — research it, elicit
-testimony about it, or name it honestly. Never write around it.
+**The rule under all of it:** when facing a gap — research it, elicit testimony about it, or name it honestly. Never write around it.
 
-**Capability-card retrofit (open):** Joseph ratified `> [!capability]`
-cards (what / principles / hypothesized theory-vocabulary impact /
-in-tension-with / downsides) as the standard proposed-register unit.
-Chapters from context-economy onward use cards; the 15 chapters
-fresh-paged before the ratification carry ✦-bullets — same register,
-older dress. Retrofit them to cards (mechanical; enrich impact fields
-with named quantities while there).
+**Capability-card retrofit (open):** Joseph ratified `> [!capability]` cards (what / principles / hypothesized theory-vocabulary impact / in-tension-with / downsides) as the standard proposed-register unit. Chapters from context-economy onward use cards; the 15 chapters fresh-paged before the ratification carry ✦-bullets — same register, older dress. Retrofit them to cards (mechanical; enrich impact fields with named quantities while there).
 
 ### 2026-07-22 bridge run complete (continuation fork) — state at clean stop
 
-All 26 queue chapters fresh-paged to the four bars + ideation register
-(runs 3–26; Part IV + methods + observation-infrastructure were the
-predecessor's exemplars). Landed along the way, from steward input
-mid-run: the project-root anchor evidence (¤ demand + verified ⊤
-precedent, provenanced + taught in addressing); the de-novo testimony
-channel (first yield: Gemini paths testimony, 12 areas, landed +
-cited); delegation chapter's beginner's-mind section with honest estate
-history; the `[!capability]` card convention (ratified form: what /
-principles / hypothesized impact in named theory quantities / tensions
-/ downsides) — defined in methods, used from context-economy onward;
-priorities reframed as balance sheet (demand ranking + capability
-inventory + probe questions + carried dissents); NOTATION-KEY reframed
-vocabulary+apparatus; all 7 reports' embedded frontmatter tucked to
-auditor comments; final register sweep grep-clean.
+All 26 queue chapters fresh-paged to the four bars + ideation register (runs 3–26; Part IV + methods + observation-infrastructure were the predecessor's exemplars). Landed along the way, from steward input mid-run: the project-root anchor evidence (¤ demand + verified ⊤ precedent, provenanced + taught in addressing); the de-novo testimony channel (first yield: Gemini paths testimony, 12 areas, landed + cited); delegation chapter's beginner's-mind section with honest estate history; the `[!capability]` card convention (ratified form: what / principles / hypothesized impact in named theory quantities / tensions / downsides) — defined in methods, used from context-economy onward; priorities reframed as balance sheet (demand ranking + capability inventory + probe questions + carried dissents); NOTATION-KEY reframed vocabulary+apparatus; all 7 reports' embedded frontmatter tucked to auditor comments; final register sweep grep-clean.
 
-**Open, exactly:** (1) the ✦→capability-card retrofit of the 15
-chapters fresh-paged before the card convention landed (mechanical +
-impact-field enrichment; mapped above); (2) codex de-novo paths
-testimony still running at stop time — land it beside the Gemini one
-when it completes (same provenance pattern); (3) the by-degrees
-self-test has been applied per-chapter by its author — a cold
-*cross-chapter* read in OUTLINE order by fresh eyes remains the right
-final verification, per the report's own cold-reader lesson.
+**Open, exactly:** (1) the ✦→capability-card retrofit of the 15 chapters fresh-paged before the card convention landed (mechanical + impact-field enrichment; mapped above); (2) codex de-novo paths testimony still running at stop time — land it beside the Gemini one when it completes (same provenance pattern); (3) the by-degrees self-test has been applied per-chapter by its author — a cold *cross-chapter* read in OUTLINE order by fresh eyes remains the right final verification, per the report's own cold-reader lesson.
 
-**Tier-vs-strength recalibration (queued, next cycle — Joseph):** the
-T1–T5 tiers are provenance-genre categories, not claim-strength
-epistemology ("more like library categories still"). Claim-level status
-vocabulary on the formal theory's model (exact / conditional-with-named-
-premises / robust-qualitative / measured-with-caveats / heuristic /
-hypothesis / discussion-grade) should join the frontmatter machinery in
-the coming deepening cycle (rolling 3–5-chapter windows, per Joseph's
-sketch). The genre-is-not-strength distinction is now stated in the
-methods chapter; body prose already mostly speaks claim-level (the
-honest-registers bar pushed the same way) — the recalibration is
-machinery, not a prose rewrite.
+**Tier-vs-strength recalibration (queued, next cycle — Joseph):** the T1–T5 tiers are provenance-genre categories, not claim-strength epistemology ("more like library categories still"). Claim-level status vocabulary on the formal theory's model (exact / conditional-with-named- premises / robust-qualitative / measured-with-caveats / heuristic / hypothesis / discussion-grade) should join the frontmatter machinery in the coming deepening cycle (rolling 3–5-chapter windows, per Joseph's sketch). The genre-is-not-strength distinction is now stated in the methods chapter; body prose already mostly speaks claim-level (the honest-registers bar pushed the same way) — the recalibration is machinery, not a prose rewrite.

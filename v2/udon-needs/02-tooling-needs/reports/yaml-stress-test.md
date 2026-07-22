@@ -1,10 +1,6 @@
 # The YAML stress test: can agents recover from corruption?
 
-**How to read this.** The December 2025 stress test behind this book's
-strongest demand: three agents, adversarial protocol, six corruption
-scenarios, recovery measured with and without backup infrastructure. The
-recovery-scenarios document runs the experiment; the verdict draws the
-conclusions. Watch scenario 4 — the silent one is the argument.
+**How to read this.** The December 2025 stress test behind this book's strongest demand: three agents, adversarial protocol, six corruption scenarios, recovery measured with and without backup infrastructure. The recovery-scenarios document runs the experiment; the verdict draws the conclusions. Watch scenario 4 — the silent one is the argument.
 
 > **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 
@@ -26,9 +22,7 @@ why_included: >
 
 # Recovery Scenarios: Can Agents Recover from Corruption?
 
-**Date**: 2025-12-03
-**Question**: If an AI agent corrupts a file, can the next agent (with 100% context turnover) recover WITHOUT human intervention?
-**Verdict**: **CONDITIONAL YES** - IF backup infrastructure exists
+**Date**: 2025-12-03 **Question**: If an AI agent corrupts a file, can the next agent (with 100% context turnover) recover WITHOUT human intervention? **Verdict**: **CONDITIONAL YES** - IF backup infrastructure exists
 
 ## Executive Summary
 
@@ -586,11 +580,7 @@ why_included: >
 
 # Verdict: YAML + yq for OPERATA Storage (Adversarial Review)
 
-**Date**: 2025-12-03
-**Initial Spike Duration**: ~45 minutes
-**Adversarial Testing Duration**: ~3 hours
-**Total Spike Duration**: ~4 hours
-**Verdict**: **RECOMMENDED WITH STRONG CAVEATS** - must implement safeguards
+**Date**: 2025-12-03 **Initial Spike Duration**: ~45 minutes **Adversarial Testing Duration**: ~3 hours **Total Spike Duration**: ~4 hours **Verdict**: **RECOMMENDED WITH STRONG CAVEATS** - must implement safeguards
 
 ## Executive Summary
 
@@ -851,8 +841,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 1: Duplicate Key Data Loss (NEW)
 
-**Likelihood**: Medium (agent bugs, human error)
-**Impact**: HIGH (silent data corruption)
+**Likelihood**: Medium (agent bugs, human error) **Impact**: HIGH (silent data corruption)
 
 **Mitigation**:
 - ✓ REQUIRED: Implement duplicate key validator
@@ -864,8 +853,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 2: Memory Exhaustion (NEW)
 
-**Likelihood**: Low (OPERATA unlikely to hit 10MB files)
-**Impact**: MEDIUM (slow queries, system instability)
+**Likelihood**: Low (OPERATA unlikely to hit 10MB files) **Impact**: MEDIUM (slow queries, system instability)
 
 **Mitigation**:
 - Enforce max file size: 10 MB
@@ -876,8 +864,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 3: Pathological Queries (NEW)
 
-**Likelihood**: Low (if query guidelines enforced)
-**Impact**: MEDIUM (timeouts, slow response)
+**Likelihood**: Low (if query guidelines enforced) **Impact**: MEDIUM (timeouts, slow response)
 
 **Mitigation**:
 - Query timeout: 5 seconds
@@ -888,8 +875,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 4: Agent Recovery Failures (NEW)
 
-**Likelihood**: MEDIUM (agents will corrupt files eventually)
-**Impact**: HIGH (data loss without backups)
+**Likelihood**: MEDIUM (agents will corrupt files eventually) **Impact**: HIGH (data loss without backups)
 
 **Mitigation**:
 - ✓ REQUIRED: Automatic backup infrastructure
@@ -900,8 +886,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 5: Schema Migration Complexity (NEW)
 
-**Likelihood**: Low (infrequent schema changes)
-**Impact**: MEDIUM (developer time, error risk)
+**Likelihood**: Low (infrequent schema changes) **Impact**: MEDIUM (developer time, error risk)
 
 **Mitigation**:
 - Build migration infrastructure (~200 LOC)
@@ -912,8 +897,7 @@ MAX_RESULT_SIZE = 1000
 
 ### Risk 6: Nesting Limit (Previous)
 
-**Likelihood**: Low (typical usage <10 levels)
-**Impact**: High (catastrophic failure)
+**Likelihood**: Low (typical usage <10 levels) **Impact**: High (catastrophic failure)
 
 **Mitigation**: (unchanged from previous)
 - Add validation: Reject efforts with >100 levels nesting

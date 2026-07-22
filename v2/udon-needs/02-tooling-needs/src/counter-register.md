@@ -19,23 +19,9 @@ sources:
 
 # The counter-register: evidence against our own theses
 
-The previous chapter promised that counter-evidence would ride beside the
-claims it qualifies rather than sinking into footnotes. This chapter is
-that promise kept — a standing register, one row per counter-result, each
-naming the thesis it pushes against and how much weight it carries. **A
-downstream decision that touches one of these theses should cite the
-counter-row, not just the supporting chapter.**
+The previous chapter promised that counter-evidence would ride beside the claims it qualifies rather than sinking into footnotes. This chapter is that promise kept — a standing register, one row per counter-result, each naming the thesis it pushes against and how much weight it carries. **A downstream decision that touches one of these theses should cite the counter-row, not just the supporting chapter.**
 
-The **Weight** column speaks the claim-level strength ladder the
-[[method-evidence-tiers| methods chapter]] defines (measured /
-robust-qualitative / heuristic / hypothesis / discussion-grade), because a
-counter-row's entire job is to *cap* the strength of the thesis it opposes —
-a thesis can be no stronger than the counter-evidence standing against it is
-weak. The rung leads each cell; the prose after it says why. Note the
-asymmetry that makes this honest: a single *measured* counter-result (row 1)
-caps a thesis hard, because a measurement outranks any amount of design
-conviction; a *discussion-grade* counter-position (row 2) caps nothing on its
-own but flags an argument the supporting chapter still owes an answer to.
+The **Weight** column speaks the claim-level strength ladder the [[method-evidence-tiers| methods chapter]] defines (measured / robust-qualitative / heuristic / hypothesis / discussion-grade), because a counter-row's entire job is to *cap* the strength of the thesis it opposes — a thesis can be no stronger than the counter-evidence standing against it is weak. The rung leads each cell; the prose after it says why. Note the asymmetry that makes this honest: a single *measured* counter-result (row 1) caps a thesis hard, because a measurement outranks any amount of design conviction; a *discussion-grade* counter-position (row 2) caps nothing on its own but flags an argument the supporting chapter still owes an answer to.
 
 | # | Counter-evidence | Qualifies | Weight |
 |---|---|---|---|
@@ -51,8 +37,4 @@ own but flags an argument the supporting chapter still owes an answer to.
 | 10 | **A parseable prefix is not a streaming protocol** (dissent entered by a GPT-family reviewer, 2026-07-22). A format whose partial payloads parse honestly still provides no framing, sequencing, cancellation, or multiplexing; newline-delimited JSON solves *transport*, prefix-parsing solves *payload validation*, and neither replaces the other without a protocol experiment nobody has run. | Any "UDON can serve the NDJSON role natively" claim ([[headless-io-contract| headless I/O chapter]], [[streaming-and-partial-documents| streaming chapter]]) | **heuristic** — practitioner-architecture reasoning, no measurement either way; adopted as this report's working framing |
 | 11 | **JSON tool-call editing is alive and primary elsewhere** (dissent entered by a Gemini-family reviewer, 2026-07-22). In the Gemini/Antigravity ecosystem, structured tool-call editing with schema validation at the tool layer is the default and it succeeds; the aider abandonment (row 4) reads from there as an artifact of particular model families and eras, not a law about agents. | The [[edit-representation-landscape| edit-landscape chapter]]'s abandonment framing | **measured** (shipped and succeeding in the Gemini/Antigravity ecosystem) — materially scopes a shipped-practice conclusion; the first counter-weight in this register from outside the model family that produced most of the report's other evidence |
 
-Rows 1–2 and 8 bear most directly on UDON; rows 3–7 and 9–11 on harness
-design; all travel with both consumers. Rows 10 and 11 carry their
-reviewer's model family on purpose: nearly everything else in this report
-was written, shipped, or lived by one ecosystem, and these two rows are
-what evidence from outside it currently looks like.
+Rows 1–2 and 8 bear most directly on UDON; rows 3–7 and 9–11 on harness design; all travel with both consumers. Rows 10 and 11 carry their reviewer's model family on purpose: nearly everything else in this report was written, shipped, or lived by one ecosystem, and these two rows are what evidence from outside it currently looks like.

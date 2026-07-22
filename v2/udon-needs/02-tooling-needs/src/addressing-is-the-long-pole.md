@@ -23,150 +23,29 @@ sources:
 
 # Addressing is the long pole
 
-The last two chapters left the same debt twice. A guarded edit needs a way
-to say *where* the guarantee applies; a freshness check needs a way to say
-*what* must still be true at write time. Both assume something this
-notation does not yet have: a stable way to **name a place in a
-document**. This chapter is about that missing piece — why nearly
-everything else waits on it, what the evidence already pins about its
-shape, and what remains genuinely open.
+The last two chapters left the same debt twice. A guarded edit needs a way to say *where* the guarantee applies; a freshness check needs a way to say *what* must still be true at write time. Both assume something this notation does not yet have: a stable way to **name a place in a document**. This chapter is about that missing piece — why nearly everything else waits on it, what the evidence already pins about its shape, and what remains genuinely open.
 
-**Why it is the long pole.** Count the mouths pulling on one design: the
-edit tool needs targets; a refusal that says "did you mean one of these?"
-needs paths it can print; a document skeleton is only useful if its lines
-can be pasted back as addresses; queries need a way to ask for exactly-one
-and for many; in-document references are addresses the *document* makes;
-and templates turn out to want them too — when a template's data context
-is itself a document, "insert the value of X" is a path expression. Two
-independent examinations of this territory arrived at the same sentence:
-everything bottoms out on addressing. The full consumer map, with the
-collisions between them, is the first thing the
-[[addressing-exploration| addressing exploration]] lays out.
+**Why it is the long pole.** Count the mouths pulling on one design: the edit tool needs targets; a refusal that says "did you mean one of these?" needs paths it can print; a document skeleton is only useful if its lines can be pasted back as addresses; queries need a way to ask for exactly-one and for many; in-document references are addresses the *document* makes; and templates turn out to want them too — when a template's data context is itself a document, "insert the value of X" is a path expression. Two independent examinations of this territory arrived at the same sentence: everything bottoms out on addressing. The full consumer map, with the collisions between them, is the first thing the [[addressing-exploration| addressing exploration]] lays out.
 
-**What the evidence already pins.** Four findings, each argued in full in
-the exploration:
+**What the evidence already pins.** Four findings, each argued in full in the exploration:
 
-1. **Agents address relationally, not positionally.** A set of
-   walkthroughs followed an agent through a full day of realistic
-   document work — reading unfamiliar files, making guarded edits,
-   coordinating with a second writer. Nearly every query in that day
-   began "find the element with this key, at any depth" — the tree
-   served as storage, not as the mental model. (One day's sample, and the exploration says so — but it
-   inverts the XPath-style assumption that root-to-leaf navigation comes
-   first.)
-2. **Asking-for-one and asking-for-many are different questions.** A
-   query that expects exactly one match should *fail loudly* when there
-   are zero or two — a silently empty result leaves the agent unable to
-   tell "not present" from "my path is wrong" from "the document changed
-   under me." Query languages that return quiet empty sets teach exactly
-   the habit an agent must not learn.
-3. **Failures at an address need different names.** "Two elements matched
-   my path," "an attribute holds two stacked values," and "a reference
-   resolves to several definitions" are three different situations with
-   three different repairs — and staleness (the previous chapter's
-   subject) is a fourth. One error name covering any two of them routes a
-   reader to the wrong fix.
-4. **A path must be writable *inside* a document without breaking it.**
-   Today a path in a document must be quoted, because bare `|` or `@` in
-   value position already means something. Whether paths ever get a bare
-   in-document form is exactly the kind of question that cannot be
-   answered locally — it collides with value termination, arrays, and
-   inline forms, and the exploration's unfinished stress table shows how
-   sharp those collisions get.
+1. **Agents address relationally, not positionally.** A set of walkthroughs followed an agent through a full day of realistic document work — reading unfamiliar files, making guarded edits, coordinating with a second writer. Nearly every query in that day began "find the element with this key, at any depth" — the tree served as storage, not as the mental model. (One day's sample, and the exploration says so — but it inverts the XPath-style assumption that root-to-leaf navigation comes first.)
+2. **Asking-for-one and asking-for-many are different questions.** A query that expects exactly one match should *fail loudly* when there are zero or two — a silently empty result leaves the agent unable to tell "not present" from "my path is wrong" from "the document changed under me." Query languages that return quiet empty sets teach exactly the habit an agent must not learn.
+3. **Failures at an address need different names.** "Two elements matched my path," "an attribute holds two stacked values," and "a reference resolves to several definitions" are three different situations with three different repairs — and staleness (the previous chapter's subject) is a fourth. One error name covering any two of them routes a reader to the wrong fix.
+4. **A path must be writable *inside* a document without breaking it.** Today a path in a document must be quoted, because bare `|` or `@` in value position already means something. Whether paths ever get a bare in-document form is exactly the kind of question that cannot be answered locally — it collides with value termination, arrays, and inline forms, and the exploration's unfinished stress table shows how sharp those collisions get.
 
-One piece of shipping prior art deserves its own sentence: of the
-fourteen harnesses examined, exactly one tool treats *position in the
-source* as first-class queryable data (a match operator returning offset,
-length, and captures) — the shape a span-precise edit substrate needs,
-and otherwise absent from the ecosystem.
+One piece of shipping prior art deserves its own sentence: of the fourteen harnesses examined, exactly one tool treats *position in the source* as first-class queryable data (a match operator returning offset, length, and captures) — the shape a span-precise edit substrate needs, and otherwise absent from the ecosystem.
 
-**Scope, stated plainly.** By *path* this report means what the word
-already means everywhere else: an expression that names a place. A
-filesystem path names a file; a URL names a page and a fragment names a
-place inside it; a wikilink names a note. That paths can name other
-documents is not a design question — every path convention in common use
-does it. It has to be said out loud here only because a contrary habit
-crept in from the tools this territory grew up beside: in the jq /
-JSONPath / XPath lineage, the document is handed to the tool out-of-band
-(a file handle, an argument), so "path" in that tradition definitionally
-excludes naming the document — and that inherited assumption bled into
-the early design material, where several passes treated file-scope as
-the default and cross-document addressing as an open question awaiting
-permission. When the question finally reached the project's owner, the
-answer was a confirmation of the obvious, now on record in the
-[[DECISIONS.md|design ledger]]: documents are in scope. The
-inherited-assumption story is worth its ink because it is a live hazard:
-tooling built during the file-scoped habit may still hard-code it.
+**Scope, stated plainly.** By *path* this report means what the word already means everywhere else: an expression that names a place. A filesystem path names a file; a URL names a page and a fragment names a place inside it; a wikilink names a note. That paths can name other documents is not a design question — every path convention in common use does it. It has to be said out loud here only because a contrary habit crept in from the tools this territory grew up beside: in the jq / JSONPath / XPath lineage, the document is handed to the tool out-of-band (a file handle, an argument), so "path" in that tradition definitionally excludes naming the document — and that inherited assumption bled into the early design material, where several passes treated file-scope as the default and cross-document addressing as an open question awaiting permission. When the question finally reached the project's owner, the answer was a confirmation of the obvious, now on record in the [[DECISIONS.md|design ledger]]: documents are in scope. The inherited-assumption story is worth its ink because it is a live hazard: tooling built during the file-scoped habit may still hard-code it.
 
-**What remains genuinely undesigned** is everything *interesting* about
-naming places across and within documents. Start with the
-**anchor** — the point a path measures from. Common convention already
-gives every reader three: relative (from here), absolute (from the
-filesystem root), and home (`~`). The design work adds a fourth,
-different in kind: a *document*-root anchor ("anywhere under this
-document's root" appears in the early path sketches). And a fifth is not
-a proposal but **practice this research programme already shipped**: a
-**project-root** anchor. In the September-2025 entity-infrastructure
-systems, `⊤` meant "project root, resolved via git" — defined in a
-lexicon, implemented in the build tooling (with a clear error when used
-outside a repository), and used across dozens of files to include other
-files: `@⊤/entities/zi-am-tur.md` rather than a chain of `../`. The
-recorded reason is the analytically interesting part: **address
-stability under motion**. A moved file breaks every relative path in it
-and to it; root-anchored paths survive the move, and when the *root*
-layout changes, every reference repairs with one mechanical
-search-and-replace. That is the same demand the freshness chapter met at
-document scale — addresses shouldn't rot — surfacing at filesystem
-scale. The owner still wants it ("I would love to be able to do
-`¤/tests/fixtures` from any file in the project… It comes up all the
-time in other-file inclusion"), and the idea has now appeared in three
-independent sigil dressings across its own systems (`⊤`, a `@⊥/` root-import
-form in the identity-files work, and the `¤` wish) — internal
-convergence on the slot, with no decision yet on any syntax. Beyond
-anchors: fragments within a target, and when resolution happens, are
-equally open — the exploration barely touches any of this. And an
-unprimed practitioner's account, elicited fresh from an agent of another
-model family (2026-07-22), lands on the same territory from lived pain —
-its first two complaints are this chapter's findings 1–2 in different
-words — and then names slots this design work hasn't reached: paths with
-a *time* dimension, path lifecycle and volatility, canonical-vs-literal
-identity, and the translation between execution paths and source paths.
-That testimony travels with this chapter's sources; the design work
-ahead should mine it whole.
+**What remains genuinely undesigned** is everything *interesting* about naming places across and within documents. Start with the **anchor** — the point a path measures from. Common convention already gives every reader three: relative (from here), absolute (from the filesystem root), and home (`~`). The design work adds a fourth, different in kind: a *document*-root anchor ("anywhere under this document's root" appears in the early path sketches). And a fifth is not a proposal but **practice this research programme already shipped**: a **project-root** anchor. In the September-2025 entity-infrastructure systems, `⊤` meant "project root, resolved via git" — defined in a lexicon, implemented in the build tooling (with a clear error when used outside a repository), and used across dozens of files to include other files: `@⊤/entities/zi-am-tur.md` rather than a chain of `../`. The recorded reason is the analytically interesting part: **address stability under motion**. A moved file breaks every relative path in it and to it; root-anchored paths survive the move, and when the *root* layout changes, every reference repairs with one mechanical search-and-replace. That is the same demand the freshness chapter met at document scale — addresses shouldn't rot — surfacing at filesystem scale. The owner still wants it ("I would love to be able to do `¤/tests/fixtures` from any file in the project… It comes up all the time in other-file inclusion"), and the idea has now appeared in three independent sigil dressings across its own systems (`⊤`, a `@⊥/` root-import form in the identity-files work, and the `¤` wish) — internal convergence on the slot, with no decision yet on any syntax. Beyond anchors: fragments within a target, and when resolution happens, are equally open — the exploration barely touches any of this. And an unprimed practitioner's account, elicited fresh from an agent of another model family (2026-07-22), lands on the same territory from lived pain — its first two complaints are this chapter's findings 1–2 in different words — and then names slots this design work hasn't reached: paths with a *time* dimension, path lifecycle and volatility, canonical-vs-literal identity, and the translation between execution paths and source paths. That testimony travels with this chapter's sources; the design work ahead should mine it whole.
 
-**Two more boundary facts, each in its true register.** The project has
-*decided* — a convention choice, with its reason on record — to freeze
-the small in-document reference form exactly as it is rather than grow it
-feature-by-feature toward a path language: each incremental field would
-be a constraint the eventual language must honor or break, debt without a
-design (recorded in the [[DECISIONS.md|design ledger]]). And one question is simply *open*: an
-element can carry more than one key, and how addressing treats that is
-undecided (carried in the [[OPEN.md|open-questions ledger]]). Everything else — the syntax,
-the verbs, whether positional access ever becomes language rather than
-tooling — is deliberately unclaimed: this report maps the demand and
-declines to design.
+**Two more boundary facts, each in its true register.** The project has *decided* — a convention choice, with its reason on record — to freeze the small in-document reference form exactly as it is rather than grow it feature-by-feature toward a path language: each incremental field would be a constraint the eventual language must honor or break, debt without a design (recorded in the [[DECISIONS.md|design ledger]]). And one question is simply *open*: an element can carry more than one key, and how addressing treats that is undecided (carried in the [[OPEN.md|open-questions ledger]]). Everything else — the syntax, the verbs, whether positional access ever becomes language rather than tooling — is deliberately unclaimed: this report maps the demand and declines to design.
 
-**Where to go from here.** Read the
-[[addressing-exploration| addressing exploration]] whole — it
-is the deepest single treatment of this territory. Its nine provisional
-boundary demands (§8) are the demand floor; its trap list (§9) records
-the dead ends already found so the design work ahead does not rediscover
-them as ideas; its open questions (§10) are the sharpest current
-statement of what any future path language has to answer — starting with
-the load-bearing one: *what is the smallest in-document reference form
-that is still a true subset of the full path language?* The
-[[agent-utility-exploration| agent-utility exploration]] §3
-independently corroborates the dependency map from the tool side.
+**Where to go from here.** Read the [[addressing-exploration| addressing exploration]] whole — it is the deepest single treatment of this territory. Its nine provisional boundary demands (§8) are the demand floor; its trap list (§9) records the dead ends already found so the design work ahead does not rediscover them as ideas; its open questions (§10) are the sharpest current statement of what any future path language has to answer — starting with the load-bearing one: *what is the smallest in-document reference form that is still a true subset of the full path language?* The [[agent-utility-exploration| agent-utility exploration]] §3 independently corroborates the dependency map from the tool side.
 
-**Who reads this and when:** whoever takes up path-language design starts
-here and reads the exploration whole before sketching syntax. The harness
-reads findings 2–3 as requirements on any tool that reports locations to
-agents, in any notation: two verbs, loud failure, distinct failure names.
+**Who reads this and when:** whoever takes up path-language design starts here and reads the exploration whole before sketching syntax. The harness reads findings 2–3 as requirements on any tool that reports locations to agents, in any notation: two verbs, loud failure, distinct failure names.
 
 ## Honest edges
 
-The relational-first finding rests on a one-day sample; the consumer map
-is design-corpus convergence that largely shares an author. This is a
-demand map, not a validated design, and the exploration's own unfinished
-stress table means every claim about in-document embeddability is soft
-until that table is forced.
+The relational-first finding rests on a one-day sample; the consumer map is design-corpus convergence that largely shares an author. This is a demand map, not a validated design, and the exploration's own unfinished stress table means every claim about in-document embeddability is soft until that table is forced.

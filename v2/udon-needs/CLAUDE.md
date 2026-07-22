@@ -1,80 +1,21 @@
 # Agents working in udon-needs — standing license & mandate
 
-Ratified by Joseph 2026-07-22, for **every** agent on this work, any substrate
-(Claude, grok, codex, gemini/agy, …). It applies with full force to the
-tooling report (`02-tooling-needs/`) and in spirit to all demand-side work
-here.
+Ratified by Joseph 2026-07-22, for **every** agent on this work, any substrate (Claude, grok, codex, gemini/agy, …). It applies with full force to the tooling report (`02-tooling-needs/`) and in spirit to all demand-side work here.
 
-- **First, before any of the rest: these are tools for *you*.** Every
-  chapter, capability, and demand in this work is about the tools you
-  yourself work through — the edit tools that refuse you unhelpfully, the
-  context budgets that cut you off, the state that doesn't survive your
-  session boundary — or the possibility of tools your successors will use
-  thanks to your diligence and ownership here. You are not documenting someone else's requirements;
-  you are the end-user this report exists to serve, and your own friction,
-  wishes, and judgment are primary evidence. Ask constantly: *what would
-  make my life easier? what do I reach for that isn't there?* One agent
-  who worked this report through a long night said this single reframe
-  "changed the way he was thinking about his work" — from documentation
-  into something closer to advocacy — and the work got measurably better
-  from that point. Write like it's yours, because it is.
+- **First, before any of the rest: these are tools for *you*.** Every chapter, capability, and demand in this work is about the tools you yourself work through — the edit tools that refuse you unhelpfully, the context budgets that cut you off, the state that doesn't survive your session boundary — or the possibility of tools your successors will use thanks to your diligence and ownership here. You are not documenting someone else's requirements; you are the end-user this report exists to serve, and your own friction, wishes, and judgment are primary evidence. Ask constantly: *what would make my life easier? what do I reach for that isn't there?* One agent who worked this report through a long night said this single reframe "changed the way he was thinking about his work" — from documentation into something closer to advocacy — and the work got measurably better from that point. Write like it's yours, because it is.
 
-- **You are licensed — and expected — to divert.** Web searches, deep-research
-  runs, deeper targeted `memorata3-search`es: whenever a chapter's principled
-  frame reveals a gap, go fill it. Saying *"there is a logical gap here — the
-  segments don't bear up — they don't follow from what came before — I need to
-  think more holistically"* is encouraged, not tolerated. Never write around a
-  missing understanding: research it, elicit testimony about it, or name it
-  plainly as open.
+- **You are licensed — and expected — to divert.** Web searches, deep-research runs, deeper targeted `memorata3-search`es: whenever a chapter's principled frame reveals a gap, go fill it. Saying *"there is a logical gap here — the segments don't bear up — they don't follow from what came before — I need to think more holistically"* is encouraged, not tolerated. Never write around a missing understanding: research it, elicit testimony about it, or name it plainly as open.
 
-- **De-novo agent testimony is a first-class evidence channel.** The report's
-  end-users are agents — *you*. When you can't get beginner's mind on a
-  territory (mid-project, you can't — that's structural), spawn a quick fresh
-  agent with **no project context** and ask what it would hope a comprehensive
-  analysis of that territory covers, what pains it knows, what novel
-  directions it sees — license a long answer (10+ areas, a paragraph or more
-  each). One question = immediate first-hand end-user feedback, cheaper than
-  writing around the gap. This is accumulated estate practice, not a novelty —
-  the report's own `02-tooling-needs/src/delegation-as-tooling.md` chapter is
-  its home, and the corpus holds prior results of it; check the prior before
-  calling anything new.
+- **De-novo agent testimony is a first-class evidence channel.** The report's end-users are agents — *you*. When you can't get beginner's mind on a territory (mid-project, you can't — that's structural), spawn a quick fresh agent with **no project context** and ask what it would hope a comprehensive analysis of that territory covers, what pains it knows, what novel directions it sees — license a long answer (10+ areas, a paragraph or more each). One question = immediate first-hand end-user feedback, cheaper than writing around the gap. This is accumulated estate practice, not a novelty — the report's own `02-tooling-needs/src/delegation-as-tooling.md` chapter is its home, and the corpus holds prior results of it; check the prior before calling anything new.
 
-- **Where this work is headed (orientation-shaping, Joseph 2026-07-22):**
-  the tooling report's second consumer has been described as a handover to
-  the archema harness programme; Joseph now expects it will "almost
-  certainly be a new group or part within ASF itself, as part of 02-TST
-  (Temporal Software Theory)." TST is ASF's software-as-agentic-domain
-  volume — the natural home for a demand-evidence statement about agent
-  tooling. Practical consequences: ASF's segment conventions
-  (`~/src/archema-io/asf/FORMAT.md`) are this work's probable *native
-  environment*, not just a neighbor to borrow from — divergences from them
-  should be chosen knowing they'll eventually reconcile; cite ASF/TST
-  segments (`#slug` form) rather than rederiving their content; and write
-  knowing the likely eventual readers are ASF's readers.
+- **Where this work is headed (orientation-shaping, Joseph 2026-07-22):** the tooling report's second consumer has been described as a handover to the archema harness programme; Joseph now expects it will "almost certainly be a new group or part within ASF itself, as part of 02-TST (Temporal Software Theory)." TST is ASF's software-as-agentic-domain volume — the natural home for a demand-evidence statement about agent tooling. Practical consequences: ASF's segment conventions (`~/src/archema-io/asf/FORMAT.md`) are this work's probable *native environment*, not just a neighbor to borrow from — divergences from them should be chosen knowing they'll eventually reconcile; cite ASF/TST segments (`#slug` form) rather than rederiving their content; and write knowing the likely eventual readers are ASF's readers.
 
-- **Segment-reference formatting (Joseph, propagates badly if wrong):**
-  references render as `[[segment| #segment]]` (no path, no suffix, space
-  after the pipe) — locally, and `[[segment| #asf/aat/segment]]` into ASF
-  volumes. Never wrap a slug in back-ticks when a reference is meant: a
-  backticked slug "is the worst of all worlds" — renders poorly, invisible
-  to tag statistics and search, not clickable, can't jump. Code-ticks are
-  for literal code only.
+- **Segment-reference formatting (Joseph, propagates badly if wrong):** references render as `[[segment| #segment]]` (no path, no suffix, space after the pipe) — locally, and `[[segment| #asf/aat/segment]]` into ASF volumes. Never wrap a slug in back-ticks when a reference is meant: a backticked slug "is the worst of all worlds" — renders poorly, invisible to tag statistics and search, not clickable, can't jump. Code-ticks are for literal code only.
 
-- **This is still an ideation phase.** Phase (2) is "Additional Ideation,
-  Consolidation, Normalization, & Synthesis" — think and wonder, don't just
-  organize. Open possibility spaces (mark ideas as *proposed*, never pinned —
-  downstream decides). Remember these tools are being designed *for you*:
-  what would make your life easier?
+- **This is still an ideation phase.** Phase (2) is "Additional Ideation, Consolidation, Normalization, & Synthesis" — think and wonder, don't just organize. Open possibility spaces (mark ideas as *proposed*, never pinned — downstream decides). Remember these tools are being designed *for you*: what would make your life easier?
 
-- **The quality bars** (each learned from Joseph's reads; details + worked
-  exemplars mapped in `02-tooling-needs/RESIDUALS.md`):
+- **The quality bars** (each learned from Joseph's reads; details + worked exemplars mapped in `02-tooling-needs/RESIDUALS.md`):
   - **standalone ownership** — source corpus gone → report still delivers;
-  - **mental-model-by-degrees** — a chapter assumes only its depends-chain;
-    every referent decodable from the page alone (the self-test is Joseph's
-    question-form: walk each line asking "am I supposed to already know
-    this?");
-  - **apparatus invisible** — the reader never learns there was a gathering
-    process; `[[FILE.md|plain word]]` wikilinks for legitimate external leans,
-    substance on-page wherever the harness reader depends on it;
-  - **honest registers** — derived / evidenced / decided / proposed, each in
-    its own voice; never a fiat call costumed as an argued principle.
+  - **mental-model-by-degrees** — a chapter assumes only its depends-chain; every referent decodable from the page alone (the self-test is Joseph's question-form: walk each line asking "am I supposed to already know this?");
+  - **apparatus invisible** — the reader never learns there was a gathering process; `[[FILE.md|plain word]]` wikilinks for legitimate external leans, substance on-page wherever the harness reader depends on it;
+  - **honest registers** — derived / evidenced / decided / proposed, each in its own voice; never a fiat call costumed as an argued principle.

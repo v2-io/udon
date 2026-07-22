@@ -1,47 +1,10 @@
 # *Report* Agentic Tooling: The Demand Evidence
 
-*What agents — and the humans working with and through them — actually need
-from their tools: notations, interfaces, harnesses, memory and context
-systems, feedback loops, guardrails.*
+*What agents — and the humans working with and through them — actually need from their tools: notations, interfaces, harnesses, memory and context systems, feedback loops, guardrails.*
 
-**How this report is built — an anthology with a spine.** The substance
-lives in seven deep, self-contained **reports** ([`reports/`](reports/)):
-a survey of the formal theory, an examination of fourteen shipping
-harnesses, two demand explorations, two foundational design documents,
-and a stress test. Each stands alone and is worth reading whole. Around
-them, short **bridge chapters** ([`src/`](src/)) do what the reports
-individually cannot: orient a reader by degrees, carry the findings that
-only emerge *across* reports (convergences, counter-evidence,
-priorities), and hand the reader into the right report at the right
-moment. This outline is the spine: each Part below lists its bridges and
-names the body reports they open into. A bridge that merely summarizes
-its report has failed; a bridge succeeds when the reader arrives at the
-report ready to use it.
+**How this report is built — an anthology with a spine.** The substance lives in seven deep, self-contained **reports** ([`reports/`](reports/)): a survey of the formal theory, an examination of fourteen shipping harnesses, two demand explorations, two foundational design documents, and a stress test. Each stands alone and is worth reading whole. Around them, short **bridge chapters** ([`src/`](src/)) do what the reports individually cannot: orient a reader by degrees, carry the findings that only emerge *across* reports (convergences, counter-evidence, priorities), and hand the reader into the right report at the right moment. This outline is the spine: each Part below lists its bridges and names the body reports they open into. A bridge that merely summarizes its report has failed; a bridge succeeds when the reader arrives at the report ready to use it.
 
-**The one-paragraph thesis.** Tools are an agent's observation channels and
-its action semantics at once, and the evidence from every tier says the same
-thing about them: their quality is existential, not ergonomic. Theory gives
-the mechanism (bias bounded by observation ambiguity; tempo gated by channel
-noise; persistence across sessions existing *only* through externalized
-state), shipped practice shows an ecosystem converging — partly by copying,
-which is itself evidence of a gap — on sharp-refusal editing, graduated
-fuzzy tolerance, context-budget machinery, and machine-legible I/O
-contracts, and the lived testimony and external research agree on where it
-still breaks: edits with no validity guarantees, plausible failure that
-testing can't catch, and context loss across session boundaries that only
-externalized state compensates (the theory's exact result, under named
-premises; *within* a session, retrieval and context machinery genuinely
-help -- the boundary is where the law bites). **The strongest mutation-side
-demand -- and the customer that pulls paths, schema, spans, and round-trip
-together -- is schema-guarded structural mutation, the validated, atomic,
-path-addressed edit no shipping tool provides; it is long-pole-blocked on
-stable addressing**;
-around that lead, the report hands downstream a set of *properties*:
-observations that resolve sharply, refusals that teach, addressing that is
-loud on failure, and durable state formats an agent can trust across the
-boundary of its own context. (Shorthand used throughout is glossed in
-[[NOTATION-KEY| NOTATION-KEY.md]], which also carries the
-coming-from-the-harness reading path.)
+**The one-paragraph thesis.** Tools are an agent's observation channels and its action semantics at once, and the evidence from every tier says the same thing about them: their quality is existential, not ergonomic. Theory gives the mechanism (bias bounded by observation ambiguity; tempo gated by channel noise; persistence across sessions existing *only* through externalized state), shipped practice shows an ecosystem converging — partly by copying, which is itself evidence of a gap — on sharp-refusal editing, graduated fuzzy tolerance, context-budget machinery, and machine-legible I/O contracts, and the lived testimony and external research agree on where it still breaks: edits with no validity guarantees, plausible failure that testing can't catch, and context loss across session boundaries that only externalized state compensates (the theory's exact result, under named premises; *within* a session, retrieval and context machinery genuinely help -- the boundary is where the law bites). **The strongest mutation-side demand -- and the customer that pulls paths, schema, spans, and round-trip together -- is schema-guarded structural mutation, the validated, atomic, path-addressed edit no shipping tool provides; it is long-pole-blocked on stable addressing**; around that lead, the report hands downstream a set of *properties*: observations that resolve sharply, refusals that teach, addressing that is loud on failure, and durable state formats an agent can trust across the boundary of its own context. (Shorthand used throughout is glossed in [[NOTATION-KEY| NOTATION-KEY.md]], which also carries the coming-from-the-harness reading path.)
 
 ---
 
@@ -54,9 +17,7 @@ coming-from-the-harness reading path.)
 
 ## *Part I* — Foundations: what a tool is to an agent
 
-*Scope: the theorem-grade and multiply-witnessed results that give every later demand
-its "why." Mostly harness-general; UDON enters as the instance "a notation is
-observation infrastructure."*
+*Scope: the theorem-grade and multiply-witnessed results that give every later demand its "why." Mostly harness-general; UDON enters as the instance "a notation is observation infrastructure."*
 
 *Opens into:* [[theory-of-agentic-tooling| the theory report]] · [[quick-tooling-conventions| the quick-tooling conventions]] · [[the-pattern| the pattern statement]]
 
@@ -69,8 +30,7 @@ observation infrastructure."*
 
 ## *Part II* — The in-loop tool contract
 
-*Scope: how a tool presents itself to an agent and what one interaction
-carries. Harness-primary; UDON enters where payloads/schemas are documents.*
+*Scope: how a tool presents itself to an agent and what one interaction carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 
 *Opens into:* [[shipping-practice| shipping practice]] · [[quick-tooling-conventions| the quick-tooling conventions]]
 
@@ -85,9 +45,7 @@ carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 
 ## *Part III* — Mutation: editing under guarantees
 
-*Scope: the largest and strongest demand cluster in the evidence. UDON-primary
-(the schema-guarded structural edit is the gap the ecosystem documents); the
-harness consumes the same evidence for its edit-tool choices.*
+*Scope: the largest and strongest demand cluster in the evidence. UDON-primary (the schema-guarded structural edit is the gap the ecosystem documents); the harness consumes the same evidence for its edit-tool choices.*
 
 *Opens into:* [[shipping-practice| shipping practice]] · [[yaml-stress-test| the YAML stress test]] · [[agent-utility-exploration| the agent-utility exploration]]
 
@@ -100,11 +58,7 @@ harness consumes the same evidence for its edit-tool choices.*
 
 ## *Part IV* — Addressing and query
 
-*Scope: paths as the long pole — almost every agentic affordance bottoms out
-on stable structural addressing. UDON-primary; the direct brief for the path-language design work ahead. Ordering note: Part III (mutation) precedes this part by demand
-strength — it is the customer; addressing is what it consumes — but the
-build dependency runs the other way, and #priorities states it: addressing
-first, mutation on top of it.*
+*Scope: paths as the long pole — almost every agentic affordance bottoms out on stable structural addressing. UDON-primary; the direct brief for the path-language design work ahead. Ordering note: Part III (mutation) precedes this part by demand strength — it is the customer; addressing is what it consumes — but the build dependency runs the other way, and #priorities states it: addressing first, mutation on top of it.*
 
 *Opens into:* [[addressing-exploration| the addressing exploration]] · [[agent-utility-exploration| the agent-utility exploration]]
 
@@ -115,9 +69,7 @@ first, mutation on top of it.*
 
 ## *Part V* — The document itself: notation demand
 
-*Scope: what the evidence says a notation for agents should be — including
-the evidence against. UDON-primary; the harness consumes it as "what formats
-to standardize on."*
+*Scope: what the evidence says a notation for agents should be — including the evidence against. UDON-primary; the harness consumes it as "what formats to standardize on."*
 
 *Opens into:* [[the-pattern| the pattern statement]] · [[yaml-stress-test| the YAML stress test]] · [[quick-tooling-conventions| the quick-tooling conventions]]
 
@@ -131,9 +83,7 @@ to standardize on."*
 
 ## *Part VI* — Memory, context, and continuity
 
-*Scope: the boundary where in-loop tooling becomes identity infrastructure.
-Both consumers; the harness reads it as the PROPRIUM/CHRONICA demand, UDON as
-the durable-format demand.*
+*Scope: the boundary where in-loop tooling becomes identity infrastructure. Both consumers; the harness reads it as the PROPRIUM/CHRONICA demand, UDON as the durable-format demand.*
 
 *Opens into:* [[theory-of-agentic-tooling| the theory report]]
 
@@ -145,8 +95,7 @@ the durable-format demand.*
 
 ## *Part VII* — The human side
 
-*Scope: the humans steering and verifying — a first-class consumer of this
-report, and its thinnest evidence base (named as such).*
+*Scope: the humans steering and verifying — a first-class consumer of this report, and its thinnest evidence base (named as such).*
 
 *Opens into:* [[shipping-practice| shipping practice]]
 
@@ -164,9 +113,7 @@ report, and its thinnest evidence base (named as such).*
 
 ## The body — the reports themselves
 
-The report's evidence is not summarized from elsewhere; it is *here*,
-whole, each report self-contained with its own on-ramp. Bridges cite
-inward to these. (Provenance banners inside each are auditor apparatus.)
+The report's evidence is not summarized from elsewhere; it is *here*, whole, each report self-contained with its own on-ramp. Bridges cite inward to these. (Provenance banners inside each are auditor apparatus.)
 
 | Report | What it is | Opened by |
 |---|---|---|

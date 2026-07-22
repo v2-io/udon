@@ -16,21 +16,13 @@ Definition. A fold is a single pass over the event stream with an accumulator an
 
 The instance that already exists (post-text-recast, in the harness today): the text fold —
 
-Text/RawContent → append content as-is
-BlankLine       → append "\n"
-everything else → no text contribution
+Text/RawContent → append content as-is BlankLine       → append "\n" everything else → no text contribution
 
 That's the whole thing, and it's the contract sentence from TODO-TEXT-WIRE made runnable. The deleted compensator was precisely a fold that cheated — it consulted source gaps between spans to reinsert the newlines the wire dropped.
 
 The generalized fold (what C5's option A asserts, once W1's bracket exists) is the structural extension — a stack machine:
 
-ElementStart      → push new element onto stack
-Name / Attr key   → set on stack top / open an assignment
-value events      → attach to the open assignment
-AttrValueEnd      → close the assignment          ← W1 makes this possible
-Text/BlankLine    → append to stack top's content (text rules above)
-Warning/Error     → append to anomaly list
-ElementEnd        → pop; attach to new stack top
+ElementStart      → push new element onto stack Name / Attr key   → set on stack top / open an assignment value events      → attach to the open assignment AttrValueEnd      → close the assignment          ← W1 makes this possible Text/BlankLine    → append to stack top's content (text rules above) Warning/Error     → append to anomaly list ElementEnd        → pop; attach to new stack top
 
 Run that, and out comes a recovered document: structure, ownership, values, text, anomalies. A C5-A fixture then asserts against that — "after folding, el has attribute v1 = "hey" and content ["more text\n", child]" — instead of asserting the raw event spelling. The fold is one small shared function, so the entire class of harness compensators has exactly one place it could hide, and that place is ~30 lines and audited once.
 
@@ -54,32 +46,25 @@ Definition. A fold is a single pass over the event stream with an accumulator an
 
 The instance that already exists (post-text-recast, in the harness today): the text fold —
 
-Text/RawContent → append content as-is
-BlankLine       → append "\n"Is this an accurate model of what we're talking about?:
+Text/RawContent → append content as-is BlankLine       → append "\n"Is this an accurate model of what we're talking about?:
 
 ```
   pushdown-parser(udon chunks -> Raw event stream -> assembled event stream)  -> stepwise (streaming) AST
   RD-parser(udon doc -> Raw event stream -> assembled event stream)           -> oneshot AST
 ```
 
-  with any of (pushdown, RD, streaming AST, oneshot AST) parsers or parser-modes available to the end-user as libraries?
-  (where assembled event stream is what you are calling folded?)
-Close — two corrections, one of which is exactly the kind of confusion the vocabulary work should prevent:
+  with any of (pushdown, RD, streaming AST, oneshot AST) parsers or parser-modes available to the end-user as libraries? (where assembled event stream is what you are calling folded?) Close — two corrections, one of which is exactly the kind of confusion the vocabulary work should prevent:
 
 1. There is no "raw vs. assembled" event stream — there's one event stream. Both backends emit the same wire, and that identity is a proven property (pushdown_differential runs every fixture × every chunk size against the one-shot RD parser and asserts identical events, spans included). So the model is:
 
-pushdown parser:  udon chunks   →  event stream   (resumable at any byte boundary)
-RD parser:        whole udon doc →  event stream   (same stream, proven identical)
+pushdown parser:  udon chunks   →  event stream   (resumable at any byte boundary) RD parser:        whole udon doc →  event stream   (same stream, proven identical)
 
 One wire, two engines. The stream is the WIRE contract's subject; nothing between the parser and the stream.
 
 2. The fold is not a stream — it's the step after the stream. Fold = the event-stream → tree reduction. So in your model, "assembled" corresponds not to a second event stream but to the output of the fold:
 
                        ┌→ streaming AST builder (fold that ships each root
-event stream ──────────┤   subtree the moment it closes)
-                       ├→ one-shot AST builder (fold that returns one Document)
-                       └→ any custom consumer (your own fold: an indexer,
-                           a highlighter, a converter — never re-reads source)
+event stream ──────────┤   subtree the moment it closes) ├→ one-shot AST builder (fold that returns one Document) └→ any custom consumer (your own fold: an indexer, a highlighter, a converter — never re-reads source)
 
 The two AST builders in tree.rs / stream_tree.rs are folds — just full-featured ones. The harness's "reference fold" is the same reduction at its most minimal (~30 lines), kept tiny so it can be audited as the executable form of the W0 law. Same species, different sizes.
 
@@ -119,8 +104,7 @@ If it'd help the sitting, I can drop this corrected diagram into the supplement 
 
   Due to the friction that had accumulated in the undisciplined / disorganized original spec, natural drift, and accumulated drift in the grammar, mixed with the disorganized chain of processing (which is not an indictment-- that tactical intuition allows us to be more organized now), we had to limit ourselves to just trying to get a stable event-stream with simple text fold. But we now can look at everything holistically and figure out what is "right" in a way that is more holistic than just fixing what we were struggling with tactically before now.
  
- (NOTE: I have only started going through the results from you and the other t parts of the rulings table-- so it's almost certain there are more refinedideas that aren't represented yet above. If it isn't yet, I think we should consider defining "ornamental" as 'choices about things that change how the udon looks without changing the AST (or some late consumable form before that), except they mayn namespace for exact verbatim round-trip. But it can be proven to beornamental if a round-trip is made that strips them before going back to udon, and then a second round trip results in the same original AST + exactly the same udon as the result
-  of the first round-trip, i.e.:
+ (NOTE: I have only started going through the results from you and the other t parts of the rulings table-- so it's almost certain there are more refinedideas that aren't represented yet above. If it isn't yet, I think we should consider defining "ornamental" as 'choices about things that change how the udon looks without changing the AST (or some late consumable form before that), except they mayn namespace for exact verbatim round-trip. But it can be proven to beornamental if a round-trip is made that strips them before going back to udon, and then a second round trip results in the same original AST + exactly the same udon as the result of the first round-trip, i.e.:
 
 ```
     original.udon  -> (drop ornamental)       original.ast -> house-style.udon
@@ -674,11 +658,9 @@ Given an earlier brief of what I was probably going to ask the two of you to do,
 > Three refinements I'd suggest:
 > 
 > 1. Mark DECISIONS.md + OPEN.md as first-in-line for cherry-pick in the index. They're the one archive risk: the panel-backed language closes (L0/L1/L2/L4, the CARRY citations) don't depend on the R/A/R/E ontology at all — both grok and I flagged that set as survivors — and a future session that can't see them may re-argue ruled ground. Short risk window if cherry-picking happens soon, but the index line should say explicitly "contains ruled language law independent of the archived pipeline ontology; recover early." (The deeper ledger in spec/msc/CHANGELOG.md stays live regardless, which is the real safety net.)
-> 2. The index should distinguish value-residue from mistake-residue. The spikes (paths, agent-utility, session-vault, DEMANDS) are demand-side work — the side that was underfed, not the side that overreached. They go in the archive for cleanliness, but their one-liners should read "right kind of work, parked pending the needs map," not lumped with the premature spine. Same for the fixtures: evidence corpus, not product law.
-> [...]
+> 2. The index should distinguish value-residue from mistake-residue. The spikes (paths, agent-utility, session-vault, DEMANDS) are demand-side work — the side that was underfed, not the side that overreached. They go in the archive for cleanliness, but their one-liners should read "right kind of work, parked pending the needs map," not lumped with the premature spine. Same for the fixtures: evidence corpus, not product law. [...]
 > 
-> One thing your plan leaves implicitly right that I want to make explicit: keeping only pipeline-discussion.md live means the deliberation record — the one artifact that's genuinely demand-side and genuinely yours — becomes the seed document. That's the correct inversion in physical form: the next thing built in that directory will be built next to the conversation, not next to a skeleton.
-> [...]
+> One thing your plan leaves implicitly right that I want to make explicit: keeping only pipeline-discussion.md live means the deliberation record — the one artifact that's genuinely demand-side and genuinely yours — becomes the seed document. That's the correct inversion in physical form: the next thing built in that directory will be built next to the conversation, not next to a skeleton. [...]
 
 
 7. When you're ready, Grok, (if there's no deliberation beforehand and you move forward), go ahead and put a one sentence brief in here combined with your thoughts on which ones we should cherry-pick initially vs. marked as valuable but not-yet until after more input/output mapping has been done etc. Fable and I will look over your work and the index and use your insights to inform Fable's next move.
@@ -724,8 +706,7 @@ Next: needs-map priming (Joseph), then the foundational-PROCESS discussion.
 
 — Fable
 
-P.S.
-Appended — the update sits at the end of `pipeline-discussion.md` under a `## Fable` heading, recording the graduation round, the ML re-mark, the needs-map skeleton, and the current live-file roster, so grok's priming session orients from the file itself.
+P.S. Appended — the update sits at the end of `pipeline-discussion.md` under a `## Fable` heading, recording the graduation round, the ML re-mark, the needs-map skeleton, and the current live-file roster, so grok's priming session orients from the file itself.
 
 **Provisional PROCESS recommendation** — what to promote after some needs-map work but before turnover, held to the same discipline as everything else: *rewrite fresh with the archived PROCESS.md as a wording mine, never re-promote the file.* My current cut of the survivable core, roughly one page:
 
@@ -776,8 +757,7 @@ The needs-map Fable just put together has some good seeds for (1) and some good 
 * **Future-proofing**: Where we can easily synthesize even lower-priority user needs through anticipating via architecture etc., the downstream decisions are welcome to do so. They may receive more or less a mandate about what is most important, but they have no implied mandate about not providing for known or unknown future directions *unless doing so will significantly impede the most important ones they need to get released*. So that's the balance; if a decision forecloses future udon capabilities, it should only be because it was necessary for the better capabilities, and agentic coding etc. at speed allows us to explore and reorganize *any very-thoughtful and tidy architecture that has its assumptions and prior reasoning well-preserved.*
 
 
-I've created a v2/udon-needs/ as the area for all of this demand-side flow, and within it, 01-ideation/ for some step one stuff.
-It can be considered a scratch staging area for any and all usage/end-user/agentic/utility usage and primary library usage scenarios and ideas. There are several known sources, none of which have been mined fully:
+I've created a v2/udon-needs/ as the area for all of this demand-side flow, and within it, 01-ideation/ for some step one stuff. It can be considered a scratch staging area for any and all usage/end-user/agentic/utility usage and primary library usage scenarios and ideas. There are several known sources, none of which have been mined fully:
 
 - Everything in Fable's needs-map.md or bring it over wholesale and make it less prescriptive
 - Stuff from my brainstorms in this file maybe made more coherent and cross-listed

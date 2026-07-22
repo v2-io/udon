@@ -1,10 +1,6 @@
 # The tooling conventions (the 2025 taproot)
 
-**How to read this.** The 2025 statement of the crystallized-process
-philosophy in its original voice — where the 60/30/6/4 distribution, the
-tool-evolution ladder, and the Wisdom/Strength/Beauty gate were first laid
-down. Its register is a design manifesto, not a measured study; Part I's
-bridge says what has and hasn't been tested since.
+**How to read this.** The 2025 statement of the crystallized-process philosophy in its original voice — where the 60/30/6/4 distribution, the tool-evolution ladder, and the Wisdom/Strength/Beauty gate were first laid down. Its register is a design manifesto, not a measured study; Part I's bridge says what has and hasn't been tested since.
 
 > **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 
