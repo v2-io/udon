@@ -54,15 +54,15 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 ### `characterizations/` — 30 extraction-by-report
 
 - `harness-invivo/` — **17** per-repo tool-usage maps (14 shipping harnesses + claude-docs + obsidian×2 + yq).
-- **13** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes).
+- **14** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes, **`recall-floor-archema-harness`** [the 2026-07-21 recall-floor find — the compilation's OWN consumer repo `~/src/archema-io/harness/` was un-swept; parallel corrected-behavior dossier + primary CLI census + PROPRIUM/compaction demand; SC#15]).
 
 ### `syntheses/` — 4 already-integrated secondary documents
 
 `asf-dossier.md` (+ `-reading-log.md`; Tier-4 theory) · `CONVERGENCES.md` (tiers + 18 clusters) · `tier2-invivo-digest.md` (read-across of the 17 in-vivo maps) · `tier2-lineage.md` (copying-vs-convergence disentangle: apply_patch = one origin not five; fork pairs collapsed; C2 fuzzy-ladder + C16 headless-contract survive as genuine convergence) · `external-landscape-2026-07.md` (**Tier-5 external evidence** — deep-research over 8 areas, adversarially verified, contrarian findings kept; the only tier independent of both the single-author and harness-lineage caveats). *Register + cross-link these — don't decompose or re-derive them.*
 
-### `commentary/` — 19 witness + demand-spike files
+### `commentary/` — 20 witness + demand-spike files
 
-16 per-section witness files (`*-witness.md` — 1–2-line evidence, dry-wells, steward flags per area) + `spikes/` (grok's demand spikes: agent-utility notes, paths notes + sketches).
+16 per-section witness files (`*-witness.md` — 1–2-line evidence, dry-wells, steward flags per area) + **`recall-floor-witnesses.md`** (24 witness lines from un-mined territories — external agent-command/tool-call convergence, Joseph's OODA→Orient-cascade loop ancestry, relata/TFT-loop tool charters; OODA + relata flagged copy-candidates) + `spikes/` (grok's demand spikes: agent-utility notes, paths notes + sketches).
 
 ## Steward calls — open questions for Joseph
 

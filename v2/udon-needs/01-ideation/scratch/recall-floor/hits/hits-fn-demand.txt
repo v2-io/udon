@@ -6,4 +6,6 @@
 /Users/josephwecker-v2/src/udon/v2/.archived/second-pass/spikes/DEMANDS.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/discussion-excerpts/joseph-morning-demand-sampling.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/I7-seam-addendum/early-demand-asciidocs-2011.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-demand-first.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-demand-side.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-demand.txt

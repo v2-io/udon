@@ -831,7 +831,6 @@
 /Users/josephwecker-v2/src/tmp/_core-sapientia.md
 /Users/josephwecker-v2/src/tmp/eli.md
 /Users/josephwecker-v2/src/tst-tft-combined.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/design/agentic-ux-principles.md
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/dialogs.md
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/elsewhere.md
@@ -872,9 +871,18 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/CONVERGENCES.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/agentic-tooling-search-log.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/sources-agentic-tooling.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-instrumenta.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-praxes.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-quick-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-tooling.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/BUCKET-convergences.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var-why_udon.json

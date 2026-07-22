@@ -776,7 +776,6 @@
 /Users/josephwecker-v2/src/relata/lib/relata/markdown_store.rb
 /Users/josephwecker-v2/src/ruby-community/tmp/ruby_weekly_cache/issue_459.html
 /Users/josephwecker-v2/src/udon/_archive/decisions-superseded/fence-semantics-brief.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/core/fixtures/_wip/FINDINGS.md
 /Users/josephwecker-v2/src/udon/spec/msc/CHANGELOG.md
 /Users/josephwecker-v2/src/udon/test/usability/lib/topic_enablement.rb
@@ -806,12 +805,18 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/needs-map.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agent-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-praxes.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-calling.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-use.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-agent.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-guardrail.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-prompt.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var2-compelling_agent_tools.json
 /Users/josephwecker-v2/src/udon/v2/udon-needs/BRIEF-agentic-tooling-compilation.md

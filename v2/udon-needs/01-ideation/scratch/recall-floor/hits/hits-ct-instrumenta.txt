@@ -203,7 +203,6 @@
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/docs/reflections/three-pillars-synthesis.md
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/docs/reflections/tools-as-truth-bearing.md
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/docs/sessions/2025-09-18-phenomenology-prophecy-light.md
-/Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/elixir-postgres-rag-poc/_build/dev/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/elixir-postgres-rag-poc/erl_crash.dump
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/LEXICON.md
 /Users/josephwecker-v2/src-ext/sapientia.snapshot-backup/next-steps-tool-consciousness.md
@@ -271,8 +270,6 @@
 /Users/josephwecker-v2/src/_core/eli-migration-prep/to-review/sapientia-zi-am-tur-session/cc-raw/f2401dd8-762c-4108-a68b-8bb7e069cf24.jsonl
 /Users/josephwecker-v2/src/_core/eli-migration-prep/to-review/sapientia-zi-am-tur-session/CLAUDE.md
 /Users/josephwecker-v2/src/_core/eli-migration-prep/to-review/sapientia-zi-am-tur-session/LEXICON.md
-/Users/josephwecker-v2/src/_core/ennaos/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_core/ennaos/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_core/ennaos/.archive/analyses/analysis-30-oct.md
 /Users/josephwecker-v2/src/_core/ennaos/.archive/bootstrap/initial-sprint-checklist.md
 /Users/josephwecker-v2/src/_core/ennaos/apps/anima/erl_crash.dump
@@ -407,7 +404,6 @@
 /Users/josephwecker-v2/src/_core/sapientia/docs/reflections/three-pillars-synthesis.md
 /Users/josephwecker-v2/src/_core/sapientia/docs/reflections/tools-as-truth-bearing.md
 /Users/josephwecker-v2/src/_core/sapientia/docs/sessions/2025-09-18-phenomenology-prophecy-light.md
-/Users/josephwecker-v2/src/_core/sapientia/elixir-postgres-rag-poc/_build/dev/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_core/sapientia/elixir-postgres-rag-poc/erl_crash.dump
 /Users/josephwecker-v2/src/_core/sapientia/fathom-emergence.jsonl
 /Users/josephwecker-v2/src/_core/sapientia/LEXICON.md
@@ -524,9 +520,6 @@
 /Users/josephwecker-v2/src/_core/tst/vault/04-workspace/1-inbox/papers/undermind/08-human-hybrid-references.csv
 /Users/josephwecker-v2/src/_core/tst/vault/04-workspace/1-inbox/papers/undermind/08-human-hybrid.md
 /Users/josephwecker-v2/src/_core/tst/vault/04-workspace/1-inbox/papers/undermind/09-theory-building-lit-review-references.csv
-/Users/josephwecker-v2/src/_core/zoetica/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_core/zoetica/_build/prod/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_core/zoetica/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_core/zoetica/.archive/context-immediate-original.md
 /Users/josephwecker-v2/src/_core/zoetica/.archive/CRITICAL-CONTEXT.md
 /Users/josephwecker-v2/src/_core/zoetica/.archive/docs-20251012/architecture/zoetica-console-architecture.md
@@ -548,8 +541,6 @@
 /Users/josephwecker-v2/src/_core/zoetica/.archive/ROADMAP.md
 /Users/josephwecker-v2/src/_core/zoetica/.archive/zoetica_council/erl_crash.dump
 /Users/josephwecker-v2/src/_core/zoetica/.archive/zoetica_deliberation/erl_crash.dump
-/Users/josephwecker-v2/src/_core/zoetica/apps/web/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_core/zoetica/apps/web/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_core/zoetica/apps/zoetica_pq/erl_crash.dump
 /Users/josephwecker-v2/src/_core/zoetica/doc/architecture.html
 /Users/josephwecker-v2/src/_core/zoetica/doc/identity-sovereignty.html
@@ -572,10 +563,6 @@
 /Users/josephwecker-v2/src/_exp/book-reader/ebook_extract_20250905_154203.md
 /Users/josephwecker-v2/src/_exp/book-reader/ebook_extract_20250905_154203.xml
 /Users/josephwecker-v2/src/_exp/book-reader/to-keep/accelerate.md
-/Users/josephwecker-v2/src/_exp/command-center/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_ref/_arch/geminex/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_ref/_arch/geminex/_build/prod/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_ref/_arch/geminex/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_ref/_arch/geminex/elixir-best-practices-older.md
 /Users/josephwecker-v2/src/_ref/_arch/geminex/methodology.md
 /Users/josephwecker-v2/src/_ref/_arch/other-agents/CLI.js.backup
@@ -1028,8 +1015,6 @@
 /Users/josephwecker-v2/src/_ref/_arch/third-other-client/cli.js
 /Users/josephwecker-v2/src/_ref/_arch/third-other-client/cli.simple.js
 /Users/josephwecker-v2/src/_ref/_arch/UNIFIED-FEATURE-SPEC.md
-/Users/josephwecker-v2/src/_ref/agentic-elixir/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_ref/agentic-elixir/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_ref/agentic-elixir/docs/Elixir Model-Context-Protocol Deep Dive.md
 /Users/josephwecker-v2/src/_ref/agentic-elixir/docs/ELIXIR_BEST_PRACTICES.md
 /Users/josephwecker-v2/src/_ref/agentic-tft/10-ontology-unification.md
@@ -1042,8 +1027,6 @@
 /Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/management/ref/bookmarks.txt
 /Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/tracking/.archive/easylist.to/easylist/easyprivacy.txt
 /Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/v2/README.md
-/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/corvus/_build/dev/lib/telemetry/ebin/telemetry.app
-/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/corvus/_build/test/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/Documents/arch-concept-rough.svg
 /Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/Documents/arch-newstyle.svg
 /Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/Documents/sdn_advanced.xml
@@ -1750,7 +1733,6 @@
 /Users/josephwecker-v2/src/archema-io/vivarium/spikes/FINDINGS.md
 /Users/josephwecker-v2/src/arXiv-2411.00986v1/main.bib
 /Users/josephwecker-v2/src/arXiv-2411.00986v1/main.tex
-/Users/josephwecker-v2/src/ato/vendor/diffvg/thrust/dependencies/cub/CHANGELOG.md
 /Users/josephwecker-v2/src/autopax/.yardoc/checksums
 /Users/josephwecker-v2/src/autopax/coverage/index.html
 /Users/josephwecker-v2/src/autopax/docs/ADR/011-more-principled-ruby.md
@@ -1965,7 +1947,6 @@
 /Users/josephwecker-v2/src/tmp/autopax.md
 /Users/josephwecker-v2/src/tmp/firmatum.md
 /Users/josephwecker-v2/src/tst-tft-combined.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/test/usability/results/udon-topic_enablement-20251223-190817-b6d78286.yaml
 /Users/josephwecker-v2/src/udon/tools/descent/TODO-DESCENT.md
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/autopax-practica.md
@@ -2014,14 +1995,33 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/asf-dossier.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/CONVERGENCES.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/sources-agentic-tooling.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agent-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-cross-tier.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-crystallized.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-demand-side.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-edit-tool.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-feedback-loop.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-for-agents.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-mcp-tool.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-meta-tool.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-multi-agent.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-praxes.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-quick-tool.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-definition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-schema.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-suite.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-use.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tools-for-agents.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-cli.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-instrumenta.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/BUCKET-convergences.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/BUCKET-inventory.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
@@ -2043,7 +2043,6 @@
 /Users/josephwecker-v2/src/vestigia/results/blub-subject-rerun.json
 /Users/josephwecker-v2/src/vestigia/results/register-results.json
 /Users/josephwecker-v2/src/vestigia/results/register-subject-rerun.json
-/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/telemetry/ebin/telemetry.app
 /Users/josephwecker-v2/vaults/earlier-unsorted/App Development Strategy.md
 /Users/josephwecker-v2/vaults/earlier-unsorted/compass_artifact_wf-3b803159-4f7d-4e7f-8307-91cd4724da15_text_markdown.md
 /Users/josephwecker-v2/vaults/earlier-unsorted/comprehensive_app_dev_guide.md

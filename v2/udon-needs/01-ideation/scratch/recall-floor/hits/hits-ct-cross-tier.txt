@@ -11,7 +11,6 @@
 /Users/josephwecker-v2/src/archema-io/asf/mono/.build-scrbook/aat/chunks/disc-dynamic-regime-axis.md
 /Users/josephwecker-v2/src/archema-io/asf/mono/.build-scrbook/aat/citation-scan/src/aat.md
 /Users/josephwecker-v2/src/archema-io/asf/spikes/strategic-composition-class-3-attempt-2026-05-21/06-PILLAR-PRIOR-ART.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/MASTER-REGISTRY.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/01-reconciled-target-files/TARGET-FILES.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/I1-usability-enablement-corpus.md
@@ -45,6 +44,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/2025-12-14-tool-definition-anatomy.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/instrumenta--tool.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/practica-intent-action-layers.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II5-dialogs/codex-gpt-cross-model-udon-assessment.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II5-dialogs/read-first-principles-anti-hallucination.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II6-elsewhere/sar-ai-applied-tst-excerpt.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II6-elsewhere/sar-archive-domain-updates-excerpt.md
@@ -69,7 +69,14 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/tier2-lineage.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/GATHERING-INDEX.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/README.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-instrumenta.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-quick-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/BUCKET-convergences.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/TF-header.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/use-udon-for-audit.md

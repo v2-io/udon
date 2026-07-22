@@ -20,7 +20,6 @@
 /Users/josephwecker-v2/src/archema-io/asf/ref/prior-art-analysis/14-composition-under-goal-divergence.md
 /Users/josephwecker-v2/src/archema-io/asf/ref/prior-art-analysis/cluster_references/composition_under_goal_divergence.md
 /Users/josephwecker-v2/src/archema-io/vivarium/core/src/form-rl-closure-algebra.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/nexum-synaptic-elimigration.md
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/ref-arch.md
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/zoetica-ennaos.md
@@ -51,6 +50,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/III-vaults-context-memory-field-survey.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/characterizations/sapientia-bin-buildout.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/I5-live-consumers-witness.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II5-dialogs-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II7-ref-arch-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/discussion-excerpts/joseph-morning-demand-sampling.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/I5-live-consumers/consumer-vivarium-ordinum-parser.rs.md
@@ -66,7 +66,15 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/README.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/sources-agentic-tooling.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/grok-pass-README.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/build-union.py
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-instrumenta.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-demand.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/BRIEF-agentic-tooling-compilation.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/pipeline-discussion.md

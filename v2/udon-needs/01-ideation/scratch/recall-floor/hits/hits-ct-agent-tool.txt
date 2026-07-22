@@ -659,6 +659,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/2025-12-14-tool-definition-anatomy.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/instrumenta--tool.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/task-and-issue-tools-survey.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II6-elsewhere/sar-archive-domain-updates-excerpt.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II7-ref-arch/codex-synthesis-plan.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II8-harness-refs/agent-tool-authoring-conventions.md

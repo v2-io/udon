@@ -753,6 +753,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II1-sapientia-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II2-zoetica-ennaos-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II4-autopax-practica-witness.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II5-dialogs-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II7-ref-arch-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II8-harness-refs-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/III-schema-witness.md
@@ -825,6 +826,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-affordance.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agent-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agents-need.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-cross-tier.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-crystallized.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-edit-tool.txt
@@ -833,6 +835,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-guardrail.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-instrumenta.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-memory-system.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-multi-agent.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-praxes.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-calling.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-tool-schema.txt
@@ -842,6 +845,10 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-tool.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-tooling.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/BUCKET-inventory.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-C.md
@@ -856,6 +863,7 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var2-compelling_agent_tools.json
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var2-udon_handoff_generator.json
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/use-udon-for-audit.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/STEWARD-CALLS.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/pipeline-discussion.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/README.md
 /Users/josephwecker-v2/src/umi/_archive/survey-umi-ecosystem-and-autopax.md

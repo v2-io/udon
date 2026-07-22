@@ -1,4 +1,5 @@
 /Users/josephwecker-v2/src/_ref/claude-code-snapshot/constants/tools.ts
 /Users/josephwecker-v2/src/udon/v2/.archived/consumed-maps-2026-07-21/agentic-tooling-sources/dialogs.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II5-dialogs/joseph-agent-tooling-vision-primary-turns.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-var2-compelling_agent_tools.json

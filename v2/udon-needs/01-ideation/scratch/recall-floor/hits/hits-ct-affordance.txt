@@ -558,7 +558,6 @@
 /Users/josephwecker-v2/src/udon/_archive/decisions-superseded/explicit-typing-brief.md
 /Users/josephwecker-v2/src/udon/_archive/decisions-superseded/identity-syntax-brief.md
 /Users/josephwecker-v2/src/udon/_archive/REVIEW-JULY-2026.md
-/Users/josephwecker-v2/src/udon/.obsidian/workspace.json
 /Users/josephwecker-v2/src/udon/core/fixtures/v0.9/attr_boundary.yaml
 /Users/josephwecker-v2/src/udon/core/fixtures/v0.9/attr_combinations.yaml
 /Users/josephwecker-v2/src/udon/core/fixtures/v0.9/interplay.yaml
@@ -649,8 +648,14 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/asf-dossier.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/syntheses/external-landscape-2026-07.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-multi-agent.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-affordance.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/run-battery.sh
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-already-in-corpus.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-corpus-own.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION-needs-disposition.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/UNION.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-A.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/reconcile-workdir/UNION-C.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/tmp-use-udon-for.json

@@ -1,4 +1,5 @@
 /Users/josephwecker-v2/src-ext/qwen-code/docs/design/2026-07-16-subagent-prompt-guardrails.md
 /Users/josephwecker-v2/src-ext/qwen-code/docs/developers/daemon/06-mcp-budget-guardrails.md
 /Users/josephwecker-v2/src/_ref/rails-migrations-survey/chatwoot/db/migrate/20250714104358_add_response_guidelines_and_guardrails_to_captain_assistants.rb
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-guardrail.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-guardrail.txt
