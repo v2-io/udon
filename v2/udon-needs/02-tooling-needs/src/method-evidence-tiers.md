@@ -43,6 +43,13 @@ written so you can tell which without apparatus:
   [[DECISIONS.md|design ledger]]) rather than manufacturing an argument
   that arrives where the decision already stood; and where a decision
   merely confirmed something obvious, the text says *that*.
+- **Proposed** — an idea, generated here. This report is not only an
+  organization of what exists; each chapter is chartered to *think* — to
+  notice what its principles make conceivable that nobody has yet said.
+  Such passages are voiced unmistakably as imagination ("one could…",
+  "nothing yet built does…"), they open possibility space without closing
+  any of it, and they decide nothing — the design work downstream owns
+  all of that, with fuller context than this page has.
 
 If a passage seems to argue hard for something that needed no argument,
 treat it as a defect in this report and flag it.
