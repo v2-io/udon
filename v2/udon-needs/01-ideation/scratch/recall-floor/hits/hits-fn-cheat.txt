@@ -1,0 +1,27 @@
+/Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/simplex-material/ref/cheat.md
+/Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/simplex-material/ref/cheat.pdf
+/Users/josephwecker-v2/src/_ref/axiomata/axiomata-technica/_unsorted/simplex-material/ref/cheat.tex
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/more/simplex-material/ref/cheat.md
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/more/simplex-material/ref/cheat.pdf
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/more/simplex-material/ref/cheat.tex
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/simplex-material/ref/cheat.md
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/simplex-material/ref/cheat.pdf
+/Users/josephwecker-v2/src/_ref/backup-simplex-stuff/_unsorted/simplex-material/ref/cheat.tex
+/Users/josephwecker-v2/src/_ref/books/Paperpile/All Papers/A/Alberts 2022 - Not cheating on the Turing test - Towards grounded language learning in artificial intelligence.pdf
+/Users/josephwecker-v2/src/autopax/docs/ref/yaml-syntax-cheatsheet.md
+/Users/josephwecker-v2/src/autopax/docs/tactical/yaml-work/yaml-syntax-cheatsheet.md
+/Users/josephwecker-v2/src/neurips/02-unified-convergence-rl/src/_recovery/STRENGTHENS-CHEATSHEET.md
+/Users/josephwecker-v2/src/python-interview-cheatsheet.pdf
+/Users/josephwecker-v2/src/rowan/docs/ref/yaml-syntax-cheatsheet.md
+/Users/josephwecker-v2/src/ruby_to_python_cheatsheet.pdf
+/Users/josephwecker-v2/src/udon/design/examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-2a/snippets/from-examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-2b/snippets/from-examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-3a/snippets/from-examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-3b/snippets/from-examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-pristine/snippets/from-examples/cheatsheet.udon
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-cheat.txt
+/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheets.beam
+/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheets.Docs.beam
+/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheetsInSearch.beam
+/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Spark.CheatSheet.beam

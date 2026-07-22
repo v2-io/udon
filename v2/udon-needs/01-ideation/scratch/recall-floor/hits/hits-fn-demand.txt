@@ -1,0 +1,9 @@
+/Users/josephwecker-v2/src/_core/tst/planning/analysis/139-demand-control-patterns.md
+/Users/josephwecker-v2/src/_core/tst/vault/03-library/analyses/designing-elixir-systems/back-pressure-and-demand-driven-processing-prevent-resource-exhaustion-by-allowing-consumers-to.md
+/Users/josephwecker-v2/src/_core/tst/vault/03-library/analyses/release-it/create-cooperative-demand-control.md
+/Users/josephwecker-v2/src/_core/tst/vault/03-library/analyses/release-it/synchronized-resource-demands.md
+/Users/josephwecker-v2/src/_core/tst/vault/03-library/analyses/release-it/systems-must-control-demand-through-backpressure-rate-limiting-and-load-shedding.md
+/Users/josephwecker-v2/src/udon/v2/.archived/second-pass/spikes/DEMANDS.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/discussion-excerpts/joseph-morning-demand-sampling.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/I7-seam-addendum/early-demand-asciidocs-2011.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-demand.txt

@@ -1,0 +1,9 @@
+/Users/josephwecker-v2/src/_core/zoetica/.archive/docs-20251012/praxis-protocol.md
+/Users/josephwecker-v2/src/_core/zoetica/.archive/docs-20251012/praxis-split-candidates.md
+/Users/josephwecker-v2/src/_core/zoetica/doc/praxis-protocol.html
+/Users/josephwecker-v2/src/_core/zoetica/docs/praxis-protocol.md
+/Users/josephwecker-v2/src/_ref/validate-praxis.sh
+/Users/josephwecker-v2/src/archema-io/asf/.claude/worktrees/wf_176351a4-f07-6/terminology/entries/praxis.md
+/Users/josephwecker-v2/src/archema-io/asf/terminology/entries/praxis.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II2-zoetica-ennaos/praxis-protocol.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-praxis.txt

@@ -1,0 +1,8 @@
+/Users/josephwecker-v2/src-ext/warp/app/src/auth/needs_sso_link_view.rs
+/Users/josephwecker-v2/src/_core/tst/planning/analysis/351-quality-prediction-models---using-historical-data-to-predict-future-quality-issues-and-maintenance-needs.md
+/Users/josephwecker-v2/src/_core/tst/planning/analysis/657-coordination-needs-measurement-algorithms---quantitative-methods-for-predicting-team-coordination-requirements.md
+/Users/josephwecker-v2/src/_core/tst/vault/03-library/analyses/unknown/coordination-needs-measurement-algorithms-quantitative-methods-for-predicting-team-coordination.md
+/Users/josephwecker-v2/src/_ref/_arch/sar/nim-compiler/tests/discard/tneedsdiscard_in_for.nim
+/Users/josephwecker-v2/src/_ref/_arch/sar/nim-compiler/tests/discard/tneedsdiscard.nim
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/needs-map.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-needs.txt

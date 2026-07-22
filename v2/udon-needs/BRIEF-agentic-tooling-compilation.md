@@ -150,6 +150,20 @@ evolution; verbatim redundancy is not).
   logs — carry them forward visibly rather than papering over.
 - **The built thing is a source, not scaffolding** — a docs sweep once
   skipped a 4,491-line executable that was the ideology crystallized.
+- **Transported judgments are stale by default — position launders
+  assumptions into law.** Three times in one day (2026-07-21) a provisional
+  judgment moved into a more authoritative position and became de-facto law
+  nobody re-ratified: hypothesis stage-names → a process spine table; a
+  reservoir aside → an audit exclusion category; pre-broadening map
+  verdicts ("off-target for notation") → work-list row cells that
+  extraction agents then deferred to over their own broader mandate. The
+  discipline: a judgment you inherit from an upstream artifact carries the
+  scope and date of its *author's* charter, not of the document it now
+  sits in — when the charter has since widened (or you can't establish
+  it), re-judge; never defer to an annotation over your own instructed
+  scope. And when you transport others' judgments into a new artifact,
+  mark their provenance or re-base them — transporting them silently is
+  how the previous phase's assumptions become your phase's law.
 
 ## Working conventions
 
