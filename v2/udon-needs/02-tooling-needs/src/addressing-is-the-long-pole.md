@@ -83,7 +83,8 @@ hop — or does the path stop at the file's edge, with "open the other
 document, then path within it" left to the tool driving the session? The
 walkthroughs of realistic agent workdays consistently took the second
 view, and a path language could plausibly stop there forever. But that
-boundary has been ruled out as a *permanent* assumption: cross-document
+boundary has been ruled out as a *permanent* assumption (the ruling is
+recorded in the [[DECISIONS.md|design ledger]]): cross-document
 addressing is in scope for the eventual design, so a tool that hard-codes
 "paths never leave this file" into its workflows would be built on sand.
 Second: UDON documents can already point at their own elements with a
@@ -91,9 +92,10 @@ small reference form, and the temptation is to grow it a feature at a
 time toward a path language. That road is closed — each incremental field
 would be a constraint the real path language later has to honor or break,
 debt without a design — so the reference form stays frozen exactly as it
-is until a whole path language replaces it. Third: an element can carry
-more than one key, and how addressing should treat that is explicitly
-undecided. Everything else — the syntax, the verbs, whether positional
+is until a whole path language replaces it (also a recorded
+[[DECISIONS.md|ledger]] ruling). Third: an element can carry more than
+one key, and how addressing should treat that is explicitly undecided —
+an [[OPEN.md|open question]], not an oversight. Everything else — the syntax, the verbs, whether positional
 access ever becomes language rather than tooling — is deliberately open:
 this report maps the demand and declines to design.
 

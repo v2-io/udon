@@ -224,6 +224,16 @@ where a finding came from a lived situation, **show the situation** — the
 one-or-two-sentence scene (the agent, the reference, the file edge) is
 simultaneously the evidence and the pedagogy.
 
+**External-document convention (Joseph, 2026-07-22):** where prose
+legitimately leans on a project document rather than teaching its
+content, use a reader-labeled wikilink — `[[DECISIONS.md|ledger]]`
+(filename alone; no path) — so prose reads naturally and the referent is
+one hop away. Third option alongside teach-in-place and footnote; right
+for ruling-provenance. Caveat for the handover half of the audience:
+links into this repo do not survive the port to the harness programme —
+anything harness-load-bearing must be self-contained on the page, with
+the wikilink carrying provenance only (teach the substance AND link).
+
 **Remaining work, exact:**
 1. Fresh-page rewrites of the remaining 26 bridges (Part IV's two are
    done and are the pattern; the two synthesis chapters and the methods/
