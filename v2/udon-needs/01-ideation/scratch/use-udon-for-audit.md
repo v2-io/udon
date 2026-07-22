@@ -1,4 +1,13 @@
-# Coverage audit — the "use udon for" demand-phrase angle
+# Coverage audit — demand-phrase & memory-jogged-probe angles
+
+*This file began as the "use udon for" demand-phrase sweep (Pass 1, below) and
+was extended 2026-07-21 with Pass 2 — four memory-jogged probes Joseph named
+directly (`principled tooling` · `instrumenta` · `agentic cycle` ·
+`agentic prose`). Pass 2's section is at the bottom; Pass 1 is the original.*
+
+---
+
+## PASS 1 — the "use udon for" demand-phrase angle
 
 **Prompted by:** Joseph's suspicion (2026-07-21) that "there was still some
 good stuff that hasn't surfaced yet" — things he remembered being in the estate
@@ -160,3 +169,206 @@ Of the 95 UDON-file hits (63 unique paths):
 - sapientia/synaptic/`.sapientia`/emerson transcripts, all `.jsonl` — **deferred
   reservoir** by README design.
 - claude-docs / books / gemini-logs — lexical `use…for` noise, no UDON relation.
+
+---
+---
+
+# PASS 2 — the four memory-jogged probes (2026-07-21)
+
+**Prompted by:** Joseph naming four specific `memorata3-search -n100` probes he
+suspected would surface things the path-sweep + Pass-1 demand-phrase sweep
+missed: `principled tooling` · `instrumenta` · `agentic cycle` · `agentic prose`.
+
+**Method:** same discipline as Pass 1 — full `-n100` JSON per probe, every hit
+classified (represented-where / MISSING / stale-path / excluded-why), stale
+paths and "is it really uncovered" claims verified on disk against
+`TARGET-FILES.md` + `02-provenanced/` (incl. the growth since Pass 1: the
+OPERATA landing, the I1 usability deep-pass, the III-schema/autopax crown). The
+corpus is now ~270 provenanced artifacts + a 312-row TARGET-FILES; coverage of
+the sapientia/autopax/ennaos/nexum/zoetica "agentic-tooling ideology" center of
+mass is dense, so Pass 2 spot-checked known clusters and spent its effort on the
+*residue outside* the three prior sweeps.
+
+## Bottom line
+
+**No strong unrepresented miss on the order of Pass 1's OPERATA.** The corpus is
+well-saturated against all four probes. Two of the four probes (`agentic cycle`,
+`agentic prose`) are **dry wells** — pure lexical collision with the
+agentic-systems framework's old name (**A**gentic **C**ycle **T**heory) and its
+prose-vocabulary/naming corpus; zero tooling-demand content. The other two hit
+almost entirely into already-copied territory. The only residue worth a steward
+glance:
+
+1. **`~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`**
+   — a `_self` personal-notebook file (same steward class as Pass-1's OPERATA,
+   which Joseph ruled in-scope), genuinely **not in corpus**. ~80% PROPRIUM /
+   personhood; a thin but real tool-adjacent seam. **WITNESS + steward-call.**
+2. **The TST tooling-ROI *worked elaborations*** (`~/src/_core/tst/planning/refs/{regime-breakout-analysis,future-dev,future-dev-part2,future-dev-lindy,future-dev-part4}.md`
+   + `analysis/412-tooling-support-for-metaprogramming.md`) — the fuller
+   simulation/calculus treatment behind a thesis the corpus **already carries at
+   theorem level** via `temporal-software-theory-distilled.md`.
+   **Depth-residue, low priority + steward-call.**
+
+Everything else is represented, a derived restatement of a represented source, a
+deferred-reservoir session hit, or framework-naming noise.
+
+## Per-query accounting
+
+### Q1 — `principled tooling` (100 hits: 61 document / 39 session-corpora)
+
+The richest probe. Documents cluster into the **already-copied agentic-tooling
+ideology** and a small uncovered residue.
+
+- **REPRESENTED (spot-checked copied):** `nexum/docs/dev/vision-agentic-toys.md`
+  (+ quick-reference + comparison-matrix) → `copies/II3-nexum/`;
+  `ennaos/…/agentic-coding-background/{02,05}` + `refs/addendum-intent-driven-tooling…`
+  → `copies/II2-zoetica-ennaos/`; `sapientia/QUICK-TOOLING-CONVENTIONS.md`,
+  `tools-as-truth-bearing.md`, `three-pillars-synthesis.md`,
+  `zoetica…/tools-as-crystallized-consciousness.md`,
+  `ZOETICA-CONSTITUTION.md` (INSTRUMENTA/crystallized-consciousness ideology) —
+  all inside the II1/II2/II3 sweeps. `udon/design/agentic-ux-principles.md` and
+  `udon/TODO-UTILS.md` are the live repo's own design layer (in `copies/extracts/`).
+- **Joseph human-user turn (top-2 by score), 2026-07-16 udon session:** *"any
+  effort spent on udon fmt would end up being friction for adoption when the same
+  effort could be spent on an actually principled tool with all the right span
+  pieces and feedback mechanisms (all well researched late last year…)."* →
+  **REPRESENTED** — carried verbatim in `copies/extracts/TODO-UTILS.md:123` and
+  the "feedback mechanisms" demand is copied in
+  `II2-zoetica-ennaos/{addendum-intent-driven-tooling,zoetica-misc-notes-jaw,agentic-semantic-code-manipulation-synthesis}.md`.
+- **RESIDUE — TST tooling-ROI math** (`~/src/_core/tst/planning/`, Aug–Sep 2025,
+  1021 `.md` files; the demand-relevant tight cluster is 6 files: the three
+  `future-dev*` "mathematics of tooling investment" refs + `future-dev-lindy` +
+  `future-dev-part4` + `regime-breakout-analysis.md` + `analysis/412-tooling-support-for-metaprogramming.md`).
+  A formal (Temporal Software Theory) treatment of **when/how much to invest in
+  tooling**: three regimes (winning/equilibrium/losing β/γ), the linear-vs-**compound**
+  returns distinction, and **regime *breakout* only via exponential "tools that
+  build better tools."** This is the mathematical backbone under the whole
+  demand thesis (principled/meta-tooling investment) and the ELI "intelligence
+  begets intelligence at the artifact level" quote. **Verified representation
+  state:** the *thesis* IS carried — `copies/II2-zoetica-ennaos/temporal-software-theory-distilled.md`
+  (804 lines, already in corpus) distills exactly this: §179-187 "only compound
+  improvements maintain velocity long-term / the investment strategy may need to
+  shift from linear to compound-seeking" (the distilled regime-breakout insight);
+  §233-291 the AI-collaboration application (100%-turnover-per-context-window,
+  compound virtuous/vicious cycle). What is **uncovered** is only the *fuller
+  worked elaboration* — the regime-breakout simulation tables, the "developer's
+  dilemma" optimization calculus, the metaprogramming tooling-tax formalization.
+  Per the BRIEF's restatement rule ("keep it if it adds a new context/era; not
+  verbatim redundancy") the simulation-data treatment is a *more concrete tier*
+  of the same thesis, so this is a **depth-residue WITNESS**, not a thesis-gap.
+  **Steward-call:** worth pulling the concrete regime-breakout/investment-calculus
+  as formal-theory-tier demand evidence (sibling to the ASF/AAT dossier, which
+  does not cover TST), or is thesis-level distilled coverage enough? I lean
+  witness-line-only unless synthesis later wants the simulation numbers.
+- **Excluded (noise/off-target):** `_ref/…/technology-strategy-patterns.md`
+  (book index, lexical "principles/tools"), `vaults/{claude-tools-complete-guide,
+  Release-It,v2_brand_guidelines}.md`, `logos/refs/Phenomenal_asymmetry…`
+  (consciousness paper), `practica/…/06-limits-and-positioning.md` ("principled
+  actors," not tooling), agentic-systems naming/CHANGELOG bookkeeping,
+  `role-encounter-plan.md` (psql-18 tooling-stack note). All `.jsonl`/`.gemini`
+  = deferred reservoir.
+
+### Q2 — `instrumenta` (79 hits: 54 document / 25 session-corpora)
+
+As forecast, **saturated in already-swept sapientia/autopax/zoetica/ennaos/nexum
+INSTRUMENTA territory** — this probe re-confirmed known coverage more than it
+found residue.
+
+- **REPRESENTED (spot-checked copied):** the whole autopax INSTRUMENTA cluster —
+  `docs/ADR/013-instrumenta.md`, `docs/tactical/2025-12-14-{tool-definition-anatomy,
+  instrumenta-*}.md`, `docs/system-overview/instrumenta/{tool,handlers,built-in,
+  registry,handler-errors}.md` → `copies/II4-autopax-practica/`; both
+  `misc-notes-jaw.md` (ennaos + zoetica versions, the richest raw INSTRUMENTA
+  ideation) → `copies/II2-zoetica-ennaos/`; `tools-as-truth-bearing.md`,
+  `three-pillars-synthesis.md`, `tools-as-crystallized-consciousness.md`,
+  `zoetica/docs/architecture.md` INSTRUMENTA/AUXILIA taxonomy — all inside II2/II4.
+- **RESIDUE — `~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`**
+  (git-added 2026-04-01; digitized 2026-02-23 from a 2025-11-01 handwritten PDF).
+  **Verified not in corpus** (`soren`/`digitized-notes` → 0 hits in TARGET-FILES +
+  02). **Read in full.** ~80% PROPRIUM/personhood (entity-type taxonomy, AUXILIA
+  architecture, sovereignty, ACTUS journal, "system-prompt-becomes-INSTINCT").
+  Tool-adjacent seam, mostly restatement of covered material:
+  - Pages 2–4 "Coding Steward Agent / Codebase-Module-Owner" (Type-D agent that
+    *owns* a module, "as if the module were a living entity responsible for its
+    own success," can fork/experiment/recombine, negotiates boundaries) — this is
+    the **fuller original of the "AUXILIA as stewarded code / expert agents that
+    own modules" idea already copied** in `II2-zoetica-ennaos/ennaos-misc-notes-jaw.md`.
+    Restatement-in-different-context (handwritten origin) → witness value.
+  - Page 6 "Cost/Time Estimation": *"Stop hourly quote/estimate and instead
+    predict number of steps, token consumption, tool-usage counts, continuous
+    wall-clock time… (derive time / transform for TST accordingly)"* — an
+    agent-tool **telemetry/estimation** demand. Adjacent to the covered OOB
+    tool-usage-audit spec (agentic-semantic-code-manipulation-synthesis) and the
+    OPERATA/AGENT_FEEDBACK "telemetry on tool usage / time-to-correct-change"
+    demand, but the *predict-before* framing (vs post-hoc audit) is a mild new angle.
+  - Page 5 "Startup Sequence for Agents" (prompt-enrichment → research → R&D →
+    new praxes+system-prompt → OOB research assistant) — agent-bootstrapping demand.
+  - Page 9 "system prompt → INSTINCT" duplicates the covered misc-notes-jaw thesis.
+  **Disposition: WITNESS + steward-call.** It's a `_self` personal notebook (the
+  exact class Joseph ruled in-scope for OPERATA); the honest read is that its
+  tool-demand is ~one witness paragraph (Pages 5–6 + the module-owner origin),
+  the rest PROPRIUM out-of-scope. Recommend a witness line (or a Pages-5/6 excerpt
+  if a pass is already in `_self`), pending Joseph's in-scope confirmation.
+- **RESIDUE (represented-via-source) — `~/src/_core/zoetica/.archive/docs-20251012/ref/web/cli-patterns-for-entities.md`**
+  (not in corpus by path). **Read in full.** Genuine agent-CLI demand — universal
+  flag conventions (`--format=json|yaml`, `--dry-run`, stackable `-vvv`), BSD
+  `EX_*` exit codes, `@filename` args-from-file (prior art adjacent to UDON's
+  `@`-embed sigil, cf. the III-vaults `@`-inclusion witness), and *"exit codes
+  communicate intent, not just failure — entities can learn which errors are their
+  fault vs tool faults vs system faults."* **But** its own header names its source
+  as `~/src/sapientia/cli-conventions/command-line-interface.md`, a split-file
+  chunk of `sapientia/cli-conventions/full.md` — which **is in corpus** (witnessed;
+  `core-design-philosophy.md` + `ai-agent-considerations.md` copied). So this is a
+  derived Layer-3 restatement of a **represented** source → **not a miss**; the
+  error-attribution framing is worth a one-line note if the sapientia CLI cluster
+  is revisited.
+- **Excluded:** `_self/agents/soren/…` PROPRIUM pages (above), `operata/…/where-operata-fits-in.md`
+  (operata swept in III-schema), `agentic-systems/04-eli-core/def-auxilia-hierarchy.md`
+  (ASF formal, dossier tier), all `.jsonl` = deferred reservoir.
+
+### Q3 — `agentic cycle` (66 hits: 36 document / 30 session-corpora) — **DRY WELL**
+
+Essentially 100% **framework-name collision.** "Agentic Cycle Theory" is the
+Mar–May 2026 former name of ACT → AAD → AAT; every substantive document hit is
+`agentic-systems/msc/naming/**` (naming-votes, candidate cards, aggregate
+reviews, `name-transition-aad.md`), `_obs/founding-notes`, `ACT-FULL.built.md`,
+project MEMORY files, or `_self/{tmp,PROGRAM-STRATEGY}.md` (the ACT/AI-Consciousness-Test
+name-collision note). Joseph human turns are all about *reinforcing/renaming the
+word "Cycle"* in the theory. **Zero agent-tool-loop / observe-act-feedback
+demand.** The ASF/AAT theory tier itself is covered by the asf-dossier; this
+probe adds nothing. Dry.
+
+### Q4 — `agentic prose` (83 hits: 66 document / 17 session-corpora) — **DRY WELL**
+
+Also ~100% **framework collision**, one layer over: the agentic-systems
+*prose-vocabulary / naming* corpus — "how do we use the word 'agentic' in the
+monograph's prose," symbol↔prose binding (M_t/G_t/Σ_t prose handles), agent-class
+naming, `PROPOSALS.md`/`TERMINOLOGY-TODO.md`. Nearest-to-relevant: a logos paper
+audit note deciding to scare-quote 'agentic' for industry usage — a *writing*
+decision, not tooling demand. **Zero tooling-demand content.** Dry.
+
+## Explicitly NOT misses (verified, so a re-check doesn't re-chase them)
+
+- The whole `instrumenta`/`principled-tooling` ideology center of mass
+  (sapientia cli-conventions, ennaos agentic-coding-background, nexum
+  vision-agentic-toys, autopax INSTRUMENTA, zoetica crystallized-consciousness,
+  misc-notes-jaw ×2) — **all copied** in II1/II2/II3/II4.
+- `zoetica…/cli-patterns-for-entities.md` — derived restatement of the
+  **represented** sapientia `cli-conventions/full.md`; not a path-miss.
+- The TST *thesis* (compound-vs-linear tooling returns, velocity/comprehension) —
+  **represented** via `temporal-software-theory-distilled.md`; only the worked
+  simulation elaboration is uncovered (depth-residue, not thesis-gap).
+- `agentic cycle` / `agentic prose` document hits — **framework-name/prose
+  collision** with agentic-systems; not tooling demand.
+- All `.jsonl` / `.gemini` / `.codex` / `.claude.bak` — deferred reservoir.
+
+## Deliverable — the characterized MISSING list
+
+| # | Path | What's uncovered | Disposition | Steward-call |
+|---|---|---|---|---|
+| 1 | `~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md` | Pages 5–6: agent startup-sequence + "predict steps/tokens/tool-usage/wall-clock, not hours" estimation demand; Pages 2–4: handwritten *origin* of the covered AUXILIA-as-stewarded-code / codebase-module-owner idea. (~80% PROPRIUM = out of scope.) | **WITNESS** (line, or Pages-5/6 excerpt) | Yes — `_self` personal notebook; same class Joseph ruled in-scope for OPERATA. Confirm before landing. |
+| 2 | `~/src/_core/tst/planning/refs/{regime-breakout-analysis,future-dev,future-dev-part2,future-dev-lindy,future-dev-part4}.md` + `analysis/412-tooling-support-for-metaprogramming.md` | Worked simulation/optimization treatment of tooling-investment ROI: three regimes, linear-vs-compound returns, regime *breakout* via meta-tooling; metaprogramming tooling-tax formalization. **Thesis already carried** at theorem level by `temporal-software-theory-distilled.md` (in corpus). | **WITNESS** (depth-residue) | Yes — pull the concrete simulation/calculus as formal-theory-tier demand (TST is sibling to, and absent from, the ASF/AAT dossier)? Or is distilled thesis-coverage enough? Lean: witness-line only unless synthesis wants the numbers. |
+
+Neither rises to Pass-1's OPERATA (an unrepresented *original brainstorm*). Both
+are steward-flagged low-priority residue. **A clean verdict: the demand center of
+mass is well-covered; the probes confirmed it rather than cracking it open.**
