@@ -139,6 +139,37 @@ match?) is open as OPEN S3 and interacts with typed-key equality, which
 the scenarios already exercised (`||intent[42]` ≠ `||intent["0042"]` —
 integer and string keys are different keys, used deliberately).
 
+## The spike's demand table, carried whole
+
+The paths spike closed with nine provisional boundary demands ("proposals
+only — not decisions… wrong is fine"), here absorbed as the demand floor
+(paths-NOTES §8, stage vocabulary theirs — read "Assembly/Resolution" as
+product boundaries per the archived-pipeline note in DECISIONS):
+
+| # | Layer | Demand | Who pulls it | Spike's confidence |
+|---|-------|--------|--------------|--------------------|
+| D1 | Recognition | In-doc `@` stays self-delimiting one-segment until multi-segment embeddability is proven | live consumers, parsers | high as *interim* |
+| D2 | Recognition | If multi-segment ever embeds bare, the terminator table must be explicit (value boundary, arrays, brace forms) | path-in-document authors | medium |
+| D3 | Assembly | Type-scoped key index suffices for `\|type[key]` / `@type[key]`; order-preserving child lists for structural paths | `at`/`all`, skeleton | high |
+| D4 | Assembly | Stacked-attribute access exposes the *assignment list*, not only a host scalar-last view | edit tool, `all(:attr)` | medium |
+| D5 | Resolution | Fail-loud on unresolvable follow; distinguish PathNotFound / PathNotUnique / ReferencePlural | agent edit tool | high (from scenarios) |
+| D6 | Resolution | Patch paths evaluate against the **pre-patch** tree (CAS composition — one consistent addressing frame per batch) | multi-agent scenarios | high as *tool* law |
+| D7 | Wire | Keep the raw-`@` payload until multi-segment or typed structure forces events (aligns ledger W3) | wire suite | medium |
+| D8 | Host/tool | Prose/comment/raw-body addressing may stay API-positional in v1 (no path segment for a paragraph) | edit tool | medium |
+| D9 | Host/tool | `at` = exactly one match or error; `all` = explicit plural — never one overloaded API | all query surfaces | high as *convention* |
+
+And the embeddability stress cases the spike started (its §4 hand-table,
+"incomplete" by its own label) — the concrete shapes any bare multi-segment
+future must answer before it exists:
+
+| Written | The question it forces |
+|---------|------------------------|
+| `:db @config\|database[primary]` | does `\|` end the reference and start a sibling element? |
+| `:db @config\|database[primary] :host x` | where does the ref end — is `:host` the owner's next attribute or the path's? |
+| `:xs [@a\|b, @c]` | array item boundaries vs path `\|` |
+| prose, then `@x\|y` mid-line | reference guards fire only at structure/value sites — never after prose commits |
+| `:p "\|config\|db"` | a quoted string is fine today — but it is text, not a structured path on the wire |
+
 ## Open questions the spike inherits (the informed floor)
 
 The paths spike's own closing list (paths-NOTES §10 — "the win condition

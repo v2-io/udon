@@ -34,10 +34,13 @@ tier asking for it *by name* through the ease-gradient account below.
   cause the document to now violate the schema is accepted. The tool
   itself will need the machinery to do jq/yq like span-sensitive changes
   to the AST and have it checked against a static schema."
-  Convergent T1 stratum: zoetica doc-03/signum, autopax INSTRUMENTA ("make
-  invalid states unrepresentable"), the agentic-ux principles (validate
-  inside the write, not post-hoc; one-call resolution over
-  edit→check→revert loops).
+  Convergent T1 stratum: zoetica's semantic-storage design (doc-03: the
+  document store validates structure at the write boundary, and its signum
+  companion makes the schema declaration part of the document's own
+  identity), autopax INSTRUMENTA ("make invalid states unrepresentable"),
+  and the agentic-ux principles' write-path rules — validate inside the
+  write, not post-hoc; one-call resolution over edit→check→revert loops;
+  the file's own declared schema governs ("declared ≠ theater").
 - **T2 (the gap + the near-misses):** the shipping ecosystem's whole
   fuzzy-ladder apparatus is compensation for unguaranteed text edits;
   qwen-code bolts on *post*-edit secret-scanning (guard-after, the weaker
@@ -48,10 +51,22 @@ tier asking for it *by name* through the ease-gradient account below.
   measured cost of guarantee-free mutation. Three agents, adversarial
   protocol: Agent A writes valid data, Agent B introduces a specific
   corruption, Agent C — with 100% context turnover and no human — attempts
-  recovery. Across six corruption scenarios, recovery was **100% with
-  backup infrastructure and 16% (1/6) without**. The worst case wasn't the
-  loud one: **duplicate keys parse cleanly**, the YAML parser raises
-  nothing, and the earlier values are silently gone —
+  recovery. The six scenarios and their outcomes, absorbed whole
+  (yaml-spike RECOVERY_SCENARIOS, verbatim table):
+
+  | Corruption | Recoverable? | Method | Without backup |
+  |---|---|---|---|
+  | Truncated write (crash mid-write) | ✓ | restore from backup | ✗ failed |
+  | Invalid YAML syntax (generation bug) | ✓ | auto-fix heuristic OR backup | ⚠ maybe |
+  | Schema violation (valid YAML, wrong shape) | ✓ | backup, after a validation layer catches it | ✗ failed |
+  | **Duplicate keys** | ✗ **silent failure** | none — undetectable | ✗ failed |
+  | Partial update | ✓ | binary-search salvage OR backup | ⚠ maybe, loses data |
+  | Circular reference (anchor misuse) | ✓ | backup, after cycle detection | ✗ failed |
+
+  Headline numbers: **recovery drops from ~100% to 16% (1/6) without
+  backup infrastructure** — and the one failure backups don't fix is the
+  quiet one. **Duplicate keys parse cleanly**: the parser raises nothing,
+  last-value-wins, and the earlier values are silently gone —
 
   ```yaml
   - id: "task-1"
@@ -60,12 +75,20 @@ tier asking for it *by name* through the ease-gradient account below.
     name: "Implement feature Y"   # parses fine; X is lost forever
   ```
 
-  — unrecoverable *and undetectable* by the next agent ("file looks valid,
-  no errors, but data is wrong"). The spike's own conclusion is this
-  segment's demand stated from the wound side: the format did nothing, so
-  ~500 lines of backup/validation/salvage infrastructure had to be built
-  around it — and the one failure that infrastructure still can't catch is
-  exactly the one a schema-checking write gate refuses at the door.
+  "Can agent detect this? NO — YAML parser doesn't warn about duplicates.
+  Can agent recover? NO — earlier values are gone forever. Human
+  intervention required: YES (to notice data inconsistency)." The spike's
+  four resulting requirements are a build-list for compensating
+  infrastructure — (1) backup/WAL before every write, (2) a validation
+  layer after every read, (3) salvage heuristics, (4) human escalation —
+  ~500 lines built around a format that did nothing to help. The demand
+  stated from the wound side: every scenario a schema-checking write gate
+  refuses at the door is a scenario the next agent never has to recover
+  from — and the undetectable one (duplicate keys) is refusable *only*
+  at the door, because after the write there is nothing left to detect.
+  (UDON's stacking law is the other half of this defense: same-key
+  assignments are *kept, in order*, by CORE law — silent last-wins is the
+  YAML behavior UDON already refuses.)
 - **T3 (lived, adjacent):** Architectus's ease-gradient account — chaining
   unverified str_replace edits was the easiest available path and "broke
   minimal-sapientia 3 times." The tool's own audience asking for the
@@ -75,10 +98,16 @@ tier asking for it *by name* through the ease-gradient account below.
   low-A move (#tools-are-observation-infrastructure); typed response/write
   boundaries are the W₂ separation mechanism; and refusal atomicity is an
   epistemic requirement (#errors-that-teach).
-- **T5:** malformed-call and fabricated-parameter failures are attributed to
-  insufficient schema grounding; the MCP fault taxonomy's largest execution
-  subcategory is schema-serialization mismatch. External practice is
-  discovering the same absence.
+- **T5:** the external landscape's tool-failure findings point at the same
+  absence from outside: malformed-call and fabricated-parameter failures
+  are attributed in the published measurements to insufficient schema
+  grounding (small models: ~68% omission / ~32% malformation — the
+  BFCL-adjacent finding carried with its scope in
+  #structured-output-two-mechanisms), and the largest execution-failure
+  subcategory in the 2026 MCP fault taxonomy study is
+  schema-serialization mismatch (external-landscape finding 4). External
+  practice keeps rediscovering that ungrounded structure is where agent
+  writes break.
 
 ## The shape the evidence pins (and what stays open)
 
@@ -96,11 +125,15 @@ atomic first, schema conformance next (the T1 critical path: paths → schema
 → serializer/round-trip+spans → edit v0 → conformance v1).
 
 Open, deliberately (feeds phase-3 spikes): whether the schema is static or
-composable/nested (S8); the path language itself
-(#addressing-is-the-long-pole); the inverse/serialization substrate
-(#round-trip-and-span-splice); and where guard strictness lives (the
-soft/hard casual/careful/critical dial — same notation, different
-enforcement — with the agent edit tool as the *careful* gatekeeper).
+composable/nested — Joseph's own open questions from the source turn:
+"can schemas be nested or otherwise composable?… or is the schema
+static?" (pipeline-discussion, same morning list as the edit-tool quote);
+the path language itself (#addressing-is-the-long-pole); the
+inverse/serialization substrate (#round-trip-and-span-splice); and where
+guard strictness lives — the soft/hard guarantees dial from the design
+corpus (profiles *casual / careful / critical*: same notation, different
+enforcement), with the agent edit tool as the **careful** gatekeeper for
+writes that flow through agents.
 
 **Who reads this and when:** UDON reads it as the flagship utility its
 phase-3/4 decisions must enable (it pulls paths, schema, spans, and
