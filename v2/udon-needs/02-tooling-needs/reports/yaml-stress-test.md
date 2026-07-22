@@ -1,6 +1,12 @@
-# Appendix E — The YAML stress test (agent-recovery evidence), in full
+# The YAML stress test: can agents recover from corruption?
 
-The December 2025 adversarial stress test behind the report's strongest demand: three agents, six corruption scenarios, recovery measured with and without backup infrastructure. The recovery-scenarios document and the updated verdict are reproduced whole.
+**How to read this.** The December 2025 stress test behind this book's
+strongest demand: three agents, adversarial protocol, six corruption
+scenarios, recovery measured with and without backup infrastructure. The
+recovery-scenarios document runs the experiment; the verdict draws the
+conclusions. Watch scenario 4 — the silent one is the argument.
+
+> **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 
 ---
 

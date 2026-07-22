@@ -1,6 +1,15 @@
-# Appendix A — The formal theory of agentic tooling (ASF/AAT), in full
+# The formal theory of agentic tooling (ASF/AAT survey)
 
-The theory this report's foundations cite, reproduced whole so every theoretical claim in Parts I–VI can be checked here without leaving the report. It maps what ASF/AAT — the research programme's mathematical core — says about tool interfaces, observation channels, notation, memory, and feedback loops, with each result's epistemic tier and premises as the theory itself states them. Frontmatter and file citations inside are the original document's own apparatus.
+**How to read this.** This is the full survey of what the programme's formal
+theory (ASF/AAT) proves, conjectures, and prescribes about agent tooling —
+the deep treatment behind every theoretical claim in the bridge chapters.
+It assumes you've met the two core ideas in Part I's bridge (observations
+with low ambiguity; persistence through externalized state); everything
+else it teaches as it goes, tier-labeling each result the way the theory
+itself does. Read it whole when you want the mechanism; return to it by
+section when a bridge points here.
+
+> **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 
 ---
 

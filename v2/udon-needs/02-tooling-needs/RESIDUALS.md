@@ -169,3 +169,27 @@ the deeper fix Joseph named via the "AI slop attends to the whole thing"
 diagnosis — has not been done end-to-end; the demand spine has had the
 most attention, Parts VI–VIII the least. That pass is writing craft, not
 mechanics, and deserves fresh eyes segment-by-segment.
+
+### 2026-07-22 anthology inversion — IN PROGRESS at handoff
+
+Joseph's architectural redirect (via coordinator): the report becomes an
+**anthology with a spine** — crown reports promoted to the body, OUTLINE
+as the organizing spine, segments cut down to short bridge chapters
+(orient by degrees; carry only the genuinely synthetic content; make the
+reader ready for the deep report, never summarize it); method /
+counter-register / priorities / handover-map stay true chapters.
+
+State at this handoff: **`reports/` is created and committed** — seven
+promoted reports (theory survey; shipping practice + descent; both
+explorations; yaml stress test; the two taproots), each with a by-degrees
+"How to read this" on-ramp and an honest provenance banner
+(framing-only refinement); `appendices/` is removed. **Not yet done:**
+(1) OUTLINE/README restructure showing body-vs-bridge — land this FIRST
+so Joseph can judge the architecture from one file; (2) bridge rewrites —
+every `src/` segment still carries absorbed material its promoted report
+now owns (the addressing bridge is the worst/best example: its D-table
+and stress-table duplicate reports/addressing-exploration.md §8/§4 and
+should shrink to a true bridge); the recommended exemplar is Part IV
+(addressing) or Part III (mutation), done end-to-end so Joseph can feel
+the delta; (3) bridge cross-refs still say "Appendix A–E" — retarget to
+`reports/*`; (4) the by-degrees pass now applies to bridges specifically.

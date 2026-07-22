@@ -1,6 +1,14 @@
-# Appendix B — What shipping harnesses actually do, and which agreements are real
+# Shipping practice: the fourteen-harness examination and the descent analysis
 
-The source-level examination of fourteen real coding harnesses and CLIs that grounds every shipped-practice claim in this report, followed by the descent analysis that separates genuine independent convergence from inheritance of one influential design. Read the second document before treating any uniformity in the first as agreement.
+**How to read this.** Two documents: first the source-level examination of
+fourteen shipping coding harnesses and CLIs — what they actually build for
+editing, context, tools, and I/O — then the descent analysis that
+determines which uniformities are genuine independent agreement and which
+are inheritance from one influential design. The second document changes
+what the first one's counts mean; read them together, and treat any
+"everyone does X" as unresolved until the descent analysis has weighed in.
+
+> **Provenance.** Promoted to the body of this report 2026-07-22. Refinements: this framing introduction; nothing else touched — the text below is the assembled original (gathered 2026-07-21; original file paths in its own frontmatter, which is auditor apparatus).
 
 ---
 
