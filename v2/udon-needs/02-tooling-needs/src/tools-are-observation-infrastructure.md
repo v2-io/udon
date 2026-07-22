@@ -2,7 +2,8 @@
 slug: tools-are-observation-infrastructure
 type: finding
 evidence: [T4, T2, T1]
-status: theorem-grade-conditional (T4 core) + cross-tier-convergent (implications)
+register: [derived, evidenced]   # theory-derived core; shipped-practice + design corroboration
+strength: conditional            # headline rests on the κ×A theorem, which holds under named premises
 stage: drafted
 consumers: both
 depends: [method-evidence-tiers]
@@ -35,7 +36,22 @@ theory survey whole, with each result's premises):**
   observation's meaning is left open to interpretation the agent's goals
   could bend. The product bounds how wrong wanting-something can make the
   agent's beliefs. Since κ is immovable, **A — a property of observation
-  design — is the one knob anyone gets.** The theory's own lever statement: the
+  design — is the one knob anyone gets.** (One apparent second lever deserves
+  naming precisely, because it does *not* dislodge that conclusion: the theory
+  offers "wrapping" constructions — routing the agent's belief-updates through
+  goal-blind query channels, or parsing its response into typed belief-vs-strategy
+  fields — that make a coupled model *behave* like a separated one. But these do
+  not lower κ; they leave the forward pass exactly as coupled and instead buy a
+  *certificate* — a provable bound on how much goal-content leaked across a call
+  boundary. The theory is blunt that the certificate is the whole purchase: the
+  actual behavioral leakage it prevents is marginal ("a proof, not a meaningful
+  behavioral delta"), and the weaker of the two regimes — the typed-response one,
+  which is what real structured-output stacks already do — bounds leakage only by
+  the model's instruction-following, behaviorally, not structurally. So wrapping
+  is a verification instrument, not a rival to A: it lets you *prove* separation
+  you mostly already had, while A is what actually moves the bias. Reducing
+  observation ambiguity remains the one knob that changes the agent's beliefs
+  rather than merely certifying them.) The theory's own lever statement: the
   practical move is "not reducing κ … but reducing A: more tests, more
   precise metrics, more structured outputs, less reliance on interpretive
   judgments." Canonical A≈0 observations: a test passing or failing, a

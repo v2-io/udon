@@ -1,0 +1,199 @@
+# Pilot A — restatement gate + workflow feedback
+
+*Cycle one, division = Parts Intro+I opening four: `method-evidence-tiers`,
+`counter-register`, `tools-are-observation-infrastructure`, `errors-that-teach`.
+Written before touching any chapter (the gate), amended after the work where
+noted.*
+
+## Part 1 — the workflow, restated in my own words
+
+A deepening cycle hands each agent a small rolling window (3–5 chapters in
+OUTLINE order) and asks not for polish but for **movement toward truth**: a
+claim verified at its source and restated at honest strength; a claim refuted
+and *replaced* (a success, not a failure); a gap researched / elicited / named
+rather than written around; a seam between chapters healed; a capability card
+whose costs are named so a later decision gets easier. A division that comes
+back looking finished with none of that has failed the cycle's whole purpose.
+
+Order of operations I'm bound to:
+
+1. **Cold read first, before opening any source.** My fresh eyes are one-shot;
+   my confusions on that pass are reader-evidence, not embarrassments — record
+   them. (I did this; findings in Part 3 below.)
+2. Then work the chapters with **full author authority + more** — pull corpus
+   nuance, run research, do de-novo user-voice elicitation, verify at sources,
+   build rigor, add/refine capability cards, strengthen ideation.
+3. **Direct edits stay inside my four chapters.** Everything else — suggested
+   edits to other chapters, suspicions, structural proposals — travels through
+   `notes/for-<slug>.md`, `notes/for-OUTLINE.md`, `notes/general.md`,
+   `notes/for-joseph.md`. That edit-isolation is what lets pilot B and me run
+   at once.
+4. Outline-evolution proposals are an **expected output**, not an optional
+   extra — the canary that the cycle is really working is the OUTLINE morphing
+   as better structure becomes visible. A cycle that leaves it untouched owes a
+   sentence of justification.
+
+The discipline with teeth, as I hold it: when a claim looks overclaimed,
+**strengthen before softening** — attempt to make the strong claim true (verify
+at source, tighten, find the stronger statement that holds) *first*, and soften
+only when that attempt has honestly failed. The seductive failure is the soften
+dressed as honesty ("'measured' is too strong, 'estimated' is more honest") —
+that framing carries zero weight on the direction; if the substitute is weaker
+it is a weakening whoever proposed it. Four honest end-states: strengthened past
+the claim / to the claim / a **no-go** (I can say structurally why it can't
+hold — itself a discovery) / "failed and can't say why" (an alarm, not a
+result). If a strengthening spike can't finish in my window, I don't leave the
+overclaim standing — I mark it `[…claim…]⚑` with a matching working-note entry
+(interim honesty, text stays at aspirational strength). A refuted claim is
+*false* and has no honest weakened form: mark it false in place immediately,
+find + flag dependents (incl. across divisions via notes), state the no-go in
+domain voice where a competent reader would otherwise assume we missed the
+obvious, then delete-and-replace (never keep-softened-with-a-pointer). Labels
+track truth not history — don't down-tier a verified/exact result for being new,
+and don't argue with the past in the body (that voice belongs in the revision
+log).
+
+Integration guard for the coordinator step: corrected truth usually reads
+*messier* than what it replaced, so "the old version reads better" is a signal
+to check provenance, never a reason to restore.
+
+## Part 2 — the four quality bars I'm held to (from CLAUDE.md)
+
+standalone ownership (source corpus gone → report still delivers) ·
+mental-model-by-degrees (a chapter assumes only its depends-chain; every
+referent decodable from the page alone) · apparatus invisible (reader never
+learns there was a gathering process; wikilinks for legit external leans) ·
+honest registers (derived / evidenced / decided / proposed, each in its own
+voice; never a fiat call costumed as an argued principle).
+
+## Part 3 — cold-read findings on my division (reader-evidence)
+
+Recorded on first pass, as the intended reader, before opening sources:
+
+- **F1 (methods).** The chapter runs *three* orthogonal classification axes and
+  a cold reader can conflate two of them: (a) genre/provenance = the T1–T5
+  table; (b) the three→four **registers** derived/evidenced/decided/proposed;
+  (c) a *third* axis — claim-level **strength** — that the chapter itself says
+  is "queued for the metadata machinery in a coming revision cycle." Reading it
+  cold, I could not immediately tell whether "register" and "strength" are the
+  same axis or different ones. They are different (register = which *kind* of
+  speech act; strength = how defeasible), but the page doesn't yet say so — and
+  this is exactly the first-cycle recalibration work item. **This is my primary
+  deliverable.** (Fixed — see Part 4.)
+
+- **F2 (methods).** The genre↔strength independence is asserted well ("Genre is
+  not strength") but the *positive* model of strength is deferred to "a coming
+  revision cycle." Deferring the model while asserting claims need it is a small
+  self-contradiction the recalibration should close now, in this cycle — the
+  deferral language was written *pointing at this cycle*. (Fixed.)
+
+- **F3 (counter-register).** As pure reader I wanted, for each row, its
+  *strength* in the same vocabulary the methods chapter will now define — the
+  Weight column is prose ("Medium confidence", "High confidence", "single
+  experiment") that would read sharper as claim-level strength tags. Rows 10/11
+  are explicitly practitioner-architecture-reasoning-with-no-measurement — that
+  is *heuristic/discussion-grade* in the ladder. Aligning the Weight column to
+  the new vocabulary is a seam-heal between two of my own chapters. (Done.)
+
+- **F4 (observation-infrastructure).** Reads clean and rigorous (it was a prior
+  exemplar). One reader-snag: "κ ≈ 1 by construction" is stated as flat fact;
+  the theory says κ≈1 *for a single-forward-pass coupled agent* and the whole
+  W₁/W₂ wrapping apparatus exists precisely to make a coupled LLM behave as if
+  κ were lower. The chapter says κ "cannot be engineered away" — which is true
+  of the *architecture* but the wrappers change the *effective* behavior. A
+  competent reader who knows the theory could see this as an overclaim. I
+  strengthened it by naming the wrapping caveat rather than softening the
+  law. (Done — strengthen-before-soften.)
+
+- **F5 (errors-that-teach).** The ✦-bullet ideation section predates the
+  `[!capability]` card convention (RESIDUALS names this retrofit as open). The
+  five ✦ ideas are strong; converting them to cards with named theory-quantity
+  impact fields + tensions + downsides is in-division mechanical-plus-enrichment
+  work. (Done.)
+
+- **F6 (cross-chapter seam, methods↔counter-register).** The methods chapter
+  says counter-evidence "rides adjacent … never in a footnote graveyard" and
+  points at the counter-register; the counter-register opens by "keeping that
+  promise." Good seam. But neither yet routes claim-*strength* between them — a
+  counter-row's job is precisely to *cap* a thesis's strength, so the strength
+  vocabulary is the natural shared currency. Wiring it makes the seam
+  load-bearing instead of decorative. (Done via F1+F3.)
+
+## Part 4 — what I changed (amended post-work)
+
+See the chapter diffs + `notes/for-OUTLINE.md` and `notes/for-joseph.md`.
+Headline: introduced the **claim-level strength axis** (ASF ladder: exact /
+conditional / robust-qualitative / measured / heuristic / hypothesis /
+discussion-grade) into the methods chapter as a first-class third axis distinct
+from genre and register, with the frontmatter machinery (`strength:` on claims)
+specified; propagated strength tags into the counter-register Weight column and
+the three Part-I chapters' key claims; strengthened the κ≈1 statement with the
+wrapping caveat; retrofitted errors-that-teach ✦-bullets to capability cards.
+
+## Part 5 — workflow-document feedback (the doubled pilot deliverable)
+
+What confused, fought, or was missing in `DEEPENING-CYCLES.md` /
+`../CLAUDE.md`, at peak fresh-read sensitivity:
+
+1. **The recalibration item under-specifies the *shape* of the fix, and that
+   ambiguity is load-bearing.** "First-cycle work already known →
+   Epistemic-status recalibration" says the tiers are genres not epistemology
+   and names the ASF ladder as the model, but does not say whether strength is
+   (a) a *replacement* for the register axis, (b) a *third* axis alongside
+   genre and register, or (c) a sub-typing of two of the registers. I ruled it
+   (b)-with-(c)-flavor: strength is a third axis, and it only applies to the
+   two *truth-apt* registers (derived, evidenced) — a *decided* claim has no
+   strength grade (a decision isn't strong-or-weak, it's a different speech act)
+   and a *proposed* claim is hypothesis-grade by definition. This felt like the
+   principled read but it *is* a genuine design call an agent shouldn't have to
+   silently make — recommend the workflow either state the intended shape or
+   explicitly license the deepening agent to rule it (I've flagged the ruling
+   to Joseph in `for-joseph.md`).
+
+2. **"Direct edits stay inside your assigned chapters" vs. the frontmatter
+   machinery.** The recalibration says "the frontmatter machinery follows." But
+   frontmatter is per-chapter, and a *schema* change to frontmatter (adding a
+   `strength:` field, changing what `evidence:` means) is implicitly a
+   whole-report change — every chapter's frontmatter is now expected to carry
+   it. I resolved this by: (i) making the change concretely only in my four
+   chapters' frontmatter, and (ii) *specifying the convention* for the rest in
+   the methods chapter + a `for-OUTLINE.md` note so the next window's agents
+   propagate it. Recommend the workflow name this pattern explicitly — "a
+   convention/schema change lands in-division as an exemplar + a note that
+   carries it to the rest" — because it will recur (any cross-cutting machinery
+   change hits it).
+
+3. **The cold-read rule and the restatement gate compete for the true first
+   moment.** Both want to be "before anything else." I read the two charter docs
+   first (required to know the rules at all), which means by the time I cold-read
+   my chapters I already knew the recalibration was coming — slightly priming the
+   "fresh eyes." Minor, probably unavoidable (you can't cold-read without knowing
+   it's a cold read), but worth a sentence: the cold read is fresh w.r.t. the
+   *chapter content*, not w.r.t. the *workflow* — that's the achievable freshness.
+
+4. **"Capability card" default-fields list is long and lives in the methods
+   chapter prose, not in a spec.** Retrofitting errors-that-teach, I wanted a
+   canonical card template to conform to; it's embedded in a dense paragraph of
+   method-evidence-tiers. Recommend extracting the card schema (what / principles
+   / hypothesized-impact-in-named-quantities / in-tension-with / downsides) to a
+   short block the retrofit agents can copy. Low priority; I reconstructed it.
+
+5. **Missing: a cheap way to record "I verified X at source and it held."** The
+   workflow is rich on what to do when a claim is *wrong*, near-silent on
+   recording a *successful* verification so the next cycle doesn't re-verify.
+   The revision log in RESIDUALS §6 is the closest thing but it's coarse.
+   Suggest a lightweight per-chapter "verified-at-source" ledger line (claim →
+   source → date → holds/adjusted). I've put my verifications in the chapter
+   frontmatter-adjacent source notes for now.
+
+6. **Strong positive: the "strengthen before softening" section is the single
+   most valuable page** and it fought my instincts productively twice already
+   (the κ≈1 snag in F4 — my reflex was to soften "cannot be engineered away";
+   the discipline made me name the wrapping caveat *and keep the law at
+   strength* instead, which is strictly better). The worked illustration
+   (cross-document addressing) is what made it land — keep it.
+
+7. **The workflow never says how a pilot signals "I'm done and staying on the
+   line."** I'm inferring: land the work, commit only my files, report, and hold
+   context. Confirmed by the launch note but not the workflow doc — worth one
+   line in the doc for non-piloted future runs.

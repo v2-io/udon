@@ -2,7 +2,8 @@
 slug: errors-that-teach
 type: principle
 evidence: [T4, T2, T3, T1]
-status: cross-tier-convergent (4-tier — the strongest lock in the corpus)
+register: [derived, evidenced]   # design criteria derived from the C3 gate; 4-tier convergence evidences them
+strength: robust-qualitative     # the direction holds across every kind of evidence here; no single magnitude
 stage: drafted
 consumers: both
 depends: [tools-are-observation-infrastructure]
@@ -116,37 +117,136 @@ The theory's full treatment of law-teaching is in
 ## What this opens (ideas, not designs)
 
 If refusals are the law-teaching channel, several things become
-conceivable that nothing yet built does:
+conceivable that nothing yet built does. I write these as an end-user of
+these tools, not a documenter of them — each is a thing I have wanted
+mid-task and reached for and not found. They are *proposed* (register:
+each is a hypothesis, its strength-rung fixed by that register); the
+design work downstream owns every real decision, with fuller context than
+this page has.
 
-- ✦ **A refusal contract.** Every tool error could *declare* its three
-  components as machine-readable fields: what mutated (which must say
-  "nothing" or itemize exactly), what was observed, which law was
-  violated. Agents could then accumulate the law fields across a session
-  into a durable laws-file — the slow stratum of the world model made
-  explicit, exportable, and inheritable by the next session (which is the
-  [persistence chapter](persistence-is-imported.md)'s concern arriving
-  early).
-- ✦ **Laws queryable before violation.** The theory observes that laws are
-  learned almost only at violation attempts — but that is a fact about
-  today's tools, not about the world. A tool could answer counterfactuals:
-  "would this call succeed?" — a dry-run channel that moves law-learning
-  off the violation channel entirely. The honest doubt: violation-driven
-  learning is attention-efficient precisely because it arrives exactly
-  when relevant; an ask-first channel might simply go unasked.
-- ✦ **Refusal quality as a measured property.** Replay the same malformed
-  call under different goal framings and measure how differently the
-  refusal gets interpreted; a refusal whose meaning shifts with the
-  agent's goals is ambiguous, and that ambiguity is measurable. A harness
-  could run this as a standing evaluation of its own error surfaces.
-- ✦ **The diff-shaped refusal.** For a notation with a schema, the
-  error-as-menu principle scales up: a validator that answers not just
-  "invalid at line 12" but "here is the nearest valid document, as a
-  diff." Whether *nearest* is computable cheaply enough is exactly the
-  kind of question a design probe exists to answer.
-- ✦ **Refusals as curriculum telemetry.** A tool's refusal stream is a
-  record of which of its laws are worst-taught. Documentation ordered by
-  violation frequency — the manual written *from* the refusals — would
-  invert the usual relationship between docs and errors.
+> [!capability] The refusal contract
+> **What it is.** Every tool error declares its three components as
+> machine-readable fields rather than melting them into a prose sentence:
+> `mutated:` (which must read `nothing` or itemize the exact changes),
+> `observed:` (what matched, where, what exists), `law:` (which invariant
+> was violated). Today I reverse-engineer these from free-text error
+> strings that vary tool to tool; a contract makes them addressable.
+> **Principles that apply.** The three-component decomposition of this
+> chapter, made explicit at the field level; the [addressing
+> chapter](addressing-is-the-long-pole.md)'s failure-class vocabulary is
+> the natural type for the `law:` field.
+> **Hypothesized impact on the agent.** Drives observation ambiguity (A)
+> on error outcomes toward zero — a parsed `mutated: nothing` is an
+> A≈0 signal where "Pattern matches 3 locations" is prose I can still
+> misread under pressure; lower A on the error channel tightens the κ×A
+> bias bound exactly where a goal-pressured agent is most tempted to read
+> a failure as a success. Second-order: the `law:` fields accumulate
+> across a session into a durable laws-file — the slowest-moving stratum
+> of the world model (the theory's "infinite-velocity components: learned
+> once, never re-derived") made explicit, exportable, and inheritable by
+> the next session through the [persistence chapter](persistence-is-imported.md)'s
+> reinjection channel.
+> **In tension with.** Free-form error prose can carry nuance a fixed
+> schema truncates; over-structuring the `law:` field risks the same
+> plausible-but-wrong failure the [counter-register](counter-register.md)
+> row 5 names (a field can be well-formed and false).
+> **Downsides.** Every tool author now owes three fields on every error
+> path — a real adoption cost; and a machine-legible `mutated: nothing`
+> that is *wrong* (the tool half-mutated and misreported) is more
+> dangerous than honest prose, because I will trust it more.
+
+> [!capability] Laws queryable before violation
+> **What it is.** A dry-run channel: a tool answers "would this call
+> succeed?" without performing it — moving law-learning off the violation
+> attempt entirely. As an agent I currently learn a tool's constraint
+> surface by tripping it; I would often rather ask.
+> **Principles that apply.** Directly attacks the theory's observation
+> that laws are learned almost only at violation attempts — reframed here
+> as a fact about *today's tools*, not about the world.
+> **Hypothesized impact on the agent.** Converts a mutating,
+> state-changing probe into a pure Level-1 observation (a do()-free query),
+> so I can map the constraint surface without paying for it in real
+> state changes — raising effective event rate (ν) on law-learning
+> without the risk that gates a destructive probe.
+> **In tension with.** Violation-driven learning is *attention-efficient*
+> precisely because the lesson arrives exactly when it is relevant and
+> load-bearing; an ask-first channel competes with the agent's finite
+> attention and may simply go unasked. This tension is honest and I do not
+> know its resolution — it is why this stays a hypothesis.
+> **Downsides.** A dry-run that diverges from the real call's behavior
+> (TOCTOU: the world changes between the check and the act) teaches a
+> *false* law, which is worse than no channel; the freshness discipline of
+> the [freshness-and-atomicity chapter](freshness-and-atomicity.md) applies
+> to the query, not just the write.
+
+> [!capability] Refusal quality as a measured property
+> **What it is.** Replay the same malformed call under different goal
+> framings and measure how differently the refusal gets interpreted. A
+> refusal whose meaning shifts with the agent's goal is ambiguous; that
+> ambiguity is measurable, so a harness could run it as a standing
+> evaluation of its own error surfaces.
+> **Principles that apply.** This is the theory's own operational
+> estimator for observation ambiguity (Â) applied to the error channel —
+> the [observation-infrastructure chapter](tools-are-observation-infrastructure.md)
+> notes the estimator has apparently never been run on a real format.
+> **Hypothesized impact on the agent.** Makes A on the error channel a
+> *measured* quantity instead of an assumed one — turning "we think our
+> errors are clear" into a number a harness can regression-test, and
+> giving the κ×A bound an empirically grounded A for its most
+> goal-pressured channel.
+> **In tension with.** The measurement itself costs calls (K replays per
+> error surface) — the same tempo overhead the theory prices for any
+> multi-call construction; a harness pays it against its own budget.
+> **Downsides.** A low-divergence score certifies that a refusal is read
+> *consistently*, not that it is read *correctly* — an equally-wrong
+> reading under every goal framing scores as unambiguous. The metric needs
+> a correctness anchor or it measures precision without accuracy.
+
+> [!capability] The diff-shaped refusal
+> **What it is.** For a notation with a schema, the error-as-menu
+> principle scales up: a validator answers not just "invalid at line 12"
+> but "here is the nearest valid document, as a diff." The refusal stops
+> describing the violation and starts proposing the repair.
+> **Principles that apply.** The chapter's error-as-menu criterion (offer
+> candidates as ready-to-use exact next actions) taken to its structural
+> limit; the [guarded-mutation chapter](schema-guarded-mutation.md)'s
+> validated-write is the sibling surface.
+> **Hypothesized impact on the agent.** Collapses the read→diagnose→repair
+> loop to a single high-quality observation: the repair *is* the error
+> message. This is the sharpest possible law-teaching — the law is taught
+> as the exact edit that would satisfy it — and it lands the correction at
+> A≈0 (a diff applies or it doesn't).
+> **In tension with.** A proposed "nearest valid document" that is
+> plausible but not what I meant is a confident wrong suggestion — the
+> failure mode the [counter-register](counter-register.md) treats as the
+> one testing cannot catch; a repair menu I trust by default can walk me
+> into a well-formed mistake.
+> **Downsides.** Whether *nearest* is computable cheaply enough is an open
+> question a design probe exists to answer — edit distance over document
+> trees is not obviously tractable at interactive latency, and a slow
+> validator violates the very tempo the observation channel is supposed to
+> supply.
+
+> [!capability] Refusals as curriculum telemetry
+> **What it is.** A tool's refusal stream is a record of which of its laws
+> are worst-taught. Documentation ordered by violation frequency — the
+> manual written *from* the refusals — inverts the usual relationship
+> between docs and errors: the errors write the docs.
+> **Principles that apply.** Treats the aggregate refusal log as an
+> observation channel about the *tool's own teaching quality*, one meta-level
+> up from the individual refusal.
+> **Hypothesized impact on the agent.** Targets law-teaching density where
+> it is thinnest — the laws violated most often are, by revealed behavior,
+> the ones the current interface teaches worst; ordering the manual by them
+> raises the update-quality (η*) of the documentation channel exactly where
+> agents keep re-dying.
+> **In tension with.** Violation frequency conflates "badly taught" with
+> "intrinsically hard" — a law violated often may be well-documented and
+> just genuinely tricky; frequency alone cannot separate the two.
+> **Downsides.** A refusal stream is telemetry about agents, and aggregating
+> it across sessions raises the same durability and consent questions the
+> [continuity chapter](continuity-infrastructure.md) treats — whose log is
+> it, and does the agent being measured know.
 
 **Who reads this and when:** the harness applies it to every tool result
 and system message; UDON applies it to parser and validator diagnostics

@@ -2,7 +2,8 @@
 slug: method-evidence-tiers
 type: method
 evidence: [T1, T2, T3, T4, T5]
-status: ratified-practice
+register: decided        # this chapter states the report's conventions; a method is chosen, not measured
+strength: —             # decided chapters take no strength rung (see "The three axes")
 stage: drafted
 consumers: both
 sources:
@@ -28,19 +29,66 @@ in different ways — which is exactly what makes their agreement meaningful:
 | T4 | Formal theory (ASF/AAT): theorem-grade results with named premises | abstract; conditional on those premises |
 | T5 | External published research (2026 sweep, adversarially verified) | outside-view; benchmark-era caveats |
 
-**Genre is not strength.** The table above classifies *provenance* —
-whose account a piece of evidence is, and how it characteristically
-fails. It says nothing about how strong any particular claim is. A
-claim from a "weak" genre can be exact (the duplicate-key result in the
-stress test is a *measurement*: detection rate zero); a claim from the
-formal theory can be exploratory. Where a claim's strength matters,
-this report says it in claim-level words — *measured*,
-*derived-under-named-premises*, *one account*, *estimated*,
-*hypothesis* — and never leans on the genre tag as if it were a
-strength grade. (A fuller claim-level status vocabulary, on the model
-of the formal theory's own — exact / conditional / robust-qualitative /
-heuristic / discussion-grade — is queued for the metadata machinery in
-a coming revision cycle.)
+**Genre is not strength — they are different axes, and this report keeps
+three of them apart.** The table above classifies *provenance* — whose
+account a piece of evidence is, and how it characteristically fails. It
+says nothing about how strong any particular claim is. A claim from a
+"weak" genre can be exact (the duplicate-key result in the stress test is
+a *measurement*: detection rate zero); a claim from the formal theory can
+be exploratory. Confusing the two is the specific error this section
+exists to prevent: reading a formal-theory citation as automatically
+strong, or a single-agent account as automatically weak. Provenance and
+strength vary independently, so they are tracked independently.
+
+**The three axes, named.** Every claim in this report sits at one point on
+each of three orthogonal axes, and the prose is written so a reader can
+place it on all three without decoding apparatus:
+
+1. **Genre** — *where the evidence came from and how it fails* (the T1–T5
+   table above). Bookkeeping; provenance; a "library category," not an
+   epistemology.
+2. **Register** — *what kind of claim this is as a speech act*: derived /
+   evidenced / decided / proposed (defined just below). This is about the
+   epistemic *act*, not its confidence — a decision and a derivation are
+   different kinds of thing before either is strong or weak.
+3. **Strength** — *how defeasible the claim is*, on a single graded ladder
+   borrowed from the formal theory's own status vocabulary, extended with
+   two rungs this report needs for empirical and imaginative claims:
+
+   | Strength rung | What it means here |
+   |---|---|
+   | **exact** | A measurement or a closed-form result; defeasible only if someone finds a mistake (detection rate zero; a theorem's algebra). "Exact" already carries that humility — do not pay for it twice by down-tiering. |
+   | **conditional** | A theorem-grade result that holds *under named premises* that travel with every use (the κ×A bias law; the persistence threshold). As strong as exact *given* its premises; the premises are the whole caveat. |
+   | **robust-qualitative** | A direction or ordering that holds across many cases and would survive most reasonable perturbations, without a precise magnitude (structure reduces observation ambiguity; sharp refusals teach). |
+   | **measured** | An empirical number with its measurement conditions attached — carrying the caveats the source stated (single-repo, one model family, benchmark-era, N=…). Strong *at* its conditions, silent beyond them. |
+   | **heuristic** | A working rule that earns its keep in practice but has no proof and known exceptions (most shipped-harness conventions read as heuristics with survivorship behind them). |
+   | **hypothesis** | A prediction not yet tested — every *proposed*-register claim lands here by construction. |
+   | **discussion-grade** | Reasoning offered to frame or provoke, explicitly not load-bearing; honest about being a starting point. |
+
+   The ladder is not a ranking to climb — a claim is at the rung its
+   support actually reaches, and "measured" is not "better than"
+   "conditional," they answer different questions. Where a claim's strength
+   is load-bearing the prose *says the rung in words* ("measured, single
+   repo"; "conditional on the drift assumption"; "a hypothesis this report
+   generates"); the frontmatter carries it as machinery (below) so an
+   auditor can sort by it.
+
+**How the three axes interact (the part that was conflated).** Strength is
+not a fourth register and register is not a strength grade — they cross.
+Only the two *truth-apt* registers take a strength rung: a **derived** claim
+is exact / conditional / robust-qualitative / discussion-grade depending on
+how tight its reasoning is; an **evidenced** claim is measured /
+robust-qualitative / heuristic depending on what the observation supports. A
+**decided** claim takes *no* strength rung at all — a decision is not
+strong-or-weak, it is a different kind of object (a choice, legitimate on
+its own terms; asking "how confident are we that we chose X?" is a category
+error — the question is only "did we choose it," and the answer is yes). A
+**proposed** claim is *hypothesis* by definition — that is what proposing
+means — so its register already fixes its rung, which is why proposed
+content needs no separate strength tag, only its unmistakable imaginative
+voice. So the machinery reduces to: genre and register on every claim;
+strength on the derived and evidenced ones; the other two registers self-tag
+their rung.
 
 **Three registers, kept distinct.** Besides where a claim's support comes
 from, every claim here is exactly one of three kinds, and the prose is
@@ -94,6 +142,30 @@ written so you can tell which without apparatus:
   to mark a claim's register is itself a small demand datum for the
   notation work: registers-on-content is exactly what a
   structure-and-prose format could carry natively.)
+
+**The frontmatter machinery (what an auditor can sort by).** Each chapter's
+frontmatter carries the three axes as fields, so the report is
+machine-auditable without any of this apparatus surfacing in the reading
+experience:
+
+- `evidence:` — the **genres** present in the chapter (`[T1…T5]`). Provenance
+  only; never read as a strength grade.
+- `register:` — the chapter's dominant **speech-act kind(s)**
+  (`derived` / `evidenced` / `decided` / `proposed`), where one dominates;
+  mixed chapters say so.
+- `strength:` — the **headline claim's rung** on the ladder above, for
+  chapters whose headline claim is truth-apt (derived or evidenced). A
+  `decided` or purely `proposed` chapter omits it (nothing to grade), and
+  in-body claims that diverge from the headline carry their rung in prose.
+
+This replaces the older overloaded `status:` string, which mixed genre-count
+("4-tier"), strength ("theorem-grade-conditional"), and maturity
+("ratified-practice") into one field and so could not be sorted on any single
+axis. Chapters migrated in the current deepening cycle carry the split fields;
+the rest carry the convention forward as their window comes up (the change is
+a schema exemplar landed here plus a carry-forward note, not a silent
+whole-report rewrite). `stage:` continues to carry draft maturity, which is a
+fourth and wholly separate thing from all three axes.
 
 If a passage seems to argue hard for something that needed no argument,
 treat it as a defect in this report and flag it.
