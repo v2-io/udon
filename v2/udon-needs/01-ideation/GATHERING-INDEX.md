@@ -33,13 +33,13 @@ characterization can; a synthesis carries its own reading-log provenance; commen
 witness-line evidence. Frontmatter template + provenance conventions live in
 [`README.md`](README.md).
 
-### `copies/` — 219 verbatim files/spans (with provenance frontmatter)
+### `copies/` — 220 verbatim files/spans (with provenance frontmatter)
 
 | Cluster | # | Cluster | # |
 |---|--:|---|--:|
 | `extracts/` (grok early pass, in-repo design/consumer) | 14 | `II2-zoetica-ennaos/` | 34 |
 | `discussion-excerpts/` (3 Joseph pipeline-discussion turns) | 3 | `II3-nexum/` | 14 |
-| `I1-usability/` | 5 | `II4-autopax-practica/` | 43 |
+| `I1-usability/` | 6 | `II4-autopax-practica/` | 43 |
 | `I2-scenarios/` (incl. 7-file `corpus/` mirror) | 12 | `II5-dialogs/` | 5 |
 | `I3-design-of-record/` | 12 | `II6-elsewhere/` | 6 |
 | `I4-genre-seeds/` | 7 | `II7-ref-arch/` | 10 |
@@ -47,14 +47,14 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 | `I7-seam-addendum/` | 2 | `III-schema/` | 19 |
 | `II1-sapientia/` | 11 | `III-vaults/` | 8 |
 
-### `characterizations/` — 28 extraction-by-report
+### `characterizations/` — 29 extraction-by-report
 
 - `harness-invivo/` — **17** per-repo tool-usage maps (14 shipping harnesses + claude-docs + obsidian×2 + yq).
-- **11** top-level reports (sapientia architecture/dialogs, shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes).
+- **12** top-level reports (sapientia architecture/dialogs, shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes).
 
 ### `syntheses/` — 4 already-integrated secondary documents
 
-`asf-dossier.md` (+ `-reading-log.md`; Tier-4 theory) · `CONVERGENCES.md` (tiers + 18 clusters) · `tier2-invivo-digest.md` (read-across of the 17 in-vivo maps) · `tier2-lineage.md` (copying-vs-convergence disentangle: apply_patch = one origin not five; fork pairs collapsed; C2 fuzzy-ladder + C16 headless-contract survive as genuine convergence). *Register + cross-link these — don't decompose or re-derive them.*
+`asf-dossier.md` (+ `-reading-log.md`; Tier-4 theory) · `CONVERGENCES.md` (tiers + 18 clusters) · `tier2-invivo-digest.md` (read-across of the 17 in-vivo maps) · `tier2-lineage.md` (copying-vs-convergence disentangle: apply_patch = one origin not five; fork pairs collapsed; C2 fuzzy-ladder + C16 headless-contract survive as genuine convergence) · `external-landscape-2026-07.md` (**Tier-5 external evidence** — deep-research over 8 areas, adversarially verified, contrarian findings kept; the only tier independent of both the single-author and harness-lineage caveats). *Register + cross-link these — don't decompose or re-derive them.*
 
 ### `commentary/` — 19 witness + demand-spike files
 

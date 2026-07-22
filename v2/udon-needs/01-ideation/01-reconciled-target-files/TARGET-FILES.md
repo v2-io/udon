@@ -52,8 +52,7 @@ is its reconciled projection onto the plan. Marker vocabulary:
 **Remaining work at a glance:** the fan-out worked essentially every row. Genuine open
 items are just: rows **763–764** (⊘ budget residual), **607** + the `AGENT_FIX_RECOMMENDATIONS`
 half of **608** (☐ un-extracted — vaults ruled *in-scope* `SC#1`, so these are ordinary
-residuals a later phase can pick up, not scope-blocked), **79**'s deeper result-body sampling (deliberately
-deferred, `SC#7`), and the ELI-testimony rows **776–782** (✔ carried via the first-sweep
+residuals a later phase can pick up, not scope-blocked), and the ELI-testimony rows **776–782** (✔ carried via the first-sweep
 quarantine but *not* re-landed as `02-provenanced/` artifacts — `SC#11`). Deferred reservoirs
 (raw session corpora, `/deep-research`) are out of scope by design — see the README.
 
@@ -103,8 +102,8 @@ bodies, not just the synthesis.
 | `test/usability/enablement-synthesis.md` | M — ✔copied | Human compression of topic_enablement (strong/weak fit, novel patterns) — **index, not substitute**; don't double-count against the raw yamls above |
 | `test/usability/lib/realistic_tests.rb` (TASKS hash) | M — ✔excerpt | Genre briefs: frontmatter+prose, experiment report, config+comments, conversation log, recipe — read task defs before bulk result yamls |
 | `test/usability/lib/context_comparison.rb` (TASKS hash) | M — ✔excerpt | Genre briefs: config, mixed tutorial, org chart, inline science, blog schema, HTML email template |
-| `test/usability/results/udon-realistic-*.yaml`, `udon-context_comparison-*.yaml` | M — ○dry (result-bodies deliberate; SC#7) | Sample after reading the task defs above, not before |
-| `test/usability/results/AGENT_FEEDBACK.md` | L — ✔excerpt | Aggregated FEEDBACK blocks; friction-heavy — sample for "what I wanted / what hurt," not a use-catalog. Grok's design-ux file flags it as "large, noisy — sample, not whole dump" |
+| `test/usability/results/udon-realistic-*.yaml`, `udon-context_comparison-*.yaml` | M — ✔charact (SC#7 OVERRULE) | Prior ○dry ("output-quality not demand-catalog") **overruled by Joseph** — result bodies mined all 45 → `characterizations/I1-usability-result-bodies.md`: minimum-viable-context is genre-conditional; footgun catalog (unbalanced `\|{...}}` = most-reproduced); "correct UDON" judge prior made empirical; positive demand (dynamics, `@[id]`, typed inline) |
+| `test/usability/results/AGENT_FEEDBACK.md` | L — ✔copied+excerpt (SC#7) | Prior ✔excerpt ("sample, not whole dump") **overruled** — WHOLE 827-line file now at `copies/I1-usability/AGENT_FEEDBACK-full.md` (verbatim; adds the Judge/Validated-score tail). The thematic `agent-feedback-excerpts.md` kept as an index INTO the full copy |
 | `test/usability/lib/validated_tests.rb` + `udon-validated-*.yaml` | L — ✔witness | Feature-expectation scoring of authoring tasks |
 | `test/usability/lib/test_definitions.rb` | L — ✔witness | Learning-curve ladder + stress/translate defs |
 | `test/usability/results/udon-invention-*.yaml`, `udon-learning_curve-*.yaml`, `udon-interpretation-*.yaml` | L — ✔witness | Redesign / onboarding / comprehension contrast runs — **not** a use catalog, treat as contrast only |
