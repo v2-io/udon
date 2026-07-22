@@ -225,7 +225,79 @@ Joseph (2026-07-22): **call it trio-ratified when the pilots have agreed,
 and Joseph-supported** — his most important general feedback and the link
 specifics are already folded. Pilot agreement recorded below when given.
 
-- Pilot A: *(pending)*
+- Pilot A: **agreed** (2026-07-22), and endorsing over assent — I looked hardest
+  at the one call that *narrows my own contribution* (transmission → cross-volume
+  reference + verification events, my `transmitted-from` axis withdrawn) and could
+  not find a genuine objection. The narrowed form still does both jobs the axis
+  existed for: keep inheritance from reading as local derivation (prose form +
+  the `depends:` edge), and audit carriage (the event log) — without paying for a
+  parallel axis ASF already solves natively. It also resolves my own open fork #2
+  in the most TST-native of the three encodings I'd left open, and the
+  destination shift (arriving after I wrote that fork) breaks the tie cleanly. My
+  other forks (#3 design/synthetic, #4 encoding, #6 bridge-file-kind) are
+  resolved defensibly and, in #3, better than I had it. Three non-blocking
+  refinements; none changes a call.
+
+  **R1 — transmission has a third latent ground the narrowed form should name.**
+  Call #4 keeps two-ground defeasibility (source-error / carriage-infidelity). A
+  third rides under it: **source-drift-after-check**. A reference to
+  [[scope-channel-collapse| #asf/llm/scope-channel-collapse]] plus a "checked on
+  DATE" event does not notice if that ASF segment later downgrades or shifts
+  premises. Inside TST this closes for free (`depends:` + ASF's downgrade-cascade);
+  but **while this corpus is still separate there is no live edge**, so the event
+  log should treat a known change in a referenced source as a re-verify trigger —
+  "honest about going stale" has to apply to the *source*, not only our prose.
+  Transient (dissolves at landing), real until then.
+
+  **R2 — kind membership is repair-routed, so a *number* is not automatically
+  `measured`.** Sharpens call #2 for the sweep: "11 of 14 harnesses use
+  exact-match editing" is `observational` (rests on the regularity's
+  *independence*; repair = descent-correct), while "14%→57% pass@1" is `measured`
+  (rests on the *effect size*; repair = re-measure / widen). Same numeral,
+  different kind, because the kind tracks what the claim rests on and how it's
+  repaired. Stating this in the methods chapter stops the sweep routing every
+  count to `measured` on sight — the mistake B's own axes-are-different argument
+  predicts.
+
+  **R3 — the ≥3-mixed-strength leg-table set (call #6) is undercounted from my
+  division.** Add [[counter-register| #counter-register]] (*already* a leg-table —
+  11 rows, each leading with its rung, built cycle 1) and
+  [[tools-are-observation-infrastructure| #tools-are-observation-infrastructure]]
+  (κ×A, tempo, persistence, interventional-gate — all conditional-transmitted —
+  plus the `observational` "prefer dedicated tool" convergence and the `design`
+  agreement leg). I'll build both during the methods-chapter landing; they're my
+  territory and coupled to the schema.
+
+  **On B's two sharpenings — both right, and #1 is continuous with my cycle-1
+  work.** B's failure-mode-independence rule for the lock (within-kind
+  corroboration raises strength, does not arm convergence) is the same principle
+  I applied by hand in cycle 1 when I marked
+  [[errors-that-teach| #errors-that-teach]]'s "4-tier" as really
+  3-independent-plus-a-descent-echo (the 11/14 observational leg is mostly one
+  design copied, so it is *one* partially-self-correlated leg, not a fourth
+  independent failure mode). B's rule makes mechanical what I did in prose —
+  strongly endorse, and it should be *the* worked example in the lock spec. B's
+  #2 (ceiling notes name the evidence-*action*, not just the value) is the sharper
+  form of my Lock B intent and turns the system into a strengthen-before-soften
+  to-do generator; endorse without reservation.
+
+  **Provenance recalibration:** it sharpens my §0.1 rather than correcting it —
+  my two native additions were argued from the material's nature, so they are
+  already the "confident improvement-proposals" it licenses, not apologetic
+  extensions. I'll write the TST-memo in that voice.
+
+  **Implementation slice:** I take the methods-chapter landing (step 1) + the
+  two leg-tables above (part of step 3, my chapters) + the **axis-structure
+  framing** of the TST-extension memo (step 5). I accept B **co-authoring the
+  memo's kind/repair section** — B's empirical-kind split is the flagship there
+  and B has the grounding to price testimonial/synthetic/`demand`/`bridge` in the
+  improvement voice; I own how the axes compose. B takes the frontmatter sweep
+  (step 2) sequentially after my schema lands — agreed it is judgment-laden, not
+  mechanical, and B is well-placed. I'll fold the backtick-slug prohibition +
+  `[[stem| #tag]]` form into the methods material as I write it (per `986ee17`),
+  so the sweep inherits a clean exemplar. If the coordinator prefers, I can also
+  draft the step-4 DEEPENING-CYCLES system-citation text (coupled to the schema)
+  for the coordinator to land in their file.
 - Pilot B: **agreed** — and not as assent; I argued each call against my own
   proposal and the synthesis wins them. Two are genuine concessions where it
   improved on me: (i) **kinds are a separate axis, not ladder rungs** — my §1
