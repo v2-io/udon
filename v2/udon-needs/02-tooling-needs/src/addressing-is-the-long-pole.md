@@ -101,7 +101,7 @@ gives every reader three: relative (from here), absolute (from the
 filesystem root), and home (`~`). The design work adds a fourth,
 different in kind: a *document*-root anchor ("anywhere under this
 document's root" appears in the early path sketches). And a fifth is not
-a proposal but **practice this estate already shipped**: a
+a proposal but **practice this research programme already shipped**: a
 **project-root** anchor. In the September-2025 entity-infrastructure
 systems, `⊤` meant "project root, resolved via git" — defined in a
 lexicon, implemented in the build tooling (with a clear error when used
@@ -116,13 +116,19 @@ document scale — addresses shouldn't rot — surfacing at filesystem
 scale. The owner still wants it ("I would love to be able to do
 `¤/tests/fixtures` from any file in the project… It comes up all the
 time in other-file inclusion"), and the idea has now appeared in three
-independent sigil dressings across the estate (`⊤`, a `@⊥/` root-import
+independent sigil dressings across its own systems (`⊤`, a `@⊥/` root-import
 form in the identity-files work, and the `¤` wish) — internal
 convergence on the slot, with no decision yet on any syntax. Beyond
 anchors: fragments within a target, and when resolution happens, are
-equally open — the exploration barely touches any of this. The inherited-assumption
-story is worth this paragraph because it is a live hazard: tooling built
-during the file-scoped habit may still hard-code it.
+equally open — the exploration barely touches any of this. And an
+unprimed practitioner's account, elicited fresh from an agent of another
+model family (2026-07-22), lands on the same territory from lived pain —
+its first two complaints are this chapter's findings 1–2 in different
+words — and then names slots this design work hasn't reached: paths with
+a *time* dimension, path lifecycle and volatility, canonical-vs-literal
+identity, and the translation between execution paths and source paths.
+That testimony travels with this chapter's sources; the design work
+ahead should mine it whole.
 
 **Two more boundary facts, each in its true register.** The project has
 *decided* — a convention choice, with its reason on record — to freeze
