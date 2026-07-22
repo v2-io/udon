@@ -498,8 +498,10 @@ prose — `;{…}` reducing to `""` (comments are not value segments). Hence:
 ```udon
 |el :n value |{em x} :a 1
 ; n = the flow value ⟨"value " |{em x} " :a 1"⟩ — no :a attribute exists
-; ≡ |el :n \|{em x}-wise ownership; the framed ` ; ` affordance REMAINS
-; active in a brace-committed flow value (unlike \-forced text)
+; (ownership-wise the same as escaping the brace: ≡ |el :n value \|{em x} :a 1)
+; A brace-committed flow value stays an ordinary prose-shaped flow value:
+; the framed ` ; ` comment affordance remains active — only \-forced text
+; gives it up.
 |el :n ;{}        ; n = ""  (empty-string value, not a missing value)
 |el :n |{em x}    ; n = flow value whose sole segment is inline em
 |el :n |em x      ; n = the em NODE (block form binds; braces inline text)
