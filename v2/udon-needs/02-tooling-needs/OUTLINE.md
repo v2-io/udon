@@ -37,12 +37,12 @@ coming-from-the-harness reading path.)
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
-| 0 | Method | [#method-evidence-tiers](src/method-evidence-tiers.md) | Five tiers with distinct failure modes; cross-tier convergence is the unit of proof; lineage correction and the single-author caveat | drafted |
+| 0 | Method | [#method-evidence-tiers](src/method-evidence-tiers.md) | Five kinds of evidence with distinct failure modes; agreement across kinds is the unit of proof; descent correction and the single-author caveat | drafted |
 | 0 | Counterposition | [#counter-register](src/counter-register.md) | The standing register of evidence *against* our own theses — kept adjacent to the claims they qualify | drafted |
 
 ## *Part I* — Foundations: what a tool is to an agent
 
-*Scope: the theory-grade and cross-tier results that give every later demand
+*Scope: the theorem-grade and multiply-witnessed results that give every later demand
 its "why." Mostly harness-general; UDON enters as the instance "a notation is
 observation infrastructure."*
 
@@ -69,7 +69,7 @@ carries. Harness-primary; UDON enters where payloads/schemas are documents.*
 
 ## *Part III* — Mutation: editing under guarantees
 
-*Scope: the largest and strongest demand cluster in the corpus. UDON-primary
+*Scope: the largest and strongest demand cluster in the evidence. UDON-primary
 (the schema-guarded structural edit is the gap the ecosystem documents); the
 harness consumes the same evidence for its edit-tool choices.*
 
@@ -122,8 +122,8 @@ the durable-format demand.*
 
 ## *Part VII* — The human side
 
-*Scope: the humans steering and verifying — first-class demand per the BRIEF,
-and the thinnest part of the gathered corpus (named as such).*
+*Scope: the humans steering and verifying — a first-class consumer of this
+report, and its thinnest evidence base (named as such).*
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
@@ -135,7 +135,22 @@ and the thinnest part of the gathered corpus (named as such).*
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|
 | VIII | Synthesis | [#priorities-and-spike-agenda](src/priorities-and-spike-agenda.md) | The ranked demand list and what phase-3's informed spikes (paths, dialects, schema, value typing) should each probe, stated as questions the evidence makes concrete | drafted |
-| VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which segments are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citation per SC#15), what transfers as-is vs re-based | drafted (written last) |
+| VIII | Synthesis | [#harness-handover-map](src/harness-handover-map.md) | The port map: which segments are the harness statement, what the harness's own dossier already carries (peer artifacts, cross-citing by ruling), what transfers as-is vs re-based | drafted (written last) |
+
+## Appendices — the crown sources, reproduced whole
+
+The report owns its evidence: the highest-density sources are reproduced
+inside it, and segments cite inward. (Each appendix carries its own
+provenance; the surrounding frontmatter and file citations within are
+auditor apparatus.)
+
+| | Carries | Feeds |
+|---|---|---|
+| [A — The formal theory](appendices/appendix-a-theory.md) | The full ASF/AAT survey of tool-interface theory | Parts I, VI |
+| [B — Shipping practice](appendices/appendix-b-shipping-practice.md) | The fourteen-harness source examination + the descent analysis | Parts II–III, VII |
+| [C — The demand explorations](appendices/appendix-c-demand-explorations.md) | The addressing and agent-utility exploration notes, whole | Parts III–IV |
+| [D — The taproot documents](appendices/appendix-d-taproot.md) | The 2025 tooling conventions + the pattern-language statement | Parts I, V |
+| [E — The YAML stress test](appendices/appendix-e-yaml-stress.md) | The six-scenario agent-recovery evidence, whole | Parts III, V |
 
 ---
 

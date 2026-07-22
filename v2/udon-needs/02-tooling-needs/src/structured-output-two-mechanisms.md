@@ -23,13 +23,13 @@ guarantees, and design decisions that conflate them inherit the wrong one.
 
 ## The evidence
 
-- **T2:** the C9 catalog spans both mechanisms explicitly — true constrained
+- **Shipped:** the ecosystem's catalog spans both mechanisms explicitly — true constrained
   decoding (Anthropic `strict`, codex `--output-schema`, grammar-constrained
-  patch emission) vs formatter-class serialization (mistral-vibe's own
-  dry-well log makes the distinction itself). The digest's instruction to
-  downstream synthesis — "worth not conflating these" — is honored here as
-  the segment's thesis.
-- **T5 (the contrarian result, medium confidence, 2-1 vote):** structured
+  patch emission) vs formatter-class serialization (one harness's own
+  honest engineering log makes the distinction itself). Not conflating
+  them is this segment's thesis.
+- **The contrarian external result (medium confidence — it survived two
+  of three adversarial checks):** structured
   function-calling modes produced substantially *more* incorrect calls than
   free-text prompting in the multiple-call category (BFCL, ICML 2025 —
   scoped: counts among decoded responses, one category). Structure changes

@@ -75,7 +75,8 @@ The lock, tier by tier:
   nothing else can. "Well-taught laws become infinite-velocity components of
   the agent's environment model — learned once, never re-derived."
 
-The same demand recurs across the wider design corpus — an error-message
+The same demand recurs across the wider design corpus (the theory's full
+treatment of law-teaching is in Appendix A §2.4) — an error-message
 plan built on speaking domain concepts rather than mechanics, a
 failure-mode quality ladder ranking diagnostics by how much they teach —
 and in the theory's specification of located, structure-revealing

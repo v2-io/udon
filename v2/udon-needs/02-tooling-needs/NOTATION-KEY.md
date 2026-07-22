@@ -3,7 +3,7 @@
 One line each, with where the full definition lives. If you hit a symbol in
 a segment and it isn't here, that's a defect — flag it.
 
-## Theory quantities (ASF/AAT — full treatment in the [ASF dossier](../01-ideation/02-provenanced/syntheses/asf-dossier.md))
+## Theory quantities (ASF/AAT — full treatment reproduced in [Appendix A](appendices/appendix-a-theory.md))
 
 | Symbol | One-line meaning |
 |---|---|
@@ -24,8 +24,8 @@ a segment and it isn't here, that's a defect — flag it.
 | Prefix | What it indexes |
 |---|---|
 | **T1–T5** | The five evidence tiers (see [#method-evidence-tiers](src/method-evidence-tiers.md)): ideology / shipped practice / lived testimony / formal theory / external research. |
-| **C1–C16** | Cross-tool convergence clusters in the [Tier-2 in-vivo digest](../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md) (C1 str-replace, C2 fuzzy ladder, C7 deferred loading, C16 headless contract, …). |
-| **Cluster #1–18** | The cross-*tier* convergence clusters in [CONVERGENCES.md](../01-ideation/02-provenanced/syntheses/CONVERGENCES.md) — a different numbering than C1–C16. |
+| **C1–C16** | Cross-tool convergence clusters in the shipping-practice examination ([Appendix B](appendices/appendix-b-shipping-practice.md)) — C1 str-replace, C2 fuzzy ladder, C7 deferred loading, C16 headless contract, …. Auditor apparatus; body prose does not use these codes. |
+| **Cluster #1–18** | The cross-evidence agreement clusters in the source apparatus (CONVERGENCES) — a different numbering than C1–C16. Auditor apparatus only. |
 | **P-A … P-H** | Provisional proposals from the [agent-utility spike](../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md) §8 (stage products, verdict channel, edit binding, …). Proposals, not law. |
 | **D1 … D9** | Provisional boundary demands from the [paths spike](../01-ideation/02-provenanced/commentary/spikes/paths-NOTES.md) §8. |
 | **S1 … S12** | The twelve gathered situations in [needs-map.md](../01-ideation/needs-map.md) (S1 agent-edit-under-schema-guard … S12 mid-stream reconfiguration). |

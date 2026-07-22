@@ -15,7 +15,8 @@ same day after the full back half landed — the ranking below survived the
 back-half segments unchanged (they thickened its legs: crystallized-process
 under #5, typing/evolution under the schema spike, continuity under #4).
 Priorities here are
-*demand-strength* rankings (breadth × tier-span × measured cost of absence),
+*demand-strength* rankings (how many independent kinds of evidence ask,
+how broadly, and at what measured cost of absence),
 not implementation sequencing — that adjudication belongs downstream
 (phase 3/4 per the flow's own rule).
 

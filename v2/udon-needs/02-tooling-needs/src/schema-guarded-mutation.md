@@ -37,7 +37,7 @@ testimony.
   cause the document to now violate the schema is accepted. The tool
   itself will need the machinery to do jq/yq like span-sensitive changes
   to the AST and have it checked against a static schema."
-  Convergent T1 stratum: zoetica's semantic-storage design (doc-03: the
+  The same demand runs through the wider design corpus: zoetica's semantic-storage design (doc-03: the
   document store validates structure at the write boundary, and its signum
   companion makes the schema declaration part of the document's own
   identity), autopax INSTRUMENTA ("make invalid states unrepresentable"),
@@ -50,7 +50,7 @@ testimony.
   form); yq demonstrates structural path-assignment without schema guard;
   Obsidian's linter admits its rules don't compose. Nobody has the
   validated-transaction shape.
-- **The empirical stress test (the autopax yaml-spike, Dec 2025):** the
+- **The empirical stress test (Dec 2025 — Appendix E reproduces it whole):** the
   measured cost of guarantee-free mutation. Three agents, adversarial
   protocol: Agent A writes valid data, Agent B introduces a specific
   corruption, Agent C — with 100% context turnover and no human — attempts

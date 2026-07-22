@@ -23,7 +23,7 @@ hard here: most of the uniformity is convention-adoption of one or two
 influential designs — reported as survivorship (nothing displaced them), not
 as independent votes.
 
-## The converged shapes (descent noted where it matters)
+## The converged shapes (descent noted where it matters; Appendix B has the per-harness detail)
 
 - **Ask-user:** 1–4 questions × 2–4 options, "(Recommended)" first, always
   an "Other" escape. Probable single-origin design, verbatim-copied.
@@ -31,7 +31,7 @@ as independent votes.
   free-text asking everywhere it landed — and the published
   fabricated-missing-parameters finding (#structured-output-two-mechanisms)
   supplies the *reason* such an affordance is load-bearing.
-- **Todo/task-list:** the most uniform micro-convention in the corpus
+- **Todo/task-list:** the most uniform micro-convention in the landscape
   (near word-for-word rules: one `in_progress` at a time; mark complete
   only after verification; never done with red tests) — i.e., most-copied.
   Its function in the theory's light: an externalized strategy artifact with

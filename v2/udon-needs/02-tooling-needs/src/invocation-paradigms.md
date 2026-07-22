@@ -26,14 +26,14 @@ default.
    the harness must reassemble and guard (C10: five independent
    implementations of tolerant reassembly, including auto-repair of
    unclosed strings). Reliability burden: on the model's schema adherence —
-   exactly where T5 found the error profile lives (fabricated parameters,
+   exactly where external measurement found the error profile lives (fabricated parameters,
    omission; #structured-output-two-mechanisms).
 2. **Code mode — tools as a callable API in a sandbox.** The model writes a
    small program that calls host tools as functions (opencode: acorn-parsed
    JS sandbox; codex: embedded V8; Anthropic's programmatic-tool-calling is
    the official third instance). The census calls it out as *convergent
    innovation* — two independent implementations plus a vendor — and it is
-   the newest paradigm in the corpus. What it buys: orchestration logic
+   the newest paradigm in the landscape. What it buys: orchestration logic
    (loops, conditionals, intermediate variables) moves from N round-trips
    of tool-call ping-pong into one artifact; intermediate results never
    transit the context window. What it costs: the reliability burden moves
@@ -46,7 +46,8 @@ default.
    becomes impossible rather than detected), currently applied only where
    the payoff is highest (edits).
 
-Deferred tool loading (C7, lineage-corrected to ~3 independent arrivals)
+Deferred tool loading (one origin plus two or three independent arrivals
+— the descent history is in #context-economy)
 cuts across all three: name-only registration with on-demand schema fetch
 is what makes large catalogs viable at all.
 

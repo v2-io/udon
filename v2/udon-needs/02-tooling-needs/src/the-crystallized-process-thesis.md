@@ -28,7 +28,8 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
 
 ## The evidence
 
-- **T1 (the taproot, read whole):** QUICK-TOOLING-CONVENTIONS states the
+- **The taproot (reproduced whole in Appendix D):** the 2025 sapientia
+  tooling conventions state the
   evolution pattern — *conscious practice → deliberate habit → crystallized
   tool → transparent extension* — with the design consequences drawn out:
   Unix philosophy adapted for *embedded wisdom* ("do one thing well — but
@@ -42,7 +43,8 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
   only 10% for actual reasoning." That is the thesis measured against its
   own author's lived session, and it is also the origin of the
   intent-as-parameter demand (#intent-as-parameter).
-- **T1 (the ease-gradient spine):** THE-PATTERN gives the thesis its
+- **The ease-gradient spine (also Appendix D):** the autopax
+  pattern-language work gives the thesis its
   behavioral mechanism in two layers — *constraint* (make invalid states
   inexpressible where appropriate) and *gradient* (make the correct
   operation the easiest one, with visible-friction escape hatches) — and
@@ -51,14 +53,15 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
   operations the golden path. "Not 'make incorrect things impossible' (too
   rigid) but 'make correct things so easy that incorrect things feel like
   friction.'"
-- **T2 (structural echo):** the shipping ecosystem embodies the
-  distribution without citing it — deterministic fuzzy-match ladders and
-  read-gates (the 60), small-model pruning layers like SWE-Pruner (the 30),
-  main-model reasoning (the 6), human escalation (the 4). And T3's
-  ease-gradient testimony is the thesis's failure mode lived: chaining
+- **The shipping ecosystem (structural echo):** shipped harnesses embody
+  the distribution without citing it — deterministic fuzzy-match ladders
+  and read-gates (the 60), small-model pruning layers like SWE-Pruner (the
+  30), main-model reasoning (the 6), human escalation (the 4). And the
+  lived ease-gradient testimony is the thesis's failure mode in first
+  person: chaining
   unverified edits "was the easiest path and broke minimal-sapientia 3
   times" — when the gradient points the wrong way, agents slide down it.
-- **T4 (the price tag):** the persistence-economics chain gives
+- **The theory (the price tag):** the persistence-economics chain gives
   crystallization a formal ROI — invest t when t < n̂_future × Δt_comp × k,
   with k the number of distinct future agents who read the artifact; under
   agent workloads k is large, so the case strengthens. And "well-taught
@@ -86,8 +89,9 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
 
 The 60/30/6/4 numbers are a stated prior, not a measurement — the one
 empirical check is the author's own single-session self-audit, and the
-whole T1 leg is one author's corpus (coherence, not corroboration; the T2
-echo is my structural reading, not the harnesses citing the thesis). The
+whole ideological leg is one author's work (coherence, not corroboration;
+the ecosystem echo is this report's structural reading, not the harnesses
+citing the thesis). The
 distribution's *shape* (most friction is crystallizable) is better
 supported than its *numbers*. Also carry the taxonomy's disconfirmer here:
 crystallization is right-sizing, not maximal tooling — a tool nobody needed

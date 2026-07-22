@@ -36,7 +36,7 @@ experiment is cheap.
   — `##` headers ARE the segment boundaries, frontmatter IS the typed
   metadata (#machine-first-documents) — is structure-as-chunking working
   in production for one narrow document class.
-- **The spike's honesty (§3):** "Nobody has measured it… If true,
+- **The design corpus's own honesty:** "Nobody has measured it… If true,
   recognition/assembly products should preserve enough structure for
   chunk emission without re-indent archaeology. If false, kill the claim
   cleanly."
@@ -47,7 +47,7 @@ Corpora that already exist: `design/examples/`, the ASF process maps,
 this repo's own tracking documents. Conditions: (a) element-boundary
 chunks (with breadcrumb + attribute enrichment), (b) heuristic
 paragraph/size chunks, (c) fixed-token windows. Measure retrieval quality
-on question sets drawn from real agent tasks (the I1 usability corpus's
+on question sets drawn from real agent tasks (the December usability-test
 task briefs are a ready seed). Report *whichever way it comes out* — a
 negative result kills a README claim cheaply now instead of expensively
 after tooling is built on it.
@@ -55,7 +55,7 @@ after tooling is built on it.
 ## What it generates
 
 - **For UDON (the one CORE-side requirement, either way):** element
-  extents must stay recoverable from the assembly product (P-H) — that is
+  extents must stay recoverable from the assembly product — that is
   the *only* thing the core owes this thesis; everything else is harness/
   eval work. Do not let the unmeasured claim pull chunking machinery into
   the language.
@@ -68,7 +68,7 @@ after tooling is built on it.
 ## Honest edges
 
 This segment exists mostly to prevent a specific failure: the README
-claim (T1, aspirational) being cited downstream as if cluster 10 (adjacent
-domain, different substrate, partly estimated) had verified it. It hasn't.
+claim (aspirational) being cited downstream as if the adjacent evidence
+(different substrate, partly estimated) had verified it. It hasn't.
 Counter-register row 8 is this segment's summary and travels with any
 citation of the thesis.

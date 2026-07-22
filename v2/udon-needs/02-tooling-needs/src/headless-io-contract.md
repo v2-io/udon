@@ -27,16 +27,17 @@ shape Tier 2 can produce.
 
 ## The evidence
 
-- **T2:** convergent across effectively all 14 real harnesses (the one
+- **Shipped:** convergent across effectively all fourteen real harnesses (the one
   exception is an honest dry well); the cleanest standalone statement of the
-  detection heuristic is minimax-cli's `isInteractive()`/`isCI()`. Lineage
-  verdict: independently built — hard-constraint convergence, not copying.
-- **T1:** the sapientia cli-conventions corpus specified the same contract
-  from first principles in 2025 (stdout=data / stderr=diagnostics /
+  detection heuristic is minimax-cli's `isInteractive()`/`isCI()`. The
+  descent check: independently built — hard-constraint convergence, not
+  copying.
+- **Anticipated (2025):** the sapientia CLI conventions specified the same
+  contract from first principles (stdout=data / stderr=diagnostics /
   sysexits / `--format=json` / `!isatty()`), before most of these harnesses
-  existed — the corpus's clearest case of ideology anticipating practice.
-  (Same-author caveat noted; the T2 convergence carries the weight, T1
-  supplies the earlier articulation.)
+  existed — the clearest case in this report of ideology anticipating
+  practice. (Same-author caveat noted; the shipped convergence carries the
+  weight, the design work supplies the earlier articulation.)
 - Related but distinct micro-convergence: minimax-cli's *reverse-direction*
   schema export (the CLI describes itself as a tool, with flag→JSON-type
   inference) — a singleton, but directly relevant to any

@@ -27,7 +27,7 @@ documentation, not code that implements behavior."
 
 ## The evidence
 
-- **T1 (the argument from failure):** the PRAXIS protocol opens with the
+- **The argument from failure:** the PRAXIS protocol opens with the
   indictment — human-centric prose documentation is an agent bottleneck
   (llms.txt files exceeding 800K tokens; short variants devolving to link
   lists that offload the parsing back onto the agent; scraped versions
@@ -39,7 +39,7 @@ documentation, not code that implements behavior."
   without its parameters or its error states." That quadripartite split is
   a document-format demand statement: knowledge modality boundaries want
   to be structural, not stylistic.
-- **T1→T2, the "agents ARE documents" lineage (three substrates):** the
+- **The "agents ARE documents" lineage (three substrates):** the
   MACH design (agent = YAML frontmatter + markdown body, hot-reloaded,
   schema-validated, the running agent "literally reads its own markdown to
   understand its purpose"); gemini's *shipped* `agents/*.md` with an
@@ -53,13 +53,14 @@ documentation, not code that implements behavior."
   markdown-runtime, Ruby-era design) is genuine re-derivation of one idea
   against three different execution environments, and two of the three
   shipped.
-- **T1 (the philosophical spine):** THE-PATTERN's living-documents
+- **The philosophical spine (Appendix D):** the pattern-language work's
+  living-documents
   section: traditional docs and code drift; a compiled document *cannot*
   drift ("documentation is always current — it IS the implementation"),
   with the extended-mind framing: the document is cognitive scaffolding,
   part of the agent's mind, not external storage — which is
   #persistence-is-imported's reinjection channel said with feeling.
-- **T4 (the price argument):** the specification bound — minimum
+- **The theory (the price argument):** the specification bound — minimum
   implementation time is bounded below by the time to transmit
   distinguishing information given shared context; **shared notation is
   compression** (DSLs, conventions, schemas reduce the residual entropy);
@@ -91,7 +92,7 @@ documentation, not code that implements behavior."
 
 ## Honest edges
 
-Cluster 11's breadth is same-author re-derivation plus one external
+The breadth here is mostly same-author re-derivation plus one external
 lineage (llms.txt/llm-min.txt); the only outside-the-estate corroboration
 is that ecosystem's own token-bloat pain. "Documents compile to behavior"
 has two shipped instances, both small; nothing here tests it at scale or

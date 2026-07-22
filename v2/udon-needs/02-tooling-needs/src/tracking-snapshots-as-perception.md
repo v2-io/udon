@@ -25,7 +25,7 @@ theorized exact in the dossier.
 
 ## The evidence
 
-- **T1/T2 (built, Sept 2025):** minimal-sapientia injected an XML
+- **Built (Sept 2025):** minimal-sapientia injected an XML
   tracking snapshot per turn; the zoetica spec (Oct 2025) is its
   design-of-record successor, and its stated mission is the point:
   "ELIs must experience passage of time, environmental context, and
@@ -39,13 +39,12 @@ theorized exact in the dossier.
   compressed snapshots stay expandable from history. Compression of
   *old* snapshots with the latest kept whole is the two-timescale
   structure in miniature.
-- **T2 (the ecosystem's parallel):** the state-snapshot compaction
-  family (C11) — "this snapshot is the agent's *only* memory" — plus
-  system-reminder catalogs (autopax) are the same mechanism grown
-  independently for context management rather than temporal coherence;
-  the two lineages meeting is the convergence cluster 12 records
-  (built / designed / theorized).
-- **T4 (why it's structural):** out-of-band temporal markers are a
+- **The ecosystem's parallel:** the state-snapshot compaction family —
+  "this snapshot is the agent's *only* memory" — plus system-reminder
+  catalogs are the same mechanism grown independently for context
+  management rather than temporal coherence; the same idea arriving three
+  ways (built, designed, theorized) is what gives this claim its weight.
+- **The theory (why it's structural):** out-of-band temporal markers are a
   *prerequisite for the agent computing its own tempo* — suspension gaps
   are invisible at the sequence level; the multi-channel provisioning
   argument ("you must provision high-bandwidth, multi-channel,
@@ -66,7 +65,7 @@ theorized exact in the dossier.
   to design deliberately: which independent channels, at which
   frequencies, ephemeral-vs-persisted per field, with an audit pointer so
   ephemeral frames stay reconstructible. The zoetica spec is a working
-  draft of exactly this and is sitting in the corpus.
+  draft of exactly this, ready to build from.
 - **For UDON:** snapshots are a *document class* with unusual physics —
   emitted constantly, read once, compressed aggressively, never
   hand-authored — the purest ephemeral-instrument case in the
@@ -76,10 +75,11 @@ theorized exact in the dossier.
 
 ## Honest edges
 
-Cluster 12's built/designed legs are same-estate; the independent T2 leg
+The built and designed legs share an author; the independent shipped leg
 (state-snapshot compaction) converged on *content* (git status, elapsed
 context) but not on the temporal-coherence *rationale* — the ecosystem
 built it for token budgets, not for time perception, so the perceptual
-framing rests on T1+T4. No measurements exist of snapshot-driven behavior
+framing rests on the design work and the theory. No measurements exist of
+snapshot-driven behavior
 deltas (does time-passage visibility actually change agent pacing? —
 testable, untested).

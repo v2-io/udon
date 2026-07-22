@@ -20,12 +20,12 @@ spans** and **model identity for the changed span** — serialize a subtree
 with correct geometry relative to its insertion site, splice it in, leave
 every other byte alone. Whole-file house-style formatting is a *different
 product* that shares machinery but must never be the write path's default.
-Conflating the two produces bad edit tools; the corpus states this from
+Conflating the two produces bad edit tools; the evidence states this from
 three directions.
 
 ## The evidence
 
-- **T1 (the spike, §4 — why agents care, and it isn't aesthetics):** edit
+- **Why agents care (and it isn't aesthetics):** edit
   tools need span-splicing because minimal-changeset economics (the TST
   proximity results) and diff/patch-against-disk both require untouched
   regions to stay byte-identical. The demand list: serialize a subtree
@@ -35,8 +35,8 @@ three directions.
   want model-level certainty + local spatial correctness, not global
   pretty. Humans want fmt. Both are real; conflating them produces bad
   edit tools."
-- **T1 (the ornamental criterion — the testable line between the two
-  products):** Joseph's double-fixpoint test from the pipeline discussion:
+- **The ornamental criterion (the testable line between the two
+  products):** Joseph's double-fixpoint test:
   strip discretionary geometry → model → emit house style; do it again;
   model and bytes must be stable. **Ornamental** = geometry that changes
   look without changing the assembled meaning (extra blanks, alignment
@@ -44,9 +44,9 @@ three directions.
   (they are nodes). This gives "what may fmt touch?" a criterion instead
   of a taste war — and gives the edit tool its converse rule: the agent
   write path preserves non-touched bytes and never runs house-style
-  unless asked (spike proposal P-D: ornamental is out of the agent happy
-  path).
-- **T2 (prior art at the two edges):** yq demonstrates the query side of
+  unless asked (the standing rule: ornamental work is out of the agent
+  happy path).
+- **Prior art at the two edges:** yq demonstrates the query side of
   structural round-trip — `match()` returning `{string, offset, length,
   captures}` plus line/column operators: position as first-class queryable
   data, exactly the span substrate splicing needs. And obsidian-linter is
@@ -55,19 +55,19 @@ three directions.
   many independently-toggleable style rules are a non-commutative system,
   which is an argument for a single coherent house-style profile over a
   rule bazaar.
-- **The identity-layer vocabulary** (from the greenfield SEMANTICS work,
-  now corpus): byte identity / recognition identity / core-semantic
+- **The identity-layer vocabulary** (from the specification-side
+  equivalence work): byte identity / recognition identity / core-semantic
   identity / host-projection equality. The edit substrate operates at byte
   identity for context and core-semantic identity for the change; fmt
   operates between recognition and core-semantic identity; **N-way
-  round-trips** (json / toml / yaml / markdown / rust-native — S6) each
+  round-trips** (json / toml / yaml / markdown / rust-native) each
   pick a layer and a loss policy, which is why "products" is an open
   family, not four fixed nouns (the DAG-not-line lesson).
 
 ## What it generates
 
 - **For UDON:** the serializer/spans substrate sits on the critical path
-  *before* edit v0 (the T1 build order); W1d (self-delimiting value
+  *before* edit v0 (the design-of-record build order); W1d (self-delimiting value
   extents) and the text law (pure-concat reconstruction) are the wire-side
   prerequisites already ruled. The open design work — sugar-aware
   round-trip (writing `$traits` back as `.trait`), where emit-style

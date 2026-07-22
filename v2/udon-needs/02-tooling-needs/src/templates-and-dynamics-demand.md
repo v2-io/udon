@@ -65,7 +65,7 @@ dialect binding is per-document, per-scope, or per-event.
   answer ("this template requires these names, these predicates") — the
   schema spike should be in the room.
 - **For the harness:** templates are its prompt-assembly and
-  report-generation substrate (the T4 frame: prompt assembly *is* the
+  report-generation substrate (the theory's frame: prompt assembly *is* the
   reconstruction mechanism — a template with an interrogable scope
   contract is a checkable prompt assembler). The near-term form doesn't
   wait for UDON dynamics: any templating the harness adopts should have

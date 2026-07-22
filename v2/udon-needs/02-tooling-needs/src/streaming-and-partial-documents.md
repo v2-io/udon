@@ -26,7 +26,8 @@ assembled trees for structural ops) rather than one mandatory "the AST."
 
 ## The evidence
 
-- **T2 (transport layer, independently rediscovered ≥5 times):** streaming
+- **The transport layer (independently rediscovered at least five
+  times):** streaming
   tool-call *reassembly* is a real, nontrivial, repeatedly-solved problem —
   arguments arrive fragmented and out of order; harnesses buffer,
   reassemble, tolerate malformed partial JSON, and in one case auto-repair
@@ -37,7 +38,8 @@ assembled trees for structural ops) rather than one mandatory "the AST."
   warnings citing the opener) removes the tax at the source — UDON's
   existing recognition posture is exactly this property; the demand
   evidence says it is load-bearing, not incidental.
-- **T1 (the affordance list, agent-utility spike):** partial-tree query
+- **The affordance list (from the design corpus — Appendix C carries the
+  full exploration):** partial-tree query
   mid-parse (open-element stack, current attribute — "where am I?"); early
   anomaly surfacing before 500 more tokens compound the mistake;
   prefix/candidate validation against schema or enum; grammar-constrained
@@ -49,7 +51,7 @@ assembled trees for structural ops) rather than one mandatory "the AST."
   folding harder; sufficiency at product boundaries (W0) and
   self-delimiting value extents (W1d) are the wire-side laws that make
   partial products honest.
-- **T4:** the reconstruction-adequacy condition and the two-timescale
+- **The theory:** the reconstruction-adequacy condition and the two-timescale
   buffer/triage structure give the theory frame: arrival ≠ processing, and
   a session that begins with poor reconstruction produces unreliable
   diagnostics — partial-state honesty is what makes mid-stream diagnostics
@@ -64,8 +66,9 @@ soft/hard dial again. The tooling mistake would be letting one posture
 colonize the other.
 
 **Who reads this and when:** UDON reads it as the case for
-recognition-layer products being *public agent surfaces* (P-A) with the
-verdict channel (P-B); the harness reads C10 as transport reality and the
+recognition-layer products being *public agent surfaces* with the
+verdict channel; the harness reads the reassembly evidence as transport
+reality and the
 verdict shape as what its tool results should expose for long-running
 generation. Divergence: none substantive; the harness benefits even for
 non-UDON payloads (NDJSON etc.).
@@ -73,7 +76,7 @@ non-UDON payloads (NDJSON etc.).
 ## Honest edges
 
 Multi-line policy (ML) stays WAIT-DEMAND/possibly-dissolved: this segment's
-scenarios are the demand side that should eventually force it (P-G) — pain
+scenarios are the demand side that should eventually force it — pain
 in concrete stream/repair cases, not deliberation in the abstract. The
 "grammar-constrained decode from descent" idea is technique-known but
 never harnessed; unmeasured.

@@ -22,7 +22,7 @@ segment says what transfers as-is, what re-bases, what the harness
 already owns, and how the two bodies of work relate — written last,
 against the drafted whole.
 
-## How the two artifacts relate (SC#15, ruled)
+## How the two artifacts relate (ruled by Joseph)
 
 The harness workshop's corrected-behavior dossier and this compilation
 are **peer artifacts that cite each other; neither absorbs the other.**
@@ -30,9 +30,8 @@ They approach one subject from complementary sides: the dossier compiles
 *how agents fail and correct* (behavior-side; adversarially verified;
 its own honest status: "not one behavior has a measured base rate"); this
 report compiles *what agents need from tools* (demand-side;
-tier-disciplined). The deep-copies pulled under the ruling
-(dossier-TAXONOMY, the CLI census) live in `01-ideation/02-provenanced/
-copies/harness-workshop/` with provenance; the census additionally
+evidence-disciplined). The workshop's taxonomy and CLI census are carried
+in this report's source apparatus with provenance; the census additionally
 functions as a *corrector* — where it and the external landscape or the
 in-vivo maps disagree on a repo, read-the-code wins.
 
@@ -86,7 +85,7 @@ merge.
 
 ## Mechanics of the port
 
-Per SC#15's deep-copy-on-pull pattern: when the harness takes this
+Per the ruled deep-copy-on-pull pattern: when the harness takes this
 report, it takes a **copy with provenance** (source path + commit +
 date), not a live mount — the two programs then diverge deliberately,
 cross-citing. The segments' `sources:` chains resolve within this repo;

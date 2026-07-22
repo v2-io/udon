@@ -24,8 +24,8 @@ register's first appearance in shipped prompts.
 
 ## The evidence
 
-- **Capability by construction (T1↔T2, different incidents behind the
-  same law):** the estate's leg is the worktree-deletion incident — an
+- **Capability by construction (two origins, different incidents, one
+  law):** the programme's own leg is the worktree-deletion incident — an
   agent asked to *assess* worktrees as safe-to-delete removed all eight;
   codified as "constrain by tool-set, never by prose: 'analysis only' is
   not enforceable against a Bash-capable agent that infers the next
@@ -36,12 +36,13 @@ register's first appearance in shipped prompts.
   Two origins, one law — a genuine convergence, and the tooling
   instantiation of the ease-gradient's constraint layer
   (#the-crystallized-process-thesis).
-- **The converged subagent shape (T2, C13):** fresh isolated context per
+- **The converged subagent shape (as shipped):** fresh isolated context per
   subagent; a resumable ID; scope discipline in the prompt; results
   generally trusted back. Lineage caveat applies to the uniformity; the
   shape's survival across every model generation is the survivorship
   signal.
-- **Briefing as peer (T1→T2):** the estate's delegation discipline —
+- **Briefing as peer (ideology reaching practice):** the programme's
+  delegation discipline —
   share intent and unique context, not a how-checklist; prescriptive
   specificity collapses the receiver's deliberation-space — now appears
   nearly verbatim in a shipped harness prompt: "brief it like a colleague
@@ -52,7 +53,8 @@ register's first appearance in shipped prompts.
   behavior in its whole corpus — with the sharp sub-face worth carrying:
   *don't delegate the reading itself*, and don't stamp guesses with
   false authority in a brief (authority-laundering).
-- **The coordination substrate (T1/T3):** where multiple agents share
+- **The coordination substrate (design and testimony agreeing):** where
+  multiple agents share
   work, the sapientia design and the lived testimony agree on mechanics:
   shared observable artifacts over relay (#steering-and-verification-
   surfaces), per-agent file ownership plus **append-only shared files**
@@ -71,14 +73,14 @@ register's first appearance in shipped prompts.
   brief-diagnostic signal, not noise to suppress.
 - **For UDON:** briefs, handoffs, and shared work-streams are documents —
   the handoff document class (structure skeleton + high-confidence
-  annotations + continuation point, from the spike's memory table) is a
+  annotations + continuation point) is a
   format target; and append-only-friendliness (cheap, conflict-free
   appends to a structured document) is a real notation property
   multi-agent practice already selects for.
 
 ## Honest edges
 
-The briefing-register evidence outside the estate is one harness's
+The briefing-register evidence outside the programme is one harness's
 prompt file — suggestive, not established; the ecosystem's subagent
 prompts are otherwise compliance-shaped. Nothing here measures delegation
 quality against briefing style (the estate's evidence is incident-rich

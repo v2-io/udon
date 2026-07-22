@@ -18,7 +18,7 @@ sources:
 **Claim.** Across session boundaries an agent's relevant information decays
 geometrically unless a non-vanishing **reinjection channel** exists — durable
 artifacts, tracking files, structured summaries, curated narrative. This is
-an exact T4 result (under argued commitments), and its converse is the
+an exact formal result (under argued commitments), and its converse is the
 strongest possible warrant for durable agent-facing formats: *the design
 effort that buys persistence is the construction and maintenance of the
 reinjection channel, and no tuning of in-session behavior substitutes for
@@ -26,7 +26,8 @@ it.* The reinjection channel structurally **is** the scaffold.
 
 ## The evidence
 
-- **The formal result (exact, under argued commitments):** with lossy
+- **The formal result (exact, under argued commitments; Appendix A §4
+  carries the full statement):** with lossy
   context turnover and no reinjection,
   geometric decay to zero — the in-session persistence apparatus provably
   does not transfer across boundaries. Companion engineering results:

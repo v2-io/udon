@@ -25,7 +25,7 @@ shipping approach edits at the text/character level with **no validity
 guarantee** for the artifact being edited. That absence is the gap this
 whole part of the report converges on (#schema-guarded-mutation).
 
-## The landscape (fourteen real harnesses, descent accounted for)
+## The landscape (fourteen real harnesses, descent accounted for — Appendix B carries the full examination)
 
 Three paradigms ship today:
 
@@ -38,7 +38,7 @@ Three paradigms ship today:
    grammar-constrained (lark) rather than free-text-then-parsed.
 3. **Hashline anchor-editing** (grok-build singleton) — `LINE:HASH→content`
    anchors; atomic bottom-up batch where one stale anchor rejects the whole
-   batch. The only materially different addressing paradigm in Tier 2:
+   batch. The only materially different addressing paradigm shipping anywhere:
    content-addressed-by-hash instead of by-quoted-text.
 
 **The one genuine independent convergence** (at least five teams, same

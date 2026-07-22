@@ -21,7 +21,7 @@ could help (repair, learning, audit, handoff) needs the act, not the
 keystrokes. The demand has a lived origin, a shipped mechanism, and a
 formal slot.
 
-## The origin case (T1, Oct 2025 — worth seeing)
+## The origin case (Oct 2025 — worth seeing)
 
 An agent adding citations to a report performed ~15 str_replace operations
 and then audited its own session. The semantic intent was "add a citation
@@ -53,18 +53,18 @@ made these choices / what I didn't finish"), across agents
 human and agent (the stated user story vs the *real* intent behind it).
 Intent is "the most valuable and most easily lost information."
 
-## The shipped mechanism (T2) and the formal slot (T4)
+## The shipped mechanism, and the formal slot
 
 gemini-cli is the one harness that made intent load-bearing: its edit tool
 *requires* an `instruction` field (why/where/what/desired-outcome), and
 when all string-fuzzing tiers fail, a second LLM call repairs the edit
 *from the stated intent* — the only shipped repair layer that recovers the
-semantic act after the mechanical anchor breaks (C2b). That is the
+semantic act after the mechanical anchor breaks. That is the
 origin case's thesis running in production: carried intent converts an
 unrecoverable mechanical failure into a repairable semantic one.
 
-T4 supplies the slot: plans with observable intermediates sidestep the
-credit-assignment intractability (dossier §5.2) — and a stated intent is
+The theory supplies the slot: plans with observable intermediates sidestep
+the credit-assignment intractability — and a stated intent is
 precisely the observable that lets a refusal name *structural vs
 parametric* failure ("your anchor broke" vs "your goal is unachievable
 here"), which #errors-that-teach requires and a bare old/new pair cannot
@@ -89,9 +89,9 @@ support.
 
 ## Honest edges
 
-T1 and the cluster's other legs share an author; the genuinely independent
-leg is gemini's shipped mechanism (one harness — a singleton, flagged as
-such in the digest). No one has measured how often carried intent actually
+The design-side legs share an author; the genuinely independent leg is
+gemini's shipped mechanism (one harness — a singleton, and flagged as
+one). No one has measured how often carried intent actually
 rescues failed edits vs string-fuzzing alone; gemini's telemetry would
 answer it and is not public. And there is a real tension to hold: intent
 fields add authoring burden to every call — the ease gradient cuts against

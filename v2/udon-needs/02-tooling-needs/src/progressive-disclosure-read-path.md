@@ -23,7 +23,7 @@ numbers, and explicit confidence.
 
 ## The evidence
 
-- **T1 (design of record, read whole):** the udon-agentic tool catalog is
+- **The design of record:** the udon-agentic tool catalog is
   the fullest statement of what read-side payloads must carry, and its
   conventions section is quietly the most transferable part: **line
   numbers always** ("enables agents to correlate across calls"),
@@ -37,13 +37,14 @@ numbers, and explicit confidence.
   `trace` tool (what references this / what does this reference, with
   locations) is the impact-analysis half: read-before-write due diligence
   as a first-class query.
-- **T1 (the spike's payload table):** skeleton/path-map (multiplicities,
+- **The payload table (from the same design corpus):** skeleton/path-map
+  (multiplicities,
   attribute names without bodies), focused subtree + breadcrumb (where am
   I, siblings summary, refs in/out), structural diff (move vs delete+add),
   impact/side-effects (broken refs), validation verdict, confidence,
   teaching refusal — one row per payload, each answering a different
   question an agent actually asks mid-task.
-- **T2 (the echo):** the ecosystem's context-management machinery
+- **The ecosystem's echo:** its context-management machinery
   (#context-economy) is progressive disclosure applied *to tool results* —
   previews with disk-spill recovery paths, content-aware pruning against a
   focus question. What no shipping harness has is the *structural* glance:

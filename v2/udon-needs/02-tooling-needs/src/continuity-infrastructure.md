@@ -29,7 +29,7 @@ named in the dossier's sources); each is also lived.
    (fork-undetectability is what makes integrity tooling existential
    rather than convenient). The defense named for truth death: a
    hash-chained, content-addressed event log — "no gaslighting; the
-   entity can trust their own history." Lived leg (T3): the
+   entity can trust their own history." The lived leg: the
    tool-hallucination cascade — the harness persisted `tool_use` blocks
    without their paired results, and the agent's self-model of its own
    past actions was corrupted *by the persistence layer*; "an agent's
@@ -63,7 +63,7 @@ named in the dossier's sources); each is also lived.
    objective, not just what the objective is." A validation rule for goal
    formats.
 
-## The harness workshop's own record (SC#15, pulled)
+## The harness workshop's own record
 
 The proprium specs are these demands at design-of-record altitude:
 CHRONICA-PORT-SPEC (append-only $\mathcal{C}_t$ — whose own §0 correction
@@ -99,8 +99,9 @@ the other.
 The identity results are conditional theorems whose premises (argued
 commitments about compression, frozen weights) travel with them; the
 lived legs are few entities over months, not populations over years. The
-harness workshop record is within-programme (not an independent tier —
-A-audit's correction carried forward). And a scope truth: most of this
+harness workshop record is within the same programme (not independent
+evidence — a correction from this report's review cycle, carried
+forward). And a scope truth: most of this
 part's weight lands on the harness; UDON's share is real but modest, and
 inflating the notation's role in identity infrastructure would be
 exactly the kind of overclaim the register exists to catch.

@@ -25,24 +25,24 @@ guards the boundary.
 
 ## The evidence
 
-- **T1 (the spike, §2):** "agents want strippable, queryable residue:
+- **The design corpus:** "agents want strippable, queryable residue:
   confidence, source, decision, uncertainty — without polluting content."
   The December-era `|{@ ...}` form is *not valid under 0.9*; the standing
-  rule (P-F): host conventions only (traits, named note elements,
-  out-of-band sidecars) until a steward ruling — "do not invent CORE
-  syntax in a spike." Same family: the `;?`/TBD/`.draft` markers from
+  rule: host conventions only (traits, named note elements, out-of-band
+  sidecars) until a steward ruling — exploration must not invent core
+  syntax. Same family: the `;?`/TBD/`.draft` markers from
   older feedback, and the design-of-record `annotate` tool (span-level
   entity/comment/review/confidence annotations over prose — the
   training-data and review use-cases).
-- **T3 (why it matters more than ergonomics):** what memory wants from
-  the format (spike §3, informed by the testimony): stable identity so
+- **Lived (why it matters more than ergonomics):** what memory wants from
+  the format, informed by agents' own accounts: stable identity so
   "the same decision" survives rewrite; markers distinguishing decision
   from draft from uncertainty; structure that survives summarization. An
   agent re-reading its own past needs to know *what kind of statement*
   each thing was — the tool-hallucination account is the dark version
   (a record whose epistemic status was corrupted by the persistence
   layer taught the agent false things about itself).
-- **T4 (the identity-grade form):** the congruency construction — an
+- **The theory (the identity-grade form):** the congruency construction — an
   entity feels most like itself when re-read prior answers are congruent
   with how it would answer now — depends on `<causal-annotation>`:
   annotating a historical turn with *the context loaded when it was
@@ -80,4 +80,4 @@ annotation is subject to the same wrongness as confident prose). The
 strippability requirement conflicts mildly with the queryability one
 (strippable-by-dumb-transform argues for comments; queryable-by-path
 argues for structure) — that tension is the actual design problem the
-eventual ruling must resolve, and no evidence in the corpus resolves it.
+eventual ruling must resolve, and nothing in the evidence resolves it yet.

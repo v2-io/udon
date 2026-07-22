@@ -145,3 +145,27 @@ acceptance test for every segment. This pass:
   if Joseph's read still finds segments leaning outward, the next
   escalation is appendix-grade reproduction of the three or four
   crown sources inside the report.
+
+
+### 2026-07-22 apparatus-register + appendices pass (Joseph's register ruling)
+
+Joseph's two register rulings, applied: (1) *"The reader should never have
+to know that there was an 01 process whatsoever"* — the gathering
+apparatus is gone from body prose across all 30 segments, OUTLINE, and
+NOTATION-KEY: tier codes (T1–T5) replaced by plain evidence descriptions,
+descent/lineage corrections told as history in sentences, internal file
+names and process vocabulary (corpus/digest/spike-as-source/SC#/BRIEF)
+removed from prose; codes survive only in frontmatter, the methods
+segment's mapping table, and source notes. (2) The crown sources are now
+**reproduced as Appendices A–E** (theory survey; fourteen-harness
+examination + descent analysis; both demand explorations; the two taproot
+design documents; the YAML stress test) and segments cite inward.
+
+Honest remaining distance, for the next pass: the *by-degrees* discipline
+(each segment assuming only its depends: chain, teaching before using) is
+applied where reviewers and Joseph flagged it, but a dedicated
+build-a-mental-model-by-degrees read of every segment in depends-order —
+the deeper fix Joseph named via the "AI slop attends to the whole thing"
+diagnosis — has not been done end-to-end; the demand spine has had the
+most attention, Parts VI–VIII the least. That pass is writing craft, not
+mechanics, and deserves fresh eyes segment-by-segment.

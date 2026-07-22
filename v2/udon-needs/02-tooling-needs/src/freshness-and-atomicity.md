@@ -68,7 +68,7 @@ a batch either fully applies or fully refuses.
 
 ## Honest edges
 
-Atomic *multi-file* transactions remain the corpus-wide gap (only hashline's
+Atomic *multi-file* transactions remain the gap nobody fills (only hashline's
 single-batch semantics comes close). Nothing in the evidence yet prices
 optimistic-vs-pessimistic concurrency for agent workloads — soft-claiming
 (a working convention) and footprint-scheduling (one shipped scheduler)

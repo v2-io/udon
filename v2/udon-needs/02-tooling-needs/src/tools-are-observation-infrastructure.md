@@ -24,8 +24,8 @@ throughput or ergonomics quantity.
 
 ## The evidence
 
-**From the formal theory (conditional theorems; the premises are named
-where ASF/AAT states each result):**
+**From the formal theory (conditional theorems; Appendix A reproduces the
+theory survey whole, with each result's premises):**
 
 - **The κ×A bias law** — belief bias in a coupled (LLM) agent is bounded by
   (architectural coupling κ) × (observation ambiguity A). Plainly: κ
