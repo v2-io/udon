@@ -119,3 +119,14 @@ Append-only.
   the older values were silently overriding. Values agreed in all four cases;
   the richer comments were kept. · Why: a duplicate key in machine-auditable
   frontmatter is a silent-wrong-answer defect, not a cosmetic one.
+
+- 2026-07-22 · report (pilot A, epistemology step 5) · TST-extension memo drafted
+  (`notes/TST-extension-memo.md`) — the deliverable's outward face: seven
+  proposed additions to TST's evidence vocabulary (support-kind as a separate
+  axis; six kinds defined by repair; the convergent lock keyed on failure-mode
+  independence; the verification-event log; transmission-without-a-new-status;
+  `demand` type + `bridge` file-kind; the cross-volume reference notation), each
+  priced for adoption cost, plus what we adopted from ASF unchanged and four open
+  questions for its maintainers. Written in the improvement-proposal voice the
+  provenance recalibration licenses. · Why: the corpus expects to land inside
+  02-TST; its warranted differences are contributions, not local dialect.
