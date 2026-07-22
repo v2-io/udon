@@ -343,3 +343,4 @@ later, but not the reverse.
 | 2026-07-22 | AGENTIC-DELEGATION.md worktree-deletion incident row | copied | `commentary/worktree-deletion-incident.md` | fable-arc2 | bolt-on (RESIDUALS §3): provenances the 2026-05-02 capability-by-construction incident for the monograph tool-definition segment (review-A #6) |
 | 2026-07-22 | harness dossier TAXONOMY.md | copied | `copies/harness-workshop/dossier-TAXONOMY.md` | fable-arc2 | SC#15 deep-copy pulled by phase-2 (continuity/handover segments); verbatim + frontmatter |
 | 2026-07-22 | harness ai-cli-tools-source-assessment.md | copied | `copies/harness-workshop/ai-cli-tools-source-assessment.md` | fable-arc2 | SC#15 deep-copy pulled by phase-2; primary-source corrector of T2 maps + T5 landscape |
+| 2026-07-22 | steward channel (Joseph, project-root anchor) | copied | `copies/discussion-excerpts/joseph-project-root-anchor-2026-07-22.md` | fable-bridge-run | primary steward demand, landed per bolt-on protocol |

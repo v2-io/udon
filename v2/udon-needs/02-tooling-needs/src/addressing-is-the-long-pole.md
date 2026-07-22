@@ -13,6 +13,7 @@ sources:
   - ../reports/agent-utility-exploration.md  # §3 "Addressing is load-bearing"
   - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # yq match() singleton
   - ../../../DECISIONS.md  # PATH-1, S14; ../../OPEN.md S3
+  - ../../01-ideation/02-provenanced/copies/discussion-excerpts/joseph-project-root-anchor-2026-07-22.md  # anchor-kinds demand
 ---
 
 # Addressing is the long pole
@@ -88,10 +89,37 @@ the early design material, where several passes treated file-scope as
 the default and cross-document addressing as an open question awaiting
 permission. When the question finally reached the project's owner, the
 answer was a confirmation of the obvious, now on record in the
-[[DECISIONS.md|design ledger]]: documents are in scope. What remains
-genuinely undesigned is everything *interesting* about it — relative
-versus absolute forms, fragments within a target, when resolution
-happens — which the exploration barely touches. The inherited-assumption
+[[DECISIONS.md|design ledger]]: documents are in scope. The
+inherited-assumption story is worth its ink because it is a live hazard:
+tooling built during the file-scoped habit may still hard-code it.
+
+**What remains genuinely undesigned** is everything *interesting* about
+naming places across and within documents. Start with the
+**anchor** — the point a path measures from. Common convention already
+gives every reader three: relative (from here), absolute (from the
+filesystem root), and home (`~`). The design work adds a fourth,
+different in kind: a *document*-root anchor ("anywhere under this
+document's root" appears in the early path sketches). And a fifth is not
+a proposal but **practice this estate already shipped**: a
+**project-root** anchor. In the September-2025 entity-infrastructure
+systems, `⊤` meant "project root, resolved via git" — defined in a
+lexicon, implemented in the build tooling (with a clear error when used
+outside a repository), and used across dozens of files to include other
+files: `@⊤/entities/zi-am-tur.md` rather than a chain of `../`. The
+recorded reason is the analytically interesting part: **address
+stability under motion**. A moved file breaks every relative path in it
+and to it; root-anchored paths survive the move, and when the *root*
+layout changes, every reference repairs with one mechanical
+search-and-replace. That is the same demand the freshness chapter met at
+document scale — addresses shouldn't rot — surfacing at filesystem
+scale. The owner still wants it ("I would love to be able to do
+`¤/tests/fixtures` from any file in the project… It comes up all the
+time in other-file inclusion"), and the idea has now appeared in three
+independent sigil dressings across the estate (`⊤`, a `@⊥/` root-import
+form in the identity-files work, and the `¤` wish) — internal
+convergence on the slot, with no decision yet on any syntax. Beyond
+anchors: fragments within a target, and when resolution happens, are
+equally open — the exploration barely touches any of this. The inherited-assumption
 story is worth this paragraph because it is a live hazard: tooling built
 during the file-scoped habit may still hard-code it.
 
