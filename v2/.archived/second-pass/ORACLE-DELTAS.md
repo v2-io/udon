@@ -1,11 +1,9 @@
 # Intentional deltas vs live oracle (0.10 suite)
 
 **Status:** working list for differential-oracle work (**C4**).  
-**Not** a claim that the live parser is wrong on every row — some rows are
-*suite evolution*; some are *live CORE debt the suite refuses*.
+**Not** a claim that the live parser is wrong on every row — some rows are *suite evolution*; some are *live CORE debt the suite refuses*.
 
-When a new recognizer is built: every disagreement with `core/` on these points
-should match a DECISIONS ID or be filed as a bug in one side.
+When a new recognizer is built: every disagreement with `core/` on these points should match a DECISIONS ID or be filed as a bug in one side.
 
 | Area | Live `spec/` / parser (rough) | 0.10 suite | Cite |
 |------|-------------------------------|------------|------|

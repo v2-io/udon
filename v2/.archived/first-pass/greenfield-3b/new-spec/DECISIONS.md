@@ -1,19 +1,14 @@
 # Greenfield decisions
 
-This file lists deliberate choices in the greenfield-3b rewrite where the
-scrubbed input was open, provisional, multi-named, or implementation-primed.
-Each item records **what**, **why**, and **user-facing impact**.
+This file lists deliberate choices in the greenfield-3b rewrite where the scrubbed input was open, provisional, multi-named, or implementation-primed. Each item records **what**, **why**, and **user-facing impact**.
 
-Items that change or pin user-visible behavior are marked **[BEHAVIOR]**.
-Items that only reorganize language are marked **[ORG]**.
+Items that change or pin user-visible behavior are marked **[BEHAVIOR]**. Items that only reorganize language are marked **[ORG]**.
 
 ---
 
 ## D1 — Multi-line delimited constructs  **[BEHAVIOR]** *(revised after Fable)*
 
-**Source:** CORE left most delimited constructs “deliberately undefined” across
-newlines; only `|{…}`, Fence, and `<…>` were settled multi-line. Joseph noted
-single-line-only decisions would not last.
+**Source:** CORE left most delimited constructs “deliberately undefined” across newlines; only `|{…}`, Fence, and `<…>` were settled multi-line. Joseph noted single-line-only decisions would not last.
 
 **Original pin (withdrawn as a single atom):** all delimited forms multi-line.
 
@@ -31,15 +26,9 @@ single-line-only decisions would not last.
 | Inline comment `;{…}` | **Open** — [OPEN O16](OPEN.md) | Failure mode is document-swallow; decide with dialect/inline work |
 | Inline directive/verbatim `!{…}` / `!{:…}` | **Open** — [OPEN O16](OPEN.md) | Same concern |
 
-**Impact of the revision:** An editing accident `|el[k` + next structural line
-again yields `$partial-key` (fail-safe lives). Unclosed `;{` / `!{{` are *not*
-yet licensed to consume the rest of the document; until O16 closes, treat
-cross-line as at-your-own-risk for those forms only.
+**Impact of the revision:** An editing accident `|el[k` + next structural line again yields `$partial-key` (fail-safe lives). Unclosed `;{` / `!{{` are *not* yet licensed to consume the rest of the document; until O16 closes, treat cross-line as at-your-own-risk for those forms only.
 
-**Reasoning (Fable):** Uniformity is purchasable without making identity and
-inline-comment typos misfile the remainder of a stream. Geometric vs delimited
-stays the taxonomy; line-bound is a *close rule for specific delimited forms*,
-not a third extent kind.
+**Reasoning (Fable):** Uniformity is purchasable without making identity and inline-comment typos misfile the remainder of a stream. Geometric vs delimited stays the taxonomy; line-bound is a *close rule for specific delimited forms*, not a third extent kind.
 
 ---
 
@@ -47,15 +36,11 @@ not a third extent kind.
 
 **Source:** CORE marked bare `1/3r`, `3+4i` provisional / candidates for dialect.
 
-**Decision:** Not Frozen Core Scalars. Future `standard-types` (or similar)
-Dialect via Envelope. Until Dialects load, those spellings are ordinary bare
-text if unquoted.
+**Decision:** Not Frozen Core Scalars. Future `standard-types` (or similar) Dialect via Envelope. Until Dialects load, those spellings are ordinary bare text if unquoted.
 
-**Impact:** Authors who relied on bare rational/complex typing must use
-Envelopes once the Dialect exists. No contradiction with frozen-set principle.
+**Impact:** Authors who relied on bare rational/complex typing must use Envelopes once the Dialect exists. No contradiction with frozen-set principle.
 
-**Reasoning:** Bare recognition is a one-way door; compositional numbers fit
-Envelope + Dialect better than eternal bare growth.
+**Reasoning:** Bare recognition is a one-way door; compositional numbers fit Envelope + Dialect better than eternal bare growth.
 
 ---
 
@@ -63,24 +48,19 @@ Envelope + Dialect better than eternal bare growth.
 
 **Source:** Undefined (parser free-floating attribute; “do not rely”).
 
-**Decision:** **Warning** (not Error); keep line as Document-level Text
-including `:`. Nothing is lost — severity tracks loss (§14.1).
+**Decision:** **Warning** (not Error); keep line as Document-level Text including `:`. Nothing is lost — severity tracks loss (§14.1).
 
-**Impact:** No portable meaning for top-level `:key`. Bytes preserved. Hosts
-that want hard-fail may promote via Consumer policy.
+**Impact:** No portable meaning for top-level `:key`. Bytes preserved. Hosts that want hard-fail may promote via Consumer policy.
 
-**Reasoning:** Attributes are edges of Elements; root edges without a node are
-not in the ADM. Keep-everything + “Error means loss” forbids Error here.
+**Reasoning:** Attributes are edges of Elements; root edges without a node are not in the ADM. Keep-everything + “Error means loss” forbids Error here.
 
 ---
 
 ## D4 — Vocabulary stabilization  **[ORG]**
 
-**Retired** freeform, embedded, positional (close-axis), blob, head position,
-wire/event (from contract), raw-as-free-noun. See GLOSSARY §8.
+**Retired** freeform, embedded, positional (close-axis), blob, head position, wire/event (from contract), raw-as-free-noun. See GLOSSARY §8.
 
-**Renamed for contract:** Structure Position, Line Scan, Geometric/Delimited,
-Verbatim family, Flow Value, Recognition (vs “the parser”).
+**Renamed for contract:** Structure Position, Line Scan, Geometric/Delimited, Verbatim family, Flow Value, Recognition (vs “the parser”).
 
 **Impact:** None on document bytes; large impact on implementer/reader clarity.
 
@@ -88,22 +68,17 @@ Verbatim family, Flow Value, Recognition (vs “the parser”).
 
 ## D5 — Pillar split  **[ORG]**
 
-**Decision:** Middle-pillar suite: GLOSSARY + MODEL + CORE + SEMANTICS +
-dialects + layers; pedagogy separate; grammar deferred; wire omitted.
+**Decision:** Middle-pillar suite: GLOSSARY + MODEL + CORE + SEMANTICS + dialects + layers; pedagogy separate; grammar deferred; wire omitted.
 
-**Reasoning:** Matches `defining-udon.md`; stops implementation jargon from
-being the language definition.
+**Reasoning:** Matches `defining-udon.md`; stops implementation jargon from being the language definition.
 
 ---
 
 ## D6 — Anomaly posture retained, re-scoped  **[ORG]** (+ light **[BEHAVIOR]** clarify)
 
-**Decision:** Keep-Everything remains recognition default. Halt/reject/fail-on-
-warning are Consumer policies (menu), not alternate recognition modes.
+**Decision:** Keep-Everything remains recognition default. Halt/reject/fail-on- warning are Consumer policies (menu), not alternate recognition modes.
 
-**Reasoning:** Round-trip and LLM/stream partial inputs need retention.
-JSON-style hard reject remains available *above* recognition without forking
-the language.
+**Reasoning:** Round-trip and LLM/stream partial inputs need retention. JSON-style hard reject remains available *above* recognition without forking the language.
 
 ---
 
@@ -111,9 +86,7 @@ the language.
 
 **Original pin:** `\\` and matching `\"`/`\'` inside quoted strings.
 
-**Status now:** **Withdrawn as a closed pin.** Multi-line strings remain under
-D1 (strings row). Interior escape policy is **[OPEN O15](OPEN.md)** — genuine
-fork:
+**Status now:** **Withdrawn as a closed pin.** Multi-line strings remain under D1 (strings row). Interior escape policy is **[OPEN O15](OPEN.md)** — genuine fork:
 
 | Option | Pros | Cons |
 |--------|------|------|
@@ -121,17 +94,13 @@ fork:
 | B — Core minimal: `\\` + delimiter quote only (old D7) | Expresses any string in one quote kind | Fifth, non-positional use of `\`; mixed `\n` literal-pair surprises |
 | C — doubling only (`""` inside `"`) | No backslash story | Collides with list adjacent-quoted items `["x""y"]` = two items |
 
-**This suite’s interim posture (not a ratification claim):** Option **A** —
-no interior Core escapes; contain one quote kind with the other. Aligns with
-Fable/2a and preserves positional `\`. Marked interim in CORE §11.3 until O15
-closes.
+**This suite’s interim posture (not a ratification claim):** Option **A** — no interior Core escapes; contain one quote kind with the other. Aligns with Fable/2a and preserves positional `\`. Marked interim in CORE §11.3 until O15 closes.
 
 ---
 
 ## D8 — Temporal as envelope-only Dialect  **[BEHAVIOR]** (affirms CORE direction)
 
-**Decision:** Recast TIME-SPEC as `temporal@1`; bare dates are strings. Value
-*grammar inside* envelopes preserved from TIME-SPEC.
+**Decision:** Recast TIME-SPEC as `temporal@1`; bare dates are strings. Value *grammar inside* envelopes preserved from TIME-SPEC.
 
 **Impact:** Aligns companion with CORE; fixes documented contradiction.
 
@@ -141,11 +110,9 @@ closes.
 
 **Source:** “content-base shape vs verbatim from comment column — needs ruling.”
 
-**Decision:** First continuation line establishes strip column (same shape as
-prose Content Base).
+**Decision:** First continuation line establishes strip column (same shape as prose Content Base).
 
-**Reasoning:** One mental model for continued geometric text; matches source’s
-primary description.
+**Reasoning:** One mental model for continued geometric text; matches source’s primary description.
 
 ---
 
@@ -162,8 +129,7 @@ primary description.
 
 ## D11 — `$partial-key` name kept  **[ORG]**
 
-Provisional name in source; retained for fail-safe identity. Rename would break
-no documents but would churn Hosts; not worth greenfield churn.
+Provisional name in source; retained for fail-safe identity. Rename would break no documents but would churn Hosts; not worth greenfield churn.
 
 ---
 
@@ -183,8 +149,7 @@ Path-syntax future noted; current contract remains `(name, key, traits)`.
 
 ## D14 — Round-trip / equivalence  **[ORG]**
 
-New [SEMANTICS.md](SEMANTICS.md) defines equivalence classes so AST
-normalization can be discussed without equating all surface spellings.
+New [SEMANTICS.md](SEMANTICS.md) defines equivalence classes so AST normalization can be discussed without equating all surface spellings.
 
 ---
 
@@ -196,17 +161,11 @@ Omitted on purpose; post-spec grammar/parser rewrite will own that layer.
 
 ## D16 — Grammar companion file  **[ORG]** (peer revision)
 
-**Source:** greenfield-3a’s three-pillar split; Gemini feedback that CORE’s
-mechanical rules are thorough but heavy, and that `pop while` must be easy to
-find.
+**Source:** greenfield-3a’s three-pillar split; Gemini feedback that CORE’s mechanical rules are thorough but heavy, and that `pop while` must be easy to find.
 
-**Decision:** Add non-normative [GRAMMAR.md](GRAMMAR.md) as a scannable
-implementer extract. CORE remains authoritative (including an explicit
-`pop while new_column <= stack_top.base_column` spelling in §3.2). On conflict,
-CORE wins.
+**Decision:** Add non-normative [GRAMMAR.md](GRAMMAR.md) as a scannable implementer extract. CORE remains authoritative (including an explicit `pop while new_column <= stack_top.base_column` spelling in §3.2). On conflict, CORE wins.
 
-**Impact:** None on document bytes; improves dual-track reading (parser vs
-Host/ADM).
+**Impact:** None on document bytes; improves dual-track reading (parser vs Host/ADM).
 
 ---
 

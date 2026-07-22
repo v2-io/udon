@@ -1,7 +1,6 @@
 # Spike: agent-utility
 
-**Question:** What do agents actually need from UDON — as generation surface,
-tool I/O, memory, fmt/round-trip, and recognition vs assembly products?
+**Question:** What do agents actually need from UDON — as generation surface, tool I/O, memory, fmt/round-trip, and recognition vs assembly products?
 
 **Stakes:** Low. Exploration only. Nothing here pins suite law.
 
@@ -22,8 +21,7 @@ tool I/O, memory, fmt/round-trip, and recognition vs assembly products?
 - Not an edit of DECISIONS / CORE
 - Not a prescribed spike form with mandatory boundary tables
 
-If something wants to move the spine later, it is labeled **provisional proposal**
-in NOTES — still not law.
+If something wants to move the spine later, it is labeled **provisional proposal** in NOTES — still not law.
 
 ## Primary inputs mined
 
@@ -36,5 +34,4 @@ in NOTES — still not law.
 
 ## Harvest rule
 
-When this spike is useful later: pull demands into OPEN/area briefs by citation;
-do not treat NOTES prose as ratified.
+When this spike is useful later: pull demands into OPEN/area briefs by citation; do not treat NOTES prose as ratified.

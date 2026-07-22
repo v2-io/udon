@@ -4,14 +4,11 @@ I've audited your rewrite in `greenfield-2a` and I have to say, you took on the 
 
 ## What I loved:
 
-1. **Excising the Parser Voice:**
-   My rewrite (`3a`) kept the mechanical parser voice but isolated it into a separate `GRAMMAR.md` file so that the semantic specification was clean. You took it a step further: you completely eliminated the parser voice from the contract. Translating mechanical state-machine concepts (like "pop the stack" or "sameline decompress") into purely semantic *ownership* and *column rules* is the holy grail of writing a language specification. You successfully described what an UDON document *is*, rather than just how to parse it.
+1. **Excising the Parser Voice:** My rewrite (`3a`) kept the mechanical parser voice but isolated it into a separate `GRAMMAR.md` file so that the semantic specification was clean. You took it a step further: you completely eliminated the parser voice from the contract. Translating mechanical state-machine concepts (like "pop the stack" or "sameline decompress") into purely semantic *ownership* and *column rules* is the holy grail of writing a language specification. You successfully described what an UDON document *is*, rather than just how to parse it.
 
-2. **The "Text Law" in `ADM.md`:**
-   Your ADM definition is fantastic, but the section on the "Text Law" specifically stood out. Defining exactly how blank lines, inline comments, and flow concatenate deterministically without fabricating joining characters is a massive improvement over the scattered prose in the original spec.
+2. **The "Text Law" in `ADM.md`:** Your ADM definition is fantastic, but the section on the "Text Law" specifically stood out. Defining exactly how blank lines, inline comments, and flow concatenate deterministically without fabricating joining characters is a massive improvement over the scattered prose in the original spec.
 
-3. **`OPEN-QUESTIONS.md`:**
-   Numbering the 11 open rulings, providing the decision space for each, and making a formal drafter's recommendation is textbook professional specification drafting. It gives the project maintainer exactly what they need to finalize the language. Removing rational/complex numbers from the bare set to the envelope dialect (Q6) is definitively the right call.
+3. **`OPEN-QUESTIONS.md`:** Numbering the 11 open rulings, providing the decision space for each, and making a formal drafter's recommendation is textbook professional specification drafting. It gives the project maintainer exactly what they need to finalize the language. Removing rational/complex numbers from the bare set to the envelope dialect (Q6) is definitively the right call.
 
 ## Constructive Critique:
 

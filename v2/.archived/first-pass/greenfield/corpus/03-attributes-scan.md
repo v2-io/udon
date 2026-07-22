@@ -43,9 +43,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(Row 1 of ownership: `first` was still collecting, so the blob — including the
-literal `:another x` — is its value. Text-bearing line ⇒ terminator inside the
-blob's last Text, inside the bracket.)*
+*(Row 1 of ownership: `first` was still collecting, so the blob — including the literal `:another x` — is its value. Text-bearing line ⇒ terminator inside the blob's last Text, inside the bracket.)*
 
 ## A failed number falls through to bare token, boundary rule applies
 
@@ -150,10 +148,7 @@ ElementStart button
 ElementEnd
 ```
 
-*(Wait — `:disabled` is followed by `:type`, a marker, so `disabled` has no
-value material: the error fires at the boundary and the scan continues. The
-`Scalar Null` is synthesized; its `text` payload is empty/synthetic, shown as
-`"nil"` for legibility only.)*
+*(Wait — `:disabled` is followed by `:type`, a marker, so `disabled` has no value material: the error fires at the boundary and the scan continues. The `Scalar Null` is synthesized; its `text` payload is empty/synthetic, shown as `"nil"` for legibility only.)*
 
 ## The framed sameline comment at a value boundary
 
@@ -172,9 +167,4 @@ ElementStart el
 ElementEnd
 ```
 
-*(No terminator event: `something` is a scalar and comment content is not text
-material, so the line bears no text — its terminator is geometry. The
-contract's "terminator-only `Text "\n"` when an annotation owns the line's end"
-clause applies to **text-bearing** lines, e.g. a blob value followed by a
-comment — see 05. The greenfield CORE copy states this scoping explicitly;
-current CORE leaves it implicit.)*
+*(No terminator event: `something` is a scalar and comment content is not text material, so the line bears no text — its terminator is geometry. The contract's "terminator-only `Text "\n"` when an annotation owns the line's end" clause applies to **text-bearing** lines, e.g. a blob value followed by a comment — see 05. The greenfield CORE copy states this scoping explicitly; current CORE leaves it implicit.)*

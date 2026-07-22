@@ -1,7 +1,6 @@
 # Hierarchy: inline nesting, siblings, dedent cascades
 
-The stack rule is the whole story: pop while `new_column <= top.base_column`,
-push at the marker's actual column. Inline elements push at their real columns.
+The stack rule is the whole story: pop while `new_column <= top.base_column`, push at the marker's actual column. Inline elements push at their real columns.
 
 ## Inline nesting ≡ vertical form
 
@@ -68,9 +67,7 @@ ElementStart table                 ; col 0
 ElementEnd
 ```
 
-*(Terminator question: `A1`'s line is text-bearing, so its terminator is text —
-`Text "A1\n"` strictly; shown bare here and below only where the case isn't
-about terminators. The corpus files about text carry them exactly.)*
+*(Terminator question: `A1`'s line is text-bearing, so its terminator is text — `Text "A1\n"` strictly; shown bare here and below only where the case isn't about terminators. The corpus files about text carry them exactly.)*
 
 ## Dedent cascade to column 0
 
@@ -94,8 +91,7 @@ ElementEnd                          ; 0 <= 0 pops |one too
 Text "- this prose is sibling to |one\n"
 ```
 
-*(Root prose; the mid-line `|one` is past head position — literal. A `|` even
-at head start followed by space is literal anyway.)*
+*(Root prose; the mid-line `|one` is past head position — literal. A `|` even at head start followed by space is literal anyway.)*
 
 ## Closed columns are dead: only the current stack matters
 

@@ -3,10 +3,7 @@
 **Universal Document & Object Notation**  
 Working label: *greenfield-3b rewrite* (clean-room reorganization of the scrubbed 0.9 material).
 
-This directory is primarily a **middle-pillar** language specification: the
-legal contract between the notation and anyone who implements or consumes it.
-A short **Grammar** companion restates mechanical rules for implementers;
-pedagogy is optional and separate.
+This directory is primarily a **middle-pillar** language specification: the legal contract between the notation and anyone who implements or consumes it. A short **Grammar** companion restates mechanical rules for implementers; pedagogy is optional and separate.
 
 ## How to read this suite
 
@@ -37,39 +34,24 @@ pedagogy is optional and separate.
 
 ## Design stance (one paragraph)
 
-UDON is a single notation for data, documents, and configuration. Structure
-is indentation- and marker-based; prose is first-class; types come from
-syntax, not value sniffing; the core is deliberately small and leaves
-projection, constraint, and exotic typing to **Host**, **Schema**, and
-**Dialect** layers. Recognition prefers **keep-everything with warnings**
-over silent loss; document success/failure policies sit above recognition.
+UDON is a single notation for data, documents, and configuration. Structure is indentation- and marker-based; prose is first-class; types come from syntax, not value sniffing; the core is deliberately small and leaves projection, constraint, and exotic typing to **Host**, **Schema**, and **Dialect** layers. Recognition prefers **keep-everything with warnings** over silent loss; document success/failure policies sit above recognition.
 
 ## Requirement language
 
-This suite uses [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119)
-keywords (`MUST`, `MUST NOT`, `SHOULD`, `SHOULD NOT`, `MAY`) in uppercase
-when normative. Lowercase “must/should/may” in prose is ordinary English
-and is not a conformance claim.
+This suite uses [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) keywords (`MUST`, `MUST NOT`, `SHOULD`, `SHOULD NOT`, `MAY`) in uppercase when normative. Lowercase “must/should/may” in prose is ordinary English and is not a conformance claim.
 
 ## What is *not* here
 
-- Event streams, wire encodings, and emission order (intentionally omitted;
-  expected to be redesigned after this contract stabilizes).
-- A formal EBNF/PEG grammar (GRAMMAR.md is prose mechanics, not a generator
-  input). Geometry and recognition rules are precise enough for a future
-  grammar pass.
+- Event streams, wire encodings, and emission order (intentionally omitted; expected to be redesigned after this contract stabilizes).
+- A formal EBNF/PEG grammar (GRAMMAR.md is prose mechanics, not a generator input). Geometry and recognition rules are precise enough for a future grammar pass.
 - The live parser, fixtures outside this clean-room tree, or project TODOs.
 
 ## Marker legend
 
-- **Normative** body text is the contract (MODEL, CORE, SEMANTICS, dialects
-  where marked).
+- **Normative** body text is the contract (MODEL, CORE, SEMANTICS, dialects where marked).
 - *Non-normative* sections are labelled as such (GRAMMAR, pedagogy, rationale).
-- **[GREENFIELD]** marks a deliberate choice that either specifies something
-  the source left open, renames a concept, or (rarely) adjusts surface
-  behavior — always justified in [DECISIONS.md](DECISIONS.md).
+- **[GREENFIELD]** marks a deliberate choice that either specifies something the source left open, renames a concept, or (rarely) adjusts surface behavior — always justified in [DECISIONS.md](DECISIONS.md).
 
 ## Peer revision
 
-Incorporated feedback from greenfield-3a (Gemini) and reverse-audit lessons:
-see [../work/peer-revision.md](../work/peer-revision.md).
+Incorporated feedback from greenfield-3a (Gemini) and reverse-audit lessons: see [../work/peer-revision.md](../work/peer-revision.md).

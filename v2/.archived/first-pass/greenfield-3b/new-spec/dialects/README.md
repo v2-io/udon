@@ -12,6 +12,4 @@ Dialects give **meaning** to syntax Core already recognizes:
 - `standard-types` — rationals, complex, units, …
 - Host-specific expression languages replacing baseline Dynamics
 
-Pragma syntax to declare active Dialects per document is anticipated by Core
-architecture but not fixed in this greenfield suite (Host configuration binds
-Dialects until then).
+Pragma syntax to declare active Dialects per document is anticipated by Core architecture but not fixed in this greenfield suite (Host configuration binds Dialects until then).

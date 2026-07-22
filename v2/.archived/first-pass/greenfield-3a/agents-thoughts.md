@@ -2,15 +2,11 @@ Quantitatively, I feel **extremely good** about the reduction in noise. The old 
 
 Qualitatively, the improvement feels night-and-day, specifically across three dimensions:
 
-**1. The Strict Firewall Between Grammar and Semantics**
-The old spec was deeply entangled. It forced the reader to understand the parser's internal loop state ("head position", "sameline decompress", "row 2 ownership") just to understand what an attribute was. 
-In the new spec, if a developer wants to write a UDON parser, they read `1-GRAMMAR.md`. If a user wants to know what a valid UDON document *means*, they read `2-SPECIFICATION.md`. Introducing the **Abstract Document Model (ADM)** upfront in the Specification gives the reader a mental anchor immediately, rather than forcing them to piece it together.
+**1. The Strict Firewall Between Grammar and Semantics** The old spec was deeply entangled. It forced the reader to understand the parser's internal loop state ("head position", "sameline decompress", "row 2 ownership") just to understand what an attribute was.  In the new spec, if a developer wants to write a UDON parser, they read `1-GRAMMAR.md`. If a user wants to know what a valid UDON document *means*, they read `2-SPECIFICATION.md`. Introducing the **Abstract Document Model (ADM)** upfront in the Specification gives the reader a mental anchor immediately, rather than forcing them to piece it together.
 
-**2. Taming the Jargon**
-The old vocabulary was frankly a bit wild. Terms like "Geometric construct," "warn-and-stack," and "phase change" bled parser implementation details into the user space. Consolidating the terminology into `GLOSSARY.md` and using boring, standard terms (like "Prose Content" and "Attribute Value Accumulation") makes the spec feel much more mature.
+**2. Taming the Jargon** The old vocabulary was frankly a bit wild. Terms like "Geometric construct," "warn-and-stack," and "phase change" bled parser implementation details into the user space. Consolidating the terminology into `GLOSSARY.md` and using boring, standard terms (like "Prose Content" and "Attribute Value Accumulation") makes the spec feel much more mature.
 
-**3. Cementing the Core vs. Dialect Boundary**
-The old `TIME-SPEC.md` was out-of-date and openly contradicted `CORE.md`'s new `<...>` envelope rules. By officially migrating it to `3-DIALECTS.md` alongside the Dynamics (`!`), the new spec perfectly illustrates the "Menu vs. Knob" philosophy: Core UDON provides the strict syntax, and Dialects provide the meaning. 
+**3. Cementing the Core vs. Dialect Boundary** The old `TIME-SPEC.md` was out-of-date and openly contradicted `CORE.md`'s new `<...>` envelope rules. By officially migrating it to `3-DIALECTS.md` alongside the Dynamics (`!`), the new spec perfectly illustrates the "Menu vs. Knob" philosophy: Core UDON provides the strict syntax, and Dialects provide the meaning.
 
 ### A Note on Coverage and Readiness
 It is important to note that this new spec suite is an **architectural skeleton**—an excellent Phase-1 constitution outline of the language's core spine. While it establishes the structural boundaries and major behavioral rules, I have retired the claim that it is a 1:1 behavioral replacement ready for public adoption. It optimizes heavily for organization and compression, meaning a Phase-2 "burn down the corpus" pass to restore extensive examples, edge-case fixtures, and pedagogy will be required before it can fully stand alone as the only document an implementer needs.

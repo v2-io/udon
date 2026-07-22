@@ -2,17 +2,7 @@ Quantitative
 
 Size
 
-┌───────────────────────────────────────────────────┬───────┬────────────────┐
-│ Corpus                                            │ Lines │ Words (approx) │
-├───────────────────────────────────────────────────┼───────┼────────────────┤
-│ Original scrubbed suite (spec/*)                  │ 2,680 │              — │
-├───────────────────────────────────────────────────┼───────┼────────────────┤
-│ New suite (new-spec/**, incl. pedagogy/decisions) │ 2,188 │              — │
-├───────────────────────────────────────────────────┼───────┼────────────────┤
-│ Original CORE only                                │ 1,745 │        ~15,800 │
-├───────────────────────────────────────────────────┼───────┼────────────────┤
-│ New CORE only                                     │   844 │         ~4,800 │
-└───────────────────────────────────────────────────┴───────┴────────────────┘
+┌───────────────────────────────────────────────────┬───────┬────────────────┐ │ Corpus                                            │ Lines │ Words (approx) │ ├───────────────────────────────────────────────────┼───────┼────────────────┤ │ Original scrubbed suite (spec/*)                  │ 2,680 │              — │ ├───────────────────────────────────────────────────┼───────┼────────────────┤ │ New suite (new-spec/**, incl. pedagogy/decisions) │ 2,188 │              — │ ├───────────────────────────────────────────────────┼───────┼────────────────┤ │ Original CORE only                                │ 1,745 │        ~15,800 │ ├───────────────────────────────────────────────────┼───────┼────────────────┤ │ New CORE only                                     │   844 │         ~4,800 │ └───────────────────────────────────────────────────┴───────┴────────────────┘
 
 So: CORE is ~48% the lines and ~30% the words. The whole suite is only modestly smaller than the original suite, because mass was moved, not only deleted — MODEL, SEMANTICS, GLOSSARY, DECISIONS, recast dialects.
 
@@ -20,55 +10,19 @@ Density shifted too: original CORE ~9.0 words/line; new CORE ~5.6. That tracks �
 
 Structure
 
-┌────────────────────────────┬───────────────┬───────────────────────────────────┐
-│                            │ Original CORE │ New CORE                          │
-├────────────────────────────┼───────────────┼───────────────────────────────────┤
-│ ## sections                │ 23            │ 17 (numbered 1–15 + 2 appendices) │
-├────────────────────────────┼───────────────┼───────────────────────────────────┤
-│ ###                        │ 68            │ 54                                │
-├────────────────────────────┼───────────────┼───────────────────────────────────┤
-│ ```udon examples           │ 93            │ 10 (+ 6 in pedagogy tour)         │
-├────────────────────────────┼───────────────┼───────────────────────────────────┤
-│ Admonition callouts ([!…]) │ 17            │ 0                                 │
-└────────────────────────────┴───────────────┴───────────────────────────────────┘
+┌────────────────────────────┬───────────────┬───────────────────────────────────┐ │                            │ Original CORE │ New CORE                          │ ├────────────────────────────┼───────────────┼───────────────────────────────────┤ │ ## sections                │ 23            │ 17 (numbered 1–15 + 2 appendices) │ ├────────────────────────────┼───────────────┼───────────────────────────────────┤ │ ###                        │ 68            │ 54                                │ ├────────────────────────────┼───────────────┼───────────────────────────────────┤ │ ```udon examples           │ 93            │ 10 (+ 6 in pedagogy tour)         │ ├────────────────────────────┼───────────────┼───────────────────────────────────┤ │ Admonition callouts ([!…]) │ 17            │ 0                                 │ └────────────────────────────┴───────────────┴───────────────────────────────────┘
 
 Original CORE was trying to be contract + tutorial + edge-case museum + implementer diary in one scroll. New CORE is thinner as a reading surface because examples and status drama left.
 
 Conformance voice
 
-┌──────────────────────────────┬───────────────┬─────────────────────────────────────┐
-│                              │ Original CORE │ New CORE (+MODEL/SEMANTICS)         │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ RFC 2119 MUST/MUST NOT       │ 0             │ 14 (+6 more in companions)          │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ SHOULD*                      │ 0             │ 4 (+1)                              │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ MAY                          │ 0             │ 19 (+9)                             │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ “the parser”                 │ 17            │ 0                                   │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ “parser” (any)               │ 31            │ 0                                   │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ “head position”              │ 23            │ 0 (→ Structure Position ×15)        │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ CURRENT / UNDEFINED BEHAVIOR │ 9 / 5         │ 0 / 0 (pinned in DECISIONS or OPEN) │
-├──────────────────────────────┼───────────────┼─────────────────────────────────────┤
-│ GREENFIELD markers           │ 0             │ 9 in CORE (honest deltas)           │
-└──────────────────────────────┴───────────────┴─────────────────────────────────────┘
+┌──────────────────────────────┬───────────────┬─────────────────────────────────────┐ │                              │ Original CORE │ New CORE (+MODEL/SEMANTICS)         │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ RFC 2119 MUST/MUST NOT       │ 0             │ 14 (+6 more in companions)          │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ SHOULD*                      │ 0             │ 4 (+1)                              │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ MAY                          │ 0             │ 19 (+9)                             │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ “the parser”                 │ 17            │ 0                                   │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ “parser” (any)               │ 31            │ 0                                   │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ “head position”              │ 23            │ 0 (→ Structure Position ×15)        │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ CURRENT / UNDEFINED BEHAVIOR │ 9 / 5         │ 0 / 0 (pinned in DECISIONS or OPEN) │ ├──────────────────────────────┼───────────────┼─────────────────────────────────────┤ │ GREENFIELD markers           │ 0             │ 9 in CORE (honest deltas)           │ └──────────────────────────────┴───────────────┴─────────────────────────────────────┘
 
 That last block is the feel in a single chart: original describes a system’s behavior; new asserts a contract.
 
 Vocabulary
 
-┌───────────────────────────────────────┬───────────────────────────────────────────────┐
-│                                       │                                         Count │
-├───────────────────────────────────────┼───────────────────────────────────────────────┤
-│ extracted-jargon.txt definition lines │ ~152 terms (messy, overlapping, honest probe) │
-├───────────────────────────────────────┼───────────────────────────────────────────────┤
-│ New GLOSSARY formal rows              │                                           ~72 │
-├───────────────────────────────────────┼───────────────────────────────────────────────┤
-│ Explicitly retired synonyms           │    9 named (freeform, blob, head position, …) │
-└───────────────────────────────────────┴───────────────────────────────────────────────┘
+┌───────────────────────────────────────┬───────────────────────────────────────────────┐ │                                       │                                         Count │ ├───────────────────────────────────────┼───────────────────────────────────────────────┤ │ extracted-jargon.txt definition lines │ ~152 terms (messy, overlapping, honest probe) │ ├───────────────────────────────────────┼───────────────────────────────────────────────┤ │ New GLOSSARY formal rows              │                                           ~72 │ ├───────────────────────────────────────┼───────────────────────────────────────────────┤ │ Explicitly retired synonyms           │    9 named (freeform, blob, head position, …) │ └───────────────────────────────────────┴───────────────────────────────────────────────┘
 
 Roughly: half as many named concepts in the contract surface, not because the language shrank, but because duplicate names and implementer-internal names were refused entry.
 
@@ -86,11 +40,7 @@ A brilliant lab notebook that became the constitution by accident.
 
 It has real depth — ownership rows, bare-token boundary, inline-brace principle, $partial-key, geometric vs delimited EOF — and those ideas are good. But the reading experience is:
 
-• You meet scan machinery before you meet what a document is.
-• The same rule is taught three times (prose heuristic, worked example, edge case), sometimes with a CURRENT BEHAVIOR footnote that half-takes it back.
-• Vocabulary drifts mid-document (“blob” / “flow” / “text”; “freeform” / fence; “head” everywhere).
-• Status is honest but scattered — provisional, undefined, needs-a-ruling live next to normative prose with the same visual weight.
-• Companions disagree with CORE (TIME-SPEC still bare-recognizing while CORE says envelope-only). That undermines trust even when CORE is right.
+• You meet scan machinery before you meet what a document is. • The same rule is taught three times (prose heuristic, worked example, edge case), sometimes with a CURRENT BEHAVIOR footnote that half-takes it back. • Vocabulary drifts mid-document (“blob” / “flow” / “text”; “freeform” / fence; “head” everywhere). • Status is honest but scattered — provisional, undefined, needs-a-ruling live next to normative prose with the same visual weight. • Companions disagree with CORE (TIME-SPEC still bare-recognizing while CORE says envelope-only). That undermines trust even when CORE is right.
 
 If you already have the language in your head, the original is rich. If you don’t, it’s a fog with excellent mountains in it.
 

@@ -37,10 +37,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(Emission order per CORE: content first, then the `Unclosed*`, then any
-bracket End. A string has no Start/End frame of its own, so the warning rides
-between the scalar and `AttrEnd`. Line-boundedness: whether the newline or EOF
-closed it is deliberately version-varying; the warning cites the opener.)*
+*(Emission order per CORE: content first, then the `Unclosed*`, then any bracket End. A string has no Start/End frame of its own, so the warning rides between the scalar and `AttrEnd`. Line-boundedness: whether the newline or EOF closed it is deliberately version-varying; the warning cites the opener.)*
 
 ## Unclosed array closes at the newline (this version)
 
@@ -79,8 +76,7 @@ ElementStart user
 ElementEnd
 ```
 
-*(The `AttrStart` name is decided by the close — this is the one place the
-bracket wire holds an emission; see EVENTS.md.)*
+*(The `AttrStart` name is decided by the close — this is the one place the bracket wire holds an emission; see EVENTS.md.)*
 
 ## Nested unclosed delimited constructs: one warning each, innermost first
 
@@ -100,10 +96,7 @@ ElementStart p
 ElementEnd
 ```
 
-*(Each answers against its own entry site; the unwind is innermost-first, so
-the interpolation's warning precedes the embed's, and both precede the embed's
-`ElementEnd`. Document-level: two delimited constructs open at true EOF ⇒ the
-consuming layer reports the incomplete-input result — a result, not an event.)*
+*(Each answers against its own entry site; the unwind is innermost-first, so the interpolation's warning precedes the embed's, and both precede the embed's `ElementEnd`. Document-level: two delimited constructs open at true EOF ⇒ the consuming layer reports the incomplete-input result — a result, not an event.)*
 
 ## Unclosed fence: keep everything, warn
 

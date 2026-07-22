@@ -1,8 +1,6 @@
 # Recognition traces — value-acquisition flight manual
 
-Exploratory materials for the “push harder” area: **Line Scan, bare-token
-boundary, ownership, Content Phase, node one-way door**, plus a few greenfield
-pins (multi-line, root attr).
+Exploratory materials for the “push harder” area: **Line Scan, bare-token boundary, ownership, Content Phase, node one-way door**, plus a few greenfield pins (multi-line, root attr).
 
 | File | Role |
 |------|------|
@@ -17,6 +15,4 @@ pins (multi-line, root attr).
 3. Cover the expectation, parse the snippet cold, then compare.  
 4. File disagreements as notes — best fuel for CORE tightening.
 
-These traces are **more interesting than authoritative**. Where they conflict
-with [../../new-spec/CORE.md](../../new-spec/CORE.md), either the trace is wrong
-or we found a contract hole — both outcomes are useful.
+These traces are **more interesting than authoritative**. Where they conflict with [../../new-spec/CORE.md](../../new-spec/CORE.md), either the trace is wrong or we found a contract hole — both outcomes are useful.

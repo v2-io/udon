@@ -68,8 +68,7 @@ if case.anomalies:
 
 `assemble` is the audited ~W0 check, not a host AST product requirement.
 
-Until **W1e** freezes Attr bracketing, event-only cases may skip ADM or mark
-`adm` as design-target with `notes: design-target-not-oracle`.
+Until **W1e** freezes Attr bracketing, event-only cases may skip ADM or mark `adm` as design-target with `notes: design-target-not-oracle`.
 
 ---
 

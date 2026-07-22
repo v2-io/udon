@@ -95,9 +95,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(Interim ratified alternative: `Warning NoDialectsLoaded` + `Scalar Str
-"<2026-07-11>"` per envelope. Envelopes are multi-line: a newline inside `<…>`
-is content.)*
+*(Interim ratified alternative: `Warning NoDialectsLoaded` + `Scalar Str "<2026-07-11>"` per envelope. Envelopes are multi-line: a newline inside `<…>` is content.)*
 
 ## Reference as value vs reference as child
 
@@ -136,9 +134,7 @@ ElementStart link
 ElementEnd
 ```
 
-*(The bracket makes the leaky edge CORE's deratification note complains about
-— `/x` silently becoming element content — impossible to mis-read: the
-segments are inside the value.)*
+*(The bracket makes the leaky edge CORE's deratification note complains about — `/x` silently becoming element content — impossible to mis-read: the segments are inside the value.)*
 
 ## Multi-line value (deferred block) with a blank line
 
@@ -160,6 +156,4 @@ ElementStart el
 ElementEnd
 ```
 
-*(`AttrEnd` placement means trailing BlankLines before a dedent land inside the
-bracket; whether they are value text or ornamentation is the AST's whole-stream
-call, exactly as for element prose.)*
+*(`AttrEnd` placement means trailing BlankLines before a dedent land inside the bracket; whether they are value text or ornamentation is the AST's whole-stream call, exactly as for element prose.)*

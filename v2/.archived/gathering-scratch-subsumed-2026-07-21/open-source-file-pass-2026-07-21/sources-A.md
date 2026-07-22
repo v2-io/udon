@@ -8,30 +8,17 @@ out_of_scope_for_this_file: mining content into needs rows; treating _quarantine
 
 # Prospective sources — pass A (open file map)
 
-**What this is.** Candidate files and short directory units where end-user /
-agent / library-consumer *needs* (usage situations, tool desires, friction,
-schema/path/template/edit/stream ideas, interchange, editor surfaces, etc.)
-might live. For later reconciliation and per-file mining — **not** a needs map.
+**What this is.** Candidate files and short directory units where end-user / agent / library-consumer *needs* (usage situations, tool desires, friction, schema/path/template/edit/stream ideas, interchange, editor surfaces, etc.) might live. For later reconciliation and per-file mining — **not** a needs map.
 
-**How to read.** Absolute paths. Each entry: **why it might matter** + brief
-**provenance** when known. Prefer include when unsure. Overlap with Fable’s
-agentic-tooling / schema-versioning maps and the quarantined Grok design/UX
-maps is fine.
+**How to read.** Absolute paths. Each entry: **why it might matter** + brief **provenance** when known. Prefer include when unsure. Overlap with Fable’s agentic-tooling / schema-versioning maps and the quarantined Grok design/UX maps is fine.
 
-**Method (high level).** Walked live `udon/` (design, spec lanes, utils, UX,
-test scenarios/usability, core API, archives), `v2/` ledgers + `.archived/`
-demand spikes, live consumers named by `CONSUMERS.md`, older UDON lineages
-under `~/src/_ref/`, adjacent “waiting customer” projects (rowan, autopax,
-operata, vivarium loaders), harness/agentic ideology deposits, vaults outside
-`~/src`, and memory/session pointers. Did **not** deep-mine bodies into
-needs. Did **not** re-copy extracts.
+**Method (high level).** Walked live `udon/` (design, spec lanes, utils, UX, test scenarios/usability, core API, archives), `v2/` ledgers + `.archived/` demand spikes, live consumers named by `CONSUMERS.md`, older UDON lineages under `~/src/_ref/`, adjacent “waiting customer” projects (rowan, autopax, operata, vivarium loaders), harness/agentic ideology deposits, vaults outside `~/src`, and memory/session pointers. Did **not** deep-mine bodies into needs. Did **not** re-copy extracts.
 
 ---
 
 ## 0. Coordination / already-mapped siblings (do not treat as exclusive)
 
-These are **other gather maps**, not substitutes for opening the originals they
-point at:
+These are **other gather maps**, not substitutes for opening the originals they point at:
 
 | Path | Role |
 |------|------|
@@ -58,8 +45,7 @@ point at:
 
 ## 2. In-repo “felt needs” / utility / agent UX (0.9 line)
 
-High signal **wishlists and design-of-record** that name caller products
-directly (edit, skeleton, guard, paths, schema, CLI probes, cheat-sheets).
+High signal **wishlists and design-of-record** that name caller products directly (edit, skeleton, guard, paths, schema, CLI probes, cheat-sheets).
 
 ### 2a. Wishlists & lanes
 
@@ -186,8 +172,7 @@ Whole tree: `/Users/josephwecker-v2/src/udon/test/usability/`
 
 ### 4d. Scenario corpus mirrors of live genres
 
-`/Users/josephwecker-v2/src/udon/test/scenarios/corpus/` — see §3a; deliberate
-rewrites of live genres for mutation safety.
+`/Users/josephwecker-v2/src/udon/test/scenarios/corpus/` — see §3a; deliberate rewrites of live genres for mutation safety.
 
 ---
 
@@ -261,9 +246,7 @@ Whole orientation: `/Users/josephwecker-v2/src/udon/v2/.archived/INDEX.md`
 
 ### 7b. Night spine (mostly supply — selective mine)
 
-Treat as **secondary**: `PIPELINE.md`, `WIRE.md`, `SPEC.md`, `ADM.md`,
-`PROCESS.md`, `HARNESS.md`, fixtures under `second-pass/fixtures/` — useful
-when they name *products at boundaries*, dangerous if re-promoted as ontology.
+Treat as **secondary**: `PIPELINE.md`, `WIRE.md`, `SPEC.md`, `ADM.md`, `PROCESS.md`, `HARNESS.md`, fixtures under `second-pass/fixtures/` — useful when they name *products at boundaries*, dangerous if re-promoted as ontology.
 
 ### 7c. Greenfield / brownfield archives
 
@@ -361,8 +344,7 @@ Whole tree: `/Users/josephwecker-v2/src/_ref/udon-c/`
 
 ## 11. Schema / document-modeling “waiting customers” (overlap OK)
 
-**Prefer originals over the already-written schema map**, but that map is a
-good index: `…/sources-schema-versioning.md`.
+**Prefer originals over the already-written schema map**, but that map is a good index: `…/sources-schema-versioning.md`.
 
 ### 11a. Rowan (formerly Archema Ruby)
 
@@ -424,9 +406,7 @@ High-value clusters (not exhaustive — see schema map for more):
 
 ## 12. Agentic-tooling ideology (overlap OK — still list originals)
 
-Full maps already exist under `agentic-tooling-sources/` and
-`sources-agentic-tooling.md`. Below: **centers of mass + surprises** this pass
-would not want lost.
+Full maps already exist under `agentic-tooling-sources/` and `sources-agentic-tooling.md`. Below: **centers of mass + surprises** this pass would not want lost.
 
 ### 12a. Sapientia / _core centers
 
@@ -515,18 +495,12 @@ would not want lost.
 
 ## 16. Intentionally lower priority (listed so we don’t re-discover as “missed”)
 
-- Attribute-model proposal series under `design/attribute-model-*` — supply-side
-  substrate debates already largely ratified into CORE 0.9.
-- Pure parser implementation diaries under `core/_archive/generator/2025-12-*.md`
-  unless mining *performance/streaming product* constraints.
-- Greenfield fixture copies under `.archived/first-pass/*/snippets/from-fixtures/`
-  — prefer live `core/fixtures/`.
+- Attribute-model proposal series under `design/attribute-model-*` — supply-side substrate debates already largely ratified into CORE 0.9.
+- Pure parser implementation diaries under `core/_archive/generator/2025-12-*.md` unless mining *performance/streaming product* constraints.
+- Greenfield fixture copies under `.archived/first-pass/*/snippets/from-fixtures/` — prefer live `core/fixtures/`.
 - Quarantine extracts under `_quarantine/.../extracts/` — use originals.
-- `firmatum/`, `eli/` homes, `ops/` publication portfolio — generally not
-  UDON product needs (per elsewhere pass), unless a future search finds
-  explicit UDON adoption plans.
-- `semachrome/` at `~/src/semachrome` appears empty; content lives under
-  `design/semachrome.md` + autocolors trees.
+- `firmatum/`, `eli/` homes, `ops/` publication portfolio — generally not UDON product needs (per elsewhere pass), unless a future search finds explicit UDON adoption plans.
+- `semachrome/` at `~/src/semachrome` appears empty; content lives under `design/semachrome.md` + autocolors trees.
 
 ---
 
@@ -534,25 +508,13 @@ would not want lost.
 
 These are **prospective search trails**, not confirmed files:
 
-1. **memorata3 / hybrid search queries** for: `udon-c`, `udon paths`,
-   `schema-guarded edit`, `round-trip fixpoint`, `day in the life agents`,
-   pre-2015 UDON objectives, Joseph ideation dumps not yet landed as files.
-2. **Full `find` of `*.udon` under `~/src`** excluding `udon/`, `target/`,
-   `_ref/libudon/target` — CONSUMERS.md claims six live docs; watch for
-   new unregistered consumers (vivarium grows fast).
-3. **`~/src/archema-io/harness/` consolidation of agentic-tooling** — check
-   whether a dedicated `agentic-tooling/` subtree landed after the needs-map
-   note (README still PROPRIUM-heavy as of this pass).
-4. **Vaults search for “UDON” / “libudon”** — ideology is mapped; UDON-specific
-   vault notes may still exist.
-5. **Descent / time-spec as dialect precedent**:
-   `core/generator/temporal-value.desc.setaside`, `spec/TIME-SPEC.md` + any
-   standalone timespec grammar outside this repo.
-6. **A2A / ACP external references** named in design docs but not re-opened
-   here as third-party specs.
-7. **Joseph’s incoming “end-user input + ideation dump”** called out in
-   needs-map standing harvest — not present as a path yet; primary when it
-   lands.
+1. **memorata3 / hybrid search queries** for: `udon-c`, `udon paths`, `schema-guarded edit`, `round-trip fixpoint`, `day in the life agents`, pre-2015 UDON objectives, Joseph ideation dumps not yet landed as files.
+2. **Full `find` of `*.udon` under `~/src`** excluding `udon/`, `target/`, `_ref/libudon/target` — CONSUMERS.md claims six live docs; watch for new unregistered consumers (vivarium grows fast).
+3. **`~/src/archema-io/harness/` consolidation of agentic-tooling** — check whether a dedicated `agentic-tooling/` subtree landed after the needs-map note (README still PROPRIUM-heavy as of this pass).
+4. **Vaults search for “UDON” / “libudon”** — ideology is mapped; UDON-specific vault notes may still exist.
+5. **Descent / time-spec as dialect precedent**: `core/generator/temporal-value.desc.setaside`, `spec/TIME-SPEC.md` + any standalone timespec grammar outside this repo.
+6. **A2A / ACP external references** named in design docs but not re-opened here as third-party specs.
+7. **Joseph’s incoming “end-user input + ideation dump”** called out in needs-map standing harvest — not present as a path yet; primary when it lands.
 
 ---
 
@@ -560,39 +522,21 @@ These are **prospective search trails**, not confirmed files:
 
 For reconcilers only — not a synthesis of needs:
 
-1. **Situations with concrete journeys:** `test/scenarios/**`, live consumer
-   docs + `ordinum.rs`, `TODO-UTILS` / `TOOLING-WISHLIST` / `TODO-AGENT-UX` /
-   `TODO-AUX`, paths + agent-utility spikes §8.
-2. **Waiting customers:** rowan schema evolution + constraints + tool-export;
-   autopax SIGNUM/YAML ADRs; vivarium FORMAT/regula/toolchain.
-3. **Empirical / historical friction:** usability enablement + AGENT_FEEDBACK
-   (sampled); udon-c `docs/`; original `_ref/udon/doc/objectives`; conversion
-   bins; CONSUMERS unused-feature surface.
-4. **Ideology (how tools should feel):** sapientia cli-conventions,
-   agentic-ux-principles, harness agent-enhancement anecdotes, SAR ai-* docs,
-   vaults “Practicability for AI Agents.”
-5. **Library product contracts:** core `lib/tree/stream_tree/span` + fixtures
-   README + text-wire rulings.
-6. **Selective archive / greenfield:** only where they name *caller products*
-   or dissolve questions (ML sugar, inverse edit).
+1. **Situations with concrete journeys:** `test/scenarios/**`, live consumer docs + `ordinum.rs`, `TODO-UTILS` / `TOOLING-WISHLIST` / `TODO-AGENT-UX` / `TODO-AUX`, paths + agent-utility spikes §8.
+2. **Waiting customers:** rowan schema evolution + constraints + tool-export; autopax SIGNUM/YAML ADRs; vivarium FORMAT/regula/toolchain.
+3. **Empirical / historical friction:** usability enablement + AGENT_FEEDBACK (sampled); udon-c `docs/`; original `_ref/udon/doc/objectives`; conversion bins; CONSUMERS unused-feature surface.
+4. **Ideology (how tools should feel):** sapientia cli-conventions, agentic-ux-principles, harness agent-enhancement anecdotes, SAR ai-* docs, vaults “Practicability for AI Agents.”
+5. **Library product contracts:** core `lib/tree/stream_tree/span` + fixtures README + text-wire rulings.
+6. **Selective archive / greenfield:** only where they name *caller products* or dissolve questions (ML sugar, inverse edit).
 
 ---
 
 ## 19. Feedback on this brief / pass (peer note)
 
-- The brief’s **path-map-first, overlap-OK** shape is right; the quarantine of
-  extract-heavy prior work was necessary — this pass deliberately stayed at
-  paths.
-- Highest surprise relative to “design/UX only” bias: **`test/scenarios/`**
-  (already full multi-agent product language), **vivarium `ordinum.rs` hand
-  parser**, **conversion bin matrix** in udon-ruby lineages, **udon-c
-  docs/DECIDED+TODO**, and **rowan tool-export / path-centric query** as
-  non-UDON-repo demand.
-- Brief risk if any: “prospective sources” can still drift into listing
-  *supply-side* spine files; §7b and §16 try to mark those explicitly so
-  phase (2) can deprioritize without re-walking.
+- The brief’s **path-map-first, overlap-OK** shape is right; the quarantine of extract-heavy prior work was necessary — this pass deliberately stayed at paths.
+- Highest surprise relative to “design/UX only” bias: **`test/scenarios/`** (already full multi-agent product language), **vivarium `ordinum.rs` hand parser**, **conversion bin matrix** in udon-ruby lineages, **udon-c docs/DECIDED+TODO**, and **rowan tool-export / path-centric query** as non-UDON-repo demand.
+- Brief risk if any: “prospective sources” can still drift into listing *supply-side* spine files; §7b and §16 try to mark those explicitly so phase (2) can deprioritize without re-walking.
 
 ---
 
-*End of sources-A.md — ready for reconciliation with other open-source-file
-passes and the existing agentic/schema maps.*
+*End of sources-A.md — ready for reconciliation with other open-source-file passes and the existing agentic/schema maps.*

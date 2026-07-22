@@ -48,8 +48,7 @@ ElementStart p
 ElementEnd
 ```
 
-*(One Text shown; fragmentation is unguaranteed either way. The escapes before
-`|{` are consumed; mid-word and trailing `\` pass through.)*
+*(One Text shown; fragmentation is unguaranteed either way. The escapes before `|{` are consumed; mid-word and trailing `\` pass through.)*
 
 ## The `\`-anchored indented prose block
 
@@ -73,7 +72,4 @@ ElementStart the-element
 ElementEnd
 ```
 
-*(The consumed `\` takes no column: base=3, so line 2's col-9 keeps 6 spaces,
-line 3's col-6 keeps 3, and the col-2 line rebases. Exact interior spacing per
-CORE's example shape; the arithmetic here is the derived reading of "the text
-after it backs up one column into the `\`'s position".)*
+*(The consumed `\` takes no column: base=3, so line 2's col-9 keeps 6 spaces, line 3's col-6 keeps 3, and the col-2 line rebases. Exact interior spacing per CORE's example shape; the arithmetic here is the derived reading of "the text after it backs up one column into the `\`'s position".)*

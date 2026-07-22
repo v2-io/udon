@@ -1,7 +1,6 @@
 # UDON tour (non-normative pedagogy)
 
-A progressive introduction. The contract lives in `../CORE.md`; this file only
-builds a mental model.
+A progressive introduction. The contract lives in `../CORE.md`; this file only builds a mental model.
 
 ---
 
@@ -99,11 +98,9 @@ Core only recognizes `!` forms; meaning comes from a Host Dialect.
 
 1. **Attributes before children** on each Element.
 2. **Spaces, not tabs**, for indent.
-3. **Drop the braces** to bind an Element as an Attribute value; **keep braces**
-   to put it in text: `:x |em hi` vs `:x |{em hi}`.
+3. **Drop the braces** to bind an Element as an Attribute value; **keep braces** to put it in text: `:x |em hi` vs `:x |{em hi}`.
 4. Same key twice **stacks** (keeps both), it does not overwrite.
-5. When something looks wrong, check whether you are still in **attributes**
-   or already in **content** (a late `:foo` is just text).
+5. When something looks wrong, check whether you are still in **attributes** or already in **content** (a late `:foo` is just text).
 
 ---
 

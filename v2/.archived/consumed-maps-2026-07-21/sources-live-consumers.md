@@ -9,8 +9,7 @@ scope: |
 
 # Sources — live consumers (usage → needs)
 
-Purpose: ground demand in **actual documents and loaders**, not only design
-essays. Highest signal from 2026-07-21 capped scan under `~/src/`.
+Purpose: ground demand in **actual documents and loaders**, not only design essays. Highest signal from 2026-07-21 capped scan under `~/src/`.
 
 ## Extracted heads (partial)
 

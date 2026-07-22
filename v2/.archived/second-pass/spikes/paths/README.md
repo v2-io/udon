@@ -8,27 +8,15 @@
 
 ## The itch (question-shaped)
 
-What does it mean for agents (and humans) to **address** structure inside a
-UDON document — and how much of that language should be the *same* as the
-document surface itself?
+What does it mean for agents (and humans) to **address** structure inside a UDON document — and how much of that language should be the *same* as the document surface itself?
 
 Related forks that keep showing up as one cluster, not separate problems:
 
-1. **In-document references** today are a selector tuple
-   `(name, key, traits)`. When (if ever) do they grow into multi-segment
-   paths — and how do you avoid path-debt from incremental tuple growth?
-2. **Tool addressing** (skeleton, `at`/`all`, patch, schema selectors,
-   cross-file trace) seems to want a richer language than one segment.
-3. **Identity purity:** document `[1]` is the integer key 1. Older path
-   sketches used `[0]` for positional. Those cannot both be true under
-   “paths look like the UDON they navigate.”
-4. **Embeddability:** a path string must eventually live *inside*
-   documents (attrs, patches, schema) without poisoning the scan —
-   terminators, `|` mid-token, quoted vs bare vs dialect envelope.
-5. **Multi-line (OPEN ML):** the emergent-span finding says line-bound
-   policy and path/edit/stream design pull on each other. This spike does
-   **not** pin multi-line; it only watches where addressing would *force*
-   a demand.
+1. **In-document references** today are a selector tuple `(name, key, traits)`. When (if ever) do they grow into multi-segment paths — and how do you avoid path-debt from incremental tuple growth?
+2. **Tool addressing** (skeleton, `at`/`all`, patch, schema selectors, cross-file trace) seems to want a richer language than one segment.
+3. **Identity purity:** document `[1]` is the integer key 1. Older path sketches used `[0]` for positional. Those cannot both be true under “paths look like the UDON they navigate.”
+4. **Embeddability:** a path string must eventually live *inside* documents (attrs, patches, schema) without poisoning the scan — terminators, `|` mid-token, quoted vs bare vs dialect envelope.
+5. **Multi-line (OPEN ML):** the emergent-span finding says line-bound policy and path/edit/stream design pull on each other. This spike does **not** pin multi-line; it only watches where addressing would *force* a demand.
 
 This is not a mini-spec. Wrong sketches are welcome.
 
@@ -42,9 +30,7 @@ Enough durable residue that a stranger-agent can:
 - Try new examples without re-deriving the collision map
 - Optionally harvest a **proposal** into OPEN later — never smuggle a pin here
 
-Optional next passes (anyone): push embeddability edge cases; relational vs
-tree; multiple keys (`|phase[9][scribal]`); prose addressing; wire
-reference encoding under path pressure.
+Optional next passes (anyone): push embeddability edge cases; relational vs tree; multiple keys (`|phase[9][scribal]`); prose addressing; wire reference encoding under path pressure.
 
 ---
 
@@ -67,9 +53,7 @@ sketches.udon      toy documents + provisional path strings (not law)
 | [`v2-spec/OPEN.md`](../../OPEN.md) **S3, S14, ML, W3** | Multiple keys; ref model; multi-line wait; wire ref encoding |
 | [`test/scenarios/`](../../../test/scenarios/) | Day-in-the-life paths (provisional spelling; demand > spelling) |
 
-Session vault (optional retrieval): multi-line / demand-side discussion in
-`spikes/session-vault/raw/grok/019f7d71-greenfield-3b.md`, agentic path
-pressure in older exports.
+Session vault (optional retrieval): multi-line / demand-side discussion in `spikes/session-vault/raw/grok/019f7d71-greenfield-3b.md`, agentic path pressure in older exports.
 
 ---
 

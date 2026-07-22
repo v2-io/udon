@@ -5,12 +5,9 @@
 
 > ## After context compaction (read first)
 >
-> **Do not trust the compacted conversation summary as ground truth.** Compaction
-> is lossy — it invents clean narratives, drops open forks, and confuses
-> DECISIONS with proposals. Treat the chat remainder as *hints only*.
+> **Do not trust the compacted conversation summary as ground truth.** Compaction is lossy — it invents clean narratives, drops open forks, and confuses DECISIONS with proposals. Treat the chat remainder as *hints only*.
 >
-> **Reorient from disk every time you resume after compaction (or any cold
-> start):**
+> **Reorient from disk every time you resume after compaction (or any cold start):**
 >
 > 1. **This file** (`STATUS.md`) — phase, queue, need-Joseph list  
 > 2. **[PROCESS.md](PROCESS.md)** — agent-primary rules; meta channel  
@@ -18,8 +15,7 @@
 > 4. **[README.md](README.md)** — suite map / read order  
 > 5. Only then continue work — prefer STATUS “Own next” over memory of the prior turn  
 >
-> For *why* something was decided: **session vault** + memory search, not the
-> compaction blurb. Primary sources over summaries is non-negotiable here.
+> For *why* something was decided: **session vault** + memory search, not the compaction blurb. Primary sources over summaries is non-negotiable here.
 
 | | |
 |--|--|

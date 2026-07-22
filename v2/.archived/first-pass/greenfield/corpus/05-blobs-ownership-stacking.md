@@ -167,8 +167,4 @@ ElementStart el
 ElementEnd
 ```
 
-*(The trailing `\n` sits at owner scope — reconstruction is global in-order
-concatenation, so the blob text + newline still concatenate exactly; the AST
-decides whether that terminator is the value's or ornamental. This is the
-terminator-placement rule EVENTS.md states and the greenfield CORE copy adopts.
-The space before ` ; ` is the comment frame — geometry.)*
+*(The trailing `\n` sits at owner scope — reconstruction is global in-order concatenation, so the blob text + newline still concatenate exactly; the AST decides whether that terminator is the value's or ornamental. This is the terminator-placement rule EVENTS.md states and the greenfield CORE copy adopts. The space before ` ; ` is the comment frame — geometry.)*

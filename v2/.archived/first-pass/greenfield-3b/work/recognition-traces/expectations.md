@@ -1,10 +1,8 @@
 # Expected streams (hypothetical)
 
-Companion to [snippets.udon](snippets.udon). Event vocabulary:
-[00-event-model.md](00-event-model.md).
+Companion to [snippets.udon](snippets.udon). Event vocabulary: [00-event-model.md](00-event-model.md).
 
-Each case: **snippet** → **why I care** → **L2 event expectation** → optional
-diagram or cursor notes. Disagreements welcome — mark them and we refine CORE.
+Each case: **snippet** → **why I care** → **L2 event expectation** → optional diagram or cursor notes. Disagreements welcome — mark them and we refine CORE.
 
 ---
 
@@ -29,8 +27,7 @@ elem_end
 doc_end
 ```
 
-**Decision:** after bare `another`, next non-space is `w` → not a Boundary Marker
-→ commit Flow for `another` through EOL.
+**Decision:** after bare `another`, next non-space is `w` → not a Boundary Marker → commit Flow for `another` through EOL.
 
 ### Line B — quoted value finishes → tail is element Content
 
@@ -81,9 +78,7 @@ elem_end
 
 **Not:** `attr n=value` then child `em` then `attr a=1`.
 
-**Decision:** bare `value`, next non-space is `|` of `|{` → inline brace → Flow
-commit; inside flow, `|{em x}` is an inline element segment; after `}`, rest is
-literal text including `:a 1`.
+**Decision:** bare `value`, next non-space is `|` of `|{` → inline brace → Flow commit; inside flow, `|{em x}` is an inline element segment; after `}`, rest is literal text including `:a 1`.
 
 ---
 
@@ -116,8 +111,7 @@ elem_start name=el col=0
 elem_end
 ```
 
-**Note:** This is the teachable “empty string without quotes” path. Distinct from
-missing value (Error + Nil) on a plain key with nothing at all.
+**Note:** This is the teachable “empty string without quotes” path. Distinct from missing value (Error + Nil) on a plain key with nothing at all.
 
 ---
 
@@ -173,8 +167,7 @@ elem_start name=el col=0
 elem_end
 ```
 
-**Decision:** quotes finish value; line is attribute-rooted → collecting continues;
-tail warn-ingested.  
+**Decision:** quotes finish value; line is attribute-rooted → collecting continues; tail warn-ingested.  
 **Contrast:** same tail on `|el :attr "first" and…` (element-rooted) → element `text`, no multi-seg on `attr`.
 
 ---
@@ -198,10 +191,7 @@ elem_start name=el col=0
 elem_end
 ```
 
-**Open modeling choice (worth pinning later):** one multi-segment `when` vs two
-stacked `attr key=when`. CORE says stacking spirit / further segments — I treat
-as **second segment or second stacked assignment under same key**, always with Warning.
-Not child text of `el` (that would be wrong: indent is under the attr value column).
+**Open modeling choice (worth pinning later):** one multi-segment `when` vs two stacked `attr key=when`. CORE says stacking spirit / further segments — I treat as **second segment or second stacked assignment under same key**, always with Warning. Not child text of `el` (that would be wrong: indent is under the attr value column).
 
 ---
 
@@ -285,8 +275,7 @@ elem_start name=api col=0
 elem_end
 ```
 
-**No warning required by CORE** (valid structure, surprising intent). Pedagogy/Host
-linter MAY warn. This is why the trace pack exists.
+**No warning required by CORE** (valid structure, surprising intent). Pedagogy/Host linter MAY warn. This is why the trace pack exists.
 
 ---
 
@@ -605,8 +594,7 @@ elem_start name=el
 elem_end
 ```
 
-Interior newlines = whitespace between items. No structure recognition of `8080`
-lines as elements (inside delimited list).
+Interior newlines = whitespace between items. No structure recognition of `8080` lines as elements (inside delimited list).
 
 ---
 
@@ -696,8 +684,7 @@ elem_start name=el col=0
 elem_end
 ```
 
-Key line ends with no finished value → deeper lines are value body; first child
-element is the Node Value (one node preferred).
+Key line ends with no finished value → deeper lines are value body; first child element is the Node Value (one node preferred).
 
 ---
 
@@ -718,11 +705,7 @@ elem_start name=el col=0
 elem_end
 ```
 
-**Why included:** This is an interplay edge (fixture `interplay1113`). I am
-**less certain** than T01–T12. If comment counts as “content,” late-`:` rules
-might fire — I currently say **comments are not Content Phase triggers**; only
-Text / child Elements / etc. Confirm against CORE wording (“any text or child
-element”). Comment ≠ text content of the element body → `:a` OK.
+**Why included:** This is an interplay edge (fixture `interplay1113`). I am **less certain** than T01–T12. If comment counts as “content,” late-`:` rules might fire — I currently say **comments are not Content Phase triggers**; only Text / child Elements / etc. Confirm against CORE wording (“any text or child element”). Comment ≠ text content of the element body → `:a` OK.
 
 ---
 

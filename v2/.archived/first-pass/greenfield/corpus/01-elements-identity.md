@@ -1,8 +1,6 @@
 # Elements, identity, traits, suffixes
 
-Notation: indentation in `events` blocks is presentational (frame depth).
-`Scalar` payloads are `kind "source-text"`. Terminators appear as `\n` only
-where the reconstruction contract makes them text.
+Notation: indentation in `events` blocks is presentational (frame depth). `Scalar` payloads are `kind "source-text"`. Terminators appear as `\n` only where the reconstruction contract makes them text.
 
 ## Bare element, no content — pure structure line, no terminator event
 
@@ -35,8 +33,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(Per CORE "Suffix characters inside a trait are part of the trait": `.b?` is
-trait `b?`, not trait `b` + suffix. Compare next case.)*
+*(Per CORE "Suffix characters inside a trait are part of the trait": `.b?` is trait `b?`, not trait `b` + suffix. Compare next case.)*
 
 ## Suffix before traits, and the space-separated suffix
 

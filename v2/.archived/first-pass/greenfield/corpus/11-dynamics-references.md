@@ -22,8 +22,7 @@ DirectiveStart else
 DirectiveEnd
 ```
 
-*(The core does not know `else` pairs with `if` — dialect's job; on the wire
-they are siblings, exactly like same-column elements.)*
+*(The core does not know `else` pairs with `if` — dialect's job; on the wire they are siblings, exactly like same-column elements.)*
 
 ## Interpolation in prose and in values
 
@@ -49,9 +48,7 @@ ElementStart link
 ElementEnd
 ```
 
-*(Second case: a mixed blob — segments inside one bracket. Terminator note:
-the line's last non-geometry is the interpolation; the terminator-only Text
-follows it inside the still-open bracket.)*
+*(Second case: a mixed blob — segments inside one bracket. Terminator note: the line's last non-geometry is the interpolation; the terminator-only Text follows it inside the still-open bracket.)*
 
 ## Empty interpolation is valid
 
@@ -85,9 +82,7 @@ ElementStart p
 ElementEnd
 ```
 
-*(Open question flagged in the greenfield copy: does the inline directive's
-name-adjacent material split into arg vs body? CORE/DYNAMICS say only "content
-is parsed as UDON"; shown here as body-only, no arg.)*
+*(Open question flagged in the greenfield copy: does the inline directive's name-adjacent material split into arg vs body? CORE/DYNAMICS say only "content is parsed as UDON"; shown here as body-only, no arg.)*
 
 ## References: the selector ladder, one structured event
 

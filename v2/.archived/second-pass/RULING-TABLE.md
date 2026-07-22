@@ -1,10 +1,6 @@
 # Ruling table — v2-spec charter
 
-**Purpose:** One sitting for Joseph. Every row is either **already ruled**
-(must not re-open as open philosophy), **open** (needs a mark), or
-**packaging** (how the new suite lives). After rulings, this file is the
-non-negotiable input to fresh authoring — not a merge negotiation into live
-CORE.
+**Purpose:** One sitting for Joseph. Every row is either **already ruled** (must not re-open as open philosophy), **open** (needs a mark), or **packaging** (how the new suite lives). After rulings, this file is the non-negotiable input to fresh authoring — not a merge negotiation into live CORE.
 
 | | |
 |--|--|
@@ -12,9 +8,7 @@ CORE.
 | **Stress-check** | Fable (greenfield-2a) — integrated from `RULING-TABLE-delta-fable.md` |
 | **Genre** | DECISIONS-ledger craft — status, impact, options, costs |
 
-**How to rule:** fill the **Ruling** column (`A` / `B` / `C` / custom / `defer
-to …`). Optional: initials + date. Rows marked `ALREADY RULED` need only
-confirm “carry as-cited” unless you explicitly overturn.
+**How to rule:** fill the **Ruling** column (`A` / `B` / `C` / custom / `defer to …`). Optional: initials + date. Rows marked `ALREADY RULED` need only confirm “carry as-cited” unless you explicitly overturn.
 
 ---
 

@@ -2,19 +2,9 @@
 
 **Draft extension to CORE.md**
 
-> ⚠️ **Out of date -- moving to a `temporal@1` dialect (2026-07-13).** Temporal
-> is becoming a **dialect**, not core recognition. CORE now requires all
-> temporal values inside the `<...>` typing envelope -- they are no longer
-> bare-recognized (a bare `2026-07-11` is just the string `"2026-07-11"`). This
-> document still describes the *old bare-recognition* model, so **it is out of
-> date and waiting to be fixed**: it contradicts CORE until recast as
-> `temporal@1`. CORE's "Explicit Typing (`<...>`)" section is authoritative
-> on *where* temporal values live; the *value grammar* here (what a valid date /
-> time / duration looks like *inside* the envelope) stays useful pending the
-> recast.
+> ⚠️ **Out of date -- moving to a `temporal@1` dialect (2026-07-13).** Temporal is becoming a **dialect**, not core recognition. CORE now requires all temporal values inside the `<...>` typing envelope -- they are no longer bare-recognized (a bare `2026-07-11` is just the string `"2026-07-11"`). This document still describes the *old bare-recognition* model, so **it is out of date and waiting to be fixed**: it contradicts CORE until recast as `temporal@1`. CORE's "Explicit Typing (`<...>`)" section is authoritative on *where* temporal values live; the *value grammar* here (what a valid date / time / duration looks like *inside* the envelope) stays useful pending the recast.
 
-This document specifies syntactic recognition of date, time, datetime, duration,
-and relative time values in UDON.
+This document specifies syntactic recognition of date, time, datetime, duration, and relative time values in UDON.
 
 ---
 
@@ -65,8 +55,7 @@ ISO 8601 times of day (24-hour format).
 :logged-at 14:30:00.123
 ```
 
-**Fractional seconds**: Up to nanosecond precision (9 digits). Parser preserves
-all provided digits; host decides internal representation.
+**Fractional seconds**: Up to nanosecond precision (9 digits). Parser preserves all provided digits; host decides internal representation.
 
 ```udon
 :timestamp 14:30:00.123456789    ; nanosecond precision
@@ -95,14 +84,12 @@ ISO 8601 combined date and time, with optional timezone offset.
 :india-time 2025-01-03T20:00:00+05:30
 ```
 
-The `T` separator is required (not space). This matches strict ISO 8601 and
-avoids ambiguity.
+The `T` separator is required (not space). This matches strict ISO 8601 and avoids ambiguity.
 
 **Timezone representation**:
 - `Z` = UTC (Zulu time)
 - `+HH:MM` or `-HH:MM` = fixed offset from UTC
-- Named timezones (`America/New_York`) are not syntactically recognized; use
-  strings and host interpretation
+- Named timezones (`America/New_York`) are not syntactically recognized; use strings and host interpretation
 
 ```udon
 :meeting 2025-01-03T14:30:00
@@ -203,16 +190,13 @@ Both ISO 8601 and shorthand durations work with offset prefixes:
 :created -P1Y2M3D                ; 1 year, 2 months, 3 days ago
 ```
 
-**Semantics**: The parser emits a RelativeTime value with direction and
-duration. The host resolves the reference point (typically current time) and
-computes the absolute value.
+**Semantics**: The parser emits a RelativeTime value with direction and duration. The host resolves the reference point (typically current time) and computes the absolute value.
 
 ```
 RelativeTime { direction: Future, duration: Duration { days: 30 } }
 ```
 
-**Reference point**: By default, "now" (evaluation time). Hosts may support
-explicit reference:
+**Reference point**: By default, "now" (evaluation time). Hosts may support explicit reference:
 
 ```udon
 :due +7d                         ; 7 days from now (default)
@@ -278,8 +262,7 @@ ISO 8601 allows `24:00:00` for end-of-day midnight. UDON recognizes this:
 :opens 00:00:00                  ; start of day
 ```
 
-The parser emits `hour: 24` literally, preserving the semantic distinction between
-"end of Jan 3" and "start of Jan 4". Hosts may normalize if desired.
+The parser emits `hour: 24` literally, preserving the semantic distinction between "end of Jan 3" and "start of Jan 4". Hosts may normalize if desired.
 
 ### Negative Durations
 
@@ -294,13 +277,11 @@ ISO 8601 doesn't define negative durations. In UDON, use relative time syntax:
 
 ## Validation and Warnings
 
-This section documents strictness decisions for temporal parsing. The parser
-follows ISO 8601 strictly where practical, with warnings for common mistakes.
+This section documents strictness decisions for temporal parsing. The parser follows ISO 8601 strictly where practical, with warnings for common mistakes.
 
 ### Leading Zeros Required
 
-ISO 8601 requires leading zeros in dates and times. Values without leading zeros
-are not recognized as temporal types:
+ISO 8601 requires leading zeros in dates and times. Values without leading zeros are not recognized as temporal types:
 
 ```udon
 :date 2025-01-03                 ; Date (valid)
@@ -338,8 +319,7 @@ ISO 8601 allows decimal fractions only on the smallest (rightmost) component:
 
 ### Negative Zero Offset
 
-Some systems produce `-00:00` for UTC. UDON accepts this as equivalent to
-`Z` or `+00:00`:
+Some systems produce `-00:00` for UTC. UDON accepts this as equivalent to `Z` or `+00:00`:
 
 ```udon
 :timestamp 2025-01-03T14:30:00-00:00   ; Accepted as UTC (no warning)
@@ -351,15 +331,13 @@ Some systems produce `-00:00` for UTC. UDON accepts this as equivalent to
 
 ### Fractional Seconds Precision
 
-The parser preserves all provided fractional second digits (up to implementation
-limits). Hosts receive the full precision and decide their internal representation:
+The parser preserves all provided fractional second digits (up to implementation limits). Hosts receive the full precision and decide their internal representation:
 
 ```udon
 :timestamp 14:30:00.123456789012       ; All digits preserved
 ```
 
-**Behavior:** Preserve all digits. Hosts may warn if precision exceeds their
-capability, but the parser does not truncate or reject.
+**Behavior:** Preserve all digits. Hosts may warn if precision exceeds their capability, but the parser does not truncate or reject.
 
 ### Empty Duration Components
 
@@ -459,14 +437,9 @@ The parser validates patterns character-by-character without lookahead. Consider
 2026-03-24T03:12:4.993290109288-says-what
 ```
 
-This looks like a DateTime until we reach the invalid ending. Without lookahead,
-we don't know whether something is a valid temporal value until we've validated
-the **entire pattern**. If we emitted sub-events (Year, Month, Day...) as we
-parsed, invalid inputs would leave orphaned partial events.
+This looks like a DateTime until we reach the invalid ending. Without lookahead, we don't know whether something is a valid temporal value until we've validated the **entire pattern**. If we emitted sub-events (Year, Month, Day...) as we parsed, invalid inputs would leave orphaned partial events.
 
-The solution: validate the full pattern through the state machine, emit a single
-typed event only on successful completion. If validation fails at any point,
-fall through to BareValue.
+The solution: validate the full pattern through the state machine, emit a single typed event only on successful completion. If validation fails at any point, fall through to BareValue.
 
 ### What the Parser Provides
 
@@ -476,8 +449,7 @@ fall through to BareValue.
 
 ### Host Responsibility
 
-Hosts parse the validated string into native types. This is straightforward
-because the parser has already determined the type:
+Hosts parse the validated string into native types. This is straightforward because the parser has already determined the type:
 
 ```ruby
 # Ruby example
@@ -489,8 +461,7 @@ when :Date
 end
 ```
 
-Hosts convert to their preferred datetime representations (chrono, time, jiff,
-DateTime, Time, etc.).
+Hosts convert to their preferred datetime representations (chrono, time, jiff, DateTime, Time, etc.).
 
 ---
 
@@ -498,10 +469,8 @@ DateTime, Time, etc.).
 
 1. **Intervals**: Should `2025-01-01/2025-12-31` be recognized? Deferred for now.
 
-2. **Recurring patterns**: RRULE-style recurrence (`FREQ=WEEKLY;BYDAY=MO,WE,FR`)?
-   Likely too complex for syntactic recognition; use structured elements.
+2. **Recurring patterns**: RRULE-style recurrence (`FREQ=WEEKLY;BYDAY=MO,WE,FR`)? Likely too complex for syntactic recognition; use structured elements.
 
 3. **Fiscal/business calendars**: `2025-Q1`, `2025-H2`? Probably host-defined.
 
-4. **Timezone database**: Should UDON specify IANA timezone behavior? Probably
-   leave to host, with recommendation to use IANA names as strings.
+4. **Timezone database**: Should UDON specify IANA timezone behavior? Probably leave to host, with recommendation to use IANA names as strings.

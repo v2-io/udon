@@ -9,29 +9,17 @@ overlap: intentional with sources-A/B/C and agentic/schema maps
 
 # Prospective sources — pass R1 (reservoirs / underweighted)
 
-**What this is.** Path map for phase-1 gathering: places where people (or
-models in experiments) brainstormed **what UDON might be for**, creative
-applications, enablement scenarios, “I would use this for…”, genre seeds —
-not syntax law and not a re-walk of last week’s design-of-record.
+**What this is.** Path map for phase-1 gathering: places where people (or models in experiments) brainstormed **what UDON might be for**, creative applications, enablement scenarios, “I would use this for…”, genre seeds — not syntax law and not a re-walk of last week’s design-of-record.
 
-**How to read.** Absolute paths. Prefer inclusion when unsure. Overlap with
-`open-source-file-pass-2026-07-21/sources-{A,B,C}.md` is fine; this pass
-**reweights** rather than re-enumerating those maps.
+**How to read.** Absolute paths. Prefer inclusion when unsure. Overlap with `open-source-file-pass-2026-07-21/sources-{A,B,C}.md` is fine; this pass **reweights** rather than re-enumerating those maps.
 
-**Method.** Walked the Dec-2025 usability tree at file/track granularity;
-original 2011-era lineages; archived Dec-2025 revival notes; v2 archived
-demand spikes (for situation texture, not as architecture law); live
-consumer unused-feature surface; a few outside-`udon/` surprises already
-flagged by Joseph / pass A. Did **not** re-catalog design essays, TODO
-lanes, or greenfield suites.
+**Method.** Walked the Dec-2025 usability tree at file/track granularity; original 2011-era lineages; archived Dec-2025 revival notes; v2 archived demand spikes (for situation texture, not as architecture law); live consumer unused-feature surface; a few outside-`udon/` surprises already flagged by Joseph / pass A. Did **not** re-catalog design essays, TODO lanes, or greenfield suites.
 
 ---
 
 ## 0. Already well-known — skip detail
 
-First open pass (A/B/C) + Fable agentic/schema maps already cover these at
-path density. Treat as **pointers only** for reconciliation; do not mine
-this document for their bodies:
+First open pass (A/B/C) + Fable agentic/schema maps already cover these at path density. Treat as **pointers only** for reconciliation; do not mine this document for their bodies:
 
 | Unit | Where listed |
 |------|----------------|
@@ -43,9 +31,7 @@ this document for their bodies:
 | v2 deliberation (`pipeline-discussion.md`, `needs-map.md`, DECISIONS/OPEN) | A §1; quarantine discussion-excerpts |
 | Greenfield / second-pass **supply** spine under `v2/.archived/` | INDEX.md — park for wording; not use-ideation primary |
 
-**Exception within “already mapped”:** `test/usability/` and
-`test/scenarios/` appear in A/B/C but were **glossed as stale evidence /
-BDD corpus**. Below they are re-opened at reservoir grain.
+**Exception within “already mapped”:** `test/usability/` and `test/scenarios/` appear in A/B/C but were **glossed as stale evidence / BDD corpus**. Below they are re-opened at reservoir grain.
 
 ---
 
@@ -53,11 +39,7 @@ BDD corpus**. Below they are re-opened at reservoir grain.
 
 **Whole tree:** `/Users/josephwecker-v2/src/udon/test/usability/`
 
-**Provenance:** Dec 2025 hallway-style agent eval harness. Models/spec
-stale (floor, not ceiling — REVIEW-JULY-2026 §). Still the densest
-**empirical “what might UDON enable”** deposit in the estate. Joseph’s
-session reaction: open pass underweighted creative use-case signal under a
-“stale usability corpus” gloss.
+**Provenance:** Dec 2025 hallway-style agent eval harness. Models/spec stale (floor, not ceiling — REVIEW-JULY-2026 §). Still the densest **empirical “what might UDON enable”** deposit in the estate. Joseph’s session reaction: open pass underweighted creative use-case signal under a “stale usability corpus” gloss.
 
 ### 1a. How to rank tracks (opinionated for miners)
 
@@ -158,8 +140,7 @@ Examples (not exclusive):
 
 ## 2. Day-in-the-life product language (situations, not syntax)
 
-Underweighted relative to essays: these files already speak **agent day
-journeys** in product vocabulary (skeleton/at/all/diff/patch/CAS…).
+Underweighted relative to essays: these files already speak **agent day journeys** in product vocabulary (skeleton/at/all/diff/patch/CAS…).
 
 **Whole tree:** `/Users/josephwecker-v2/src/udon/test/scenarios/`
 
@@ -183,8 +164,7 @@ journeys** in product vocabulary (skeleton/at/all/diff/patch/CAS…).
 
 ## 3. Historical / original-era ideation (pre-revival)
 
-Easy to gloss as “old syntax notes.” Actually early **utility & wishlist**
-thinking + archaeological map into attic.
+Easy to gloss as “old syntax notes.” Actually early **utility & wishlist** thinking + archaeological map into attic.
 
 | Path | Why / provenance |
 |------|------------------|
@@ -226,9 +206,7 @@ Often archived as “historical” and skipped when mining **uses**.
 
 ## 5. Archived v2 demand spikes (situation texture — not architecture law)
 
-Parked supply spine is **out of scope** for this map. These residual spikes
-are the night’s **demand-side** work — situation/product language for
-agents:
+Parked supply spine is **out of scope** for this map. These residual spikes are the night’s **demand-side** work — situation/product language for agents:
 
 | Path | Why |
 |------|-----|
@@ -257,9 +235,7 @@ Not essays — **what people actually do vs what remains unused**.
 | `/Users/josephwecker-v2/src/udon/CONSUMERS.md` | Live inventory + **unused feature surface** (no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet) — demand for tooling/migration *and* evidence of which affordances haven’t been pulled into real work |
 | `/Users/josephwecker-v2/src/udon/bin/find-consumers` | How the registry is refreshed |
 
-Live docs themselves are well-mapped in pass A/B; re-list only if mining
-**genres** (decision log growth, process map, ordinum, taxonomy). Prefer
-those maps.
+Live docs themselves are well-mapped in pass A/B; re-list only if mining **genres** (decision log growth, process map, ordinum, taxonomy). Prefer those maps.
 
 ---
 
@@ -292,8 +268,7 @@ Whole: `/Users/josephwecker-v2/src/udon/design/examples/`
 
 ## 8. Outside-repo ideology reservoirs (adjacent, not UDON-syntax)
 
-Already partly in A §12; listed here only where they inform **agent
-product expectations** that pull on notation:
+Already partly in A §12; listed here only where they inform **agent product expectations** that pull on notation:
 
 | Path | Why |
 |------|-----|
@@ -342,17 +317,10 @@ product expectations** that pull on notation:
 
 ## 12. Feedback on the brief (peer)
 
-- The **reservoir reweight** is the right correction: pass 1’s “stale
-  usability” framing was accurate about model age and wrong about signal
-  class. The load-bearing files are the **P0 yamls + seed prompt**, not
-  `AGENT_FEEDBACK.md` alone and not invention/learning_curve.
-- `topic_dsl` is a quiet sibling of topic_enablement — almost invisible in
-  prior maps; five files still expand “what DSL might emerge.”
-- Scenarios + agent-utility spikes are the other under-mined *situation*
-  layer once creative enablement is in hand — different register (ops day
-  vs free ideation), both demand-side.
-- Risk for reconcilers: double-counting synthesis.md *and* all 25 yamls as
-  independent sources. Treat synthesis as **index**, yamls as **primary**.
+- The **reservoir reweight** is the right correction: pass 1’s “stale usability” framing was accurate about model age and wrong about signal class. The load-bearing files are the **P0 yamls + seed prompt**, not `AGENT_FEEDBACK.md` alone and not invention/learning_curve.
+- `topic_dsl` is a quiet sibling of topic_enablement — almost invisible in prior maps; five files still expand “what DSL might emerge.”
+- Scenarios + agent-utility spikes are the other under-mined *situation* layer once creative enablement is in hand — different register (ops day vs free ideation), both demand-side.
+- Risk for reconcilers: double-counting synthesis.md *and* all 25 yamls as independent sources. Treat synthesis as **index**, yamls as **primary**.
 
 ---
 

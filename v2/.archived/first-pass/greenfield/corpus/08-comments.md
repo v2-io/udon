@@ -18,11 +18,7 @@ CommentEnd
 Text "; But this line is output as text.\n"     ; head-\ consumed
 ```
 
-*(Comment content never carries terminators — stripping the frame preserves
-line boundaries. What happens to a continuation line's *indentation* — stripped
-to the comment's column, or kept verbatim? — is not decidable from CORE's text.
-Shown stripped here, by analogy with prose content-base; flagged in the
-greenfield copy as needing one sentence.)*
+*(Comment content never carries terminators — stripping the frame preserves line boundaries. What happens to a continuation line's *indentation* — stripped to the comment's column, or kept verbatim? — is not decidable from CORE's text. Shown stripped here, by analogy with prose content-base; flagged in the greenfield copy as needing one sentence.)*
 
 ## Comments participate in the hierarchy
 
@@ -84,10 +80,7 @@ ElementStart li
 ElementEnd
 ```
 
-*(Frame spaces: the space before ` ; ` is consumed as frame — geometry. So
-"Item one" not "Item one ". Derived: CORE never says which side keeps the
-space; the strip-comments-preserves-text goal argues the frame is geometry.
-Flagged in the greenfield copy.)*
+*(Frame spaces: the space before ` ; ` is consumed as frame — geometry. So "Item one" not "Item one ". Derived: CORE never says which side keeps the space; the strip-comments-preserves-text goal argues the frame is geometry. Flagged in the greenfield copy.)*
 
 ## Comment at the prose base column vs deeper
 

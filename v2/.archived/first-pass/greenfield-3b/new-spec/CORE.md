@@ -4,10 +4,7 @@
 **Status:** normative (middle pillar)  
 **Companion documents:** [GLOSSARY.md](GLOSSARY.md), [MODEL.md](MODEL.md), [SEMANTICS.md](SEMANTICS.md), [DECISIONS.md](DECISIONS.md)
 
-This document is the legal contract for UDON *surface recognition*: how source
-text maps to the Abstract Document Model. It does not teach idiomatic style
-(see `pedagogy/`) and does not define Host projection, Schema constraint, or
-Dialect evaluation beyond what Core must recognize.
+This document is the legal contract for UDON *surface recognition*: how source text maps to the Abstract Document Model. It does not teach idiomatic style (see `pedagogy/`) and does not define Host projection, Schema constraint, or Dialect evaluation beyond what Core must recognize.
 
 ---
 
@@ -15,28 +12,22 @@ Dialect evaluation beyond what Core must recognize.
 
 ### 1.1 Requirement language
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY**
-in this document are to be interpreted as described in RFC 2119.
+The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** in this document are to be interpreted as described in RFC 2119.
 
 ### 1.2 What a conformant recognizer does
 
 A conformant **Recognizer** MUST:
 
-1. Map any finite UTF-8 input to an ADM instance plus Anomaly list per this
-   specification and [MODEL.md](MODEL.md).
+1. Map any finite UTF-8 input to an ADM instance plus Anomaly list per this specification and [MODEL.md](MODEL.md).
 2. Implement Keep-Everything wherever this document defines a keep path.
 3. Recognize all Markers, Value forms, and sugar desugarings specified here.
-4. Treat Dialect *meaning* as optional: it MUST recognize Envelope and Dynamics
-   *syntax*; it MAY leave bodies unresolved when no Dialect is loaded.
+4. Treat Dialect *meaning* as optional: it MUST recognize Envelope and Dynamics *syntax*; it MAY leave bodies unresolved when no Dialect is loaded.
 
-A conformant Recognizer is **not** required to implement any particular
-Dialect, Schema, mixin expansion, or Reference resolution mode.
+A conformant Recognizer is **not** required to implement any particular Dialect, Schema, mixin expansion, or Reference resolution mode.
 
 ### 1.3 Compliance tests
 
-When a canonical fixture suite is published for a version of this contract,
-passing that suite is the operational definition of recognition compliance.
-Until then, this prose is authoritative.
+When a canonical fixture suite is published for a version of this contract, passing that suite is the operational definition of recognition compliance. Until then, this prose is authoritative.
 
 ---
 
@@ -66,18 +57,13 @@ Core fixes:
 | Duplicate `(name, key)` policy | Document layer (menu in §12) |
 | Markdown interpretation of Text | layers above Core |
 
-**Menu vs knob:** Core MAY specify a finite option space and a default. A
-Consumer MUST choose within that space and MUST NOT invent options outside it.
+**Menu vs knob:** Core MAY specify a finite option space and a default. A Consumer MUST choose within that space and MUST NOT invent options outside it.
 
-**Dialects are not Schemas.** A Dialect says what a value means; a Schema says
-what is allowed. They MUST NOT trade jobs.
+**Dialects are not Schemas.** A Dialect says what a value means; a Schema says what is allowed. They MUST NOT trade jobs.
 
 ### 2.3 Streaming
 
-UDON is a **bounded-lookahead** language: every Structure Position Guard
-resolves with a small fixed number of characters and no deep backtracking.
-New syntax SHOULD preserve that bound so incremental recognition remains
-possible. Chunk boundaries are not end of input.
+UDON is a **bounded-lookahead** language: every Structure Position Guard resolves with a small fixed number of characters and no deep backtracking. New syntax SHOULD preserve that bound so incremental recognition remains possible. Chunk boundaries are not end of input.
 
 ---
 
@@ -85,27 +71,18 @@ possible. Chunk boundaries are not end of input.
 
 ### 3.1 Lines and columns
 
-- Input is a sequence of lines separated by U+000A (newline). A final line
-  need not end with newline; end of input is newline-equivalent for Geometric
-  Constructs (§13).
+- Input is a sequence of lines separated by U+000A (newline). A final line need not end with newline; end of input is newline-equivalent for Geometric Constructs (§13).
 - **Column** is the count of leading U+0020 SPACE characters before content.
-- **Tabs in indentation are Errors.** A tab that participates in leading
-  indentation of a line MUST produce an Error; that line’s structural
-  contribution is best-effort (Keep-Everything: treat content after the tab
-  as prose of the current owner when a coherent keep exists). A tab *inside*
-  Text, values, or comments is ordinary content.
+- **Tabs in indentation are Errors.** A tab that participates in leading indentation of a line MUST produce an Error; that line’s structural contribution is best-effort (Keep-Everything: treat content after the tab as prose of the current owner when a coherent keep exists). A tab *inside* Text, values, or comments is ordinary content.
 
 ### 3.2 Nesting Rule
 
-Open structural items (Elements, block Directives, block Comments as geometric
-participants, block Verbatim) form a stack, each with a **Base Column** (the
-column of the item’s introducing marker, e.g. the `|` of an Element).
+Open structural items (Elements, block Directives, block Comments as geometric participants, block Verbatim) form a stack, each with a **Base Column** (the column of the item’s introducing marker, e.g. the `|` of an Element).
 
 When a new structural line begins at column `c`:
 
 1. While the stack is non-empty and `c ≤ top.base_column`, close the top item.
-2. Open the new item as a child of the new top (or as a Document top-level item
-   if the stack is empty).
+2. Open the new item as a child of the new top (or as a Document top-level item if the stack is empty).
 
 In implementer form (equivalent):
 
@@ -114,8 +91,7 @@ pop while new_column <= stack_top.base_column
 then push the new item under the resulting top
 ```
 
-A non-normative scannable restatement of this rule and related mechanics lives
-in [GRAMMAR.md](GRAMMAR.md).
+A non-normative scannable restatement of this rule and related mechanics lives in [GRAMMAR.md](GRAMMAR.md).
 
 Consequences:
 
@@ -123,25 +99,16 @@ Consequences:
 - **Same column** ⇒ sibling (parent closed first by step 1).
 - **Lesser column** ⇒ ancestor closed until the relation holds.
 
-**Sameline nesting:** Elements appearing later on the same line are treated as
-if each began on its own line at its actual column (the column of its `|`).
-The Nesting Rule applies with those columns.
+**Sameline nesting:** Elements appearing later on the same line are treated as if each began on its own line at its actual column (the column of its `|`). The Nesting Rule applies with those columns.
 
-**Exception — prose interior:** once an Element has an established **Content
-Base** for block prose, a line indented *deeper than that Content Base* is
-prose interior (literal Text), not a new structural child, even if it begins
-with a Marker-looking character. Structure resumes only at columns `≤`
-Content Base (see §7).
+**Exception — prose interior:** once an Element has an established **Content Base** for block prose, a line indented *deeper than that Content Base* is prose interior (literal Text), not a new structural child, even if it begins with a Marker-looking character. Structure resumes only at columns `≤` Content Base (see §7).
 
 ### 3.3 Structure Position
 
-**Structure Position** is the state in which Markers are recognized. It is
-entered:
+**Structure Position** is the state in which Markers are recognized. It is entered:
 
-1. At the beginning of a line’s content when that line is at a **structural
-   column** (not inside prose interior), and
-2. During the **Line Scan** on an Element-rooted line: left-to-right through
-   Elements and Attributes before any prose Text begins.
+1. At the beginning of a line’s content when that line is at a **structural column** (not inside prose interior), and
+2. During the **Line Scan** on an Element-rooted line: left-to-right through Elements and Attributes before any prose Text begins.
 
 At Structure Position, and only there, these Markers are candidates:
 
@@ -154,17 +121,13 @@ At Structure Position, and only there, these Markers are candidates:
 | `@` | Reference |
 | `` ``` `` | Fence |
 
-Each Marker has a **Guard** (§4). If the Guard fails, the character is ordinary
-Text.
+Each Marker has a **Guard** (§4). If the Guard fails, the character is ordinary Text.
 
-The first bare prose word (or other non-Marker commitment) **commits the line
-to prose** for the remainder of that physical line: later Marker characters are
-literal Text, **except** a whitespace-framed sameline comment (` ; `, §8).
+The first bare prose word (or other non-Marker commitment) **commits the line to prose** for the remainder of that physical line: later Marker characters are literal Text, **except** a whitespace-framed sameline comment (` ; `, §8).
 
 ### 3.4 Style (non-normative)
 
-A consistent indent step (commonly 2 spaces) aids readers. It is not required
-for recognition.
+A consistent indent step (commonly 2 spaces) aids readers. It is not required for recognition.
 
 ---
 
@@ -182,30 +145,21 @@ All Guards use bounded lookahead.
 
 Otherwise `|` is Text (Markdown table rows like `| col |` remain safe).
 
-`|{` opens an **Inline Element** (brace form) even at line start: the line is a
-flow/content line whose first segment may be that inline form.
+`|{` opens an **Inline Element** (brace form) even at line start: the line is a flow/content line whose first segment may be that inline form.
 
 ### 4.2 Dynamics `!`
 
-`!` at Structure Position opens a block Directive or block Verbatim when
-followed by an identifier character or `:`. Forms such as `![img]`, `!=`, `!(`
-are Text.
+`!` at Structure Position opens a block Directive or block Verbatim when followed by an identifier character or `:`. Forms such as `![img]`, `!=`, `!(` are Text.
 
-Inline `!{…}` forms are prose-level (not this Structure Position block rule);
-see §10–§11.
+Inline `!{…}` forms are prose-level (not this Structure Position block rule); see §10–§11.
 
 ### 4.3 Reference `@`
 
-`@` marks when followed by `[`, `.`, or an identifier-start character.
-`@` has equal structural footing with `|` in the Line Scan and in value
-position (Reference as Attribute value vs Reference as Content child).
+`@` marks when followed by `[`, `.`, or an identifier-start character. `@` has equal structural footing with `|` in the Line Scan and in value position (Reference as Attribute value vs Reference as Content child).
 
 ### 4.4 Attribute `:`
 
-`:` opens an Attribute only while the owning Element has not entered Content
-Phase, and only when followed by a Key (bare or quoted). A bare `:` without a
-Key is Text. After Content Phase, a line-initial `:` at an ancestor Attribute
-column is Text with a **Warning** (§5.9).
+`:` opens an Attribute only while the owning Element has not entered Content Phase, and only when followed by a Key (bare or quoted). A bare `:` without a Key is Text. After Content Phase, a line-initial `:` at an ancestor Attribute column is Text with a **Warning** (§5.9).
 
 ### 4.5 Comment `;`
 
@@ -213,9 +167,7 @@ column is Text with a **Warning** (§5.9).
 
 ### 4.6 Fence
 
-Three U+0060 GRAVE ACCENT characters open a Fence at Structure Position.
-They do not open a Fence after the line has committed to prose, nor deeper
-than an established Content Base (prose interior).
+Three U+0060 GRAVE ACCENT characters open a Fence at Structure Position. They do not open a Fence after the line has committed to prose, nor deeper than an established Content Base (prose interior).
 
 ---
 
@@ -223,9 +175,7 @@ than an established Content Base (prose interior).
 
 ### 5.1 Shape
 
-An Element is **Name (optional) + ordered Attributes + ordered Content**.
-There are no separate identity/trait fields in the model; sugar desugars to
-Designated Attributes ([MODEL.md](MODEL.md)).
+An Element is **Name (optional) + ordered Attributes + ordered Content**. There are no separate identity/trait fields in the model; sugar desugars to Designated Attributes ([MODEL.md](MODEL.md)).
 
 ### 5.2 Names and bare identifiers
 
@@ -234,14 +184,11 @@ A bare Name is a Unicode identifier:
 - first character: `XID_Start`
 - continuation: `XID_Continue` or U+002D HYPHEN-MINUS `-` or U+002F SOLIDUS `/`
 
-Hyphenated names (`my-element`) and slash namespacing (`acme/widget`) are
-first-class; `/` has **zero** Core semantics.
+Hyphenated names (`my-element`) and slash namespacing (`acme/widget`) are first-class; `/` has **zero** Core semantics.
 
-Characters outside that set end a bare Name. To include them, use single
-quotes: `|'weird name'`.
+Characters outside that set end a bare Name. To include them, use single quotes: `|'weird name'`.
 
-Which Unicode version supplies `XID_*` is a Host/implementation choice; Core
-requires only “Unicode identifier” behavior.
+Which Unicode version supplies `XID_*` is a Host/implementation choice; Core requires only “Unicode identifier” behavior.
 
 ### 5.3 Identity and Classification sugar
 
@@ -255,22 +202,15 @@ requires only “Unicode identifier” behavior.
 | `\|el.a.b` | `\|el :'$traits' a :'$traits' b` |
 | `\|el?` | `\|el :'$?' true` (and analogously `!` `*` `+` → `$!` `$*` `$+`) |
 
-The interior of `[…]` uses normal value recognition (so `[1]` is integer `1`,
-`["01"]` is string `"01"`).
+The interior of `[…]` uses normal value recognition (so `[1]` is integer `1`, `["01"]` is string `"01"`).
 
-**Unclosed `[`:** if `]` never arrives, the captured value is assigned to
-**`$partial-key`** (not `$key`), with a Warning. Same for a Reference selector
-key.
+**Unclosed `[`:** if `]` never arrives, the captured value is assigned to **`$partial-key`** (not `$key`), with a Warning. Same for a Reference selector key.
 
-**Designated, not reserved.** Any `$`-name is a legal Key. Because `$` is not
-a bare-name character, longhand uses quotes (`:'$key' …`). Generators that only
-emit Attributes can still produce identities.
+**Designated, not reserved.** Any `$`-name is a legal Key. Because `$` is not a bare-name character, longhand uses quotes (`:'$key' …`). Generators that only emit Attributes can still produce identities.
 
 **Traits stack:** each `.trait` is a separate `$traits` assignment (Stacking).
 
-A bare `.trait` continuation set additionally includes `*` `!` `?` `+` so that
-`.foo?` is the trait string `foo?`. Flag suffixes that must apply to the Element
-rather than the trait use space-separated form or appear before the trait:
+A bare `.trait` continuation set additionally includes `*` `!` `?` `+` so that `.foo?` is the trait string `foo?`. Flag suffixes that must apply to the Element rather than the trait use space-separated form or appear before the trait:
 
 ```udon
 |el.bar?         ; traits: ["bar?"]
@@ -278,8 +218,7 @@ rather than the trait use space-separated form or appear before the trait:
 |el?.bar         ; $? = true, traits: ["bar"]
 ```
 
-**Identity contiguity:** after a space, `.trait` is not identity sugar
-(`|p .gitignore is a file` has no traits).
+**Identity contiguity:** after a space, `.trait` is not identity sugar (`|p .gitignore is a file` has no traits).
 
 ### 5.4 Flag suffix positions
 
@@ -293,8 +232,7 @@ Suffixes bind to Element identity:
 |name[key].trait ?
 ```
 
-Meaning of `?` `!` `*` `+` is Schema/Dialect territory; Core only expands them
-to boolean true Designated Attributes.
+Meaning of `?` `!` `*` `+` is Schema/Dialect territory; Core only expands them to boolean true Designated Attributes.
 
 ### 5.5 Anonymous Elements
 
@@ -311,15 +249,10 @@ A Name MAY be absent:
 Within Text or Flow Values, `|{…}` opens an Inline Element:
 
 - Brace-balanced; closes at matching `}`.
-- Interior Line Scan and Attributes follow Element rules with `}` as an
-  additional bare-token terminator (unconsumed).
-- Nested structure inside MUST use brace form only (**bracket mode**): block
-  form `|name` is not opened inside `|{…}`.
-- **[GREENFIELD]** Inline Elements MAY span multiple lines. Continuation-line
-  indentation is geometry (not content); each line’s terminator is part of
-  content delivery (Consumers that want a single string concatenate).
-- Intervening Text between sibling inline Elements (including a single space)
-  is real Content.
+- Interior Line Scan and Attributes follow Element rules with `}` as an additional bare-token terminator (unconsumed).
+- Nested structure inside MUST use brace form only (**bracket mode**): block form `|name` is not opened inside `|{…}`.
+- **[GREENFIELD]** Inline Elements MAY span multiple lines. Continuation-line indentation is geometry (not content); each line’s terminator is part of content delivery (Consumers that want a single string concatenate).
+- Intervening Text between sibling inline Elements (including a single space) is real Content.
 
 ---
 
@@ -327,40 +260,27 @@ Within Text or Flow Values, `|{…}` opens an Inline Element:
 
 ### 6.1 Labeled edges
 
-Attributes are labeled edges from the Element’s perspective. Children are
-positional and self-named. Heuristic (*non-normative*): *whose name is it?* —
-relationship to parent ⇒ Attribute; what the thing is ⇒ child Element.
+Attributes are labeled edges from the Element’s perspective. Children are positional and self-named. Heuristic (*non-normative*): *whose name is it?* — relationship to parent ⇒ Attribute; what the thing is ⇒ child Element.
 
-Attributes appear **sameline**, **block**, or inside Inline Elements. Value
-grammar is uniform; terminators and tail ownership differ by context (§6.6).
+Attributes appear **sameline**, **block**, or inside Inline Elements. Value grammar is uniform; terminators and tail ownership differ by context (§6.6).
 
-**[GREENFIELD]** An Attribute at Document root (no owning Element) is a
-**Warning**. The line is kept as Document-level Text (including the leading `:`)
-so bytes are not lost — nothing is lost, so severity is Warning, not Error
-(§14.1). Do not rely on free-floating Attributes.
+**[GREENFIELD]** An Attribute at Document root (no owning Element) is a **Warning**. The line is kept as Document-level Text (including the leading `:`) so bytes are not lost — nothing is lost, so severity is Warning, not Error (§14.1). Do not rely on free-floating Attributes.
 
 ### 6.2 Keys and Flag Keys
 
-Bare Keys use `XID_Start` then `XID_Continue` plus `-` `/` and `?` `!` `*` `+`.
-Other characters require single quotes: `:'weird key'`.
+Bare Keys use `XID_Start` then `XID_Continue` plus `-` `/` and `?` `!` `*` `+`. Other characters require single quotes: `:'weird key'`.
 
-A **terminal `?`** on the Key selects **Flag Key** semantics. The Key string
-**includes** the `?` (`:ready?` and `:'ready?'` are the same Key).
+A **terminal `?`** on the Key selects **Flag Key** semantics. The Key string **includes** the `?` (`:ready?` and `:'ready?'` are the same Key).
 
-**Plain Attributes always take a value.** A plain `:key` with no value material
-(end of line and no Deferred Value body) is an **Error**; the Attribute is
-still recorded with **Nil** value (annotated reason). Presence flags use `?`.
+**Plain Attributes always take a value.** A plain `:key` with no value material (end of line and no Deferred Value body) is an **Error**; the Attribute is still recorded with **Nil** value (annotated reason). Presence flags use `?`.
 
 #### Flag rule
 
 After `:key?`, examine the next token in value position:
 
 1. Exactly `true`, `false`, `null`, or `nil` **alone** → that is the flag’s value.
-2. **Anything else** (bare word, `|node`, `:next`, end of line, …) → the flag
-   is **true**, and that material is **re-owned** by the continuing Line Scan
-   (never the flag’s body). No multi-segment warning for this re-owning.
-3. Deeper lines under a finished flag follow the finished-value warned-extension
-   rule (§6.7).
+2. **Anything else** (bare word, `|node`, `:next`, end of line, …) → the flag is **true**, and that material is **re-owned** by the continuing Line Scan (never the flag’s body). No multi-segment warning for this re-owning.
+3. Deeper lines under a finished flag follow the finished-value warned-extension rule (§6.7).
 
 ### 6.3 Value Kinds
 
@@ -374,52 +294,31 @@ An Attribute assignment’s value is one of:
 | **Node Value** | block-form Element, block Verbatim `!:label:`, or Fence |
 | **Flow Value** | prose-shaped text, including values that begin with or contain inline brace forms |
 
-Types live on the map side (Attribute values and List items). Envelopes are
-meaningful in value position only.
+Types live on the map side (Attribute values and List items). Envelopes are meaningful in value position only.
 
-A block-form `|name` in value position is a **Node Value**. The brace form
-`|{…}` in value position is a **Flow Value** segment (Inline-Brace Principle).
+A block-form `|name` in value position is a **Node Value**. The brace form `|{…}` in value position is a **Flow Value** segment (Inline-Brace Principle).
 
 ### 6.4 Line Scan and Bare Token Boundary
 
-After `:`, recognition collects that Attribute’s value, then continues the
-scan for the current owner. Block lines may carry multiple Attributes:
+After `:`, recognition collects that Attribute’s value, then continues the scan for the current owner. Block lines may carry multiple Attributes:
 
 ```udon
 |el
   :a 1 :b 2
 ```
 
-Most value shapes self-announce (digit → number, `"` → string, `<` → Envelope,
-`[` → List, `@` → Reference, block `|` → Node Value). A committed numeric pattern
-that fails mid-token (e.g. `12ab`) **falls through** to an ordinary bare token
-without unbounded lookahead; the Bare Token Boundary then applies at its end
-(`:x 12ab :y 3` → `x="12ab"`, `y=3`; `:x 12ab more` → Flow Value `"12ab more"`).
-A bare word is decided by:
+Most value shapes self-announce (digit → number, `"` → string, `<` → Envelope, `[` → List, `@` → Reference, block `|` → Node Value). A committed numeric pattern that fails mid-token (e.g. `12ab`) **falls through** to an ordinary bare token without unbounded lookahead; the Bare Token Boundary then applies at its end (`:x 12ab :y 3` → `x="12ab"`, `y=3`; `:x 12ab more` → Flow Value `"12ab more"`). A bare word is decided by:
 
 **Bare Token Boundary.** After an unquoted token, the next non-space character:
 
-- **Boundary Marker** → token finishes as a single-token value; scan continues.
-  Boundary Markers are *guard-confirmed* block-form Markers (`:`, block `|`,
-  block `@`, block `!`, Fence), value-position or boundary `\`, and framed
-  sameline ` ; `.
-- **Anything else**, including an **inline brace form** → commit a **Flow Value**
-  beginning with this token, running to end of line or framed comment (unless
-  value-`\` text mode, §6.5 / §9).
+- **Boundary Marker** → token finishes as a single-token value; scan continues. Boundary Markers are *guard-confirmed* block-form Markers (`:`, block `|`, block `@`, block `!`, Fence), value-position or boundary `\`, and framed sameline ` ; `.
+- **Anything else**, including an **inline brace form** → commit a **Flow Value** beginning with this token, running to end of line or framed comment (unless value-`\` text mode, §6.5 / §9).
 
-A character that *looks* like a marker but **fails its Guard** (§4) is not a
-Boundary Marker — it is ordinary text and commits Flow together with the bare
-token (e.g. `:k v != 3` after bare `v`, or `:x :3` where `:3` fails the key
-guard). Fixtures that probe `:3`, `|~`, `!=` rely on this clause.
+A character that *looks* like a marker but **fails its Guard** (§4) is not a Boundary Marker — it is ordinary text and commits Flow together with the bare token (e.g. `:k v != 3` after bare `v`, or `:x :3` where `:3` fails the key guard). Fixtures that probe `:3`, `|~`, `!=` rely on this clause.
 
-**Inline-Brace Principle.** `|{` `!{` `;{` (and anticipated `@{`) are never
-Boundary Markers. They commit Flow Value and participate as inline segments.
-`;{…}` contributes no text to the value. Example: `:n value |{em x} :a 1` is one
-Flow Value for `n` (trailing `:a 1` is text).
+**Inline-Brace Principle.** `|{` `!{` `;{` (and anticipated `@{`) are never Boundary Markers. They commit Flow Value and participate as inline segments. `;{…}` contributes no text to the value. Example: `:n value |{em x} :a 1` is one Flow Value for `n` (trailing `:a 1` is text).
 
-**Keywords:** `true` `false` `null` `nil` are typed only when the token finishes
-alone at a Boundary Marker or end of line. Otherwise they begin a Flow Value
-(`:alpha true story` → text `"true story"`).
+**Keywords:** `true` `false` `null` `nil` are typed only when the token finishes alone at a Boundary Marker or end of line. Otherwise they begin a Flow Value (`:alpha true story` → text `"true story"`).
 
 ### 6.5 Ownership of Flow Values
 
@@ -431,16 +330,11 @@ When a Flow Value starts, owner priority:
 | 2 | Else nearest Element on the same line | That Element’s Content (Content Phase begins) |
 | 3 | Else | Ordinary column ownership (not an Error) |
 
-**Collecting:** on an **Attribute-Rooted Line**, the Attribute remains collector
-even after its value is finished; further same-line material is a **further
-assignment** under that key with Warning (§6.7). On an **Element-Rooted Line**,
-a finished Attribute never collects the tail — the Element takes it (sameline
-decompress).
+**Collecting:** on an **Attribute-Rooted Line**, the Attribute remains collector even after its value is finished; further same-line material is a **further assignment** under that key with Warning (§6.7). On an **Element-Rooted Line**, a finished Attribute never collects the tail — the Element takes it (sameline decompress).
 
 #### Deferred Value (multi-line body)
 
-If the Key line ends with no finished value, deeper lines form the value body
-under ordinary Nesting / Content Base rules (blank lines like prose):
+If the Key line ends with no finished value, deeper lines form the value body under ordinary Nesting / Content Base rules (blank lines like prose):
 
 ```udon
 |el
@@ -452,10 +346,7 @@ under ordinary Nesting / Content Base rules (blank lines like prose):
 
 #### Value-position `\`
 
-Where a plain Attribute still needs a value and no token has started, `\` is
-consumed and enters **text mode**: the value is a Flow Value; the rest of the
-physical line is included; sameline comment framing is disabled on that line.
-Owner rules unchanged.
+Where a plain Attribute still needs a value and no token has started, `\` is consumed and enters **text mode**: the value is a Flow Value; the rest of the physical line is included; sameline comment framing is disabled on that line. Owner rules unchanged.
 
 ```udon
 |el :count \7 apples     ; count = text "7 apples", not integer 7
@@ -470,35 +361,24 @@ Owner rules unchanged.
 | Inside `\|{…}` | `}` unconsumed | Inline Element content |
 | List item | `]` unconsumed | *(no tails)* |
 
-Framed ` ; ` opens a sameline comment on Element and Attribute lines except in
-value-`\` text mode. Unspaced `;` may be part of a token
-(`:url https://example.com/a?q=1;s=2`).
+Framed ` ; ` opens a sameline comment on Element and Attribute lines except in value-`\` text mode. Unspaced `;` may be part of a token (`:url https://example.com/a?q=1;s=2`).
 
-Inside Inline Elements, bare `;` is literal; only `;{…}` comments
-(**[GREENFIELD]** affirmation of intended long-term rule; framed sameline
-comments inside `|{…}` are not required).
+Inside Inline Elements, bare `;` is literal; only `;{…}` comments (**[GREENFIELD]** affirmation of intended long-term rule; framed sameline comments inside `|{…}` are not required).
 
-**List items:** no Flow Values; quote strings with spaces. `}` is not a List
-terminator. Quoted item end allows adjacent items: `["x"y]` is two items.
+**List items:** no Flow Values; quote strings with spaces. `}` is not a List terminator. Quoted item end allows adjacent items: `["x"y]` is two items.
 
 ### 6.7 Stacking and warned extension
 
-Same Key repeated ⇒ ordered Stacking of assignments (heterogeneous Values
-allowed). Orthogonal to List literals:
+Same Key repeated ⇒ ordered Stacking of assignments (heterogeneous Values allowed). Orthogonal to List literals:
 
 ```udon
 |el :x 1 :x 2         ; two assignments
 |el :x [1 2] :x [3]   ; assignments: List[1,2] then List[3]
 ```
 
-After a value is finished, additional material under that Key on an
-Attribute-Rooted Line (same line or deeper) is kept as a **further
-`AttributeAssignment`** under that key, with a **Warning** — never a nested
-multi-segment Value kind, never silently dropped (MODEL §4). Flags are exempt
-from same-line extension (Flag rule re-owns instead).
+After a value is finished, additional material under that Key on an Attribute-Rooted Line (same line or deeper) is kept as a **further `AttributeAssignment`** under that key, with a **Warning** — never a nested multi-segment Value kind, never silently dropped (MODEL §4). Flags are exempt from same-line extension (Flag rule re-owns instead).
 
-Preferred warning-free multi-value style: write the Key again (Stacking) or use
-an explicit List.
+Preferred warning-free multi-value style: write the Key again (Stacking) or use an explicit List.
 
 ### 6.8 Node Values
 
@@ -509,20 +389,13 @@ Block form binds a Node Value; brace form is Flow text:
 |el :x |{em hi}    ; x is Flow Value with inline em
 ```
 
-Once a Node Value opens on a line, its Line Scan owns the rest of that line
-(**One-Way Door**). Put outer Attributes *before* the node-valued Attribute, or
-use a Deferred block.
+Once a Node Value opens on a line, its Line Scan owns the rest of that line (**One-Way Door**). Put outer Attributes *before* the node-valued Attribute, or use a Deferred block.
 
-**No Attribute-under-Attribute:** a deeper line that is itself `:key` directly
-under an Attribute (not inside a Node Value) is an **Error**; the line is
-ingested as Text of the open value (Keep-Everything).
+**No Attribute-under-Attribute:** a deeper line that is itself `:key` directly under an Attribute (not inside a Node Value) is an **Error**; the line is ingested as Text of the open value (Keep-Everything).
 
 ### 6.9 Content Phase and late `:`
 
-Attributes MUST precede Content of the same Element in the model’s construction
-order from the surface. Sameline tails that become Content **do** enter Content
-Phase. A later line-initial `:` that would have been an Attribute of an Element
-already in Content Phase is Text of the column owner, with a **Warning**.
+Attributes MUST precede Content of the same Element in the model’s construction order from the surface. Sameline tails that become Content **do** enter Content Phase. A later line-initial `:` that would have been an Attribute of an Element already in Content Phase is Text of the column owner, with a **Warning**.
 
 ---
 
@@ -530,34 +403,24 @@ already in Content Phase is Text of the column owner, with a **Warning**.
 
 ### 7.1 Prose
 
-Any line not opening a Marker at Structure Position is prose Text of the
-current owner. Core treats prose as **opaque Text** (no Markdown parsing).
+Any line not opening a Marker at Structure Position is prose Text of the current owner. Core treats prose as **opaque Text** (no Markdown parsing).
 
-Prefer Markdown spelling for simple emphasis when a Schema/renderer supports
-it; reserve `|{…}` for attributed or non-Markdown structure (*non-normative*
-guidance).
+Prefer Markdown spelling for simple emphasis when a Schema/renderer supports it; reserve `|{…}` for attributed or non-Markdown structure (*non-normative* guidance).
 
 ### 7.2 Prose Dedentation
 
 1. Sameline Text on the Element line does **not** establish Content Base.
-2. The first indented content line establishes **Content Base** (author’s choice
-   within the valid range).
-3. Later lines at column ≥ Content Base: strip Content Base spaces; extra spaces
-   remain in Text.
-4. Later lines still inside the Element but column < Content Base: **Warning**,
-   set Content Base to the new column, continue.
+2. The first indented content line establishes **Content Base** (author’s choice within the valid range).
+3. Later lines at column ≥ Content Base: strip Content Base spaces; extra spaces remain in Text.
+4. Later lines still inside the Element but column < Content Base: **Warning**, set Content Base to the new column, continue.
 
-Valid indented columns lie between the parent’s Base Column (exclusive) and any
-inline child’s Base Column (inclusive).
+Valid indented columns lie between the parent’s Base Column (exclusive) and any inline child’s Base Column (inclusive).
 
-Each prose line’s line terminator is part of Text; stripped indentation is
-geometry only.
+Each prose line’s line terminator is part of Text; stripped indentation is geometry only.
 
 ### 7.3 Blank lines
 
-Inside Element Content, blank lines are Text newlines. At pure structure
-boundaries, a normalizing Document layer MAY treat blanks as ornamental
-(SEMANTICS).
+Inside Element Content, blank lines are Text newlines. At pure structure boundaries, a normalizing Document layer MAY treat blanks as ornamental (SEMANTICS).
 
 ### 7.4 Fences and dedentation
 
@@ -580,13 +443,11 @@ Comments MUST be retained in the ADM; Consumers MAY strip in a view.
 
 ### 8.2 Where `;` is literal
 
-Block prose deeper than Content Base; unframed sameline prose; value-`\` text;
-inside `|{…}` except `;{`; attribute values when not framed as sameline comment.
+Block prose deeper than Content Base; unframed sameline prose; value-`\` text; inside `|{…}` except `;{`; attribute values when not framed as sameline comment.
 
 ### 8.3 Escaping a leading semicolon
 
-A Structure Position `\` forces the line to prose, so `\; …` yields Text
-starting with `;`.
+A Structure Position `\` forces the line to prose, so `\; …` yields Text starting with `;`.
 
 ---
 
@@ -601,17 +462,13 @@ Position alone disambiguates four uses:
 | Value-expected (plain Attribute needs value) | Consume `\`; enter text mode Flow Value (§6.5) |
 | Anywhere else | Literal `\` (Host MAY interpret `\n` etc.; Core does not) |
 
-A leading literal backslash doubles: first `\` forces prose (Structure
-Position), second is content → `\\` yields `\`.
+A leading literal backslash doubles: first `\` forces prose (Structure Position), second is content → `\\` yields `\`.
 
-Consumed Structure Position `\` occupies no column for Content Base: text after
-it backs into the column where the `\` sat for indent purposes.
+Consumed Structure Position `\` occupies no column for Content Base: text after it backs into the column where the `\` sat for indent purposes.
 
-A `\` deeper than an established Content Base is not Structure Position; it is
-literal (no required Warning at recognition; Host tooling MAY warn).
+A `\` deeper than an established Content Base is not Structure Position; it is literal (no required Warning at recognition; Host tooling MAY warn).
 
-`'` is not an escape; it delimits strings/names/keys. Inside quoted strings,
-`\` follows string rules (§11.3).
+`'` is not an escape; it delimits strings/names/keys. Inside quoted strings, `\` follows string rules (§11.3).
 
 ---
 
@@ -625,12 +482,9 @@ One family, three forms — body never UDON-parsed:
 | Fence | `` ``` `` | Byte-exact; no dedent; no Marker interpretation. Closer: line whose first non-space content is `` ``` ``, any indent; trailing spaces before newline ignored. Indent before closer is already body if present |
 | Inline | `!{:kind:…}` | Brace-balanced; optional single space after label’s `:` is separator, not content |
 
-Block Verbatim and Fences MAY be Node Values. Prefer `!:lang:` for ordinary
-code samples; Fences for true byte-exact capture.
+Block Verbatim and Fences MAY be Node Values. Prefer `!:lang:` for ordinary code samples; Fences for true byte-exact capture.
 
-**[GREENFIELD]** Inline Verbatim MAY appear in value position as a Flow Value
-segment (uniform with other inline brace forms). When used as an entire value
-via block form, it is a Node Value as today.
+**[GREENFIELD]** Inline Verbatim MAY appear in value position as a Flow Value segment (uniform with other inline brace forms). When used as an entire value via block form, it is a Node Value as today.
 
 ---
 
@@ -638,8 +492,7 @@ via block form, it is a Node Value as today.
 
 ### 11.1 Syntactic typing
 
-Type comes from syntax. Bare recognition is a **closed** Frozen Core Scalar Set.
-All other typed values use the Envelope.
+Type comes from syntax. Bare recognition is a **closed** Frozen Core Scalar Set. All other typed values use the Envelope.
 
 ### 11.2 Numbers
 
@@ -656,26 +509,15 @@ A leading `0` followed by decimal digits is decimal (`0755` = 755), not octal.
 
 **Float:** fractional part and/or exponent: `3.14`, `1e10`, `1.5e-3`.
 
-**[GREENFIELD]** Bare rational (`1/3r`) and complex (`3+4i`, `5i`) are **not**
-Core scalars. Write them in a Dialect Envelope when that Dialect exists (e.g.
-`<r:1/3>`, `<c:3+4i>` — exact spelling is Dialect-defined). Until then, those
-spellings are ordinary bare strings / Flow Values if they appear unquoted.
+**[GREENFIELD]** Bare rational (`1/3r`) and complex (`3+4i`, `5i`) are **not** Core scalars. Write them in a Dialect Envelope when that Dialect exists (e.g. `<r:1/3>`, `<c:3+4i>` — exact spelling is Dialect-defined). Until then, those spellings are ordinary bare strings / Flow Values if they appear unquoted.
 
 ### 11.3 Strings
 
-`"…"` and `'…'` are strings. **[GREENFIELD]** Strings MAY span lines; interior
-newlines are content. Unclosed at end of input → Warning + Incomplete Input
-flag (§13).
+`"…"` and `'…'` are strings. **[GREENFIELD]** Strings MAY span lines; interior newlines are content. Unclosed at end of input → Warning + Incomplete Input flag (§13).
 
-**Interior escapes (interim — OPEN O15).** This suite does **not** define Core
-escapes inside quotes: a string closes at the next unescaped occurrence of its
-own quote character; interior bytes including `\` pass through. To embed one
-quote kind, use the other (`"it's"` / `'say "hi"'`). Host MUST NOT invent Core
-escapes. See [DECISIONS.md](DECISIONS.md) D7 / [OPEN.md](OPEN.md) O15 for the
-fork (positional purity vs minimal `\\`/`\"` vs doubling).
+**Interior escapes (interim — OPEN O15).** This suite does **not** define Core escapes inside quotes: a string closes at the next unescaped occurrence of its own quote character; interior bytes including `\` pass through. To embed one quote kind, use the other (`"it's"` / `'say "hi"'`). Host MUST NOT invent Core escapes. See [DECISIONS.md](DECISIONS.md) D7 / [OPEN.md](OPEN.md) O15 for the fork (positional purity vs minimal `\\`/`\"` vs doubling).
 
-Unquoted bare text that is not another scalar is a string or Flow Value per
-§6.4.
+Unquoted bare text that is not another scalar is a string or Flow Value per §6.4.
 
 ### 11.4 Booleans and Nil
 
@@ -686,27 +528,21 @@ Unquoted bare text that is not another scalar is a string or Flow Value per
 
 ### 11.5 Lists
 
-`[ item item … ]` space-delimited; each item full Value rules except Flow Value.
-**[GREENFIELD]** Lists MAY span lines; newlines between items are whitespace.
-Unclosed at EOF → Warning + Incomplete Input.
+`[ item item … ]` space-delimited; each item full Value rules except Flow Value. **[GREENFIELD]** Lists MAY span lines; newlines between items are whitespace. Unclosed at EOF → Warning + Incomplete Input.
 
 ### 11.6 Envelope `<…>`
 
-In value position, bare `<` opens an Envelope; matching `>` (depth-counted)
-closes it. To start a string with `<`, quote it.
+In value position, bare `<` opens an Envelope; matching `>` (depth-counted) closes it. To start a string with `<`, quote it.
 
 **[GREENFIELD / affirmed]** Envelopes MAY span lines; newlines are content.
 
 Label Ladder: `<content>`, `<type:content>`, `<dialect:type:content>`.
 
-Unlabelled envelopes are offered to declared Dialects in order; first claim
-wins; if none claim, Error (or Warning if no Dialects loaded — keep text).
+Unlabelled envelopes are offered to declared Dialects in order; first claim wins; if none claim, Error (or Warning if no Dialects loaded — keep text).
 
-Nested `<>` balance is required; routing of nested typed values is Dialect
-concern.
+Nested `<>` balance is required; routing of nested typed values is Dialect concern.
 
-**Temporal:** all temporal values require Envelope; bare `2026-07-11` is string
-`"2026-07-11"`. See [dialects/temporal.md](dialects/temporal.md).
+**Temporal:** all temporal values require Envelope; bare `2026-07-11` is string `"2026-07-11"`. See [dialects/temporal.md](dialects/temporal.md).
 
 ---
 
@@ -724,8 +560,7 @@ concern.
 
 Any directive name is accepted at recognition; meaning is Dialect/Host.
 
-Expression language, truthiness, filters, and control-flow *meaning* are
-specified in [dialects/dynamics.md](dialects/dynamics.md) (baseline Dialect).
+Expression language, truthiness, filters, and control-flow *meaning* are specified in [dialects/dynamics.md](dialects/dynamics.md) (baseline Dialect).
 
 ### 12.2 References
 
@@ -739,20 +574,17 @@ Surface → Selector `(name, key, traits)`:
 | `@.realized` | `(absent, absent, [realized])` |
 | `@licence[mit].realized` | `(licence, mit, [realized])` |
 
-Traits filter matches; they do not modify the referent. No suffixes, Attributes,
-or predicates on References in Core.
+Traits filter matches; they do not modify the referent. No suffixes, Attributes, or predicates on References in Core.
 
 References are **inert** at Core. Host resolution **menu**:
 
 `transclude` | `merge-attributes` | `leave-inert` (default)
 
-`@[key]` alone MAY be ambiguous across names; recognition still succeeds; resolve
-time MAY Error.
+`@[key]` alone MAY be ambiguous across names; recognition still succeeds; resolve time MAY Error.
 
 ### 12.3 Duplicate definitions
 
-Two Elements with the same Name and same Identity Key are a **duplicate
-definition**. This is Document-layer, not streaming recognition.
+Two Elements with the same Name and same Identity Key are a **duplicate definition**. This is Document-layer, not streaming recognition.
 
 **Menu** (default **error**):  
 `error` | `allow-if-identical` | `first-wins` | `last-wins` | `keep-all`  
@@ -760,9 +592,7 @@ optional `warn` modifier.
 
 ### 12.4 Mixins (non-core)
 
-A Host MAY treat an Anonymous Element that carries only Classification (and
-Attributes) as a mixin when another Element lists the same trait. Core sees only
-what is written. Conformant systems need not implement mixins.
+A Host MAY treat an Anonymous Element that carries only Classification (and Attributes) as a mixin when another Element lists the same trait. Core sees only what is written. Conformant systems need not implement mixins.
 
 ---
 
@@ -770,15 +600,12 @@ what is written. Conformant systems need not implement mixins.
 
 ### 13.1 Geometric vs Delimited
 
-- **Geometric:** Element, block Directive, block Comment, Deferred Value,
-  block Verbatim, block prose — closed by end of line, dedent, or end of input.
-- **Delimited:** quoted strings, Lists, Inline Elements, inline comments,
-  Interpolation, inline Directive/Verbatim, Envelope, Fence, identity `[…]`.
+- **Geometric:** Element, block Directive, block Comment, Deferred Value, block Verbatim, block prose — closed by end of line, dedent, or end of input.
+- **Delimited:** quoted strings, Lists, Inline Elements, inline comments, Interpolation, inline Directive/Verbatim, Envelope, Fence, identity `[…]`.
 
 ### 13.2 Multi-line policy
 
-**[GREENFIELD — per construct, see D1]** Geometric Constructs already span by
-geometry. Delimited forms:
+**[GREENFIELD — per construct, see D1]** Geometric Constructs already span by geometry. Delimited forms:
 
 | Construct | Cross-line |
 |-----------|------------|
@@ -793,15 +620,10 @@ Unclosed multi-line forms at true EOF still Warning + Incomplete Input (§13.3).
 
 At true end of input, close all open constructs innermost-first:
 
-- **Geometric:** close silently (EOF ≡ newline for this purpose). Missing final
-  newline alone is not an Anomaly.
-- **Delimited still open:** keep captured content; emit a **Warning** citing the
-  open site; close the construct. Each open delimited frame yields its own
-  Warning.
+- **Geometric:** close silently (EOF ≡ newline for this purpose). Missing final newline alone is not an Anomaly.
+- **Delimited still open:** keep captured content; emit a **Warning** citing the open site; close the construct. Each open delimited frame yields its own Warning.
 
-If any Delimited Construct was still open at true EOF, the Document also
-carries **Incomplete Input** = true (Document-layer non-success signal).
-Streaming chunk boundaries are not EOF.
+If any Delimited Construct was still open at true EOF, the Document also carries **Incomplete Input** = true (Document-layer non-success signal). Streaming chunk boundaries are not EOF.
 
 ---
 
@@ -814,21 +636,13 @@ Streaming chunk boundaries are not EOF.
 | **Warning** | Content kept; may not match author intent |
 | **Error** | Something was **lost**, or a required value is **genuinely absent** as written (see below); recognition continues |
 
-**Loss vs keep.** If every source byte is represented in the ADM (as structure
-or Text), severity MUST be Warning unless a more specific rule names Error for
-*absent intended value* (plain `:key` with no value material → assignment with
-Nil + Error: the value the author needed is not present, even though the key
-slot is kept). Root-level `:attr` loses nothing → **Warning** only (D3).
+**Loss vs keep.** If every source byte is represented in the ADM (as structure or Text), severity MUST be Warning unless a more specific rule names Error for *absent intended value* (plain `:key` with no value material → assignment with Nil + Error: the value the author needed is not present, even though the key slot is kept). Root-level `:attr` loses nothing → **Warning** only (D3).
 
 ### 14.2 Keep-Everything
 
-Where this specification defines a keep representation, a Recognizer MUST use
-it and SHOULD prefer Warning over Error. Silent drop of author-visible material
-is non-conformant.
+Where this specification defines a keep representation, a Recognizer MUST use it and SHOULD prefer Warning over Error. Silent drop of author-visible material is non-conformant.
 
-Document rejection, halt, or “fail the build on warnings” are Consumer policies
-on top of recognition results — **menu** left to Host/Document layer, not a
-second silent recognition mode.
+Document rejection, halt, or “fail the build on warnings” are Consumer policies on top of recognition results — **menu** left to Host/Document layer, not a second silent recognition mode.
 
 ### 14.3 Representative cases
 
@@ -875,6 +689,4 @@ second silent recognition mode.
 
 ## Appendix B — Implementer note: Nesting Rule (non-normative)
 
-The `pop while new_column <= stack_top.base_column` formula in §3.2 is the
-canonical mechanical spelling of the Nesting Rule. See also [GRAMMAR.md](GRAMMAR.md)
-for a full implementer-oriented extract (always subordinate to this document).
+The `pop while new_column <= stack_top.base_column` formula in §3.2 is the canonical mechanical spelling of the Nesting Rule. See also [GRAMMAR.md](GRAMMAR.md) for a full implementer-oriented extract (always subordinate to this document).

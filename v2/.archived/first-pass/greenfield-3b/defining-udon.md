@@ -28,16 +28,14 @@ Adopt the strict terminology of **RFC 2119** (e.g., `MUST`, `MUST NOT`, `SHOULD`
 ### 3. Enforce Strict Error Handling (The JSON Lesson)
 A robust specification must spend as much time defining what happens when rules are broken as it does defining the "happy path." 
 
-**Case Study: JSON (RFC 8259)**
-JSON's massive success is largely due to its ruthless simplicity and strict error handling. The specification explicitly defines that a parser `MUST` accept all valid texts, but it offers zero leeway for non-standard extensions like trailing commas or comments.[^1] By forcing parsers to fail loudly on invalid input, JSON prevented a fragmented ecosystem of "almost-JSON" flavors. 
+**Case Study: JSON (RFC 8259)** JSON's massive success is largely due to its ruthless simplicity and strict error handling. The specification explicitly defines that a parser `MUST` accept all valid texts, but it offers zero leeway for non-standard extensions like trailing commas or comments.[^1] By forcing parsers to fail loudly on invalid input, JSON prevented a fragmented ecosystem of "almost-JSON" flavors.
 
 **Takeaway for UDON:** The spec must explicitly mandate parser behavior for edge cases. For instance, if an author leaves a `|{` inline element unclosed at the end of a line, the spec must dictate whether a compliant parser `MUST` throw a fatal error, `SHOULD` attempt recovery, or `MAY` silently convert it to plain text. 
 
 ### 4. Standardization Through Test-Driven Conformance
 A specification written purely in prose is virtually guaranteed to contain contradictions. The modern gold standard is to pair the written specification with a comprehensive, language-agnostic conformance test suite.
 
-**Case Study: CommonMark & TOML**
-CommonMark was created specifically to formalize the language, aiming to ensure that "the same input must always produce the same output."[^2] To achieve this, it relies heavily on a massive suite of JSON-based test fixtures. Similarly, the TOML specification relies heavily on the `toml-test` framework, forcing any developer claiming "TOML compliance" to pass hundreds of edge-case tests.[^3]
+**Case Study: CommonMark & TOML** CommonMark was created specifically to formalize the language, aiming to ensure that "the same input must always produce the same output."[^2] To achieve this, it relies heavily on a massive suite of JSON-based test fixtures. Similarly, the TOML specification relies heavily on the `toml-test` framework, forcing any developer claiming "TOML compliance" to pass hundreds of edge-case tests.[^3]
 
 **Takeaway for UDON:** UDON's "compliance-fixture group" is exactly the right approach. The `CORE.md` specification should explicitly state that passing the canonical fixture suite is the *only* definition of compliance.
 
@@ -59,8 +57,7 @@ If the specification is written for machines, the pedagogy is written for human 
 ### 1. Progressive Disclosure
 Progressive disclosure is an instructional design strategy that involves revealing information incrementally, preventing cognitive overload by hiding advanced details until the user has mastered the basics.[^4]
 
-**Application in UDON:**
-A user looking at UDON for the first time should not be immediately confronted with dynamic interpolations (`!{}`), temporal types, or the nuances of the Suffix Stacking rules.
+**Application in UDON:** A user looking at UDON for the first time should not be immediately confronted with dynamic interpolations (`!{}`), temporal types, or the nuances of the Suffix Stacking rules.
 *   **Level 1:** Show UDON acting exactly like Markdown (prose + basic structure).
 *   **Level 2:** Introduce block elements (`|heading`) and attributes (`:author`).
 *   **Level 3:** Introduce inline elements and dynamics.
@@ -68,8 +65,7 @@ A user looking at UDON for the first time should not be immediately confronted w
 ### 2. Shaping Mental Models
 A mental model is the internal cognitive framework a learner uses to predict how a system works. Effective pedagogy doesn't just list features; it gives the user heuristics (rules of thumb) to help them guess the right syntax.[^5]
 
-**Application in UDON:**
-UDON's rule for deciding between an Attribute (`:`) and a Child element (`|`) is a perfect example: *"Ask whose name is it? If the label describes the relationship to the parent, it's an attribute; if the name describes the thing itself, it's a child."*
+**Application in UDON:** UDON's rule for deciding between an Attribute (`:`) and a Child element (`|`) is a perfect example: *"Ask whose name is it? If the label describes the relationship to the parent, it's an attribute; if the name describes the thing itself, it's a child."*
 
 ### 3. Relate Before Naming
 When introducing adopted terminology, use the "relate before naming" technique. Before hitting the user with a new term, describe it using concepts they already know. 

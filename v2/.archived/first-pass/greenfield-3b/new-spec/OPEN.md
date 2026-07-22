@@ -1,7 +1,6 @@
 # Open items (after greenfield-3b)
 
-Not blocking for the suite as a language contract draft. Each is intentionally
-unfinished rather than silently fixed.
+Not blocking for the suite as a language contract draft. Each is intentionally unfinished rather than silently fixed.
 
 | ID | Topic | Notes |
 |----|-------|-------|
@@ -22,5 +21,4 @@ unfinished rather than silently fixed.
 | **O15** | **In-string escapes** | **Fork after Fable:** (A) none / other quote — *interim in CORE*; (B) `\\`+delimiter quote; (C) doubling (collides with list `["x""y"]`). See DECISIONS D7. |
 | **O16** | **Multi-line `;{…}` / `!{…}` / `!{:…}`** | **Split from D1:** document-swallow failure mode; decide with dialect/inline work. Identity already line-bound (D1). |
 
-When an open item is closed, record the decision in DECISIONS.md (or a
-changelog) and delete or shrink the row here.
+When an open item is closed, record the decision in DECISIONS.md (or a changelog) and delete or shrink the row here.

@@ -13,38 +13,24 @@ method: filesystem walk + spot-reads for provenance; pass-1 maps used only to
 
 # Sources-R2 — underweighted usage-ideation reservoirs
 
-**What this is.** A second open path map, deliberately biased away from the
-obvious recent design/TODO/live-lane material that pass-1 (A∪B∪C) already
-exhaustively listed. Preference: buried empirical corpora, experimental agent
-answers, historical “why this notation exists,” free-form “I would use this
-for…,” and easy-to-gloss-over secondary analysis tooling.
+**What this is.** A second open path map, deliberately biased away from the obvious recent design/TODO/live-lane material that pass-1 (A∪B∪C) already exhaustively listed. Preference: buried empirical corpora, experimental agent answers, historical “why this notation exists,” free-form “I would use this for…,” and easy-to-gloss-over secondary analysis tooling.
 
-**What this is not.** Needs synthesis. Body extracts. A re-index of
-`design/udon-agentic.md`, `TODO-UTILS`, CORE, or the quarantine extracts.
+**What this is not.** Needs synthesis. Body extracts. A re-index of `design/udon-agentic.md`, `TODO-UTILS`, CORE, or the quarantine extracts.
 
-**How to use.** Absolute paths. Trees as units when the whole folder is the
-mining grain. Prefer include when unsure. Reconcile later with A/B/C.
+**How to use.** Absolute paths. Trees as units when the whole folder is the mining grain. Prefer include when unsure. Reconcile later with A/B/C.
 
 ---
 
 ## 0. Already well-known (skip detail)
 
-Pass-1 already mapped these thoroughly — open originals if needed, but do
-**not** treat re-listing them as progress for this pass:
+Pass-1 already mapped these thoroughly — open originals if needed, but do **not** treat re-listing them as progress for this pass:
 
-- Live lanes: `TODO-UTILS`, `TOOLING-WISHLIST`, `ux/TODO-{AGENT,HUMAN}-UX`,
-  `spec/TODO-*`, `core/TODO-*`
-- Design-of-record essays under `/Users/josephwecker-v2/src/udon/design/`
-  (agentic tools, paths, guarantees, schema, ACP, GBNF, …)
-- Live consumer *documents* registry (`CONSUMERS.md` + vivarium/ASF/autopax
-  `.udon` files) — listed below only where they are *validation* of older
-  enablement predictions, not as a fresh inventory
-- Rowan/autopax/operata schema-versioning surface (dedicated map already:
-  `…/sources-schema-versioning.md`)
-- Sapientia/zoetica/ennaos/nexum agentic-tooling ideology (maps under
-  `…/agentic-tooling-sources/`)
-- v2 `.archived/` night-spine supply ontology (`PIPELINE`, `WIRE`, `ADM`…)
-  — only selective demand tables were already flagged; skip re-spine
+- Live lanes: `TODO-UTILS`, `TOOLING-WISHLIST`, `ux/TODO-{AGENT,HUMAN}-UX`, `spec/TODO-*`, `core/TODO-*`
+- Design-of-record essays under `/Users/josephwecker-v2/src/udon/design/` (agentic tools, paths, guarantees, schema, ACP, GBNF, …)
+- Live consumer *documents* registry (`CONSUMERS.md` + vivarium/ASF/autopax `.udon` files) — listed below only where they are *validation* of older enablement predictions, not as a fresh inventory
+- Rowan/autopax/operata schema-versioning surface (dedicated map already: `…/sources-schema-versioning.md`)
+- Sapientia/zoetica/ennaos/nexum agentic-tooling ideology (maps under `…/agentic-tooling-sources/`)
+- v2 `.archived/` night-spine supply ontology (`PIPELINE`, `WIRE`, `ADM`…) — only selective demand tables were already flagged; skip re-spine
 
 Sibling maps (do not treat as exclusive coverage):
 
@@ -59,15 +45,9 @@ Sibling maps (do not treat as exclusive coverage):
 
 ## 1. PRIMARY RESERVOIR — Dec 2025 usability corpus (underweighted as “stale”)
 
-**Whole tree unit:**
-`/Users/josephwecker-v2/src/udon/test/usability/`
+**Whole tree unit:** `/Users/josephwecker-v2/src/udon/test/usability/`
 
-Pass-1 listed this as “stale models/spec — still evidence,” often one row or
-a short §3b. That gloss buried the **creative use-case** signal. The harness
-explicitly ran open-ended “what might UDON enable / apply to” experiments;
-estate review (`_archive/REVIEW-JULY-2026.md` §~3) later found that 27
-topic-enablement runs **predicted July 2026 adopters** (process maps,
-vivarium experiment narratives, audit/pre-registration) seven months early.
+Pass-1 listed this as “stale models/spec — still evidence,” often one row or a short §3b. That gloss buried the **creative use-case** signal. The harness explicitly ran open-ended “what might UDON enable / apply to” experiments; estate review (`_archive/REVIEW-JULY-2026.md` §~3) later found that 27 topic-enablement runs **predicted July 2026 adopters** (process maps, vivarium experiment narratives, audit/pre-registration) seven months early.
 
 ### 1a. Load-bearing tracks for “what is UDON *for*” (mine first)
 
@@ -103,17 +83,14 @@ Still useful for demand; lower pure-ideation density than 1a.
 | `/Users/josephwecker-v2/src/udon/test/usability/embed_sentences.rb` | Sentence-level embedding of enablement answers | Same pipeline |
 | `/Users/josephwecker-v2/src/udon/test/usability/analyze_chunks.rb` | Chunk analysis over corpus | Same pipeline |
 
-**Mining note for reconcilers:** For “what agents would want UDON *for*,”
-priority is **`topic_enablement` + free `enablement` + `enablement-synthesis.md`
-+ `topic_dsl`**, then realistic/context *task definitions*, then AGENT_FEEDBACK.
-Treat `invention` / pure learning-curve as contrast, not the main reservoir.
+**Mining note for reconcilers:** For “what agents would want UDON *for*,” priority is **`topic_enablement` + free `enablement` + `enablement-synthesis.md`
++ `topic_dsl`**, then realistic/context *task definitions*, then AGENT_FEEDBACK. Treat `invention` / pure learning-curve as contrast, not the main reservoir.
 
 ---
 
 ## 2. Free-form agent “would *I* use this?” judgments (not design docs)
 
-These are durable session or first-contact artifacts where a model answers
-usage/value questions without being asked to invent syntax.
+These are durable session or first-contact artifacts where a model answers usage/value questions without being asked to invent syntax.
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -126,17 +103,13 @@ usage/value questions without being asked to invent syntax.
 | `/Users/josephwecker-v2/src/udon/v2/.archived/second-pass/spikes/session-vault/raw/grok/INVENTORY.md` | Index into grok vault extracts | Inventory |
 | `/Users/josephwecker-v2/src/udon/v2/.archived/second-pass/spikes/session-vault/raw/claude/INVENTORY.md` | Index into claude vault extracts | Inventory |
 
-Greenfield **feedback-from-*** / `agents-thoughts.md` under
-`v2/.archived/first-pass/greenfield-*` are mostly *spec architecture*
-reactions — lower for pure use ideation; open only if reconciling “what
-agents wanted the *language product* to be.”
+Greenfield **feedback-from-*** / `agents-thoughts.md` under `v2/.archived/first-pass/greenfield-*` are mostly *spec architecture* reactions — lower for pure use ideation; open only if reconciling “what agents wanted the *language product* to be.”
 
 ---
 
 ## 3. Day-in-the-life scenarios (scripted usage journeys)
 
-Already in pass-1, but kept here as a **usage** unit (not design essays).
-Commissioned 2026-07-16; BDD-style multi-agent day.
+Already in pass-1, but kept here as a **usage** unit (not design essays). Commissioned 2026-07-16; BDD-style multi-agent day.
 
 | Path | Why |
 |------|-----|
@@ -152,8 +125,7 @@ Commissioned 2026-07-16; BDD-style multi-agent day.
 
 ## 4. Historical “why UDON exists” lineage (pre-2025 objectives)
 
-Pass-1 listed these lightly; they are the original **utility priority matrix**,
-not syntax law.
+Pass-1 listed these lightly; they are the original **utility priority matrix**, not syntax law.
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -173,19 +145,13 @@ not syntax law.
 | `/Users/josephwecker-v2/src/_ref/udon-ruby/bin/` | **Conversion matrix** (json/md/xml/yaml ⇄ udon) as product-demand evidence for interchange genres | Pre-umbrella gem |
 | `/Users/josephwecker-v2/src/udon/_archive/udon-ruby/bin/` | Same matrix absorbed under umbrella archive | Archive twin |
 
-**Note:** `_archive/analysis.md` references `~/src/_ref/udon/.attic/`
-(syntax2, sample1, scratch comparative, declang). That tree was **not**
-visible in a plain listing of `_ref/udon/` this pass (gone, gitignored, or
-elsewhere). Treat as a **search trail**, not a confirmed path.
+**Note:** `_archive/analysis.md` references `~/src/_ref/udon/.attic/` (syntax2, sample1, scratch comparative, declang). That tree was **not** visible in a plain listing of `_ref/udon/` this pass (gone, gitignored, or elsewhere). Treat as a **search trail**, not a confirmed path.
 
 ---
 
 ## 5. Joseph-flagged “forgotten” adjacent ideology — SAR AI-first docs
 
-Joseph (session context) called out rediscovering material under
-`_ref/_arch/sar/docs/` after open-pass maps barely weighted it. These are
-**not** UDON use-case dumps; they are AI-agent-driven language/tooling
-ideation that shapes what a notation *for agents* is asked to support.
+Joseph (session context) called out rediscovering material under `_ref/_arch/sar/docs/` after open-pass maps barely weighted it. These are **not** UDON use-case dumps; they are AI-agent-driven language/tooling ideation that shapes what a notation *for agents* is asked to support.
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -216,8 +182,7 @@ Short list — essays that state *jobs*, not implementation.
 
 ## 7. Live consumers as *confirmation* of enablement predictions
 
-Not a re-inventory (see CONSUMERS.md). Listed only as **empirical
-validation** of Dec-2025 enablement strong-fit classes:
+Not a re-inventory (see CONSUMERS.md). Listed only as **empirical validation** of Dec-2025 enablement strong-fit classes:
 
 | Live path | Enablement class it instantiates |
 |-----------|----------------------------------|
@@ -228,10 +193,7 @@ validation** of Dec-2025 enablement strong-fit classes:
 | `/Users/josephwecker-v2/src/archema-io/vivarium/tabularium/terrestris.ordinum.udon` | Machine-read law-data with narrative host project |
 | `/Users/josephwecker-v2/src/autopax/taxonomy.udon` | Nested taxonomy as living doc |
 
-**Candidate future classes** (from CONSUMERS watchlist — not live `.udon`
-yet): ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications,
-mentoring-feedback, Loci. When mining “what else might UDON be for,” these
-names are intentional adoption hypotheses, not files.
+**Candidate future classes** (from CONSUMERS watchlist — not live `.udon` yet): ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci. When mining “what else might UDON be for,” these names are intentional adoption hypotheses, not files.
 
 ---
 
@@ -245,8 +207,7 @@ names are intentional adoption hypotheses, not files.
 - `terrestris.ordinum.udon` — ordinum/law-data
 - `vivarium.decision-log.udon`, `vivarium.lexicon.udon` — decision + lexicon
 
-These encode **what the team believed agents would do** with those genres
-(understand / diff / modify / multi-agent) more than they encode syntax.
+These encode **what the team believed agents would do** with those genres (understand / diff / modify / multi-agent) more than they encode syntax.
 
 ---
 
@@ -262,8 +223,7 @@ Mine *§ demand tables*, not pipeline ontology.
 | `…/spikes/memory-import/FINDINGS.md` | Session → memory document substrate |
 | `/Users/josephwecker-v2/src/udon/v2/udon-needs/pipeline-discussion.md` | Joseph morning demand *sampling* (templates, dialects, schema-guarded edit, mid-stream reconfig, …) — highest-texture steward ideation; also excerpted under quarantine | Live deliberation |
 
-Quarantine excerpt of that sampling (for convenience, not preferred over
-primary):  
+Quarantine excerpt of that sampling (for convenience, not preferred over primary):  
 `…/_quarantine/…/discussion-excerpts/joseph-morning-demand-sampling.md`
 
 ---
@@ -293,23 +253,13 @@ primary):
 
 ## 12. Gaps / search trails this pass did not finish
 
-1. **`.attic` / declang** under historical udon — referenced by
-   `_archive/analysis.md`, not confirmed present on disk; check git history /
-   other clones.
-2. **memorata hybrid queries** for: `topic enablement`, `mixed content`,
-   “I would use UDON”, pre-2015 objectives dumps not yet files.
-3. **Full topic seed list** realized in yaml `task:` fields — only a sample
-   was grepped; a miner should `rg '^task:' results/udon-topic_*.yaml` for the
-   complete domain catalog.
-4. **Embedding analysis DB** (`udon_analysis` / ollama) — may hold clustered
-   application themes if still reconstitutable; scripts are durable even if DB
-   is gone.
-5. **Joseph’s promised end-user + ideation dump** (needs-map standing harvest)
-   — not present as a path yet; primary when it lands.
-6. **Vault search for libudon/UDON** returned no matches this pass; ideology
-   deposits remain, UDON-specific vault notes may still exist under other names.
-7. **Live unregistered `*.udon`** outside CONSUMERS scan roots — re-run
-   `bin/find-consumers` before treating inventory as closed.
+1. **`.attic` / declang** under historical udon — referenced by `_archive/analysis.md`, not confirmed present on disk; check git history / other clones.
+2. **memorata hybrid queries** for: `topic enablement`, `mixed content`, “I would use UDON”, pre-2015 objectives dumps not yet files.
+3. **Full topic seed list** realized in yaml `task:` fields — only a sample was grepped; a miner should `rg '^task:' results/udon-topic_*.yaml` for the complete domain catalog.
+4. **Embedding analysis DB** (`udon_analysis` / ollama) — may hold clustered application themes if still reconstitutable; scripts are durable even if DB is gone.
+5. **Joseph’s promised end-user + ideation dump** (needs-map standing harvest) — not present as a path yet; primary when it lands.
+6. **Vault search for libudon/UDON** returned no matches this pass; ideology deposits remain, UDON-specific vault notes may still exist under other names.
+7. **Live unregistered `*.udon`** outside CONSUMERS scan roots — re-run `bin/find-consumers` before treating inventory as closed.
 
 ---
 
@@ -317,32 +267,19 @@ primary):
 
 Opinionated reconcilers’ band — not a needs synthesis:
 
-1. **Gold:** `topic_enablement` yaml corpus + `topic_dsl` + free `enablement`
-   yaml + `enablement-synthesis.md` + prompts in `topic_enablement.rb` /
-   `enablement_prompt`.
-2. **Silver:** realistic + context_comparison *task definitions* (product
-   briefs); Grok orientation utility essay; `positioning.md`;
-   `_archive/feedback.md`; REVIEW enablement-prediction paragraph.
-3. **Bronze:** scenarios feature files + corpus genres; historical
-   `objectives.asciidoc`; Joseph morning sampling in pipeline-discussion;
-   agent-utility/paths demand spikes §8.
-4. **Ideology / problem-space (not UDON answers):** SAR `docs/ai-*`,
-   sapientia document-as-agent, vault “Practicability for AI Agents.”
-5. **Validation loop:** live CONSUMERS docs as instances of enablement
-   strong-fit classes (do not re-mine as design).
+1. **Gold:** `topic_enablement` yaml corpus + `topic_dsl` + free `enablement` yaml + `enablement-synthesis.md` + prompts in `topic_enablement.rb` / `enablement_prompt`.
+2. **Silver:** realistic + context_comparison *task definitions* (product briefs); Grok orientation utility essay; `positioning.md`; `_archive/feedback.md`; REVIEW enablement-prediction paragraph.
+3. **Bronze:** scenarios feature files + corpus genres; historical `objectives.asciidoc`; Joseph morning sampling in pipeline-discussion; agent-utility/paths demand spikes §8.
+4. **Ideology / problem-space (not UDON answers):** SAR `docs/ai-*`, sapientia document-as-agent, vault “Practicability for AI Agents.”
+5. **Validation loop:** live CONSUMERS docs as instances of enablement strong-fit classes (do not re-mine as design).
 
 ---
 
 ## 14. Feedback on the brief / process (optional)
 
-- The failure mode this pass targets is real: **directory-level “stale
-  usability” one-liners hide track-level gold.** Recommend future maps name
-  *tracks* (`topic_enablement` vs `invention`) whenever a harness tree is
-  multi-experiment.
-- Pass-1 inclusion bias was still useful (it *pointed* at the directory);
-  the fix is weight and grain, not deletion of design maps.
-- Overlap with A/B/C is intentional; R2’s value is re-weighting, not
-  exclusivity.
+- The failure mode this pass targets is real: **directory-level “stale usability” one-liners hide track-level gold.** Recommend future maps name *tracks* (`topic_enablement` vs `invention`) whenever a harness tree is multi-experiment.
+- Pass-1 inclusion bias was still useful (it *pointed* at the directory); the fix is weight and grain, not deletion of design maps.
+- Overlap with A/B/C is intentional; R2’s value is re-weighting, not exclusivity.
 
 ---
 

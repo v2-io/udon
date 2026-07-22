@@ -1,19 +1,12 @@
 # UDON Dynamics -- the baseline `!` dialect
 
-**A companion spec to CORE.md.** UDON's core recognizes the `!` *syntax*
-(directives, interpolation, raw blocks) -- see CORE "Marker Recognition" and
-"Code and Raw Content".
-What those directives and expressions *mean* is a **host-provided dialect**, not
-core UDON. This document specifies the **baseline** dialect: a Liquid-style
-expression and control-flow language. A host may provide a different `!`
-dialect, and a conformant UDON parser needs none of what follows.
+**A companion spec to CORE.md.** UDON's core recognizes the `!` *syntax* (directives, interpolation, raw blocks) -- see CORE "Marker Recognition" and "Code and Raw Content". What those directives and expressions *mean* is a **host-provided dialect**, not core UDON. This document specifies the **baseline** dialect: a Liquid-style expression and control-flow language. A host may provide a different `!` dialect, and a conformant UDON parser needs none of what follows.
 
 ---
 
 ## Dynamics Extension
 
-The `!` prefix enables evaluation and control flow. The specific dialect depends
-on the host environment, with Liquid-style primitives as a common baseline.
+The `!` prefix enables evaluation and control flow. The specific dialect depends on the host environment, with Liquid-style primitives as a common baseline.
 
 ### Inline Forms
 
@@ -35,8 +28,7 @@ Non-raw inline directives support nested UDON:
 !{include |{em emphasized} content}
 ```
 
-> [!caution] CURRENT BEHAVIOR
-> `!{include ...}` may change in future to prefer filter-based includes like `!{{'file.un' | include}}` instead.
+> [!caution] CURRENT BEHAVIOR `!{include ...}` may change in future to prefer filter-based includes like `!{{'file.un' | include}}` instead.
 
 ### Interpolation
 
@@ -47,8 +39,7 @@ Non-raw inline directives support nested UDON:
 |link :href !{{base_url}}/users/!{{user.id}}
 ```
 
-Empty interpolation (`!{{}}`) is valid--it is an interpolation with empty
-expression content. The host decides how to handle it.
+Empty interpolation (`!{{}}`) is valid--it is an interpolation with empty expression content. The host decides how to handle it.
 
 ### Filters
 
@@ -63,21 +54,16 @@ expression content. The host decides how to handle it.
 
 ### Interpolation in Typed Contexts (Implementation Notes)
 
-> [!caution] CURRENT BEHAVIOR
-> Interpolation in attribute values and element IDs is not yet implemented; `!{{...}}` in these contexts is currently passed through as literal string content. The rest of this section describes the *intended* behavior.
+> [!caution] CURRENT BEHAVIOR Interpolation in attribute values and element IDs is not yet implemented; `!{{...}}` in these contexts is currently passed through as literal string content. The rest of this section describes the *intended* behavior.
 
-When an attribute value is entirely an interpolation, the parser recognizes it
-as an interpolation. The resulting type is **unparsed**--the host must evaluate
-it to determine actual type:
+When an attribute value is entirely an interpolation, the parser recognizes it as an interpolation. The resulting type is **unparsed**--the host must evaluate it to determine actual type:
 
 ```
 |div[!{{dynamic_id}}]
 |link :href !{{computed_url}}
 ```
 
-When interpolation is mixed with literal content, the value becomes a
-multi-part string. All non-interpolation parts are treated as string segments,
-even if they started parsing as numbers:
+When interpolation is mixed with literal content, the value becomes a multi-part string. All non-interpolation parts are treated as string segments, even if they started parsing as numbers:
 
 ```
 |div[prefix_!{{id}}_suffix]
@@ -85,11 +71,7 @@ even if they started parsing as numbers:
 |item[283!{{more}}]
 ```
 
-**Note.** A mixed literal+interpolation value is a **flow value** — a sequence
-of text and interpolation segments, whole-value `!{{x}}` being the one-segment
-degenerate (following CORE's inline-brace principle; see CORE "The Scan and the
-Bare-Token Boundary" and the Implementation Notes). An earlier idea modeling it
-as an array of alternating string/interpolation parts is superseded.
+**Note.** A mixed literal+interpolation value is a **flow value** — a sequence of text and interpolation segments, whole-value `!{{x}}` being the one-segment degenerate (following CORE's inline-brace principle; see CORE "The Scan and the Bare-Token Boundary" and the Implementation Notes). An earlier idea modeling it as an array of alternating string/interpolation parts is superseded.
 
 ### Expression Grammar
 
@@ -120,8 +102,7 @@ UDON adopts Liquid's intentionally simple expression grammar.
 
 Logical operators evaluate **right-to-left** with no precedence.
 
-This differs from standard precedence (where `and` typically binds tighter than
-`or`). The difference only affects expressions mixing both operators:
+This differs from standard precedence (where `and` typically binds tighter than `or`). The difference only affects expressions mixing both operators:
 
 | Expression | Right-to-left (Liquid) | Standard precedence |
 |------------|------------------------|---------------------|
@@ -153,8 +134,7 @@ Only two values are falsy:
 | `[]` (empty list) | **Yes** |
 | Everything else | **Yes** |
 
-> [!failure] AVOID
-> Assuming `0`, `""`, or `[]` are falsy. Only `false` and `nil`/`null` are -- code carried over from C-style or Python-style truthiness will silently misbehave here. Use explicit comparison to test for empty values:
+> [!failure] AVOID Assuming `0`, `""`, or `[]` are falsy. Only `false` and `nil`/`null` are -- code carried over from C-style or Python-style truthiness will silently misbehave here. Use explicit comparison to test for empty values:
 
 ```
 !if title != \"\"           ; Check non-empty string
@@ -162,8 +142,7 @@ Only two values are falsy:
 !if value != blank        ; Check defined and non-empty
 ```
 
-The `empty` keyword tests if a defined value is empty. The `blank` keyword
-tests if a value is undefined OR empty.
+The `empty` keyword tests if a defined value is empty. The `blank` keyword tests if a value is undefined OR empty.
 
 ### Control Flow
 
@@ -189,16 +168,13 @@ tests if a value is undefined OR empty.
 !include partials/header
 ```
 
-**Parser implementation note:** Block directives use the same `raw` flag as
-inline directives. The parser does not enumerate directive names--any name is
-accepted. The only distinction is colon-wrapped syntax:
+**Parser implementation note:** Block directives use the same `raw` flag as inline directives. The parser does not enumerate directive names--any name is accepted. The only distinction is colon-wrapped syntax:
 - `!:lang:` -> Raw block (raw=true)
 - `!if`, `!for`, etc. -> Normal block (raw=false)
 
 ### Inline Control Flow
 
-> [!caution] CURRENT BEHAVIOR
-> UDON does not currently support inline forms of control flow directives (`!if`, `!for`, etc.) -- these remain block-level only, using indentation to delimit scope. A syntax for inline control flow (e.g., `!if{cond}{then}{else}`) is under investigation but not yet specified.
+> [!caution] CURRENT BEHAVIOR UDON does not currently support inline forms of control flow directives (`!if`, `!for`, etc.) -- these remain block-level only, using indentation to delimit scope. A syntax for inline control flow (e.g., `!if{cond}{then}{else}`) is under investigation but not yet specified.
 
 ### Key Insight: Indentation Eliminates Closing Tags
 

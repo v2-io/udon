@@ -5,18 +5,13 @@
 **Product shapes:** [ADM.md](ADM.md) §1 · [WIRE.md](WIRE.md) §2–3 · [SEMANTICS.md](SEMANTICS.md).  
 **Not law:** invented event spellings below; OPEN **W1e** owns Attr encoding.
 
-These notes exist so the suite can assert **sufficiency** (events + verdict →
-assembly) before any new Rust harness lands. Old `core/fixtures/v0.9/` is a
-**mining source and differential oracle** (**C4**), not the 0.10 contract.
+These notes exist so the suite can assert **sufficiency** (events + verdict → assembly) before any new Rust harness lands. Old `core/fixtures/v0.9/` is a **mining source and differential oracle** (**C4**), not the 0.10 contract.
 
 ---
 
 ## 1. Why fixtures are the operational contract
 
-When a suite ships for a claimed version, **passing it is the operational
-definition of compliance** ([SPEC.md](SPEC.md) §1.1). Prose without fixtures is
-an unfinished contract; fixtures without profiles re-create the 0.9 failure
-modes:
+When a suite ships for a claimed version, **passing it is the operational definition of compliance** ([SPEC.md](SPEC.md) §1.1). Prose without fixtures is an unfinished contract; fixtures without profiles re-create the 0.9 failure modes:
 
 | Failure mode | How it showed up | Guard |
 |--------------|------------------|--------|
@@ -29,8 +24,7 @@ modes:
 
 ## 2. Profiles (**C5**)
 
-Every case carries a **profile**. Profiles are not severity of the *input* —
-they are the **assertion contract** the harness (and humans) apply.
+Every case carries a **profile**. Profiles are not severity of the *input* — they are the **assertion contract** the harness (and humans) apply.
 
 | Profile | Asserts | Normative for compliance? | Typical use |
 |---------|---------|---------------------------|-------------|
@@ -40,16 +34,10 @@ they are the **assertion contract** the harness (and humans) apply.
 
 ### 2.1 Profile rules
 
-1. **Gate sets** load only `idiomatic` + `comprehensive`. Descriptive never
-   flips a version gate red/green by itself.
-2. A **descriptive** case MUST name the open hole it pins (`open: ML`,
-   `open: W1e`, …) so a future close can reclassify or delete without drama.
-3. **Idiomatic** cases SHOULD be readable as teaching material (short `udon`,
-   one idea). Dense combinatorics belong in **comprehensive**.
-4. The same surface string MAY appear under two profiles only if the
-   *assertion slice* differs (e.g. events-only descriptive twin of an ADM
-   comprehensive case). Prefer one case with dual assertion when both are
-   normative.
+1. **Gate sets** load only `idiomatic` + `comprehensive`. Descriptive never flips a version gate red/green by itself.
+2. A **descriptive** case MUST name the open hole it pins (`open: ML`, `open: W1e`, …) so a future close can reclassify or delete without drama.
+3. **Idiomatic** cases SHOULD be readable as teaching material (short `udon`, one idea). Dense combinatorics belong in **comprehensive**.
+4. The same surface string MAY appear under two profiles only if the *assertion slice* differs (e.g. events-only descriptive twin of an ADM comprehensive case). Prefer one case with dual assertion when both are normative.
 
 ### 2.2 What each profile asserts (minimum)
 
@@ -59,9 +47,7 @@ they are the **assertion contract** the harness (and humans) apply.
 | comprehensive | Same as idiomatic **plus** `result` when the case can differ from a wire twin; anomalies codes/shapes where law names them | partial event lists; open-stack notes | Hidden harness policy outside W0 |
 | descriptive | At least one of: events, adm, anomalies, notes | `result` | Claiming the pin is 0.10 law |
 
-**Reference assembly** (harness-internal): the pure audited events→ADM step
-used for W0/C5 — not “the fold” as an architecture noun for hosts. Hosts may
-assemble however they like if information-equivalent.
+**Reference assembly** (harness-internal): the pure audited events→ADM step used for W0/C5 — not “the fold” as an architecture noun for hosts. Hosts may assemble however they like if information-equivalent.
 
 ---
 
@@ -77,25 +63,17 @@ result: complete            # default if omitted on idiomatic/comprehensive
 result: incomplete-input
 ```
 
-Alias allowed in authoring notes: `verdict: incomplete-input` (same fact as
-WIRE `RecognitionProduct.verdict` / ADM `Document.result`). The **preferred
-fixture spelling** is `result:` so case files align with **D-pack**.
+Alias allowed in authoring notes: `verdict: incomplete-input` (same fact as WIRE `RecognitionProduct.verdict` / ADM `Document.result`). The **preferred fixture spelling** is `result:` so case files align with **D-pack**.
 
 ### 3.2 When to set incomplete-input
 
-`result: incomplete-input` **iff** at true EOF at least one **delimited**
-extent is still open (string/quote, brace forms that require a closer,
-unclosed type envelope, etc. — whatever SPEC marks delimited). Geometric
-constructs closing at EOF do **not** flip the verdict (**R2**).
+`result: incomplete-input` **iff** at true EOF at least one **delimited** extent is still open (string/quote, brace forms that require a closer, unclosed type envelope, etc. — whatever SPEC marks delimited). Geometric constructs closing at EOF do **not** flip the verdict (**R2**).
 
 Warnings and errors alone do **not** flip `result`.
 
 ### 3.3 The wire-twin pattern (load-bearing)
 
-Interior-newline closes can be **event-identical** to at-EOF unclosed twins
-yet differ in document result. That distinction is **untestable** without a
-verdict field (0.9 infrastructure flag in `eof_delimited.yaml`). Every such
-pair MUST be authored as twins:
+Interior-newline closes can be **event-identical** to at-EOF unclosed twins yet differ in document result. That distinction is **untestable** without a verdict field (0.9 infrastructure flag in `eof_delimited.yaml`). Every such pair MUST be authored as twins:
 
 ```text
 case A  — interior close path → result: complete   (+ maybe Warning)
@@ -106,16 +84,13 @@ If events match and `result` is not asserted, the suite cannot enforce R2.
 
 ### 3.4 Incomplete-input is not an event
 
-Do **not** invent `IncompleteInput` (or similar) as a stream event that
-assembly might miss. Anomalies for unclosed constructs remain per-construct
-Warnings; the document-level fact is only `result`.
+Do **not** invent `IncompleteInput` (or similar) as a stream event that assembly might miss. Anomalies for unclosed constructs remain per-construct Warnings; the document-level fact is only `result`.
 
 ---
 
 ## 4. Case shape (authoring sketch)
 
-Not a frozen schema — a **working** YAML shape the future harness can grow
-into. Fields marked † are profile-conditional.
+Not a frozen schema — a **working** YAML shape the future harness can grow into. Fields marked † are profile-conditional.
 
 ```yaml
 - id: own_element_tail_is_content          # stable id; snake_case
@@ -156,8 +131,7 @@ into. Fields marked † are profile-conditional.
 ### 4.2 What assertions must never do
 
 - Consult **source bytes** after recognition to decide ownership or text.
-- “Fix up” expected events with span gaps, EOF newline invention, or indent
-  re-analysis (the old compensator class).
+- “Fix up” expected events with span gaps, EOF newline invention, or indent re-analysis (the old compensator class).
 - Treat **descriptive** pins as version-gate failures.
 - Encode incomplete-input only as a Warning event and call R2 covered.
 
@@ -165,14 +139,10 @@ into. Fields marked † are profile-conditional.
 
 **C5** prefers both when useful:
 
-- **Events** catch wire honesty (self-delimiting values **W1d**, order **R12**,
-  text concat **R1**, unclosed order).
-- **ADM** catches assembly meaning (ownership, stacking multiplicity,
-  `$partial-key` vs `$key`, Content Phase).
+- **Events** catch wire honesty (self-delimiting values **W1d**, order **R12**, text concat **R1**, unclosed order).
+- **ADM** catches assembly meaning (ownership, stacking multiplicity, `$partial-key` vs `$key`, Content Phase).
 
-If only one is affordable for a case, prefer **ADM for idiomatic** and
-**events (+ result) for incomplete / unclosed comprehensive** pairs — agents
-and tools bind to different stage products (agent-utility P-A / P-B).
+If only one is affordable for a case, prefer **ADM for idiomatic** and **events (+ result) for incomplete / unclosed comprehensive** pairs — agents and tools bind to different stage products (agent-utility P-A / P-B).
 
 ---
 
@@ -186,30 +156,21 @@ v2-spec/fixtures/           # authoring home until cutover (P1); not cargo gate 
   descriptive/ml-open.yaml
 ```
 
-Live gate remains `core/fixtures/v0.9/` (**C4**). Do not intermingle. At
-cutover, promote or re-home as `core/fixtures/v0.10/` under the same profiles.
-Full index: [fixtures/INDEX.md](fixtures/INDEX.md).
+Live gate remains `core/fixtures/v0.9/` (**C4**). Do not intermingle. At cutover, promote or re-home as `core/fixtures/v0.10/` under the same profiles. Full index: [fixtures/INDEX.md](fixtures/INDEX.md).
 
-Versioning: a conformance claim names the version whose fixture group it
-passes ([SPEC.md](SPEC.md) §1.2).
+Versioning: a conformance claim names the version whose fixture group it passes ([SPEC.md](SPEC.md) §1.2).
 
-**Law check (2026-07-21):** unclosed identity `[` → `$partial-key` + Warning,
-`result: **complete**` (geometric/sugar close under **R2**/**R5**), unless OPEN
-**ML** later reclassifies identity brackets as delimited. Interior-newline list
-close is **descriptive / open: ML**, never comprehensive gate material.
+**Law check (2026-07-21):** unclosed identity `[` → `$partial-key` + Warning, `result: **complete**` (geometric/sugar close under **R2**/**R5**), unless OPEN **ML** later reclassifies identity brackets as delimited. Interior-newline list close is **descriptive / open: ML**, never comprehensive gate material.
 
-**Dedup:** removed `eof_verdict`, `stacking_and_partial`, `multiline_strawman`
-(content folded). Added `closed_law.yaml` for L2/S8/R13/R20/refs.
+**Dedup:** removed `eof_verdict`, `stacking_and_partial`, `multiline_strawman` (content folded). Added `closed_law.yaml` for L2/S8/R13/R20/refs.
 
 ---
 
 ## 6. Probe catalog — ownership & deferred-value edges
 
-**YAML is source of truth** under [fixtures/](fixtures/). Narrative sketches
-below remain for reading; prefer the files when asserting.
+**YAML is source of truth** under [fixtures/](fixtures/). Narrative sketches below remain for reading; prefer the files when asserting.
 
-Invented mini-cases. **Expected shapes are design targets from SPEC/DECISIONS**,
-not parser traces. Event names provisional.
+Invented mini-cases. **Expected shapes are design targets from SPEC/DECISIONS**, not parser traces. Event names provisional.
 
 ### 6.1 Element-rooted vs Attribute-rooted tail (**SPEC** §6.5)
 
@@ -305,8 +266,7 @@ not parser traces. Event names provisional.
   result: complete
 ```
 
-*(Interior-newline twin for string multi-line stays **descriptive** /
-`open: ML` until OPEN ML closes — do not promote as comprehensive law.)*
+*(Interior-newline twin for string multi-line stays **descriptive** / `open: ML` until OPEN ML closes — do not promote as comprehensive law.)*
 
 ### 6.7 Tab in indentation (**L4**, **L0**)
 
@@ -368,21 +328,18 @@ When mining `core/fixtures/v0.9/`:
 | Flat Attr wire expectations | **Rewrite** under **W1d**; do not carry inference-extent pins |
 | Live CORE “line lost” tab | Expect **ORACLE-DELTAS** divergence under **L4** |
 
-Differential runs (old parser vs new) belong in tooling notes, not as
-authority for expected ADM.
+Differential runs (old parser vs new) belong in tooling notes, not as authority for expected ADM.
 
 ---
 
 ## 8. Harness constraints (when implemented)
 
 1. **No source after recognition** for expected-product comparison (**W0**).
-2. Text fold / adjacent-Text collapse only if **associative concat** preserves
-   **R1** and is applied symmetrically to actual and expected.
+2. Text fold / adjacent-Text collapse only if **associative concat** preserves **R1** and is applied symmetrically to actual and expected.
 3. Variations (wrap/indent) MUST NOT run on `root_only` or truncated-EOF cases.
 4. Gate = idiomatic ∪ comprehensive; descriptive reported separately.
 5. Empty `events` + empty `adm` is not a pass — it is a skip or a fail.
-6. Warning codes: suite vocabulary must agree with generator derivation
-   (**W4**); until registry freezes, assert severity + stable local name.
+6. Warning codes: suite vocabulary must agree with generator derivation (**W4**); until registry freezes, assert severity + stable local name.
 
 ---
 
@@ -397,8 +354,7 @@ authority for expected ADM.
 | OPEN **W1e** | Event spellings for Attr regions stay provisional in comprehensive notes |
 | OPEN **S3** | Multiple-keys cases are not Core gate material yet |
 
-No harvest from paths/agent-utility is promoted here — only fixture *shape*
-pressure already closed as C5/C6.
+No harvest from paths/agent-utility is promoted here — only fixture *shape* pressure already closed as C5/C6.
 
 ---
 
@@ -406,11 +362,9 @@ pressure already closed as C5/C6.
 
 1. ~~Promote §6 probes into YAML~~ → [fixtures/](fixtures/) (file-only corpus).
 2. Densify wire-twin pairs (interp `!{{`, fence, more envelope edges).
-3. Add SPEC annex or pedagogy cross-links to 2–3 idiomatic cases as “worked
-   recognition product” once spellings stabilize.
+3. Add SPEC annex or pedagogy cross-links to 2–3 idiomatic cases as “worked recognition product” once spellings stabilize.
 4. Keep descriptive ML corpus in sync with [OPEN-ML-STRAWMEN.md](OPEN-ML-STRAWMEN.md).
-5. When harness starts: loader for `profile` + `result` + `adm`; never load
-   descriptive into the version gate.
+5. When harness starts: loader for `profile` + `result` + `adm`; never load descriptive into the version gate.
 
 ---
 

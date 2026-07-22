@@ -1,7 +1,6 @@
 # UDON Full Specification
 
-**Universal Document & Object Notation**
-*Version 0.9.0-alpha.2 -- 2026-07-18 · rebooted lineage, see [CHANGELOG](msc/CHANGELOG.md)*
+**Universal Document & Object Notation** *Version 0.9.0-alpha.2 -- 2026-07-18 · rebooted lineage, see [CHANGELOG](msc/CHANGELOG.md)*
 
 It is intended to be the single comprehensive, authoritative spec. & source of truth.
 
@@ -455,13 +454,7 @@ One character of lookahead at one decision point -- the same shape as every othe
 
 ### Flow Values
 
-**Text flow** (or just *flow*) is the one prose-shaped content model: a
-sequence of text fragments, inline forms (`|{...}`, `!{...}`, `;{...}`), and
-blank lines that **resolves to text** once the inline forms are processed by
-their layers (comments stripped, interpolations evaluated, inline elements
-rendered). It has three homes -- element prose, **flow values** (this
-section), and inline-form interiors -- with one set of rules. (0.9-alpha drafts
-called a flow value a "text blob"; same thing.)
+**Text flow** (or just *flow*) is the one prose-shaped content model: a sequence of text fragments, inline forms (`|{...}`, `!{...}`, `;{...}`), and blank lines that **resolves to text** once the inline forms are processed by their layers (comments stripped, interpolations evaluated, inline elements rendered). It has three homes -- element prose, **flow values** (this section), and inline-form interiors -- with one set of rules. (0.9-alpha drafts called a flow value a "text blob"; same thing.)
 
 A flow value is prose-shaped -- the same flow, not a second literal-only dialect:
 
@@ -619,27 +612,14 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
   ;                                      ^ boundary-\: title = "Home"; content " Welcome home!"
   ```
 
-  A trailing framed ` ; ` after `\`-entered text inside the inline element --
-  `|{a :href /home :title Home \ Welcome home! ; hope that helps}` -- will
-  probably gain comment semantics once the dialect layer and inline-element
-  behavior are fleshed out; in 0.9 its result is **unspecified** -- do not
-  rely on it either way. (A framed ` ; ` in ordinary inline-element content stays
-  literal per the bullet above, with its own revisit note.)
+  A trailing framed ` ; ` after `\`-entered text inside the inline element -- `|{a :href /home :title Home \ Welcome home! ; hope that helps}` -- will probably gain comment semantics once the dialect layer and inline-element behavior are fleshed out; in 0.9 its result is **unspecified** -- do not rely on it either way. (A framed ` ; ` in ordinary inline-element content stays literal per the bullet above, with its own revisit note.)
 - **Array items**: `}` is *not* a terminator inside `[...]` -- the array closes only on `]` (else `UnclosedArray`). A `}` closing an inline element must come after the `]`. **Quoted-item nuance**: a quoted item's closing quote ends it, so `["x"y]` and `["x""y"]` each yield two items, same as `["x" y]`.
 
 ### Event Encoding (the value bracket)
 
-*(Replaces the deratified flat wire of 2026-07-19 — the record of that
-deratification and the flat wire's defect analysis live in the CHANGELOG. This
-section realizes the corrected intent Joseph stated at deratification: an
-`Attr` is always followed by exactly its value, and that value is a
-**self-delimiting** unit.)*
+*(Replaces the deratified flat wire of 2026-07-19 — the record of that deratification and the flat wire's defect analysis live in the CHANGELOG. This section realizes the corrected intent Joseph stated at deratification: an `Attr` is always followed by exactly its value, and that value is a **self-delimiting** unit.)*
 
-Every attribute is a **bracket**: `AttrStart key` … value events … `AttrEnd`.
-Everything between the pair *is the value* — one scalar event, one bracketed
-construct (element, verbatim, array), or a flow value's segment sequence. The
-bracket is structural, not text-bearing; the reconstruction contract is
-unaffected.
+Every attribute is a **bracket**: `AttrStart key` … value events … `AttrEnd`. Everything between the pair *is the value* — one scalar event, one bracketed construct (element, verbatim, array), or a flow value's segment sequence. The bracket is structural, not text-bearing; the reconstruction contract is unaffected.
 
 ```text
 |el
@@ -667,28 +647,13 @@ AttrEnd
 
 Consequences:
 
-- **Value extent is explicit.** Whether deeper material is a value
-  continuation or the element's child content is answered by where `AttrEnd`
-  fires — decided once, by the parser, which already ran the ownership rules.
-  Consumers never re-run indent/attr-vs-child logic.
-- **Stacking ≠ segmentation, structurally.** Stacked assignments (author-written
-  or warn-ingested) are *sibling brackets* under the same key, in source order;
-  a flow value's segments are *events inside one bracket*. Host views: `attr` =
-  last bracket, `attr_all` = all brackets.
-- **Node value vs flag+child is bracket membership**: an `ElementStart` inside
-  the bracket *is* the value; `Attr "a?"` closing with `true` followed by an
-  `ElementStart` outside means the flag settled and the element is a child.
-- **The only arrays on the wire are literal `[...]`** — segment sequences and
-  stacks have no array wire form; multiplicity is brackets and segments.
-- **Empty is representable without sentinels**: an empty bracket (or one whose
-  only frame is a comment, as in `:n ;{}`) is the present-and-empty value `""`;
-  a `MissingAttributeValue` bracket carries the error event and a `Scalar Null`.
-- **One hold.** An identity key's bracket name (`$key` vs `$partial-key`) is
-  decided by its close, so that one `AttrStart` is withheld until the `]` (or
-  EOF/newline) decides — bounded, since identity keys are single values.
-- **Segment granularity carries the same non-guarantee as Text granularity**:
-  a segment is never guaranteed to arrive whole; reconstruction is by the same
-  concatenation contract.
+- **Value extent is explicit.** Whether deeper material is a value continuation or the element's child content is answered by where `AttrEnd` fires — decided once, by the parser, which already ran the ownership rules. Consumers never re-run indent/attr-vs-child logic.
+- **Stacking ≠ segmentation, structurally.** Stacked assignments (author-written or warn-ingested) are *sibling brackets* under the same key, in source order; a flow value's segments are *events inside one bracket*. Host views: `attr` = last bracket, `attr_all` = all brackets.
+- **Node value vs flag+child is bracket membership**: an `ElementStart` inside the bracket *is* the value; `Attr "a?"` closing with `true` followed by an `ElementStart` outside means the flag settled and the element is a child.
+- **The only arrays on the wire are literal `[...]`** — segment sequences and stacks have no array wire form; multiplicity is brackets and segments.
+- **Empty is representable without sentinels**: an empty bracket (or one whose only frame is a comment, as in `:n ;{}`) is the present-and-empty value `""`; a `MissingAttributeValue` bracket carries the error event and a `Scalar Null`.
+- **One hold.** An identity key's bracket name (`$key` vs `$partial-key`) is decided by its close, so that one `AttrStart` is withheld until the `]` (or EOF/newline) decides — bounded, since identity keys are single values.
+- **Segment granularity carries the same non-guarantee as Text granularity**: a segment is never guaranteed to arrive whole; reconstruction is by the same concatenation contract.
 
 ### Phase Change and Late `:`
 
@@ -1444,14 +1409,7 @@ The character immediately after the prefix determines the parse mode with no loo
 
 ## Verbatim Content
 
-**Verbatim** is the capture that is *never* UDON-parsed: the body is opaque
-bytes handed to the host, with an optional **label** (language, kind, or fence
-info string). One wire frame serves it -- `VerbatimStart {form, label} /
-Text… / VerbatimEnd` -- with three surface **forms**, differing only in
-geometry: the **block** form `!:lang:` (dedents to the raw base), the
-**fence** ``` (byte-exact, no dedent), and the **inline** form `!{:kind:…}`
-(brace-counted). "Raw," "freeform," and "content" as free-floating nouns are
-retired in favor of this one family.
+**Verbatim** is the capture that is *never* UDON-parsed: the body is opaque bytes handed to the host, with an optional **label** (language, kind, or fence info string). One wire frame serves it -- `VerbatimStart {form, label} / Text… / VerbatimEnd` -- with three surface **forms**, differing only in geometry: the **block** form `!:lang:` (dedents to the raw base), the **fence** ``` (byte-exact, no dedent), and the **inline** form `!{:kind:…}` (brace-counted). "Raw," "freeform," and "content" as free-floating nouns are retired in favor of this one family.
 
 ### Raw Directives (the block form, `!:lang:`)
 
@@ -1763,10 +1721,7 @@ These are distinct:
 
 ## Anomalies, Warnings, and End of Input
 
-*(Relocated from the Overview — this is the spec's most implementation-facing
-material and reads best after the constructs it governs. Substance unchanged
-except vocabulary: geometric/delimited close, and the normalized `Unclosed*`
-names.)*
+*(Relocated from the Overview — this is the spec's most implementation-facing material and reads best after the constructs it governs. Substance unchanged except vocabulary: geometric/delimited close, and the normalized `Unclosed*` names.)*
 
 ### Anomaly posture (warnings, errors, recovery)
 

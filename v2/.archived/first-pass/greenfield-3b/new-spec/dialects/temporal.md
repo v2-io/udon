@@ -1,11 +1,9 @@
 # Dialect: `temporal@1`
 
 **Status:** normative for the first standard temporal Dialect.  
-**Core rule:** temporal values appear only inside Envelopes `<…>` in value
-position. A bare `2025-01-03` is the string `"2025-01-03"`.
+**Core rule:** temporal values appear only inside Envelopes `<…>` in value position. A bare `2025-01-03` is the string `"2025-01-03"`.
 
-This document recasts the scrubbed TIME-SPEC value *grammar* for use **inside**
-envelopes. It does not restore bare recognition.
+This document recasts the scrubbed TIME-SPEC value *grammar* for use **inside** envelopes. It does not restore bare recognition.
 
 ---
 
@@ -21,8 +19,7 @@ envelopes. It does not restore bare recognition.
 
 Dialect-and-type form: `<temporal:date:2025-01-03>` (and similarly).
 
-If the Dialect is not loaded, Core keeps the envelope text and signals
-unresolved (CORE §11.6).
+If the Dialect is not loaded, Core keeps the envelope text and signals unresolved (CORE §11.6).
 
 ---
 
@@ -42,12 +39,9 @@ unresolved (CORE §11.6).
 | `YYYY-MM-DD` | Date | `2025-01-03` |
 | `YYYY-MM` | YearMonth | `2025-01` |
 
-Not recognized as temporal (remain non-claim / string body failure → unresolved
-or Error per Host): year-only `2025`, week dates, ordinal dates without quotes
-in a non-matching envelope.
+Not recognized as temporal (remain non-claim / string body failure → unresolved or Error per Host): year-only `2025`, week dates, ordinal dates without quotes in a non-matching envelope.
 
-Leading zeros required; missing zeros → Dialect declines claim (body stays
-unresolved string content / Warning).
+Leading zeros required; missing zeros → Dialect declines claim (body stays unresolved string content / Warning).
 
 ---
 
@@ -59,9 +53,7 @@ unresolved string content / Warning).
 | `HH:MM:SS` | Time | `14:30:00` |
 | `HH:MM:SS.fn` | Time | `14:30:00.123` |
 
-Fractional seconds: up to implementation precision; all provided digits
-preserved in the raw string. `24:00:00` allowed (end-of-day); preserved
-literally.
+Fractional seconds: up to implementation precision; all provided digits preserved in the raw string. `24:00:00` allowed (end-of-day); preserved literally.
 
 No 12-hour or informal times.
 
@@ -75,8 +67,7 @@ No 12-hour or informal times.
 | `…Z` | UTC |
 | `…+HH:MM` / `…-HH:MM` | fixed offset |
 
-`T` required (not space). Named timezones are not syntactic; use a separate
-Attribute or string.
+`T` required (not space). Named timezones are not syntactic; use a separate Attribute or string.
 
 `-00:00` accepted as UTC-equivalent to `Z` / `+00:00`.
 
@@ -86,8 +77,7 @@ Attribute or string.
 
 ### 6.1 ISO 8601
 
-`P[nY][nM][nD][T[nH][nM][nS]]`, `PnW`, etc. Standard ordering; fractional only
-on smallest unit; weeks not mixed with other components.
+`P[nY][nM][nD][T[nH][nM][nS]]`, `PnW`, etc. Standard ordering; fractional only on smallest unit; weeks not mixed with other components.
 
 ### 6.2 Shorthand
 
@@ -101,8 +91,7 @@ on smallest unit; weeks not mixed with other components.
 | `Nmo` | months |
 | `Ny` | years |
 
-No space; `mo` before `m` in matching. Case-insensitive units; lowercase
-recommended. No compound shorthand (`1d12h` invalid); use ISO or single unit.
+No space; `mo` before `m` in matching. Case-insensitive units; lowercase recommended. No compound shorthand (`1d12h` invalid); use ISO or single unit.
 
 ---
 
@@ -124,17 +113,14 @@ After stripping optional type labels, the Dialect attempts patterns in order:
 5. Duration ISO
 6. Duration shorthand
 
-On full-pattern success: claim with type tag + **raw body string** (not
-eagerly decomposed components — avoids partial orphans on near-misses).  
+On full-pattern success: claim with type tag + **raw body string** (not eagerly decomposed components — avoids partial orphans on near-misses).  
 On failure: decline; Core/Host handle unresolved.
 
 ---
 
 ## 9. Host projection
 
-Hosts parse the validated raw string into native date/time types. Core and this
-Dialect guarantee pattern validity + type tag, not a particular timezone
-database behavior.
+Hosts parse the validated raw string into native date/time types. Core and this Dialect guarantee pattern validity + type tag, not a particular timezone database behavior.
 
 ---
 

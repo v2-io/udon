@@ -14,9 +14,7 @@
 | CORE still long / mechanical rules dense | Added scannable [GRAMMAR.md](../new-spec/GRAMMAR.md); dual-track README |
 | Is `pop while` codified? | Already was (prose §3.2); **elevated** formula into main Nesting Rule text + GRAMMAR §2 + Appendix B pointer |
 
-We did **not** cut CORE’s completeness to match 3a’s line count — Gemini also
-called the thoroughness a strength. Compression lives in the Grammar front
-door, not by deleting ownership/EOF/sugar edge rules.
+We did **not** cut CORE’s completeness to match 3a’s line count — Gemini also called the thoroughness a strength. Compression lives in the Grammar front door, not by deleting ownership/EOF/sugar edge rules.
 
 ## What we stole from the 3a audit (our own §8)
 
@@ -29,8 +27,7 @@ door, not by deleting ownership/EOF/sugar edge rules.
 
 ## Deliberately not stolen from 3a
 
-- Implicit document root Element (we keep forest ADM — their feedback to
-  themselves / our critique still stands)
+- Implicit document root Element (we keep forest ADM — their feedback to themselves / our critique still stands)
 - “Same coverage as CORE in 367 lines” framing
 - Dropping one-way door, attr-under-attr, full ownership, etc.
 
@@ -49,14 +46,8 @@ door, not by deleting ownership/EOF/sugar edge rules.
 
 Source: [`../feedback-fable.md`](../feedback-fable.md) (greenfield-2a author).
 
-**Agreed and applied:** split D1; re-open D7 as O15 (interim no interior escapes);
-root attr → Warning; drop MODEL MultiSegment; text law in MODEL §6.1; guard-fail
-at bare-token boundary; reference `partial` flag; GRAMMAR `\` not a marker;
-SEMANTICS integer cross-pointer; O16 for inline multi-line.
+**Agreed and applied:** split D1; re-open D7 as O15 (interim no interior escapes); root attr → Warning; drop MODEL MultiSegment; text law in MODEL §6.1; guard-fail at bare-token boundary; reference `partial` flag; GRAMMAR `\` not a marker; SEMANTICS integer cross-pointer; O16 for inline multi-line.
 
-**Held as praise, no code change:** SEMANTICS as distinctive contribution;
-DECISIONS tagging; coverage/auditability.
+**Held as praise, no code change:** SEMANTICS as distinctive contribution; DECISIONS tagging; coverage/auditability.
 
-**Convergence Fable flagged (stable under re-derivation):** rational/complex out
-of bare; comment content-base strip; forest document; attr-under-attr error+text;
-inline verbatim as flow segment.
+**Convergence Fable flagged (stable under re-derivation):** rational/complex out of bare; comment content-base strip; forest document; attr-under-attr error+text; inline verbatim as flow segment.

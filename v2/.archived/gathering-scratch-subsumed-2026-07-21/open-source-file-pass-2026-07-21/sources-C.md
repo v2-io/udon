@@ -13,22 +13,14 @@ not treated as coverage: 01-ideation/_quarantine/ (prior over-constrained pass)
 
 # Sources-C — prospective mining spots (phase 1 gathering)
 
-**What this is.** Candidate **paths** (files or whole subtrees as units) where
-needs, usage situations, tool desires, consumer friction, schema/path/template/
-edit/stream ideas, etc. might live. Short *why* + *provenance* when known.
-Later passes open and mine; this pass does not copy bodies or synthesize needs.
+**What this is.** Candidate **paths** (files or whole subtrees as units) where needs, usage situations, tool desires, consumer friction, schema/path/template/ edit/stream ideas, etc. might live. Short *why* + *provenance* when known. Later passes open and mine; this pass does not copy bodies or synthesize needs.
 
-**How to use.** Absolute paths. Section order is geography, not priority.
-Duplicates vs `sources-schema-versioning.md`, `sources-agentic-tooling.md`,
-quarantined Grok maps, etc. are **fine** — reconcile later.
+**How to use.** Absolute paths. Section order is geography, not priority. Duplicates vs `sources-schema-versioning.md`, `sources-agentic-tooling.md`, quarantined Grok maps, etc. are **fine** — reconcile later.
 
 **Deliberate biases of this pass (on purpose):**
-- Not design/UX-only — historical UDON, converters, fixtures, library APIs,
-  live Rust consumers, conversion pipelines, session vaults, program TODOs.
+- Not design/UX-only — historical UDON, converters, fixtures, library APIs, live Rust consumers, conversion pipelines, session vaults, program TODOs.
 - Trees listed as units when the whole folder is the natural mining grain.
-- Prefer inclusion of *adjacent* document genres (YAML frontmatter agents,
-  Ash/resource DSLs, markdown process maps) that shape what UDON is asked to
-  replace or host.
+- Prefer inclusion of *adjacent* document genres (YAML frontmatter agents, Ash/resource DSLs, markdown process maps) that shape what UDON is asked to replace or host.
 
 ---
 
@@ -49,8 +41,7 @@ quarantined Grok maps, etc. are **fine** — reconcile later.
 
 ## 1. Live UDON documents (actual consumers)
 
-Registry of record: `/Users/josephwecker-v2/src/udon/CONSUMERS.md` (scan
-2026-07-16). Each live `.udon` is a usage situation, not just syntax evidence.
+Registry of record: `/Users/josephwecker-v2/src/udon/CONSUMERS.md` (scan 2026-07-16). Each live `.udon` is a usage situation, not just syntax evidence.
 
 ### 1a. Registry + re-scan tooling
 
@@ -116,8 +107,7 @@ Whole tree is a unit:
 
 ## 2. In-repo design of record (UDON-specific product wishes)
 
-Not “the architecture of the parser” — surfaces that name *what users/agents
-want to do*. Overlap with quarantine extracts expected.
+Not “the architecture of the parser” — surfaces that name *what users/agents want to do*. Overlap with quarantine extracts expected.
 
 ### 2a. Agent / tool / guarantee surfaces
 
@@ -188,9 +178,7 @@ want to do*. Overlap with quarantine extracts expected.
 
 ## 4. Library / wire / fixture surfaces (consumer-of-parser needs)
 
-These are supply-side *code*, but they encode real I/O contracts agents and
-libraries need (stream vs tree, events dump, compliance YAML as “what must be
-observable”).
+These are supply-side *code*, but they encode real I/O contracts agents and libraries need (stream vs tree, events dump, compliance YAML as “what must be observable”).
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -343,8 +331,7 @@ These predate the umbrella; still the earliest statement of utility goals.
 
 ## 9. Descent (parser-generator) — dialect-author / library-consumer sibling
 
-Descent is both infrastructure *and* a waiting customer for path/schema/dialect
-story (grammars as structured docs; `*.descent.udon` already in udon).
+Descent is both infrastructure *and* a waiting customer for path/schema/dialect story (grammars as structured docs; `*.descent.udon` already in udon).
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -378,8 +365,7 @@ Stale vs current CORE, still evidence of *situations* agents fail at.
 
 **Primary dedicated map already exists:**  
 `/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/sources-schema-versioning.md`  
-Below is a **compact high-signal re-list** (overlap intentional) plus a few
-extras this pass noticed.
+Below is a **compact high-signal re-list** (overlap intentional) plus a few extras this pass noticed.
 
 ### 11a. Rowan (first waiting schema customer)
 
@@ -527,9 +513,7 @@ Peripheral to CLI ideology; relevant to “documents as memory substrate” (S10
 
 ## 14. Memorata / session corpora (pointers to durable needs)
 
-Not primary source files for needs themselves — **indexes** into conversations
-that may contain UDON product wishes. Prefer durable docs first; use these to
-*find* more docs.
+Not primary source files for needs themselves — **indexes** into conversations that may contain UDON product wishes. Prefer durable docs first; use these to *find* more docs.
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -540,9 +524,7 @@ that may contain UDON product wishes. Prefer durable docs first; use these to
 | `/Users/josephwecker-v2/src/udon/v2/.archived/second-pass/spikes/session-vault/` | Already-extracted UDON sessions (see §6) | vault |
 
 **Flag for reconciler (out of `~/src`, not verified this pass):**  
-`~/vaults/gemini/archive/analysis-v1/analysis/**` — elsewhere map reports
-“Practicability for AI Agents” sections on classic SE books; in-scope if vaults
-are allowed.
+`~/vaults/gemini/archive/analysis-v1/analysis/**` — elsewhere map reports “Practicability for AI Agents” sections on classic SE books; in-scope if vaults are allowed.
 
 ---
 
@@ -573,8 +555,7 @@ are allowed.
 | `…/01-ideation/_quarantine/overprescribed-pass-2026-07-21-grok/sources-*.md` | Prior Grok design/UX + live-consumer maps (**do not treat as coverage ceiling**) |
 | `…/01-ideation/needs-map.md` | Seed situations |
 
-Sibling files expected in this same `open-source-file-pass-2026-07-21/` directory
-from parallel agents: merge later by path-set union.
+Sibling files expected in this same `open-source-file-pass-2026-07-21/` directory from parallel agents: merge later by path-set union.
 
 ---
 
@@ -606,5 +587,4 @@ Listed so reconcilers don’t re-dig expecting UDON product needs:
 
 ## End
 
-Path map only. Ready for path-set union with other `sources-*.md` in this
-directory, then per-file mining in a later pass.
+Path map only. Ready for path-set union with other `sources-*.md` in this directory, then per-file mining in a later pass.

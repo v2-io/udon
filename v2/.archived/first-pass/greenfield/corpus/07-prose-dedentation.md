@@ -58,9 +58,7 @@ ElementStart article
 ElementEnd
 ```
 
-*(Interior BlankLine — text material, `"\n"`. A trailing BlankLine before a
-dedent would also be emitted; interior-vs-ornamental is the AST's whole-stream
-disposition, not the event parser's.)*
+*(Interior BlankLine — text material, `"\n"`. A trailing BlankLine before a dedent would also be emitted; interior-vs-ornamental is the AST's whole-stream disposition, not the event parser's.)*
 
 ## Prose interleaves freely with structure (head position every line)
 
@@ -81,10 +79,7 @@ ElementStart a
 ElementEnd
 ```
 
-*(Careful case: `|b`'s base column is 2; the prose line at col 2 satisfies
-`2 <= 2` → pops `b`, then is prose of `a`. But `b`'s sameline prose set no
-content-base, so nothing holds the line inside `b` — consistent with "same
-column = sibling", and prose-vs-element makes no difference to the stack rule.)*
+*(Careful case: `|b`'s base column is 2; the prose line at col 2 satisfies `2 <= 2` → pops `b`, then is prose of `a`. But `b`'s sameline prose set no content-base, so nothing holds the line inside `b` — consistent with "same column = sibling", and prose-vs-element makes no difference to the stack rule.)*
 
 ## Deeper-than-base is inside the prose — markers inert
 
@@ -123,10 +118,7 @@ ElementStart p
 ElementEnd
 ```
 
-*(Strip the comment frames and concatenate: "This has  some text mid and
-continues.\n" — the double space is real; both framing spaces around `;{…}` are
-prose. CORE's example strips to a single space, which quietly deletes a real
-space — flagged in the greenfield copy.)*
+*(Strip the comment frames and concatenate: "This has  some text mid and continues.\n" — the double space is real; both framing spaces around `;{…}` are prose. CORE's example strips to a single space, which quietly deletes a real space — flagged in the greenfield copy.)*
 
 ## Multiline inline element: per-line Text, continuation indent skipped
 
@@ -151,7 +143,4 @@ ElementStart p
 ElementEnd
 ```
 
-*(Derived placement: the newline after `/docs` is content of the still-open
-inline form — its line ends inside the braces. Flagged as an interpretation in
-the greenfield copy; CORE says only "per-line Text events, each carrying its
-line terminator".)*
+*(Derived placement: the newline after `/docs` is content of the still-open inline form — its line ends inside the braces. Flagged as an interpretation in the greenfield copy; CORE says only "per-line Text events, each carrying its line terminator".)*

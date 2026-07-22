@@ -1,28 +1,19 @@
 # UDON Glossary (0.10 / v2-spec)
 
 **Status:** **provisional skeleton** — not full suite prose.  
-**Role:** Stable vocabulary for the normative companions. Full definitions of
-*behavior* live in SPEC / ADM / WIRE / SEMANTICS when authored; this file owns
-the short form of each formal noun.  
-**Authority:** Only what is already in [DECISIONS.md](DECISIONS.md) (charter +
-CARRY) is treated as settled law. Greenfields (`spec/msc/greenfield-2a|3b`) are
-**wording mines**, not law. Silences → [OPEN.md](OPEN.md).  
-**How to read:** Load-bearing terms have real short definitions. Thin spots
-are marked **TODO**. Do not invent surface or wire behavior here.
+**Role:** Stable vocabulary for the normative companions. Full definitions of *behavior* live in SPEC / ADM / WIRE / SEMANTICS when authored; this file owns the short form of each formal noun.  
+**Authority:** Only what is already in [DECISIONS.md](DECISIONS.md) (charter + CARRY) is treated as settled law. Greenfields (`spec/msc/greenfield-2a|3b`) are **wording mines**, not law. Silences → [OPEN.md](OPEN.md).  
+**How to read:** Load-bearing terms have real short definitions. Thin spots are marked **TODO**. Do not invent surface or wire behavior here.
 
-Requirement words (MUST / SHOULD / MAY), when used later in suite prose, follow
-RFC 2119. This skeleton does not yet assert RFC density.
+Requirement words (MUST / SHOULD / MAY), when used later in suite prose, follow RFC 2119. This skeleton does not yet assert RFC density.
 
 ---
 
 ## Policy (skeleton)
 
 1. Every formal capitalized / bolded noun used in suite prose SHOULD appear here.
-2. Mechanical / recognizer terms MAY be defined for SPEC/GRAMMAR precision, but
-   SHOULD NOT be the primary Host- or pedagogy-facing vocabulary (prefer Element,
-   Attribute, Content, Value, Document). *Lean 3b glossary policy.*
-3. Wire / event vocabulary is **not** pinned here — see OPEN **W\***; WIRE owns
-   that contract when drafted.
+2. Mechanical / recognizer terms MAY be defined for SPEC/GRAMMAR precision, but SHOULD NOT be the primary Host- or pedagogy-facing vocabulary (prefer Element, Attribute, Content, Value, Document). *Lean 3b glossary policy.*
+3. Wire / event vocabulary is **not** pinned here — see OPEN **W\***; WIRE owns that contract when drafted.
 4. Multi-line / line-bound policy is **not** pinned here — see OPEN **ML**.
 5. Retired synonyms (below) MUST NOT re-enter normative text.
 

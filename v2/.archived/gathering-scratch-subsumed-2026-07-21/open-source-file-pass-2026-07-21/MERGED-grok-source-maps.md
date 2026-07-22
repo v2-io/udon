@@ -11,15 +11,9 @@ out_of_scope: Fable agentic-tooling-sources/* and sources-schema-versioning.md e
 
 # MERGED — Grok prospective source maps (2026-07-21)
 
-**What this is.** One coherent path picture from *this* line of work only:
-three open path maps (A∪B∪C), three reservoir reweight maps (R1∪R2∪R3), and
-a full union including the quarantined overprescribed haul (uniques first-class;
-method-weight untrusted). Still path-level / notes-from-maps — not a
-filesystem re-crawl and not needs synthesis.
+**What this is.** One coherent path picture from *this* line of work only: three open path maps (A∪B∪C), three reservoir reweight maps (R1∪R2∪R3), and a full union including the quarantined overprescribed haul (uniques first-class; method-weight untrusted). Still path-level / notes-from-maps — not a filesystem re-crawl and not needs synthesis.
 
-**How to use.** Sections are **weight bands**, not geography. Within a band,
-paths appear once. When passes **disagreed on weight**, that is called out
-explicitly — disagreement is more useful than a flat alphabetical dump.
+**How to use.** Sections are **weight bands**, not geography. Within a band, paths appear once. When passes **disagreed on weight**, that is called out explicitly — disagreement is more useful than a flat alphabetical dump.
 
 ---
 
@@ -41,16 +35,13 @@ explicitly — disagreement is more useful than a flat alphabetical dump.
 | `…/scratch/first-sweep-agentic-tooling/` | Earlier tooling sweep + search log |
 | `…/scratch/schema-sources-search-log.md` | Schema search trail |
 
-Grok maps **overlap** those territories on purpose; paths below that land in
-Fable domains are still *our* findings, but trees are not expanded beyond
-what A/B/C/R already named.
+Grok maps **overlap** those territories on purpose; paths below that land in Fable domains are still *our* findings, but trees are not expanded beyond what A/B/C/R already named.
 
 ---
 
 ## 1. Weight-disagreement ledger (most important delta)
 
-These are the places where pass-1 gloss and pass-2 reweight **diverge**. Mine
-using the **pass-2** weight unless you have a reason not to.
+These are the places where pass-1 gloss and pass-2 reweight **diverge**. Mine using the **pass-2** weight unless you have a reason not to.
 
 | Unit | Pass 1 (A/B/C) | Pass 2 (R1/R2/R3) | Reconciled stance |
 |------|----------------|-------------------|-------------------|
@@ -67,9 +58,7 @@ using the **pass-2** weight unless you have a reason not to.
 | `AGENT_FEEDBACK.md` | Often paired with enablement as main usability signal | Friction-heavy aggregator; **not** use encyclopedia | Sample for “what I wanted to do / what hurt,” not catalogs |
 | Live consumers + CONSUMERS.md | Full inventory tables | Pointer-only (already mapped); R adds **validation-of-enablement** reading | Keep inventory in §5; use R’s “strong-fit class” lens when mining *uses* |
 
-**Story in one line:** pass 1 padded the last-week design/TODO corridor;
-pass 2 elevated buried empirical gold (especially usability tracks +
-scenarios) without deleting the design maps.
+**Story in one line:** pass 1 padded the last-week design/TODO corridor; pass 2 elevated buried empirical gold (especially usability tracks + scenarios) without deleting the design maps.
 
 ---
 
@@ -117,9 +106,7 @@ Opinionated reconcilers’ spine — **not** a needs synthesis:
 | provenance | `ETHICS.md`, `run` | How agents were treated; experiment menu | All |
 
 **Meta-evidence (not substitute for yamls):**  
-`/Users/josephwecker-v2/src/udon/_archive/REVIEW-JULY-2026.md` — enablement
-predicted July 2026 adopters (~L163–208 / L179–192); estate review underweighted
-*raw* application diversity.
+`/Users/josephwecker-v2/src/udon/_archive/REVIEW-JULY-2026.md` — enablement predicted July 2026 adopters (~L163–208 / L179–192); estate review underweighted *raw* application diversity.
 
 ### 3b. Day-in-the-life scenarios (high demand density per line)
 
@@ -160,8 +147,7 @@ predicted July 2026 adopters (~L163–208 / L179–192); estate review underweig
 
 ### 3e. Archived demand spikes (situation texture — not architecture law)
 
-For spikes also in archive: open archived originals for truth; quarantine
-copies remain staged findings with frontmatter.
+For spikes also in archive: open archived originals for truth; quarantine copies remain staged findings with frontmatter.
 
 | Path | Why |
 |------|-----|
@@ -172,10 +158,7 @@ copies remain staged findings with frontmatter.
 | `…/spikes/memory-import/FINDINGS.md` + `samples/` | Session/memory as document substrate (S10) |
 | `…/spikes/session-vault/` | Selective mine (§3c); use `raw/{claude,grok}/INVENTORY.md` first |
 
-**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`, …): listed
-in A/C as secondary archaeology only — **do not re-promote as ontology**.
-Greenfield `agents-thoughts` / feedback-from-* mostly **spec craft** (R:
-low for pure use ideation).
+**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`, …): listed in A/C as secondary archaeology only — **do not re-promote as ontology**. Greenfield `agents-thoughts` / feedback-from-* mostly **spec craft** (R: low for pure use ideation).
 
 ---
 
@@ -257,12 +240,9 @@ low for pure use ideation).
 | `/Users/josephwecker-v2/src/udon/CONSUMERS.md` | Live inventory, migration surfaces, **unused feature surface**, candidate future classes |
 | `/Users/josephwecker-v2/src/udon/bin/find-consumers` | Discovery / re-scan mechanics |
 
-**Unused features called out (quarantine + R1):** no `@`, no `|{…}`, no freeform
-fences, no `<…>`, no `:key?` yet — product vs overbuild tension.
+**Unused features called out (quarantine + R1):** no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet — product vs overbuild tension.
 
-**Candidate future classes (watchlist, not all live `.udon`):** ADRs, Axiomata,
-Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci,
-descent grammars (already UDON).
+**Candidate future classes (watchlist, not all live `.udon`):** ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON).
 
 ### 5b. Live `.udon` documents (2026-07-16 scan authority)
 
@@ -295,16 +275,11 @@ descent grammars (already UDON).
 ### 5d. Scenario corpus mirrors of live genres
 
 Under `test/scenarios/corpus/`:  
-`archema.concept-matrix.udon`, `asf-processes.process-map.udon`,
-`operata.domain.udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`,
-`vivarium.decision-log.udon`, `vivarium.lexicon.udon`.
+`archema.concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain.udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium.decision-log.udon`, `vivarium.lexicon.udon`.
 
 ### 5e. Need classes distilled from quarantine live-consumers map (not decisions)
 
-Safe subset + lint/fmt CLI · schema = root type = filename designator ·
-identity `[key]` density · unvalidated date attrs → temporal dialect ·
-append-friendly docs · real library parse (not forever hand parsers) ·
-raw dialects inside structured docs · unused features as overbuild signal.
+Safe subset + lint/fmt CLI · schema = root type = filename designator · identity `[key]` density · unvalidated date attrs → temporal dialect · append-friendly docs · real library parse (not forever hand parsers) · raw dialects inside structured docs · unused features as overbuild signal.
 
 ---
 
@@ -369,9 +344,7 @@ Encode what hosts *do* with parse products (A/B/C strong; R mostly skips).
 | `…/latest.txt`, `misc/udon.vim` | Experiment pointers; editor from day one |
 
 **Unconfirmed trail (R1/R2 gap):**  
-`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `declang/` predecessor) —
-referenced by `_archive/analysis.md`; **not confirmed on disk** this cycle.
-Treat as search trail, not path inventory.
+`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `declang/` predecessor) — referenced by `_archive/analysis.md`; **not confirmed on disk** this cycle. Treat as search trail, not path inventory.
 
 ### 8b. udon-c / libudon / udon-ruby archives
 
@@ -399,39 +372,28 @@ Treat as search trail, not path inventory.
 ### 8d. v2 night archive — selective (beyond demand spikes in §3e)
 
 Brownfield: `BIG-PICTURE`, `DIRECTION`, `wire-value-model`.  
-Greenfield: `new-spec/OPEN*`, dialect trees — comparative product factorings
-only. Night `SCHEMA.md` / `WARNING-CODES.md` / `pedagogy/OUTLINE.md` —
-demand residue if filtered; supply chapters parked.
+Greenfield: `new-spec/OPEN*`, dialect trees — comparative product factorings only. Night `SCHEMA.md` / `WARNING-CODES.md` / `pedagogy/OUTLINE.md` — demand residue if filtered; supply chapters parked.
 
 ---
 
 ## 9. Waiting customers & adjacent ecosystems (Grok-cited overlap with Fable)
 
-**Prefer Fable’s dedicated maps for depth.** Below is the Grok-union of
-high-signal entry points only.
+**Prefer Fable’s dedicated maps for depth.** Below is the Grok-union of high-signal entry points only.
 
 ### 9a. Rowan (first waiting schema customer)
 
 ADRs: document-schema-first, programmatic schema API, dig-style filter paths.  
-Code: `lib/archema/resource/versioning.rb`, `schema/` subsystem, `constraints.rb`,
-`agentic/tool_export.rb`.  
-Docs: `usr/10-schema-evolution`, `usr/14-schema-api`, `exp/schema-evolution-patterns`,
-`exp/path-centric-query-dsl`, `exp/2025-12-03-schema-migration…`, msc plans
-(constraints, runtime evolution, recursive embedded, memory-store versioning),
-`sys/schema/`, `sys/agentic/tool-export`, `KEY_FILES.md`.  
-Adjacent empirical: `rowan/test/usability/results/` (R3: hallway method sibling),
-`docs/dev/hallway-usability-at-scale.md`, `_ref/rails-migrations-survey/`.
+Code: `lib/archema/resource/versioning.rb`, `schema/` subsystem, `constraints.rb`, `agentic/tool_export.rb`.  
+Docs: `usr/10-schema-evolution`, `usr/14-schema-api`, `exp/schema-evolution-patterns`, `exp/path-centric-query-dsl`, `exp/2025-12-03-schema-migration…`, msc plans (constraints, runtime evolution, recursive embedded, memory-store versioning), `sys/schema/`, `sys/agentic/tool-export`, `KEY_FILES.md`.  
+Adjacent empirical: `rowan/test/usability/results/` (R3: hallway method sibling), `docs/dev/hallway-usability-at-scale.md`, `_ref/rails-migrations-survey/`.
 
 ### 9b. Autopax
 
-ADRs 002b/008/010/012/013; instrumenta + templates system docs; agents tree;
-OPERATA.md; HANDOFF; exp sessions on schema/doc tools/intent; live `taxonomy.udon`.
+ADRs 002b/008/010/012/013; instrumenta + templates system docs; agents tree; OPERATA.md; HANDOFF; exp sessions on schema/doc tools/intent; live `taxonomy.udon`.
 
 ### 9c. Operata
 
-Storage/system/principles exps; `docs/sys/`; `LEXICON.yaml` (contrast LEXICON.udon);
-idealized/advanced project models; design examples under udon (no live `*.udon`
-found under operata root — quarantine live-consumers).
+Storage/system/principles exps; `docs/sys/`; `LEXICON.yaml` (contrast LEXICON.udon); idealized/advanced project models; design examples under udon (no live `*.udon` found under operata root — quarantine live-consumers).
 
 ### 9d. Agentic-tooling ideology (roots only — Fable owns detail)
 
@@ -446,10 +408,7 @@ found under operata root — quarantine live-consumers).
 
 ### 9e. Peripheral (thin / S10-adjacent)
 
-shoshin event/memory schemas · firmatum PROPRIUM · memorata IMPROVEMENTS /
-memory-curation · umi patterns · eli-migration-prep taxonomy · relata ·
-obsidian-linter/help refs · rbs_json_schema · vox (dry) · ops (dry) ·
-`~/src/tmp/udon.md` · `2026-02-18-long-conversation-emerson.txt`.
+shoshin event/memory schemas · firmatum PROPRIUM · memorata IMPROVEMENTS / memory-curation · umi patterns · eli-migration-prep taxonomy · relata · obsidian-linter/help refs · rbs_json_schema · vox (dry) · ops (dry) · `~/src/tmp/udon.md` · `2026-02-18-long-conversation-emerson.txt`.
 
 ---
 
@@ -529,12 +488,9 @@ Full discussion file remains primary for context; these mark which turns quarant
 
 ### 10f. Quarantine admitted “not yet copied” (then)
 
-`test/scenarios/` · schema-workbench · AGENT-CONTEXT-PROTOCOL · udon-paths
-(pointer) · udon-ast · TODO-AUX · TODO-HUMAN-UX · file-naming ·
-enablement-synthesis · AGENT_FEEDBACK (sample) · design/examples set.
+`test/scenarios/` · schema-workbench · AGENT-CONTEXT-PROTOCOL · udon-paths (pointer) · udon-ast · TODO-AUX · TODO-HUMAN-UX · file-naming · enablement-synthesis · AGENT_FEEDBACK (sample) · design/examples set.
 
-Later **fully path-mapped** by A/B/C and elevated by R — so “not copied
-into quarantine” ≠ “not found in the Grok line overall.”
+Later **fully path-mapped** by A/B/C and elevated by R — so “not copied into quarantine” ≠ “not found in the Grok line overall.”
 
 ### 10g. Quarantine “not found” (negative findings)
 
@@ -595,29 +551,20 @@ into quarantine” ≠ “not found in the Grok line overall.”
 **What worked**
 
 - Path-map-first, overlap-OK avoided re-running the quarantine extract failure.
-- Three-way parallel A/B/C gave geography breadth; R1/R2/R3 correctly fixed
-  *weight* without deleting design maps.
+- Three-way parallel A/B/C gave geography breadth; R1/R2/R3 correctly fixed *weight* without deleting design maps.
 - Track-level grain on usability is the single highest-value correction.
 
 **What failed or nearly failed**
 
 - Pass 1’s “stale usability” one-liner hid the densest empirical reservoir.
-- Pass 1 padded obvious recent design/TODO files (memory-jog lists, weak
-  labels for buried gold) — useful as *pointers*, poor as *priority*.
-- Quarantine over-constrained to design/UX then bulk-copied — correct to
-  quarantine as *method*, wrong to gap-fill against it as coverage, and
-  **wrong (this merge’s earlier draft) to treat unique quarantine residue as
-  second-class**. Union includes uniques; only the *weighting scheme* of the
-  constrained pass is untrusted.
-- Risk of double-counting `enablement-synthesis.md` *and* all P0 yamls as
-  independent sources (R1).
+- Pass 1 padded obvious recent design/TODO files (memory-jog lists, weak labels for buried gold) — useful as *pointers*, poor as *priority*.
+- Quarantine over-constrained to design/UX then bulk-copied — correct to quarantine as *method*, wrong to gap-fill against it as coverage, and **wrong (this merge’s earlier draft) to treat unique quarantine residue as second-class**. Union includes uniques; only the *weighting scheme* of the constrained pass is untrusted.
+- Risk of double-counting `enablement-synthesis.md` *and* all P0 yamls as independent sources (R1).
 
 **For future maps**
 
-- When a harness tree is multi-experiment, name **tracks**, not only the
-  directory.
-- Prefer “skip detail / already known” sections (as R did) over re-tabulating
-  design spines.
+- When a harness tree is multi-experiment, name **tracks**, not only the directory.
+- Prefer “skip detail / already known” sections (as R did) over re-tabulating design spines.
 - Inventory-first for session vault; don’t re-export JSONL.
 
 ---

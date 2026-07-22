@@ -1,10 +1,6 @@
 # Open Questions
 
-**Normative as to scope:** each item below is *deliberately undefined* in
-this draft — authors MUST NOT rely on any particular behavior, and
-implementations MUST NOT treat their own behavior as settling it. The
-recommendation column is the drafter's judgment, marked as such, not a
-ruling.
+**Normative as to scope:** each item below is *deliberately undefined* in this draft — authors MUST NOT rely on any particular behavior, and implementations MUST NOT treat their own behavior as settling it. The recommendation column is the drafter's judgment, marked as such, not a ruling.
 
 | # | Question | Decision space | Drafter's recommendation |
 |---|---|---|---|

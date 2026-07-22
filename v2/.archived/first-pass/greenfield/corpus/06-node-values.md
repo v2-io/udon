@@ -106,9 +106,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(Same tree-ish shape, different meaning — the `inline` flag and the trailing
-terminator-only Text are the wire's tells. A host reading `x` gets a node in
-case 1 and a text value containing markup in case 2.)*
+*(Same tree-ish shape, different meaning — the `inline` flag and the trailing terminator-only Text are the wire's tells. A host reading `x` gets a node in case 1 and a text value containing markup in case 2.)*
 
 ## Attribute-under-attribute is an error; the named-carrier idiom
 
@@ -127,10 +125,7 @@ ElementStart el
 ElementEnd
 ```
 
-*(CORE names the error but not the kept shape; keep-everything plus "a `:` that
-fails its guard falls back to prose intact" argues for ingesting the line as
-the open value's text. The greenfield CORE copy says this explicitly — flagged
-as a derived interpretation, not a ruling.)*
+*(CORE names the error but not the kept shape; keep-everything plus "a `:` that fails its guard falls back to prose intact" argues for ingesting the line as the open value's text. The greenfield CORE copy says this explicitly — flagged as a derived interpretation, not a ruling.)*
 
 ## Raw block as node value
 

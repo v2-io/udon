@@ -37,10 +37,7 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 
 ### Early cherry-pick candidates (recover soon)
 
-> **Graduated 2026-07-21 (same day):** `DECISIONS.md` and `OPEN.md` now live
-> at `v2/` (with the ML re-mark applied and archive-pointing links fixed).
-> The rows below are kept for the record. Spikes remain parked pending the
-> needs map.
+> **Graduated 2026-07-21 (same day):** `DECISIONS.md` and `OPEN.md` now live at `v2/` (with the ML re-mark applied and archive-pointing links fixed). The rows below are kept for the record. Spikes remain parked pending the needs map.
 
 | Path | Kind | One line + interest / risk |
 |------|------|----------------------------|
@@ -101,17 +98,11 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 | `open-source-file-pass-2026-07-21/MERGED-grok-source-maps.md` | Grok's quarantine-unioning merge; fully superseded by the live `MERGED-six-maps.md` + `01-ideation/MASTER-REGISTRY.md`. |
 | (rest of both subdirs) | Open-source-file pass scratch, subsumed same day. |
 
-**Supersession review note (2026-07-21, post-registry):** a per-file sweep of
-`01-ideation/` found nothing further fully superseded at that point; the same-day
-dissolve+recombine round (below) then consumed the maps **by design**, not by
-supersession.
+**Supersession review note (2026-07-21, post-registry):** a per-file sweep of `01-ideation/` found nothing further fully superseded at that point; the same-day dissolve+recombine round (below) then consumed the maps **by design**, not by supersession.
 
 ## consumed-maps-2026-07-21/ — mining maps dissolved into the target-file union
 
-The phase-1.1 mining-spot maps, archived after their content was **fully chopped
-into** `01-ideation/01-reconciled-target-files/TARGET-FILES.md` (the flat spawnable
-union) and `01-ideation/02-provenanced/syntheses/CONVERGENCES.md` (the analysis
-layer). Assembly provenance: `01-ideation/scratch/reconcile-workdir/UNION-{A,C,D}.md`.
+The phase-1.1 mining-spot maps, archived after their content was **fully chopped into** `01-ideation/01-reconciled-target-files/TARGET-FILES.md` (the flat spawnable union) and `01-ideation/02-provenanced/syntheses/CONVERGENCES.md` (the analysis layer). Assembly provenance: `01-ideation/scratch/reconcile-workdir/UNION-{A,C,D}.md`.
 
 | Path | One line |
 |------|----------|

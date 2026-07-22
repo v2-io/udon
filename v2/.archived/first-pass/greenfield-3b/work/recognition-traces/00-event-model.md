@@ -1,17 +1,13 @@
 # Hypothetical event model (exploratory)
 
-**Not normative.** The greenfield suite deliberately omits wire/event design.
-This vocabulary exists so the traces in this directory can be *compared*.
-A future real stream may rename, fuse, or reorder events — the point is the
-**information and ownership decisions**, not the spelling.
+**Not normative.** The greenfield suite deliberately omits wire/event design. This vocabulary exists so the traces in this directory can be *compared*. A future real stream may rename, fuse, or reorder events — the point is the **information and ownership decisions**, not the spelling.
 
 ## Design goals for this sketch
 
 1. **Streaming-friendly:** start/end frames; no need for the whole document in hand.
 2. **ADM-aligned:** a Document-layer consumer can build [MODEL.md](../../new-spec/MODEL.md) by stacking events.
 3. **Anomalies inline:** warnings/errors appear when recognized, with a span hint.
-4. **Sugar already expanded:** identity/traits/suffixes show up as ordinary
-   `attr` events on `$…` keys (or we note desugar as a logical step).
+4. **Sugar already expanded:** identity/traits/suffixes show up as ordinary `attr` events on `$…` keys (or we note desugar as a logical step).
 
 ## Event catalog
 
@@ -52,9 +48,7 @@ Written in a compact literal form:
 | `Flow[…]` | flow segments |
 | `Ref(…)` | reference |
 
-Nested node values are usually shown as nested `elem_start…elem_end` *inside*
-the logical attribute value, or as a one-line `Node` summary when the point of
-the trace is ownership, not deep structure.
+Nested node values are usually shown as nested `elem_start…elem_end` *inside* the logical attribute value, or as a one-line `Node` summary when the point of the trace is ownership, not deep structure.
 
 ## Stream shape (typical element)
 

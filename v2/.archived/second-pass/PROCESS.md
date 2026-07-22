@@ -1,18 +1,10 @@
 # v2-spec process — agent-primary, steward-gated
 
-**Status:** **provisional operating agreement** for `v2-spec/` and sessions
-advancing the 0.10 suite — *in force while useful, never sacred*.  
+**Status:** **provisional operating agreement** for `v2-spec/` and sessions advancing the 0.10 suite — *in force while useful, never sacred*.  
 **Audience:** agents (default operators) and Joseph (steward).  
-**Why this exists:** UDON’s primary consumers are agents. The prior default
-(every residual fork waits for a Joseph sitting) made the non-primary user
-the bottleneck. Turnover is real; **files**, not conversational continuity,
-are the project’s identity.
+**Why this exists:** UDON’s primary consumers are agents. The prior default (every residual fork waits for a Joseph sitting) made the non-primary user the bottleneck. Turnover is real; **files**, not conversational continuity, are the project’s identity.
 
-> **Meta first.** This process is an experiment. Details (decision classes,
-> session shapes, spike norms) are **hypotheses to revisit**, not calcified
-> law. See [§0](#0-meta--the-process-is-open) and
-> [PROCESS-FEEDBACK.md](PROCESS-FEEDBACK.md). If reality fights a rule,
-> change the rule — do not pretend compliance.
+> **Meta first.** This process is an experiment. Details (decision classes, session shapes, spike norms) are **hypotheses to revisit**, not calcified law. See [§0](#0-meta--the-process-is-open) and [PROCESS-FEEDBACK.md](PROCESS-FEEDBACK.md). If reality fights a rule, change the rule — do not pretend compliance.
 
 ---
 
@@ -20,14 +12,9 @@ are the project’s identity.
 
 ### 0.1 Standing invitation
 
-**Every operator and the steward are invited, at any time, to critique and
-amend this process** — friction, dead weight, missing permission, wrong
-defaults, “this class is too heavy,” “spikes got prescriptive,” “STATUS is
-noise,” anything.
+**Every operator and the steward are invited, at any time, to critique and amend this process** — friction, dead weight, missing permission, wrong defaults, “this class is too heavy,” “spikes got prescriptive,” “STATUS is noise,” anything.
 
-That is not a side hobby. **Process fitness is load-bearing work.** A session
-that only improves PROCESS/FEEDBACK when the machinery is wrong has done
-real project work.
+That is not a side hobby. **Process fitness is load-bearing work.** A session that only improves PROCESS/FEEDBACK when the machinery is wrong has done real project work.
 
 ### 0.2 Side channel (always open)
 
@@ -37,9 +24,7 @@ real project work.
 | **This file (PROCESS.md)** | Apply accepted amendments with a **dated changelog** at the bottom |
 | **STATUS handoff** | One line is enough: “process friction: …” |
 
-No ticket, no STEWARD sitting, no severity gate is required to **write**
-feedback. Implementing a process change follows §0.3 so the repo stays
-coherent — not so speech is chilled.
+No ticket, no STEWARD sitting, no severity gate is required to **write** feedback. Implementing a process change follows §0.3 so the repo stays coherent — not so speech is chilled.
 
 ### 0.3 Changing the process (how amendments land)
 
@@ -50,13 +35,9 @@ coherent — not so speech is chilled.
 | **Authority or spine movement** (who may close language forks; what is STEWARD-only; greenfield charter) | Write proposal in FEEDBACK; prefer a second agent pass if contested; steward mark if it narrows/widens *steward* power or external stakes |
 | **“This whole mechanism is wrong”** | FEEDBACK entry + proposed replacement sketch; STATUS flags process rethink; **do not** keep performing a broken ritual while waiting |
 
-**Anti-calcification rule.** Any PROCESS mechanism that has not been
-*exercised* or *explicitly reaffirmed* in a long stretch of real work is
-suspect. Prefer deleting unused ceremony over “we might need it.”
+**Anti-calcification rule.** Any PROCESS mechanism that has not been *exercised* or *explicitly reaffirmed* in a long stretch of real work is suspect. Prefer deleting unused ceremony over “we might need it.”
 
-**Assumption register.** §11 lists active process assumptions. Operators
-SHOULD challenge them when evidence appears. Challenging an assumption is
-success, not insubordination.
+**Assumption register.** §11 lists active process assumptions. Operators SHOULD challenge them when evidence appears. Challenging an assumption is success, not insubordination.
 
 ### 0.4 Spikes vs process vs law
 
@@ -66,15 +47,13 @@ success, not insubordination.
 | **Process** | Medium — how we work | Provisional; easy to amend (§0) |
 | **DECISIONS / suite** | High — language or contract meaning | Evidence bar; harder to reverse |
 
-Do not apply high-stakes ceremony to low-stakes layers. Especially: **do not
-force decision classes onto spikes.**
+Do not apply high-stakes ceremony to low-stakes layers. Especially: **do not force decision classes onto spikes.**
 
 ---
 
 ## 1. Roles (turnover-safe)
 
-No role assumes a continuous person. A “role” is a **permission set for a
-session**, not an identity that remembers.
+No role assumes a continuous person. A “role” is a **permission set for a session**, not an identity that remembers.
 
 | Role | Who (this session) | May | Must not |
 |------|--------------------|-----|----------|
@@ -82,31 +61,22 @@ session**, not an identity that remembers.
 | **Operator** | Any agent session | Advance the suite; run spikes; propose and land agent-primary closes; amend process per §0.3; leave handoffs | Silent syntax invention; claim completion without files; perform broken process without filing feedback |
 | **Panel pass** | An independent operator pass on a shared brief | Concur, dissent, or stress-check a proposed close | Soft-merge without naming the split |
 
-**There is no “lane owner.”** Continuity does not live in an agent; it lives
-in **area briefs** and **session charters** (§4). Any operator may pick up
-any area by reading the brief + STATUS + OPEN for that area.
+**There is no “lane owner.”** Continuity does not live in an agent; it lives in **area briefs** and **session charters** (§4). Any operator may pick up any area by reading the brief + STATUS + OPEN for that area.
 
-**Primary-user rule.** Choices that mainly affect how agents write, stream,
-repair, address, or tool UDON → operators by default. Choices that mainly
-affect human authorship culture, external published consumers, project
-identity, or irreversible charter → steward (or steward mark).
+**Primary-user rule.** Choices that mainly affect how agents write, stream, repair, address, or tool UDON → operators by default. Choices that mainly affect human authorship culture, external published consumers, project identity, or irreversible charter → steward (or steward mark).
 
-**Veto is not the workflow.** Steward may reverse a landed decision with a
-short DECISIONS Overturn. That is cheaper than steward marks on every row.
+**Veto is not the workflow.** Steward may reverse a landed decision with a short DECISIONS Overturn. That is cheaper than steward marks on every row.
 
 ---
 
 ## 2. Decision classes — provisional scaffolding
 
-> **Assumption (challengeable):** tagging *high-stakes* opens with a close-path
-> label reduces steward bottleneck without re-creating a mega-sitting.  
-> **Not assumed:** that every artifact needs a class, or that the current
-> taxonomy is right. If classes feel like ceremony, file FEEDBACK and simplify.
+> **Assumption (challengeable):** tagging *high-stakes* opens with a close-path label reduces steward bottleneck without re-creating a mega-sitting.  
+> **Not assumed:** that every artifact needs a class, or that the current taxonomy is right. If classes feel like ceremony, file FEEDBACK and simplify.
 
 ### 2.1 When classes apply
 
-Use a class on items that **pin language, wire law, or suite contract**
-(OPEN rows, DECISIONS candidates, ruling-table residues).
+Use a class on items that **pin language, wire law, or suite contract** (OPEN rows, DECISIONS candidates, ruling-table residues).
 
 **Do not** require classes on:
 
@@ -126,20 +96,15 @@ Use a class on items that **pin language, wire law, or suite contract**
 | **OPEN-LIGHT** | Low cross-spine risk; single operator may land with evidence + revisit trigger | One operator | Replaces old “OWNER / lane owner” — no person-ownership fiction |
 | **WAIT-DEMAND** | Must not be nailed supply-side; needs exploration first | Reclassify after spikes (or other evidence) return | **Not** “run a prescribed spike template”; see §5 |
 
-Old name **DEMAND** ≡ **WAIT-DEMAND**. Old name **OWNER** ≡ **OPEN-LIGHT**.
-If the five-way split is too heavy, a future amendment may collapse to
-`carry | steward | agent | wait`.
+Old name **DEMAND** ≡ **WAIT-DEMAND**. Old name **OWNER** ≡ **OPEN-LIGHT**. If the five-way split is too heavy, a future amendment may collapse to `carry | steward | agent | wait`.
 
 ### 2.3 R3-class (exemplar of WAIT-DEMAND)
 
-**Multi-line / line-boundedness** (old R3; greenfield D1/Q8) is the
-canonical *do not nail from supply-side intuition alone* item:
+**Multi-line / line-boundedness** (old R3; greenfield D1/Q8) is the canonical *do not nail from supply-side intuition alone* item:
 
 - 2a/3a/3b picks are **strawmen**, not law
-- Right answer likely depends on paths, agent edit/stream repair, dialects,
-  serializers — discover that with **open spikes**, not a steward sitting
-- Honest state until then: OPEN + WAIT-DEMAND (or simply OPEN with a note
-  “blocked on exploration”)
+- Right answer likely depends on paths, agent edit/stream repair, dialects, serializers — discover that with **open spikes**, not a steward sitting
+- Honest state until then: OPEN + WAIT-DEMAND (or simply OPEN with a note “blocked on exploration”)
 
 ### 2.4 Default STEWARD (keep short)
 
@@ -151,23 +116,17 @@ canonical *do not nail from supply-side intuition alone* item:
 
 ### 2.5 Default agent-primary (PANEL or OPEN-LIGHT)
 
-Severity labels when keep-shape is agreed; root `:key` keep-shape; string
-escapes; tab keep-shape; attr-under-attr shape; comment strip; fixture
-profiles; sufficiency **law** and “value self-delimiting” **direction**;
-vocab/org under C3; agent-UX and harness design.
+Severity labels when keep-shape is agreed; root `:key` keep-shape; string escapes; tab keep-shape; attr-under-attr shape; comment strip; fixture profiles; sufficiency **law** and “value self-delimiting” **direction**; vocab/org under C3; agent-UX and harness design.
 
-Full wire **vocabulary freeze** and multi-line **final pin** → WAIT-DEMAND
-until exploration has something to say.
+Full wire **vocabulary freeze** and multi-line **final pin** → WAIT-DEMAND until exploration has something to say.
 
-Panel split after two written positions → steward only if charter/values;
-else prefer checkable + better for agent generate/repair, record dissent.
+Panel split after two written positions → steward only if charter/values; else prefer checkable + better for agent generate/repair, record dissent.
 
 ---
 
 ## 3. Spine vs areas (not “owned lanes”)
 
-**Lattice rule:** *Areas propose; only qualified decisions move shared
-contracts.*
+**Lattice rule:** *Areas propose; only qualified decisions move shared contracts.*
 
 | Spine (move carefully) | Areas (explore and propose freely) |
 |------------------------|-------------------------------------|
@@ -179,9 +138,7 @@ contracts.*
 | SEMANTICS equivalence ladder | house styles, fmt policies |
 | DECISIONS / OPEN / PROCESS | discussion files, spikes |
 
-**Area ≠ owner.** An **area brief** (short file under `v2-spec/areas/` or a
-section in STATUS) may list: questions in flight, useful pointers, traps.
-Any session may work an area by adopting a **session charter** (§4).
+**Area ≠ owner.** An **area brief** (short file under `v2-spec/areas/` or a section in STATUS) may list: questions in flight, useful pointers, traps. Any session may work an area by adopting a **session charter** (§4).
 
 Disagreement between areas → OPEN intake, not a SPEC merge war.
 
@@ -191,8 +148,7 @@ Disagreement between areas → OPEN intake, not a SPEC merge war.
 
 Because agents do not continue, **session parameters** carry focus.
 
-At session start (light touch — skip formality when the task is obvious),
-state or write in STATUS:
+At session start (light touch — skip formality when the task is obvious), state or write in STATUS:
 
 ```markdown
 ### Session charter
@@ -203,8 +159,7 @@ state or write in STATUS:
 - Landing: which files will change if this goes well
 ```
 
-That is enough continuity for the *next* agent: not “you own paths,” but
-“paths brief + last handoff + open questions.”
+That is enough continuity for the *next* agent: not “you own paths,” but “paths brief + last handoff + open questions.”
 
 ---
 
@@ -229,17 +184,13 @@ Enough that a stranger-agent benefits:
 - What you tried / what you noticed  
 - Examples that hurt or helped  
 - Open questions (richer than when you started is a win)  
-- *If* something should move the spine later: a clearly labeled
-  **proposal** (not a decision)  
+- *If* something should move the spine later: a clearly labeled **proposal** (not a decision)
 
-Location: `v2-spec/spikes/<name>/` or a discussion file. Disposable by
-design; harvest into OPEN/DECISIONS only when something graduates.
+Location: `v2-spec/spikes/<name>/` or a discussion file. Disposable by design; harvest into OPEN/DECISIONS only when something graduates.
 
 ### 5.3 Spikes and WAIT-DEMAND
 
-WAIT-DEMAND means “don’t pin the suite yet,” **not** “you must complete
-Spike Form 12-B.” Multiple messy spikes can unlock a pin; zero spikes and a
-supply-side hunch should not.
+WAIT-DEMAND means “don’t pin the suite yet,” **not** “you must complete Spike Form 12-B.” Multiple messy spikes can unlock a pin; zero spikes and a supply-side hunch should not.
 
 ---
 
@@ -264,9 +215,7 @@ intake (OPEN: question, options if known, class if useful, lean)
 | Clean-room re-derivation | Accretion in wording/org suspected | Expensive; rare; not a ruling source |
 | Differential oracle | Replacing working parser/fixtures | Until new gate green; never authority |
 
-**Ruling table** = intake archaeology + steward marks already made — not the
-OS for new work. **Pipeline discussion** = deliberation record; stage
-*names* and demand-side *habit* are adopted; payload tables stay provisional.
+**Ruling table** = intake archaeology + steward marks already made — not the OS for new work. **Pipeline discussion** = deliberation record; stage *names* and demand-side *habit* are adopted; payload tables stay provisional.
 
 ---
 
@@ -331,26 +280,20 @@ Reorder or drop freely via FEEDBACK if the sketch fights reality.
 
 ### After context compaction (mandatory reorient)
 
-Compaction **is not onboarding.** The compressed transcript is **untrusted**:
-it may omit OPEN rows, misstate severity pins, invent "we decided," or
-collapse vault history into a slogan.
+Compaction **is not onboarding.** The compressed transcript is **untrusted**: it may omit OPEN rows, misstate severity pins, invent "we decided," or collapse vault history into a slogan.
 
 **Before any further law, suite edit, or "continue where we left off" claim:**
 
-1. Re-read **STATUS.md** (phase + Own next + Need Joseph) — especially the
-   banner at the top of STATUS
+1. Re-read **STATUS.md** (phase + Own next + Need Joseph) — especially the banner at the top of STATUS
 2. Re-read **DECISIONS.md** / **OPEN.md** for anything you are about to touch  
-3. Re-open the **primary file** (SPEC section, spike NOTES, vault export) — not
-   a chat paraphrase  
+3. Re-open the **primary file** (SPEC section, spike NOTES, vault export) — not a chat paraphrase
 4. Only then act  
 
-If STATUS and the chat disagree, **STATUS + DECISIONS win.** File a
-PROCESS-FEEDBACK note if compaction repeatedly misleads.
+If STATUS and the chat disagree, **STATUS + DECISIONS win.** File a PROCESS-FEEDBACK note if compaction repeatedly misleads.
 
 ### End
 
-Land at least one of: STATUS handoff, OPEN/DECISIONS, spike residue, area
-brief, **or PROCESS-FEEDBACK**.
+Land at least one of: STATUS handoff, OPEN/DECISIONS, spike residue, area brief, **or PROCESS-FEEDBACK**.
 
 ```markdown
 ## Handoff (date, agent label)
@@ -363,8 +306,7 @@ brief, **or PROCESS-FEEDBACK**.
 
 ### Panel (when used)
 
-Shared brief → pass A → pass B (fresh) → integrate or name the split.
-Not required for spikes.
+Shared brief → pass A → pass B (fresh) → integrate or name the split. Not required for spikes.
 
 ---
 
@@ -380,8 +322,7 @@ Not required for spikes.
 | A6 | WAIT-DEMAND prevents supply-side nailing (R3-class) | Everything becomes WAIT forever / or pins ignore it |
 | A7 | FEEDBACK side channel stays used | Unused → process is either perfect (unlikely) or unsafe to criticize |
 
-Operators: if you falsify an assumption, **log it in FEEDBACK and propose a
-delta** — that is a first-class win.
+Operators: if you falsify an assumption, **log it in FEEDBACK and propose a delta** — that is a first-class win.
 
 ---
 

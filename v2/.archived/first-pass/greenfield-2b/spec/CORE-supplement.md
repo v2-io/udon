@@ -1,7 +1,6 @@
 # UDON Full Specification Supplement
 
-This file contains material from SPEC.md that is not included in CORE.md.
-It is preserved for completeness and reference.
+This file contains material from SPEC.md that is not included in CORE.md. It is preserved for completeness and reference.
 
 ---
 

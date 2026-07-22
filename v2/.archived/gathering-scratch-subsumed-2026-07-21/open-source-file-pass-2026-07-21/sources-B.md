@@ -9,20 +9,11 @@ scope: end-user, agent, library-consumer *needs* that might later feed a Parsing
 
 # Sources-B — prospective files & trees for demand-side gathering
 
-**What this is.** A path map of places where needs, usage situations, tool
-desires, consumer friction, schema/path/template/edit/stream ideas, etc.
-*might* live. Later mining opens these; this pass does not synthesize needs
-or copy bodies into the gathering tree.
+**What this is.** A path map of places where needs, usage situations, tool desires, consumer friction, schema/path/template/edit/stream ideas, etc. *might* live. Later mining opens these; this pass does not synthesize needs or copy bodies into the gathering tree.
 
-**What this is not.** Coverage of the quarantined overprescribed pass
-(`01-ideation/_quarantine/`). Those extracts are not the map of
-coverage. Sibling maps (`sources-agentic-tooling`, `sources-schema-versioning`,
-quarantined `sources-udon-repo-design-ux` / `sources-live-consumers`) are
-welcome overlap territory, not exclusions.
+**What this is not.** Coverage of the quarantined overprescribed pass (`01-ideation/_quarantine/`). Those extracts are not the map of coverage. Sibling maps (`sources-agentic-tooling`, `sources-schema-versioning`, quarantined `sources-udon-repo-design-ux` / `sources-live-consumers`) are welcome overlap territory, not exclusions.
 
-**Path style.** Absolute paths under `~/src/...` (and a few outside). Trees
-are listed when the unit is a whole directory; key files called out when a
-later miner should open them first.
+**Path style.** Absolute paths under `~/src/...` (and a few outside). Trees are listed when the unit is a whole directory; key files called out when a later miner should open them first.
 
 ---
 
@@ -42,8 +33,7 @@ later miner should open them first.
 
 ## 1. Lived friction & wishlists inside the UDON umbrella (high density)
 
-These are "I reached for X and didn't have it" or open capability lanes —
-closest to raw demand without being full design docs.
+These are "I reached for X and didn't have it" or open capability lanes — closest to raw demand without being full design docs.
 
 | Path | Why | Provenance |
 |------|-----|------------|
@@ -233,9 +223,7 @@ ADRs, Axiomata, Signa, Archema, Operata, Memorata, descent grammars (already UDO
 
 ## 8. Archived v2 demand spikes & night-spine archaeology
 
-**Mine demand tables carefully** — supply-side PIPELINE ontology is *not*
-carried forward (see pipeline-discussion); agent-utility/paths §8 demand
-tables are explicitly parked for needs map.
+**Mine demand tables carefully** — supply-side PIPELINE ontology is *not* carried forward (see pipeline-discussion); agent-utility/paths §8 demand tables are explicitly parked for needs map.
 
 | Path | Why |
 |------|-----|
@@ -259,8 +247,7 @@ tables are explicitly parked for needs map.
 | `/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-2a/new-spec/OPEN-QUESTIONS.md` | Earlier open questions |
 | `/Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-2a/feedback-from-*.md` | External model feedback on greenfield |
 
-Copies of demand spikes also appear under quarantine for historical
-reconciliation only — prefer archived originals above.
+Copies of demand spikes also appear under quarantine for historical reconciliation only — prefer archived originals above.
 
 ---
 
@@ -341,9 +328,7 @@ These encode *original* utility claims (templating, mixing, schema, API).
 
 ## 11. Schema / versioning / checking ecosystems (rowan · autopax · operata)
 
-Parallel map already exists at
-`01-ideation/sources-schema-versioning.md` — **overlap
-intentional**. Condensed high-value entry points for this pass:
+Parallel map already exists at `01-ideation/sources-schema-versioning.md` — **overlap intentional**. Condensed high-value entry points for this pass:
 
 ### 11a. Rowan (formerly Archema) — first waiting schema customer
 
@@ -491,9 +476,7 @@ Parallel maps:
 | Claude project memory under `~/.claude/projects/` | Same for Claude substrates |
 | **Flagged outside `~/src`:** `~/vaults/` | Sibling gatherer noted agent-oriented deposit outside src — not opened this pass; reconcilers should assign |
 
-Also: needs-map standing queue mentions Joseph consolidating agentic tooling
-into `~/src/archema-io/harness/agentic-tooling/` — verify existence at mine
-time (may still be planned).
+Also: needs-map standing queue mentions Joseph consolidating agentic tooling into `~/src/archema-io/harness/agentic-tooling/` — verify existence at mine time (may still be planned).
 
 ---
 
@@ -553,30 +536,19 @@ If a later pass wants a *starting* spine without pretending completeness:
 
 ## 17. Gaps / honesty about this pass
 
-- Did **not** fully walk every file under sapientia `docs/`, zoetica, ennaos,
-  rowan `docs/ref/patterns/`, or vivarium `msc/` — listed as trees or via
-  sibling maps.
+- Did **not** fully walk every file under sapientia `docs/`, zoetica, ennaos, rowan `docs/ref/patterns/`, or vivarium `msc/` — listed as trees or via sibling maps.
 - Did **not** open `~/vaults/` (flagged by another gatherer).
-- Did **not** run `find-consumers` or a full `**/*.udon` filesystem walk
-  outside known inventory; CONSUMERS.md is the 2026-07-16 authority for live
-  `.udon`.
-- Did **not** mine session memory for additional durable paths beyond the
-  session-vault already staged under v2/.archived.
-- Quarantine extracts deliberately **not** treated as preferred reading;
-  originals listed instead.
-- Library-consumer needs from *external* crates.io users: none yet (crate
-  not published) — only internal embedders (wasm, descent vendor, scenarios).
+- Did **not** run `find-consumers` or a full `**/*.udon` filesystem walk outside known inventory; CONSUMERS.md is the 2026-07-16 authority for live `.udon`.
+- Did **not** mine session memory for additional durable paths beyond the session-vault already staged under v2/.archived.
+- Quarantine extracts deliberately **not** treated as preferred reading; originals listed instead.
+- Library-consumer needs from *external* crates.io users: none yet (crate not published) — only internal embedders (wasm, descent vendor, scenarios).
 
 ---
 
 ## 18. Feedback on the brief (as requested)
 
 - Shape is right: path maps before mining avoids the quarantine failure mode.
-- Overlap policy is correct; the expensive miss is whole geographies
-  (historical objectives, day-in-life scenarios, live consumer field
-  hazards) not duplicate design/*.md rows.
-- One brief-adjacent risk: "Parsing Framework" as frame can still pull
-  supply-side reading of library APIs; this map intentionally keeps
-  wishlists and scenarios *above* CORE event encoding when mining.
+- Overlap policy is correct; the expensive miss is whole geographies (historical objectives, day-in-life scenarios, live consumer field hazards) not duplicate design/*.md rows.
+- One brief-adjacent risk: "Parsing Framework" as frame can still pull supply-side reading of library APIs; this map intentionally keeps wishlists and scenarios *above* CORE event encoding when mining.
 
 — end sources-B —

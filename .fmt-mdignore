@@ -1,0 +1,10 @@
+# Verbatim material: not prose, and not fmt-md's business.
+# Reformatting these is render-equivalent and still destructive — the line
+# structure is part of what is being preserved — so no automatic check can
+# catch it. Excluded by declaration. See archema-io/utils/fmt-md.
+
+# Raw AI session transcripts (pasted shell, logs, tool output).
+v2/.archived/second-pass/spikes/session-vault/raw/
+
+# Provenanced copies of source material gathered for the needs work.
+v2/udon-needs/01-ideation/02-provenanced/copies/

@@ -13,15 +13,9 @@ note: Distinct from MERGED-grok-source-maps.md (which also unioned quarantine). 
 
 # MERGED — six prospective source maps (A∪B∪C∪R1∪R2∪R3)
 
-**What this is.** One coherent path picture from six peer open maps: three
-inclusive geography walks (A, B, C) and three reservoir-reweight maps (R1, R2,
-R3). Paths deduped; when notes or *weights* differ across passes, distinctions
-are kept. Still path-level / notes-from-these-maps — not needs synthesis and
-not a new crawl.
+**What this is.** One coherent path picture from six peer open maps: three inclusive geography walks (A, B, C) and three reservoir-reweight maps (R1, R2, R3). Paths deduped; when notes or *weights* differ across passes, distinctions are kept. Still path-level / notes-from-these-maps — not needs synthesis and not a new crawl.
 
-**How to use.** Sections are **weight bands first**, then geography where
-that helps. Within a band, each path appears once. Disagreement on weight or
-grain is more useful than a flat dump.
+**How to use.** Sections are **weight bands first**, then geography where that helps. Within a band, each path appears once. Disagreement on weight or grain is more useful than a flat dump.
 
 ---
 
@@ -32,10 +26,7 @@ grain is more useful than a flat dump.
 | **Pass 1 — A / B / C** | Inclusive walk of `udon/`, live consumers, `_ref/`, rowan·autopax·operata, agentic ideology, library APIs, vaults pointers | High coverage of *recent* design/TODO/live lanes; re-lists known files; buried empirical gold often one-line (“stale usability”) |
 | **Pass 2 — R1 / R2 / R3** | Deliberately *under*-list design/TODO spine; reweight empirical / historical / creative enablement at **track** grain | Corrects pass-1 weight; elevates usability tracks, scenarios, historical objectives, SAR, selective session-vault; does not delete design maps |
 
-**Story in one line:** pass 1 padded the last-week design/TODO corridor and
-pointed at reservoirs under weak labels; pass 2 elevated buried empirical gold
-(especially usability tracks + scenarios) without suppressing either kind of
-finding.
+**Story in one line:** pass 1 padded the last-week design/TODO corridor and pointed at reservoirs under weak labels; pass 2 elevated buried empirical gold (especially usability tracks + scenarios) without suppressing either kind of finding.
 
 **Sibling maps cited by the six (not expanded here):**
 
@@ -48,16 +39,13 @@ finding.
 | `…/scratch/schema-sources-search-log.md` | Schema search trail |
 | `…/_quarantine/overprescribed-pass-2026-07-21-grok/` | Prior constrained haul — **hint list of paths already noticed**, not coverage truth, not preferred input, not gap-fill target |
 
-Grok maps **overlap** Fable territories on purpose; roots below that land in
-those domains stay *our* findings, but trees are not expanded beyond what the
-six already named.
+Grok maps **overlap** Fable territories on purpose; roots below that land in those domains stay *our* findings, but trees are not expanded beyond what the six already named.
 
 ---
 
 ## 1. Weight-disagreement ledger (most important delta)
 
-Places where pass-1 gloss and pass-2 reweight **diverge**. Mine using the
-**pass-2** weight unless you have a reason not to.
+Places where pass-1 gloss and pass-2 reweight **diverge**. Mine using the **pass-2** weight unless you have a reason not to.
 
 | Unit | Pass 1 (A/B/C) | Pass 2 (R1/R2/R3) | Reconciled stance |
 |------|----------------|-------------------|-------------------|
@@ -78,8 +66,7 @@ Places where pass-1 gloss and pass-2 reweight **diverge**. Mine using the
 
 ## 2. Suggested reading order for later mining
 
-Opinionated reconcilers’ spine — **not** a needs synthesis. Union of A §18,
-B §16, R* mining bands.
+Opinionated reconcilers’ spine — **not** a needs synthesis. Union of A §18, B §16, R* mining bands.
 
 1. **P0 empirical enablement** — usability P0 tracks + prompts (§3a)
 2. **P1 day-in-life** — `test/scenarios/` features (esp. `.gap`) + corpus genres
@@ -102,9 +89,7 @@ B §16, R* mining bands.
 
 **Tree unit:** `/Users/josephwecker-v2/src/udon/test/usability/`
 
-Estate review later found ~27 topic-enablement runs **predicted July 2026
-adopters** (process maps, vivarium narratives, audit/pre-registration) seven
-months early — meta-evidence that this is not “stale evidence only.”
+Estate review later found ~27 topic-enablement runs **predicted July 2026 adopters** (process maps, vivarium narratives, audit/pre-registration) seven months early — meta-evidence that this is not “stale evidence only.”
 
 | Priority | Track / path | Why (merged notes) | Seen in |
 |----------|--------------|--------------------|---------|
@@ -124,26 +109,18 @@ months early — meta-evidence that this is not “stale evidence only.”
 | mining aid | `analyze_embeddings.rb`, `embed_sentences.rb`, `analyze_chunks.rb` | Cluster enablement if re-runnable | R* |
 | provenance | `ETHICS.md`, `run` | How agents were treated; experiment menu | All |
 
-**Named topic_enablement seeds (sample from R1 — not exhaustive):** A/B testing,
-CQRS, transparency, HCI, OpenID Connect, model distillation, JAMstack, DDD,
-reinforcement learning, stream processing, feature store, human-in-the-loop,
-cognitive load, turn-taking. Full catalog: `rg '^task:' results/udon-topic_*.yaml`.
+**Named topic_enablement seeds (sample from R1 — not exhaustive):** A/B testing, CQRS, transparency, HCI, OpenID Connect, model distillation, JAMstack, DDD, reinforcement learning, stream processing, feature store, human-in-the-loop, cognitive load, turn-taking. Full catalog: `rg '^task:' results/udon-topic_*.yaml`.
 
 **Meta-evidence (not substitute for yamls):**  
-`/Users/josephwecker-v2/src/udon/_archive/REVIEW-JULY-2026.md` — enablement /
-onboarding sections (~L163–208 / L179–192); underweighted *raw* application
-diversity relative to synthesis.
+`/Users/josephwecker-v2/src/udon/_archive/REVIEW-JULY-2026.md` — enablement / onboarding sections (~L163–208 / L179–192); underweighted *raw* application diversity relative to synthesis.
 
-**Double-count risk (R1):** do not treat `enablement-synthesis.md` *and* all
-P0 yamls as independent sources. Synthesis indexes; yamls are primary.
+**Double-count risk (R1):** do not treat `enablement-synthesis.md` *and* all P0 yamls as independent sources. Synthesis indexes; yamls are primary.
 
 ### 3b. Day-in-the-life scenarios (high demand density per line)
 
 **Tree unit:** `/Users/josephwecker-v2/src/udon/test/scenarios/`
 
-Commissioned 2026-07-16; already speaks product vocabulary
-(skeleton/at/all/diff/patch/CAS/append). Under-mined relative to design essays
-in all six maps’ honest self-assessment.
+Commissioned 2026-07-16; already speaks product vocabulary (skeleton/at/all/diff/patch/CAS/append). Under-mined relative to design essays in all six maps’ honest self-assessment.
 
 | Path | Why |
 |------|-----|
@@ -155,8 +132,7 @@ in all six maps’ honest self-assessment.
 | `…/corpus/*.udon` | CORE-0.9 idioms of live genres (names under §5d) |
 | `…/bin/verify` | Corpus clean-parse contract |
 
-**Mining tip (R3):** prefer `.gap` scenarios and `|gap` children first — they
-name wanted capabilities the packet doesn’t cover.
+**Mining tip (R3):** prefer `.gap` scenarios and `|gap` children first — they name wanted capabilities the packet doesn’t cover.
 
 ### 3c. Free-form “would *I* use this?” judgments
 
@@ -185,9 +161,7 @@ name wanted capabilities the packet doesn’t cover.
 | `/Users/josephwecker-v2/src/udon/defining-udon.md` | Grammar / Spec / Pedagogy pillars — *how* needs become docs more than *what* needs are |
 | `/Users/josephwecker-v2/src/udon/README.md`, `Claude.md` | Work organization; agent ground rules; v2 center-of-gravity |
 
-Quarantine discussion-excerpts (joseph-accumulation / what-we-are-missing /
-morning-demand-sampling) are **not** merge inputs here; they slice the same
-pipeline-discussion turns. Prefer the full live file.
+Quarantine discussion-excerpts (joseph-accumulation / what-we-are-missing / morning-demand-sampling) are **not** merge inputs here; they slice the same pipeline-discussion turns. Prefer the full live file.
 
 ### 3e. Archived demand spikes (situation texture — not architecture law)
 
@@ -200,17 +174,9 @@ pipeline-discussion turns. Prefer the full live file.
 | `…/spikes/memory-import/FINDINGS.md` + `samples/` | Session/memory as document substrate (S10) |
 | `…/spikes/session-vault/` | Selective mine (§3c); inventory-first |
 
-**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`,
-`HARNESS`, `SEMANTICS`, `WARNING-CODES`, `OPEN-ML-STRAWMEN`, `PROCESS*`,
-`SCHEMA.md`, dialects/pedagogy): listed in A/C as secondary archaeology only —
-**do not re-promote as ontology**. Mine only where they name *caller products*
-or dissolve questions (ML sugar, inverse edit).
+**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`, `HARNESS`, `SEMANTICS`, `WARNING-CODES`, `OPEN-ML-STRAWMEN`, `PROCESS*`, `SCHEMA.md`, dialects/pedagogy): listed in A/C as secondary archaeology only — **do not re-promote as ontology**. Mine only where they name *caller products* or dissolve questions (ML sugar, inverse edit).
 
-Greenfield `agents-thoughts` / `feedback-from-*` under `first-pass/greenfield-*`:
-mostly **spec craft** (R: low for pure use ideation). Brownfield
-`BIG-PICTURE` / `DIRECTION` / `wire-value-model`: strategic framing of wire vs
-host. Greenfield dialect packaging (`3b/new-spec/dialects/`, `OPEN*`) —
-comparative product factorings only.
+Greenfield `agents-thoughts` / `feedback-from-*` under `first-pass/greenfield-*`: mostly **spec craft** (R: low for pure use ideation). Brownfield `BIG-PICTURE` / `DIRECTION` / `wire-value-model`: strategic framing of wire vs host. Greenfield dialect packaging (`3b/new-spec/dialects/`, `OPEN*`) — comparative product factorings only.
 
 ---
 
@@ -260,8 +226,7 @@ comparative product factorings only.
 | `…/design/README.md` | Status banners / superseded markers |
 
 **Lower for demand (listed so not “rediscovered”):**  
-`design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side, mostly
-ratified into CORE 0.9 (A/C).
+`design/attribute-model-*` (+ proposal-2/3 + substrates) — supply-side, mostly ratified into CORE 0.9 (A/C).
 
 ### 4d. Spec companions as *situation* names (not re-spec)
 
@@ -296,14 +261,9 @@ ratified into CORE 0.9 (A/C).
 | `/Users/josephwecker-v2/src/udon/CONSUMERS.md` | Live inventory, migration surfaces, **unused feature surface**, candidate future classes |
 | `/Users/josephwecker-v2/src/udon/bin/find-consumers` | Discovery / re-scan mechanics |
 
-**Unused features (R1 + A notes):** no `@`, no `|{…}`, no freeform fences,
-no `<…>`, no `:key?` yet — claimed affordances not pulled into real work
-(product vs overbuild tension).
+**Unused features (R1 + A notes):** no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet — claimed affordances not pulled into real work (product vs overbuild tension).
 
-**Candidate future classes (watchlist, not all live `.udon`):** ADRs, Axiomata,
-Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci,
-descent grammars (already UDON). These are *stated intended use classes* from
-drained next-notes, not files.
+**Candidate future classes (watchlist, not all live `.udon`):** ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON). These are *stated intended use classes* from drained next-notes, not files.
 
 ### 5b. Live `.udon` documents (2026-07-16 scan authority)
 
@@ -338,12 +298,9 @@ drained next-notes, not files.
 ### 5d. Scenario corpus mirrors of live genres
 
 Under `test/scenarios/corpus/`:  
-`archema.concept-matrix.udon`, `asf-processes.process-map.udon`,
-`operata.domain.udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`,
-`vivarium.decision-log.udon`, `vivarium.lexicon.udon`.
+`archema.concept-matrix.udon`, `asf-processes.process-map.udon`, `operata.domain.udon`, `operata-live.workspace.udon`, `terrestris.ordinum.udon`, `vivarium.decision-log.udon`, `vivarium.lexicon.udon`.
 
-These encode **what the team believed agents would do** with those genres more
-than they encode syntax.
+These encode **what the team believed agents would do** with those genres more than they encode syntax.
 
 ---
 
@@ -364,8 +321,7 @@ Whole tree: `/Users/josephwecker-v2/src/udon/design/examples/`
 
 ### 6b. Conversion matrix (continuous product desire 2011→2026)
 
-Durable need class, not one spike — from `_ref/udon` → udon-ruby →
-TOOLING-WISHLIST.
+Durable need class, not one spike — from `_ref/udon` → udon-ruby → TOOLING-WISHLIST.
 
 | Path | Why |
 |------|-----|
@@ -389,8 +345,7 @@ TOOLING-WISHLIST.
 
 ## 7. Library / streaming / API surfaces
 
-Encode what hosts *do* with parse products (A/B/C strong; R mostly skips —
-different register from use-ideation).
+Encode what hosts *do* with parse products (A/B/C strong; R mostly skips — different register from use-ideation).
 
 | Path | Why |
 |------|-----|
@@ -426,9 +381,7 @@ Whole tree unit: `/Users/josephwecker-v2/src/_ref/udon/`
 | `…/bin/xml2udon` | Interchange from day one |
 
 **Unconfirmed trail (R1/R2 gap):**  
-`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `scratch`, **`declang/`**
-predecessor) — referenced by `_archive/analysis.md`; **not confirmed on disk**
-this cycle. Search trail, not path inventory.
+`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `scratch`, **`declang/`** predecessor) — referenced by `_archive/analysis.md`; **not confirmed on disk** this cycle. Search trail, not path inventory.
 
 ### 8b. udon-c / libudon / udon-ruby archives
 
@@ -460,19 +413,14 @@ this cycle. Search trail, not path inventory.
 ### 8d. v2 night archive — selective (beyond demand spikes in §3e)
 
 Brownfield: `BIG-PICTURE-2026-07-20`, `DIRECTION-2026-07-19`, `wire-value-model-2026-07`.  
-Greenfield: `new-spec/OPEN*`, dialect trees, `recognition-traces/` — comparative
-product factorings / event-model expectations only.  
-Night chapters (`SCHEMA`, `WARNING-CODES`, `pedagogy/OUTLINE`, `HARNESS`,
-`WIRE`, `ADM`, `SEMANTICS`) — demand residue if filtered for *named products*;
-supply chapters parked.
+Greenfield: `new-spec/OPEN*`, dialect trees, `recognition-traces/` — comparative product factorings / event-model expectations only.  
+Night chapters (`SCHEMA`, `WARNING-CODES`, `pedagogy/OUTLINE`, `HARNESS`, `WIRE`, `ADM`, `SEMANTICS`) — demand residue if filtered for *named products*; supply chapters parked.
 
 ---
 
 ## 9. Waiting customers & adjacent ecosystems (overlap with Fable maps)
 
-**Prefer Fable’s dedicated maps for depth.** Below is the six-map union of
-high-signal entry points only — compact, not a re-mine of
-`sources-schema-versioning.md`.
+**Prefer Fable’s dedicated maps for depth.** Below is the six-map union of high-signal entry points only — compact, not a re-mine of `sources-schema-versioning.md`.
 
 ### 9a. Rowan (first waiting schema customer)
 
@@ -640,21 +588,16 @@ Listed by the six so reconcilers don’t re-dig expecting UDON product needs:
 **What worked**
 
 - Path-map-first, overlap-OK avoided re-running extract-heavy failure modes.
-- Three-way parallel A/B/C gave geography breadth (consumers, library, history,
-  converters, program TODOs).
+- Three-way parallel A/B/C gave geography breadth (consumers, library, history, converters, program TODOs).
 - R1/R2/R3 correctly fixed *weight* without deleting design maps.
 - Track-level grain on usability is the single highest-value correction.
 
 **What failed or nearly failed**
 
 - Pass 1’s “stale usability” one-liner hid the densest empirical reservoir.
-- Pass 1 padded obvious recent design/TODO files (memory-jog lists, weak
-  labels for buried gold) — useful as *pointers*, poor as *priority*.
-- Risk of double-counting `enablement-synthesis.md` *and* all P0 yamls as
-  independent sources (R1).
-- Risk of “Parsing Framework” framing pulling supply-side library reading
-  above wishlists/scenarios (B feedback) — this merge keeps both bands but
-  ranks empirical/situations first in §2.
+- Pass 1 padded obvious recent design/TODO files (memory-jog lists, weak labels for buried gold) — useful as *pointers*, poor as *priority*.
+- Risk of double-counting `enablement-synthesis.md` *and* all P0 yamls as independent sources (R1).
+- Risk of “Parsing Framework” framing pulling supply-side library reading above wishlists/scenarios (B feedback) — this merge keeps both bands but ranks empirical/situations first in §2.
 
 **Characteristic uniques worth not losing**
 
@@ -672,13 +615,10 @@ Listed by the six so reconcilers don’t re-dig expecting UDON product needs:
 
 **For future maps**
 
-- When a harness tree is multi-experiment, name **tracks**, not only the
-  directory.
-- Prefer “skip detail / already known” sections (as R did) over re-tabulating
-  design spines.
+- When a harness tree is multi-experiment, name **tracks**, not only the directory.
+- Prefer “skip detail / already known” sections (as R did) over re-tabulating design spines.
 - Inventory-first for session vault; don’t re-export JSONL.
-- Prefer search-shaped tools for buried *textual* reservoirs over multi-agent
-  directory tours that pad with known recent files.
+- Prefer search-shaped tools for buried *textual* reservoirs over multi-agent directory tours that pad with known recent files.
 
 ---
 
@@ -704,11 +644,6 @@ Listed by the six so reconcilers don’t re-dig expecting UDON product needs:
 ## End
 
 Path-level union of six peer maps only. Ready for per-file mining.  
-Sibling file `MERGED-grok-source-maps.md` additionally unions quarantine; this
-file deliberately does not.
+Sibling file `MERGED-grok-source-maps.md` additionally unions quarantine; this file deliberately does not.
 
-*Feedback on the six maps (for parent):* pass-1 inclusion and pass-2 reweight
-are complementary, not competitive. The expensive miss if either were discarded
-would be different: without A/B/C you lose library/consumer/history breadth;
-without R you mine design essays first and bury the enablement gold under a
-“stale” label. Keep both kinds of finding; use §1 for weight.
+*Feedback on the six maps (for parent):* pass-1 inclusion and pass-2 reweight are complementary, not competitive. The expensive miss if either were discarded would be different: without A/B/C you lose library/consumer/history breadth; without R you mine design essays first and bury the enablement gold under a “stale” label. Keep both kinds of finding; use §1 for weight.

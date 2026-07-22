@@ -1,7 +1,6 @@
 # UDON Full Specification
 
-**Universal Document & Object Notation**
-*Version 0.9.0-alpha.2*
+**Universal Document & Object Notation** *Version 0.9.0-alpha.2*
 
 It is intended to be the single comprehensive, authoritative spec. & source of truth.
 
@@ -332,8 +331,7 @@ A child names *what it is*; an attribute names *what it is to the parent*. That 
 
 Attributes appear in two positions -- **sameline** (on the element definition line) and **block** (on their own indented line) -- plus inside inline `|{...}` elements. The value grammar is the same everywhere; what differs by context is a small terminator set and who owns trailing material (below).
 
-> [!attention] UNDEFINED BEHAVIOR: attribute at the document root
-> An attribute at the **document root** -- a line-initial `:key` with no owning element -- is **undefined** in this version: the parser currently treats it as a free-floating attribute, but do not rely on it (a future version may make it prose or an error).
+> [!attention] UNDEFINED BEHAVIOR: attribute at the document root An attribute at the **document root** -- a line-initial `:key` with no owning element -- is **undefined** in this version: the parser currently treats it as a free-floating attribute, but do not rely on it (a future version may make it prose or an error).
 
 ### Attribute Keys and Flags
 
@@ -437,12 +435,7 @@ One character of lookahead at one decision point -- the same shape as every othe
 
 ### Flow Values
 
-**Text flow** (or just *flow*) is the one prose-shaped content model: a
-sequence of text fragments, inline forms (`|{...}`, `!{...}`, `;{...}`), and
-blank lines that **resolves to text** once the inline forms are processed by
-their layers (comments stripped, interpolations evaluated, inline elements
-rendered). It has three homes -- element prose, **flow values** (this
-section), and inline-form interiors -- with one set of rules.
+**Text flow** (or just *flow*) is the one prose-shaped content model: a sequence of text fragments, inline forms (`|{...}`, `!{...}`, `;{...}`), and blank lines that **resolves to text** once the inline forms are processed by their layers (comments stripped, interpolations evaluated, inline elements rendered). It has three homes -- element prose, **flow values** (this section), and inline-form interiors -- with one set of rules.
 
 A flow value is prose-shaped -- the same flow, not a second literal-only dialect:
 
@@ -529,8 +522,7 @@ An attribute's value may be a node -- the attribute *is* that element (or raw bl
 - **No attribute-under-attribute.** A deeper line that is itself `:key` directly under an attribute (not inside a node value) is an **error** -- maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`. Keep-everything shape: the offending line is ingested as text of the open value, the error annotating it. *(The kept shape needs a ruling.)*
 - The preferred, warning-free shape is **one node per declaration**; stack the key to add more. A second sibling node at the value's depth is the ingest-with-warning case below.
 
-> [!failure] AVOID
-> **The node value is a one-way door on its line.** Once the node opens, there is no way back to the outer element on that line. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*, not to `api` -- almost certainly not what was meant in this particular case.  Put the outer element's attributes *before* the node-valued one, or move the node to a deferred block.
+> [!failure] AVOID **The node value is a one-way door on its line.** Once the node opens, there is no way back to the outer element on that line. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*, not to `api` -- almost certainly not what was meant in this particular case.  Put the outer element's attributes *before* the node-valued one, or move the node to a deferred block.
 
 - **Block form binds a node; the brace form is text.** A node value is the *block* form `|name`. The inline **brace form** `|{…}` in value position is **not** a node value -- it is an inline segment of a *flow value* (the inline-brace principle; see The Scan and Flow Values). So `:x |em hi` gives `x` the `|em` node, while `:x |{em hi}` gives `x` the flow value whose sole segment is an inline `|em`. The distinction is the one teachable rule: *drop the braces to bind an element as the value; keep them to inline it as text.*
 
@@ -602,11 +594,9 @@ The value grammar is uniform; contexts differ only in their terminator sets for 
   ;                                      ^ boundary-\: title = "Home"; content " Welcome home!"
   ```
 
-  > [!caution] CURRENT BEHAVIOR
-  > Inside inline `|{...}` there are no framed sameline comments -- a bare `;` is literal; only `;{...}` comments there. Framed comments in inline elements will likely be revisited once the dialect layer and inline-element behavior are more fully fleshed out.
+  > [!caution] CURRENT BEHAVIOR Inside inline `|{...}` there are no framed sameline comments -- a bare `;` is literal; only `;{...}` comments there. Framed comments in inline elements will likely be revisited once the dialect layer and inline-element behavior are more fully fleshed out.
 
-  > [!attention] UNDEFINED BEHAVIOR: trailing framed comment after value-`\` text inside an inline element
-  > `|{a :href /home :title Home \ Welcome home! ; hope that helps}` -- the trailing framed ` ; ` will probably gain comment semantics once the dialect layer and inline-element behavior are fleshed out; in 0.9 its result is unspecified -- do not rely on it either way. (A framed ` ; ` in ordinary inline-element content, without a preceding value-`\`, stays literal per the CURRENT BEHAVIOR note above.)
+  > [!attention] UNDEFINED BEHAVIOR: trailing framed comment after value-`\` text inside an inline element `|{a :href /home :title Home \ Welcome home! ; hope that helps}` -- the trailing framed ` ; ` will probably gain comment semantics once the dialect layer and inline-element behavior are fleshed out; in 0.9 its result is unspecified -- do not rely on it either way. (A framed ` ; ` in ordinary inline-element content, without a preceding value-`\`, stays literal per the CURRENT BEHAVIOR note above.)
 
 - **Array items**: `}` is *not* a terminator inside `[...]` -- the array closes only on `]` (else it is an unclosed array, its content kept with a warning). A `}` closing an inline element must come after the `]`. **Quoted-item nuance**: a quoted item's closing quote ends it, so `["x"y]` and `["x""y"]` each yield two items, same as `["x" y]`.
 
@@ -786,8 +776,7 @@ A `;` *deeper* than the prose base is inside the prose — literal, like any oth
 |p This is some text ;{TODO: improve this} and more text.
 ```
 
-> [!caution] CURRENT BEHAVIOR
-> The whitespace surrounding an inline comment `;{...}` is assumed to be **preserved** for now, pending the dialect work -- and it may change then. Under that assumption, stripping the comment frames from `This is some text ;{TODO} and more text.` leaves **two** spaces (both framing spaces are prose, and pure concatenation keeps them); a consumer wanting collapsed whitespace normalizes at its own layer.
+> [!caution] CURRENT BEHAVIOR The whitespace surrounding an inline comment `;{...}` is assumed to be **preserved** for now, pending the dialect work -- and it may change then. Under that assumption, stripping the comment frames from `This is some text ;{TODO} and more text.` leaves **two** spaces (both framing spaces are prose, and pure concatenation keeps them); a consumer wanting collapsed whitespace normalizes at its own layer.
 
 #### Escaping Semicolons
 
@@ -1250,8 +1239,7 @@ Inline elements can be nested:
 
 ### Bracket Mode Rules
 
-> [!failure] AVOID
-> **Once in bracket mode, stay in bracket mode.** Inside `|{...}`, you cannot use inline element syntax (`|element`). All nested elements must also use the brace form:
+> [!failure] AVOID **Once in bracket mode, stay in bracket mode.** Inside `|{...}`, you cannot use inline element syntax (`|element`). All nested elements must also use the brace form:
 >
 > ```udon
 > ; Correct -- nested inline elements
@@ -1294,14 +1282,7 @@ The character immediately after the prefix determines the parse mode with no loo
 
 ## Verbatim Content
 
-**Verbatim** is the capture that is *never* UDON-parsed: the body is opaque
-bytes handed to the host, with an optional **label** (language, kind, or fence
-info string). One **Verbatim** family serves it -- carrying its `form` and
-optional `label` around the opaque body -- with three surface **forms**,
-differing only in geometry: the **block** form `!:lang:` (dedents to the raw base), the
-**fence** ``` (byte-exact, no dedent), and the **inline** form `!{:kind:…}`
-(brace-counted). "Raw," "freeform," and "content" as free-floating nouns are
-retired in favor of this one family.
+**Verbatim** is the capture that is *never* UDON-parsed: the body is opaque bytes handed to the host, with an optional **label** (language, kind, or fence info string). One **Verbatim** family serves it -- carrying its `form` and optional `label` around the opaque body -- with three surface **forms**, differing only in geometry: the **block** form `!:lang:` (dedents to the raw base), the **fence** ``` (byte-exact, no dedent), and the **inline** form `!{:kind:…}` (brace-counted). "Raw," "freeform," and "content" as free-floating nouns are retired in favor of this one family.
 
 ### Raw Directives (the block form, `!:lang:`)
 
@@ -1335,8 +1316,7 @@ For inline raw content, use `!{:kind: ...}`:
 
 Inline raw uses brace-counting. The parser finds the closing `}` by counting brace depth. Nested `{}` pairs are fine as long as they're balanced. The form carries the same **Verbatim** frame as the block form (`form: inline`). A single space after the label's closing `:` is a separator (not content) -- so `!{:json: {"a":1}}` captures `{"a":1}`, not ` {"a":1}`.
 
-> [!caution] CURRENT BEHAVIOR
-> The separator rule above is provisional; tighter nailing is deferred until dialects / templating settle.
+> [!caution] CURRENT BEHAVIOR The separator rule above is provisional; tighter nailing is deferred until dialects / templating settle.
 
 Examples:
 
@@ -1355,8 +1335,7 @@ Examples:
 
 A raw block (`!:lang:`) *is* usable as an attribute's **node value** (see Attributes, Value Kinds) -- the attribute is the raw node, same as any node value, in both positions: on the deferred block form, and sameline -- `|el :script !:sh:` followed by deeper lines -- where the body follows the ordinary raw rules (raw base = first content line's column; the block ends at a dedent to or left of the *line's* structural column).
 
-> [!attention] UNDEFINED BEHAVIOR: inline raw (`!{:kind:...}`) in value position
-> Whether the *inline* raw form can appear in attribute-value position is deferred along with the rest of the inline-raw nailing.
+> [!attention] UNDEFINED BEHAVIOR: inline raw (`!{:kind:...}`) in value position Whether the *inline* raw form can appear in attribute-value position is deferred along with the rest of the inline-raw nailing.
 
 ### Triple-Backtick Fence
 
@@ -1385,8 +1364,7 @@ Two cases are **not** fences: (1) after prose has begun on the line -- in `|a |b
 
 **Closing.** A line whose first non-space content is triple-backticks closes the block, at **any** indentation, and must be followed by a newline (trailing whitespace before that newline is ignored). Putting the closer at the opening indent is **recommended** -- so a reader mid-long-block can recover the parent's column -- but not required.
 
-> [!failure] AVOID
-> Indenting the closing backticks means their leading whitespace is part of the captured body: the body runs to the newline *before* the closer, so that indentation was already body. Only whitespace to the *right* of the closing backticks is silently trimmed. Put the closer at column 0 if you do not want its indent in the output.
+> [!failure] AVOID Indenting the closing backticks means their leading whitespace is part of the captured body: the body runs to the newline *before* the closer, so that indentation was already body. Only whitespace to the *right* of the closing backticks is silently trimmed. Put the closer at column 0 if you do not want its indent in the output.
 
 Use a fence **only** when:
 
@@ -1417,8 +1395,7 @@ The **language** inside directives and interpolations -- expressions, operators,
 
 `@` refers to an element defined elsewhere. A reference is a **selector tuple** `(element, key, traits)`:
 
-> [!caution] CURRENT BEHAVIOR
-> The `(element, key, traits)` selector-tuple model is provisional -- it stands until a path syntax replaces it wholesale.
+> [!caution] CURRENT BEHAVIOR The `(element, key, traits)` selector-tuple model is provisional -- it stands until a path syntax replaces it wholesale.
 
 | You write | Selector |
 |-----------|----------|
@@ -1516,11 +1493,9 @@ The types above are the **frozen core scalar set** -- recognized *bare*, from th
 
 **Envelopes span newlines (multi-line).** A newline inside `<...>` is ordinary content; the value closes only at the matching `>` -- or, unclosed, at EOF, with a warning (keep-everything as usual). `<...>` is its own delimited construct, uniform with strings and embeds rather than a line-bound special case, and this deliberately does **not** foreclose the multi-line typed values most dialects will want. Interior indentation is captured verbatim for now; a dedent policy, if ever wanted, is a dialect-layer concern.
 
-> [!caution] CURRENT BEHAVIOR
-> The dialect layer is not built yet. Until it lands, a conformant parser still recognizes the envelope (the `<>`-balanced span, terminating the value at the matching `>`) but issues a warning that no dialect is loaded and passes the value through as a plain string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the string `"<5m>"` plus the warning). Nothing is lost or silently retyped; when dialects land, the same document parses to typed values and the warning disappears.
+> [!caution] CURRENT BEHAVIOR The dialect layer is not built yet. Until it lands, a conformant parser still recognizes the envelope (the `<>`-balanced span, terminating the value at the matching `>`) but issues a warning that no dialect is loaded and passes the value through as a plain string -- the full `<...>` lexical form, untouched (`:dur <5m>` is the string `"<5m>"` plus the warning). Nothing is lost or silently retyped; when dialects land, the same document parses to typed values and the warning disappears.
 
-> [!attention] UNDEFINED BEHAVIOR: nested `<...>` envelope routing
-> Typed values will eventually nest -- a composite whose components are themselves typed, e.g. `<r: <i: 3 -7> 0d83.23>` (a rational of a complex numerator and a decimal denominator). "The matching `>`" is already depth-counted -- a `<>`-balanced span, like the brace-balancing already used for `|{...}` and `;{...}` -- so a nested envelope already parses. *Who* routes the inner typed values, though, is left open on purpose: it may be an implicit dialect stack that the active dialect drives, rather than the core grammar consuming and handing off. Nesting is anticipated and stays `<>`-balanced; the routing itself is a dialect concern to settle when dialects are fleshed out.
+> [!attention] UNDEFINED BEHAVIOR: nested `<...>` envelope routing Typed values will eventually nest -- a composite whose components are themselves typed, e.g. `<r: <i: 3 -7> 0d83.23>` (a rational of a complex numerator and a decimal denominator). "The matching `>`" is already depth-counted -- a `<>`-balanced span, like the brace-balancing already used for `|{...}` and `;{...}` -- so a nested envelope already parses. *Who* routes the inner typed values, though, is left open on purpose: it may be an implicit dialect stack that the active dialect drives, rather than the core grammar consuming and handing off. Nesting is anticipated and stays `<>`-balanced; the routing itself is a dialect concern to settle when dialects are fleshed out.
 
 **Label ladder.** The envelope may be unlabelled (`<...>`), type-labelled (`<type:...>`), or dialect-and-type-labelled (`<dialect:type:...>`) -- least to most specific.
 
@@ -1553,8 +1528,7 @@ A leading `0` *followed by more decimal digits* is decimal, not octal -- `0755` 
 3.14        1e10        1.5e-3 ; Floats
 ```
 
-> [!caution] CURRENT BEHAVIOR
-> The grammar today also recognizes bare `1/3r` / `22/7r` (rational) and `5i` / `3+4i` (complex). At the moment their status is **parser-decided** -- the grammar recognizes them, and that is where the decision sits until the dialect layer lands, at which point it gets nailed down. Both are **current candidates** to move out of the bare core into a **standard-types `<...>` dialect** (e.g. `<r: 1 3>`, `<i: 3 4>`), where composition and nesting are clean and operator-free.
+> [!caution] CURRENT BEHAVIOR The grammar today also recognizes bare `1/3r` / `22/7r` (rational) and `5i` / `3+4i` (complex). At the moment their status is **parser-decided** -- the grammar recognizes them, and that is where the decision sits until the dialect layer lands, at which point it gets nailed down. Both are **current candidates** to move out of the bare core into a **standard-types `<...>` dialect** (e.g. `<r: 1 3>`, `<i: 3 4>`), where composition and nesting are clean and operator-free.
 >
 > A rational is inherently compositional -- two literals over a bar -- so it leans toward the dialect. A complex has no such lean and could go either way: bare `5i` is a single number with a suffix (like `0d` or the `e` of scientific notation) and has a real claim to staying a literal; only the composed `3+4i` (real + imaginary) pulls toward the envelope. Treat both as not yet frozen.
 
@@ -1655,11 +1629,9 @@ Nothing is ever discarded; the warnings mark what the author probably meant to f
 
 Three delimited constructs are settled as **multi-line** and stay that way: the `|{...}` inline element, the fence, and the `<...>` typing envelope (a newline inside `<...>` is content; it closes only on the matching `>` or EOF; see Explicit Typing).
 
-> [!attention] UNDEFINED BEHAVIOR: multi-line span of the remaining delimited constructs
-> For the **remaining** delimited constructs -- `"..."` / `'...'` strings, `[...]` arrays, `[...]` identity keys, `!{{...}}` interpolation, `;{...}` inline comments, and the `!{...}` / `!{:kind:...}` inline directive/verbatim forms -- spanning multiple lines is deliberately undefined in this version: they have not all been verified safe across a newline (head-position re-entry, indentation, and the like), so treat multi-line as at-your-own-risk.
+> [!attention] UNDEFINED BEHAVIOR: multi-line span of the remaining delimited constructs For the **remaining** delimited constructs -- `"..."` / `'...'` strings, `[...]` arrays, `[...]` identity keys, `!{{...}}` interpolation, `;{...}` inline comments, and the `!{...}` / `!{:kind:...}` inline directive/verbatim forms -- spanning multiple lines is deliberately undefined in this version: they have not all been verified safe across a newline (head-position re-entry, indentation, and the like), so treat multi-line as at-your-own-risk.
 
-> [!caution] CURRENT BEHAVIOR
-> What the current parser does at an interior newline varies by construct: strings and interpolation span (the newline is content); `[...]` arrays and identity keys close on the newline (their content kept, with a warning); and either may change. We expect to make the rest multi-line once the consequences are fully understood (most typed and structured values will want it); if a case is instead made *illegal*, the parser will warn at that point rather than silently change meaning.
+> [!caution] CURRENT BEHAVIOR What the current parser does at an interior newline varies by construct: strings and interpolation span (the newline is content); `[...]` arrays and identity keys close on the newline (their content kept, with a warning); and either may change. We expect to make the rest multi-line once the consequences are fully understood (most typed and structured values will want it); if a case is instead made *illegal*, the parser will warn at that point rather than silently change meaning.
 
 ---
 
@@ -1741,5 +1713,4 @@ The consequence is **streamability**: because every decision needs only a few ch
 - **Mixed** literal+interpolation values (`pre!{{x}}post`, or a leading `!{{base}}/path`) are a **flow value** — a sequence of text and interpolation segments, the same flat model as any flow value, with whole-value `!{{x}}` the one-segment degenerate (a consequence of the inline-brace principle; see The Scan).
 - Raw directives and fences are parsed as specified, but host behavior (highlighting, execution, etc.) is host-defined.
 
-> [!caution] CURRENT BEHAVIOR
-> Whole-value interpolation is recognized as an interpolation value; a mid-token interpolation is not yet fired, so a glued `pre!{{x}}post` currently parses as one bare string.
+> [!caution] CURRENT BEHAVIOR Whole-value interpolation is recognized as an interpolation value; a mid-token interpolation is not yet fired, so a glued `pre!{{x}}post` currently parses as one bare string.

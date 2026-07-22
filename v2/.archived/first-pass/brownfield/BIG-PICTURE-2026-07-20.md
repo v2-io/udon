@@ -1,10 +1,6 @@
 # Bigger picture — after clean-room unsequester (2026-07-20)
 
-Written after reading front doors, all active `TODO-*` lanes, unscrubbed
-`spec/CORE.md`, the descent grammar units, fixtures layout, and the greenfield
-suites (2a / 3a / 3b) + peer feedback. Purpose: one map of **where the project
-is**, **what the real bottleneck is**, and **how the clean-rooms plug into the
-live stack** — without re-litigating language taste Joseph already holds.
+Written after reading front doors, all active `TODO-*` lanes, unscrubbed `spec/CORE.md`, the descent grammar units, fixtures layout, and the greenfield suites (2a / 3a / 3b) + peer feedback. Purpose: one map of **where the project is**, **what the real bottleneck is**, and **how the clean-rooms plug into the live stack** — without re-litigating language taste Joseph already holds.
 
 ---
 
@@ -43,8 +39,7 @@ live stack** — without re-litigating language taste Joseph already holds.
 `spec → event-parser → AST → aux · utils · UX → publishing`  
 You cannot honestly work a lower layer without the one above.
 
-**Compliance rule:** an implementation is “core-vX compliant” iff it passes
-that version’s fixture group — not because a TODO says so.
+**Compliance rule:** an implementation is “core-vX compliant” iff it passes that version’s fixture group — not because a TODO says so.
 
 **Area lanes (open-only TODOs, ~1.6k lines open work tracked):**
 

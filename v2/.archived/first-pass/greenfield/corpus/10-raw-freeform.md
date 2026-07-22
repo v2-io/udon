@@ -71,9 +71,7 @@ ElementStart code
 ElementEnd
 ```
 
-*(Freeform is the exact mode: byte-for-byte body, so unlike `!:lang:` there is
-no base-column strip and blank lines are `Text "\n"`, not `BlankLine`.
-Concatenating the Texts reproduces the body exactly.)*
+*(Freeform is the exact mode: byte-for-byte body, so unlike `!:lang:` there is no base-column strip and blank lines are `Text "\n"`, not `BlankLine`. Concatenating the Texts reproduces the body exactly.)*
 
 ## Fence in sameline scan, after attributes
 

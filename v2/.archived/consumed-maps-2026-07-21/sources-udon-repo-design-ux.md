@@ -10,14 +10,9 @@ scope: |
 
 # Sources — UDON repo design / UX / utils (demand-side)
 
-Purpose: map **where in this repo** end-user and agent needs are already
-written down, and which pieces were **copied into** `extracts/` / `spikes/`
-with provenance. Inclusive; overlap with Fable’s external maps is fine when
-the same idea appears in both places (different context).
+Purpose: map **where in this repo** end-user and agent needs are already written down, and which pieces were **copied into** `extracts/` / `spikes/` with provenance. Inclusive; overlap with Fable’s external maps is fine when the same idea appears in both places (different context).
 
-Exploration ranked by explore-agent 2026-07-21; high-value items copied
-below. Live originals remain authoritative for updates — extracts are
-snapshots at gather time.
+Exploration ranked by explore-agent 2026-07-21; high-value items copied below. Live originals remain authoritative for updates — extracts are snapshots at gather time.
 
 ## Already extracted (see sibling dirs)
 
@@ -60,14 +55,9 @@ snapshots at gather time.
 
 ## Lower priority / supply-side (skip for demand gathering)
 
-Attribute-model proposal series, descent-experience, markup-feature-matrix,
-tmLanguage/vim internals, pure parser TODOs without user-facing surface.
+Attribute-model proposal series, descent-experience, markup-feature-matrix, tmLanguage/vim internals, pure parser TODOs without user-facing surface.
 
 ## Relation to Fable’s maps
 
-- **sources-agentic-tooling.md** — external sapientia/nexum/… ideology; do not
-  duplicate here. Overlap: both care about agent-facing tools; this map is
-  *UDON-specific* design of record.
-- **sources-schema-versioning.md** — external rowan/autopax/operata; this map
-  only has `schema-notes` / workbench / guarantees as *UDON-side* schema
-  demand.
+- **sources-agentic-tooling.md** — external sapientia/nexum/… ideology; do not duplicate here. Overlap: both care about agent-facing tools; this map is *UDON-specific* design of record.
+- **sources-schema-versioning.md** — external rowan/autopax/operata; this map only has `schema-notes` / workbench / guarantees as *UDON-side* schema demand.

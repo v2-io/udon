@@ -1,7 +1,6 @@
 # Imported historical session — Thorough Exploration of Udon with Detailed Thoughts
 
-> Source: Grok session `019f7328-2fc2-7e50-831b-8df8a0b1e247` (2026-07-18 → 2026-07-18)
-> Conversion: offline spike sample (NOT yet an LLM flush). Replace body with real summary before live drop-in.
+> Source: Grok session `019f7328-2fc2-7e50-831b-8df8a0b1e247` (2026-07-18 → 2026-07-18) Conversion: offline spike sample (NOT yet an LLM flush). Replace body with real summary before live drop-in.
 
 ## Decisions & rationale
 
