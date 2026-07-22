@@ -13,54 +13,96 @@ sources:
 
 # "Structured output" names two different guarantees
 
-**Claim.** The ecosystem's converged machine-readable-answer contract (8/14
-harnesses) conceals a real split the sources themselves flag: **constrained
-decoding** (grammar/schema enforced at generation time — the output *cannot*
-be malformed) versus **after-the-fact serialization** (internal message
-objects rendered as JSON — well-formed transport around unconstrained
-content). Both are marketed as "structured output"; they are different
-guarantees, and design decisions that conflate them inherit the wrong one.
+**Claim.** Most shipping harnesses offer some machine-readable-answer
+mode, and the phrase "structured output" covers all of them — but it
+names two different mechanisms with two different guarantees.
+**Constrained decoding** enforces a grammar or schema *while the model
+generates*: malformed output cannot exist, because the sampler is not
+allowed to produce it. **After-the-fact serialization** takes whatever
+the model produced internally and renders it as well-formed JSON:
+the *transport* is guaranteed, the content inside it is as unconstrained
+as ever. Both are marketed under one name; they are different
+guarantees, and a design decision that conflates them inherits the wrong
+one.
 
 ## The evidence
 
-- **Shipped:** the ecosystem's catalog spans both mechanisms explicitly — true constrained
-  decoding (Anthropic `strict`, codex `--output-schema`, grammar-constrained
-  patch emission) vs formatter-class serialization (one harness's own
-  honest engineering log makes the distinction itself). Not conflating
-  them is this chapter's thesis.
-- **The contrarian external result (medium confidence — it survived two
-  of three adversarial checks):** structured
-  function-calling modes produced substantially *more* incorrect calls than
-  free-text prompting in the multiple-call category (BFCL, ICML 2025 —
-  scoped: counts among decoded responses, one category). Structure changes
-  the **error profile**; it does not remove error. Companion finding
-  (high confidence): failures split ~68% omission / ~32% malformation in
-  small models, attributed to insufficient schema grounding — while large
-  models show ~0% in the same study; and models *fabricate missing required
-  parameters* rather than ask.
-- **The aider abandonment** (#edit-representation-landscape) is the same
-  lesson from the edit side: pushing content through tool-call structure
-  moved the failure, it didn't eliminate it.
+- **Shipped, both kinds, sometimes knowingly:** of the fourteen harnesses
+  examined at source, eight offer a structured-output mode. The
+  examination catalogs true constrained decoding (Anthropic's strict
+  mode, codex's output-schema flag, grammar-constrained patch emission)
+  alongside formatter-class serialization — and at least one harness's
+  own engineering log draws the distinction itself, honestly, about its
+  own feature.
+- **Structure changes the error profile; it does not remove error.** The
+  Berkeley function-calling benchmark (published at ICML 2025; the
+  finding survived two of our three adversarial checks, so it is carried
+  at medium confidence) found structured calling modes produced
+  substantially *more* incorrect calls than free-text prompting in its
+  multiple-call category — counted among successfully decoded responses,
+  in that one category. A companion finding, carried at high confidence:
+  small-model failures split roughly 68% *omission* (a required field
+  simply absent) to 32% malformation, attributed to insufficient schema
+  grounding — large models showed nearly none of either in the same
+  study. And when a required parameter is missing from what the caller
+  gave, models tend to **fabricate a plausible value rather than ask**.
+- **The edit-side echo:** one prominent tool tried routing file edits
+  through structured tool-call arguments and abandoned the mechanism
+  after models kept mangling the arguments (the
+  [edit-landscape chapter](edit-representation-landscape.md) tells that
+  story, and the [counter-register](counter-register.md) scopes it by
+  ecosystem). Same lesson: pushing content *into* structure moved the
+  failure; it didn't eliminate it.
 
 ## What it generates
 
-- **For the harness:** state which guarantee each surface actually provides;
-  use constrained decoding where malformation is costly and available;
-  design for the *remaining* failure modes structure doesn't touch —
-  omission, fabricated parameters (a clarification affordance is the
-  evidence-backed answer), and wrong-but-well-formed content
-  (fail-plausible, #counter-register).
-- **For UDON:** two implications. (a) The κ×A case for sharp formats
-  (#tools-are-observation-infrastructure) is about *observation* design and
-  survives this chapter untouched — but any claim that structured **emission**
-  improves reliability must be scoped by the BFCL result; the honest pitch
-  is verifiability-of-output, not error-elimination. (b) Grammar-constrained
-  generation of UDON (from the descent grammar) would be the strong-guarantee
-  path — it makes emission correctness structural, which is exactly the tier
-  of guarantee the weak mechanism lacks; worth an experiment before a claim.
+- **For the harness:** state which guarantee each surface actually
+  provides. Use constrained decoding where malformation is costly and
+  the capability exists. Then design for the failure modes structure
+  demonstrably does not touch: omission (the dominant small-model
+  failure), fabricated parameters (a cheap structured way to ask is the
+  evidence-backed answer), and wrong-but-well-formed content — the
+  validation-passes-but-it's-false failure the
+  [counter-register](counter-register.md) documents.
+- **For UDON:** two implications, pulling in different directions. The
+  case the [observation chapter](tools-are-observation-infrastructure.md)
+  makes for sharp formats is about *reading* — observation design — and
+  survives this chapter untouched. But any claim that structured
+  **emission** improves reliability must be scoped by the benchmark
+  result above: the honest pitch is verifiability-of-output, not
+  error-elimination. The strong-guarantee path exists, though: UDON has
+  a machine-readable grammar (the same one its parser is generated
+  from), and constrained decoding against that grammar would make
+  emission correctness *structural* — exactly the tier of guarantee the
+  weak mechanism lacks. Worth an experiment before a claim.
+
+## What this opens (ideas, not designs)
+
+- **Guarantee provenance on every output.** A structured result could
+  *declare which mechanism produced it* — constrained-decode versus
+  serialized — so a consumer knows whether it holds a proof or a
+  formatting promise. Today that distinction lives in vendor docs;
+  nothing carries it with the data.
+- **Omission-first validation.** If absence outweighs malformation two
+  to one, validators have the emphasis backwards: the first-class
+  question is "what's missing," not "what's malformed." A checker whose
+  primary output is a filled-in skeleton of absent required material
+  would match the measured failure distribution.
+- **Asks generated from the schema.** The fabrication finding and the
+  ask-the-user affordance combine naturally: when a required field is
+  missing, the *schema itself* has everything needed to generate the
+  structured question (field, type, allowed values, why it matters).
+  The clarification loop becomes mechanical instead of hoped-for.
+- **Emission-constrained streaming.** If UDON emission were
+  grammar-constrained, a stream would be valid *at every prefix* — which
+  is the [streaming chapter](streaming-and-partial-documents.md)'s
+  territory arriving from the generation side. Whether the two
+  mechanisms compose (constrained decode + incremental consumption) is
+  an experiment nobody has run, in any notation.
 
 ## Honest edges
 
-The BFCL figure is one category of one benchmark (2-1 verified, kept at
-medium); the 68/32 split is small-model-only. Neither licenses "structure is
-bad" — they license precision about *which* structure buys *what*.
+The benchmark figure is one category of one benchmark, carried at medium
+confidence; the omission split is small-model-only. Neither licenses
+"structure is bad" — they license precision about *which* structure buys
+*what*.
