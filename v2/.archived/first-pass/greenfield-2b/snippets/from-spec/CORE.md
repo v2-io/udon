@@ -657,7 +657,8 @@ and this would be a sibling of |element instead.  ; col 0 = element's col, DEDEN
 ```udon
 |code
   ```
-  def foo(): return 1
+  def foo():
+      return 1
   ```
 ```
 
