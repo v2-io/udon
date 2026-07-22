@@ -118,7 +118,7 @@ The theory's full treatment of law-teaching is in
 If refusals are the law-teaching channel, several things become
 conceivable that nothing yet built does:
 
-- **A refusal contract.** Every tool error could *declare* its three
+- ✦ **A refusal contract.** Every tool error could *declare* its three
   components as machine-readable fields: what mutated (which must say
   "nothing" or itemize exactly), what was observed, which law was
   violated. Agents could then accumulate the law fields across a session
@@ -126,24 +126,24 @@ conceivable that nothing yet built does:
   explicit, exportable, and inheritable by the next session (which is the
   [persistence chapter](persistence-is-imported.md)'s concern arriving
   early).
-- **Laws queryable before violation.** The theory observes that laws are
+- ✦ **Laws queryable before violation.** The theory observes that laws are
   learned almost only at violation attempts — but that is a fact about
   today's tools, not about the world. A tool could answer counterfactuals:
   "would this call succeed?" — a dry-run channel that moves law-learning
   off the violation channel entirely. The honest doubt: violation-driven
   learning is attention-efficient precisely because it arrives exactly
   when relevant; an ask-first channel might simply go unasked.
-- **Refusal quality as a measured property.** Replay the same malformed
+- ✦ **Refusal quality as a measured property.** Replay the same malformed
   call under different goal framings and measure how differently the
   refusal gets interpreted; a refusal whose meaning shifts with the
   agent's goals is ambiguous, and that ambiguity is measurable. A harness
   could run this as a standing evaluation of its own error surfaces.
-- **The diff-shaped refusal.** For a notation with a schema, the
+- ✦ **The diff-shaped refusal.** For a notation with a schema, the
   error-as-menu principle scales up: a validator that answers not just
   "invalid at line 12" but "here is the nearest valid document, as a
   diff." Whether *nearest* is computable cheaply enough is exactly the
   kind of question a design probe exists to answer.
-- **Refusals as curriculum telemetry.** A tool's refusal stream is a
+- ✦ **Refusals as curriculum telemetry.** A tool's refusal stream is a
   record of which of its laws are worst-taught. Documentation ordered by
   violation frequency — the manual written *from* the refusals — would
   invert the usual relationship between docs and errors.

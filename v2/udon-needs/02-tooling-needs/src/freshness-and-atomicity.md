@@ -76,20 +76,20 @@ applies or fully refuses.
 
 ## What this opens (ideas, not designs)
 
-- **Freshness as a token, not a behavior.** Every read could return a
+- ✦ **Freshness as a token, not a behavior.** Every read could return a
   freshness token (a content hash, a version mark); every write could
   require one. The read gate stops being a rule agents follow and
   becomes a fact of the interface — un-forgettable by construction,
   and the hash-anchored editor's insight generalized from lines to any
   addressable thing.
-- **Staleness scoped to the target.** Text-level freshness invalidates
+- ✦ **Staleness scoped to the target.** Text-level freshness invalidates
   on *any* change to the file. Structural addressing makes a finer
   question possible: did the *addressed subtree* change? A file whose
   unrelated sections moved on could still accept a guarded edit whose
   target is untouched — fewer false staleness refusals, which matters
   exactly in the multi-writer world where the file is always changing
   somewhere.
-- **Claims as leases.** The soft-claim convention formalizes naturally:
+- ✦ **Claims as leases.** The soft-claim convention formalizes naturally:
   an advisory reservation over a path, with a lifetime, visible to
   every other writer. Whether it lives in the document, beside it, or
   in the tool layer is a design question; that agents already invented

@@ -100,24 +100,24 @@ system: "agents ARE documentation, not code that implements behavior."
 
 ## What this opens (ideas, not designs)
 
-- **Documents at N altitudes.** The elaboration-level metadata
+- ✦ **Documents at N altitudes.** The elaboration-level metadata
   generalizes: one knowledge artifact maintained at several compression
   levels, each linking up and down, with the *agent choosing by context
   budget*. The context-economy machinery keeps proving documents get
   summarized anyway — this would make the summaries authored,
   versioned, and honest instead of ad hoc.
-- **Applicability gates that execute.** The when-to-use / preconditions
+- ✦ **Applicability gates that execute.** The when-to-use / preconditions
   section is currently prose an agent reads. Stated as checkable
   conditions, the gate could *run* — knowledge that declines to apply
   itself out of scope, the way a well-designed tool refuses out-of-law
   calls.
-- **The tool whose definition is its document.** This chapter and the
+- ✦ **The tool whose definition is its document.** This chapter and the
   [tool-anatomy chapter](tool-definition-anatomy.md) converge from two
   sides: if a tool's contract is a structured document and documents
   can compile to behavior, then a tool registry is a directory of
   documents — authored, diffed, schema-checked, and projected to
   vendor formats, with nothing hand-maintained twice.
-- **Drift detection for living documents.** A compiled document cannot
+- ✦ **Drift detection for living documents.** A compiled document cannot
   drift from its own behavior — but its claims about the *world* still
   can. Assertions in a living document could carry freshness marks
   (checked-against-what, when), so staleness becomes visible in the

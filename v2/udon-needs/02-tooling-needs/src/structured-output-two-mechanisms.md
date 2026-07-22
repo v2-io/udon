@@ -78,22 +78,22 @@ one.
 
 ## What this opens (ideas, not designs)
 
-- **Guarantee provenance on every output.** A structured result could
+- ✦ **Guarantee provenance on every output.** A structured result could
   *declare which mechanism produced it* — constrained-decode versus
   serialized — so a consumer knows whether it holds a proof or a
   formatting promise. Today that distinction lives in vendor docs;
   nothing carries it with the data.
-- **Omission-first validation.** If absence outweighs malformation two
+- ✦ **Omission-first validation.** If absence outweighs malformation two
   to one, validators have the emphasis backwards: the first-class
   question is "what's missing," not "what's malformed." A checker whose
   primary output is a filled-in skeleton of absent required material
   would match the measured failure distribution.
-- **Asks generated from the schema.** The fabrication finding and the
+- ✦ **Asks generated from the schema.** The fabrication finding and the
   ask-the-user affordance combine naturally: when a required field is
   missing, the *schema itself* has everything needed to generate the
   structured question (field, type, allowed values, why it matters).
   The clarification loop becomes mechanical instead of hoped-for.
-- **Emission-constrained streaming.** If UDON emission were
+- ✦ **Emission-constrained streaming.** If UDON emission were
   grammar-constrained, a stream would be valid *at every prefix* — which
   is the [streaming chapter](streaming-and-partial-documents.md)'s
   territory arriving from the generation side. Whether the two

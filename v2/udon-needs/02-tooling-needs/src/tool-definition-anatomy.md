@@ -97,23 +97,23 @@ Per-harness detail for all of these lives in
 
 ## What this opens (ideas, not designs)
 
-- **Single-source tool contracts.** If the anatomy is name + schema +
+- ✦ **Single-source tool contracts.** If the anatomy is name + schema +
   teaching description + guidance file, nothing requires authoring those
   four in four places. One could author a tool's whole contract — law,
   examples, refusal vocabulary, per-vendor quirks — as one structured
   document and project the JSON-schema fragment each vendor API wants.
   The export seed above suggests the direction is live.
-- **Description-vs-law drift detection.** A tool's refusal stream reveals
+- ✦ **Description-vs-law drift detection.** A tool's refusal stream reveals
   the laws agents actually collide with. Diffing that against the laws
   its description *teaches* would mechanically expose the gap — the
   description rewritten from evidence, the ex-ante channel kept honest by
   the ex-post one.
-- **Plans with first-class alternatives.** The chain-vs-options numbers
+- ✦ **Plans with first-class alternatives.** The chain-vs-options numbers
   suggest a todo artifact whose syntax makes "or, failing that…" as cheap
   to write as "then…". Nothing shipped has one; the theory says the
   shape difference is worth twenty-two points of success probability in
   the worked example.
-- **Pricing the familiarity cost.** "Models are trained against these
+- ✦ **Pricing the familiarity cost.** "Models are trained against these
   shapes" is currently an argument. It could be a number: the same task
   run against a tool in its trained-shape dress and in a renamed,
   reshaped twin. Anyone choosing to deviate from convention would then

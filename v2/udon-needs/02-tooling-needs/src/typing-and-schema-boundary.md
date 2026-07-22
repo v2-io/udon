@@ -100,24 +100,24 @@ write gate can consume.
 
 ## What this opens (ideas, not designs)
 
-- **A taxonomy of the undetectable.** The duplicate-key failure matters
+- ✦ **A taxonomy of the undetectable.** The duplicate-key failure matters
   because it is *invisible at the format layer* — the format's own
   parser blesses the corruption. Every format has such a set; nobody
   has enumerated them side by side. A catalog of
   what-each-format-cannot-see would turn format selection for agent
   state from taste into risk assessment.
-- **The guessing-tax catalog as a portable test suite.** The
+- ✦ **The guessing-tax catalog as a portable test suite.** The
   architecture record's gotcha table is executable: feed each row to
   any candidate format and score silent retypes. A standing
   "Norway suite" would let every notation — UDON included — *prove*
   its typing discipline rather than assert it.
-- **Evolution in both directions.** Read-time translation as designed
+- ✦ **Evolution in both directions.** Read-time translation as designed
   is forward-only: new schema reads old documents. The inverse has
   real uses in an agent estate — old tools reading newer documents
   during staged rollouts. Whether `was:`-style declarations can be run
   backwards (or paired with `becomes:`) is a design question with a
   concrete payoff: no flag-day anywhere in a fleet of agents.
-- **Documents that know their schema version.** If schema history is
+- ✦ **Documents that know their schema version.** If schema history is
   versioned, a document stamped with the schema version it was written
   under makes every future read *self-locating* in that history — the
   read-time translator knows exactly which upcasters apply, and

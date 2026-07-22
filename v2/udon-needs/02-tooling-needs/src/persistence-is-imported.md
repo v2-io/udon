@@ -80,25 +80,25 @@ channel, and no tuning of in-session behavior substitutes for it.*
 
 ## What this opens (ideas, not designs)
 
-- **The cold-start lint.** The theory demands cold-start
+- ✦ **The cold-start lint.** The theory demands cold-start
   reconstructibility; nothing yet measures it. One could build a tool
   that reads any handoff document with deliberately *zero* context and
   reports every referent it cannot decode from the page — mechanizing the
   question a cold reader asks ("am I supposed to already know this?").
   Handoff quality becomes checkable at write time instead of discovered
   at wake time.
-- **Provenance as a first-class text property.** The summary-vs-read
+- ✦ **Provenance as a first-class text property.** The summary-vs-read
   wound exists because nothing in-band distinguishes secondhand text
   from verified text. A notation could mark derivation natively — this
   block is a digest *of* that artifact, as-of then — so a fresh agent's
   trust calibration arrives with the text instead of being reconstructed
   from folklore.
-- **Handoffs that quiz their reader.** If session-start should verify
+- ✦ **Handoffs that quiz their reader.** If session-start should verify
   reconstruction, a handoff document could carry its own verification: a
   few questions generated at write time whose answers live in the ground
   truth it points at. A successor that can't answer them knows — before
   planning anything — that its reconstruction failed.
-- **Reinjection budgeting.** Decay per boundary is geometric; expected
+- ✦ **Reinjection budgeting.** Decay per boundary is geometric; expected
   boundaries per project are estimable. That suggests maintenance of the
   reinjection channel could be *budgeted* like any other engineering
   cost, scaled to how many future sessions will pay the decay — rather

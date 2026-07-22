@@ -96,24 +96,24 @@ needs it.
 
 ## What this opens (ideas, not designs)
 
-- **The self-audit as a standing instrument.** The October-2025 session
+- ✦ **The self-audit as a standing instrument.** The October-2025 session
   audit happened once, by hand. Nothing prevents it from being a habit a
   harness prompts: every N tool calls, one cheap question — "what
   fraction of the last stretch was mechanical?" — with the answers
   accumulating into a measured, per-project 60/30/6/4 rather than a
   stated prior. The thesis would then grade its own numbers.
-- **A crystallization-request channel.** An agent that notices 60-shaped
+- ✦ **A crystallization-request channel.** An agent that notices 60-shaped
   friction mid-task currently just endures it. One could give that
   noticing somewhere to go — a standing file of tool-requests-from-lived
   -friction, so the tool suite grows from measured pain rather than from
   anticipation. (The refusal chapter's telemetry idea is this same move
   applied to errors.)
-- **An ease-gradient audit.** The gradient claim is testable per harness:
+- ✦ **An ease-gradient audit.** The gradient claim is testable per harness:
   for a given operation, count the steps and tokens of the verified path
   versus the unverified one. Where the unverified path is cheaper, the
   post-mortem above predicts exactly what agents will do. A tool suite
   could be *linted* for wrong-way gradients.
-- **The distribution as explicit dispatch.** Shipped harnesses embody the
+- ✦ **The distribution as explicit dispatch.** Shipped harnesses embody the
   routing implicitly. It could be declared instead: per task-class,
   which layer (code / small model / large model / human) owns it — a
   routing table that is observable, arguable, and tunable, instead of

@@ -89,22 +89,22 @@ directions.
 
 ## What this opens (ideas, not designs)
 
-- **The criterion as a running check.** The double-fixpoint test is
+- ✦ **The criterion as a running check.** The double-fixpoint test is
   executable: strip → model → emit → strip → model → emit, assert both
   stabilities. A formatter whose test suite *is* the criterion can
   never drift into meaning-changing "style."
-- **Diff legibility as a measured property.** If span-splicing exists,
+- ✦ **Diff legibility as a measured property.** If span-splicing exists,
   agent edits produce minimal diffs; if it doesn't, reviewers wade
   through reformat noise. "Median human-reviewable diff size per agent
   edit" is a measurable number that would price the substrate's value
   in reviewer time — the human side's stake in what looks like an
   internals decision.
-- **House style that travels with the file.** If emit-style profiles
+- ✦ **House style that travels with the file.** If emit-style profiles
   exist, a document could declare its own — style as data, applied by
   any conforming formatter, so "which style?" stops being a per-tool
   argument. Whether that declaration belongs in the document or beside
   it is exactly the kind of question the design work ahead owns.
-- **The span map as a public product.** The substrate could expose what
+- ✦ **The span map as a public product.** The substrate could expose what
   it knows: a per-node byte-span table emitted alongside any parse, so
   *any* tool — not just the blessed editor — can splice precisely
   without reparsing. The yq operator shows the demand; a first-class

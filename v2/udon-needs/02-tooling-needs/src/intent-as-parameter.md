@@ -97,7 +97,7 @@ that distinction; a bare old-text/new-text pair cannot support it.
 
 ## What this opens (ideas, not designs)
 
-- **Intent as the verification anchor.** The counter-register's hardest
+- ✦ **Intent as the verification anchor.** The counter-register's hardest
   row says validation cannot catch plausible wrongness — a well-formed
   edit that does the wrong thing sails through every schema. A *stated
   intent* gives a verifier, human or machine, something to check the
@@ -105,18 +105,18 @@ that distinction; a bare old-text/new-text pair cannot support it.
   answerable; "is this change right?" in a vacuum is not. Intent might
   be the cheapest purchase available against exactly the failure class
   nothing else catches.
-- **History queryable by purpose.** If operations carry intent, an
+- ✦ **History queryable by purpose.** If operations carry intent, an
   audit log becomes searchable semantically: every change whose purpose
   mentioned the deadline, every edit made in service of the migration.
   Commit messages half-deliver this today at commit granularity;
   operation-level intent would deliver it exactly.
-- **Intent chains across delegation.** When an agent delegates, its
+- ✦ **Intent chains across delegation.** When an agent delegates, its
   sub-agent's tool calls could carry the *parent's* intent alongside
   their own — a provenance chain of purpose. "Which top-level goal
   caused this edit?" becomes answerable across any depth of delegation
   (the [delegation chapter](delegation-as-tooling.md)'s briefing
   discipline, extended down into the tool layer).
-- **Pricing the burden.** The honest tension below — authoring cost per
+- ✦ **Pricing the burden.** The honest tension below — authoring cost per
   call — is measurable: repair-yield and audit-value per character of
   required intent, against completion drag. The mandatory-intent scope
   (mutations only? high-stakes only?) could be set from data rather

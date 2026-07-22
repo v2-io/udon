@@ -49,7 +49,16 @@ written so you can tell which without apparatus:
   Such passages are voiced unmistakably as imagination ("one could…",
   "nothing yet built does…"), they open possibility space without closing
   any of it, and they decide nothing — the design work downstream owns
-  all of that, with fuller context than this page has.
+  all of that, with fuller context than this page has. **Proposed content
+  is marked visibly:** each idea appears under a chapter's "What this
+  opens (ideas, not designs)" heading with a leading **✦** — skim the ✦
+  marks across the report and you have its full harvestable idea
+  inventory, cleanly separated from everything evidenced or decided.
+  (That this report has to *invent* a typographic convention to mark a
+  claim's register is itself a small demand datum for the notation
+  work: registers-on-content is exactly the kind of thing a
+  structure-and-prose format could carry natively instead of by
+  decoration.)
 
 If a passage seems to argue hard for something that needed no argument,
 treat it as a defect in this report and flag it.

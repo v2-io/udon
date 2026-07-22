@@ -137,24 +137,24 @@ with the agent edit tool as the careful gatekeeper.
 
 ## What this opens (ideas, not designs)
 
-- **One guard, three doors.** The same conformance engine could stand
+- ✦ **One guard, three doors.** The same conformance engine could stand
   at generation time (grammar/schema-constrained emission), at edit
   time (this chapter's transaction), and at review time (batch CI
   checking) — one schema, three enforcement points, so a document is
   guarded whether it was born, changed, or merged into shape. Nothing
   requires three separate validators; nobody has built the unified one.
-- **Refusals that carry the repair.** A guarded refusal knows exactly
+- ✦ **Refusals that carry the repair.** A guarded refusal knows exactly
   which constraint failed. It could return the *nearest conforming
   version* of the attempted edit as a diff — "not this, but here is
   the closest thing that would be accepted." The refusal chapter's
   error-as-menu, upgraded to error-as-counteroffer.
-- **Schema-aware merge.** Two agents editing the same document
+- ✦ **Schema-aware merge.** Two agents editing the same document
   concurrently is a documented collision class. Structural mutation
   suggests structural *merge*: both edits applied to the model (not
   the text), conformance checked on the merged result, conflicts
   reported in path vocabulary rather than diff hunks. The multi-writer
   problem inherits the guard.
-- **Guarding the markdown-era estate.** The harness's divergence note
+- ✦ **Guarding the markdown-era estate.** The harness's divergence note
   below has an answering idea: conventions-as-schema. The harness's
   existing plain-markdown artifacts follow implicit rules; stated as a
   lightweight schema, the same write gate could guard them *today*,

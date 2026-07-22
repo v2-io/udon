@@ -83,25 +83,25 @@ either posture colonize the other.
 
 ## What this opens (ideas, not designs)
 
-- **A validity heartbeat.** Nothing today tells a generating agent "your
+- ✦ **A validity heartbeat.** Nothing today tells a generating agent "your
   last 400 tokens still parse; one construct open; no anomalies." A
   sidecar that renders the partial-parse verdict at intervals during
   generation would be the syntax-highlighting equivalent the demand
   names — cheap with a format whose prefixes parse, impossible without.
-- **Prefix-honesty as a declared class.** Streaming surfaces could
+- ✦ **Prefix-honesty as a declared class.** Streaming surfaces could
   declare what their payload format guarantees mid-stream:
   parses-at-every-prefix, or guard-the-parse. Consumers would pick
   buffering strategy mechanically instead of by folklore. (The
   [counter-register](counter-register.md)'s transport dissent stands
   unchanged: this classifies *payloads*; framing, sequencing, and
   cancellation remain the transport's job.)
-- **Interruption as a document.** If a partial tree plus its verdict is
+- ✦ **Interruption as a document.** If a partial tree plus its verdict is
   honest, an interrupted generation becomes a *handoff artifact* — one
   model stops mid-emission, another (or the same one, a session later)
   resumes from the partial state rather than regenerating. Nothing
   shipped treats mid-generation state as transferable; the format
   property above is what would make it thinkable.
-- **Pricing the tax.** "Tokens wasted after the first uncaught anomaly"
+- ✦ **Pricing the tax.** "Tokens wasted after the first uncaught anomaly"
   is measurable per format: generate until an induced error, count how
   long the error survives undetected under each format's feedback
   affordances. The reassembly machinery's cost has never been priced;

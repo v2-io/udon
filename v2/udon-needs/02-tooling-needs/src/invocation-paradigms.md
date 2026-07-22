@@ -79,18 +79,18 @@ the [context chapter](context-economy.md) tells that history.)
 
 ## What this opens (ideas, not designs)
 
-- **The program run as a document.** Code mode's observability
+- ✦ **The program run as a document.** Code mode's observability
   regression has a document-shaped answer: the sandbox could emit the
   whole run — each in-program tool call, its arguments, its result or
   teaching refusal — as one structured trace artifact. The per-call
   learning channel comes back, and the run becomes auditable and
   handoff-able rather than ephemeral.
-- **Composed guarantees.** Nothing prevents a code-mode program from
+- ✦ **Composed guarantees.** Nothing prevents a code-mode program from
   emitting constrained-freeform payloads for its riskiest operations —
   orchestration in code, mutation under grammar. The paradigms are
   presented as rivals; they compose, and no one has tried the
   composition.
-- **A measured router.** The rival-suites experiment generalizes: a
+- ✦ **A measured router.** The rival-suites experiment generalizes: a
   harness could route invocation paradigm *per task class* from its own
   measured outcomes rather than by fashion — the same move the
   [crystallized-process chapter](the-crystallized-process-thesis.md)

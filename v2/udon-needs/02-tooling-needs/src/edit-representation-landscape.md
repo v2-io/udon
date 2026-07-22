@@ -120,23 +120,23 @@ artifact was right, so its ambiguity is priced twice (the
 
 ## What this opens (ideas, not designs)
 
-- **The ladder as a published contract.** Every team built its
+- ✦ **The ladder as a published contract.** Every team built its
   tolerance ladder privately. Standardized — with each result declaring
   *which tier matched* — edit reliability would become comparable
   across tools and models, and a tier-2 match (whitespace-flexible)
   could warn where a tier-0 match (byte-exact) stays silent.
-- **Path plus hash.** The landscape presents structural addressing and
+- ✦ **Path plus hash.** The landscape presents structural addressing and
   content-hash anchoring as different paradigms; nothing prevents their
   composition — a structural path names the place, a content hash pins
   the version, and staleness becomes detectable *at the address level*
   regardless of how the document moved underneath. Neither alone
   delivers that.
-- **A compliance arena for structural edits.** The "precise bar" above
+- ✦ **A compliance arena for structural edits.** The "precise bar" above
   is runnable: the same edit tasks, the same models, the tolerance
   ladder versus a schema-guarded structural representation,
   compliance and correctness scored separately. Before UDON claims its
   edit tool beats the ladder, this is the experiment that would know.
-- **Edit dialects as declared capability.** Harnesses route edit formats
+- ✦ **Edit dialects as declared capability.** Harnesses route edit formats
   per model by folklore and testing. Models (or their cards) could
   *declare* which edit dialects they are trained against — turning the
   universal ad-hoc routing into negotiation over stated capability.
