@@ -82,28 +82,29 @@ The 17 pre-template files (grok's extracts + excerpts) predate
 `source_commit`; their gather date locates the commits if ever needed —
 backfill is optional-queue work, not a blocker.
 
-## Deferred reservoirs — available on question, not swept
+## The session-transcript corpus — dialog content is IN scope; only bulk telemetry is deferred
 
-Two sources deliberately *not* mined in the 2026-07-21 fan-out, noted here
-so a later subphase reaches for them when a specific question wants an
-answer (rather than sweeping them into the digestion queue now):
+**Correction (2026-07-21, after a misapplied exclusion):** an earlier version
+of this section ("raw session corpora — query it, don't sweep it") was
+over-generalized from Joseph's note and got applied by audit agents as a
+*class exclusion on content hits* — the opposite of the standing
+instruction. The actual rule:
 
-- **Raw session corpora** — many hundreds of long agent sessions with
-  *full tool usage*: invocations, failure results, retries, recoveries
-  (~/.claude/projects/**, ~/.sapientia/, ~/.claude.bak.*, cc-raw jsonls,
-  session-vault). Much of what was noteworthy got discussed and is already
-  captured via the dialog-span excerpts — the *additional* value here is
-  question-shaped empirics: e.g. "how did edit-tool failure rates change
-  across model generations?", "what does a retry cascade actually look
-  like?" — and uniquely, **the evolution of harness + model tool-use
-  capability over a full year of Anthropic models**. Query it (memorata3,
-  targeted greps); don't sweep it.
-- **External landscape via /deep-research** — a commissioned web-research
-  pass (industry edit-format debates, agent-tooling papers, harness
-  changelogs) is available whenever synthesis hits a claim that wants
-  outside corroboration. Not launched during gathering by choice: the
-  compilation's value is the internal estate; external context is
-  seasoning, commissioned per-question.
+- **Dialog content in transcripts is a first-class source.** memorata3-search
+  over the session corpora (~/.claude/projects/**, ~/.claude.bak.*,
+  ~/.sapientia/, cc-raw jsonls, curation transcripts, session-vault) is how
+  much of this corpus was found, and any span a search surfaces is an
+  **ordinary candidate**: read it, judge it against the vision question,
+  land/witness/dismiss-with-reason. There is no transcript class exclusion.
+  Never classify a search-surfaced span as excluded *by location*.
+- **What IS deferred** is the *bulk-telemetry dimension* of those same
+  files: systematic sweeps over full tool-usage mechanics (failure-result
+  rates, retry cascades, capability evolution across a year of Anthropic
+  models). That's question-shaped empirical work — commissioned when a
+  specific question wants it — not because it's out of scope, but because
+  an unsweepable volume needs a question to bound it.
+- **External landscape via /deep-research** — commissioned per-question
+  (first commission landed 2026-07-21: `02-provenanced/syntheses/external-landscape-2026-07.md`).
 
 Standing brief for agents working this material (purposes, quality bars,
 conventions): [`../BRIEF-agentic-tooling-compilation.md`](../BRIEF-agentic-tooling-compilation.md).
