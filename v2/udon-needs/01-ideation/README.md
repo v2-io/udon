@@ -17,30 +17,64 @@ runs through four subphases, per Joseph's framing (2026-07-21, verbatim):
 |----------|------|----------|
 | **1.1 Target identification** | Mining-spot maps / source listings ("potential source files"), reconciled into a prioritized target queue | [`01-reconciled-target-files/`](01-reconciled-target-files/) |
 | **1.2 Verification** | Per-target: confirm relevance; confirm not already present *verbatim* (restated-in-different-context is wanted, with editorial) | happens en route 01 → 02 |
-| **1.3 Provenanced intake** | Copy file or relevant span here, provenance in frontmatter | [`02-provenanced-copies/`](02-provenanced-copies/) |
-| **1.4 Annotation & pre-analysis** | Categories, `why_included` banners, phase-(2)-facing metadata — fleshed out in place on the copies | in place, within `02-…` |
+| **1.3 Provenanced intake** | Copy file or relevant span here — or characterize/synthesize where verbatim copy is the wrong move — provenance in frontmatter | [`02-provenanced/`](02-provenanced/) |
+| **1.4 Annotation & pre-analysis** | Categories, `why_included` banners, phase-(2)-facing metadata — fleshed out in place on the intake | in place, within `02-…` |
 
 ## Layout
 
-- **`01-reconciled-target-files/`** — subphase-1.1 output.
-  `MASTER-REGISTRY.md` is the front door (four evidentiary tiers, 18
-  cross-tier convergence clusters, trust annotations, the prioritized
-  copy-queue that drives 1.2/1.3). Beside it: the ~30 vetted mining-spot
-  maps (`agentic-tooling-sources/` incl. the 17 in-vivo harness maps and
-  the ASF dossier — the dossier is a tier-4 *synthesized result*, not a
-  map), `sources-schema-versioning.md`, and grok's `MERGED-six-maps.md`.
-- **`02-provenanced-copies/`** — subphases 1.3/1.4 output.
-  `grok-early-pass/` is the first resident: 14 extracts + 3
-  discussion-excerpts already carrying provenance frontmatter, categories,
-  and `why_included` annotation (the furthest-advanced material in the
-  pipeline). The extraction pass over the copy-queue lands its copies
-  here too.
+- **`01-reconciled-target-files/`** — subphase-1.1 output:
+  **`TARGET-FILES.md`**, the flat spawnable target-file union — one row
+  per unique target across all ~30 mining maps (the maps themselves were
+  dissolved into it 2026-07-21 and archived at
+  `v2/.archived/consumed-maps-2026-07-21/`), priorities carried from the
+  maps' own tiering, merged annotations, editorial + dry-wells inline,
+  per-section [COPY]/[CHARACTERIZE] work-mode markers. Extraction agents
+  spawn against its rows.
+- **`02-provenanced/`** — subphases 1.3/1.4 output, by genre:
+  `copies/` (verbatim spans w/ provenance: grok's extracts +
+  discussion-excerpts), `characterizations/` (extraction-by-report: the
+  17 `harness-invivo/` reports, `sapientia-bin-buildout.md`),
+  `syntheses/` (the ASF dossier + reading log, `CONVERGENCES.md` — tiers,
+  18 cross-tier clusters, the Tier-2 lineage caveat — and the tier-2
+  digest), `commentary/` (grok's demand spikes). The genres carry
+  different trust: copies can't be wrong about their source;
+  characterizations can; syntheses carry reading-log provenance.
 - **`needs-map.md`** — gathered ideation seed (situations S1–S12); an
   input to phase (2)'s deliverable shape, not a source listing or a copy.
-- **`scratch/`** — search logs, reconcile buckets, and the quarantined
-  first sweep (see its README before touching).
-- **`GATHERING-INDEX.md`** — the running registry of what's staged, with
-  the supersession-review record.
+- **`scratch/`** — search logs, the reconcile workdir (UNION chop passes =
+  the union's assembly provenance), grok pass bookkeeping, and the
+  quarantined first sweep (see its README before touching).
+- **`GATHERING-INDEX.md`** — the running front door / state of the phase.
+
+## Frontmatter template for `02-provenanced/` files
+
+Every file landing in `02-provenanced/{copies,characterizations,syntheses,commentary}/`
+carries YAML frontmatter in this shape (settled 2026-07-21 from grok's
+convention, in uniform use across all existing copies):
+
+```yaml
+---
+source: <descriptive origin — repo file / consumer doc / discussion turn / sweep>
+gathered: <YYYY-MM-DD>
+status: <gathered / characterization / synthesis — never authoritative;
+  partial extracts say so explicitly ("head only — full file ~N lines")>
+paths:
+  - <actual source location; repo-relative for this repo, absolute for
+    external; append :start-end line-spans for excerpts and jsonl>
+source_commit: <git SHA of the source repo at gather time; source_mtime
+  for non-git sources. Optional but expected for anything external or
+  long-lived — "live originals may advance" is only checkable against a
+  pin. (The theory's own point: verifiability of the past, not its
+  presence, is what makes a copy trustworthy.)>
+categories: [<phase-2 tags>]
+why_included: <one line of editorial — or carry it as a top banner
+  blockquote in the body when it wants more room>
+---
+```
+
+The 17 pre-template files (grok's extracts + excerpts) predate
+`source_commit`; their gather date locates the commits if ever needed —
+backfill is optional-queue work, not a blocker.
 
 Standing brief for agents working this material (purposes, quality bars,
 conventions): [`../BRIEF-agentic-tooling-compilation.md`](../BRIEF-agentic-tooling-compilation.md).

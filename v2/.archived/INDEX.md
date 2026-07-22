@@ -102,9 +102,24 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 | (rest of both subdirs) | Open-source-file pass scratch, subsumed same day. |
 
 **Supersession review note (2026-07-21, post-registry):** a per-file sweep of
-`01-ideation/` found nothing further fully superseded — grok-early-pass
-extracts/spikes/excerpts hold unique annotation work and stay live; details in
-`01-ideation/GATHERING-INDEX.md` §Supersession review.
+`01-ideation/` found nothing further fully superseded at that point; the same-day
+dissolve+recombine round (below) then consumed the maps **by design**, not by
+supersession.
+
+## consumed-maps-2026-07-21/ — mining maps dissolved into the target-file union
+
+The phase-1.1 mining-spot maps, archived after their content was **fully chopped
+into** `01-ideation/01-reconciled-target-files/TARGET-FILES.md` (the flat spawnable
+union) and `01-ideation/02-provenanced/syntheses/CONVERGENCES.md` (the analysis
+layer). Assembly provenance: `01-ideation/scratch/reconcile-workdir/UNION-{A,C,D}.md`.
+
+| Path | One line |
+|------|----------|
+| `agentic-tooling-sources/` (9 maps) | Fable's vetted area maps (sapientia, zoetica-ennaos, nexum…, autopax-practica, dialogs, elsewhere, ref-arch, harness-refs, vaults) → TARGET-FILES Parts II–III |
+| `MERGED-six-maps.md` | grok's six-map union (usability corpus, scenarios, consumers) → TARGET-FILES Part I |
+| `sources-{live-consumers,udon-repo-design-ux}.md` | grok's early-pass source maps → TARGET-FILES Part I (✔-copied markers preserved) |
+| `sources-schema-versioning.md` | rowan/autopax/operata schema family → TARGET-FILES Part III |
+| `MASTER-REGISTRY.md` | the interim librarian's index (same day) — editorial absorbed into TARGET-FILES header + CONVERGENCES; superseded as front door |
 
 ## Pointers outside this archive
 
