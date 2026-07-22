@@ -43,15 +43,17 @@ theory survey whole, with each result's premises):**
   reasoning is formalized as the high-κ×high-A corner — ambiguity in an
   agent-facing format is the opening through which goal-conditioned
   distortion enters, not mere friction.
-- **Tempo gating** — T = Σ ν·η*, and η* collapses under observation noise:
+- **Tempo gating** — an agent's adaptation tempo is loop speed times
+  update quality, summed over its channels (the theory writes it T = Σ ν·η*),
+  and the update-quality term collapses under observation noise:
   *you cannot outrun a bad observation channel by iterating faster.* Worse,
   bad channels *hide miscomprehension* (high noise + spuriously-low model
   uncertainty drives the update gain toward zero: the agent stops updating
   even when wrong). And correlated channels overcount: more telemetry ≠ more
   adaptation; only structurally independent channels sum.
-- **Persistence threshold** — T > ρ/‖δ_critical‖ (tempo must exceed the
-  environment's drift rate, scaled by how much mismatch the agent can
-  survive). Round-trips-per-orient-step set loop tempo; a tool loop too
+- **Persistence threshold** — tempo must exceed the environment's drift
+  rate, scaled by how much mismatch the agent can survive (the theory's
+  T > ρ/‖δ_critical‖). Round-trips-per-orient-step set loop tempo; a tool loop too
   slow for the environment's drift rate is a viability failure, not a
   performance failure. And persistence is priced: it demands a *sustained*
   information intake rate — "survival is not a state you achieve once; it
@@ -71,24 +73,24 @@ theory survey whole, with each result's premises):**
   knowing the tool's action-mechanism — the map from "I called this" to
   "that happened" (the theory's condition C3) — which is an *interface
   property*, established by precise action semantics and law-teaching
-  refusals (#errors-that-teach).
+  refusals (the [next chapter's](errors-that-teach.md) subject).
 
 **From shipping practice (the same physics instantiated, mostly without
 the theory):** the ecosystem's converged "prefer dedicated tool over shell
 equivalent" tables (7 sources, near-verbatim: Read not cat, Edit not sed —
 "keeps raw stdout out of the conversation") are A-reduction in the wild;
-the entire context-management subsystem family (#context-economy) is the
+the entire context-management machinery ([a later chapter](context-economy.md)) is the
 description-length budget handled empirically.
 
-**From the design corpus:** the agentic-ux principles state the same rules
-as design ideology, years before the theory formalized them — "tool loop =
+**From the first-principles design work:** a 2025 statement of design
+principles for agent-facing interfaces lays down the same rules as ideology, years before the theory formalized them — "tool loop =
 epistemic organ (deterministic, honest readout)"; "drive observation
 ambiguity toward zero (codes, counts, paths — not interpretive prose in the
 result channel)." This is the report's strongest foundations-level
 agreement — noted honestly: the design principles and the theory share an
 author, so the load-bearing independence is between **the theory and the
 shipped ecosystem**, which arrived at the same rules separately; the design
-corpus is the same mind saying it earlier. (No external study directly
+work is the same mind saying it earlier. (No external study directly
 tests the bias law itself; published evidence corroborates neighboring
 claims, not this one.)
 
@@ -112,5 +114,5 @@ claims, not this one.)
 The theory results are conditional (their named sub-scopes travel with
 them); the persistence framing transfers to real harnesses only insofar as
 "drift" is meaningful for the task environment. Nothing here says structure is
-sufficient — see #counter-register (structured modes change the error
-profile rather than removing it).
+sufficient — see the [counter-evidence chapter](counter-register.md) — structured modes
+change the error profile rather than removing it.
