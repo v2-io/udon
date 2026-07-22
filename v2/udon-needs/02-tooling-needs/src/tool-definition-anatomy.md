@@ -37,13 +37,22 @@ as independent votes.
   Its function under T4 light: an externalized strategy artifact with
   observable intermediates — credit assignment made bookkeeping
   (dossier §5.2) — which is likely *why* it survives contact with every
-  model generation.
+  model generation. The same theory supplies a plan-*shape* lesson worth
+  carrying next to it: under uncertainty, deep AND-chains are
+  mathematically doomed while wide OR-structure survives — the dossier's
+  worked numbers: a 4-step chain at 90% per step succeeds 65% of the time;
+  three independent 50% options succeed 87.5%. A plan artifact that makes
+  it easy to write parallel fallbacks and awkward to write long dependent
+  chains is quietly load-bearing.
 - **Subagent/delegation tool:** fresh isolated context, resumable ID,
   scope-discipline framing, and — notable, repeated across independent
   implementations — **read-only roles enforced by tool-omission, not
   prose**. That last is a genuine design law the estate learned separately
-  (the 2026-05-02 worktree deletion: constrain by tool-set, never by
-  prose) — a Tier-1↔Tier-2 convergence with different incidents behind it.
+  from its own incident (an agent asked to *assess* worktrees as
+  safe-to-delete removed all eight; the codified rule: constrain by
+  tool-set, never by prose — provenanced at
+  `01-ideation/02-provenanced/commentary/worktree-deletion-incident.md`) —
+  a Tier-1↔Tier-2 convergence with different incidents behind it.
   (#delegation-as-tooling carries the briefing-discipline half.)
 - **Instruction files (AGENTS.md):** directory-scoped, nearest-wins — with
   a live, unresolved disagreement: one harness treats AGENTS.md as

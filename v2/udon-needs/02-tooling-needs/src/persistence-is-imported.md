@@ -35,17 +35,17 @@ it.* The reinjection channel structurally **is** the scaffold.
   reconstruction mechanism; and the context window is a joint
   description-length budget (strategy + model + task under one capacity), so
   compact formats relieve a structural ceiling, not a convenience.
-- **T2/T3 lived (the compaction wound, three vantage points):** the harness
-  workshop's own INTERPRES note — auto-compaction "produced a task sheet,
-  not a continuation of experiential understanding. **False confidence
-  followed**"; recovery required durable on-disk notes plus full re-reads
-  before trusting plans. Convergent with the corrected-behavior dossier's
-  `summary-not-sufficient` (a summary and a verified read arrive in context
-  as the same kind of text — the model has no native marker distinguishing
-  them) and with Zi-am-tur's testimony ("can't persist across context
-  boundaries without infrastructure"). Same wound; independently earned in
-  an adversarially-verified artifact — a genuine Tier-1↔harness cross-tier
-  convergence.
+- **The compaction wound, three vantage points** — T3 (lived, Zi-am-tur:
+  "can't persist across context boundaries without infrastructure"), plus
+  the harness workshop's own empirical record (within-programme, so not an
+  independent tier, but adversarially verified): the INTERPRES note —
+  auto-compaction "produced a task sheet, not a continuation of
+  experiential understanding. **False confidence followed**"; recovery
+  required durable on-disk notes plus full re-reads before trusting plans.
+  Convergent with the corrected-behavior dossier's `summary-not-sufficient`
+  (a summary and a verified read arrive in context as the same kind of
+  text — the model has no native marker distinguishing them). Same wound,
+  earned separately at each vantage.
 - **T2 shipped:** every mature harness carries reinjection machinery —
   compaction prompts framed as the agent's *only* memory (XML state
   snapshots), first-person handoff-note prompts, tracking snapshots. The

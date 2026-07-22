@@ -16,10 +16,14 @@ sources:
 # The edit-representation landscape: text-level, guarantee-free, and empirically decisive
 
 **Claim.** How an agent expresses an edit is the single most consequential
-interface choice in shipped agentic tooling — format choice swings success
-2–3× — and *every* shipping approach edits at the text/character level with
-**no validity guarantee** for the artifact being edited. That absence is the
-gap this whole part of the report converges on (#schema-guarded-mutation).
+interface choice in shipped agentic tooling — the T5-measured swing between
+formats on one model was 14.07% → 57.07% pass@1 (~4×, fine-tuned-7B-era;
+aider's own benchmarks report 2–3× variation, a figure that reaches us
+second-hand through a T1 summary and corroborates the direction rather than
+pinning the size) — and *every* shipping approach edits at the
+text/character level with **no validity guarantee** for the artifact being
+edited. That absence is the gap this whole part of the report converges on
+(#schema-guarded-mutation).
 
 ## The landscape (T2, 14 real harnesses, lineage-corrected)
 
@@ -56,9 +60,10 @@ edit contract as model-agnostic.**
 
 ## External corroboration (T5, adversarially verified)
 
-- Line-number-indexed diffs catastrophically fail (14.07% vs 57.07% pass@1,
-  7B model); structure-aware diffs match/beat whole-file at >30% lower cost;
-  aider measures format *compliance* separately from correctness and
+- Line-number-indexed diffs catastrophically fail (the 14.07%-vs-57.07%
+  figure above); structure-aware diffs match whole-file accuracy at >30%
+  lower cost (the accuracy edge itself is thin — 1.5pt, a single benchmark
+  cell); aider measures format *compliance* separately from correctness and
   defaults unfamiliar models to whole-file as easiest-to-emit. (Caveat
   travels: headline numbers are fine-tuned-7B-era, not frontier.)
 - SWE-agent (NeurIPS 2024): agents are a distinct user category; guarded

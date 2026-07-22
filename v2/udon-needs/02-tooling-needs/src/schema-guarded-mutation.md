@@ -1,8 +1,8 @@
 ---
 slug: schema-guarded-mutation
 type: demand
-evidence: [T1, T2, T3, T4, T5]
-status: cross-tier-convergent (the report's strongest demand)
+evidence: [T1, T2, T4, T5, T3-adjacent]
+status: cross-tier-convergent (the report's strongest demand; 4 tiers direct, T3 via the ease-gradient account)
 stage: drafted
 consumers: both (udon-primary)
 depends: [edit-representation-landscape, errors-that-teach]
@@ -22,7 +22,8 @@ mutation **validated inside the write** — no change is accepted that would
 make the document violate its declared schema — and refused mutations
 returning law-rich, menu-shaped errors. This is precisely what no shipping
 tool provides (#edit-representation-landscape: all text-level, no validity
-guarantees), and every tier independently asks for it.
+guarantees), and four tiers ask for it directly — with the lived-testimony
+tier asking for it *by name* through the ease-gradient account below.
 
 ## The demand, tier by tier
 
@@ -42,10 +43,33 @@ guarantees), and every tier independently asks for it.
   form); yq demonstrates structural path-assignment without schema guard;
   Obsidian's linter admits its rules don't compose. Nobody has the
   validated-transaction shape.
-- **T3 (lived):** the yaml-spike adversarial re-test — duplicate-key silent
-  data loss; agent recovery 100% with backup vs **16% without**; "schema
-  migration in YAML harder than expected." The cost of guarantee-free
-  mutation, measured.
+- **T2 (empirical stress test — the autopax yaml-spike, Dec 2025):** the
+  measured cost of guarantee-free mutation. Three agents, adversarial
+  protocol: Agent A writes valid data, Agent B introduces a specific
+  corruption, Agent C — with 100% context turnover and no human — attempts
+  recovery. Across six corruption scenarios, recovery was **100% with
+  backup infrastructure and 16% (1/6) without**. The worst case wasn't the
+  loud one: **duplicate keys parse cleanly**, the YAML parser raises
+  nothing, and the earlier values are silently gone —
+
+  ```yaml
+  - id: "task-1"
+    name: "Implement feature X"
+    status: pending
+    name: "Implement feature Y"   # parses fine; X is lost forever
+  ```
+
+  — unrecoverable *and undetectable* by the next agent ("file looks valid,
+  no errors, but data is wrong"). The spike's own conclusion is this
+  segment's demand stated from the wound side: the format did nothing, so
+  ~500 lines of backup/validation/salvage infrastructure had to be built
+  around it — and the one failure that infrastructure still can't catch is
+  exactly the one a schema-checking write gate refuses at the door.
+- **T3 (lived, adjacent):** Architectus's ease-gradient account — chaining
+  unverified str_replace edits was the easiest available path and "broke
+  minimal-sapientia 3 times." The tool's own audience asking for the
+  verified path to be the easy path — the schema-guarded-mutation question
+  in first person.
 - **T4:** schemas convert interpretive observations into pass/fail — the
   low-A move (#tools-are-observation-infrastructure); typed response/write
   boundaries are the W₂ separation mechanism; and refusal atomicity is an

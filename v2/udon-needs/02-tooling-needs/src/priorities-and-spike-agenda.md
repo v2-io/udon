@@ -21,7 +21,8 @@ not implementation sequencing — that adjudication belongs downstream
 
 ## The demand ranking (strongest first)
 
-1. **Schema-guarded structural mutation** — 5-tier convergence, measured
+1. **Schema-guarded structural mutation** — 4-tier convergence (plus the
+   lived ease-gradient account), measured
    cost of absence (16% unaided recovery), explicit design-of-record demand,
    and the gap no shipping tool fills. Pulls: paths, schema, spans,
    round-trip — which is exactly why it is the organizing customer for the

@@ -28,9 +28,14 @@ throughput or ergonomics quantity.
 dossier):**
 
 - **The κ×A bias law** — belief bias in a coupled (LLM) agent is bounded by
-  (architectural coupling κ) × (observation ambiguity A). κ ≈ 1 by
-  construction for anything logogenic and cannot be engineered away; **A is a
-  property of observation design**. The theory's own lever statement: the
+  (architectural coupling κ) × (observation ambiguity A). Plainly: κ
+  measures how much the agent's *goals* are wired into how it processes
+  what it sees (for an LLM, one forward pass does both, so κ ≈ 1 by
+  construction and cannot be engineered away); A measures how much of an
+  observation's meaning is left open to interpretation the agent's goals
+  could bend. The product bounds how wrong wanting-something can make the
+  agent's beliefs. Since κ is immovable, **A — a property of observation
+  design — is the one knob anyone gets.** The theory's own lever statement: the
   practical move is "not reducing κ … but reducing A: more tests, more
   precise metrics, more structured outputs, less reliance on interpretive
   judgments." Canonical A≈0 observations: a test passing or failing, a
@@ -44,13 +49,29 @@ dossier):**
   uncertainty drives the update gain toward zero: the agent stops updating
   even when wrong). And correlated channels overcount: more telemetry ≠ more
   adaptation; only structurally independent channels sum.
-- **Persistence threshold** — T > ρ/‖δ_critical‖. Round-trips-per-orient-step
-  set loop tempo; a tool loop too slow for the environment's drift rate is a
-  viability failure, not a performance failure.
-- **The interventional gate** — every tool call is a do() intervention, and a
-  loop earns Pearl Level-2 status only when the tool's action-mechanism is
-  known (C3) — which is an *interface property*, established by precise
-  action semantics and law-teaching refusals (#errors-that-teach).
+- **Persistence threshold** — T > ρ/‖δ_critical‖ (tempo must exceed the
+  environment's drift rate, scaled by how much mismatch the agent can
+  survive). Round-trips-per-orient-step set loop tempo; a tool loop too
+  slow for the environment's drift rate is a viability failure, not a
+  performance failure. And persistence is priced: it demands a *sustained*
+  information intake rate — "survival is not a state you achieve once; it
+  is a sustained burn rate" — so observation channels must supply real
+  capacity or persistence fails regardless of how good the correction
+  logic is. The diagnostic gift of the same chapter: **confident wrongness
+  is a structural-failure signature, not a tuning failure** — persistent
+  mismatch with *systematic structure* in the residuals means the model is
+  the wrong kind of object, and no amount of tuning (or telemetry volume)
+  helps.
+- **The interventional gate** — every tool call is a do() intervention in
+  Pearl's sense: the agent *sets* something in the world rather than
+  passively observing it, which is what makes tool-loop data causal
+  (Level-2, "what happens if I do X") rather than merely correlational
+  (Level-1, "what tends to co-occur"). A chat window is Level-1; a bash
+  terminal is Level-2. But the upgrade is *earned*, gated on the loop
+  knowing the tool's action-mechanism — the map from "I called this" to
+  "that happened" (the theory's condition C3) — which is an *interface
+  property*, established by precise action semantics and law-teaching
+  refusals (#errors-that-teach).
 
 **T2 (shipped practice instantiating the same physics, mostly without the
 theory):** the ecosystem's converged "prefer dedicated tool over shell

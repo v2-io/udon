@@ -28,11 +28,38 @@ actions.
 
 ## The four-tier lock: the str_replace multi-match refuse
 
-The single best worked example in the harvest, present in every tier:
+The single best worked example in the harvest, present in every tier — and
+worth actually seeing. The original tool silently replaced *every* match
+(`gsub`) and reported a count; the author discovered the damage only later.
+The evolved sapientia tool refuses instead:
 
-- **Built (T1/T2, sapientia 2025):** the minimal-sapientia str-replace error —
-  mutation: zero; law taught: uniqueness required; state revealed: line
-  numbers of every match.
+```text
+⚠️  WARNING: Pattern matches 3 locations:
+  - Line 1246 (deliberation-participate tool)
+  - Line 1273 (council-participate tool)
+  - Line 1890 (execute method)
+Pattern matches 3 locations. Make pattern more specific.
+```
+
+Read that refusal against the three components: **mutation — zero** (the
+file is untouched; the failure is atomic). **State revealed** — not just
+"3 matches" but *where*, which teaches the reader something true about the
+file itself: it has repeated structure (three tools with similar schemas),
+and the anchor was at the content level when it needed to be at the
+structural level. **Law taught** — uniqueness is required here, and the
+message points at the repair ("make pattern more specific"; the companion
+principle: anchor on closing delimiters and method boundaries, which occur
+once, not on field lists, which repeat). The agent doesn't just recover
+from this error — it comes out knowing more about the codebase than it
+knew before the refusal. That is what "errors as teaching moments" means
+mechanically, and it's why the safe default became `sub` (one) rather than
+`gsub` (all).
+
+The lock, tier by tier:
+
+- **Built (T1/T2, sapientia 2025):** the refusal above, shipped, with its
+  design rationale recorded (fail *before* corruption; rich diagnostics;
+  message guides toward the fix).
 - **Shipped ecosystem-wide (T2):** exact-match editing that "fails loud on
   0-matches or >1-matches" with a mandated prior Read is the near-universal
   contract (11/14 harnesses) — largely by descent from one influential

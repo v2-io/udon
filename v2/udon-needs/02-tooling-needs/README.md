@@ -14,6 +14,11 @@ their tools**. It serves two named consumers (see
    are marked `consumers: udon | harness | both`; where the two diverge, the
    segment says so rather than silently serving one.
 
+**New reader — especially from the harness side:** start with
+[`NOTATION-KEY.md`](NOTATION-KEY.md); it glosses every piece of estate
+shorthand the segments lean on (κ×A, Level-2, W₁/W₂, the C-/P-/S-/R-
+indices) and carries a reading path that assumes no UDON background.
+
 **Shape.** ASF-style: [`OUTLINE.md`](OUTLINE.md) carries the whole argument
 part-by-part with one table row per segment (claim + stage at a glance);
 segments live in [`src/`](src/), one claim-cluster per file, reorderable by

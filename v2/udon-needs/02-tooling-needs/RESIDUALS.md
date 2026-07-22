@@ -76,3 +76,19 @@ Keep the anti-collapse discipline: distinctions that route to different
 repairs (mechanism families, failure classes, guarantee kinds) stay
 separate even when merging would read cleaner. The outline carries
 ordering; the slug carries identity; re-ordering is an outline edit only.
+
+## 6. Revision log (for auditor cite traceability)
+
+- **2026-07-22 (post review-A/B, spine pass):** context-economy C7 count
+  lineage-corrected (B#1/A); edit-representation 2–3× re-voiced as
+  T1-secondhand with T5 lead + thin-margin caveat on >30% (B#2/A#2);
+  schema-guarded-mutation: yaml-spike retiered T3→T2, 16% decoupled from
+  duplicate-key, headline 5-tier→4-tier(+adjacent), recovery drama rendered
+  (A#1/B#3/B#5); errors-that-teach: refusal shown verbatim (B#5);
+  tools-are-observation-infrastructure: κ×A/Level-2 first-use teaching +
+  burn-rate/confident-wrongness gold (B#4/A#3); persistence-is-imported
+  tier labels made consistent (A#5); NOTATION-KEY.md added + README pointer
+  (B#4); OUTLINE thesis names the lead + Part IV ordering signpost
+  (B#6/A#4); worktree incident landed as provenanced artifact + anchor
+  swap in tool-definition-anatomy (A#6); AND/OR worked numbers added to
+  tool-definition-anatomy (A#3). No audit finding rejected.

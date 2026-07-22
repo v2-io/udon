@@ -6,23 +6,26 @@ systems, feedback loops, guardrails. Synthesized from the 2026-07-21 gathering
 (~290 provenanced artifacts, five evidentiary tiers). Segment files in
 `src/`; per-segment status in frontmatter; this outline is the single spine.*
 
-**The one-paragraph thesis (provisional, drafted segments' version).** Tools
-are an agent's observation channels and its action semantics at once, and the
-evidence from every tier says the same thing about them: their quality is
-existential, not ergonomic. Theory gives the mechanism (bias bounded by
-observation ambiguity; tempo gated by channel noise; persistence across
-sessions existing *only* through externalized state), shipped practice shows
-an ecosystem converging — partly by copying, which is itself evidence of a
-gap — on sharp-refusal editing, graduated fuzzy tolerance, context-budget
-machinery, and machine-legible I/O contracts, and the lived testimony and
-external research agree on where it still breaks: edits with no validity
-guarantees, plausible failure that testing can't catch, and context loss that
-no amount of in-session cleverness compensates. The demand this report hands
-downstream is therefore not a feature list but a set of *properties*:
-observations that resolve sharply, refusals that teach, mutations that are
-atomic and guarantee-checked, addressing that is stable and loud on failure,
-and durable state formats an agent can trust across the boundary of its own
-context.
+**The one-paragraph thesis.** Tools are an agent's observation channels and
+its action semantics at once, and the evidence from every tier says the same
+thing about them: their quality is existential, not ergonomic. Theory gives
+the mechanism (bias bounded by observation ambiguity; tempo gated by channel
+noise; persistence across sessions existing *only* through externalized
+state), shipped practice shows an ecosystem converging — partly by copying,
+which is itself evidence of a gap — on sharp-refusal editing, graduated
+fuzzy tolerance, context-budget machinery, and machine-legible I/O
+contracts, and the lived testimony and external research agree on where it
+still breaks: edits with no validity guarantees, plausible failure that
+testing can't catch, and context loss that no amount of in-session
+cleverness compensates. **The single organizing demand is schema-guarded
+structural mutation — the validated, atomic, path-addressed edit no
+shipping tool provides — and it is long-pole-blocked on stable addressing**;
+around that lead, the report hands downstream a set of *properties*:
+observations that resolve sharply, refusals that teach, addressing that is
+loud on failure, and durable state formats an agent can trust across the
+boundary of its own context. (Shorthand used throughout is glossed in
+[NOTATION-KEY.md](NOTATION-KEY.md), which also carries the
+coming-from-the-harness reading path.)
 
 ---
 
@@ -77,7 +80,10 @@ harness consumes the same evidence for its edit-tool choices.*
 
 *Scope: paths as the long pole — almost every agentic affordance bottoms out
 on stable structural addressing. UDON-primary; feeds the phase-3 paths spike
-directly.*
+directly. Ordering note: Part III (mutation) precedes this part by demand
+strength — it is the customer; addressing is what it consumes — but the
+build dependency runs the other way, and #priorities states it: addressing
+first, mutation on top of it.*
 
 | § | Type | Tag | Claim | Stage |
 |---|------|-----|-------|-------|

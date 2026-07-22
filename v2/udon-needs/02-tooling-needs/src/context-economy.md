@@ -26,9 +26,14 @@ discipline — they route to different repairs):
 ## The mechanism families (T2)
 
 1. **Don't load it until needed — deferred tool loading.** Name-only
-   registration + on-demand schema fetch; five teams in the same 2026
-   window; >85% token reduction cited, with accuracy degrading past 30–50
-   loaded tools. The strongest *recent-advancement* convergence in Tier 2.
+   registration + on-demand schema fetch; ~3 independent arrivals in the
+   same 2026 window once lineage is corrected (Claude Code is the origin;
+   qwen-code explicitly mirrors it and inherits gemini-fork infrastructure;
+   codex and kimi-code are the more plausibly independent arrivals —
+   tier2-lineage C7, "partial lineage"). The digest's pre-correction read
+   called this the strongest recent-advancement convergence in Tier 2; the
+   corrected form is more modest but still notable: >85% token reduction
+   cited, with accuracy degrading past 30–50 loaded tools.
 2. **Don't let one result flood the window — disk-spill with preview.**
    ~2000 lines / ~50KB thresholds recur; full output parked on disk,
    recoverable by path. T5 corroboration: unbounded tool-response size is a
