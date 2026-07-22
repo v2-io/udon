@@ -53,7 +53,7 @@ documentation, not code that implements behavior."
   markdown-runtime, Ruby-era design) is genuine re-derivation of one idea
   against three different execution environments, and two of the three
   shipped.
-- **The philosophical spine (Appendix D):** the pattern-language work's
+- **The philosophical spine ([the pattern statement](../reports/the-pattern.md)):** the pattern-language work's
   living-documents
   section: traditional docs and code drift; a compiled document *cannot*
   drift ("documentation is always current — it IS the implementation"),

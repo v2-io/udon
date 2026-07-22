@@ -26,7 +26,7 @@ it.* The reinjection channel structurally **is** the scaffold.
 
 ## The evidence
 
-- **The formal result (exact, under argued commitments; Appendix A §4
+- **The formal result (exact, under argued commitments; [the theory report](../reports/theory-of-agentic-tooling.md) §4
   carries the full statement):** with lossy
   context turnover and no reinjection,
   geometric decay to zero — the in-session persistence apparatus provably

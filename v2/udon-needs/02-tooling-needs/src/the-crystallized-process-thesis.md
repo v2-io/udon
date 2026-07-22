@@ -28,7 +28,7 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
 
 ## The evidence
 
-- **The taproot (reproduced whole in Appendix D):** the 2025 sapientia
+- **The taproot (reproduced whole in [the quick-tooling conventions](../reports/quick-tooling-conventions.md)):** the 2025 sapientia
   tooling conventions state the
   evolution pattern — *conscious practice → deliberate habit → crystallized
   tool → transparent extension* — with the design consequences drawn out:
@@ -43,7 +43,7 @@ reasoning, and 4% is genuinely judgment-critical. Tools exist to absorb the
   only 10% for actual reasoning." That is the thesis measured against its
   own author's lived session, and it is also the origin of the
   intent-as-parameter demand (#intent-as-parameter).
-- **The ease-gradient spine (also Appendix D):** the autopax
+- **The ease-gradient spine (also [the pattern statement](../reports/the-pattern.md)):** the autopax
   pattern-language work gives the thesis its
   behavioral mechanism in two layers — *constraint* (make invalid states
   inexpressible where appropriate) and *gradient* (make the correct

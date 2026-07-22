@@ -47,7 +47,7 @@ not implementation sequencing — that adjudication belongs downstream
 
 **Paths spike** — inherits #addressing-is-the-long-pole whole (its
 question floor and demand table, with the full exploration notes in
-Appendix C). The three questions the evidence makes decisive: the smallest
+[the addressing exploration](../reports/addressing-exploration.md)). The three questions the evidence makes decisive: the smallest
 in-document reference subset that is a *true* subset of the tool language;
 the terminator table (embeddability in every value context — the forced
 probe); relational-first vs tree-first as primary mental model

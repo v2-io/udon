@@ -27,7 +27,7 @@ machine verdict** a write gate can consume.
 
 ## The evidence, wound by wound
 
-- **The measured wound (the yaml stress test — Appendix E):** the six-scenario
+- **The measured wound (the yaml stress test — [the YAML stress test](../reports/yaml-stress-test.md)):** the six-scenario
   adversarial recovery test (#schema-guarded-mutation carries the drama)
   bottom-lined YAML for agent-written documents: recoverable only with
   ~500 LOC of custom backup/validation/salvage infrastructure, and its

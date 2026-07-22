@@ -23,7 +23,7 @@ hard here: most of the uniformity is convention-adoption of one or two
 influential designs — reported as survivorship (nothing displaced them), not
 as independent votes.
 
-## The converged shapes (descent noted where it matters; Appendix B has the per-harness detail)
+## The converged shapes (descent noted where it matters; [shipping practice](../reports/shipping-practice.md) has the per-harness detail)
 
 - **Ask-user:** 1–4 questions × 2–4 options, "(Recommended)" first, always
   an "Other" escape. Probable single-origin design, verbatim-copied.

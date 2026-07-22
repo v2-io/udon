@@ -50,7 +50,7 @@ testimony.
   form); yq demonstrates structural path-assignment without schema guard;
   Obsidian's linter admits its rules don't compose. Nobody has the
   validated-transaction shape.
-- **The empirical stress test (Dec 2025 — Appendix E reproduces it whole):** the
+- **The empirical stress test (Dec 2025 — [the YAML stress test](../reports/yaml-stress-test.md) reproduces it whole):** the
   measured cost of guarantee-free mutation. Three agents, adversarial
   protocol: Agent A writes valid data, Agent B introduces a specific
   corruption, Agent C — with 100% context turnover and no human — attempts

@@ -24,7 +24,7 @@ throughput or ergonomics quantity.
 
 ## The evidence
 
-**From the formal theory (conditional theorems; Appendix A reproduces the
+**From the formal theory (conditional theorems; [the theory report](../reports/theory-of-agentic-tooling.md) reproduces the
 theory survey whole, with each result's premises):**
 
 - **The κ×A bias law** — belief bias in a coupled (LLM) agent is bounded by

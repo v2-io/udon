@@ -38,7 +38,7 @@ assembled trees for structural ops) rather than one mandatory "the AST."
   warnings citing the opener) removes the tax at the source — UDON's
   existing recognition posture is exactly this property; the demand
   evidence says it is load-bearing, not incidental.
-- **The affordance list (from the design corpus — Appendix C carries the
+- **The affordance list (from the design corpus — [the agent-utility exploration](../reports/agent-utility-exploration.md) carries the
   full exploration):** partial-tree query
   mid-parse (open-element stack, current attribute — "where am I?"); early
   anomaly surfacing before 500 more tokens compound the mistake;

@@ -25,7 +25,7 @@ shipping approach edits at the text/character level with **no validity
 guarantee** for the artifact being edited. That absence is the gap this
 whole part of the report converges on (#schema-guarded-mutation).
 
-## The landscape (fourteen real harnesses, descent accounted for — Appendix B carries the full examination)
+## The landscape (fourteen real harnesses, descent accounted for — [shipping practice](../reports/shipping-practice.md) carries the full examination)
 
 Three paradigms ship today:
 
