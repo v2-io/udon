@@ -24,7 +24,7 @@ script — the diff is read by eye, and as of this pass it's folded into the pla
 |---|---|
 | **[`01-reconciled-target-files/TARGET-FILES.md`](01-reconciled-target-files/TARGET-FILES.md)** | **The plan.** ~300 spawnable target rows, one per unique target across all maps, priority + why + work-mode. As of 2026-07-21 **every row carries a ✔/○dry/⊘blocked/☐ disposition marker folded from the ledger** — so remaining work reads at a glance (see its "Extraction status" header for the legend). |
 | **[`02-provenanced/LEDGER.md`](02-provenanced/LEDGER.md)** | **The actuals.** 286 append-only lines, one per target *visit* (date · disposition · output · by · note), dry/blocked visits included. Append-only by design — parallel appends don't collide where edits would. The per-file record; TARGET-FILES is its reconciled projection. |
-| **[`02-provenanced/syntheses/CONVERGENCES.md`](02-provenanced/syntheses/CONVERGENCES.md)** | **The analysis.** Why targets were prioritized: four evidentiary tiers, 18 cross-tier agreement clusters, singletons, the Tier-2 lineage-vs-convergence caveat. |
+| **[`02-provenanced/syntheses/CONVERGENCES.md`](02-provenanced/syntheses/CONVERGENCES.md)** | **The analysis.** Why targets were prioritized: four evidentiary tiers, 18 cross-tier agreement clusters, singletons, the Tier-2 lineage-vs-convergence caveat — **now resolved by** [`tier2-lineage.md`](02-provenanced/syntheses/tier2-lineage.md) (read its Part 4 rules before citing any Tier-2 vote-count). |
 
 ## What `02-provenanced/` holds, by genre (~270 artifacts)
 
@@ -54,7 +54,7 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 
 ### `syntheses/` — 4 already-integrated secondary documents
 
-`asf-dossier.md` (+ `-reading-log.md`; Tier-4 theory) · `CONVERGENCES.md` (tiers + 18 clusters) · `tier2-invivo-digest.md` (read-across of the 17 in-vivo maps). *Register + cross-link these — don't decompose or re-derive them.*
+`asf-dossier.md` (+ `-reading-log.md`; Tier-4 theory) · `CONVERGENCES.md` (tiers + 18 clusters) · `tier2-invivo-digest.md` (read-across of the 17 in-vivo maps) · `tier2-lineage.md` (copying-vs-convergence disentangle: apply_patch = one origin not five; fork pairs collapsed; C2 fuzzy-ladder + C16 headless-contract survive as genuine convergence). *Register + cross-link these — don't decompose or re-derive them.*
 
 ### `commentary/` — 19 witness + demand-spike files
 
