@@ -156,16 +156,22 @@ structure boundaries. Consumers follow the ornamentation model
 must never be inference-only); the successor direction (W0 sufficiency /
 no-reachback at product boundaries, W1d self-delimiting values) and the
 exact event spelling (W1e) live in the v2 ledger and wait on demand
-(utils/paths pull). This suite specifies the model and its adequacy test
-(MODEL §6) — any future wire must reconstruct the text law — and otherwise
-stays silent.
+(utils/paths pull). References meanwhile ride the interim raw-text-after-`@`
+encoding (W3) until shared identity machinery makes structured encoding
+cheap. This suite specifies the model and its adequacy test (MODEL §6) —
+any future wire must reconstruct the text law — and otherwise stays
+silent. The unscrubbed 0.9 `spec/CORE.md` retains the deratified wire text
+and the event-era parser notes as the historical record; consult it (and
+`core/generator/*.descent.udon`) for event-layer archaeology, never as
+contract.
 
 ## CODES — warning-code spellings
 
 **What:** anomaly code names (`Unclosed*`, `$partial-key` spelling
 included) are working names; SPEC vocabulary and generator derivation must
 agree (ruled W4) before spellings become contract. Implement toward them;
-do not cement them.
+do not cement them. The current working inventory is CORE Appendix B
+(recovered from the unscrubbed registry; severities updated per L0/L4).
 
 ---
 

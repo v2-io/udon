@@ -573,7 +573,11 @@ ownership:
   (`:url https://example.com/a?q=1;s=2`).
 - Inside `|{…}` there are **no framed sameline comments** — a bare `;` is
   literal; only `;{…}` comments there (ruled; revisit with dialects —
-  CARVEOUTS).
+  CARVEOUTS). One edge is narrower than that rule: a framed ` ; ` after
+  **value-`\` text** inside an inline element
+  (`|{a :title Home \ Welcome! ; hm}`) is **unspecified this version** — it
+  may gain comment semantics with the dialect work; do not rely on either
+  reading.
 - `}` is not a terminator inside `[…]`: an inline element's `}` must follow
   the `]`; a `[` unclosed at the `}` is an unclosed list (content kept,
   Warning).
@@ -761,6 +765,12 @@ the explicit newline."
 The **frame** for a sameline comment is whitespace before the `;` and
 whitespace or end-of-line after: `x ; c` comments; `x ;c`, `1;2` do not; a
 trailing `x ;` is an empty comment.
+
+The frame requirement is a property of the *framed* positions only. In the
+no-frame positions (line start at a structural column; after a finished
+value on element/block-attribute lines), a `;` opens the comment with or
+without a following space — `;comment` at line start is a comment (a host
+MAY surface a style advisory for the missing space; see Appendix C).
 
 **Comments are carried, not discarded** — they appear in the model
 (MODEL §5) and consumers decide their fate (documentation extraction, TODO
@@ -1228,3 +1238,27 @@ anomalies: the model carries both.
   @other[key]
 \| this line is literal text
 ```
+
+## Appendix B — Working anomaly-code inventory (non-normative)
+
+The current working vocabulary of anomaly codes, carried so tooling and
+spike agents share names (recovered from the unscrubbed 0.9 registry).
+**All spellings are working names** — SPEC vocabulary and generator
+derivation must agree before any becomes contract (ruled W4; most already
+derive from the grammar as `Unclosed<Construct>`); severities below follow
+this suite (L0/L4), which supersedes older per-code severities where they
+differ.
+
+| Code | Situation (§) | Severity |
+|---|---|---|
+| `InconsistentIndentation` | prose or comment-continuation line under the content base but still inside the owner (§7.2 r4); a line at/left of the owner's column is an ordinary dedent, not this | Warning |
+| `NoDialectsLoaded` | envelope recognized, no dialects bound; lexical pass-through (§11.6) | Warning |
+| `AttributeValueExtendedByTrailingText` | same-line warned extension on a block attribute line (§6.7) | Warning |
+| `AttributeSecondValue` | deeper second value under a finished key (§6.7) | Warning |
+| `AttributeAfterChildren` | late `:` after content phase (§6.9) | Warning |
+| `Unclosed<Construct>` family | each delimited construct's missing closer (§13.3): String, Array, InlineElement, InlineComment, Interpolation, TypeEnvelope, Fence, IdentityKey, InlineDirective, InlineRaw | Warning |
+| `NoTabs` | tab in indentation (§2) — **severity now Warning per L4** (the code name predates the ruling) | Warning |
+| `MissingAttributeValue` | plain `:key` with no value material → Nil (§6.2) | Error |
+| `AttributeUnderAttribute` | `:key` directly under an open value (§6.8) → text of the open value | Error |
+| `EscapeOutsideHeadPosition` | past-base `\` (§4) — consumer-layer, optional | advisory |
+| `CommentMissingFollowingSpace` | `;comment` in a no-frame position (§8) — host style advisory, optional | advisory |
