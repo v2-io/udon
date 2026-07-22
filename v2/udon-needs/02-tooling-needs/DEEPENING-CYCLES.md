@@ -272,11 +272,19 @@ while editing. Three homes, by state:
 - **Resolved history** → the git commit message and
   [`CHANGELOG.md`](CHANGELOG.md) (the monograph's own history layer —
   date, scope, delta, why). Not the body. Ever.
-- **Unresolved working state** — commentary still needed for further work
-  on the chapter → a `## Working Notes` section at the **bottom of the
-  chapter**: no epistemic claims, explicitly not part of the deliverable,
-  free in register (this is also where ⚑-flag explanations live). Every
-  chapter may carry one; readers of the report proper stop before it.
+- **Unresolved working state** → a `## Working Notes` section at the
+  **bottom of the chapter**. This is an in-file **side-car**: not canonical,
+  not part of the deliverable, and — this is the point — **not bound by the
+  rules that bind body prose**. A Working Note may repeat a downstream
+  claim, rely on a downstream segment, discuss anything, at any length, in
+  any register. What it is *for*: work that still needs addressing,
+  in-progress thinking, forward pointers, regression-guards and dead-end
+  warnings, and ideas that need more thought but **whose routing and
+  disposition aren't clear yet**. (⚑-flag explanations live here.) The one
+  thing it is **not** is a historical log — that is git and
+  [`CHANGELOG.md`](CHANGELOG.md)'s job, and "we used to say X" belongs
+  there, not here. Every chapter may carry one; readers of the report
+  proper stop before it.
 - **The one exception**: evolution that is *itself part of the tooling
   narrative* — an inherited assumption's archaeology, an abandonment that
   explains a landscape — stays in the body, told as content in domain
