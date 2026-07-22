@@ -88,6 +88,12 @@ from ≥2 support-kinds with independent failure modes, orthogonal to strength
 (a convergent claim still has a ceiling). Its repair — break the independence
 — is what makes descent-correction mechanical. Frontmatter: `convergent:
 [kind, kind]` listing the legs, so the lock is auditable, not asserted.
+**Sharpening (pilot B, at ratification, adopted):** the lock keys on
+*failure-mode* independence, not source multiplicity — within-kind
+corroboration (two testimonials) raises strength but does **not** arm the
+lock, because same-kind sources share a failure mode. This is the report's
+own same-lineage-blind-spot thesis applied reflexively to its own
+epistemology.
 
 **6. Claim grain: B's proportionate shape.** The capability card is the
 native claim-grain unit (all cards `proposed`/`hypothesis`); inline
@@ -119,6 +125,13 @@ Feynman-criterion as a *check* (B's costless form) rather than a new field;
 gates as re-runnable checks; `empirica:`-shaped experiment records deferred
 until phase-3 runs exist, with `measured (self)` requiring a run-pointer from
 then on.
+**Sharpening (pilot B, at ratification, adopted):** the max-attainable
+ceiling note couples to the kind axis — promotion usually means *adding or
+changing a support-kind*, so the ceiling note names the **evidence-action**
+that would move the claim ("ceiling: measured — the Norway-suite experiment
+is the action"). This turns the ceiling from a stop-sign into a generative
+instruction: strengthen-before-soften made mechanical, and the capability
+cards are revealed as exactly these evidence-actions in card form.
 
 **10. The reflexivity finding (B's closing observation, fork-free, worth
 Joseph's eye):** this system, if UDON succeeds, is a UDON schema —
