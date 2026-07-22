@@ -1,11 +1,14 @@
 ---
 slug: tools-are-observation-infrastructure
 type: finding
-evidence: [T4, T2, T1]
 register: [derived, evidenced]   # theory-derived core; shipped-practice + design corroboration
+support-kind: [theoretic, observational, design]
 strength: conditional            # headline rests on the κ×A theorem, which holds under named premises
+convergent: [theoretic, observational]   # theory + independently-arrived shipped practice; design shares the theory's author, so it does not arm the lock
 stage: drafted
 consumers: both
+verified:
+  - 2026-07-22 · source · pilot-A · κ×A carriage checked against #asf/llm/scope-channel-collapse; wrapping caveat added so faithful carriage does not overclaim
 depends: [method-evidence-tiers]
 sources:
   - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.1–2.3, §3
@@ -22,6 +25,18 @@ gates adaptation speed regardless of loop speed; below a threshold set by the
 environment's drift rate, the agent doesn't work inefficiently — it fails to
 persist. "Tool-interface quality" is therefore an existential quantity, not a
 throughput or ergonomics quantity.
+
+**What each leg carries** (this chapter makes several load-bearing claims at
+different strengths; the support behind each, at a glance):
+
+| Claim | Support-kind | Strength |
+|---|---|---|
+| Bias is bounded by κ×A; A is the one designer knob | theoretic (transmitted, [[scope-channel-collapse| #asf/llm/scope-channel-collapse]]) | conditional (its premises) |
+| Tempo gates adaptation; a bad channel can't be out-iterated | theoretic (transmitted) | conditional |
+| Persistence needs tempo above the environment's drift | theoretic (transmitted) | conditional |
+| Every tool call is a do() intervention; the upgrade is gated on known action-mechanism | theoretic (transmitted) | conditional |
+| The ecosystem's "prefer dedicated tool over shell" tables are A-reduction in the wild | observational | robust-qualitative |
+| The 2025 design principles lay down the same rules years earlier | design | robust-qualitative (shares the theory's author — coherence, not corroboration) |
 
 ## The evidence
 

@@ -57,3 +57,24 @@ Append-only.
   theory quantities / in-tension-with / downsides), written from first-person
   end-user friction. · Why: the RESIDUALS ✦→card retrofit item, applied to this
   chapter with impact-field enrichment.
+
+- 2026-07-22 · method-evidence-tiers (pilot A, epistemology step 1; trio-ratified
+  774f022) · Rewritten whole to the ratified epistemology system: three axes
+  (support-kind with per-kind repairs / strength / register) + two locks
+  (convergent, keyed on failure-mode independence; transmission, as cross-volume
+  reference + verification events) + the append-only verification-event log
+  (gates are re-runnable checks, not a promotion ladder). T1–T5 genre codes
+  retired to an auditor's historical mapping note. Notation exemplar baked in
+  (`[[stem| #tag]]` segment refs; no backticked slugs). · Why: completes Joseph's
+  "tiers are library categories, not epistemology" recalibration; the schema's
+  home. Reasoning record: notes/epistemology-{pilot-A,SYNTHESIS}.md.
+
+- 2026-07-22 · errors-that-teach · tools-are-observation-infrastructure ·
+  counter-register (pilot A) · Frontmatter migrated to the new schema
+  (`support-kind:` / `convergent:` / `verified:` added, `evidence: [T…]` retired)
+  as the sweep exemplars; errors-that-teach body now states the convergence
+  honestly as three independent kinds + a descent-echo (the lock's worked
+  example); observation-infrastructure gains a "what each leg carries" leg-table;
+  counter-register recognized as already a leg-table. · Why: epistemology step 1
+  (my two leg-tables + exemplar frontmatter). The bulk cross-reference conversion
+  to `[[stem| #tag]]` across all 30 chapters is B's step-2 sweep.

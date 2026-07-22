@@ -1,11 +1,13 @@
 ---
 slug: counter-register
 type: counterposition
-evidence: [T2, T3, T5]
 register: evidenced      # each row is an observation/result that cuts against a thesis
-strength: mixed          # per-row; the Weight column carries each row's rung on the ladder
+support-kind: [observational, testimonial, measured, synthetic]  # per-row; named in each row's description
+strength: mixed          # per-row; the Weight column carries each row's rung on the ladder — this chapter IS a leg-table
 stage: drafted
 consumers: both
+verified:
+  - 2026-07-22 · content · pilot-A · Weight column carries per-row strength rung; support-kind stated in each row description
 depends: [method-evidence-tiers]
 sources:
   - ../../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # singletons

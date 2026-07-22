@@ -1,11 +1,14 @@
 ---
 slug: errors-that-teach
 type: principle
-evidence: [T4, T2, T3, T1]
-register: [derived, evidenced]   # design criteria derived from the C3 gate; 4-tier convergence evidences them
-strength: robust-qualitative     # the direction holds across every kind of evidence here; no single magnitude
+register: [derived, evidenced]   # design criteria derived from the C3 gate; convergence evidences them
+support-kind: [theoretic, observational, testimonial, design]
+strength: robust-qualitative     # the direction holds across every independent kind here; no single magnitude
+convergent: [design, testimonial, theoretic]   # three independent failure modes; observational is a descent-echo (11/14 = one design copied), not a fourth
 stage: drafted
 consumers: both
+verified:
+  - 2026-07-22 · content · pilot-A · convergence audited under the failure-mode key: 3 independent + observational descent-echo, not 4 independent
 depends: [tools-are-observation-infrastructure]
 sources:
   - ../../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.4
@@ -87,6 +90,18 @@ How each kind of evidence holds its corner:
   else can reach. In the theory's own words: "well-taught laws become
   infinite-velocity components of the agent's environment model — learned
   once, never re-derived."
+
+Counted honestly, that is **three independent failure modes plus a
+descent-echo**, not four independent arrivals: the shipped-ecosystem leg is
+mostly one influential design copied across harnesses, so it shares a failure
+mode with itself — it is one partially-self-correlated leg, not a fourth
+independent check. The convergence is real and strong (the design work, the
+lived testimony, and the theory each fail in *different* ways and still agree),
+and it is what a downstream decision should weigh — but the echo does not get
+counted as if the ecosystem had arrived here eleven times over. (This chapter is
+the report's worked example of that discipline: a convergence lock arms on
+independent failure modes, and the count survives an honest descent audit or it
+does not.)
 
 The same demand recurs across the 2025–26 design work in other dress —
 an error-message plan built on speaking domain concepts rather than

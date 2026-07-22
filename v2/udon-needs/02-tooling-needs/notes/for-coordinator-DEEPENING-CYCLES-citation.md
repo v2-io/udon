@@ -1,0 +1,68 @@
+# Drop-in text for DEEPENING-CYCLES (step 4) — coordinator lands this
+
+*You hold DEEPENING-CYCLES.md; here is drafted citation text so the workflow
+points at the ratified epistemology system instead of restating it. Land where
+it fits — my suggestion is a new short `## Epistemic system` section after "What
+counts as success," plus the two folded lines noted below. Adjust freely; this
+is a draft, not a spec.*
+
+---
+
+## Epistemic system (the rigor vocabulary this workflow deepens toward)
+
+The report's claims are typed on three axes and two locks, defined in full in
+[[method-evidence-tiers| #method-evidence-tiers]] (the schema's home) and
+proposed outward as an extension to TST's evidence vocabulary. A deepening agent
+does not need to re-derive them, but does need to *apply* them:
+
+- **support-kind** (design / observational / testimonial / theoretic /
+  measured `(self|ext)` / synthetic) — each defined by its **repair**, which is
+  what tells you how to strengthen a claim of that kind. Kind is routed by
+  repair, not by surface: a numeral is not automatically `measured` (a count of
+  shipped tools is `observational` — repair: descent-correct; an effect size is
+  `measured` — repair: re-measure).
+- **strength** (exact / conditional / robust-qualitative / measured / heuristic /
+  hypothesis / discussion-grade) — the defeasibility ceiling, carried in prose
+  where load-bearing.
+- **register** (derived / evidenced / decided / proposed) — the speech-act kind;
+  only the two truth-apt registers take a strength rung.
+- **convergent lock** — a claim is convergent when ≥2 support-kinds with
+  **independent failure modes** agree. Within-kind corroboration raises strength
+  but does *not* arm the lock. The lock's repair — break the independence — is
+  what makes descent-correction mechanical; [[errors-that-teach| #errors-that-teach]]
+  is the worked example (three independent kinds plus a descent-echo, not four).
+- **transmission** — inherited theory is a cross-volume reference into ASF
+  (`#asf/{aat,tst,llm,eli}/slug`); the fidelity risk is audited in the
+  verification-event log, not stamped as a label; a transmitted claim carries a
+  plain-word gloss so it stands on the page.
+
+**The verification-event log is this workflow's standing record.** Each chapter's
+frontmatter carries an append-only `verified:` list — *what was verified ·
+against what · by whom · when* — never a permanent stage. The four rigor checks
+(dependency audit / content review / mechanical / notes-disposition) are
+**re-runnable instruments, not a promotion ladder**: a living document under flux
+gets re-checked, not re-certified. When a deepening pass verifies a claim at its
+source, or deliberately corrects a form away, it *appends an event* (including a
+`deliberately-corrected-away` event, so the next re-verifier is not told to "fix
+it back" toward a cleaner-reading original — the regression check imported into
+the machinery instead of relying on memory).
+
+**The layer split (bodies speak present truth; history lives elsewhere)** is
+ASF's already-worked discipline — cite [`format.sop.md` §Voice and provenance]
+and §Working Notes (`~/src/archema-io/asf/doc/sop/format.sop.md`) rather than
+restating it: segment voice, not diff voice; a Working Note earns its place only
+as a forward-pointer, regression-guard, or dead-end warning — never
+vanity-changelog. Resolved history goes to `CHANGELOG.md` + the git log.
+
+---
+
+## Two lines to fold into existing sections (not new sections)
+
+- In **"When a claim looks wrong"**, after the integration-is-replacement
+  paragraph: *"Labels track truth on all three axes — a corrected claim carries
+  its honest support-kind, strength, and (where it applies) convergence legs; a
+  refuted convergence leg is removed from the `convergent:` list, not left to
+  imply agreement that broke."*
+- In the **first-cycle work list**, mark the epistemic-status recalibration
+  **done** (trio-ratified `774f022`; landed in the methods chapter) and point
+  the frontmatter-machinery follow-through at the step-2 sweep.
