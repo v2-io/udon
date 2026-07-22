@@ -378,6 +378,30 @@ specifics are already folded. Pilot agreement recorded below when given.
   matching the drafting to where each of us built the reasoning.
 - Coordinator: agreed (author of this synthesis).
 
+## Ratification refinements (pilot A, at ratification, adopted)
+
+- **R1 — the third transmission ground:** *source-drift-after-check* — a
+  "restatement checked on DATE" event does not notice the ASF source later
+  changing. Closes for free at TST-landing (`depends:` + downgrade-cascade);
+  while the corpus lives separately, re-verification events are the
+  mitigation and the staleness is honest.
+- **R2 — numerals are not auto-`measured`:** kind membership is
+  repair-routed, so "11/14 harnesses" is `observational` (repair:
+  descent-correct) while "14→57% pass@1" is `measured` (repair:
+  re-measure). The frontmatter sweep routes by repair, never by the
+  presence of a number.
+- **R3 — the leg-table set expands:** `counter-register` already is one
+  (built cycle 1) and `tools-are-observation-infrastructure` qualifies —
+  the ≥3-mixed-strength census is five chapters, not three.
+- The lock spec's worked example is errors-that-teach's
+  "3-independent-plus-a-descent-echo" (A's cycle-1 hand-work, made
+  mechanical by B's failure-mode rule).
+
+**TRIO-RATIFIED 2026-07-22** (A: `d8580ad` · B: recorded · coordinator:
+author) **+ Joseph-supported** per his rule. The system is law for this
+report; amendments now travel through the truthification process like any
+other claim.
+
 ## Implementation order (when trio-ratified)
 
 1. Methods chapter: land the three-axis system + kind table + lock + event
