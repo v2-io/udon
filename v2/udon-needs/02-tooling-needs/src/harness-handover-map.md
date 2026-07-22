@@ -17,7 +17,7 @@ sources:
 
 **What this is.** The port plan for the report's second consumer:
 `~/src/archema-io/harness/` receives this monograph as the programme's
-consolidated statement on agentic tooling (BRIEF §purpose 2). This
+consolidated statement on agentic tooling — its second consumer by charter. This
 chapter says what transfers as-is, what re-bases, what the harness
 already owns, and how the two bodies of work relate — written last,
 against the drafted whole.
@@ -73,19 +73,19 @@ harness's risk register as much as this report's.
 ## What the harness already owns (don't re-import)
 
 The taxonomy's behavior spine (honest≡effective; proportion-not-maximum;
-the 21 ranked corrected-behaviors), its INC findings (date-is-load-
+the 21 ranked corrected-behaviors), its incident-class findings (date-is-load-
 bearing; incident→fix doesn't stick; harness-enforceable routing;
 misattributed-substrate-bugs), and the proprium port specs. Where this
 report and the taxonomy converge from opposite sides — INC-4's
 harness-enforceable category ↔ #the-crystallized-process-thesis;
-summary-not-sufficient ↔ #persistence-is-imported's compaction wound;
-str_replace-refuse-as-teaching ↔ #errors-that-teach — the convergence
+its summary-not-sufficient behavior ↔ [the persistence chapter](persistence-is-imported.md)'s compaction wound;
+its refuse-as-teaching examples ↔ [the refusal chapter](errors-that-teach.md) — the convergence
 itself is the finding, and both artifacts should cite it rather than
 merge.
 
 ## Mechanics of the port
 
-Per the ruled deep-copy-on-pull pattern: when the harness takes this
+Per the pattern already decided for cross-programme pulls (a copy with provenance, so the programmes diverge deliberately): when the harness takes this
 report, it takes a **copy with provenance** (source path + commit +
 date), not a live mount — the two programs then diverge deliberately,
 cross-citing. The chapters' `sources:` chains resolve within this repo;
