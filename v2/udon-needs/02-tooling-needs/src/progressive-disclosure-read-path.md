@@ -3,7 +3,7 @@ slug: progressive-disclosure-read-path
 type: demand
 evidence: [T1, T2]
 status: estate-convergent (T1 design-of-record) with T2 context-economy echo
-stage: drafted
+stage: drafted (fresh-page bridge rewrite, 2026-07-22)
 consumers: both
 depends: [addressing-is-the-long-pole, context-economy]
 sources:
@@ -12,67 +12,66 @@ sources:
   - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C11
 ---
 
-# The read path: glance → focus, and payloads that answer "where am I?"
+# The read path: glance first, then focus
 
-**Claim.** The read side of agent-document interaction has a converged
-shape in the design corpus: **progressive disclosure** — a cheap structural
-glance first (skeleton, counts, paths), then focused descent on demand —
-with every payload carrying the orientation data an agent needs to act
-without re-reading the file: copy-pasteable paths, breadcrumbs, line
-numbers, and explicit confidence.
+Editing was the last three chapters' subject; this one is about the
+cheaper thing agents do far more often — *reading* — and about a
+mismatch: an agent's context window is a hard budget, but the reading
+tools it is given are mostly all-or-nothing. Open the file whole, or
+search it blind. What an agent actually needs, over and over, is the
+middle move: a cheap structural **glance** — what is this document, what
+are its parts, how big — followed by focused descent into exactly one
+region, without paying for the rest.
 
-## The evidence
+**The glance has been designed in detail, and the design keeps arriving
+at the same conventions.** The most complete treatment is a tool catalog
+written for agent-facing document work in late 2025 (its full text
+informs this chapter; the catalog's own conventions section is the most
+transferable part). Its rules are concrete: every payload carries **line
+numbers**, so an agent can correlate one tool's answer with another's;
+descent payloads carry a **breadcrumb** — the chain of ancestors, each
+with its own line number — so "where am I?" never costs a second read;
+summaries appear as **counts in parentheses** rather than prose ("3
+children, 12 attributes"); answers carry an explicit **confidence
+marker**, with an explanation whenever confidence is not high; and errors
+arrive as **menus** — a refusal that lists the nearest resolvable
+alternatives, each one copy-pasteable, rather than a bare "not found."
+The same catalog designs a stateful session view (current location,
+expanded and collapsed regions, staged-but-uncommitted changes) and a
+trace query — *what refers to this, what does this refer to, with
+locations* — which is impact analysis as a first-class read: the
+due-diligence an agent should be able to do before any risky write.
 
-- **The design of record:** the udon-agentic tool catalog is
-  the fullest statement of what read-side payloads must carry, and its
-  conventions section is quietly the most transferable part: **line
-  numbers always** ("enables agents to correlate across calls"),
-  **breadcrumbs with line numbers at each level**, **summaries as counts
-  in parentheses**, **explicit confidence indicators** ('high'/'medium'/
-  'low' with explanation when not high), and an error format that is
-  error-as-menu (`:suggestions` carrying resolvable paths with line
-  numbers). Its `session` tool is progressive disclosure made stateful —
-  current location, expanded/collapsed state, staged changes, navigation
-  history — "dramatically reduces context usage for multi-step work." Its
-  `trace` tool (what references this / what does this reference, with
-  locations) is the impact-analysis half: read-before-write due diligence
-  as a first-class query.
-- **The payload table (from the same design corpus):** skeleton/path-map
-  (multiplicities,
-  attribute names without bodies), focused subtree + breadcrumb (where am
-  I, siblings summary, refs in/out), structural diff (move vs delete+add),
-  impact/side-effects (broken refs), validation verdict, confidence,
-  teaching refusal — one row per payload, each answering a different
-  question an agent actually asks mid-task.
-- **The ecosystem's echo:** its context-management machinery
-  (#context-economy) is progressive disclosure applied *to tool results* —
-  previews with disk-spill recovery paths, content-aware pruning against a
-  focus question. What no shipping harness has is the *structural* glance:
-  their skeletons are file trees and grep hits, not document shapes. The
-  gap is the same one as editing: text-level tools over structured
-  documents.
+**The key composition: what you can see is what you can address.** The
+glance's skeleton lines are designed to *be* valid addresses — the
+previous chapter's subject — so a skeleton is simultaneously a map and a
+set of handles. Glance, copy the line, descend; descend, copy the line,
+edit. That single design decision is what makes the read path and the
+edit path one loop instead of two tools.
 
-## What it generates
+**Shipping practice has half of this.** Real coding harnesses have
+independently built progressive disclosure *for tool output* — long
+results arrive as previews with the full text parked on disk behind a
+recoverable path, and some prune results against a stated focus question.
+What none of them has is the *structural* glance: their skeletons are
+file trees and search hits, lines of text with no shape. A document
+notation whose structure is itself cheap to skeletonize would supply the
+half that is missing — and the budget arithmetic is stark: a 200-token
+glance in place of a 5,000-token full read is not a convenience, it is
+room for a more ambitious plan in the same window.
 
-- **For UDON:** glance/skeleton is the second-cheapest high-value utility
-  after validation (it needs only the assembly product + paths), and
-  skeleton lines doubling as valid paths is the design decision that makes
-  the whole read-write loop compose: what you see is what you can address
-  is what you can edit. The DL-budget frame prices it: a glance that costs
-  200 tokens instead of a 5,000-token full read is a strategy-complexity
-  subsidy (#context-economy).
-- **For the harness:** the payload conventions (paths, breadcrumbs,
-  counts, confidence, menu-shaped errors) transfer to *any* tool output
-  regardless of notation — they are the read-side half of
-  #errors-that-teach, and several (line numbers, previews) are already
-  ecosystem floor.
+**Who reads this and when:** for UDON, the skeleton/glance utility is
+among the cheapest high-value tools to build once addressing exists, and
+skeleton-lines-as-addresses is the design decision to protect. For the
+harness, the payload conventions — line numbers, breadcrumbs, counts,
+confidence, menu-shaped errors — transfer to any tool output in any
+notation, and several are already ecosystem-standard.
 
 ## Honest edges
 
-All shape, no measurements: nobody has measured glance-vs-full-read
-context savings or task-success deltas on real agent workloads (the
-December usability corpus predates these designs and is stale). The
-catalog's session tool assumes single-agent use — its staged-changes model
-meets #freshness-and-atomicity's multi-writer reality only via the
-re-resolve-at-commit rule, which the design states but no code enforces
-yet.
+All shape, no measurements: no one has measured glance-versus-full-read
+context savings or task-success deltas on real agent workloads (the one
+usability study that exists predates these designs). The session view
+assumes a single writer; under concurrent writers it survives only via
+the re-resolve-at-commit rule the previous chapter describes — stated in
+the design, enforced by no code yet.

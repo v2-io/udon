@@ -12,7 +12,8 @@ inherits.
 
 ---
 
----
+<!-- auditor apparatus — original gathered frontmatter:
+- - -
 source: second-pass paths demand spike (Grok, 2026-07-21); free-form NOTES
 gathered: 2026-07-21
 status: gathered source material — NOT an authoritative decision document
@@ -27,7 +28,8 @@ categories:
   - D1-through-D9
   - edit-tool-blocker
 why_included: Addressing is the long pole for edit/query/error-as-menu/refs. Whole NOTES + demand table D1–D9. Complements (does not replace) design/udon-paths.md.
----
+- - -
+-->
 
 > **Why gathered:** Addressing is the long pole for edit/query/error-as-menu/refs. Whole NOTES + demand table D1–D9. Complements (does not replace) design/udon-paths.md.
 

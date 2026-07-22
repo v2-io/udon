@@ -73,15 +73,22 @@ length, and captures) — the shape a span-precise edit substrate needs,
 and otherwise absent from the ecosystem.
 
 **What is already decided, and what is genuinely open.** Three boundary
-facts are settled: cross-document addressing is in scope for any future
-path design (so no tool should assume single-document scope is
-permanent); the current in-document reference form stays frozen exactly
-as it is — *no field-by-field growth* — until a real path language
-replaces it whole; and how multiple keys on one element interact with
-addressing is explicitly undecided. Everything else — the syntax, the
-verbs, whether positional access ever becomes language rather than
-tooling — is deliberately open: this report maps the demand and declines
-to design.
+decisions frame the design space. First: a path language could plausibly
+stop at the edge of a single document — cross-file hops left to the tools
+that open files — and the day-in-the-life studies leaned that way. That
+boundary has been ruled out as a permanent assumption: cross-document
+addressing is in scope for the eventual design, so a tool that hard-codes
+"paths never leave this file" into its workflows would be built on sand.
+Second: UDON documents can already point at their own elements with a
+small reference form, and the temptation is to grow it a feature at a
+time toward a path language. That road is closed — each incremental field
+would be a constraint the real path language later has to honor or break,
+debt without a design — so the reference form stays frozen exactly as it
+is until a whole path language replaces it. Third: an element can carry
+more than one key, and how addressing should treat that is explicitly
+undecided. Everything else — the syntax, the verbs, whether positional
+access ever becomes language rather than tooling — is deliberately open:
+this report maps the demand and declines to design.
 
 **Where to go from here.** Read the
 [addressing exploration](../reports/addressing-exploration.md) whole — it
