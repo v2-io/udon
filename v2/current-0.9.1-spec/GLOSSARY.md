@@ -28,8 +28,9 @@ tooling messages, or documentation.
 - **Designated attribute** — an ordinary attribute whose `$`-key is a sugar
   target (`$key`, `$traits`, `$?`, `$!`, `$*`, `$+`, `$partial-key`).
   Designated, not reserved. (CORE §5.3.)
-- **Identity** — the `[key]` sugar; desugars to `$key`; unique per element
-  name at the Document layer. (CORE §5.3.)
+- **Identity** — the `[key]` sugar; desugars to `$key`. Duplicate
+  `(name, key)` pairs are a Document-layer *policy* concern (menu, default
+  error — CORE §12.3 / R14), not a definitional property. (CORE §5.3.)
 - **Trait** — the `.name` sugar; classification, plural, ordered; desugars
   to stacked `$traits`. (CORE §5.3.)
 - **Flag suffix** — trailing `?` `!` `*` `+` on element identity, desugared

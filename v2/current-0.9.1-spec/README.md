@@ -1,5 +1,19 @@
 # current-0.9.1-spec — the consolidated UDON spec suite
 
+```udon
+|article[intro].featured :author "Joseph Wecker" :draft?
+  Structure and prose, freely interleaved — no closing tags, and prose
+  is just prose (Markdown survives; ; only a framed semicolon comments).
+  |section :title Typed values
+    :when <2026-07-11>          ; envelope: a dialect types it
+    :tags [udon notation]       ; frozen bare scalars stay boring
+```
+
+**Bare recognition is frozen forever, so adding a dialect can never
+silently retype an existing document — UDON's dates structurally cannot be
+Norway'd.** New readers: [TUTORIAL.md](TUTORIAL.md) (twenty minutes,
+settled core only), then CORE's Appendix A.
+
 **What this is.** The single place to learn what UDON *is* right now:
 0.9-era law consolidated from four scattered sources — the live
 `spec/CORE.md` (0.9.0-alpha.2), the `spec/msc/CHANGELOG.md` rulings ledger,
@@ -20,6 +34,14 @@ not listed there, that's a defect here; say so rather than picking a side.
 Language-law history stays in `../../spec/msc/CHANGELOG.md` (append-only);
 new rulings land in `../DECISIONS.md` and get folded into this prose.
 
+**Ruling-ID namespaces.** Three registries share short IDs, and the labels
+collide (`C2`, `S4`, `D4` each mean two different things across them).
+This suite therefore always namespaces: bare IDs (`L4`, `R19`, `W4`,
+`S14`, `PATH-1`) are `../DECISIONS.md` rows; `CHANGELOG …` prefixes the
+`spec/msc/CHANGELOG.md` batch clauses (`CHANGELOG S6`, `CHANGELOG C2`);
+`OPEN Sn` is an `../OPEN.md` row; `3b-Dn` is a greenfield decision. If you
+add a cite, namespace it.
+
 ## Reading order
 
 | File | Role |
@@ -31,7 +53,8 @@ new rulings land in `../DECISIONS.md` and get folded into this prose.
 | [CARVEOUTS.md](CARVEOUTS.md) | **Normative as to scope.** Deliberately unspecified items, each with its demand-side reason and closing condition. **Spike agents (paths/dialects/schema/value-typing): start here.** |
 | [DELTAS.md](DELTAS.md) | The complete behavior-change ledger vs 0.9.0-alpha.2. |
 | [RATIONALE.md](RATIONALE.md) | Non-normative why. |
-| [PEDAGOGY.md](PEDAGOGY.md) | Teaching-ladder outline stub (deliberately thin — P4). |
+| [TUTORIAL.md](TUTORIAL.md) | Non-normative provisional baseline tutorial — the settled core in twenty minutes. |
+| [PEDAGOGY.md](PEDAGOGY.md) | Teaching-ladder outline + committed mental models (manual deferred — P4). |
 
 Deliberately **absent**: an event/wire encoding (the 0.9 flat wire was
 deratified; the successor is demand-gated — see CARVEOUTS §W), full dialect

@@ -1,10 +1,12 @@
-# Pedagogy — outline stub
+# Pedagogy — outline + committed mental models
 
-**Non-normative; deliberately an outline only** (ruled P4: pedagogy day one
-is outline, not prose). The teaching pillar is written after the demand
-side settles what idiomatic UDON *is* — pedagogy prescribes one idiom where
-the spec allows many, and the idiom should be chosen against real usage
-evidence (the udon-needs corpus), not ahead of it.
+**Non-normative.** The full teaching *manual* stays deferred (P4): pedagogy
+prescribes one idiom where the spec allows many, and the idiom should be
+chosen against real usage evidence (the udon-needs corpus), not ahead of
+it. A **provisional baseline tutorial** covering only the settled core
+exists now at [TUTORIAL.md](TUTORIAL.md) (per Joseph's 2026-07-22 ask,
+which supersedes P4's outline-only for the baseline); this file holds the
+outline and the committed teaching choices the eventual manual builds on.
 
 Principles held for the eventual write-up (from defining-udon.md):
 progressive disclosure; shape mental models with heuristics ("whose name is

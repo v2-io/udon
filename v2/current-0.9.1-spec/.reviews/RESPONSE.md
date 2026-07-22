@@ -19,3 +19,36 @@ disposition choices below note where I picked among a finding's options.*
 
 Nothing rejected. Both reviews' "checked clean" logs gratefully relied on —
 no re-derivation done where a reviewer verified against source.
+
+---
+
+## Round 2 — cross-substrate: codex + agy (reviewed at `bca74bf`)
+
+| Finding | Disposition |
+|---|---|
+| **codex HIGH** (Float equivalence vs S17) | Fixed — and owned: I carried 3b's SEMANTICS wording past a ruling I had in hand. §2.3 now scopes base-normalization to Integers only; Float equality is host-profile-or-omitted per S17, named-profile required, no portable cross-profile claim, profile territory enumerated (decimal-vs-IEEE, NaN, signed zero, lexical preservation). |
+| **codex MED** (DELTAS scope vs SEMANTICS) | Fixed: DELTAS row 10 — the equivalence/serializer contract as a newly specified consumer surface, no source-recognition change, C3 cite. |
+| **codex MED** (Unicode fork) | Fixed per codex's own disposition: §5.2 requires recognizers to declare their Unicode data version; non-ASCII identifiers non-portable across declared versions; DELTAS row 11; CARVEOUTS §UNI carries the future version-pin ruling. No pin invented. |
+| **codex LOW** (on-ramp placement) | Taken in the stronger form: compact annotated example at README top + TUTORIAL as the stated first read; Appendix A rebuilt (see round 3). |
+| **agy #1** (Structure Position/Line Scan jargon) | **Not applied — steward-tier** (N-pos/N-scan are ruled). Argument + cite recorded in `.reviews/STEWARD-FLAGS.md` §1. |
+| **agy #2** (pedagogy stub insufficient) | Taken: `TUTORIAL.md` — provisional baseline tutorial, settled core only, CORE-wins banner; PEDAGOGY reframed as outline + committed models with the P4-supersession note (Joseph's 2026-07-22 ask). |
+| **agy #3** (default indent unit) | **Not applied — is OPEN IND**, a steward call; agy's tooling-thrash scenario attached as demand evidence in STEWARD-FLAGS §2. |
+| **agy #4** (CARVEOUTS praise) | Protected; also extended (index line, round 3). |
+
+## Round 3 — grok (reviewed at `13e6623`)
+
+| Finding | Disposition |
+|---|---|
+| **H1** (bare `C2` collision) | Fixed: CORE §12.5 + CARVEOUTS §ANNOT now cite `CHANGELOG C2 (2026-07-19 densification)`; README gains the **ruling-ID namespaces** note (this was the third collision of the shape — S4, D4, C2 — so the convention is now stated once). |
+| **H2** (dangling "Appendix C") | Fixed → Appendix B. |
+| **M1** (GLOSSARY Identity overclaims uniqueness) | Fixed: uniqueness is Document-layer policy (menu, default error — R14), not definitional. |
+| **M2** ("Two boundary rules", three bullets) | Fixed: "Three". |
+| **M3** (S4 namespace load) | Fixed via grok's alias suggestion: empty-`\|{}` now cites **R19** exclusively; the indent-scope question is "OPEN S4 (indent-scope)" at every mention. |
+| **M4 + D1** (Appendix A under-delivers; lead with commit model) | Rebuilt: Appendix A now leads with the two predictive ideas (open→commit; columns-are-the-syntax with the horizontal≡vertical diagram), then the annotated marker inventory with per-line labels and § cites, sugar-honesty and keep-everything closers. |
+| **E3.3** (recognition vignettes) | Added as Appendix C: happy-path sugar, `$partial-key` fail-safe, and the two L0 Errors — each with its Document shape. |
+| **D2** (Norway sentence buried) | Bolded once in README ¶1 and once in Appendix A. |
+| **E1 shine** (machine-readable CARVEOUTS index) | Added at top of CARVEOUTS (`ID(closes-when)` line). |
+| **E4** (read-these-first) | Added to CORE's front matter: §2.1/§2.2/§6.4/§6.5/§14.1. |
+| **L2** (fixture-pinning MUST NOT) | Applied per coordinator endorsement **and flagged**: DELTAS org paragraph notes it edges normative; STEWARD-FLAGS §4 records the one-revert undo. |
+| **L1** (promote N-pos/N-scan into DELTAS table) | **Declined**: the org paragraph now carries the full provenance story including the non-ruling status; putting org-only rows back into the behavior table would recreate the exact table-vs-paragraph tension review-A flagged (A-F6). |
+| **D3** (don't rush grammar pillar) | Recorded as third-party support in STEWARD-FLAGS §3. |

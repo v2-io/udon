@@ -18,6 +18,16 @@ openness is design intent; the reason is the load-bearing part.
 > BEHAVIOR"; a future version may redefine with a warning first, never a
 > silent meaning change.
 
+```text
+index: ML(closes: dialects/value-typing spike) · ENV-ROUTE(dialect spike)
+· ENV-EMPTY(dialect layer) · PATHS(paths spike) · PRAGMA(dialect+schema)
+· DIALECT-DEF(dialect spike) · MD(companion work) · MIXIN(host demand)
+· ANNOT(paths/dialects/schema) · IND(editing-tool demand)
+· RC-SPELL(standard-types dialect) · S4-SCOPE(steward call)
+· UNI(version-pin ruling) · S9(ornamentation work) · W(demand-gated wire)
+· CODES(W4 reconciliation)
+```
+
 ---
 
 ## ML — multi-line policy for the remaining delimited forms
@@ -122,7 +132,7 @@ override rules, multiple-mixin resolution, child/prose inheritance all
 unspecified. The core gives the mechanism (anonymity + traits + stacking)
 and nothing more.
 
-## ANNOT — annotation syntax beyond the named-element convention (C2)
+## ANNOT — annotation syntax beyond the named-element convention (CHANGELOG C2)
 
 **What:** richer inline annotation than `|{note :confidence 0.7 …}` —
 deferred to the demand-side work with paths/dialects/schema. (The ASF-side
@@ -155,6 +165,22 @@ state of the code/spec text; do not cite it as settling S4.
 
 **Closes when:** the S4 steward call lands (then OPEN.md's row closes with
 a cite and this item disappears).
+
+## UNI — Unicode identifier version pin
+
+**What:** which Unicode version's `XID_Start`/`XID_Continue` tables govern
+bare names/keys/traits. Currently a declared host decision (CORE §5.2):
+recognizers state their Unicode data version; non-ASCII identifiers are
+non-portable across different declared versions.
+
+**Why open:** the 0.9 line never versioned it, and inventing a pin in a
+consolidation would be design, not consolidation. The eventual answer
+(a pinned version + upgrade procedure, or a permanent declared-profile
+model) affects conformance-suite portability and belongs with the
+compliance/versioning work.
+
+**Closes when:** a ruling pins a version (or ratifies the declared-profile
+model) — likely alongside the first published fixture suite.
 
 ## S9 — BlankLine placement at structural seams
 

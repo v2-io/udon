@@ -17,6 +17,15 @@ cites its ruling; nothing below is this suite's invention.
 | 7 | Multi-line for remaining delimited forms | "deliberately undefined" per-construct table (the greenfields then closed it per-construct) | Same openness, **reframed as a carve-out with its dissolution reason** (dialect-capture sugar); explicit do-not-close-per-construct | OPEN **ML** re-mark (2026-07-21) |
 | 8 | Event/wire encoding in the spec | CORE carried an "Event Encoding" section (flat wire) | **Absent from the spec suite** — flat wire deratified; successor (W0/W1d) lives in the v2 ledger; MODEL §6 carries the adequacy test any future wire must pass | **R8** |
 | 9 | Anomaly severity framing | Ladder + per-case calls | **Error = loss** (or genuinely-absent intended value) as the checkable rule; representative table re-derived under it | **L0** |
+| 10 | Equivalence / serializer contract | none — 0.9 specified the text law and selected desugarings, but no whole-document equivalence relation or serializer requirements | **SEMANTICS.md**: a newly specified comparison + serializer contract (equivalence layers, normalization list, serializer MUST NOTs). No source-recognition change — it constrains consumers/serializers, not what source text means | Charter **C3** (SEMANTICS named a day-one component); **S17**/**S9** boundaries respected |
+| 11 | Unicode identifier portability | UAX #31 vocabulary with no version statement (silent cross-implementation fork) | Recognizers MUST declare their Unicode data version; non-ASCII identifiers are non-portable across declared versions (§5.2; CARVEOUTS §UNI). A version pin is a future ruling, not invented here | consolidation-surfaced (codex review); no prior ruling |
+
+One suite-scope addition for Joseph's eye (grok L2, coordinator-endorsed):
+CORE §13.2's caution now carries an explicit sentence that fixtures/tools
+treating the current-parser multi-line table as *language* behavior are
+non-conformant with the suite's scope claim — S2's own descriptive-framing
+rule made enforceable. It constrains fixture *framing*, not source
+meaning; flagged here because it edges normative.
 
 Organizational (no behavior surface): the vocabulary rename — head position
 / blob / embedded / freeform / raw-as-noun → **Structure Position / Line

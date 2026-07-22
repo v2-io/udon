@@ -35,9 +35,14 @@ after, in order:
 2. **Nil and boolean spelling.** `null` ≡ `nil`.
 3. **Integer base spelling.** Compare by mathematical value: `255` ≡
    `0xFF` ≡ `0b11111111`. **Not round-trip safe by design** — never use §2
-   alone as a recognition-identity check. Float spelling is *not*
-   normalized beyond recognized-Float equality (`1.0` ≡ `1.00`); bit-exact
-   float policy is a host profile (ruled S17).
+   alone as a recognition-identity check. This item applies to **Integers
+   only**: Float equality is **not part of core equivalence** (ruled S17 —
+   host profile, or omitted). Two Float values compare equal at this layer
+   only under a *named* host Float-equality profile, and documents compared
+   under different profiles carry **no portable core-equivalence claim**;
+   absent a profile, Floats compare by recognized lexical form like any
+   other unresolved value. (Decimal-vs-IEEE value, NaN, signed zero, and
+   lexical preservation are all profile territory, not core law.)
 4. **Stacking vs list — NOT collapsed.** `:x 1 :x 2` ≠ `:x [1 2]`, ever. A
    host "values(x) → [1,2]" view is a projection, not equivalence.
 5. **Flow flattening.** Adjacent pure text segments may concatenate; inline

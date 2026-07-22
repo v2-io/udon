@@ -16,8 +16,11 @@ must carry.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are per RFC 2119.
 
-*New to UDON? Appendix A is a one-screen annotated surface map — reading it
-first makes the density below land easier.*
+*New to UDON? Read [TUTORIAL.md](TUTORIAL.md) or Appendix A (the annotated
+surface map) first. Implementers pressed for time: the five subsections
+that carry the load are **§2.1** (Nesting Rule), **§2.2** (Structure
+Position / commit), **§6.4** (bare-token boundary), **§6.5** (ownership),
+and **§14.1** (severity = loss) — everything else hangs off those.*
 
 ---
 
@@ -61,7 +64,7 @@ and the anomaly contract. Everything else belongs to a consumer:
 | Mixin inheritance | Host (experimental, §12.4) |
 | Markdown inside Text | layers above recognition |
 
-Two boundary rules keep the split honest:
+Three boundary rules keep the split honest:
 
 - **Menu vs knob.** The core MAY fix an option space and a default; a
   consumer picks within the menu and MUST NOT invent options outside it.
@@ -265,7 +268,13 @@ or `/`. Kebab-case is first-class (`|my-element`); `/` is conventional
 namespacing with **zero** core semantics (`|acme/widget`). Any other
 character ends the bare name; names containing one take single quotes
 (`|'weird name'`). Which Unicode version supplies the `XID_*` properties is
-a host decision; the rule (UAX #31 plus `-` `/`) is the core's.
+a host decision; the rule (UAX #31 plus `-` `/`) is the core's. Because
+XID properties change across Unicode versions, this is a **declared
+host-profile boundary**: a recognizer MUST state the Unicode data version
+it resolves `XID_*` against, and non-ASCII identifiers are **not
+portable** across implementations declaring different versions (ASCII
+names are stable everywhere). Pinning a version and an upgrade procedure
+is a future ruling, not this consolidation's to invent (CARVEOUTS §UNI).
 
 The flag-suffix characters `? ! * +` are **not** name-continue characters
 for elements — a trailing one is a flag suffix (§5.4). (Traits and
@@ -367,7 +376,7 @@ Within flow, `|{…}` opens an inline element:
   terminator; the opener line's terminator belongs to the form when its
   line ends inside the braces. Consumers concatenate for a single string —
   exact by the text law.
-- **Empty `|{}`** is a valid, empty anonymous inline element (ruled — CHANGELOG S4; distinct from OPEN.md's S4).
+- **Empty `|{}`** is a valid, empty anonymous inline element (ruled — DECISIONS R19).
 - Intervening text between sibling inline forms — including a single
   space — is real content (round-trip fidelity).
 - An inline element is a child of its containing element, sibling to the
@@ -775,7 +784,7 @@ The frame requirement is a property of the *framed* positions only. In the
 no-frame positions (line start at a structural column; after a finished
 value on element/block-attribute lines), a `;` opens the comment with or
 without a following space — `;comment` at line start is a comment (a host
-MAY surface a style advisory for the missing space; see Appendix C).
+MAY surface a style advisory for the missing space; see Appendix B).
 
 **Comments are carried, not discarded** — they appear in the model
 (MODEL §5) and consumers decide their fate (documentation extraction, TODO
@@ -1082,7 +1091,8 @@ resolution is fully conformant. (Ruled S13: remains a host experiment.)
 
 Inline annotation is a named-element convention — e.g.
 `|{note :confidence 0.7 …}` with a schema-owned vocabulary, strippable by
-consumers (ruled C2). Richer annotation syntax is deferred to the
+consumers (ruled — CHANGELOG C2, 2026-07-19 densification; not the
+DECISIONS charter's C2). Richer annotation syntax is deferred to the
 demand-side work (CARVEOUTS).
 
 ---
@@ -1126,8 +1136,11 @@ CARVEOUTS (ML) for the full reasoning and what would settle it.
 > (content); lists and identity keys close at the newline with their
 > content kept and a Warning (identity via `$partial-key`). Ratified only
 > as "undefined-but-warn-before-disallow" (S2): pinning fixtures must be
-> framed descriptively, and a future version may define multi-line or warn
-> — it will not silently change meaning.
+> framed descriptively ("PINS CURRENT PARSER"), and a future version may
+> define multi-line or warn — it will not silently change meaning.
+> **A fixture or tool that treats this table as expected behavior of the
+> language — rather than of the current parser — is non-conformant with
+> this suite's scope claim.**
 
 ### 13.3 End of input
 
@@ -1232,22 +1245,53 @@ anomalies: the model carries both.
 
 ---
 
-## Appendix A — quick surface map (non-normative)
+## Appendix A — annotated surface map (non-normative)
+
+Two ideas predict nearly everything here. **A line starts open and
+commits**: markers work at the start of a line and while structure is
+still being written; the first prose word commits the rest to text (only
+a space-framed ` ; ` survives as a trailing comment). **Columns are the
+syntax**: deeper = child, same = sibling, shallower = closed — and
+elements written on one line sit at their real columns:
 
 ```udon
-; comment
-|element[key].trait :attr value :flag?
-  :block-attr multi word value
-  :node-attr |config :first 1 :second 2
-  Prose with |{em inline}, !{{interp}}, and ;{a note}.
-  !:python:
-    print("| not udon")
-  ```
-  byte-exact fence body
-  ```
-  @other[key]
-\| this line is literal text
+|a |b |c        ; three elements, nested — identical to the
+                ; vertical form below (columns are real):
+|a
+   |b
+      |c
 ```
+
+The rest is the marker inventory, annotated:
+
+```udon
+; a comment (owns anything indented deeper than it)
+|element[key].trait :attr value :flag?
+;        │    │      │           └ flag key: present ⇒ true        (§6.2)
+;        │    │      └ attribute: the PARENT's label for the value (§6.1)
+;        │    └ trait: what KINDs of thing this is — stacks        (§5.3)
+;        └ identity: what makes it THIS one; @[key] points at it   (§5.3)
+  :block-attr a multi word flow value
+; └ same attribute grammar on its own line; value runs to EOL     (§6.4)
+  :node-attr |config :first 1 :second 2
+;            └ no braces ⇒ the |config node IS the value          (§6.8)
+  Prose with |{em inline}, !{{interp}}, and ;{a note}.
+; └ committed text; braces ⇒ inline forms INSIDE text             (§7.3)
+  :when <2026-07-11>
+;       └ envelope: everything beyond the frozen bare scalars —
+;         a dialect types it. **Bare recognition is frozen forever,
+;         so adding a dialect can never silently retype a document
+;         (no Norway problem, structurally).**                    (§11.6)
+  !:python:
+    print("| not udon here")   ; verbatim body — never parsed     (§10.1)
+  @other[key]                  ; reference — inert selector       (§12.2)
+\| this whole line is literal text (the \ consumed itself)         (§4)
+```
+
+Sugar is honest: `|element[key].trait?` and
+`|element :'$key' key :'$traits' trait :'$?' true` are the **same
+element** (§5.3). And nothing is ever thrown away: malformed input keeps
+its bytes, with a Warning marking the spot (§14).
 
 ## Appendix B — Working anomaly-code inventory (non-normative)
 
@@ -1261,7 +1305,7 @@ differ.
 
 | Code | Situation (§) | Severity |
 |---|---|---|
-| `InconsistentIndentation` | prose or comment-continuation line under the content base but still inside the owner (§7.2 r4); a line at/left of the owner's column is an ordinary dedent, not this. *Scope note: the comment-continuation extent follows live CORE but is pending the open S4 steward call (OPEN.md; CARVEOUTS §S4-SCOPE)* | Warning |
+| `InconsistentIndentation` | prose or comment-continuation line under the content base but still inside the owner (§7.2 r4); a line at/left of the owner's column is an ordinary dedent, not this. *Scope note: the comment-continuation extent follows live CORE but is pending OPEN S4 (indent-scope) — the steward call (CARVEOUTS §S4-SCOPE)* | Warning |
 | `NoDialectsLoaded` | envelope recognized, no dialects bound; lexical pass-through (§11.6) | Warning |
 | `AttributeValueExtendedByTrailingText` | same-line warned extension on a block attribute line (§6.7) | Warning |
 | `AttributeSecondValue` | deeper second value under a finished key (§6.7) | Warning |
@@ -1272,3 +1316,62 @@ differ.
 | `AttributeUnderAttribute` | `:key` directly under an open value (§6.8) → text of the open value | Error |
 | `EscapeOutsideHeadPosition` | past-base `\` (§4) — consumer-layer, optional | advisory |
 | `CommentMissingFollowingSpace` | `;comment` in a no-frame position (§8) — host style advisory, optional | advisory |
+
+## Appendix C — recognition vignettes (non-normative)
+
+Three inputs and the Document each produces (shapes per MODEL; anomaly
+codes are Appendix B working names).
+
+**1. Happy path, sugar and longhand identical:**
+
+```udon
+|user[jw].admin :active? Joined 2025.
+```
+
+```text
+Document { result: complete, anomalies: [] }
+└ Element user
+    attributes: $key="jw" · $traits="admin" · active?=true
+    content:    Text "Joined 2025.\n"
+```
+
+**2. The `$partial-key` fail-safe** — an editing accident, not a disaster:
+
+```udon
+|user[jw
+  :name Jo
+```
+
+```text
+Document { result: complete, anomalies: [Warning UnclosedIdentityKey @1:6] }
+└ Element user
+    attributes: $partial-key="jw" · name="Jo"
+```
+
+The truncated key lands under `$partial-key`, so nothing that reads
+`$key` or resolves `@[jw]` acts on it — and the newline closed the
+bracket, so the rest of the document parsed normally. (Had the input
+*ended* inside a delimited construct, `result` would be
+`incomplete-input`.)
+
+**3. The two non-loss Errors** (§14.1 — intended value / structure absent,
+bytes kept):
+
+```udon
+|server :host
+  :port
+    :nested 1
+```
+
+```text
+Document { result: complete,
+           anomalies: [Error MissingAttributeValue @1:9,
+                       Error AttributeUnderAttribute @3:5] }
+└ Element server
+    attributes: host=Nil · port="​:nested 1\n"
+```
+
+`host` stands with Nil (the intended value is absent); the misplaced
+`:nested 1` line survives as text of `port`'s open value (the intended
+nested-attribute structure is absent). Recognition continued; every byte
+is in the model.
