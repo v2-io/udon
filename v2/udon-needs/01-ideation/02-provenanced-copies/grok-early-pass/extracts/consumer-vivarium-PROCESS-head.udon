@@ -1,0 +1,117 @@
+---
+source: live consumer document (vivarium process norms)
+gathered: 2026-07-21
+status: gathered partial extract of external consumer — not moved into udon as authority
+paths:
+  - /Users/josephwecker-v2/src/archema-io/vivarium/doc/PROCESS.udon
+categories:
+  - live-consumer
+  - safe-subset
+  - authoring-contract
+  - process-map
+why_included: |
+  Founding-style consumer: hybrid structure+prose + explicit safe-subset/authoring contract until CLI tools exist. Evidence for lint/fmt/CLI and subset needs.
+---
+
+> **Why gathered:** Founding-style consumer: hybrid structure+prose + explicit safe-subset/authoring contract until CLI tools exist. Evidence for lint/fmt/CLI and subset needs.
+
+|norms[vivarium-process]
+  :title Working norms for vivarium — prescriptions, proscriptions, and the feedback valve
+  :created 2026-07-11
+  :version 0.1.0
+  :status living
+  :authority binds-until-amended
+
+  ; Instituted 2026-07-11 during the doc reorg, at Joseph's direction: empowering
+  ; workflow norms with a method for feedback. Genre precedent:
+  ; asf/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.udon. Kept deliberately
+  ; small: a norm that is not real is worse than no norm.
+
+  |meta[self-governance]
+    :source-sink participant-feedback
+
+    How this document governs and evolves itself, in three imperatives:
+    - Any participant (Joseph, any agent, any future instance) may give feedback
+      on any norm, at any time.
+    - The valve: append a dated |feedback child under the norm in question (or
+      leave a TODO.md entry pointing here). Joseph adjudicates; a norm changes by
+      amendment, never by silent drift or quiet non-observance.
+    - A norm observed to be routinely violated is a finding about the norm, not
+      only about the violators — bring it back through the valve.
+
+  |cluster[doc-taxonomy]
+    :name Where documents live, and how they stay honest
+
+    |norm[doc-placement]
+      :kind prescription
+      Every document has exactly one home, chosen at creation: root = front
+      doors (README, CLAUDE) + claim core (core/OUTLINE.md, core/src/ segments —
+      sole claim truth, #scope-segment-canon) + the ethics/moratorium unit
+      (ASF.md, ETHICS.md) + the three ledgers (LEXICON, ASSUMPTIONS; SUPERSEDED
+      lives under .archive/ until re-homed); doc/ = durable thinking substrate
+      (ARCHITECTURE; design/ plan/ theory/ — source until segmented); the
+      codified phase floor is tabularium/*.ordinum.udon; ref/ = true reference,
+      consulted not onboarded; msc/ = session reflections and spikes;
+      audits/ = audit deliverables (pending at top level; move to
+      audits/.integrated/ only after verified, adjudicated, and integrated);
+      .archive/ = accounted-for retirements (incl. former ORIENTATION/TODO). A
+      new doc that fits none of these is a taxonomy question to raise, not a
+      root file to drop.
+
+    |norm[sunset-freely]
+      :kind prescription
+      :authority Joseph 2026-07-11 — "a program unwilling to sunset things becomes unable to attempt things"
+      Archive generously. The main tree is for current working state; a program
+      that keeps its whole reasoning trail and evolution in the main parts
+      becomes too difficult to maintain and navigate. Reasoning trails, dated
+      reviews, superseded framings, provenance — .archive/ (organized, indexed
+      in .archive/README.md) and git history are their proper home, and
+      rewinding for any reason is exactly what they serve.
+
+    |norm[archive-accounting]
+      :kind prescription
+      The dependency-type rule (Joseph's correction, 2026-07-11): the main tree
+      must never depend on .archive/ for TACTICAL CURRENT needs — never "the
+      algorithm we need is described in .archive/..." — but historical,
+      archaeological, provenance, and reasoning-trail pointers into .archive/
+      are proper and encouraged: "assumptions and rationale for this are in
+      .archive/..." is exactly right. Before the git mv: verify anything
+      tactically load-bearing is accounted for in the main tree, and name where
+      (file + section) in the commit message. "Probably covered" is not
+      accounted for.
+
+    |norm[breadcrumbs]
+      :kind prescription
+      Breadcrumb pointers in live docs are a matter of taste, and Joseph's
+      taste governs: pull them back out where they clutter or dilute the most
+      load-bearing concepts; keep only those critical for understanding IN THE
+      PRESENT — plus the one-line "the trail exists, here is where" pointer
+      when a future agent would otherwise re-derive or re-litigate. Git history
+      and .archive/ carry the rest.
+
+    |norm[present-tense-bodies]
+      :kind prescription
+      Current-state documents (ARCHITECTURE as substrate, this file, CLAUDE as
+      router) change their bodies; they do not grow by addenda. Claim truth
+      changes by editing segments. History lives in git and DECISIONS; retired
+      terms live in .archive/SUPERSEDED.md (or LEXICON |carve); open work is
+      named as OUTLINE gaps or DECISIONS proposals — not a hand-maintained
+      ORIENTATION/TODO state map.
+
+    |norm[ledger-duty]
+      :kind prescription
+      Touch a constant — touch ASSUMPTIONS.md. Retire a term or doc-section —
+      append to SUPERSEDED.md. Settle a term — LEXICON.udon, collision-checked.
+      Add or change a nomos — declare it in the nomotheke. These are part of
+      the change, not follow-up work.
+
+    |norm[no-top-billing-rot]
+      :kind proscription
+      An outdated document must not sit above a live one in any reading path.
+      If a front door is discovered stale, fixing it joins the current task's
+      scope; "someday" is how DESIGN.md ended up outranking the architecture.
+
+  |cluster[documents]
+    :name Document formats
+
+    |norm[udon-for-structure]

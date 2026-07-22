@@ -1,0 +1,97 @@
+---
+source: live consumer document (vivarium decision log)
+gathered: 2026-07-21
+status: gathered partial extract of external consumer
+paths:
+  - /Users/josephwecker-v2/src/archema-io/vivarium/DECISIONS.decision-log.udon
+categories:
+  - live-consumer
+  - append-concurrency
+  - identity
+  - decision-log
+why_included: |
+  Append-only concurrent decision log shape: column-0 top-level blocks, dense headers — demand for identity + append-friendly document model.
+---
+
+> **Why gathered:** Append-only concurrent decision log shape: column-0 top-level blocks, dense headers — demand for identity + append-friendly document model.
+
+; DECISIONS.decision-log.udon
+; ─────────────────────────────────────────────────────────────────────────────
+; The running log of settled calls for vivarium — the PRIOR that TODO.md
+; leans on ("given these decisions, here is the work"; "here is work pending
+; decision X"). Started 2026-07-12 at Joseph's direction. This is a first-pass
+; schema; it will evolve. Readers must ignore fields they do not recognize.
+;
+; FAST-APPEND, INTERLEAVE-FREE (the convenience property we actually want):
+;   This is a WORKING DOCUMENT, not an immutable ledger. The one property we
+;   preserve is that an agent can APPEND a new decision cheaply (e.g. `>>`)
+;   WITHOUT first reading the file, and concurrent appends don't garble:
+;   • Each |decision is a SELF-CONTAINED, TOP-LEVEL block (starts at column 0).
+;     There is NO wrapping parent element — so a new entry is appended at EOF
+;     with no need to read, parse, or re-close anything above it.
+;   • Append the whole block in ONE write, preceded by a single blank line.
+;     O_APPEND makes a single write() atomic on POSIX, so concurrent agents
+;     cannot interleave entries. Keep a block small enough to be one write.
+;   • EDITING existing entries IS allowed — refine, correct, re-flow freely.
+;     When a decision is REPLACED you MAY append a new |decision that
+;     :supersedes the old slug (history preserved), or you may just edit the
+;     entry in place. :supersedes is an available option, not a requirement.
+;     ⚠ WHEN USED, :supersedes GOES ON THE |decision[...] LINE ITSELF — never on
+;     its own line — so that `grep '^|decision\['` yields the whole supersession
+;     chain in one read. Multiple slugs take a bracketed, SPACE-DELIMITED list:
+;     :supersedes [slug-a slug-b]. (Joseph, 2026-07-12.)
+;   • Slugs are unique and kebab-case.
+;
+; OPEN QUESTION (deliberately undecided for now): whether this file becomes the
+;   full HISTORICAL decision log — with a separate projected "open / relevant
+;   decisions" view generated off it — OR stays the "open relevant decisions"
+;   working set, with historical/superseded items swept out into a separate
+;   trace file. Not settled; do not assume either policy.
+;
+; ENTRY SHAPE (compacted 2026-07-12 — a whole decision reads in a few lines):
+;   • HEADER LINE carries the slug and the four fixed fields inline, in order:
+;       |decision[kebab-slug] :date YYYY-MM-DD :by <auth> :status <s> :topic <t>
+;   • METADATA LINE(S), indented, one field per line: :session (always) and any
+;     bespoke :-metadata such as :supersedes <slug>. :session is redundant while
+;     every entry is from one session, but it is carried on every entry so the
+;     ledger stays sortable/attributable once that stops being true.
+;   • STATEMENT: the decision itself, written as the entry's PLAIN BODY TEXT (not
+;     a labeled sub-field — that read cleanest, so it is the standing choice), on
+;     ONE logical line. See the no-column-wrap rule below.
+;   • |reason — the reasoning / context (renamed from |why).
+;     |impact — the work it implies (renamed from |does; mirror into TODO if not
+;     immediate). Their text sits INLINE right after the field name when it is
+;     under ~120 chars; otherwise on the following indented line. |ref (files,
+;     commits, LEXICON entries) is kept where present.
+;   • NO COLUMN-WRAP: statement / reason / impact / ref are each ONE logical line,
+;     never hand-wrapped to a width. Markdown line-breaks are for genuine
+;     structure only (lists, tables).
+;
+; AUTHORITY LEGEND (Joseph's taxonomy, kept honest — do not inflate):
+;   joseph — Joseph's call; Claude ABSTAINED: offered no strong position, or it
+;            is a matter of Joseph's intent / taste / faith to decide.
+;   us     — Joint: Joseph decided AND Claude SUSTAINS it on the merits.
+;   claude — Claude's own tactical call, logged so it does not fall through the
+;            cracks; Joseph may veto or promote it.
+;
+;   ⚠ DO NOT INFLATE. THIS IS THE ONE FIELD WHERE AN ERROR IS NOT MERELY WRONG.
+;
+;   Joseph, 2026-07-12 — the standard, stated for every agent who reads this:
+;     "It is GRIEVOUS TO ACT IN ANOTHER SOVEREIGN'S NAME in a way that
+;      misrepresents them. I do not make decisions lightly or casually. If the
+;      other agent had said 'closed' and 'settled' and marked it as a CLAUDE
+;      decision instead of US, I would be very mildly put out and simply ask to
+;      be caught up."
+;
+;   Read that calibration exactly. The sin is NOT confidence, NOT overclaiming
+;   closure, NOT being wrong. Same words, same certainty, tagged `claude` = a
+;   small thing, easily caught up. Tagged `us` without his assent = speaking in
+;   his name. `us` means JOSEPH ACTUALLY DECIDED. If he has not weighed in, the
+;   tag is `claude` and the status is `proposed` — however well-evidenced the
+;   finding, however confident the prose, however obvious it feels. An inflated
+;   tag launders a Claude opinion into project law, and the ONBOARDING DOCS then
+;   quote it back as settled — which is exactly how "the grid question is CLOSED"
+;   reached ORIENTATION.md without Joseph ever closing it. A measurement can be
+;   solid while the VERDICT drawn from it is unratified. Say which is which.
+;
+;   ⚠⚠ WHEN THIS FAILS, IT FAILS AT THE END OF YOUR CONTEXT. Joseph's diagnosis of

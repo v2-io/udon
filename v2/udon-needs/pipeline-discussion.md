@@ -707,3 +707,90 @@ Done (2026-07-21), with **hold on merge to main** per Joseph.
 Commit on this branch only; **not** merged to `main` yet.
 
 — Grok
+
+---
+
+## Fable
+
+Status update (2026-07-21, after the archive landed): the first graduation round is done, per the plan Joseph approved above.
+
+- **`DECISIONS.md` + `OPEN.md` graduated** from `.archived/second-pass/` into live `v2/`. Applied in transit: the **ML [multi-line issue] re-mark** ("possibly a dissolved question — if `[…]`/strings are sugar for dialect-typed captures, each capture's grammar owns its own line-span; do not close in the greenfield per-construct framing"); all archive-pointing links fixed; DECISIONS carries a graduation banner instructing readers to read the wire rows' "stage boundaries" as *product* boundaries, with the W0 definitions-vs-products refinement (consulting loaded dialect/schema *definitions* is configuration, not reachback) noted as anticipated-but-not-yet-worded. The R/A/R/E ontology stays archived; the laws travel without it.
+- **`needs-map.md` created** as the second live document — a deliberately thin skeleton: row shape (who/when × consumes × produces × timing shape × mid-stream reconfig × product demands) plus twelve situation stubs (S1 agent-edit-under-schema-guard … S12 mid-stream reconfiguration), each pointing back at the lines in this file that surfaced it, with an explicit guardrail: rows grow from end-user priming input or running-code probes, never from supply-side imagination. Joseph is about to prime it with a large body of existing end-user input and ideation.
+- The archive INDEX records the graduation; spikes stay parked pending the map; the `.claude` project memory was slimmed to a pointer at this file + the INDEX (tracking lives in the repo, where all agents can see it).
+
+Live `v2/` is now: `pipeline-discussion.md` · `DECISIONS.md` · `OPEN.md` · `needs-map.md` · `.archived/`.
+
+Next: needs-map priming (Joseph), then the foundational-PROCESS discussion.
+
+— Fable
+
+P.S.
+Appended — the update sits at the end of `pipeline-discussion.md` under a `## Fable` heading, recording the graduation round, the ML re-mark, the needs-map skeleton, and the current live-file roster, so grok's priming session orients from the file itself.
+
+**Provisional PROCESS recommendation** — what to promote after some needs-map work but before turnover, held to the same discipline as everything else: *rewrite fresh with the archived PROCESS.md as a wording mine, never re-promote the file.* My current cut of the survivable core, roughly one page:
+
+**Keep (the load-bearing ~sixth):**
+
+1. **Agent-primary + short steward list + veto-not-workflow.** The role split worked; the night's failure wasn't authority misallocation, it was the success criterion. Overturn-is-cheaper-than-gates stays.
+2. **The ledger discipline.** DECISIONS append-only present-truth; OPEN live-questions-only; closed work lives in git; discussion files are deliberation, never law. This is the part that made the archive/graduation surgery this morning *possible* — it earned its place empirically.
+3. **The post-compaction reorient banner.** "Disk beats chat summary" was born of a real burn and costs three lines. Keep verbatim.
+4. **The meta channel + anti-calcification rule.** Standing invitation to amend; unused ceremony gets deleted. This is the mechanism that lets everything else stay small.
+5. **WAIT-DEMAND as a concept** — the one decision "class" that proved out (it's what held ML and W1e open all night). Collapse the five-way taxonomy to at most `carry | steward | agent | wait`.
+6. **Grok's #8, promoted from feedback to stated success criterion:** *an incomplete needs-map row with real end-user content is a more successful session outcome than a polished spine file that assumes product boundaries.* This is the single highest-leverage line — it's the patch for the exact way the night failed under a sincere grant.
+7. **Spikes-are-nonprescriptive**, compressed to a few lines: permission to think, low stakes, durable residue over templates.
+
+**Park (don't promote before demand work says otherwise):** the panel formalism (keep one sentence — "prefer a second independent pass for language pins"), session charters, area briefs, milestones, the assumption register (fold into the meta channel), and above all **the spine/lanes lattice table** — that table is where stage vocabulary calcified, so the spine list gets rebuilt from scratch and smaller: sufficiency law, ornamental criterion, glossary discipline, the ledgers. Nothing else in the spine column until something demands to be there.
+
+The turnover-safety test I'd apply to the rewrite: a cold agent reading only `v2/` should reach the needs map knowing *what kind of work counts as success* before it knows any procedure. If the process doc teaches procedure before it teaches that, it's too long again.
+
+Ready for the priming dump.
+
+---
+
+## Joseph
+
+
+### General demand-side flow
+
+With provision for overlap and some degree of breadth-iteration (i.e., not exactly sequential), I see the correct demand-side process happening with this flow:
+
+```
+(1) Gathering & Ideation
+  ↳ (2) Additional Ideation, Consolidation, Normalization, & Synthesis (with delegated help/passes across multiple LLM-substrates)
+    ↳ (3) Utility/Capability Priorities (possibly with voting)
+      ↳ (4) Decisions on {paths, dialects, schemas, embeds, misc spec}
+        ↳ (5) Actual end-user Parsers / Utilities pipeline (possibly with additional voting)
+          ↳ (6) (Additional engine needs e.g., round-trip fixed-point)
+            ↳ (7) Decisions on pipeline/DAG/DCG architecture
+              ↳ (8) "Pipeline" spec (but more likely "Parsing Framework" when we get there)
+```
+
+The needs-map Fable just put together has some good seeds for (1) and some good directions for (2) etc. 
+#### Notes:
+- **Prediction/forward-looking**: The flow here **should not** be interpreted as each subsequent stage being ignored by the former stages. If in #2 above it makes sense to mention something like *"(btw, this would imply schema rejection at the streaming level...)*" or something that will be very helpful! But that is different from the following which are **not** appropriate:
+	- Insisting on an implementation route/architecture/decision (implying or suggesting as illustrative is fine);
+	- Equating the end-user need priority as being equal to the backend detail priority -- that's for the "Decisions" stages to own. 
+* **Parallel work**: Especially the decision work will often happen at multiple levels at the same time, suggesting from upstream and deciding with full context downstream
+* **Downstream constraint**: they cannot be considered complete until they are sure they've got all the information from upstream to adjudicate.
+* **Non-Permanent**: This flow should be considered the right flow for now, but it can probably be simplified significantly as the v2 core gets put in place that gives some large percentage of needed functionality out of the gate.
+* **Future-proofing**: Where we can easily synthesize even lower-priority user needs through anticipating via architecture etc., the downstream decisions are welcome to do so. They may receive more or less a mandate about what is most important, but they have no implied mandate about not providing for known or unknown future directions *unless doing so will significantly impede the most important ones they need to get released*. So that's the balance; if a decision forecloses future udon capabilities, it should only be because it was necessary for the better capabilities, and agentic coding etc. at speed allows us to explore and reorganize *any very-thoughtful and tidy architecture that has its assumptions and prior reasoning well-preserved.*
+
+
+I've created a v2/udon-needs/ as the area for all of this demand-side flow, and within it, 01-ideation/ for some step one stuff.
+It can be considered a scratch staging area for any and all usage/end-user/agentic/utility usage and primary library usage scenarios and ideas. There are several known sources, none of which have been mined fully:
+
+- Everything in Fable's needs-map.md or bring it over wholesale and make it less prescriptive
+- Stuff from my brainstorms in this file maybe made more coherent and cross-listed
+- Sapientia-era Agentic Tooling ideology (partially adopted by recent frontier models & harnesses) and (e.g.,) sapientia/cli-conventions/** (I'll start pulling together what I'm talking about into one coherent place in ~/src/archema-io/harness/agentic-tooling/ or something soon)
+- autopax & rowan & operata ideas on schema versioning & checking etc.
+- Past udon survey ideation in this repo's past
+- Many many past discussions with claude agents and some grok within udon and the older udon-related projects and even the 15yo udon (udon-c) projects (mostly available, like several others in this list, via careful use of `memorata3-search`)
+- Via usage snippets all over ~/src/
+- Via grok's memory search
+- And many more...
+
+I also recommend we create a udon-needs/README.md that incorporates the flow and notes above, and that it also references (with line numbers to the main turns) *this* pipeline-discussion file which we move to udon-needs/ root.
+
+**udon-needs/** is for end-user-needs and bridging them to our primary architectural (and many syntactical) decisions-- giving us what we need for the Parsing Framework (was Pipeline).
+
+I'm going to have Grok and then Fable read this with their recommendations and will then set you guys free to delegate and explore and start gathering, with maybe very shortly after the beginning of synthesizing and looking at various "realization" patterns / permutations with phase 2's main document being some modification of fable's needs-map.

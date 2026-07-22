@@ -9,17 +9,32 @@ a submodule.
 
 ## Orientation (read in this order)
 
+> **⚠ Center of gravity moved (2026-07-21): `v2/udon-needs/`.** The wire
+> deratification (07-19) led to clean-room spec re-derivations, then to a
+> night-built v2 spine — and both are now **archived** at `v2/.archived/`
+> (INDEX.md there maps it). What survived is demand-first: end-user needs
+> are being gathered and synthesized in `v2/udon-needs/` (its README has the
+> flow; `v2/udon-needs/pipeline-discussion.md` is the deliberation record —
+> read at least its later turns before touching v2 work). `v2/DECISIONS.md`
+> + `v2/OPEN.md` are the live ledgers. The README status sections below and
+> the lane table describe the **0.9 parser/spec line**, which remains the
+> live oracle — valid for core/ work, but not the current plan.
+
 1. **README → Status + How the work is organized** (imported below) — the
    current state, the map of co-located TODO lanes, per-area compliance,
    and how work propagates.
-2. **spec/CORE.md** — the authoritative language specification
+2. **defining-udon.md** — the documentation philosophy for the whole project
+   (three pillars: Grammar / Specification / Pedagogy; implementation jargon
+   never bleeds into outer layers). It seeded the greenfield exercise and is
+   the standard any spec suite — current or v2 — is held to.
+3. **spec/CORE.md** — the authoritative language specification
    (0.9.0-alpha.2 in progress; 0.8.0 released and tagged `core-v0.8.0` —
    canonical version in `spec/CORE-VERSION`; changelog + rulings ledger in
    `spec/msc/CHANGELOG.md`).
-3. **The TODO lane for your area** (table in the README import below) —
+4. **The TODO lane for your area** (table in the README import below) —
    every lane holds only open items; closed work lives in git and the
    changelog.
-4. *History, when you need the deep why:* `_archive/REVIEW-JULY-2026.md`
+5. *History, when you need the deep why:* `_archive/REVIEW-JULY-2026.md`
    (the estate review + evidence) and `_archive/REBOOT-PLAN.md` (the reboot
    plan) — fully drained into the lanes 2026-07-16, kept as the record. The
    dense predecessor ledgers `_archive/DECIDED.bak.md` +

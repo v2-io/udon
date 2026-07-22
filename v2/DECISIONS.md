@@ -1,6 +1,12 @@
-# DECISIONS — present ledger (0.10 / v2-spec)
+# DECISIONS — present ledger (0.10 / v2)
 
-**Status:** seed 2026-07-21. Thin present-truth only.  
+**Status:** seed 2026-07-21; graduated from `.archived/second-pass/` the same
+day (first cherry-pick — these closes don't depend on the archived R/A/R/E
+pipeline ontology). Where wire rows below say "stage boundaries," read
+"product boundaries" — the four-stage picture is archived, the sufficiency
+law survives; a definitions-vs-products refinement of **W0** (consulting
+loaded dialect/schema *definitions* is configuration, not reachback) is
+anticipated but not yet worded. Thin present-truth only.  
 **History / life:** `spec/msc/CHANGELOG.md`, greenfields, session vault — not this file.  
 **How to amend:** append or overturn with date + provenance; do not silently rewrite history into this file.
 
@@ -19,7 +25,7 @@ Each entry: **what holds now**, a **short why**, and a **cite**. No session dige
 | **C4** | Old parser **runnable as differential oracle** until new gate green; not authority; do not intermingle with new stack. | same |
 | **C5** | Fixtures assert **events and assembly/ADM product** where useful; profiles **idiomatic / comprehensive / descriptive (non-normative)**. | same |
 
-Process norms (agent-primary, provisional PROCESS, vault for history): see [PROCESS.md](PROCESS.md). Not re-listed as language law.
+Process norms: the night's PROCESS.md is archived (`.archived/second-pass/`) pending a post-needs-map rewrite; agent-primary + steward-gate + append-only-ledger norms remain in force informally. Not language law.
 
 ---
 
@@ -132,7 +138,6 @@ High-consensus greenfield + pipeline leans, landed thin. **Overturn freely** via
 ## Pointers
 
 - Open work: [OPEN.md](OPEN.md)  
-- Process: [PROCESS.md](PROCESS.md)  
-- Fixtures (C5/C6 design): [FIXTURES.md](FIXTURES.md)  
-- Session vault: [spikes/session-vault/](spikes/session-vault/)  
+- Deliberation seed: [udon-needs/pipeline-discussion.md](udon-needs/pipeline-discussion.md)  
+- Archive map: [.archived/INDEX.md](.archived/INDEX.md) (PROCESS, FIXTURES, session vault, spikes — all there)  
 - CHANGELOG: [`../spec/msc/CHANGELOG.md`](../spec/msc/CHANGELOG.md)

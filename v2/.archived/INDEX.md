@@ -37,6 +37,11 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 
 ### Early cherry-pick candidates (recover soon)
 
+> **Graduated 2026-07-21 (same day):** `DECISIONS.md` and `OPEN.md` now live
+> at `v2/` (with the ML re-mark applied and archive-pointing links fixed).
+> The rows below are kept for the record. Spikes remain parked pending the
+> needs map.
+
 | Path | Kind | One line + interest / risk |
 |------|------|----------------------------|
 | **`DECISIONS.md`** | law-candidate | Thin present ledger: C0–C5, CARRY, L0/L1/L2/L4/L5–L7, W0/W1d, C6, packaging. **Contains ruled language law independent of the archived R/A/R/E pipeline ontology; recover early.** Real safety net still `spec/msc/CHANGELOG.md`. Risk if left only in archive: future sessions re-argue closed ground. |
@@ -89,6 +94,18 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 
 ---
 
+## gathering-scratch-subsumed-2026-07-21/ — subsumed gathering scratch
+
+| Path | One line |
+|------|----------|
+| `open-source-file-pass-2026-07-21/MERGED-grok-source-maps.md` | Grok's quarantine-unioning merge; fully superseded by the live `MERGED-six-maps.md` + `01-ideation/MASTER-REGISTRY.md`. |
+| (rest of both subdirs) | Open-source-file pass scratch, subsumed same day. |
+
+**Supersession review note (2026-07-21, post-registry):** a per-file sweep of
+`01-ideation/` found nothing further fully superseded — grok-early-pass
+extracts/spikes/excerpts hold unique annotation work and stay live; details in
+`01-ideation/GATHERING-INDEX.md` §Supersession review.
+
 ## Pointers outside this archive
 
 | Live path | Role |
@@ -97,4 +114,3 @@ Built under agent ownership grant after pipeline discussion. **Letter of demand-
 | `spec/CORE.md` + companions | Live oracle / published record until cutover |
 | `spec/msc/CHANGELOG.md` | Append-only rulings ledger (stays in `spec/msc/`) |
 | `core/` | Differential parser oracle (C4) |
-EOF

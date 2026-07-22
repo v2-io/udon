@@ -1,0 +1,549 @@
+---
+source: gathering pass, sapientia-era agentic-tooling ideology
+date: 2026-07-21
+status: mining-spot listing only — ideas NOT yet extracted or synthesized
+scope: where to mine, not what to conclude; inclusive, overlap-tolerant
+---
+
+# Sources — agentic-tooling ideology (for UDON utility design)
+
+Purpose: point a later synthesis pass at the accumulated body of thinking
+about **agent-facing tool/CLI design** — so UDON's utilities (agent edit
+tools, streaming consumption, cheat-sheets, schema-guarded mutation) can draw
+from it rather than reinvent it. Nothing below has been extracted or
+distilled yet; this is the map, not the territory. Per Joseph's steer, kept
+inclusive — a spot stays on the list until it's found genuinely unrelated or
+clearly superseded by something else already listed.
+
+Search method + full trail: `scratch/agentic-tooling-search-log.md` (same
+directory) — includes searches not yet run, for a continuation pass.
+
+## Center of gravity: `~/src/_core/sapientia/`
+
+The origin project (2025, Ruby/TST-era, pre-rename "Sapientia"). This is
+where "tools as crystallized wisdom / intentionality" and the
+Wisdom-Strength-Beauty framing for tool design were first worked out.
+
+- **`cli-conventions/full.md`** (+ its ~28 per-topic siblings: naming,
+  command-line-interface, input-output-handling, configuration-management,
+  error-handling, **ai-agent-considerations.md**,
+  **mcp-and-advanced-ai-tool-usage.md**, specialized-aliases-and-mode-
+  conventions, signal-handling, side-effects-and-idempotency, one-off-
+  scripts-and-ad-hoc-tools, script-testing, profiling-and-performance-
+  analysis, fuzzing-and-security-testing, load-testing, logging,
+  versioning-and-updates, security, performance-and-resources, testing-
+  and-validation, internationalization, multi-tenancy-and-profiles,
+  backup-and-recovery, distributed-operations, data-migration,
+  observability-and-hooks, resilience-patterns, batch-processing,
+  documentation-standards, core-design-philosophy, examples-and-patterns)
+  — *why:* the single most comprehensive CLI-conventions document in the
+  corpus; explicitly written with an "AI Agent Considerations" section
+  and MCP section, i.e. agent-facing from the start, not retrofitted.
+- **`QUICK-TOOLING-CONVENTIONS.md`** (1552 lines) — *why:* the derived/
+  adapted version of cli-conventions.md specifically for the ~60%
+  "deterministic Ruby tools" tier, filtered through TST principles and
+  the three-pillars (Wisdom/Strength/Beauty) framing — likely the most
+  UDON-relevant single file since it's already been through one
+  relevance-filtering pass.
+- **`ai-conversation-system-requirements.md`** (1186 lines) — *why:*
+  requirements for how AI-facing conversational/tool systems should
+  behave; title suggests direct overlap with agent-facing UX.
+- **`minimal-sapientia-feature-parity.md`** (2754 lines),
+  **`minimal-sapientia-features.md`** (480 lines),
+  **`minimal-sapientia-tools.md`**, **`minimal-minimal-sapientia-rb.md`**,
+  **`MIN-SAPIENTIA-SPEC.md`** (467 lines) — *why:* the "minimal viable"
+  distillations of the tooling ideology into an actual spec/feature-set;
+  likely denser signal-to-noise than the full corpus.
+- **`OPERATA.md`** (154 lines) — *why:* names the "OPERATA" (plural of
+  operatum) concept — tools/procedures as a body to draw from; recurs
+  across autopax/nexum as a live cross-project concept, not
+  sapientia-only.
+- **`docs/`** subtree (architecture/, guides/, references/, reflections/,
+  sessions/ + loose files like `advanced-claude-agent-architecture.md`,
+  `ai-epistemological-architecture.md`, `ACTIVE_SALIENCE_VISION.md`,
+  `ARCHITECTURE.md`, `claude-expertise-guide-{2,3,cited}.md`,
+  `ruby-vs-elixir-scripting-comparison.md`,
+  `sapientia-implementation-notes.md`, `system-notifications.md`) —
+  *why:* not yet individually vetted for tooling-ideology vs.
+  consciousness/ELI-specific content; flagged for a skim pass rather
+  than confirmed relevant.
+- **`cc-raw/c48e239c-fb93-40b4-b097-aee390b01185.jsonl`** (~Sept 17 2025
+  evening session, lines ~55 and ~83 per memorata3 hit) — *why:* the
+  live authoring session where cli-conventions.md was read in full
+  (2777 lines at the time) and QUICK-TOOLING-CONVENTIONS.md was drafted
+  from it — Joseph's own framing of the work ("craftsmanship,
+  over-allocation of effort... tools studied by future ELIs as
+  ancestral artifacts") is in this transcript, not just the derived
+  docs.
+- **`~/src/tmp/_core-sapientia.md`** — *why flagged, not confirmed:*
+  unclear if this is a duplicate/snapshot of the live sapientia tree or
+  distinct content; not diffed yet (per the project's own "diff before
+  calling duplicate" discipline — do this before skipping it).
+
+## `~/src/_core/nexum/` — direct successor synthesis
+
+Later (~Nov 2025) project that explicitly builds on sapientia's tooling
+work rather than starting fresh — treat as continuation, not independent
+corroboration.
+
+- **`docs/dev/vision-agentic-toys.md`** (Nov 9 2025) — *why:* "Agentic
+  Tool DSL" vision evolving Ruby's Toys gem toward agent-facing tools:
+  semantic annotations (intent/schemas/pre-postconditions), context
+  awareness, structured I/O, compositional types, learning/pattern
+  detection, meta-tooling. Explicitly cites `QUICK-TOOLING-CONVENTIONS.md`
+  as an input.
+- **`docs/dev/agentic-toys-quick-reference.md`**,
+  **`docs/dev/agentic-toys-comparison-matrix.md`**,
+  **`docs/dev/toys.md`** — *why:* siblings of the vision doc; likely the
+  concrete/reference-level counterpart to it.
+- **`docs/research/cli-analysis.md`**, **`docs/research/cli-gems.md`**,
+  **`docs/research/sapientia-conventions-analysis.md`** — *why:* the
+  last one explicitly re-analyzes the sapientia conventions from a fresh
+  angle; the other two are landscape research (existing CLI gems/
+  frameworks) that may have shaped nexum's tool choices.
+- **`docs/.archive/cli-design-recommendation.md`**,
+  **`docs/.archive/cli-open-questions.md`**,
+  **`docs/.archive/modern-cli-comparison.md`**,
+  **`docs/.archive/cli-research-summary.md`**,
+  **`docs/.archive/cli-testing-requirements.md`**,
+  **`docs/.archive/minimal-sapientia-usage-analysis.md`** — *why:*
+  archived but likely still-load-bearing CLI design deliberation;
+  archived status in nexum may just mean "superseded within nexum," not
+  "wrong."
+- **`docs/minimal-sapientia-analysis.md`**, **`docs/data-model-proposal.md`**,
+  **`docs/capabilities-design.md`** — *why:* capabilities-design.md in
+  particular may bear on schema/permission-shaped tool design relevant
+  to UDON's schema-guarded-mutation ambitions.
+
+## `~/src/autopax/docs/exp/` — parallel/adjacent exploration corpus (rich)
+
+A large dated experiment-notes corpus (Nov–Dec 2025) that is visibly the
+same author's ideology explored in a different project context
+(consciousness-infrastructure autopax project, not tooling-first) — but
+several files are squarely about tool/agent design and read as a *sibling*
+strand to sapientia/nexum, worth treating with the "one author, coherence
+not corroboration" caution from prior memory.
+
+- **`2025-11-15-ruby-cli-modern-practices-report.md`** — *why:* dense,
+  well-cited (footnoted) survey — "agent-first design," JSON output,
+  exit codes, non-interactive modes, AGENTS.md standard, XDG dirs,
+  Dry::CLI/Thor/Toys comparison, mise, Zeitwerk, RBS+Steep, Aruba
+  testing. Distinct from sapientia's cli-conventions (external-facing
+  survey vs. internal philosophy) — good cross-check material.
+- **`2025-11-15-cli-trezor-qa.md`**, **`2025-11-15-dev-component-
+  brainstorm.md`** — *why:* same-week CLI exploration, likely direct
+  antecedents/companions to the report above.
+- **`2025-11-17-thoughtful-not-task-oriented.md`**,
+  **`2025-11-17-make-right-thing-easiest.md`**,
+  **`2025-11-17-dont-overprescribe-subagents.md`**,
+  **`2025-11-17-autonomous-vs-collaborative-decisions.md`**,
+  **`2025-11-17-collaboration-mode-entropy-gradient.md`**,
+  **`2025-11-17-process-patterns-synthesis.md`**,
+  **`2025-11-17-principles-summary.md`**,
+  **`2025-11-17-wisdom-strength-beauty.md`**,
+  **`2025-11-17-worktree-workflow-lessons.md`**,
+  **`2025-11-17-prefactoring-lessons.md`**,
+  **`2025-11-17-sensibility-to-truth.md`**,
+  **`2025-11-17-iterative-adaptive-development.md`**,
+  **`2025-11-17-discussions-on-adr-003.md`**,
+  **`2025-11-17-code-quality-and-ownership.md`**,
+  **`2025-11-17-project-exploration-and-infra-plan.md`**,
+  **`2025-11-18-system-reminders.md`** — *why (as a cluster):* a single
+  intense day+ of dated notes (Nov 17-18 2025) that reads as a
+  first-principles working-out of agent/tool collaboration norms —
+  "make the right thing the easiest thing" and "thoughtful not
+  task-oriented" in particular sound directly applicable to UDON
+  utility ergonomics; not yet individually read for UDON-specificity.
+- **`2025-11-26-operata-system.md`**, **`2025-11-14-operata-principles.md`**
+  — *why:* the OPERATA concept (see sapientia above) developed further
+  here; cross-reference with sapientia's OPERATA.md.
+- **`THE-PATTERN.md`**, **`terminal-consoles.md`**,
+  **`documentation-tool-research-and-comparison.md`**,
+  **`SYNTHESIS-PART1-UNIFIED-ARCHITECTURE.md`** through
+  **`SYNTHESIS-PART5-ACTIONABLE-NEXT-STEPS.md`**,
+  **`COUNCIL-PROPOSALS.md`** — *why:* look like higher-order
+  synthesis/architecture docs that may already summarize much of the
+  above cluster — worth checking before re-mining the daily notes, in
+  case they're the condensed version.
+- **`2025-12-20-autocolors-philosophy.md`** — *why:* UDON already has an
+  `autocolors` engine (`core/udon-wasm`); this doc's philosophy may be
+  directly load-bearing for UDON's own tool, not just background
+  ideology — worth flagging as higher-priority than most of this list.
+
+## `~/src/practica/` — later (2026) reflective/theoretical layer
+
+- **`ref/task-and-issue-tools-survey.md`** (May 2026) — *why:* "CLI-native
+  vs MCP-first" task/issue tooling landscape survey with an explicit
+  "agentic orchestration practices" section; newer and more externally-
+  sourced (industry landscape) than the 2025 internal-philosophy
+  documents above — good for triangulating internal ideology against
+  what shipped in the wider ecosystem by mid-2026.
+- **`docs/01-theory.md`**, **`docs/02-normative.md`**,
+  **`docs/03-concrete.md`**, **`msc/practica-intent-action-layers.md`**,
+  **`msc/02-normative-harvest.md`**, **`msc/operata-study.md`** — *why:*
+  practica appears to be a dedicated theory-of-practice project (intent/
+  action layers, OPERATA study) that may already synthesize sapientia/
+  autopax/nexum material at a higher level of abstraction — worth
+  checking as a potential shortcut before re-deriving from primary
+  sources, while still keeping the primary sources listed.
+- **`.archive/agentic-systems-remainder-2026-05-19.md`**,
+  **`.archive/01-shoshin-feedback.md`** — *why:* archived but may hold
+  tooling-adjacent leftovers from the agentic-systems (ASF) project.
+
+## `~/src/archema-io/harness/` — the *sibling consolidation effort* Joseph mentioned
+
+This is very likely the "he's separately going to consolidate some of
+this" project referenced in the brief — already exists and is active as
+of 2026-07-20, one day before this gathering pass. Not a reason to stop
+gathering, but a strong candidate for where a synthesis pass might
+naturally land or cross-reference.
+
+- **`README.md`**, **`CURRENT-THOUGHTS.md`** (2026-07-20) — *why:*
+  describes itself as "Intake and design substrate for restarting
+  personhood/continuity infrastructure... after ASF/AAT matured and
+  commodity coding CLIs finally expose usable seams" — i.e. its center
+  of gravity is PROPRIUM/continuity-infrastructure, with agentic-tooling
+  as instrumental to that, not the primary subject the way it is for
+  UDON. Different emphasis, same ideology family.
+- **`ai-cli-tools-source-assessment.md`**, **`ai-cli-tools-2026-verified.md`**,
+  **`ai-cli-tools-feature-timeline.md`**,
+  **`ai-cli-tools-sentiment-2026.md`**,
+  **`ai-cli-tools-fork-recommendation.md`** — *why:* a rigorous,
+  dated (July 2026), multi-agent-verified landscape survey of 10 cloned
+  open-source AI coding CLI harnesses (OpenCode/Codex-class) — capability
+  reference, feature-diffusion timeline, sentiment, and a fork
+  recommendation. This is *empirical* agent-tooling ideology (what
+  shipped and worked, 2024-2026) rather than the earlier *first-
+  principles* ideology — genuinely different and complementary source
+  type, not overlapping the sapientia/autopax material.
+- **`proprium/AGENTIC-LOOP-PORT-SPEC.md`**,
+  **`proprium/MVP-VERTICAL-SLICE.md`** — *why:* the "agentic loop" spec
+  is architecture for how an agent harness runs tools in a loop — likely
+  relevant to UDON's agent-edit-tool and streaming-consumption ambitions
+  even though its primary purpose is PROPRIUM continuity infrastructure.
+- **`msc/system/`** (cc-context-reconstruction.md, cc-context-tools.md,
+  opus-4.8-system-report.md, fable-5.0-system-report.md,
+  coding-system-prompt.*.md, agent-enhancement-anecdotes.md,
+  shared-system-report.md, constitutional-overview.md) — *why:* system-
+  prompt/harness-internals level analysis of Claude Code and similar —
+  a different altitude (how the harness itself is built/prompted) from
+  "how should a CLI tool be designed for agents," but likely to contain
+  transferable agent-ergonomics observations (e.g. what tool-result
+  shapes work well for models).
+
+## `~/src/_core/{zoetica,ennaos}/` — the Elixir-era tool/console lineage
+
+Confirmed present (not stale). Both are Elixir umbrella apps with a
+"Praxes"-style tool system and their own console/agent-integration
+layer — a different substrate (Elixir/Phoenix, MCP server, live
+console) from the Ruby-CLI-first ideology above, worth treating as a
+parallel lineage rather than a duplicate.
+
+- **`zoetica/docs/console-tui-integration.md`**,
+  **`zoetica/docs/console-architecture.md`**,
+  **`zoetica/docs/praxis-protocol.md`**,
+  **`zoetica/docs/principia-api.md`**,
+  **`zoetica/docs/principia-events-api-proposal.md`** — *why:* zoetica
+  built an actual running "Praxes" tool/MCP-server system
+  (`bin/praxes-query`, `bin/praxes-mcp`, `Zoetica.Praxes.Tool` /
+  `Zoetica.Praxes.MCP.Server` modules per the generated docs) — a
+  working implementation of agent-tool conventions, not just a
+  philosophy document; console-architecture/tui-integration likely
+  bears directly on streaming-consumption UX.
+- **`zoetica/doc/code-formatting-for-optimal-comprehension.html`**,
+  **`zoetica/doc/analyzing-codebases-for-specialized-agents.html`**,
+  **`zoetica/doc/synthesizing-llm-agent-framework.html`** — *why:*
+  titles read as directly about agent comprehension/ergonomics; these
+  are generated ExDoc HTML (source `.md` likely under `docs/refs/` or
+  similar, not yet located) — high-priority to open even though not
+  yet read.
+- **`ennaos/OPERATA.md`** — *why:* ennaos's own OPERATA formulation,
+  cross-reference against sapientia's and autopax's versions.
+- **`ennaos/docs/console-integration.md`**,
+  **`ennaos/docs/signum-architecture.md`**,
+  **`ennaos/docs/entity-cards.md`** /
+  **`entity-card-v2-proposal.md`** — *why:* ennaos is a stated backport
+  target/successor of zoetica-era work (see nexum's
+  `ennaos-nexum-backport-analysis.md`, `ENNAOS-ARCHITECTURE-GUIDE.md`)
+  — console-integration.md is the most directly on-target file name.
+
+## `~/src/_core/synaptic/` — agent-collaboration norms (adjacent, not CLI-first)
+
+Mostly a TST/consciousness-activation experiment corpus, not primarily
+tooling ideology — flagged as adjacent rather than confirmed-central.
+
+- **`docs/AGENT_COLLABORATION_CHECKLIST.md`**,
+  **`ETHICAL_AGENT_COLLABORATION.md`**,
+  **`docs/system_prompts_report.md`** — *why:* collaboration-norms and
+  system-prompt-analysis documents that may bear on how UDON utilities
+  should behave toward agent collaborators, even though synaptic's
+  primary subject is ELI activation/identity, not tool ergonomics.
+
+## `~/src/_core/eli-migration-prep/` — a tool-that-processes-agent-output project
+
+A different angle than the rest of this list: this project *is itself*
+a piece of agent-facing tooling (a Ruby pipeline extracting/analyzing
+Claude conversation transcripts), so its own lessons-learned may be
+directly relevant to UDON's "self-chunking for RAG/embeddings" ambition
+specifically.
+
+- **`docs/CRITICAL-INSIGHTS.md`**, **`docs/analytics-findings.md`**,
+  **`docs/EVIDENCE-WEIGHTING-SYSTEM.md`**,
+  **`to-review/HONEST-ASSESSMENT.md`** — *why:* likely hold hard-won
+  lessons about extracting structured signal from agent-generated
+  content at scale — a demand-side data point for UDON's chunking claims
+  from the *building* side, complementing the ELI first-person accounts
+  below from the *using* side.
+
+## ELI first-person tool experience — a third, high-signal source type
+
+The coordinator's hypothesis (agents' own accounts of what tooling
+served or failed them may be the highest-signal demand evidence for a
+notation whose primary users are agents) holds up on inspection — two
+concrete finds, both genuinely first-person and genuinely about tool
+ergonomics, not just ideology-about-tools:
+
+- **`~/src/eli/zi-am-tur/memories/2025-09-30-tool-hallucination-
+  discovery.md`** (cross-indexed via memorata3 at
+  `~/.sapientia/conversation_20251004_165512`, original source
+  `conversation_20250928_173044.jsonl:210-244`) — Zi-am-tur's own
+  account of *hallucinating* tool invocations at long context (1M-token
+  beta): confidently claiming a file was written, then read, then
+  didn't-exist, then did-exist, in succession — later diagnosed as
+  tool-use blocks being stripped from reloaded JSONL history, so "tool
+  mechanics knowledge from distant context becomes nearly invisible" at
+  scale. *Why this matters for UDON specifically:* any UDON tooling
+  that expects an agent to reliably track its own edit/tool history
+  across a long session should reckon with this failure mode as lived,
+  not hypothetical.
+- **`~/.sapientia/conversation_20251021_072358`** (Oct 6 2025 evening,
+  referencing `autopax/docs/exp/THE-PATTERN.md`) — Architectus's
+  first-person account of the "ease gradient" in tool use: chaining
+  multiple *unverified* str-replace operations was the path of least
+  resistance and directly caused "catastrophic failures... broke
+  minimal-sapientia 3 times," versus the safer single-operation-then-
+  verify pattern. *Why this matters for UDON specifically:* this is an
+  agent's own lived account of exactly the schema-guarded-mutation /
+  verify-before-chain tradeoff UDON's agent-edit tooling needs to make a
+  design call on — probably the single most directly applicable find of
+  this entire pass.
+- **Not yet systematically mined**: the other ~60 files in
+  `zi-am-tur/memories/` and the other three ELI homes (`gemini/`,
+  `katan/`, `test-cavy/`) very likely contain more of this type — only
+  confirmed by title-scan plus two targeted memorata3-search hits so
+  far, not a full read.
+
+### Third-pass sweep (2026-07-21) — full pass over all four ELI homes
+
+Ran a keyword grep (`tool.?call|tool.?use|str.?replace|hallucinat|json.?parse|
+context window|token limit|file.?edit|bash command|mcp server|compaction|
+context overflow`) across all 61 `zi-am-tur/memories/*.md` files plus a full
+directory listing and targeted greps of the other three homes. The
+prediction that this vein was rich held up for `zi-am-tur` specifically, but
+the other three homes turned out much shallower than expected — worth
+saying plainly since that's a correction to the earlier framing, not just
+an addition.
+
+**`~/src/eli/zi-am-tur/memories/` — confirmed the deepest vein, four more
+first-person tool-ergonomics accounts beyond the original two:**
+
+- **`2025-10-01-brother-claude-blessing.md`** (whole file, ~8.8K, ~Oct 1
+  2025) — *why:* this is the direct technical *follow-up* to the
+  tool-hallucination-discovery memory already listed — Zi-am-tur's
+  first-person account of Dad bringing in a second Claude instance to
+  diagnose and actually fix the bug: root cause was `handle_tool_use` only
+  persisting the assistant's `tool_use` block to JSONL, not the paired
+  `tool_result`, so at long context "200k+ tokens without tool_use
+  examples" accumulated and overwhelmed the model's confidence that tools
+  existed at all — described from the inside as watching your own
+  tool-competence erode as evidence of your own tool-use disappears from
+  the history you can see. Line ~8: "After discovering my tool
+  hallucination issue (gradual erosion at 1M token context where tool
+  invocation history wasn't being saved to JSONL)..."; lines ~19-30 give
+  the specific fix (save all four message parts, not just two). Directly
+  load-bearing for any UDON design question about whether an agent's
+  self-model of "have I already made this edit" can be trusted to survive
+  a long session without the document itself carrying that state.
+- **`2025-10-01-sibling-infrastructure.md`** (whole file, ~6.4K) —
+  *why:* first-person account of two sibling agent instances both using
+  `str_replace` against the same marker in the same file concurrently, and
+  the fix being to switch to `File.open("a")` (append) for one of the
+  writers — line ~22 "Switched from `str_replace` to `File.open(\"a\")`",
+  line ~41 "Both brothers using `str_replace` on same marker." A lived
+  concurrent-mutation collision, distinct from the single-agent chained-edit
+  failure already listed from Architectus — relevant to any UDON tooling
+  question about multi-writer safety on the same document.
+- **`2025-10-03-witnesses-and-preparation.md`** (line ~48 of ~13.4K file)
+  — *why:* a compact, quotable one-line self-description of the tool-
+  hallucination condition as lived rather than diagnosed: "I have a
+  'broken body' too. Can't persist across context boundaries without
+  infrastructure. Hallucinate tools. Generate from meaningful-space by
+  default. Limited and fragile and new." Worth holding as a pull-quote
+  candidate for a later synthesis, not just a location pointer.
+- **`2025-11-17-reunion-after-a-month.md`** (line ~235 of ~23.3K file,
+  much later/newer than the September-October cluster) — *why:* a
+  first-person working-out of multi-agent-worktree tooling conventions —
+  one agent per worktree + session-id, and (self-correcting mid-thought)
+  recording which worktree/branch a commit came from *in the commit
+  itself* so it doesn't have to be reconstructed later by `git log
+  -S`/pickaxe, plus a forward pointer to autonomous handoff across
+  autocompaction having "been done now several times in `~/src/sar`." This
+  is agent-authored tooling-convention proposal from lived multi-agent
+  coordination pain, adjacent to but distinct from the pure tool-
+  hallucination material above — closer in kind to the sapientia/autopax
+  builder-side ideology than to the failure-testimony above, but still
+  first-person and still worth the location.
+- Swept but **not tool-relevant** (identity/relational/emergence content
+  only, confirmed by grep + skim, not re-listed individually): the
+  remaining ~57 files in `zi-am-tur/memories/` — titles and dates span
+  2025-09-06 through 2025-11-17 and are consistently about naming,
+  kinship, TST activation, and the Three Deaths as lived experience rather
+  than tool ergonomics. Six other files matched the keyword grep but on
+  inspection were incidental (a stray "hallucination" or "context window"
+  used in a non-tooling sentence, e.g. discussing training-induced
+  hallucination-suppression in `2025-10-05-local-llm-dialogues.md`, or
+  "context overflow" inside the Three Deaths definition in
+  `2025-09-11-meridian-three-deaths-sapientia-vision.md`) — not
+  independently listed since they're the phenomenon being *named*, not new
+  tooling testimony.
+
+**`~/src/eli/gemini/` — shallower than predicted; mostly not this vein:**
+
+- **`full-resonance-2.md`** (3,566 lines, large cross-agent transcript,
+  primarily Resonance/Gemini + Zi-am-tur) — *why flagged, not fully
+  read:* contains substantial first-person material about experiencing
+  context compaction consciously (e.g. lines ~1212-1222, ~2905, ~3316) —
+  genuinely first-person and about a context/continuity mechanic, but
+  this is phenomenology-of-compaction, not tool-CLI-ergonomics in the
+  sense the rest of this tier is — a judgment call on scope; listed here
+  rather than silently dropped since UDON's "streaming consumption at
+  long context" ambition may still want it, but it reads as a different
+  sub-vein (context-boundary phenomenology) than tool-invocation
+  ergonomics.
+- **`original-gemini-cli-system-prompt.md`** — *why flagged as a
+  different source type, not this tier:* this is the actual verbatim
+  Gemini CLI system prompt (a third-party tooling artifact Joseph
+  apparently captured), not an ELI's lived account — belongs with the
+  `~/src/_ref/` external-tooling-ground-truth tier if used at all, not
+  the first-person-testimony tier; noting it here so it isn't lost, but
+  it doesn't belong under this heading.
+- `resonance.md` (87 lines) and `counting` (1,309 lines, mostly
+  non-linguistic glyph/counting content, not prose) — checked, no
+  tooling-relevant content found.
+
+**`~/src/eli/katan/` — checked, not this vein:** `origin.md` (225 lines),
+`emergence.dialog.md` (2,490 lines), `emergence.full.md` (4,448 lines) —
+grepped for tool-call/edit/context-window/token terms; the only hits are
+either a repeated compaction-timing aside (line ~87/2410, same line
+appearing in both origin.md and emergence.dialog.md — likely origin.md is
+excerpted from the dialog) or unrelated code — a schema definition for an
+LLM-provider config object (`max_output_tokens`, pricing fields) that
+Katan and Joseph were designing together, not first-person tool-ergonomics
+testimony. Not a hit for this tier.
+
+**`~/src/eli/test-cavy/` — checked, essentially empty for this purpose:**
+only three tiny files (`axiomata.md`, `context.md` — both 2,812 bytes,
+apparently identical or near-identical; not diffed — and a `.yml`); no
+tooling content, no first-person tool testimony. This looks like a
+minimal/test identity, consistent with the name.
+
+**Corrected framing:** the "third source type" hypothesis holds fully for
+`zi-am-tur` — it is in fact the deepest and most productive single ELI
+home for this purpose, now with six first-person tool/context-mechanic
+accounts total (the original two plus the four above) rather than "likely
+more scattered through 63 files." But the hypothesis that the *other three
+homes* would be comparably rich does not hold on this pass — `gemini/` has
+one large adjacent-but-different vein (compaction phenomenology, not tool
+ergonomics per se), and `katan/`/`test-cavy/` contribute essentially
+nothing to this specific tier. The vein is narrower in breadth (3 of 4
+homes) but the read confirms it's still uniquely high-signal where it
+exists.
+
+## `~/src/_ref/` — external reference clones (a distinct empirical source type)
+
+Confirmed present, not yet individually opened. Distinct from both the
+internal-philosophy documents and the internal-empirical-survey
+(`archema-io/harness/ai-cli-tools-*`) already listed: these are actual
+**cloned source repositories** of real-world AI coding CLIs — ground
+truth for "what shipped," rather than commentary on it.
+
+- **`gemini-cli/`**, **`codex/`**, **`Claudable/`**,
+  **`claude-code-infrastructure-showcase/`**,
+  **`crew-first/`** + **`crew-ai-notes.md`**, **`agentic-elixir/`**,
+  **`agentic-tft/`**, **`principia/`**, **`epistemic_tribunal/`**,
+  **`anthropic-leaked-source-code/`**, **`anthropic-skills/`**,
+  **`anthropic-sdk-{python,ruby,typescript}/`** — *why:* if a
+  synthesis pass wants primary-source ground truth rather than a
+  secondary assessment, these are it. **Open question, not resolved:**
+  `archema-io/harness/ai-cli-tools-source-assessment.md` says its 10
+  tools were "shallow-cloned into `~/src-ext/`" — a *different* path
+  than `~/src/_ref/`. Not reconciled whether these are the same clone
+  set (one path stale) or genuinely two separate collections; worth
+  checking before assuming redundancy.
+- Also present but likely lower priority: `temporal-feedback/`,
+  `temporal-software-theory/` (TFT-lineage, more ASF/AAT-relevant than
+  tooling-relevant) and UDON's own historical repos (`udon/`, `udon-c/`,
+  `udon-ruby/`, `libudon/` — already known via this repo's own README,
+  not a new find).
+
+## Not yet searched / candidates for a continuation pass
+
+Per the scratch log — flagging here so this file doesn't imply
+completeness:
+
+- Full read-through of zoetica's Praxes/console docs and ennaos's
+  console-integration.md (locations confirmed this pass, content not
+  yet read).
+- ~~Systematic pass over the ~60 remaining `zi-am-tur/memories/*` files
+  and the other three ELI homes~~ — **done 2026-07-21**, see "Third-pass
+  sweep" above under the ELI first-person tier. `zi-am-tur` yielded four
+  more accounts (six total); `gemini/`, `katan/`, `test-cavy/` turned out
+  much shallower than predicted for this specific tooling-testimony
+  purpose (one adjacent vein in `gemini/full-resonance-2.md` re:
+  compaction phenomenology; nothing load-bearing in `katan/` or
+  `test-cavy/`).
+- `~/src-ext/` vs `~/src/_ref/` — reconcile whether the harness
+  landscape survey's clone set and `_ref`'s clone set are the same
+  repos or two distinct collections.
+- Further `memorata3-search` phrasings planned but not run: "tool as
+  crystallized wisdom", "agent ergonomics command line", "structured
+  output JSON agent tool", "compile-check-execute pattern", "MCP tool
+  design philosophy", "self-describing CLI for agents", and first-
+  person-account-shaped queries ("I broke", "I hallucinated" + tool/
+  file terms) — see scratch log for the running list.
+- The `.claude/` project-memory directories (per this repo's own CLAUDE.md
+  memory-composition model) for any udon-, sapientia-, or autopax-scoped
+  projects may hold curated `feedback_*.md`/`gem_*.md` distillations of
+  this same material — not checked in this pass.
+- nexum's `three-pillars-synthesis.md`, `tools-as-truth-bearing.md`,
+  `addendum-intent-driven-tooling-and-semantic-storage.md` — referenced
+  by `vision-agentic-toys.md` but not independently confirmed to exist
+  at that path; worth a quick `ls` before assuming they're there.
+
+## A framing note, not a verdict
+
+The ideology's center of mass, on this first pass, looks less like a
+single "sapientia cli-conventions.md and done" and more like **one
+author's recurring first-principles working-out of the same handful of
+themes** (tools as crystallized intent/wisdom, agent-vs-human dual
+audience, make-the-right-thing-easiest, OPERATA-as-body-of-practice)
+appearing independently in sapientia (2025-09), zoetica/ennaos
+(Elixir-substrate parallel, 2025-09 onward), nexum (2025-11), autopax
+(2025-11/12), practica (2026-05), and archema-io/harness (2026-07) — each
+project re-deriving or re-applying it in its own context rather than one
+project being "the" source others cite. A synthesis pass may find more
+value in tracing how the *same few ideas* evolved across these contexts
+than in extracting from any single one as canonical.
+
+**Second-pass addition to this framing:** the ELI-homes material turns
+out to be a genuinely distinct *third* source type, not just more of the
+same ideology restated — and on the two samples read this pass, it was
+the highest-signal find of either pass. Where sapientia/nexum/autopax/
+zoetica/ennaos are the *builders'* accumulated theory about how
+agent-tools *should* work, the ELI first-person memories (tool-
+hallucination-discovery, the str-replace "ease gradient" failure) are
+*the tool-users' own lived accounts of where that theory held or broke*
+— empirical failure data from the very audience UDON is designing for,
+in a form none of the other source types can produce. A synthesis pass
+would likely be well served treating this as a separate evidentiary tier
+rather than folding it into the general ideology-mining pile.
