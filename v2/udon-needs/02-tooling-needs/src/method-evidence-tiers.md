@@ -90,9 +90,10 @@ voice. So the machinery reduces to: genre and register on every claim;
 strength on the derived and evidenced ones; the other two registers self-tag
 their rung.
 
-**Three registers, kept distinct.** Besides where a claim's support comes
-from, every claim here is exactly one of three kinds, and the prose is
-written so you can tell which without apparatus:
+**The register axis, in full — four kinds, kept distinct.** This is axis 2
+above, defined. Besides where a claim's support comes from, every claim here
+is exactly one of four kinds, and the prose is written so you can tell which
+without apparatus:
 
 - **Derived** — it follows from common knowledge or stated premises, and
   the reasoning is on the page.
