@@ -321,3 +321,11 @@ was the first.
 
 **The rule under all of it:** when facing a gap — research it, elicit
 testimony about it, or name it honestly. Never write around it.
+
+**Capability-card retrofit (open):** Joseph ratified `> [!capability]`
+cards (what / principles / hypothesized theory-vocabulary impact /
+in-tension-with / downsides) as the standard proposed-register unit.
+Chapters from context-economy onward use cards; the 15 chapters
+fresh-paged before the ratification carry ✦-bullets — same register,
+older dress. Retrofit them to cards (mechanical; enrich impact fields
+with named quantities while there).

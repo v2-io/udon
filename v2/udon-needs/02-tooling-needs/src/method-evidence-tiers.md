@@ -50,15 +50,36 @@ written so you can tell which without apparatus:
   "nothing yet built does…"), they open possibility space without closing
   any of it, and they decide nothing — the design work downstream owns
   all of that, with fuller context than this page has. **Proposed content
-  is marked visibly:** each idea appears under a chapter's "What this
-  opens (ideas, not designs)" heading with a leading **✦** — skim the ✦
-  marks across the report and you have its full harvestable idea
-  inventory, cleanly separated from everything evidenced or decided.
-  (That this report has to *invent* a typographic convention to mark a
-  claim's register is itself a small demand datum for the notation
-  work: registers-on-content is exactly the kind of thing a
-  structure-and-prose format could carry natively instead of by
-  decoration.)
+  is marked visibly**, in each chapter's "What this opens (ideas, not
+  designs)" section, as **capability cards** — callout blocks of the form
+  `> [!capability] <name>` carrying, as a strong default: what it is,
+  the principles that apply, the **hypothesized impact on the agent** —
+  stated in the formal theory's rigorously defined vocabulary wherever
+  that vocabulary is the precise fit (observation ambiguity, update
+  gain, tempo and the persistence condition, channel quality,
+  reinjection strength, law-teaching density, comprehension time under
+  turnover, credit-assignment observability, the context
+  description-length budget… the theory survey in Appendix-grade depth
+  lives in [the theory report](../reports/theory-of-agentic-tooling.md)),
+  because that vocabulary precisely names every aspect of an agent's
+  fitness — human agents included. Two disciplines keep the field
+  honest: name the *specific* quantity and the direction and mechanism
+  ("drives observation ambiguity toward zero on parse outcomes" beats
+  "improves observation quality"), and stay in the hypothesized voice —
+  the theory supplies the precise language for a prediction; the
+  prediction remains a prediction. Then: what the capability stands in
+  tension with, and its potential downsides. The last two
+  fields are the point: cards that name their own costs are what lets
+  the later priority stages weigh capabilities *against one another*
+  instead of inheriting a verdict. A card whose territory genuinely
+  lacks one of the fields says so rather than manufacturing content —
+  the register discipline applies inside cards too. (Chapters written
+  before this convention landed carry their ideas as ✦-marked bullets —
+  same register, older dress; a retrofit is mapped in the coverage
+  notes. And that this report had to *invent* a typographic convention
+  to mark a claim's register is itself a small demand datum for the
+  notation work: registers-on-content is exactly what a
+  structure-and-prose format could carry natively.)
 
 If a passage seems to argue hard for something that needed no argument,
 treat it as a defect in this report and flag it.
