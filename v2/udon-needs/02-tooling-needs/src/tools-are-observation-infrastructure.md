@@ -24,8 +24,8 @@ throughput or ergonomics quantity.
 
 ## The evidence
 
-**T4 (conditional theorems, premises named in the segments cited by the
-dossier):**
+**From the formal theory (conditional theorems; the premises are named
+where ASF/AAT states each result):**
 
 - **The κ×A bias law** — belief bias in a coupled (LLM) agent is bounded by
   (architectural coupling κ) × (observation ambiguity A). Plainly: κ
@@ -73,22 +73,24 @@ dossier):**
   property*, established by precise action semantics and law-teaching
   refusals (#errors-that-teach).
 
-**T2 (shipped practice instantiating the same physics, mostly without the
-theory):** the ecosystem's converged "prefer dedicated tool over shell
+**From shipping practice (the same physics instantiated, mostly without
+the theory):** the ecosystem's converged "prefer dedicated tool over shell
 equivalent" tables (7 sources, near-verbatim: Read not cat, Edit not sed —
 "keeps raw stdout out of the conversation") are A-reduction in the wild;
 the entire context-management subsystem family (#context-economy) is the
-DL-budget constraint handled empirically.
+description-length budget handled empirically.
 
-**T1:** the agentic-ux principles state the same rules as design ideology —
-"tool loop = epistemic organ (deterministic, honest readout)"; "drive
-observation ambiguity toward zero (codes, counts, paths — not interpretive
-prose in the result channel)." Cross-tier with T4 this is the corpus's
-strongest foundations-level convergence; noted honestly: T1 and T4 share an
-author, so the load-bearing independence here is **T4↔T2** -- the theory and
-the shipped ecosystem arriving at the same rules separately -- with T1 as
-same-author resonance. (No T5 source directly tests the bias law itself;
-external evidence corroborates neighboring claims, not this one.)
+**From the design corpus:** the agentic-ux principles state the same rules
+as design ideology, years before the theory formalized them — "tool loop =
+epistemic organ (deterministic, honest readout)"; "drive observation
+ambiguity toward zero (codes, counts, paths — not interpretive prose in the
+result channel)." This is the report's strongest foundations-level
+agreement — noted honestly: the design principles and the theory share an
+author, so the load-bearing independence is between **the theory and the
+shipped ecosystem**, which arrived at the same rules separately; the design
+corpus is the same mind saying it earlier. (No external study directly
+tests the bias law itself; published evidence corroborates neighboring
+claims, not this one.)
 
 ## What it generates
 
@@ -99,15 +101,16 @@ external evidence corroborates neighboring claims, not this one.)
   channel added to the agent's Level-2 portfolio at the cheapest tier.
 - **For the harness:** channel *independence* matters as much as channel
   count (tests + typecheck + runtime probe genuinely add tempo; three views
-  of one state don't); and there is a runnable eval here — the dossier's
-  operational estimator for A (probe the same observation under multiple
-  goal-primings, measure interpretation divergence) has apparently never
-  been run on a real format. A candidate experiment for either consumer.
+  of one state don't); and there is a runnable eval here — the theory's own
+  operational estimator for ambiguity (probe the same observation under
+  multiple goal-primings, measure interpretation divergence) has apparently
+  never been run on a real format. A candidate experiment for either
+  consumer.
 
 ## Honest edges
 
-The T4 results are conditional (named sub-scopes; the dossier carries them);
-the persistence framing transfers to real harnesses only insofar as "drift"
-is meaningful for the task environment. Nothing here says structure is
+The theory results are conditional (their named sub-scopes travel with
+them); the persistence framing transfers to real harnesses only insofar as
+"drift" is meaningful for the task environment. Nothing here says structure is
 sufficient — see #counter-register (structured modes change the error
 profile rather than removing it).

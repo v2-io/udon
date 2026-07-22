@@ -57,17 +57,17 @@ mechanically, and it's why the safe default became `sub` (one) rather than
 
 The lock, tier by tier:
 
-- **Built (T1/T2, sapientia 2025):** the refusal above, shipped, with its
+- **Built (sapientia, 2025):** the refusal above, shipped, with its
   design rationale recorded (fail *before* corruption; rich diagnostics;
   message guides toward the fix).
-- **Shipped ecosystem-wide (T2):** exact-match editing that "fails loud on
+- **Shipped ecosystem-wide:** exact-match editing that "fails loud on
   0-matches or >1-matches" with a mandated prior Read is the near-universal
-  contract (11/14 harnesses) — largely by descent from one influential
-  design (lineage-corrected), which makes the *survivorship* point: nothing
+  contract (11 of the 14 harnesses examined) — largely by descent from one
+  influential design, which makes the *survivorship* point: nothing
   displaced it.
-- **Shown failing when absent (T3):** Architectus's first-person account of
+- **Shown failing when absent:** Architectus's first-person account of
   tool failure where the refusal-shape was missing.
-- **Theorized (T4):** accumulated law-feedback is what establishes the
+- **Theorized:** accumulated law-feedback is what establishes the
   known-action-mechanism gate (C3) — law-teaching errors are how a tool loop
   *earns* interventional (Level-2) status; laws are the slow,
   otherwise-bottlenecked stratum of the world model, observed almost only at
@@ -75,9 +75,11 @@ The lock, tier by tier:
   nothing else can. "Well-taught laws become infinite-velocity components of
   the agent's environment model — learned once, never re-derived."
 
-Supporting cross-tier cluster: errors-that-speak-domain-concepts (sar
-error-messages plan · zoetica failure-mode-quality ladder · dossier §2.4's
-located, structure-revealing refusals).
+The same demand recurs across the wider design corpus — an error-message
+plan built on speaking domain concepts rather than mechanics, a
+failure-mode quality ladder ranking diagnostics by how much they teach —
+and in the theory's specification of located, structure-revealing
+refusals.
 
 ## Design consequences
 
@@ -103,7 +105,7 @@ surfaces; no divergence.
 
 ## Honest edges
 
-The dossier's own scope note travels with this: in-loop diagnostics (per
+The theory's own scope note travels with this: in-loop diagnostics (per
 event) and cross-session imports (per boundary) are deliberately distinct
 channels with different design physics — this segment is the in-loop half;
 #persistence-is-imported is the other.

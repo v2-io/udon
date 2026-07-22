@@ -22,12 +22,15 @@ mutation **validated inside the write** — no change is accepted that would
 make the document violate its declared schema — and refused mutations
 returning law-rich, menu-shaped errors. This is precisely what no shipping
 tool provides (#edit-representation-landscape: all text-level, no validity
-guarantees), and four tiers ask for it directly — with the lived-testimony
-tier asking for it *by name* through the ease-gradient account below.
+guarantees), and every kind of evidence this report holds asks for it —
+design intent, the shipping ecosystem's gap, a measured wound, the formal
+theory, and (through the ease-gradient account below) agents' own
+testimony.
 
-## The demand, tier by tier
+## The demand, witness by witness
 
-- **T1 (design of record):** Joseph, pipeline-discussion (~L537): "a
+- **The design of record:** Joseph, during the deliberations that
+  reoriented the v2 effort (2026-07): "a
   critical tool IMO for agents is a specialized edit tool that makes edits
   very easy without needing to worry about indent-levels for prose or raw
   code blocks, while simultaneously guaranteeing that no mutation that would
@@ -41,13 +44,13 @@ tier asking for it *by name* through the ease-gradient account below.
   and the agentic-ux principles' write-path rules — validate inside the
   write, not post-hoc; one-call resolution over edit→check→revert loops;
   the file's own declared schema governs ("declared ≠ theater").
-- **T2 (the gap + the near-misses):** the shipping ecosystem's whole
+- **The shipping ecosystem (the gap, and the near-misses):** the whole
   fuzzy-ladder apparatus is compensation for unguaranteed text edits;
   qwen-code bolts on *post*-edit secret-scanning (guard-after, the weaker
   form); yq demonstrates structural path-assignment without schema guard;
   Obsidian's linter admits its rules don't compose. Nobody has the
   validated-transaction shape.
-- **T2 (empirical stress test — the autopax yaml-spike, Dec 2025):** the
+- **The empirical stress test (the autopax yaml-spike, Dec 2025):** the
   measured cost of guarantee-free mutation. Three agents, adversarial
   protocol: Agent A writes valid data, Agent B introduces a specific
   corruption, Agent C — with 100% context turnover and no human — attempts
@@ -89,30 +92,28 @@ tier asking for it *by name* through the ease-gradient account below.
   (UDON's stacking law is the other half of this defense: same-key
   assignments are *kept, in order*, by CORE law — silent last-wins is the
   YAML behavior UDON already refuses.)
-- **T3 (lived, adjacent):** Architectus's ease-gradient account — chaining
+- **Lived, adjacent:** Architectus's ease-gradient account — chaining
   unverified str_replace edits was the easiest available path and "broke
   minimal-sapientia 3 times." The tool's own audience asking for the
   verified path to be the easy path — the schema-guarded-mutation question
   in first person.
-- **T4:** schemas convert interpretive observations into pass/fail — the
+- **The theory:** schemas convert interpretive observations into pass/fail — the
   low-A move (#tools-are-observation-infrastructure); typed response/write
   boundaries are the W₂ separation mechanism; and refusal atomicity is an
   epistemic requirement (#errors-that-teach).
-- **T5:** the external landscape's tool-failure findings point at the same
-  absence from outside: malformed-call and fabricated-parameter failures
-  are attributed in the published measurements to insufficient schema
-  grounding (small models: ~68% omission / ~32% malformation — the
-  BFCL-adjacent finding carried with its scope in
+- **External research:** published tool-failure measurements point at the
+  same absence from outside: malformed-call and fabricated-parameter
+  failures are attributed to insufficient schema grounding (small models:
+  ~68% omission / ~32% malformation — carried with its scope in
   #structured-output-two-mechanisms), and the largest execution-failure
-  subcategory in the 2026 MCP fault taxonomy study is
-  schema-serialization mismatch (external-landscape finding 4). External
-  practice keeps rediscovering that ungrounded structure is where agent
-  writes break.
+  subcategory in the 2026 MCP fault-taxonomy study is schema-serialization
+  mismatch. The outside world keeps rediscovering that ungrounded
+  structure is where agent writes break.
 
 ## The shape the evidence pins (and what stays open)
 
-Pinned by evidence (T1 build-order + agent-utility P-C, consistent across
-sources):
+Pinned by evidence (the design corpus's build order and its edit-tool
+proposal, consistent across sources):
 
 ```text
 re-resolve path against current file → mutate assembly model
@@ -121,8 +122,8 @@ re-resolve path against current file → mutate assembly model
 ```
 
 with the staged v0 honestly available: syntax-valid + indent-correct +
-atomic first, schema conformance next (the T1 critical path: paths → schema
-→ serializer/round-trip+spans → edit v0 → conformance v1).
+atomic first, schema conformance next (the design-of-record critical path:
+paths → schema → serializer/round-trip+spans → edit v0 → conformance v1).
 
 Open, deliberately (feeds phase-3 spikes): whether the schema is static or
 composable/nested — Joseph's own open questions from the source turn:

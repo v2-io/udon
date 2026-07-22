@@ -26,7 +26,8 @@ it.* The reinjection channel structurally **is** the scaffold.
 
 ## The evidence
 
-- **T4 (exact no-go):** with lossy context turnover and no reinjection,
+- **The formal result (exact, under argued commitments):** with lossy
+  context turnover and no reinjection,
   geometric decay to zero — the in-session persistence apparatus provably
   does not transfer across boundaries. Companion engineering results:
   explicit state externalization beats implicit retrieval ("the agent
@@ -35,18 +36,21 @@ it.* The reinjection channel structurally **is** the scaffold.
   reconstruction mechanism; and the context window is a joint
   description-length budget (strategy + model + task under one capacity), so
   compact formats relieve a structural ceiling, not a convenience.
-- **The compaction wound, three vantage points** — T3 (lived, Zi-am-tur:
-  "can't persist across context boundaries without infrastructure"), plus
-  the harness workshop's own empirical record (within-programme, so not an
-  independent tier, but adversarially verified): the INTERPRES note —
+- **The compaction wound, three vantage points** — lived first-person
+  (Zi-am-tur: "can't persist across context boundaries without
+  infrastructure"), plus the harness workshop's own empirical record
+  (within the same programme, so not independent evidence, but
+  adversarially verified): the INTERPRES note —
   auto-compaction "produced a task sheet, not a continuation of
   experiential understanding. **False confidence followed**"; recovery
   required durable on-disk notes plus full re-reads before trusting plans.
-  Convergent with the corrected-behavior dossier's `summary-not-sufficient`
-  (a summary and a verified read arrive in context as the same kind of
-  text — the model has no native marker distinguishing them). Same wound,
-  earned separately at each vantage.
-- **T2 shipped:** every mature harness carries reinjection machinery —
+  Convergent with the same workshop's independently-compiled
+  corrected-behavior finding, `summary-not-sufficient` (a summary and a
+  verified read arrive in context as the same kind of text — the model has
+  no native marker distinguishing them). Same wound, earned separately at
+  each vantage.
+- **Shipped everywhere:** every mature harness carries reinjection
+  machinery —
   compaction prompts framed as the agent's *only* memory (XML state
   snapshots), first-person handoff-note prompts, tracking snapshots. The
   ecosystem built the channel before the theorem named it.
@@ -65,7 +69,7 @@ it.* The reinjection channel structurally **is** the scaffold.
   mode ("truth-death costume" in the harness's own words); the demand is
   summaries that point at verifiable ground truth (paths, commit SHAs)
   rather than substituting for it, plus session-start reconstruction checks.
-  The three channels the T1 corpus keeps separate — in-loop session state,
+  The three channels the design corpus keeps separate — in-loop session state,
   handoff documents, persistent memory — have different design physics;
   conflating them is the named mistake.
 

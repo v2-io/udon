@@ -15,30 +15,29 @@ sources:
 # Context is a hard budget, and the ecosystem built an economy around it
 
 **Claim.** The context window is a joint description-length budget —
-strategy + world-model + task specification under one capacity (T4's frame:
-window limits are a structural ceiling on sustainable strategy complexity,
-and "context-stuffing helps to a point, then degrades" is an
+strategy + world-model + task specification under one capacity (the formal
+frame: window limits are a structural ceiling on sustainable strategy
+complexity, and "context-stuffing helps to a point, then degrades" is an
 information-rate fact, not folklore). Shipped practice has independently
 built a whole economy against that budget, in **distinct mechanism
-families that downstream design must not merge** (the anti-collapse
-discipline — they route to different repairs):
+families that downstream design must not merge** (they route to different
+repairs, so collapsing them loses the routing):
 
-## The mechanism families (T2)
+## The mechanism families, as shipped
 
 1. **Don't load it until needed — deferred tool loading.** Name-only
-   registration + on-demand schema fetch; ~3 independent arrivals in the
-   same 2026 window once lineage is corrected (Claude Code is the origin;
-   qwen-code explicitly mirrors it and inherits gemini-fork infrastructure;
-   codex and kimi-code are the more plausibly independent arrivals —
-   tier2-lineage C7, "partial lineage"). The digest's pre-correction read
-   called this the strongest recent-advancement convergence in Tier 2; the
-   corrected form is more modest but still notable: >85% token reduction
-   cited, with accuracy degrading past 30–50 loaded tools.
+   registration + on-demand schema fetch. The history, told straight:
+   Claude Code originated the design; qwen-code explicitly mirrors it (and
+   inherits its fork-parent's infrastructure); codex and kimi-code look
+   like genuinely independent arrivals in the same 2026 window. So: one
+   origin plus two or three independent rediscoveries — not five votes,
+   but a real signal. The cited payoff: >85% token reduction, with
+   accuracy degrading past 30–50 loaded tools.
 2. **Don't let one result flood the window — disk-spill with preview.**
    ~2000 lines / ~50KB thresholds recur; full output parked on disk,
-   recoverable by path. T5 corroboration: unbounded tool-response size is a
-   measured shipped hazard (a 5K→250K-token inflation incident) — the
-   external world is paying for the absence of this mechanism.
+   recoverable by path. External measurement corroborates the hazard: a
+   published incident of a 5K-token response inflating to 250K tokens —
+   the outside world is paying for the absence of exactly this mechanism.
 3. **Shrink each result before it lands — content-aware pruning.** The
    SWE-Pruner singleton: a small model skims raw tool output per-call
    against a declared `context_focus_question`. Different lever than
@@ -49,10 +48,10 @@ discipline — they route to different repairs):
    bites hardest — compaction that replaces history rather than pointing at
    it produced the lived false-confidence failure.
 
-T4 adds the buffer architecture underneath: capture / triage / processing as
-separable stages (triage reading signal statistics, not content — staying
-goal-clean), and the ephemeral/persistent channel duality (quick-view
-snapshots vs durable stores have different design physics).
+The theory adds the buffer architecture underneath: capture / triage /
+processing as separable stages (triage reading signal statistics, not
+content — staying goal-clean), and the ephemeral/persistent channel duality
+(quick-view snapshots vs durable stores have different design physics).
 
 ## What it generates
 
