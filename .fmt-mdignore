@@ -8,3 +8,11 @@ v2/.archived/second-pass/spikes/session-vault/raw/
 
 # Provenanced copies of source material gathered for the needs work.
 v2/udon-needs/01-ideation/02-provenanced/copies/
+
+# Nested-fence examples (```udon containing an inner ``` fence): malformed
+# CommonMark that every parser reads as the outer fence closing early, so
+# fmt-md sees the code inside as joinable prose. Layout was hand-restored
+# 2026-07-22 (commit 2ac2883); excluded so no future run re-flattens it.
+# Real fix if ever wanted: 4-backtick outer fences (but these are archived
+# archaeology — left verbatim).
+v2/.archived/first-pass/greenfield-*/snippets/from-spec/CORE.md
