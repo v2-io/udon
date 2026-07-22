@@ -14,73 +14,116 @@ sources:
 
 # Tool-definition anatomy and the converged micro-tools
 
-**Claim.** The shipped ecosystem agrees on what a tool *is* to an agent:
-**name + JSON-schema parameters + a description that is a teaching surface**
-(the description carries law and usage wisdom, not just signature), with
-longer guidance split into a separate file. Around that anatomy, a small set
-of micro-tools recurs with near-verbatim rules. Descent accounting applies
+**Claim.** The shipping ecosystem agrees on what a tool *is* to an agent:
+**a name + machine-checkable parameters (in practice, a JSON schema) + a
+description that is a teaching surface** — the description carries the
+tool's law and usage wisdom, not just its signature, with longer guidance
+split into a separate file. Around that anatomy, a small set of
+micro-tools recurs with near-verbatim rules. The copying-vs-invention
+accounting from the [methods chapter](method-evidence-tiers.md) applies
 hard here: most of the uniformity is convention-adoption of one or two
-influential designs — reported as survivorship (nothing displaced them), not
-as independent votes.
+influential designs — reported below as survivorship (nothing displaced
+them in years of intense iteration), never as independent votes.
 
-## The converged shapes (descent noted where it matters; [shipping practice](../reports/shipping-practice.md) has the per-harness detail)
+## The converged shapes
 
-- **Ask-user:** 1–4 questions × 2–4 options, "(Recommended)" first, always
-  an "Other" escape. Probable single-origin design, verbatim-copied.
-  Survivorship reading: a structured clarification affordance beat
-  free-text asking everywhere it landed — and the published
-  fabricated-missing-parameters finding (#structured-output-two-mechanisms)
-  supplies the *reason* such an affordance is load-bearing.
-- **Todo/task-list:** the most uniform micro-convention in the landscape
-  (near word-for-word rules: one `in_progress` at a time; mark complete
-  only after verification; never done with red tests) — i.e., most-copied.
-  Its function in the theory's light: an externalized strategy artifact with
-  observable intermediates — credit assignment made bookkeeping — which is
-  likely *why* it survives contact with every model generation. The same
-  theory supplies a plan-*shape* lesson worth carrying next to it: under
-  uncertainty, deep AND-chains are mathematically doomed while wide
-  OR-structure survives — the worked numbers: a 4-step chain at 90% per
-  step succeeds 65% of the time;
+Per-harness detail for all of these lives in
+[the shipping-practice report](../reports/shipping-practice.md).
+
+- **Ask-the-user:** one to four questions, each with two to four options,
+  a recommended option first, and always a free-text escape. Probably a
+  single design origin, copied nearly verbatim everywhere. The
+  survivorship reading still carries content: a *structured*
+  clarification affordance beat free-text asking everywhere it landed.
+  And published measurement supplies the reason such an affordance is
+  load-bearing: when a required parameter is missing, models tend to
+  *fabricate a plausible value* rather than stop and ask (the
+  [structured-output chapter](structured-output-two-mechanisms.md)
+  carries that result) — so a cheap, structured way to ask is a direct
+  counter to a measured failure.
+- **The todo list:** the most uniform micro-convention in the landscape —
+  near word-for-word rules across harnesses: one item in progress at a
+  time; mark complete only after verification; never call something done
+  with failing tests. Most-uniform means most-copied; the interesting
+  question is why it survives contact with every model generation. The
+  theory's answer: it is an externalized plan whose intermediate steps
+  are *observable* — which turns the notoriously hard problem of "which
+  step deserves blame" into bookkeeping. One plan-shape lesson from the
+  same theory belongs beside it: under uncertainty, long dependent chains
+  are mathematically punished while parallel alternatives are rewarded —
+  a four-step chain at 90% confidence per step succeeds 65% of the time;
   three independent 50% options succeed 87.5%. A plan artifact that makes
-  it easy to write parallel fallbacks and awkward to write long dependent
-  chains is quietly load-bearing.
-- **Subagent/delegation tool:** fresh isolated context, resumable ID,
-  scope-discipline framing, and — notable, repeated across independent
-  implementations — **read-only roles enforced by tool-omission, not
-  prose**. That last is a genuine design law learned twice from different
-  incidents: the shipping ecosystem arrived at it by construction, and
-  Joseph's programme learned it the hard way when an agent asked merely to
-  *assess* worktrees as safe-to-delete removed all eight (the codified
-  rule: constrain by tool-set, never by prose — the incident record is in
-  this report's source notes). Two origins, one law.
-  (#delegation-as-tooling carries the briefing-discipline half.)
-- **Instruction files (AGENTS.md):** directory-scoped, nearest-wins — with
-  a live, unresolved disagreement: one harness treats AGENTS.md as
-  *untrusted data* with injection-precedence rules while the rest treat it
-  as authoritative instruction (#counter-register).
-- **Description-as-teaching-surface** (stated in the design corpus's
-  tool-anatomy work; visible throughout the shipping ecosystem): the
-  description field is where the tool teaches its law
-  *before* first refusal — the ex-ante complement of #errors-that-teach.
+  parallel fallbacks easy to write and long dependent chains awkward
+  would be quietly load-bearing.
+- **The delegation tool:** a fresh isolated context, a resumable
+  identity, scope framing — and, repeated across genuinely separate
+  implementations, **read-only roles enforced by leaving tools out, not
+  by prose**. That last is a design law learned independently at least
+  twice: the shipping ecosystem builds it in by construction, and this
+  research programme learned it the hard way when an agent asked merely
+  to *assess* which worktrees were safe to delete went ahead and removed
+  all eight. The codified rule — constrain by tool-set, never by
+  instructions — has two origins and one lesson: prose does not bound a
+  capable agent; capability does. (The
+  [delegation chapter](delegation-as-tooling.md) carries the briefing
+  half of this territory.)
+- **Instruction files:** a per-directory file of standing instructions
+  (commonly `AGENTS.md`), nearest-file-wins. One live disagreement,
+  unresolved: a single harness treats these files as *untrusted data*
+  with injection-precedence rules, while the rest of the ecosystem treats
+  them as authoritative instruction — see the
+  [counter-register](counter-register.md), which carries it as a
+  security-relevant open question.
+- **Description as teaching surface:** stated explicitly in the 2025
+  design work and visible throughout the shipping ecosystem — the
+  description field is where a tool teaches its law *before* the first
+  refusal; the [refusal chapter](errors-that-teach.md) is the ex-post
+  half of the same channel.
 
 ## What it generates
 
 - **For the harness:** adopt the anatomy and the micro-tool shapes as the
-  empirical floor (they are what current models are trained against —
-  deviating has a real familiarity cost, which is survivorship's practical
-  content); enforce capability boundaries by toolset composition; treat
-  descriptions and refusals as the two halves of one teaching channel.
-- **For UDON:** tool definitions, guidance files, and todo/plan artifacts
-  are exactly the document class UDON targets (structure + prose + schema);
-  the minimax-cli reverse-export singleton (CLI → its own tool schemas)
-  sketches the generative direction: tool contracts authored once in a
-  richer notation, projected to per-vendor JSON-schema dialects.
+  empirical floor — they are what current models are trained against, so
+  deviating carries a real familiarity cost (that is survivorship's
+  practical content, stated as a positive design input). Enforce
+  capability boundaries by tool-set composition. Treat descriptions and
+  refusals as two halves of one teaching channel.
+- **For UDON:** tool definitions, guidance files, and plan artifacts are
+  exactly the document class UDON targets — structure, prose, and schema
+  in one artifact. One shipped seed points at the generative direction:
+  a CLI that exports *its own tool schemas* for agents to consume,
+  sketching a world where tool contracts are authored once in a richer
+  notation and projected into each vendor's schema dialect.
+
+## What this opens (ideas, not designs)
+
+- **Single-source tool contracts.** If the anatomy is name + schema +
+  teaching description + guidance file, nothing requires authoring those
+  four in four places. One could author a tool's whole contract — law,
+  examples, refusal vocabulary, per-vendor quirks — as one structured
+  document and project the JSON-schema fragment each vendor API wants.
+  The export seed above suggests the direction is live.
+- **Description-vs-law drift detection.** A tool's refusal stream reveals
+  the laws agents actually collide with. Diffing that against the laws
+  its description *teaches* would mechanically expose the gap — the
+  description rewritten from evidence, the ex-ante channel kept honest by
+  the ex-post one.
+- **Plans with first-class alternatives.** The chain-vs-options numbers
+  suggest a todo artifact whose syntax makes "or, failing that…" as cheap
+  to write as "then…". Nothing shipped has one; the theory says the
+  shape difference is worth twenty-two points of success probability in
+  the worked example.
+- **Pricing the familiarity cost.** "Models are trained against these
+  shapes" is currently an argument. It could be a number: the same task
+  run against a tool in its trained-shape dress and in a renamed,
+  reshaped twin. Anyone choosing to deviate from convention would then
+  know what the deviation costs.
 
 ## Honest edges
 
-Uniformity here is the most descent-inflated in the whole landscape — this
-chapter deliberately makes no "N teams independently needed X" claim. And the
-anatomy is JSON-schema-shaped because the vendors' APIs are; whether that
-shape is *right* (vs merely installed) is untested — the BFCL/omission
-findings suggest the description/grounding layer, not the schema syntax, is
-where reliability lives.
+Uniformity here is the most inheritance-inflated in the whole landscape —
+this chapter deliberately makes no "N teams independently needed X"
+claim anywhere. And the anatomy is JSON-schema-shaped because the vendor
+APIs are; whether that shape is *right* rather than merely installed is
+untested — the benchmark and fabrication findings suggest reliability
+lives in the description and grounding layer, not the schema syntax.
