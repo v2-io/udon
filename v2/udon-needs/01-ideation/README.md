@@ -82,5 +82,28 @@ The 17 pre-template files (grok's extracts + excerpts) predate
 `source_commit`; their gather date locates the commits if ever needed —
 backfill is optional-queue work, not a blocker.
 
+## Deferred reservoirs — available on question, not swept
+
+Two sources deliberately *not* mined in the 2026-07-21 fan-out, noted here
+so a later subphase reaches for them when a specific question wants an
+answer (rather than sweeping them into the digestion queue now):
+
+- **Raw session corpora** — many hundreds of long agent sessions with
+  *full tool usage*: invocations, failure results, retries, recoveries
+  (~/.claude/projects/**, ~/.sapientia/, ~/.claude.bak.*, cc-raw jsonls,
+  session-vault). Much of what was noteworthy got discussed and is already
+  captured via the dialog-span excerpts — the *additional* value here is
+  question-shaped empirics: e.g. "how did edit-tool failure rates change
+  across model generations?", "what does a retry cascade actually look
+  like?" — and uniquely, **the evolution of harness + model tool-use
+  capability over a full year of Anthropic models**. Query it (memorata3,
+  targeted greps); don't sweep it.
+- **External landscape via /deep-research** — a commissioned web-research
+  pass (industry edit-format debates, agent-tooling papers, harness
+  changelogs) is available whenever synthesis hits a claim that wants
+  outside corroboration. Not launched during gathering by choice: the
+  compilation's value is the internal estate; external context is
+  seasoning, commissioned per-question.
+
 Standing brief for agents working this material (purposes, quality bars,
 conventions): [`../BRIEF-agentic-tooling-compilation.md`](../BRIEF-agentic-tooling-compilation.md).

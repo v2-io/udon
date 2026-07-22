@@ -15,6 +15,7 @@ re-framed per [pipeline-discussion.md](udon-needs/pipeline-discussion.md)). Clos
 | **S4** | `InconsistentIndentation` prose-only? | STEWARD / fact | Grammar intent. |
 | **S12** | Nested envelope routing | WAIT-DEMAND | With dialects. |
 | **W1e** | Exact Attr value **event encoding** | WAIT-DEMAND | Direction **W1d** closed. Agent-utility + paths may pull. |
+| **IND** | **No-sibling indentation default** — when a tool computes insertion indentation and the destination has no siblings to read from, no ratified rule names the default unit. Needs a spec sentence. | agent-suggested (open) | Demand evidence: `udon-needs/01-ideation/02-provenanced/copies/I2-scenarios/03-modifying.scenarios.udon` ("nothing ratified names the default unit"); STEWARD-CALLS #5, Joseph 7/21: add unless redundant — verified not redundant (CORE's 2-space note is non-normative style only). |
 
 ---
 

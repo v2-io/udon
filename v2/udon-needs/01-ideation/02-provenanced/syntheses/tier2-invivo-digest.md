@@ -1,3 +1,13 @@
+---
+source: read-across of the 17 harness-invivo characterizations (not a primary-source read)
+gathered: 2026-07-21
+status: synthesis — digest of secondary artifacts; provenance traces back to harness-invivo/<name>.md
+paths:
+  - 02-provenanced/characterizations/harness-invivo/*.md
+categories: [tier-2, in-vivo-practice, cross-map-digest, edit-formats, tool-schemas]
+why_included: phase-2 aid — cross-map patterns over the 17 shipped-harness maps; reopen the named map for exact line numbers/dates
+---
+
 # BUCKET — Tier 2: In-vivo shipped practice
 
 Source: `agentic-tooling-sources/harness-invivo/*.md` (17 vetted mining-spot maps, gathered 2026-07-21). Each source map is itself a secondary artifact (someone already read the real repo); this bucket digests all 17 into cross-map patterns. Provenance for every claim traces back to `harness-invivo/<name>.md` — reopen that file for exact line numbers/dates.
