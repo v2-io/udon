@@ -24,6 +24,53 @@ truth is. Effort, time, and token spend are false constraints here: push as
 far as you can, and track your state in commits as you go so interruption
 loses nothing.
 
+## Epistemic system (the rigor vocabulary this workflow deepens toward)
+
+The report's claims are typed on three axes and two locks, defined in full in
+[[method-evidence-tiers| #method-evidence-tiers]] (the schema's home) and
+proposed outward as an extension to TST's evidence vocabulary. A deepening agent
+does not need to re-derive them, but does need to *apply* them:
+
+- **support-kind** (design / observational / testimonial / theoretic /
+  measured `(self|ext)` / synthetic) — each defined by its **repair**, which is
+  what tells you how to strengthen a claim of that kind. Kind is routed by
+  repair, not by surface: a numeral is not automatically `measured` (a count of
+  shipped tools is `observational` — repair: descent-correct; an effect size is
+  `measured` — repair: re-measure).
+- **strength** (exact / conditional / robust-qualitative / measured / heuristic /
+  hypothesis / discussion-grade) — the defeasibility ceiling, carried in prose
+  where load-bearing.
+- **register** (derived / evidenced / decided / proposed) — the speech-act kind;
+  only the two truth-apt registers take a strength rung.
+- **convergent lock** — a claim is convergent when ≥2 support-kinds with
+  **independent failure modes** agree. Within-kind corroboration raises strength
+  but does *not* arm the lock. The lock's repair — break the independence — is
+  what makes descent-correction mechanical; [[errors-that-teach| #errors-that-teach]]
+  is the worked example (three independent kinds plus a descent-echo, not four).
+- **transmission** — inherited theory is a cross-volume reference into ASF
+  (`#asf/{aat,tst,llm,eli}/slug`); the fidelity risk is audited in the
+  verification-event log, not stamped as a label; a transmitted claim carries a
+  plain-word gloss so it stands on the page.
+
+**The verification-event log is this workflow's standing record.** Each chapter's
+frontmatter carries an append-only `verified:` list — *what was verified ·
+against what · by whom · when* — never a permanent stage. The four rigor checks
+(dependency audit / content review / mechanical / notes-disposition) are
+**re-runnable instruments, not a promotion ladder**: a living document under flux
+gets re-checked, not re-certified. When a deepening pass verifies a claim at its
+source, or deliberately corrects a form away, it *appends an event* (including a
+`deliberately-corrected-away` event, so the next re-verifier is not told to "fix
+it back" toward a cleaner-reading original — the regression check imported into
+the machinery instead of relying on memory).
+
+**The layer split (bodies speak present truth; history lives elsewhere)** is
+ASF's already-worked discipline — see `format.sop.md` §Voice-and-provenance and
+§Working-Notes (`~/src/archema-io/asf/doc/sop/format.sop.md`) for the canonical
+statement this workflow's own layer-split section applies: segment voice, not
+diff voice; a Working Note earns its place only as a forward-pointer,
+regression-guard, or dead-end warning — never vanity-changelog. Resolved
+history goes to `CHANGELOG.md` + the git log.
+
 ## The idea
 
 The report is end-to-end and honest, but depth arrived unevenly and its
@@ -247,6 +294,10 @@ project-autobiography demotes to history; the domain truth stays on the
 page. And the recursive check: don't under-name your own result — if you
 proved something, "I found a limitation" is false modesty; state it at
 strength and let it stand where it can be attacked.
+Labels track truth on all three axes — a corrected claim carries its honest
+support-kind, strength, and (where it applies) convergence legs; a refuted
+convergence leg is removed from the `convergent:` list, not left to imply
+agreement that broke.
 
 ## The one thing held above everything
 
@@ -262,7 +313,9 @@ what kind of thing the claim is, plainly.
 
 ## First-cycle work already known
 
-- **Epistemic-status recalibration.** The evidence "tiers" are library
+- **Epistemic-status recalibration — DONE** (trio-ratified `774f022`;
+  landed in the methods chapter at `6f53d83`; frontmatter machinery
+  completing via the step-2 sweep). Kept here one cycle for orientation: The evidence "tiers" are library
   categories (provenance genres), not epistemology. ASF's claim-level
   status vocabulary (exact / conditional-with-named-premises /
   robust-qualitative / measured / heuristic / hypothesis /
