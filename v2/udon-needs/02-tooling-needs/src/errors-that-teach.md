@@ -1,0 +1,82 @@
+---
+slug: errors-that-teach
+type: principle
+evidence: [T4, T2, T3, T1]
+status: cross-tier-convergent (4-tier — the strongest lock in the corpus)
+stage: drafted
+consumers: both
+depends: [tools-are-observation-infrastructure]
+sources:
+  - ../01-ideation/02-provenanced/syntheses/asf-dossier.md   # §2.4
+  - ../01-ideation/02-provenanced/syntheses/CONVERGENCES.md  # clusters 8, 15
+  - ../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # C1, C2, C6
+  - ../01-ideation/02-provenanced/commentary/spikes/agent-utility-NOTES.md  # §2 principles
+---
+
+# A well-designed refusal is mutation-free, revelation-rich, and law-rich
+
+**Claim.** Every tool interaction decomposes into three components — *mutate
+state*, *reveal state*, *teach law* (what invariantly governs this tool's
+jurisdiction) — and errors are the interactions where the law component
+dominates. A refusal is the *safe* channel for an agent to learn a system's
+constraint surface (the alternatives are destructive learning, or a
+constraint that never surfaces until it bites). The design criteria fall out:
+a good refusal **mutates nothing** (atomic failure, so the law signal is
+unconfounded), **reveals state** (what matched, where, what exists), and
+**teaches the law** that was violated — ideally as a menu of exact next
+actions.
+
+## The four-tier lock: the str_replace multi-match refuse
+
+The single best worked example in the harvest, present in every tier:
+
+- **Built (T1/T2, sapientia 2025):** the minimal-sapientia str-replace error —
+  mutation: zero; law taught: uniqueness required; state revealed: line
+  numbers of every match.
+- **Shipped ecosystem-wide (T2):** exact-match editing that "fails loud on
+  0-matches or >1-matches" with a mandated prior Read is the near-universal
+  contract (11/14 harnesses) — largely by descent from one influential
+  design (lineage-corrected), which makes the *survivorship* point: nothing
+  displaced it.
+- **Shown failing when absent (T3):** Architectus's first-person account of
+  tool failure where the refusal-shape was missing.
+- **Theorized (T4):** accumulated law-feedback is what establishes the
+  known-action-mechanism gate (C3) — law-teaching errors are how a tool loop
+  *earns* interventional (Level-2) status; laws are the slow,
+  otherwise-bottlenecked stratum of the world model, observed almost only at
+  violation attempts, so law-rich refusals accelerate exactly the stratum
+  nothing else can. "Well-taught laws become infinite-velocity components of
+  the agent's environment model — learned once, never re-derived."
+
+Supporting cross-tier cluster: errors-that-speak-domain-concepts (sar
+error-messages plan · zoetica failure-mode-quality ladder · dossier §2.4's
+located, structure-revealing refusals).
+
+## Design consequences
+
+1. **Error taxonomy is first-class language/tool design.** Classify every
+   diagnostic by which component it carries; bias hard toward law-rich,
+   located, structure-revealing refusals.
+2. **Atomicity of failed operations is an epistemic requirement**, not just a
+   safety nicety — a refusal that half-mutates confounds the law signal.
+3. **Error-as-menu:** candidates offered as ready-to-use exact paths; on zero
+   match, name the stale-model hypothesis ("the file may have changed since
+   you read it").
+4. **Name the failure class** — structural vs parametric, not-found vs
+   not-unique vs plural (#addressing-is-the-long-pole carries the concrete
+   vocabulary demand).
+5. **Severity must track loss** and diagnostics must stay machine-legible —
+   the UDON anomaly posture (keep-everything; warning = kept, error = lost)
+   is this principle already applied at the notation layer.
+
+**Who reads this and when:** the harness applies it to every tool result and
+system message; UDON applies it to parser/validator diagnostics and to the
+edit tool's refusal design (#schema-guarded-mutation). Same principle, two
+surfaces; no divergence.
+
+## Honest edges
+
+The dossier's own scope note travels with this: in-loop diagnostics (per
+event) and cross-session imports (per boundary) are deliberately distinct
+channels with different design physics — this segment is the in-loop half;
+#persistence-is-imported is the other.
