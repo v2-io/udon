@@ -12,32 +12,14 @@
 
 ## How the two relate
 
-The 0.9.1 suite says **what the language is right now**, including — deliberately
-— [what it leaves unspecified and why](current-0.9.1-spec/CARVEOUTS.md). The
-demand-side work says **what agents actually need**, and will eventually rule on
-those carve-outs. Neither is the 0.10 design; that comes when the demand work
-reaches its decision stages. A spike or design probe should read the suite's
-carve-out register first — each open item carries the demand-side reason it is
-open and what would close it.
+The 0.9.1 suite says **what the language is right now**, including — deliberately — [what it leaves unspecified and why](current-0.9.1-spec/CARVEOUTS.md). The demand-side work says **what agents actually need**, and will eventually rule on those carve-outs. Neither is the 0.10 design; that comes when the demand work reaches its decision stages. A spike or design probe should read the suite's carve-out register first — each open item carries the demand-side reason it is open and what would close it.
 
 ## Origin of the demand-first turn
 
-This directory was reduced to a seed on 2026-07-21: a night of autonomous
-spine-building (spec/wire/process skeletons) ran ahead of demand-side
-understanding and was archived wholesale. The lesson, now the operating rule:
-**end-user needs generate the architecture; the architecture is never drawn
-first and back-filled.** The deliberation record is
-[`udon-needs/pipeline-discussion.md`](udon-needs/pipeline-discussion.md); the
-history and cherry-pick map is [`.archived/INDEX.md`](.archived/INDEX.md).
+This directory was reduced to a seed on 2026-07-21: a night of autonomous spine-building (spec/wire/process skeletons) ran ahead of demand-side understanding and was archived wholesale. The lesson, now the operating rule: **end-user needs generate the architecture; the architecture is never drawn first and back-filled.** The deliberation record is [`udon-needs/pipeline-discussion.md`](udon-needs/pipeline-discussion.md); the history and cherry-pick map is [`.archived/INDEX.md`](.archived/INDEX.md).
 
 ## Working here
 
-Agents working anywhere under `udon-needs/` are covered by the standing license
-and quality bars in [`udon-needs/CLAUDE.md`](udon-needs/CLAUDE.md) (ratified
-2026-07-22, any substrate) — research diversion, de-novo testimony as evidence,
-the ideation mandate, and the four writing bars. Read it before starting.
+Agents working anywhere under `udon-needs/` are covered by the standing license and quality bars in [`udon-needs/CLAUDE.md`](udon-needs/CLAUDE.md) (ratified 2026-07-22, any substrate) — research diversion, de-novo testimony as evidence, the ideation mandate, and the four writing bars. Read it before starting.
 
-Elsewhere in the repo: `../spec/CORE.md` + `../spec/msc/CHANGELOG.md` remain the
-0.9.0-alpha.2 record and rulings ledger (no work continues there); `../core/` is
-the differential parser oracle; `../defining-udon.md` is the documentation
-philosophy any spec suite is held to.
+Elsewhere in the repo: `../spec/CORE.md` + `../spec/msc/CHANGELOG.md` remain the 0.9.0-alpha.2 record and rulings ledger (no work continues there); `../core/` is the differential parser oracle; `../defining-udon.md` is the documentation philosophy any spec suite is held to.

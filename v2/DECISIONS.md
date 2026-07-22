@@ -1,12 +1,6 @@
 # DECISIONS — present ledger (0.10 / v2)
 
-**Status:** seed 2026-07-21; graduated from `.archived/second-pass/` the same
-day (first cherry-pick — these closes don't depend on the archived R/A/R/E
-pipeline ontology). Where wire rows below say "stage boundaries," read
-"product boundaries" — the four-stage picture is archived, the sufficiency
-law survives; a definitions-vs-products refinement of **W0** (consulting
-loaded dialect/schema *definitions* is configuration, not reachback) is
-anticipated but not yet worded. Thin present-truth only.  
+**Status:** seed 2026-07-21; graduated from `.archived/second-pass/` the same day (first cherry-pick — these closes don't depend on the archived R/A/R/E pipeline ontology). Where wire rows below say "stage boundaries," read "product boundaries" — the four-stage picture is archived, the sufficiency law survives; a definitions-vs-products refinement of **W0** (consulting loaded dialect/schema *definitions* is configuration, not reachback) is anticipated but not yet worded. Thin present-truth only.  
 **History / life:** `spec/msc/CHANGELOG.md`, greenfields, session vault — not this file.  
 **How to amend:** append or overturn with date + provenance; do not silently rewrite history into this file.
 
@@ -143,9 +137,7 @@ High-consensus greenfield + pipeline leans, landed thin. **Overturn freely** via
 
 ## Steward marks (2026-07-22 — conventions ruled in session)
 
-These are **cross-cutting authoring conventions**, not language law; they bind
-any agent writing in this estate's markdown corpora (and are echoed in
-`udon-needs/CLAUDE.md` for the agents who work there).
+These are **cross-cutting authoring conventions**, not language law; they bind any agent writing in this estate's markdown corpora (and are echoed in `udon-needs/CLAUDE.md` for the agents who work there).
 
 | ID | Holds | Cite |
 |----|--------|------|

@@ -1,10 +1,6 @@
 # OPEN — live questions only
 
-**Status:** 2026-07-22. Closed → [DECISIONS.md](DECISIONS.md). Language
-carve-outs with their demand-side reasons now also live in
-[`current-0.9.1-spec/CARVEOUTS.md`](current-0.9.1-spec/CARVEOUTS.md) — that
-register is the fuller statement for anything spec-shaped; rows here are the
-ledger-level index.
+**Status:** 2026-07-22. Closed → [DECISIONS.md](DECISIONS.md). Language carve-outs with their demand-side reasons now also live in [`current-0.9.1-spec/CARVEOUTS.md`](current-0.9.1-spec/CARVEOUTS.md) — that register is the fuller statement for anything spec-shaped; rows here are the ledger-level index.
 
 ---
 
