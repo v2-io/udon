@@ -66,12 +66,6 @@
 /Users/josephwecker-v2/src/_core/nexum/spec/support/pty_harness_spec.rb
 /Users/josephwecker-v2/src/_core/nexum/spec/support/pty_harness.rb
 /Users/josephwecker-v2/src/_core/tst/planning/analysis/040-test-harnesses.md
-/Users/josephwecker-v2/src/_core/zoetica/_build/dev/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
-/Users/josephwecker-v2/src/_core/zoetica/_build/prod/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
-/Users/josephwecker-v2/src/_core/zoetica/_build/test/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
-/Users/josephwecker-v2/src/_ref/_arch/elixir-tui/_build/dev/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
-/Users/josephwecker-v2/src/_ref/_arch/elixir-tui/_build/prod/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
-/Users/josephwecker-v2/src/_ref/_arch/elixir-tui/_build/test/lib/elixir_tui/ebin/Elixir.ElixirTui.PtyHarness.beam
 /Users/josephwecker-v2/src/_ref/_arch/elixir-tui/doc/ElixirTui.PtyHarness.html
 /Users/josephwecker-v2/src/_ref/_arch/elixir-tui/lib/pty_harness.ex
 /Users/josephwecker-v2/src/_ref/_arch/elixir-tui/test/pty_harness_test.exs
@@ -95,4 +89,5 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/commentary/II8-harness-refs-witness.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II8-harness-refs/harness-nine-requirements-and-seams.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II8-harness-refs/harness-system-disposition-and-context.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-harness-facing.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-harness.txt

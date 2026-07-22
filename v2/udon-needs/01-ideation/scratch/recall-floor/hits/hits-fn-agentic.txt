@@ -106,6 +106,8 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II3-nexum/vision-agentic-toys.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/agentic-tooling-search-log.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/first-sweep-agentic-tooling/sources-agentic-tooling.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic-tooling.txt
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-agentic.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-agentic.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/BRIEF-agentic-tooling-compilation.md
 /Users/josephwecker-v2/vaults/earlier-unsorted/agentic-coding-2.md

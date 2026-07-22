@@ -21,7 +21,3 @@
 /Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-3b/snippets/from-examples/cheatsheet.udon
 /Users/josephwecker-v2/src/udon/v2/.archived/first-pass/greenfield-pristine/snippets/from-examples/cheatsheet.udon
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-cheat.txt
-/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheets.beam
-/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheets.Docs.beam
-/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Mix.Tasks.Spark.CheatSheetsInSearch.beam
-/Users/josephwecker-v2/src/vox/uptake/_build/dev/lib/spark/ebin/Elixir.Spark.CheatSheet.beam

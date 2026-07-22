@@ -1,4 +1,5 @@
 /Users/josephwecker-v2/src-ext/grok-build/crates/codegen/xai-grok-pager/tests/scenarios/mermaid-affordances.yaml
 /Users/josephwecker-v2/src/practica/docs/02-normative/02-coordination-affordances.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/practica-normative--02-coordination-affordances.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-affordance.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-affordance.txt

@@ -18,6 +18,8 @@ RG_EXCLUDES=(
   --glob '!**/node_modules/**'
   --glob '!**/target/**'
   --glob '!**/deps/**'
+  --glob '!**/_build/**'
+  --glob '!**/vendor/**'
   --glob '!**/.venv/**'
   --glob '!**/venv/**'
   --glob '!**/__pycache__/**'
@@ -32,7 +34,7 @@ RG_EXCLUDES=(
 RG_BASE=( rg -li --no-ignore --hidden "${RG_EXCLUDES[@]}" )
 
 # find prune expression (dir basenames)
-FIND_PRUNE=( -type d \( -name .git -o -name node_modules -o -name target -o -name deps -o -name .venv -o -name venv -o -name __pycache__ -o -name .mypy_cache -o -name dist -o -name build \) -prune -o )
+FIND_PRUNE=( -type d \( -name .git -o -name node_modules -o -name target -o -name deps -o -name _build -o -name vendor -o -name .venv -o -name venv -o -name __pycache__ -o -name .mypy_cache -o -name dist -o -name build \) -prune -o )
 
 # --- Filename queries (find -iname) -----------------------------------------
 # slug|glob-pattern

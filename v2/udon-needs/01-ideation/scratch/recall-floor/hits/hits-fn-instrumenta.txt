@@ -88,4 +88,5 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/instrumenta--registry.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/instrumenta--tool.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II5-dialogs/gemini-resonance-instrumenta-crystallization.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-instrumenta.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-instrumenta.txt

@@ -50,4 +50,5 @@
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/2025-11-14-operata-principles.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/II4-autopax-practica/operata-study.md
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/02-provenanced/copies/III-schema/operata-storage-exploration.md
+/Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-ct-operata.txt
 /Users/josephwecker-v2/src/udon/v2/udon-needs/01-ideation/scratch/recall-floor/hits/hits-fn-operata.txt
