@@ -127,6 +127,36 @@ as native attributes on segment documents. It is plausibly the first real
 UDON schema ASF would dogfood, which makes the vocabulary choices doubly
 load-bearing and is the strongest argument for deciding them carefully now.
 
+## Provenance recalibration (Joseph, post-synthesis — changes the posture, not the calls)
+
+ASF's epistemology "grew organically for the most part via iterating over and
+over again with 'find anything that isn't strictly true and let's figure out
+if we can truthify it'" — and the *ontology* came from agents with less
+training than the current generation; only the insistence on inculcating the
+process was Joseph's. Two consequences:
+
+1. **The authority is the truthification process, not the inherited labels.**
+   "Align with ASF by default" (§0.1 in both pilot proposals, and above)
+   over-states the deference: the real rule is *coordinate with the existing
+   vocabulary where consistency is the value* (a convention-SOP concern —
+   deltas still price as coordination cost) *and judge every category against
+   truth, not against its incumbency*. Where this deliberation found a
+   genuinely better cut — support-kinds defined by their repairs being the
+   clearest case — it should be proposed **confidently as an improvement TST
+   might adopt for its own material**, not apologetically as a local
+   extension. The TST-extension memo (implementation step 5) should be
+   written in that voice.
+2. **The process validates itself recursively.** This trio deliberation —
+   independent proposals from lived need, forks preserved, steward
+   calibration, synthesis under strengthen-not-average — is the same process
+   that grew ASF's ontology, run by its successors with more training and a
+   new evidence domain. That the two vocabularies converged where the domains
+   overlap and diverged exactly where the domains differ (derivation vs
+   transmission/triangulation/proposal) is evidence the process, not any
+   fixed label set, is the load-bearing thing to inculcate — which is also
+   the answer to what this report should teach the harness programme about
+   epistemology: the cycle, with the vocabulary as its current best output.
+
 ## What supersedes what (the honest ledger)
 
 | Earlier framing | Superseded by | Whose |
