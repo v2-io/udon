@@ -83,6 +83,17 @@ treat it as a defect in this report and flag it.
    conditions travel with every use (the bias bound's named sub-scopes; the
    deliberation threshold's drift assumption).
 
+One further fact about evidence, learned while writing this report:
+**readable, principled analysis is itself an elicitation channel.** When a
+chapter lays its territory out from first principles, readers remember
+things no search would have surfaced — shipped precedents, old rationales,
+buried counter-examples that were latent until good analysis fired the
+recall. (The addressing chapter's project-root anchor arrived exactly this
+way: the owner had forgotten a shipped precedent entirely until the
+principled treatment made it vivid again.) So late-arriving evidence is
+not a gathering failure; it is the analysis working, and this report is
+built to absorb it additively.
+
 **Who reads this and when:** both consumers, first — any downstream use of
 this report's claims should apply these weights rather than re-deriving or
 ignoring them.
