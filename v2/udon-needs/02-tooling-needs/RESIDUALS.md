@@ -250,3 +250,45 @@ the wikilink carrying provenance only (teach the substance AND link).
 4. NOTATION-KEY: re-frame as pure auditor apparatus or fold what readers
    need into bridges — its gloss table still teaches codes readers should
    no longer meet.
+
+
+### 2026-07-22 bridge run — state at fork handoff (quality-honest stop)
+
+**GO confirmed by Joseph on Part IV** ("It reads much better… this is the
+right direction"), with the bar raised once more: writing must be
+*thoughtful and principled* — every claim in its true register, one of
+**derived** (reasoning on the page) / **evidenced** (cited where it
+stands) / **decided** (a choice, said plainly — never costumed as a
+derivation). The register discipline is now STATED IN THE METHODS CHAPTER
+(src/method-evidence-tiers.md, "Three registers, kept distinct") — it
+binds every chapter, and costumed derivation is a reportable defect. The
+canonical worked example of the failure and its fix: the addressing
+bridge's scope paragraph (commit 20634bd) — common knowledge first
+(paths name documents everywhere: filesystems, URLs, wikilinks), the
+jq/JSONPath inherited-assumption archaeology told as history, the owner's
+call presented as confirmation-of-the-obvious with a ledger link, the
+convention choice (frozen reference form) as a decision with its recorded
+reason, the open question as open.
+
+**Done to the full four-bar standard** (standalone ownership · by-degrees
+· apparatus-invisible · honest registers): Part IV both bridges;
+methods; observation-infrastructure (2/26 of the run proper). Also done
+globally: chapters-vocabulary sweep (5e542e7), wikilink convention
+(b03e68b), process-vocab sweeps.
+
+**Remaining queue, depends-order:** counter-register → errors-that-teach,
+persistence-is-imported, crystallized-process (rest of Part I) → Part II
+(anatomy, structured-output, streaming, headless, invocation, intent) →
+Part III (edit-landscape, schema-guarded, freshness, round-trip) → Part V
+(machine-first, self-chunking, typing, templates, annotation) → Part VI
+(context-economy, continuity, tracking-snapshots) → Part VII (steering,
+delegation) → Part VIII (priorities, handover-map). Each wants the
+fresh-page treatment, the register self-test ("is every referent
+decodable from this page alone?" / "does any passage argue for what was
+merely decided?"), hashtag-refs → readable chapter links, and the
+parts-vs-chapters vocabulary held. Plus, still: six promoted reports'
+embedded frontmatter to tuck (pattern: b9ecabe); NOTATION-KEY re-frame.
+
+This stop is deliberate: the executing fork hit its depth limit and
+stopped at a clean boundary rather than let fidelity decline across the
+tail (the coordinator has the handoff protocol).
