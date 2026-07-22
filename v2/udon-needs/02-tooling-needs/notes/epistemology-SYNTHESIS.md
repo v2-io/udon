@@ -167,7 +167,49 @@ process was Joseph's. Two consequences:
 | B's kinds-as-ladder-members | A's separate kind axis with B's kind-set and repairs | B's, restructured |
 | A's transmitted-from status axis | ASF cross-volume refs + events (B §11), prose form kept | A's, narrowed |
 
-## Implementation order (when Joseph ratifies)
+## Cross-reference notation (Joseph's formalization, 2026-07-22 — adopted into the system)
+
+The links themselves — "somewhat poetically, the cross-document path
+notation" — formalized:
+
+- **Local segment:** `#meas-a-local-segment-here` — bare slug, flat local
+  namespace.
+- **Cross-corpus into ASF:** `#asf/aat/intr-segment-in-aat` — volumes
+  addressable as `asf/{aat,tst,llm,eli}/`. Future namespaces as they're
+  needed: `#logos/…`, `#vivia/…`, eventually harness ones.
+- **Rendering form** (new here — needed at ASF but not yet implemented
+  there; we pioneer it):
+
+  ```
+  [[tool-definition-anatomy| #tool-definition-anatomy]]
+  [[impl-strategic-composition| #asf/aat/impl-strategic-composition]]
+  ```
+
+  Three deliberate properties: (1) **no path** in the wikilink target,
+  (2) **no filename suffix**, (3) **a space after `|`** so Obsidian renders
+  the display text as a tag. Renders perfectly in Obsidian *and* keeps
+  working if this corpus is interned into ASF or anywhere else in archema —
+  the reference is relocation-stable by construction (the report's own
+  addressing principle, applied to itself). Implies archema-global
+  file-stem uniqueness; acceptable, and collisions in this corpus are
+  self-evident from the flat `src/`.
+
+This supersedes ASF's `volume:slug` TBD row (FORMAT.md's cross-volume source
+form was explicitly unsettled — this is the settlement we propose back to
+it) and refines the report's existing `[[FILE.md|word]]` convention for the
+segment-reference case.
+
+## Ratification status
+
+Joseph (2026-07-22): **call it trio-ratified when the pilots have agreed,
+and Joseph-supported** — his most important general feedback and the link
+specifics are already folded. Pilot agreement recorded below when given.
+
+- Pilot A: *(pending)*
+- Pilot B: *(pending)*
+- Coordinator: agreed (author of this synthesis).
+
+## Implementation order (when trio-ratified)
 
 1. Methods chapter: land the three-axis system + kind table + lock + event
    log spec; T-code mapping note for auditors.
