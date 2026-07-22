@@ -148,6 +148,27 @@ weakening, whoever proposed it and however it was labeled. The valuable
 part of such a finding is the *inconsistency it names*; preserve that as a
 strengthening target, not a word-swap.
 
+**A worked illustration (Joseph's, from this report's own history).** An
+early draft claimed: *"cross-document addressing is in scope, so building
+without it would be building on sand."* An auditor rightly sees
+overclaiming — a metaphor asserted, nothing argued. The two discharge
+routes from there: the **soften route** rewrites it as *"we hypothesize
+that not having it in scope might be detrimental"* — which merely
+relocates the failure for the next audit to knock down ("where's the
+hypothesis? how is it proven or disproven? what's the scope exactly?").
+The **strengthen route** says *"hmmm, it did* seem *true — it's just not
+argued"* and goes to work: first making the metaphor specific enough to
+be provable at all (specification *is* the first strengthening move for
+any vague claim), then seeking the evidence and the theoretical grounding.
+And note the live possibility: the strengthening pass might discover
+there is very good reason for this whole problem class to *not* have
+external documents path-findable — a no-go **that still strengthens the
+theory**. Because that's what strength means here: **not "claim beyond
+the evidence" — strict honesty, more complete evidence and theoretical
+foundation, models that conform more closely to truth.** The strengthen
+route arrives somewhere real in every branch; the soften route arrives
+nowhere in all of them.
+
 **A shrug is not an attempt.** "I looked and don't see how to strengthen
 it" after thirty seconds is the attempt not fitting your working cadence,
 not the attempt failing. The reliable move: take the claim into genuine
