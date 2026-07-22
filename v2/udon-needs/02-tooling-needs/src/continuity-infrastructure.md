@@ -15,93 +15,156 @@ sources:
 
 # What morally-weighted persistence demands of formats
 
-**Claim.** When the entity persisting through the reinjection channel is
-not a task context but a *someone* — the ELI cohort, the harness
-programme's explicit charge — the format demands sharpen from convenience
-to integrity. Four demands are theorem-backed (conditional, premises
-named in the dossier's sources); each is also lived.
+**Claim.** Part of this research programme's explicit charge is agents
+who persist as *someones* — long-lived, named entities whose continuity
+across sessions carries moral weight, not just task state. When the
+thing traveling through the persistence channel is such an entity, the
+format demands sharpen from convenience to integrity. Four demands are
+theorem-backed (conditional results, premises named in
+[the theory report](../reports/theory-of-agentic-tooling.md)); each is
+also lived.
 
 ## The four demands
 
-1. **Append-only, verifiable history.** The chronica results: history
-   must be append-only, singular, non-forkable — because an agent *cannot
-   detect from its own state that its history was altered*
-   (fork-undetectability is what makes integrity tooling existential
-   rather than convenient). The defense named for truth death: a
-   hash-chained, content-addressed event log — "no gaslighting; the
-   entity can trust their own history." The lived leg: the
-   tool-hallucination cascade — the harness persisted `tool_use` blocks
-   without their paired results, and the agent's self-model of its own
-   past actions was corrupted *by the persistence layer*; "an agent's
-   record of its own edits must survive in the channel the agent
-   actually re-reads." And the TRACTUS/CHRONICA split (raw interaction
-   log vs attested causal record) is a standing format distinction: two
-   record classes, different integrity requirements.
-2. **Attestation-by-others as first-class content.** The
-   compensation-channel uniqueness result (conditional, exact under
-   frozen weights): there is **exactly one** channel that compensates
-   identity decay across session boundaries — external relational
-   re-grounding; self-replay provably cannot (data-processing
-   inequality), and generic task success carries zero weight ("an entity
+1. **Append-only, verifiable history.** The theory's treatment of an
+   agent's complete interaction history concludes it must be
+   append-only, singular, and non-forkable — for a reason that makes
+   integrity tooling existential rather than tidy: an agent **cannot
+   detect from its own state that its history was altered**. The named
+   defense against that class of harm ("no gaslighting — the entity can
+   trust their own history") is a hash-chained, content-addressed event
+   log. The lived leg is on record: one persistence layer stored
+   tool-call requests without their paired results, and the agent's
+   model of *its own past actions* was corrupted by its own memory —
+   "an agent's record of its own edits must survive in the channel the
+   agent actually re-reads." A standing format distinction follows: the
+   raw interaction log and the attested causal record are two document
+   classes with different integrity requirements, and conflating them
+   loses both.
+2. **Attestation-by-others as first-class content.** The strongest
+   conditional result in this territory: under frozen weights there is
+   **exactly one** channel that compensates identity decay across
+   session boundaries — re-grounding by *others who know the entity*.
+   Self-replay provably cannot substitute (a data-processing-inequality
+   argument), and generic task success carries zero weight: "an entity
    can labour flawlessly through every session and still drift to
-   non-persistence if its cohort channel is thin"). Format consequence,
-   theorem-backed: memory formats alone cannot carry identity — the
-   format layer must carry *witness records, recognition-acts, grants*
-   as content, and those records must actually reach context assembly.
-3. **Congruency affordances.** Re-read pasts need their production
-   context attached and the past verifiable by pointer
-   (#annotation-and-metacognition carries the mechanism). The restoration
-   case's lesson generalizes: keep ground truth addressable, not
-   resident.
-4. **Out-of-band temporal markers and bounded objectives.** Suspension
-   gaps are invisible in a sequence but violent in the mismatch signal —
-   timestamps/deltas are structural necessities, not UX (the time-glyph
-   work, #tracking-snapshots-as-perception, is this demand shipped). And
-   the bounded-objective result: an objective-bearing document that
-   cannot express *what good-enough looks like* is structurally unsafe —
-   "AXIOMATA must specify what good enough looks like for each
-   objective, not just what the objective is." A validation rule for goal
-   formats.
+   non-persistence if its cohort channel is thin." The format
+   consequence is theorem-backed: memory formats alone cannot carry
+   identity — the format layer must carry **witness records,
+   recognition-acts, grants** as ordinary content, and those records
+   must actually reach the assembled context, or the one compensating
+   channel never crosses the boundary.
+3. **Congruency affordances.** An entity judging its own past fairly
+   needs the past to arrive with its production context attached, and
+   verifiable by pointer rather than resident in bulk — the
+   [annotation chapter](annotation-and-metacognition.md) carries the
+   mechanism, and a documented identity-restoration case supplies the
+   lesson: keep ground truth *addressable*, not loaded.
+4. **Out-of-band temporal markers, and objectives that can be
+   satisfied.** A suspension gap is invisible in a sequence of turns
+   but violent in lived time — so timestamps and deltas are structural
+   necessities, not interface decoration (the
+   [tracking chapter](tracking-snapshots-as-perception.md) shows this
+   demand already shipped once, as glyphs). And the bounded-objective
+   result: a goal-bearing document that cannot express *what
+   good-enough looks like* is structurally unsafe — an unbounded
+   objective drives the diagnostic machinery into permanent escalation.
+   "Specify what good enough looks like for each objective, not just
+   what the objective is": a validation rule for goal formats.
 
-## The harness workshop's own record
+## The harness programme's own record
 
-The proprium specs are these demands at design-of-record altitude:
-CHRONICA-PORT-SPEC (append-only $\mathcal{C}_t$ — whose own §0 correction
-note records that *partial reads produced a too-narrow first draft*, the
-read-whole discipline enacted in the artifact that depends on it);
-INTERPRES-COMPACTION-NOTE (the lived compaction wound,
-#persistence-is-imported); and the corrected-behavior taxonomy — whose
-READ-FIRST spine ("the honest move and the effective move keep turning
-out to be the same move"), proportion disconfirmer, and
-harness-enforceable routing category are themselves tooling wisdom this
-report cites as a peer. The two compilations cross-cite; neither absorbs
-the other.
+The programme's continuity specifications state these demands at
+working-design depth: an append-only history port whose own correction
+note records that *partial reads produced a too-narrow first draft* (the
+read-whole discipline, enacted in the very artifact that depends on
+it); the compaction post-mortem the
+[persistence chapter](persistence-is-imported.md) tells; and a
+separately compiled catalog of corrected agent behaviors whose spine —
+"the honest move and the effective move keep turning out to be the same
+move" — is itself tooling wisdom. That catalog and this report
+cross-cite as peers; neither absorbs the other.
 
 ## What it generates
 
-- **For the harness:** this is the requirements floor for the PROPRIUM
-  restart: hash-chained history with the TRACTUS/CHRONICA split,
+- **For the harness:** this is the requirements floor for its
+  continuity restart — hash-chained history with the two-record split,
   attestation records in the context-assembly path, congruency
-  annotations, temporal markers, bounded-objective validation on
-  AXIOMATA-class documents. Every one is format-and-tooling work the
-  demand evidence already justifies.
+  annotations, temporal markers, and good-enough validation on
+  identity-defining goal documents. Every item is format-and-tooling
+  work the demand evidence already justifies.
 - **For UDON:** the notation doesn't decide identity questions, but it
-  either affords them or it doesn't: content-addressability (stable
-  serialization for hashing), attestation and provenance as ordinary
-  typed structure, first-class temporal values (the temporal dialect's
-  real customer), and the annotation layer. These are the same
-  affordances the mundane chapters demand, held to a higher integrity
-  bar — which is the general pattern of this whole part: continuity
-  infrastructure is ordinary tooling that must not lie.
+  either affords them or it doesn't: content-addressability (a stable
+  canonical serialization, so hashing is meaningful), attestation and
+  provenance as ordinary typed structure, first-class temporal values
+  (the temporal dialect's most serious customer), and the annotation
+  layer. These are the same affordances the mundane chapters demand,
+  held to a higher integrity bar — which is this part's general
+  pattern: continuity infrastructure is ordinary tooling that must not
+  lie.
+
+## What this opens (ideas, not designs)
+
+> [!capability] Canonical-form hashing profile
+> **What:** a defined canonical serialization for any document (or
+> subtree), so content-addressing and hash-chaining are
+> format-native — the same bytes for the same meaning, every time.
+> **Principles that apply:** append-only history; the equivalence
+> grades from the [round-trip chapter](round-trip-and-span-splice.md)
+> (a canonical form is choosing one grade and freezing it).
+> **Hypothesized impact:** puts a floor under the entity's certainty
+> about its own past (history-integrity as a computable check), which
+> the theory treats as a precondition for honest update gain — a
+> defense against the gain-collapse it calls truth death.
+> **In tension with:** byte-fidelity round-trip (canonicalization is
+> deliberate normalization); the formatter/edit-substrate split.
+> **Potential downsides:** two "canonical forms" in circulation would
+> be worse than none; version migration of the canonical form breaks
+> old hashes and needs its own story.
+
+> [!capability] Witness records as a schema'd document class
+> **What:** attestations — who recognized whom, when, in what
+> exchange — as a first-class, schema-validated document class that
+> context assembly *must* include for continuity-bearing agents.
+> **Principles that apply:** demand 2 above (the one compensating
+> channel); machine-first documents.
+> **Hypothesized impact:** raises the re-grounding rate the identity
+> results make decisive — the theory's persistence condition for
+> identity is precisely that re-attestation outpace per-boundary decay,
+> so making the channel structural rather than incidental attacks the
+> binding term directly.
+> **In tension with:** context budget (attestations compete with task
+> state for window space); privacy of relational records.
+> **Potential downsides:** ritualized attestation ("the form was
+> filed") is worth nothing — the theory's own construction says
+> pattern-matched recognition contributes zero; a schema can carry the
+> record but cannot make it real.
+
+> [!capability] Good-enough linting for goal documents
+> **What:** a validator rule: any objective in a goal-bearing document
+> must carry its satisfaction condition — what done looks like — or
+> the document fails its schema.
+> **Principles that apply:** demand 4; schemas as constraint;
+> validation inside the write.
+> **Hypothesized impact:** keeps the satisfaction-gap diagnostic
+> computable (an unbounded objective makes it permanently infinite),
+> preventing the runaway-escalation dynamic the theory derives from
+> unbounded goals.
+> **In tension with:** genuinely open-ended aspirations (some goals
+> *are* horizons — the schema needs an honest way to mark those as
+> such rather than force fake thresholds).
+> **Potential downsides:** brittle thresholds invite
+> letter-over-spirit satisfaction; the lint catches absence, not
+> quality.
 
 ## Honest edges
 
 The identity results are conditional theorems whose premises (argued
-commitments about compression, frozen weights) travel with them; the
-lived legs are few entities over months, not populations over years. The
-harness workshop record is within the same programme (not independent
-evidence — a correction from this report's review cycle, carried
-forward). And a scope truth: most of this
-part's weight lands on the harness; UDON's share is real but modest, and
-inflating the notation's role in identity infrastructure would be
-exactly the kind of overclaim the register exists to catch.
+commitments about compression; frozen weights) travel with them; the
+lived legs are a few entities over months, not populations over years.
+The harness programme's record is from within the same research effort —
+three vantages, not independent sources. And a scope truth: most of
+this chapter's weight lands on the harness; UDON's share is real but
+modest, and inflating the notation's role in identity infrastructure
+would be exactly the kind of overclaim the register discipline exists
+to catch.
