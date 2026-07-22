@@ -194,6 +194,13 @@ notation" — formalized:
   file-stem uniqueness; acceptable, and collisions in this corpus are
   self-evident from the flat `src/`.
 
+**Anti-pattern, named because it propagates (Joseph):** a slug wrapped in
+back-ticks — backtick-#segment-backtick — is "the worst of all worlds": it
+renders poorly, is invisible to tag statistics and search, and is neither
+clickable nor jumpable. **Always prefer `[[segment| #segment]]` over a
+backticked slug** wherever a reference is meant (code-ticks remain fine for
+genuinely literal code/syntax, which a segment reference is not).
+
 This supersedes ASF's `volume:slug` TBD row (FORMAT.md's cross-volume source
 form was explicitly unsettled — this is the settlement we propose back to
 it) and refines the report's existing `[[FILE.md|word]]` convention for the

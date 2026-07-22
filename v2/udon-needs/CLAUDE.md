@@ -52,6 +52,14 @@ here.
   segments (`#slug` form) rather than rederiving their content; and write
   knowing the likely eventual readers are ASF's readers.
 
+- **Segment-reference formatting (Joseph, propagates badly if wrong):**
+  references render as `[[segment| #segment]]` (no path, no suffix, space
+  after the pipe) — locally, and `[[segment| #asf/aat/segment]]` into ASF
+  volumes. Never wrap a slug in back-ticks when a reference is meant: a
+  backticked slug "is the worst of all worlds" — renders poorly, invisible
+  to tag statistics and search, not clickable, can't jump. Code-ticks are
+  for literal code only.
+
 - **This is still an ideation phase.** Phase (2) is "Additional Ideation,
   Consolidation, Normalization, & Synthesis" — think and wonder, don't just
   organize. Open possibility spaces (mark ideas as *proposed*, never pinned —
