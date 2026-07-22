@@ -38,11 +38,11 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 | Cluster | # | Cluster | # |
 |---|--:|---|--:|
 | `extracts/` (grok early pass, in-repo design/consumer) | 14 | `II2-zoetica-ennaos/` | 34 |
-| `discussion-excerpts/` (3 Joseph pipeline-discussion turns) | 3 | `II3-nexum/` | 14 |
+| `discussion-excerpts/` (3 Joseph pipeline-discussion turns) | 3 | `II3-nexum/` | 15 |
 | `I1-usability/` | 6 | `II4-autopax-practica/` | 43 |
 | `I2-scenarios/` (incl. 7-file `corpus/` mirror) | 12 | `II5-dialogs/` | 7 |
 | `I3-design-of-record/` | 12 | `II6-elsewhere/` | 6 |
-| `I4-genre-seeds/` | 7 | `II7-ref-arch/` | 10 |
+| `I4-genre-seeds/` | 7 | `II7-ref-arch/` | 19 |
 | `I5-live-consumers/` | 7 | `II8-harness-refs/` | 7 |
 | `I7-seam-addendum/` | 2 | `III-schema/` | 19 |
 | `II1-sapientia/` | 14 | `III-vaults/` | 8 |
@@ -51,7 +51,9 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 
 2 added 2026-07-21 (transcript-hit triage — the wrongly-location-excluded bucket, read span-by-span): `II5-dialogs/joseph-agent-tooling-vision-primary-turns.md` (Joseph's own Dec-2025→Jul-2026 agent-tooling turns: ALSP seed, tool-gen-from-schema, `uq` CLI, soft/hard boundary, 2026 edit-guard — primary-source origins behind the represented design docs) + `II5-dialogs/codex-gpt-cross-model-udon-assessment.md` (**cross-substrate**: a GPT-family model's independent UDON demand-fit read + the counter-weight the single-author corpus lacks). Full accounting: `scratch/use-udon-for-audit.md` §Transcript-hit triage.
 
-### `characterizations/` — 30 extraction-by-report
+10 added 2026-07-21 (**REBASING PASS** — stale-charter rebase; report `scratch/REBASING-REPORT.md`): correcting dispositions whose recorded reasoning measured against "the notation"/"UDON" alone, laundered into work-list cells that extraction agents then deferred to over the harness bar. `copies/II7-ref-arch/` +8 (`other-agents-claude-cli-{feature-spec,technical-architecture,tool-input-schemas}.md` = the reified Claude-Code CLI contract, Aug 2025; `codex-system-prompt.md` = a full production harness prompt + Joseph's disposition; `geminex-methodology.md` = his own agent-runtime bounded-context decomposition; `sapientia-{multi-agent-coordination,ethical-agent-collaboration,agent-collaboration-checklist}.md` = the Sept-2025 documents-as-message-passing + delegation-ethos stratum), `copies/II3-nexum/` +1 (`capabilities-design.md` = harness runtime model-management), `characterizations/` +1 (`II2-zoetica-event-log-durability-architecture.md` = append-only durable event-log memory architecture). The measured phantom-bar cost: **6 dispositions promoted** out of 13 re-examined (7 honestly re-affirmed).
+
+### `characterizations/` — 31 extraction-by-report
 
 - `harness-invivo/` — **17** per-repo tool-usage maps (14 shipping harnesses + claude-docs + obsidian×2 + yq).
 - **14** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes, **`recall-floor-archema-harness`** [the 2026-07-21 recall-floor find — the compilation's OWN consumer repo `~/src/archema-io/harness/` was un-swept; parallel corrected-behavior dossier + primary CLI census + PROPRIUM/compaction demand; SC#15]).
