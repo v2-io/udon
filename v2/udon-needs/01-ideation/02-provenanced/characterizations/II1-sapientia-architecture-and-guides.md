@@ -34,6 +34,12 @@ and are flagged where relevant.
 
 ## advanced-claude-agent-architecture.md — the MACH framework (2988 lines)
 
+> **⤷ SUPERSEDED by a full-body read (2026-07-21, SC#8):** the whole file (incl. all
+> Ruby) was later read cover-to-cover and its concrete mechanisms excerpted verbatim to
+> `copies/II1-sapientia/mach-framework-mechanisms.md`. The head-read summary below is
+> accurate but partial — prefer the excerpt for the paradigm-selection tree, verification
+> levels, progressive-autonomy, and sub-agent manifest.
+
 "Advanced Agent Architecture for Claude: The MACH Framework" (Modular Adaptive
 Cognitive Hybrid). Thesis: an agent system should **select a cognitive paradigm
 per request** rather than run one fixed loop — the "expert consulting team"
@@ -81,6 +87,11 @@ in. It reframes "readability" (UDON's headline claim) from ergonomics to a
 turnover-economics necessity. Directly serves both consumers.
 
 ## ai-conversation-system-requirements.md — persistent-conversation requirements spec (1186 lines)
+
+> **⤷ SUPERSEDED by a full-body read (2026-07-21, SC#8):** the full spec was read and
+> the harness-critical recovery state machine excerpted verbatim to
+> `copies/II1-sapientia/conversation-system-tool-execution-state-machine.md` (REQ-9/18/19/23/24/25/28
+> + failure-mode matrix). Prefer the excerpt for the harness handover.
 
 A functional-requirements spec (2025-10-10) for a durable agent conversation
 system. Reading the TOC + §7 + the requirement grep, the load-bearing content:

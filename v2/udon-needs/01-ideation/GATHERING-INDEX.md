@@ -45,12 +45,14 @@ witness-line evidence. Frontmatter template + provenance conventions live in
 | `I4-genre-seeds/` | 7 | `II7-ref-arch/` | 10 |
 | `I5-live-consumers/` | 7 | `II8-harness-refs/` | 7 |
 | `I7-seam-addendum/` | 2 | `III-schema/` | 19 |
-| `II1-sapientia/` | 11 | `III-vaults/` | 8 |
+| `II1-sapientia/` | 14 | `III-vaults/` | 8 |
 
-### `characterizations/` — 29 extraction-by-report
+3 added 2026-07-21 (SC#8 deep-pass): `conversation-system-tool-execution-state-machine.md` + `mach-framework-mechanisms.md` (harness-facing verbatim excerpts of the two named residuals, full-body-read) + `active-salience-src-and-consciousness-compiler-vision.md` (gem hunt: Joseph's hand-written GCM/SRC notation = UDON+harness prior art).
+
+### `characterizations/` — 30 extraction-by-report
 
 - `harness-invivo/` — **17** per-repo tool-usage maps (14 shipping harnesses + claude-docs + obsidian×2 + yq).
-- **12** top-level reports (sapientia architecture/dialogs, shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes).
+- **13** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes).
 
 ### `syntheses/` — 4 already-integrated secondary documents
 
