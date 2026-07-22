@@ -14,6 +14,7 @@ sources:
   - ../../01-ideation/02-provenanced/syntheses/tier2-invivo-digest.md  # yq match() singleton
   - ../../../DECISIONS.md  # PATH-1, S14; ../../OPEN.md S3
   - ../../01-ideation/02-provenanced/copies/discussion-excerpts/joseph-project-root-anchor-2026-07-22.md  # anchor-kinds demand
+  - ../../01-ideation/02-provenanced/copies/de-novo-testimony/paths-testimony-gemini-2026-07-22.md  # unprimed practitioner testimony
 ---
 
 # Addressing is the long pole

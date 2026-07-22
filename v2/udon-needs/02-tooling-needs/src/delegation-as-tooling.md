@@ -63,6 +63,37 @@ register's first appearance in shipped prompts.
   agent-authored conventions like recording branch/session-id in the
   commit itself.
 
+## The beginner's-mind instrument (accumulated practice, now an evidence channel)
+
+A third delegation discipline deserves its own section, because this
+report both documents it and runs on it. A fresh agent with *no* project
+context is an instrument: it has the reader's mind, the newcomer's
+questions, and none of the accumulated assumptions that make a
+mid-project mind unable to see its own frame. The practice is old in
+this estate — the canonical delegation text calls the delegate's
+beginner's mind "your secret weapon," and prescribes a two-shot pattern
+(launch a first agent purely to *diagnose* — then refine the brief and
+launch a fresh second, deliberately not fed the first's output). It has
+run at scale: clean-room re-derivations of a whole language spec by
+agents given only scrubbed inputs; fresh-reader audits where an agent's
+confusion is treated as a defect in the document, not the agent
+("agent confusion = reader confusion").
+
+The newest form, formalized while this report was being written:
+**de-novo testimony** — ask a fresh agent, with explicit license for a
+long answer, what it would hope a comprehensive analysis of some
+territory covers, what pains it knows first-hand, which default
+assumptions deserve questioning. One question, one answer: immediate
+end-user feedback from the tool's actual audience, for less than the
+cost of writing around the gap. The first per-territory result (a
+Gemini-family agent on paths, 2026-07-22 — twelve pain areas, several
+absent from years of gathered design work) demonstrated the yield and is
+now part of the addressing territory's evidence. The channel's honest
+epistemics: it produces a *practitioner's unprimed account* — vivid,
+first-person, unverified — to be weighed like testimony, not like
+measurement; and eliciting across model families adds an independence
+most single-estate evidence lacks.
+
 ## What it generates
 
 - **For the harness:** compose subagent capability from toolsets, never
