@@ -39,6 +39,19 @@ here.
   its home, and the corpus holds prior results of it; check the prior before
   calling anything new.
 
+- **Where this work is headed (orientation-shaping, Joseph 2026-07-22):**
+  the tooling report's second consumer has been described as a handover to
+  the archema harness programme; Joseph now expects it will "almost
+  certainly be a new group or part within ASF itself, as part of 02-TST
+  (Temporal Software Theory)." TST is ASF's software-as-agentic-domain
+  volume — the natural home for a demand-evidence statement about agent
+  tooling. Practical consequences: ASF's segment conventions
+  (`~/src/archema-io/asf/FORMAT.md`) are this work's probable *native
+  environment*, not just a neighbor to borrow from — divergences from them
+  should be chosen knowing they'll eventually reconcile; cite ASF/TST
+  segments (`#slug` form) rather than rederiving their content; and write
+  knowing the likely eventual readers are ASF's readers.
+
 - **This is still an ideation phase.** Phase (2) is "Additional Ideation,
   Consolidation, Normalization, & Synthesis" — think and wonder, don't just
   organize. Open possibility spaces (mark ideas as *proposed*, never pinned —
