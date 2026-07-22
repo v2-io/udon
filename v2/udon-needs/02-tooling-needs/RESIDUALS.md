@@ -355,3 +355,15 @@ when it completes (same provenance pattern); (3) the by-degrees
 self-test has been applied per-chapter by its author — a cold
 *cross-chapter* read in OUTLINE order by fresh eyes remains the right
 final verification, per the report's own cold-reader lesson.
+
+**Tier-vs-strength recalibration (queued, next cycle — Joseph):** the
+T1–T5 tiers are provenance-genre categories, not claim-strength
+epistemology ("more like library categories still"). Claim-level status
+vocabulary on the formal theory's model (exact / conditional-with-named-
+premises / robust-qualitative / measured-with-caveats / heuristic /
+hypothesis / discussion-grade) should join the frontmatter machinery in
+the coming deepening cycle (rolling 3–5-chapter windows, per Joseph's
+sketch). The genre-is-not-strength distinction is now stated in the
+methods chapter; body prose already mostly speaks claim-level (the
+honest-registers bar pushed the same way) — the recalibration is
+machinery, not a prose rewrite.

@@ -28,6 +28,20 @@ in different ways — which is exactly what makes their agreement meaningful:
 | T4 | Formal theory (ASF/AAT): theorem-grade results with named premises | abstract; conditional on those premises |
 | T5 | External published research (2026 sweep, adversarially verified) | outside-view; benchmark-era caveats |
 
+**Genre is not strength.** The table above classifies *provenance* —
+whose account a piece of evidence is, and how it characteristically
+fails. It says nothing about how strong any particular claim is. A
+claim from a "weak" genre can be exact (the duplicate-key result in the
+stress test is a *measurement*: detection rate zero); a claim from the
+formal theory can be exploratory. Where a claim's strength matters,
+this report says it in claim-level words — *measured*,
+*derived-under-named-premises*, *one account*, *estimated*,
+*hypothesis* — and never leans on the genre tag as if it were a
+strength grade. (A fuller claim-level status vocabulary, on the model
+of the formal theory's own — exact / conditional / robust-qualitative /
+heuristic / discussion-grade — is queued for the metadata machinery in
+a coming revision cycle.)
+
 **Three registers, kept distinct.** Besides where a claim's support comes
 from, every claim here is exactly one of three kinds, and the prose is
 written so you can tell which without apparatus:
