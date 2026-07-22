@@ -15,61 +15,90 @@ sources:
 
 # Freshness and atomicity: edits bind to the file as it is *now*
 
-**Claim.** Three related invariants recur across every tier that touches
-writing, and together they form the transaction discipline of agent
-mutation: (1) **read-before-edit** as a hard, code-enforced gate — an edit is
-only meaningful against a state the agent has actually observed;
-(2) **apply-time re-resolution** — addresses re-resolve against the current
-file at write time, never trusted from cache ("paths re-resolve at write
-time; never trust cache over file"); (3) **atomic multi-site application** —
-a batch either fully applies or fully refuses.
+**Claim.** Three related invariants recur across every kind of evidence
+that touches writing, and together they form the transaction discipline
+of agent mutation: (1) **read before edit**, as a hard, code-enforced
+gate — an edit is only meaningful against a state the agent has actually
+observed; (2) **re-resolve at apply time** — addresses resolve against
+the current file at the moment of writing, never trusted from cache;
+(3) **atomic multi-site application** — a batch of changes either fully
+applies or fully refuses.
 
 ## The evidence
 
-- **Universal in shipping practice (and its sharpest formulation):** read-before-edit is
-  enforced in code (typed error, dedicated modules) across 8+ harnesses —
-  a hard invariant, not a prompt suggestion. grok-build's hashline makes
-  freshness *content-addressed*: anchors are valid only for the file state
-  at read time, and **one stale anchor rejects the whole batch** — the
-  cleanest shipped statement of freshness+atomicity as one mechanism.
-  kimi-code's `ToolAccesses` (per-call declared read/write footprints so the
-  scheduler runs only non-conflicting calls concurrently) is the same
-  concern lifted to the scheduler.
-- **Lived:** Zi-am-tur's sibling-collision account — two agents editing
-  the same document, the multi-writer wound — plus practica's soft-claiming
-  convention. Multi-agent concurrent edit is a real, present condition, not
-  a future scenario.
-- **The design corpus:** the agentic-ux principles state (2) verbatim; the
-  addressing exploration hardens it into a rule (#addressing-is-the-long-pole,
-  table row D6): *path evaluation for a patch is against the pre-patch
-  tree* — compare-and-swap composition, so a batch of edits has one
-  consistent addressing frame.
-- **The theory:** refusal atomicity as unconfounded law signal
-  (#errors-that-teach); and the fork/divergence analysis
-  (checkpoint-forking failure modes) gives the deep version of why two
-  writers over one artifact need explicit reconciliation, not hope.
+- **Universal in shipping practice, with one especially sharp
+  formulation.** The read-before-edit gate is enforced *in code* — a
+  typed error, dedicated modules — across at least eight of the
+  fourteen harnesses examined: a hard invariant, not a prompt
+  suggestion. The sharpest shipped statement is the hash-anchored
+  editor from the [edit-landscape chapter](edit-representation-landscape.md):
+  its anchors are valid only for the file state at read time, and **one
+  stale anchor rejects the whole batch** — freshness and atomicity as a
+  single mechanism. One other harness lifts the same concern to its
+  scheduler: every tool call declares the files it will read and write,
+  and only non-conflicting calls run concurrently.
+- **Lived.** An agent's first-person account of the multi-writer wound —
+  two agents editing the same document, each blind to the other — plus a
+  working convention that grew up in response (a lightweight
+  "soft-claim" note staking a file before touching it). Concurrent
+  multi-agent editing is a present condition, not a future scenario.
+- **Designed.** The 2025–26 design work states the re-resolution rule
+  verbatim ("paths re-resolve at write time; never trust cache over
+  file"), and [the addressing exploration](../reports/addressing-exploration.md)
+  hardens it into a composition rule: path evaluation for a whole patch
+  runs against the *pre-patch* tree, compare-and-swap style, so a batch
+  of edits shares one consistent addressing frame instead of each edit
+  shifting the ground under the next.
+- **Derived.** The [refusal chapter](errors-that-teach.md) already
+  established that a failed operation must not half-apply — atomicity is
+  what keeps the lesson of a refusal unconfounded. And the theory's
+  analysis of forked, divergent copies of one artifact gives the deep
+  version of the multi-writer problem: two writers over one document are
+  two histories sharing a prefix, and reconciling them takes an explicit
+  protocol, not hope.
 
 ## What it generates
 
-- **For UDON's edit substrate:** the transaction shape in
-  #schema-guarded-mutation inherits all three invariants; failure vocabulary
-  must distinguish *stale* (file changed since read) from *not-found* from
-  *not-unique* (#addressing-is-the-long-pole's failure vocabulary), because
-  the repairs differ — re-read vs re-derive vs disambiguate. Semantic merge
-  (the one early design idea never absorbed into the
-  tool suite: structure-aware merge with annotation accumulation) is the
-  known missing piece above single-writer transactions — carried as an open
-  demand, not designed here.
-- **For the harness:** enforce the read gate in code, not prose; consider
-  declared-footprint concurrency (the ToolAccesses shape) once multi-agent
-  sessions are normal; and surface staleness as its own teaching refusal
-  ("the file may have changed since you read it" — the stale-model
-  hypothesis named to the agent).
+- **For UDON's edit substrate:** the transaction in the
+  [guarded-mutation chapter](schema-guarded-mutation.md) inherits all
+  three invariants, and the failure vocabulary must keep **stale** (the
+  file changed since you read it) distinct from **not found** and **not
+  unique** — the repairs differ: re-read, versus re-derive the address,
+  versus disambiguate. One early design idea remains above all of this
+  as a known missing piece: structure-aware *merge*, with annotations
+  accumulating rather than colliding — carried here as an open demand,
+  not designed.
+- **For the harness:** enforce the read gate in code, never prose;
+  consider declared-footprint concurrency once multi-agent sessions are
+  the norm; and surface staleness as its own teaching refusal — name
+  the hypothesis to the agent ("the file may have changed since you
+  read it") instead of letting a mysterious mismatch teach nothing.
+
+## What this opens (ideas, not designs)
+
+- **Freshness as a token, not a behavior.** Every read could return a
+  freshness token (a content hash, a version mark); every write could
+  require one. The read gate stops being a rule agents follow and
+  becomes a fact of the interface — un-forgettable by construction,
+  and the hash-anchored editor's insight generalized from lines to any
+  addressable thing.
+- **Staleness scoped to the target.** Text-level freshness invalidates
+  on *any* change to the file. Structural addressing makes a finer
+  question possible: did the *addressed subtree* change? A file whose
+  unrelated sections moved on could still accept a guarded edit whose
+  target is untouched — fewer false staleness refusals, which matters
+  exactly in the multi-writer world where the file is always changing
+  somewhere.
+- **Claims as leases.** The soft-claim convention formalizes naturally:
+  an advisory reservation over a path, with a lifetime, visible to
+  every other writer. Whether it lives in the document, beside it, or
+  in the tool layer is a design question; that agents already invented
+  the manual version is the demand evidence.
 
 ## Honest edges
 
-Atomic *multi-file* transactions remain the gap nobody fills (only hashline's
-single-batch semantics comes close). Nothing in the evidence yet prices
-optimistic-vs-pessimistic concurrency for agent workloads — soft-claiming
-(a working convention) and footprint-scheduling (one shipped scheduler)
-are single points, not a convergence.
+Atomic *multi-file* transactions remain the gap nobody fills — the
+hash-anchored batch stops at one file. And nothing in the evidence yet
+prices optimistic against pessimistic concurrency for agent workloads:
+the soft-claim convention and the footprint scheduler are single points,
+not a convergence.
