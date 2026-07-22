@@ -4,6 +4,7 @@ gathered: 2026-07-21
 status: gathered partial extract — residue still cited by TODO-AGENT-UX
 paths:
   - design/UDON-AGENT-TOOLS.md
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693  # verified byte-current 2026-07-21
 categories:
   - semantic-merge
   - streaming

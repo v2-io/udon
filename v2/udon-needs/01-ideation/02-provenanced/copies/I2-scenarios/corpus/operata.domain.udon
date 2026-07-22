@@ -1,0 +1,132 @@
+---
+source: udon repo — test/scenarios/corpus/operata.domain.udon (pseudo-real BDD substrate, CORE 0.9 idiom)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy — substrate/genre-mirror, not primary demand text; see corpus-framing note)
+paths:
+  - test/scenarios/corpus/operata.domain.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [substrate, genre-mirror, schema-dsl, one-of, require-nil, embedded-dialect]
+why_included: >
+  Mirror of an ash-like resource-schema DSL (efforts/intents/realizations). Witnesses schema-as-bound-document demand: :one-of vocabularies + typed attrs the schema-guard-before-write scenario checks against, :require-nil [claimed-by] declaring the compare-and-set the edit tool must honor, and !:rb: / !:sh: raw dialect escapes embedded in structured config.
+---
+
+; operata.domain.udon — scenario-corpus edition
+; Pseudo-real: the Operata resource schema (efforts / intents /
+; realizations — an ash-like Ruby DSL), evolved from
+; design/examples/archema-operata.udon to 0.9 idiom: flags (:primary?),
+; explicit flag-false (:allow-nil? false), double-brace interpolation,
+; same-line raw values. The workspace file (operata-live.workspace.udon)
+; holds data conforming to this schema; the modify scenarios check writes
+; against the :one-of vocabularies here before committing them.
+
+|domain[operata]
+  :store sqlite
+  :version 0.2
+  :migrate !:sh: bin/operata migrate --auto
+
+  |resource[effort]
+    :description "A bounded initiative with origin, intent, and temporal span"
+
+    |attributes
+      |attr[id].uuid8 :primary?
+      |attr[slug].string :allow-nil? false
+      |attr[title].string :allow-nil? false
+      |attr[description].text
+      |attr[actionability].atom :default active :one-of [active ongoing resource archived]
+      |attr[temporal].atom :default present :one-of [past present future speculative]
+      |attr[owner-type].atom :default human :one-of [eli human system]
+      |timestamps
+
+    |actions
+      |defaults [create read update destroy]
+
+      |update[archive]
+        :description "Archive this effort for future reference"
+        |change :set-actionability archived
+        |change :set-temporal past
+
+      |update[activate]
+        :description "Activate this effort for current work"
+        |change :set-actionability active
+        |change :set-temporal present
+
+    |relationships
+      |has-many[intents] :destination operata.intent
+
+    |identities
+      |identity[unique-slug] :keys [slug] :eager-check?
+
+  |resource[intent]
+    :description "A desired state or outcome"
+
+    |attributes
+      |attr[id].integer :primary?
+      |attr[title].string :allow-nil? false
+      |attr[kind].atom :default compound :one-of [compound primitive]
+      |attr[status].atom :default projected :one-of [projected active realized abandoned]
+      |attr[relationship].atom :default root :one-of [prepares decomposes supports root]
+      |attr[claimed-by].string
+      |attr[claimed-at].datetime
+      |attr[position].integer :default 0
+      |timestamps
+
+    |actions
+      |defaults [create read update destroy]
+
+      |update[claim]
+        :description "Signal that you're working on this intent"
+        :arguments [claimer]
+        :require-nil [claimed-by]
+        |change :set-claimed-by !{{claimer}}
+        |change :set-claimed-at !{{now}}
+
+      |update[release]
+        :description "Release your claim on this intent"
+        |change :set-claimed-by nil
+        |change :set-claimed-at nil
+
+      |update[realize]
+        :description "Mark this intent as achieved"
+        |change :set-status realized
+        |change :set-claimed-by nil
+        |change :set-claimed-at nil
+
+      ; Escape for time and argument plumbing
+      !:rb:
+        def change_claim(changeset)
+          changeset
+            .put_change(:claimed_by, changeset.arguments[:claimer])
+            .put_change(:claimed_at, Time.now.utc)
+        end
+
+    |relationships
+      |belongs-to[effort] :destination operata.effort
+      |belongs-to[parent] :destination operata.intent :allow-nil? true
+      |has-many[children] :destination operata.intent :inverse-of parent
+
+    |queries
+      !:rb:
+        def self.ready
+          query
+            .filter(kind: :primitive, status: %i[projected active])
+            .all
+            .select { |intent| preparations_satisfied?(intent) }
+        end
+
+  |resource[realization]
+    :description "What actually happened when working on an intent"
+
+    |attributes
+      |attr[id].uuid8 :primary?
+      |attr[outcome].text :allow-nil? false
+      |attr[delta].atom :default as-expected :one-of [as-expected easier harder different blocked surprising]
+      |attr[learnings].text
+      |attr[propagate].boolean :default false
+      |attr[recorded-by].string
+      |timestamps
+
+    |actions
+      |defaults [create read update destroy]
+
+    |relationships
+      |belongs-to[intent] :destination operata.intent

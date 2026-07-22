@@ -1,0 +1,104 @@
+---
+source: live consumer .udon — vivarium terrestris ordinum (machine-read law-data)
+gathered: 2026-07-21
+status: gathered partial extract ("head only — full file 429 lines") — not authoritative
+paths:
+  - /Users/josephwecker-v2/src/archema-io/vivarium/tabularium/terrestris.ordinum.udon:1-75
+source_commit: vivarium@e5b022e
+categories: [live-consumer, schema-as-data, machine-read, versioned-artifact, kept-by-audit, embedded-schema]
+why_included: |
+  The .udon document that `ordinum.rs` (this same dir) parses by hand — copy them as a cross-tier
+  pair. It witnesses UDON used as *instituted data* (not prose docs): a versioned, immutable-once-
+  pinned artifact (`:version 0.1.0 :status draft-until-first-pinned`) that other artifacts pin as a
+  floor. The schema (phase / charge / promise / defeasance / record) is declared in a `|meta` block
+  inside the document itself, and epistemic-honesty machinery is encoded in the data: "`:kept-by`
+  ABSENCE = GLOSS … greppable, auditable for epistemic honesty, never mistaken for a guarantee." The
+  `.class` stacking (`.state.regime`) and `:from`/`:unlocks`/`|predicate` edges are exactly the
+  accessor surface the hand-rolled parser reaches for and a library would need to expose.
+---
+
+> **Why gathered (pairs with the ordinum parser copy).** Live demand for UDON as greppable,
+> auditable, machine-read law-data: attributes carry the semantics (`:kept-by`, `.class`, `:tag`),
+> and *absence of an attribute is itself a meaningful, greppable signal* ("the gloss set is exactly
+> the promises with no `:kept-by`"). That the consuming code compiles this file in via `include_str!`
+> "so the report cannot drift from the artifact" makes this document the primary source and the
+> parser its reader — the exact copy-travels-and-higher-views-build-over-it relationship the Brief
+> prizes.
+
+|ordinum[terrestris]
+  :title Ordinatio Ordinum — the Terrestris phase floor, as instituted data
+  :version 0.1.0
+  :status draft-until-first-pinned
+  :created 2026-07-11
+  :manifold cube-sphere-3d-voxel
+  :reportatio .archive/PHASES.md
+  :reportatio-pin 42621d5
+
+  ; Terrestris = the earthlike world-kind — the TRACK. Its floor (this ordinum)
+  ; and its conformance profile (Regula Terrestris) share the track name and
+  ; are told apart by artifact type (.ordinum.udon vs .regula.udon): one track,
+  ; two faces. This is ONE ordinum among a planned many in the tabularium; a
+  ; second, wholly different one is anticipated (a cellular-automata testbed,
+  ; likely a 2-D plane — `:manifold euclidean-plane-2d`). The SCHEMA here
+  ; (phase / charge / promise / defeasance / record) is world-kind-agnostic;
+  ; only the CONTENT below is Earth-lineage. One ordinum, many regulae: other
+  ; profiles over the same ladder are possible.
+
+  ; The first instituted artifact of the tabularium: the per-phase
+  ; Charge/Promise floor as DATA, which every regula pins (`ordinum@version`)
+  ; as the floor it may extend but never silently undercut. The whole ladder
+  ; lives here; a regula SLICES its target phase from it (later phases render
+  ; as horizon, never as failures). .archive/PHASES.md is this document's
+  ; reportatio — the prose working text it was authorized from; a PHASES
+  ; revision yields a NEW ordinum version (immutable once any regula pins
+  ; one), and existing regulae opt in by re-versioning. Faithfulness to the
+  ; reportatio is the governing constraint: the terms here are the reportatio's
+  ; terms, verbatim in substance.
+
+  |meta[reading-rules]
+
+    A phase declares three things about what it hands the future — CHARGES,
+    PROMISES, and DEFEASANCES — plus a RECORD (the readable-in-rock slice).
+
+    - CHARGE — what the phase must establish; the GATING SUBSET of its
+      promises. A charge IS the next phase-gate's opening condition. :tag is
+      the gate tag (LEXICON §1): gate (hard prerequisite we simulate) · earth
+      (Earth's pattern kept for fidelity) · mech (causality known, no
+      simulable mechanism yet) · emergent (verify, don't build). Tags state
+      ARROW-KIND, never implementation status — the reportatio's status asides
+      ("running today", "fBm stands in") are stripped; built-status lives in
+      the nomotheke and the store.
+
+    - PROMISE — a defeasible, forward-facing commitment this phase generates,
+      preconditioned on prior phases, that later phases may depend on. The
+      SUPERSET of which Charge is the gating subset. Its `.class` is its kind:
+      state (a frozen field/datum handed forward) · regime (nomoi that keep
+      running past the gate) · capability (a precondition now unlocked that
+      enables new nomoi downstream) · limit (a standing incapability in force).
+      Classes stack (`.state.regime`). Within a promise:
+      - `:kept-by <nomos>` — the function that makes it true. ABSENCE = GLOSS:
+        an honest word-of-honor not yet mechanized. The gloss set is exactly
+        the promises with no `:kept-by` — greppable, auditable for epistemic
+        honesty, never mistaken for a guarantee.
+      - `|predicate ...` — the testable condition a probe would check (the
+        falsifiable core; prose now, formal as it sharpens).
+      - `:from <charge>` — the charge that generates this promise (composition).
+      - `:unlocks <charge>` — a downstream charge this capability enables.
+
+    - PROMISE MATURITY — the acceptance-test discipline. A promise climbs a
+      ladder: NAMED (prose only — the big picture laid down) -> SPECIFIED (has
+      a `|predicate`; what would count as keeping it is now defined) ->
+      CLAIMED (has `:kept-by`; a nomos says it delivers) -> KEPT (the predicate
+      passes at a declared epistemic tier, via declared-vs-derived). The rule
+      that keeps this honest: a promise with NO predicate CANNOT be marked
+      fulfilled at any epistemic level — nothing has yet been defined that
+      could convict it. So big-picture promises land first and their
+      predicates are written when we actually need to see them delivered,
+      which then guides the coding. The regula conformance audit computes each
+      promise's rung and reports the gaps ("promise X: un-checkable — no
+      predicate") beside the fidelity pyramid.
+
+    - DEFEASANCE — the mechanism of "defeasible". A phase declares ONLY its
+      NOVEL promises; inherited promises CONTINUE IMPLICITLY (no re-listing —
+
+; […head extract ends at line 75 of 429 — phase/charge/promise instance data continues below…]

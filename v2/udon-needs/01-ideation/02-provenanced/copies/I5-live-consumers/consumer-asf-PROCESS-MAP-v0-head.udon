@@ -1,0 +1,116 @@
+---
+source: live consumer .udon — asf meta-process map (founding process-map document)
+gathered: 2026-07-21
+status: gathered partial extract ("head only — full file 489 lines") — not authoritative
+paths:
+  - /Users/josephwecker-v2/src/archema-io/asf/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.udon:1-90
+source_commit: asf@089d2af
+categories: [live-consumer, process-map, hybrid-structure-prose, health-tags, embedded-tables]
+why_included: |
+  The process-map founding document — a live .udon consumer that encodes a MECE-ish process
+  taxonomy with per-item `:health` / `:drain` tags and inline signal-flow notes. Witnesses the
+  "structure carries the schema, prose carries the reasoning" hybrid that recurs across every
+  vivarium/asf consumer: deeply nested `|process[slug]` with `:field value` metadata AND
+  free-flowing prose bodies in the same document, comment blocks (`;`) used for conventions/section
+  banners, and Markdown-style tables living inside comments. This is the genre CONSUMERS.md and the
+  scenario-corpus mirror (`asf-processes.process-map.udon`) both point at. Head only — the head
+  carries the schema/conventions; the body is more instances of the same shape.
+---
+
+> **Why gathered.** Demand evidence that agents author *real governance documents* in UDON where
+> structure and prose interleave at depth — and that they lean on `;` comments for conventions and
+> section banners and on health/drain attribute tags for machine-legible status. Extract is the head
+> (schema + conventions + spine); the full 489-line file continues the same pattern.
+
+
+|process-map[asf-processes]
+  :title The meta-processes of ASF, as a system
+  :created 2026-07-07
+  :version 0.0.1
+  :status first-pass
+
+  ; A MECE-ish list of the processes that run (or should run), in mild hierarchy. Correct the carve freely.
+
+  ; Conventions:
+    - Each process carries a `health` tag (from findings) and a `drain` tag.
+    - `drain` values:
+      | healing    (steady-state, self-clearing if given a trigger + "do-one-extra" rule)
+      | task-force (a one-off is the right fit; a steady rhythm would mis-fit)
+      | nil        (not a backlog-shaped process)
+
+    - A `?` marks a genuinely unknown sub-process we'd have to design.
+    - Signal-flow is noted per-item as fed-by / feeds, and drawn only for the
+      core loop, where it clarifies the dynamics.
+
+  |meta-meta-process[self-governance]
+    :name How this map governs and evolves itself
+    :source-sink participant-feedback
+
+    Kept to a few imperatives on purpose:
+    - Make it easy to follow the *right current* process, or to reach for the
+      tool around it.
+    - Make it just as easy to *evolve* a process — incrementally, or more
+      fundamentally.
+    - Every participant may give feedback and ideas on *any* process.
+    - That participant feedback is the *only* source/sink point of the
+      meta-process itself.
+
+  ; ==========================================================================
+  ; THE SPINE -- cross-cutting, not a stage
+  ; ==========================================================================
+
+  |cluster[spine]
+    :name Decision-routing & stewardship
+    :scope cross-cutting
+
+    Every stall below reduces to a decision that never reached Joseph in
+    actionable form; this is the parent, not a sibling (cluster 02's insight).
+
+    |process[decision-surfacing]
+      :name Decision surfacing
+      :health broken
+      :drain healing
+      :example spikes/epistemic-target-ontology/
+
+      Recognize a genuine-Joseph fork, assemble a real brief (reconstructed
+      context + options + recommendation + honest uncertainty + the actual
+      pointer), route it to a valve he can act from. JOSEPH-TODO catches under
+      half (`<½`); the newer half leaks. Per-fork trigger + prune. The worked
+      example that already exists is `spikes/epistemic-target-ontology/`.
+
+    |process[coherence-stewardship]?
+      :name Coherence stewardship (the domain-master role)
+      :health absent
+      :drain nil
+      :design-unknown how it's instantiated across turnover
+
+      Not a gatekeeper; a check on cross-process coherence who can say "hold that
+      integration until the intro lands," "these two pull opposite ways — make
+      them read each other first." A standing role, not a queue.
+
+    |process[valve]
+      :name The valve itself (JOSEPH-TODO)
+      :health under-fed
+      :drain healing
+
+      The durable list of genuinely-his calls. Exists, well-designed,
+      under-fed.
+
+  ; ==========================================================================
+  ; GENERATION (sources)
+  ; ==========================================================================
+
+  |cluster[generation]
+    :name Generation (sources)
+
+    |process[spike-lifecycle]
+      :name Spike lifecycle
+      :health healthy
+      :drain nil
+      :feeds [verification integration]
+
+      Launch → derive → refute-verify → land self-contained at honest tier. It's
+      a source, not a queue.
+
+
+; […head extract ends at line 90 of 489 — same |process[slug]+:health/:drain+prose pattern continues…]

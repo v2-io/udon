@@ -3,7 +3,8 @@ source: live consumer document (vivarium process norms)
 gathered: 2026-07-21
 status: gathered partial extract of external consumer — not moved into udon as authority
 paths:
-  - /Users/josephwecker-v2/src/archema-io/vivarium/doc/PROCESS.udon
+  - /Users/josephwecker-v2/src/archema-io/vivarium/doc/PROCESS.udon  # head only; full file ~206 lines
+source_commit: vivarium@e5b022e (verified current 2026-07-21 by I5-live-consumers; extract head still matches live source)
 categories:
   - live-consumer
   - safe-subset

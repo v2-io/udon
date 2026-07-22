@@ -1,0 +1,136 @@
+---
+source: udon repo — test/scenarios/features/02-diffing.scenarios.udon (midday "diff" journeys)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy)
+paths:
+  - test/scenarios/features/02-diffing.scenarios.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [tool-demand, diff-tool, semantic-vs-textual, identity-alignment, provenance, wire-stability, differential-test]
+why_included: >
+  What an agent needs from DIFF, and the load-bearing word is "actually changed": byte diffs
+  overstate and the wire can rename events without renaming meaning. Transferable tool demands:
+  semantic-grain diff that folds reflow/re-wrapping to zero change ("a diff tool that reports
+  reflow as change would train agents to ignore it"); element-aligned-by-identity + attr-aligned-
+  by-name reporting with zero positional noise; stacked-attribute diffs as ordered value lists
+  (append vs remove vs reorder are distinct edit kinds — reporting append as wholesale
+  replacement is "semantically equal, provenance-hostile"); move-recognition vs delete-plus-add;
+  and the parser-version differential ("same bytes, two parser versions, event streams compared")
+  promoted from an internal CI method (CONSUMERS.md) to a first-class tool op, as the guard
+  against the Norway-problem class — "parser upgrades must be auditable at the meaning grain,
+  not the byte grain." The diff/patch duality thesis is stated up front: a diff SHOULD be
+  expressible as the patch that would produce it.
+---
+
+; 02-diffing.scenarios.udon — a day in the life, midday
+; Diff journeys for the future udon diff tool (the read half of the patch
+; language: a diff SHOULD be expressible as the patch that would produce
+; it). Conventions: ../README.md. Path syntax provisional (see 01).
+
+|feature[diffing].day-in-the-life
+  :date <2026-07-21>
+  :tool udon-diff
+  :path-syntax provisional-2026-07
+  :corpus ../corpus/
+
+  Yesterday evening the upstream stewards landed edits to the lexicon and
+  the ordinum. Before touching anything, the day's agents ask what
+  actually changed — and "actually" is the load-bearing word: byte diffs
+  overstate, and the wire can rename events without renaming meaning.
+
+  |scenario[semantic-vs-textual]
+    :at <11:05> :agent lexicographer
+    :file corpus/vivarium.lexicon.udon
+
+    Yesterday's commit reflowed the |term[promise] definition paragraph
+    to a narrower width. git shows nine changed lines.
+
+    |given the lexicon at HEAD~1 and at HEAD, where the only change is
+      prose re-wrapping inside |term[promise]
+    |when
+      |diff :from HEAD~1 :to HEAD :grain semantic
+    |then
+      |expect :changes 0
+      Line-grain Text events differ, but the tool folds text-reducible
+      runs before comparing (the same folding the compliance harness
+      already does — the wire's granularity non-guarantee cuts both
+      ways). A diff tool that reports reflow as change would train
+      agents to ignore it.
+
+  |scenario[status-flip]
+    :at <11:20> :agent lexicographer
+    :file corpus/vivarium.lexicon.udon
+
+    |given the lexicon at HEAD, and a working copy where
+      |term[regime-change] has :status settled, a sharpened first
+      paragraph, and a new relation edge
+    |when
+      |diff :from HEAD :to working :grain semantic
+    |then the report is element-aligned by (type, key) and attr-aligned
+      by name
+      !:text:
+        ~ |term[regime-change]
+            :status  open -> settled
+            ~ prose  (1 paragraph rewritten)
+            + |rel :to phase-gate :kind certified-at
+      |expect :changes 3 :aligned-by identity
+      No positional noise: terms above and below the edit do not appear
+      in the report at all.
+
+  |scenario[trait-append-is-not-replacement]
+    :at <11:30> :agent ordinator
+    :file corpus/terrestris.ordinum.udon
+
+    Promise classes are stacked $traits assignments. The working copy
+    reclassifies ore-and-soil from .state to .state.regime.
+
+    |given the ordinum at HEAD and a working copy where
+      promise[ore-and-soil] carries traits [state regime]
+    |when
+      |diff :from HEAD :to working :grain semantic
+    |then
+      |expect :change "+ $traits regime (appended after state)"
+      Stacked attributes diff as ordered value lists — append, remove,
+      reorder are each their own edit kind. Reporting this as
+      "traits: [state] -> [state regime]" (wholesale replacement) would
+      round-trip into a patch that rewrites the identity line instead of
+      appending one assignment — semantically equal, provenance-hostile.
+
+  |scenario[move-not-rewrite]
+    :at <11:45> :agent surveyor
+    :file corpus/asf-processes.process-map.udon
+
+    A working copy moves |process[drift-repair] from cluster[coherence]
+    into cluster[integration] — eleven lines relocate.
+
+    |given the map at HEAD and that working copy
+    |when
+      |diff :from HEAD :to working :grain semantic
+    |then
+      |expect :change "> |process[drift-repair] moved: |cluster[coherence] -> |cluster[integration] (content unchanged)"
+      Identity-keyed alignment recognizes the move; a delete-plus-add
+      report would invite a reviewer to re-read eleven unchanged lines.
+      Position within the new parent is part of the move record (here:
+      last child).
+
+  |scenario[wire-rename-vs-meaning-change]
+    :at <12:00> :agent steward
+    :file corpus/operata-live.workspace.udon
+
+    The differential method from CONSUMERS.md, as a first-class tool op:
+    same bytes, two parser versions, event streams compared.
+
+    |given the workspace file unchanged, parsed by the core-v0.8.0 parser
+      and by the current 0.9 parser
+    |when
+      |diff :from parser@core-v0.8.0 :to parser@current :grain semantic
+    |then pure wire renames (BareValue -> Text for multi-word blobs) fold
+      to zero reported changes, but re-owned text is a MEANING change and
+      must surface loudly
+      !:text:
+        ~ |realization[r-0042-1]:outcome
+          0.8: "udon-core"           (rest stranded as element prose)
+          0.9: "udon-core and udon-cli verified available and reserved"
+          class: ownership change (blob row-1) — toward author intent
+      |expect :meaning-changes 1 :wire-renames folded
+      This is the guard against the Norway-problem class: parser upgrades
+      must be auditable at the meaning grain, not the byte grain.

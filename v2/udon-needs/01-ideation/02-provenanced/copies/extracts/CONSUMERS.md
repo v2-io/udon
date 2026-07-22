@@ -4,6 +4,7 @@ gathered: 2026-07-21
 status: gathered source material — NOT an authoritative decision document; live originals may advance
 paths:
   - CONSUMERS.md
+source_commit: udon@3d8e5b9 (verified current 2026-07-21 by I5-live-consumers; body unchanged vs live, only the gather banner added)
 categories:
   - live-consumers
   - scenarios

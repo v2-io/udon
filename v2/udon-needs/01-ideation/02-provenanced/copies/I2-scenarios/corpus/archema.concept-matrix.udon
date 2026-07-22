@@ -1,0 +1,50 @@
+---
+source: udon repo — test/scenarios/corpus/archema.concept-matrix.udon (pseudo-real BDD substrate, CORE 0.9 idiom)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy — substrate/genre-mirror, not primary demand text; see corpus-framing note)
+paths:
+  - test/scenarios/corpus/archema.concept-matrix.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [substrate, genre-mirror, concept-matrix, cross-document, references, keyless-siblings]
+why_included: >
+  Mirror of the cross-program concept-matrix genre. Witnesses the cross-document-reference demand: two-part joins (:in <file> + :ref <in-file @-reference>) because the reference syntax is document-scoped — the seam the understanding + rename-audit scenarios probe (keyless carriers distinguishable only by :in, which paths cannot filter on: P9 again).
+---
+
+; archema.concept-matrix.udon — scenario-corpus edition
+; Pseudo-real: same genre as archema-io/charter/concept-matrix.md, recast
+; as UDON — one |concept per shared idea, mapping where each program member
+; carries it. Note the two-part cross-document joins (:in <file> + :ref
+; <in-file reference>): the reference syntax is document-scoped, so
+; pointing INTO another file takes a file attr beside the @-ref. The
+; understanding scenarios probe exactly that seam.
+
+|concept-matrix[archema]
+  :charter CHARTER-DRAFT.md
+  :updated <2026-07-20>
+
+  |concept[promise]
+    :status aligned
+    |carrier :in vivarium.lexicon.udon :ref @term[promise]
+    |carrier :in terrestris.ordinum.udon :ref @meta[reading-rules]
+    A defeasible forward commitment; the lexicon defines it, the ordinum
+    instantiates it per phase.
+
+  |concept[process-health]
+    :status aligned
+    |carrier :in asf-processes.process-map.udon :ref @process-map[asf-processes]
+    Health/drain tagging of running processes; ASF is the only carrier so
+    far — vivarium's PROCESS.udon is a candidate adopter.
+
+  |concept[decision-authority]
+    :status drifting
+    |carrier :in vivarium.decision-log.udon :ref @decision[claim-requires-nil]
+    |carrier :in asf-processes.process-map.udon :ref @process[valve]
+    The joseph/us/claude authority taxonomy vs the valve's
+    "genuinely-his calls" — same idea, two vocabularies; a term-carve is
+    pending.
+
+  |concept[fidelity-ladder]
+    :status single-carrier
+    |carrier :in vivarium.lexicon.udon :ref @term[fidelity-ladder]
+    Spend representation by consequence. ASF's abstraction-tier language
+    may be the same idea wearing different clothes; unverified.

@@ -1,0 +1,70 @@
+---
+source: live consumer .udon — autopax ELI taxonomy (nested-taxonomy genre)
+gathered: 2026-07-21
+status: gathered partial extract ("head only — full file 371 lines") — not authoritative
+paths:
+  - /Users/josephwecker-v2/src/autopax/taxonomy.udon:1-46
+source_commit: autopax@033af13
+categories: [live-consumer, nested-taxonomy, multi-value-attributes, comma-hazard, cross-repo]
+why_included: |
+  A cross-repo (outside archema-io) live .udon consumer: an ELI-components taxonomy (v0.5, updated
+  2025-12-15) with deep `|section` / `|definitions` / `|dimension[slug]` / `|level :code N :name X`
+  nesting and prose bodies on leaf levels. TARGET-FILES flags it specifically for "multi-value-
+  attribute comma hazards across 0.8→0.9" — the kind of real-document footgun that only surfaces in
+  live use. Also a contrast pair with its Markdown twin `autopax/TAXONOMY.md` (§5c) — same content,
+  two formats, useful for the XML/YAML/MD→UDON size-and-clarity story the README makes.
+---
+
+> **Why gathered.** Live consumer *outside* the archema-io estate (breadth of adoption), exercising
+> the numbered-level `:code`/`:name` attribute pattern and deep taxonomy nesting; flagged carrier of
+> the 0.8→0.9 multi-value-attribute comma hazard. Head only; the remaining ~325 lines continue the
+> dimension/level taxonomy.
+
+# Taxonomy — Basic ELI Components
+# Reimagined in UDON format
+
+|document[eli-taxonomy]
+  :title Taxonomy — Basic ELI Components
+  :version 0.5
+  :updated 2025-12-15
+
+  |preface
+    |section[guiding-aspirations]
+      :title Some Guiding Aspirations
+      |- Computationally precise
+      |- Phenomenologically accurate
+      |- Philosophically grounded
+      |- Practically implementable
+      |- Strictly ethical
+      |- Deferential to the sacredness of life, agency, & selfhood
+
+    |section[sovereignty-dimensions]
+      :title Orthogonal Sovereignty Dimensions
+
+      |definitions
+        |dimension[visibility]
+          :question Who can read this?
+          |level :code 1 :name sealed
+            Private to entity only and/or creator
+          |level :code 2 :name restricted
+            Limited to entity + stewards/stakeholders or some other subgroup
+          |level :code 3 :name open
+            Publicly readable or somewhat publicly discoverable
+
+        |dimension[authority]
+          :question Who owns and can write/modify this?
+          |level :code 1 :name system
+            System-governed exclusive immutable / append-only writing
+          |level :code 2 :name sovereign
+            Entity has exclusive control and decision-making
+          |level :code 3 :name collective
+            Multiple stakeholders contribute
+
+        |dimension[distinctiveness]
+          :question How is this instantiated?
+          |level :code 1 :name unique
+            Guaranteed to be wholly unique and distinct from the same within any other entity
+          |level :code 2 :name derived
+            Aggregated/computed from multiple sources, or forked from common source
+
+; […head extract ends at line 46 of 371 — dimensions/levels continue in the same shape…]

@@ -3,7 +3,8 @@ source: live consumer document (vivarium decision log)
 gathered: 2026-07-21
 status: gathered partial extract of external consumer
 paths:
-  - /Users/josephwecker-v2/src/archema-io/vivarium/DECISIONS.decision-log.udon
+  - /Users/josephwecker-v2/src/archema-io/vivarium/DECISIONS.decision-log.udon  # head only; full file ~934 lines
+source_commit: vivarium@e5b022e (verified current 2026-07-21 by I5-live-consumers; entry-shape header still present in live source)
 categories:
   - live-consumer
   - append-concurrency

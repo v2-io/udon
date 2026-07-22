@@ -1,0 +1,58 @@
+---
+source: program-level demand — archema-io umbrella TODO
+gathered: 2026-07-21
+status: gathered — verbatim copy of a short program-level demand document
+paths:
+  - /Users/josephwecker-v2/src/archema-io/TODO.md
+source_commit: archema-io@1b98ad4
+categories: [live-consumer, program-demand, rust-on-udon-core, tooling-migration, decision-log, agentic-tooling]
+why_included: |
+  Explicit, dated program-level demand for UDON tooling from the consuming programme itself.
+  Load-bearing lines: (item 5) "Migrate entry format YAML → udon (udon-core Rust crate expected
+  ready 2026-07-17)" with the decided posture "archterm is a durable program tool, so it goes Rust
+  on udon-core — no udon-ruby/python binding to maintain"; (linter item) "a huge upgrade hopefully
+  soon to all of the linters and moving them to archema … Rust on udon-core … program-wide linting
+  needs it (vivarium's lexicon is already .udon)"; (decision-log item) Joseph wondering whether the
+  programme needs a DECISIONS.decision-log.udon "unless/until the agentic udon tooling (coming
+  within days) makes it workable." The recurring phrase "agentic udon tooling within days" is a
+  direct demand-timeline statement. Also witnesses the fresh-implementation-over-golden-corpus
+  rewrite posture (item 5) — "no golden-corpus parity gate (explicitly declined as unprincipled)."
+---
+
+> **Why gathered (both audiences).** This is the consuming programme stating, in its own words and
+> with its own dates, that it is waiting on udon-core (Rust) for: entry-format migration (YAML →
+> udon), a program-wide linter/formatter toolchain, and an agentic decision-log workflow. It also
+> records the *language decision* (durable shared tools = Rust on udon-core, no binding maintenance)
+> and a rewrite-posture principle relevant to the harness programme (old code is reference not spec;
+> the multi-agent-safe append-only atomicity contract is what must survive a rewrite, not the old
+> behavior). Copied whole — it is short and it *is* the demand statement.
+
+---
+*(Verbatim copy below of `~/src/archema-io/TODO.md` at archema-io@1b98ad4, 2026-07-21. The live
+original may advance; this pin is the checkpoint.)*
+
+---
+
+# Archema program TODO
+
+*Created 2026-07-16 (Joseph's direction, via the asf session that ran the terminology C5–C13 execution). Program-level work items — things that cut across members or live at the umbrella. Member-local work stays in member trackers (asf: `asf/TODO.md` + `asf/TERMINOLOGY-TODO.md`; etc.). Per the prune discipline: done items are deleted, narrative goes to the member CHANGELOG that landed the work (or a program-level record once one exists).*
+
+## Terminology system → program level (`archterm`)
+
+The terminology system currently lives entirely in asf (`asf/terminology/` entries + append-only decision events, `asf/bin/term` CLI, generated `LEXICON.md`; schema + atomicity contract in `asf/terminology/README.md`). The concept-matrix (`charter/concept-matrix.md`) already maps concepts across members — this migration makes the *tooling* program-wide to match. Ordered roughly by dependency; several design points are marked for Joseph.
+
+- [ ] **1. Move the tool to `common/utl/archterm`** (name provisional — Joseph's sketch; `common/utl/` doesn't exist yet, create it). Today's `bin/term` is Ruby; the move is a lift-and-rename first, feature work after. asf keeps a thin `bin/term` shim or drops it once PATH is set (below). Entries: decide whether `terminology/entries/` stays per-member (with archterm reading across members) or consolidates under the program — the custodian field (item 3) suggests entries can live with their custodian member, tool reads all.
+- [ ] **2. PATH script:** quick script to add `~/src/archema-io/common/utl/` to the user's path (mise or shell rc — match how `relata` got its PATH via mise).
+- [ ] **3. Custodian field.** Add a field declaring which project is the term's *primary custodian* — vocabulary namespaced like `asf.aat`, `asf.tst`, `asf.llm`, `asf.eli`, `vivarium`, `logos` — plus which other projects also use the term. (Exact namespace tokens are Joseph's call; `asf.llm`/`asf.eli` written here as guesses for 03/04.) This is the schema move that makes per-project lexicons (item 6) possible, and it should stay coherent with the concept-matrix rather than parallel it — ideally the matrix's cross-member rows become derivable from custodian+users fields.
+- [ ] **4. Carefully distinct `notation` fields as appropriate.** Notation can differ per project (or a term may carry notation in one member and none in another); split the single `notation:` field into per-context fields where genuinely distinct. The 2026-07-15 YAML-breakage found in `notation:` fields (unescaped `\gt`) is a reminder this field needs escaping-robust handling in whatever format lands.
+- [ ] **5. Migrate entry format YAML → udon** (udon-core Rust crate expected ready 2026-07-17). Language direction decided (Joseph, 2026-07-16): archterm is a durable program tool, so it goes **Rust on udon-core** — no udon-ruby/python binding to maintain. Rewrite posture: fresh implementation by thoughtful agents; the Ruby `bin/term` and git history are reference, not a spec — no golden-corpus parity gate (explicitly declined as unprincipled; the old code carries mistakes and dead-ends no one chose). The append-only decision-event atomicity contract must survive the redesign — that property, not the old behavior, is what makes the system multi-agent-safe.
+- [ ] **6. Generate/update distinct per-project lexicons.** Autodetect the directory archterm is run from and prioritize that member's lexicon; run from the archema root defaults to all three members. (Custodian field is the input; a term appears in every user-project's lexicon, presumably marked when custodianship is elsewhere.)
+- [ ] **7. Generate/update distinct notation documents.** Same shape as item 6 for NOTATION. Note: asf's `NOTATION.md` is currently hand-written and load-bearing (symbol *semantics*, not just glyphs) — decide whether generation subsumes it, feeds it a generated section, or produces a separate per-member notation index alongside it.
+
+## Program-level items
+
+- [ ] **Migrate `archema-io` → `archema`.** Already specced as the queued second migration — see `MIGRATION.md` (§4 + the §5 general utility motivated by exactly this). Don't re-plan here; execute from there. One item to fold into its sweep: asf's `core.hooksPath` still points at the pre-rename `~/src/agentic-systems/.git/hooks` (works only via the transition symlink — will break silently when that symlink is cleaned; fix is one `git config` per repo, discovered 2026-07-14).
+- [ ] **Terminology auditing process.** Design + build (Joseph, 2026-07-16). Shape TBD — candidate ingredients from existing practice: the asf naming-cycle SOP (`asf/doc/sop/naming.sop.md`), the concept-matrix coherence check, drift detection between entries and actual segment/prose usage, and the C8-vs-C5-style conflicting-decision detection that the 2026-07-15 execution surfaced manually.
+- [ ] **Linter upgrade + move to archema.** Joseph, 2026-07-16: "a huge upgrade hopefully soon to all of the linters and moving them to archema" — placeholder so the intent is recorded; scope/plan when it starts. (Current linters: asf's `bin/lint-md`, `bin/lint-outline` + whitelist/stage-check, `bin/check-links`; lands in `common/utl/` alongside archterm.) Language direction decided (2026-07-16): **Rust on udon-core** for the durable shared tools — one toolchain with the rest of Archema's coding, static binaries, and udon parsing without binding maintenance (vivarium's lexicon is already `.udon`; program-wide linting needs it). Rewrite posture: fresh implementations — old sources/git are reference, not a parity spec; the genuinely-chosen constraints (e.g. asf agents.sop's known lint traps: code-span-skipped Unicode, emphasis-vulnerable underscores, conservative `--fix` boundaries) carry forward by being read, not by output-matching. Disposable one-cycle scripts stay whatever-is-fastest; community-facing artifacts still lean Python.
+- [ ] **DECISIONS.decision-log.udon for Archema?** Joseph wonders (2026-07-16) whether the program needs a decision log like vivarium's (`vivarium/DECISIONS.decision-log.udon`) — and possibly asf too, though asf's would get unwieldy fast unless/until the agentic udon tooling (coming within days) makes it workable. Open question, not yet decided; revisit when udon tooling lands.
+- [ ] **(Joseph: one more item you couldn't recall, 2026-07-16.)** Candidates from recent program-level threads, in case one of these was it: the memory-consolidation-for-launch-from-root proposal (asf `msc/meta-process-review-2026-07-07/SESSION-LOG-2026-07-14.md` §Proposal); the charter ratification pass (`CHARTER-DRAFT.md` §10); the vivarium non-§0 content re-homing (`charter/INCOHERENCE.md`). Replace this line when remembered.

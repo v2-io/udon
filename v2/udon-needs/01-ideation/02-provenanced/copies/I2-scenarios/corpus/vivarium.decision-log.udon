@@ -1,0 +1,60 @@
+---
+source: udon repo — test/scenarios/corpus/vivarium.decision-log.udon (pseudo-real BDD substrate, CORE 0.9 idiom)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy — substrate/genre-mirror, not primary demand text; see corpus-framing note)
+paths:
+  - test/scenarios/corpus/vivarium.decision-log.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [substrate, genre-mirror, decision-log, append-only, concurrency, o-append, authority-taxonomy]
+why_included: >
+  Mirror of the append-only concurrent decision-log genre — the property the multi-agent scenarios exercise. Its HEADER COMMENT is itself demand text: self-contained column-0 blocks, no wrapping parent, one O_APPEND write per entry so concurrent agents cannot interleave; duplicate-slug detection as a Document-layer post-assembly check; authority taxonomy (joseph/us/claude). Also carries in-corpus rulings (paths-quoted-in-value-position, claim-requires-nil).
+---
+
+; vivarium.decision-log.udon — scenario-corpus edition
+; Pseudo-real: same genre as archema-io/vivarium/DECISIONS.decision-log.udon.
+; FAST-APPEND, INTERLEAVE-FREE — the property the multi-agent scenarios
+; exercise: each |decision is a SELF-CONTAINED, TOP-LEVEL block (column 0).
+; There is NO wrapping parent element, so a new entry appends at EOF with no
+; need to read, parse, or re-close anything above it. Append the whole block
+; in ONE write, preceded by a single blank line (O_APPEND makes a single
+; write atomic on POSIX, so concurrent agents cannot interleave entries).
+; Slugs are unique and kebab-case; duplicate-slug detection is the
+; Document-layer duplicate-definition policy, checked after assembly, never
+; during the streaming parse.
+;
+; ENTRY SHAPE: header line carries slug + fixed fields inline
+;   (|decision[slug] :date <d> :by <auth> :status <s> :topic <t>);
+; metadata lines indented one field per line (:session always; :supersedes
+; when used goes ON THE HEADER LINE so grep '^|decision\[' shows the chain);
+; the STATEMENT is the entry's plain body text on one logical line;
+; |reason and |impact carry the trail.
+;
+; AUTHORITY: joseph (his call; agent abstained) · us (joint — Joseph decided
+; AND the agent sustains it) · claude (an agent's tactical call, logged so
+; it does not fall through the cracks). Do not inflate.
+
+|decision[fixture-groups-are-versioned] :date <2026-07-14> :by us :status decided :topic compliance
+  :session 01Kx2mQpVv8sT4Ra
+  Compliance is measured by version-scoped fixture groups; an implementation is compliant with core-vX iff it passes that group.
+  |reason Tracked-in-prose compliance claims drift; a frozen group is checkable by anyone, forever.
+  |impact fixtures/v0.8 frozen at the tag; v0.9 is the active burn-down group.
+  |ref core/fixtures/README.md
+
+|decision[scenario-corpus-is-pseudo-real] :date <2026-07-16> :by claude :status proposed :topic testing
+  :session 01Mc9uTz5Wa9cWYb
+  The BDD scenario corpus mirrors real consumer genres (process-map, lexicon, ordinum, operata) with its own content, so scenarios can mutate files freely without touching live documents.
+  |reason Real consumer files are read-only from this repo's side; scenarios need to write.
+  |impact test/scenarios/corpus/ carries the pseudo-real editions; CONSUMERS.md still governs the real ones.
+
+|decision[paths-quoted-in-value-position] :date <2026-07-16> :by claude :status proposed :topic paths
+  :session 01Mc9uTz5Wa9cWYb
+  A path expression stored in an attribute value is always a QUOTED string; a bare leading | or @ in value position would parse as a node or reference value, not text.
+  |reason The path language reuses UDON's own sigils, so bare paths collide with the value grammar at their first character; quoting is the only 0.9-legal carrier (a <path:...> envelope becomes the principled home once dialects land).
+  |impact Every :path value in test/scenarios/features/ is quoted; the linter should eventually flag bare-sigil path-shaped values.
+
+|decision[claim-requires-nil] :date <2026-07-18> :by us :status decided :topic operata
+  :session 01Hf7dNq2Lp0Xw3E
+  An intent claim is valid only if :claimed-by is nil at write time; a second claimant must fail loudly, never overwrite.
+  |reason Two agents claiming one intent is the canonical lost-update; the guard belongs in the write path, not in etiquette.
+  |impact operata.domain.udon carries :require-nil [claimed-by] on |update[claim]; the edit tool needs a compare-and-set precondition to honor it.
+  |ref corpus/operata.domain.udon

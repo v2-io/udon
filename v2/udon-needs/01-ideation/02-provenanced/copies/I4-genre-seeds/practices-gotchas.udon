@@ -1,0 +1,166 @@
+---
+source: udon repo design/examples/ — genre-seed example document
+gathered: 2026-07-21
+status: gathered (verbatim copy)
+paths:
+  - design/examples/practices-gotchas.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [genre-seed, authoring-hazards, linting-targets, human-and-agent-friction]
+why_included: >
+  Authoring-hazard catalog — directly demand-facing (both agent- and
+  human-facing, per its own framing). Names where AUTHORS get surprised:
+  attributes-must-precede-children, the flag vs false vs nil vs absent
+  distinction, escape-prefix rules, column-alignment ambiguity, quoting to
+  force strings, !:lang: over triple-backticks. Witness for both consumers:
+  this is the checklist a good notation-editing/linting tool must guard,
+  warn, or auto-fix against — the friction inventory a harness authoring
+  surface should eliminate.
+---
+
+; UDON Practices & Gotchas — opinionated guide for authoring
+; NOTE: This guide is in review and may change.
+
+|guide[practices-gotchas]
+  :title "UDON Practices & Gotchas"
+  :version 0.1
+  :date 2025-12-24  ; bare date is a string; temporal is moving to a <…> dialect
+
+  UDON is most readable when you lean on prose and keep structure explicit.
+  This guide highlights practical patterns and the most common surprises.
+
+  |section[practices]
+    :title "Practices"
+
+    |tip[markdown-first]
+      Prefer Markdown for simple emphasis and code. Reserve inline elements
+      for semantics or attributes that Markdown cannot express.
+
+      !:udon:
+        ; Preferred
+        |p This has **bold** and `inline code`.
+
+        ; Use inline elements only when needed
+        |p See |{a :href /docs \ the docs} for details.
+
+    |tip[attributes-vs-children]
+      Ask whose name it is. An attribute is a labeled edge from the
+      *parent's* perspective (its value can be a scalar, a text blob, or
+      even a node); a child names *what it is* and is positional. Use
+      attributes for "my X" relationships and children for structure,
+      order, repetition, or prose.
+
+      !:udon:
+        ; Attributes: labeled edges (same-key assignments stack, in order)
+        |message :timestamp "2025-01-15" :priority 3
+          Body text here
+
+        ; Children: structured or repeatable
+        |authors
+          |author :name "Jane Doe"
+          |author :name "Ravi Singh"
+
+    |tip[explicit-strings]
+      Quote values when you need them to be strings, not booleans or numbers.
+
+      !:udon:
+        |config
+          :enabled true     ; boolean
+          :enabled "true"   ; string
+          :port 8080        ; integer
+          :port "8080"      ; string
+
+    |tip[raw-content]
+      Prefer !:lang: for code blocks. Reserve triple-backticks for rare
+      cases where indentation cannot be controlled.
+
+      !:udon:
+        |example
+          !:sql:
+            SELECT * FROM users WHERE active = true;
+
+    |tip[ids-are-typed]
+      IDs are typed values. Quote IDs if the leading zeros or formatting matter.
+
+      !:udon:
+        |step[1]       ; integer ID
+        |step["01"]   ; string ID, preserves leading zero
+
+  |section[gotchas]
+    :title "Gotchas"
+
+    |gotcha[attributes-first]
+      Attributes must come before children and prose. Do not scatter attributes
+      throughout a block.
+
+      !:udon:
+        ; Valid
+        |item :id 1 :status "open"
+          Content
+
+        ; Invalid (attribute after children/prose)
+        |item :id 1
+          Content
+          :status "open"
+
+    |gotcha[column-alignment]
+      Column-aligned siblings are powerful but easy to misread. If you use
+      rightward nesting on one line, align siblings carefully or expand to
+      explicit blocks.
+
+      !:udon:
+        ; Rightward nesting (a > b > c)
+        |a |b |c
+
+        ; Column-aligned siblings under |tr
+        |table |tr |td A1
+               |td A2
+             |tr |td B1
+               |td B2
+
+        ; If alignment is unclear, expand instead
+        |table
+          |tr
+            |td A1
+            |td A2
+          |tr
+            |td B1
+            |td B2
+
+    |gotcha[inline-elements]
+      Inline elements are siblings of surrounding text, not part of it. This is
+      usually what you want, but it affects downstream renderers.
+
+      !:udon:
+        |p Hello, |{em world}!  ; "Hello," text and |em are siblings
+
+    |gotcha[flags-and-nil]
+      A missing attribute, a flag, and nil are distinct.
+
+      !:udon:
+        |config
+          :debug?        ; true (flag present)
+          :verbose false ; false
+          :timeout nil   ; explicit nil
+          ; :cache is absent
+
+    |gotcha[escape-prefix]
+      A backslash escapes the next character at a prefix position. `\` is the
+      sole escape now — a head-position apostrophe is no longer an escape.
+
+      !:udon:
+        \|not-an-element
+        \:not-an-attribute
+        \;not-a-comment
+        \\literal backslash
+
+    |gotcha[mixins-scope]
+      Mixins are powerful, but child/prose inheritance semantics are still
+      evolving. For now, treat mixins as attribute-only unless your host
+      defines subtree inheritance explicitly.
+
+      !:udon:
+        |.defaults
+          :timeout 30
+
+        |service.defaults
+          :name "api"

@@ -1,0 +1,163 @@
+---
+source: udon repo — test/scenarios/corpus/terrestris.ordinum.udon (pseudo-real BDD substrate, CORE 0.9 idiom)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy — substrate/genre-mirror, not primary demand text; see corpus-framing note)
+paths:
+  - test/scenarios/corpus/terrestris.ordinum.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [substrate, genre-mirror, ordinum, law-data, stacked-traits, proto-paths]
+why_included: >
+  Mirror of the machine-read phase-floor law-data genre. Witnesses two live demand signals the path scenarios lean on hard: stacked .class traits (.state.regime) diffed as ordered value lists, and hand-rolled quoted cross-phase proto-paths (:voids "2.water-covered-surface") that predate any path tool — the P9 value-equality-filter gap and the 'resolve conventions it did not define' question.
+---
+
+; terrestris.ordinum.udon — scenario-corpus edition
+; Pseudo-real: same genre as archema-io/vivarium/tabularium/
+; terrestris.ordinum.udon (the per-phase Charge/Promise floor as data),
+; abridged to four phases and recast in 0.9 idiom. Note the quoted
+; cross-phase proto-paths in |defeasance :voids — a domain convention the
+; path scenarios lean on hard.
+
+|ordinum[terrestris]
+  :title Ordinatio Ordinum — the Terrestris phase floor, as instituted data
+  :version 0.1.0
+  :status draft-until-first-pinned
+  :created <2026-07-11>
+  :manifold cube-sphere-3d-voxel
+  :reportatio .archive/PHASES.md
+
+  ; One ordinum among a planned many in the tabularium. The SCHEMA here
+  ; (phase / charge / promise / defeasance / record) is world-kind-agnostic;
+  ; only the CONTENT is Earth-lineage. A regula pins `ordinum@version` as
+  ; the floor it may extend but never silently undercut.
+
+  |meta[reading-rules]
+
+    A phase declares CHARGES, PROMISES, and DEFEASANCES, plus a RECORD.
+
+    - CHARGE — what the phase must establish; the gating subset of its
+      promises. :tag states arrow-kind, never implementation status:
+      gate (hard prerequisite we simulate), earth (Earth's pattern kept
+      for fidelity), mech (causality known, no simulable mechanism yet),
+      emergent (verify, don't build).
+    - PROMISE — a defeasible, forward-facing commitment. Its `.class` is
+      its kind and classes stack (`.state.regime`): state, regime,
+      capability, limit. `:kept-by <nomos>` — absence = an honest GLOSS,
+      greppable, never mistaken for a guarantee. `|predicate` — the
+      testable condition; a promise with no predicate cannot be marked
+      fulfilled at any tier.
+    - DEFEASANCE — explicit retirement of a prior promise. Cross-phase
+      references are quoted qualified ids ("N.promise-slug").
+
+  |phase[ante-mundane]
+    :num 1
+    :name Ante-mundane
+    :epithet before the world
+    :regime analytic
+    Cosmic scale; everything prior to the world. Not a process — a
+    parameter block (element abundances, orbital configuration, seed).
+    |charge[stable-orbit] :tag gate
+      Stable orbit in the habitable zone of a viable, protected system.
+    |charge[proper-mass] :tag gate
+      Proper mass.
+    |charge[protective-architecture] :tag mech
+      Protective architecture — moon, outer giants, solar-wind shelter.
+      The moon cannot be added non-destructively later, so it is declared
+      here; declare-causally-materialize-lazily.
+    |promises
+      |promise[the-constants].state :from stable-orbit
+        The constants themselves — orbit, mass, chemistry, seed: the box
+        every later computation happens inside.
+        |predicate the Phase-1 parameter block is declared and conserved forward.
+    |record
+      Proportions and totals of elements, base columns, and most conserved
+      values.
+
+  |phase[protogenic]
+    :num 2
+    :name Protogenic
+    :epithet the world is now Formed
+    :regime analytic
+    A sphere orbiting its star, featureless, hot, brooded upon.
+    |charge[axial-tilt] :tag gate
+      Axial tilt.
+    |charge[spin] :tag gate
+      Spin — possibly differential layers.
+    |charge[smooth-water-surface] :tag earth
+      Smooth, water-covered surface.
+    |promises
+      |promise[formed-sphere].state
+        The sphere itself — formed, and orbiting its star.
+      |promise[water-covered-surface].state :from smooth-water-surface
+        A smooth, water-covered surface.
+      |promise[axial-rhythms].regime :kept-by planet :from axial-tilt
+        Tilt and spin produce seasons and the day/night cycle, forever.
+        |predicate insolation, declination, and hour-angle are correct for date and latitude.
+      |promise[coriolis].capability :from spin :unlocks modern-weather
+        Spin bequeaths Coriolis — the skeleton of every future wind belt.
+
+  |phase[primordial]
+    :num 3
+    :name Primordial
+    :epithet the world is now Divided
+    :regime analytic-relaxation
+    Gas, liquid, and solid separate; a sea level; solid ground beneath.
+    Light is ambient and highly diffused — day and night exist, but the
+    sun is not yet seen.
+    |charge[atmosphere-reservoir] :tag gate
+      Atmosphere as a real reservoir, pre-oxygen composition.
+    |charge[closed-water-cycle] :tag gate
+      Water cycle, closed.
+    |charge[seeded-asymmetry] :tag gate
+      Enough variation, asymmetry, and seeded noise to awaken the Phase-4
+      processes.
+    |promises
+      |promise[sea-level-datum].state
+        The sea-level datum every later elevation is read against.
+      |promise[diffused-light].regime
+        Ambient, highly-diffused light — day and night exist, but the sun
+        is not yet seen through the dense sky.
+      |promise[closed-water-cycle].regime :from closed-water-cycle
+        A closed, conserved water cycle with its energy-gradient channels.
+        |predicate global water mass is conserved — nothing pulled from nothing, nothing drained into nothing.
+      |promise[seeded-asymmetry].capability :kept-by noise :from seeded-asymmetry :unlocks plate-tectonics
+        The seeded asymmetries and fated noise that awaken the Phase-4
+        processes; every later phase amplifies them.
+        |predicate a deterministic, per-key asymmetry field exists and is stable under re-query.
+    |record
+      Reservoir partitions; the water cycle settled to steady state.
+
+  |phase[abyssal]
+    :num 4
+    :name Abyssal
+    :epithet the world is now Alive
+    :regime incremental-emergent
+    :sub-gates expected
+    Deep Time. The world itself becomes a highly dynamic system across
+    great orders of temporal magnitude.
+    |charge[plate-tectonics] :tag mech
+      Plate tectonics and the Wegenerian cycle.
+    |charge[emergent-land] :tag gate
+      Meaningful non-volcanic land above sea level — delivered by uplift,
+      never an initial condition.
+    |charge[erosion-carving] :tag gate
+      Erosion processes carving real landscapes.
+    |promises
+      |promise[emerged-land].state :from emergent-land
+        THE LAND ITSELF — continents, relief, and drainage networks.
+        |predicate land rises above sea level, non-volcanic; land-fraction toward the early-Earth target band.
+      |promise[erosion-substrate].regime :kept-by erosion-tile :from erosion-carving
+        Fluvial erosion continues running as the geological substrate
+        beneath every later phase.
+        |predicate erosion runs each geological cycle; its eroded bed is what later phases build on.
+      |promise[ore-and-soil].state
+        Mineral and ore bodies; soil parent material.
+    |defeasances
+      |defeasance :voids "2.water-covered-surface" :by emergent-land
+        Land now rises above the sea; the surface is no longer wholly
+        water-covered.
+      |defeasance :voids "3.diffused-light" :by plate-tectonics
+        Volcanic clearing begins; the sky thins toward the later phases'
+        visible cosmos.
+    |record
+      The deep sedimentary stack; banded-iron formations; the first
+      limestones — life writing itself into rock.

@@ -1,0 +1,241 @@
+---
+source: udon repo — test/scenarios/features/03-modifying.scenarios.udon (afternoon "write" journeys)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy)
+paths:
+  - test/scenarios/features/03-modifying.scenarios.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [tool-demand, patch-tool, atomicity, invariants, minimal-diff, computed-indentation, schema-guard, round-trip-safety, precondition-cas, reference-audit, affordance-gap]
+why_included: >
+  What an agent needs to WRITE safely — the richest tool-obligation inventory in the set, every
+  scenario stating its invariant (what must NOT change). Transferable demands: minimal-byte-range
+  edits (comments, blank lines, prose, sibling formatting preserved); layout-idiom preservation
+  (keep an attr sameline vs exploded to a block, per the author's choice); the TOOL not the agent
+  computes indentation, read from the destination's actual siblings — and the honest admission
+  that the no-sibling fallback "deserves a spec sentence somewhere: nothing ratified names the
+  default unit"; schema-guard-BEFORE-write refusing an out-of-vocabulary value AND naming the
+  vocabulary in the error ("conformance-before-write is the whole point of binding the schema");
+  round-trip safety as an invariant (parse(serialize(v)) == v — quote "true  " so it doesn't
+  re-parse boolean, escape a leading-pipe value so it doesn't re-parse a node); atomic multi-op
+  patches with pre-state path resolution; and rename-with-reference-audit that runs BEFORE the
+  write and lists cross-document escapes as unverifiable rather than silently ignoring them.
+  Closes on a .gap (P7): prose edits are the ONLY write class that had to leave the tool for a
+  span-splice that bypasses every guarantee — the strongest single demand for a co-designed
+  text-addressing form.
+---
+
+; 03-modifying.scenarios.udon — a day in the life, afternoon
+; Edit journeys for the future udon patch tool: at-addressed, atomic,
+; indentation-computing, schema-checked, round-trip-safe. Conventions:
+; ../README.md. Path syntax provisional (see 01). Ops used here:
+;   |patch :file <f>            — atomic container; all ops or none
+;     |require :path :equals    — precondition (compare-and-set)
+;     |set :path :value         — replace a value
+;     |add-value :path :value   — append an assignment to a stacked attr
+;     |insert :parent :position — add a child node (body in !:udon: raw)
+;     |delete :path             — remove a node / assignment
+; A patch touches the minimal byte range: comments, blank lines, prose,
+; and sibling formatting are preserved untouched.
+
+|feature[modifying].day-in-the-life
+  :date <2026-07-21>
+  :tool udon-patch
+  :path-syntax provisional-2026-07
+  :corpus ../corpus/
+
+  Joseph's morning rulings arrive at 13:00; the afternoon is writes.
+  Every scenario here states its invariant: what must NOT change.
+
+  |scenario[single-set]
+    :at <13:05> :agent lexicographer
+    :file corpus/vivarium.lexicon.udon
+
+    Joseph settled the regime-change carve. One attribute flips.
+
+    |given the lexicon as shipped
+    |when
+      |patch :file corpus/vivarium.lexicon.udon
+        |set :path "||term[regime-change]:status" :value settled
+    |then
+      |expect-fragment
+        !:udon:
+          |term[regime-change] :status settled
+      |invariant the entry's body prose, the parenthetical crediting
+        Joseph's flag, and every other line of the file are byte-identical
+      |invariant the sameline position of :status (on the |term line, not
+        exploded to a block line) is preserved — patches respect the
+        author's layout idiom
+
+  |scenario[stack-append-through-sugar]
+    :at <13:15> :agent ordinator
+    :file corpus/terrestris.ordinum.udon
+
+    Reclassify promise[ore-and-soil] as .state.regime — the diff studied
+    at 11:30, now performed.
+
+    |given the ordinum as shipped, where the promise line reads
+      \|promise[ore-and-soil].state
+    |when
+      |add-value :path "||promise[ore-and-soil]:'$traits'" :value regime
+    |then
+      |expect-fragment
+        !:udon:
+          |promise[ore-and-soil].state.regime
+      The wire says "append a $traits assignment"; the serializer must
+      know the assignment's canonical SURFACE is the identity sugar and
+      extend `.state` to `.state.regime` — not emit a legal-but-alien
+      block line `:'$traits' regime`. Sugar-aware rendering is a real
+      tool obligation the packet has not named: the wire model and the
+      surface idiom diverge exactly at the $-designated attributes.
+
+  |scenario[insert-with-computed-indentation]
+    :at <13:30> :agent cartographer
+    :file corpus/asf-processes.process-map.udon
+
+    A new process lands in cluster[coherence]. The tool, not the agent,
+    computes every column.
+
+    |given the map as shipped
+    |when
+      |insert :parent "||cluster[coherence]" :position last
+        !:udon:
+          |process[theory-news-monitor]?
+            :name Theory-news monitoring
+            :health absent
+            :drain healing
+            :design-unknown the monitoring cadence + source list
+
+            Watch the field for results that bear on the theory; route
+            hits into finding-routing.
+    |then the inserted block adopts the SIBLING column (|process at
+      column 4), attrs at 6, prose at 6 — read from the destination's
+      actual siblings, never assumed from a house default
+      |invariant a blank line separates it from |process[drift-repair],
+        matching the file's existing sibling rhythm
+    |when the ordinator inserts a |predicate under
+      promise[ore-and-soil], which has prose but NO element children
+    |then the tool derives the child column from the parent's
+      content-base (prose base = predicate base), and appends after the
+      existing prose — with no sibling to copy, the computation falls
+      back to parent column + the file's observed indent unit (2 here),
+      and THAT fallback deserves a spec sentence somewhere: nothing
+      ratified names the default unit
+
+  |scenario[schema-guard-before-write]
+    :at <13:50> :agent operator-2
+    :file corpus/operata-live.workspace.udon
+
+    |given the workspace as shipped, with operata.domain.udon bound as
+      its schema
+    |when
+      |patch :file corpus/operata-live.workspace.udon
+        |set :path "||intent[312]:status" :value resurrected
+    |then
+      |expect-error :code SchemaViolation
+      The domain declares :one-of [projected active realized abandoned];
+      the patch is refused BEFORE the file is touched, and the error
+      names the vocabulary. Conformance-before-write is the whole point
+      of binding the schema: an agent must not be able to write a state
+      the consuming Ruby will choke on.
+    |when
+      |set :path "||intent[312]:claimed-by" :value 42
+    |then
+      |expect-error :code SchemaViolation :note claimed-by is .string;
+        the integer 42 is refused, not coerced
+
+  |scenario[write-safety-is-type-safety]
+    :at <14:05> :agent lexicographer
+    :file corpus/vivarium.lexicon.udon
+
+    The serializer owns the boundary rules. Values that LOOK like other
+    kinds must survive the round trip.
+
+    |given the lexicon as shipped
+    |when the agent sets a new :gloss attribute on term[memo] to the
+      six-character STRING "true  " — trailing spaces included — and
+      a :note whose text begins with a pipe
+      ; (that line wrap is deliberate: a reflow that leaves ":note" line-
+      ;  initial inside prose draws AttributeAfterChildren — the exact
+      ;  sigil-promotion hazard CONSUMERS.md caught in the wild; a
+      ;  formatting tool must wrap prose with the same awareness)
+    |then the serializer must emit `:gloss "true  "` (quoted — a bare
+      true would re-parse as a boolean and the spaces would vanish) and
+      `:note \|looks structural...` or a quoted equivalent (a bare
+      leading pipe in value position would re-parse as a NODE value)
+      |invariant parse(serialize(v)) == v for every value written today —
+        the patch tool's write path must consult the same scan rules the
+        parser reads by (keywords alone at a boundary, sigil-leading
+        blobs, framed ` ; ` in blobs, digit-leading strings like "0042")
+
+  |scenario[atomic-claim]
+    :at <14:20> :agent operator-1
+    :file corpus/operata-live.workspace.udon
+
+    The claim ritual from the domain's |update[claim], expressed as one
+    atomic patch.
+
+    |given the workspace as shipped, where intent 312 is unclaimed
+    |when
+      |patch :file corpus/operata-live.workspace.udon
+        |require :path "||intent[312]:claimed-by" :equals nil
+        |set :path "||intent[312]:claimed-by" :value operator-1
+        |set :path "||intent[312]:claimed-at" :value <2026-07-21T14:20>
+        |set :path "||intent[312]:status" :value active
+    |then all four ops apply in one write, or none do
+      |expect :applied 4
+      |invariant no intermediate state is ever on disk (claimed with no
+        claimed-at is the exact half-write the domain forbids)
+      All :path values in one patch resolve against the PRE-patch tree —
+      op 3 must not be re-addressed against a half-applied document.
+      The packet is silent on patch-internal addressing semantics;
+      pre-state resolution is what these scenarios assume throughout.
+
+  |scenario[rename-with-reference-audit]
+    :at <14:40> :agent cartographer
+    :file corpus/asf-processes.process-map.udon
+
+    Joseph renames the valve. Keys are referenced material.
+
+    |given the map as shipped
+    |when
+      |patch :file corpus/asf-processes.process-map.udon
+        |set :path "||process[valve]:'$key'" :value joseph-valve
+    |then the tool reports every in-document reference to the old
+      identity BEFORE applying
+      !:text:
+        renaming |process[valve] -> |process[joseph-valve]
+        in-document references to update:
+          |process[decision-surfacing]:feeds   @process[valve]
+          |process[finding-routing]:feeds      @process[valve]
+        out-of-scope (document-scoped tool cannot verify):
+          corpus/archema.concept-matrix.udon   |carrier :ref @process[valve]
+          corpus/vivarium.decision-log.udon    prose mention
+      |expect :cascade offered :dangling-check in-document
+      Whether the cascade auto-applies or the agent confirms is a tool
+      policy; that the audit RUNS before the write is the contract. The
+      cross-document escapes are listed as unverifiable, not silently
+      ignored — the seam from 01's cross-document scenario again.
+
+  |scenario[prose-edit-falls-back-to-api].gap
+    :at <15:10> :agent lexicographer
+    :file corpus/vivarium.lexicon.udon
+
+    A typo in the memo entry's prose ("qeury-graph"). The trio's third
+    member — modify — finally hits P7 for real.
+
+    |given the lexicon as shipped
+    |when the agent tries to patch the second prose paragraph of
+      term[memo]
+    |then no path addresses prose, so no |set can carry the edit; the
+      journey drops to the API (parent node, text children by index) and
+      a span-based splice
+    |gap
+      :packet-ref P7
+      :shape a text-segment addressing form co-designed with the patch
+        syntax — the read side never needed it (01 agreed), but the
+        WRITE side has no principled fallback: span-splices bypass every
+        guarantee (schema check, round-trip safety) the patch tool
+        otherwise gives
+      P7's "revisit together with patch syntax" is exactly right, and
+      today supplies the evidence: prose edits are the only write class
+      that had to leave the tool.

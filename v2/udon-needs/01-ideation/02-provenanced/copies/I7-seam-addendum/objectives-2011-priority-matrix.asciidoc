@@ -1,0 +1,87 @@
+---
+source: _ref/udon (the original 2011 UDON repo) — doc/objectives.asciidoc
+gathered: 2026-07-21
+status: gathered — verbatim whole file (copy)
+paths:
+  - /Users/josephwecker-v2/src/_ref/udon/doc/objectives.asciidoc:1-64
+source_commit: 1be87d5d4a51332387b81bbb4c34e0bc0e655db7
+categories: [demand-statement, first-principles-ideology, historical-2011, priority-matrix, utility-ambition, human-ux, performance]
+why_included: >
+  THE original 2011 demand statement — a concern-weighted (0–10) priority
+  matrix across Beauty / Performance / Utility / Support. This is the
+  earliest, most explicit "what should this format be FOR" document in the
+  whole estate, predating the agent audience by 14 years. Copy whole:
+  the weights ARE the demand ranking, and their survival/inversion into the
+  agentic-era corpus is prime cross-era evidence (see the witness note).
+---
+
+; ===================================================================
+; VERBATIM COPY of /Users/josephwecker-v2/src/_ref/udon/doc/objectives.asciidoc
+; (asciidoc source, 2011). Reproduced below exactly. Editorial reading of
+; what it witnesses is in the frontmatter + the I7 witness note; nothing in
+; the copy itself is altered.
+; ===================================================================
+
+== Objectives / Main Concerns
+
+[options="header"]
+|===============================================================
+| High-level feature               | Concern-level | Execution
+|----------------------------------|---------------|------------
+| [Beauty] (visual & conceptual)   | Highest       |
+|----------------------------------|---------------|------------
+| Human readability                | 10            |
+| Learnability                     | 10            |
+| Self-description-ability         | 10            |
+|                                  |               |
+| Syntactic simplicity             | 8             |
+| Conciseness                      | 6             |
+| Homoiconicity                    | 5             |
+| Algorithmic declaration          | 3             |
+| Turing completeness              | 0             |
+|----------------------------------|---------------|------------
+| [Performance]                    | Very High     |
+|----------------------------------|---------------|------------
+| Execution speed (throughput)     | 10            |
+| Stability                        | 10            |
+| Parsing/generating speed         | 9             |
+|                                  |               |
+| Document size                    | 7             |
+| Transportation speed             | 5             |
+|----------------------------------|---------------|------------
+| [Utility]                        | Very High     |
+|----------------------------------|---------------|------------
+| Semantic declarative data        | 10            |
+| Hierarchical structures          | 10            |
+| Document mixing (include/layout) | 9             |
+| Universal Templating constructs  | 9             |
+| Language mixing (scripts...)     | 9             |
+|                                  |               |
+| Extensibility                    | 8             |
+| Standard API                     | 8             |
+| In-document API usage            | 8             |
+| In-doc schema definition         | 7             |
+| Global data serialization        | 7             |
+| Standard Schema definition       | 7             |
+| Relational data                  | 7             |
+| On-line processing               | 6             |
+| Narrative texts                  | 5             |
+| Specialized data serialization   | 5             |
+| Document universality            | 5             |
+| Document Type mixing (namesp...) | 4             |
+|----------------------------------|---------------|------------
+| [Support]                        | High          |
+|----------------------------------|---------------|------------
+| License liberality/accessibility | 10            |
+| Documentation                    | 10            |
+| Editor integration               | 9             |
+|                                  |               |
+| Language integration             | 8             |
+| Chic                             | 8             |
+| Portability (ease)               | 8             |
+| Framework integration            | 7             |
+| Software integration             | 7             |
+| Community                        | 5             |
+| Standardization                  | 3             |
+| Commercial support               | 2             |
+|===============================================================

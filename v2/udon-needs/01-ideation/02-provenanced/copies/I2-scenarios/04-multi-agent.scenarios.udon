@@ -1,0 +1,214 @@
+---
+source: udon repo — test/scenarios/features/04-multi-agent.scenarios.udon (the whole-day concurrency chronicle)
+gathered: 2026-07-21
+status: gathered (verbatim whole-file copy)
+paths:
+  - test/scenarios/features/04-multi-agent.scenarios.udon
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693
+categories: [tool-demand, multi-agent, concurrency, lock-free, append-only, precondition-cas, path-anchored-patch, handoff, durable-plan, three-deaths, atomic-rename, torn-read]
+why_included: >
+  The scenarios Joseph asked for by name — "a pretended chronicle of events... a typical day in
+  the life of multiple agents" — and the deepest harness-relevant material in the set even where
+  it has no UDON hook. Five agents share a corpus with NO locks and NO coordinator; the discipline
+  is append-only blocks, path-anchored patches, and preconditions. Transferable demands: lock-free
+  concurrent append via column-0 self-closing blocks + single O_APPEND write ("an agent can append
+  WITHOUT reading"); compare-and-set claim (require-nil) making lost updates "impossible by
+  construction" — "etiquette is not the mechanism"; path-anchored patches that COMPOSE where span/
+  line anchors would spuriously conflict (staleness checked at node grain, not file grain, so
+  honestly-independent edits don't serialize through one writer); atomic-rename write discipline
+  giving torn-read-free reads without reader locks. The handoff-mid-edit scenario is direct
+  Three-Deaths engineering: "what survives a death is what was written down" — a durable UDON
+  patch-plan with per-op postconditions the incoming agent VERIFIES rather than trusts (applied/
+  pending/stranded), so a plan interrupted between write and annotation still resumes correctly.
+  Names the demand the syntax side cannot see: "ops need to be stateable as predicates, not just
+  executable as commands."
+---
+
+; 04-multi-agent.scenarios.udon — a day in the life, the whole day
+; Concurrency, contention, handoff, and the evening ledger. These are the
+; scenarios Joseph asked for by name: "a pretended chronicle of events
+; that would be a typical day in the life of multiple agents
+; understanding, diffing, and modifying those files." Conventions:
+; ../README.md. Path syntax provisional (see 01).
+
+|feature[multi-agent].day-in-the-life
+  :date <2026-07-21>
+  :tool udon-patch
+  :path-syntax provisional-2026-07
+  :corpus ../corpus/
+
+  Five agents share the corpus today: surveyor, ordinator, lexicographer
+  (twice — see the handoff), and two operators working the same effort.
+  No locks, no coordinator process: the discipline is append blocks,
+  path-anchored patches, and preconditions.
+
+  |scenario[concurrent-append]
+    :at <10:12> :agent operator-1
+    :also :at <10:12> :agent operator-2
+    :file corpus/vivarium.decision-log.udon
+
+    Both operators finish a decision at the same moment. The log's design
+    (self-contained top-level blocks, one write each, O_APPEND) is built
+    for exactly this.
+
+    |given the decision log as shipped
+    |when both agents append-block simultaneously
+      |append-block :file corpus/vivarium.decision-log.udon :agent operator-1
+        !:udon:
+          |decision[fixture-mining-order] :date <2026-07-21> :by claude :status proposed :topic testing
+            :session 01Aa1bCc2dEe3fGg
+            Mine legacy-pre-0.8 fixtures newest-first; recency correlates with surviving semantics.
+      |append-block :file corpus/vivarium.decision-log.udon :agent operator-2
+        !:udon:
+          |decision[bench-before-regenerate] :date <2026-07-21> :by claude :status proposed :topic tooling
+            :session 01Hh4iJj5kLl6mNn
+            Run the criterion suite immediately before AND after every grammar regeneration, as a pair.
+    |then both blocks are intact at EOF in either order — never
+      interleaved (single write under O_APPEND)
+      |expect :decisions 6 :garbled 0
+      |invariant re-parsing the whole file yields six top-level
+        |decision elements and the Document-layer duplicate-key check
+        (default policy: error) passes — slugs were distinct
+      The convention the log's header documents is load-bearing: an
+      agent can append WITHOUT reading, because column-0 blocks close
+      everything by construction. The parser's EOF-as-universal-closer
+      ruling is what makes the last block always well-formed.
+
+  |scenario[contested-claim]
+    :at <10:30> :agent operator-1
+    :also :agent operator-2
+    :file corpus/operata-live.workspace.udon
+
+    Both operators want intent 311. The claim patch carries its own
+    guard; etiquette is not the mechanism.
+
+    |given the workspace as shipped, where intent 311 has :claimed-by nil
+    |when both agents submit the atomic claim patch (require nil, then
+      set claimed-by / claimed-at / status) within the same second
+    |then exactly one patch applies; the other fails its |require and
+      touches nothing
+      |expect :winners 1 :losers 1
+      |expect-error :agent-loser :code PreconditionFailed
+        :detail "||intent[311]:claimed-by is operator-1, expected nil"
+      The loser re-reads, sees 311 taken, and claims 312 instead — the
+      recovery is a fresh read plus a fresh patch, not a merge. Lost
+      updates are impossible by construction, exactly as
+      @decision[claim-requires-nil] ruled.
+
+  |scenario[disjoint-subtrees-compose]
+    :at <11:58> :agent lexicographer
+    :also :agent ordinator
+    :file corpus/vivarium.lexicon.udon
+
+    Two agents edit ONE file: the lexicographer settles the
+    regime-change term (section 1) while the ordinator extends the
+    nomos term's :forms (section 2). The lexicographer lands first,
+    shifting every byte offset below section 1.
+
+    |given the lexicon as shipped
+    |when the lexicographer's patch applies, then the ordinator's patch
+      — prepared against the SAME pre-state — is submitted
+    |then the ordinator's patch still applies cleanly: its anchors are
+      paths, and "||term[nomos]:forms" resolves identically in the
+      shifted file
+      |expect :applied both :conflicts 0
+      |invariant a span- or line-anchored patch prepared against the
+        same pre-state would have mis-landed or spuriously conflicted;
+        path anchoring is what makes patches COMPOSE
+      Staleness is still checked — but at the node grain (the require
+      mechanism, or a node-content fingerprint), not the file grain. A
+      whole-file base hash would serialize all concurrency through
+      one writer; these two edits are honestly independent.
+
+  |scenario[handoff-mid-edit]
+    :at <14:30> :agent lexicographer
+    :handoff-to lexicographer-2
+    :file corpus/vivarium.lexicon.udon
+
+    The lexicographer's context ends mid-restructure of section 2 —
+    intent 402, three ops into a five-op plan. What survives a death is
+    what was written down: the patch plan is a durable UDON artifact,
+    not conversation state.
+
+    |given a patch-plan file the lexicographer maintained as it worked
+      (the split: section 2 becomes "runtime" and a new "fidelity"):
+      !:udon:
+        |patch-plan[lexicon-section-split]
+          :file corpus/vivarium.lexicon.udon
+          :intent "||intent[402]" ; in operata-live.workspace.udon
+          :prepared <2026-07-21T13:58>
+          |op[1].applied
+            |insert :parent "|lexicon[vivarium]" :position last
+              !:udon:
+                |section[fidelity] :num 3
+                  :name Fidelity & memoization
+          |op[2].applied
+            |set :path "||section[runtime-fidelity]:name" :value Runtime
+          |op[3].applied
+            |move :path "||term[fidelity-ladder]" :to "||section[fidelity]"
+          |op[4]
+            |move :path "||term[rung]" :to "||section[fidelity]"
+          |op[5]
+            |move :path "||term[memo]" :to "||section[fidelity]"
+    |when lexicographer-2 wakes with no shared context, reads the plan,
+      and validates it against the CURRENT file before resuming
+    |then validation distinguishes three states per op: applied (its
+      postcondition already holds), pending (its paths resolve against
+      the current tree), and stranded (its paths no longer resolve)
+      |expect :ops [applied applied applied pending pending]
+      |expect :resume-from 4
+      The .applied traits are the outgoing agent's claim; the incoming
+      agent VERIFIES rather than trusts — op postconditions make the
+      plan re-entrant, so a plan interrupted between write and
+      annotation still resumes correctly. This is the affordance the
+      packet cannot see from the syntax side: ops need to be stateable
+      as predicates, not just executable as commands.
+
+  |scenario[reader-during-writer]
+    :at <15:00> :agent steward
+    :also :agent operator-1
+    :file corpus/operata-live.workspace.udon
+
+    The steward skeleton-reads the workspace for the evening report
+    while operator-1's realization patch is mid-flight.
+
+    |given operator-1 writing via the patch tool's write discipline
+      (write to temp, fsync, rename over the original)
+    |when the steward reads at any instant
+    |then the steward sees the pre-patch file or the post-patch file,
+      never a torn intermediate
+      |expect :torn-reads 0
+      |invariant the patch tool never writes a document in place; the
+        atomic-rename discipline is part of the tool's contract, same
+        standing as computed indentation — without it, every reader
+        needs a lock, and the whole multi-agent posture collapses
+
+  |scenario[evening-ledger]
+    :at <17:30> :agent steward
+    :file corpus/vivarium.decision-log.udon
+
+    The steward closes the day: verify the corpus's cross-references
+    still hold after eleven writes, then append the day's summary.
+
+    |given the corpus as it stands at 17:30
+    |when
+      |all :path "||*:feeds@" :file corpus/asf-processes.process-map.udon
+      |all :path "||*:fed-by@" :file corpus/asf-processes.process-map.udon
+    |then every reference in the signal graph resolves to a definition —
+      the cartographer's rename at 14:40 cascaded correctly
+      |expect :dangling 0
+      (Resolve-audit as a one-liner: `all` over a wildcard element
+      segment, a named attribute, and a follow. The steward would have
+      liked "every reference-valued attribute, whatever its name" —
+      `||*:*@` — which needs the wildcard ATTR segment `:*` to compose
+      with `@`-follow; worth confirming that composition is intended.)
+    |when the steward appends the summary decision
+      |append-block :file corpus/vivarium.decision-log.udon :agent steward
+        !:udon:
+          |decision[day-2026-07-21-summary] :date <2026-07-21> :by claude :status proposed :topic chronicle
+            :session 01Ss7tUu8vWw9xYy
+            Eleven writes across five files by five agents; zero lost updates, one contested claim resolved by precondition, one mid-edit handoff resumed from a durable plan.
+            |ref test/scenarios/features/
+    |then the chronicle is itself in the corpus, and tomorrow's surveyor
+      will read it the way today's read yesterday's
+      |expect :decisions 7

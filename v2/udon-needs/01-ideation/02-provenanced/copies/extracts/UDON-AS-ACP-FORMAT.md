@@ -5,6 +5,7 @@ status: |
   gathered source material — NOT an authoritative decision document; live originals may advance
 paths:
   - design/UDON-AS-ACP-FORMAT.md
+source_commit: 3d8e5b9c52b2a581c4ab9021984423073a694693  # verified byte-current 2026-07-21
 categories:
   - payload
   - handoff
