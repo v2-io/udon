@@ -15,96 +15,138 @@ sources:
 
 # The edit-representation landscape: text-level, guarantee-free, and empirically decisive
 
-**Claim.** How an agent expresses an edit is the single most consequential
-interface choice in shipped agentic tooling — the externally measured swing
-between formats on one model was 14.07% → 57.07% pass@1 (~4×,
-fine-tuned-7B-era; aider's own benchmarks report 2–3× variation, a figure
-that reaches us second-hand through a design-document summary and
-corroborates the direction rather than pinning the size) — and *every*
-shipping approach edits at the text/character level with **no validity
-guarantee** for the artifact being edited. That absence is the gap this
-whole part of the report converges on (#schema-guarded-mutation).
+**Claim.** How an agent *expresses an edit* is the single most
+consequential interface choice in shipped agentic tooling. The externally
+measured swing between edit formats on one model was 14% → 57% task
+success — roughly four-to-one, from format choice alone (measured on
+fine-tuned 7B-class models; frontier numbers will differ). The most-used
+editing tool's own benchmarks report two-to-three-fold variation — a
+figure that reaches this report second-hand, corroborating the direction
+without pinning the size. And across all of it, *every* shipping
+approach edits at the text level, with **no validity guarantee** for the
+artifact being edited. That absence is the gap this whole part of the
+report converges on (the
+[guarded-mutation chapter](schema-guarded-mutation.md)).
 
-## The landscape (fourteen real harnesses, descent accounted for — [shipping practice](../reports/shipping-practice.md) carries the full examination)
+## The landscape
 
+Fourteen real harnesses were examined at source level; copying and
+invention are distinguished throughout ([the shipping-practice
+report](../reports/shipping-practice.md) carries the full examination).
 Three paradigms ship today:
 
-1. **Exact str-replace** (old_string/new_string; fail loud on 0 or >1
-   matches; read-before-edit gate) — near-universal, **largely by
-   convention-adoption of Claude Code's design** rather than independent
-   arrival. Survivorship evidence: nothing has displaced it.
-2. **Patch envelopes** (`*** Begin Patch …` V4A) — **one origin** (OpenAI's
-   cookbook), zero independent arrivals; codex's version is
-   grammar-constrained (lark) rather than free-text-then-parsed.
-3. **Hashline anchor-editing** (grok-build singleton) — `LINE:HASH→content`
-   anchors; atomic bottom-up batch where one stale anchor rejects the whole
-   batch. The only materially different addressing paradigm shipping anywhere:
-   content-addressed-by-hash instead of by-quoted-text.
+1. **Exact find-and-replace** — old text, new text; fail loudly on zero
+   matches or more than one; a mandatory read of the file first.
+   Near-universal — largely by adoption of Claude Code's design rather
+   than independent arrival, which still says something: nothing has
+   displaced it.
+2. **Patch envelopes** — a fenced patch dialect (`*** Begin Patch …`)
+   with one published origin (OpenAI's cookbook) and zero independent
+   arrivals; one harness hardens it by constraining the decoder with the
+   patch grammar so a malformed patch cannot be emitted at all.
+3. **Hash-anchored lines** — one harness addresses each line by its
+   position *plus a short hash of its content*, and applies edits as an
+   atomic bottom-up batch where one stale anchor rejects the whole
+   batch. The only materially different addressing paradigm shipping
+   anywhere: content-addressed rather than quoted-text-addressed.
 
-**The one genuine independent convergence** (at least five teams, same
-shape, different implementations — real agreement, not inheritance): the
-**graduated fuzzy-match ladder** layered on exact matching — whitespace-flexible →
-anchor/similarity tiers → (singleton escalation) a second LLM call to repair
-the edit. The convergent insight: LLM-emitted `old_string` is reliably
-*almost* right and reliably *not byte-exact*; every mature team hit this
-wall and built the same-shaped tolerance rather than trusting exact match or
-falling back to whole-file.
+**The one genuine independent convergence.** At least five teams, same
+shape, different implementations: a **graduated tolerance ladder** on
+top of exact matching — try byte-exact, then whitespace-flexible, then
+anchor-and-similarity tiers, and in one case escalate to a second model
+call that repairs the edit. The convergent insight underneath: a
+model-emitted "old text" is reliably *almost* right and reliably *not
+byte-exact*. Every mature team hit that wall and built the same-shaped
+cushion rather than trusting exact match or falling back to whole-file
+rewrites.
 
-**The abandonment that shaped this landscape -- scoped honestly:** aider
-tried tool-call (JSON-function) editing and killed it
-(`RuntimeError("Deprecated")`) -- models of that era mangled structured
-arguments -- and within the ecosystem sampled here, prompt-dialect editing
-is what everyone ships. But the negative result is family- and era-scoped,
-not a law: the Gemini/Antigravity ecosystem ships tool-call editing with
-tool-layer schema validation as its default, successfully (cross-substrate
-dissent, #counter-register row 11). The honest statement: in the
-Claude/OpenAI-lineage ecosystem examined here, prompt-dialect editing won
-and at least one team's abandonment of the alternative is on record;
-elsewhere the alternative is alive.
-Model-conditional routing (per-model edit formats, per-model prompts, 5
-sources) is the second half of that lesson: **no shipping harness treats the
-edit contract as model-agnostic.**
+**The abandonment that shaped the landscape — scoped honestly.** The
+aider project tried routing edits through JSON tool-call arguments and
+killed the mechanism (its code still raises "Deprecated" there): models
+of that era mangled the structured arguments. Within the ecosystem
+sampled here, edits-as-marked-up-text is what everyone ships. But the
+negative result is family- and era-scoped, not a law: in the
+Gemini/Antigravity ecosystem, tool-call editing with schema validation
+at the tool layer is the successful default (a dissent from a
+Gemini-family reviewer, carried in the
+[counter-register](counter-register.md)). The honest statement: in the
+Claude/OpenAI-lineage world examined here, text-dialect editing won and
+one team's abandonment of the alternative is on record; elsewhere the
+alternative is alive. Its second half: five separate sources show
+harnesses routing *per model* — different edit formats, different
+prompts, per model family. **No shipping harness treats the edit
+contract as model-agnostic.**
 
-## External corroboration (published research, adversarially verified)
+## External corroboration (published research, independently checked)
 
-- Line-number-indexed diffs catastrophically fail (the 14.07%-vs-57.07%
-  figure above); structure-aware diffs match whole-file accuracy at >30%
-  lower cost (the accuracy edge itself is thin — 1.5pt, a single benchmark
-  cell); aider measures format *compliance* separately from correctness and
-  defaults unfamiliar models to whole-file as easiest-to-emit. (Caveat
-  travels: headline numbers are fine-tuned-7B-era, not frontier.)
-- SWE-agent (NeurIPS 2024): agents are a distinct user category; guarded
-  edits and concise feedback measurably change solve rates — the ACI thesis
-  underneath this whole part.
+- Line-number-indexed diffs fail catastrophically (the 14%-vs-57% figure
+  above); structure-aware diffs match whole-file accuracy at more than
+  30% lower cost — though the accuracy edge itself is thin (a point and
+  a half, in a single benchmark cell). The aider project measures format
+  *compliance* separately from correctness, and defaults unfamiliar
+  models to whole-file rewrites as the easiest thing to emit correctly.
+- The SWE-agent work (NeurIPS 2024) established the frame this whole
+  part rests on: agents are a distinct user category — an
+  *agent-computer interface* is a real design surface — and guarded
+  edits with concise feedback measurably change solve rates.
 
 ## The lived and theoretical anchors
 
-Architectus's testimony shows the failure when the refusal-shape is absent
-(#errors-that-teach); the theory grounds *why* representation dominates: the edit
-channel is simultaneously action semantics (the C3 gate) and an observation
-channel whose ambiguity the κ×A law prices (#tools-are-observation-infrastructure).
+An agent's own account of editing without the loud-refusal shape shows
+the failure directly (the [refusal chapter](errors-that-teach.md)
+carries it). The theory explains *why* representation dominates: the
+edit channel is action and observation at once — it is how the agent
+acts on the artifact *and* how it learns whether its model of the
+artifact was right, so its ambiguity is priced twice (the
+[observation chapter](tools-are-observation-infrastructure.md)).
 
 ## What it generates
 
-- **For UDON:** the bar a structural edit representation must clear is now
-  precise — beat the fuzzy-ladder's *reliability* (models emit it correctly)
-  while adding what no shipping tool has: **validity guarantees**. The
-  fuzzy-ladder exists because text addressing is brittle; stable structural
-  addressing (#addressing-is-the-long-pole) attacks the cause rather than
-  cushioning the symptom. Hashline's stale-anchor-rejects-all is prior art
-  for freshness semantics (#freshness-and-atomicity); grammar-constrained
-  emission (codex) is prior art for making the representation itself
-  un-mis-emittable.
-- **For the harness:** adopt the ladder consciously (it is the empirical
-  floor), expect per-model routing, and treat "edit-format compliance" as a
-  measurable, model-specific quantity — aider's leaderboard discipline is
-  the model to copy.
+- **For UDON:** the bar a structural edit representation must clear is
+  now precise — match the tolerance ladder's *reliability* (models can
+  emit it correctly) while adding the thing no shipping tool has:
+  **validity guarantees**. The ladder exists because text addressing is
+  brittle; stable structural addressing (the
+  [addressing chapter](addressing-is-the-long-pole.md)) attacks the
+  cause rather than cushioning the symptom. The hash-anchor batch is
+  prior art for freshness semantics (the
+  [freshness chapter](freshness-and-atomicity.md)); grammar-constrained
+  patch emission is prior art for making the representation itself
+  impossible to mis-emit.
+- **For the harness:** adopt the ladder consciously — it is the
+  empirical floor; expect per-model routing; and treat edit-format
+  compliance as a measurable, model-specific quantity. The aider
+  project's public leaderboard discipline is the model to copy.
+
+## What this opens (ideas, not designs)
+
+- **The ladder as a published contract.** Every team built its
+  tolerance ladder privately. Standardized — with each result declaring
+  *which tier matched* — edit reliability would become comparable
+  across tools and models, and a tier-2 match (whitespace-flexible)
+  could warn where a tier-0 match (byte-exact) stays silent.
+- **Path plus hash.** The landscape presents structural addressing and
+  content-hash anchoring as different paradigms; nothing prevents their
+  composition — a structural path names the place, a content hash pins
+  the version, and staleness becomes detectable *at the address level*
+  regardless of how the document moved underneath. Neither alone
+  delivers that.
+- **A compliance arena for structural edits.** The "precise bar" above
+  is runnable: the same edit tasks, the same models, the tolerance
+  ladder versus a schema-guarded structural representation,
+  compliance and correctness scored separately. Before UDON claims its
+  edit tool beats the ladder, this is the experiment that would know.
+- **Edit dialects as declared capability.** Harnesses route edit formats
+  per model by folklore and testing. Models (or their cards) could
+  *declare* which edit dialects they are trained against — turning the
+  universal ad-hoc routing into negotiation over stated capability.
 
 ## Honest edges
 
-No shipping harness addresses multi-file atomic transactions except
-hashline's batch semantics (a named gap). And the uniformity of
-str-replace is weak evidence of *optimality* — it is strong evidence only
-that it is good enough to survive under current model capabilities, within
-a sample that is Claude/OpenAI-lineage-heavy (row 11's dissent is what
-sampling another lineage immediately surfaced).
+No shipping harness handles multi-file atomic transactions except the
+hash-anchor batch within single batches — a named gap with no coverage
+anywhere in the examined ecosystem. And the uniformity of
+find-and-replace is weak evidence of *optimality* — it is strong
+evidence only that it is good enough to survive under current model
+capabilities, within a sample heavy in one lineage; the first look at
+another lineage immediately produced the counter-example above.
