@@ -16,16 +16,16 @@ sources:
 # The edit-representation landscape: text-level, guarantee-free, and empirically decisive
 
 **Claim.** How an agent expresses an edit is the single most consequential
-interface choice in shipped agentic tooling — the T5-measured swing between
-formats on one model was 14.07% → 57.07% pass@1 (~4×, fine-tuned-7B-era;
-aider's own benchmarks report 2–3× variation, a figure that reaches us
-second-hand through a T1 summary and corroborates the direction rather than
-pinning the size) — and *every* shipping approach edits at the
-text/character level with **no validity guarantee** for the artifact being
-edited. That absence is the gap this whole part of the report converges on
-(#schema-guarded-mutation).
+interface choice in shipped agentic tooling — the externally measured swing
+between formats on one model was 14.07% → 57.07% pass@1 (~4×,
+fine-tuned-7B-era; aider's own benchmarks report 2–3× variation, a figure
+that reaches us second-hand through a design-document summary and
+corroborates the direction rather than pinning the size) — and *every*
+shipping approach edits at the text/character level with **no validity
+guarantee** for the artifact being edited. That absence is the gap this
+whole part of the report converges on (#schema-guarded-mutation).
 
-## The landscape (T2, 14 real harnesses, lineage-corrected)
+## The landscape (fourteen real harnesses, descent accounted for)
 
 Three paradigms ship today:
 
@@ -41,9 +41,9 @@ Three paradigms ship today:
    batch. The only materially different addressing paradigm in Tier 2:
    content-addressed-by-hash instead of by-quoted-text.
 
-**The one genuine independent convergence** (survives lineage correction,
-≥5 teams, shape-convergent/implementation-divergent): the **graduated
-fuzzy-match ladder** layered on exact matching — whitespace-flexible →
+**The one genuine independent convergence** (at least five teams, same
+shape, different implementations — real agreement, not inheritance): the
+**graduated fuzzy-match ladder** layered on exact matching — whitespace-flexible →
 anchor/similarity tiers → (singleton escalation) a second LLM call to repair
 the edit. The convergent insight: LLM-emitted `old_string` is reliably
 *almost* right and reliably *not byte-exact*; every mature team hit this
@@ -58,14 +58,14 @@ is what everyone ships. But the negative result is family- and era-scoped,
 not a law: the Gemini/Antigravity ecosystem ships tool-call editing with
 tool-layer schema validation as its default, successfully (cross-substrate
 dissent, #counter-register row 11). The honest statement: in the
-Claude/OpenAI-lineage ecosystem this corpus samples, prompt-dialect editing
-won and at least one team's abandonment of the alternative is on record;
+Claude/OpenAI-lineage ecosystem examined here, prompt-dialect editing won
+and at least one team's abandonment of the alternative is on record;
 elsewhere the alternative is alive.
 Model-conditional routing (per-model edit formats, per-model prompts, 5
 sources) is the second half of that lesson: **no shipping harness treats the
 edit contract as model-agnostic.**
 
-## External corroboration (T5, adversarially verified)
+## External corroboration (published research, adversarially verified)
 
 - Line-number-indexed diffs catastrophically fail (the 14.07%-vs-57.07%
   figure above); structure-aware diffs match whole-file accuracy at >30%
@@ -77,10 +77,10 @@ edit contract as model-agnostic.**
   edits and concise feedback measurably change solve rates — the ACI thesis
   underneath this whole part.
 
-## T3/T4 anchors
+## The lived and theoretical anchors
 
 Architectus's testimony shows the failure when the refusal-shape is absent
-(#errors-that-teach); T4 grounds *why* representation dominates: the edit
+(#errors-that-teach); the theory grounds *why* representation dominates: the edit
 channel is simultaneously action semantics (the C3 gate) and an observation
 channel whose ambiguity the κ×A law prices (#tools-are-observation-infrastructure).
 
@@ -102,9 +102,9 @@ channel whose ambiguity the κ×A law prices (#tools-are-observation-infrastruct
 
 ## Honest edges
 
-Nobody in Tier 2 addresses multi-file atomic transactions except hashline's
-batch semantics (named gap, carried in RESIDUALS). And the uniformity of
-str-replace is weak evidence of *optimality* -- it is strong evidence only
+No shipping harness addresses multi-file atomic transactions except
+hashline's batch semantics (a named gap). And the uniformity of
+str-replace is weak evidence of *optimality* — it is strong evidence only
 that it is good enough to survive under current model capabilities, within
-a corpus whose Tier-2 sample is Claude/OpenAI-lineage-heavy (row 11's
-dissent is what sampling another lineage immediately surfaced).
+a sample that is Claude/OpenAI-lineage-heavy (row 11's dissent is what
+sampling another lineage immediately surfaced).

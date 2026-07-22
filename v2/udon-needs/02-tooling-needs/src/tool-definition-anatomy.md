@@ -18,48 +18,49 @@ sources:
 **name + JSON-schema parameters + a description that is a teaching surface**
 (the description carries law and usage wisdom, not just signature), with
 longer guidance split into a separate file. Around that anatomy, a small set
-of micro-tools recurs with near-verbatim rules. Lineage correction applies
+of micro-tools recurs with near-verbatim rules. Descent accounting applies
 hard here: most of the uniformity is convention-adoption of one or two
 influential designs — reported as survivorship (nothing displaced them), not
 as independent votes.
 
-## The converged shapes (T2, lineage-annotated)
+## The converged shapes (descent noted where it matters)
 
 - **Ask-user:** 1–4 questions × 2–4 options, "(Recommended)" first, always
   an "Other" escape. Probable single-origin design, verbatim-copied.
   Survivorship reading: a structured clarification affordance beat
-  free-text asking everywhere it landed — and T5's
+  free-text asking everywhere it landed — and the published
   fabricated-missing-parameters finding (#structured-output-two-mechanisms)
   supplies the *reason* such an affordance is load-bearing.
 - **Todo/task-list:** the most uniform micro-convention in the corpus
   (near word-for-word rules: one `in_progress` at a time; mark complete
   only after verification; never done with red tests) — i.e., most-copied.
-  Its function under T4 light: an externalized strategy artifact with
-  observable intermediates — credit assignment made bookkeeping
-  (dossier §5.2) — which is likely *why* it survives contact with every
-  model generation. The same theory supplies a plan-*shape* lesson worth
-  carrying next to it: under uncertainty, deep AND-chains are
-  mathematically doomed while wide OR-structure survives — the dossier's
-  worked numbers: a 4-step chain at 90% per step succeeds 65% of the time;
+  Its function in the theory's light: an externalized strategy artifact with
+  observable intermediates — credit assignment made bookkeeping — which is
+  likely *why* it survives contact with every model generation. The same
+  theory supplies a plan-*shape* lesson worth carrying next to it: under
+  uncertainty, deep AND-chains are mathematically doomed while wide
+  OR-structure survives — the worked numbers: a 4-step chain at 90% per
+  step succeeds 65% of the time;
   three independent 50% options succeed 87.5%. A plan artifact that makes
   it easy to write parallel fallbacks and awkward to write long dependent
   chains is quietly load-bearing.
 - **Subagent/delegation tool:** fresh isolated context, resumable ID,
   scope-discipline framing, and — notable, repeated across independent
   implementations — **read-only roles enforced by tool-omission, not
-  prose**. That last is a genuine design law the estate learned separately
-  from its own incident (an agent asked to *assess* worktrees as
-  safe-to-delete removed all eight; the codified rule: constrain by
-  tool-set, never by prose — provenanced at
-  `01-ideation/02-provenanced/commentary/worktree-deletion-incident.md`) —
-  a Tier-1↔Tier-2 convergence with different incidents behind it.
+  prose**. That last is a genuine design law learned twice from different
+  incidents: the shipping ecosystem arrived at it by construction, and
+  Joseph's programme learned it the hard way when an agent asked merely to
+  *assess* worktrees as safe-to-delete removed all eight (the codified
+  rule: constrain by tool-set, never by prose — the incident record is in
+  this report's source notes). Two origins, one law.
   (#delegation-as-tooling carries the briefing-discipline half.)
 - **Instruction files (AGENTS.md):** directory-scoped, nearest-wins — with
   a live, unresolved disagreement: one harness treats AGENTS.md as
   *untrusted data* with injection-precedence rules while the rest treat it
   as authoritative instruction (#counter-register).
-- **Description-as-teaching-surface** (T1 autopax anatomy + INSTRUMENTA,
-  T2 throughout): the description field is where the tool teaches its law
+- **Description-as-teaching-surface** (stated in the design corpus's
+  tool-anatomy work; visible throughout the shipping ecosystem): the
+  description field is where the tool teaches its law
   *before* first refusal — the ex-ante complement of #errors-that-teach.
 
 ## What it generates
@@ -77,8 +78,8 @@ as independent votes.
 
 ## Honest edges
 
-Vote-counts here are the most lineage-inflated in the corpus — this segment
-deliberately makes no "N teams independently needed X" claim. And the
+Uniformity here is the most descent-inflated in the whole landscape — this
+segment deliberately makes no "N teams independently needed X" claim. And the
 anatomy is JSON-schema-shaped because the vendors' APIs are; whether that
 shape is *right* (vs merely installed) is untested — the BFCL/omission
 findings suggest the description/grounding layer, not the schema syntax, is

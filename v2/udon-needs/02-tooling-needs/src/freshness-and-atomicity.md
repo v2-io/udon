@@ -26,7 +26,7 @@ a batch either fully applies or fully refuses.
 
 ## The evidence
 
-- **T2 (universal + the sharpest formulation):** read-before-edit is
+- **Universal in shipping practice (and its sharpest formulation):** read-before-edit is
   enforced in code (typed error, dedicated modules) across 8+ harnesses —
   a hard invariant, not a prompt suggestion. grok-build's hashline makes
   freshness *content-addressed*: anchors are valid only for the file state
@@ -35,15 +35,16 @@ a batch either fully applies or fully refuses.
   kimi-code's `ToolAccesses` (per-call declared read/write footprints so the
   scheduler runs only non-conflicting calls concurrently) is the same
   concern lifted to the scheduler.
-- **T3 (lived):** Zi-am-tur's sibling-collision account — two agents editing
+- **Lived:** Zi-am-tur's sibling-collision account — two agents editing
   the same document, the multi-writer wound — plus practica's soft-claiming
   convention. Multi-agent concurrent edit is a real, present condition, not
-  a future scenario (needs-map S1/S12; scenarios 04-multi-agent).
-- **T1:** the agentic-ux principles state (2) verbatim; the paths spike
-  hardens it into demand D6: *path evaluation for a patch is against the
-  pre-patch tree* — compare-and-swap composition, so a batch of edits has
-  one consistent addressing frame.
-- **T4:** refusal atomicity as unconfounded law signal
+  a future scenario.
+- **The design corpus:** the agentic-ux principles state (2) verbatim; the
+  addressing exploration hardens it into a rule (#addressing-is-the-long-pole,
+  table row D6): *path evaluation for a patch is against the pre-patch
+  tree* — compare-and-swap composition, so a batch of edits has one
+  consistent addressing frame.
+- **The theory:** refusal atomicity as unconfounded law signal
   (#errors-that-teach); and the fork/divergence analysis
   (checkpoint-forking failure modes) gives the deep version of why two
   writers over one artifact need explicit reconciliation, not hope.
@@ -53,8 +54,9 @@ a batch either fully applies or fully refuses.
 - **For UDON's edit substrate:** the transaction shape in
   #schema-guarded-mutation inherits all three invariants; failure vocabulary
   must distinguish *stale* (file changed since read) from *not-found* from
-  *not-unique* (paths D5), because the repairs differ — re-read vs re-derive
-  vs disambiguate. Semantic merge (the one T1 idea never absorbed into the
+  *not-unique* (#addressing-is-the-long-pole's failure vocabulary), because
+  the repairs differ — re-read vs re-derive vs disambiguate. Semantic merge
+  (the one early design idea never absorbed into the
   tool suite: structure-aware merge with annotation accumulation) is the
   known missing piece above single-writer transactions — carried as an open
   demand, not designed here.
@@ -69,4 +71,5 @@ a batch either fully applies or fully refuses.
 Atomic *multi-file* transactions remain the corpus-wide gap (only hashline's
 single-batch semantics comes close). Nothing in the evidence yet prices
 optimistic-vs-pessimistic concurrency for agent workloads — soft-claiming
-(T1) and footprint-scheduling (T2) are single points, not a convergence.
+(a working convention) and footprint-scheduling (one shipped scheduler)
+are single points, not a convergence.

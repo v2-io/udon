@@ -16,8 +16,8 @@ sources:
 # What the human on the other side needs
 
 **Claim.** The human steering and verifying agent work is a first-class
-tool consumer (the BRIEF's explicit widening), and the evidence — thin as
-this slice of the gathering is — converges on three needs: **structured
+tool consumer — an explicit charge of this report — and the evidence,
+thin as it is on this side, converges on three needs: **structured
 decision surfaces** (not free-text interrogation), **explicit trust
 boundaries** (currently a live disagreement), and above all
 **verification surfaces matched to the fail-plausible reality**, because
@@ -26,7 +26,7 @@ using the product notices.
 
 ## The evidence
 
-- **Verification is the load-bearing need (T5):** the production runtime
+- **Verification is the load-bearing need (measured externally):** the production runtime
   study — ~70% of silent failures were caught by *a human observing the
   product as a user*, and ~none by 4,286 tests ex-ante ("audits are
   regression engines, not prediction engines"); the distinctive
@@ -36,7 +36,7 @@ using the product notices.
   — and it inverts the usual priority: the human surface is not the
   fallback after automation, it is the *only* catch for the failure
   class automation creates.
-- **Observability as architecture (T1, Sept 2025):** the sapientia
+- **Observability as architecture (sapientia, Sept 2025):** the
   coordination design made human steering a filesystem property —
   observable markdown work streams, a shared todo.md attention anchor,
   "Joseph can `tail -f` these files to watch agents think in real-time"
@@ -44,20 +44,22 @@ using the product notices.
   solved is still current: the mediated pattern ("main instance becomes
   mediator/translator… telephone game") that hides subagent work from
   the human. Steering-by-shared-artifact beats steering-by-relay.
-- **Structured decision surfaces (T2):** the converged ask-user shape
-  (1–4 questions, 2–4 options, "(Recommended)", always an Other escape) —
-  lineage-corrected as one influential design adopted everywhere, i.e.
-  survivorship: structured choice presentation beat free-text asking
+- **Structured decision surfaces (shipped everywhere):** the converged
+  ask-user shape (1–4 questions, 2–4 options, "(Recommended)", always an
+  Other escape) — one influential design adopted across the ecosystem,
+  i.e. survivorship: structured choice presentation beat free-text asking
   wherever it landed. Its complement is dry-run/propose-before-apply
   (#progressive-disclosure-read-path's `propose` returning diff +
   validation + side-effects + confidence) — the human-reviewable preview
   as a first-class product.
-- **Trust boundaries are unsettled (T2, live disagreement):** AGENTS.md
+- **Trust boundaries are unsettled (a live disagreement in shipping
+  practice):** AGENTS.md
   as authoritative instruction (the ecosystem consensus) vs untrusted
   reference data with injection-precedence rules (kimi-code's dissent,
   #counter-register row 6). Security-relevant and unresolved; a harness
   must *choose* and say so.
-- **The bootstrapping datum (census §6):** the tools are increasingly
+- **The bootstrapping datum (from the source-level census of shipping
+  CLIs):** the tools are increasingly
   built *by* agents (bot fleets filing/reviewing/merging PRs; agent-
   written spec folders preceding implementation) — so the human-
   verification surface is becoming review-of-agent-work all the way
@@ -70,10 +72,9 @@ using the product notices.
   control: propose/dry-run previews everywhere mutation exists;
   work-in-observable-artifacts over relay reporting; explicit
   instruction-trust policy; and agent-work diffs designed for human
-  reading (structural diffs, provenance). The BRIEF's human-side demand
-  list (authoring ergonomics, review bottlenecks, trust-and-verification)
-  is the extraction target the gathering under-sampled — treat absence
-  as missing data, not low demand.
+  reading (structural diffs, provenance). Authoring ergonomics, review
+  bottlenecks, and trust-and-verification needs are under-sampled in this
+  report's evidence — treat that absence as missing data, not low demand.
 - **For UDON:** the human is the second reader of every agent-facing
   design in this report: skeletons, structural diffs, and provenance
   annotations are dual-consumer surfaces by construction ("crystal clear
@@ -84,10 +85,11 @@ using the product notices.
 
 ## Honest edges
 
-This is the report's thinnest evidentiary base and the OUTLINE says so:
-Part VII rests on one external case study (medium confidence), one
-Sept-2025 design, survivorship-grade T2 shapes, and a census aside. The
-gathering's own residual ledger expects late-arriving core pieces here.
+This is the report's thinnest evidentiary base and the outline says so:
+this part rests on one external case study (medium confidence), one
+Sept-2025 design, survivorship-grade shipped shapes, and a census aside.
+Late-arriving evidence is expected here, and the report's revision
+protocol welcomes it.
 What's *absent* outright: any human-subject evidence (review-time
 measurements, steering-error rates) — everything is builder-side
 reasoning about the human, not observation of one.
