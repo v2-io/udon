@@ -36,7 +36,8 @@ sources:
 - ✦ **An agent-identification convention.** Terminal-detection infers *that* a machine is calling; nothing today lets the caller *say who it is and what it can consume* — an environment convention through which an agent declares itself (and, say, its context budget or format preferences) would let tools adapt output richness deliberately instead of guessing from TTY absence.
 - ✦ **A shared error-code registry per tool suite.** Structured errors with stable codes, held in common across a whole suite, would make the [[errors-that-teach| refusal chapter]]'s law-accumulation idea practical: laws learned from one tool's refusals transfer to its siblings because the vocabulary is shared.
 - ✦ **Dry-run as machine-readable plan.** The dry-run flag exists everywhere; its output is usually prose. A dry run that emitted the *structured would-do* — same schema as the real run's result, marked hypothetical — would give agents the predict-failure-before-execution affordance the 2025 conventions asked for, as data rather than as reassurance.
-- ✦ **Self-describing tools, universalized.** The schema-export one-off generalizes: if every CLI shipped its own agent-callable tool definition, harnesses would *discover* their toolsets rather than hand-author them — and the [[tool-definition-anatomy| tool-anatomy chapter]]'s single-source-contract idea gets its distribution mechanism for free.
+- ✦ **Self-describing tools, universalized.** The schema-export one-off generalizes: if every CLI shipped its own agent-callable tool definition, harnesses would *discover* their toolsets rather than hand-author them — and the [[tool-definition-anatomy| tool-anatomy chapter]]'s single-source-contract idea  
+  gets its distribution mechanism for free.
 
 ## Honest edges
 

@@ -42,7 +42,8 @@ Each is a real machine-facing tool contract. **Medium-High** as a set; the `.txt
 - **`read.ts`** (386) + **`read.txt`** — line-numbered `<line>: <content>` output format, 2000-line/50KB default caps, `offset`/`limit`, per-line 2000-char truncation, image (jpeg/png/gif/webp) + PDF returned as attachments (L304-306), "avoid tiny repeated slices" guidance. **High** — output-format + context-budget design.
 - **`shell.ts`** (645) + **`shell/prompt.ts`** (dynamic prompt builder) + **`shell/shell.txt`** — the bash/shell tool. prompt.ts (L28-60) injects OS/shell-specific notes (PowerShell 7 vs 5.1 vs cmd chaining rules); `.txt` bans using shell for file ops and carries a full git/gh policy block. `workdir` param instead of `cd`. **High** — command-exec tool with OS-adaptive prompting.
 - **`grep.ts`+.txt`, `glob.ts`+.txt`** — ripgrep/glob search; both `.txt`s steer open-ended search toward the Task tool to save context. **Medium.**
-- **`task.ts`** (360) + **`task.txt`** — sub-agent spawner: fresh-context vs resumable `task_id`, "launch multiple concurrently", "outputs generally trusted", tell-it-code-vs-research. **High** — multi-agent delegation contract.
+- **`task.ts`** (360) + **`task.txt`** — sub-agent spawner: fresh-context vs resumable `task_id`, "launch multiple concurrently", "outputs generally trusted", tell-it-code-vs-research.  
+  **High** — multi-agent delegation contract.
 - **`todo.ts`** + **`todowrite.txt`** — structured task-list tool with pending/in_progress/ completed/cancelled states and strict "exactly one in_progress" / "mark done only after verification" rules. **High** — a machine-readable progress-state format.
 - **`webfetch.ts`(192)+.txt`, `websearch.ts`(143)+.txt`, `mcp-websearch.ts`** — fetch (markdown/text/html), search (live-crawl modes, current-year injection). **Medium.**
 - **`lsp.ts`(113)+.txt`** — LSP code-intelligence tool (goToDefinition, findReferences, hover, call-hierarchy, workspaceSymbol); 1-based line/char. **Medium** — structured code-nav as a tool.
@@ -67,7 +68,8 @@ Each is a real machine-facing tool contract. **Medium-High** as a set; the `.txt
 ## Custom/plugin tool authoring (third-party tool-definition ergonomics)
 
 - **`.opencode/tool/github-pr-search.ts`** (65, read in full) + **`github-triage.ts`** — real examples of the plugin `tool({ description, args: {query: tool.schema.string().describe(...)}, execute })` API. Shows the intended *ergonomic* surface for user-defined tools (Zod-ish schema, string return). **Medium** — what "defining a tool" looks like for an integrator.
-- **`packages/opencode/src/agent/generate.txt`** (~5KB) — the meta-prompt that generates agent *configurations* from a description (persona + instructions + identifier synthesis). **Medium** — agent-as-config generation.
+- **`packages/opencode/src/agent/generate.txt`** (~5KB) — the meta-prompt that generates agent *configurations* from a description (persona + instructions + identifier synthesis).  
+  **Medium** — agent-as-config generation.
 
 ## Dry wells / deliberately skipped
 

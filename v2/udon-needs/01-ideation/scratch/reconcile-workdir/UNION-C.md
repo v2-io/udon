@@ -140,7 +140,8 @@ Grounds demand in actual documents and code that load UDON today, not just desig
 
 **Unused features** (consistent across both maps): no `@`, no `|{…}`, no freeform fences, no `<…>`, no `:key?` yet in real documents — claimed affordances not yet pulled into real work; a genuine product-vs-overbuild signal.
 
-**Candidate future classes** (watchlist, not yet live `.udon`): ADRs, Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON). These are stated *intended* use classes from drained planning notes, not files to extract.
+**Candidate future classes** (watchlist, not yet live `.udon`): ADRs,  
+Axiomata, Signa, Operata, Memorata, A2A agent communications, mentoring-feedback, Loci, descent grammars (already UDON). These are stated *intended* use classes from drained planning notes, not files to extract.
 
 ### 5b. Live `.udon` documents
 

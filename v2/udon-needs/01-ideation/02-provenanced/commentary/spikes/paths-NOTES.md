@@ -86,7 +86,8 @@ Live CORE: one segment; “notably absent by design” for nesting/attrs/ predic
 
 **Ceiling:** whole tool language including wildcards, `||`, `:attr@` follow.
 
-**Hard constraint the standalone path doc never had:** reference-paths must parse inside documents with clean terminators at value boundaries. What does `@config|database` do to the sameline scan? Where does a path end in arrays, in `|{…}`, after bare tokens?
+**Hard constraint the standalone path doc never had:** reference-paths must parse inside documents with clean terminators at value boundaries.  
+What does `@config|database` do to the sameline scan? Where does a path end in arrays, in `|{…}`, after bare tokens?
 
 Until that is forced by a real embeddability probe (grammar sketch or hand-table of terminator cases), subset choice is under-constrained.
 

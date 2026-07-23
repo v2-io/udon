@@ -12,7 +12,8 @@ What does it mean for agents (and humans) to **address** structure inside a UDON
 
 Related forks that keep showing up as one cluster, not separate problems:
 
-1. **In-document references** today are a selector tuple `(name, key, traits)`. When (if ever) do they grow into multi-segment paths — and how do you avoid path-debt from incremental tuple growth?
+1. **In-document references** today are a selector tuple  
+   `(name, key, traits)`. When (if ever) do they grow into multi-segment paths — and how do you avoid path-debt from incremental tuple growth?
 2. **Tool addressing** (skeleton, `at`/`all`, patch, schema selectors, cross-file trace) seems to want a richer language than one segment.
 3. **Identity purity:** document `[1]` is the integer key 1. Older path sketches used `[0]` for positional. Those cannot both be true under “paths look like the UDON they navigate.”
 4. **Embeddability:** a path string must eventually live *inside* documents (attrs, patches, schema) without poisoning the scan — terminators, `|` mid-token, quoted vs bare vs dialect envelope.

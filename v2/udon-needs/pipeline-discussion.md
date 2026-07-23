@@ -16,13 +16,18 @@ Definition. A fold is a single pass over the event stream with an accumulator an
 
 The instance that already exists (post-text-recast, in the harness today): the text fold —
 
-Text/RawContent → append content as-is BlankLine       → append "\n" everything else → no text contribution
+Text/RawContent → append content as-is  
+BlankLine       → append "\n"  
+everything else → no text contribution
 
 That's the whole thing, and it's the contract sentence from TODO-TEXT-WIRE made runnable. The deleted compensator was precisely a fold that cheated — it consulted source gaps between spans to reinsert the newlines the wire dropped.
 
 The generalized fold (what C5's option A asserts, once W1's bracket exists) is the structural extension — a stack machine:
 
-ElementStart      → push new element onto stack Name / Attr key   → set on stack top / open an assignment value events      → attach to the open assignment AttrValueEnd      → close the assignment          ← W1 makes this possible Text/BlankLine    → append to stack top's content (text rules above) Warning/Error     → append to anomaly list ElementEnd        → pop; attach to new stack top
+ElementStart      → push new element onto stack  
+Name / Attr key   → set on stack top / open an assignment value events      → attach to the open assignment  
+AttrValueEnd      → close the assignment          ← W1 makes this possible Text/BlankLine    → append to stack top's content (text rules above) Warning/Error     → append to anomaly list  
+ElementEnd        → pop; attach to new stack top
 
 Run that, and out comes a recovered document: structure, ownership, values, text, anomalies. A C5-A fixture then asserts against that — "after folding, el has attribute v1 = "hey" and content ["more text\n", child]" — instead of asserting the raw event spelling. The fold is one small shared function, so the entire class of harness compensators has exactly one place it could hide, and that place is ~30 lines and audited once.
 
@@ -46,14 +51,16 @@ Definition. A fold is a single pass over the event stream with an accumulator an
 
 The instance that already exists (post-text-recast, in the harness today): the text fold —
 
-Text/RawContent → append content as-is BlankLine       → append "\n"Is this an accurate model of what we're talking about?:
+Text/RawContent → append content as-is  
+BlankLine       → append "\n"Is this an accurate model of what we're talking about?:
 
 ```
   pushdown-parser(udon chunks -> Raw event stream -> assembled event stream)  -> stepwise (streaming) AST
   RD-parser(udon doc -> Raw event stream -> assembled event stream)           -> oneshot AST
 ```
 
-  with any of (pushdown, RD, streaming AST, oneshot AST) parsers or parser-modes available to the end-user as libraries? (where assembled event stream is what you are calling folded?) Close — two corrections, one of which is exactly the kind of confusion the vocabulary work should prevent:
+  with any of (pushdown, RD, streaming AST, oneshot AST) parsers or parser-modes available to the end-user as libraries?  
+  (where assembled event stream is what you are calling folded?) Close — two corrections, one of which is exactly the kind of confusion the vocabulary work should prevent:
 
 1. There is no "raw vs. assembled" event stream — there's one event stream. Both backends emit the same wire, and that identity is a proven property (pushdown_differential runs every fixture × every chunk size against the one-shot RD parser and asserts identical events, spans included). So the model is:
 
@@ -64,7 +71,8 @@ One wire, two engines. The stream is the WIRE contract's subject; nothing betwee
 2. The fold is not a stream — it's the step after the stream. Fold = the event-stream → tree reduction. So in your model, "assembled" corresponds not to a second event stream but to the output of the fold:
 
                        ┌→ streaming AST builder (fold that ships each root
-event stream ──────────┤   subtree the moment it closes) ├→ one-shot AST builder (fold that returns one Document) └→ any custom consumer (your own fold: an indexer, a highlighter, a converter — never re-reads source)
+event stream ──────────┤   subtree the moment it closes)  
+                       ├→ one-shot AST builder (fold that returns one Document) └→ any custom consumer (your own fold: an indexer, a highlighter, a converter — never re-reads source)
 
 The two AST builders in tree.rs / stream_tree.rs are folds — just full-featured ones. The harness's "reference fold" is the same reduction at its most minimal (~30 lines), kept tiny so it can be audited as the executable form of the W0 law. Same species, different sizes.
 
@@ -706,7 +714,8 @@ Next: needs-map priming (Joseph), then the foundational-PROCESS discussion.
 
 — Fable
 
-P.S. Appended — the update sits at the end of `pipeline-discussion.md` under a `## Fable` heading, recording the graduation round, the ML re-mark, the needs-map skeleton, and the current live-file roster, so grok's priming session orients from the file itself.
+P.S.  
+Appended — the update sits at the end of `pipeline-discussion.md` under a `## Fable` heading, recording the graduation round, the ML re-mark, the needs-map skeleton, and the current live-file roster, so grok's priming session orients from the file itself.
 
 **Provisional PROCESS recommendation** — what to promote after some needs-map work but before turnover, held to the same discipline as everything else: *rewrite fresh with the archived PROCESS.md as a wording mine, never re-promote the file.* My current cut of the survivable core, roughly one page:
 
@@ -757,7 +766,8 @@ The needs-map Fable just put together has some good seeds for (1) and some good 
 * **Future-proofing**: Where we can easily synthesize even lower-priority user needs through anticipating via architecture etc., the downstream decisions are welcome to do so. They may receive more or less a mandate about what is most important, but they have no implied mandate about not providing for known or unknown future directions *unless doing so will significantly impede the most important ones they need to get released*. So that's the balance; if a decision forecloses future udon capabilities, it should only be because it was necessary for the better capabilities, and agentic coding etc. at speed allows us to explore and reorganize *any very-thoughtful and tidy architecture that has its assumptions and prior reasoning well-preserved.*
 
 
-I've created a v2/udon-needs/ as the area for all of this demand-side flow, and within it, 01-ideation/ for some step one stuff. It can be considered a scratch staging area for any and all usage/end-user/agentic/utility usage and primary library usage scenarios and ideas. There are several known sources, none of which have been mined fully:
+I've created a v2/udon-needs/ as the area for all of this demand-side flow, and within it, 01-ideation/ for some step one stuff.  
+It can be considered a scratch staging area for any and all usage/end-user/agentic/utility usage and primary library usage scenarios and ideas. There are several known sources, none of which have been mined fully:
 
 - Everything in Fable's needs-map.md or bring it over wholesale and make it less prescriptive
 - Stuff from my brainstorms in this file maybe made more coherent and cross-listed

@@ -1,6 +1,7 @@
 # Review: current-0.9.1-spec consolidation
 
-**Reviewer:** agy (Gemini 3.1 Pro (High)) **Date:** 2026-07-22
+**Reviewer:** agy (Gemini 3.1 Pro (High))  
+**Date:** 2026-07-22
 
 ## Findings
 

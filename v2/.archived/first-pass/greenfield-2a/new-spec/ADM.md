@@ -39,7 +39,8 @@ Element := {
 }
 ```
 
-There are no identity, trait, or flag fields. `[key]`, `.trait`, and flag suffixes exist only in the surface syntax; in the model they are ordinary assignments to designated attributes (`$key`, `$traits`, `$?`, `$!`, `$*`, `$+`; `$partial-key` for an unclosed identity). An element written `|el[k].a.b?` and one written `|el :'$key' k :'$traits' a :'$traits' b :'$?' true` are **identical** in the model. Implementations MUST NOT distinguish them.
+There are no identity, trait, or flag fields. `[key]`, `.trait`, and flag suffixes exist only in the surface syntax; in the model they are ordinary assignments to designated attributes (`$key`, `$traits`, `$?`, `$!`, `$*`, `$+`; `$partial-key` for an unclosed identity). An element written `|el[k].a.b?` and one written  
+`|el :'$key' k :'$traits' a :'$traits' b :'$?' true` are **identical** in the model. Implementations MUST NOT distinguish them.
 
 **Comment** carries its text (content is inert — never interpreted, always carried). **Verbatim** carries `form` (`block` | `fence` | `inline`), an optional `label`, and its exact body. **Directive** carries its name, its unparsed head-line remainder, and UDON-parsed content. **Interpolation** carries its unparsed expression text. **Reference** carries the selector `(name?, key?, traits)`.
 
@@ -88,7 +89,8 @@ The substrate is `attributes` as defined above, designated attributes included. 
 - **`all_attributes`** — the assignment sequence exactly as parsed, in order, `$`-designated entries included. The round-trip view.
 - **`key` / `traits` / `attributes`** — the ergonomic split: `key` = the value(s) of `$key`; `traits` = the values of `$traits`, **always a list** (`[]`, `["a"]`, `["a","b"]`); `attributes` = every non-designated assignment. Flag suffixes surface from `$?` and friends.
 
-`traits`-always-a-list is the one normalization beyond a straight read. **Round-trip caution:** ergonomic views can collapse what the model keeps distinct (`:x 1 :x 2` vs `:x [1 2]` may both read `[1, 2]`); provenance- sensitive tooling MUST work from the substrate, not a flattened view.
+`traits`-always-a-list is the one normalization beyond a straight read.  
+**Round-trip caution:** ergonomic views can collapse what the model keeps distinct (`:x 1 :x 2` vs `:x [1 2]` may both read `[1, 2]`); provenance- sensitive tooling MUST work from the substrate, not a flattened view.
 
 ## 6. Anomalies
 

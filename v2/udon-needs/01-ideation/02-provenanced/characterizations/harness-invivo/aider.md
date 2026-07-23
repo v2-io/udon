@@ -37,9 +37,11 @@ repo_version: v0.86.3.dev-53-g5dc9490b (HEAD 5dc9490, committed 2026-05-22; clon
 - **`aider/coders/wholefile_func_coder.py`** (134) + **`single_wholefile_func_coder.py`** (102) + their `_func_prompts.py` — more (deprecated-lineage) function-schema coders. **Priority: MEDIUM** (corroborates the abandonment).
 
 ### Meta / mode coders
-- **`aider/coders/architect_coder.py`** (48) + **`architect_prompts.py`** (40) — two-model pattern: a reasoning "architect" model proposes in prose, a separate cheaper "editor" model (`editor_edit_format`) turns it into edits. **Priority: MEDIUM** — an agent-orchestration convention (plan/execute split).
+- **`aider/coders/architect_coder.py`** (48) + **`architect_prompts.py`** (40) — two-model pattern: a reasoning "architect" model proposes in prose, a separate cheaper "editor" model (`editor_edit_format`) turns it into edits.  
+  **Priority: MEDIUM** — an agent-orchestration convention (plan/execute split).
 - **`aider/coders/context_coder.py`** (53) + **`context_prompts.py`** (75) — a coder whose only job is to identify which files need editing (returns file list, no edits). **Priority: MEDIUM** — machine-readable file-selection step.
-- **`aider/coders/ask_coder.py`**, **`help_coder.py`** — read-only Q&A modes. **Priority: LOW**.
+- **`aider/coders/ask_coder.py`**, **`help_coder.py`** — read-only Q&A modes.  
+  **Priority: LOW**.
 
 ---
 
@@ -50,7 +52,8 @@ repo_version: v0.86.3.dev-53-g5dc9490b (HEAD 5dc9490, committed 2026-05-22; clon
   - **1174–1224 `fmt_system_prompt`** — how reminders get composed: lazy/ overeager toggles are per-model flags, shell-command prompt injected conditionally, `quad_backtick_reminder` when content forces 4-backtick fences. **HIGH**.
   - **1226–1333 `format_chat_chunks`** — few-shot examples either inlined as system text (`examples_as_sys_msg`, model-dependent) or as real user/assistant turns; `use_system_prompt=False` path degrades to a user+"Ok." pair for models without system role. **HIGH** — concrete per-model prompt-shape adaptation.
   - **1419–1522 `send_message`** / **1783–1835 `send`** / **1836+ `show_send_output`** — the send loop; tool_calls read from `completion.choices[0].message.tool_calls[0].function` (1850–1853) into `partial_response_function_call`; reasoning_content pulled from either `.reasoning_content` or `.reasoning` (1857–1863). **MEDIUM-HIGH**.
-  - **1900–1996 `show_send_output_stream` / `live_incremental_response`** — streaming delta handling, interleaving reasoning tags mid-stream. **MEDIUM**.
+  - **1900–1996 `show_send_output_stream` / `live_incremental_response`** — streaming delta handling, interleaving reasoning tags mid-stream.  
+    **MEDIUM**.
   - **534–542** — if a coder defines `functions`, they're passed through and can be dumped for debug. **LOW-MEDIUM**.
   - **609 `choose_fence`** / **1127 `get_platform_info`** — dynamic fence selection (avoids collision with code content) and the platform/shell/date block injected into prompts. **MEDIUM** (relevant to UDON: aider chooses delimiters at runtime to avoid ambiguity with payload content).
 - **`aider/reasoning_tags.py`** (~90 lines) — `remove_reasoning_content`, `replace_reasoning_tags`, `format_reasoning_content`; uses a random-looking sentinel tag `thinking-content-7bbeb8e...` (line 8) to isolate think-blocks from editable content. **Priority: MEDIUM** — handling `<think>`-style reasoning so it doesn't get parsed as edits.

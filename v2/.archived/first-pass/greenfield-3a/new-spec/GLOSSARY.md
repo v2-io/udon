@@ -1,6 +1,7 @@
 # UDON Glossary (Source of Truth)
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2 (Draft)*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2 (Draft)*
 
 To maintain **Ruthless Consistency**, this glossary serves as the single source of truth for all terminology used in the UDON ecosystem. When discussing UDON, you MUST use these terms exactly as defined here.
 

@@ -135,7 +135,8 @@ Adopt the one-line ceiling note on any claim whose ceiling isn't obvious. It's t
 
 **Adopt:** the `inherited (asf #…)` cite-don't-rederive status (§2); the empirical-family status split defined by repair (§1); claim-grain marking via the capability card + inline words + optional leg-table (§3); Search-Log coverage tags incl. `intuition-only` (§4); gate-checks-as-re-runnable-instruments + dated verification events with a regression-guard line (§5); Related-Work relationship labels + novelty-claim postures (§6); the transmiss- ibility check (§7); max-attainable-status (§9).
 
-**Adapt:** ASF's derivation-audit table → the report's "what each leg carries" mini-table; Feynman Brief → a claim-grain transmissibility check on the plain-word gloss; ASF's segment-status frontmatter → pilot A's `register:`+`strength:`, with `strength:` drawing from the refined ladder.
+**Adapt:** ASF's derivation-audit table → the report's "what each leg carries" mini-table;  
+Feynman Brief → a claim-grain transmissibility check on the plain-word gloss; ASF's segment-status frontmatter → pilot A's `register:`+`strength:`, with `strength:` drawing from the refined ladder.
 
 **Decline (with reason):** LaTeX equation tags + Formal-Expression cadence (no equations); three rings (no inevitability core in a demand report — ceiling survives); wholesale ASF `type:` vocab (the report's own fits); `empirica:` now (no runs yet — reserve the shape).
 

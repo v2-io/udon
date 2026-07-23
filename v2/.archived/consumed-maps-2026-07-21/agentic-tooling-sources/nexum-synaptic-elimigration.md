@@ -45,7 +45,8 @@ A coherent research pass (early–mid **November 2025**; several files carry an 
 
 - `~/src/_core/nexum/docs/research/cli-analysis.md` — Capability-comparison matrix across codex / claude / gemini / minimal-sapientia CLIs (~40 dimensions: one-shot mode, resume, output-format, permission/approval modes, tool management, streaming) with per-tool "unique features" and design implications. Empirical grounding for agent-CLI flag design. Date: 2025-11-06. **Priority: medium-high.**
 
-- `~/src/_core/nexum/docs/.archive/modern-cli-comparison.md` — Deeper Claude Code vs Codex vs Gemini comparison (invocation, headless mode, conventions worth copying). Companion to cli-analysis. Committed 2025-11-07. **Priority: medium.**
+- `~/src/_core/nexum/docs/.archive/modern-cli-comparison.md` — Deeper Claude Code vs Codex vs Gemini comparison (invocation, headless mode, conventions worth copying). Companion to cli-analysis. Committed 2025-11-07.  
+  **Priority: medium.**
 
 - `~/src/_core/nexum/docs/.archive/cli-testing-requirements.md` — Testing checklist for an agent-facing CLI (meaningful exit codes; stdout pipeable only; works under `set -euo pipefail`; SIGINT/SIGTERM handling; validates inputs; non-interactive mode). Sourced from `sapientia/cli-conventions/examples-and-patterns.md`. The "what a compliant agent tool must pass" list. Committed 2025-11-07. **Priority: medium.**
 

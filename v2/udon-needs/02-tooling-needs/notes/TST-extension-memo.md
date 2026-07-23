@@ -39,7 +39,8 @@ The posture is deliberate and worth stating plainly, because the alternative wou
 
 **`testimonial` is the member we'd argue hardest for.** A theory volume about software-as-agentic-domain will increasingly carry lived agent accounts, and they are neither `empirical` (no measurement) nor `discussion` (not interpretation) in ASF's current vocabulary — they are testimony, and their repair is corroboration, which nothing else in the ladder routes to. Typing them honestly is what lets them be *weighed* rather than either over-trusted or quietly discarded.
 
-**Price.** A six-member controlled vocabulary and the judgment to apply it. Non-trivial: assignment requires reading a claim for what it rests on. In our 30-chapter migration this was real work, and it repeatedly *found* things — which is the argument for it.
+**Price.** A six-member controlled vocabulary and the judgment to apply it.  
+Non-trivial: assignment requires reading a claim for what it rests on. In our 30-chapter migration this was real work, and it repeatedly *found* things — which is the argument for it.
 
 ## 3. The convergent lock, keyed on failure-mode independence
 

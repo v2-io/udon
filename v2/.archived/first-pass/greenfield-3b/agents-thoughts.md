@@ -40,7 +40,11 @@ A brilliant lab notebook that became the constitution by accident.
 
 It has real depth — ownership rows, bare-token boundary, inline-brace principle, $partial-key, geometric vs delimited EOF — and those ideas are good. But the reading experience is:
 
-• You meet scan machinery before you meet what a document is. • The same rule is taught three times (prose heuristic, worked example, edge case), sometimes with a CURRENT BEHAVIOR footnote that half-takes it back. • Vocabulary drifts mid-document (“blob” / “flow” / “text”; “freeform” / fence; “head” everywhere). • Status is honest but scattered — provisional, undefined, needs-a-ruling live next to normative prose with the same visual weight. • Companions disagree with CORE (TIME-SPEC still bare-recognizing while CORE says envelope-only). That undermines trust even when CORE is right.
+• You meet scan machinery before you meet what a document is.  
+• The same rule is taught three times (prose heuristic, worked example, edge case), sometimes with a CURRENT BEHAVIOR footnote that half-takes it back.  
+• Vocabulary drifts mid-document (“blob” / “flow” / “text”; “freeform” / fence; “head” everywhere).  
+• Status is honest but scattered — provisional, undefined, needs-a-ruling live next to normative prose with the same visual weight.  
+• Companions disagree with CORE (TIME-SPEC still bare-recognizing while CORE says envelope-only). That undermines trust even when CORE is right.
 
 If you already have the language in your head, the original is rich. If you don’t, it’s a fog with excellent mountains in it.
 

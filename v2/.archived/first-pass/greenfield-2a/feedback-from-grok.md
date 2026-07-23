@@ -123,7 +123,8 @@ Leaving Q8 open is coherent for a careful contract. Joseph’s greenfield note w
 
 ### 3.5 Root attribute (Q1) still undefined
 
-Recommendation (text + warning) is sensible; 3a/3b pinned Error + keep. Undefined is fine if OPEN is canonical; just know three greenfields will disagree until Joseph rules.
+Recommendation (text + warning) is sensible; 3a/3b pinned Error + keep.  
+Undefined is fine if OPEN is canonical; just know three greenfields will disagree until Joseph rules.
 
 ### 3.6 No explicit “pop while” implementer formula
 

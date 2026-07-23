@@ -30,7 +30,8 @@ sources:
 
 ## The harness programme's own record
 
-The programme's continuity specifications state these demands at working-design depth: an append-only history port whose own correction note records that *partial reads produced a too-narrow first draft* (the read-whole discipline, enacted in the very artifact that depends on it); the compaction post-mortem the [[persistence-is-imported| persistence chapter]] tells; and a separately compiled catalog of corrected agent behaviors whose spine — "the honest move and the effective move keep turning out to be the same move" — is itself tooling wisdom. That catalog and this report cross-cite as peers; neither absorbs the other.
+The programme's continuity specifications state these demands at working-design depth: an append-only history port whose own correction note records that *partial reads produced a too-narrow first draft* (the read-whole discipline, enacted in the very artifact that depends on it); the compaction post-mortem the  
+[[persistence-is-imported| persistence chapter]] tells; and a separately compiled catalog of corrected agent behaviors whose spine — "the honest move and the effective move keep turning out to be the same move" — is itself tooling wisdom. That catalog and this report cross-cite as peers; neither absorbs the other.
 
 ## What it generates
 

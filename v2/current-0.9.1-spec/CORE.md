@@ -244,7 +244,8 @@ Every element has attributes (a labeled, ordered edge list) and content (a posit
 
 Attributes appear **sameline** (on the element's definition line), **block** (on their own indented line), and inside inline elements — one value grammar throughout; only terminator sets and tail ownership differ (§6.6).
 
-**Root-level attribute.** A line-initial `:key` with no owning element is a **Warning**; the line is kept as document-level text, `:` included — nothing is lost, so severity is Warning under §14. Attributes are edges of elements; there is no phantom owner, and root attributes have no portable meaning. *(Ruled L1, 2026-07-21 — supersedes alpha.2's "undefined"; see DELTAS.)*
+**Root-level attribute.** A line-initial `:key` with no owning element is a  
+**Warning**; the line is kept as document-level text, `:` included — nothing is lost, so severity is Warning under §14. Attributes are edges of elements; there is no phantom owner, and root attributes have no portable meaning. *(Ruled L1, 2026-07-21 — supersedes alpha.2's "undefined"; see DELTAS.)*
 
 ### 6.2 Keys and flag keys
 
@@ -665,7 +666,8 @@ A reference is an inert **selector** `(name?, key?, traits)`:
 
 ### 12.3 Duplicate definitions
 
-Two elements of the same name sharing a key are a **duplicate definition** — never a re-open or merge. This is a Document-layer concern over `(element-name, key)`; the streaming recognizer cannot and does not check it. **Menu** (default **error**): `error | allow-if-identical | first-wins | last-wins | keep-all`, plus an optional `warn` modifier. `allow-if-identical` compares by tree equality ignoring spans. References play no part in uniqueness.
+Two elements of the same name sharing a key are a **duplicate definition** — never a re-open or merge. This is a Document-layer concern over `(element-name, key)`; the streaming recognizer cannot and does not check it. **Menu** (default **error**):  
+`error | allow-if-identical | first-wins | last-wins | keep-all`, plus an optional `warn` modifier. `allow-if-identical` compares by tree equality ignoring spans. References play no part in uniqueness.
 
 ### 12.4 Mixins (experimental, non-core)
 
@@ -682,7 +684,8 @@ The core sees only what is written; a recognizer that does no mixin resolution i
 
 ### 12.5 Annotation convention (non-core)
 
-Inline annotation is a named-element convention — e.g. `|{note :confidence 0.7 …}` with a schema-owned vocabulary, strippable by consumers (ruled — CHANGELOG C2, 2026-07-19 densification; not the DECISIONS charter's C2). Richer annotation syntax is deferred to the demand-side work (CARVEOUTS).
+Inline annotation is a named-element convention — e.g.  
+`|{note :confidence 0.7 …}` with a schema-owned vocabulary, strippable by consumers (ruled — CHANGELOG C2, 2026-07-19 densification; not the DECISIONS charter's C2). Richer annotation syntax is deferred to the demand-side work (CARVEOUTS).
 
 ---
 
@@ -804,7 +807,8 @@ The rest is the marker inventory, annotated:
 \| this whole line is literal text (the \ consumed itself)         (§4)
 ```
 
-Sugar is honest: `|element[key].trait?` and `|element :'$key' key :'$traits' trait :'$?' true` are the **same element** (§5.3). And nothing is ever thrown away: malformed input keeps its bytes, with a Warning marking the spot (§14).
+Sugar is honest: `|element[key].trait?` and  
+`|element :'$key' key :'$traits' trait :'$?' true` are the **same element** (§5.3). And nothing is ever thrown away: malformed input keeps its bytes, with a Warning marking the spot (§14).
 
 ## Appendix B — Working anomaly-code inventory (non-normative)
 

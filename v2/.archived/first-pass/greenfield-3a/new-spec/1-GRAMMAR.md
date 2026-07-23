@@ -1,6 +1,7 @@
 # UDON Grammar (The Parser's Domain)
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2 (Draft)*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2 (Draft)*
 
 This document specifies the mechanical parsing rules for UDON: how a stream of bytes is analyzed, how boundaries are determined, and how the document hierarchy is constructed via indentation. For the semantic meaning of the resulting structures, see [2-SPECIFICATION.md](2-SPECIFICATION.md).
 
@@ -26,7 +27,8 @@ At the **start of a line** (after indentation) or within the **sameline scan** (
 
 If a marker character appears but fails its short lookahead guard (e.g., `| ` followed by a space), it is treated as ordinary prose text. 
 
-**Phase-Restriction on `:`**  The attribute marker `:` is phase-restricted. It is only valid while the element has no child content yet. Once any text or child element has appeared for an element, that element enters its **content phase**. A subsequent line-initial `:` at an ancestor's column is parsed as Prose Content and emits a Warning.
+**Phase-Restriction on `:`**   
+The attribute marker `:` is phase-restricted. It is only valid while the element has no child content yet. Once any text or child element has appeared for an element, that element enters its **content phase**. A subsequent line-initial `:` at an ancestor's column is parsed as Prose Content and emits a Warning.
 
 ### 1.2 The Bare-Token Boundary Rule
 

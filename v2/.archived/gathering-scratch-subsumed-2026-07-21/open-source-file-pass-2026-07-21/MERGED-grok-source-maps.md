@@ -158,7 +158,8 @@ For spikes also in archive: open archived originals for truth; quarantine copies
 | `…/spikes/memory-import/FINDINGS.md` + `samples/` | Session/memory as document substrate (S10) |
 | `…/spikes/session-vault/` | Selective mine (§3c); use `raw/{claude,grok}/INVENTORY.md` first |
 
-**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`, …): listed in A/C as secondary archaeology only — **do not re-promote as ontology**. Greenfield `agents-thoughts` / feedback-from-* mostly **spec craft** (R: low for pure use ideation).
+**Supply spine under second-pass** (`PIPELINE`, `WIRE`, `ADM`, `SPEC`, …): listed in A/C as secondary archaeology only — **do not re-promote as ontology**.  
+Greenfield `agents-thoughts` / feedback-from-* mostly **spec craft** (R: low for pure use ideation).
 
 ---
 
@@ -344,7 +345,8 @@ Encode what hosts *do* with parse products (A/B/C strong; R mostly skips).
 | `…/latest.txt`, `misc/udon.vim` | Experiment pointers; editor from day one |
 
 **Unconfirmed trail (R1/R2 gap):**  
-`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `declang/` predecessor) — referenced by `_archive/analysis.md`; **not confirmed on disk** this cycle. Treat as search trail, not path inventory.
+`…/_ref/udon/.attic/` (`syntax2`, `sample1`, `declang/` predecessor) — referenced by `_archive/analysis.md`; **not confirmed on disk** this cycle.  
+Treat as search trail, not path inventory.
 
 ### 8b. udon-c / libudon / udon-ruby archives
 

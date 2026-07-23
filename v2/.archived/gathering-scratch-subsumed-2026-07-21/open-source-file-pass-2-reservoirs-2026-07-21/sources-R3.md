@@ -313,4 +313,5 @@ These are **search strategies**, not paths to open once — run when file maps r
 
 ## Provenance of this map
 
-Filesystem walks of `test/usability`, `test/scenarios`, `v2/.archived`, `_ref/udon*`, `design/examples`, `CONSUMERS.md`, sibling rowan/sar/vaults paths; cross-check against open pass A/B/C underweighting of the usability tree; session memory on Joseph’s “hidden reservoir” reaction. )
+Filesystem walks of `test/usability`, `test/scenarios`, `v2/.archived`, `_ref/udon*`, `design/examples`, `CONSUMERS.md`, sibling rowan/sar/vaults paths; cross-check against open pass A/B/C underweighting of the usability tree; session memory on Joseph’s “hidden reservoir” reaction.  
+)

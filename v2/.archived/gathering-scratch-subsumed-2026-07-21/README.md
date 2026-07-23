@@ -6,4 +6,5 @@ Individual open path maps (A/B/C) and reservoir maps (R1/R2/R3), plus the earlie
 
 Keep for archaeology / audit of how the merge was produced. Prefer the live merge for mining order and path union.
 
-Scratch items **not** moved (still need reconciling with Fable's parallel mining) remain under `v2/udon-needs/01-ideation/scratch/`.
+Scratch items **not** moved (still need reconciling with Fable's parallel mining) remain under  
+`v2/udon-needs/01-ideation/scratch/`.

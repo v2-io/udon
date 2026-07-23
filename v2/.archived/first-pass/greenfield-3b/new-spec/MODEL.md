@@ -47,7 +47,8 @@ Element =
 ### 3.1 Name
 
 - A **Name** is a string (Unicode identifier or quoted form as on the surface).
-- **Absent** name ⇒ Anonymous Element. Namelessness has no Core meaning; Hosts MAY interpret trait-only anonymous Elements as mixins (non-core).
+- **Absent** name ⇒ Anonymous Element. Namelessness has no Core meaning;  
+  Hosts MAY interpret trait-only anonymous Elements as mixins (non-core).
 
 ### 3.2 AttributeAssignment
 
@@ -130,7 +131,8 @@ Scalar =
   | Envelope
 ```
 
-**Frozen Core Scalars** (bare recognition): String (quoted or bare fallback), Integer, Float, Boolean (`true`/`false` lowercase), Nil (`null`/`nil`), List.
+**Frozen Core Scalars** (bare recognition): String (quoted or bare fallback),  
+Integer, Float, Boolean (`true`/`false` lowercase), Nil (`null`/`nil`), List.
 
 **[GREENFIELD]** Rational and Complex are **not** Frozen Core Scalars in this suite; they belong to a future `standard-types` Dialect via Envelope. See [DECISIONS.md](DECISIONS.md).
 

@@ -99,7 +99,8 @@ Consequences:
 - **Same column** ⇒ sibling (parent closed first by step 1).
 - **Lesser column** ⇒ ancestor closed until the relation holds.
 
-**Sameline nesting:** Elements appearing later on the same line are treated as if each began on its own line at its actual column (the column of its `|`). The Nesting Rule applies with those columns.
+**Sameline nesting:** Elements appearing later on the same line are treated as if each began on its own line at its actual column (the column of its `|`).  
+The Nesting Rule applies with those columns.
 
 **Exception — prose interior:** once an Element has an established **Content Base** for block prose, a line indented *deeper than that Content Base* is prose interior (literal Text), not a new structural child, even if it begins with a Marker-looking character. Structure resumes only at columns `≤` Content Base (see §7).
 
@@ -361,7 +362,8 @@ Where a plain Attribute still needs a value and no token has started, `\` is con
 | Inside `\|{…}` | `}` unconsumed | Inline Element content |
 | List item | `]` unconsumed | *(no tails)* |
 
-Framed ` ; ` opens a sameline comment on Element and Attribute lines except in value-`\` text mode. Unspaced `;` may be part of a token (`:url https://example.com/a?q=1;s=2`).
+Framed ` ; ` opens a sameline comment on Element and Attribute lines except in value-`\` text mode. Unspaced `;` may be part of a token  
+(`:url https://example.com/a?q=1;s=2`).
 
 Inside Inline Elements, bare `;` is literal; only `;{…}` comments (**[GREENFIELD]** affirmation of intended long-term rule; framed sameline comments inside `|{…}` are not required).
 
@@ -492,7 +494,8 @@ Block Verbatim and Fences MAY be Node Values. Prefer `!:lang:` for ordinary code
 
 ### 11.1 Syntactic typing
 
-Type comes from syntax. Bare recognition is a **closed** Frozen Core Scalar Set. All other typed values use the Envelope.
+Type comes from syntax. Bare recognition is a **closed** Frozen Core Scalar Set.  
+All other typed values use the Envelope.
 
 ### 11.2 Numbers
 
@@ -528,7 +531,8 @@ Unquoted bare text that is not another scalar is a string or Flow Value per §6.
 
 ### 11.5 Lists
 
-`[ item item … ]` space-delimited; each item full Value rules except Flow Value. **[GREENFIELD]** Lists MAY span lines; newlines between items are whitespace. Unclosed at EOF → Warning + Incomplete Input.
+`[ item item … ]` space-delimited; each item full Value rules except Flow Value. **[GREENFIELD]** Lists MAY span lines; newlines between items are whitespace.  
+Unclosed at EOF → Warning + Incomplete Input.
 
 ### 11.6 Envelope `<…>`
 
@@ -623,7 +627,8 @@ At true end of input, close all open constructs innermost-first:
 - **Geometric:** close silently (EOF ≡ newline for this purpose). Missing final newline alone is not an Anomaly.
 - **Delimited still open:** keep captured content; emit a **Warning** citing the open site; close the construct. Each open delimited frame yields its own Warning.
 
-If any Delimited Construct was still open at true EOF, the Document also carries **Incomplete Input** = true (Document-layer non-success signal). Streaming chunk boundaries are not EOF.
+If any Delimited Construct was still open at true EOF, the Document also carries **Incomplete Input** = true (Document-layer non-success signal).  
+Streaming chunk boundaries are not EOF.
 
 ---
 

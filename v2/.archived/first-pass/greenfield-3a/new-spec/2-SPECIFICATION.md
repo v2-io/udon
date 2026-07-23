@@ -1,6 +1,7 @@
 # UDON Specification (The Semantic Domain)
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2 (Draft)*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2 (Draft)*
 
 This document defines the **semantics** of a valid UDON document, establishing what the constructs mean independently of how they are parsed. For the formal lexical grammar and parser mechanics, see [1-GRAMMAR.md](1-GRAMMAR.md).
 
@@ -21,7 +22,8 @@ Every Element in the ADM consists of exactly three things:
 
 There are no separate, intrinsic fields for "identity" or "traits" in the core model. They are syntactic sugar that desugars into specially-designated attributes.
 
-**Anonymous Elements as Core:** An element's name is optional. Forms like `|[key]`, `|.trait`, and `|?` produce valid, ordinary Elements with no name that carry attributes and children exactly like named elements.
+**Anonymous Elements as Core:**  
+An element's name is optional. Forms like `|[key]`, `|.trait`, and `|?` produce valid, ordinary Elements with no name that carry attributes and children exactly like named elements.
 
 ### 1.2 The Core vs. Host Boundary
 
@@ -57,7 +59,8 @@ Attribute keys that terminate with a `?` character are **Flag Keys** (e.g., `:re
 
 An attribute's value MUST be one of the following kinds:
 
-1. **Scalar:** An integer, float, boolean, nil, string, list (`[...]`), or explicitly typed envelope (`<...>`).  *(List Items MUST NOT contain flow values; each item is a discrete token. Adjacent quoted strings are preserved).*
+1. **Scalar:** An integer, float, boolean, nil, string, list (`[...]`), or explicitly typed envelope (`<...>`).   
+   *(List Items MUST NOT contain flow values; each item is a discrete token. Adjacent quoted strings are preserved).*
 2. **Reference:** An `@`-prefixed selector targeting another Element.
 3. **Interpolation:** A `!{{...}}` expression left unparsed for host evaluation.
 4. **Node:** A fully constructed Element assigned directly to the attribute in block form (`|name`).
@@ -84,7 +87,8 @@ These forms desugar directly into ordinary attributes within the ADM.
 - **Traits (`.trait`):** Desugars to `:'$traits'`. Traits stack into a list. The trait value is a Unicode identifier, and absorbs trailing flag suffix characters (`* ! ? +`), meaning `.foo?` is exactly the trait `"foo?"`.
 - **Flag Suffixes (`?`, `!`, `*`, `+`):** Desugar to explicit boolean `true` assignments on matching `$`-prefixed attributes (`:'$?' true`). A suffix binds to the element identity; if placed after a trait, it MUST be space-separated to avoid absorption.
 
-**Naming Rules (XID):** A bare element name or trait is a Unicode identifier. The first character MUST carry the `XID_Start` property. Subsequent characters MUST carry `XID_Continue` or be a hyphen `-` or slash `/`. Characters outside this set (e.g., `.`, `[`, `:`) end the bare name. Names with invalid characters must be quoted (`|'weird name'`).
+**Naming Rules (XID):**  
+A bare element name or trait is a Unicode identifier. The first character MUST carry the `XID_Start` property. Subsequent characters MUST carry `XID_Continue` or be a hyphen `-` or slash `/`. Characters outside this set (e.g., `.`, `[`, `:`) end the bare name. Names with invalid characters must be quoted (`|'weird name'`).
 
 If an Identity key is left unclosed at EOF, the core MUST desugar it to `:'$partial-key'` to prevent the host from acting on a truncated identifier, emitting a Warning.
 

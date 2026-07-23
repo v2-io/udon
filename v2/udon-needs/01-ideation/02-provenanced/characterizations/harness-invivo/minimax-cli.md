@@ -14,7 +14,8 @@ repo_provenance: HEAD 3615170 dated 2026-07-19 02:18 (+0800); history spans 2026
 
 **Where the relevant center of mass actually is** — two things, both genuinely useful to a document/notation-for-agents project:
 
-1. **The CLI-as-agent-tools story:** the text/chat surface speaks the **Anthropic Messages API** wire format verbatim (tool_use / tool_result / input_schema / tool_choice), *and* the CLI can auto-emit its own commands as **Anthropic/OpenAI-compatible JSON tool schemas** (`config export-schema`). So this repo is a worked example of "a CLI presenting itself to an agent as a set of typed tools."
+1. **The CLI-as-agent-tools story:** the text/chat surface speaks the **Anthropic Messages API** wire format verbatim (tool_use / tool_result / input_schema / tool_choice), *and* the CLI can auto-emit its own commands as **Anthropic/OpenAI-compatible JSON tool schemas** (`config export-schema`).  
+   So this repo is a worked example of "a CLI presenting itself to an agent as a set of typed tools."
 2. **Agent-mode CLI conventions:** an explicit machine-facing contract — non-interactive detection, `--output json`, clean-stdout/`--quiet`, structured JSON errors keyed to a fixed exit-code table, `--dry-run` request preview, async task-ID + polling. This is the "how a CLI behaves for a non-human caller" material.
 
 ---
@@ -51,7 +52,8 @@ The chat command: `--tool <json-or-path>` (repeatable) accepts a tool def as inl
 `mapApiError` folds both HTTP status and MiniMax's `base_resp.status_code` envelope into `CLIError`s: 401/403→AUTH, 429→QUOTA, 408/504→TIMEOUT, plus plan-tier hints inferred from URL path. Date: within repo range. **Priority: medium** — dual error-channel (HTTP + in-body `base_resp`) normalization, a pattern any structured-API notation hits.
 
 ### `src/utils/env.ts` (full, 38 lines) — interactive vs agent/CI detection
-`isInteractive()` returns false on non-TTY stdin/stdout, `--non-interactive`, or `CI` env; `isCI()` checks GITHUB_ACTIONS/GITLAB_CI/JENKINS/TRAVIS/CIRCLECI. This is the switch that makes commands prompt a human vs fail-fast for an agent. **Priority: medium** — the concrete "am I talking to a machine?" heuristic.
+`isInteractive()` returns false on non-TTY stdin/stdout, `--non-interactive`, or `CI` env; `isCI()` checks GITHUB_ACTIONS/GITLAB_CI/JENKINS/TRAVIS/CIRCLECI. This is the switch that makes commands prompt a human vs fail-fast for an agent.  
+**Priority: medium** — the concrete "am I talking to a machine?" heuristic.
 
 ### `src/client/stream.ts` (full, 82 lines) — hand-rolled SSE parser
 Generic `parseSSE(Response)` async-generator: buffers, splits on `\n`, handles `\r`, multi-line `data:` concatenation, comment lines (`:`), flushes trailing event. Consumed by chat/repl to decode Anthropic streaming. **Priority: medium** — reference SSE-frame handling for streamed structured events.

@@ -1,9 +1,11 @@
 # WIRE — recognition event stream (0.10 / v2-spec)
 
 **Status:** **provisional skeleton** — not full suite prose; not a frozen event enum.  
-**Role:** Normative *contract* for consumers of the recognition product: the event stream plus recognition-verdict under **sufficiency / no-reachback**. Implementation-facing (engines, harness, fixtures, tools) but **normative** for any consumer of that stream.  
+**Role:** Normative *contract* for consumers of the recognition product: the event stream plus recognition-verdict under **sufficiency / no-reachback**.  
+Implementation-facing (engines, harness, fixtures, tools) but **normative** for any consumer of that stream.  
 **Not this document:** surface syntax → SPEC (when authored); document shape → [ADM.md](ADM.md); stage names → [PIPELINE.md](PIPELINE.md); equivalence layers → [SEMANTICS.md](SEMANTICS.md).  
-**Authority:** [DECISIONS.md](DECISIONS.md) **W0**, **W1d**, **W2**–**W5**, **C5**, **C6**, **R1**, **R8**, **R12** (and related CARRY). Encoding detail still open → [OPEN.md](OPEN.md) **W1e**, **ML**.  
+**Authority:** [DECISIONS.md](DECISIONS.md) **W0**, **W1d**, **W2**–**W5**,  
+**C5**, **C6**, **R1**, **R8**, **R12** (and related CARRY). Encoding detail still open → [OPEN.md](OPEN.md) **W1e**, **ML**.  
 **How to read:** Law sentences are load-bearing. Working spellings (e.g. `AttrValueEnd`) are *illustrations*, not final vocabulary. **TODO** / OPEN markers are honest holes — do not invent event names to fill them.
 
 Requirement words MUST / SHOULD / MAY follow RFC 2119 when used below.

@@ -1,6 +1,7 @@
 # UDON Full Specification
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2 -- 2026-07-18 · rebooted lineage, see [CHANGELOG](msc/CHANGELOG.md)*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2 -- 2026-07-18 · rebooted lineage, see [CHANGELOG](msc/CHANGELOG.md)*
 
 It is intended to be the single comprehensive, authoritative spec. & source of truth.
 

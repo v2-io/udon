@@ -1,6 +1,7 @@
 # UDON Dialects and Dynamics
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2 (Draft)*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2 (Draft)*
 
 This document specifies the standard Host extensions for UDON. Because core UDON is strictly a syntactic layer, the meaning of explicitly typed values (the `<...>` envelope) and dynamic blocks (`!`) are defined by **Dialects**. 
 
@@ -10,7 +11,8 @@ A conformant parser recognizes the syntax of these constructs, but a Host enviro
 
 ## 1. The `temporal@1` Dialect
 
-The `temporal@1` dialect defines standard representations for dates, times, durations, and relative offsets.  All temporal values in UDON MUST be written inside the explicit typing envelope (`<...>`), as core UDON no longer recognizes bare temporal values.
+The `temporal@1` dialect defines standard representations for dates, times, durations, and relative offsets.   
+All temporal values in UDON MUST be written inside the explicit typing envelope (`<...>`), as core UDON no longer recognizes bare temporal values.
 
 ### 1.1 Valid Temporal Patterns
 
@@ -53,7 +55,9 @@ Expressions inside `!{{...}}` and control-flow directives support standard logic
 - **Logical:** `and`, `or` (Evaluated **Right-to-Left** with no precedence).
 - **Membership:** `contains`
 
-**Truthiness Rules:** Only two values are falsy in the baseline dialect: `false` and `nil` / `null`. *All other values*, including `0`, `""` (empty string), and `[]` (empty list), are explicitly **Truthy**.
+**Truthiness Rules:**  
+Only two values are falsy in the baseline dialect: `false` and `nil` / `null`.  
+*All other values*, including `0`, `""` (empty string), and `[]` (empty list), are explicitly **Truthy**.
 
 ### 2.3 Control Flow Directives
 
@@ -75,4 +79,5 @@ Because UDON relies on indentation rather than closing tags, control flow blocks
 
 ### 2.4 Filters
 
-Expressions support pipe-based filters: `!{{ value | filter_name arg }}`. Standard filters include `capitalize`, `format`, `first`, and `currency`.
+Expressions support pipe-based filters: `!{{ value | filter_name arg }}`.  
+Standard filters include `capitalize`, `format`, `first`, and `currency`.

@@ -305,7 +305,8 @@ Boundary demands that *appeared* while reading — **proposals only**. Do not tr
 
 ### P-B. Recognition-verdict channel for partial generation
 
-**Proposal:** Incomplete-input and related generation stops surface as **verdicts** agents can branch on, not as malformed ASTs or silent truncation.
+**Proposal:** Incomplete-input and related generation stops surface as  
+**verdicts** agents can branch on, not as malformed ASTs or silent truncation.
 
 **Pairs with:** C6 / OPEN C6; mid-generation feedback item.
 

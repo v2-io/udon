@@ -13,7 +13,8 @@ So the findings below are mostly **traceability, vocabulary-consistency, and tea
 ## Medium
 
 ### M1. Version identity (`0.9.1`) contradicts the ratified charter (`0.10.0`) with no reconciling cite
-**Files:** README.md ¶1, ¶"Authority"; DELTAS title. **Source:** `v2/DECISIONS.md` Charter **C0** ("**Greenfield replacement** … not brownfield merge") and **C2** ("Version line **0.10.0**; 0.9.x stays transitional history"); packaging **P1** ("Author new suite under **`v2-spec/`**").
+**Files:** README.md ¶1, ¶"Authority"; DELTAS title. **Source:** `v2/DECISIONS.md`  
+Charter **C0** ("**Greenfield replacement** … not brownfield merge") and **C2** ("Version line **0.10.0**; 0.9.x stays transitional history"); packaging **P1** ("Author new suite under **`v2-spec/`**").
 
 The ratified charter says the successor suite is a *0.10.0 greenfield replacement* authored under `v2-spec/`. This suite instead presents as a *0.9.1 consolidation* under `current-0.9.1-spec/`. Those are three separate divergences from C0/C2/P1, and nothing in the suite or in DECISIONS.md carries a cite explaining the pivot. A future spec author reading DECISIONS.md (still C2=0.10.0, P1=`v2-spec/`) next to this suite will hit an unexplained contradiction and not know which is current.
 

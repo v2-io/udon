@@ -15,7 +15,8 @@ not treated as coverage: 01-ideation/_quarantine/ (prior over-constrained pass)
 
 **What this is.** Candidate **paths** (files or whole subtrees as units) where needs, usage situations, tool desires, consumer friction, schema/path/template/ edit/stream ideas, etc. might live. Short *why* + *provenance* when known. Later passes open and mine; this pass does not copy bodies or synthesize needs.
 
-**How to use.** Absolute paths. Section order is geography, not priority. Duplicates vs `sources-schema-versioning.md`, `sources-agentic-tooling.md`, quarantined Grok maps, etc. are **fine** — reconcile later.
+**How to use.** Absolute paths. Section order is geography, not priority.  
+Duplicates vs `sources-schema-versioning.md`, `sources-agentic-tooling.md`, quarantined Grok maps, etc. are **fine** — reconcile later.
 
 **Deliberate biases of this pass (on purpose):**
 - Not design/UX-only — historical UDON, converters, fixtures, library APIs, live Rust consumers, conversion pipelines, session vaults, program TODOs.

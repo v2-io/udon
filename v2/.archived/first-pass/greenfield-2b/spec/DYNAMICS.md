@@ -1,6 +1,7 @@
 # UDON Dynamics -- the baseline `!` dialect
 
-**A companion spec to CORE.md.** UDON's core recognizes the `!` *syntax* (directives, interpolation, raw blocks) -- see CORE "Marker Recognition" and "Code and Raw Content". What those directives and expressions *mean* is a **host-provided dialect**, not core UDON. This document specifies the **baseline** dialect: a Liquid-style expression and control-flow language. A host may provide a different `!` dialect, and a conformant UDON parser needs none of what follows.
+**A companion spec to CORE.md.** UDON's core recognizes the `!` *syntax* (directives, interpolation, raw blocks) -- see CORE "Marker Recognition" and "Code and Raw Content".  
+What those directives and expressions *mean* is a **host-provided dialect**, not core UDON. This document specifies the **baseline** dialect: a Liquid-style expression and control-flow language. A host may provide a different `!` dialect, and a conformant UDON parser needs none of what follows.
 
 ---
 

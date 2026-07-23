@@ -2,7 +2,8 @@
 
 **Status:** **provisional skeleton** — surface recognition → ADM contract prose.  
 **Not** a full encyclopedia; not the live `spec/CORE.md`.  
-**Authority:** [DECISIONS.md](DECISIONS.md) wins on conflict. Multi-line / line-bound policy and exact wire/event encoding → [OPEN.md](OPEN.md) (**ML**, **W1e**). Do **not** invent pins for OPEN items here.  
+**Authority:** [DECISIONS.md](DECISIONS.md) wins on conflict. Multi-line / line-bound policy and exact wire/event encoding → [OPEN.md](OPEN.md) (**ML**,  
+**W1e**). Do **not** invent pins for OPEN items here.  
 **Companions:** [GLOSSARY.md](GLOSSARY.md), [ADM.md](ADM.md), [PIPELINE.md](PIPELINE.md), [SEMANTICS.md](SEMANTICS.md), [WIRE.md](WIRE.md) (event stream under **W0**/**W1d**; encoding detail OPEN **W1e**), [GRAMMAR.md](GRAMMAR.md) (non-normative extract).  
 **Version line:** **0.10.0** (**C2**).  
 **Wording mines (not law):** `../spec/msc/greenfield-2a/new-spec/SPEC.md`, `../spec/msc/greenfield-3b/new-spec/CORE.md`.
@@ -218,7 +219,9 @@ A line-initial `:key` with **no owning Element** MUST produce a **Warning** and 
 
 Bare Key: `XID_Start` then `XID_Continue` plus `-` `/` and `?` `!` `*` `+`. Other characters: single quotes. Terminal `?` selects **Flag Key** semantics; the key string **includes** the `?` (`:ready?` ≡ `:'ready?'`).
 
-**Plain keys always take a value.** Plain `:key` with no value material → Assignment with value **Nil** + **Error** (**R6**; absent intended value under **L0**). Presence flags use `?`.
+**Plain keys always take a value.** Plain `:key` with no value material →  
+Assignment with value **Nil** + **Error** (**R6**; absent intended value under  
+**L0**). Presence flags use `?`.
 
 #### Flag rule
 
@@ -322,7 +325,8 @@ Same Key repeated ⇒ ordered **Stacking** of Assignments (heterogeneous Values 
 | `:x 1 :x 2` | Two Assignments |
 | `:x [1 2]` | One Assignment, List value |
 
-**Warned extension:** material after a finished value on an Attribute-rooted line (same line or deeper) → further Assignment under that key + **Warning**. Never a nested multi-segment Value kind; never silently dropped. Flags are exempt same-line (flag rule re-owns).
+**Warned extension:** material after a finished value on an Attribute-rooted line (same line or deeper) → further Assignment under that key + **Warning**.  
+Never a nested multi-segment Value kind; never silently dropped. Flags are exempt same-line (flag rule re-owns).
 
 ### 6.8 Contexts and terminators
 
@@ -350,7 +354,8 @@ Attributes MUST precede Content of the same Element in surface construction orde
 
 ### 7.1 Flow
 
-**Flow** is the one prose-shaped model: ordered segments (Text, Inline Element, Interpolation, Inline Directive, Inline Verbatim, Inline Comment) shared by element prose, flow values, and inline interiors. Core treats prose as **opaque Text** — no Markdown parsing (**S16**: companion stub, not day-one Layer-1 in Core).
+**Flow** is the one prose-shaped model: ordered segments (Text, Inline Element,  
+Interpolation, Inline Directive, Inline Verbatim, Inline Comment) shared by element prose, flow values, and inline interiors. Core treats prose as **opaque Text** — no Markdown parsing (**S16**: companion stub, not day-one Layer-1 in Core).
 
 Any line not opening a Marker at Structure Position is Text of the column owner.
 

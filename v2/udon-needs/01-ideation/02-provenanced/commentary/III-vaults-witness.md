@@ -15,7 +15,8 @@ why_included: coverage-legible witness for the rows that resolved short.
 
 # Part III — ~/vaults/ witness lines
 
-Rows given full treatment elsewhere (not repeated here): claude-code-tools, gemini agent-defs + CLAUDE.md, MACH markdown-agents + gemini methodology (→ `characterizations/III-vaults-agents-as-documents-lineage.md`); multi_agent_practices + clean_split + RAG + agentic-coding (→ `characterizations/III-vaults-context-memory-field-survey.md`); claude-tools philosophy, TodoWrite, prompt-engineering rules, truthfulness prompts (→ `copies/III-vaults/*-excerpt.md` and `truthfulness-prompts.md`).
+Rows given full treatment elsewhere (not repeated here): claude-code-tools, gemini agent-defs + CLAUDE.md, MACH markdown-agents + gemini methodology (→ `characterizations/III-vaults-agents-as-documents-lineage.md`); multi_agent_practices + clean_split + RAG + agentic-coding  
+(→ `characterizations/III-vaults-context-memory-field-survey.md`); claude-tools philosophy, TodoWrite, prompt-engineering rules, truthfulness prompts (→ `copies/III-vaults/*-excerpt.md` and `truthfulness-prompts.md`).
 
 ## Cross-model / cross-substrate tool-use
 

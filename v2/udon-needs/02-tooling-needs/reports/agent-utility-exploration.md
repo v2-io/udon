@@ -244,7 +244,8 @@ Agents mostly want model-level certainty + local spatial correctness, not global
 
 ### Soft/hard guarantees (`udon-guarantees`)
 
-Profiles casual / careful / critical: same notation, different enforcement. Agent edit tool is the **careful** gatekeeper for writes that flow through agents. Critical may need store/query later — not generation-surface day one.
+Profiles casual / careful / critical: same notation, different enforcement.  
+Agent edit tool is the **careful** gatekeeper for writes that flow through agents. Critical may need store/query later — not generation-surface day one.
 
 ---
 
@@ -334,7 +335,8 @@ Boundary demands that *appeared* while reading — **proposals only**. Do not tr
 
 ### P-B. Recognition-verdict channel for partial generation
 
-**Proposal:** Incomplete-input and related generation stops surface as **verdicts** agents can branch on, not as malformed ASTs or silent truncation.
+**Proposal:** Incomplete-input and related generation stops surface as  
+**verdicts** agents can branch on, not as malformed ASTs or silent truncation.
 
 **Pairs with:** C6 / OPEN C6; mid-generation feedback item.
 

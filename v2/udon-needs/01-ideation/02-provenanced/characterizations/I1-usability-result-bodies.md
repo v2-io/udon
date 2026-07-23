@@ -38,7 +38,8 @@ why_included: >
 
 The context_comparison track exists to find "the MINIMUM VIABLE CONTEXT an agent needs to produce good UDON" (task-defs `why_included`). The bodies answer it, and the answer is **genre-conditional, not a single threshold** — more reference is not uniformly better.
 
-**Schema — the sharpest gradient (cheatsheet is not enough; comprehensive teaches the idiom).** The same "blog-post schema" brief produced three qualitatively different shapes:
+**Schema — the sharpest gradient (cheatsheet is not enough; comprehensive teaches the idiom).**  
+The same "blog-post schema" brief produced three qualitatively different shapes:
 
 - `schema @ cheatsheet` (214158) fell back to the rubric's *named anti-pattern* — element-per-field with quoted content, no attributes, no cardinality:
   ```udon
@@ -61,7 +62,8 @@ The context_comparison track exists to find "the MINIMUM VIABLE CONTEXT an agent
 
 **Config — more context → richer structure.** cheatsheet/minimal produced flat attribute lists; comprehensive (214113, 214101) promoted `|cors` and `|ssl-config` to child elements with their own attributes — a genuine structure upgrade, not over-engineering.
 
-**Prose-markup genres — more context made output WORSE (the non-monotone case).** For `experiment_report` and `structure_prose` the judge scored the comprehensive- context runs *below* the minimal ones:
+**Prose-markup genres — more context made output WORSE (the non-monotone case).**  
+For `experiment_report` and `structure_prose` the judge scored the comprehensive- context runs *below* the minimal ones:
 
 | genre | cheatsheet | minimal | comprehensive |
 |---|---|---|---|
@@ -75,7 +77,8 @@ The context_comparison track exists to find "the MINIMUM VIABLE CONTEXT an agent
 
 These reproduce across independent runs, genres, and context levels. This is the notation's real friction, witnessed in production rather than speculated.
 
-**(a) Unbalanced inline-element closers `|{ … }}` — the single most-reproduced error.** Agents systematically emit an extra `}` closing `|{…}` inline elements. Verbatim, across at least five independent runs and three genres:
+**(a) Unbalanced inline-element closers `|{ … }}` — the single most-reproduced error.**  
+Agents systematically emit an extra `}` closing `|{…}` inline elements. Verbatim, across at least five independent runs and three genres:
 
 - structure_prose @ minimal (214612): `However, |{em 3}} participants`
 - experiment_report @ cheatsheet (214906): `(|{data :statistic p :value <0.001}}).` and `|{data :value 3}} participants` and `|{em jitteriness}}`
@@ -87,7 +90,8 @@ This directly corroborates the invention-track testimony in `AGENT_FEEDBACK-full
 
 **(b) Markdown code-fence wrapper leakage.** *Every* context_comparison response is wrapped in ```` ```udon … ``` ```` fences despite the prompt's "Output UDON only. No explanation." The model's chat-formatting prior overrides the instruction. A harness that ingests agent-authored UDON must strip/expect fences — or the notation's own raw-fence affordance must absorb them.
 
-**(c) Markdown-syntax leakage *inside* UDON, specifically under comprehensive context.** The 452-line reference runs reverted to embedding markdown:
+**(c) Markdown-syntax leakage *inside* UDON, specifically under comprehensive context.**  
+The 452-line reference runs reverted to embedding markdown:
 - markdown_to_udon @ comprehensive (214529): `# API Documentation`, `## Authentication`, and an *escaped* markdown table `'| Tier | Requests/min |` inside the UDON body.
 - yaml_frontmatter @ comprehensive (214723) and mixed_doc @ comprehensive (214131): `## Getting Started` / `## Introduction` headings instead of `|h2`. The richer reference apparently showed markdown-interop affordances and the agent leaned on them. Interaction effect worth the harness knowing: teaching more can teach the *escape hatch* louder than the core.
 

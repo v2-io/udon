@@ -29,7 +29,8 @@ Center of mass = `pkg/yqlib/doc/operators/*.md` (the expression-language referen
 
 - **`pkg/yqlib/doc/operators/string-operators.md` L160–200** — `match(regex)` returns `{string, offset, length, captures}` — i.e. **byte-offset + length spans** for substring matches, with `"g"` for global and named `capture` groups; `sub(regex, replacement)` does in-value substring replacement referencing captures; `test(regex)` boolean. Date 2025-11. **Priority: HIGH** — offset/length span reporting is precisely the primitive UDON's value-bracket wire needs; worth studying how a query language returns spans as data.
 
-- **`pkg/yqlib/doc/operators/parent.md`** — `parent` returns parent nodes; paired with `path` gives full tree navigation up and down. Date 2025-11. **Priority: LOW.**
+- **`pkg/yqlib/doc/operators/parent.md`** — `parent` returns parent nodes; paired with `path` gives full tree navigation up and down. Date 2025-11.  
+  **Priority: LOW.**
 
 ---
 

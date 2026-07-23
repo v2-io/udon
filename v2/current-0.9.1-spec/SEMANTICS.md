@@ -1,6 +1,7 @@
 # Semantic equivalence and round-trip
 
-**Status:** normative for equivalence claims; examples non-normative. Defines when two documents (or two surfaces) **mean the same** at core, so hosts can normalize without inventing silent language forks.
+**Status:** normative for equivalence claims; examples non-normative.  
+Defines when two documents (or two surfaces) **mean the same** at core, so hosts can normalize without inventing silent language forks.
 
 ---
 

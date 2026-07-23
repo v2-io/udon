@@ -60,7 +60,8 @@ Held while reading the live consumers above; each is corroborated by at least on
 
 - **`~/src/operata`** — no live `*.udon` files; the name appears only in `design/examples/operata*.udon` (an in-repo genre seed, §4), not as a live consumer. (Confirmed via prior sweep; consistent with TARGET-FILES §5 dry-well note.)
 - **`ops/`** — no hits in the capped live-consumer search pass (per TARGET-FILES §5).
-- **`vivarium/doc/ARCHITECTURE.md`** — the row listed it at repo root; it is actually at `doc/` (resolved, not a true dry well — noted so the path discrepancy isn't re-chased).
+- **`vivarium/doc/ARCHITECTURE.md`** — the row listed it at repo root; it is actually at `doc/`  
+  (resolved, not a true dry well — noted so the path discrepancy isn't re-chased).
 
 ## Blocked / unresolved
 

@@ -84,7 +84,8 @@ Of the 95 UDON-file hits (63 unique paths):
 
 1. **`~/src/_self/agents/soren/digitized-notes-2025-11-01-entities-and-auxilia.md`** — a `_self` personal-notebook file (same steward class as Pass-1's OPERATA, which Joseph ruled in-scope), genuinely **not in corpus**. ~80% PROPRIUM / personhood; a thin but real tool-adjacent seam. **WITNESS + steward-call.**
 2. **The TST tooling-ROI *worked elaborations*** (`~/src/_core/tst/planning/refs/{regime-breakout-analysis,future-dev,future-dev-part2,future-dev-lindy,future-dev-part4}.md`
-   + `analysis/412-tooling-support-for-metaprogramming.md`) — the fuller simulation/calculus treatment behind a thesis the corpus **already carries at theorem level** via `temporal-software-theory-distilled.md`. **Depth-residue, low priority + steward-call.**
+   + `analysis/412-tooling-support-for-metaprogramming.md`) — the fuller simulation/calculus treatment behind a thesis the corpus **already carries at theorem level** via `temporal-software-theory-distilled.md`.  
+   **Depth-residue, low priority + steward-call.**
 
 Everything else is represented, a derived restatement of a represented source, a deferred-reservoir session hit, or framework-naming noise.
 

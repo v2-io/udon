@@ -45,7 +45,8 @@ Sibling maps (do not treat as exclusive coverage):
 
 ## 1. PRIMARY RESERVOIR — Dec 2025 usability corpus (underweighted as “stale”)
 
-**Whole tree unit:** `/Users/josephwecker-v2/src/udon/test/usability/`
+**Whole tree unit:**  
+`/Users/josephwecker-v2/src/udon/test/usability/`
 
 Pass-1 listed this as “stale models/spec — still evidence,” often one row or a short §3b. That gloss buried the **creative use-case** signal. The harness explicitly ran open-ended “what might UDON enable / apply to” experiments; estate review (`_archive/REVIEW-JULY-2026.md` §~3) later found that 27 topic-enablement runs **predicted July 2026 adopters** (process maps, vivarium experiment narratives, audit/pre-registration) seven months early.
 
@@ -109,7 +110,8 @@ Greenfield **feedback-from-*** / `agents-thoughts.md` under `v2/.archived/first-
 
 ## 3. Day-in-the-life scenarios (scripted usage journeys)
 
-Already in pass-1, but kept here as a **usage** unit (not design essays). Commissioned 2026-07-16; BDD-style multi-agent day.
+Already in pass-1, but kept here as a **usage** unit (not design essays).  
+Commissioned 2026-07-16; BDD-style multi-agent day.
 
 | Path | Why |
 |------|-----|

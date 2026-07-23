@@ -36,7 +36,8 @@ Items that change or pin user-visible behavior are marked **[BEHAVIOR]**. Items 
 
 **Source:** CORE marked bare `1/3r`, `3+4i` provisional / candidates for dialect.
 
-**Decision:** Not Frozen Core Scalars. Future `standard-types` (or similar) Dialect via Envelope. Until Dialects load, those spellings are ordinary bare text if unquoted.
+**Decision:** Not Frozen Core Scalars. Future `standard-types` (or similar)  
+Dialect via Envelope. Until Dialects load, those spellings are ordinary bare text if unquoted.
 
 **Impact:** Authors who relied on bare rational/complex typing must use Envelopes once the Dialect exists. No contradiction with frozen-set principle.
 
@@ -60,7 +61,8 @@ Items that change or pin user-visible behavior are marked **[BEHAVIOR]**. Items 
 
 **Retired** freeform, embedded, positional (close-axis), blob, head position, wire/event (from contract), raw-as-free-noun. See GLOSSARY §8.
 
-**Renamed for contract:** Structure Position, Line Scan, Geometric/Delimited, Verbatim family, Flow Value, Recognition (vs “the parser”).
+**Renamed for contract:** Structure Position, Line Scan, Geometric/Delimited,  
+Verbatim family, Flow Value, Recognition (vs “the parser”).
 
 **Impact:** None on document bytes; large impact on implementer/reader clarity.
 

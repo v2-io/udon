@@ -74,7 +74,8 @@ Each carries a search log + dry-well list + priority tiers; template is high-qua
 | `spikes/` (3), `discussion-excerpts/` (3) | spike/excerpt | agent-utility P-A…P-H, paths D1–D9, paths-sketches; joseph demand-turn slices (prefer live `pipeline-discussion.md`) |
 
 ### 1d. Quarantine (`scratch/first-sweep-agentic-tooling/` — do NOT promote)
-First sonnet sweep; missed core sources (method failure — see its README). Stays quarantined. **One reconcile-back exception:** its ELI first-person-testimony section (Tier 3) was content-read and is good — carried into §1f below.
+First sonnet sweep; missed core sources (method failure — see its README). Stays quarantined.  
+**One reconcile-back exception:** its ELI first-person-testimony section (Tier 3) was content-read and is good — carried into §1f below.
 
 ### 1e. Tier-2 in-vivo (17 harness maps) — digest in `BUCKET-tier2-invivo.md`
 14 real harnesses (aider, claude-code-snapshot, codex, gemini-cli, grok-build, kilocode, kimi-code, minimax-cli, mistral-vibe, opencode, qwen-code, warp, agentic-elixir[Joseph's own],

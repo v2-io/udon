@@ -191,7 +191,8 @@ elem_start name=el col=0
 elem_end
 ```
 
-**Open modeling choice (worth pinning later):** one multi-segment `when` vs two stacked `attr key=when`. CORE says stacking spirit / further segments — I treat as **second segment or second stacked assignment under same key**, always with Warning. Not child text of `el` (that would be wrong: indent is under the attr value column).
+**Open modeling choice (worth pinning later):** one multi-segment `when` vs two stacked `attr key=when`. CORE says stacking spirit / further segments — I treat as **second segment or second stacked assignment under same key**, always with Warning.  
+Not child text of `el` (that would be wrong: indent is under the attr value column).
 
 ---
 

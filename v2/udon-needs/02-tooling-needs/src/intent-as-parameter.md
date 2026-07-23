@@ -41,7 +41,8 @@ The theory supplies the slot. Plans whose intermediate steps are observable turn
 
 ## What it generates
 
-- **For the harness:** an intent field on mutating tools is cheap and compounds — it powers repair (the shipped mechanism above), audit trails that answer *why*, and the tool-gap-detection loop (intent-vs-tool mismatches are the roadmap for what to crystallize next — the [[the-crystallized-process-thesis| crystallized-process chapter]]'s request channel, fed automatically). One caution from the same design work that proposed it: intent *comments* drift and lie — its own anti-pattern list names intent-hiding, intent-drift, and false intent. Prefer intent carried on *operations and events*, which are dated and immutable, over intent as decoration in the artifact.
+- **For the harness:** an intent field on mutating tools is cheap and compounds — it powers repair (the shipped mechanism above), audit trails that answer *why*, and the tool-gap-detection loop (intent-vs-tool mismatches are the roadmap for what to crystallize next — the [[the-crystallized-process-thesis| crystallized-process chapter]]'s request channel, fed  
+  automatically). One caution from the same design work that proposed it: intent *comments* drift and lie — its own anti-pattern list names intent-hiding, intent-drift, and false intent. Prefer intent carried on *operations and events*, which are dated and immutable, over intent as decoration in the artifact.
 - **For UDON:** the edit tool's operations (the [[schema-guarded-mutation| guarded-mutation chapter]]) should carry intent from day one; and the document-side residue of executed intents is exactly the annotation layer (the [[annotation-and-metacognition| annotation chapter]]) — one demand seen from the call side and the artifact side.
 
 ## What this opens (ideas, not designs)

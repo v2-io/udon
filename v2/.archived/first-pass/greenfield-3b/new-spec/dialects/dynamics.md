@@ -86,7 +86,8 @@ Keywords `empty` and `blank` (as in Liquid-style checks) MAY be provided by the 
 - Indentation delimits bodies (no closing tags).
 - Recognition accepts any directive name; this Dialect defines evaluation for the baseline set above. Unknown names: Host-defined (pass through / Error).
 
-**Inline control flow** is not specified in this baseline (e.g. no `!if{cond}{then}{else}` yet).
+**Inline control flow** is not specified in this baseline  
+(e.g. no `!if{cond}{then}{else}` yet).
 
 ---
 

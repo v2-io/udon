@@ -48,7 +48,8 @@ Center of mass is exactly where expected: tool **specs** (schema authoring) live
 
 - **`codex-rs/core/src/exec.rs`** (L69–80, L730–855) — exec output **truncation/context management**: `EXEC_OUTPUT_MAX_BYTES = DEFAULT_OUTPUT_BYTES_CAP = 1 MiB` (defined `utils/pty/src/lib.rs:12`), read in 8KB chunks, capped ≤10,000 output deltas/call (`MAX_EXEC_OUTPUT_DELTAS_PER_CALL`), `append_capped`/tail logic. Medium — the byte-budget mechanics for tool output before it reaches the model. Date: current.
 
-- **`codex-rs/core/src/tools/runtimes/`** (`shell.rs`, `apply_patch.rs`, `unified_exec.rs`, `mod.rs`) — the execution side of each tool spec (the "runtime" that actually runs the shell/patch). Pair with the `*_spec.rs` files above to see spec↔execution. Medium. Date: current.
+- **`codex-rs/core/src/tools/runtimes/`** (`shell.rs`, `apply_patch.rs`, `unified_exec.rs`, `mod.rs`) — the execution side of each tool spec (the "runtime" that actually runs the shell/patch). Pair with the `*_spec.rs`  
+  files above to see spec↔execution. Medium. Date: current.
 
 - **`codex-rs/apply-patch/src/`** — the standalone apply_patch parser/applier crate: `parser.rs` (661 lines), `streaming_parser.rs` (944 lines — streaming patch application), `seek_sequence.rs` (163 lines, fuzzy context matching), `standalone_executable.rs`. This is the actual diff-format engine + how it fuzzily locates context. Medium-high if you want the edit-tool internals (fuzzy matching, streaming apply). Date: current.
 

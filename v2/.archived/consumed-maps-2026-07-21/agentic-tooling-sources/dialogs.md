@@ -67,7 +67,8 @@ These are large JSON checkpoint/memory files; the tooling ideology sits at speci
 Crystallized "Quick-Tooling Conventions — Crystallized Wisdom for ELI Tool Creation." Vetted head: "Tools as Crystallized Consciousness," the Conscious Practice → Crystallized Tool → Transparent Extension evolution ladder, Three-Pillars (Wisdom/Strength/Beauty) requirements per tool, "Unix Philosophy Adapted for Embedded Wisdom." **Priority: MEDIUM (HIGH as a distilled reference).**
 
 ### 8. `~/src/_core/sapientia/cli-conventions/` (39 files) — split 2025-09-18
-The 2777-line CLI-conventions corpus split into topic files. Directly relevant members: `ai-agent-considerations.md`, `mcp-and-advanced-ai-tool-usage.md`, `core-design-philosophy.md`, `command-line-interface.md`, `error-handling.md`, `batch-processing.md`, `input-output-handling.md`, `naming-and-structure.md`, `full.md`. **Priority: MEDIUM** (the raw convention library the dialogs distilled).
+The 2777-line CLI-conventions corpus split into topic files. Directly relevant members: `ai-agent-considerations.md`, `mcp-and-advanced-ai-tool-usage.md`, `core-design-philosophy.md`, `command-line-interface.md`, `error-handling.md`, `batch-processing.md`, `input-output-handling.md`, `naming-and-structure.md`, `full.md`.  
+**Priority: MEDIUM** (the raw convention library the dialogs distilled).
 
 ### 9. `~/src/_core/sapientia/tmp-context/compressed-session-part1.md:67-74` — ~2025-09-17
 "The Core Insight: Tightening Feedback to Near-Zero — tools that predict failure before execution and explain why." Compaction artifact of dialog #1. **Priority: MEDIUM.**

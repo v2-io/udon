@@ -28,7 +28,8 @@ The consequence is not cosmetic. With the yaml-spike correctly at T2, the segmen
 
 **Where:** `src/edit-representation-landscape.md` — Claim para ("format choice swings success **2–3×**") and §"External corroboration" (bullet 1: "structure-aware diffs **match/beat whole-file at >30% lower cost**").
 
-**What I found.** (a) **The "2–3×" figure** is not grounded in any primary I could open at the point of use. It is inherited verbatim from `CONVERGENCES.md` cluster 1 ("edit-format choice swings success 2–3× (aider)"), which itself gives no primary cite. The one place with actual numbers, `external-landscape-2026-07.md` finding 2, reports a *different* comparison and a *larger* swing (MinUniDiff 14.07% vs FullCode 57.07% pass@1 — ~4×, and that is line-diff-vs-whole-file on a 7B model, not "format choice" generally). So the segment asserts a specific multiplier as fact whose provenance is a summary line, and the nearest real measurement doesn't match it.
+**What I found.**  
+(a) **The "2–3×" figure** is not grounded in any primary I could open at the point of use. It is inherited verbatim from `CONVERGENCES.md` cluster 1 ("edit-format choice swings success 2–3× (aider)"), which itself gives no primary cite. The one place with actual numbers, `external-landscape-2026-07.md` finding 2, reports a *different* comparison and a *larger* swing (MinUniDiff 14.07% vs FullCode 57.07% pass@1 — ~4×, and that is line-diff-vs-whole-file on a 7B model, not "format choice" generally). So the segment asserts a specific multiplier as fact whose provenance is a summary line, and the nearest real measurement doesn't match it.
 
 (b) **The ">30% lower cost" clause** conflates two separate external findings and drops a caveat the source flagged. `external-landscape` finding 2 states them distinctly: "structure-aware diffs **close the gap** (FuncDiff 70.88 vs 69.38 on EditEval)" — with the explicit caveat "**FuncDiff margin is thin (1.5pt, single cell)**" — *and separately* "adaptive format selection (AdaEdit) cuts latency/cost **>30%** on long code at accuracy parity." The segment merges these into "structure-aware diffs match/beat whole-file at >30% lower cost," attributing AdaEdit's cost figure to structure-aware diffs and silently dropping the thin-margin caveat. This is a small instance of exactly the genre's named characteristic failure (synthesis firming up a carefully-caveated source).
 
@@ -68,11 +69,13 @@ None of this is a fidelity defect — it is an *aspiration* gap. For "the most-r
 
 ## Finding 5 — LOW — persistence-is-imported: tier-label wobble on the compaction evidence
 
-**Where:** `src/persistence-is-imported.md` §"The evidence," second bullet header "**T2/T3 lived**," which then concludes the same evidence is "a genuine **Tier-1↔harness** cross-tier convergence."
+**Where:** `src/persistence-is-imported.md` §"The evidence," second bullet header "**T2/T3 lived**," which then concludes the same evidence is "a genuine  
+**Tier-1↔harness** cross-tier convergence."
 
 **What I found.** The header says T2/T3; the conclusion says T1↔harness; the sources are the archema-io/harness workshop's INTERPRES note (within the *programme*, i.e. not author-independent in the strong sense) plus genuine T3 (Zi-am-tur). The Zi-am-tur anchor *is* a real lived-testimony leg (unlike Finding 1's segment, this one has one), so the convergence is real — but the label is internally inconsistent and the "cross-tier" framing quietly counts the harness workshop as an independent tier when it is within the same programme. Minor, and partly self-flagged, but it reads as imprecision in a document whose whole method is tier precision.
 
-**Suggested disposition.** Pick one consistent labeling: the honest one is "T3 (lived, Zi-am-tur) + harness-workshop empirical (within-programme, adversarially verified) + T2 shipped," and drop "Tier-1↔harness" (the INTERPRES note isn't T1 ideology). One-line fix.
+**Suggested disposition.** Pick one consistent labeling: the honest one is "T3 (lived,  
+Zi-am-tur) + harness-workshop empirical (within-programme, adversarially verified) + T2 shipped," and drop "Tier-1↔harness" (the INTERPRES note isn't T1 ideology). One-line fix.
 
 ---
 

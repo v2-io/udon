@@ -469,7 +469,8 @@ Hosts convert to their preferred datetime representations (chrono, time, jiff, D
 
 1. **Intervals**: Should `2025-01-01/2025-12-31` be recognized? Deferred for now.
 
-2. **Recurring patterns**: RRULE-style recurrence (`FREQ=WEEKLY;BYDAY=MO,WE,FR`)? Likely too complex for syntactic recognition; use structured elements.
+2. **Recurring patterns**: RRULE-style recurrence (`FREQ=WEEKLY;BYDAY=MO,WE,FR`)?  
+   Likely too complex for syntactic recognition; use structured elements.
 
 3. **Fiscal/business calendars**: `2025-Q1`, `2025-H2`? Probably host-defined.
 

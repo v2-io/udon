@@ -160,7 +160,8 @@ Live gate remains `core/fixtures/v0.9/` (**C4**). Do not intermingle. At cutover
 
 Versioning: a conformance claim names the version whose fixture group it passes ([SPEC.md](SPEC.md) §1.2).
 
-**Law check (2026-07-21):** unclosed identity `[` → `$partial-key` + Warning, `result: **complete**` (geometric/sugar close under **R2**/**R5**), unless OPEN **ML** later reclassifies identity brackets as delimited. Interior-newline list close is **descriptive / open: ML**, never comprehensive gate material.
+**Law check (2026-07-21):** unclosed identity `[` → `$partial-key` + Warning, `result: **complete**` (geometric/sugar close under **R2**/**R5**), unless OPEN  
+**ML** later reclassifies identity brackets as delimited. Interior-newline list close is **descriptive / open: ML**, never comprehensive gate material.
 
 **Dedup:** removed `eof_verdict`, `stacking_and_partial`, `multiline_strawman` (content folded). Added `closed_law.yaml` for L2/S8/R13/R20/refs.
 

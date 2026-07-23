@@ -17,7 +17,8 @@ sources:
 
 # "Structured output" names two different guarantees
 
-**Claim.** Most shipping harnesses offer some machine-readable-answer mode, and the phrase "structured output" covers all of them — but it names two different mechanisms with two different guarantees. **Constrained decoding** enforces a grammar or schema *while the model generates*: malformed output cannot exist, because the sampler is not allowed to produce it. **After-the-fact serialization** takes whatever the model produced internally and renders it as well-formed JSON: the *transport* is guaranteed, the content inside it is as unconstrained as ever. Both are marketed under one name; they are different guarantees, and a design decision that conflates them inherits the wrong one.
+**Claim.** Most shipping harnesses offer some machine-readable-answer mode, and the phrase "structured output" covers all of them — but it names two different mechanisms with two different guarantees.  
+**Constrained decoding** enforces a grammar or schema *while the model generates*: malformed output cannot exist, because the sampler is not allowed to produce it. **After-the-fact serialization** takes whatever the model produced internally and renders it as well-formed JSON: the *transport* is guaranteed, the content inside it is as unconstrained as ever. Both are marketed under one name; they are different guarantees, and a design decision that conflates them inherits the wrong one.
 
 ## The evidence
 

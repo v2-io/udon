@@ -54,7 +54,8 @@ Note: `USER_TYPE === 'ant'` branches all over the prompts gate the internal-only
   - `maxResultSizeChars` (lines 457–466) — **tool-result-to-disk overflow**: results over N chars are persisted to a file and the model gets a preview + path instead. Read=Infinity to avoid a Read→file→Read loop.
   - `strict` (468–472) — API strict-schema-adherence flag.
   - `backfillObservableInput` (474–481), `validateInput` (489–492), `mapToolResultToToolResultBlockParam` (557), `extractSearchText`, `renderToolResultMessage` (with a `condensed` style + `isBriefOnly`).
-  - Default-tool factory at ~line 749 shows the safe defaults (isEnabled→true, isConcurrencySafe→false, isReadOnly→false). **Priority: high** — this single interface is the best compact statement of "what a tool IS" in a production harness; maps almost 1:1 onto UDON's agent-facing-tooling questions.
+  - Default-tool factory at ~line 749 shows the safe defaults (isEnabled→true, isConcurrencySafe→false, isReadOnly→false).  
+  **Priority: high** — this single interface is the best compact statement of "what a tool IS" in a production harness; maps almost 1:1 onto UDON's agent-facing-tooling questions.
 
 - **Tool.ts:557–605** — `mapToolResultToToolResultBlockParam` (model-facing serialization) vs `renderToolResultMessage`/`extractSearchText` (human-facing
   + transcript-search indexing), with an explicit comment that the model-facing form "adds system-reminders, persisted-output wrappers." **Priority: medium** — the two-audience (model vs human) split of one tool result.
@@ -83,9 +84,11 @@ Note: `USER_TYPE === 'ant'` branches all over the prompts gate the internal-only
   - `getSimpleDoingTasksSection` (199–253): the anti-gold-plating / minimal-code rules, ant-only **faithful-reporting** bullet (240: "never claim all tests pass when output shows failures") — striking overlap with Joseph's voice-discipline principle, independently arrived at.
   - `getActionsSection` (255–267): the **reversibility/blast-radius** framework for when to confirm before acting (destructive vs hard-to-reverse vs shared-state) — directly parallels this repo's subagent-destructive-action guidance.
   - `getOutputEfficiencySection` (403–428) + `getSimpleToneAndStyleSection` (430–442): user-facing-text style, incl. the exact "Do not use a colon before tool calls" rule and `file_path:line_number` convention.
-  - `DEFAULT_AGENT_PROMPT` (758): the subagent system prompt ("You are an agent for Claude Code... Complete the task fully—don't gold-plate... respond with a concise report"). **Priority: high** for the tool-instruction/agent-mode passages; medium for the code-style bullets.
+  - `DEFAULT_AGENT_PROMPT` (758): the subagent system prompt ("You are an agent for Claude Code... Complete the task fully—don't gold-plate... respond with a concise report").  
+  **Priority: high** for the tool-instruction/agent-mode passages; medium for the code-style bullets.
 
-- **constants/systemPromptSections.ts** (68 lines), **constants/system.ts** (95), **constants/tools.ts** — section-registry + caching scaffolding. **Priority: low** (structure, not content).
+- **constants/systemPromptSections.ts** (68 lines), **constants/system.ts** (95), **constants/tools.ts** — section-registry + caching scaffolding.  
+  **Priority: low** (structure, not content).
 
 ---
 
@@ -101,11 +104,13 @@ Note: `USER_TYPE === 'ant'` branches all over the prompts gate the internal-only
 
 - **tools/TodoWriteTool/prompt.ts** (184 lines) — the structured task-list tool: when-to-use (3+ steps) / when-not-to-use rules, single-`in_progress`-at-a-time discipline, "mark completed immediately." Evidence of **agent self-tracking as a tool**. Date ~Mar 2026. **Priority: medium.**
 
-- **tools/AskUserQuestionTool/prompt.ts** (44 lines) — multiple-choice clarification tool with an optional `preview` field (ASCII/HTML mockups, side-by-side layout) for single-select. Structured human-in-the-loop. **Priority: low-medium.**
+- **tools/AskUserQuestionTool/prompt.ts** (44 lines) — multiple-choice clarification tool with an optional `preview` field (ASCII/HTML mockups, side-by-side layout) for single-select. Structured human-in-the-loop.  
+  **Priority: low-medium.**
 
 - **tools/AgentTool/prompt.ts** (287 lines) — the **subagent/Task tool**: per-agent tool allow/deny-list rendering, fork-subagent mode (background, keeps tool output out of parent context). Plus `constants/prompts.ts:316–320, 390–400` (verification-agent contract: adversarial verification before reporting completion — the "you own the gate, can't self-assign PARTIAL" wording). **Priority: medium** — multi-agent delegation as a tool.
 
-- **tools/GrepTool/prompt.ts** (18 lines) & **GlobTool/prompt.ts** — ripgrep-backed search tool contract (output modes files/content/count, multiline flag). **Priority: low.**
+- **tools/GrepTool/prompt.ts** (18 lines) & **GlobTool/prompt.ts** — ripgrep-backed search tool contract (output modes files/content/count, multiline flag).  
+  **Priority: low.**
 
 - **tools/WebFetchTool/prompt.ts** (46 lines) — fetch→HTML-to-markdown→ summarize-with-small-model, 15-min cache, redirect-host handling. **Priority: low** (a "process a tool result with a secondary model" pattern).
 

@@ -1,6 +1,7 @@
 # The UDON Document Model (ADM)
 
-**Status:** normative. This is the **ADM** — the Abstract Document Model of `defining-udon.md` §5, the DECISIONS charter (C3/C5), and the prior drafts; "Document Model" and "ADM" name the same pillar. Defines what recognition produces — the information a consumer may rely on. Surface syntax is [CORE.md](CORE.md); equivalence is [SEMANTICS.md](SEMANTICS.md).
+**Status:** normative. This is the **ADM** — the Abstract Document Model of `defining-udon.md` §5, the DECISIONS charter (C3/C5), and the prior drafts; "Document Model" and "ADM" name the same pillar. Defines what recognition produces — the information a  
+consumer may rely on. Surface syntax is [CORE.md](CORE.md); equivalence is [SEMANTICS.md](SEMANTICS.md).
 
 A conforming implementation MUST expose a representation from which this model is recoverable without loss; it MAY use any concrete encoding (tree, event stream, cursor API) that preserves it. *(This suite deliberately specifies no event/wire encoding — see README. The adequacy test for any future one is §6: the text law must be recoverable from it.)*
 
@@ -58,7 +59,8 @@ Sugar desugars **before the model is considered complete**:
 | `\|el?` (`!` `*` `+`) | `$?` (`$!` `$*` `$+`) = true |
 | unclosed `[` | **`$partial-key`** = captured value (+ Warning) |
 
-An element written `|el[k].a.b?` and one written `|el :'$key' k :'$traits' a :'$traits' b :'$?' true` are **identical** in the model; implementations MUST NOT distinguish them. Consumers that resolve identity or references MUST treat `$partial-key` as non-identity.
+An element written `|el[k].a.b?` and one written  
+`|el :'$key' k :'$traits' a :'$traits' b :'$?' true` are **identical** in the model; implementations MUST NOT distinguish them. Consumers that resolve identity or references MUST treat `$partial-key` as non-identity.
 
 ### 3.2 Recommended host views (non-normative shape; normative substrate)
 

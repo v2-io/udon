@@ -68,7 +68,8 @@ status: vetted mining-spot map
 
 - **`docs/en/agents-and-tools/tool-use/server-tools.md`**, **`tool-combinations.md`**, **`tool-choice`** (in overview) — server-loop mechanics, combining tool types, forcing/disabling tool calls. Current. Skim-level.
 
-- **`docs/en/agents-and-tools/agent-skills/best-practices.md`** (1179 lines) — **Skill-authoring / instruction-design gold**: "Concise is key" (L13), degrees-of-freedom (L61), progressive-disclosure patterns (high-level+refs / domain-org / conditional-details, L251–369), naming conventions (L168), writing effective descriptions (L201), test-with-all-models (L134), TOC-structured reference files (L399). This is how Anthropic tells authors to write tool/agent instructions — directly relevant to UDON-as-agent-instruction-surface. Current. **High if instruction ergonomics are in scope.**
+- **`docs/en/agents-and-tools/agent-skills/best-practices.md`** (1179 lines) — **Skill-authoring / instruction-design gold**: "Concise is key" (L13), degrees-of-freedom (L61), progressive-disclosure patterns (high-level+refs / domain-org / conditional-details, L251–369), naming conventions (L168), writing effective descriptions (L201), test-with-all-models (L134), TOC-structured reference files (L399). This is how Anthropic tells authors to write tool/agent instructions — directly relevant to UDON-as-agent-instruction-surface. Current.  
+  **High if instruction ergonomics are in scope.**
 
 - **`docs/en/agents-and-tools/agent-skills/overview.md`** (337 lines) — Agent Skills model (SKILL.md + bundled files, filesystem-based progressive disclosure). Current. Companions: `quickstart.md`, `enterprise.md`, `claude-api-skill.md`.
 

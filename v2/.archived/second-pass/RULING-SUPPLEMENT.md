@@ -108,7 +108,8 @@ today (deratified):        with the value bracket:
                              ElementStart child
 ```
 
-Also the test case that proves it: mixed interpolation. Semantics are already ruled (`:href !{{base}}/x` is one flow value), but the old encoding for it ("re-emitted Attr segments") was flat-wire vocabulary and died with the deratification. Under the bracket it's simply: `Attr "href" / Interpolation "base" / Text "/x" / AttrValueEnd` — no re-emit machinery at all.
+Also the test case that proves it: mixed interpolation. Semantics are already ruled (`:href !{{base}}/x` is one flow value), but the old encoding for it ("re-emitted Attr segments") was flat-wire vocabulary and died with the deratification. Under the bracket it's simply:  
+`Attr "href" / Interpolation "base" / Text "/x" / AttrValueEnd` — no re-emit machinery at all.
 
 Open sub-choice inside A: asymmetric (`Attr` opens, `AttrValueEnd` closes) vs symmetric (`AttrStart`/`AttrEnd`). Authoring-level detail.
 
@@ -163,7 +164,8 @@ In both, keep-everything can preserve every byte as text. So:
 - **A (strict loss)** — Error means bytes lost, full stop. Since these keep the bytes, they're **Warnings**. Severity stays mechanically checkable; the fold can verify it. *(Fable's position.)*
 - **B (loss ∪ illegal geometry)** — Error also marks "this cannot mean anything as written," even when bytes survive as text. Matches the intuition that a tab in indentation is worse than a stylistic wobble. *(grok's lean.)*
 
-What actually rides on it: only the severity *labels* on L1/L4 (and the schema/CI story — "fail on error" means different things under A and B). Content handling is identical either way.
+What actually rides on it: only the severity *labels* on L1/L4 (and the schema/CI story — "fail on error" means different things under A and B).  
+Content handling is identical either way.
 
 ### L1 — Root-level `:key`
 
@@ -323,7 +325,8 @@ The `<>`-balanced span already parses. Who interprets the *inner* envelope — *
   :database prod_db      ; a mixin-aware host also sees adapter/host
 ```
 
-**A** stays a host experiment (core specifies nothing; already true) · **B** specify inheritance now · **C** delete the mention.
+**A** stays a host experiment (core specifies nothing; already true) ·  
+**B** specify inheritance now · **C** delete the mention.
 
 **Lean: A (all three greenfields).**
 

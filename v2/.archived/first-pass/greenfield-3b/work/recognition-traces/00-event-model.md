@@ -1,6 +1,7 @@
 # Hypothetical event model (exploratory)
 
-**Not normative.** The greenfield suite deliberately omits wire/event design. This vocabulary exists so the traces in this directory can be *compared*. A future real stream may rename, fuse, or reorder events — the point is the **information and ownership decisions**, not the spelling.
+**Not normative.** The greenfield suite deliberately omits wire/event design.  
+This vocabulary exists so the traces in this directory can be *compared*. A future real stream may rename, fuse, or reorder events — the point is the **information and ownership decisions**, not the spelling.
 
 ## Design goals for this sketch
 

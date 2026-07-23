@@ -59,7 +59,8 @@ Center of mass matched expectations: `packages/opencode/src/tool/`, `packages/op
 - Date: repo @2026-07-17. **Priority: MEDIUM-HIGH** — the "which tools exist and how they're built" map.
 
 ### `packages/opencode/src/tool/json-schema.ts` (~150 lines) + `tool.ts`
-- `fromSchema()`/`fromTool()` convert Effect Schema → **JSONSchema7** for the wire (draft-2020-12, `additionalProperties:true`, inlines `$defs`, strips nulls, WeakMap-cached). `tool.ts` defines `Tool.Def` (`description`, `parameters`, `execute`) and a `DynamicDescription = (agent) => Effect<string>` — descriptions can vary by agent.
+- `fromSchema()`/`fromTool()` convert Effect Schema → **JSONSchema7** for the wire (draft-2020-12, `additionalProperties:true`, inlines `$defs`, strips nulls, WeakMap-cached).  
+  `tool.ts` defines `Tool.Def` (`description`, `parameters`, `execute`) and a `DynamicDescription = (agent) => Effect<string>` — descriptions can vary by agent.
 - Date: repo @2026-07-17. **Priority: MEDIUM** — the schema-generation seam feeding the model.
 
 ### `packages/opencode/src/tool/lsp.ts`(+`.txt`), `diagnostics.ts`, `truncate.ts`
@@ -117,7 +118,8 @@ Center of mass matched expectations: `packages/opencode/src/tool/`, `packages/op
 
 - **`AGENTS.md`** (repo root, 17 KB) + `CONTEXT.md` (14 KB) — contributor/agent guide to repo structure and the `// kilocode_change` convention. Date @2026-07-17. **Priority: LOW-MEDIUM** — orientation, not tool evidence.
 - **`packages/llm/`** (`@opencode-ai/llm`, imported by core tools for `ToolFailure`) — the LLM/tool primitive package; not read in depth. **Priority: LOW** unless chasing the `ToolFailure` contract.
-- **`packages/opencode/src/tool/skill.ts`(+`.txt`), `recall.ts`(+`.txt`)** — skill invocation and memory recall tools; descriptions confirm skills + typed memory are surfaced as tools. **Priority: MEDIUM** for the memory/skill-as-tool pattern specifically.
+- **`packages/opencode/src/tool/skill.ts`(+`.txt`), `recall.ts`(+`.txt`)** — skill invocation and memory recall tools; descriptions confirm skills + typed memory are surfaced as tools.  
+  **Priority: MEDIUM** for the memory/skill-as-tool pattern specifically.
 - **`specs/`, `plans/`, `perf/`** (repo root dirs) — not opened; likely product/perf docs, not tool/prompt evidence. **Priority: LOW.**
 
 ---

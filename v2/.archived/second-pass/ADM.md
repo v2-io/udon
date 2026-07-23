@@ -1,8 +1,11 @@
 # Abstract Document Model (ADM) — 0.10 / v2-spec
 
 **Status:** **provisional skeleton** — not full suite prose.  
-**Role:** Normative *shape* of what recognition produces: the product **assembly** / fixtures may assert (**C5**), and the type language + wire both project against. Surface → [SPEC.md](SPEC.md). Equivalence → [SEMANTICS.md](SEMANTICS.md). Wire → [WIRE.md](WIRE.md) (**W0**/**W1d**; encoding OPEN **W1e**).  
-**Authority:** [DECISIONS.md](DECISIONS.md). Greenfields are wording mines only. Multi-line → [OPEN.md](OPEN.md) **ML**.  
+**Role:** Normative *shape* of what recognition produces: the product  
+**assembly** / fixtures may assert (**C5**), and the type language + wire both project against. Surface → [SPEC.md](SPEC.md). Equivalence → [SEMANTICS.md](SEMANTICS.md).  
+Wire → [WIRE.md](WIRE.md) (**W0**/**W1d**; encoding OPEN **W1e**).  
+**Authority:** [DECISIONS.md](DECISIONS.md). Greenfields are wording mines only.  
+Multi-line → [OPEN.md](OPEN.md) **ML**.  
 **Terminology:** [GLOSSARY.md](GLOSSARY.md).  
 **How to read:** Sections with shapes are load-bearing consensus. **TODO** marks thin spots. No fake completeness.
 
@@ -155,7 +158,8 @@ Scalar :=
   | Envelope
 ```
 
-**Frozen bare recognition (**R21**, **L5**):** String (quoted or bare fallback), Integer, Float, Boolean (`true`/`false` lowercase — surface detail SPEC), Nil (`null`/`nil`), List. **Not** bare: rational, complex → dialect/envelope when specified.
+**Frozen bare recognition (**R21**, **L5**):** String (quoted or bare fallback),  
+Integer, Float, Boolean (`true`/`false` lowercase — surface detail SPEC), Nil (`null`/`nil`), List. **Not** bare: rational, complex → dialect/envelope when specified.
 
 ### 3.2 List
 

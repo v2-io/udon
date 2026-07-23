@@ -1,6 +1,8 @@
 # Review: 02-tooling-needs (Agentic Tooling Monograph)
 
-**Reviewer:** agy (Gemini 3.1 Pro (High)) **Date:** 2026-07-22 **Reviewed Commit/State:** Working state as of 2026-07-22 (Drafting phase, `OUTLINE.md` completed, `src/` populated)
+**Reviewer:** agy (Gemini 3.1 Pro (High))  
+**Date:** 2026-07-22  
+**Reviewed Commit/State:** Working state as of 2026-07-22 (Drafting phase, `OUTLINE.md` completed, `src/` populated)
 
 ## Findings
 

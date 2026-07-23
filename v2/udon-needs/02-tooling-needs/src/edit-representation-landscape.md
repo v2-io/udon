@@ -37,7 +37,8 @@ Note the asymmetry in the fourth row, because it governs how the descent correct
 
 ## The landscape
 
-Fourteen real harnesses were examined at source level; copying and invention are distinguished throughout ([[shipping-practice| the shipping-practice report]] carries the full examination). Three paradigms ship today:
+Fourteen real harnesses were examined at source level; copying and invention are distinguished throughout ([[shipping-practice| the shipping-practice report]] carries the full examination).  
+Three paradigms ship today:
 
 1. **Exact find-and-replace** — old text, new text; fail loudly on zero matches or more than one; a mandatory read of the file first. Near-universal — largely by adoption of Claude Code's design rather than independent arrival, which still says something: nothing has displaced it.
 2. **Patch envelopes** — a fenced patch dialect (`*** Begin Patch …`) with one published origin (OpenAI's cookbook) and zero independent arrivals; one harness hardens it by constraining the decoder with the patch grammar so a malformed patch cannot be emitted at all.
@@ -45,7 +46,8 @@ Fourteen real harnesses were examined at source level; copying and invention are
 
 **The one genuine independent convergence.** At least five teams, same shape, different implementations: a **graduated tolerance ladder** on top of exact matching — try byte-exact, then whitespace-flexible, then anchor-and-similarity tiers, and in one case escalate to a second model call that repairs the edit. The convergent insight underneath: a model-emitted "old text" is reliably *almost* right and reliably *not byte-exact*. Every mature team hit that wall and built the same-shaped cushion rather than trusting exact match or falling back to whole-file rewrites.
 
-**The abandonment that shaped the landscape — scoped honestly.** The aider project tried routing edits through JSON tool-call arguments and killed the mechanism (its code still raises "Deprecated" there): models of that era mangled the structured arguments. Within the ecosystem sampled here, edits-as-marked-up-text is what everyone ships. But the negative result is family- and era-scoped, not a law: in the Gemini/Antigravity ecosystem, tool-call editing with schema validation at the tool layer is the successful default (a dissent from a Gemini-family reviewer, carried in the [[counter-register| counter-register]]). The honest statement: in the Claude/OpenAI-lineage world examined here, text-dialect editing won and one team's abandonment of the alternative is on record; elsewhere the alternative is alive. Its second half: five separate sources show harnesses routing *per model* — different edit formats, different prompts, per model family. **No shipping harness treats the edit contract as model-agnostic.**
+**The abandonment that shaped the landscape — scoped honestly.** The aider project tried routing edits through JSON tool-call arguments and killed the mechanism (its code still raises "Deprecated" there): models of that era mangled the structured arguments. Within the ecosystem sampled here, edits-as-marked-up-text is what everyone ships. But the negative result is family- and era-scoped, not a law: in the Gemini/Antigravity ecosystem, tool-call editing with schema validation at the tool layer is the successful default (a dissent from a Gemini-family reviewer, carried in the  
+[[counter-register| counter-register]]). The honest statement: in the Claude/OpenAI-lineage world examined here, text-dialect editing won and one team's abandonment of the alternative is on record; elsewhere the alternative is alive. Its second half: five separate sources show harnesses routing *per model* — different edit formats, different prompts, per model family. **No shipping harness treats the edit contract as model-agnostic.**
 
 ## External corroboration (published research, independently checked)
 

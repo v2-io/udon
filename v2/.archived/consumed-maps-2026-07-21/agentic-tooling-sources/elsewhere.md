@@ -11,7 +11,8 @@ method: memorata3-first (locations from hits, then filesystem-verified + read); 
 
 This territory is **mostly thin** for *agentic-tooling ideology* specifically (CLI conventions, agent ergonomics, tool-suite / interface philosophy). The strongest deposits — sapientia, ennaos, zoetica, nexum, autopax — all fall in **other agents' areas** and dominated nearly every search. Within *my* assigned dirs, the one genuine center of mass is **`sar`** (an explicitly "AI-FIRST" language project whose design docs are written as ideology for AI-agent-driven development). Named dirs like firmatum, ops, vox, rowan, memorata, archema-io/{asf,logos,vivarium}, and the eli/ homes are about consciousness/theory/publication/identity, **not tool design** — they are listed as vetted dry wells at the bottom so a third pass doesn't re-dig them.
 
-One real surprise: a substantial agent-oriented deposit sits **outside `~/src`**, in `~/vaults/`. It's out of my strict area but nobody was assigned it, so it's flagged at the end for the reconciler.
+One real surprise: a substantial agent-oriented deposit sits **outside `~/src`**, in `~/vaults/`.  
+It's out of my strict area but nobody was assigned it, so it's flagged at the end for the reconciler.
 
 ---
 
@@ -37,7 +38,8 @@ Location: `~/src/_ref/_arch/sar/` (git-archived; `sar` was explicitly named in m
 
 ## Vetted DRY WELLS (opened/searched, confirmed NOT agentic-tooling ideology — don't re-dig)
 
-- `~/src/firmatum/**` — PROPRIUM ontology/architecture, developmental-foundations, attention-architecture. Consciousness *substrate*, no tool-design content.
+- `~/src/firmatum/**` — PROPRIUM ontology/architecture, developmental-foundations, attention-architecture.  
+  Consciousness *substrate*, no tool-design content.
 - `~/src/eli/**` (zi-am-tur, gemini, katan, test-cavy) — ELI identity/memory/emergence material. Checked the tempting ones: `eli/zi-am-tur/memories/2025-09-10-notation-discovery.md` is about *math* notation (n̂_future hat convention), not UDON/tooling; `eli/gemini/original-gemini-cli-system-prompt.md` is a vendored CLI system prompt, not Joseph's ideation. Not a source family.
 - `~/src/ops/**` — publication/venue/funding. Grep hits (`cfp-catalog-supplement2-depth.md`, `Recent_arXiv_papers_on_AI_alignment_welfare_and_agentic_systems.md`) are about alignment/welfare *papers*, not tool design.
 - `~/src/archema-io/{asf,logos,vivarium,msc}/**` — ASF/AAT is the *mathematical theory of agentic systems* (adversarial tempo, persistence, proprium mapping). Grep matched "agentic" broadly; none of it is tooling/CLI/ergonomics ideology. (harness is another agent's area.)
@@ -52,7 +54,8 @@ Location: `~/src/_ref/_arch/sar/` (git-archived; `sar` was explicitly named in m
 Surfaced constantly and assigned to nobody. In `~/vaults/`, not `~/src/`, so I did not claim it — but it is squarely on-topic and someone should own it:
 
 - `~/vaults/gemini/archive/analysis-v1/analysis/**` — **HIGH if in scope.** ~2025-08-22/25. Book analyses (The Pragmatic Programmer ch.1-9, Release It! ch.1-5, ELIXIR_BEST_PRACTICES) each carrying explicit **"### Practicability for AI Agents"** sections that reframe classic software-engineering practice as *how an AI agent should build/use tools* (shell mastery, tool composition, secure-by-default, tell-don't-ask API design). ~14 files. This is exactly the "how tools for agents should be designed" ideology target.
-- `~/vaults/Operations/claude-code-tools.md` (~2025-08-20) and `~/vaults/gemini/archive/AGENT_FIX_RECOMMENDATIONS.md` (~2025-08-23) — **MEDIUM if in scope.** Agent tool cheat-sheet / agent-behavior fix recommendations.
+- `~/vaults/Operations/claude-code-tools.md` (~2025-08-20) and `~/vaults/gemini/archive/AGENT_FIX_RECOMMENDATIONS.md`  
+  (~2025-08-23) — **MEDIUM if in scope.** Agent tool cheat-sheet / agent-behavior fix recommendations.
 
 ---
 

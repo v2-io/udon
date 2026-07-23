@@ -138,7 +138,8 @@ Panel split after two written positions → steward only if charter/values; else
 | SEMANTICS equivalence ladder | house styles, fmt policies |
 | DECISIONS / OPEN / PROCESS | discussion files, spikes |
 
-**Area ≠ owner.** An **area brief** (short file under `v2-spec/areas/` or a section in STATUS) may list: questions in flight, useful pointers, traps. Any session may work an area by adopting a **session charter** (§4).
+**Area ≠ owner.** An **area brief** (short file under `v2-spec/areas/` or a section in STATUS) may list: questions in flight, useful pointers, traps.  
+Any session may work an area by adopting a **session charter** (§4).
 
 Disagreement between areas → OPEN intake, not a SPEC merge war.
 

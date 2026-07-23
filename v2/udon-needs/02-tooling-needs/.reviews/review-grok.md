@@ -1,8 +1,11 @@
 # Review — 02-tooling-needs (grok)
 
-**Reviewer:** grok (independent substrate; no prior reading of review-A/B) **Date:** 2026-07-22 **Git commit reviewed:** `1835190f963582385cdcde3de0cdd76f81f8c77c`  
+**Reviewer:** grok (independent substrate; no prior reading of review-A/B)  
+**Date:** 2026-07-22  
+**Git commit reviewed:** `1835190f963582385cdcde3de0cdd76f81f8c77c`  
   (`Monograph: fold in reviews A+B (spine corrections + teaching/vivid upgrades) — no finding rejected`)  
-  Workspace HEAD at review time matched this commit. **Scope:** README, OUTLINE, NOTATION-KEY, RESIDUALS; all **drafted** segments in `src/` (15); planned stubs only sampled for claim/path hygiene — not treated as content. Spot-checks against `01-ideation/02-provenanced/syntheses/` (CONVERGENCES, tier2-lineage, tier2-invivo-digest, external-landscape, asf-dossier) and crown yaml-spike copies. Did not re-read the ~290 primary artifacts end-to-end; findings below are those with checkable cites.
+  Workspace HEAD at review time matched this commit.  
+**Scope:** README, OUTLINE, NOTATION-KEY, RESIDUALS; all **drafted** segments in `src/` (15); planned stubs only sampled for claim/path hygiene — not treated as content. Spot-checks against `01-ideation/02-provenanced/syntheses/` (CONVERGENCES, tier2-lineage, tier2-invivo-digest, external-landscape, asf-dossier) and crown yaml-spike copies. Did not re-read the ~290 primary artifacts end-to-end; findings below are those with checkable cites.
 
 **Overall.** This is the rare synthesis that *earns* its confidence language: tier discipline is operational (not decorative), lineage correction is applied where it hurts, the counter-register is adjacent and usable, drafted segments keep Honest edges non-empty, and dual-consumer splits are real. Against the BRIEF's quality bars, the drafted spine largely *works*. The defects are path hygiene, a few status/thesis overstatements relative to the body's own care, and — as excellence — opportunities to make the teaching spine as strong as the evidence spine. **~half the outline is still `planned`**; this review does not grade planned stubs as finished claims.
 

@@ -49,7 +49,8 @@ For **the harness programme** (may never touch UDON): most of the demands here a
 The corpus author built a first-class convention for recording *unmet* wants: a scenario tagged `.gap` with a `|gap` child naming the wanted shape and the adjudication packet item it maps to. This is itself worth witnessing — **an explicit affordance-gap marker is a reusable pattern for any tool-demand corpus.** The four gaps:
 
 - **P9 (twice)** — attribute/suffix-flag filtering and value-equality filtering. Agents wanted "every process whose `$?` flag is set" and "the phase whose `:num` is 2"; no path form expresses either, so both fell back to host-side filtering. Six live sites in the mirrored process map; real consumer files *already* contain hand-rolled proto-paths (ordinum defeasances, lexicon relation slugs, decision-log refs) the tool "will be asked to resolve conventions it did not define."
-- **P7 (read side)** — prose addressing; deferred, and the morning *agreed* with the deferral: API-side access on the parent node was enough for every read.
+- **P7 (read side)** — prose addressing; deferred, and the morning *agreed* with the deferral:  
+  API-side access on the parent node was enough for every read.
 - **P7 (write side)** — the strongest gap in the set: prose edits are the **only write class that had to leave the tool**, dropping to a span-splice that "bypasses every guarantee (schema check, round-trip safety) the patch tool otherwise gives." Today supplies the evidence P7's "revisit together with patch syntax" asked for.
 
 ## Bootstrap / method disciplines (harness-transferable, from README + `bin/verify`)

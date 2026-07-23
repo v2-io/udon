@@ -1,6 +1,7 @@
 # UDON Full Specification
 
-**Universal Document & Object Notation** *Version 0.9.0-alpha.2*
+**Universal Document & Object Notation**  
+*Version 0.9.0-alpha.2*
 
 It is intended to be the single comprehensive, authoritative spec. & source of truth.
 
