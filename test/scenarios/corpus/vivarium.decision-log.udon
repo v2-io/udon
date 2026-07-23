@@ -1,5 +1,5 @@
 ; vivarium.decision-log.udon — scenario-corpus edition
-; Pseudo-real: same genre as archema-io/vivarium/DECISIONS.decision-log.udon.
+; Pseudo-real: same genre as arch/vivarium/DECISIONS.decision-log.udon.
 ; FAST-APPEND, INTERLEAVE-FREE — the property the multi-agent scenarios
 ; exercise: each |decision is a SELF-CONTAINED, TOP-LEVEL block (column 0).
 ; There is NO wrapping parent element, so a new entry appends at EOF with no

@@ -35,16 +35,16 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 PARSER="$REPO_DIR/core/target/release/examples/stdin_parse"
 CHECK="${1:-}"
 
-# Scan roots: archema-io explicitly (primary consumer program), then a
+# Scan roots: arch explicitly (the ARCHEMA program, primary consumer), then a
 # depth-limited sweep of ~/src for strays. Excludes this repo, _ref, and
 # .claude/worktrees (agent worktree copies shadow their originals).
 FILES=$( {
-  find "$HOME/src/archema-io" -name '*.udon' -not -path '*/.git/*' \
+  find "$HOME/src/arch" -name '*.udon' -not -path '*/.git/*' \
     -not -path '*/.claude/worktrees/*' 2>/dev/null
   find "$HOME/src" -maxdepth 4 -name '*.udon' \
     -not -path "$REPO_DIR/*" \
     -not -path "$HOME/src/_ref/*" \
-    -not -path "$HOME/src/archema-io/*" \
+    -not -path "$HOME/src/arch/*" \
     -not -path '*/.claude/worktrees/*' \
     -not -path '*/.git/*' -not -path '*/node_modules/*' -not -path '*/target/*' 2>/dev/null
 } | sort -u )

@@ -1,5 +1,5 @@
 ; vivarium.lexicon.udon — scenario-corpus edition
-; Pseudo-real: same genre as archema-io/vivarium/LEXICON.udon (dictionary-
+; Pseudo-real: same genre as arch/vivarium/LEXICON.udon (dictionary-
 ; grade |term entries, relation edges, register conventions), abridged and
 ; recast in 0.9 idiom so the BDD scenarios can read, diff, and mutate it.
 

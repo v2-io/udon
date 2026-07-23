@@ -1,5 +1,5 @@
 ; archema.concept-matrix.udon — scenario-corpus edition
-; Pseudo-real: same genre as archema-io/charter/concept-matrix.md, recast
+; Pseudo-real: same genre as arch/charter/concept-matrix.md, recast
 ; as UDON — one |concept per shared idea, mapping where each program member
 ; carries it. Note the two-part cross-document joins (:in <file> + :ref
 ; <in-file reference>): the reference syntax is document-scoped, so

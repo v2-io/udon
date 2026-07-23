@@ -14,10 +14,11 @@ not directly comparable to the 2026-07-11 scan's.
 
 ## Scan roots
 
-- `~/src/archema-io/**/*.udon` — the ARCHEMA program (will become
-  `~/src/archema/` eventually; distinct from `~/src/rowan/`, the former
-  ruby ash port that previously held the archema name)
-- `~/src/**/*.udon` (depth-limited) — catches consumers outside archema-io
+- `~/src/arch/**/*.udon` — the ARCHEMA program (path shortened from
+  `~/src/archema-io/` to `~/src/arch/` on 2026-07-22; distinct from
+  `~/src/rowan/`, the former ruby ash port that previously held the archema
+  name)
+- `~/src/**/*.udon` (depth-limited) — catches consumers outside arch
 - Excluded: this repo, `~/src/_ref/`, `.git`, `.claude/worktrees/` (agent
   worktree copies shadow their originals)
 
@@ -25,11 +26,11 @@ not directly comparable to the 2026-07-11 scan's.
 
 | Document | Lines | Exposure | 0.9 parse | Notes |
 |---|---|---|---|---|
-| `archema-io/asf/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.udon` | 489 | 50 `[key]`, 6 `\|process[k]?` suffixes, 1 attr-date, 1 raw | clean | The founding adopter — ASF process map |
-| `archema-io/vivarium/DECISIONS.decision-log.udon` | 903 | 75 `[key]`, **78 attr-dates**, 1 raw | clean | NEW since last scan (first commit 2026-07-12); largest doc, heaviest temporal exposure, actively growing (897→903 lines within hours during the scan) |
-| `archema-io/vivarium/LEXICON.udon` | 617 | 112 `[key]`, 24 attr-dates, 3 raws | clean | Heavily reworked since last scan (was 1151 lines) |
-| `archema-io/vivarium/doc/PROCESS.udon` | 198 | 24 `[key]`, 1 attr-date, 2 raws | clean | One of the two raws is an accidental prose→directive promotion (see findings) |
-| `archema-io/vivarium/tabularium/terrestris.ordinum.udon` | 429 | 82 `[key]`, 1 attr-date | clean | NEW since last scan (first commit 2026-07-11) |
+| `arch/asf/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.udon` | 489 | 50 `[key]`, 6 `\|process[k]?` suffixes, 1 attr-date, 1 raw | clean | The founding adopter — ASF process map |
+| `arch/vivarium/DECISIONS.decision-log.udon` | 903 | 75 `[key]`, **78 attr-dates**, 1 raw | clean | NEW since last scan (first commit 2026-07-12); largest doc, heaviest temporal exposure, actively growing (897→903 lines within hours during the scan) |
+| `arch/vivarium/LEXICON.udon` | 617 | 112 `[key]`, 24 attr-dates, 3 raws | clean | Heavily reworked since last scan (was 1151 lines) |
+| `arch/vivarium/doc/PROCESS.udon` | 198 | 24 `[key]`, 1 attr-date, 2 raws | clean | One of the two raws is an accidental prose→directive promotion (see findings) |
+| `arch/vivarium/tabularium/terrestris.ordinum.udon` | 429 | 82 `[key]`, 1 attr-date | clean | NEW since last scan (first commit 2026-07-11) |
 | `autopax/taxonomy.udon` | 371 | 51 `[key]`, 6 attr-dates | clean | 3 changelog `:authors` values changed meaning under 0.9 — toward author intent (see findings) |
 
 **Aggregate exposure**: 394 `[key]` identities and 111 date-valued

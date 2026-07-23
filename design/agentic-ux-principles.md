@@ -374,7 +374,7 @@ have its shape, not its text · **queued** = identified, unread ·
 | `.claude.bak.2026-01-26/…/145408e9-….jsonl:10` | 2026-01-14 | **distilled** | Archaeology: the thinking-block that summarizes `udon-agentic.md`'s four principles + `udon-ast.md`'s type-scoped uniqueness. The origin point. |
 | `agentic-systems/02-tst-core/src/der-change-proximity-principle.md` | — | **read** | cost = size × spread; boundary-crossing costs; its own note that agent tooling changes effective distances → **the tool as proximity modifier** (P8). |
 
-### ASF (`~/src/archema-io/asf`) — scouted by an agent, spine read first-hand
+### ASF (`~/src/arch/asf`) — scouted by an agent, spine read first-hand
 
 | File | Tier | Status | Carries |
 |---|---|---|---|
