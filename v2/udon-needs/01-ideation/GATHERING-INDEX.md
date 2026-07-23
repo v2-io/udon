@@ -45,7 +45,7 @@ Genre carries **trust level**: a verbatim copy can't be wrong about its source; 
 ### `characterizations/` — 31 extraction-by-report
 
 - `harness-invivo/` — **17** per-repo tool-usage maps (14 shipping harnesses + claude-docs + obsidian×2 + yq).
-- **14** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes, **`recall-floor-archema-harness`** [the 2026-07-21 recall-floor find — the compilation's OWN consumer repo `~/src/archema-io/harness/` was un-swept; parallel corrected-behavior dossier + primary CLI census + PROPRIUM/compaction demand; SC#15]).
+- **14** top-level reports (sapientia architecture/dialogs, **sapientia Elixir consciousness-compiler** [SC#8 gem hunt — the shipped `lib/` runtime, a 3rd-substrate instantiation of agents-ARE-documents; new vein], shoshin memory-design, vaults agents-as-documents + context-memory survey, III-schema pipeline, I1 usability corpus, I1 usability **result-bodies** [SC#7 overrule], I7 archaeology + library API surfaces, sapientia-bin buildout, II8 anecdotes, **`recall-floor-archema-harness`** [the 2026-07-21 recall-floor find — the compilation's OWN consumer repo `~/src/arch/harness/` was un-swept; parallel corrected-behavior dossier + primary CLI census + PROPRIUM/compaction demand; SC#15]).
 
 ### `syntheses/` — 4 already-integrated secondary documents
 

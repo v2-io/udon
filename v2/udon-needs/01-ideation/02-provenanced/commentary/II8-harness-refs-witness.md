@@ -4,7 +4,7 @@ gathered: 2026-07-21
 status: witness — 1–2 evidence lines per artifact; verified by direct read/search snippet unless marked otherwise
 paths:
   - see each entry
-source_commit: "archema-io 1b98ad4 · src-ext/codex 0fb559f0f · _ref/claude-docs (no-git, mtime 2026-07-17) · src-ext varies (see entry)"
+source_commit: "arch 1b98ad4 · src-ext/codex 0fb559f0f · _ref/claude-docs (no-git, mtime 2026-07-17) · src-ext varies (see entry)"
 categories: [witness, tier-2-shipped-practice, landscape-census, harness-handover, provenance]
 why_included: >
   Per the Brief's three-outcome model, several §8 rows are witness material: the
@@ -17,12 +17,12 @@ why_included: >
 
 ## Harness companion + loop-spec docs (existence + shape witnessed)
 
-- **`archema-io/harness/proprium/AGENTIC-LOOP-PORT-SPEC.md`** (~320 lines, 2026-07-20). Witness: an ASF-shaped **event-stream** agent loop deliberately contrasted with the commodity **request→response** clock — its §0 table names the distinction verbatim ("Clock: Human turn | **Event stream** (multi-channel, async)"), and it carries a tool-subsumption taxonomy (ToolKind), incomplete-state gates, an anti-thrash/doom_loop guard, and multi-timescale nesting (fast tool loop vs slow strategy). The loop *ideology* is captured in depth in ../copies/II8-harness-refs/harness-nine-requirements-and-seams.md (the interiority design note); this spec is the port-obligation companion. Verified: head read.
-- **`archema-io/harness/msc/system/cc-context-reconstruction.md`** and **`misc-snippets.md`** (companions to cc-context-tools.md, which IS copied whole). Witness: cc-context-reconstruction covers the context-assembly seam; misc-snippets is ~398 lines of raw system-prompt / policy-spec / command-prefix-detection extracts from Claude Code — prior-art for **safe-command classification** (which Bash commands can auto-run vs. need approval). Not copied: the copied tool-surface doc + the codex sandbox/approval prose already carry the load-bearing shape; the raw policy extracts are reference-depth. (cc-context-tools.md read confirms the companion relationship; the two companions themselves surface-verified, not deep-read.)
+- **`arch/harness/proprium/AGENTIC-LOOP-PORT-SPEC.md`** (~320 lines, 2026-07-20). Witness: an ASF-shaped **event-stream** agent loop deliberately contrasted with the commodity **request→response** clock — its §0 table names the distinction verbatim ("Clock: Human turn | **Event stream** (multi-channel, async)"), and it carries a tool-subsumption taxonomy (ToolKind), incomplete-state gates, an anti-thrash/doom_loop guard, and multi-timescale nesting (fast tool loop vs slow strategy). The loop *ideology* is captured in depth in ../copies/II8-harness-refs/harness-nine-requirements-and-seams.md (the interiority design note); this spec is the port-obligation companion. Verified: head read.
+- **`arch/harness/msc/system/cc-context-reconstruction.md`** and **`misc-snippets.md`** (companions to cc-context-tools.md, which IS copied whole). Witness: cc-context-reconstruction covers the context-assembly seam; misc-snippets is ~398 lines of raw system-prompt / policy-spec / command-prefix-detection extracts from Claude Code — prior-art for **safe-command classification** (which Bash commands can auto-run vs. need approval). Not copied: the copied tool-surface doc + the codex sandbox/approval prose already carry the load-bearing shape; the raw policy extracts are reference-depth. (cc-context-tools.md read confirms the companion relationship; the two companions themselves surface-verified, not deep-read.)
 
 ## AI-CLI landscape census (descriptive prior-art — witnessed, not ideology)
 
-- **`archema-io/harness/{ai-cli-tools-2026-verified.md, -source-assessment.md, -sentiment-2026.md, -feature-timeline.md, lived.md}`** (2026-07-18/19). Witness: a census of shipping coding CLIs — seams, licenses, velocity, local-vs-hosted, tool-subsumption; `lived.md` is a command→app→provider→models table. Descriptive, not demand-ideology — the *derived* requirements from reading these trees are what matters, and those are copied in harness-nine-requirements-and-seams.md (which is built from `ai-cli-tools-fork-recommendation.md`, the analytic sibling of this census). Left as witness to avoid double-counting the same underlying survey.
+- **`arch/harness/{ai-cli-tools-2026-verified.md, -source-assessment.md, -sentiment-2026.md, -feature-timeline.md, lived.md}`** (2026-07-18/19). Witness: a census of shipping coding CLIs — seams, licenses, velocity, local-vs-hosted, tool-subsumption; `lived.md` is a command→app→provider→models table. Descriptive, not demand-ideology — the *derived* requirements from reading these trees are what matters, and those are copied in harness-nine-requirements-and-seams.md (which is built from `ai-cli-tools-fork-recommendation.md`, the analytic sibling of this census). Left as witness to avoid double-counting the same underlying survey.
 
 ## Additional shipping system prompts (cross-vendor prior-art, witnessed)
 
@@ -42,7 +42,7 @@ why_included: >
 
 ## nexum-OPERATA (sibling ledger)
 
-- **`archema-io/harness/proprium/stalled-lineage/nexum-OPERATA.md`** — sits beside the sapientia/autopax OPERATA ledgers (both excerpted in ../copies/II8-harness-refs/sapientia-era-tool-ideology.md). Witness: the fork-recommendation names it "requirements-gold" for the memory-model design (entity-authored first-person memory files + recursive `@import` into a 1M window, which explicitly calls the ennaos salience-gradient overengineered). Not individually deep-read this pass — flagged for a phase-2 pull if the memory-model thread becomes a focus. (Same underlying doc referenced from Part II §3 nexum row; merge-cross-ref.)
+- **`arch/harness/proprium/stalled-lineage/nexum-OPERATA.md`** — sits beside the sapientia/autopax OPERATA ledgers (both excerpted in ../copies/II8-harness-refs/sapientia-era-tool-ideology.md). Witness: the fork-recommendation names it "requirements-gold" for the memory-model design (entity-authored first-person memory files + recursive `@import` into a 1M window, which explicitly calls the ennaos salience-gradient overengineered). Not individually deep-read this pass — flagged for a phase-2 pull if the memory-model thread becomes a focus. (Same underlying doc referenced from Part II §3 nexum row; merge-cross-ref.)
 
 ## Blocked / corrected paths (coverage honesty)
 

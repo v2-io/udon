@@ -21,7 +21,7 @@ The report's claims are typed on three axes and two locks, defined in full in [[
 
 **The verification-event log is this workflow's standing record.** Each chapter's frontmatter carries an append-only `verified:` list — *what was verified · against what · by whom · when* — never a permanent stage. The four rigor checks (dependency audit / content review / mechanical / notes-disposition) are **re-runnable instruments, not a promotion ladder**: a living document under flux gets re-checked, not re-certified. When a deepening pass verifies a claim at its source, or deliberately corrects a form away, it *appends an event* (including a `deliberately-corrected-away` event, so the next re-verifier is not told to "fix it back" toward a cleaner-reading original — the regression check imported into the machinery instead of relying on memory).
 
-**The layer split (bodies speak present truth; history lives elsewhere)** is ASF's already-worked discipline — see `format.sop.md` §Voice-and-provenance and §Working-Notes (`~/src/archema-io/asf/doc/sop/format.sop.md`) for the canonical statement this workflow's own layer-split section applies: segment voice, not diff voice; a Working Note earns its place only as a forward-pointer, regression-guard, or dead-end warning — never vanity-changelog. Resolved history goes to `CHANGELOG.md` + the git log.
+**The layer split (bodies speak present truth; history lives elsewhere)** is ASF's already-worked discipline — see `format.sop.md` §Voice-and-provenance and §Working-Notes (`~/src/arch/asf/doc/sop/format.sop.md`) for the canonical statement this workflow's own layer-split section applies: segment voice, not diff voice; a Working Note earns its place only as a forward-pointer, regression-guard, or dead-end warning — never vanity-changelog. Resolved history goes to `CHANGELOG.md` + the git log.
 
 ## The idea
 
@@ -55,7 +55,7 @@ Orientation before writing: the theory survey in [`reports/`](reports/) and the 
 
 ## When a claim looks wrong (the discipline with teeth)
 
-This is the estate's hardest-won epistemic method, compressed here because you need it on this page; the full texture lives in `~/.claude/memory/epistemic-discipline/{strengthen-before-soften,integration-is-replacement}.md` and `~/src/archema-io/asf/doc/sop/audit.sop/routing.sop.md` (readable by any substrate) — worked examples, scars, and calibration data included.
+This is the estate's hardest-won epistemic method, compressed here because you need it on this page; the full texture lives in `~/.claude/memory/epistemic-discipline/{strengthen-before-soften,integration-is-replacement}.md` and `~/src/arch/asf/doc/sop/audit.sop/routing.sop.md` (readable by any substrate) — worked examples, scars, and calibration data included.
 
 **Strengthen before softening.** When a claim seems overclaimed, there are two ways to discharge the inconsistency: strengthen the work until the strong claim is true, or weaken the claim to match the work — and only one of them produces a discovery. The strong claim was asserted because somebody's mental picture was pointing at something real; that's where the strengthening attempt aims. Attempt it *first*, always — verify at the source, tighten the argument, find the stronger statement that holds — and fall back to softening only when the attempt has honestly failed. Empirically, across many cycles: the strengthening usually *succeeds*, and softening recommendations consistently underestimate what's reachable.
 

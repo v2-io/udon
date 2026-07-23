@@ -771,7 +771,7 @@ It can be considered a scratch staging area for any and all usage/end-user/agent
 
 - Everything in Fable's needs-map.md or bring it over wholesale and make it less prescriptive
 - Stuff from my brainstorms in this file maybe made more coherent and cross-listed
-- Sapientia-era Agentic Tooling ideology (partially adopted by recent frontier models & harnesses) and (e.g.,) sapientia/cli-conventions/** (I'll start pulling together what I'm talking about into one coherent place in ~/src/archema-io/harness/agentic-tooling/ or something soon)
+- Sapientia-era Agentic Tooling ideology (partially adopted by recent frontier models & harnesses) and (e.g.,) sapientia/cli-conventions/** (I'll start pulling together what I'm talking about into one coherent place in ~/src/arch/harness/agentic-tooling/ or something soon)
 - autopax & rowan & operata ideas on schema versioning & checking etc.
 - Past udon survey ideation in this repo's past
 - Many many past discussions with claude agents and some grok within udon and the older udon-related projects and even the 15yo udon (udon-c) projects (mostly available, like several others in this list, via careful use of `memorata3-search`)

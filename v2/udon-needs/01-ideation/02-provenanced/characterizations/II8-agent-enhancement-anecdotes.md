@@ -1,10 +1,10 @@
 ---
-source: archema-io/harness/msc/system/agent-enhancement-anecdotes.md — corpus-mined catalog of recurring agent-shaping teachings
+source: arch/harness/msc/system/agent-enhancement-anecdotes.md — corpus-mined catalog of recurring agent-shaping teachings
 gathered: 2026-07-21
 status: characterization — full intro + §A read verbatim (lines 1-120); §B–§8 mapped by section header, not fully read (flagged below). Verbatim quotes are only from the read span.
 paths:
-  - /Users/josephwecker-v2/src/archema-io/harness/msc/system/agent-enhancement-anecdotes.md   # 650 lines; §A read in full, §B-8 header-mapped
-source_commit: "archema-io: 1b98ad4; file dated 2026-07-17"
+  - /Users/josephwecker-v2/src/arch/harness/msc/system/agent-enhancement-anecdotes.md   # 650 lines; §A read in full, §B-8 header-mapped
+source_commit: "arch: 1b98ad4; file dated 2026-07-17"
 categories: [agent-shaping, tier-1-ideology, system-prompt-evidence, disposition, cheat-sheet-framing, corpus-mined, harness-handover]
 why_included: >
   The evidence layer under Joseph's system-prompt wager — mined from the memorata3

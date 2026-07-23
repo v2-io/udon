@@ -22,7 +22,7 @@ The built artifact **is** the crystallized sapientia-era thesis: an agent (an EL
 
 ## How I read the harness survey's claims
 
-The harness survey (`~/src/archema-io/harness/proprium/stalled-lineage/SURVEY-sapientia-zoetica-ennaos-nexum.md`) gave a §B "deep cut" table of standout capabilities. **Against the code, every one of its claims holds** — model-as-constant, `set-sampling`, `toggle-tracking`, tracking snapshots, Zoetica time notation, incomplete-state gate, dual JSONL+git audit, `@import` identity, AFK/interrupt, self-token tools, multi-match safety, stale council/deliberation shell-out paths. Three corrections / additions the survey (and the Dec-14 awakening plan) did not surface are noted in **§ Corrections** at the bottom — all first-class findings.
+The harness survey (`~/src/arch/harness/proprium/stalled-lineage/SURVEY-sapientia-zoetica-ennaos-nexum.md`) gave a §B "deep cut" table of standout capabilities. **Against the code, every one of its claims holds** — model-as-constant, `set-sampling`, `toggle-tracking`, tracking snapshots, Zoetica time notation, incomplete-state gate, dual JSONL+git audit, `@import` identity, AFK/interrupt, self-token tools, multi-match safety, stale council/deliberation shell-out paths. Three corrections / additions the survey (and the Dec-14 awakening plan) did not surface are noted in **§ Corrections** at the bottom — all first-class findings.
 
 ---
 

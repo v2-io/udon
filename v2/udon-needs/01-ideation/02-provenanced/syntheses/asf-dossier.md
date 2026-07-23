@@ -1,11 +1,11 @@
 ---
-source: ASF/AAT corpus read (~/src/archema-io/asf/, branch state 2026-07-21)
+source: ASF/AAT corpus read (~/src/arch/asf/, branch state 2026-07-21)
 gathered: 2026-07-21, two passes (see asf-dossier-reading-log.md for per-file coverage)
 status: dossier — theory perspective
-area: ~/src/archema-io/asf/** (all four parts: 01-aat-core, 02-tst-core, 03-llm-core, 04-eli-core)
+area: ~/src/arch/asf/** (all four parts: 01-aat-core, 02-tst-core, 03-llm-core, 04-eli-core)
 target: what the theory and mathematics of ASF/AAT say that should inform a notation-and-tool-suite for agents (UDON v2 demand-side synthesis)
 note: >
-  All paths below are relative to ~/src/archema-io/asf/. Segments are cited as
+  All paths below are relative to ~/src/arch/asf/. Segments are cited as
   path + slug (the slug, e.g. #der-orient-cascade, is the stable identity;
   ordering lives in the OUTLINE.md files). Epistemic tiers are ASF's own
   (exact / conditional / robust-qualitative / heuristic / discussion-grade)

@@ -19,7 +19,7 @@ sources:
 
 # The harness handover map
 
-**What this is.** The port plan for the report's second consumer: `~/src/archema-io/harness/` receives this monograph as the programme's consolidated statement on agentic tooling — its second consumer by charter. This chapter says what transfers as-is, what re-bases, what the harness already owns, and how the two bodies of work relate — written last, against the drafted whole.
+**What this is.** The port plan for the report's second consumer: `~/src/arch/harness/` receives this monograph as the programme's consolidated statement on agentic tooling — its second consumer by charter. This chapter says what transfers as-is, what re-bases, what the harness already owns, and how the two bodies of work relate — written last, against the drafted whole.
 
 ## How the two artifacts relate (ruled by Joseph)
 

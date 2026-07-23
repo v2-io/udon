@@ -1,9 +1,9 @@
 ---
-source: "~/src/archema-io/AGENTIC-DELEGATION.md §'The named exceptions' + incident ledger row 2026-05-02 (always-loaded estate delegation discipline; distilled 2026-07-16 from ~/.claude/memory/collaboration/* carriers)"
+source: "~/src/arch/AGENTIC-DELEGATION.md §'The named exceptions' + incident ledger row 2026-05-02 (always-loaded estate delegation discipline; distilled 2026-07-16 from ~/.claude/memory/collaboration/* carriers)"
 gathered: 2026-07-22 (bolt-on during phase-2 synthesis — RESIDUALS §3 protocol; the monograph's tool-definition segment needed this anchor provenanced rather than cited from memory)
 status: gathered — witness-line evidence (incident + the discipline it produced)
 paths:
-  - ~/src/archema-io/AGENTIC-DELEGATION.md  # "Destructive actions: constrain by tool-set, never by prose" + Incident ledger "2026-05-02: the worktree-deletion incident"
+  - ~/src/arch/AGENTIC-DELEGATION.md  # "Destructive actions: constrain by tool-set, never by prose" + Incident ledger "2026-05-02: the worktree-deletion incident"
 categories: [tier-1, incident, capability-boundaries, tool-omission, delegation, subagent-safety]
 why_included: >
   The estate's own hard-won instance of "capability boundaries must be

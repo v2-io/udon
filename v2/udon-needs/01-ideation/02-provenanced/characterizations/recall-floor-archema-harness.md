@@ -1,5 +1,5 @@
 ---
-source: "~/src/archema-io/harness/ — the harness workshop repo (the compilation's OWN downstream consumer), surfaced un-swept by the 2026-07-21 recall-floor battery"
+source: "~/src/arch/harness/ — the harness workshop repo (the compilation's OWN downstream consumer), surfaced un-swept by the 2026-07-21 recall-floor battery"
 gathered: 2026-07-21
 status: characterization — never authoritative. Territory-level characterization
   of a ~90-file workshop; key files read in full or head-read as marked, the rest
@@ -7,21 +7,21 @@ status: characterization — never authoritative. Territory-level characterizati
   standing recommendation to deep-copy the dossier + CLI census if synthesis leans
   on them.
 paths:
-  - src/archema-io/harness/README.md
-  - src/archema-io/harness/CURRENT-THOUGHTS.md
-  - src/archema-io/harness/STEWARD-JUDGMENT-2026-07-20.md
-  - src/archema-io/harness/ai-cli-tools-source-assessment.md
-  - src/archema-io/harness/ai-cli-tools-{2026-verified,feature-timeline,sentiment-2026}.md
-  - src/archema-io/harness/msc/system/dossier/**  (TAXONOMY.md, PILOT-SYNTHESIS.md,
+  - src/arch/harness/README.md
+  - src/arch/harness/CURRENT-THOUGHTS.md
+  - src/arch/harness/STEWARD-JUDGMENT-2026-07-20.md
+  - src/arch/harness/ai-cli-tools-source-assessment.md
+  - src/arch/harness/ai-cli-tools-{2026-verified,feature-timeline,sentiment-2026}.md
+  - src/arch/harness/msc/system/dossier/**  (TAXONOMY.md, PILOT-SYNTHESIS.md,
     summary-not-sufficient.md, plausibility-asserted-as-verification.md,
     sycophancy-affirm-and-flip.md, depth-over-haste.md, over-engineering-inversion.md,
     summary-not-sufficient.md + the four discovery/*.md angles + *.verify.md)
-  - src/archema-io/harness/msc/system/{coding-system-prompt.full-reckoning.md,
+  - src/arch/harness/msc/system/{coding-system-prompt.full-reckoning.md,
     cc-system-prompt-disposition.md, *-system-report.md, published-prompts/*}
-  - src/archema-io/harness/proprium/** (CHRONICA-PORT-SPEC.md, AGENTIC-LOOP-PORT-SPEC.md,
+  - src/arch/harness/proprium/** (CHRONICA-PORT-SPEC.md, AGENTIC-LOOP-PORT-SPEC.md,
     MVP-VERTICAL-SLICE.md, INTERPRES-COMPACTION-NOTE.md, proprium-harness-design.md,
     canonical/*, archaeology/*, bridges/*, stalled-lineage/*)
-source_commit: "archema-io/harness @ 01c4d30 (submodule of archema-io @ 01c4d30); files dated 2026-07-18…20"
+source_commit: "arch/harness @ 01c4d30 (submodule of arch @ 01c4d30); files dated 2026-07-18…20"
 categories: [harness-facing, agent-failure-taxonomy, cli-census, compaction, continuity, system-prompt, cross-tier, demand-side]
 why_included: >
   The recall-floor battery caught what ~30 mining maps and the territory sweeps
@@ -36,11 +36,11 @@ why_included: >
   it is captured here rather than lost.
 ---
 
-> **Recall-floor find (2026-07-21).** This file exists because the lexical recall-floor over `~/src` surfaced `~/src/archema-io/harness/**` as un-accounted-for. It is the single highest-value catch of the residual sweep: the compilation's own consumer repo, never mined, holding some of the most concentrated agentic-tooling demand evidence in the estate. Read the primary files at the point you rely on them — this is a map, not the territory.
+> **Recall-floor find (2026-07-21).** This file exists because the lexical recall-floor over `~/src` surfaced `~/src/arch/harness/**` as un-accounted-for. It is the single highest-value catch of the residual sweep: the compilation's own consumer repo, never mined, holding some of the most concentrated agentic-tooling demand evidence in the estate. Read the primary files at the point you rely on them — this is a map, not the territory.
 
 ## What this territory is
 
-`~/src/archema-io/harness/` is the **intake and design substrate for restarting PROPRIUM-shaped personhood/continuity infrastructure** now that ASF/AAT matured and commodity coding CLIs finally expose usable seams (README, `01c4d30`). It is explicitly *not* a shipping product and *not* a fork. It carries four altitudes in one workshop dir, three of which are first-class demand evidence for this compilation:
+`~/src/arch/harness/` is the **intake and design substrate for restarting PROPRIUM-shaped personhood/continuity infrastructure** now that ASF/AAT matured and commodity coding CLIs finally expose usable seams (README, `01c4d30`). It is explicitly *not* a shipping product and *not* a fork. It carries four altitudes in one workshop dir, three of which are first-class demand evidence for this compilation:
 
 ### 1. The agent corrected-behavior dossier — `msc/system/dossier/` (highest value)
 

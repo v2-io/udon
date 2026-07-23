@@ -47,7 +47,7 @@ Each situation might eventually carry:
 - Archived spikes: `../../.archived/second-pass/spikes/{paths,agent-utility}/NOTES.md` §8 demand tables (re-read paths under the S4 template/paths pull — discussion ~608)
 - `ux/TODO-AGENT-UX.md`, `TODO-UTILS.md` wishlists (live repo)
 - December usability corpus (`test/usability/`, stale but evidence)
-- Sapientia-era agentic-tooling ideology; `sapientia/cli-conventions/**` (Joseph consolidating into `~/src/archema-io/harness/agentic-tooling/`)
+- Sapientia-era agentic-tooling ideology; `sapientia/cli-conventions/**` (Joseph consolidating into `~/src/arch/harness/agentic-tooling/`)
 - autopax / rowan / operata schema-versioning & checking ideas
 - Past udon survey ideation in this repo's history; udon-c-era discussions (`memorata3-search` etc.)
 - Usage snippets across `~/src/`; grok's memory search

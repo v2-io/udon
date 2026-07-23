@@ -7,7 +7,7 @@ status: >
   and the reconcile buckets. TARGET-FILES.md is the operational work-list; this is the
   "why these targets matter" layer, and the seed of the eventual tooling-thesis synthesis.
 second_reader: >
-  This doubles as programme-level material for ~/src/archema-io/harness/ — the tiers,
+  This doubles as programme-level material for ~/src/arch/harness/ — the tiers,
   convergence clusters, singletons, and the Tier-2 caveat are claims about agent-facing
   tooling as such; "for UDON" clauses are one consumer's application. The prescriptive
   inversion ("when building a harness, do X") is the not-yet-written

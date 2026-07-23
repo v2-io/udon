@@ -3,7 +3,7 @@ source: coverage-audit pass 2 residue ruling (STEWARD-CALLS #13)
 gathered: 2026-07-21
 status: commentary — witness line for a deliberately un-pulled depth residue
 paths:
-  - ~/src/archema-io/asf/02-tst-core (distilled thesis IS in corpus — see below)
+  - ~/src/arch/asf/02-tst-core (distilled thesis IS in corpus — see below)
 categories: [tooling-roi, tst, depth-residue, pull-on-demand]
 why_included: >
   So phase-2's pull is one hop when the harness thesis reaches for the

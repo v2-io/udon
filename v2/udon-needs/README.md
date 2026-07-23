@@ -99,7 +99,7 @@ From Joseph (~L779–L790) and the discussion’s own residue:
 
 - The needs-map seed (and any less-prescriptive rewrites of it)
 - Brainstorms already in [`pipeline-discussion.md`](pipeline-discussion.md) (accumulation list ~L101–L118; utility/paths/dialects/schema list ~L311–L332; morning sampling of demand counterexamples ~L527–L542)
-- Sapientia-era agentic tooling ideology and e.g. cli-conventions (Joseph consolidating toward something like `~/src/archema-io/harness/agentic-tooling/`)
+- Sapientia-era agentic tooling ideology and e.g. cli-conventions (Joseph consolidating toward something like `~/src/arch/harness/agentic-tooling/`)
 - autopax / rowan / operata ideas on schema versioning and checking
 - Past UDON survey and ideation in this repo’s history
 - Many past Claude/Grok discussions in udon and related projects (including old udon-c), often via `memorata3-search`
