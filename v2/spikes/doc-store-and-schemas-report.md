@@ -56,7 +56,10 @@ simulation/hallway distinction in §10.4, and corrections C3, C11, C12. Sections
 of pass 1 are now §18–19. Pass 3 (same day) closed the CHRONICA question inside §1.4,
 corrected §12.2's gating overclaim against the `logos/` counter-case (C13), extended the
 descent to four generations, and carried two artifacts the text had been leaning on (the
-projected-constraint table in §5, the emitted tool definition in §13).*
+projected-constraint table in §5, the emitted tool definition in §13). Pass 4 added §12.4
+— side-cars, in-file regions, companion file classes, per-record history, and the
+cluster-record schema question — the one structural gap the earlier passes had described
+only in its sibling-directory form.*
 
 ---
 
@@ -357,7 +360,9 @@ end
 ```
 
 `SELECT`-by-key is `path_for`; `SELECT *` is `glob("*.yml")`. The directory *is* the
-table; the filename *is* the primary key. Note `sort` before `filter_map`: iteration
+table; the filename *is* the primary key. (One row of that table is often **not one
+file** — records routinely span sibling directories and in-file regions with different
+rules. That is a separate axis, developed in §12.4.) Note `sort` before `filter_map`: iteration
 order is lexicographic-by-key and deterministic, which is what makes the generated
 views diff cleanly.
 
@@ -2114,6 +2119,307 @@ reading the schema — the same move as `_schema`-in-the-document, run in the ot
 direction. Status is EXPLORING and it is `blocked_by: ["[[008]]"]`[^adr010-frontmatter],
 so this is an unbuilt proposal; cite it as a design, not a capability.
 
+### 12.4 Side-cars and the cluster record — when the table's row is not one file
+
+Everything above has assumed a record is a file. It usually is not. Across this estate a
+record is routinely a **cluster** — several files and/or several *regions within one
+file*, carrying different roles, different canonicity, and different rules. The
+directory-as-table frame does not describe that; it composes with it, one level down.
+This is the schema question underneath the whole review, and the estate answers it four
+different ways without ever naming it as one problem.
+
+**Realization A — the sibling-directory side-car** is well covered above and is the mature
+one: relata's `pdf-attempts/<key>/`, `verifications/`, `calibrations/` (§7); terminology's
+`decisions/<slug>/` (§12.1); `_emitted/` as explicitly derived and non-canonical; the
+ingest quarantine's `.rejected` / `.needs-review` marker-plus-sidecar pairs (§7). One key,
+many co-located stores, each with its own write rule. Not re-derived here.
+
+The other three are the gap.
+
+#### 12.4.1 The in-file non-canonical region
+
+ASF's `## Working Notes` is a side-car **inside** the record, bound by different rules
+than the body[^format-workingnotes]:
+
+> The `## Working Notes` section is for active development: open questions about the
+> claim, sketches of how AAT machinery might strengthen or weaken it, unresolved issues,
+> things to check. This is *our* working space — what we're thinking about, not what we're
+> asserting. **It should be removed or emptied when the segment reaches `candidate`
+> stage.** Unlike the Discussion section (which is part of the published theory), Working
+> Notes are process artifacts.
+
+The rules governing it are the interesting part, because **non-canonical does not mean
+unconstrained**. The region has a positive admission schema — three legitimate kinds and
+two named exclusions[^format-workingnotes]:
+
+> A Working Note earns its place *only if it assists future work*. Three legitimate kinds:
+> **forward pointers** (open follow-on, gating sub-spikes, unresolved questions);
+> **regression-guards** (a disconfirmed prediction or deliberately-corrected-away form,
+> recorded so it is not re-attempted or re-landed); **dead-end warnings** (an approach
+> found not to work). What does *not* belong, even though Working Notes are not canon:
+> **vanity-changelog** — pure past-work narration ("previously carried X," "the audit
+> recommended a soften"); that is `CHANGELOG.md`'s job, and the urge is strongest exactly
+> when the fix was a *deletion*, so there's no artifact to point at — and **unneeded
+> spike/artifact references**, which not only clutter but *pin the spike in place*,
+> tripping the spike-archivability test. **"Not canon" licenses forward-work content, not
+> backward-narration.**
+
+Three transferable ideas. **A non-canonical region needs its own admission rule or it
+becomes a dumping ground** — and the rule here is *directional*: forward-looking content
+is admitted, backward-looking content is routed to the history layer. **The region has a
+lifecycle tied to the record's stage** — emptied at `candidate` — which makes it a
+*temporary* part of the cluster, unlike a sibling event directory that only grows. And
+the exclusion of spike references because they *"pin the spike in place, tripping the
+spike-archivability test"* is a real cross-store coupling: a pointer from a non-canonical
+region into a transient store prevents that store from being garbage-collected. **A
+side-car can hold another store hostage.**
+
+The same section governs the whole cluster's voice discipline: *"Date / commit / spike
+references belong in the history layer (`CHANGELOG.md` / the cycle tracking file); a
+`## Working Notes` carries one **only** when it is a forward-pointer, regression-guard, or
+dead-end warning."* And the acceptance test for the body is stated as a
+consequence: *"a reader with no knowledge of which spike produced which segment should be
+able to read any segment as a coherent piece of theory; **spike files can vanish without
+invalidating it.**"*[^format-voice] That is a *severability* criterion for the cluster —
+which parts can be deleted without damaging the record.
+
+#### 12.4.2 The in-file *harvested* region — the mirror image
+
+`## Findings` is the same structural move with the opposite disposition. Where Working
+Notes are suppressed at build, Findings are **extracted outward** into a curated
+catalog[^format-findings]:
+
+> The `bin/extract-findings` script walks every component's `OUTLINE.md`, opens each
+> referenced segment, extracts the Findings sections that are present, and emits both a
+> canonical `FINDINGS.md` (full per-segment catalog) and a README-shaped condensed
+> `_findings-summary.md`. **Header absent ⇒ section absent ⇒ no catalog entry from this
+> segment. This is by design.**
+
+And unlike Working Notes it is **schema'd**: each Finding is an `### {name}` sub-heading
+carrying five fields in a fixed order — Brief / Impact / Novelty Claim / Related Work /
+Search Log — with the ordering itself load-bearing (*"Catalog extraction relies on this
+ordering"*)[^format-findings-schema]. It also declares a deliberate **non-**duplication
+across the cluster: *"Findings sections do not duplicate the tier — the extractor reads
+`status:` from frontmatter and surfaces it alongside the Finding in the catalog"*, which
+*"separates what kind of contribution (the Findings section's job) from how
+well-established (the segment's job)"*[^format-findings-tier]. The region and the
+frontmatter are explicitly non-overlapping fields of one record, and the derived view
+joins them.
+
+So the estate has **two in-file regions with opposite dispositions and opposite maturity**:
+
+| | `## Working Notes` | `## Findings` |
+|---|---|---|
+| Disposition at build | **stripped** (`:public`) / boxed (`:review`) | **harvested** into `FINDINGS.md` |
+| Internal schema | prose, with an admission rule | five fields, fixed order |
+| Addressed by | H2 heading text | H2 heading + `###` per finding |
+| Lifecycle | emptied at `candidate` | persists; absence is meaningful |
+| Extraction tooling | a regex truncation | a walker (`bin/extract-findings`) |
+| Cardinality | 0–1 per record | 0–n findings per record |
+
+**Findings is the worked precedent.** A region with a declared schema, a walker that
+addresses it, a derived artifact, and a stated semantics for absence is exactly what
+Working Notes lacks — and the two live in the same file, five headings apart. If a
+cluster-aware schema is wanted, it does not need inventing so much as **generalizing from
+the region the estate already got right.**
+
+#### 12.4.3 What assembly-time filtering costs
+
+The current mechanism is a build-variant filter, and it is worth showing exactly because
+its limitations are the argument[^renderer-strip]:
+
+```ruby
+# Variants:
+#   :public   strips ## Working Notes entirely
+#   :review   keeps Working Notes, surfaces the `stage:` field as marginalia
+
+# Working Notes is always the trailing section by FORMAT discipline, so
+# truncation at the last `## Working Notes` heading is safe.
+def strip_working_notes(body)
+  idx = body.rindex(/^##[ \t]+Working Notes\b/m)
+  idx ? "#{body[0...idx].rstrip}\n" : body
+end
+```
+
+In fairness this is more than "filtering": there are **two named variants**, and the
+review variant does not merely retain the region — it wraps it in a distinct LaTeX
+`workingnotes` environment, closing on the next H2 or higher, and surfaces the otherwise-
+suppressed `stage:` field as marginalia[^renderer-variants]. That is a real
+projection-by-audience, and it is the right *shape*: one record, two renderings, region
+membership deciding which parts appear. Compare rowan's store roles and modes (§2.2) —
+same idea, different altitude.
+
+What it costs is everything below the rendering layer:
+
+- **The boundary is recovered, not declared.** `rindex` over the rendered body, with
+  correctness resting on an explicitly-invoked convention — *"always the trailing section
+  by FORMAT discipline"* — that nothing enforces. A segment with a stray `## Working Notes`
+  mid-body, or a fenced code block containing that line, silently truncates the record.
+- **The region is invisible to the schema.** Frontmatter has `slug`/`type`/`status`/
+  `depends`/`stage`; it has no notion that the file has parts. Nothing declares that a
+  Working Notes region exists, what may go in it, or that it must be empty at `candidate`
+  — the FORMAT rule (§12.4.1) is enforced by review, not by the linter that already checks
+  stage consistency (§12.2).
+- **It cannot be addressed.** There is no way to reference a segment's Working Notes from
+  elsewhere, diff them separately, or ask "which segments have non-empty Working Notes at
+  `candidate`?" — a question the promotion workflow (§12.2) obviously wants answered, and
+  which `bin/extract-findings` answers trivially for the *other* region.
+- **It cannot be validated separately.** The admission rule ("forward-work content, not
+  backward-narration") is precisely the kind of thing a lint pass over an addressable
+  region could at least warn on, in the estate's own warnings-only register (§12.2).
+- **Cardinality is fixed at one by accident.** A trailing-region convention admits exactly
+  one such region per record. A second non-canonical region — reviewer notes, provenance,
+  a per-record history (§12.4.5) — has nowhere to go.
+
+Note the asymmetry this produces: **the region that is thrown away has no schema; the
+region that is kept has one.** That is backwards from a durability standpoint. The
+harvested region gets validated on the way out; the suppressed region accumulates
+unchecked until someone empties it by hand.
+
+#### 12.4.4 Companion *files* — a third cluster axis
+
+Beyond regions, the estate has whole **file classes** that are companions to the claim
+segments rather than instances of them, and their status is handled by two different
+escape hatches:
+
+- **`old-*` — exempt by filename.** *"The `old-*` filename prefix is the **only**
+  mechanism for placing a file in `src/` that is exempt from FORMAT. Those are prior-work
+  staging files; they retain their original frontmatter (often with non-AAT `type:` tokens
+  like `Definition`, `Theorem`) until their content is converted. Tooling skips
+  them."*[^format-segmentset] 44 of them across the volumes — the single largest prefix
+  class, larger than any claim type. Exemption encoded in the *name*, so it is visible in
+  every listing and diff.
+- **Gloss segments — exempt by carve-out.** 17 `impl-*` files (chapter-closing
+  "Additional Implications & Discussion") plus the `*-intro` chapter openers. They carry
+  `type: discussion`, `status: discussion-grade`, and large `depends:` lists, but make no
+  formal claim. FORMAT grants them a cadence exemption and says so
+  honestly[^format-cadence-exemption]:
+
+  > Chapter-intro segments and most `disc-*` discussion segments are exempt from the full
+  > cadence above … **until dedicated norms for those file kinds are worked out.** These
+  > files do expository, framing, or meta-architectural work rather than making one formal
+  > claim, so the claim-segment cadence is the wrong mold for them; **the exemption records
+  > that their free-form structure is deliberate, not drift.** … When norms for these kinds
+  > are authored, they should replace this paragraph.
+
+The two hatches differ in an instructive way. `old-*` is **exemption by address** — the
+class is legible to tooling without reading the file. The gloss exemption is **exemption
+by prose** — a paragraph in the spec, invisible to any tool, recoverable only by
+convention (`impl-` / `-intro` prefixes) that nothing declares. And the exemption is
+explicitly a placeholder for a schema that does not exist yet: *the wrong mold* is named,
+the right one is deferred. **A companion class with no positive schema is a row type the
+table cannot describe** — which is the same gap as the unschema'd region, one level up.
+
+An honest note: the estate's own frame already half-solves this. A gloss segment *is* a
+record with its own `type` value (`discussion`) and its own `status` value
+(`discussion-grade`); what it lacks is a *cadence* — a declared internal structure. So the
+gap is not "these files are unclassified" but "**the schema types the record and not its
+shape.**"
+
+#### 12.4.5 Per-record history — solved once, unsolved next door
+
+Terminology has per-record history: `decisions/<slug>/<ts>-<decider>-<action>.md`, one
+append-only file per decision event, never deleted (§12.1). ASF segments have none — a
+segment's history retires to a single root `CHANGELOG.md`. Why one and not the other is
+worth asking, and the answer is a real design distinction rather than an oversight.
+
+**Terminology events are discrete, attributable, low-volume, and about the identity of the
+record.** A `canonicalize` / `rename` / `add-alias` / `deprecate` / `supersede` decision is
+a countable act with a decider and an outcome, and there are eight of them in the
+vocabulary (§12.1). **Segment changes are continuous refinement** — a derivation tightened,
+a scope narrowed, a paragraph rewritten — with no natural event boundary and no discrete
+decider. The former has an obvious record shape; the latter does not, which is why it
+lands in a prose changelog.
+
+But the cost is measurable. ASF's `CHANGELOG.md` is 1,405 lines carrying 128 slug
+references[^asf-changelog]. Per-slug history is therefore **recoverable by grep and not
+addressable by anything** — there is no `history-of(slug)` the way there is
+`decisions_for(slug)` in `bin/term`[^term-events-api]. The asymmetry is visible in the
+tooling: `bin/term show <slug>` prints the entry *plus its decision history plus its
+segment cross-refs*; there is no ASF equivalent for a segment.
+
+**Git as the implicit alternative, and what it requires.** `git log -- src/<slug>.md` is
+always available in principle, but its usefulness depends entirely on the commit regime
+being shaped for it. The measured regime across 392 commits touching segment
+files[^asf-commit-regime]:
+
+| Files touched per commit | Commits |
+|---|---|
+| exactly 1 | 97 (25%) |
+| 2–3 | 124 |
+| 4–10 | 124 |
+| more than 10 | 47 (largest: 146 files) |
+
+So three quarters of the history is diluted: a commit message covering 146 segments says
+nothing useful about any one of them. Per-slug git history is *partially* viable and would
+become fully viable only under a one-slug-per-commit discipline that does not currently
+exist.
+
+**And the practice is already reaching for what the schema cannot express.** Eleven
+commits use a slug-prefixed, *region-qualified* subject line[^asf-commit-regime]:
+
+> `hyp-behavioral-self-knowledge WN: the constitutive resolution (Joseph) — the
+> positing-class self-query is not discovered but chosen`
+
+`<slug> WN:` — record identifier plus **region identifier**, in a commit subject, because
+there is nowhere else to put it. Eleven of 392 is an emergent convention, not an
+established one, and it is concentrated on a single segment in July 2026. But it is
+direct evidence of the demand: **when a change touches only the non-canonical region,
+authors want to say so, and the only addressable surface available is the commit message.**
+
+#### 12.4.6 The schema question, and whether anything in the estate already models it
+
+Stated generally: **how does a schema express a record that is a cluster** — several files
+and/or several regions, with different roles, canonicity, lifecycles, and admission rules?
+The estate's four realizations answer different fragments:
+
+| Realization | Addressable? | Schema'd? | Lifecycle? | Example |
+|---|---|---|---|---|
+| Sibling event directory | ✅ by key | ✅ frontmatter per event | grows forever | `decisions/<slug>/` |
+| Harvested in-file region | ✅ by heading | ✅ five fields, ordered | persists | `## Findings` |
+| Suppressed in-file region | ❌ regex only | ❌ prose + review-enforced rule | emptied at `candidate` | `## Working Notes` |
+| Companion file class | ⚠️ by filename or convention | ❌ (cadence deferred) | — | `old-*`, `impl-*` |
+
+**Does rowan's multi-store already model this? No — it is a different axis, and the
+distinction is worth being precise about.** Multi-store binds *one resource to several
+stores at once* (§2.2): primary plus event log plus projection plus cache, each receiving
+the same record, differing in *where* and *when* rather than in *what*. The cluster
+question is one record with **parts that differ in kind** — different content, different
+rules, different canonicity, different lifecycles. Multi-store replicates; a cluster
+decomposes. They compose cleanly (a cluster's parts could each be multi-stored) but
+neither substitutes for the other.
+
+Rowan does, however, contain the estate's **only schema-level region declaration**, and it
+is a single line: `body_attribute:` in the YAML-frontmatter adapter (§2.1, §2.3). A record
+is declared to have two regions — a structured frontmatter region and a free-text body —
+with the body bound to a *named attribute*, so it round-trips through the same
+attribute-coercion and validation machinery as any other field[^yamlfm-init]. That is the
+existence proof that a region can be first-class: **the body is a field**. It is also the
+ceiling — exactly one body region, no sub-regions, no per-region rules beyond the
+attribute's own type.
+
+So a cluster-aware schema would need, at minimum, four things the estate has each
+demonstrated *somewhere* and never together:
+
+1. **Declared parts with addresses** — `body_attribute:` proves a region can be a named
+   field; `decisions/<slug>/` proves a sibling store can be keyed off the record. Both are
+   addressable; neither generalizes to *n* parts of mixed kind.
+2. **Per-part rules** — canonicity (canonical / derived / process-artifact), an admission
+   rule (Working Notes' forward-not-backward), and an internal schema where one applies
+   (Findings' five ordered fields).
+3. **Per-part lifecycle, tied to record state** — "must be empty at `candidate`" is a
+   validation the promotion workflow already wants and cannot express.
+4. **Assembly semantics** — which parts appear in which projection. `:public` / `:review`
+   is this, hardcoded for one region; rowan's role × mode composition is the general form
+   one altitude up.
+
+The near-term, cheap move suggested by the material is not a new system: it is to
+**generalize `bin/extract-findings` into a region walker** and let frontmatter declare the
+record's parts. Findings already proves the walker; `body_attribute` already proves the
+declaration; the promotion workflow already wants the validation. What is missing is the
+line in the schema that says a record has parts — and that line is the thing UDON is
+being asked to design at document scale.
+
 ---
 
 ## 13. Resources as agent tools
@@ -2705,6 +3011,23 @@ actual path work is in hand.
   which relata's aliases are the cure.
 - **A dangling reference can be a truth-status defect, not a broken link.** ASF's
   `empirica:` contract (§12.2) is the strongest referential-integrity formulation found.
+- **A record may be a cluster, and the parts need addresses** (§12.4). ASF's
+  `## Working Notes` cannot be referenced, diffed, queried, or validated separately
+  because the schema does not know the file has parts — while `## Findings`, five headings
+  away in the same file, has a walker, a declared five-field schema, a derived catalog and
+  a stated semantics for absence. The demand shows up in commit subjects as
+  `<slug> WN:` — record identifier plus region identifier, because there is nowhere else
+  to put it. **If UDON addresses regions, this is the worked case.**
+- **Region membership is a projection axis.** ASF's `:public` strips Working Notes;
+  `:review` keeps them, boxes them, and surfaces `stage:` as marginalia (§12.4.3). One
+  record, two renderings, membership deciding what appears — the same shape as rowan's
+  role × mode composition, one altitude down. But the boundary is recovered by `rindex`
+  over rendered prose and rests on an unenforced ordering convention.
+- **Severability is a design criterion.** ASF states the test for its transient stores:
+  *"spike files can vanish without invalidating it"* (§12.4.1). Which parts of a cluster
+  may be deleted without damaging the record is a question a path/schema design should be
+  able to answer — and a side-car pointing into a transient store can hold that store
+  hostage.
 - **Versioning is why an address must not rot.** `was:` / `upcast` chains /
   schema-history / `since:`/`removed:` are the mechanisms that let a key keep resolving
   across a schema change, and §6.6's asymmetry is the key insight for a document format:
@@ -2808,6 +3131,25 @@ actual path work is in hand.
   instance.
 - **Preserve intent, not just state** (§16.4, P1) — *"the difference between a photograph
   and a film."* The argument under every append-only event directory here.
+- **Non-canonical does not mean unconstrained** (§12.4.1). Working Notes has a positive
+  admission rule that is *directional* — forward pointers, regression-guards, dead-end
+  warnings admitted; backward-narration routed to the history layer. *"'Not canon'
+  licenses forward-work content, not backward-narration."* Any agent-writable scratch
+  region needs an admission rule or it becomes a dumping ground, and this is the best one
+  in the estate.
+- **The kept region has a schema; the discarded one does not** (§12.4.3) — backwards from
+  a durability standpoint. The harvested region is validated on the way out; the
+  suppressed region accumulates unchecked until emptied by hand. Generalizing
+  `bin/extract-findings` into a region walker is the cheap move the material suggests.
+- **Per-record history is solved for discrete attributable events and unsolved for
+  continuous refinement** (§12.4.5). Terminology has `decisions/<slug>/`; ASF segments
+  retire to a 1,405-line CHANGELOG where per-slug history is greppable but not
+  addressable. Git-per-slug is only 25% viable at the measured commit regime.
+- **Companion classes need a positive schema, not an exemption** (§12.4.4). `old-*` is
+  exemption *by address* (legible to tooling); the gloss-segment carve-out is exemption
+  *by prose* (invisible to tooling), and FORMAT says so honestly — "until dedicated norms
+  for those file kinds are worked out." The gap is that **the schema types the record and
+  not its shape.**
 - **Estimate in sessions, not calendar time** (§11) — "aligns with agent context
   boundaries."
 
@@ -2884,8 +3226,18 @@ shoshin, and the autopax Dec-2025 commit run.
   material in §7, and `~/src/firmatum/` and `~/src/shoshin/` are unread as repos.
 - `nexum-OPERATA.md` (627 lines) and `autopax-SYNTHESIS-PART1-UNIFIED-ARCHITECTURE.md`
   (756) and `autopax-README.md` (957) — opened only far enough to place them.
-- ASF `FORMAT.md` §300+ (Document Cadence, Findings schema, Working Notes, Epistemic
-  Triage) and `bin/term`'s CLI/lint halves.
+- ASF `FORMAT.md` §479+ (Epistemic Triage) and the equation-tag conventions; `bin/term`'s
+  CLI/lint halves. Cadence / Findings / Working Notes / voice-and-provenance are now read
+  (§12.4).
+- **The side-car question, one level further:** `bin/extract-findings` itself (I read its
+  contract in FORMAT, not its source), the `spikes.sop.md` archivability test that Working
+  Notes references can trip, and `bin/lint-outline`'s actual checks. Also whether
+  `udon-needs`' embedded `verified:` event array (§12.2) is the estate's fourth answer to
+  per-record history or a fifth realization of the in-file region — I named the shape but
+  did not trace how it is written or read.
+- Whether any consumer of `FINDINGS.md` / `_findings-summary.md` round-trips edits back
+  into segments, which would make the harvested region bidirectional and change its
+  schema requirements.
 - ASF terminology `entries/` (176 records) and `decisions/` (~150 dirs) — the README and
   schema read whole, the record corpus sampled.
 
@@ -3181,3 +3533,17 @@ it brackets the quoted material.*
 [^chronica-nonclaims]: `~/src/arch/harness/proprium/CHRONICA-PORT-SPEC.md:272-290` — the explicit does-not-claim list (identity continuity across turnovers; replay reconstitutes a prefix record, not the entity; backup/restore not identity-preserving) and the "sibling MVP hooks" to name even if stubbed.
 [^logos-provenance]: `~/src/arch/logos/refs/README.md:5` — "Adaptation provenance (2026-05-09). Borrowed from `~/src/neurips/` … The data layout, atomicity contract, and CLI verbs transfer verbatim. What does NOT transfer: the NeurIPS `bin/build` LaTeX pipeline (output format here is venue-specific …)". The two READMEs differ by ~29 lines total.
 [^logos-gate]: `~/src/arch/logos/CLAUDE.md:86` — "`bin/refs lint` is **the anonymization gate before submission** — it scans every entry and every cited key against the deny-list. Run it before each Synthese / Inquiry submission."
+
+### Pass 4 — side-cars, in-file regions, and the cluster record
+
+[^format-workingnotes]: `~/src/arch/asf/FORMAT.md:428-432` — the `## Working Notes` section: process artifacts vs published theory; "removed or emptied when the segment reaches `candidate` stage"; "What earns a Working Note" with the three legitimate kinds (forward pointers, regression-guards, dead-end warnings) and the two exclusions (vanity-changelog, unneeded spike/artifact references that "pin the spike in place"); *"'Not canon' licenses forward-work content, not backward-narration."*
+[^format-voice]: `~/src/arch/asf/FORMAT.md:434-442` — "Voice and provenance"; segment voice not diff voice; date/commit/spike references belong to the history layer; the two narrow permitted spike-reference forms; the severability test ("spike files can vanish without invalidating it").
+[^format-findings]: `~/src/arch/asf/FORMAT.md:315-319` — the `## Findings` section and `bin/extract-findings`; canonical `FINDINGS.md` + condensed `_findings-summary.md`; "Header absent ⇒ section absent ⇒ no catalog entry from this segment. This is by design."
+[^format-findings-schema]: `~/src/arch/asf/FORMAT.md:327-334,~410` — the five-field Finding schema introduced by `### {Finding name}`; fixed field ordering Brief / Impact / Novelty Claim / Related Work / Search Log; "Catalog extraction relies on this ordering."
+[^format-findings-tier]: `~/src/arch/asf/FORMAT.md:~406` — "Tier comes from frontmatter, not Findings"; the extractor reads `status:` and surfaces it beside the Finding; separates *what kind of contribution* from *how well-established*.
+[^format-cadence-exemption]: `~/src/arch/asf/FORMAT.md:300-313` — the eight-item Document Cadence (frontmatter → title → summary → Formal Expression → Epistemic Status → Discussion → Findings → Working Notes) and the "Cadence exemption for intro and discussion segments (Joseph, 2026-07-14)"; "the wrong mold for them"; "the exemption records that their free-form structure is deliberate, not drift"; "When norms for these kinds are authored, they should replace this paragraph."
+[^renderer-strip]: `~/src/arch/asf/bin/lib/segment_renderer.rb:14-30,147-153` — the documented section order with "## Working Notes (optional; stripped in :public variant)"; the two variants; `strip_working_notes` using `body.rindex(/^##[ \t]+Working Notes\b/m)` justified by "always the trailing section by FORMAT discipline."
+[^renderer-variants]: `~/src/arch/asf/bin/lib/segment_renderer.rb:29-30,364,405-418`; `~/src/arch/asf/bin/lib/typeset.rb:203-204`; `~/src/arch/asf/bin/build-monograph:21,161` — `:review` keeps Working Notes and surfaces `stage:` as marginalia; the `workingnotes` LaTeX environment opened on the H2 and closed at the next H2-or-higher; `WIDE_SECTION_TITLES = %w[Discussion Findings]`; the `--public` build flag ("public variant (strips Working Notes)").
+[^asf-changelog]: `~/src/arch/asf/CHANGELOG.md` — 1,405 lines carrying 128 segment-slug references (`#def-`/`#der-`/`#result-`); the sole history layer for segments, with no per-slug index. Contrast `~/src/arch/asf/LOG.md` (221 lines, pre-2026-04-24 archaeology, frozen).
+[^term-events-api]: `~/src/arch/asf/bin/term:268-290,624-678` — `DecisionEvent.dir_for(slug)` / `events_for(slug)`; `cmd_show` prints the entry plus its decision history plus segment cross-references. No ASF-segment equivalent exists.
+[^asf-commit-regime]: `~/src/arch/asf` git, 392 commits touching `0*/src/*.md` — files-per-commit distribution: 97 single-file, 124 two-to-three, 124 four-to-ten, 47 above ten (largest 146). Eleven commits carry a slug-prefixed, region-qualified subject, e.g. `hyp-behavioral-self-knowledge WN: the constitutive resolution (Joseph) — the positing-class self-query is not discovered but chosen`.

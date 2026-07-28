@@ -162,3 +162,41 @@ principle."** §4.3 rewritten; the footnote is kept as a tombstone.
    definition §13).
 
 Final: ~3,180 lines / ~29,200 words / 247 footnotes; 1 deliberate tombstone.
+
+## PASS 4 COMPLETE (2026-07-23) — side-cars / the cluster record
+
+Deliverable moved to `~/src/udon/v2/spikes/doc-store-and-schemas-report.md` (this file is
+the sibling checkpoint). Added **§12.4** (~250 lines, 11 new footnotes; 258 total).
+
+Findings:
+- **Two in-file regions with opposite dispositions, five headings apart.**
+  `## Working Notes` = suppressed at build, prose, regex-truncated, no schema.
+  `## Findings` = harvested into FINDINGS.md by `bin/extract-findings`, five ordered
+  fields, absence is meaningful "by design". **Findings is the worked precedent Working
+  Notes lacks** — generalize the walker rather than invent a system.
+- **Non-canonical ≠ unconstrained.** WN has a *directional* admission rule (forward
+  pointers / regression-guards / dead-end warnings in; vanity-changelog + spike refs out)
+  — "'Not canon' licenses forward-work content, not backward-narration." Plus: a side-car
+  pointer into a transient store *pins that store in place* (spike-archivability test).
+- **What filtering costs:** boundary recovered by `rindex` + unenforced "trailing section"
+  convention; region invisible to schema; not addressable / queryable / validatable;
+  cardinality accidentally fixed at 1. Asymmetry: the *kept* region has a schema, the
+  *discarded* one doesn't — backwards for durability.
+- **Companion files:** `old-*` = exemption by ADDRESS (44 files, legible to tooling);
+  gloss `impl-*`/`*-intro` (17+) = exemption by PROSE, explicitly "until dedicated norms
+  … are worked out". Gap = **the schema types the record, not its shape.**
+- **Per-record history:** terminology solved it (discrete attributable events);
+  ASF didn't (continuous refinement → 1,405-line CHANGELOG, 128 slug refs, greppable not
+  addressable). Git-per-slug: 97/392 commits single-file (25%); largest commit 146 files.
+  **11 commits use `<slug> WN:` — record id + REGION id in a commit subject, because
+  there's nowhere else to put it.** Demand visible in practice.
+- **rowan multi-store does NOT model clusters** — different axis (multi-store replicates
+  one record across stores; a cluster decomposes one record into unlike parts). But
+  `body_attribute:` IS the estate's only schema-level region declaration: the body is a
+  field. Existence proof + ceiling (exactly one region).
+- Four requirements named for a cluster-aware schema (declared parts w/ addresses;
+  per-part rules; per-part lifecycle tied to record state; assembly semantics).
+
+Left: `bin/extract-findings` source; `spikes.sop.md`; `bin/lint-outline` checks; how
+udon-needs' embedded `verified:` array is written/read; whether FINDINGS.md ever
+round-trips back into segments.
