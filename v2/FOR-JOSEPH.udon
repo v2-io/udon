@@ -73,7 +73,19 @@
   maintainable or like a fifth language. Evidence either way feeds O5
   before anything is built on it.
 
-|item[tst-grounding-agent] :date 2026-07-28 :status launched :class commission
+|item[tst-citation-repair] :date 2026-07-28 :status open :class proposal
+  Surfaced by the TST grounding read, verified by count: the 30 bridge
+  chapters headed for ASF 02-TST cite ZERO TST segment slugs while
+  restating TST's formulas correctly in prose -- mechanical
+  under-attribution, cheap to fix, and worth fixing BEFORE the corpus
+  is entrained into ASF (where uncited restatement of canon is exactly
+  what X5/FORMAT discipline exists to prevent). Related gift in the
+  other direction: counter-register.md row 1 is a measurement bearing
+  directly on #hyp-conceptual-alignment's own stated empirical
+  uncertainty -- a contribution back to TST neither side knows it has.
+  Natural moment: the SEG-SPLIT segmentation pass.
+
+|item[tst-grounding-agent] :date 2026-07-28 :status delivered :class commission
   Per your #3: exploration agent launched (opus) — starting from the
   asf dossier in udon-needs syntheses, then the TST segments whole plus
   adjacent theory and the udon-needs segments that elaborate them.

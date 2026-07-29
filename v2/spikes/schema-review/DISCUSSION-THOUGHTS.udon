@@ -111,6 +111,14 @@
     with the estate's own directory-is-a-table thesis (dropping an
     attribute across N documents is DROP COLUMN -- well-defined, merely
     gateless). The sketch syntax is explicitly no-lean.
+    TST-grounding update (2026-07-28, spikes/tst-grounding/): the
+    renaming half is evidenced in TST near-verbatim (a Realignment-as-
+    Feature corollary with an ROI threshold; its worked example
+    friends/posts -> teammates/documents is this thought's site ->
+    company-primary-url) -- but at discussion-grade tier, so "TST is our
+    grounding here, from first principles" overstates by roughly two
+    tiers. The contraction half is not in TST; the grounding report
+    offers a three-step derivation and names its own weakest link.
   |needs
     The honest residue stands: down-migration splits mechanical / lossy /
     requires-judgment, and the judgment tier's per-item cost is genuinely
