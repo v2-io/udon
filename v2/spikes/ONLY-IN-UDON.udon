@@ -76,6 +76,20 @@
   "markdown couldn't have given us that without inventing worse
   conventions."
 
+|capability[duplicate-keys-cannot-silently-lose] :status candidate :date 2026-07-28
+  :nearest-elsewhere YAML / JSON (both fail identically)
+  Repeated keys stack — ordered, all kept, never last-wins (CORE 6.7:
+  "last-wins does not exist in UDON"). The counter-case is measured and
+  adversarial: the Dec-2025 YAML stress test found duplicate keys the ONE
+  unrecoverable corruption of six scenarios — parser accepts silently,
+  earlier values lost forever, undetectable without custom validation,
+  the single scenario backups cannot save (yaml-stress-test report,
+  scenario 4: "the silent one is the argument"). JSON shares the failure.
+  In UDON the identical agent bug produces a warned, ordered stack with
+  zero loss — the schema layer then judges cardinality. This is the rare
+  entry where the elsewhere-failure is empirically stress-tested rather
+  than asserted.
+
 |capability[headline-density-under-line-tools] :status candidate :date 2026-07-28
   :nearest-elsewhere YAML frontmatter / JSONL
   One line carries identity + classification + state as readable structure

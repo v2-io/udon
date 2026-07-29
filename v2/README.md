@@ -20,6 +20,8 @@ This directory was reduced to a seed on 2026-07-21: a night of autonomous spine-
 
 ## Working here
 
+**Arriving to work on spikes/ideation?** Start at [`spikes/README.md`](spikes/README.md) — the onboarding reading list (baseline law, the demand corpus's seven reports, the territory maps, the registers, and the register discipline), assembled 2026-07-28 from what measurably should have been the first session's reading list.
+
 Agents working anywhere under `udon-needs/` are covered by the standing license and quality bars in [`udon-needs/CLAUDE.md`](udon-needs/CLAUDE.md) (ratified 2026-07-22, any substrate) — research diversion, de-novo testimony as evidence, the ideation mandate, and the four writing bars. Read it before starting.
 
 Elsewhere in the repo: `../spec/CORE.md` + `../spec/msc/CHANGELOG.md` remain the 0.9.0-alpha.2 record and rulings ledger (no work continues there); `../core/` is the differential parser oracle; `../defining-udon.md` is the documentation philosophy any spec suite is held to.
