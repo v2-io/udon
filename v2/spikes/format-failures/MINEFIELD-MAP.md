@@ -57,6 +57,8 @@ Each line is a failure *mechanism*, not a format. Instances are illustrative; th
 
 **M12 — The format security record is one shape: a lexical channel carrying both content and instruction.** Entity expansion, external-entity resolution, type-tag deserialization, template injection. Escaping asks every implementation to behave; positional commitment proves the instruction cannot arise. By M4's mechanism the difference is a certificate, not a marginal safety delta.
 
+**M13 — A grammar cannot express co-occurrence, and every ecosystem that shipped grammar-only grew an ad-hoc rules layer anyway.** Constraints relating one value to another — quantity × price = total, currency agreement, "if `@type` is X then `@unit` is required," anything cross-tree or cross-document — are not regular-tree-language membership, so *no* grammar-based schema language can state them, RELAX NG included. The ecosystems that shipped grammar-only did not go without the constraints; they scattered them into application code. **[evidenced]** — added by the external pass; see §2 M13. This was absent from the first draft of this map entirely, and it is aimed straight at the layer UDON is about to build.
+
 ---
 
 ## 2. The mines at mechanism depth
@@ -147,7 +149,21 @@ The segment's central line — "the emitter sees a scalar; the recipient sees a 
 
 The organizational gloss in the same segment translates directly to a document toolchain: *heard* (I), *shattered by shock* (II-a), *couldn't hear* (II-b), *absorbed as fatigue* (III).
 
-**The record.** Every format in this survey answers with one response or two. XML: fatal, or (for validity) invalid. YAML: exception, or silence. JSON: exception. Schema validators: error/warning. **No format in the record distinguishes "your document is malformed" from "your document is fine but my model of documents cannot represent it" — which is the II-a/II-b distinction, and the one where the repairs are opposite.** **[hypothesized]**, based on this survey's coverage; a counterexample would be genuinely interesting and I did not find one.
+**The record — and a prediction of mine that was falsified, which is the best thing in this section.** I originally wrote that **no** format in the record distinguishes "your document is malformed" from "your document is fine but my model of documents cannot represent it" — the II-a/II-b distinction, where the repairs are opposite — and said a counterexample would be more useful than the prediction.
+
+**The counterexample exists, and it is forty years old: SOAP's `mustUnderstand`.** **[evidenced]** SOAP 1.1 §4.2.3 states the purpose in the theory's own terms:
+
+> "The SOAP mustUnderstand attribute allows for robust evolution… Tagging elements in this manner assures that this change in semantics will not be silently (and, presumably, erroneously) ignored…"
+
+The default in SOAP is *ignore unknowns*; `mustUnderstand` is a **selective, per-element opt-in override** that says: if you cannot represent this, do not proceed. That is precisely the II-b marker — a way to say "this is not malformation, this is beyond your model class, and continuing is the wrong repair." The whole must-ignore/must-understand literature (Orchard's TAG drafts; RFC 9110 §16.4.2 on why "a 'must-ignore' rule is preferable to a 'must-understand' rule" for extension parameters) is the field having theorized exactly this axis while I was asserting nobody had.
+
+So the honest state of M3 is now **stronger, not weaker**, and better specified:
+
+- The four regimes are real and the repairs are distinct — that stands.
+- **The II-b case has a known, shipped design pattern**, and its key property is that the *producer* elects it per-element rather than the recognizer diagnosing it. That is a better answer than the one I was reaching for, because a recognizer genuinely cannot always tell "I don't know this" from "this is broken," whereas the author always can say "this one matters."
+- And RFC 9110 supplies the counterweight that keeps it from being over-applied: must-ignore is the *right default*, because otherwise "it will be hard to introduce new parameters in the presence of legacy recipients." Must-understand is the exception you mark, not the posture you adopt.
+
+My original framing — recognizer-side repair classification — is not wrong, but it was the harder half of a problem whose easier half was solved in 2000 and which I asserted was unsolved. Recorded in §4.
 
 Regime III is the one with the strongest historical evidence and the least design attention. Warning fatigue in compilers and linters; XSD validators producing error cascades where one root cause yields hundreds of derived complaints; deprecation-warning floods. The theory says this is not an annoyance but a *drain on adaptive reserve*, and that the repair is structural: aggregate below the reader and escalate only on threshold crossing, rather than making the reader parse every event. The segment's own security reading is that a low-priority-alert flood is a genuine attack, "not because individual events are significant but because processing them consumes tempo that should go to actual work."
 
@@ -349,6 +365,31 @@ Two punctures are worth naming rather than glossing, and they are in §3.5 and �
 
 ---
 
+### M13 — Grammars cannot express co-occurrence, and the market punished the language that was honest about it
+
+*Added wholly by the external pass (`ADJUDICATED-CLAIMS.md` §1, §8). It is the most consequential thing this map did not contain.*
+
+**The structural limit.** Co-occurrence and context-sensitive constraints are "difficult or impossible to model using regular grammars" (Jelliffe, via Dodds, *Schemarama*, xml.com 2001). This is not an XSD weakness that RELAX NG fixed: Robertsson (xml.com 2004) documents that even RELAX NG — which *can* represent any regular tree grammar — cannot express `quantity × price = totalAmount`, currency agreement across sibling fields, or cross-document stock checks. Jelliffe states it flatly: "Grammar schema languages don't express semantics because they cannot." **[evidenced]**
+
+The field's answer was a *second, differently-shaped* language: Schematron, rule-based rather than grammar-based, and eventually ISO/IEC 19757 (DSDL) as a multi-part architecture — RELAX NG as Part 2, Schematron as Part 3, NVDL as Part 4 — explicitly designed to compose validation processes rather than to be one monolith. Clark's own framing was that this is a tool-choice, not a defect: "Why does one kind of schema have to be better than another? … If it can't be expressed simply using a grammar, then use a rule-based system." W3C later collected co-constraint use cases that fed XSD 1.1 assertions — a partial, late absorption of the same insight. **[evidenced]**
+
+**Why RELAX NG lost, which is not what I assumed.** I had this queued as the single most decision-relevant open question (§5), expecting the answer to be "vendor weight." The evidence says something more useful. RELAX NG lost a *different contest than the one it was designed to win*:
+
+- It is formally stronger or equal to XSD 1.0 for structure validation (Murata et al.'s taxonomy: RNG represents any regular tree grammar; XSD is essentially single-type). **[evidenced]**
+- It **deliberately refuses infoset modification** — Clark: "RELAX NG validation does not involve changing the information about the document that is passed to an application," because validation and infoset modification "need to be capable of being performed independently." XSD Part 1, by contrast, *defines* schema processing as producing a post-schema-validation infoset with type annotations and defaults. **[evidenced]**
+- Van der Vlist (2001) called RNG "technically superior" while predicting vendor support would go to XSD.
+
+So the selection pressure was not "best tree-language validator." It was **typed infoset for data binding and codegen** — stable element→type maps, which single-type grammars give you and full regular tree grammars structurally do not (a tree can have multiple interpretations against a regular grammar; Clark notes type assignment needs restrictions *beyond* RELAX NG itself). That is a genuinely *technical* impediment to a job people were paying for, and it is a much sharper finding than the mono-causal "Microsoft won" story, which the pass marks **unsupported as sole cause**. **[evidenced]**
+
+Note the shape: RELAX NG's cleanest design decision — keep validation and infoset modification separable — is the one that cost it the market. That is worth sitting with, because it is exactly the kind of decision UDON has already made (`CORE §1.1`: schemas constrain, never type; dialects type, never constrain; nothing is invalid at recognition).
+
+**The design consequence, stated as sharply as the record supports.** Two claims, and the second is the one with teeth:
+
+1. **Ship grammar and assertions together, or the rules will live in ad-hoc code.** Not "should"; this is what happened to every ecosystem that shipped grammar-only. DSDL is the best historical architecture for it and the market shipped monoliths anyway.
+2. **UDON's layer split is RELAX NG's bet, and it is the bet that lost the market.** The split is right on the merits — I argued in §M10 that XML's well-formed/valid split was one of the things it got *correct*. But being right on the merits is what RELAX NG had. The lesson is not to abandon the split; it is that **the split must still answer the job**. XSD won because it delivered typed nodes for codegen. If UDON's schema layer delivers constraint-checking and nothing a consumer can build against, it will be admired and unused for the same reason. The pass puts it exactly right: *do not copy XSD's inheritance/PSVI package by default — but answer the job, or lose for the same reason.* **[hypothesized]**, and the sharpest strategic finding in this document.
+
+---
+
 ## 3. Where UDON is already standing on a mine
 
 Stated as findings, not verdicts. Several of these are things the design has already reasoned about and accepted; the value here is naming which mine each acceptance is standing on, and what the failure would look like.
@@ -418,7 +459,26 @@ Two consequences for UDON, stated plainly because they cut both ways:
 
 **3.10 — "Git is the transaction log we never have to build" is half true, and the missing half is where the prior art spent its whole budget.** This one is aimed at `misc-db-theory.md` rather than at the spec, since that is where the claim lives.
 
-The as-of half is genuinely free: `git show <ref>:<path>` is real, corpus-consistent, and shipped. The half that is not free is **record-grain diff and merge**, and the record here is one-directional. Every serious "git for data" system — Noms, Dolt (which began as a Noms fork), TerminusDB — found that git's own machinery operates at line-grain over files, and each responded by **building a content-addressed storage engine of its own** (the prolly-tree lineage) specifically to get diff and merge at record grain. Dolt "implements the Git command line and associated operations on table rows instead of files," and the engineering write-ups in that lineage describe resolving concurrent changes on a content-defined Merkle tree as "a deceptively challenging problem." **[evidenced]** at survey strength — I could not find a primary source that states *"git specifically fails because X"* in so many words, and I am recording that as a partial rather than dressing the inference up (§5).
+The as-of half is genuinely free: `git show <ref>:<path>` is real, corpus-consistent, and shipped. The half that is not free is **record-grain diff and merge**, and the record here is one-directional. Every serious "git for data" system — Noms, Dolt (which began as a Noms fork), TerminusDB, lakeFS, Irmin — built a content-addressed storage engine of its own rather than using git's.
+
+*I originally recorded that I could not find anyone stating plainly why git's machinery is wrong for this, and flagged it as a gap. **That was my search failing, not the literature.*** The external pass found it stated bluntly in two places **[evidenced]**:
+
+> "The crucial difference is **granularity**. Git versions text lines inside files. TerminusDB versions individual **subject–predicate–object** triples… a TerminusDB diff is not a textual hunk that you have to re-parse — it is a structured, semantic description of which facts were added, removed, or changed."
+> — TerminusDB, *Knowledge Graph Version Control*
+
+> "Conflict resolution happens at the **line level**. There is no built-in concept of schema… using Git for data is not the right tool for the job, like using a hammer to fasten a screw."
+> — Tim Sehn, *So you want Git for Data?*, DoltHub 2020-03-06
+
+And the reason each built storage rather than layering: Noms records that B-trees and LSM trees are not *history-independent* — the same value must yield the same physical chunks regardless of mutation order — which is what prolly trees exist to provide; Dolt's architecture docs say plainly "we knew we would need our own storage engine… Git storage is not built for fast seek." **[evidenced]**
+
+(Method note on my own miss: I fetched Dolt's 2021 *"So you want Database Version Control?"* post, which describes what Dolt does without saying why git is wrong. The 2020 *"So you want Git for Data?"* post — one year earlier, nearly the same title — says it in the second paragraph. A negative result from one fetch is not a negative result from the literature, and I should have said "not found in one place" rather than "could not find.")
+
+**What this changes.** It does not overturn §3.10's tension; it sharpens the boundary and makes it actionable. The distinction the sources draw is **grain**, and grain is separable:
+
+- **File/corpus grain** — "what did this document look like at commit X," corpus-consistent as-of, coarse history. Git is genuinely, fully adequate here, and the misc-db-theory claim is correct as stated for this grain.
+- **Record grain** — diff, merge, blame at the level of an identified record inside a file. Git's line-diff and line-merge are the wrong instrument, said plainly by two of the three systems closest to this design.
+
+The prescription that follows is cheap and worth adopting now: **be explicit, per verb, which grain it runs at.** `as-of` is file-grain and free. `history`/`blame`/`diff` at record grain are structure-aware operations that need either a UDON-aware differ computed at call time (viable at this estate's scale for years, as the document already says) or the second store the constraint forbids. What the record adds is that "for years" was also everyone else's starting assumption.
 
 The tension this creates is precise, and the design has already stated both sides of it without noticing they pull against each other:
 
@@ -427,6 +487,31 @@ The tension this creates is precise, and the design has already stated both side
 - The field's only production answers to record-grain diff are second stores. And the named escape hatch — incremental view maintenance — *is* a second store, which is exactly what the constraint forbids.
 
 I do not think this is fatal, and the document's own "recompute-on-read is fine for years at this estate's scale" is probably correct. But the honest statement is that **the constraint and the verb are in tension, the tension is resolved today only by scale, and the field's experience is that it stops being resolved by scale sooner than people expect.** The staleness-detection carve-out (hash-pinning where materialization is unavoidable) is the right shape for when that day arrives, and it would be worth designing *before* it is needed rather than after — because by M5, a corpus written against the free version is exactly what makes the paid version unfixable. **[hypothesized]**
+
+**3.11 — "Keep everything and warn" needs a substitution table, and the field already worked out its axes (M3, M4).** *Added by the external pass; the finding I most wish I'd had before writing §M3.*
+
+Orchard's formalism gives forwards-compatibility a precise shape: an **Accept set** that is a superset of the **Defined set**, plus a *substitution rule* mapping Accept back into Defined. Must-ignore is that substitution rule; without one, a recipient must "catch fire and die if unknown" and forward compatibility is structurally impossible. **[evidenced]**
+
+The part bearing directly on UDON is that **must-ignore is not one rule — it has two independent knobs**, both documented in the TAG drafts:
+
+- **Disposition** — does the recipient *remove* unknown material (early HTML), *preserve* it, or *forward* it? Must-forward is its own axis: intermediaries that drop unknown fields kill end-to-end evolution even when both endpoints could cope (HTTP; SOAP `relay`).
+- **Scope** — Must Accept *All* (the unknown element and its whole subtree) versus Must Accept *Container* (accept the element, still process its children).
+
+UDON's recognizer is maximally permissive by design, which answers *disposition* at the recognition layer — preserve everything, the strongest of the historical choices. But the axes don't disappear; they move up a layer, and become the *consumer's* questions, which nothing currently states: meeting an element, attribute, envelope, or `$`-key it doesn't know, does a consumer drop, preserve, or forward it on re-serialization? Does an unknown wrapper hide its known children? `SEMANTICS §3`'s forbidden-silent-changes list is the beginning of this table but not the table.
+
+Cheap, unusually well-precedented, and per M4 it is what turns "we preserve everything" from something every consumer might honor into something checkable. **[hypothesized]** as a priority; the axes are **[evidenced]**.
+
+**3.12 — The envelope's closest prior art is EDN, with three specific lessons (M1, M12).** UDON's `<…>` and EDN's `#tag value` are the same move: extensible typing through explicitly-delimited, dialect-owned syntax that cannot reach bare space. Since the dialect spike has never run (§3.6), this is prior art to read *before* designing:
+
+1. **Unknown-tag policy is a real fork, and EDN names all three branches** — error, call a handler, or keep a *generic tag+value representation* so a reader can still process the whole document. The third preserves round-trip and matches UDON's keep-everything posture — which means the envelope's already-specified interim behavior (carry the full lexical form with a warning when no dialect is loaded) is the right branch and has independent precedent. Worth citing rather than re-arguing. **[evidenced]**
+2. **Host print is not a serialization format.** Clojure practice leans on `pr-str`, and what that breaks is documented: namespaced maps outside the spec, print truncation, `##NaN`, `#object[…]`. The lesson: **freeze the envelope's print grammar independently of any host's pretty-printer**, or durability is hostage to a language's REPL conventions. **[evidenced]**
+3. **Version the tag, not just the payload.** UDON already gestures at this (`<temporal:interval:…>`, `temporal@1`); the lesson is to make it law before dialects exist, since afterward it is an M5 problem. **[hypothesized]**
+
+**3.13 — Append-plus-supersede meets right-to-erasure, and the workaround is legally contested (M5).** Aimed at `misc-db-theory.md`. The immutability record is one-directional — Greg Young: "the moment you allow a single edit of an event, maintaining a proper audit log becomes impossible"; Azure's pattern docs: "you should never update the event data." And the collision is documented in those terms — Dudycz: "the law to be forgotten and immutable data sounds like fire and water." **[evidenced]**
+
+The common workaround is crypto-shredding (encrypt personal data, delete the key), and the pass marks its *sufficiency* **contested**: counsel quoted by Verraes holds that encrypted personal data may still be personal data, and key deletion alone may not constitute erasure. **[evidenced]**
+
+The live exposure here is probably small — these corpora are research artifacts, not user data. But the repair is cheap now and a retrofit later, and it is what the record advises: **supersede is not erasure while prior versions remain reconstructable**, so segregate personal data out of the immortal log (forgettable payloads, tombstones, retention boundaries) rather than relying on a cryptographic escape whose legal status is unresolved. One line in the starter-layout design, not a subsystem.
 
 ---
 
@@ -443,6 +528,20 @@ Kept visible with reasons, per the spike convention.
 **Weakened: my first framing of M5 as "the ecosystem chases the spec."** The cleaner mapping is that the *corpus* is the fast layer and cannot re-settle at all, which is what drives $\epsilon_{\max}$ to zero. The first framing would have suggested that a slower spec cadence is the repair; the theorem says slowing helps only against (C1) violations and cannot help a fast layer with no settled state — which is a different and more useful prescription (make changes additive; do not merely make them rarer).
 
 **Open, not killed: whether UDON's two severities are actually under-resolved.** I believe the repair axis is orthogonal to the loss axis and have run the anti-collapse diagnostic on it (§M3), but "the distinction is real" and "the distinction is worth spec surface" are different claims and I can only support the first.
+
+### Killed by the external pass (`ADJUDICATED-CLAIMS.md`)
+
+Four corrections, three of them to claims I made confidently. Recorded here rather than silently edited, because the pattern in them is more useful than any one.
+
+**Falsified: "no format distinguishes malformation from beyond-my-model-class."** SOAP's `mustUnderstand` is exactly that distinction, shipped in 2000, with the rationale stated in the spec in almost the theory's own words. The whole must-ignore/must-understand literature is the field having worked this axis while I asserted nobody had. M3's four regimes survive; my claim to novelty on the II-b case does not. **This was the prediction I explicitly said I most wanted broken, and it broke.**
+
+**Falsified: "nobody wrote down why git's machinery is wrong for record grain."** TerminusDB and Dolt both say it plainly, one of them in a post whose title differs from the one I fetched by three words. My negative result was a search failure reported as a literature finding — the exact error the estate's conventions warn about, committed in the same document that warns about it. The lesson I'm keeping: *"not found in one place"* and *"could not find"* are different sentences and I wrote the wrong one.
+
+**Corrected: "XSD beat RELAX NG on vendor weight."** Marked **unsupported as sole cause**. The technical attractor — PSVI, typed nodes, stable element→type maps for codegen — is independently documented, and RELAX NG's inability to supply it follows from its *strength* (full regular tree grammars admit multiple interpretations). I had this queued as an open question and would have guessed wrong; §M13 has the corrected account, and it changed a §3 recommendation.
+
+**Corrected in scope: my reading of XML 1.1's non-adoption.** I attributed it to ecosystem capacity generally (M5). Walsh's 2004 post gives a sharper mechanism: RELAX NG's ISO committee ruled that an XML 1.1 document *can never be valid* against a RELAX NG schema — "Game Over." That is not a diffuse capacity failure, it is **an adjacent slow layer vetoing the core layer's move**, which is a better instance of the multi-timescale story than the one I told: two slow layers moved out of sync and the schema layer's refusal was decisive. M5's conclusion is unchanged; its worked example is now sharper and belongs to someone else.
+
+**And one of mine that held:** the draft-07 plateau. I predicted it was a structural signature rather than community laziness. Maintainer testimony supports it directly — draft-07 ratified as LTS and "the current center-of-gravity of the community," with Greg Dennis naming the mechanism as "zero incentive" for consumers to update while implementors support every version — plus a corpus census at ~86% classical drafts. Per my own standard I discount this: confirmation of a prediction I wrote first is weak evidence. The *maintainer testimony* is the part that is genuinely new, because it supplies a mechanism (implementor multi-version support removing consumer pressure) that I did not have and could not have derived.
 
 ---
 
@@ -462,9 +561,25 @@ Everything cited in this document was therefore fetched directly by me. **The th
 **Not reached to a standard I would build on:**
 
 - **Indentation-as-syntax, the remaining objections** (§3.9) — transport and copy-paste mangling, mixed-tab incidents, editor auto-indent interference, and any *measured* account of indentation-related authoring failure. Still the gap I would close first among the UX-bearing ones.
-- **XML databases at depth** (MarkLogic, Tamino, eXist, BaseX) — the closest prior art to the document-corpus-as-database direction, and the place I most expect an uncomfortable finding. Entirely unexamined.
-- **"Database in a git repo," at primary-source depth** — I got far enough to establish the shape (§3.10) but *not* far enough to find anyone stating plainly why git's own machinery is the wrong substrate. I looked and came up empty rather than inferring it; the Dolt engineering blog was the obvious place and did not say it. Someone should either find that statement or establish that it was never written down — both are useful answers.
-- **RELAX NG's loss to XSD** — whether the reasons were technical, which bears directly on the schema-language design and is the single most decision-relevant unexamined question given §3.7.
+### Closed by the external pass (2026-07-29, `ADJUDICATED-CLAIMS.md`)
+
+The cross-substrate pass commissioned in `BRIEF-FOR-EXTERNAL-PASS.md` ran on a healthy substrate and delivered against nine of the ten open questions with fetched primary sources and per-claim adjudication. It closed:
+
+- **RELAX NG vs XSD** — closed, and the answer changed a recommendation (§M13). Was the top open question.
+- **Grammar-vs-assertion split** — closed and *added a mechanism this map lacked entirely* (M13).
+- **JSON Schema draft churn** — closed with maintainer testimony and corpus census.
+- **Forwards-compatibility literature** — closed; supplied Orchard's Accept/Defined formalism and the must-ignore knobs (§3.11), and the falsifier for one of my predictions (§4).
+- **Git-as-database** — closed; my "could not find" was wrong (§3.10).
+- **XML databases** — closed enough to reframe: category displacement by JSON document stores plus analytics gravity, not "trees cannot be databases," with open engines' missing scale-out primitives as a concrete failure. Notably, BaseX *outperformed* selected JSON stores on 3 of 4 aggregation queries in the benchmark, which is not the story I expected.
+- **Event sourcing / erasure** — closed (§3.13).
+- **EDN reader tags** — closed (§3.12).
+- **Semantic-web identity line** — closed at compressed depth, enough to firm M9.
+
+**Still open after both passes:**
+
+- **Measured indentation failure rates** — the pass reached the same conclusion I did: normative reactions (Python's `TabError`, YAML forbidding tabs in indentation) are real and stronger evidence than blog posts, but controlled merge/transport studies were not found. Marked **open** by both passes independently. One live design question falls out and is not mine to settle: Python's repair for ambiguous indentation is a *hard error*, while UDON keeps a tab-indented line as text with a warning. Both are defensible; they are different answers to the same documented hazard.
+- **Xanadu / one-way-link primary literature** — still training-recall on both sides (M9).
+- **Event-sourcing schema-evolution empirics** (Overeem et al. 2021 body).
 - **Event-sourcing's documented pain points**, particularly the immutability/right-to-erasure collision, which is a hard external constraint the append-plus-supersede model may be walking into.
 
 **Theory segments cited at less than segment weight** (pulled from `theory-of-agentic-tooling` or an OUTLINE row rather than the segment itself), which someone should verify before building on: `#der-observability-dominance` (M9), `#obs-context-turnover` (M7's budget half), `#der-turnover-information-recursion`, and `#deriv-tempo-additivity` (M8 — read via the survey's summary, which quotes the saturation result but not its conditions). The rest — `#disc-anti-collapse`, `#disc-identifiability-floor`, `#der-interaction-channel-classification`, `#der-code-quality-as-observation-infrastructure`, `#obs-software-epistemic-properties`, `#result-specification-bound`, `#disc-w1-structural-bound-boundary`, `#scope-observation-ambiguity-modulation`, `#der-multi-timescale-stability`, `#scope-channel-collapse` — were read whole.
@@ -477,16 +592,17 @@ Everything cited in this document was therefore fetched directly by me. **The th
 
 In rough order of leverage, and all **[hypothesized]** as priorities — the underlying claims carry their own marks above.
 
-1. **Name the residual bare-type collision surface explicitly in the spec** (§3.1), and decide whether the anomaly channel should fire on bare-token retyping in schema-typed positions. This is the one place a load-bearing commitment sits on an unnamed mine, and the fix may cost nothing.
+0. **Design the schema layer as grammar + assertions from the start** (§M13). Promoted to the top by the external pass, and it displaces everything below it: a grammar-only schema language *structurally cannot* express co-occurrence constraints, every ecosystem that shipped one grew an ad-hoc rules layer, and the one language that was formally cleanest lost the market for a reason UDON's layer split shares. This is the next major layer to be built and the record on it is unusually clear.
+1. **Settle the leading-zero question** (§3.1) — reading (A) or (B) of the `0d`/`0o` rule — and, if (A), say whether leading zeros are lexically preserved. One sentence either way; it closes the last live case in the typing story.
 2. **Make the dialect spike's first-class question the evaluation channel** (§3.6), not a later hardening pass. Every historical instance of that shape became an incident at the meaning-supplying layer.
 3. **Add a SCHEMA entry to `CARVEOUTS.md`** with a demand-side reason and closing condition (§3.7). Three mines converge there and it is currently the only major deferred layer without a register entry.
 4. **Ship one trivial reference resolver** as an observation instrument (§M9), before a corpus is written against the reference model.
 5. **Consider the root/derived bit on anomalies** (§3.3) — one field, and it converts a manufactured Regime III flood back into a Regime I observation.
 6. **When the schema layer lands, count independent channels rather than tools** (§M8), and treat extraction-based drift detection as first-class precisely because it never reads the declaration.
 7. **Design the record-grain-history escape hatch before it is needed** (§3.10) — the "never a second store" constraint and the record-grain-diff verb are in tension that scale currently hides, and by M5 a corpus written against the free version is what makes the paid version unfixable.
-8. **Re-run the six evidence passes** (`evidence/README.md`) when the API is healthy. The highest-value single one is schema-evolution, because §3.7 says the schema layer is where three mines converge and it is the next major layer to land; the most likely to produce an uncomfortable surprise is database-lineage's XML-database half.
-9. **Close the remaining indentation objections** (§3.9) before the human-UX work commits further — noting that the one case I expected to be decisive against it turned out not to be.
+8. **Specify the consumer-side substitution table** (§3.11) — disposition (drop / preserve / forward) and scope (subtree / container) for unknown material. Well-precedented, cheap, and it is what makes "we keep everything" checkable rather than merely intended.
+9. **Close the remaining indentation objections** (§3.9), and settle the tab question while there: Python hard-errors on ambiguous indentation, UDON keeps-and-warns. Both defensible, different answers to the same documented hazard.
 
 ---
 
-*Written 2026-07-29 as the second artifact of the format-failures research thread, against `UDON-PRIMER.md` (this spike), `misc-db-theory.md`, and the ASF/AAT corpus. Registers are load-bearing; §4 and §5 are part of the finding, not apparatus.*
+*Written 2026-07-29 as the second artifact of the format-failures research thread, against `UDON-PRIMER.md` (this spike), `misc-db-theory.md`, and the ASF/AAT corpus. Revised the same day against `ADJUDICATED-CLAIMS.md` — the cross-substrate pass, which closed nine open questions, added M13 whole, and falsified two of my claims (§4). Registers are load-bearing; §4 and §5 are part of the finding, not apparatus.*
