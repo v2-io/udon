@@ -94,6 +94,19 @@
   and what mathematics is genuinely missing. Report expected at
   spikes/tst-grounding/.
 
+|item[steward-evident-register] :date 2026-07-28 :status open :class vocabulary
+  Coined and steward-approved this session ("perfect"): **steward-evident
+  (formalization pending)** -- the epistemic state where the argument
+  logic has become self-evident to the steward but is unaudited; distinct
+  from derived-tier and from mere proposal. Two independent collisions
+  with the existing tier ladder motivated it: Joseph's colloquial "first
+  principles" usage, and TST's own "convergent representational choice"
+  third category (which already has an open frontmatter-register
+  proposal). Natural formal home: the three-axis epistemology's
+  support-kind/register vocabulary, next time it gets worked. Until
+  then: transcriptions render his "first principles" as steward-evident
+  with the nearest formal carrier cited.
+
 |item[commit-cadence] :date 2026-07-28 :status adopted :class norm
   Committing as we go, coherent commits per body of work. Five landed
   for this session (b1d060c..e2b3fcf); this file and successors ride
