@@ -1,10 +1,10 @@
 # v2/spikes — onboarding
 
 You're arriving at the ideation/spike layer of UDON's demand-first v2 effort. This
-README exists because of a measured lesson (2026-07-28): a session that read the
-list below *before* working produced categorically better results than sessions
-pointed only at the spec — and several of these would have served best on the very
-first reading list. Reading order matters less than completeness; the whys tell
+README exists because Joseph judged, reviewing the 2026-07-28 session, that several
+of these would have best served the original reading list — that session went
+noticeably better where it had read them firsthand, though that is one session's
+impression, not a measurement. Reading order matters less than completeness; the whys tell
 you what each is load-bearing for, so you can judge depth yourself. (One caution
 from this estate's history before you trust your recall of any of it: an index
 line is not the document — grep-and-window reconstruction of a skipped read

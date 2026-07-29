@@ -116,8 +116,7 @@ templating rather than Obsidian-style wikilinks."* (autopax's ruling for autopax
 not UDON law — but it is the estate's only considered decision here, and its
 reason was composition power.)
 
-**On Liquid specifically (Joseph, 2026-07-28 — steward statement, this seed's
-sharpest register):** the Liquid *dialect* is **not a foregone conclusion**. Its
+**On Liquid specifically (Joseph, 2026-07-28 — steward statement, quoted close):** the Liquid *dialect* is **not a foregone conclusion**. Its
 long-standing place in the udon vision was as a candidate occupying a particular
 design point — *"a pretty-much-Turing-complete but digestible subset of
 host-languages"* — i.e. enough power to make extensibility useful without the
@@ -144,8 +143,8 @@ have an opinion about):
 **UDON may be the first system in this lineage that doesn't have to choose** —
 its tier system already separates the two (`@` join vs `!` evaluation), so the
 Liquid-vs-wikilink ruling may dissolve into "both, in different tiers, with
-different fidelity contracts." (proposed — and probably the seed's sharpest
-single idea to stress.)
+different fidelity contracts." (proposed — and the claim in this seed I would
+most want stress-tested, since nothing but the tier system's existence supports it yet.)
 
 ### 1b. The lower layer — include as typed AST-graft (Joseph, 2026-07-28)
 
@@ -174,7 +173,7 @@ What the sketch contains, unpacked (proposed reading):
   `field :posts, [Post]` is exactly "this slot holds Post-shaped nodes from that
   store" — the include is a relationship declaration living in the document
   instead of the class.
-- **Consumer-side ascription is the load-bearing choice.** "Compliant with *my*
+- **Consumer-side ascription looks like the consequential choice in the sketch** (my reading). "Compliant with *my*
   schema" puts the contract at the insertion site rather than trusting the
   producer's self-description. Shipped prior art for precisely this: **Dhall**
   (imports take a type ascription, fail loudly on mismatch, and can pin a
