@@ -1,0 +1,527 @@
+
+=== FILE ../../../core/generator/00-udon.core.descent.udon ===
+elements: 102 | comments: 104 | blank-lines: 27 | top-level text lines: 0
+warning: NoDialectsLoaded x6  (lines [119, 127, 150, 162, 178])
+warning: UnclosedIdentityKey x2  (lines [133, 193])
+top-level census: |constx15  |entry-pointx1  |functionx3  |parserx1  |typex26
+top-seq[..16]: |parser |type |type |type |type |type |type |type |type |type |type |type |type |type |type |type ...
+
+  |type  n=26  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex26
+
+  |c  n=24  keyed=100% text=100% child-elems=4% verbatim=0% leaf=0%
+      key-kinds: barex1 envelope?x6 stringx17
+      > |c  total=1 on 1/24 parents, max/parent=1
+      > |default  total=1 on 1/24 parents, max/parent=1
+      > |return  total=1 on 1/24 parents, max/parent=1
+
+  |const  n=15  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex15
+
+  |default  n=13  keyed=0% text=100% child-elems=15% verbatim=0% leaf=0%
+      > |)             |>> :line
+
+
+|function[count_indent:INT]  | result = 0
+  |state[:main]
+    |c[  total=1 on 1/13 parents, max/parent=1
+      > |default  total=1 on 1/13 parents, max/parent=1
+      > |return  total=1 on 1/13 parents, max/parent=1
+
+  |state  n=13  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex13
+      > |c  total=23 on 11/13 parents, max/parent=7
+      > |default  total=11 on 11/13 parents, max/parent=1
+      > |if  total=2 on 2/13 parents, max/parent=1
+
+  |function  n=3  keyed=100% text=33% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex3
+      > |state  total=13 on 3/3 parents, max/parent=10
+
+  |return  n=3  keyed=0% text=33% child-elems=0% verbatim=0% leaf=66%
+
+  |if  n=2  keyed=0% PARTIAL-KEYx2 text=100% child-elems=50% verbatim=0% leaf=0%
+      > |return  total=1 on 1/2 parents, max/parent=1
+
+  |)             |>> :line
+
+
+|function[count_indent:INT]  | result = 0
+  |state[:main]
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |entry-point  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |parser  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../core/generator/10-udon.elements.descent.udon ===
+elements: 238 | comments: 131 | blank-lines: 58 | top-level text lines: 0
+warning: NoDialectsLoaded x18  (lines [21, 28, 73, 91, 106])
+warning: UnclosedIdentityKey x27  (lines [125, 141, 142, 143, 144])
+ERROR: MissingAttributeValue x3  (lines [17, 83, 441])
+top-level census: |functionx5
+top-seq[..16]: |function |function |function |function |function
+
+  |c  n=91  keyed=100% text=100% child-elems=4% verbatim=0% leaf=0%
+      key-kinds: barex6 envelope?x18 stringx67
+      > |c  total=8 on 2/91 parents, max/parent=5
+      > |return  total=4 on 4/91 parents, max/parent=1
+      > |default  total=2 on 2/91 parents, max/parent=1
+
+  |default  n=47  keyed=0% text=100% child-elems=21% verbatim=0% leaf=0%
+      > |c  total=7 on 3/47 parents, max/parent=4
+      > |return  total=6 on 6/47 parents, max/parent=1
+      > |default  total=3 on 3/47 parents, max/parent=1
+      > |)   |>> :after_newline
+
+  |state[:check_sameline_pipe]
+    |c[  total=1 on 1/47 parents, max/parent=1
+      > |)  |>> :attr_line_done
+
+  |state[:battr_node_tail]
+    |eof                      |                                  |>> :attr_line_done
+    |c[  total=1 on 1/47 parents, max/parent=1
+      > |) |>> :after_newline
+
+  ; After child element/embedded returns - always re-check column for potential dedent
+  |state[:after_child]
+    |                                                            |>> :children
+
+  ; After line content (prose, attr, comment, etc.) - consume trailing newline
+  ; This ensures :children only sees \n when at true line-start (blank line)
+  ; If content returned early (e.g., line_comment on dedent), re-dispatch mid-line
+  |state[:after_content]
+    |c[  total=1 on 1/47 parents, max/parent=1
+      > |) |>> :after_newline
+
+  ; Check if new element  total=1 on 1/47 parents, max/parent=1
+
+  |state  n=46  keyed=100% text=8% child-elems=97% verbatim=0% leaf=0%
+      key-kinds: barex46
+      > |c  total=66 on 31/46 parents, max/parent=12
+      > |default  total=42 on 42/46 parents, max/parent=1
+      > |if  total=27 on 11/46 parents, max/parent=8
+      > |eof  total=2 on 2/46 parents, max/parent=1
+
+  |if  n=27  keyed=0% PARTIAL-KEYx27 text=100% child-elems=11% verbatim=0% leaf=0%
+      > |c  total=8 on 1/27 parents, max/parent=8
+      > |return  total=3 on 3/27 parents, max/parent=1
+
+  |return  n=16  keyed=0% text=18% child-elems=0% verbatim=0% leaf=81%
+
+  |function  n=5  keyed=100% text=60% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex5
+      :ch  on 1/5 (20%)  sameline 1/1  stackedx0  pos~1.0  [flow-textx1]  e.g. ["| result = FIN"]
+      :close  on 1/5 (20%)  sameline 1/1  stackedx0  pos~0.0  [nilx1]  e.g. ["nil"]
+      :elem_col  on 1/5 (20%)  sameline 1/1  stackedx0  pos~0.0  [nilx1]  e.g. ["nil"]
+      :parent_col  on 1/5 (20%)  sameline 1/1  stackedx0  pos~1.0  [flow-textx1]  e.g. ["| content_base = -1 | content_seen = 0 | ..."]
+      :sfx  on 1/5 (20%)  sameline 1/1  stackedx0  pos~0.0  [nilx1]  e.g. ["nil"]
+      attr-order: [close]x1  [elem_col parent_col]x1  [sfx ch]x1
+      > |state  total=46 on 5/5 parents, max/parent=38
+
+  |eof  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |return  total=3 on 2/2 parents, max/parent=2
+      > |c  total=2 on 2/2 parents, max/parent=1
+
+  |)   |>> :after_newline
+
+  |state[:check_sameline_pipe]
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |)  |>> :attr_line_done
+
+  |state[:battr_node_tail]
+    |eof                      |                                  |>> :attr_line_done
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |) |>> :after_newline
+
+  ; After child element/embedded returns - always re-check column for potential dedent
+  |state[:after_child]
+    |                                                            |>> :children
+
+  ; After line content (prose, attr, comment, etc.) - consume trailing newline
+  ; This ensures :children only sees \n when at true line-start (blank line)
+  ; If content returned early (e.g., line_comment on dedent), re-dispatch mid-line
+  |state[:after_content]
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |) |>> :after_newline
+
+  ; Check if new element  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../core/generator/20-udon.attributes.descent.udon ===
+elements: 220 | comments: 138 | blank-lines: 57 | top-level text lines: 0
+warning: NoDialectsLoaded x9  (lines [37, 111, 216, 225, 233])
+warning: UnclosedIdentityKey x16  (lines [42, 46, 77, 83, 124])
+ERROR: MissingAttributeValue x2  (lines [168, 168])
+top-level census: |functionx9
+top-seq[..16]: |function |function |function |function |function |function |function |function |function
+
+  |c  n=59  keyed=100% text=100% child-elems=20% verbatim=0% leaf=0%
+      key-kinds: barex4 envelope?x9 stringx46
+      > |return  total=12 on 12/59 parents, max/parent=1
+      > |c  total=4 on 3/59 parents, max/parent=2
+      > |default  total=3 on 3/59 parents, max/parent=1
+      > |]                   |                                  |return result
+    |c[<BS>]                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | -> | /attr_text_verbatim(  total=1 on 1/59 parents, max/parent=1
+
+  |return  n=42  keyed=0% text=45% child-elems=0% verbatim=0% leaf=54%
+
+  |state  n=42  keyed=100% text=19% child-elems=97% verbatim=0% leaf=0%
+      key-kinds: barex42
+      > |c  total=40 on 18/42 parents, max/parent=6
+      > |default  total=25 on 25/42 parents, max/parent=1
+      > |if  total=13 on 10/42 parents, max/parent=3
+      > |eof  total=11 on 11/42 parents, max/parent=1
+
+  |default  n=38  keyed=0% text=97% child-elems=26% verbatim=0% leaf=0%
+      > |return  total=9 on 9/38 parents, max/parent=1
+      > | follows in value position — the node is the attr  total=1 on 1/38 parents, max/parent=1
+      > |)    |>> :line
+
+  ; `!` guard (see document :check_bang): a raw block or directive line
+  ; within the body; a failed guard is prose with the   total=1 on 1/38 parents, max/parent=1
+
+  |if  n=16  keyed=0% PARTIAL-KEYx16 text=100% child-elems=50% verbatim=0% leaf=0%
+      > |return  total=9 on 8/16 parents, max/parent=2
+      > |default  total=5 on 5/16 parents, max/parent=1
+      > |if  total=3 on 1/16 parents, max/parent=3
+
+  |eof  n=11  keyed=0% text=100% child-elems=63% verbatim=0% leaf=0%
+      > |c  total=15 on 7/11 parents, max/parent=5
+      > |return  total=12 on 7/11 parents, max/parent=2
+      > |default  total=5 on 5/11 parents, max/parent=1
+
+  |function  n=9  keyed=100% text=66% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex9
+      :bracket  on 3/9 (33%)  sameline 3/3  stackedx0  pos~0.0  [flow-textx3]  e.g. ["| result = 0 | hit = 0   ", "| MARK"]
+      :attr_col  on 1/9 (11%)  sameline 1/1  stackedx0  pos~0.0  [nilx1]  e.g. ["nil"]
+      :mode0  on 1/9 (11%)  sameline 1/1  stackedx0  pos~2.0  [flow-textx1]  e.g. ["| mode = :mode0"]
+      :parent_col  on 1/9 (11%)  sameline 1/1  stackedx0  pos~1.0  [nilx1]  e.g. ["nil"]
+      attr-order: [bracket]x3  [attr_col parent_col mode0]x1
+      > |state  total=42 on 9/9 parents, max/parent=13
+
+  | follows in value position — the node is the attr  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |)    |>> :line
+
+  ; `!` guard (see document :check_bang): a raw block or directive line
+  ; within the body; a failed guard is prose with the   n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      suffixes: $!x1
+
+  |]                   |                                  |return result
+    |c[<BS>]                  | Warning(AttributeValueExtendedByTrailingText) | Attr(USE_SAVED(akey)) | -> | /attr_text_verbatim(  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../core/generator/30-udon.values.descent.udon ===
+elements: 263 | comments: 114 | blank-lines: 42 | top-level text lines: 0
+warning: NoDialectsLoaded x22  (lines [15, 16, 32, 157, 158])
+warning: UnclosedIdentityKey x7  (lines [71, 213, 353, 372, 380])
+ERROR: MissingAttributeValue x3  (lines [13, 13, 129])
+top-level census: |functionx6  |keywordsx1
+top-seq[..16]: |function |function |function |function |keywords |function |function
+
+  |c  n=97  keyed=100% text=100% child-elems=44% verbatim=0% leaf=0%
+      key-kinds: barex8 envelope?x22 stringx67
+      > |return  total=54 on 43/97 parents, max/parent=2
+      > |c  total=23 on 14/97 parents, max/parent=5
+      > |default  total=14 on 14/97 parents, max/parent=1
+      > |LABEL_CONT  total=1 on 1/97 parents, max/parent=1
+
+  |return  n=71  keyed=0% text=22% child-elems=0% verbatim=0% leaf=77%
+
+  |state  n=38  keyed=100% text=34% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex38
+      > |c  total=61 on 28/38 parents, max/parent=8
+      > |default  total=12 on 12/38 parents, max/parent=1
+      > |eof  total=8 on 8/38 parents, max/parent=1
+      > |if  total=7 on 7/38 parents, max/parent=1
+      > |LETTER  total=1 on 1/38 parents, max/parent=1
+
+  |default  n=32  keyed=0% text=100% child-elems=12% verbatim=0% leaf=0%
+      > |return  total=4 on 4/32 parents, max/parent=1
+
+  |eof  n=8  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |c  total=13 on 8/8 parents, max/parent=3
+      > |return  total=11 on 8/8 parents, max/parent=2
+      > |default  total=4 on 4/8 parents, max/parent=1
+
+  |if  n=7  keyed=0% PARTIAL-KEYx7 text=100% child-elems=28% verbatim=0% leaf=0%
+      > |default  total=2 on 2/7 parents, max/parent=1
+      > |return  total=2 on 2/7 parents, max/parent=1
+
+  |function  n=6  keyed=100% text=16% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex6
+      :bracket  on 2/6 (33%)  sameline 2/2  stackedx0  pos~1.0  [flow-textx1 nilx1]  e.g. ["nil", "| MARK | depth = 0 | result = FIN"]
+      :space_term  on 2/6 (33%)  sameline 2/2  stackedx0  pos~0.0  [nilx2]  e.g. ["nil"]
+      :q  on 1/6 (16%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["| MARK"]
+      attr-order: [space_term bracket]x2  [q]x1
+      > |state  total=38 on 6/6 parents, max/parent=31
+      > |unclosed  total=1 on 1/6 parents, max/parent=1
+
+  |LABEL_CONT  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |LETTER  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |keywords  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :fallback  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["/emit_bare_value"]
+
+  |unclosed  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../core/generator/40-udon.prose.descent.udon ===
+elements: 122 | comments: 63 | blank-lines: 39 | top-level text lines: 0
+warning: NoDialectsLoaded x4  (lines [51, 102, 145, 188])
+warning: UnclosedIdentityKey x4  (lines [75, 83, 199, 207])
+ERROR: MissingAttributeValue x12  (lines [74, 74, 74, 82, 82])
+top-level census: |functionx7
+top-seq[..16]: |function |function |function |function |function |function |function
+
+  |c  n=29  keyed=100% text=100% child-elems=37% verbatim=0% leaf=0%
+      key-kinds: envelope?x4 stringx25
+      > |return  total=11 on 11/29 parents, max/parent=1
+      > |default  total=6 on 6/29 parents, max/parent=1
+
+  |return  n=28  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |state  n=23  keyed=100% text=60% child-elems=78% verbatim=0% leaf=0%
+      key-kinds: barex23
+      > |eof  total=10 on 10/23 parents, max/parent=1
+      > |c  total=9 on 6/23 parents, max/parent=3
+      > |default  total=2 on 2/23 parents, max/parent=1
+      > |if  total=2 on 2/23 parents, max/parent=1
+
+  |default  n=17  keyed=0% text=100% child-elems=17% verbatim=0% leaf=0%
+      > |return  total=3 on 3/17 parents, max/parent=1
+
+  |eof  n=10  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |c  total=20 on 10/10 parents, max/parent=3
+      > |return  total=11 on 10/10 parents, max/parent=2
+      > |default  total=9 on 9/10 parents, max/parent=1
+      > |]                   | ->                               |>> :check_pipe
+    |c[  total=3 on 3/10 parents, max/parent=1
+      > |]                   | ->                               |>> :vpipe
+    |c[  total=1 on 1/10 parents, max/parent=1
+
+  |function  n=7  keyed=100% text=14% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex7
+      :line_col  on 4/7 (57%)  sameline 4/4  stackedx0  pos~0.0  [nilx4]  e.g. ["nil"]
+      :parent_col  on 4/7 (57%)  sameline 4/4  stackedx0  pos~1.0  [nilx4]  e.g. ["nil"]
+      :prepend  on 3/7 (42%)  sameline 3/3  stackedx0  pos~1.7  [nilx3]  e.g. ["nil"]
+      :elem_col  on 1/7 (14%)  sameline 1/1  stackedx0  pos~0.0  [nilx1]  e.g. ["nil"]
+      attr-order: [line_col parent_col]x2  [line_col parent_col prepend]x2  [elem_col prepend]x1
+      > |state  total=21 on 5/7 parents, max/parent=8
+      > |if  total=2 on 2/7 parents, max/parent=1
+
+  |if  n=4  keyed=0% PARTIAL-KEYx4 text=100% child-elems=75% verbatim=0% leaf=0%
+      > |return  total=3 on 3/4 parents, max/parent=1
+      > |state  total=2 on 2/4 parents, max/parent=1
+
+  |]                   | ->                               |>> :check_pipe
+    |c[  n=3  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |]                   | ->                               |>> :vpipe
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      suffixes: $!x1
+
+=== FILE ../../../core/generator/50-udon.comments.descent.udon ===
+elements: 40 | comments: 35 | blank-lines: 13 | top-level text lines: 0
+warning: UnclosedIdentityKey x2  (lines [49, 52])
+top-level census: |functionx4
+top-seq[..16]: |function |function |function |function
+
+  |state  n=9  keyed=100% text=33% child-elems=88% verbatim=0% leaf=0%
+      key-kinds: barex9
+      > |c  total=5 on 3/9 parents, max/parent=3
+      > |default  total=3 on 3/9 parents, max/parent=1
+      > |eof  total=3 on 3/9 parents, max/parent=1
+      > |if  total=2 on 1/9 parents, max/parent=2
+
+  |default  n=8  keyed=0% text=100% child-elems=12% verbatim=0% leaf=0%
+      > |return  total=1 on 1/8 parents, max/parent=1
+
+  |c  n=7  keyed=100% text=100% child-elems=28% verbatim=0% leaf=0%
+      key-kinds: stringx7
+      > |default  total=2 on 2/7 parents, max/parent=1
+      > |return  total=2 on 2/7 parents, max/parent=1
+
+  |return  n=7  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |function  n=4  keyed=100% text=75% child-elems=75% verbatim=0% leaf=0%
+      key-kinds: barex4
+      > |state  total=9 on 3/4 parents, max/parent=7
+
+  |eof  n=3  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |default  total=3 on 3/3 parents, max/parent=1
+      > |return  total=3 on 3/3 parents, max/parent=1
+      > |c  total=2 on 2/3 parents, max/parent=1
+
+  |if  n=2  keyed=0% PARTIAL-KEYx2 text=100% child-elems=50% verbatim=0% leaf=0%
+      > |return  total=1 on 1/2 parents, max/parent=1
+
+=== FILE ../../../core/generator/60-udon.embedded.descent.udon ===
+elements: 46 | comments: 23 | blank-lines: 10 | top-level text lines: 0
+warning: NoDialectsLoaded x3  (lines [24, 37, 55])
+top-level census: |functionx2
+top-seq[..16]: |function |function
+
+  |c  n=17  keyed=100% text=100% child-elems=23% verbatim=0% leaf=0%
+      key-kinds: envelope?x3 stringx14
+      > |c  total=5 on 2/17 parents, max/parent=4
+      > |return  total=4 on 4/17 parents, max/parent=1
+      > |default  total=3 on 3/17 parents, max/parent=1
+
+  |return  n=9  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |default  n=8  keyed=0% text=100% child-elems=62% verbatim=0% leaf=0%
+      > |return  total=4 on 4/8 parents, max/parent=1
+      > |) |>> :main
+
+  |state[:check_semi]
+    ; Brace comment - emit accumulated text first
+    |c[  total=1 on 1/8 parents, max/parent=1
+      > |default  total=1 on 1/8 parents, max/parent=1
+      > |{(anon)}  total=1 on 1/8 parents, max/parent=1
+
+  |state  n=7  keyed=100% text=28% child-elems=85% verbatim=0% leaf=0%
+      key-kinds: barex7
+      > |c  total=11 on 6/7 parents, max/parent=4
+      > |default  total=4 on 4/7 parents, max/parent=1
+      > |eof  total=1 on 1/7 parents, max/parent=1
+
+  |function  n=2  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      :uc  on 1/2 (50%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["| MARK"]
+      > |state  total=7 on 2/2 parents, max/parent=4
+
+  |) |>> :main
+
+  |state[:check_semi]
+    ; Brace comment - emit accumulated text first
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |eof  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |c  total=1 on 1/1 parents, max/parent=1
+      > |return  total=1 on 1/1 parents, max/parent=1
+
+  |{(anon)}  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+=== FILE ../../../core/generator/70-udon.dynamics.descent.udon ===
+elements: 130 | comments: 76 | blank-lines: 32 | top-level text lines: 0
+warning: NoDialectsLoaded x3  (lines [97, 110, 119])
+warning: UnclosedIdentityKey x5  (lines [56, 57, 89, 114, 196])
+top-level census: |functionx6
+top-seq[..16]: |function |function |function |function |function |function
+
+  |c  n=37  keyed=100% text=100% child-elems=16% verbatim=0% leaf=0%
+      key-kinds: barex4 envelope?x3 stringx30
+      > |return  total=6 on 6/37 parents, max/parent=1
+      > |default  total=3 on 3/37 parents, max/parent=1
+      > |!kind  total=1 on 1/37 parents, max/parent=1
+
+  |state  n=26  keyed=100% text=11% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex26
+      > |c  total=32 on 18/26 parents, max/parent=5
+      > |default  total=18 on 18/26 parents, max/parent=1
+      > |eof  total=4 on 4/26 parents, max/parent=1
+      > |if  total=4 on 4/26 parents, max/parent=1
+
+  |default  n=25  keyed=0% text=100% child-elems=36% verbatim=0% leaf=0%
+      > |return  total=8 on 8/25 parents, max/parent=1
+      > |!name  total=1 on 1/25 parents, max/parent=1
+      > |)      |>> :children
+
+
+; Directive arguments - capture until newline or EOF, terminator included
+; (uniform rule: every Text event carries whatever terminator the source has).
+|function[directive_args:Text]
+  |state[:main]
+    |eof                      | TERM                             |return
+    |c[  total=1 on 1/25 parents, max/parent=1
+      > |default  total=1 on 1/25 parents, max/parent=1
+
+  |return  n=22  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |function  n=6  keyed=100% text=33% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex6
+      :line_col  on 1/6 (16%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["| raw_base = -1"]
+      attr-order: [line_col]x1
+      > |state  total=26 on 6/6 parents, max/parent=16
+      > |unclosed  total=2 on 2/6 parents, max/parent=1
+
+  |if  n=5  keyed=0% PARTIAL-KEYx5 text=100% child-elems=40% verbatim=0% leaf=0%
+      > |return  total=2 on 2/5 parents, max/parent=1
+      > |default  total=1 on 1/5 parents, max/parent=1
+      > |if  total=1 on 1/5 parents, max/parent=1
+
+  |eof  n=4  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |return  total=6 on 4/4 parents, max/parent=3
+      > |c  total=5 on 4/4 parents, max/parent=2
+      > |default  total=2 on 2/4 parents, max/parent=1
+
+  |unclosed  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |!kind  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |!name  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |)      |>> :children
+
+
+; Directive arguments - capture until newline or EOF, terminator included
+; (uniform rule: every Text event carries whatever terminator the source has).
+|function[directive_args:Text]
+  |state[:main]
+    |eof                      | TERM                             |return
+    |c[  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../core/generator/80-udon.freeform.descent.udon ===
+elements: 27 | comments: 29 | blank-lines: 6 | top-level text lines: 0
+top-level census: |functionx1
+top-seq[..16]: |function
+
+  |c  n=9  keyed=100% text=100% child-elems=11% verbatim=0% leaf=0%
+      key-kinds: stringx9
+      > |return  total=1 on 1/9 parents, max/parent=1
+
+  |state  n=7  keyed=100% text=14% child-elems=85% verbatim=0% leaf=0%
+      key-kinds: barex7
+      > |c  total=7 on 5/7 parents, max/parent=3
+      > |default  total=5 on 5/7 parents, max/parent=1
+      > |eof  total=1 on 1/7 parents, max/parent=1
+
+  |default  n=5  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |return  n=3  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |eof  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |c  total=2 on 1/2 parents, max/parent=2
+      > |return  total=2 on 2/2 parents, max/parent=1
+
+  |function  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      > |state  total=7 on 1/1 parents, max/parent=7
+      > |eof  total=1 on 1/1 parents, max/parent=1
+
+=== FILE ../../../core/generator/90-udon.references.descent.udon ===
+elements: 10 | comments: 14 | blank-lines: 1 | top-level text lines: 0
+warning: NoDialectsLoaded x2  (lines [19, 24])
+top-level census: |functionx1
+top-seq[..16]: |function
+
+  |c  n=3  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: envelope?x2 stringx1
+
+  |default  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |return  total=2 on 2/2 parents, max/parent=1
+
+  |return  n=2  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |state  n=2  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      > |c  total=3 on 2/2 parents, max/parent=2
+      > |default  total=2 on 2/2 parents, max/parent=1
+
+  |function  n=1  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      > |state  total=2 on 1/1 parents, max/parent=2

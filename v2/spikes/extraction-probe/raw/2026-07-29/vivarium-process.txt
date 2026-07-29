@@ -1,0 +1,39 @@
+
+=== FILE /Users/josephwecker-v2/src/arch/vivarium/doc/PROCESS.udon ===
+elements: 27 | comments: 5 | blank-lines: 24 | top-level text lines: 0
+top-level census: |normsx1
+top-seq[..16]: |norms
+
+  |norm  n=19  keyed=100% text=100% child-elems=5% verbatim=0% leaf=0%
+      key-kinds: barex19
+      :kind  on 19/19 (100%)  sameline 0/19  stackedx0  pos~0.0  [barex19]  e.g. ["prescription", "proscription"]
+      :authority  on 4/19 (21%)  sameline 0/4  stackedx0  pos~1.0  [flow-textx4]  e.g. ["Joseph 2026-07-11 — \"a program unwilling ...", "Joseph 2026-07-11 (relaying the conventio...", "Joseph 2026-07-11 — \"commit whenever you ..."]
+      :files  on 1/19 (5%)  sameline 0/1  stackedx0  pos~1.0  [arrayx1]  e.g. ["[...]"]
+      :source  on 1/19 (5%)  sameline 0/1  stackedx0  pos~1.0  [flow-textx1]  e.g. [".super-archive/from-archive/VIVARIA-DECLA..."]
+      attr-order: [kind]x13  [kind authority]x4  [kind files]x1
+      > |!lang  total=1 on 1/19 parents, max/parent=1
+      > |!sh  total=1 on 1/19 parents, max/parent=1
+
+  |cluster  n=4  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex4
+      :name  on 4/4 (100%)  sameline 0/4  stackedx0  pos~0.0  [flow-textx4]  e.g. ["Where documents live, and how they stay h...", "Document formats", "Code-side truth disciplines (the mechanic..."]
+      attr-order: [name]x4
+      > |norm  total=19 on 4/4 parents, max/parent=8
+
+  |!lang  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |!sh  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |meta  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :source-sink  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["participant-feedback"]
+
+  |norms  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :authority  on 1/1 (100%)  sameline 0/1  stackedx0  pos~4.0  [barex1]  e.g. ["binds-until-amended"]
+      :created  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["2026-07-11"]
+      :status  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["living"]
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Working norms for vivarium — prescription..."]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["0.1.0"]
+      > |cluster  total=4 on 1/1 parents, max/parent=4
+      > |meta  total=1 on 1/1 parents, max/parent=1

@@ -1,0 +1,67 @@
+
+=== FILE /Users/josephwecker-v2/src/arch/vivarium/DECISIONS.decision-log.udon ===
+elements: 472 | comments: 108 | blank-lines: 127 | top-level text lines: 0
+warning: AttributeAfterChildren x1  (lines [945])
+warning: InconsistentIndentation x3  (lines [954, 1031, 1405])
+top-level census: |decisionx121
+top-seq[..16]: |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision |decision ...
+
+  |decision  n=121  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex121
+      :by  on 121/121 (100%)  sameline 121/121  stackedx0  pos~1.0  [barex121]  e.g. ["joseph", "us", "claude"]
+      :date  on 121/121 (100%)  sameline 121/121  stackedx0  pos~0.0  [barex121]  e.g. ["2026-07-12", "2026-07-13", "2026-07-16"]
+      :session  on 121/121 (100%)  sameline 0/121  stackedx0  pos~4.3  [barex121]  e.g. ["01UzCVNNAn6eynKxo2fV74MC", "438f7e79-7d30-4492-a131-d25b5e62e099", "spike-corrected-scheme-cost"]
+      :status  on 121/121 (100%)  sameline 121/121  stackedx0  pos~2.0  [barex121]  e.g. ["decided", "superseded", "wish"]
+      :topic  on 121/121 (100%)  sameline 121/121  stackedx0  pos~3.0  [barex121]  e.g. ["naming", "architecture", "process"]
+      :council  on 22/121 (18%)  sameline 0/22  stackedx0  pos~4.2  [flow-textx22]  e.g. ["2026-07-24 — Adjudicated then RE-MARKED s...", "2026-07-24 — Adjudicated (self-correction...", "2026-07-24 — Read the chain, in order: su..."]
+      :supersedes  on 10/121 (8%)  sameline 9/10  stackedx0  pos~4.2  [arrayx2 barex8]  e.g. ["spine-nomos-to-initial-topography", "declared-ocean-does-not-fit-the-generated...", "initial-topography-name-holds"]
+      :note  on 3/121 (2%)  sameline 0/3  stackedx0  pos~6.7  [flow-textx3]  e.g. ["2026-07-12 — DOWNGRADED decided -> propos...", "2026-07-12 — AUTHORITY CORRECTED (was `:b...", "2026-07-13 — AUTHORITY SELF-CORRECTED (wa..."]
+      :superseded-by  on 3/121 (2%)  sameline 0/3  stackedx0  pos~4.3  [arrayx1 barex2]  e.g. ["the-grid-tentatively-decided-keep-the-cub...", "[...]"]
+      :status-note  on 1/121 (0%)  sameline 0/1  stackedx0  pos~4.0  [flow-textx1]  e.g. ["The FRAME is settled (Joseph: \"it very mu..."]
+      attr-order: [date by status topic session]x91  [date by status topic council session]x17  [date by status topic supersedes session]x7
+      > |reason  total=121 on 120/121 parents, max/parent=2
+      > |impact  total=110 on 110/121 parents, max/parent=1
+      > |ref  total=107 on 107/121 parents, max/parent=1
+      > |context-first  total=1 on 1/121 parents, max/parent=1
+      > |council  total=1 on 1/121 parents, max/parent=1
+      > |execution  total=1 on 1/121 parents, max/parent=1
+      > |judgment  total=1 on 1/121 parents, max/parent=1
+
+  |reason  n=121  keyed=0% text=100% child-elems=1% verbatim=0% leaf=0%
+      > |!md  total=1 on 1/121 parents, max/parent=1
+      > |impact  total=1 on 1/121 parents, max/parent=1
+      > |phase  total=1 on 1/121 parents, max/parent=1
+
+  |impact  n=111  keyed=0% text=100% child-elems=1% verbatim=0% leaf=0%
+      > |phase  total=1 on 1/111 parents, max/parent=1
+      > |predicate  total=1 on 1/111 parents, max/parent=1
+      > |ref  total=1 on 1/111 parents, max/parent=1
+
+  |ref  n=108  keyed=0% text=100% child-elems=2% verbatim=0% leaf=0%
+      > |meta  total=1 on 1/108 parents, max/parent=1
+      > |note  total=1 on 1/108 parents, max/parent=1
+      > |term  total=1 on 1/108 parents, max/parent=1
+
+  |phase  n=2  keyed=50% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+
+  |!md  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |context-first  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |council  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |execution  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |judgment  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |meta  n=1  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+
+  |note  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+
+  |predicate  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |term  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1

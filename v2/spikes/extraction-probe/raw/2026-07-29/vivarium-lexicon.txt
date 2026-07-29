@@ -1,0 +1,64 @@
+
+=== FILE /Users/josephwecker-v2/src/arch/vivarium/LEXICON.udon ===
+elements: 240 | comments: 40 | blank-lines: 131 | top-level text lines: 0
+top-level census: |lexiconx1
+top-seq[..16]: |lexicon
+
+  |term  n=95  keyed=100% text=100% child-elems=62% verbatim=0% leaf=0%
+      key-kinds: barex95
+      :status  on 95/95 (100%)  sameline 95/95  stackedx0  pos~0.0  [barex95]  e.g. ["carved", "settled", "open"]
+      :since  on 23/95 (24%)  sameline 23/23  stackedx0  pos~1.0  [barex23]  e.g. ["2026-07-04", "2026-07-11", "2026-07-10"]
+      :name  on 20/95 (21%)  sameline 0/20  stackedx0  pos~1.3  [flow-textx20]  e.g. ["lineage head ⟂ pinned regula", "Regula Terrestris", "use-case = fidelity contract"]
+      :forms  on 10/95 (10%)  sameline 0/10  stackedx0  pos~1.7  [flow-textx10]  e.g. ["full formal name Ordinatio Ordinum; keyed...", "Earth (capital) / earth (lowercase) / #ea...", "pl. nomos (invariant — DECISIONS[nomos-pl..."]
+      :anchor  on 5/95 (5%)  sameline 5/5  stackedx0  pos~1.0  [floatx5]  e.g. ["7.1", "7.2", "7.3"]
+      attr-order: [status]x49  [status since]x16  [status name]x14
+      > |rel  total=62 on 39/95 parents, max/parent=5
+      > |source  total=21 on 21/95 parents, max/parent=1
+      > |not  total=19 on 19/95 parents, max/parent=1
+      > |confused  total=15 on 14/95 parents, max/parent=2
+      > |context  total=7 on 7/95 parents, max/parent=1
+      > |!md  total=1 on 1/95 parents, max/parent=1
+
+  |rel  n=62  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :kind  on 62/62 (100%)  sameline 62/62  stackedx0  pos~1.0  [barex62]  e.g. ["must-deliver", "hands-forward", "bounded-by"]
+      :to  on 62/62 (100%)  sameline 62/62  stackedx0  pos~0.0  [barex62]  e.g. ["charge", "promise", "phase-gate"]
+      attr-order: [to kind]x62
+
+  |source  n=21  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |not  n=19  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |confused  n=15  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |note  n=8  keyed=100% text=87% child-elems=25% verbatim=0% leaf=0%
+      key-kinds: barex8
+      :name  on 8/8 (100%)  sameline 0/8  stackedx0  pos~0.1  [flow-textx8]  e.g. ["The three layers inside a vivium (they di...", "Cross-project collision ledger (the no-co...", "AAT handshake — the four axes ↔ typed ign..."]
+      :anchor  on 1/8 (12%)  sameline 1/1  stackedx0  pos~0.0  [floatx1]  e.g. ["7.5"]
+      attr-order: [name]x7  [anchor name]x1
+      > |term  total=5 on 1/8 parents, max/parent=5
+      > |!md  total=2 on 1/8 parents, max/parent=2
+
+  |section  n=8  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex8
+      :name  on 8/8 (100%)  sameline 0/8  stackedx0  pos~1.0  [barex1 flow-textx7]  e.g. ["World-structure (phases & gates)", "Runtime & fidelity", "Determinism & provenance"]
+      :num  on 8/8 (100%)  sameline 8/8  stackedx0  pos~0.0  [intx8]  e.g. ["1", "2", "3"]
+      attr-order: [num name]x8
+      > |term  total=90 on 8/8 parents, max/parent=24
+      > |note  total=8 on 4/8 parents, max/parent=3
+
+  |context  n=7  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |!md  n=3  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |lexicon  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :restructured  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["2026-07-11"]
+      :seeded  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["2026-07-03"]
+      :status  on 1/1 (100%)  sameline 1/1  stackedx0  pos~2.0  [barex1]  e.g. ["living"]
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [flow-textx1]  e.g. ["vivarium — LEXICON (the bounded, ubiquito..."]
+      > |section  total=8 on 1/1 parents, max/parent=8
+      > |meta  total=1 on 1/1 parents, max/parent=1
+
+  |meta  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :authority  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["PROCESS.udon self-governance valve"]

@@ -1,0 +1,66 @@
+
+=== FILE ../schema-review/DISCUSSION-THOUGHTS.udon ===
+elements: 63 | comments: 17 | blank-lines: 16 | top-level text lines: 0
+warning: AttributeAfterChildren x1  (lines [534])
+top-level census: |practice-candidatex2  |thoughtx15
+top-seq[..16]: |thought |thought |thought |thought |thought |thought |thought |practice-candidate |thought |practice-candidate |thought |thought |thought |thought |thought |thought ...
+
+  |!quote  n=16  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |assessment  n=15  keyed=0% text=100% child-elems=6% verbatim=0% leaf=0%
+      > |@ref  total=2 on 1/15 parents, max/parent=2
+
+  |needs  n=15  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |thought  n=15  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex15
+      traits: .adjudication-point-migrationsx1 .consumer-driven-schema-adjudicatorx1 .contraction-absence-is-tooling-failurex1 .convention-driven-schema-evolutionx1 .current-truth-and-safe-deletabilityx1 .de-facto-schema-at-birthx1 .deliberate-vs-incidental-legibilityx1 .expected-initial-best-practicesx1 .grammar-decisions-must-not-swing-syntaxx1 .operation-arity-plus-expectation-arityx1 .path-decomposition-perspective-file-stem-...x1 .reasonless-rulings-are-recheckablex1 ...
+      :by  on 15/15 (100%)  sameline 15/15  stackedx0  pos~1.0  [barex15]  e.g. ["joseph"]
+      :context  on 15/15 (100%)  sameline 0/15  stackedx0  pos~3.0  [flow-textx15]  e.g. ["Response to the five-pattern synthesis; b...", "Response to the lossless-witness pattern;...", "Correction of Fable's \"supply side is set..."]
+      :date  on 15/15 (100%)  sameline 15/15  stackedx0  pos~0.0  [barex15]  e.g. ["2026-07-28", "2026-07-29"]
+      :status  on 15/15 (100%)  sameline 15/15  stackedx0  pos~2.0  [barex15]  e.g. ["endorsed-with-caveats", "recorded-pre-validation"]
+      attr-order: [date by status context]x15
+      > |!quote  total=15 on 15/15 parents, max/parent=1
+      > |assessment  total=15 on 15/15 parents, max/parent=1
+      > |needs  total=15 on 15/15 parents, max/parent=1
+
+  |practice-candidate  n=2  keyed=100% text=100% child-elems=50% verbatim=0% leaf=0%
+      key-kinds: barex2
+      :by  on 2/2 (100%)  sameline 2/2  stackedx0  pos~1.0  [barex2]  e.g. ["joseph"]
+      :context  on 2/2 (100%)  sameline 0/2  stackedx0  pos~3.0  [flow-textx2]  e.g. ["Named by Joseph after this file's own !:q...", "Companion to prefer-block-verbatim-for-em..."]
+      :date  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["2026-07-28"]
+      :status  on 2/2 (100%)  sameline 2/2  stackedx0  pos~2.0  [barex2]  e.g. ["candidate"]
+      > |!quote  total=1 on 1/2 parents, max/parent=1
+
+=== FILE ../../FOR-JOSEPH.udon ===
+elements: 20 | comments: 8 | blank-lines: 9 | top-level text lines: 0
+top-level census: |itemx10
+top-seq[..16]: |item |item |item |item |item |item |item |item |item |item
+
+  |item  n=10  keyed=100% text=100% child-elems=80% verbatim=0% leaf=0%
+      key-kinds: barex10
+      :class  on 10/10 (100%)  sameline 10/10  stackedx0  pos~2.0  [barex10]  e.g. ["direction", "deferred-lean", "queue"]
+      :date  on 10/10 (100%)  sameline 10/10  stackedx0  pos~0.0  [barex10]  e.g. ["2026-07-28"]
+      :status  on 10/10 (100%)  sameline 10/10  stackedx0  pos~1.0  [barex10]  e.g. ["answered", "answered-reframed", "done"]
+      attr-order: [date status class]x10
+      > |answer  total=8 on 8/10 parents, max/parent=1
+
+  |answer  n=8  keyed=0% text=100% child-elems=25% verbatim=0% leaf=0%
+      :by  on 8/8 (100%)  sameline 8/8  stackedx0  pos~0.0  [barex8]  e.g. ["joseph"]
+      :date  on 8/8 (100%)  sameline 8/8  stackedx0  pos~1.0  [barex8]  e.g. ["2026-07-28"]
+      attr-order: [by date]x8
+      > |!quote  total=2 on 2/8 parents, max/parent=1
+
+  |!quote  n=2  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+=== FILE ../ONLY-IN-UDON.udon ===
+elements: 9 | comments: 10 | blank-lines: 8 | top-level text lines: 0
+top-level census: |capabilityx9
+top-seq[..16]: |capability |capability |capability |capability |capability |capability |capability |capability |capability
+
+  |capability  n=9  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex9
+      :date  on 9/9 (100%)  sameline 9/9  stackedx0  pos~1.0  [barex9]  e.g. ["2026-07-28"]
+      :nearest-elsewhere  on 9/9 (100%)  sameline 0/9  stackedx0  pos~2.0  [flow-textx9]  e.g. ["markdown blockquote / HTML cite", "JSON schema-inference / markdown conventi...", "none at the format layer; javadoc/lint to..."]
+      :status  on 9/9 (100%)  sameline 9/9  stackedx0  pos~0.0  [barex9]  e.g. ["candidate"]
+      attr-order: [status date nearest-elsewhere]x9

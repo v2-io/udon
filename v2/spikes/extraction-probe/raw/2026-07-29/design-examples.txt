@@ -1,0 +1,1251 @@
+
+=== FILE ../../../design/examples/comprehensive.udon ===
+elements: 219 | comments: 104 | blank-lines: 93 | top-level text lines: 0
+warning: NoDialectsLoaded x4  (lines [84, 404, 416, 434])
+top-level census: |(anon)x4  |api-endpointx1  |articlex1  |configx1  |databasex2  |docx1  |edge-casesx1  |licensex2  |projectx2  |raw-examplex1  |schemax1  |templatex1
+top-seq[..16]: |(anon) |(anon) |(anon) |config |schema |article |template |api-endpoint |license |license |project |project |(anon) |database |database |edge-cases ...
+
+  |{td}  n=20  keyed=0% text=100% child-elems=10% verbatim=0% leaf=0%
+      > |{em}  total=2 on 2/20 parents, max/parent=1
+
+  |{code}  n=14  keyed=0% text=92% child-elems=14% verbatim=0% leaf=7%
+      :lang  on 1/14 (7%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["udon \"|server :host localhost\""]
+      :type  on 1/14 (7%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["response"]
+      attr-order: [lang]x1  [type]x1
+      > |{element}  total=2 on 2/14 parents, max/parent=1
+
+  |{a}  n=12  keyed=0% text=91% child-elems=16% verbatim=0% leaf=8%
+      :href  on 12/12 (100%)  sameline 16/16  stackedx1  pos~0.6  [barex11 flow(inline-el)x2 flow-textx3]  e.g. ["#getting-started", "#format-comparison", "/doc"]
+      :title  on 2/12 (16%)  sameline 2/2  stackedx0  pos~1.0  [stringx2]  e.g. ["Full documentation", "Link title"]
+      attr-order: [href]x9  [href title]x2  [href href href href href]x1
+      > |{em}  total=2 on 2/12 parents, max/parent=1
+      > |{code}  total=1 on 1/12 parents, max/parent=1
+
+  |p  n=11  keyed=0% text=100% child-elems=54% verbatim=0% leaf=0%
+      traits: .metax1
+      > |{a}  total=3 on 3/11 parents, max/parent=1
+      > |{em}  total=3 on 3/11 parents, max/parent=1
+      > |{strong}  total=3 on 3/11 parents, max/parent=1
+      > |{code}  total=1 on 1/11 parents, max/parent=1
+
+  |{em}  n=11  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |field  n=10  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex10
+      traits: .searchablex1
+      suffixes: $!x2 $*x1 $+x1 $?x3
+      :type  on 10/10 (100%)  sameline 10/10  stackedx0  pos~0.0  [barex10]  e.g. ["integer", "string"]
+      :required?  on 2/10 (20%)  sameline 2/2  stackedx0  pos~1.0  [truex2]  e.g. ["true"]
+      :auto-increment?  on 1/10 (10%)  sameline 1/1  stackedx0  pos~1.0  [truex1]  e.g. ["true"]
+      :enum  on 1/10 (10%)  sameline 1/1  stackedx0  pos~1.0  [arrayx1]  e.g. ["[...]"]
+      :format  on 1/10 (10%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["email"]
+      :max-length  on 1/10 (10%)  sameline 1/1  stackedx0  pos~1.0  [intx1]  e.g. ["100"]
+      :min-length  on 1/10 (10%)  sameline 1/1  stackedx0  pos~2.0  [intx1]  e.g. ["8"]
+      :unique?  on 1/10 (10%)  sameline 1/1  stackedx0  pos~2.0  [truex1]  e.g. ["true"]
+      attr-order: [type]x4  [type auto-increment?]x1  [type enum]x1
+
+  |(anon)  n=6  keyed=16% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+      traits: .another-classx1 .base-servicex1 .cachedx1 .db-defaultsx1 .just-classesx1 .loggingx1
+      :timeout  on 2/6 (33%)  sameline 0/2  stackedx0  pos~2.0  [intx2]  e.g. ["30"]
+      :adapter  on 1/6 (16%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["postgres"]
+      :cache-enabled  on 1/6 (16%)  sameline 0/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      :cache-ttl  on 1/6 (16%)  sameline 0/1  stackedx0  pos~1.0  [intx1]  e.g. ["3600"]
+      :host  on 1/6 (16%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["localhost"]
+      :log-format  on 1/6 (16%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["json"]
+      :log-level  on 1/6 (16%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["info"]
+      :pool  on 1/6 (16%)  sameline 0/1  stackedx0  pos~2.0  [intx1]  e.g. ["5"]
+      :retries  on 1/6 (16%)  sameline 0/1  stackedx0  pos~2.0  [intx1]  e.g. ["3"]
+      :version  on 1/6 (16%)  sameline 0/1  stackedx0  pos~0.0  [floatx1]  e.g. ["1.0"]
+      attr-order: [adapter host pool timeout]x1  [cache-enabled cache-ttl]x1  [log-level log-format]x1
+
+  |tr  n=6  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      traits: .emphx1
+      > |{td}  total=20 on 5/6 parents, max/parent=4
+      > |{th}  total=4 on 1/6 parents, max/parent=4
+
+  |{n}  n=6  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |!if  n=5  keyed=0% text=100% child-elems=80% verbatim=0% leaf=0%
+      > |div  total=2 on 2/5 parents, max/parent=1
+      > |article  total=1 on 1/5 parents, max/parent=1
+      > |section  total=1 on 1/5 parents, max/parent=1
+
+  |div  n=5  keyed=0% text=60% child-elems=40% verbatim=0% leaf=0%
+      traits: .admin-noticex1 .announcementx1 .announcementsx1 .mod-noticex1
+      :class  on 1/5 (20%)  sameline 1/1  stackedx0  pos~0.0  [interpolationx1]  e.g. ["announcement.type"]
+      attr-order: [class]x1
+      > |!for  total=1 on 1/5 parents, max/parent=1
+      > |span  total=1 on 1/5 parents, max/parent=1
+
+  |section  n=5  keyed=40% text=60% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      traits: .guestx1 .postsx1 .welcomex1
+      :level  on 2/5 (40%)  sameline 0/2  stackedx0  pos~0.0  [intx2]  e.g. ["2"]
+      attr-order: [level]x2
+      > |{code}  total=6 on 2/5 parents, max/parent=4
+      > |a  total=2 on 1/5 parents, max/parent=2
+      > |p  total=2 on 2/5 parents, max/parent=1
+      > |!elif  total=1 on 1/5 parents, max/parent=1
+      > |!elixir  total=1 on 1/5 parents, max/parent=1
+      > |!else  total=1 on 1/5 parents, max/parent=1
+      > |!for  total=1 on 1/5 parents, max/parent=1
+      > |!if  total=1 on 1/5 parents, max/parent=1
+      > |!sql  total=1 on 1/5 parents, max/parent=1
+      > |!udon  total=1 on 1/5 parents, max/parent=1
+      > |div  total=1 on 1/5 parents, max/parent=1
+      > |nav  total=1 on 1/5 parents, max/parent=1
+      > |span  total=1 on 1/5 parents, max/parent=1
+      > |{dfn}  total=1 on 1/5 parents, max/parent=1
+
+  |{field}  n=5  keyed=0% text=20% child-elems=0% verbatim=0% leaf=80%
+      :name  on 5/5 (100%)  sameline 5/5  stackedx0  pos~0.0  [barex5]  e.g. ["_links", "email", "name"]
+      :type  on 2/5 (40%)  sameline 2/2  stackedx0  pos~1.0  [barex2]  e.g. ["object"]
+      :required?  on 1/5 (20%)  sameline 1/1  stackedx0  pos~1.0  [truex1]  e.g. ["true"]
+      attr-order: [name]x2  [name type]x2  [name required?]x1
+
+  |a  n=4  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :href  on 4/4 (100%)  sameline 4/4  stackedx0  pos~0.0  [barex4]  e.g. ["https://example.com", "/login", "/register"]
+      attr-order: [href]x4
+
+  |header  n=4  keyed=0% text=25% child-elems=25% verbatim=0% leaf=50%
+      :name  on 3/4 (75%)  sameline 3/3  stackedx0  pos~0.0  [barex3]  e.g. ["Content-Type", "X-API-Version", "Authorization"]
+      :value  on 3/4 (75%)  sameline 3/3  stackedx0  pos~1.0  [barex2 stringx1]  e.g. ["application/json", "2025-01", "Bearer"]
+      attr-order: [name value]x3
+      > |!if  total=1 on 1/4 parents, max/parent=1
+      > |!include  total=1 on 1/4 parents, max/parent=1
+
+  |{th}  n=4  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |!for  n=3  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |article  total=1 on 1/3 parents, max/parent=1
+      > |div  total=1 on 1/3 parents, max/parent=1
+      > |link  total=1 on 1/3 parents, max/parent=1
+
+  |!include  n=3  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |article  n=3  keyed=33% text=66% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      traits: .featuredx1
+      :author  on 1/3 (33%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Joseph Wecker"]
+      :date  on 1/3 (33%)  sameline 0/1  stackedx0  pos~1.0  [envelope?x1]  e.g. ["<2025-12-22>"]
+      :id  on 1/3 (33%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["post-!{{post.id}}"]
+      :status  on 1/3 (33%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["published"]
+      :tags  on 1/3 (33%)  sameline 0/1  stackedx0  pos~2.0  [arrayx1]  e.g. ["[...]"]
+      attr-order: [author date tags status]x1  [id]x1
+      > |p  total=2 on 1/3 parents, max/parent=2
+      > |section  total=2 on 1/3 parents, max/parent=2
+      > |{a}  total=2 on 1/3 parents, max/parent=2
+      > |{em}  total=2 on 1/3 parents, max/parent=2
+      > |blockquote  total=1 on 1/3 parents, max/parent=1
+      > |h1  total=1 on 1/3 parents, max/parent=1
+      > |h2  total=1 on 1/3 parents, max/parent=1
+      > |h3  total=1 on 1/3 parents, max/parent=1
+      > |table  total=1 on 1/3 parents, max/parent=1
+      > |{abbr}  total=1 on 1/3 parents, max/parent=1
+      > |{cite}  total=1 on 1/3 parents, max/parent=1
+      > |{data}  total=1 on 1/3 parents, max/parent=1
+      > |{dfn}  total=1 on 1/3 parents, max/parent=1
+      > |{q}  total=1 on 1/3 parents, max/parent=1
+      > |{ul}  total=1 on 1/3 parents, max/parent=1
+
+  |database  n=3  keyed=100% text=0% child-elems=33% verbatim=0% leaf=66%
+      key-kinds: barex3
+      traits: .db-defaultsx2 .base-servicex1
+      :pool  on 3/3 (100%)  sameline 0/3  stackedx0  pos~1.7  [intx3]  e.g. ["10", "2", "20"]
+      :database  on 2/3 (66%)  sameline 0/2  stackedx0  pos~0.0  [barex2]  e.g. ["myapp_dev", "myapp_prod"]
+      :ssl?  on 2/3 (66%)  sameline 0/2  stackedx0  pos~3.0  [truex2]  e.g. ["true"]
+      :adapter  on 1/3 (33%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["postgres"]
+      :host  on 1/3 (33%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["db.example.com"]
+      :port  on 1/3 (33%)  sameline 0/1  stackedx0  pos~2.0  [intx1]  e.g. ["5432"]
+      attr-order: [adapter host port pool ssl?]x1  [database pool]x1  [database pool ssl?]x1
+      > |credentials  total=1 on 1/3 parents, max/parent=1
+
+  |response  n=3  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :description  on 3/3 (100%)  sameline 3/3  stackedx0  pos~1.0  [stringx3]  e.g. ["User created", "Validation error", "Email already exists"]
+      :status  on 3/3 (100%)  sameline 3/3  stackedx0  pos~0.0  [intx3]  e.g. ["201", "400", "409"]
+      attr-order: [status description]x3
+
+  |{strong}  n=3  keyed=0% text=100% child-elems=66% verbatim=0% leaf=0%
+      > |{em}  total=2 on 2/3 parents, max/parent=1
+
+  |!else  n=2  keyed=0% text=50% child-elems=50% verbatim=0% leaf=0%
+      > |section  total=1 on 1/2 parents, max/parent=1
+
+  |endpoint  n=2  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      :method  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["POST"]
+      :path  on 2/2 (100%)  sameline 2/2  stackedx0  pos~1.0  [barex2]  e.g. ["/oauth/token", "/users"]
+      :rate-limit  on 2/2 (100%)  sameline 0/2  stackedx0  pos~2.5  [node(element)x2]  e.g. [""]
+      :auth  on 1/2 (50%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["required"]
+      > |{field}  total=4 on 1/2 parents, max/parent=4
+      > |example  total=2 on 1/2 parents, max/parent=2
+      > |limit  total=2 on 2/2 parents, max/parent=1
+      > |{code}  total=1 on 1/2 parents, max/parent=1
+      > |{duration}  total=1 on 1/2 parents, max/parent=1
+
+  |example  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :type  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["request", "response"]
+      :status  on 1/2 (50%)  sameline 1/1  stackedx0  pos~1.0  [intx1]  e.g. ["201"]
+      > |{code-block}  total=2 on 2/2 parents, max/parent=1
+
+  |level-1  n=2  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |level-2  total=2 on 2/2 parents, max/parent=1
+
+  |level-2  n=2  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |level-3  total=2 on 2/2 parents, max/parent=1
+
+  |level-3  n=2  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |level-4  total=2 on 2/2 parents, max/parent=1
+
+  |level-4  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :deep  on 2/2 (100%)  sameline 1/2  stackedx0  pos~0.0  [truex2]  e.g. ["true"]
+
+  |license  n=2  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex2
+
+  |limit  n=2  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :requests  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [intx2]  e.g. ["10", "100"]
+      :window  on 2/2 (100%)  sameline 2/2  stackedx0  pos~1.0  [envelope?x2]  e.g. ["<60s>"]
+
+  |project  n=2  keyed=100% text=0% child-elems=50% verbatim=0% leaf=50%
+      key-kinds: barex2
+      :license  on 2/2 (100%)  sameline 0/2  stackedx0  pos~2.0  [referencex2]  e.g. ["[mit]", "[apache-2]"]
+      :name  on 2/2 (100%)  sameline 0/2  stackedx0  pos~0.0  [stringx2]  e.g. ["UDON Parser", "UDON Tools"]
+      :version  on 2/2 (100%)  sameline 0/2  stackedx0  pos~1.0  [barex2]  e.g. ["0.7.0", "0.1.0"]
+      :authors  on 1/2 (50%)  sameline 0/1  stackedx0  pos~4.0  [arrayx1]  e.g. ["[...]"]
+      :dependencies  on 1/2 (50%)  sameline 0/1  stackedx0  pos~3.0  [node(element)x1]  e.g. [""]
+      :homepage  on 1/2 (50%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["https://github.com/example/udon"]
+      :keywords  on 1/2 (50%)  sameline 0/1  stackedx0  pos~5.0  [arrayx1]  e.g. ["[...]"]
+      > |dep  total=1 on 1/2 parents, max/parent=1
+
+  |span  n=2  keyed=0% text=50% child-elems=50% verbatim=0% leaf=0%
+      > |strong  total=1 on 1/2 parents, max/parent=1
+
+  |{abbr}  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :title  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [stringx2]  e.g. ["Application Programming Interface", "Create, Read, Update, Delete"]
+
+  |{code-block}  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :lang  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["json"]
+
+  |{dfn}  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :id  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["mixed-content", "mixed-content-def"]
+
+  |{element}  n=2  keyed=0% text=50% child-elems=0% verbatim=0% leaf=50%
+
+  |!elif  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |div  total=1 on 1/1 parents, max/parent=1
+
+  |!elixir  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |!let  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |!if  total=1 on 1/1 parents, max/parent=1
+
+  |!sql  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |!udon  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |api-endpoint  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :auth  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["required"]
+      :headers  on 1/1 (100%)  sameline 0/3  stackedx1  pos~4.0  [node(element)x3]  e.g. [""]
+      :method  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["POST"]
+      :path  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["/api/users"]
+      :request-body  on 1/1 (100%)  sameline 0/3  stackedx1  pos~7.0  [node(element)x3]  e.g. [""]
+      :responses  on 1/1 (100%)  sameline 0/3  stackedx1  pos~10.0  [node(element)x3]  e.g. [""]
+      > |field  total=3 on 1/1 parents, max/parent=3
+      > |header  total=3 on 1/1 parents, max/parent=3
+      > |response  total=3 on 1/1 parents, max/parent=3
+
+  |blockquote  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :cited-by  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [node(element)x1]  e.g. [""]
+      :source  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["Ancient Proverb"]
+      > |a  total=1 on 1/1 parents, max/parent=1
+
+  |body  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :class  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [interpolationx1]  e.g. ["body_classes | join \" \""]
+      > |!include  total=1 on 1/1 parents, max/parent=1
+      > |header  total=1 on 1/1 parents, max/parent=1
+      > |main  total=1 on 1/1 parents, max/parent=1
+
+  |cache  n=1  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+      traits: .base-servicex1 .cachedx1 .loggingx1
+      :host  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["cache.example.com"]
+      :port  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [intx1]  e.g. ["6379"]
+
+  |config  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :debug  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [falsex1]  e.g. ["false"]
+      :environment  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [interpolationx1]  e.g. ["env.APP_ENV"]
+      :name  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["My Application"]
+      > |cache  total=1 on 1/1 parents, max/parent=1
+      > |database  total=1 on 1/1 parents, max/parent=1
+      > |features  total=1 on 1/1 parents, max/parent=1
+      > |nil-test  total=1 on 1/1 parents, max/parent=1
+
+  |credentials  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :password  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [interpolationx1]  e.g. ["env.DB_PASS"]
+      :username  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [interpolationx1]  e.g. ["env.DB_USER"]
+
+  |dep  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["udon-parser"]
+      :version  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [stringx1]  e.g. ["~> 0.7"]
+
+  |doc  n=1  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      traits: .technicalx1
+      :authors  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [arrayx1]  e.g. ["[...]"]
+      :last-updated  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [envelope?x1]  e.g. ["<2025-12-22>"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["2.1.0"]
+      > |{n}  total=6 on 1/1 parents, max/parent=6
+      > |{code}  total=5 on 1/1 parents, max/parent=5
+      > |{a}  total=3 on 1/1 parents, max/parent=3
+      > |endpoint  total=2 on 1/1 parents, max/parent=2
+      > |{abbr}  total=1 on 1/1 parents, max/parent=1
+      > |{field}  total=1 on 1/1 parents, max/parent=1
+      > |{header}  total=1 on 1/1 parents, max/parent=1
+      > |{status}  total=1 on 1/1 parents, max/parent=1
+
+  |edge-cases  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |p  total=7 on 1/1 parents, max/parent=7
+      > |(anon)  total=2 on 1/1 parents, max/parent=2
+      > |level-1  total=2 on 1/1 parents, max/parent=2
+      > |empty  total=1 on 1/1 parents, max/parent=1
+      > |outer  total=1 on 1/1 parents, max/parent=1
+      > |test-values  total=1 on 1/1 parents, max/parent=1
+
+  |empty  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |features  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :empty-list  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [arrayx1]  e.g. ["[...]"]
+      :enabled-flags  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [arrayx1]  e.g. ["[...]"]
+      :mixed-example  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [arrayx1]  e.g. ["[...]"]
+      :rate-limits  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [arrayx1]  e.g. ["[...]"]
+
+  |h1  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |h2  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |h3  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |a  total=1 on 1/1 parents, max/parent=1
+
+  |head  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |!for  total=1 on 1/1 parents, max/parent=1
+      > |!if  total=1 on 1/1 parents, max/parent=1
+      > |meta  total=1 on 1/1 parents, max/parent=1
+      > |title  total=1 on 1/1 parents, max/parent=1
+
+  |html  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :lang  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [interpolationx1]  e.g. ["locale | default \"en\""]
+      > |body  total=1 on 1/1 parents, max/parent=1
+      > |head  total=1 on 1/1 parents, max/parent=1
+
+  |inner  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :c  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["3"]
+
+  |link  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :href  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [interpolationx1]  e.g. ["stylesheet"]
+      :rel  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["stylesheet"]
+
+  |main  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      > |!else  total=1 on 1/1 parents, max/parent=1
+      > |!if  total=1 on 1/1 parents, max/parent=1
+      > |!let  total=1 on 1/1 parents, max/parent=1
+      > |section  total=1 on 1/1 parents, max/parent=1
+
+  |meta  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :charset  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["utf-8"]
+
+  |middle  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :b  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["2"]
+      > |inner  total=1 on 1/1 parents, max/parent=1
+
+  |nav  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      traits: .mainx1
+      > |{a}  total=4 on 1/1 parents, max/parent=4
+
+  |nil-test  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :explicit-false  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [falsex1]  e.g. ["false"]
+      :explicit-true  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [truex1]  e.g. ["true"]
+      :flag-present?  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      :nil-value  on 1/1 (100%)  sameline 0/1  stackedx0  pos~4.0  [nilx1]  e.g. ["nil"]
+      :null-value  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [nilx1]  e.g. ["nil"]
+
+  |outer  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :a  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["1"]
+      > |middle  total=1 on 1/1 parents, max/parent=1
+
+  |raw-example  n=1  keyed=0% text=100% child-elems=0% verbatim=100% leaf=0%
+      :description  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["Sometimes you need to break free of inden..."]
+
+  |schema  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :description  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["User account schema"]
+      > |field  total=7 on 1/1 parents, max/parent=7
+
+  |strong  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |table  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      > |tr  total=6 on 1/1 parents, max/parent=6
+
+  |template  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :doctype  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["html5"]
+      > |!include  total=1 on 1/1 parents, max/parent=1
+      > |html  total=1 on 1/1 parents, max/parent=1
+
+  |test-values  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :empty-list  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [arrayx1]  e.g. ["[...]"]
+      :mixed-types  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [arrayx1]  e.g. ["[...]"]
+      :simple-list  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [arrayx1]  e.g. ["[...]"]
+      :single  on 1/1 (100%)  sameline 0/1  stackedx0  pos~4.0  [arrayx1]  e.g. ["[...]"]
+      :with-spaces  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [arrayx1]  e.g. ["[...]"]
+
+  |title  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |{cite}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :author  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [stringx1]  e.g. ["Kay"]
+      :year  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [intx1]  e.g. ["1993"]
+
+  |{data}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :type  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["metric"]
+      :value  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["42"]
+
+  |{duration}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :seconds  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["3600"]
+
+  |{header}  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["Retry-After"]
+
+  |{q}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |{status}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :code  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["429"]
+
+  |{ul}  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+=== FILE ../../../design/examples/archema-operata.udon ===
+elements: 115 | comments: 5 | blank-lines: 33 | top-level text lines: 0
+top-level census: |domainx1
+top-seq[..16]: |domain
+
+  |attr  n=33  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex33
+      traits: .atomx8 .stringx8 .textx7 .uuid8x4 .datetimex3 .booleanx2 .integerx1
+      :default  on 11/33 (33%)  sameline 11/11  stackedx0  pos~0.0  [barex8 falsex1 intx1 truex1]  e.g. ["active", "present", "human"]
+      :one-of  on 8/33 (24%)  sameline 8/8  stackedx0  pos~1.0  [arrayx8]  e.g. ["[...]"]
+      :allow-nil  on 5/33 (15%)  sameline 5/5  stackedx0  pos~0.0  [falsex5]  e.g. ["false"]
+      :primary  on 4/33 (12%)  sameline 4/4  stackedx0  pos~0.0  [truex4]  e.g. ["true"]
+      attr-order: [default one-of]x8  [allow-nil]x5  [primary]x4
+
+  |change  n=23  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :set-claimed-at  on 4/23 (17%)  sameline 4/4  stackedx0  pos~0.0  [interpolationx1 nilx3]  e.g. ["now", "nil"]
+      :set-claimed-by  on 4/23 (17%)  sameline 4/4  stackedx0  pos~0.0  [interpolationx1 nilx3]  e.g. ["claimer", "nil"]
+      :set-status  on 3/23 (13%)  sameline 3/3  stackedx0  pos~0.0  [barex3]  e.g. ["active", "realized", "abandoned"]
+      :set-temporal  on 3/23 (13%)  sameline 3/3  stackedx0  pos~0.0  [barex3]  e.g. ["past", "present", "speculative"]
+      :set-actionability  on 2/23 (8%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["archived", "active"]
+      :set-declared-at  on 2/23 (8%)  sameline 2/2  stackedx0  pos~0.0  [interpolationx2]  e.g. ["now"]
+      :set-kind  on 2/23 (8%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["primitive", "compound"]
+      :set-propagate  on 2/23 (8%)  sameline 2/2  stackedx0  pos~0.0  [falsex1 truex1]  e.g. ["true", "false"]
+      :set-current  on 1/23 (4%)  sameline 1/1  stackedx0  pos~0.0  [falsex1]  e.g. ["false"]
+      attr-order: [set-claimed-at]x4  [set-claimed-by]x4  [set-status]x3
+
+  |update  n=14  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex14
+      :description  on 14/14 (100%)  sameline 0/14  stackedx0  pos~0.0  [stringx14]  e.g. ["Archive this effort for future reference", "Activate this effort for current work", "Mark as speculative exploration"]
+      :arguments  on 2/14 (14%)  sameline 0/2  stackedx0  pos~1.0  [arrayx2]  e.g. ["[...]"]
+      attr-order: [description]x12  [description arguments]x2
+      > |change  total=22 on 14/14 parents, max/parent=3
+
+  |!rb  n=5  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |belongs-to  n=5  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex5
+      :destination  on 5/5 (100%)  sameline 5/5  stackedx0  pos~0.0  [barex5]  e.g. ["operata.effort", "operata.intent"]
+      :allow-nil  on 3/5 (60%)  sameline 3/3  stackedx0  pos~1.0  [truex3]  e.g. ["true"]
+      attr-order: [destination allow-nil]x3  [destination]x2
+
+  |has-many  n=5  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex5
+      :destination  on 5/5 (100%)  sameline 5/5  stackedx0  pos~0.0  [barex5]  e.g. ["operata.intent", "operata.perspective", "operata.realization"]
+      :destination-attribute  on 2/5 (40%)  sameline 2/2  stackedx0  pos~1.0  [barex2]  e.g. ["focus-effort-id", "focus-intent-id"]
+      :inverse-of  on 1/5 (20%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["parent"]
+      attr-order: [destination]x2  [destination destination-attribute]x2  [destination inverse-of]x1
+
+  |actions  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |update  total=14 on 4/4 parents, max/parent=7
+      > |defaults  total=4 on 4/4 parents, max/parent=1
+      > |!rb  total=3 on 3/4 parents, max/parent=1
+      > |create  total=1 on 1/4 parents, max/parent=1
+
+  |attributes  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |attr  total=33 on 4/4 parents, max/parent=11
+      > |timestamps  total=4 on 4/4 parents, max/parent=1
+
+  |defaults  n=4  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :actions  on 4/4 (100%)  sameline 4/4  stackedx0  pos~0.0  [arrayx4]  e.g. ["[...]"]
+      attr-order: [actions]x4
+
+  |relationships  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |belongs-to  total=5 on 3/4 parents, max/parent=2
+      > |has-many  total=5 on 2/4 parents, max/parent=3
+
+  |resource  n=4  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex4
+      :description  on 4/4 (100%)  sameline 0/4  stackedx0  pos~0.0  [stringx4]  e.g. ["A bounded initiative with origin, intent,...", "A desired state or outcome", "What actually happened when working on an..."]
+      attr-order: [description]x4
+      > |actions  total=4 on 4/4 parents, max/parent=1
+      > |attributes  total=4 on 4/4 parents, max/parent=1
+      > |relationships  total=4 on 4/4 parents, max/parent=1
+      > |queries  total=2 on 2/4 parents, max/parent=1
+      > |identities  total=1 on 1/4 parents, max/parent=1
+
+  |timestamps  n=4  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+
+  |queries  n=2  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |!rb  total=2 on 2/2 parents, max/parent=1
+
+  |create  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :arguments  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [arrayx1]  e.g. ["[...]"]
+      :description  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["Declare a new focus perspective"]
+      > |change  total=1 on 1/1 parents, max/parent=1
+
+  |domain  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :store  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["sqlite"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [floatx1]  e.g. ["0.1"]
+      > |resource  total=4 on 1/1 parents, max/parent=4
+
+  |identities  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |identity  total=1 on 1/1 parents, max/parent=1
+
+  |identity  n=1  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+      :eager-check  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [truex1]  e.g. ["true"]
+      :keys  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [arrayx1]  e.g. ["[...]"]
+
+=== FILE ../../../design/examples/docbook-graphics.udon ===
+elements: 715 | comments: 209 | blank-lines: 0 | top-level text lines: 0
+top-level census: |stylesheetx1
+top-seq[..16]: |stylesheet
+
+  |when  n=99  keyed=0% text=54% child-elems=82% verbatim=0% leaf=8%
+      :test  on 99/99 (100%)  sameline 99/99  stackedx0  pos~0.0  [barex4 referencex12 stringx83]  e.g. ["$ignore.image.scaling != 0", "width", "not(@depth) and $default.image.width != ''"]
+      attr-order: [test]x99
+      > |variable  total=23 on 11/99 parents, max/parent=10
+      > |{value-of}  total=23 on 23/99 parents, max/parent=1
+      > |value-of  total=17 on 13/99 parents, max/parent=4
+      > |choose  total=13 on 13/99 parents, max/parent=1
+      > |{apply-templates}  total=6 on 6/99 parents, max/parent=1
+      > |{attribute}  total=6 on 6/99 parents, max/parent=1
+      > |{insertfile}  total=6 on 6/99 parents, max/parent=1
+      > |text  total=5 on 3/99 parents, max/parent=3
+      > |if  total=3 on 2/99 parents, max/parent=2
+      > |attribute  total=2 on 2/99 parents, max/parent=1
+      > |{call-template}  total=2 on 2/99 parents, max/parent=1
+      > |{copy-of}  total=2 on 2/99 parents, max/parent=1
+      > |apply-templates  total=1 on 1/99 parents, max/parent=1
+      > |area  total=1 on 1/99 parents, max/parent=1
+      > |call-template  total=1 on 1/99 parents, max/parent=1
+      > ... 4 more child kinds
+
+  |variable  n=73  keyed=0% text=20% child-elems=72% verbatim=0% leaf=27%
+      :name  on 73/73 (100%)  sameline 73/73  stackedx0  pos~0.0  [barex73]  e.g. ["lcext", "width-units", "width"]
+      :select  on 20/73 (27%)  sameline 20/20  stackedx0  pos~1.0  [barex1 stringx19]  e.g. ["translate($ext,                          ...", "@width|@depth|@contentwidth|@contentdepth...", "$viewport != 0                         an..."]
+      attr-order: [name]x53  [name select]x20
+      > |choose  total=24 on 24/73 parents, max/parent=1
+      > |{call-template}  total=12 on 12/73 parents, max/parent=1
+      > |call-template  total=10 on 10/73 parents, max/parent=1
+      > |if  total=3 on 3/73 parents, max/parent=1
+      > |element  total=1 on 1/73 parents, max/parent=1
+      > |value-of  total=1 on 1/73 parents, max/parent=1
+      > |{apply-templates}  total=1 on 1/73 parents, max/parent=1
+      > |{if}  total=1 on 1/73 parents, max/parent=1
+      > |{value-of}  total=1 on 1/73 parents, max/parent=1
+
+  |choose  n=61  keyed=0% text=4% child-elems=100% verbatim=0% leaf=0%
+      > |when  total=99 on 58/61 parents, max/parent=6
+      > |otherwise  total=52 on 52/61 parents, max/parent=1
+      > |{when}  total=3 on 3/61 parents, max/parent=1
+
+  |with-param  n=53  keyed=0% text=1% child-elems=16% verbatim=0% leaf=83%
+      :name  on 53/53 (100%)  sameline 53/53  stackedx0  pos~0.0  [barex53]  e.g. ["length", "pixels.per.inch", "em.size"]
+      :select  on 44/53 (83%)  sameline 44/44  stackedx0  pos~1.0  [barex41 stringx3]  e.g. ["$contentwidth", "$pixels.per.inch", "$points.per.em"]
+      attr-order: [name select]x44  [name]x9
+      > |choose  total=6 on 6/53 parents, max/parent=1
+      > |call-template  total=2 on 2/53 parents, max/parent=1
+      > |html  total=1 on 1/53 parents, max/parent=1
+      > |value-of  total=1 on 1/53 parents, max/parent=1
+      > |{call-template}  total=1 on 1/53 parents, max/parent=1
+
+  |otherwise  n=52  keyed=0% text=75% child-elems=88% verbatim=0% leaf=3%
+      > |{value-of}  total=14 on 14/52 parents, max/parent=1
+      > |{attribute}  total=6 on 5/52 parents, max/parent=2
+      > |variable  total=5 on 3/52 parents, max/parent=2
+      > |{apply-templates}  total=5 on 5/52 parents, max/parent=1
+      > |{call-template}  total=5 on 5/52 parents, max/parent=1
+      > |call-template  total=3 on 3/52 parents, max/parent=1
+      > |message  total=3 on 3/52 parents, max/parent=1
+      > |{copy-of}  total=3 on 3/52 parents, max/parent=1
+      > |{message}  total=3 on 3/52 parents, max/parent=1
+      > |{text}  total=2 on 2/52 parents, max/parent=1
+      > |a  total=1 on 1/52 parents, max/parent=1
+      > |apply-templates  total=1 on 1/52 parents, max/parent=1
+      > |choose  total=1 on 1/52 parents, max/parent=1
+      > |div  total=1 on 1/52 parents, max/parent=1
+      > |if  total=1 on 1/52 parents, max/parent=1
+      > ... 2 more child kinds
+
+  |{value-of}  n=49  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 49/49 (100%)  sameline 49/49  stackedx0  pos~0.0  [barex30 intx2 referencex9 stringx8]  e.g. ["width", "$default.image.width", "scalefit"]
+      attr-order: [select]x49
+
+  |call-template  n=44  keyed=0% text=15% child-elems=47% verbatim=0% leaf=52%
+      :name  on 44/44 (100%)  sameline 44/44  stackedx0  pos~0.0  [barex44]  e.g. ["id.attribute", "anchor", "mediaobject.filename"]
+      attr-order: [name]x44
+      > |with-param  total=53 on 14/44 parents, max/parent=9
+      > |{with-param}  total=9 on 7/44 parents, max/parent=2
+
+  |if  n=30  keyed=0% text=50% child-elems=93% verbatim=0% leaf=0%
+      :test  on 30/30 (100%)  sameline 30/30  stackedx0  pos~0.0  [barex2 referencex6 stringx22]  e.g. ["$format = 'SVG'                 or $forma...", "$lcext = 'svg'              or $lcext = '...", "$contentwidth != ''"]
+      attr-order: [test]x30
+      > |{attribute}  total=12 on 12/30 parents, max/parent=1
+      > |variable  total=7 on 6/30 parents, max/parent=2
+      > |attribute  total=4 on 4/30 parents, max/parent=1
+      > |choose  total=4 on 4/30 parents, max/parent=1
+      > |value-of  total=4 on 4/30 parents, max/parent=1
+      > |call-template  total=1 on 1/30 parents, max/parent=1
+      > |embed  total=1 on 1/30 parents, max/parent=1
+      > |if  total=1 on 1/30 parents, max/parent=1
+      > |map  total=1 on 1/30 parents, max/parent=1
+      > |{call-template}  total=1 on 1/30 parents, max/parent=1
+
+  |template  n=30  keyed=0% text=26% child-elems=93% verbatim=0% leaf=6%
+      :match  on 22/30 (73%)  sameline 22/22  stackedx0  pos~0.0  [referencex1 stringx21]  e.g. ["d:screenshot", "d:screenshot/d:title", "d:screeninfo"]
+      :name  on 8/30 (26%)  sameline 8/8  stackedx0  pos~0.0  [barex8]  e.g. ["is.graphic.format", "is.graphic.extension", "process.image"]
+      :priority  on 1/30 (3%)  sameline 1/1  stackedx0  pos~1.0  [intx1]  e.g. ["2"]
+      attr-order: [match]x21  [name]x8  [match priority]x1
+      > |variable  total=35 on 7/30 parents, max/parent=24
+      > |param  total=17 on 7/30 parents, max/parent=9
+      > |choose  total=8 on 8/30 parents, max/parent=1
+      > |if  total=7 on 6/30 parents, max/parent=2
+      > |call-template  total=6 on 6/30 parents, max/parent=1
+      > |{apply-templates}  total=6 on 6/30 parents, max/parent=1
+      > |div  total=4 on 4/30 parents, max/parent=1
+      > |apply-templates  total=1 on 1/30 parents, max/parent=1
+      > |span  total=1 on 1/30 parents, max/parent=1
+      > |{call-template}  total=1 on 1/30 parents, max/parent=1
+      > |{copy}  total=1 on 1/30 parents, max/parent=1
+
+  |value-of  n=28  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 28/28 (100%)  sameline 28/28  stackedx0  pos~0.0  [barex12 stringx16]  e.g. ["simg:getWidth(simg:new($filename.for.grap...", "ximg:getWidth(ximg:new($filename.for.grap...", "simg:getDepth(simg:new($filename.for.grap..."]
+      attr-order: [select]x28
+
+  |{attribute}  n=24  keyed=0% text=8% child-elems=8% verbatim=0% leaf=91%
+      :name  on 24/24 (100%)  sameline 26/26  stackedx2  pos~0.1  [flow(inline-el)x2 flow-textx24]  e.g. ["border 0", "usemap |{value-of :select \"concat('#', $m...", "summary manufactured viewport for HTML img"]
+      :select  on 1/24 (4%)  sameline 2/2  stackedx1  pos~2.5  [flow(inline-el)x1 flow-textx1]  e.g. [" ", ""]
+      attr-order: [name]x22  [name name]x1  [name name select select]x1
+      > |{value-of}  total=2 on 2/24 parents, max/parent=1
+      > |{text}  total=1 on 1/24 parents, max/parent=1
+
+  |{call-template}  n=24  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 24/24 (100%)  sameline 24/24  stackedx0  pos~0.0  [barex3 flow-textx21]  e.g. ["formal.object.heading |{with-param :name ...", "length-units |{with-param :name length :s...", "length-spec |{with-param :name length :se..."]
+      attr-order: [name]x24
+
+  |{apply-templates}  n=20  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 14/20 (70%)  sameline 14/14  stackedx0  pos~0.0  [barex1 referencex2 stringx11]  e.g. ["ancestor::d:figure/d:title/node()", "fileref", "d:imagedata"]
+      attr-order: [select]x14
+
+  |param  n=17  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 17/17 (100%)  sameline 17/17  stackedx0  pos~0.0  [barex17]  e.g. ["format", "ext", "tag"]
+      :select  on 4/17 (23%)  sameline 4/4  stackedx0  pos~1.0  [barex2 stringx2]  e.g. ["'img'", ".", "''"]
+      attr-order: [name]x13  [name select]x4
+
+  |apply-templates  n=11  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 9/11 (81%)  sameline 9/9  stackedx0  pos~0.0  [barex6 stringx3]  e.g. [".", "$object", "d:caption"]
+      :mode  on 4/11 (36%)  sameline 4/4  stackedx0  pos~1.0  [barex4]  e.g. ["common.html.attributes"]
+      attr-order: [select]x5  [select mode]x4
+
+  |attribute  n=10  keyed=0% text=70% child-elems=100% verbatim=0% leaf=0%
+      :name  on 10/10 (100%)  sameline 10/10  stackedx0  pos~0.0  [barex10]  e.g. ["data", "align", "src"]
+      attr-order: [name]x10
+      > |choose  total=3 on 3/10 parents, max/parent=1
+      > |{choose}  total=3 on 3/10 parents, max/parent=1
+      > |{value-of}  total=3 on 3/10 parents, max/parent=1
+      > |value-of  total=2 on 2/10 parents, max/parent=1
+      > |{call-template}  total=1 on 1/10 parents, max/parent=1
+
+  |{text}  n=10  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |text  n=9  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |{with-param}  n=9  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 9/9 (100%)  sameline 9/9  stackedx0  pos~0.0  [barex9]  e.g. ["object", "olist", "count"]
+      :select  on 9/9 (100%)  sameline 9/9  stackedx0  pos~1.0  [barex4 intx2 stringx3]  e.g. [".", "..", "$olist"]
+      attr-order: [name select]x9
+
+  |{copy-of}  n=6  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 6/6 (100%)  sameline 6/6  stackedx0  pos~0.0  [barex6]  e.g. ["$alt", "$imgcontents", "$img"]
+      attr-order: [select]x6
+
+  |{insertfile}  n=6  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :href  on 6/6 (100%)  sameline 6/6  stackedx0  pos~0.0  [barex6]  e.g. ["{$filename"]
+      attr-order: [href]x6
+
+  |{when}  n=6  keyed=0% text=100% child-elems=50% verbatim=0% leaf=0%
+      :test  on 6/6 (100%)  sameline 6/6  stackedx0  pos~0.0  [stringx6]  e.g. ["$is.relative = 1", "@align = 'center'"]
+      attr-order: [test]x6
+      > |{value-of}  total=3 on 3/6 parents, max/parent=1
+
+  |div  n=5  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      traits: .longdesc-linkx1
+      :align  on 1/5 (20%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["{$direction.align.end}"]
+      attr-order: [align]x1
+      > |call-template  total=8 on 4/5 parents, max/parent=3
+      > |apply-templates  total=7 on 3/5 parents, max/parent=3
+      > |if  total=3 on 3/5 parents, max/parent=1
+      > |br  total=1 on 1/5 parents, max/parent=1
+      > |span  total=1 on 1/5 parents, max/parent=1
+
+  |message  n=4  keyed=0% text=50% child-elems=100% verbatim=0% leaf=0%
+      :terminate  on 2/4 (50%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["yes"]
+      attr-order: [terminate]x2
+      > |{text}  total=5 on 2/4 parents, max/parent=3
+      > |text  total=4 on 2/4 parents, max/parent=2
+      > |value-of  total=2 on 2/4 parents, max/parent=1
+
+  |span  n=3  keyed=0% text=33% child-elems=100% verbatim=0% leaf=0%
+      traits: .longdesc-linkx1
+      > |call-template  total=6 on 2/3 parents, max/parent=3
+      > |{text}  total=2 on 1/3 parents, max/parent=2
+      > |apply-templates  total=1 on 1/3 parents, max/parent=1
+      > |{a}  total=1 on 1/3 parents, max/parent=1
+
+  |{choose}  n=3  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |{otherwise}  total=3 on 3/3 parents, max/parent=1
+      > |{when}  total=3 on 3/3 parents, max/parent=1
+
+  |{message}  n=3  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :terminate  on 3/3 (100%)  sameline 3/3  stackedx0  pos~0.0  [flow-textx3]  e.g. ["yes |{text No insertfile extension availa..."]
+      attr-order: [terminate]x3
+
+  |{otherwise}  n=3  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |{value-of}  total=3 on 3/3 parents, max/parent=1
+
+  |component  n=2  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :prefix  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["xtext", "ximg"]
+      :elements  on 1/2 (50%)  sameline 1/1  stackedx0  pos~1.0  [stringx1]  e.g. ["d:insertfile"]
+      :functions  on 1/2 (50%)  sameline 1/1  stackedx0  pos~1.0  [stringx1]  e.g. ["new getWidth getDepth"]
+
+  |for-each  n=2  keyed=0% text=50% child-elems=100% verbatim=0% leaf=0%
+      :select  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [stringx2]  e.g. ["../../d:areaspec//d:area", "$mediaobject/d:textobject[not(d:phrase)]"]
+      > |choose  total=1 on 1/2 parents, max/parent=1
+      > |variable  total=1 on 1/2 parents, max/parent=1
+      > |{apply-templates}  total=1 on 1/2 parents, max/parent=1
+
+  |{a}  n=2  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :href  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [barex2]  e.g. ["{$src", "{$href.to"]
+
+  |a  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :actuate  on 1/1 (100%)  sameline 1/1  stackedx0  pos~2.0  [barex1]  e.g. ["onLoad"]
+      :href  on 1/1 (100%)  sameline 1/1  stackedx0  pos~3.0  [barex1]  e.g. ["{$filename}"]
+      :show  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["embed"]
+      :type  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["simple"]
+
+  |area  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :shape  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["rect"]
+      > |variable  total=2 on 1/1 parents, max/parent=2
+      > |attribute  total=1 on 1/1 parents, max/parent=1
+      > |choose  total=1 on 1/1 parents, max/parent=1
+      > |if  total=1 on 1/1 parents, max/parent=1
+
+  |body  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |call-template  total=1 on 1/1 parents, max/parent=1
+      > |for-each  total=1 on 1/1 parents, max/parent=1
+
+  |br  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :style  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [stringx1]  e.g. ["clear: both"]
+
+  |copy-of  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["$img"]
+
+  |element  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :name  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["{$tag}"]
+      > |if  total=2 on 1/1 parents, max/parent=2
+      > |attribute  total=1 on 1/1 parents, max/parent=1
+      > |call-template  total=1 on 1/1 parents, max/parent=1
+
+  |embed  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :type  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["image/svg+xml"]
+      > |attribute  total=1 on 1/1 parents, max/parent=1
+      > |call-template  total=1 on 1/1 parents, max/parent=1
+
+  |head  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |call-template  total=3 on 1/1 parents, max/parent=3
+
+  |html  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |body  total=1 on 1/1 parents, max/parent=1
+      > |head  total=1 on 1/1 parents, max/parent=1
+
+  |map  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :name  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["{$mapname}"]
+      > |for-each  total=1 on 1/1 parents, max/parent=1
+
+  |object  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :type  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["image/svg+xml"]
+      > |if  total=2 on 1/1 parents, max/parent=2
+      > |attribute  total=1 on 1/1 parents, max/parent=1
+      > |call-template  total=1 on 1/1 parents, max/parent=1
+
+  |stylesheet  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :exclude-result-prefixes  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [stringx1]  e.g. ["xlink stext xtext lxslt simg ximg d"]
+      :extension-element-prefixes  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [stringx1]  e.g. ["stext xtext"]
+      :version  on 1/1 (100%)  sameline 1/1  stackedx0  pos~2.0  [floatx1]  e.g. ["1.0"]
+      > |template  total=30 on 1/1 parents, max/parent=30
+      > |component  total=2 on 1/1 parents, max/parent=2
+
+  |table  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :border  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["{$table.border.off}"]
+      > |if  total=3 on 1/1 parents, max/parent=3
+      > |tr  total=1 on 1/1 parents, max/parent=1
+
+  |td  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |if  total=3 on 1/1 parents, max/parent=3
+      > |copy-of  total=1 on 1/1 parents, max/parent=1
+
+  |tr  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |if  total=1 on 1/1 parents, max/parent=1
+      > |td  total=1 on 1/1 parents, max/parent=1
+
+  |{copy}  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |{apply-templates}  total=1 on 1/1 parents, max/parent=1
+      > |{copy-of}  total=1 on 1/1 parents, max/parent=1
+
+  |{if}  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :test  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [referencex1]  e.g. ["depth"]
+      > |{call-template}  total=1 on 1/1 parents, max/parent=1
+
+=== FILE ../../../design/examples/mathml-to-latex.udon ===
+elements: 2130 | comments: 559 | blank-lines: 0 | top-level text lines: 0
+top-level census: |stylesheetx1
+top-seq[..16]: |stylesheet
+
+  |when  n=308  keyed=0% text=17% child-elems=97% verbatim=0% leaf=0%
+      :test  on 308/308 (100%)  sameline 308/308  stackedx0  pos~0.0  [barex5 referencex5 stringx298]  e.g. ["string-length(normalize-space(text()))>1", "@closure='open' or @closure='open-closed'", "@closure='open' or @closure='closed-open'"]
+      attr-order: [test]x308
+      > |value-of  total=224 on 220/308 parents, max/parent=3
+      > |call-template  total=223 on 223/308 parents, max/parent=1
+      > |text  total=46 on 25/308 parents, max/parent=5
+      > |{text}  total=36 on 32/308 parents, max/parent=2
+      > |apply-templates  total=22 on 12/308 parents, max/parent=4
+      > |variable  total=11 on 4/308 parents, max/parent=6
+      > |{value-of}  total=9 on 9/308 parents, max/parent=1
+      > |{apply-templates}  total=8 on 7/308 parents, max/parent=2
+      > |{call-template}  total=6 on 6/308 parents, max/parent=1
+      > |if  total=5 on 3/308 parents, max/parent=2
+      > |choose  total=2 on 2/308 parents, max/parent=1
+      > |for-each  total=2 on 2/308 parents, max/parent=1
+
+  |{with-param}  n=298  keyed=0% text=4% child-elems=0% verbatim=0% leaf=95%
+      :name  on 298/298 (100%)  sameline 298/298  stackedx0  pos~0.0  [barex293 flow-textx5]  e.g. ["symbol", "this-p", "p"]
+      :select  on 280/298 (93%)  sameline 280/280  stackedx0  pos~1.0  [barex28 intx29 referencex3 stringx220]  e.g. ["$symbola", "1", "$p"]
+      attr-order: [name select]x280  [name]x18
+
+  |call-template  n=262  keyed=0% text=93% child-elems=99% verbatim=0% leaf=0%
+      :name  on 262/262 (100%)  sameline 262/262  stackedx0  pos~0.0  [barex262]  e.g. ["startspace", "infix", "binary"]
+      attr-order: [name]x262
+      > |{with-param}  total=284 on 244/262 parents, max/parent=3
+      > |with-param  total=44 on 17/262 parents, max/parent=3
+
+  |value-of  n=236  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 236/236 (100%)  sameline 236/236  stackedx0  pos~0.0  [barex13 referencex5 stringx218]  e.g. ["local-name(*[1])", "-(*[2])", "count(*)-1"]
+      attr-order: [select]x236
+
+  |{text}  n=201  keyed=0% text=84% child-elems=0% verbatim=0% leaf=15%
+
+  |template  n=163  keyed=0% text=43% child-elems=98% verbatim=0% leaf=1%
+      :match  on 143/163 (87%)  sameline 143/143  stackedx0  pos~0.0  [stringx143]  e.g. ["m:math", "m:cn", "m:cn[@type='complex-cartesian']"]
+      :name  on 21/163 (12%)  sameline 21/21  stackedx0  pos~0.0  [barex21]  e.g. ["startspace", "times", "set"]
+      :priority  on 7/163 (4%)  sameline 7/7  stackedx0  pos~1.0  [intx7]  e.g. ["2", "1", "3"]
+      :mode  on 1/163 (0%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["mprescripts"]
+      attr-order: [match]x134  [name]x20  [match priority]x7
+      > |{text}  total=84 on 59/163 parents, max/parent=3
+      > |text  total=77 on 32/163 parents, max/parent=4
+      > |param  total=52 on 42/163 parents, max/parent=3
+      > |if  total=48 on 21/163 parents, max/parent=6
+      > |{apply-templates}  total=47 on 40/163 parents, max/parent=2
+      > |apply-templates  total=46 on 31/163 parents, max/parent=3
+      > |call-template  total=31 on 31/163 parents, max/parent=1
+      > |choose  total=27 on 23/163 parents, max/parent=3
+      > |for-each  total=12 on 11/163 parents, max/parent=2
+      > |value-of  total=10 on 9/163 parents, max/parent=2
+      > |variable  total=6 on 4/163 parents, max/parent=3
+      > |{call-template}  total=6 on 6/163 parents, max/parent=1
+      > |{value-of}  total=4 on 4/163 parents, max/parent=1
+      > |{if}  total=2 on 2/163 parents, max/parent=1
+
+  |text  n=149  keyed=0% text=96% child-elems=0% verbatim=0% leaf=3%
+
+  |{apply-templates}  n=84  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 61/84 (72%)  sameline 61/61  stackedx0  pos~0.0  [barex40 flow-textx8 stringx13]  e.g. ["text()[1]", "text()[2]", "."]
+      :mode  on 1/84 (1%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["mprescripts"]
+      attr-order: [select]x60  [select mode]x1
+
+  |apply-templates  n=82  keyed=0% text=14% child-elems=15% verbatim=0% leaf=84%
+      :select  on 76/82 (92%)  sameline 76/76  stackedx0  pos~0.0  [barex60 stringx16]  e.g. ["*[1]", "*[2]", "m:bvar/*"]
+      attr-order: [select]x76
+      > |{with-param}  total=14 on 12/82 parents, max/parent=2
+      > |with-param  total=1 on 1/82 parents, max/parent=1
+
+  |if  n=68  keyed=0% text=82% child-elems=100% verbatim=0% leaf=0%
+      :test  on 68/68 (100%)  sameline 68/68  stackedx0  pos~0.0  [barex5 referencex9 stringx54]  e.g. ["contains($symbol,' ')", "not(contains($symbol,' '))", "not(position()=last()) or ../m:otherwise"]
+      attr-order: [test]x68
+      > |{text}  total=66 on 53/68 parents, max/parent=2
+      > |{apply-templates}  total=16 on 16/68 parents, max/parent=1
+      > |text  total=11 on 6/68 parents, max/parent=2
+      > |call-template  total=5 on 5/68 parents, max/parent=1
+      > |choose  total=5 on 5/68 parents, max/parent=1
+      > |{value-of}  total=3 on 3/68 parents, max/parent=1
+      > |apply-templates  total=1 on 1/68 parents, max/parent=1
+      > |if  total=1 on 1/68 parents, max/parent=1
+      > |variable  total=1 on 1/68 parents, max/parent=1
+      > |{copy-of}  total=1 on 1/68 parents, max/parent=1
+
+  |param  n=52  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 52/52 (100%)  sameline 52/52  stackedx0  pos~0.0  [barex52]  e.g. ["symbol", "p", "this-p"]
+      :select  on 37/52 (71%)  sameline 37/37  stackedx0  pos~1.0  [intx37]  e.g. ["0", "3", "1"]
+      attr-order: [name select]x37  [name]x15
+
+  |with-param  n=45  keyed=0% text=28% child-elems=11% verbatim=0% leaf=68%
+      :name  on 45/45 (100%)  sameline 45/45  stackedx0  pos~0.0  [barex45]  e.g. ["p", "this-p", "mo"]
+      :select  on 31/45 (68%)  sameline 31/31  stackedx0  pos~1.0  [barex15 intx13 stringx3]  e.g. ["10", "2", "$p"]
+      attr-order: [name select]x31  [name]x14
+      > |{call-template}  total=4 on 4/45 parents, max/parent=1
+      > |choose  total=1 on 1/45 parents, max/parent=1
+
+  |choose  n=37  keyed=0% text=5% child-elems=100% verbatim=0% leaf=0%
+      > |when  total=308 on 35/37 parents, max/parent=215
+      > |otherwise  total=34 on 34/37 parents, max/parent=1
+      > |{otherwise}  total=2 on 2/37 parents, max/parent=1
+      > |{when}  total=2 on 2/37 parents, max/parent=1
+
+  |otherwise  n=34  keyed=0% text=64% child-elems=88% verbatim=0% leaf=5%
+      suffixes: $+x1
+      > |text  total=14 on 5/34 parents, max/parent=4
+      > |apply-templates  total=10 on 5/34 parents, max/parent=3
+      > |{text}  total=8 on 7/34 parents, max/parent=2
+      > |{value-of}  total=6 on 6/34 parents, max/parent=1
+      > |{apply-templates}  total=5 on 5/34 parents, max/parent=1
+      > |call-template  total=3 on 3/34 parents, max/parent=1
+      > |for-each  total=2 on 2/34 parents, max/parent=1
+      > |value-of  total=2 on 2/34 parents, max/parent=1
+      > |{message}  total=2 on 2/34 parents, max/parent=1
+      > |message  total=1 on 1/34 parents, max/parent=1
+      > |{for-each}  total=1 on 1/34 parents, max/parent=1
+
+  |{call-template}  n=30  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :name  on 30/30 (100%)  sameline 30/30  stackedx0  pos~0.0  [barex10 flow-textx20]  e.g. ["set", "series", "colalign |{with-param :name colalign :sel..."]
+      attr-order: [name]x30
+
+  |{value-of}  n=24  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 24/24 (100%)  sameline 24/24  stackedx0  pos~0.0  [barex10 intx6 referencex5 stringx3]  e.g. ["$symbol", "base", "local-name()"]
+      attr-order: [select]x24
+
+  |variable  n=18  keyed=0% text=77% child-elems=83% verbatim=0% leaf=16%
+      :name  on 18/18 (100%)  sameline 18/18  stackedx0  pos~0.0  [barex18]  e.g. ["symbola", "numbercols", "colalign"]
+      :select  on 3/18 (16%)  sameline 3/3  stackedx0  pos~1.0  [stringx3]  e.g. ["concat(substring-before($symbol,' '),subs...", "count(./m:mtr[1]/m:mtd[not(@columnspan)])...", "translate($color,'ABCDEFGHIJKLMNOPQRSTUVW..."]
+      attr-order: [name]x15  [name select]x3
+      > |{call-template}  total=14 on 14/18 parents, max/parent=1
+      > |choose  total=1 on 1/18 parents, max/parent=1
+
+  |for-each  n=16  keyed=0% text=50% child-elems=100% verbatim=0% leaf=0%
+      :select  on 16/16 (100%)  sameline 16/16  stackedx0  pos~0.0  [barex10 stringx6]  e.g. ["*[position()>1]", "*[position() > 1]", "m:list[1]/*"]
+      attr-order: [select]x16
+      > |if  total=14 on 8/16 parents, max/parent=3
+      > |{apply-templates}  total=8 on 8/16 parents, max/parent=1
+      > |{if}  total=8 on 8/16 parents, max/parent=1
+      > |apply-templates  total=3 on 3/16 parents, max/parent=1
+      > |choose  total=1 on 1/16 parents, max/parent=1
+      > |text  total=1 on 1/16 parents, max/parent=1
+
+  |{if}  n=11  keyed=0% text=45% child-elems=45% verbatim=0% leaf=54%
+      :test  on 11/11 (100%)  sameline 11/11  stackedx0  pos~0.0  [flow-textx6 stringx5]  e.g. ["not(position()=last()) |{text ,}", "position() !=last()", "position()<last() |{text ,}"]
+      attr-order: [test]x11
+      > |{text}  total=5 on 5/11 parents, max/parent=1
+
+  |{message}  n=2  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |{otherwise}  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |{text}  total=2 on 2/2 parents, max/parent=1
+
+  |{when}  n=2  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :test  on 2/2 (100%)  sameline 2/2  stackedx0  pos~0.0  [referencex2]  e.g. ["lquote", "rquote"]
+      > |{value-of}  total=2 on 2/2 parents, max/parent=1
+
+  |message  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |output  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :encoding  on 1/1 (100%)  sameline 1/1  stackedx0  pos~2.0  [barex1]  e.g. ["UTF-8"]
+      :indent  on 1/1 (100%)  sameline 1/1  stackedx0  pos~1.0  [barex1]  e.g. ["no"]
+      :method  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["text"]
+
+  |strip-space  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :elements  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [stringx1]  e.g. ["m:*"]
+
+  |stylesheet  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      :version  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [floatx1]  e.g. ["1.0"]
+      > |template  total=163 on 1/1 parents, max/parent=163
+      > |output  total=1 on 1/1 parents, max/parent=1
+      > |strip-space  total=1 on 1/1 parents, max/parent=1
+
+  |{copy-of}  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :select  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["$mo"]
+
+  |{for-each}  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :select  on 1/1 (100%)  sameline 2/2  stackedx1  pos~0.5  [flow(inline-el)x1 flow-textx1]  e.g. ["* |{apply-templates :select .} ", ""]
+      > |{if}  total=1 on 1/1 parents, max/parent=1
+
+=== FILE ../../../design/examples/schema-dsl.udon ===
+elements: 98 | comments: 53 | blank-lines: 49 | top-level text lines: 0
+top-level census: |schemax10
+top-seq[..16]: |schema |schema |schema |schema |schema |schema |schema |schema |schema |schema
+
+  |str  n=39  keyed=92% text=0% child-elems=2% verbatim=0% leaf=97%
+      key-kinds: barex36
+      suffixes: $!x17 $?x14
+      :enum  on 5/39 (12%)  sameline 0/5  stackedx0  pos~0.0  [arrayx5]  e.g. ["[...]"]
+      :default  on 4/39 (10%)  sameline 0/4  stackedx0  pos~0.2  [barex4]  e.g. ["user", "application/json", "localhost"]
+      :format  on 4/39 (10%)  sameline 3/4  stackedx0  pos~0.0  [barex4]  e.g. ["email", "uri"]
+      :max  on 4/39 (10%)  sameline 2/4  stackedx0  pos~0.2  [intx4]  e.g. ["32", "100", "20"]
+      :pattern  on 4/39 (10%)  sameline 1/4  stackedx0  pos~0.5  [barex4]  e.g. ["^[a-z][a-z0-9_]*$", "^[A-Z][A-Z_]*$", "^/"]
+      :description  on 2/39 (5%)  sameline 0/2  stackedx0  pos~2.0  [flow-textx2]  e.g. ["Lowercase alphanumeric, starts with letter", "Component name in SCREAMING_CASE"]
+      :min  on 1/39 (2%)  sameline 0/1  stackedx0  pos~0.0  [intx1]  e.g. ["3"]
+      attr-order: [enum]x4  [format]x4  [default]x3
+      > |is_not  total=1 on 1/39 parents, max/parent=1
+
+  |int  n=18  keyed=83% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex15
+      suffixes: $!x6 $?x7
+      :min  on 5/18 (27%)  sameline 1/5  stackedx0  pos~0.2  [intx5]  e.g. ["0", "100", "1"]
+      :description  on 4/18 (22%)  sameline 0/4  stackedx0  pos~1.0  [barex1 flow-textx3]  e.g. ["1=sealed, 2=restricted, 3=open", "1=system, 2=sovereign, 3=collective", "1=unique, 2=derived, 3=canonical"]
+      :max  on 4/18 (22%)  sameline 0/4  stackedx0  pos~1.2  [intx4]  e.g. ["150", "599", "65535"]
+      :default  on 3/18 (16%)  sameline 0/3  stackedx0  pos~0.0  [intx3]  e.g. ["5", "5000", "2"]
+      :enum  on 3/18 (16%)  sameline 0/3  stackedx0  pos~0.0  [arrayx3]  e.g. ["[...]"]
+      :multiple_of  on 1/18 (5%)  sameline 1/1  stackedx0  pos~0.0  [intx1]  e.g. ["2"]
+      attr-order: [enum description]x3  [min max]x3  [default]x1
+
+  |schema  n=10  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex10
+      :title  on 3/10 (30%)  sameline 0/3  stackedx0  pos~0.0  [flow-textx3]  e.g. ["User Account", "ELI Taxonomy Component", "UDON Schema Definition"]
+      :description  on 2/10 (20%)  sameline 0/2  stackedx0  pos~1.0  [flow-textx2]  e.g. ["A registered user in the system", "Schema for defining UDON schemas"]
+      attr-order: [title description]x2  [title]x1
+      > |str  total=18 on 7/10 parents, max/parent=5
+      > |arr  total=5 on 5/10 parents, max/parent=1
+      > |int  total=5 on 3/10 parents, max/parent=3
+      > |obj  total=5 on 3/10 parents, max/parent=2
+      > |bool  total=2 on 2/10 parents, max/parent=1
+      > |all_of  total=1 on 1/10 parents, max/parent=1
+      > |any_of  total=1 on 1/10 parents, max/parent=1
+      > |one_of  total=1 on 1/10 parents, max/parent=1
+      > |ref  total=1 on 1/10 parents, max/parent=1
+
+  |arr  n=8  keyed=100% text=0% child-elems=87% verbatim=0% leaf=12%
+      key-kinds: barex8
+      suffixes: $!x1 $?x7
+      > |obj  total=3 on 3/8 parents, max/parent=1
+      > |ref  total=3 on 3/8 parents, max/parent=1
+      > |str  total=1 on 1/8 parents, max/parent=1
+
+  |obj  n=8  keyed=62% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex5
+      suffixes: $!x1 $?x4
+      :when  on 1/8 (12%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["ssl"]
+      attr-order: [when]x1
+      > |str  total=16 on 7/8 parents, max/parent=5
+      > |int  total=10 on 4/8 parents, max/parent=5
+      > |any  total=3 on 3/8 parents, max/parent=1
+      > |arr  total=3 on 2/8 parents, max/parent=2
+      > |bool  total=1 on 1/8 parents, max/parent=1
+      > |ref  total=1 on 1/8 parents, max/parent=1
+
+  |ref  n=5  keyed=40% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex2
+
+  |any  n=3  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex3
+      suffixes: $?x3
+      :description  on 2/3 (66%)  sameline 0/2  stackedx0  pos~0.0  [flow-textx2]  e.g. ["Request body schema", "Response body schema"]
+      attr-order: [description]x2
+
+  |bool  n=3  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex3
+      :default  on 3/3 (100%)  sameline 0/3  stackedx0  pos~0.0  [falsex3]  e.g. ["false"]
+      attr-order: [default]x3
+
+  |all_of  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |int  total=2 on 1/1 parents, max/parent=2
+
+  |any_of  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |str  total=3 on 1/1 parents, max/parent=3
+
+  |is_not  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :enum  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [arrayx1]  e.g. ["[...]"]
+
+  |one_of  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |int  total=1 on 1/1 parents, max/parent=1
+      > |str  total=1 on 1/1 parents, max/parent=1
+
+=== FILE ../../../design/examples/practices-gotchas.udon ===
+elements: 25 | comments: 3 | blank-lines: 15 | top-level text lines: 0
+top-level census: |guidex1
+top-seq[..16]: |guide
+
+  |!udon  n=11  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |gotcha  n=6  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex6
+      > |!udon  total=6 on 6/6 parents, max/parent=1
+
+  |tip  n=5  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex5
+      > |!udon  total=5 on 5/5 parents, max/parent=1
+
+  |section  n=2  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      :title  on 2/2 (100%)  sameline 0/2  stackedx0  pos~0.0  [stringx2]  e.g. ["Practices", "Gotchas"]
+      > |gotcha  total=6 on 1/2 parents, max/parent=6
+      > |tip  total=5 on 1/2 parents, max/parent=5
+
+  |guide  n=1  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :date  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["2025-12-24"]
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["UDON Practices & Gotchas"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [floatx1]  e.g. ["0.1"]
+      > |section  total=2 on 1/1 parents, max/parent=2
+
+=== FILE ../../../design/examples/ash-like-billing.udon ===
+elements: 63 | comments: 3 | blank-lines: 21 | top-level text lines: 0
+top-level census: |domainx1
+top-seq[..16]: |domain
+
+  |attr  n=19  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex19
+      traits: .uuidx7 .stringx5 .atomx3 .utc-datetimex3 .moneyx1
+      :allow-nil  on 6/19 (31%)  sameline 6/6  stackedx0  pos~0.0  [falsex6]  e.g. ["false"]
+      :default  on 4/19 (21%)  sameline 4/4  stackedx0  pos~0.0  [barex3 stringx1]  e.g. ["active", "open", "USD"]
+      :generated  on 4/19 (21%)  sameline 4/4  stackedx0  pos~0.0  [truex4]  e.g. ["true"]
+      :unique  on 1/19 (5%)  sameline 1/1  stackedx0  pos~1.0  [truex1]  e.g. ["true"]
+      attr-order: [allow-nil]x5  [default]x4  [generated]x4
+
+  |attributes  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |attr  total=19 on 4/4 parents, max/parent=6
+
+  |change  n=4  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :set-due-date?  on 1/4 (25%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      :set-issued-at?  on 1/4 (25%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      :set-renewal-date?  on 1/4 (25%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      :set-status-canceled?  on 1/4 (25%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      attr-order: [set-due-date?]x1  [set-issued-at?]x1  [set-renewal-date?]x1
+
+  |relationships  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |belongs-to  total=3 on 3/4 parents, max/parent=1
+      > |has-many  total=3 on 2/4 parents, max/parent=2
+
+  |resource  n=4  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex4
+      :primary-key  on 4/4 (100%)  sameline 0/4  stackedx0  pos~1.0  [barex4]  e.g. ["id"]
+      :table  on 4/4 (100%)  sameline 0/4  stackedx0  pos~0.0  [barex4]  e.g. ["customers", "invoices", "invoice_lines"]
+      :timestamps  on 3/4 (75%)  sameline 0/3  stackedx0  pos~2.0  [truex3]  e.g. ["true"]
+      attr-order: [table primary-key timestamps]x3  [table primary-key]x1
+      > |attributes  total=4 on 4/4 parents, max/parent=1
+      > |relationships  total=4 on 4/4 parents, max/parent=1
+      > |actions  total=3 on 3/4 parents, max/parent=1
+      > |calculations  total=1 on 1/4 parents, max/parent=1
+      > |policies  total=1 on 1/4 parents, max/parent=1
+      > |validations  total=1 on 1/4 parents, max/parent=1
+
+  |actions  n=3  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |create  total=3 on 3/3 parents, max/parent=1
+      > |update  total=2 on 2/3 parents, max/parent=1
+      > |read  total=1 on 1/3 parents, max/parent=1
+
+  |belongs-to  n=3  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex3
+      :destination  on 3/3 (100%)  sameline 3/3  stackedx0  pos~0.0  [barex3]  e.g. ["billing.customer", "billing.invoice"]
+      :destination-attribute  on 3/3 (100%)  sameline 3/3  stackedx0  pos~2.0  [barex3]  e.g. ["id"]
+      :source-attribute  on 3/3 (100%)  sameline 3/3  stackedx0  pos~1.0  [barex3]  e.g. ["customer-id", "invoice-id"]
+      attr-order: [destination source-attribute destination-attribute]x3
+
+  |create  n=3  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex3
+      :accept  on 3/3 (100%)  sameline 0/3  stackedx0  pos~0.0  [arrayx3]  e.g. ["[...]"]
+      attr-order: [accept]x3
+      > |change  total=3 on 2/3 parents, max/parent=2
+      > |!ex  total=2 on 2/3 parents, max/parent=1
+      > |validate  total=1 on 1/3 parents, max/parent=1
+
+  |has-many  n=3  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex3
+      :destination  on 3/3 (100%)  sameline 3/3  stackedx0  pos~0.0  [barex3]  e.g. ["billing.invoice", "billing.subscription", "billing.invoice-line"]
+      :destination-attribute  on 3/3 (100%)  sameline 3/3  stackedx0  pos~2.0  [barex3]  e.g. ["customer-id", "invoice-id"]
+      :source-attribute  on 3/3 (100%)  sameline 3/3  stackedx0  pos~1.0  [barex3]  e.g. ["id"]
+      attr-order: [destination source-attribute destination-attribute]x3
+
+  |!ex  n=2  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |update  n=2  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex2
+      :accept  on 2/2 (100%)  sameline 0/2  stackedx0  pos~0.0  [arrayx2]  e.g. ["[...]"]
+      > |authorize  total=1 on 1/2 parents, max/parent=1
+      > |change  total=1 on 1/2 parents, max/parent=1
+
+  |authorize  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :accounting-only?  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+
+  |calc  n=1  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+      traits: .moneyx1
+      :expr  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["sum(lines.amount)"]
+      :fallback  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [flow-textx1]  e.g. ["!{:ex: \"Money.zero(:USD)\"}"]
+
+  |calculations  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |calc  total=1 on 1/1 parents, max/parent=1
+
+  |domain  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :app  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["Acme"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [floatx1]  e.g. ["0.3"]
+      > |resource  total=4 on 1/1 parents, max/parent=4
+
+  |filter  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :email  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["== ^email"]
+
+  |policies  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |policy  total=1 on 1/1 parents, max/parent=1
+
+  |policy  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :effect  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["allow"]
+      > |when  total=1 on 1/1 parents, max/parent=1
+
+  |read  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :get  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+      > |filter  total=1 on 1/1 parents, max/parent=1
+
+  |validate  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :email-format?  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [truex1]  e.g. ["true"]
+
+  |validation  n=1  keyed=100% text=0% child-elems=0% verbatim=0% leaf=100%
+      key-kinds: barex1
+      :rule  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [stringx1]  e.g. ["email =~ /@/"]
+
+  |validations  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |validation  total=1 on 1/1 parents, max/parent=1
+
+  |when  n=1  keyed=0% text=0% child-elems=0% verbatim=0% leaf=100%
+      :actor-role  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["== accountant"]

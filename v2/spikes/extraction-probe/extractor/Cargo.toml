@@ -1,0 +1,12 @@
+[package]
+name = "defacto-extract"
+version = "0.1.0"
+edition = "2021"
+# Spike tool — probe 8 (schema-ideation/README.md §6.3). Not part of the core
+# workspace on purpose: core/ stays untouched; this reads udon-core as a
+# library. Everything this tool PRINTS is incidental scratch, not a format.
+
+[workspace]
+
+[dependencies]
+udon-core = { path = "../../../../core/udon-core" }

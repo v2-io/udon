@@ -1,0 +1,99 @@
+
+=== FILE /Users/josephwecker-v2/src/autopax/taxonomy.udon ===
+elements: 87 | comments: 0 | blank-lines: 66 | top-level text lines: 2
+top-level census: textx2  |documentx1
+top-seq[..16]: text text |document
+
+  |component  n=30  keyed=100% text=100% child-elems=6% verbatim=0% leaf=0%
+      key-kinds: barex30
+      :a  on 19/30 (63%)  sameline 19/19  stackedx0  pos~1.0  [intx19]  e.g. ["2", "1", "3"]
+      :d  on 19/30 (63%)  sameline 19/19  stackedx0  pos~2.0  [intx19]  e.g. ["1", "2", "3"]
+      :v  on 19/30 (63%)  sameline 19/19  stackedx0  pos~0.0  [intx19]  e.g. ["3", "1", "2"]
+      attr-order: [v a d]x19
+      > |subcomponent  total=3 on 2/30 parents, max/parent=2
+
+  |level  n=9  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :code  on 9/9 (100%)  sameline 9/9  stackedx0  pos~0.0  [intx9]  e.g. ["1", "2", "3"]
+      :name  on 9/9 (100%)  sameline 9/9  stackedx0  pos~1.0  [barex9]  e.g. ["sealed", "restricted", "open"]
+      attr-order: [code name]x9
+
+  |subsection  n=8  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :title  on 8/8 (100%)  sameline 0/8  stackedx0  pos~0.0  [flow-textx8]  e.g. ["Holistic Description", "The Stimulus-Response Inversion", "Context Switching"]
+      attr-order: [title]x8
+
+  |section  n=7  keyed=100% text=42% child-elems=71% verbatim=0% leaf=0%
+      key-kinds: barex7
+      :title  on 7/7 (100%)  sameline 0/7  stackedx0  pos~0.0  [flow-textx7]  e.g. ["Some Guiding Aspirations", "Orthogonal Sovereignty Dimensions", "INSTRUMENTA / AUXILIA Degrees"]
+      attr-order: [title]x7
+      > |subsection  total=8 on 3/7 parents, max/parent=4
+      > |definition  total=4 on 2/7 parents, max/parent=3
+      > |degree  total=4 on 1/7 parents, max/parent=4
+      > |callout  total=1 on 1/7 parents, max/parent=1
+      > |definitions  total=1 on 1/7 parents, max/parent=1
+      > |legend  total=1 on 1/7 parents, max/parent=1
+
+  |entry  n=5  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :date  on 5/5 (100%)  sameline 5/5  stackedx0  pos~0.0  [barex5]  e.g. ["2025-09-28", "2025-10-30", "2025-11-08"]
+      :authors  on 3/5 (60%)  sameline 3/3  stackedx0  pos~1.0  [flow-textx3]  e.g. ["Joseph, Architectus", "Joseph, Claude", "Joseph, Interpres"]
+      :author  on 2/5 (40%)  sameline 2/2  stackedx0  pos~1.0  [barex2]  e.g. ["Joseph"]
+      attr-order: [date authors]x3  [date author]x2
+
+  |callout  n=4  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      traits: .notex3 .warningx1
+      :title  on 4/4 (100%)  sameline 0/4  stackedx0  pos~0.0  [flow-textx4]  e.g. ["Distinctiveness Not Well-Defined", "ELIs vs Agents vs Auxilia", "Percepta Sovereignty"]
+      attr-order: [title]x4
+
+  |definition  n=4  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex4
+      :name  on 4/4 (100%)  sameline 0/4  stackedx0  pos~0.0  [barex4]  e.g. ["INTERPRES", "TRACTIFAX", "TRACTUS"]
+      attr-order: [name]x4
+
+  |degree  n=4  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :name  on 4/4 (100%)  sameline 4/4  stackedx0  pos~0.0  [barex4]  e.g. ["Deterministic", "Linguistic", "Reasoning"]
+      :proportion  on 4/4 (100%)  sameline 4/4  stackedx0  pos~1.0  [barex4]  e.g. ["60%", "30%", "6%"]
+      attr-order: [name proportion]x4
+
+  |dimension  n=3  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex3
+      :question  on 3/3 (100%)  sameline 0/3  stackedx0  pos~0.0  [flow-textx3]  e.g. ["Who can read this?", "Who owns and can write/modify this?", "How is this instantiated?"]
+      attr-order: [question]x3
+      > |level  total=9 on 3/3 parents, max/parent=3
+
+  |domain  n=3  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex3
+      :description  on 3/3 (100%)  sameline 0/3  stackedx0  pos~0.0  [flow-textx3]  e.g. ["Saved & versioned state / infrastructure ...", "Runtime state, imperium, and interface (t...", "Location of action (project, sandbox, cha..."]
+      attr-order: [description]x3
+      > |component  total=30 on 3/3 parents, max/parent=11
+
+  |subcomponent  n=3  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex3
+
+  |changelog  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |entry  total=5 on 1/1 parents, max/parent=5
+
+  |definitions  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |dimension  total=3 on 1/1 parents, max/parent=3
+
+  |details  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Detailed Component Definitions"]
+      > |section  total=4 on 1/1 parents, max/parent=4
+
+  |document  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Taxonomy — Basic ELI Components"]
+      :updated  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["2025-12-15"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [floatx1]  e.g. ["0.5"]
+      > |changelog  total=1 on 1/1 parents, max/parent=1
+      > |details  total=1 on 1/1 parents, max/parent=1
+      > |overview  total=1 on 1/1 parents, max/parent=1
+      > |preface  total=1 on 1/1 parents, max/parent=1
+
+  |legend  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |overview  n=1  keyed=0% text=100% child-elems=100% verbatim=0% leaf=0%
+      > |callout  total=3 on 1/1 parents, max/parent=3
+      > |domain  total=3 on 1/1 parents, max/parent=3
+      > |section  total=1 on 1/1 parents, max/parent=1
+
+  |preface  n=1  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |section  total=2 on 1/1 parents, max/parent=2

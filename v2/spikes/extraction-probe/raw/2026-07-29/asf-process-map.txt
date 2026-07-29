@@ -1,0 +1,65 @@
+
+=== FILE /Users/josephwecker-v2/src/arch/asf/msc/meta-process-review-2026-07-07/PROCESS-MAP-v0.udon ===
+elements: 55 | comments: 36 | blank-lines: 93 | top-level text lines: 0
+top-level census: |process-mapx1
+top-seq[..16]: |process-map
+
+  |process  n=37  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex37
+      suffixes: $?x6
+      :name  on 37/37 (100%)  sameline 0/37  stackedx0  pos~0.0  [barex1 flow-textx36]  e.g. ["Decision surfacing", "Coherence stewardship (the domain-master ...", "The valve itself (JOSEPH-TODO)"]
+      :health  on 35/37 (94%)  sameline 0/35  stackedx0  pos~1.0  [barex32 flow-textx3]  e.g. ["broken", "absent", "under-fed"]
+      :drain  on 34/37 (91%)  sameline 0/34  stackedx0  pos~2.0  [barex26 nilx8]  e.g. ["healing", "nil", "task-force"]
+      :feeds  on 10/37 (27%)  sameline 0/10  stackedx0  pos~3.3  [arrayx10]  e.g. ["[...]"]
+      :design-unknown  on 6/37 (16%)  sameline 0/6  stackedx0  pos~3.2  [flow-textx6]  e.g. ["how it's instantiated across turnover", "the trigger + the scoped-instruction gene...", "the whole empirical/sim discipline"]
+      :fed-by  on 5/37 (13%)  sameline 0/5  stackedx0  pos~3.0  [arrayx5]  e.g. ["[...]"]
+      :see  on 2/37 (5%)  sameline 0/2  stackedx0  pos~1.0  [barex2]  e.g. ["model-of-joseph", "neighborhood-metabolism"]
+      :example  on 1/37 (2%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["spikes/epistemic-target-ontology/"]
+      :gated-on  on 1/37 (2%)  sameline 0/1  stackedx0  pos~3.0  [flow-textx1]  e.g. [".claude/ un-gitignore call"]
+      :wire-to  on 1/37 (2%)  sameline 0/1  stackedx0  pos~3.0  [arrayx1]  e.g. ["[...]"]
+      attr-order: [name health drain]x16  [name health drain feeds]x6  [name health drain design-unknown]x3
+
+  |cluster  n=10  keyed=100% text=10% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex10
+      :name  on 10/10 (100%)  sameline 0/10  stackedx0  pos~0.0  [barex3 flow-textx7]  e.g. ["Decision-routing & stewardship", "Generation (sources)", "Verification"]
+      :note  on 1/10 (10%)  sameline 0/1  stackedx0  pos~1.0  [flow-textx1]  e.g. ["always-on, deliberately not DAG-wired"]
+      :scope  on 1/10 (10%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["cross-cutting"]
+      attr-order: [name]x8  [name note]x1  [name scope]x1
+      > |process  total=37 on 10/10 parents, max/parent=7
+
+  |!text  n=1  keyed=0% text=0% child-elems=0% verbatim=100% leaf=0%
+
+  |diagnosis  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |diagram  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :caption  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["The core loop"]
+      > |!text  total=1 on 1/1 parents, max/parent=1
+
+  |fix-shape  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :attribution  on 1/1 (100%)  sameline 1/1  stackedx0  pos~0.0  [barex1]  e.g. ["Joseph"]
+
+  |meta-meta-process  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :name  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["How this map governs and evolves itself"]
+      :source-sink  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["participant-feedback"]
+
+  |open-unknowns  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :items  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [arrayx1]  e.g. ["[...]"]
+
+  |process-map  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :created  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["2026-07-07"]
+      :status  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["first-pass"]
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["The meta-processes of ASF, as a system"]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["0.0.1"]
+      > |cluster  total=10 on 1/1 parents, max/parent=10
+      > |diagnosis  total=1 on 1/1 parents, max/parent=1
+      > |diagram  total=1 on 1/1 parents, max/parent=1
+      > |fix-shape  total=1 on 1/1 parents, max/parent=1
+      > |meta-meta-process  total=1 on 1/1 parents, max/parent=1
+      > |open-unknowns  total=1 on 1/1 parents, max/parent=1
+      > |unplaced  total=1 on 1/1 parents, max/parent=1
+
+  |unplaced  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :name  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Deferred until the theory reaches it (Jos..."]

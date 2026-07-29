@@ -1,0 +1,69 @@
+
+=== FILE /Users/josephwecker-v2/src/arch/vivarium/tabularium/terrestris.ordinum.udon ===
+elements: 117 | comments: 21 | blank-lines: 16 | top-level text lines: 0
+top-level census: |ordinumx1
+top-seq[..16]: |ordinum
+
+  |charge  n=39  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex39
+      :tag  on 39/39 (100%)  sameline 39/39  stackedx0  pos~0.0  [barex39]  e.g. ["gate", "mech", "earth"]
+      :opened-by  on 2/39 (5%)  sameline 0/2  stackedx0  pos~1.0  [stringx2]  e.g. ["4.oxygenation", "8.language"]
+      attr-order: [tag]x37  [tag opened-by]x2
+
+  |promise  n=32  keyed=100% text=100% child-elems=28% verbatim=0% leaf=0%
+      key-kinds: barex32
+      traits: .statex14 .capabilityx9 .regimex8 .limitx1
+      :from  on 27/32 (84%)  sameline 27/27  stackedx0  pos~0.2  [barex27]  e.g. ["elemental-abundances", "smooth-water-surface", "insolation-rhythm"]
+      :unlocks  on 8/32 (25%)  sameline 8/8  stackedx0  pos~1.2  [barex8]  e.g. ["modern-weather", "biogeochemical-cycles", "plate-tectonics"]
+      :kept-by  on 6/32 (18%)  sameline 6/6  stackedx0  pos~0.0  [barex6]  e.g. ["planet", "noise", "isostasy"]
+      attr-order: [from]x15  [from unlocks]x6  [kept-by from]x4
+      > |predicate  total=9 on 9/32 parents, max/parent=1
+
+  |phase  n=9  keyed=100% text=100% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex9
+      :epithet  on 9/9 (100%)  sameline 0/9  stackedx0  pos~2.0  [flow-textx9]  e.g. ["before the world", "the world is now Formed", "the world is now Divided"]
+      :name  on 9/9 (100%)  sameline 0/9  stackedx0  pos~1.0  [barex9]  e.g. ["Ante-mundane", "Protogenic", "Primordial"]
+      :num  on 9/9 (100%)  sameline 0/9  stackedx0  pos~0.0  [intx9]  e.g. ["1", "2", "3"]
+      :regime  on 9/9 (100%)  sameline 0/9  stackedx0  pos~3.3  [barex9]  e.g. ["analytic", "analytic-relaxation", "incremental-emergent"]
+      :target  on 3/9 (33%)  sameline 0/3  stackedx0  pos~3.0  [intx3]  e.g. ["1", "2", "3"]
+      :binds  on 1/9 (11%)  sameline 0/1  stackedx0  pos~5.0  [barex1]  e.g. ["ETHICS.md"]
+      :sub-gates  on 1/9 (11%)  sameline 0/1  stackedx0  pos~4.0  [barex1]  e.g. ["expected"]
+      attr-order: [num name epithet regime]x5  [num name epithet target regime]x2  [num name epithet regime sub-gates]x1
+      > |charge  total=39 on 9/9 parents, max/parent=7
+      > |promises  total=9 on 9/9 parents, max/parent=1
+      > |record  total=7 on 7/9 parents, max/parent=1
+      > |defeasances  total=4 on 4/9 parents, max/parent=1
+      > |obligation  total=1 on 1/9 parents, max/parent=1
+
+  |predicate  n=9  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |promises  n=9  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |promise  total=32 on 9/9 parents, max/parent=8
+
+  |record  n=7  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+
+  |defeasance  n=5  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :by  on 5/5 (100%)  sameline 5/5  stackedx0  pos~1.0  [barex5]  e.g. ["emergent-land", "post-oxygenation-atmosphere", "visible-cosmos"]
+      :voids  on 5/5 (100%)  sameline 5/5  stackedx0  pos~0.0  [stringx5]  e.g. ["2.water-covered-surface", "3.pre-oxygen-composition", "3.diffused-light"]
+      attr-order: [voids by]x5
+
+  |defeasances  n=4  keyed=0% text=0% child-elems=100% verbatim=0% leaf=0%
+      > |defeasance  total=5 on 4/4 parents, max/parent=2
+
+  |meta  n=1  keyed=100% text=100% child-elems=0% verbatim=0% leaf=0%
+      key-kinds: barex1
+
+  |obligation  n=1  keyed=0% text=100% child-elems=0% verbatim=0% leaf=0%
+      :severity  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [barex1]  e.g. ["load-bearing-must-survive-every-revision"]
+
+  |ordinum  n=1  keyed=100% text=0% child-elems=100% verbatim=0% leaf=0%
+      key-kinds: barex1
+      :created  on 1/1 (100%)  sameline 0/1  stackedx0  pos~3.0  [barex1]  e.g. ["2026-07-11"]
+      :manifold  on 1/1 (100%)  sameline 0/1  stackedx0  pos~4.0  [barex1]  e.g. ["cube-sphere-3d-voxel"]
+      :reportatio  on 1/1 (100%)  sameline 0/1  stackedx0  pos~5.0  [barex1]  e.g. [".super-archive/from-archive/PHASES.md"]
+      :reportatio-pin  on 1/1 (100%)  sameline 0/1  stackedx0  pos~6.0  [barex1]  e.g. ["42621d5"]
+      :status  on 1/1 (100%)  sameline 0/1  stackedx0  pos~2.0  [barex1]  e.g. ["draft-until-first-pinned"]
+      :title  on 1/1 (100%)  sameline 0/1  stackedx0  pos~0.0  [flow-textx1]  e.g. ["Ordinatio Ordinum — the Terrestris phase ..."]
+      :version  on 1/1 (100%)  sameline 0/1  stackedx0  pos~1.0  [barex1]  e.g. ["0.1.0"]
+      > |phase  total=9 on 1/1 parents, max/parent=9
+      > |meta  total=1 on 1/1 parents, max/parent=1

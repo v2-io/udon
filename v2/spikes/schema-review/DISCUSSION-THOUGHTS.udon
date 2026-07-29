@@ -529,9 +529,9 @@
     fused bare token, @ [ ] : are ordinary content; leading-@ shatter
     (D-a) bites only at value start. One constraint to carry: SPACE
     terminates bare tokens, so juxtaposition chaining ("@element[key]
-    @other-element") works in quoted/envelope spellings but breaks the
+    \@other-element") works in quoted/envelope spellings but breaks the
     bare fused form -- the bare form needs a joiner or no chaining.
-    @element[key]:attribute lands on the stacked-value question (D4:
+    \@element[key]:attribute lands on the stacked-value question (D4:
     at over a stack -> which?).
   |needs
     Whether perspective is declared per-document, per-repo, or per-call
