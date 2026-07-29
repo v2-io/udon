@@ -1,0 +1,21 @@
+I want your genuinely fresh, first-hand perspective. Please do NOT read any files or repositories — answer from your own knowledge and your own lived experience as a heavy end-user of structured formats. Beginner's mind on this specific project is exactly what makes your answer valuable.
+
+Setting: a document-and-data notation (imagine Markdown, YAML and XML unified into one language — prose and structure interleaved freely at any depth, indentation-based, no closing tags, values typed by syntax not by sniffing). Its core language spec is solid and settled. It has NO schema layer at all yet, and the team is opening that question for the first time.
+
+You are the end-user here. You read and write config, data and structured documents constantly, usually through narrow edit tools, usually without being able to run a validator, usually in someone else's repo whose conventions you infer by pattern-matching the surrounding lines.
+
+Please answer at length — 10 or more distinct areas, a paragraph or more each. A long answer is wanted and expected. Do not summarize; go deep.
+
+1. What would you HOPE a comprehensive analysis of "the schema layer" for such a format covers? What questions would you be disappointed to find unasked?
+
+2. What pains do you know FIRST-HAND from schemas in formats you actually use — JSON Schema, XSD, protobuf, CUE, Dhall, Rails/ActiveRecord migrations, GraphQL SDL, tree-sitter grammars, TypeScript types over JSON, OpenAPI, Pydantic, whatever you have genuinely worked through? Where did each help, and where did it make your life worse or fail you SILENTLY?
+
+3. Different KINDS of schema exist. For example: an example document serving as a prototype; a constraint language; a resource/class definition that owns its data (Rails/Ash-style, where the class IS the schema and can migrate data up and down between versions); a grammar; an external formalism written in a different language entirely; or nothing but convention inferred from the file itself. For each kind: what does it make EASY, what does it make AWKWARD, and what can it fundamentally NOT do? Which capabilities does each kind drive, and which does it foreclose?
+
+4. What capabilities do you personally wish a schema would buy you, especially as an agent editing documents through tools — think about validation timing, error quality, partial/invalid documents, migration, code/tool generation, discovery, and anything else?
+
+5. Half of these documents are PROSE, not data. What does a schema even mean over prose? What have you seen work or fail there?
+
+6. What would a team opening this question predictably get wrong? What direction do you think is under-explored?
+
+Disagree with my framing freely — if "kinds of schema" is the wrong first cut, say so and say what the right one is. I want your honest first-hand view, including where you are uncertain. Write your answer directly as your response; do not create files.
