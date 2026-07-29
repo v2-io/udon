@@ -628,8 +628,12 @@ impl<'a> TreeBuilder<'a> {
     }
 
     /// Append a line of content to a `Comment` or `Raw` node's content
-    /// field, joining lines with '\n'. Returns true if the node accepts
-    /// line content.
+    /// field. Returns true if the node accepts line content.
+    ///
+    /// Raw lines arrive carrying their own terminators (the text-wire
+    /// contract: text material reconstructs by pure concatenation), so they
+    /// concatenate with no fabricated join. Comment lines are not
+    /// text-bearing and arrive terminator-less, so they still join on '\n'.
     ///
     /// The first appended line replaces the initial empty content wholesale
     /// (tracked via `content_started`) so that a leading blank line is
@@ -637,9 +641,9 @@ impl<'a> TreeBuilder<'a> {
     fn append_line_content(&mut self, id: NodeId, line: Cow<'a, str>) -> bool {
         let started = self.content_started.contains(&id.0);
         let node = &mut self.nodes[id.index()];
-        let target = match &mut node.kind {
-            NodeKind::Comment(content) => content,
-            NodeKind::Raw { content, .. } => content,
+        let (target, fabricate_join) = match &mut node.kind {
+            NodeKind::Comment(content) => (content, true),
+            NodeKind::Raw { content, .. } => (content, false),
             _ => return false,
         };
         if !started {
@@ -648,7 +652,9 @@ impl<'a> TreeBuilder<'a> {
             self.content_started.insert(id.0);
         } else {
             let owned = target.to_mut();
-            owned.push('\n');
+            if fabricate_join {
+                owned.push('\n');
+            }
             owned.push_str(&line);
         }
         true
@@ -828,7 +834,9 @@ impl<'a> TreeBuilder<'a> {
             BlankLine { span, .. } => {
                 let current = self.current();
                 if matches!(self.nodes[current.index()].kind, NodeKind::Raw { .. }) {
-                    self.append_line_content(current, Cow::Borrowed(""));
+                    // A blank body line is a literal newline (raw content
+                    // self-terminates; no join fabricates it).
+                    self.append_line_content(current, Cow::Borrowed("\n"));
                     self.extend_current_span(span.end);
                 } else {
                     self.push_node(NodeKind::BlankLine, &span);
@@ -1083,7 +1091,9 @@ mod tests {
         match raw.kind() {
             NodeKind::Raw { lang, content } => {
                 assert_eq!(lang.as_deref(), None);
-                assert_eq!(content.as_ref(), "python\nx = 1\ny = 2");
+                // Body lines keep their terminators (text-wire recast:
+                // fence bodies are byte-exact, pure-concat reconstructible).
+                assert_eq!(content.as_ref(), "python\nx = 1\ny = 2\n");
             }
             other => panic!("expected Raw, got {:?}", other),
         }
@@ -1103,7 +1113,7 @@ mod tests {
         let children: Vec<_> = dir.children().collect();
         assert_eq!(children.len(), 1);
         match children[0].kind() {
-            NodeKind::Raw { content, .. } => assert_eq!(content.as_ref(), "SELECT 1\nFROM t"),
+            NodeKind::Raw { content, .. } => assert_eq!(content.as_ref(), "SELECT 1\nFROM t\n"),
             other => panic!("expected Raw, got {:?}", other),
         }
     }
@@ -1117,9 +1127,10 @@ mod tests {
 
         let p = doc.root().first_child().unwrap();
         let text = p.first_child().unwrap();
-        // Text span covers its content bytes ("Hello world" at 3..14).
+        // Text span covers its content bytes including the terminator
+        // ("Hello world\n" at 3..15 — terminators are text post-recast).
         assert_eq!(text.span().start, 3);
-        assert_eq!(text.span().end, 14);
+        assert_eq!(text.span().end, 15);
         // Element span covers at least through its text content.
         assert!(p.span().end >= text.span().end);
         assert!(p.span().start <= text.span().start);

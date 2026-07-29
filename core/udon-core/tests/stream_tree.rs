@@ -100,7 +100,7 @@ fn element_subtree_is_complete() {
     assert_eq!(config.attr("host").and_then(|v| v.as_str()), Some("h"));
     let nested = config.node().first_child().unwrap().as_element().unwrap();
     assert_eq!(nested.name(), "nested");
-    assert_eq!(nested.node().all_text(), "deep");
+    assert_eq!(nested.node().all_text(), "deep\n");
 }
 
 #[test]
