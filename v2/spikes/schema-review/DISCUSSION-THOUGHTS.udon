@@ -426,3 +426,207 @@
     fixture expectations toward parser output" -- port the clause, not
     just the counter). SEG-SPLIT is the natural first customer and a
     chance to run one migration censused instead of ad-hoc.
+
+|thought[O12].standard-core-schemas :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context Dialects/schemas discussion during the working-synopsis session; expressly register-marked by Joseph as "joseph's thoughts at best-- pre notes more likely as we discuss... a little bit scattershot since it's an area that has been asked for (my experiential feedback)."
+  !:quote:
+    With dialects, it already occurs to me that... well, maybe with
+    schemas... there will likely *want* to be a small handful of udon-core
+    schemas that at least we use across a variety of projects-- such as
+    udon that replaces some of your agentic tooling xml constructs, or
+    properly formats udonic-tool inputs/parameters etc., or that is a
+    "more concrete udon version of markdown" or that exposes various
+    epistemological labels or agent interior thinking traces that are
+    meant to not survive any translation/publication pipeline etc.
+  |assessment
+    Convinced the class is real -- each of the four named members has
+    shipped or ruled precedent rather than resting on the naming:
+    (1) harness/context constructs: prompt assembly is already a
+    first-class formal object in the theory (the prompt() function,
+    def-coupled-update-dynamics), and current harness practice is
+    unschema'd XML-ish injection -- this is that surface given a schema.
+    (2) tool inputs/parameters: rowan ships resource->tool projection
+    (to_tool_definitions); the tool-definition anatomy chapter shows the
+    converged name+schema+description shape; minimax's reverse export
+    proves the direction can invert.
+    (3) concrete-markdown: already named as the doc schema (markdown
+    four-layers Layer 2 / thoughts-on-scope A4), Pandoc's AST as the
+    battle-tested element set -- this row is DEMAND for it; the MD/S16
+    carve-out stays open and must not be closed by recording this.
+    (4) epistemic labels + interior traces with publication-stripping:
+    the estate re-implements this by hand everywhere -- the three-axis
+    epistemology, the ennaos INSTINCTS register (prove/know/don't-know/
+    believe), O11 deliberateness marking, ASF Working Notes stripped at
+    build by rindex. "Meant to not survive any translation/publication
+    pipeline" is per-part disposition from the cluster-record question
+    (doc-store report 12.4) stated as a schema property -- declared
+    projection semantics instead of a recovered boundary.
+    Cross-cutting: this is the standard-library move, and it gives
+    GOV-REGIME's governed rungs their first concrete citizens -- a
+    corpus adopting a core schema is opting into a named regime.
+  |needs
+    Which member goes first (my lean: the epistemic-register schema --
+    it is the one every project already pays for by hand and the one O11
+    needs; also the one where UDON is most differentiated). Whether these
+    are schemas or schema+dialect pairs (the register one wants vocabulary
+    AND stripping semantics). The O9 friction test before any of them
+    becomes "the right way" -- a standard schema is exactly where
+    right-way ceremony could creep. And (3) must route its enumeration
+    through the MD carve-out's own closing condition, not around it.
+
+|thought[O13].path-decomposition-perspective-file-stem-selection :date 2026-07-29 :by joseph :status recorded-pre-validation
+  :context Reaction to the working-synopsis path examples; restructures the proposal into his own decomposition and questions the example scaffolding ("not sure what your |when |edit |resolver-conf is or what the inner 'path' syntax is accomplishing per se").
+  !:quote:
+    we have the following concerns:
+    - perspective: file-location-reference/fixed-point, commonly:
+      - possibly user@host:port for other machine altogether
+      - possibly https:// or ssh:// etc. for other machine / protocol
+      - relative to udon document
+      - relative to caller's cwd
+      - relative to a "database" or repository root (doc/db steward decides)
+      - relative to the project root (defined probably by .git references.
+        Not always well-specified. [same with most others sometimes])
+      - relative to current system's file root (absolute paths '/' or '//')
+    - file path: often directly matches directory path, allows * and **,
+      ., .., etc.
+    - file stem: on one hand, the most immediate concrete candidate; on
+      the other hand, in more sophisticated setups, gets really fuzzy what
+      it is. For now though, simply gathers the files, files == documents
+      / document snippets / document-streams
+       - record-[UUID]...(.schema.udon)
+       - all-records(.schema.udon)
+       - some*selections* ; that doesn't even care about schemas etc.
+    - (provisionally) aspirational schema (and maybe version?)
+      asdf.decisions-v8.2.udon
+    - filetype suffix .udon -> expected implicit return type /
+      stored-as type
+    Then we have inner selection (possibly separated from the former by
+    '#' ala URIs)
+    - @[key] ; relies on key being unique for that dataset's kinds of
+      elements
+    - @element[key] ; element-differentiated key, preferred syntax
+    - @element[key] @other-element ; child element?
+    - @element[key]:attribute ; gives back just that attribute's value?
+  |assessment
+    Cleaner than the synopsis's three-separations cut at the outer
+    altitudes -- it decomposes the "to" half into perspective / file-path
+    / stem / designator / suffix where the synopsis had one "anchor
+    registry" bucket. Genuine additions over anything in the corpus:
+    (1) host/protocol as a perspective rung (user@host:port, ssh://) --
+    the grok testimony's host-scoped-paths demand, promoted into the
+    address model rather than left as a caution; (2) globs sanctioned at
+    the FILE altitude where they are proven convention (the seed's no-glob
+    lean was about in-document syntax -- the two positions are compatible
+    and should be stated as one two-altitude rule); (3) the stem-fuzziness
+    observation is directory-as-table restated in filename terms (stem
+    gathers files; file-per-record / one-file-many-records / pattern-case
+    as the three stem shapes); (4) "aspirational schema" names the
+    designator's promissory register exactly (A.4's naming-the-debt);
+    (5) suffix as expected-return-type is position-typing at the file
+    altitude -- the F4 argument one level up. Inner selection: reusing @
+    as the fragment language is mirror-the-document purity, and it is
+    MECHANICALLY FINE where paths actually live -- after '#' inside a
+    fused bare token, @ [ ] : are ordinary content; leading-@ shatter
+    (D-a) bites only at value start. One constraint to carry: SPACE
+    terminates bare tokens, so juxtaposition chaining ("@element[key]
+    @other-element") works in quoted/envelope spellings but breaks the
+    bare fused form -- the bare form needs a joiner or no chaining.
+    @element[key]:attribute lands on the stacked-value question (D4:
+    at over a stack -> which?).
+  |needs
+    Whether perspective is declared per-document, per-repo, or per-call
+    (the registry question); whether the fragment language is exactly
+    ref-syntax-plus-chaining-plus-projection or grows filters; the
+    stacked-attribute answer for :attribute projection; and the joiner
+    (or its absence) for bare-form chaining.
+
+|thought[O14].grammar-decisions-must-not-swing-syntax :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context The glob recheck: the paths seed's "leaning: no / Never?" on globs traced to the flag-suffix spelling collision plus a one-day absence claim.
+  !:quote:
+    ugh. so it's an irrelevant old grammar decision swinging our more
+    important syntax decision-- when adding those syntactical sugars was
+    exactly *for* this sort of thing. Ditch the "Never" at the *very
+    least*.
+  |assessment
+    Convinced, and it is checkable against CORE's own text: 5.4 glosses
+    the suffix characters as "a grammar might read ? 0-or-1, * 0-or-more,
+    + 1-or-more" -- the Kleene readings were the DESIGN INTENT of choosing
+    those characters, so treating the definition-desugar ($* = true) as a
+    collision that forecloses selector-Kleene inverts the sugar's purpose.
+    The general principle is O3 one level deeper: not just that reasonless
+    rulings are recheckable, but that a decision made at one layer
+    (definition-desugar grammar) silently governing a different layer's
+    design space (selector syntax) is a category of constriction to sweep
+    for. The seed's globs row is retracted to open with three candidate
+    selector readings named (cardinality / match-by-flag / name-glob);
+    done 2026-07-29.
+  |needs
+    The three-reading adjudication belongs to the paths spike with the
+    demand map, not here. A sweep for OTHER instances of the category
+    (definition-layer decisions quietly constraining selector/tool-layer
+    space) -- the ? flag-key rule vs :at? arose the same day and is the
+    same shape. CORRECTION (2026-07-29, Joseph): an earlier form of this
+    note said that case was "resolved the other direction (flag idiom
+    kept)" -- it was not resolved; Joseph had only reported the current
+    parser's reading (at? == true, path as text child), and ? on an
+    attribute key is a different mechanism from ? on an element besides.
+    Both the :at? spelling and the glob readings are OPEN; the pair still
+    shows the category needs case-by-case adjudication, with the
+    current grammar's behavior admitted as a fact and never as the
+    verdict.
+
+|thought[O15].operation-arity-plus-expectation-arity :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context Extending the declared-arity-bounds axis ({1,1}/{0,1}/{0,N}/{1,N}) during the paths discussion.
+  !:quote:
+    For certain tasks, we could even expand it to essentially indicate
+    "what to expect" vs "what to change."  e.g., I want to change the
+    first occurance (maybe something like) "...{1,N}" but I *expect*
+    there to be no more than 2 or three, or else I've grossly
+    misunderstood the data: "...{1,N}{1,3}" -- for an edit/mutate
+    command, this could give a "this record is missing _____, add one?"
+    or "several of these records have more than 3-- for example...
+    Proceed anyway?" etc. etc.  Whereas {0,N}{0,1} would be a more
+    traditional-- if it has it, there should be just one, and that's
+    the one I'm going to modify...
+  |assessment
+    Convinced of the underlying move: TWO bounds with different jobs --
+    one OPERATIONAL (what the command will select/touch) and one
+    EPISTEMIC (what I believe the data holds, such that divergence means
+    "I've grossly misunderstood") -- with the gap between observed count
+    and the epistemic bound triggering GRADUATED DIALOGUE rather than
+    binary failure. Why it lands, in the corpus's own terms: (1) it is
+    the intent-as-parameter demand in checkable form -- the 2025
+    quick-tooling protocol already carried expected_outcome and
+    will_succeed slots; a count bound is the crisp, mechanically
+    comparable slice of that intent, and the mismatch message writes
+    itself ("several have more than 3 -- proceed anyway?"). (2) It is an
+    A->0 move on the edit channel: "does this data match my model?"
+    becomes count-vs-bounds, pass/fail, BEFORE mutation -- a
+    mutation-free channel for discovering your world-model is stale,
+    which is the errors-that-teach shape applied to the agent's own
+    beliefs rather than the tool's laws. (3) It guards the propose
+    hazard: hallucinated-layout writes trip expectation bounds
+    immediately ("missing ____, add one?" surfaces the fabrication
+    instead of silently instantiating it). (4) The dialogue tiers are
+    the relata two-outcome membrane + resolution ladder arriving at the
+    edit surface: expectation-violation is not submitter-error and not
+    success -- it is the needs-review speech act, with Proceed-anyway as
+    the interactive tier and JSON-choices for machine callers. (5) A
+    sibling unification: the content-hash pin (:as-of) is the SAME move
+    for content that the epistemic bound is for count -- one family,
+    "expectation claims attached to operations" (count / content /
+    possibly shape), each checkable, each a dialogue trigger on
+    divergence. (6) Byproduct worth naming: accumulated per-call
+    expectation bounds are calibration data -- what agents believed
+    about the corpus, recorded at call sites, comparable against
+    reality over time (relata section-17's predicted-vs-actual loop, fed
+    for free).
+  |needs
+    Slot order / notation (which bound reads first; whether expectation
+    is a second {m,n} or a named param); the severity mapping (which
+    divergences block, ask, or merely annotate -- likely the casual/
+    careful/critical profiles); whether expectation bounds are ephemeral
+    (call-only) or recordable (feeding O6 extraction and calibration);
+    and the interaction with {m,n} in schemas -- a durable schema
+    cardinality and a per-call expectation can disagree, and that
+    disagreement is itself information (stale schema or stale agent).
