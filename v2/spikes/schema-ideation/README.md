@@ -8,7 +8,7 @@ version tries to correct it. Verbs here are meant to carry their actual certaint
 law, it says so and is the only part of this document that is solid.
 
 **Two documents, not one.** The first pass is preserved whole at
-[`pass-1-explication.md`](pass-1-explication.md) — the draft Joseph read on 2026-07-28,
+[`pass-1-explication.md`](../../.archived/schema-ideation-pass-1-explication.md) — the draft Joseph read on 2026-07-28 (archived to `v2/.archived/` per his 2026-07-28 call),
 kept intact at his suggestion so this revision isn't fighting its structure and its
 survey layer stays available. This file is the revision; where the two disagree, this is
 the later thinking, and where pass 1 carries detail this one compressed, pass 1 is the

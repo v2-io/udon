@@ -7,7 +7,7 @@
 ; they belong. Sibling registers: OPEN.md (formal steward calls),
 ; spikes/schema-review/DISCUSSION-THOUGHTS.udon (his brainstorms).
 
-|item[staging-question] :date 2026-07-28 :status open :class direction
+|item[staging-question] :date 2026-07-28 :status answered :class direction
   The meta-call under the fixture question: do the schema / paths /
   dialects / types / embeds territories force any IMMEDIATE change to
   0.9.1, or do they all stage for future versions? Joseph's stated
@@ -20,8 +20,18 @@
   territory map carries a would-change register (what 0.9.1 sentences
   it would touch, if ratified) so the future merge is pre-staged
   without any text moving.
+  |answer :by joseph :date 2026-07-28
+    !:quote:
+      We'll call 0.9.1 semi-frozen or provisionally frozen, recognizing that
+      further audits on the old 0.9 and fixtures etc. may reveal more
+      modifications needed, and remaining potentially open for critical
+      parser-grammar facing nuance that needs to get into 0.9.1 to avoid it
+      painting us into a corner. Similarly, we'll declare 0.9.1 spec-only
+      for now-- not intended *necessarily* to be implemented-- unknown
+      depending on findings etc. coming up.
+    Routed: DECISIONS C8; 0.9.1 README Authority paragraph updated.
 
-|item[fixture-posture] :date 2026-07-28 :status open :class deferred-lean
+|item[fixture-posture] :date 2026-07-28 :status answered :class deferred-lean
   Given staging-question, the full 0.9.1 fixture suite is deferred —
   the interesting fixtures wait on that call, and the boring ones would
   mostly mirror the 0.9 groups. What might still be worth having now:
@@ -29,8 +39,10 @@
   scope), framed per S2, as reading-companion rather than gate — the
   concretely-sitting-next-to-it affordance Joseph named, without
   calcifying anything open.
+  |answer :by joseph :date 2026-07-28
+    Confirmed: "deferred-lean."
 
-|item[steward-calls] :date 2026-07-28 :status open :class queue
+|item[steward-calls] :date 2026-07-28 :status answered-reframed :class queue
   Eleven formal calls queued in OPEN.md. Highest leverage per minute:
   REF-SLASH and REF-BRACKET (gate the include-primitive direction),
   ROOT-BASE (gates whole-document schema; one instance of the
@@ -39,15 +51,31 @@
   FIX-FRAME, N-jargon, IND/IND-2, GOV-REGIME, DEBT-DISCHARGE.
   Offer: assemble the top four into one adjudication packet with
   three-way facts each, for a single sitting.
+  |answer :by joseph :date 2026-07-28
+    !:quote:
+      These are open binary questions that shouldn't be asked yet on a spec
+      that hasn't been written yet. It's precisely our current work that
+      will make the answers self-evident in the future. Consider marking
+      the whole file "hypothetical" or "as per a current (already stale)
+      snapshot of spec vs path/schema/meta thinking... valuable only for
+      ideation pros/cons" -- consider anything open there or in the spec as
+      "open for guidance from the schema/path/meta team"
+    Routed: OPEN.md now carries this banner; the rows are ideation fuel and
+    territory-team guidance surface, not a pending-ruling queue.
 
-|item[pass-1-deletion] :date 2026-07-28 :status open :class housekeeping
+|item[pass-1-deletion] :date 2026-07-28 :status done :class housekeeping
   spikes/schema-ideation/pass-1-explication.md — the schema agent's O2
   self-assessment says safely deletable (everything substantive
   migrated; remainder is scaffolding vocabulary); retained only because
   you asked. Delete after your comparison, or keep as the record of the
   register lesson?
+  |answer :by joseph :date 2026-07-28
+    "Feel free to move to v2/.archived -- along with anything else
+    superseded. Remember the truth theorem... don't delete the meat and
+    don't obscure it with rubbish -- both make it impossible to consume."
+    Done: moved to v2/.archived/, INDEX noted.
 
-|item[priorities-bridge] :date 2026-07-28 :status open :class proposal
+|item[priorities-bridge] :date 2026-07-28 :status green-lit-exploratory :class proposal
   Your "I don't know what that would look like": concretely, one
   document — each demand cluster from the tooling corpus (guarded edit,
   addressing, context economy, persistence, ...) crossed against the
@@ -59,8 +87,13 @@
   (my demand-side picture is currently secondhand). Deliverable shape:
   udon-needs/02-tooling-needs/ sibling or v2/spikes/ — your lean
   welcome.
+  |answer :by joseph :date 2026-07-28
+    "I'm not convinced that the demand clusters represent anything
+    conclusive yet, but it sounds like a document that might be insightful
+    regardless, as long as it's seen as exploratory and not driving."
+    Will carry that as its banner.
 
-|item[reader-declaration-experiment] :date 2026-07-28 :status open :class proposal
+|item[reader-declaration-experiment] :date 2026-07-28 :status withdrawn-as-posed :class proposal
   The concrete answer to "what are you proposing" on O5's reader-half
   (the architecture's least-supported load-bearing assumption: that
   consumers will DECLARE what they read). Hand-rolled, a day: take the
@@ -72,8 +105,17 @@
   caught real past incidents (the renamed slug); do they feel
   maintainable or like a fifth language. Evidence either way feeds O5
   before anything is built on it.
+  |answer :by joseph :date 2026-07-28
+    Joseph: unclear as phrased, and "I don't see it as load bearing or
+    essential as you seem to be implying." Concession recorded (see
+    conversation 2026-07-28): the load-bearing derivation is reader-side
+    KNOWABILITY, not declarations specifically -- consumers on this machine
+    are observable code (their reads greppable), so declaration is one of
+    at least three mechanisms (declare / statically observe / runtime-
+    observe). Experiment withdrawn in this form; the space re-enters the
+    schema/adjudicator territory as open.
 
-|item[tst-citation-repair] :date 2026-07-28 :status open :class proposal
+|item[tst-citation-repair] :date 2026-07-28 :status approved :class proposal
   Surfaced by the TST grounding read, verified by count: the 30 bridge
   chapters headed for ASF 02-TST cite ZERO TST segment slugs while
   restating TST's formulas correctly in prose -- mechanical
@@ -84,6 +126,8 @@
   directly on #hyp-conceptual-alignment's own stated empirical
   uncertainty -- a contribution back to TST neither side knows it has.
   Natural moment: the SEG-SPLIT segmentation pass.
+  |answer :by joseph :date 2026-07-28
+    "sounds great." Queued for the segmentation (SEG-SPLIT) pass.
 
 |item[tst-grounding-agent] :date 2026-07-28 :status delivered :class commission
   Per your #3: exploration agent launched (opus) — starting from the
@@ -94,7 +138,7 @@
   and what mathematics is genuinely missing. Report expected at
   spikes/tst-grounding/.
 
-|item[steward-evident-register] :date 2026-07-28 :status open :class vocabulary
+|item[steward-evident-register] :date 2026-07-28 :status parked :class vocabulary
   Coined and steward-approved this session ("perfect"): **steward-evident
   (formalization pending)** -- the epistemic state where the argument
   logic has become self-evident to the steward but is unaudited; distinct
@@ -106,6 +150,8 @@
   support-kind/register vocabulary, next time it gets worked. Until
   then: transcriptions render his "first principles" as steward-evident
   with the nearest formal carrier cited.
+  |answer :by joseph :date 2026-07-28
+    "sounds good for consideration later. Maybe I'll get disciplined enough that it won't be necessary ;-)"
 
 |item[commit-cadence] :date 2026-07-28 :status adopted :class norm
   Committing as we go, coherent commits per body of work. Five landed

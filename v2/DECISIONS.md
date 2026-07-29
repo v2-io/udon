@@ -148,6 +148,12 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 | **X5** | **Body prose may point at a downstream segment** to anticipate a question that segment addresses; it **may not** restate that segment's claim in a form that might not stay evergreen, and it **may not rely on** it — with one exception, **appendix segments may be depended on in reverse** ("the derivation this relies on is in appendix segment xyz"). Working Notes are exempt (X4). | jaw 2026-07-22, correcting an over-tight reading |
 | **X6** | **Terminology:** a **chapter** is a container (an outline heading plus its table of segments); a **segment** is a file carrying one claim. Corpora where chapter currently equals file are transitional and need no renaming — the words survive the eventual split. | jaw 2026-07-22 |
 
+## Steward marks (2026-07-28 — FOR-JOSEPH answers)
+
+| ID | Holds | Cite |
+|----|--------|------|
+| **C8** | **0.9.1 is semi-frozen (provisionally frozen) and spec-only.** "We'll call 0.9.1 semi-frozen or provisionally frozen, recognizing that further audits on the old 0.9 and fixtures etc. may reveal more modifications needed, and remaining potentially open for critical parser-grammar facing nuance that needs to get into 0.9.1 to avoid it painting us into a corner. Similarly, we'll declare 0.9.1 spec-only for now — not intended *necessarily* to be implemented — unknown depending on findings etc. coming up." Refines C7's baseline status; fixture posture stays deferred-lean. | jaw 2026-07-28, FOR-JOSEPH answers |
+
 ## 2026-07-28 session brainstorms — routed OUT of this ledger
 
 Joseph's continuing brainstorms from the 2026-07-28 big-picture session (IDs O1–O7) were briefly recorded here as steward marks — a mis-routing: they are **pre-validation brainstorms, not rulings or steers**, and the ledger's form was lending them authority they don't claim. They now live, verbatim with per-item assessment and needed validations, at [`spikes/schema-review/DISCUSSION-THOUGHTS.udon`](spikes/schema-review/DISCUSSION-THOUGHTS.udon). The O-IDs remain stable there so same-day citations resolve. If Joseph decides any item by fiat he will expressly mark it as such.
