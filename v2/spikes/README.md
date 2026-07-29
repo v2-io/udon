@@ -20,8 +20,9 @@ manufactures a confident false version. Read the ones you'll lean on whole.)
 
 ## 2. The demand corpus's seven reports (`../udon-needs/02-tooling-needs/reports/`)
 
-These are the deep treatments the territory seeds cite; secondhand summaries of
-them have repeatedly proven lossy in ways that mattered.
+These are the deep treatments the territory seeds cite. In the 2026-07-28 session,
+working from secondhand summaries of them lost things that mattered (evidence
+weights, tier statuses) in at least three noticed instances — likely not the only ones.
 
 | Report | Why it earns a full read |
 |---|---|
