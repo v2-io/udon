@@ -1,11 +1,12 @@
 # UDON umbrella CI — build, full conformance, and the regeneration DRIFT GATE.
 #
 # The drift gate is the mechanical form of the spec-impl sync discipline
-# (REVIEW §7-B): parser.rs must always equal what the pinned generator
-# produces from the committed grammars. A red gate means someone hand-edited
-# generated code, or changed .desc without regenerating, or the descent pin
-# moved without a regen — the exact silent-divergence failure mode the July
-# 2026 review §2 genealogy documents.
+# (REVIEW §7-B): parser.rs and parser_pd.rs must always equal what the pinned
+# generator produces from the committed grammar units
+# (generator/NN-udon.*.descent.udon). A red gate means someone hand-edited
+# generated code, or changed a grammar without regenerating, or the descent
+# pin moved without a regen — the exact silent-divergence failure mode the
+# July 2026 review §2 genealogy documents.
 
 name: ci
 on:
@@ -35,20 +36,11 @@ jobs:
         working-directory: core
         run: cargo test --workspace
 
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3"
-
-      - name: Drift gate (Ruby descent) — one overlap cycle before retirement (D4b)
+      - name: Drift gate (descent-rs) — both generated backends
+        # regenerate-parser is descent-rs-only now (the Ruby overlap cycle
+        # retired with the toolchain); it emits parser.rs AND parser_pd.rs,
+        # so the gate diffs both.
         run: |
-          gem install liquid -v '~> 5.0' --no-document
-          cd core && ./regenerate-parser
-          cd .. && git diff --exit-code core/udon-core/src/parser.rs \
-            || { echo '::error::parser.rs drifted (Ruby generator)'; exit 1; }
-
-      - name: Drift gate (descent-rs) — the incoming standing gate
-        run: |
-          cat core/generator/udon.desc core/generator/values.desc > /tmp/combined.desc
-          cd tools/descent/rust && cargo run -q -p descent-cli -- generate /tmp/combined.desc > /tmp/parser-rs.rs
-          cd ../../.. && diff -q /tmp/parser-rs.rs core/udon-core/src/parser.rs \
-            || { echo '::error::parser.rs drifted (descent-rs generator)'; exit 1; }
+          cd core && ./regenerate-parser --no-build
+          cd .. && git diff --exit-code core/udon-core/src/parser.rs core/udon-core/src/parser_pd.rs \
+            || { echo '::error::generated parsers drifted from the committed grammars'; exit 1; }
