@@ -2,9 +2,9 @@
 
 **What this is.** A distillation of the UDON 0.9.1 spec suite (`v2/current-0.9.1-spec/`, ~1,500 lines) for someone who needs to compare UDON honestly against SGML/XML, JSON, YAML, RDF, and the schema languages — without first learning to *write* UDON. It covers the data model, the commitments the design deliberately made and why, and just enough surface syntax to read an example. It is not a tutorial (that is `TUTORIAL.md`) and not the contract (that is `CORE.md`).
 
-**Status, stated honestly.** 0.9.1 is a *consolidation baseline*: one coherent restatement of 0.9-era ruled law, marked **semi-frozen and spec-only** — provisionally frozen, still open to audit-revealed correction, and not necessarily intended to be implemented as-is. Read everything here as **current design commitments**, not as a shipped or eternal standard. The reference parser implements the predecessor version (0.9.0-alpha.2) and lags the suite in places (§9).
+**Status, stated honestly.** 0.9.1 is a *consolidation baseline*: one coherent restatement of 0.9-era ruled law, marked **semi-frozen and spec-only** — provisionally frozen, still open to audit-revealed correction, and not necessarily intended to be implemented as-is. Read everything here as **current design commitments**, not as a shipped or eternal standard.
 
-**Where the authority is.** `CORE.md` (surface recognition + core semantics), `MODEL.md` (what recognition produces), `GLOSSARY.md` (every formal term), `SEMANTICS.md` (when two documents mean the same), `CARVEOUTS.md` (what is deliberately unspecified, *with the reason it is open*), `DELTAS.md`, `RATIONALE.md`. Section cites below (`CORE §6.4`, `MODEL §3`) point into those files; every UDON snippet here was run through the reference parser rather than written from recall.
+**Where the authority is.** `CORE.md` (surface recognition + core semantics), `MODEL.md` (what recognition produces), `GLOSSARY.md` (every formal term), `SEMANTICS.md` (when two documents mean the same), `CARVEOUTS.md` (what is deliberately unspecified, *with the reason it is open*), `DELTAS.md`, `RATIONALE.md`. Section cites below (`CORE §6.4`, `MODEL §3`) point into those files. **The ruled text is the only oracle** — including for this primer's examples, each of which traces to a ruled section (most are verbatim from `CORE.md`). The repo's reference parser is *not* an oracle and is not used as one here; see §8.
 
 ---
 
@@ -224,15 +224,11 @@ Settled: the model, the marker/escape/geometry rules, syntactic typing with the 
 
 ## 8. Verifying claims and examples
 
-The spec suite is the authority; the reference parser is **not** — and it implements 0.9.0-alpha.2, so where the two disagree the parser is lagging (`DELTAS.md` lists the intended differences). Check UDON snippets with:
+**The ruled 0.9.1 text is the only recognition oracle.** If a comparison rests on what a construct *does*, the answer is in `CORE.md` — for recognition questions the five sections carrying the load are §2.1 (Nesting Rule), §2.2 (Structure Position and commit), §6.4 (the bare-token boundary), §6.5 (ownership), and §14.1 (severity = loss), with `CORE` Appendix C's three worked vignettes showing whole inputs mapped to whole Documents.
 
-```bash
-cd core && cargo build --example stdin_parse && ./target/debug/examples/stdin_parse < file.udon
-```
+**Do not use the repo's reference parser as verification.** It is an old, 0.8-lineage artifact — known non-conformant to the ruled spec, buggy even against 0.8, and *biasing*: consulting it silently converts "what the current implementation happens to do" into "what UDON is," which is the specific mistake this project has had to correct repeatedly. Its output is admissible only as an explicitly labeled "what the old parser does" fact, never as evidence about the language.
 
-(Events go to stderr; the event vocabulary is the deratified 0.9 wire and is not contract — use it as a recognition check, not as a model description.)
-
-A warning worth taking seriously: **reading the spec whole buys comprehension but not conformant generation.** Agents who had read the entire suite the same day still emitted plausible-but-wrong UDON. If a comparison rests on what a construct *does*, run it.
+There is a real hazard on the other side, worth naming rather than papering over: **reading the spec whole buys comprehension but not conformant generation** — agents who had read the entire suite the same day still emitted plausible-but-wrong UDON. The defense is not a parser run; it is citing the section at the point of use, and preferring the spec's own examples over freshly invented ones (as this primer does).
 
 ---
 
@@ -240,10 +236,9 @@ A warning worth taking seriously: **reading the spec whole buys comprehension bu
 
 Observations from this distillation pass, offered as by-product; none is a verdict.
 
-1. **Which node kinds begin content phase is unstated.** `CORE §6.9` says content phase begins with "a child, text, or a sameline tail." The model has seven node kinds. Measured on the reference parser (0.9.0-alpha.2): an element child triggers the late-`:` warning; a **reference** child does *not*; comments and blank lines do not (surely correct). The reference case looks like either a parser lag or a genuine spec silence — a reference is a node in `content`, so §6.9 read literally says it closes the attribute window. Verbatim and directive children have the same question. One sentence enumerating the kinds would close it.
-2. **Suffix stacking is spec'd but not implemented.** `CORE §5.4` rules `|field?!` ≡ `:'$?' true :'$!' true` (CHANGELOG S1). The parser produces `$? = true` and then text `"!"`. Expected lag rather than a spec problem, but it is not in `DELTAS.md`'s scope, so it may be untracked.
-3. **`CORE §1.1` lists three "boundary rules" and then gives two headings** (menu-vs-knob, dialects-are-not-schemas, additivity — the third is separated by a blank line and reads as an afterthought). Cosmetic, but the sentence promises three and the layout hides one.
-4. **`SEMANTICS §2.3` and `CARVEOUTS` interact quietly.** Integer base-spelling normalization is explicitly "not round-trip safe by design," while §3 requires a faithful serializer to preserve recognition identity "up to integer base spelling." Consistent on a careful read; a reader skimming for round-trip guarantees could easily take away that base spelling is preserved.
-5. **No carve-out covers "what a schema language must be able to say."** Constraint is assigned to the schema layer in four separate places (`CORE §1.1`, §6.7, §11.1, `MODEL §8`) as the destination for cardinality, uniqueness, and `$key` multiplicity — but `CARVEOUTS.md` has no SCHEMA entry with a demand-side reason and closing condition the way PATHS and DIALECT-DEF do. Given how much the core defers *to* it, its absence from the register is conspicuous.
+1. **Which node kinds begin content phase is unstated (spec-side, stands alone).** `CORE §6.9` says content phase begins with "a child, text, or a sameline tail." `MODEL §2` gives seven node kinds. Read literally, §6.9 says a **reference** child — a node in `content` — closes the attribute window, and the same question applies to verbatim and directive children; a comment or blank line surely must *not* (they would make `; note` between attributes a phase break). The spec never enumerates. One sentence naming the kinds would close it. *(A parser observation pointed me here, but the ambiguity is in the text and needs no implementation to see; the parser fact is not evidence and is omitted.)*
+2. **`CORE §1.1` lists three "boundary rules" and then gives two headings** (menu-vs-knob, dialects-are-not-schemas, additivity — the third is separated by a blank line and reads as an afterthought). Cosmetic, but the sentence promises three and the layout hides one.
+3. **`SEMANTICS §2.3` and §3 interact quietly.** Integer base-spelling normalization is explicitly "not round-trip safe by design," while §3 requires a faithful serializer to preserve recognition identity "up to integer base spelling." Consistent on a careful read; a reader skimming for round-trip guarantees could easily take away that base spelling is preserved.
+4. **No carve-out covers "what a schema language must be able to say."** Constraint is assigned to the schema layer in four separate places (`CORE §1.1`, §6.7, §11.1, `MODEL §8`) as the destination for cardinality, uniqueness, and `$key` multiplicity — but `CARVEOUTS.md` has no SCHEMA entry with a demand-side reason and closing condition the way PATHS and DIALECT-DEF do. Given how much the core defers *to* it, its absence from the register is conspicuous.
 
-*Written 2026-07-29 as the first artifact of the format-failures research thread. Sources: `v2/current-0.9.1-spec/` (all nine files, read whole); every snippet parser-checked.*
+*Written 2026-07-29 as the first artifact of the format-failures research thread. Sources: `v2/current-0.9.1-spec/` (all nine files, read whole). Every snippet traces to a ruled section — most verbatim from `CORE.md`; the `|book` node-value example is derived from §6.2 (deferred body), §6.8 (node value), and §2.1 (the dedent that makes the chapters children). No claim here rests on the reference parser.*
