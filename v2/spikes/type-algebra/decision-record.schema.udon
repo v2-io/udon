@@ -1,0 +1,28 @@
+; type-algebra shorthand exemplar — a schema for a decision ledger, written
+; as UDON. Dialect reading (proposed, not ratified): element suffixes are
+; arities (! = {1,1}, ? = {0,1}, * = {0,*}, + = {1,*}); a leading {n,m} tail
+; is the general arity; [key!] declares keyed-and-required; .open / .closed
+; is the row tail (P1: extraction may emit .open only; .closed is a fiat act
+; and carries its reason). A trailing ! on an attribute KEY is dialect-
+; assigned (core reads it as an ordinary key named "date!"); ? on a key is
+; core flag semantics and therefore CANNOT be this dialect's optionality
+; marker — measured: ":confidence? float" snaps the flag true, re-owns
+; "float" as CONTENT, ends the attribute phase, and every later attribute
+; draws AttributeAfterChildren. Unmarked keys are optional {0,1}; ! is
+; required {1,1}; stacks carry explicit {n,m} on the value token.
+; Every line below parses under the current parser (checked 2026-07-29;
+; sole anomaly: NoDialectsLoaded on the envelope, the expected interim).
+
+|schema[decision-record] :version 0.1 :status proposed
+  A |decision is the ledger's record grain. Prose inside a schema is
+  documentation; the dialect types it TEXT and otherwise ignores it.
+
+  |decision+[key!].open
+    :date! <temporal>
+    :by! str
+    :status! str
+    :confidence float
+    :supersedes str{0,2}
+    |reason!
+    |impact?
+    |ref{0,7}
