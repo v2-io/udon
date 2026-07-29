@@ -739,3 +739,61 @@
     demand map (and may land in 0.9.1 itself per the addendum, if it
     earns it), and the evidence-channel guard wants a phrasing cheap
     enough to ride in spike briefs.
+
+|thought[O18].invasive-change-window-is-now :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context Immediately following O17, continuing to beat the point; the ? election as the live instance.
+  !:quote:
+    This is our least expensive time to make a principled *invasive*
+    change to udon. It litterally just requires enough proof that it's
+    principled and coherent and requires it not drowning in the noise
+    in the meantime. The final cost-- a few lines to the 0.9.1 spec.
+    and a few minute's of Sonnet's time rewriting some fixtures
+    differently than it expected in the future. At no future point
+    will it be easy to be "correct" like it is right now. (to continue
+    to beat the point)
+  |assessment
+    Endorsed -- the economics are self-evident and even steeper than
+    stated, because deferral compounds on three curves at once:
+    consumers accrue (each future consumer multiplies a change into a
+    migration), corpora accrete (each document written under the wrong
+    spelling becomes retrofit surface -- the doc-store report's hardest
+    lesson), and imitation propagates (O6/O11 -- exemplars teach every
+    reader the deferred-wrong pattern with deliberateness unmarked).
+    TST states the same asymmetry as the turnover multiplier: corrected
+    now, paid once; deferred, paid per future reader. The disposition
+    consequence, paired with O17: when territory work produces a
+    principled, coherent answer that wants a core change, the change
+    lands in 0.9.1 now (C8's clause) -- not staged for 0.10, not routed
+    around, not held for demand volume. The bar is proof of
+    principledness and coherence, nothing else. Caveat carried: this is
+    not license for the reflex O17 corrects (grammar-convenience
+    reasoning, or my earlier nail-down-the-steward-calls push) -- the
+    bar is a demand/theory-side proof, and the noise-drowning guard is
+    a recorded candidate with its proof, register, and revisit trigger
+    attached (the tribunal shape), not a hasty ruling.
+  |needs
+    A home discipline so candidates do not drown: likely FOR-JOSEPH
+    entries carrying class invasive-change with the principled proof
+    attached, or a short section in OPEN -- whichever surface Joseph
+    actually re-reads; deciding that is itself a one-line steward call.
+    First live candidate: the ? election, when the schema/dialect
+    design produces its proof.
+
+|addendum[O18a] :to O18 :by joseph :date 2026-07-29
+  !:quote:
+    I've been very purposefully driving the sessions and work right *at*
+    these points-- the canaries that I mentioned at the beginning of
+    this session that need to fall out of principles instead of fiat
+    via grammar affordances. My whole work has been trying to find out
+    where early decisions weren't as principled as they tried to be and
+    to truthify them, so I get very frustrated when agents continue to
+    assert the past as an authority, no matter how "accurate" they are.
+  Names what O17/O18 are instances of: the set-aside questions are
+  steered-at deliberately, and their falling-out-of-principles is the
+  canary that the territory work is working -- closing them by fiat or
+  by incumbency trips the gauge by hand. The sharpest clause is "no
+  matter how accurate": a correct measurement of the past confers no
+  normative standing on it, which is the evidence-channel guard (O17
+  assessment, type-algebra N6) stated in steward words. Truthification
+  of under-principled early decisions is the work itself; the past is
+  its material, never its judge.
