@@ -1,0 +1,88 @@
+; FOR-JOSEPH — the running thoughts/decisions-to-run-by-you queue.
+; Started 2026-07-28 at Joseph's request. Expectation set by him: no
+; satisfying YES/NO at this stage — he uses these to surface issues with
+; the decisions either way (more brainstorm fuel, DISCUSSION-THOUGHTS
+; style). Items get :status open until his reaction lands; reactions
+; route to spikes/schema-review/DISCUSSION-THOUGHTS.udon or wherever
+; they belong. Sibling registers: OPEN.md (formal steward calls),
+; spikes/schema-review/DISCUSSION-THOUGHTS.udon (his brainstorms).
+
+|item[staging-question] :date 2026-07-28 :status open :class direction
+  The meta-call under the fixture question: do the schema / paths /
+  dialects / types / embeds territories force any IMMEDIATE change to
+  0.9.1, or do they all stage for future versions? Joseph's stated
+  posture: the spec should be written better than the old one — ready
+  to CHANGE, not ready to reimplement yet; avoid premature
+  calcification. Either way has issues worth his eye: staging
+  everything keeps 0.9.1 clean but lets the four maps drift from the
+  text they cite; immediate changes calcify exactly the territory the
+  spikes haven't run. A middle route: 0.9.1 stays frozen, and each
+  territory map carries a would-change register (what 0.9.1 sentences
+  it would touch, if ratified) so the future merge is pre-staged
+  without any text moving.
+
+|item[fixture-posture] :date 2026-07-28 :status open :class deferred-lean
+  Given staging-question, the full 0.9.1 fixture suite is deferred —
+  the interesting fixtures wait on that call, and the boring ones would
+  mostly mirror the 0.9 groups. What might still be worth having now:
+  a THIN descriptive group pinning only the settled core (TUTORIAL
+  scope), framed per S2, as reading-companion rather than gate — the
+  concretely-sitting-next-to-it affordance Joseph named, without
+  calcifying anything open.
+
+|item[steward-calls] :date 2026-07-28 :status open :class queue
+  Eleven formal calls queued in OPEN.md. Highest leverage per minute:
+  REF-SLASH and REF-BRACKET (gate the include-primitive direction),
+  ROOT-BASE (gates whole-document schema; one instance of the
+  element-centric/root-silent defect class worth a systematic sweep),
+  LINEAGE (who owns identity-over-time). Also pending: SEMI-BASE, S4,
+  FIX-FRAME, N-jargon, IND/IND-2, GOV-REGIME, DEBT-DISCHARGE.
+  Offer: assemble the top four into one adjudication packet with
+  three-way facts each, for a single sitting.
+
+|item[pass-1-deletion] :date 2026-07-28 :status open :class housekeeping
+  spikes/schema-ideation/pass-1-explication.md — the schema agent's O2
+  self-assessment says safely deletable (everything substantive
+  migrated; remainder is scaffolding vocabulary); retained only because
+  you asked. Delete after your comparison, or keep as the record of the
+  register lesson?
+
+|item[priorities-bridge] :date 2026-07-28 :status open :class proposal
+  Your "I don't know what that would look like": concretely, one
+  document — each demand cluster from the tooling corpus (guarded edit,
+  addressing, context economy, persistence, ...) crossed against the
+  four new supply maps, yielding per-demand: what supply now exists,
+  what spike would close the gap, what it waits on, and a rank by
+  (demand strength x supply readiness). Where the old
+  priorities-and-spike-agenda predates tonight, this supersedes it.
+  Precondition I hold myself to: reading the seven deep reports first
+  (my demand-side picture is currently secondhand). Deliverable shape:
+  udon-needs/02-tooling-needs/ sibling or v2/spikes/ — your lean
+  welcome.
+
+|item[reader-declaration-experiment] :date 2026-07-28 :status open :class proposal
+  The concrete answer to "what are you proposing" on O5's reader-half
+  (the architecture's least-supported load-bearing assumption: that
+  consumers will DECLARE what they read). Hand-rolled, a day: take the
+  three or four real consumers on this machine (vivarium bin/check,
+  asf extract-findings, the OUTLINE generator, relata emit), write
+  each one's read-declaration by hand (which elements/attributes/paths
+  it consumes), then check three things — is declaring cheap and
+  natural; would drift-detection against these declarations have
+  caught real past incidents (the renamed slug); do they feel
+  maintainable or like a fifth language. Evidence either way feeds O5
+  before anything is built on it.
+
+|item[tst-grounding-agent] :date 2026-07-28 :status launched :class commission
+  Per your #3: exploration agent launched (opus) — starting from the
+  asf dossier in udon-needs syntheses, then the TST segments whole plus
+  adjacent theory and the udon-needs segments that elaborate them.
+  Charter: what TST already supplies for the payment-time/four-whens,
+  strata-clocks, co-location/coupling, and expand-contract questions —
+  and what mathematics is genuinely missing. Report expected at
+  spikes/tst-grounding/.
+
+|item[commit-cadence] :date 2026-07-28 :status adopted :class norm
+  Committing as we go, coherent commits per body of work. Five landed
+  for this session (b1d060c..e2b3fcf); this file and successors ride
+  the next one.
