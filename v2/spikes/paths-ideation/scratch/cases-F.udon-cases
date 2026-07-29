@@ -1,0 +1,39 @@
+#= F1 doubled-@ sigil with pipes and colons
+|el :p @@config|database[primary]:host :host x
+
+---
+#= F2 doubled-@ sigil, block attribute line
+|el
+  :p @@intent[311]:status
+
+---
+#= F3 doubled-@ in a list item
+|el :xs [@@a|b @@c]
+
+---
+#= F4 doubled-@ in an identity bracket
+|el[@@a|b] :x 1
+
+---
+#= F5 doubled-@ inside an inline element
+|p see |{at :path @@intent[311]:status} ok
+
+---
+#= F6 tilde sigil
+|el :p ~intent[311]:status :host x
+
+---
+#= F7 percent sigil
+|el :p %intent[311]:status :host x
+
+---
+#= F8 slash-slash sigil
+|el :p //intent[311]:status :host x
+
+---
+#= F9 caret sigil
+|el :p ^intent[311]:status :host x
+
+---
+#= F10 doubled-@ in the envelope
+|el :p <path:@@intent[311]:status>

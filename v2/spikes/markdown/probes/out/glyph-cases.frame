@@ -1,0 +1,111 @@
+g01-gfm-table-spaced	30
+| a | b |
+|---|---|
+| 1 | 2 |
+
+g02-gfm-table-tight	18
+|a|b|
+|-|-|
+|1|2|
+
+g03-gfm-table-tight-in-element	21
+|sec
+  |a|b|
+  |-|-|
+
+g04-gfm-mention	27
+@alice please review this.
+
+g05-gfm-mention-midprose	26
+Hey @alice please review.
+
+g06-semicolon-french	32
+Voici un exemple ; et la suite.
+
+g07-semicolon-tight	28
+Here is a clause; and more.
+
+g08-semicolon-line-start	23
+; not a markdown thing
+
+g09-pandoc-deflist	29
+Term
+
+: The definition here.
+
+g10-colon-key-at-root	11
+:author Jo
+
+g11-emoji-shortcode	20
+I am :smile: today.
+
+g12-md-link-ref-def	20
+[foo]: /url "title"
+
+g13-md-heading	34
+# Heading with : colon and | pipe
+
+g14-md-emphasis	53
+Some **bold** and *em* and `code` and ![img](x.png).
+
+g15-md-blockquote	21
+> quoted line
+> more
+
+g16-md-hr	12
+---
+***
+___
+
+g17-md-autolink	22
+<https://example.com>
+
+g18-html-inline	33
+Text with <br/> and <b>bold</b>.
+
+g19-footnote	27
+Here[^1].
+
+[^1]: The note.
+
+g20-tasklist	22
+- [ ] todo
+- [x] done
+
+g21-wikilink	34
+See [[some-page|label]] for more.
+
+g22-bang-directive-lookalike	21
+!important note here
+
+g23-bang-image	16
+![alt](src.png)
+
+g24-obsidian-callout	23
+> [!note] Title
+> body
+
+g25-frontmatter-yaml	27
+---
+title: Test
+---
+
+# Doc
+
+g26-setext-under-prose	12
+Title
+=====
+
+g27-md-escape-midline	12
+a \* b \_ c
+
+g28-numbered-list	14
+1. one
+2. two
+
+g29-mention-at-line-start-list	12
+- @alice hi
+
+g30-pipe-then-ident-midprose	23
+see |table for details
+

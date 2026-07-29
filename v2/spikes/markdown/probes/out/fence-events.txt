@@ -1,0 +1,411 @@
+### f01-fence-plain
+--- input:
+```
+code
+```
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "code\n"
+  FreeformEnd @ 13..13
+  Text "after\n"
+
+### f02-open4-close3
+--- input:
+````
+code
+```
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "`\n"
+  Text "code\n"
+  FreeformEnd @ 14..14
+  Text "after\n"
+
+### f03-open3-inner4
+--- input:
+```
+code
+````
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "code\n"
+  Text "````\n"
+  Text "after\n"
+  WARNING UnclosedFreeform
+  FreeformEnd @ 20..20
+
+### f04-open4-inner3-close4
+--- input:
+````
+outer
+```
+inner
+```
+outer2
+````
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "`\n"
+  Text "outer\n"
+  FreeformEnd @ 15..15
+  Text "inner\n"
+  FreeformStart @ 24..24
+  Text "outer2\n"
+  Text "````\n"
+  Text "after\n"
+  WARNING UnclosedFreeform
+  FreeformEnd @ 43..43
+
+### f05-closer-indented
+--- input:
+```
+code
+    ```
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "code\n"
+  FreeformEnd @ 17..17
+  Text "after\n"
+
+### f06-fence-deeper-than-base
+--- input:
+|sec
+  prose line
+    ```
+    not-a-fence?
+    ```
+
+--- events:
+  ElementStart @ 1..1
+  Name "sec" @ 1..4
+  Text "prose line\n"
+  Text "  ```\n"
+  Text "  not-a-fence?\n"
+  Text "  ```\n"
+  ElementEnd @ 51..51
+
+### f07-tilde-fence
+--- input:
+~~~
+code
+~~~
+after
+
+--- events:
+  Text "~~~\n"
+  Text "code\n"
+  Text "~~~\n"
+  Text "after\n"
+
+### f08-fence-info-string
+--- input:
+```udon
+|el :a 1
+```
+
+--- events:
+  FreeformStart @ 3..3
+  Text "udon\n"
+  Text "|el :a 1\n"
+  FreeformEnd @ 21..21
+
+### f09-fence-after-prose
+--- input:
+some prose ```
+next line
+
+--- events:
+  Text "some prose ```\n"
+  Text "next line\n"
+
+### f10-blockverbatim-holds-mdfence
+--- input:
+|doc
+  !:markdown:
+    Here is code:
+    ```js
+    var x = 1;
+    ```
+  after-verbatim
+
+--- events:
+  ElementStart @ 1..1
+  Name "doc" @ 1..4
+  DirectiveStart @ 8..8
+  Name "markdown" @ 9..17
+  Raw "" @ 17..17
+  RawContent "Here is code:\n" @ 23..37
+  RawContent "```js\n" @ 41..47
+  RawContent "var x = 1;\n" @ 51..62
+  RawContent "```\n" @ 66..70
+  DirectiveEnd @ 72..72
+  Text "after-verbatim\n"
+  ElementEnd @ 87..87
+
+### f11-blockverbatim-holds-udon-in-mdfence
+--- input:
+|doc
+  !:markdown:
+    ```udon
+    |el :a 1
+    ```
+  after-verbatim
+
+--- events:
+  ElementStart @ 1..1
+  Name "doc" @ 1..4
+  DirectiveStart @ 8..8
+  Name "markdown" @ 9..17
+  Raw "" @ 17..17
+  RawContent "```udon\n" @ 23..31
+  RawContent "|el :a 1\n" @ 35..44
+  RawContent "```\n" @ 48..52
+  DirectiveEnd @ 54..54
+  Text "after-verbatim\n"
+  ElementEnd @ 69..69
+
+### f12-udonfence-holds-mdfence
+--- input:
+```
+Here is code:
+```js
+var x = 1;
+```
+after
+
+--- events:
+  FreeformStart @ 3..3
+  Text "Here is code:\n"
+  Text "```js\n"
+  Text "var x = 1;\n"
+  FreeformEnd @ 39..39
+  Text "after\n"
+
+### f13-inline-verbatim-backticks
+--- input:
+|p The code !{:md: `x = 1`} runs.
+
+--- events:
+  ElementStart @ 1..1
+  Name "p" @ 1..2
+  Text "The code "
+  DirectiveStart @ 15..15
+  Name "md" @ 15..17
+  Raw "" @ 18..18
+  RawContent "`x = 1`" @ 19..26
+  DirectiveEnd @ 27..27
+  Text " runs.\n"
+  ElementEnd @ 34..34
+
+### f14-inline-verbatim-triple
+--- input:
+|p Sample !{:md: ```js x ```} done.
+
+--- events:
+  ElementStart @ 1..1
+  Name "p" @ 1..2
+  Text "Sample "
+  DirectiveStart @ 13..13
+  Name "md" @ 13..15
+  Raw "" @ 16..16
+  RawContent "```js x ```" @ 17..28
+  DirectiveEnd @ 29..29
+  Text " done.\n"
+  ElementEnd @ 36..36
+
+### f20-verbatim>mdfence>udon-verbatim
+--- input:
+|doc
+  !:markdown:
+    Example doc:
+    ```udon
+    |example
+      !:elixir:
+        IO.puts("hi")
+    ```
+  tail
+
+--- events:
+  ElementStart @ 1..1
+  Name "doc" @ 1..4
+  DirectiveStart @ 8..8
+  Name "markdown" @ 9..17
+  Raw "" @ 17..17
+  RawContent "Example doc:\n" @ 23..36
+  RawContent "```udon\n" @ 40..48
+  RawContent "|example\n" @ 52..61
+  RawContent "  !:elixir:\n" @ 65..77
+  RawContent "    IO.puts(\"hi\")\n" @ 81..99
+  RawContent "```\n" @ 103..107
+  DirectiveEnd @ 109..109
+  Text "tail\n"
+  ElementEnd @ 114..114
+
+### f21-udonfence>mdfence>udon-verbatim
+--- input:
+```
+Example doc:
+```udon
+|example
+  !:elixir:
+    IO.puts("hi")
+```
+```
+tail
+
+--- events:
+  FreeformStart @ 3..3
+  Text "Example doc:\n"
+  Text "```udon\n"
+  Text "|example\n"
+  Text "  !:elixir:\n"
+  Text "    IO.puts(\"hi\")\n"
+  FreeformEnd @ 68..68
+  FreeformStart @ 71..71
+  Text "tail\n"
+  WARNING UnclosedFreeform
+  FreeformEnd @ 77..77
+
+### f22-verbatim>mdfence4>udon-fence3
+--- input:
+|doc
+  !:markdown:
+    ````udon
+    |el
+      ```
+      raw
+      ```
+    ````
+  tail
+
+--- events:
+  ElementStart @ 1..1
+  Name "doc" @ 1..4
+  DirectiveStart @ 8..8
+  Name "markdown" @ 9..17
+  Raw "" @ 17..17
+  RawContent "````udon\n" @ 23..32
+  RawContent "|el\n" @ 36..40
+  RawContent "  ```\n" @ 44..50
+  RawContent "  raw\n" @ 54..60
+  RawContent "  ```\n" @ 64..70
+  RawContent "````\n" @ 74..79
+  DirectiveEnd @ 81..81
+  Text "tail\n"
+  ElementEnd @ 86..86
+
+### f30-md-doc-with-udon-fence
+--- input:
+# Heading
+
+Some prose.
+
+```udon
+|article :author Jo
+  Prose inside.
+```
+
+More prose.
+
+--- events:
+  Text "# Heading\n"
+  BlankLine (== "\n")
+  Text "Some prose.\n"
+  BlankLine (== "\n")
+  FreeformStart @ 27..27
+  Text "udon\n"
+  Text "|article :author Jo\n"
+  Text "  Prose inside.\n"
+  FreeformEnd @ 72..72
+  BlankLine (== "\n")
+  Text "More prose.\n"
+
+### f31-md-doc-udon-fence-containing-udon-fence
+--- input:
+# Heading
+
+````udon
+|el
+  ```
+  inner raw
+  ```
+````
+
+After.
+
+--- events:
+  Text "# Heading\n"
+  BlankLine (== "\n")
+  FreeformStart @ 14..14
+  Text "`udon\n"
+  Text "|el\n"
+  FreeformEnd @ 30..30
+  Text "inner raw\n"
+  FreeformStart @ 47..47
+  Text "````\n"
+  Text "\n"
+  Text "After.\n"
+  WARNING UnclosedFreeform
+  FreeformEnd @ 61..61
+
+### f32-md-doc-udon-fence-containing-blockverbatim
+--- input:
+# Heading
+
+```udon
+|example
+  !:elixir:
+    IO.puts("hi")
+```
+
+After.
+
+--- events:
+  Text "# Heading\n"
+  BlankLine (== "\n")
+  FreeformStart @ 14..14
+  Text "udon\n"
+  Text "|example\n"
+  Text "  !:elixir:\n"
+  Text "    IO.puts(\"hi\")\n"
+  FreeformEnd @ 62..62
+  BlankLine (== "\n")
+  Text "After.\n"
+
+### f40-unclosed-udon-fence
+--- input:
+```
+code without closer
+
+--- events:
+  FreeformStart @ 3..3
+  Text "code without closer\n"
+  WARNING UnclosedFreeform
+  FreeformEnd @ 24..24
+
+### f41-unclosed-blockverbatim
+--- input:
+|doc
+  !:sh:
+    echo hi
+
+--- events:
+  ElementStart @ 1..1
+  Name "doc" @ 1..4
+  DirectiveStart @ 8..8
+  Name "sh" @ 9..11
+  Raw "" @ 11..11
+  RawContent "echo hi\n" @ 17..25
+  DirectiveEnd @ 25..25
+  ElementEnd @ 25..25
+

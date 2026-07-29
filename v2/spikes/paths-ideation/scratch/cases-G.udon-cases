@@ -1,0 +1,38 @@
+#= G1 doubled-@ WITH a [key] in a list item
+|el :xs [@@intent[311]:status @@c]
+
+---
+#= G2 doubled-@ WITH a [key] in an identity bracket
+|el[@@intent[311]:status] :x 1
+
+---
+#= G3 brace-delimited key instead of bracket, in a list
+|el :xs [@@intent{311}:status @@c]
+
+---
+#= G4 paren-delimited key, in a list
+|el :xs [@@intent(311):status @@c]
+
+---
+#= G5 paren-delimited key, identity bracket
+|el[@@intent(311):status] :x 1
+
+---
+#= G6 paren-delimited key, element-rooted with trailing attr
+|el :p @@intent(311):status :host x
+
+---
+#= G7 paren-delimited key, inline element
+|p see |{at :path @@intent(311):status} ok
+
+---
+#= G8 brace-delimited key, inline element (brace balance hazard)
+|p see |{at :path @@intent{311}:status} ok
+
+---
+#= G9 slash-separated key (no bracket at all), list item
+|el :xs [@@intent/311:status @@c]
+
+---
+#= G10 equals-separated key, list item
+|el :xs [@@intent=311:status @@c]

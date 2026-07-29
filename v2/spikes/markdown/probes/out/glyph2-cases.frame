@@ -1,0 +1,66 @@
+h01-docusaurus-admonition	23
+:::note
+Body here.
+:::
+
+h02-pymd-admonition	24
+!!! note
+    Body here.
+
+h03-myst-directive	20
+```{note}
+Body.
+```
+
+h04-bang-bracket-image	14
+![alt](x.png)
+
+h05-bang-word-midprose	28
+This is !important to note.
+
+h06-at-line-start-email	28
+@example.com is the domain.
+
+h07-pipe-tight-in-content-phase	23
+|sec text tail
+  |a|b|
+
+h08-md-table-in-prose-region	39
+|doc
+  Intro.
+
+  | a | b |
+  |---|---|
+
+h09-liquid-tag	28
+{% raw %}
+text
+{% endraw %}
+
+h10-jekyll-interp	27
+Value is {{ site.title }}.
+
+h11-udon-interp-lookalike	28
+Value is !{{ site.title }}.
+
+h12-md-bold-with-brace	26
+**bold |{ not element }**
+
+h13-hugo-shortcode	27
+{{< figure src="x.png" >}}
+
+h14-mdx-component	29
+<Note type="tip">Body</Note>
+
+h15-md-list-dash-then-pipe	12
+- | a | b |
+
+h16-semicolon-framed-in-prose	30
+See the docs ; then continue.
+
+h17-semicolon-framed-in-table	14
+| a ; b | c |
+
+h18-atx-with-trailing-semicolon	19
+# Title ; subtitle
+

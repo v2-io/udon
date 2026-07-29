@@ -1,0 +1,104 @@
+#= D1 sigil-free relational path, element-rooted, followed by another attr
+|el :p intent[311]:status :host x
+
+---
+#= D2 sigil-free relational path, block attribute line
+|el
+  :p intent[311]:status
+
+---
+#= D3 sigil-free relational path, list item
+|el :xs [intent[311]:status other[1]]
+
+---
+#= D4 sigil-free relational path, inline element interior
+|p see |{at :path intent[311]:status} ok
+
+---
+#= D5 sigil-free relational path, identity bracket
+|el[intent[311]:status] :x 1
+
+---
+#= D6 sigil-free relational path, envelope interior
+|el :p <path:intent[311]:status>
+
+---
+#= D7 sigil-free with traits and attr steps and a ref-follow
+|el :p intent[311].a.b:fed-by@:health :host x
+
+---
+#= D8 sigil-free fused locate+descend
+|el :p ⊤/spec/CORE.md#section[nesting-rule]:title :host x
+
+---
+#= D9 does a bare token stop at < ?
+|el :p abc<def>ghi
+
+---
+#= D10 does a bare token stop at } inside an inline element
+|p see |{at :path a}b} ok
+
+---
+#= D11 does a bare token stop at ] inside a list
+|el :xs [a]b c]
+
+---
+#= D12 does a bare token stop at ] inside an identity bracket
+|el[a]b] :x 1
+
+---
+#= D13 deferred body: single |element under a bare key (node value?)
+|el
+  :p
+    |database[primary]
+
+---
+#= D14 deferred body: || under a bare key
+|el
+  :p
+    ||database[primary]
+
+---
+#= D15 deferred body: sigil-free path
+|el
+  :p
+    intent[311]:status
+
+---
+#= D16 deferred body: multi-line path continuation
+|el
+  :p
+    intent[311]
+    :status
+
+---
+#= D17 sigil-free path with a space (the one hard break)
+|el :p intent[a b]:status
+
+---
+#= D18 sigil-free path with a framed semicolon
+|el :p intent[a ; b]:status
+
+---
+#= D19 sigil-free path with a * wildcard segment
+|el :p *[311]:status
+
+---
+#= D20 sigil-free path with a leading . (trait-only)
+|el :p .intro:title
+
+---
+#= D21 a path-shaped bare token that collides with a number
+|el :p 311[a]
+
+---
+#= D22 a path-shaped bare token that collides with a keyword
+|el :p true[a]
+
+---
+#= D23 sigil-free path, deep tree descent with /
+|el :p article/section/para[3]
+
+---
+#= D24 sigil-free path in an interpolation
+|el :p !{{ at(intent[311]:status) }}

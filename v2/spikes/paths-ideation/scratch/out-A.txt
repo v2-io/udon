@@ -1,0 +1,335 @@
+### [1] A1 baseline: quoted path, element-rooted line (what the corpus does today)
+INPUT:
+    |at :path "||intent[311]:status"
+EVENTS:
+    ElementStart @ 1..1
+    Name "at" @ 1..3
+    Attr "path" @ 5..9
+    StringValue "||intent[311]:status" @ 11..31
+    ElementEnd @ 33..33
+
+### [2] A2 bare multi-segment ref, element-rooted, nothing after
+INPUT:
+    |el :db @config|database[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "db" @ 5..7
+    Reference "config" @ 9..15
+    ElementStart @ 16..16
+    Name "database" @ 16..24
+    Attr "$key" @ 32..32
+    BareValue "primary" @ 25..32
+    ElementEnd @ 34..34
+    ElementEnd @ 34..34
+
+### [3] A3 bare multi-segment ref, element-rooted, attribute after
+INPUT:
+    |el :db @config|database[primary] :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "db" @ 5..7
+    Reference "config" @ 9..15
+    ElementStart @ 16..16
+    Name "database" @ 16..24
+    Attr "$key" @ 32..32
+    BareValue "primary" @ 25..32
+    Attr "host" @ 35..39
+    BareValue "x" @ 40..41
+    ElementEnd @ 42..42
+    ElementEnd @ 42..42
+
+### [4] A4 leading || relational, element-rooted
+INPUT:
+    |at :path ||intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "at" @ 1..3
+    Attr "path" @ 5..9
+    Text "|" @ 10..11
+    ElementStart @ 12..12
+    Name "intent" @ 12..18
+    Attr "$key" @ 22..22
+    Integer "311" @ 19..22
+    Text ":status\n" @ 23..31
+    ElementEnd @ 31..31
+    Text "" @ 31..31
+    ElementEnd @ 31..31
+
+### [5] A5 single | leading, element-rooted
+INPUT:
+    |at :path |intent[311]
+EVENTS:
+    ElementStart @ 1..1
+    Name "at" @ 1..3
+    Attr "path" @ 5..9
+    ElementStart @ 11..11
+    Name "intent" @ 11..17
+    Attr "$key" @ 21..21
+    Integer "311" @ 18..21
+    ElementEnd @ 23..23
+    ElementEnd @ 23..23
+
+### [6] A6 ref with attr step only (no | step)
+INPUT:
+    |el :p @config:database
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "config" @ 8..14
+    Attr "database" @ 15..23
+    Error MissingAttributeValue @ 23..23
+    Nil "" @ 23..23
+    ElementEnd @ 24..24
+
+### [7] A7 ref then attr-step then more attrs
+INPUT:
+    |el :p @config:database :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "config" @ 8..14
+    Attr "database" @ 15..23
+    Error MissingAttributeValue @ 24..24
+    Nil "" @ 24..24
+    Attr "host" @ 25..29
+    BareValue "x" @ 30..31
+    ElementEnd @ 32..32
+
+### [8] A8 trailing ref-follow  :fed-by@
+INPUT:
+    |el :p @proc:fed-by@:health
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "proc" @ 8..12
+    Attr "fed-by" @ 13..19
+    BareValue "@:health" @ 19..27
+    ElementEnd @ 28..28
+
+### [9] A9 trait filter segments
+INPUT:
+    |el :p @proc.a.b
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "proc.a.b" @ 8..16
+    ElementEnd @ 17..17
+
+### [10] A10 block attribute line, bare multi-segment
+INPUT:
+    |el
+      :db @config|database[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "db" @ 7..9
+    Reference "config" @ 11..17
+    Warning "AttributeSecondValue" @ 17..17
+    Attr "db" @ 7..9
+    ElementStart @ 18..18
+    Name "database" @ 18..26
+    Attr "$key" @ 34..34
+    BareValue "primary" @ 27..34
+    ElementEnd @ 36..36
+    ElementEnd @ 36..36
+
+### [11] A11 block attribute line, multi-segment + trailing
+INPUT:
+    |el
+      :db @config|database[primary] extra words
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "db" @ 7..9
+    Reference "config" @ 11..17
+    Warning "AttributeSecondValue" @ 17..17
+    Attr "db" @ 7..9
+    ElementStart @ 18..18
+    Name "database" @ 18..26
+    Attr "$key" @ 34..34
+    BareValue "primary" @ 27..34
+    Text "extra words\n" @ 36..48
+    ElementEnd @ 48..48
+    ElementEnd @ 48..48
+
+### [12] A12 block attribute line, leading ||
+INPUT:
+    |el
+      :path ||intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "path" @ 7..11
+    Text "||intent[311]:status\n" @ 12..33
+    ElementEnd @ 33..33
+
+### [13] A13 list items containing refs with | steps
+INPUT:
+    |el :xs [@a|b @c]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    Reference "a" @ 10..11
+    BareValue "|b" @ 11..13
+    Reference "c" @ 15..16
+    ArrayEnd @ 17..17
+    ElementEnd @ 18..18
+
+### [14] A14 list items, ref with key
+INPUT:
+    |el :xs [@a[1] @c]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    Reference "a[1]" @ 10..14
+    Reference "c" @ 16..17
+    ArrayEnd @ 18..18
+    ElementEnd @ 19..19
+
+### [15] A15 prose then a path mid-line
+INPUT:
+    |p see @config|database[primary] for details
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see @config" @ 3..14
+    ElementStart @ 15..15
+    Name "database" @ 15..23
+    Attr "$key" @ 31..31
+    BareValue "primary" @ 24..31
+    Text "for details\n" @ 33..45
+    ElementEnd @ 45..45
+    Text "" @ 45..45
+    ElementEnd @ 45..45
+
+### [16] A16 inline element interior, bare path value
+INPUT:
+    |p see |{at :path ||intent[311]:status} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    Text "" @ 18..18
+    Text "|" @ 18..19
+    Text "|intent[311]:status" @ 19..38
+    EmbeddedEnd @ 39..39
+    Text " ok\n" @ 39..43
+    ElementEnd @ 43..43
+
+### [17] A17 inline element interior, ref with | step
+INPUT:
+    |p see |{at :path @config|database} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    Reference "config" @ 19..25
+    Text "" @ 25..25
+    Text "|database" @ 25..34
+    EmbeddedEnd @ 35..35
+    Text " ok\n" @ 35..39
+    ElementEnd @ 39..39
+
+### [18] A18 envelope carrying a path
+INPUT:
+    |el :p <path:||intent[311]:status>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "<path:||intent[311]:status>" @ 7..34
+    Warning "NoDialectsLoaded" @ 34..34
+    ElementEnd @ 35..35
+
+### [19] A19 envelope carrying a path with a > inside? (comparison predicate)
+INPUT:
+    |el :p <path:||intent[age>30]>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "<path:||intent[age>" @ 7..26
+    Warning "NoDialectsLoaded" @ 26..26
+    Text "30]>\n" @ 26..31
+    ElementEnd @ 31..31
+
+### [20] A20 identity bracket containing a path-ish value
+INPUT:
+    |el[@config|database] :x 1
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "$partial-key" @ 11..11
+    Reference "config" @ 5..11
+    Warning "UnclosedIdentityKey" @ 11..11
+    Text "" @ 11..11
+    ElementStart @ 12..12
+    Name "database" @ 12..20
+    Text "] :x 1\n" @ 20..27
+    ElementEnd @ 27..27
+    Text "" @ 27..27
+    ElementEnd @ 27..27
+
+### [21] A21 wildcard trait segment
+INPUT:
+    |el :p @*.intro
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "@*.intro" @ 7..15
+    ElementEnd @ 16..16
+
+### [22] A22 path-to with slashes (namespacing collision)
+INPUT:
+    |el :p ⊤/spec/CORE.md
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "⊤/spec/CORE.md" @ 7..23
+    ElementEnd @ 24..24
+
+### [23] A23 fused locate+descend sketch
+INPUT:
+    |el :p @[core://components/another.udon # main-findings]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "[core://components/another.udon # main-findings]" @ 8..56
+    ElementEnd @ 57..57
+
+### [24] A24 the wikilink-ish fragment compose
+INPUT:
+    |el :p @⊤/spec/CORE.md#||section[nesting-rule]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "⊤" @ 8..11
+    Text "/spec/CORE.md#|" @ 11..26
+    ElementStart @ 27..27
+    Name "section" @ 27..34
+    Attr "$key" @ 47..47
+    BareValue "nesting-rule" @ 35..47
+    ElementEnd @ 49..49
+    Text "" @ 49..49
+    ElementEnd @ 49..49
+

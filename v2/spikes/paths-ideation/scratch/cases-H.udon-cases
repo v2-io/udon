@@ -1,0 +1,41 @@
+#= H1 paren key, block attribute line (C2)
+|el
+  :p @@intent(311):status
+
+---
+#= H2 envelope path, block attribute line (C2)
+|el
+  :p <path:||intent[311]:status>
+
+---
+#= H3 quoted path, block attribute line (C2)
+|el
+  :p "||intent[311]:status"
+
+---
+#= H4 interpolation as a list item (C4)
+|el :xs [!{{a}} b]
+
+---
+#= H5 hash sigil in a list item (C4)
+|el :xs [#intent(311) #c]
+
+---
+#= H6 hash sigil in identity bracket (C5)
+|el[#intent(311):status] :x 1
+
+---
+#= H7 hash sigil inside inline element (C3)
+|p see |{at :path #intent(311):status} ok
+
+---
+#= H8 caret sigil in a list item (C4)
+|el :xs [^intent(311) ^c]
+
+---
+#= H9 tilde sigil in identity bracket (C5)
+|el[~intent(311):status] :x 1
+
+---
+#= H10 percent sigil inside inline element (C3)
+|p see |{at :path %intent(311):status} ok

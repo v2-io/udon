@@ -189,6 +189,52 @@ fences nest — UDON-in-md-fence (B2), md-code-in-UDON-blob, and the ugly middle
 produce the *table of what survives*. The repo already hit this hard enough to
 need `.fmt-mdignore` protection; that pain is evidence the table is worth forcing.
 
+### 3a. Both probes have now been run — *measured*, 2026-07-28
+
+Added after the fact; this section is **evidence**, and it does not re-rule
+anything above. Full reports:
+[`commonmark-non-conflict-table.md`](commonmark-non-conflict-table.md) ·
+[`fence-knot-table.md`](fence-knot-table.md) · instrument
+[`probes/`](probes/). Measured: the full CommonMark corpus (652 examples, spec
+0.31.2) run through the reference parser recognizes zero elements, attributes,
+comments, directives, references, or inline forms — the only UDON structure any
+CommonMark construct triggers is the **fence**. 76.2% of examples survive
+byte-exact at document root, 86.7% when embedded in a UDON element (the real
+A1/A3 surface).
+
+Two limits on that, since they bear on how far the rows below travel: the
+measurement covers **recognition only**, not rendering (CARVEOUTS **MD**/S16
+untouched); and **CommonMark's corpus contains no GFM** — no tables, mentions,
+task lists, or strikethrough — so three of the five rows below were probed by
+hand and are sampled by an agent's judgment of what is common, not
+corpus-derived.
+
+Five clashes are **absent from the table above**, four of them at line start,
+all *decided* by CORE rather than open:
+
+| Glyph / construct | UDON (CORE) does | Status |
+|---|---|---|
+| line-initial `\` (markdown's own escape: `\*not em*`, `\## foo`) | **consumed** at Structure Position; markdown loses one backslash. 11/652 corpus cases. Mid-line `\` is safe. | *decided* (CORE §4) — **measured** |
+| tight table `\|a\|b\|` (no spaces) | header row opens an **element** named `a`; delimiter/data rows survive (guard fails on `-`/digits) — so it breaks *partially and silently* | *decided* (CORE §3) — **narrows the pipe-space row above** |
+| line-initial `@` (GFM mention, bare domain) | opens a **reference**; token leaves the text stream. Mid-prose `@alice` is safe. | *decided* (CORE §3, §12.2) — **measured** |
+| line-initial `!word` (`!important`) | opens a **directive**. (`![`, `!!!`, `:::` are all safe.) | *decided* (CORE §3, §9) — **measured** |
+| line-initial `:key value` | 0.9.1: Warning + kept as document text. The alpha.2 parser instead drops it from text — DELTAS row 2. | *decided* (0.9.1) / parser lags |
+
+Also **not a glyph, and larger by case count than any row above: indentation**
+(107 root / 49 embedded cases of 652 turn on it). Markdown
+gives leading whitespace semantics (4-space code blocks, list continuation
+columns); UDON treats it as geometry. This table is glyph-shaped and has no row
+for whitespace; on the evidence it should.
+
+**Two divergences were found and are *not* resolved here** (three-way facts in
+the reports; steward calls): (1) **document-root text has no content base** —
+inside an element CORE §7.2 is honored exactly, at root all leading whitespace
+is silently dropped and CORE §7.2 never states the root case; (2) **the framed
+sameline comment ` ; `** — CORE §8 says it comments in block text at the content
+base, the parser only does so on an element's sameline tail. (2) decides whether
+` ; ` is a live hazard row in this very table: markdown prose containing " ; "
+would be silently truncated under CORE-as-written, and is safe under the parser.
+
 ---
 
 ## 4. Prior art to mine (so a spike builds on, not over)

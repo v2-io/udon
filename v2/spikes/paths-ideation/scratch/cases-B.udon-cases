@@ -1,0 +1,122 @@
+#= B1 isolate: bare || in value position, element-rooted, nothing else
+|el :p ||foo
+
+---
+#= B2 same but block attribute line
+|el
+  :p ||foo
+
+---
+#= B3 token then || (bare-token boundary, failed guard)
+|el :p x||foo
+
+---
+#= B4 lone | in value position
+|el :p |
+
+---
+#= B5 | followed by space
+|el :p | foo
+
+---
+#= B6 does / continue a reference name?
+|el :p @config/sub/deep
+
+---
+#= B7 ref name then . then /
+|el :p @acme/widget.trait
+
+---
+#= B8 is the U+22A4 sigil a reference-start?
+|el :p @⊤
+
+---
+#= B9 value-position escape forces flow text
+|el :p \||intent[311]:status
+
+---
+#= B10 value-position escape, ref form
+|el :p \@config|database[primary]
+
+---
+#= B11 escaped path then more attrs (does the line survive?)
+|el :p \@config|database :host x
+
+---
+#= B12 escaped path on a block attribute line
+|el
+  :p \||intent[311]:status
+  :host x
+
+---
+#= B13 bracket-ref with ] inside
+|el :p @[a]b]
+
+---
+#= B14 bracket-ref then trailing attr
+|el :p @[core://x.udon # frag] :host y
+
+---
+#= B15 bracket-ref with a | inside the bracket
+|el :p @[a|b]
+
+---
+#= B16 bracket-ref with a : inside the bracket
+|el :p @[a:b|c]
+
+---
+#= B17 wildcard element segment in value position
+|el :p |*.intro
+
+---
+#= B18 envelope path spanning a newline
+|el :p <path:||intent[311]
+  :status>
+
+---
+#= B19 envelope with nested envelope inside path
+|el :p <path:||intent[<u64:311>]:status>
+
+---
+#= B20 envelope path then another attribute
+|el :p <path:||a|b> :host x
+
+---
+#= B21 envelope path in a list item
+|el :xs [<path:||a|b> <path:||c>]
+
+---
+#= B22 envelope path inside an inline element
+|p see |{at :path <path:||intent[311]:status>} ok
+
+---
+#= B23 envelope path in an identity bracket
+|el[<path:||a|b>] :x 1
+
+---
+#= B24 quoted path in a list item
+|el :xs ["||a|b" "||c"]
+
+---
+#= B25 quoted path in an identity bracket
+|el["||a|b"] :x 1
+
+---
+#= B26 quoted path inside an inline element
+|p see |{at :path "||intent[311]:status"} ok
+
+---
+#= B27 quoted path containing a double quote
+|el :p "||intent[\"0042\"]"
+
+---
+#= B28 quoted path containing a single-quote key
+|el :p "||intent['0042']"
+
+---
+#= B29 comment hazard: framed ; inside a bare path context
+|el :p @a ; b
+
+---
+#= B30 predicate-ish > in a quoted path (safe?)
+|el :p "||intent[age>30]"

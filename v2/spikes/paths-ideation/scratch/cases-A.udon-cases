@@ -1,0 +1,97 @@
+#= A1 baseline: quoted path, element-rooted line (what the corpus does today)
+|at :path "||intent[311]:status"
+
+---
+#= A2 bare multi-segment ref, element-rooted, nothing after
+|el :db @config|database[primary]
+
+---
+#= A3 bare multi-segment ref, element-rooted, attribute after
+|el :db @config|database[primary] :host x
+
+---
+#= A4 leading || relational, element-rooted
+|at :path ||intent[311]:status
+
+---
+#= A5 single | leading, element-rooted
+|at :path |intent[311]
+
+---
+#= A6 ref with attr step only (no | step)
+|el :p @config:database
+
+---
+#= A7 ref then attr-step then more attrs
+|el :p @config:database :host x
+
+---
+#= A8 trailing ref-follow  :fed-by@
+|el :p @proc:fed-by@:health
+
+---
+#= A9 trait filter segments
+|el :p @proc.a.b
+
+---
+#= A10 block attribute line, bare multi-segment
+|el
+  :db @config|database[primary]
+
+---
+#= A11 block attribute line, multi-segment + trailing
+|el
+  :db @config|database[primary] extra words
+
+---
+#= A12 block attribute line, leading ||
+|el
+  :path ||intent[311]:status
+
+---
+#= A13 list items containing refs with | steps
+|el :xs [@a|b @c]
+
+---
+#= A14 list items, ref with key
+|el :xs [@a[1] @c]
+
+---
+#= A15 prose then a path mid-line
+|p see @config|database[primary] for details
+
+---
+#= A16 inline element interior, bare path value
+|p see |{at :path ||intent[311]:status} ok
+
+---
+#= A17 inline element interior, ref with | step
+|p see |{at :path @config|database} ok
+
+---
+#= A18 envelope carrying a path
+|el :p <path:||intent[311]:status>
+
+---
+#= A19 envelope carrying a path with a > inside? (comparison predicate)
+|el :p <path:||intent[age>30]>
+
+---
+#= A20 identity bracket containing a path-ish value
+|el[@config|database] :x 1
+
+---
+#= A21 wildcard trait segment
+|el :p @*.intro
+
+---
+#= A22 path-to with slashes (namespacing collision)
+|el :p ⊤/spec/CORE.md
+
+---
+#= A23 fused locate+descend sketch
+|el :p @[core://components/another.udon # main-findings]
+
+---
+#= A24 the wikilink-ish fragment compose
+|el :p @⊤/spec/CORE.md#||section[nesting-rule]

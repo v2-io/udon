@@ -1,0 +1,164 @@
+f01-fence-plain	19
+```
+code
+```
+after
+
+f02-open4-close3	20
+````
+code
+```
+after
+
+f03-open3-inner4	20
+```
+code
+````
+after
+
+f04-open4-inner3-close4	43
+````
+outer
+```
+inner
+```
+outer2
+````
+after
+
+f05-closer-indented	23
+```
+code
+    ```
+after
+
+f06-fence-deeper-than-base	51
+|sec
+  prose line
+    ```
+    not-a-fence?
+    ```
+
+f07-tilde-fence	19
+~~~
+code
+~~~
+after
+
+f08-fence-info-string	21
+```udon
+|el :a 1
+```
+
+f09-fence-after-prose	25
+some prose ```
+next line
+
+f10-blockverbatim-holds-mdfence	87
+|doc
+  !:markdown:
+    Here is code:
+    ```js
+    var x = 1;
+    ```
+  after-verbatim
+
+f11-blockverbatim-holds-udon-in-mdfence	69
+|doc
+  !:markdown:
+    ```udon
+    |el :a 1
+    ```
+  after-verbatim
+
+f12-udonfence-holds-mdfence	45
+```
+Here is code:
+```js
+var x = 1;
+```
+after
+
+f13-inline-verbatim-backticks	34
+|p The code !{:md: `x = 1`} runs.
+
+f14-inline-verbatim-triple	36
+|p Sample !{:md: ```js x ```} done.
+
+f20-verbatim>mdfence>udon-verbatim	114
+|doc
+  !:markdown:
+    Example doc:
+    ```udon
+    |example
+      !:elixir:
+        IO.puts("hi")
+    ```
+  tail
+
+f21-udonfence>mdfence>udon-verbatim	77
+```
+Example doc:
+```udon
+|example
+  !:elixir:
+    IO.puts("hi")
+```
+```
+tail
+
+f22-verbatim>mdfence4>udon-fence3	86
+|doc
+  !:markdown:
+    ````udon
+    |el
+      ```
+      raw
+      ```
+    ````
+  tail
+
+f30-md-doc-with-udon-fence	85
+# Heading
+
+Some prose.
+
+```udon
+|article :author Jo
+  Prose inside.
+```
+
+More prose.
+
+f31-md-doc-udon-fence-containing-udon-fence	61
+# Heading
+
+````udon
+|el
+  ```
+  inner raw
+  ```
+````
+
+After.
+
+f32-md-doc-udon-fence-containing-blockverbatim	70
+# Heading
+
+```udon
+|example
+  !:elixir:
+    IO.puts("hi")
+```
+
+After.
+
+f40-unclosed-udon-fence	24
+```
+code without closer
+
+f41-unclosed-blockverbatim	25
+|doc
+  !:sh:
+    echo hi
+

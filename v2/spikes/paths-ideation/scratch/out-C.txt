@@ -1,0 +1,327 @@
+### [1] C1 does / continue an ELEMENT name (CORE 5.2 says yes)
+INPUT:
+    |acme/widget :x 1
+EVENTS:
+    ElementStart @ 1..1
+    Name "acme/widget" @ 1..12
+    Attr "x" @ 14..15
+    Integer "1" @ 16..17
+    ElementEnd @ 18..18
+
+### [2] C2 does / continue an element name in value position
+INPUT:
+    |el :p |acme/widget
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    ElementStart @ 8..8
+    Name "acme/widget" @ 8..19
+    ElementEnd @ 20..20
+    ElementEnd @ 20..20
+
+### [3] C3 quoted interior inside a selector bracket
+INPUT:
+    |el :p @["a]b"]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "[\"a]b" @ 8..13
+    Text "\"]\n" @ 13..16
+    ElementEnd @ 16..16
+
+### [4] C4 quoted name in a reference
+INPUT:
+    |el :p @'weird name'
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Text "@'weird name'\n" @ 7..21
+    ElementEnd @ 21..21
+
+### [5] C5 escape-forced path containing a framed semicolon
+INPUT:
+    |el
+      :p \||intent[a ; b]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "||intent[a ; b]:status\n" @ 10..33
+    ElementEnd @ 33..33
+
+### [6] C6 escape-forced path inside an inline element
+INPUT:
+    |p see |{at :path \||intent[311]:status} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    Text "||intent[311]:status" @ 19..39
+    EmbeddedEnd @ 40..40
+    Text " ok\n" @ 40..44
+    ElementEnd @ 44..44
+
+### [7] C7 escape-forced path: does } still close the inline element
+INPUT:
+    |p see |{at :path \||a|b} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    Text "||a|b" @ 19..24
+    EmbeddedEnd @ 25..25
+    Text " ok\n" @ 25..29
+    ElementEnd @ 29..29
+
+### [8] C8 multi-key selector
+INPUT:
+    |el :p @a[1][2]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "a[1]" @ 8..12
+    Text "[2]\n" @ 12..16
+    ElementEnd @ 16..16
+
+### [9] C9 traits then key order
+INPUT:
+    |el :p @a.t[1]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "a.t[1]" @ 8..14
+    ElementEnd @ 15..15
+
+### [10] C10 key then traits order
+INPUT:
+    |el :p @a[1].t
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Reference "a[1].t" @ 8..14
+    ElementEnd @ 15..15
+
+### [11] C11 interpolation as a whole path value
+INPUT:
+    |el :p !{{ path("||intent[311]") }}
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Interpolation " path(\"||intent[311]\") " @ 10..33
+    ElementEnd @ 36..36
+
+### [12] C12 interpolation inside a path envelope
+INPUT:
+    |el :p <path:||intent[!{{id}}]:status>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "<path:||intent[!{{id}}]:status>" @ 7..38
+    Warning "NoDialectsLoaded" @ 38..38
+    ElementEnd @ 39..39
+
+### [13] C13 deferred value: path on a deeper line
+INPUT:
+    |el
+      :p
+        ||intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "||intent[311]:status\n" @ 13..34
+    ElementEnd @ 34..34
+
+### [14] C14 deferred value: ref-form path on a deeper line
+INPUT:
+    |el
+      :p
+        @config|database[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "@config|database[primary]\n" @ 13..39
+    ElementEnd @ 39..39
+
+### [15] C15 path inside block verbatim (baseline: fully safe)
+INPUT:
+    |el
+      :p !:path: ||intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    DirectiveStart @ 10..10
+    Name "path" @ 11..15
+    Raw "" @ 15..15
+    RawContent "||intent[311]:status\n" @ 17..38
+    DirectiveEnd @ 38..38
+    ElementEnd @ 38..38
+
+### [16] C16 fence carrying paths byte-exactly
+INPUT:
+    |el
+      ```
+      ||intent[311]:status
+      @config|database[primary]
+      ```
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    FreeformStart @ 9..9
+    Text "  ||intent[311]:status\n" @ 10..33
+    Text "  @config|database[primary]\n" @ 33..61
+    FreeformEnd @ 67..67
+    ElementEnd @ 67..67
+
+### [17] C17 unbalanced [ inside a path envelope
+INPUT:
+    |el :p <path:||intent[311:status>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "<path:||intent[311:status>" @ 7..33
+    Warning "NoDialectsLoaded" @ 33..33
+    ElementEnd @ 34..34
+
+### [18] C18 unbalanced < inside a quoted path
+INPUT:
+    |el :p "||intent[a<b]"
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    StringValue "||intent[a<b]" @ 8..21
+    ElementEnd @ 23..23
+
+### [19] C19 bare token starting with # (fragment sigil)
+INPUT:
+    |el :p #main-findings
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "#main-findings" @ 7..21
+    ElementEnd @ 22..22
+
+### [20] C20 bare path-to with a fragment, no @ prefix
+INPUT:
+    |el :p ⊤/spec/CORE.md#nesting-rule
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "⊤/spec/CORE.md#nesting-rule" @ 7..36
+    ElementEnd @ 37..37
+
+### [21] C21 bare path-to with a fragment and || descent, no @ prefix
+INPUT:
+    |el :p ⊤/spec/CORE.md#||section[nesting-rule]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "⊤/spec/CORE.md#||section[nesting-rule]" @ 7..47
+    ElementEnd @ 48..48
+
+### [22] C22 two-operand (multi-slot) form: locate and descend as separate attrs
+INPUT:
+    |include :from ⊤/spec/CORE.md :select "||section[nesting-rule]"
+EVENTS:
+    ElementStart @ 1..1
+    Name "include" @ 1..8
+    Attr "from" @ 10..14
+    BareValue "⊤/spec/CORE.md" @ 15..31
+    Attr "select" @ 33..39
+    StringValue "||section[nesting-rule]" @ 41..64
+    ElementEnd @ 66..66
+
+### [23] C23 two-operand with envelope select
+INPUT:
+    |include :from <url:core://components/another.udon> :select <path:||findings>
+EVENTS:
+    ElementStart @ 1..1
+    Name "include" @ 1..8
+    Attr "from" @ 10..14
+    BareValue "<url:core://components/another.udon>" @ 15..51
+    Warning "NoDialectsLoaded" @ 51..51
+    Attr "select" @ 53..59
+    BareValue "<path:||findings>" @ 60..77
+    Warning "NoDialectsLoaded" @ 77..77
+    ElementEnd @ 78..78
+
+### [24] C24 does a bare token stop at [ ?
+INPUT:
+    |el :p abc[1]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "abc[1]" @ 7..13
+    ElementEnd @ 14..14
+
+### [25] C25 does a bare token stop at : mid-token?
+INPUT:
+    |el :p abc:def
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "abc:def" @ 7..14
+    ElementEnd @ 15..15
+
+### [26] C26 bare token with a . and a [
+INPUT:
+    |el :p abc.d[1]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "abc.d[1]" @ 7..15
+    ElementEnd @ 16..16
+
+### [27] C27 element-rooted: escaped path is line-final; second attr must move to block
+INPUT:
+    |el :host x :p \||intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "host" @ 5..9
+    BareValue "x" @ 10..11
+    Attr "p" @ 13..14
+    Text "||intent[311]:status\n" @ 16..37
+    ElementEnd @ 37..37
+
+### [28] C28 flag key then a bare path
+INPUT:
+    |el :ready? ||intent[311]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "ready?" @ 5..11
+    BoolTrue "" @ 12..12
+    Text "|" @ 12..13
+    ElementStart @ 14..14
+    Name "intent" @ 14..20
+    Attr "$key" @ 24..24
+    Integer "311" @ 21..24
+    ElementEnd @ 26..26
+    Text "" @ 26..26
+    ElementEnd @ 26..26
+

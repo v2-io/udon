@@ -1,0 +1,21 @@
+[package]
+name = "udon-md-probes"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# Standalone probe crate for the markdown x UDON spike.
+# Deliberately OUTSIDE core/'s workspace so running the probes never perturbs
+# the reference workspace or its fixture gate.
+[workspace]
+
+[dependencies]
+udon-core = { path = "../../../../core/udon-core" }
+
+[[bin]]
+name = "classify"
+path = "src/classify.rs"
+
+[[bin]]
+name = "events"
+path = "src/events.rs"

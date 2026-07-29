@@ -1,0 +1,652 @@
+{"id":"cm1","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":["NoTabs"],"input":"\tfoo\tbaz\t\tbim\n","text":""}
+{"id":"cm2","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  \tfoo\tbaz\t\tbim\n","text":"\tfoo\tbaz\t\tbim\n"}
+{"id":"cm3","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    a\ta\n    ὐ\ta\n","text":"a\ta\nὐ\ta\n"}
+{"id":"cm4","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":["NoTabs"],"input":"  - foo\n\n\tbar\n","text":"- foo\n\n"}
+{"id":"cm5","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":["NoTabs"],"input":"- foo\n\n\t\tbar\n","text":"- foo\n\n"}
+{"id":"cm6","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">\t\tfoo\n","text":">\t\tfoo\n"}
+{"id":"cm7","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"-\t\tfoo\n","text":"-\t\tfoo\n"}
+{"id":"cm8","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":["NoTabs"],"input":"    foo\n\tbar\n","text":"foo\n"}
+{"id":"cm9","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":["NoTabs"],"input":" - foo\n   - bar\n\t - baz\n","text":"- foo\n- bar\n"}
+{"id":"cm10","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"#\tFoo\n","text":"#\tFoo\n"}
+{"id":"cm11","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*\t*\t*\t\n","text":"*\t*\t*\t\n"}
+{"id":"cm12","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\!\\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\`\\{\\|\\}\\~\n","text":"!\\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\`\\{\\|\\}\\~\n"}
+{"id":"cm13","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\\t\\A\\a\\ \\3\\φ\\«\n","text":"\t\\A\\a\\ \\3\\φ\\«\n"}
+{"id":"cm14","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\*not emphasized*\n\\<br/> not a tag\n\\[not a link](/foo)\n\\`not code`\n1\\. not a list\n\\* not a list\n\\# not a heading\n\\[foo]: /url \"not a reference\"\n\\&ouml; not a character entity\n","text":"*not emphasized*\n<br/> not a tag\n[not a link](/foo)\n`not code`\n1\\. not a list\n* not a list\n# not a heading\n[foo]: /url \"not a reference\"\n&ouml; not a character entity\n"}
+{"id":"cm15","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\\\*emphasis*\n","text":"\\*emphasis*\n"}
+{"id":"cm16","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\\\nbar\n","text":"foo\\\nbar\n"}
+{"id":"cm17","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`` \\[\\` ``\n","text":"`` \\[\\` ``\n"}
+{"id":"cm18","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"    \\[\\]\n","text":"[\\]\n"}
+{"id":"cm19","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"~~~\n\\[\\]\n~~~\n","text":"~~~\n[\\]\n~~~\n"}
+{"id":"cm20","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://example.com?find=\\*>\n","text":"<https://example.com?find=\\*>\n"}
+{"id":"cm21","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"/bar\\/)\">\n","text":"<a href=\"/bar\\/)\">\n"}
+{"id":"cm22","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo](/bar\\* \"ti\\*tle\")\n","text":"[foo](/bar\\* \"ti\\*tle\")\n"}
+{"id":"cm23","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n[foo]: /bar\\* \"ti\\*tle\"\n","text":"[foo]\n\n[foo]: /bar\\* \"ti\\*tle\"\n"}
+{"id":"cm24","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"``` foo\\+bar\nfoo\n```\n","text":" foo\\+bar\nfoo\n"}
+{"id":"cm25","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&nbsp; &amp; &copy; &AElig; &Dcaron;\n&frac34; &HilbertSpace; &DifferentialD;\n&ClockwiseContourIntegral; &ngE;\n","text":"&nbsp; &amp; &copy; &AElig; &Dcaron;\n&frac34; &HilbertSpace; &DifferentialD;\n&ClockwiseContourIntegral; &ngE;\n"}
+{"id":"cm26","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&#35; &#1234; &#992; &#0;\n","text":"&#35; &#1234; &#992; &#0;\n"}
+{"id":"cm27","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&#X22; &#XD06; &#xcab;\n","text":"&#X22; &#XD06; &#xcab;\n"}
+{"id":"cm28","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&nbsp &x; &#; &#x;\n&#87654321;\n&#abcdef0;\n&ThisIsNotDefined; &hi?;\n","text":"&nbsp &x; &#; &#x;\n&#87654321;\n&#abcdef0;\n&ThisIsNotDefined; &hi?;\n"}
+{"id":"cm29","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&copy\n","text":"&copy\n"}
+{"id":"cm30","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&MadeUpEntity;\n","text":"&MadeUpEntity;\n"}
+{"id":"cm31","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"&ouml;&ouml;.html\">\n","text":"<a href=\"&ouml;&ouml;.html\">\n"}
+{"id":"cm32","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo](/f&ouml;&ouml; \"f&ouml;&ouml;\")\n","text":"[foo](/f&ouml;&ouml; \"f&ouml;&ouml;\")\n"}
+{"id":"cm33","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n[foo]: /f&ouml;&ouml; \"f&ouml;&ouml;\"\n","text":"[foo]\n\n[foo]: /f&ouml;&ouml; \"f&ouml;&ouml;\"\n"}
+{"id":"cm34","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"``` f&ouml;&ouml;\nfoo\n```\n","text":" f&ouml;&ouml;\nfoo\n"}
+{"id":"cm35","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`f&ouml;&ouml;`\n","text":"`f&ouml;&ouml;`\n"}
+{"id":"cm36","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    f&ouml;f&ouml;\n","text":"f&ouml;f&ouml;\n"}
+{"id":"cm37","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&#42;foo&#42;\n*foo*\n","text":"&#42;foo&#42;\n*foo*\n"}
+{"id":"cm38","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&#42; foo\n\n* foo\n","text":"&#42; foo\n\n* foo\n"}
+{"id":"cm39","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo&#10;&#10;bar\n","text":"foo&#10;&#10;bar\n"}
+{"id":"cm40","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"&#9;foo\n","text":"&#9;foo\n"}
+{"id":"cm41","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[a](url &quot;tit&quot;)\n","text":"[a](url &quot;tit&quot;)\n"}
+{"id":"cm42","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- `one\n- two`\n","text":"- `one\n- two`\n"}
+{"id":"cm43","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"***\n---\n___\n","text":"***\n---\n___\n"}
+{"id":"cm44","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"+++\n","text":"+++\n"}
+{"id":"cm45","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"===\n","text":"===\n"}
+{"id":"cm46","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"--\n**\n__\n","text":"--\n**\n__\n"}
+{"id":"cm47","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" ***\n  ***\n   ***\n","text":"***\n***\n***\n"}
+{"id":"cm48","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    ***\n","text":"***\n"}
+{"id":"cm49","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"Foo\n    ***\n","text":"Foo\n***\n"}
+{"id":"cm50","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_____________________________________\n","text":"_____________________________________\n"}
+{"id":"cm51","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" - - -\n","text":"- - -\n"}
+{"id":"cm52","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" **  * ** * ** * **\n","text":"**  * ** * ** * **\n"}
+{"id":"cm53","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"-     -      -      -\n","text":"-     -      -      -\n"}
+{"id":"cm54","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- - - -    \n","text":"- - - -    \n"}
+{"id":"cm55","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_ _ _ _ a\n\na------\n\n---a---\n","text":"_ _ _ _ a\n\na------\n\n---a---\n"}
+{"id":"cm56","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" *-*\n","text":"*-*\n"}
+{"id":"cm57","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n***\n- bar\n","text":"- foo\n***\n- bar\n"}
+{"id":"cm58","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n***\nbar\n","text":"Foo\n***\nbar\n"}
+{"id":"cm59","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n---\nbar\n","text":"Foo\n---\nbar\n"}
+{"id":"cm60","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"* Foo\n* * *\n* Bar\n","text":"* Foo\n* * *\n* Bar\n"}
+{"id":"cm61","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- Foo\n- * * *\n","text":"- Foo\n- * * *\n"}
+{"id":"cm62","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"# foo\n## foo\n### foo\n#### foo\n##### foo\n###### foo\n","text":"# foo\n## foo\n### foo\n#### foo\n##### foo\n###### foo\n"}
+{"id":"cm63","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"####### foo\n","text":"####### foo\n"}
+{"id":"cm64","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"#5 bolt\n\n#hashtag\n","text":"#5 bolt\n\n#hashtag\n"}
+{"id":"cm65","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\## foo\n","text":"## foo\n"}
+{"id":"cm66","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"# foo *bar* \\*baz\\*\n","text":"# foo *bar* \\*baz\\*\n"}
+{"id":"cm67","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"#                  foo                     \n","text":"#                  foo                     \n"}
+{"id":"cm68","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" ### foo\n  ## foo\n   # foo\n","text":"### foo\n## foo\n# foo\n"}
+{"id":"cm69","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    # foo\n","text":"# foo\n"}
+{"id":"cm70","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"foo\n    # bar\n","text":"foo\n# bar\n"}
+{"id":"cm71","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"## foo ##\n  ###   bar    ###\n","text":"## foo ##\n###   bar    ###\n"}
+{"id":"cm72","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"# foo ##################################\n##### foo ##\n","text":"# foo ##################################\n##### foo ##\n"}
+{"id":"cm73","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"### foo ###     \n","text":"### foo ###     \n"}
+{"id":"cm74","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"### foo ### b\n","text":"### foo ### b\n"}
+{"id":"cm75","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"# foo#\n","text":"# foo#\n"}
+{"id":"cm76","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"### foo \\###\n## foo #\\##\n# foo \\#\n","text":"### foo \\###\n## foo #\\##\n# foo \\#\n"}
+{"id":"cm77","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"****\n## foo\n****\n","text":"****\n## foo\n****\n"}
+{"id":"cm78","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo bar\n# baz\nBar foo\n","text":"Foo bar\n# baz\nBar foo\n"}
+{"id":"cm79","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"## \n#\n### ###\n","text":"## \n#\n### ###\n"}
+{"id":"cm80","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo *bar*\n=========\n\nFoo *bar*\n---------\n","text":"Foo *bar*\n=========\n\nFoo *bar*\n---------\n"}
+{"id":"cm81","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo *bar\nbaz*\n====\n","text":"Foo *bar\nbaz*\n====\n"}
+{"id":"cm82","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  Foo *bar\nbaz*\t\n====\n","text":"Foo *bar\nbaz*\t\n====\n"}
+{"id":"cm83","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n-------------------------\n\nFoo\n=\n","text":"Foo\n-------------------------\n\nFoo\n=\n"}
+{"id":"cm84","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   Foo\n---\n\n  Foo\n-----\n\n  Foo\n  ===\n","text":"Foo\n---\n\nFoo\n-----\n\nFoo\n===\n"}
+{"id":"cm85","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    Foo\n    ---\n\n    Foo\n---\n","text":"Foo\n---\n\nFoo\n---\n"}
+{"id":"cm86","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"Foo\n   ----      \n","text":"Foo\n----      \n"}
+{"id":"cm87","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"Foo\n    ---\n","text":"Foo\n---\n"}
+{"id":"cm88","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n= =\n\nFoo\n--- -\n","text":"Foo\n= =\n\nFoo\n--- -\n"}
+{"id":"cm89","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo  \n-----\n","text":"Foo  \n-----\n"}
+{"id":"cm90","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\\\n----\n","text":"Foo\\\n----\n"}
+{"id":"cm91","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`Foo\n----\n`\n\n<a title=\"a lot\n---\nof dashes\"/>\n","text":"`Foo\n----\n`\n\n<a title=\"a lot\n---\nof dashes\"/>\n"}
+{"id":"cm92","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> Foo\n---\n","text":"> Foo\n---\n"}
+{"id":"cm93","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\nbar\n===\n","text":"> foo\nbar\n===\n"}
+{"id":"cm94","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- Foo\n---\n","text":"- Foo\n---\n"}
+{"id":"cm95","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\nBar\n---\n","text":"Foo\nBar\n---\n"}
+{"id":"cm96","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"---\nFoo\n---\nBar\n---\nBaz\n","text":"---\nFoo\n---\nBar\n---\nBaz\n"}
+{"id":"cm97","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\n====\n","text":"\n====\n"}
+{"id":"cm98","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"---\n---\n","text":"---\n---\n"}
+{"id":"cm99","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n-----\n","text":"- foo\n-----\n"}
+{"id":"cm100","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    foo\n---\n","text":"foo\n---\n"}
+{"id":"cm101","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\n-----\n","text":"> foo\n-----\n"}
+{"id":"cm102","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\> foo\n------\n","text":"> foo\n------\n"}
+{"id":"cm103","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n\nbar\n---\nbaz\n","text":"Foo\n\nbar\n---\nbaz\n"}
+{"id":"cm104","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\nbar\n\n---\n\nbaz\n","text":"Foo\nbar\n\n---\n\nbaz\n"}
+{"id":"cm105","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\nbar\n* * *\nbaz\n","text":"Foo\nbar\n* * *\nbaz\n"}
+{"id":"cm106","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\nbar\n\\---\nbaz\n","text":"Foo\nbar\n---\nbaz\n"}
+{"id":"cm107","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    a simple\n      indented code block\n","text":"a simple\nindented code block\n"}
+{"id":"cm108","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  - foo\n\n    bar\n","text":"- foo\n\nbar\n"}
+{"id":"cm109","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1.  foo\n\n    - bar\n","text":"1.  foo\n\n- bar\n"}
+{"id":"cm110","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    <a/>\n    *hi*\n\n    - one\n","text":"<a/>\n*hi*\n\n- one\n"}
+{"id":"cm111","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    chunk1\n\n    chunk2\n  \n \n \n    chunk3\n","text":"chunk1\n\nchunk2\n\n\n\nchunk3\n"}
+{"id":"cm112","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    chunk1\n      \n      chunk2\n","text":"chunk1\n\nchunk2\n"}
+{"id":"cm113","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"Foo\n    bar\n\n","text":"Foo\nbar\n\n"}
+{"id":"cm114","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    foo\nbar\n","text":"foo\nbar\n"}
+{"id":"cm115","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"# Heading\n    foo\nHeading\n------\n    foo\n----\n","text":"# Heading\nfoo\nHeading\n------\nfoo\n----\n"}
+{"id":"cm116","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"        foo\n    bar\n","text":"foo\nbar\n"}
+{"id":"cm117","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"\n    \n    foo\n    \n\n","text":"\n\nfoo\n\n\n"}
+{"id":"cm118","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    foo  \n","text":"foo  \n"}
+{"id":"cm119","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\n<\n >\n```\n","text":"<\n >\n"}
+{"id":"cm120","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"~~~\n<\n >\n~~~\n","text":"~~~\n<\n>\n~~~\n"}
+{"id":"cm121","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"``\nfoo\n``\n","text":"``\nfoo\n``\n"}
+{"id":"cm122","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\naaa\n~~~\n```\n","text":"aaa\n~~~\n"}
+{"id":"cm123","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"~~~\naaa\n```\n~~~\n","text":"~~~\naaa\n~~~\n"}
+{"id":"cm124","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"````\naaa\n```\n``````\n","text":"`\naaa\n```\n"}
+{"id":"cm125","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"~~~~\naaa\n~~~\n~~~~\n","text":"~~~~\naaa\n~~~\n~~~~\n"}
+{"id":"cm126","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"```\n","text":""}
+{"id":"cm127","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"`````\n\n```\naaa\n","text":"``\n\naaa\n"}
+{"id":"cm128","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> ```\n> aaa\n\nbbb\n","text":"> ```\n> aaa\n\nbbb\n"}
+{"id":"cm129","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\n\n  \n```\n","text":"\n  \n"}
+{"id":"cm130","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\n```\n","text":""}
+{"id":"cm131","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":" ```\n aaa\naaa\n```\n","text":" aaa\naaa\n"}
+{"id":"cm132","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"  ```\naaa\n  aaa\naaa\n  ```\n","text":"aaa\n  aaa\naaa\n"}
+{"id":"cm133","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"   ```\n   aaa\n    aaa\n  aaa\n   ```\n","text":"   aaa\n    aaa\n  aaa\n"}
+{"id":"cm134","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"    ```\n    aaa\n    ```\n","text":"    aaa\n"}
+{"id":"cm135","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\naaa\n  ```\n","text":"aaa\n"}
+{"id":"cm136","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"   ```\naaa\n  ```\n","text":"aaa\n"}
+{"id":"cm137","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\naaa\n    ```\n","text":"aaa\n"}
+{"id":"cm138","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"``` ```\naaa\n","text":" ```\naaa\n"}
+{"id":"cm139","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"~~~~~~\naaa\n~~~ ~~\n","text":"~~~~~~\naaa\n~~~ ~~\n"}
+{"id":"cm140","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"foo\n```\nbar\n```\nbaz\n","text":"foo\nbar\nbaz\n"}
+{"id":"cm141","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\n---\n~~~\nbar\n~~~\n# baz\n","text":"foo\n---\n~~~\nbar\n~~~\n# baz\n"}
+{"id":"cm142","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```ruby\ndef foo(x)\n  return 3\nend\n```\n","text":"ruby\ndef foo(x)\n  return 3\nend\n"}
+{"id":"cm143","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"~~~~    ruby startline=3 $%@#$\ndef foo(x)\n  return 3\nend\n~~~~~~~\n","text":"~~~~    ruby startline=3 $%@#$\ndef foo(x)\nreturn 3\nend\n~~~~~~~\n"}
+{"id":"cm144","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"````;\n````\n","text":"`;\n````\n"}
+{"id":"cm145","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"``` aa ```\nfoo\n","text":" aa ```\nfoo\n"}
+{"id":"cm146","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"~~~ aa ``` ~~~\nfoo\n~~~\n","text":"~~~ aa ``` ~~~\nfoo\n~~~\n"}
+{"id":"cm147","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\n``` aaa\n```\n","text":"``` aaa\n"}
+{"id":"cm148","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>\n","text":"<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>\n"}
+{"id":"cm149","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<table>\n  <tr>\n    <td>\n           hi\n    </td>\n  </tr>\n</table>\n\nokay.\n","text":"<table>\n<tr>\n<td>\nhi\n</td>\n</tr>\n</table>\n\nokay.\n"}
+{"id":"cm150","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" <div>\n  *hello*\n         <foo><a>\n","text":"<div>\n*hello*\n<foo><a>\n"}
+{"id":"cm151","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"</div>\n*foo*\n","text":"</div>\n*foo*\n"}
+{"id":"cm152","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<DIV CLASS=\"foo\">\n\n*Markdown*\n\n</DIV>\n","text":"<DIV CLASS=\"foo\">\n\n*Markdown*\n\n</DIV>\n"}
+{"id":"cm153","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<div id=\"foo\"\n  class=\"bar\">\n</div>\n","text":"<div id=\"foo\"\nclass=\"bar\">\n</div>\n"}
+{"id":"cm154","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<div id=\"foo\" class=\"bar\n  baz\">\n</div>\n","text":"<div id=\"foo\" class=\"bar\nbaz\">\n</div>\n"}
+{"id":"cm155","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div>\n*foo*\n\n*bar*\n","text":"<div>\n*foo*\n\n*bar*\n"}
+{"id":"cm156","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div id=\"foo\"\n*hi*\n","text":"<div id=\"foo\"\n*hi*\n"}
+{"id":"cm157","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div class\nfoo\n","text":"<div class\nfoo\n"}
+{"id":"cm158","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div *???-&&&-<---\n*foo*\n","text":"<div *???-&&&-<---\n*foo*\n"}
+{"id":"cm159","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div><a href=\"bar\">*foo*</a></div>\n","text":"<div><a href=\"bar\">*foo*</a></div>\n"}
+{"id":"cm160","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<table><tr><td>\nfoo\n</td></tr></table>\n","text":"<table><tr><td>\nfoo\n</td></tr></table>\n"}
+{"id":"cm161","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"<div></div>\n``` c\nint x = 33;\n```\n","text":"<div></div>\n c\nint x = 33;\n"}
+{"id":"cm162","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"foo\">\n*bar*\n</a>\n","text":"<a href=\"foo\">\n*bar*\n</a>\n"}
+{"id":"cm163","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<Warning>\n*bar*\n</Warning>\n","text":"<Warning>\n*bar*\n</Warning>\n"}
+{"id":"cm164","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<i class=\"foo\">\n*bar*\n</i>\n","text":"<i class=\"foo\">\n*bar*\n</i>\n"}
+{"id":"cm165","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"</ins>\n*bar*\n","text":"</ins>\n*bar*\n"}
+{"id":"cm166","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<del>\n*foo*\n</del>\n","text":"<del>\n*foo*\n</del>\n"}
+{"id":"cm167","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<del>\n\n*foo*\n\n</del>\n","text":"<del>\n\n*foo*\n\n</del>\n"}
+{"id":"cm168","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<del>*foo*</del>\n","text":"<del>*foo*</del>\n"}
+{"id":"cm169","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<pre language=\"haskell\"><code>\nimport Text.HTML.TagSoup\n\nmain :: IO ()\nmain = print $ parseTags tags\n</code></pre>\nokay\n","text":"<pre language=\"haskell\"><code>\nimport Text.HTML.TagSoup\n\nmain :: IO ()\nmain = print $ parseTags tags\n</code></pre>\nokay\n"}
+{"id":"cm170","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<script type=\"text/javascript\">\n// JavaScript example\n\ndocument.getElementById(\"demo\").innerHTML = \"Hello JavaScript!\";\n</script>\nokay\n","text":"<script type=\"text/javascript\">\n// JavaScript example\n\ndocument.getElementById(\"demo\").innerHTML = \"Hello JavaScript!\";\n</script>\nokay\n"}
+{"id":"cm171","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<textarea>\n\n*foo*\n\n_bar_\n\n</textarea>\n","text":"<textarea>\n\n*foo*\n\n_bar_\n\n</textarea>\n"}
+{"id":"cm172","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<style\n  type=\"text/css\">\nh1 {color:red;}\n\np {color:blue;}\n</style>\nokay\n","text":"<style\ntype=\"text/css\">\nh1 {color:red;}\n\np {color:blue;}\n</style>\nokay\n"}
+{"id":"cm173","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<style\n  type=\"text/css\">\n\nfoo\n","text":"<style\ntype=\"text/css\">\n\nfoo\n"}
+{"id":"cm174","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> <div>\n> foo\n\nbar\n","text":"> <div>\n> foo\n\nbar\n"}
+{"id":"cm175","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- <div>\n- foo\n","text":"- <div>\n- foo\n"}
+{"id":"cm176","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<style>p{color:red;}</style>\n*foo*\n","text":"<style>p{color:red;}</style>\n*foo*\n"}
+{"id":"cm177","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<!-- foo -->*bar*\n*baz*\n","text":"<!-- foo -->*bar*\n*baz*\n"}
+{"id":"cm178","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<script>\nfoo\n</script>1. *bar*\n","text":"<script>\nfoo\n</script>1. *bar*\n"}
+{"id":"cm179","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<!-- Foo\n\nbar\n   baz -->\nokay\n","text":"<!-- Foo\n\nbar\nbaz -->\nokay\n"}
+{"id":"cm180","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<?php\n\n  echo '>';\n\n?>\nokay\n","text":"<?php\n\necho '>';\n\n?>\nokay\n"}
+{"id":"cm181","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<!DOCTYPE html>\n","text":"<!DOCTYPE html>\n"}
+{"id":"cm182","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<![CDATA[\nfunction matchwo(a,b)\n{\n  if (a < b && a < 0) then {\n    return 1;\n\n  } else {\n\n    return 0;\n  }\n}\n]]>\nokay\n","text":"<![CDATA[\nfunction matchwo(a,b)\n{\nif (a < b && a < 0) then {\nreturn 1;\n\n} else {\n\nreturn 0;\n}\n}\n]]>\nokay\n"}
+{"id":"cm183","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  <!-- foo -->\n\n    <!-- foo -->\n","text":"<!-- foo -->\n\n<!-- foo -->\n"}
+{"id":"cm184","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  <div>\n\n    <div>\n","text":"<div>\n\n<div>\n"}
+{"id":"cm185","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n<div>\nbar\n</div>\n","text":"Foo\n<div>\nbar\n</div>\n"}
+{"id":"cm186","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div>\nbar\n</div>\n*foo*\n","text":"<div>\nbar\n</div>\n*foo*\n"}
+{"id":"cm187","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n<a href=\"bar\">\nbaz\n","text":"Foo\n<a href=\"bar\">\nbaz\n"}
+{"id":"cm188","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div>\n\n*Emphasized* text.\n\n</div>\n","text":"<div>\n\n*Emphasized* text.\n\n</div>\n"}
+{"id":"cm189","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<div>\n*Emphasized* text.\n</div>\n","text":"<div>\n*Emphasized* text.\n</div>\n"}
+{"id":"cm190","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<table>\n\n<tr>\n\n<td>\nHi\n</td>\n\n</tr>\n\n</table>\n","text":"<table>\n\n<tr>\n\n<td>\nHi\n</td>\n\n</tr>\n\n</table>\n"}
+{"id":"cm191","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"<table>\n\n  <tr>\n\n    <td>\n      Hi\n    </td>\n\n  </tr>\n\n</table>\n","text":"<table>\n\n<tr>\n\n<td>\nHi\n</td>\n\n</tr>\n\n</table>\n"}
+{"id":"cm192","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url \"title\"\n\n[foo]\n","text":"[foo]: /url \"title\"\n\n[foo]\n"}
+{"id":"cm193","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   [foo]: \n      /url  \n           'the title'  \n\n[foo]\n","text":"[foo]: \n/url  \n'the title'  \n\n[foo]\n"}
+{"id":"cm194","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[Foo*bar\\]]:my_(url) 'title (with parens)'\n\n[Foo*bar\\]]\n","text":"[Foo*bar\\]]:my_(url) 'title (with parens)'\n\n[Foo*bar\\]]\n"}
+{"id":"cm195","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n","text":"[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]\n"}
+{"id":"cm196","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url '\ntitle\nline1\nline2\n'\n\n[foo]\n","text":"[foo]: /url '\ntitle\nline1\nline2\n'\n\n[foo]\n"}
+{"id":"cm197","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url 'title\n\nwith blank line'\n\n[foo]\n","text":"[foo]: /url 'title\n\nwith blank line'\n\n[foo]\n"}
+{"id":"cm198","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]:\n/url\n\n[foo]\n","text":"[foo]:\n/url\n\n[foo]\n"}
+{"id":"cm199","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]:\n\n[foo]\n","text":"[foo]:\n\n[foo]\n"}
+{"id":"cm200","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: <>\n\n[foo]\n","text":"[foo]: <>\n\n[foo]\n"}
+{"id":"cm201","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: <bar>(baz)\n\n[foo]\n","text":"[foo]: <bar>(baz)\n\n[foo]\n"}
+{"id":"cm202","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n","text":"[foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n"}
+{"id":"cm203","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n[foo]: url\n","text":"[foo]\n\n[foo]: url\n"}
+{"id":"cm204","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n[foo]: first\n[foo]: second\n","text":"[foo]\n\n[foo]: first\n[foo]: second\n"}
+{"id":"cm205","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[FOO]: /url\n\n[Foo]\n","text":"[FOO]: /url\n\n[Foo]\n"}
+{"id":"cm206","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[ΑΓΩ]: /φου\n\n[αγω]\n","text":"[ΑΓΩ]: /φου\n\n[αγω]\n"}
+{"id":"cm207","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url\n","text":"[foo]: /url\n"}
+{"id":"cm208","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[\nfoo\n]: /url\nbar\n","text":"[\nfoo\n]: /url\nbar\n"}
+{"id":"cm209","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url \"title\" ok\n","text":"[foo]: /url \"title\" ok\n"}
+{"id":"cm210","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url\n\"title\" ok\n","text":"[foo]: /url\n\"title\" ok\n"}
+{"id":"cm211","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    [foo]: /url \"title\"\n\n[foo]\n","text":"[foo]: /url \"title\"\n\n[foo]\n"}
+{"id":"cm212","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"```\n[foo]: /url\n```\n\n[foo]\n","text":"[foo]: /url\n\n[foo]\n"}
+{"id":"cm213","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n[bar]: /baz\n\n[bar]\n","text":"Foo\n[bar]: /baz\n\n[bar]\n"}
+{"id":"cm214","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"# [Foo]\n[foo]: /url\n> bar\n","text":"# [Foo]\n[foo]: /url\n> bar\n"}
+{"id":"cm215","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url\nbar\n===\n[foo]\n","text":"[foo]: /url\nbar\n===\n[foo]\n"}
+{"id":"cm216","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url\n===\n[foo]\n","text":"[foo]: /url\n===\n[foo]\n"}
+{"id":"cm217","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /foo-url \"foo\"\n[bar]: /bar-url\n  \"bar\"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]\n","text":"[foo]: /foo-url \"foo\"\n[bar]: /bar-url\n\"bar\"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]\n"}
+{"id":"cm218","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n> [foo]: /url\n","text":"[foo]\n\n> [foo]: /url\n"}
+{"id":"cm219","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"aaa\n\nbbb\n","text":"aaa\n\nbbb\n"}
+{"id":"cm220","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"aaa\nbbb\n\nccc\nddd\n","text":"aaa\nbbb\n\nccc\nddd\n"}
+{"id":"cm221","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"aaa\n\n\nbbb\n","text":"aaa\n\n\nbbb\n"}
+{"id":"cm222","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  aaa\n bbb\n","text":"aaa\nbbb\n"}
+{"id":"cm223","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"aaa\n             bbb\n                                       ccc\n","text":"aaa\nbbb\nccc\n"}
+{"id":"cm224","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   aaa\nbbb\n","text":"aaa\nbbb\n"}
+{"id":"cm225","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    aaa\nbbb\n","text":"aaa\nbbb\n"}
+{"id":"cm226","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"aaa     \nbbb     \n","text":"aaa     \nbbb     \n"}
+{"id":"cm227","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  \n\naaa\n  \n\n# aaa\n\n  \n","text":"\n\naaa\n\n\n# aaa\n\n\n"}
+{"id":"cm228","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> # Foo\n> bar\n> baz\n","text":"> # Foo\n> bar\n> baz\n"}
+{"id":"cm229","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"># Foo\n>bar\n> baz\n","text":"># Foo\n>bar\n> baz\n"}
+{"id":"cm230","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   > # Foo\n   > bar\n > baz\n","text":"> # Foo\n> bar\n> baz\n"}
+{"id":"cm231","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    > # Foo\n    > bar\n    > baz\n","text":"> # Foo\n> bar\n> baz\n"}
+{"id":"cm232","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> # Foo\n> bar\nbaz\n","text":"> # Foo\n> bar\nbaz\n"}
+{"id":"cm233","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> bar\nbaz\n> foo\n","text":"> bar\nbaz\n> foo\n"}
+{"id":"cm234","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\n---\n","text":"> foo\n---\n"}
+{"id":"cm235","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> - foo\n- bar\n","text":"> - foo\n- bar\n"}
+{"id":"cm236","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":">     foo\n    bar\n","text":">     foo\nbar\n"}
+{"id":"cm237","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"> ```\nfoo\n```\n","text":"> ```\nfoo\n"}
+{"id":"cm238","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"> foo\n    - bar\n","text":"> foo\n- bar\n"}
+{"id":"cm239","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">\n","text":">\n"}
+{"id":"cm240","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">\n>  \n> \n","text":">\n>  \n> \n"}
+{"id":"cm241","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">\n> foo\n>  \n","text":">\n> foo\n>  \n"}
+{"id":"cm242","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\n\n> bar\n","text":"> foo\n\n> bar\n"}
+{"id":"cm243","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\n> bar\n","text":"> foo\n> bar\n"}
+{"id":"cm244","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> foo\n>\n> bar\n","text":"> foo\n>\n> bar\n"}
+{"id":"cm245","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\n> bar\n","text":"foo\n> bar\n"}
+{"id":"cm246","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> aaa\n***\n> bbb\n","text":"> aaa\n***\n> bbb\n"}
+{"id":"cm247","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> bar\nbaz\n","text":"> bar\nbaz\n"}
+{"id":"cm248","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> bar\n\nbaz\n","text":"> bar\n\nbaz\n"}
+{"id":"cm249","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> bar\n>\nbaz\n","text":"> bar\n>\nbaz\n"}
+{"id":"cm250","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> > > foo\nbar\n","text":"> > > foo\nbar\n"}
+{"id":"cm251","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">>> foo\n> bar\n>>baz\n","text":">>> foo\n> bar\n>>baz\n"}
+{"id":"cm252","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":">     code\n\n>    not code\n","text":">     code\n\n>    not code\n"}
+{"id":"cm253","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"A paragraph\nwith two lines.\n\n    indented code\n\n> A block quote.\n","text":"A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm254","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1.  A paragraph\n    with two lines.\n\n        indented code\n\n    > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm255","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- one\n\n two\n","text":"- one\n\ntwo\n"}
+{"id":"cm256","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- one\n\n  two\n","text":"- one\n\ntwo\n"}
+{"id":"cm257","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" -    one\n\n     two\n","text":"-    one\n\ntwo\n"}
+{"id":"cm258","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" -    one\n\n      two\n","text":"-    one\n\ntwo\n"}
+{"id":"cm259","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   > > 1.  one\n>>\n>>     two\n","text":"> > 1.  one\n>>\n>>     two\n"}
+{"id":"cm260","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":">>- one\n>>\n  >  > two\n","text":">>- one\n>>\n>  > two\n"}
+{"id":"cm261","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"-one\n\n2.two\n","text":"-one\n\n2.two\n"}
+{"id":"cm262","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- foo\n\n\n  bar\n","text":"- foo\n\n\nbar\n"}
+{"id":"cm263","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"1.  foo\n\n    ```\n    bar\n    ```\n\n    baz\n\n    > bam\n","text":"1.  foo\n\n    bar\n\nbaz\n\n> bam\n"}
+{"id":"cm264","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- Foo\n\n      bar\n\n\n      baz\n","text":"- Foo\n\nbar\n\n\nbaz\n"}
+{"id":"cm265","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"123456789. ok\n","text":"123456789. ok\n"}
+{"id":"cm266","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"1234567890. not ok\n","text":"1234567890. not ok\n"}
+{"id":"cm267","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"0. ok\n","text":"0. ok\n"}
+{"id":"cm268","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"003. ok\n","text":"003. ok\n"}
+{"id":"cm269","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"-1. not ok\n","text":"-1. not ok\n"}
+{"id":"cm270","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- foo\n\n      bar\n","text":"- foo\n\nbar\n"}
+{"id":"cm271","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  10.  foo\n\n           bar\n","text":"10.  foo\n\nbar\n"}
+{"id":"cm272","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    indented code\n\nparagraph\n\n    more code\n","text":"indented code\n\nparagraph\n\nmore code\n"}
+{"id":"cm273","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1.     indented code\n\n   paragraph\n\n       more code\n","text":"1.     indented code\n\nparagraph\n\nmore code\n"}
+{"id":"cm274","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1.      indented code\n\n   paragraph\n\n       more code\n","text":"1.      indented code\n\nparagraph\n\nmore code\n"}
+{"id":"cm275","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   foo\n\nbar\n","text":"foo\n\nbar\n"}
+{"id":"cm276","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"-    foo\n\n  bar\n","text":"-    foo\n\nbar\n"}
+{"id":"cm277","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"-  foo\n\n   bar\n","text":"-  foo\n\nbar\n"}
+{"id":"cm278","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"-\n  foo\n-\n  ```\n  bar\n  ```\n-\n      baz\n","text":"-\nfoo\n-\n  bar\n-\nbaz\n"}
+{"id":"cm279","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"-   \n  foo\n","text":"-   \nfoo\n"}
+{"id":"cm280","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"-\n\n  foo\n","text":"-\n\nfoo\n"}
+{"id":"cm281","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n-\n- bar\n","text":"- foo\n-\n- bar\n"}
+{"id":"cm282","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n-   \n- bar\n","text":"- foo\n-   \n- bar\n"}
+{"id":"cm283","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"1. foo\n2.\n3. bar\n","text":"1. foo\n2.\n3. bar\n"}
+{"id":"cm284","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*\n","text":"*\n"}
+{"id":"cm285","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\n*\n\nfoo\n1.\n","text":"foo\n*\n\nfoo\n1.\n"}
+{"id":"cm286","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":" 1.  A paragraph\n     with two lines.\n\n         indented code\n\n     > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm287","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  1.  A paragraph\n      with two lines.\n\n          indented code\n\n      > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm288","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"   1.  A paragraph\n       with two lines.\n\n           indented code\n\n       > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm289","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"    1.  A paragraph\n        with two lines.\n\n            indented code\n\n        > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm290","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  1.  A paragraph\nwith two lines.\n\n          indented code\n\n      > A block quote.\n","text":"1.  A paragraph\nwith two lines.\n\nindented code\n\n> A block quote.\n"}
+{"id":"cm291","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"  1.  A paragraph\n    with two lines.\n","text":"1.  A paragraph\nwith two lines.\n"}
+{"id":"cm292","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> 1. > Blockquote\ncontinued here.\n","text":"> 1. > Blockquote\ncontinued here.\n"}
+{"id":"cm293","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"> 1. > Blockquote\n> continued here.\n","text":"> 1. > Blockquote\n> continued here.\n"}
+{"id":"cm294","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- foo\n  - bar\n    - baz\n      - boo\n","text":"- foo\n- bar\n- baz\n- boo\n"}
+{"id":"cm295","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- foo\n - bar\n  - baz\n   - boo\n","text":"- foo\n- bar\n- baz\n- boo\n"}
+{"id":"cm296","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"10) foo\n    - bar\n","text":"10) foo\n- bar\n"}
+{"id":"cm297","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"10) foo\n   - bar\n","text":"10) foo\n- bar\n"}
+{"id":"cm298","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- - foo\n","text":"- - foo\n"}
+{"id":"cm299","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"1. - 2. foo\n","text":"1. - 2. foo\n"}
+{"id":"cm300","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- # Foo\n- Bar\n  ---\n  baz\n","text":"- # Foo\n- Bar\n---\nbaz\n"}
+{"id":"cm301","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n- bar\n+ baz\n","text":"- foo\n- bar\n+ baz\n"}
+{"id":"cm302","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"1. foo\n2. bar\n3) baz\n","text":"1. foo\n2. bar\n3) baz\n"}
+{"id":"cm303","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo\n- bar\n- baz\n","text":"Foo\n- bar\n- baz\n"}
+{"id":"cm304","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"The number of windows in my house is\n14.  The number of doors is 6.\n","text":"The number of windows in my house is\n14.  The number of doors is 6.\n"}
+{"id":"cm305","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"The number of windows in my house is\n1.  The number of doors is 6.\n","text":"The number of windows in my house is\n1.  The number of doors is 6.\n"}
+{"id":"cm306","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n\n- bar\n\n\n- baz\n","text":"- foo\n\n- bar\n\n\n- baz\n"}
+{"id":"cm307","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- foo\n  - bar\n    - baz\n\n\n      bim\n","text":"- foo\n- bar\n- baz\n\n\nbim\n"}
+{"id":"cm308","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- foo\n- bar\n\n<!-- -->\n\n- baz\n- bim\n","text":"- foo\n- bar\n\n<!-- -->\n\n- baz\n- bim\n"}
+{"id":"cm309","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"-   foo\n\n    notcode\n\n-   foo\n\n<!-- -->\n\n    code\n","text":"-   foo\n\nnotcode\n\n-   foo\n\n<!-- -->\n\ncode\n"}
+{"id":"cm310","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n - b\n  - c\n   - d\n  - e\n - f\n- g\n","text":"- a\n- b\n- c\n- d\n- e\n- f\n- g\n"}
+{"id":"cm311","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1. a\n\n  2. b\n\n   3. c\n","text":"1. a\n\n2. b\n\n3. c\n"}
+{"id":"cm312","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n - b\n  - c\n   - d\n    - e\n","text":"- a\n- b\n- c\n- d\n- e\n"}
+{"id":"cm313","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"1. a\n\n  2. b\n\n    3. c\n","text":"1. a\n\n2. b\n\n3. c\n"}
+{"id":"cm314","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- a\n- b\n\n- c\n","text":"- a\n- b\n\n- c\n"}
+{"id":"cm315","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"* a\n*\n\n* c\n","text":"* a\n*\n\n* c\n"}
+{"id":"cm316","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n- b\n\n  c\n- d\n","text":"- a\n- b\n\nc\n- d\n"}
+{"id":"cm317","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n- b\n\n  [ref]: /url\n- d\n","text":"- a\n- b\n\n[ref]: /url\n- d\n"}
+{"id":"cm318","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"- a\n- ```\n  b\n\n\n  ```\n- c\n","text":"- a\n- ```\nb\n\n\n- c\n"}
+{"id":"cm319","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n  - b\n\n    c\n- d\n","text":"- a\n- b\n\nc\n- d\n"}
+{"id":"cm320","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"* a\n  > b\n  >\n* c\n","text":"* a\n> b\n>\n* c\n"}
+{"id":"cm321","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":[],"errors":[],"input":"- a\n  > b\n  ```\n  c\n  ```\n- d\n","text":"- a\n> b\n  c\n- d\n"}
+{"id":"cm322","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"- a\n","text":"- a\n"}
+{"id":"cm323","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n  - b\n","text":"- a\n- b\n"}
+{"id":"cm324","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"1. ```\n   foo\n   ```\n\n   bar\n","text":"1. ```\nfoo\n\n   bar\n"}
+{"id":"cm325","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"* foo\n  * bar\n\n  baz\n","text":"* foo\n* bar\n\nbaz\n"}
+{"id":"cm326","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"- a\n  - b\n  - c\n\n- d\n  - e\n  - f\n","text":"- a\n- b\n- c\n\n- d\n- e\n- f\n"}
+{"id":"cm327","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`hi`lo`\n","text":"`hi`lo`\n"}
+{"id":"cm328","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`foo`\n","text":"`foo`\n"}
+{"id":"cm329","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`` foo ` bar ``\n","text":"`` foo ` bar ``\n"}
+{"id":"cm330","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"` `` `\n","text":"` `` `\n"}
+{"id":"cm331","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`  ``  `\n","text":"`  ``  `\n"}
+{"id":"cm332","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"` a`\n","text":"` a`\n"}
+{"id":"cm333","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"` b `\n","text":"` b `\n"}
+{"id":"cm334","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"` `\n`  `\n","text":"` `\n`  `\n"}
+{"id":"cm335","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"``\nfoo\nbar  \nbaz\n``\n","text":"``\nfoo\nbar  \nbaz\n``\n"}
+{"id":"cm336","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"``\nfoo \n``\n","text":"``\nfoo \n``\n"}
+{"id":"cm337","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`foo   bar \nbaz`\n","text":"`foo   bar \nbaz`\n"}
+{"id":"cm338","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`foo\\`bar`\n","text":"`foo\\`bar`\n"}
+{"id":"cm339","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"``foo`bar``\n","text":"``foo`bar``\n"}
+{"id":"cm340","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"` foo `` bar `\n","text":"` foo `` bar `\n"}
+{"id":"cm341","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo`*`\n","text":"*foo`*`\n"}
+{"id":"cm342","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[not a `link](/foo`)\n","text":"[not a `link](/foo`)\n"}
+{"id":"cm343","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`<a href=\"`\">`\n","text":"`<a href=\"`\">`\n"}
+{"id":"cm344","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"`\">`\n","text":"<a href=\"`\">`\n"}
+{"id":"cm345","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`<https://foo.bar.`baz>`\n","text":"`<https://foo.bar.`baz>`\n"}
+{"id":"cm346","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://foo.bar.`baz>`\n","text":"<https://foo.bar.`baz>`\n"}
+{"id":"cm347","verdict":"structure-recognized","verbatim":false,"indent_only":false,"structural":["FreeformStart","FreeformEnd"],"warnings":["UnclosedFreeform"],"errors":[],"input":"```foo``\n","text":"foo``\n"}
+{"id":"cm348","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`foo\n","text":"`foo\n"}
+{"id":"cm349","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`foo``bar``\n","text":"`foo``bar``\n"}
+{"id":"cm350","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo bar*\n","text":"*foo bar*\n"}
+{"id":"cm351","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"a * foo bar*\n","text":"a * foo bar*\n"}
+{"id":"cm352","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"a*\"foo\"*\n","text":"a*\"foo\"*\n"}
+{"id":"cm353","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"* a *\n","text":"* a *\n"}
+{"id":"cm354","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*$*alpha.\n\n*£*bravo.\n\n*€*charlie.\n","text":"*$*alpha.\n\n*£*bravo.\n\n*€*charlie.\n"}
+{"id":"cm355","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo*bar*\n","text":"foo*bar*\n"}
+{"id":"cm356","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"5*6*78\n","text":"5*6*78\n"}
+{"id":"cm357","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo bar_\n","text":"_foo bar_\n"}
+{"id":"cm358","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_ foo bar_\n","text":"_ foo bar_\n"}
+{"id":"cm359","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"a_\"foo\"_\n","text":"a_\"foo\"_\n"}
+{"id":"cm360","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo_bar_\n","text":"foo_bar_\n"}
+{"id":"cm361","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"5_6_78\n","text":"5_6_78\n"}
+{"id":"cm362","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"пристаням_стремятся_\n","text":"пристаням_стремятся_\n"}
+{"id":"cm363","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"aa_\"bb\"_cc\n","text":"aa_\"bb\"_cc\n"}
+{"id":"cm364","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo-_(bar)_\n","text":"foo-_(bar)_\n"}
+{"id":"cm365","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo*\n","text":"_foo*\n"}
+{"id":"cm366","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo bar *\n","text":"*foo bar *\n"}
+{"id":"cm367","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo bar\n*\n","text":"*foo bar\n*\n"}
+{"id":"cm368","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*(*foo)\n","text":"*(*foo)\n"}
+{"id":"cm369","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*(*foo*)*\n","text":"*(*foo*)*\n"}
+{"id":"cm370","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo*bar\n","text":"*foo*bar\n"}
+{"id":"cm371","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo bar _\n","text":"_foo bar _\n"}
+{"id":"cm372","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_(_foo)\n","text":"_(_foo)\n"}
+{"id":"cm373","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_(_foo_)_\n","text":"_(_foo_)_\n"}
+{"id":"cm374","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo_bar\n","text":"_foo_bar\n"}
+{"id":"cm375","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_пристаням_стремятся\n","text":"_пристаням_стремятся\n"}
+{"id":"cm376","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo_bar_baz_\n","text":"_foo_bar_baz_\n"}
+{"id":"cm377","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_(bar)_.\n","text":"_(bar)_.\n"}
+{"id":"cm378","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo bar**\n","text":"**foo bar**\n"}
+{"id":"cm379","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"** foo bar**\n","text":"** foo bar**\n"}
+{"id":"cm380","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"a**\"foo\"**\n","text":"a**\"foo\"**\n"}
+{"id":"cm381","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo**bar**\n","text":"foo**bar**\n"}
+{"id":"cm382","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo bar__\n","text":"__foo bar__\n"}
+{"id":"cm383","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__ foo bar__\n","text":"__ foo bar__\n"}
+{"id":"cm384","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__\nfoo bar__\n","text":"__\nfoo bar__\n"}
+{"id":"cm385","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"a__\"foo\"__\n","text":"a__\"foo\"__\n"}
+{"id":"cm386","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo__bar__\n","text":"foo__bar__\n"}
+{"id":"cm387","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"5__6__78\n","text":"5__6__78\n"}
+{"id":"cm388","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"пристаням__стремятся__\n","text":"пристаням__стремятся__\n"}
+{"id":"cm389","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo, __bar__, baz__\n","text":"__foo, __bar__, baz__\n"}
+{"id":"cm390","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo-__(bar)__\n","text":"foo-__(bar)__\n"}
+{"id":"cm391","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo bar **\n","text":"**foo bar **\n"}
+{"id":"cm392","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**(**foo)\n","text":"**(**foo)\n"}
+{"id":"cm393","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*(**foo**)*\n","text":"*(**foo**)*\n"}
+{"id":"cm394","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**Gomphocarpus (*Gomphocarpus physocarpus*, syn.\n*Asclepias physocarpa*)**\n","text":"**Gomphocarpus (*Gomphocarpus physocarpus*, syn.\n*Asclepias physocarpa*)**\n"}
+{"id":"cm395","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo \"*bar*\" foo**\n","text":"**foo \"*bar*\" foo**\n"}
+{"id":"cm396","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo**bar\n","text":"**foo**bar\n"}
+{"id":"cm397","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo bar __\n","text":"__foo bar __\n"}
+{"id":"cm398","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__(__foo)\n","text":"__(__foo)\n"}
+{"id":"cm399","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_(__foo__)_\n","text":"_(__foo__)_\n"}
+{"id":"cm400","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo__bar\n","text":"__foo__bar\n"}
+{"id":"cm401","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__пристаням__стремятся\n","text":"__пристаням__стремятся\n"}
+{"id":"cm402","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo__bar__baz__\n","text":"__foo__bar__baz__\n"}
+{"id":"cm403","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__(bar)__.\n","text":"__(bar)__.\n"}
+{"id":"cm404","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo [bar](/url)*\n","text":"*foo [bar](/url)*\n"}
+{"id":"cm405","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo\nbar*\n","text":"*foo\nbar*\n"}
+{"id":"cm406","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo __bar__ baz_\n","text":"_foo __bar__ baz_\n"}
+{"id":"cm407","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo _bar_ baz_\n","text":"_foo _bar_ baz_\n"}
+{"id":"cm408","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo_ bar_\n","text":"__foo_ bar_\n"}
+{"id":"cm409","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo *bar**\n","text":"*foo *bar**\n"}
+{"id":"cm410","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo **bar** baz*\n","text":"*foo **bar** baz*\n"}
+{"id":"cm411","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo**bar**baz*\n","text":"*foo**bar**baz*\n"}
+{"id":"cm412","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo**bar*\n","text":"*foo**bar*\n"}
+{"id":"cm413","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"***foo** bar*\n","text":"***foo** bar*\n"}
+{"id":"cm414","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo **bar***\n","text":"*foo **bar***\n"}
+{"id":"cm415","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo**bar***\n","text":"*foo**bar***\n"}
+{"id":"cm416","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo***bar***baz\n","text":"foo***bar***baz\n"}
+{"id":"cm417","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo******bar*********baz\n","text":"foo******bar*********baz\n"}
+{"id":"cm418","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo **bar *baz* bim** bop*\n","text":"*foo **bar *baz* bim** bop*\n"}
+{"id":"cm419","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo [*bar*](/url)*\n","text":"*foo [*bar*](/url)*\n"}
+{"id":"cm420","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"** is not an empty emphasis\n","text":"** is not an empty emphasis\n"}
+{"id":"cm421","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**** is not an empty strong emphasis\n","text":"**** is not an empty strong emphasis\n"}
+{"id":"cm422","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo [bar](/url)**\n","text":"**foo [bar](/url)**\n"}
+{"id":"cm423","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo\nbar**\n","text":"**foo\nbar**\n"}
+{"id":"cm424","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo _bar_ baz__\n","text":"__foo _bar_ baz__\n"}
+{"id":"cm425","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo __bar__ baz__\n","text":"__foo __bar__ baz__\n"}
+{"id":"cm426","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"____foo__ bar__\n","text":"____foo__ bar__\n"}
+{"id":"cm427","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo **bar****\n","text":"**foo **bar****\n"}
+{"id":"cm428","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo *bar* baz**\n","text":"**foo *bar* baz**\n"}
+{"id":"cm429","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo*bar*baz**\n","text":"**foo*bar*baz**\n"}
+{"id":"cm430","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"***foo* bar**\n","text":"***foo* bar**\n"}
+{"id":"cm431","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo *bar***\n","text":"**foo *bar***\n"}
+{"id":"cm432","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo *bar **baz**\nbim* bop**\n","text":"**foo *bar **baz**\nbim* bop**\n"}
+{"id":"cm433","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo [*bar*](/url)**\n","text":"**foo [*bar*](/url)**\n"}
+{"id":"cm434","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__ is not an empty emphasis\n","text":"__ is not an empty emphasis\n"}
+{"id":"cm435","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"____ is not an empty strong emphasis\n","text":"____ is not an empty strong emphasis\n"}
+{"id":"cm436","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo ***\n","text":"foo ***\n"}
+{"id":"cm437","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo *\\**\n","text":"foo *\\**\n"}
+{"id":"cm438","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo *_*\n","text":"foo *_*\n"}
+{"id":"cm439","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo *****\n","text":"foo *****\n"}
+{"id":"cm440","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo **\\***\n","text":"foo **\\***\n"}
+{"id":"cm441","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo **_**\n","text":"foo **_**\n"}
+{"id":"cm442","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo*\n","text":"**foo*\n"}
+{"id":"cm443","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo**\n","text":"*foo**\n"}
+{"id":"cm444","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"***foo**\n","text":"***foo**\n"}
+{"id":"cm445","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"****foo*\n","text":"****foo*\n"}
+{"id":"cm446","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo***\n","text":"**foo***\n"}
+{"id":"cm447","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo****\n","text":"*foo****\n"}
+{"id":"cm448","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo ___\n","text":"foo ___\n"}
+{"id":"cm449","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo _\\__\n","text":"foo _\\__\n"}
+{"id":"cm450","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo _*_\n","text":"foo _*_\n"}
+{"id":"cm451","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo _____\n","text":"foo _____\n"}
+{"id":"cm452","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo __\\___\n","text":"foo __\\___\n"}
+{"id":"cm453","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo __*__\n","text":"foo __*__\n"}
+{"id":"cm454","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo_\n","text":"__foo_\n"}
+{"id":"cm455","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo__\n","text":"_foo__\n"}
+{"id":"cm456","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"___foo__\n","text":"___foo__\n"}
+{"id":"cm457","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"____foo_\n","text":"____foo_\n"}
+{"id":"cm458","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo___\n","text":"__foo___\n"}
+{"id":"cm459","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo____\n","text":"_foo____\n"}
+{"id":"cm460","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo**\n","text":"**foo**\n"}
+{"id":"cm461","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*_foo_*\n","text":"*_foo_*\n"}
+{"id":"cm462","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__foo__\n","text":"__foo__\n"}
+{"id":"cm463","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_*foo*_\n","text":"_*foo*_\n"}
+{"id":"cm464","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"****foo****\n","text":"****foo****\n"}
+{"id":"cm465","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"____foo____\n","text":"____foo____\n"}
+{"id":"cm466","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"******foo******\n","text":"******foo******\n"}
+{"id":"cm467","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"***foo***\n","text":"***foo***\n"}
+{"id":"cm468","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_____foo_____\n","text":"_____foo_____\n"}
+{"id":"cm469","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo _bar* baz_\n","text":"*foo _bar* baz_\n"}
+{"id":"cm470","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo __bar *baz bim__ bam*\n","text":"*foo __bar *baz bim__ bam*\n"}
+{"id":"cm471","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**foo **bar baz**\n","text":"**foo **bar baz**\n"}
+{"id":"cm472","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo *bar baz*\n","text":"*foo *bar baz*\n"}
+{"id":"cm473","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*[bar*](/url)\n","text":"*[bar*](/url)\n"}
+{"id":"cm474","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_foo [bar_](/url)\n","text":"_foo [bar_](/url)\n"}
+{"id":"cm475","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*<img src=\"foo\" title=\"*\"/>\n","text":"*<img src=\"foo\" title=\"*\"/>\n"}
+{"id":"cm476","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**<a href=\"**\">\n","text":"**<a href=\"**\">\n"}
+{"id":"cm477","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__<a href=\"__\">\n","text":"__<a href=\"__\">\n"}
+{"id":"cm478","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*a `*`*\n","text":"*a `*`*\n"}
+{"id":"cm479","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"_a `_`_\n","text":"_a `_`_\n"}
+{"id":"cm480","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"**a<https://foo.bar/?q=**>\n","text":"**a<https://foo.bar/?q=**>\n"}
+{"id":"cm481","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"__a<https://foo.bar/?q=__>\n","text":"__a<https://foo.bar/?q=__>\n"}
+{"id":"cm482","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/uri \"title\")\n","text":"[link](/uri \"title\")\n"}
+{"id":"cm483","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/uri)\n","text":"[link](/uri)\n"}
+{"id":"cm484","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[](./target.md)\n","text":"[](./target.md)\n"}
+{"id":"cm485","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link]()\n","text":"[link]()\n"}
+{"id":"cm486","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](<>)\n","text":"[link](<>)\n"}
+{"id":"cm487","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[]()\n","text":"[]()\n"}
+{"id":"cm488","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/my uri)\n","text":"[link](/my uri)\n"}
+{"id":"cm489","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](</my uri>)\n","text":"[link](</my uri>)\n"}
+{"id":"cm490","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo\nbar)\n","text":"[link](foo\nbar)\n"}
+{"id":"cm491","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](<foo\nbar>)\n","text":"[link](<foo\nbar>)\n"}
+{"id":"cm492","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[a](<b)c>)\n","text":"[a](<b)c>)\n"}
+{"id":"cm493","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](<foo\\>)\n","text":"[link](<foo\\>)\n"}
+{"id":"cm494","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[a](<b)c\n[a](<b)c>\n[a](<b>c)\n","text":"[a](<b)c\n[a](<b)c>\n[a](<b>c)\n"}
+{"id":"cm495","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](\\(foo\\))\n","text":"[link](\\(foo\\))\n"}
+{"id":"cm496","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo(and(bar)))\n","text":"[link](foo(and(bar)))\n"}
+{"id":"cm497","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo(and(bar))\n","text":"[link](foo(and(bar))\n"}
+{"id":"cm498","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo\\(and\\(bar\\))\n","text":"[link](foo\\(and\\(bar\\))\n"}
+{"id":"cm499","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](<foo(and(bar)>)\n","text":"[link](<foo(and(bar)>)\n"}
+{"id":"cm500","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo\\)\\:)\n","text":"[link](foo\\)\\:)\n"}
+{"id":"cm501","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](#fragment)\n\n[link](https://example.com#fragment)\n\n[link](https://example.com?foo=3#frag)\n","text":"[link](#fragment)\n\n[link](https://example.com#fragment)\n\n[link](https://example.com?foo=3#frag)\n"}
+{"id":"cm502","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo\\bar)\n","text":"[link](foo\\bar)\n"}
+{"id":"cm503","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](foo%20b&auml;)\n","text":"[link](foo%20b&auml;)\n"}
+{"id":"cm504","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](\"title\")\n","text":"[link](\"title\")\n"}
+{"id":"cm505","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/url \"title\")\n[link](/url 'title')\n[link](/url (title))\n","text":"[link](/url \"title\")\n[link](/url 'title')\n[link](/url (title))\n"}
+{"id":"cm506","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/url \"title \\\"&quot;\")\n","text":"[link](/url \"title \\\"&quot;\")\n"}
+{"id":"cm507","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/url \"title\")\n","text":"[link](/url \"title\")\n"}
+{"id":"cm508","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/url \"title \"and\" title\")\n","text":"[link](/url \"title \"and\" title\")\n"}
+{"id":"cm509","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link](/url 'title \"and\" title')\n","text":"[link](/url 'title \"and\" title')\n"}
+{"id":"cm510","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"[link](   /uri\n  \"title\"  )\n","text":"[link](   /uri\n\"title\"  )\n"}
+{"id":"cm511","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link] (/uri)\n","text":"[link] (/uri)\n"}
+{"id":"cm512","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link [foo [bar]]](/uri)\n","text":"[link [foo [bar]]](/uri)\n"}
+{"id":"cm513","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link] bar](/uri)\n","text":"[link] bar](/uri)\n"}
+{"id":"cm514","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link [bar](/uri)\n","text":"[link [bar](/uri)\n"}
+{"id":"cm515","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link \\[bar](/uri)\n","text":"[link \\[bar](/uri)\n"}
+{"id":"cm516","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link *foo **bar** `#`*](/uri)\n","text":"[link *foo **bar** `#`*](/uri)\n"}
+{"id":"cm517","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[![moon](moon.jpg)](/uri)\n","text":"[![moon](moon.jpg)](/uri)\n"}
+{"id":"cm518","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo [bar](/uri)](/uri)\n","text":"[foo [bar](/uri)](/uri)\n"}
+{"id":"cm519","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo *[bar [baz](/uri)](/uri)*](/uri)\n","text":"[foo *[bar [baz](/uri)](/uri)*](/uri)\n"}
+{"id":"cm520","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![[[foo](uri1)](uri2)](uri3)\n","text":"![[[foo](uri1)](uri2)](uri3)\n"}
+{"id":"cm521","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*[foo*](/uri)\n","text":"*[foo*](/uri)\n"}
+{"id":"cm522","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo *bar](baz*)\n","text":"[foo *bar](baz*)\n"}
+{"id":"cm523","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo [bar* baz]\n","text":"*foo [bar* baz]\n"}
+{"id":"cm524","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo <bar attr=\"](baz)\">\n","text":"[foo <bar attr=\"](baz)\">\n"}
+{"id":"cm525","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo`](/uri)`\n","text":"[foo`](/uri)`\n"}
+{"id":"cm526","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo<https://example.com/?search=](uri)>\n","text":"[foo<https://example.com/?search=](uri)>\n"}
+{"id":"cm527","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][bar]\n\n[bar]: /url \"title\"\n","text":"[foo][bar]\n\n[bar]: /url \"title\"\n"}
+{"id":"cm528","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link [foo [bar]]][ref]\n\n[ref]: /uri\n","text":"[link [foo [bar]]][ref]\n\n[ref]: /uri\n"}
+{"id":"cm529","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link \\[bar][ref]\n\n[ref]: /uri\n","text":"[link \\[bar][ref]\n\n[ref]: /uri\n"}
+{"id":"cm530","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[link *foo **bar** `#`*][ref]\n\n[ref]: /uri\n","text":"[link *foo **bar** `#`*][ref]\n\n[ref]: /uri\n"}
+{"id":"cm531","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[![moon](moon.jpg)][ref]\n\n[ref]: /uri\n","text":"[![moon](moon.jpg)][ref]\n\n[ref]: /uri\n"}
+{"id":"cm532","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo [bar](/uri)][ref]\n\n[ref]: /uri\n","text":"[foo [bar](/uri)][ref]\n\n[ref]: /uri\n"}
+{"id":"cm533","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo *bar [baz][ref]*][ref]\n\n[ref]: /uri\n","text":"[foo *bar [baz][ref]*][ref]\n\n[ref]: /uri\n"}
+{"id":"cm534","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*[foo*][ref]\n\n[ref]: /uri\n","text":"*[foo*][ref]\n\n[ref]: /uri\n"}
+{"id":"cm535","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo *bar][ref]*\n\n[ref]: /uri\n","text":"[foo *bar][ref]*\n\n[ref]: /uri\n"}
+{"id":"cm536","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo <bar attr=\"][ref]\">\n\n[ref]: /uri\n","text":"[foo <bar attr=\"][ref]\">\n\n[ref]: /uri\n"}
+{"id":"cm537","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo`][ref]`\n\n[ref]: /uri\n","text":"[foo`][ref]`\n\n[ref]: /uri\n"}
+{"id":"cm538","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo<https://example.com/?search=][ref]>\n\n[ref]: /uri\n","text":"[foo<https://example.com/?search=][ref]>\n\n[ref]: /uri\n"}
+{"id":"cm539","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][BaR]\n\n[bar]: /url \"title\"\n","text":"[foo][BaR]\n\n[bar]: /url \"title\"\n"}
+{"id":"cm540","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[ẞ]\n\n[SS]: /url\n","text":"[ẞ]\n\n[SS]: /url\n"}
+{"id":"cm541","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"[Foo\n  bar]: /url\n\n[Baz][Foo bar]\n","text":"[Foo\nbar]: /url\n\n[Baz][Foo bar]\n"}
+{"id":"cm542","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo] [bar]\n\n[bar]: /url \"title\"\n","text":"[foo] [bar]\n\n[bar]: /url \"title\"\n"}
+{"id":"cm543","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n[bar]\n\n[bar]: /url \"title\"\n","text":"[foo]\n[bar]\n\n[bar]: /url \"title\"\n"}
+{"id":"cm544","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]: /url1\n\n[foo]: /url2\n\n[bar][foo]\n","text":"[foo]: /url1\n\n[foo]: /url2\n\n[bar][foo]\n"}
+{"id":"cm545","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[bar][foo\\!]\n\n[foo!]: /url\n","text":"[bar][foo\\!]\n\n[foo!]: /url\n"}
+{"id":"cm546","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][ref[]\n\n[ref[]: /uri\n","text":"[foo][ref[]\n\n[ref[]: /uri\n"}
+{"id":"cm547","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][ref[bar]]\n\n[ref[bar]]: /uri\n","text":"[foo][ref[bar]]\n\n[ref[bar]]: /uri\n"}
+{"id":"cm548","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[[[foo]]]\n\n[[[foo]]]: /url\n","text":"[[[foo]]]\n\n[[[foo]]]: /url\n"}
+{"id":"cm549","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][ref\\[]\n\n[ref\\[]: /uri\n","text":"[foo][ref\\[]\n\n[ref\\[]: /uri\n"}
+{"id":"cm550","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[bar\\\\]: /uri\n\n[bar\\\\]\n","text":"[bar\\\\]: /uri\n\n[bar\\\\]\n"}
+{"id":"cm551","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[]\n\n[]: /uri\n","text":"[]\n\n[]: /uri\n"}
+{"id":"cm552","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"[\n ]\n\n[\n ]: /uri\n","text":"[\n]\n\n[\n]: /uri\n"}
+{"id":"cm553","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][]\n\n[foo]: /url \"title\"\n","text":"[foo][]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm554","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[*foo* bar][]\n\n[*foo* bar]: /url \"title\"\n","text":"[*foo* bar][]\n\n[*foo* bar]: /url \"title\"\n"}
+{"id":"cm555","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[Foo][]\n\n[foo]: /url \"title\"\n","text":"[Foo][]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm556","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo] \n[]\n\n[foo]: /url \"title\"\n","text":"[foo] \n[]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm557","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]\n\n[foo]: /url \"title\"\n","text":"[foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm558","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[*foo* bar]\n\n[*foo* bar]: /url \"title\"\n","text":"[*foo* bar]\n\n[*foo* bar]: /url \"title\"\n"}
+{"id":"cm559","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[[*foo* bar]]\n\n[*foo* bar]: /url \"title\"\n","text":"[[*foo* bar]]\n\n[*foo* bar]: /url \"title\"\n"}
+{"id":"cm560","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[[bar [foo]\n\n[foo]: /url\n","text":"[[bar [foo]\n\n[foo]: /url\n"}
+{"id":"cm561","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[Foo]\n\n[foo]: /url \"title\"\n","text":"[Foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm562","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo] bar\n\n[foo]: /url\n","text":"[foo] bar\n\n[foo]: /url\n"}
+{"id":"cm563","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\[foo]\n\n[foo]: /url \"title\"\n","text":"[foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm564","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo*]: /url\n\n*[foo*]\n","text":"[foo*]: /url\n\n*[foo*]\n"}
+{"id":"cm565","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][bar]\n\n[foo]: /url1\n[bar]: /url2\n","text":"[foo][bar]\n\n[foo]: /url1\n[bar]: /url2\n"}
+{"id":"cm566","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][]\n\n[foo]: /url1\n","text":"[foo][]\n\n[foo]: /url1\n"}
+{"id":"cm567","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo]()\n\n[foo]: /url1\n","text":"[foo]()\n\n[foo]: /url1\n"}
+{"id":"cm568","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo](not a link)\n\n[foo]: /url1\n","text":"[foo](not a link)\n\n[foo]: /url1\n"}
+{"id":"cm569","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][bar][baz]\n\n[baz]: /url\n","text":"[foo][bar][baz]\n\n[baz]: /url\n"}
+{"id":"cm570","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][bar][baz]\n\n[baz]: /url1\n[bar]: /url2\n","text":"[foo][bar][baz]\n\n[baz]: /url1\n[bar]: /url2\n"}
+{"id":"cm571","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"[foo][bar][baz]\n\n[baz]: /url1\n[foo]: /url2\n","text":"[foo][bar][baz]\n\n[baz]: /url1\n[foo]: /url2\n"}
+{"id":"cm572","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo](/url \"title\")\n","text":"![foo](/url \"title\")\n"}
+{"id":"cm573","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo *bar*]\n\n[foo *bar*]: train.jpg \"train & tracks\"\n","text":"![foo *bar*]\n\n[foo *bar*]: train.jpg \"train & tracks\"\n"}
+{"id":"cm574","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo ![bar](/url)](/url2)\n","text":"![foo ![bar](/url)](/url2)\n"}
+{"id":"cm575","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo [bar](/url)](/url2)\n","text":"![foo [bar](/url)](/url2)\n"}
+{"id":"cm576","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo *bar*][]\n\n[foo *bar*]: train.jpg \"train & tracks\"\n","text":"![foo *bar*][]\n\n[foo *bar*]: train.jpg \"train & tracks\"\n"}
+{"id":"cm577","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo *bar*][foobar]\n\n[FOOBAR]: train.jpg \"train & tracks\"\n","text":"![foo *bar*][foobar]\n\n[FOOBAR]: train.jpg \"train & tracks\"\n"}
+{"id":"cm578","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo](train.jpg)\n","text":"![foo](train.jpg)\n"}
+{"id":"cm579","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"My ![foo bar](/path/to/train.jpg  \"title\"   )\n","text":"My ![foo bar](/path/to/train.jpg  \"title\"   )\n"}
+{"id":"cm580","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo](<url>)\n","text":"![foo](<url>)\n"}
+{"id":"cm581","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![](/url)\n","text":"![](/url)\n"}
+{"id":"cm582","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo][bar]\n\n[bar]: /url\n","text":"![foo][bar]\n\n[bar]: /url\n"}
+{"id":"cm583","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo][bar]\n\n[BAR]: /url\n","text":"![foo][bar]\n\n[BAR]: /url\n"}
+{"id":"cm584","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo][]\n\n[foo]: /url \"title\"\n","text":"![foo][]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm585","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![*foo* bar][]\n\n[*foo* bar]: /url \"title\"\n","text":"![*foo* bar][]\n\n[*foo* bar]: /url \"title\"\n"}
+{"id":"cm586","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![Foo][]\n\n[foo]: /url \"title\"\n","text":"![Foo][]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm587","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo] \n[]\n\n[foo]: /url \"title\"\n","text":"![foo] \n[]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm588","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![foo]\n\n[foo]: /url \"title\"\n","text":"![foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm589","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![*foo* bar]\n\n[*foo* bar]: /url \"title\"\n","text":"![*foo* bar]\n\n[*foo* bar]: /url \"title\"\n"}
+{"id":"cm590","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![[foo]]\n\n[[foo]]: /url \"title\"\n","text":"![[foo]]\n\n[[foo]]: /url \"title\"\n"}
+{"id":"cm591","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"![Foo]\n\n[foo]: /url \"title\"\n","text":"![Foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm592","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"!\\[foo]\n\n[foo]: /url \"title\"\n","text":"!\\[foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm593","verdict":"text-differs","verbatim":false,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"\\![foo]\n\n[foo]: /url \"title\"\n","text":"![foo]\n\n[foo]: /url \"title\"\n"}
+{"id":"cm594","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<http://foo.bar.baz>\n","text":"<http://foo.bar.baz>\n"}
+{"id":"cm595","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://foo.bar.baz/test?q=hello&id=22&boolean>\n","text":"<https://foo.bar.baz/test?q=hello&id=22&boolean>\n"}
+{"id":"cm596","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<irc://foo.bar:2233/baz>\n","text":"<irc://foo.bar:2233/baz>\n"}
+{"id":"cm597","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<MAILTO:FOO@BAR.BAZ>\n","text":"<MAILTO:FOO@BAR.BAZ>\n"}
+{"id":"cm598","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a+b+c:d>\n","text":"<a+b+c:d>\n"}
+{"id":"cm599","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<made-up-scheme://foo,bar>\n","text":"<made-up-scheme://foo,bar>\n"}
+{"id":"cm600","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://../>\n","text":"<https://../>\n"}
+{"id":"cm601","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<localhost:5001/foo>\n","text":"<localhost:5001/foo>\n"}
+{"id":"cm602","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://foo.bar/baz bim>\n","text":"<https://foo.bar/baz bim>\n"}
+{"id":"cm603","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<https://example.com/\\[\\>\n","text":"<https://example.com/\\[\\>\n"}
+{"id":"cm604","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<foo@bar.example.com>\n","text":"<foo@bar.example.com>\n"}
+{"id":"cm605","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<foo+special@Bar.baz-bar0.com>\n","text":"<foo+special@Bar.baz-bar0.com>\n"}
+{"id":"cm606","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<foo\\+@bar.example.com>\n","text":"<foo\\+@bar.example.com>\n"}
+{"id":"cm607","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<>\n","text":"<>\n"}
+{"id":"cm608","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"< https://foo.bar >\n","text":"< https://foo.bar >\n"}
+{"id":"cm609","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<m:abc>\n","text":"<m:abc>\n"}
+{"id":"cm610","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<foo.bar.baz>\n","text":"<foo.bar.baz>\n"}
+{"id":"cm611","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"https://example.com\n","text":"https://example.com\n"}
+{"id":"cm612","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo@bar.example.com\n","text":"foo@bar.example.com\n"}
+{"id":"cm613","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a><bab><c2c>\n","text":"<a><bab><c2c>\n"}
+{"id":"cm614","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a/><b2/>\n","text":"<a/><b2/>\n"}
+{"id":"cm615","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a  /><b2\ndata=\"foo\" >\n","text":"<a  /><b2\ndata=\"foo\" >\n"}
+{"id":"cm616","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 />\n","text":"<a foo=\"bar\" bam = 'baz <em>\"</em>'\n_boolean zoop:33=zoop:33 />\n"}
+{"id":"cm617","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo <responsive-image src=\"foo.jpg\" />\n","text":"Foo <responsive-image src=\"foo.jpg\" />\n"}
+{"id":"cm618","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<33> <__>\n","text":"<33> <__>\n"}
+{"id":"cm619","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a h*#ref=\"hi\">\n","text":"<a h*#ref=\"hi\">\n"}
+{"id":"cm620","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"hi'> <a href=hi'>\n","text":"<a href=\"hi'> <a href=hi'>\n"}
+{"id":"cm621","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"< a><\nfoo><bar/ >\n<foo bar=baz\nbim!bop />\n","text":"< a><\nfoo><bar/ >\n<foo bar=baz\nbim!bop />\n"}
+{"id":"cm622","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href='bar'title=title>\n","text":"<a href='bar'title=title>\n"}
+{"id":"cm623","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"</a></foo >\n","text":"</a></foo >\n"}
+{"id":"cm624","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"</a href=\"foo\">\n","text":"</a href=\"foo\">\n"}
+{"id":"cm625","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <!-- this is a --\ncomment - with hyphens -->\n","text":"foo <!-- this is a --\ncomment - with hyphens -->\n"}
+{"id":"cm626","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <!--> foo -->\n\nfoo <!---> foo -->\n","text":"foo <!--> foo -->\n\nfoo <!---> foo -->\n"}
+{"id":"cm627","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <?php echo $a; ?>\n","text":"foo <?php echo $a; ?>\n"}
+{"id":"cm628","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <!ELEMENT br EMPTY>\n","text":"foo <!ELEMENT br EMPTY>\n"}
+{"id":"cm629","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <![CDATA[>&<]]>\n","text":"foo <![CDATA[>&<]]>\n"}
+{"id":"cm630","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <a href=\"&ouml;\">\n","text":"foo <a href=\"&ouml;\">\n"}
+{"id":"cm631","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo <a href=\"\\*\">\n","text":"foo <a href=\"\\*\">\n"}
+{"id":"cm632","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"\\\"\">\n","text":"<a href=\"\\\"\">\n"}
+{"id":"cm633","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo  \nbaz\n","text":"foo  \nbaz\n"}
+{"id":"cm634","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\\\nbaz\n","text":"foo\\\nbaz\n"}
+{"id":"cm635","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo       \nbaz\n","text":"foo       \nbaz\n"}
+{"id":"cm636","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"foo  \n     bar\n","text":"foo  \nbar\n"}
+{"id":"cm637","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"foo\\\n     bar\n","text":"foo\\\nbar\n"}
+{"id":"cm638","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo  \nbar*\n","text":"*foo  \nbar*\n"}
+{"id":"cm639","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"*foo\\\nbar*\n","text":"*foo\\\nbar*\n"}
+{"id":"cm640","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`code  \nspan`\n","text":"`code  \nspan`\n"}
+{"id":"cm641","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"`code\\\nspan`\n","text":"`code\\\nspan`\n"}
+{"id":"cm642","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"foo  \nbar\">\n","text":"<a href=\"foo  \nbar\">\n"}
+{"id":"cm643","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"<a href=\"foo\\\nbar\">\n","text":"<a href=\"foo\\\nbar\">\n"}
+{"id":"cm644","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\\\n","text":"foo\\\n"}
+{"id":"cm645","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo  \n","text":"foo  \n"}
+{"id":"cm646","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"### foo\\\n","text":"### foo\\\n"}
+{"id":"cm647","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"### foo  \n","text":"### foo  \n"}
+{"id":"cm648","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"foo\nbaz\n","text":"foo\nbaz\n"}
+{"id":"cm649","verdict":"prose-dedented","verbatim":false,"indent_only":true,"structural":[],"warnings":[],"errors":[],"input":"foo \n baz\n","text":"foo \nbaz\n"}
+{"id":"cm650","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"hello $.;'there\n","text":"hello $.;'there\n"}
+{"id":"cm651","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Foo χρῆν\n","text":"Foo χρῆν\n"}
+{"id":"cm652","verdict":"prose-verbatim","verbatim":true,"indent_only":false,"structural":[],"warnings":[],"errors":[],"input":"Multiple     spaces\n","text":"Multiple     spaces\n"}

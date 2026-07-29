@@ -1,0 +1,77 @@
+#= E1 escape inside a list item
+|el :xs [\||a|b other]
+
+---
+#= E2 escape inside an identity bracket
+|el[\||a|b] :x 1
+
+---
+#= E3 envelope path as a deferred value body
+|el
+  :p
+    <path:||intent[311]:status>
+
+---
+#= E4 quoted path as a deferred value body
+|el
+  :p
+    "||intent[311]:status"
+
+---
+#= E5 quoted path spanning a newline (ML interim behavior)
+|el :p "||intent[311]
+  :status"
+
+---
+#= E6 list spanning a newline (ML interim behavior)
+|el :xs [a
+  b]
+
+---
+#= E7 sigil-free path with a quoted segment containing a space
+|el :p intent["a b"]:status
+
+---
+#= E8 sigil-free path, quoted key with a ]
+|el :p intent["a]b"]:status
+
+---
+#= E9 sigil-free path in a list, key quoted
+|el :xs [intent["311"]:status other]
+
+---
+#= E10 does a quoted-open bare token protect ] in a list
+|el :xs ["intent[311]:status" other]
+
+---
+#= E11 sameline: node value form as a tree path
+|el :p |article|section|para
+
+---
+#= E12 sameline: node value form, does the last segment take the rest
+|el :p |article|section :host x
+
+---
+#= E13 reference at the very start of a block line (reference child)
+|el
+  @config[primary]
+
+---
+#= E14 sigil-free path with an @ mid-token (ref-follow step)
+|el :p intent[311]:fed-by@health:status
+
+---
+#= E15 sigil-free path beginning with @ is a reference; with @@?
+|el :p @@config
+
+---
+#= E16 what does a leading ! do in value position
+|el :p !intent[311]
+
+---
+#= E17 what does a leading ; do in value position
+|el :p ;intent[311]
+
+---
+#= E18 what does a leading ` do in value position
+|el :p ```intent[311]

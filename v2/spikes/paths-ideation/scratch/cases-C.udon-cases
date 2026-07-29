@@ -1,0 +1,120 @@
+#= C1 does / continue an ELEMENT name (CORE 5.2 says yes)
+|acme/widget :x 1
+
+---
+#= C2 does / continue an element name in value position
+|el :p |acme/widget
+
+---
+#= C3 quoted interior inside a selector bracket
+|el :p @["a]b"]
+
+---
+#= C4 quoted name in a reference
+|el :p @'weird name'
+
+---
+#= C5 escape-forced path containing a framed semicolon
+|el
+  :p \||intent[a ; b]:status
+
+---
+#= C6 escape-forced path inside an inline element
+|p see |{at :path \||intent[311]:status} ok
+
+---
+#= C7 escape-forced path: does } still close the inline element
+|p see |{at :path \||a|b} ok
+
+---
+#= C8 multi-key selector
+|el :p @a[1][2]
+
+---
+#= C9 traits then key order
+|el :p @a.t[1]
+
+---
+#= C10 key then traits order
+|el :p @a[1].t
+
+---
+#= C11 interpolation as a whole path value
+|el :p !{{ path("||intent[311]") }}
+
+---
+#= C12 interpolation inside a path envelope
+|el :p <path:||intent[!{{id}}]:status>
+
+---
+#= C13 deferred value: path on a deeper line
+|el
+  :p
+    ||intent[311]:status
+
+---
+#= C14 deferred value: ref-form path on a deeper line
+|el
+  :p
+    @config|database[primary]
+
+---
+#= C15 path inside block verbatim (baseline: fully safe)
+|el
+  :p !:path: ||intent[311]:status
+
+---
+#= C16 fence carrying paths byte-exactly
+|el
+  ```
+  ||intent[311]:status
+  @config|database[primary]
+  ```
+
+---
+#= C17 unbalanced [ inside a path envelope
+|el :p <path:||intent[311:status>
+
+---
+#= C18 unbalanced < inside a quoted path
+|el :p "||intent[a<b]"
+
+---
+#= C19 bare token starting with # (fragment sigil)
+|el :p #main-findings
+
+---
+#= C20 bare path-to with a fragment, no @ prefix
+|el :p ⊤/spec/CORE.md#nesting-rule
+
+---
+#= C21 bare path-to with a fragment and || descent, no @ prefix
+|el :p ⊤/spec/CORE.md#||section[nesting-rule]
+
+---
+#= C22 two-operand (multi-slot) form: locate and descend as separate attrs
+|include :from ⊤/spec/CORE.md :select "||section[nesting-rule]"
+
+---
+#= C23 two-operand with envelope select
+|include :from <url:core://components/another.udon> :select <path:||findings>
+
+---
+#= C24 does a bare token stop at [ ?
+|el :p abc[1]
+
+---
+#= C25 does a bare token stop at : mid-token?
+|el :p abc:def
+
+---
+#= C26 bare token with a . and a [
+|el :p abc.d[1]
+
+---
+#= C27 element-rooted: escaped path is line-final; second attr must move to block
+|el :host x :p \||intent[311]:status
+
+---
+#= C28 flag key then a bare path
+|el :ready? ||intent[311]

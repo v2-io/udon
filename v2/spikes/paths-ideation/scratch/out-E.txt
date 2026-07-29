@@ -1,0 +1,233 @@
+### [1] E1 escape inside a list item
+INPUT:
+    |el :xs [\||a|b other]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    BareValue "\\||a|b" @ 9..15
+    BareValue "other" @ 16..21
+    ArrayEnd @ 22..22
+    ElementEnd @ 23..23
+
+### [2] E2 escape inside an identity bracket
+INPUT:
+    |el[\||a|b] :x 1
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "$key" @ 10..10
+    BareValue "\\||a|b" @ 4..10
+    Attr "x" @ 13..14
+    Integer "1" @ 15..16
+    ElementEnd @ 17..17
+
+### [3] E3 envelope path as a deferred value body
+INPUT:
+    |el
+      :p
+        <path:||intent[311]:status>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "<path:||intent[311]:status>\n" @ 13..41
+    ElementEnd @ 41..41
+
+### [4] E4 quoted path as a deferred value body
+INPUT:
+    |el
+      :p
+        "||intent[311]:status"
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "\"||intent[311]:status\"\n" @ 13..36
+    ElementEnd @ 36..36
+
+### [5] E5 quoted path spanning a newline (ML interim behavior)
+INPUT:
+    |el :p "||intent[311]
+      :status"
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    StringValue "||intent[311]\n  :status" @ 8..31
+    ElementEnd @ 33..33
+
+### [6] E6 list spanning a newline (ML interim behavior)
+INPUT:
+    |el :xs [a
+      b]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    BareValue "a" @ 9..10
+    Warning "UnclosedArray" @ 10..10
+    ArrayEnd @ 10..10
+    Text "b]\n" @ 13..16
+    ElementEnd @ 16..16
+
+### [7] E7 sigil-free path with a quoted segment containing a space
+INPUT:
+    |el :p intent["a b"]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Text "intent[\"a b\"]:status\n" @ 7..28
+    ElementEnd @ 28..28
+
+### [8] E8 sigil-free path, quoted key with a ]
+INPUT:
+    |el :p intent["a]b"]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "intent[\"a]b\"]:status" @ 7..27
+    ElementEnd @ 28..28
+
+### [9] E9 sigil-free path in a list, key quoted
+INPUT:
+    |el :xs [intent["311"]:status other]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    BareValue "intent[\"311\"" @ 9..21
+    ArrayEnd @ 22..22
+    Attr "status" @ 23..29
+    BareValue "other]" @ 30..36
+    ElementEnd @ 37..37
+
+### [10] E10 does a quoted-open bare token protect ] in a list
+INPUT:
+    |el :xs ["intent[311]:status" other]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    StringValue "intent[311]:status" @ 10..28
+    BareValue "other" @ 30..35
+    ArrayEnd @ 36..36
+    ElementEnd @ 37..37
+
+### [11] E11 sameline: node value form as a tree path
+INPUT:
+    |el :p |article|section|para
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    ElementStart @ 8..8
+    Name "article" @ 8..15
+    Text "" @ 15..15
+    ElementStart @ 16..16
+    Name "section" @ 16..23
+    Text "" @ 23..23
+    ElementStart @ 24..24
+    Name "para" @ 24..28
+    ElementEnd @ 29..29
+    Text "" @ 29..29
+    ElementEnd @ 29..29
+    Text "" @ 29..29
+    ElementEnd @ 29..29
+    ElementEnd @ 29..29
+
+### [12] E12 sameline: node value form, does the last segment take the rest
+INPUT:
+    |el :p |article|section :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    ElementStart @ 8..8
+    Name "article" @ 8..15
+    Text "" @ 15..15
+    ElementStart @ 16..16
+    Name "section" @ 16..23
+    Attr "host" @ 25..29
+    BareValue "x" @ 30..31
+    ElementEnd @ 32..32
+    Text "" @ 32..32
+    ElementEnd @ 32..32
+    ElementEnd @ 32..32
+
+### [13] E13 reference at the very start of a block line (reference child)
+INPUT:
+    |el
+      @config[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Reference "config[primary]" @ 7..22
+    ElementEnd @ 23..23
+
+### [14] E14 sigil-free path with an @ mid-token (ref-follow step)
+INPUT:
+    |el :p intent[311]:fed-by@health:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "intent[311]:fed-by@health:status" @ 7..39
+    ElementEnd @ 40..40
+
+### [15] E15 sigil-free path beginning with @ is a reference; with @@?
+INPUT:
+    |el :p @@config
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "@@config" @ 7..15
+    ElementEnd @ 16..16
+
+### [16] E16 what does a leading ! do in value position
+INPUT:
+    |el :p !intent[311]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    DirectiveStart @ 8..8
+    Name "intent" @ 8..14
+    Text "[311]\n" @ 14..20
+    DirectiveEnd @ 20..20
+    ElementEnd @ 20..20
+
+### [17] E17 what does a leading ; do in value position
+INPUT:
+    |el :p ;intent[311]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Error MissingAttributeValue @ 7..7
+    Nil "" @ 7..7
+    CommentStart @ 8..8
+    Text "intent[311]" @ 8..19
+    CommentEnd @ 19..19
+    ElementEnd @ 20..20
+
+### [18] E18 what does a leading ` do in value position
+INPUT:
+    |el :p ```intent[311]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    FreeformStart @ 10..10
+    Text "intent[311]\n" @ 10..22
+    Warning "UnclosedFreeform" @ 22..22
+    FreeformEnd @ 22..22
+    ElementEnd @ 22..22
+

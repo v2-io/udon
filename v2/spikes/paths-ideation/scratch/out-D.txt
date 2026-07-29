@@ -1,0 +1,285 @@
+### [1] D1 sigil-free relational path, element-rooted, followed by another attr
+INPUT:
+    |el :p intent[311]:status :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "intent[311]:status" @ 7..25
+    Attr "host" @ 27..31
+    BareValue "x" @ 32..33
+    ElementEnd @ 34..34
+
+### [2] D2 sigil-free relational path, block attribute line
+INPUT:
+    |el
+      :p intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    BareValue "intent[311]:status" @ 9..27
+    ElementEnd @ 28..28
+
+### [3] D3 sigil-free relational path, list item
+INPUT:
+    |el :xs [intent[311]:status other[1]]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    BareValue "intent[311" @ 9..19
+    ArrayEnd @ 20..20
+    Attr "status" @ 21..27
+    BareValue "other[1]]" @ 28..37
+    ElementEnd @ 38..38
+
+### [4] D4 sigil-free relational path, inline element interior
+INPUT:
+    |p see |{at :path intent[311]:status} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    BareValue "intent[311]:status" @ 18..36
+    EmbeddedEnd @ 37..37
+    Text " ok\n" @ 37..41
+    ElementEnd @ 41..41
+
+### [5] D5 sigil-free relational path, identity bracket
+INPUT:
+    |el[intent[311]:status] :x 1
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "$key" @ 14..14
+    BareValue "intent[311" @ 4..14
+    Text ":status] :x 1\n" @ 15..29
+    ElementEnd @ 29..29
+
+### [6] D6 sigil-free relational path, envelope interior
+INPUT:
+    |el :p <path:intent[311]:status>
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "<path:intent[311]:status>" @ 7..32
+    Warning "NoDialectsLoaded" @ 32..32
+    ElementEnd @ 33..33
+
+### [7] D7 sigil-free with traits and attr steps and a ref-follow
+INPUT:
+    |el :p intent[311].a.b:fed-by@:health :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "intent[311].a.b:fed-by@:health" @ 7..37
+    Attr "host" @ 39..43
+    BareValue "x" @ 44..45
+    ElementEnd @ 46..46
+
+### [8] D8 sigil-free fused locate+descend
+INPUT:
+    |el :p ⊤/spec/CORE.md#section[nesting-rule]:title :host x
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "⊤/spec/CORE.md#section[nesting-rule]:title" @ 7..51
+    Attr "host" @ 53..57
+    BareValue "x" @ 58..59
+    ElementEnd @ 60..60
+
+### [9] D9 does a bare token stop at < ?
+INPUT:
+    |el :p abc<def>ghi
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "abc<def>ghi" @ 7..18
+    ElementEnd @ 19..19
+
+### [10] D10 does a bare token stop at } inside an inline element
+INPUT:
+    |p see |{at :path a}b} ok
+EVENTS:
+    ElementStart @ 1..1
+    Name "p" @ 1..2
+    Text "see " @ 3..7
+    EmbeddedStart @ 9..9
+    Name "at" @ 9..11
+    Attr "path" @ 13..17
+    BareValue "a" @ 18..19
+    EmbeddedEnd @ 20..20
+    Text "b} ok\n" @ 20..26
+    ElementEnd @ 26..26
+
+### [11] D11 does a bare token stop at ] inside a list
+INPUT:
+    |el :xs [a]b c]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "xs" @ 5..7
+    ArrayStart @ 8..8
+    BareValue "a" @ 9..10
+    ArrayEnd @ 11..11
+    Text "b c]\n" @ 11..16
+    ElementEnd @ 16..16
+
+### [12] D12 does a bare token stop at ] inside an identity bracket
+INPUT:
+    |el[a]b] :x 1
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "$key" @ 5..5
+    BareValue "a" @ 4..5
+    Text "b] :x 1\n" @ 6..14
+    ElementEnd @ 14..14
+
+### [13] D13 deferred body: single |element under a bare key (node value?)
+INPUT:
+    |el
+      :p
+        |database[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    ElementStart @ 14..14
+    Name "database" @ 14..22
+    Attr "$key" @ 30..30
+    BareValue "primary" @ 23..30
+    ElementEnd @ 32..32
+    ElementEnd @ 32..32
+
+### [14] D14 deferred body: || under a bare key
+INPUT:
+    |el
+      :p
+        ||database[primary]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "||database[primary]\n" @ 13..33
+    ElementEnd @ 33..33
+
+### [15] D15 deferred body: sigil-free path
+INPUT:
+    |el
+      :p
+        intent[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "intent[311]:status\n" @ 13..32
+    ElementEnd @ 32..32
+
+### [16] D16 deferred body: multi-line path continuation
+INPUT:
+    |el
+      :p
+        intent[311]
+        :status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 7..8
+    Text "intent[311]\n" @ 13..25
+    Error AttributeUnderAttribute @ 29..29
+    Text ":status\n" @ 29..37
+    ElementEnd @ 37..37
+
+### [17] D17 sigil-free path with a space (the one hard break)
+INPUT:
+    |el :p intent[a b]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Text "intent[a b]:status\n" @ 7..26
+    ElementEnd @ 26..26
+
+### [18] D18 sigil-free path with a framed semicolon
+INPUT:
+    |el :p intent[a ; b]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "intent[a" @ 7..15
+    CommentStart @ 17..17
+    Text " b]:status" @ 17..27
+    CommentEnd @ 27..27
+    ElementEnd @ 28..28
+
+### [19] D19 sigil-free path with a * wildcard segment
+INPUT:
+    |el :p *[311]:status
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "*[311]:status" @ 7..20
+    ElementEnd @ 21..21
+
+### [20] D20 sigil-free path with a leading . (trait-only)
+INPUT:
+    |el :p .intro:title
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue ".intro:title" @ 7..19
+    ElementEnd @ 20..20
+
+### [21] D21 a path-shaped bare token that collides with a number
+INPUT:
+    |el :p 311[a]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "311[a]" @ 7..13
+    ElementEnd @ 14..14
+
+### [22] D22 a path-shaped bare token that collides with a keyword
+INPUT:
+    |el :p true[a]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "true[a]" @ 7..14
+    ElementEnd @ 15..15
+
+### [23] D23 sigil-free path, deep tree descent with /
+INPUT:
+    |el :p article/section/para[3]
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    BareValue "article/section/para[3]" @ 7..30
+    ElementEnd @ 31..31
+
+### [24] D24 sigil-free path in an interpolation
+INPUT:
+    |el :p !{{ at(intent[311]:status) }}
+EVENTS:
+    ElementStart @ 1..1
+    Name "el" @ 1..3
+    Attr "p" @ 5..6
+    Interpolation " at(intent[311]:status) " @ 10..34
+    ElementEnd @ 37..37
+
