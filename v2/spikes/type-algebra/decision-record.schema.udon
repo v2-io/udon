@@ -4,12 +4,14 @@
 ; is the general arity; [key!] declares keyed-and-required; .open / .closed
 ; is the row tail (P1: extraction may emit .open only; .closed is a fiat act
 ; and carries its reason). A trailing ! on an attribute KEY is dialect-
-; assigned (core reads it as an ordinary key named "date!"); ? on a key is
-; core flag semantics and therefore CANNOT be this dialect's optionality
-; marker — measured: ":confidence? float" snaps the flag true, re-owns
-; "float" as CONTENT, ends the attribute phase, and every later attribute
-; draws AttributeAfterChildren. Unmarked keys are optional {0,1}; ! is
-; required {1,1}; stacks carry explicit {n,m} on the value token.
+; assigned (core reads it as an ordinary key named "date!"). ? on a key is
+; core flag semantics TODAY — measured: ":confidence? float" snaps the flag
+; true, re-owns "float" as CONTENT, ends the attribute phase, and every
+; later attribute draws AttributeAfterChildren. Whether the schema dialect
+; spells optionality with ?, or unmarked-optional as this exemplar elects,
+; or core's flag/re-own rule itself moves, is an OPEN election (zero
+; consumers of ? semantics exist — see README N6). Here: unmarked keys are
+; optional {0,1}; ! is required {1,1}; stacks carry {n,m} on the value.
 ; Every line below parses under the current parser (checked 2026-07-29;
 ; sole anomaly: NoDialectsLoaded on the envelope, the expected interim).
 
