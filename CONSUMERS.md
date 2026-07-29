@@ -118,6 +118,22 @@ Ping/migrate consumers when any of these land:
    reflow sigil-promotion would have caught the live `!:lang:` promotion
    in PROCESS.udon — that hazard class now has a confirmed field instance.
 
+## Consumer-side stop-gap tooling (coordination targets, not design input)
+
+Udon-aware tools consumers built for themselves while the real tooling
+doesn't exist. Registered so the corresponding `udon-cli` release knows
+who to offer supersession to — **not** so their conventions drive UDON's
+design (a stop-gap validates the *demand*, not its own shape; Joseph,
+2026-07-28):
+
+- **vivarium `bin/check` ref-guard** — dangling-slug checker over
+  `DECISIONS`/`LEXICON` cross-references; caught a live renamed-slug
+  incident within the hour on 2026-07-28 (field report:
+  `v2/udon-needs/01-ideation/02-provenanced/copies/I5-live-consumers/consumer-vivarium-fable-day-report-2026-07-28.md`).
+  Supersession surface for `udon-cli` lint's reference checking.
+- **tabularium `cargo run --example stdin_parse` gate** — parse-validation
+  stopgap "until a udon-cli lints it" (its own words; same I5 cluster).
+
 ## Candidate future consumers (unscanned — an adoption watchlist)
 
 From the January backlog (preserved when `notes/NEXT.md` drained,
