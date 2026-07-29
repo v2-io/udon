@@ -1,0 +1,130 @@
+; candidate-spikes — proposed spike charters, written down pre-execution.
+;
+; Register: each entry is a spike we want to run, captured while the
+; generating context is fresh. A charter carries the reasoning so far,
+; steward feedback verbatim (never paraphrased into authority), and what
+; execution would establish. Nothing here is a commitment, a ruling, or a
+; work queue; an entry leaves this file when a spike directory opens (the
+; charter travels with it) or when dropped with a reason recorded.
+; Started 2026-07-29 (Joseph: "our first of the season that we will want
+; to write down with your full explanation so far and any of my feedback
+; that lands").
+
+|spike-candidate[strata-dynamics-under-shared-capacity] :date 2026-07-29 :status candidate :seed joseph+fable
+  :question What are the honest dynamics of document strata whose layers share one correction budget, whose transitions jump rather than flow, and whose promotion network needs explicit discard sinks?
+  |context
+    Born 2026-07-29 from the theory pass mapping the multi-timescale
+    stability theorem (asf der-multi-timescale-stability, status exact,
+    Model D, premises S0-S4) onto document governance, in conversation.
+    Prior adjudication: spikes/tst-grounding section 5 (qualitative
+    structure transfers; the epsilon-max formula never does; the jump
+    gap is on AAT's own open list). The concrete flesh-out that
+    triggered this charter is summarized next; the conversation of
+    record is this date's session.
+  |claim-so-far :register proposed :by fable
+    The stratum tower in this estate's furniture: L0 session working
+    state, L1 spikes and working notes, L2 records and ledgers, L3
+    canon, L4 releases. Every adjacent pair already has a shipped
+    membrane (recognition itself; register discipline and the relata
+    spool; ratification, Gate-4, the tribunal; the tag and frozen
+    fixture group). Claim: each membrane is one template with two dials
+    -- a clock ratio (how much slower this layer ticks) and a
+    sensitivity (how much unsettled lower-layer output moves it) -- and
+    the governance-rung menu is four enforcement substrates for dial
+    settings, not four mechanisms. Four consequences with teeth:
+    |consequence[write-side-prediction]
+      Governance need is driven by agent-writes-per-day times
+      unsettledness, never corpus size. Prediction: vivarium's ledger
+      first hurts on a churn event, not a size event.
+    |consequence[membrane-vs-clock]
+      The theorem's two conditions are two governance failures with
+      different repairs, and the menu conflates them: unsettled
+      material leaking upward (the O3 laundering was literally this)
+      is repaired by membrane strictness; canon churning under working
+      agents is repaired by clock discipline (batching, versioned
+      releases). No gate fixes the second; no cadence fixes the first.
+    |consequence[debt-as-renormalized-rho]
+      Promotion pressure is a disturbance term: the slow layer's load
+      is its own drift plus the settled residue of the layer below.
+      Integration debt accumulates when absorption capacity sits below
+      that sum -- an inequality, not a vibe. The warm-start refinement
+      prices early promotion (reviewers must hold the unsettled
+      thing's whole possible swing), which makes C8's semi-frozen
+      spec-only declaration the cheapest high-leverage dial move
+      available: canon sensitivity to near zero while territories
+      churn at maximum amplitude.
+    |consequence[gate-independence]
+      Gates that read the same declaration are one channel wearing
+      several badges (tempo-additivity saturation). The extractor is
+      the only declaration-free channel in the current toolbox, which
+      is its real governance seat.
+    Three strains, honestly: (1) the jump premise -- documents are
+    discrete, only orderings transfer; (2) the layers' correction
+    capacity is mostly one shared attention pool, violating the
+    theorem's per-level-capacity premise -- a heavy spike week starves
+    canon integration, so the clock ratio is not a free dial; (3) the
+    role-plus-membrane prior narrows on inspection: it is the recurring
+    answer to vertical (stratum-boundary) questions only -- include
+    filtering is a horizontal peer-composition boundary and sibling
+    write contention is within-stratum, both drawing from different
+    kits (composition machinery; partition), and forcing the membrane
+    template onto them is the mis-application to watch for.
+  |feedback[lean] :by joseph :date 2026-07-29 :register pre-validation
+    !:quote:
+      Before I lose the thread of though-- the clock-coupling issue
+      sounds like erlang queues and just in time manufacturing and so
+      forth -- "Lean" in its mathematical form.
+    |assessment
+      Lands. The shared-attention strain is a queueing network with a
+      shared server, and the Lean/factory-physics corpus carries the
+      instruments the stability theorem lacks: Little's law ties
+      integration debt to latency directly; WIP limits are the
+      clock-discipline instrument derived independently (kanban is
+      membrane and clock as one object); Kingman's formula gives the
+      sharpest falsifiable form -- latency explodes superlinearly as
+      utilization approaches one, multiplied by variability, so the
+      estate's debt should spike when busy-and-bursty, not merely
+      busy. Testable against git history.
+  |feedback[hmm-and-sinks] :by joseph :date 2026-07-29 :register pre-validation
+    !:quote:
+      As for your third open area/ gap -- sounds like fluxes and
+      hetrogenous multi-scale to the rescue! A generalization that
+      doesn't need such tidy flows. (And if you want the flows more
+      tidy even as they are-- you need to add the throw-away sinks
+      because the latent hierarchy disallows something to be
+      integrated into a later level that has already been superseded
+      by that slower level, among other reasons...)
+    |assessment
+      Both halves land. Heterogeneous multiscale methods exist for
+      exactly the named gap -- macro behavior computed by sampling
+      micro dynamics on demand, no smoothness demanded of the lower
+      level -- and may subsume AAT's own listed repair (the
+      impulsive/hybrid extension) rather than compete with it. The
+      sink observation is the genuinely new piece: flux accounting
+      over the promotion network is wrong without a discard term,
+      because a fast-layer item whose slower target has meanwhile
+      superseded it cannot integrate and must terminate. Consequences:
+      a debt census without the sink term overcounts (dead items read
+      as owed); integration-is-replacement's deletion discipline is
+      flux bookkeeping, not just hygiene; the .archived and
+      .integrated practices are the sink half-built; the no-go
+      promotion is a sink-to-source conversion (a death becoming
+      present-truth content).
+  |would-establish
+    Theory work-up, not tooling: (a) a queueing formalization of
+    shared-capacity strata -- whether Little/Kingman survive the
+    translation and what the utilization variable honestly is; (b) an
+    HMM-style restatement of the stacked-persistence structure that
+    drops the continuous-flow premises, checked against the theorem's
+    own two-condition skeleton; (c) the sink-augmented promotion
+    network, with the census correction stated; (d) at least one
+    falsifiable output run against real history (the busy-and-bursty
+    latency prediction, or the vivarium write-side prediction).
+  |needs
+    A mathematician's eye on whether jump dynamics preserve the
+    two-condition structure (tst-grounding's own flag); the honest
+    utilization measure for agent attention; and the single-author
+    caution twice over -- the theory pass, the flesh-out, and this
+    charter share an author, and the Lean/HMM pointers arrived from
+    the one steward. Cross-substrate or de-novo review before any of
+    it is treated as more than proposed.
