@@ -1,0 +1,87 @@
+; ONLY-IN-UDON — the register of things you can do well in udon that you
+; can't do well elsewhere. Seeded 2026-07-28 from Joseph's aside: "the body
+; of 'things you can do well in udon that you can't do well elsewhere' will
+; almost certainly grow and want to be tracked."
+;
+; Honesty rule for every entry: "can't do well elsewhere" is earned by
+; comparison, never by assertion — each record names the nearest-elsewhere
+; and states the delta. :status candidate until the comparison has actually
+; been run; measured evidence cited where it exists. Pre-validation
+; register; nothing here is positioning copy yet.
+
+|capability[structured-quote-with-provenance] :status candidate :date 2026-07-28
+  :nearest-elsewhere markdown blockquote / HTML cite
+  An attributed quote as structure: |quote :src joseph :date ... — who,
+  when, from-where as queryable edges with default viewing derivable.
+  Markdown's blockquote has styling as its only slot, so every attribution
+  ever written is a display hack invisible to query; HTML's cite is
+  semantic in name and unqueried in practice. Delta: metadata-affordances
+  with default viewing vs view-only. Demand evidence: the 01-ideation
+  gathered corpus (~270 artifacts) is provenance-quotes forced into YAML
+  frontmatter workarounds.
+
+|capability[mechanical-defacto-schema-extraction] :status candidate :date 2026-07-28
+  :nearest-elsewhere JSON schema-inference / markdown convention-guessing
+  The markers make the schema's vocabulary explicit, so de-facto-schema
+  extraction reduces to statistics over a known vocabulary — two inference
+  problems reduced to one. JSON inference works but records-only (no prose
+  interleaving to preserve); markdown inference must first guess what even
+  carries structure. Evidence: the vivarium specimen (conforming dense
+  record from grep + one exemplar); probe 8 (schema seed) is the
+  measurement.
+
+|capability[schema-over-comments] :status candidate :date 2026-07-28
+  :nearest-elsewhere none at the format layer; javadoc/lint tooling partially
+  Comments are first-class model items (carried, never interpreted), so
+  "are the comments here conformant / present / well-placed" is newly
+  askable at the schema layer. Every other data format discards comments
+  before validation, so there is nothing to validate; the partial
+  precedents (javadoc requirements, missing-docs lints) live in
+  language-specific tooling, not the document format. From the schema
+  seed's tier table (§5.1).
+
+|capability[judged-from-first-byte] :status candidate :date 2026-07-28
+  :nearest-elsewhere HTML5 error recovery / tree-sitter
+  Recognition is total — any finite UTF-8 input maps to a Document,
+  schema-independently — so there is no unparseable-therefore-unjudgeable
+  state and continuous schema judgment is mechanical, not aspirational.
+  HTML5 recovers but mutates toward its own model; tree-sitter keeps a
+  tree alive but is parse-only with no judgment layer. Delta: keep-
+  everything + severity-defined-by-loss beneath a non-invasive judge.
+
+|capability[closure-without-loss] :status candidate :date 2026-07-28
+  :nearest-elsewhere JSON Schema additionalProperties:false
+  Closed-world judgment with zero data loss: close the world in the
+  verdict while the document keeps everything. Elsewhere closure is
+  enforced by rejection or discard, so it trades against extensibility
+  and data preservation; here the trade dissolves (schema seed, corrected
+  §1.1 — enforcement-by-removal is what is foreclosed, not closure).
+
+|capability[prose-structure-interleave-addressable-boundary] :status candidate :date 2026-07-28
+  :nearest-elsewhere MDX / XML mixed content
+  Structure and prose interleave at any depth with a *precise, addressable*
+  boundary (the content base — geometry, not delimiters). MDX has the
+  parse-ambiguity seam between prose and component; XML mixed content works
+  but at closing-tag ceremony that killed its prose ergonomics. The
+  no-island-boundary property is what makes schema-over-prose newly
+  tractable here (schema seed §5.3).
+
+|capability[slug-identity-with-ref-guard] :status candidate :date 2026-07-28
+  :nearest-elsewhere markdown wikilinks
+  Identity ([key]) and reference (@) are typed structure, so dangling-
+  reference checking is mechanical and cross-file. Wikilinks give links
+  without typed identity; nothing distinguishes a rename from a removal.
+  Measured evidence: the vivarium ref-guard caught a renamed slug within
+  the hour, main went red, fixed same day (I5 field report, 2026-07-28) —
+  "markdown couldn't have given us that without inventing worse
+  conventions."
+
+|capability[headline-density-under-line-tools] :status candidate :date 2026-07-28
+  :nearest-elsewhere YAML frontmatter / JSONL
+  One line carries identity + classification + state as readable structure
+  (|decision[slug] :date :by :status :topic), so grep and line tools
+  answer real queries without a parser. Frontmatter separates metadata
+  from the content it describes; JSONL is line-queryable but unreadable.
+  Evidence: the vivarium day-report ("reads beautifully under grep" —
+  pulled a settled, dated answer in one look mid-design); the estate
+  convention attributes-first-sameline exists *because* this works.

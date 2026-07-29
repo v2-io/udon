@@ -148,6 +148,10 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 | **X5** | **Body prose may point at a downstream segment** to anticipate a question that segment addresses; it **may not** restate that segment's claim in a form that might not stay evergreen, and it **may not rely on** it — with one exception, **appendix segments may be depended on in reverse** ("the derivation this relies on is in appendix segment xyz"). Working Notes are exempt (X4). | jaw 2026-07-22, correcting an over-tight reading |
 | **X6** | **Terminology:** a **chapter** is a container (an outline heading plus its table of segments); a **segment** is a file carrying one claim. Corpora where chapter currently equals file are transitional and need no renaming — the words survive the eventual split. | jaw 2026-07-22 |
 
+## 2026-07-28 session brainstorms — routed OUT of this ledger
+
+Joseph's continuing brainstorms from the 2026-07-28 big-picture session (IDs O1–O7) were briefly recorded here as steward marks — a mis-routing: they are **pre-validation brainstorms, not rulings or steers**, and the ledger's form was lending them authority they don't claim. They now live, verbatim with per-item assessment and needed validations, at [`spikes/schema-review/DISCUSSION-THOUGHTS.udon`](spikes/schema-review/DISCUSSION-THOUGHTS.udon). The O-IDs remain stable there so same-day citations resolve. If Joseph decides any item by fiat he will expressly mark it as such.
+
 ## Overturns
 
 *(none yet)*
