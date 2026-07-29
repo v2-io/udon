@@ -630,3 +630,63 @@
     and the interaction with {m,n} in schemas -- a durable schema
     cardinality and a per-call expectation can disagree, and that
     disagreement is itself information (stale schema or stale agent).
+
+|thought[O16].breadcrumbs-are-homeless-provenance :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context Late in the tribunal/decision-record discussion; prompted by the estate-wide agent habit of inline change-marks.
+  !:quote:
+    One thing that is a bit annoying but which indicates to me good
+    instincts-- agents' current proclivity for leaving breadcrumbs all
+    over the place-- "*(changed 7/29 per Joseph)* *(was P3, other file
+    sent to archive)*" type stuff *all over*. To me this is another
+    latent indicator of an instinct that has no proper tool -- they
+    *feel* that the task isn't quite done until there is the record of
+    it having been done, and the correction is usually "let git do
+    that" or pull that stuff out into a changelog or something. I'm
+    realizing in this discussion that we have a much more principled
+    "home" for those feelings to feel resolved, without it seeming like
+    vanity, without it cluttering the "current true state snapshot"
+    without it seeming like busy-work-act-busy type work-creation, but
+    really answering the need that doesn't get satisfied by "look at
+    the git history".
+  |assessment
+    Convinced, and the day's threads say exactly why both halves are
+    right -- the instinct AND its current homelessness. (1) The instinct
+    is the reinjection-channel behavior (persistence is imported): the
+    agent externalizes the change's provenance because the conversation
+    that holds it evaporates -- the durability test ("would future-me
+    find this?") answered with the only surface at hand. (2) "Let git
+    do that" fails for the reason the letter's temporal addendum names:
+    git's history verbs are serving-indexed while the crumb is a
+    bowl-indexed utterance -- it belongs to the RECORD, and the agent
+    knows the future reader won't excavate it from line-history (they
+    have been that reader). The crumb is the same demand as the
+    <slug> WN: commit-subject convention: provenance carving itself
+    into whatever surface exists. (3) The harm is also now named, not
+    just felt: breadcrumbs in the body are (C2) contamination of the
+    collision surface -- history-voice leaking into present-truth,
+    which degrades exactly the staleness-detection the body exists to
+    provide. So suppression-rules (the vanity-changelog exclusions)
+    police a symptom whose organ is missing. (4) The organ is
+    half-shipped, twice: terminology's decision-events (typed,
+    per-record, append-only, collision-free filenames) are the landing
+    shape, and rowan's annotation-as-message channel (write the mark
+    inline where you are; a watcher harvests it, promotes it to the
+    durable log, strips it from the source) is the routing shape.
+    Compose them and the feeling resolves at zero navigation cost while
+    the body stays clean: the crumb is written at the change site --
+    where the energy already exists -- and LANDS as an addressable
+    event on the record's identity. Capture by design, again: the
+    breadcrumb urge is pre-paid capture energy, currently mis-routed.
+    This also resolves O2's stated tension per-record (don't force
+    rederivation / don't drown the signal): the crumb is neither
+    deleted nor left -- it is routed.
+  |needs
+    The routing tool (inline mark -> record event sidecar, strip on
+    harvest) is unbuilt; the grain question (which crumbs are events
+    worth keeping vs noise the harvest drops) is undesigned; and the
+    load-bearing psychological premise -- that the feeling is satisfied
+    by routed-and-addressable rather than by visibly-in-place -- is
+    plausible (the tribunal discussion suggests record-existence is
+    the need, not record-location) but untested. Cheap test: run the
+    harvest convention manually for a week in one corpus and watch
+    whether the inline crumbs stop accumulating.
