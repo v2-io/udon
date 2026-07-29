@@ -254,6 +254,44 @@
   list ("code blocks: teach !:lang:, not fences"); the probes upgraded it
   from taste to measured, and this file is its live specimen.
 
+|thought[O11].deliberate-vs-incidental-legibility :date 2026-07-28 :by joseph :status endorsed-with-caveats
+  :context Closing the premature-rulings exchange; the TST-perspective generalization under the whole session.
+  !:quote:
+    Essentially unless we're extremely careful, future agents have no
+    good way of knowing what is deliberate vs incidental; and LLM's are
+    still trained currently to not really distinguish the two when
+    writing, by default.
+  |assessment
+    Convinced -- and it names the common root under at least four of the
+    session's threads. (1) The O6 imitation mechanism: an exemplar's
+    incidental choices get conformed-to exactly like its deliberate ones
+    (the vivarium agent copied everything; the tail of the file carries
+    no deliberateness bits). (2) The extractor's structural limit is the
+    same gap corpus-side: observation cannot distinguish required from
+    never-omitted -- "intent supplies closure" IS deliberateness-marking.
+    (3) TST already meets it in measurement (co-change cannot separate
+    deliberate coupling from convention-bundling; declared-vs-historical
+    divergence is its named diagnostic) and in vocabulary (the proposed
+    derived / convergent-choice / chosen register for its own notation
+    decisions -- a deliberateness axis, already wanted). (4) The estate's
+    entire hand-register discipline (status banners, "no lean," PINS
+    CURRENT PARSER, register-marked claims, steward-evident) is manual
+    compensation for exactly the training default he names: models emit
+    every choice with equal implied intentionality, so the discipline
+    must be re-applied per artifact or the distinction evaporates.
+    The UDON-shaped consequence: since training won't mark deliberateness
+    by default anytime soon, the format and tooling must make marking it
+    CHEAPER than not marking it -- the ease-gradient applied to intent
+    legibility. Suffix/trait/attribute seats make that mechanically
+    plausible in a way prose never is.
+  |needs
+    A cheap idiom (candidate territory for the practices register, not
+    designed here); whether the deliberateness axis joins the three-axis
+    epistemology alongside steward-evident; and the honest limit -- a
+    marking discipline is itself conformed-to incidentally once it
+    appears in exemplars, so the mark must carry its reason or it decays
+    into ornament (the carve-outs lesson, one level down).
+
 |practice-candidate[structured-quote-with-provenance] :date 2026-07-28 :by joseph :status candidate
   :context Companion to prefer-block-verbatim-for-embedded-grammars; Joseph, same session.
   !:quote:
