@@ -12,8 +12,10 @@
 ; or core's flag/re-own rule itself moves, is an OPEN election (zero
 ; consumers of ? semantics exist — see README N6). Here: unmarked keys are
 ; optional {0,1}; ! is required {1,1}; stacks carry {n,m} on the value.
-; Every line below parses under the current parser (checked 2026-07-29;
-; sole anomaly: NoDialectsLoaded on the envelope, the expected interim).
+; Recognition story per the RULED 0.9.1 text (CORE 5.3/5.4/6.2/6.5), which
+; is this spike's only oracle; a run through the 0.8-lineage parser served
+; as a typo-check only (that artifact is known non-conformant to the
+; current spec and validates nothing here).
 
 |schema[decision-record] :version 0.1 :status proposed
   A |decision is the ledger's record grain. Prose inside a schema is
