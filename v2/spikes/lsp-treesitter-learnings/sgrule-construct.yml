@@ -1,0 +1,5 @@
+id: blankline-construction
+language: rust
+rule:
+  kind: struct_expression
+  pattern: Event::BlankLine { $$$ }
