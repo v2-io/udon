@@ -690,3 +690,52 @@
     the need, not record-location) but untested. Cheap test: run the
     harvest convention manually for a week in one corpus and watch
     whether the inline crumbs stop accumulating.
+
+|thought[O17].decision-authority-flows-demand-to-grammar :date 2026-07-29 :by joseph :status endorsed-with-caveats
+  :context The type-algebra spike's N6 correction cycle; after the spike (and the coordinating agent) treated the core flag rule as constraining the schema dialect's optionality spelling, at zero consumers.
+  !:quote:
+    You have to see it from my perspective, or the project as a whole---
+    ? semantics were a forward-looking best guess that was the least
+    complicated for the language. Forward looking to what? This. If the
+    guess was wrong a little bit, great! As I said, such decisions I
+    *now* want to be making from the demand and theory and principled
+    side, not from the "what can we do easily with the grammar before
+    knowing what we actually need."
+  |assessment
+    Convinced -- this is O14 sharpened into a directional principle:
+    not merely "present grammar is a fact to price, never the verdict"
+    but "0.9-era spelling decisions were forward-looking guesses whose
+    correction authority belongs to the demand/theory side; decisions
+    flow demand-to-grammar, never grammar-to-demand." It reweights the
+    type-algebra spike's N6 election: the three options (spell around /
+    move the core rule / absorb the cost) are not peers -- the incumbent
+    is a placeholder built to be corrected by exactly the work now
+    arriving, so its continued existence carries no tie-breaking weight.
+    C8's semi-frozen/spec-only posture is the standing implementation of
+    this principle. The same spike carries the paired outcome that makes
+    the policy legible: the ?!*+ element-suffix guess landed whole (the
+    section-5.4 Kleene readings fit the arity algebra with zero grammar
+    change) while its sibling flag-rule guess may be revised by the same
+    arriving demand -- both were "forward-looking to this," and either
+    outcome is the system working. Mechanism note from the same cycle
+    (type-algebra N6): the reflex that inverts this flow survives
+    explicit counter-instruction by re-entering through the evidence
+    channel -- a crisp parser measurement lends its authority to the
+    incumbent frame -- so the guard is the register discipline applied
+    to design reasoning, not resolve.
+  |addendum :by joseph :date 2026-07-29
+    !:quote:
+      0.9.1 is specifically *not* fully frozen for exactly this class
+      of allowance, should this become important and useful enough.
+    Confirms and sharpens the C8 reading above: the semi-freeze is not
+    merely staging for future versions -- 0.9.1 itself remains open to
+    absorb this class of demand-driven correction, which is precisely
+    the "critical parser-grammar-facing nuance" clause of C8 doing its
+    intended job.
+  |needs
+    Nothing to validate in the principle itself (it is a steward
+    statement of decision authority, not an empirical claim); the open
+    work is applying it -- the ? election waits with the schema/dialect
+    demand map (and may land in 0.9.1 itself per the addendum, if it
+    earns it), and the evidence-channel guard wants a phrasing cheap
+    enough to ride in spike briefs.
