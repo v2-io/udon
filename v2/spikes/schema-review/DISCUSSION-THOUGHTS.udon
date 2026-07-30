@@ -797,3 +797,89 @@
   assessment, type-algebra N6) stated in steward words. Truthification
   of under-principled early decisions is the work itself; the past is
   its material, never its judge.
+
+|thought[O19].udon-explicitness-cues-deliberate-writing :date 2026-07-29 :by joseph :status recorded-pre-validation
+  :context Response to the finding that fmt-md cannot safely format .udon (no canonicalizer exists, and the mitigation is a stated rule in FORMAT.md rather than a tool). Recorded on truth grounds, expressly not as justification -- see the addendum.
+  !:quote:
+    we're only a few sessions away from a proper minimal udon utility
+    suite again anyway, so I think we can survive it being part of the
+    instructions for now. The agents are already cued to "write it
+    correctly" because it's udon instead of instinctive markdown with
+    per-llm-flavor-of-the-month-- there will be few lapses I'll bet, and
+    all of them quickly corrected by the second pass.
+  |assessment
+    Two claims with different registers, and separating them is the
+    useful move. The principled half I find convincing: UDON's markers
+    make structure explicit rather than instinctive, so writing it
+    engages deliberate choice where markdown engages a trained default
+    -- which is O11's deliberate-versus-incidental axis appearing on the
+    authoring side rather than the reading side, and it predicts that
+    the lapses which do occur will be *structural* (an attribute in the
+    wrong phase) rather than *stylistic* (wrap width, list glyph),
+    because the stylistic layer is where per-substrate defaults live and
+    UDON has no opinion there to violate.
+    The empirical half -- that lapses will be few, and second-pass
+    caught -- is a bet with partial support already in the corpus and no
+    direct measurement: O6's vivarium specimen (a conforming dense
+    record from grep plus one exemplar, near-zero exposure) and O9's
+    spontaneous-reach observation both point the same way, while the
+    counter-instance is on record too and cuts against optimism -- an
+    agent that had read the whole 0.9.1 suite the same day still emitted
+    non-canonical constructs (envelope-as-body, phase violations). So
+    the honest prior is "few relative to markdown-flavor drift", not
+    "few absolutely".
+  |needs
+    The instrument already exists at no cost: the lapse count on the
+    first batch of .udon segments written under theory/FORMAT.md, sorted
+    structural versus stylistic. Recording the prediction before the
+    batch exists is what makes it a prediction rather than a
+    retrodiction, which is the whole reason this entry is here.
+
+|addendum[O19a] :to O19 :by joseph :date 2026-07-29
+  !:quote:
+    I don't think it would change the decision since the principled
+    solution is the same distance from us and not conditioned on that
+    premise, but that's a great idea for the sake of truth!
+  Draws a distinction the registers here have not made explicit:
+  decision-relevance and truth-relevance can come apart, and a claim
+  worth recording on the second ground alone is worth recording. It also
+  pre-empts a specific misreading -- since the utility-suite timeline is
+  not conditioned on the lapse-rate premise, a later reader must not
+  find this prediction beside that decision and infer the prediction
+  justified it. Nothing was decided on this basis; the entry exists so
+  the bet can be scored.
+
+|addendum[O13a] :to O13 :by joseph :date 2026-07-29 :status recorded-pre-validation
+  :context Adds a rung O13's perspective decomposition had neglected. Raised while discussing what a principled path syntax would need, deliberately ahead of the paths spike.
+  !:quote:
+    in addition to the noted "project-root" glyph, we'll want a
+    "within-the-project" glyph... basically a shorthand for
+    "prjroot://**/<stem>.{md,udon}" or something.
+    ...
+    already, for example highly implicit in many data-document-stores, and
+    all of obsidian wikilinks, and wikilinks in general
+  |assessment
+    Recorded as the entry he asked for; the analysis below is mine and
+    decides nothing.
+    The rung is real and the prior art is broader than the seed's list
+    suggested -- every wiki link, every Obsidian link, and the resolution
+    layer of most document stores are this operation, which makes it the
+    most widely shipped addressing form in the corpus's whole survey and
+    the one the paths seed never named.
+    One structural note worth carrying to the spike: this may be a
+    distinct dimension rather than a perspective entry. O13's other rungs
+    all answer "where does resolution START"; this one answers "does
+    resolution WALK or MATCH" -- a descent versus a search over a scope.
+    On that reading a wikilink decomposes as perspective=project-root,
+    traversal=match-by-stem, arity={1,1}, and its familiar pathology
+    follows: two files sharing a stem is not a wiki quirk but an
+    unstated-arity violation, which this estate already has a name for
+    (PathNotUnique, loud). Naming the anchor and the bound is what turns
+    the most-used addressing form in the world from a convention into a
+    typed address.
+  |needs
+    Whether match-vs-walk is a second dimension or an entry on the first;
+    the default arity and what a collision does; whether the form earns a
+    glyph on frequency grounds (his own project-root evidence suggests the
+    test is usage, not elegance); and what the scope is when a project has
+    nested roots. All of it belongs to the paths spike, not here.
