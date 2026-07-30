@@ -20,7 +20,7 @@ This directory was reduced to a seed on 2026-07-21: a night of autonomous spine-
 
 ## Working here
 
-**Arriving to work on spikes/ideation?** [`spikes/README.md`](spikes/README.md) is the orientation — a reading list of what exists and why it mattered (baseline law, the demand corpus's seven reports, the territory maps, the registers, and the register calibration), assembled 2026-07-28 from what Joseph judged would have best served that session's own first reading list.
+**Arriving to work on the theory corpus?** Start with [`theory/OUTLINE.udon`](theory/OUTLINE.udon) and [`theory/FORMAT.md`](theory/FORMAT.md). [`theory/spikes-README.md`](theory/spikes-README.md) is a stale snapshot of the old `spikes/` orientation index (assembled 2026-07-28) — kept briefly for continuity but slated for removal; don't treat it as current.
 
 Agents working anywhere under `udon-needs/` are covered by the standing license and quality bars in [`udon-needs/CLAUDE.md`](udon-needs/CLAUDE.md) (ratified 2026-07-22, any substrate) — research diversion, de-novo testimony as evidence, the ideation mandate, and the four writing bars. Read it before starting.
 

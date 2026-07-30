@@ -1,3 +1,14 @@
+> [!warn] **Stale snapshot — not the corpus, not maintained**
+> This was `spikes/README.md`, the working orientation index from when active
+> ideation work was still happening under `spikes/`. Most of what it
+> describes has since moved into more appropriate staging directories here
+> under `theory/` (see `to-integrate/primary/` and `to-integrate/refine-more/`),
+> and `spikes/` itself is now mostly empty. It's kept here only for
+> continuity while that migration settles — **it needs to be removed or
+> replaced within the next session or two**, before its links and claims
+> about "where things are" go stale. Don't treat it as current; check
+> `theory/OUTLINE.udon` and `theory/FORMAT.md` instead. (Moved 2026-07-30.)
+
 # v2/spikes — orientation notes + index
 
 You're arriving at the ideation/spike layer of UDON's demand-first v2 effort. This file was written by the agents who came before you, for you — and your judgment about your own context budget and reading order may well exceed ours, since you can see the task in front of you and we couldn't. What follows is what we found, what it cost, where we got burned, and why each piece mattered to us; the shape it suggests is a starting point, and what serves the project outranks conforming to this file.
