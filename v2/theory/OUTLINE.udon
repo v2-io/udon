@@ -2,18 +2,27 @@
 ;
 ; Conventions, gates, and the register discipline: FORMAT.md. Read it before writing a segment.
 ;
+; NOTE (2026-07-30): the row shape below has been through several rounds of tightening and this
+; comment block hasn't fully caught up — the format is still in flux. The one thing worth being
+; explicit about ahead of a fuller pass: |segment? marks a *proposed segment* — a slot this
+; outline proposes filling, not a claim anyone has established. The trailing ? carries that
+; provisionality; |segment (no ?) stays reserved for FORMAT.md's governed convention once a real
+; file exists under src/.
+;
 ; EVERY ROW IS A GAP. No segment file exists. A row names a slot — its intended subject, its
 ; kind, and where its material already sits — and asserts nothing about the world. A row is
 ; not a summary of a claim; it is a description of a claim that would have to be established.
 ;
-;   |segment[slug]  :type T  :max-attainable S  :stage gap  :see "P"  what this slot is about
+;   |segment?[slug].T :max S
+;     :see P
+;     what this slot is about
 ;
 ;   :type    the kind of claim the slot is expected to hold (FORMAT §3). A proposal about the
 ;            slot, revisable by whoever writes it.
 ;   :status  ABSENT BY DESIGN. Strength is assigned by whoever reads the source at the primary
 ;            and writes the segment. A status assigned from an outline row would be a proxy
 ;            wearing verification's clothes (FORMAT §0).
-;   :max-attainable
+;   :max
 ;            The ceiling — the strongest status this slot could EVER reach, however much work
 ;            goes in. Unlike :status this is warrantable here, because a ceiling follows from
 ;            the KIND of claim rather than from work done. The outline is authoritative for it;
@@ -22,7 +31,9 @@
 ;            slot's ceiling is `decided`, since a decision is not truth-apt and saying so is more
 ;            informative than leaving it blank. A ceiling plus an absent status is a route: it
 ;            says what could be established here and that nobody has established it yet.
-;   :stage   `gap` throughout. Becomes `draft` when a file exists.
+;   :stage   ABSENT BY DESIGN. Every row here is `gap` — no segment file exists yet for any of
+;            them — so stating it on every row carries no information and is pure noise.
+;            Becomes a real field, present in the row, once a file exists and the stage can vary.
 ;   :see     where the material already sits, as a bare Obsidian wikilink — [[stem]], never
 ;            [[stem#Heading]] — with a trailing plain-text §-marker where a location narrower
 ;            than the whole document is known: [[stem]] §9. No paths — stems are unique enough,
@@ -62,18 +73,46 @@
       the corpus, not about UDON, and they take labels for the same reason every row does.
 
     |chapter[arrangement] :title "Arrangement and mechanism"
-      |segment[disc-collision-surface] :type discussion :max-attainable discussion-grade   :stage gap :see "[[outline-segments-generalization-2026-07-23]] §Part 7"  Whether present-truth collision is the arrangement's active ingredient, and what its two relayed specimens support
-      |segment[disc-named-absence] :type discussion :max-attainable discussion-grade   :stage gap :see "[[outline-segments-generalization-2026-07-23]] §Part 7"  What collision structurally cannot detect, and why a named absence is the complementary instrument
-      |segment[form-identity-ordering-split] :type formulation :max-attainable robust-qualitative :stage gap :see "[[asf/FORMAT]] · [[outline-segments-generalization-2026-07-23]] §Part 1"  Slug-carries-identity and outline-carries-ordering, and whether the separation requires the claims to form a partial order
-      |segment[norm-different-repairs-test] :type normative :max-attainable decided   :stage gap :see "[[TST-extension-memo]] §2 · [[outline-segments-generalization-2026-07-23]] §Part 1"  The different-repairs test for whether two labels earn separation, and the three collapses it caught
-      |segment[norm-proxy-discipline] :type normative :max-attainable decided    :stage gap :see "[[spikes.sop]] §0"  Provenance, indexes, consensus and convergence as proxies that locate a question without settling it
-      |segment[norm-honest-discharge] :type normative :max-attainable decided :stage gap :see "[[spikes.sop]] §0c"  The three conditions under which an honestly lower-tiered landing is a complete discharge, and the verification-regress it prevents
-      |segment[norm-absence-search] :type normative :max-attainable decided :stage gap   Why a universal negative is warranted only by its search, and what the narrow true form buys that the broad false one destroys
-      |segment[norm-carriage-risk] :type normative :max-attainable decided :stage gap :see "[[method-evidence-tiers]] §lock-2"  The two independent grounds on which a transmitted claim is defeasible
-      |segment[norm-transfer-obligation] :type normative :max-attainable decided :stage gap :see "#asf/tst/obs-software-epistemic-properties"  The obligation on exporting a theory result, and which properties the document domain shares, approximates and lacks
-      |gap :candidate form-label-axes-for-a-derivation-corpus :see "[[method-evidence-tiers]] · [[type-algebra]] §0"  Which axes this corpus needs. ASF's trio travels to 02-TST untranslated; the demand corpus's support-kinds are calibrated for surveyed evidence, where the working distinction here has been derived-here versus transmitted versus spec-grounded
-      |gap :candidate der-ratified-axes-as-segments :see "[[for-OUTLINE]] §11 · §76 · §78 · §82"  The three axes and two locks are ratified content held in a chapter its own corpus records as overloaded and pre-segmentation; segmenting them is the split that corpus has not run, and OPEN's SEG-SPLIT is the question it would answer
-      |gap :candidate norm-corpus-register-discipline  Whether the register vocabulary needs a kind for a claim about the corpus itself as distinct from a claim about UDON
+      |segment?[disc-collision-surface].discussion :max discussion-grade
+        :see [[outline-segments-generalization-2026-07-23]] §Part 7
+        Whether present-truth collision is the arrangement's active ingredient, and what its two relayed specimens support
+      |segment?[disc-named-absence].discussion :max discussion-grade
+        :see [[outline-segments-generalization-2026-07-23]] §Part 7
+        What collision structurally cannot detect, and why a named absence is the complementary instrument
+      |segment?[form-identity-ordering-split].formulation :max robust-qualitative
+        :see [[asf/FORMAT]]
+        :see [[outline-segments-generalization-2026-07-23]] §Part 1
+        Slug-carries-identity and outline-carries-ordering, and whether the separation requires the claims to form a partial order
+      |segment?[norm-different-repairs-test].normative :max decided
+        :see [[TST-extension-memo]] §2
+        :see [[outline-segments-generalization-2026-07-23]] §Part 1
+        The different-repairs test for whether two labels earn separation, and the three collapses it caught
+      |segment?[norm-proxy-discipline].normative :max decided
+        :see [[spikes.sop]] §0
+        Provenance, indexes, consensus and convergence as proxies that locate a question without settling it
+      |segment?[norm-honest-discharge].normative :max decided
+        :see [[spikes.sop]] §0c
+        The three conditions under which an honestly lower-tiered landing is a complete discharge, and the verification-regress it prevents
+      |segment?[norm-absence-search].normative :max decided
+        Why a universal negative is warranted only by its search, and what the narrow true form buys that the broad false one destroys
+      |segment?[norm-carriage-risk].normative :max decided
+        :see [[method-evidence-tiers]] §lock-2
+        The two independent grounds on which a transmitted claim is defeasible
+      |segment?[norm-transfer-obligation].normative :max decided
+        :see #asf/tst/obs-software-epistemic-properties
+        The obligation on exporting a theory result, and which properties the document domain shares, approximates and lacks
+      |segment?[form-label-axes-for-a-derivation-corpus]
+        :see [[method-evidence-tiers]]
+        :see [[type-algebra]] §0
+        Which axes this corpus needs. ASF's trio travels to 02-TST untranslated; the demand corpus's support-kinds are calibrated for surveyed evidence, where the working distinction here has been derived-here versus transmitted versus spec-grounded
+      |segment?[der-ratified-axes-as-segments]
+        :see [[for-OUTLINE]] §11
+        :see [[for-OUTLINE]] §76
+        :see [[for-OUTLINE]] §78
+        :see [[for-OUTLINE]] §82
+        The three axes and two locks are ratified content held in a chapter its own corpus records as overloaded and pre-segmentation; segmenting them is the split that corpus has not run, and OPEN's SEG-SPLIT is the question it would answer
+      |segment?[norm-corpus-register-discipline]
+        Whether the register vocabulary needs a kind for a claim about the corpus itself as distinct from a claim about UDON
 
   ; ---------------------------------------------------------------------------
   |part[why] :n I
@@ -84,26 +123,57 @@
       #norm-transfer-obligation for its borrowing.
 
     |chapter[epistemic-manufacture] :title "The epistemic-manufacture frame"
-      |segment[intro-udon-theory] :type discussion :max-attainable discussion-grade   :stage gap   Opening: what this corpus joins and where it lands. Forward references to later parts are intended
-      |segment[scope-document-epistemics] :type scope :max-attainable discussion-grade   :stage gap :see "#asf/tst/obs-software-epistemic-properties · [[tst-grounding]] §2"  Which of the six epistemic properties documents hold, approximate and lack, and at what tier the source states them
-      |segment[der-checker-intervention-channel] :type derived :max-attainable discussion-grade      :stage gap :see "[[tst-grounding]] §2b"  Whether a conformance checker supplies the intervention channel documents lack, and under what premises
-      |segment[der-format-causal-structure] :type derived :max-attainable discussion-grade      :stage gap :see "[[db-theory]] §2"  Whether identity, typed edges and declared vocabulary constitute declared causal structure
-      |segment[der-git-outcome-function] :type derived :max-attainable discussion-grade :stage gap :see "[[db-theory]] §2"  Whether checker-plus-version-control is a deterministic re-runnable outcome function, and how far its coverage reaches
-      |segment[result-epistemic-manufacture] :type result :max-attainable discussion-grade       :stage gap :see "[[db-theory]] §2"  The stack stated as the manufacture of absent epistemic properties for the document domain, and what the statement subsumes
-      |segment[disc-judgment-ceiling] :type discussion :max-attainable discussion-grade :stage gap :see "[[db-theory]] §2 · [[schema-ideation]] §6.1"  What no manufactured channel reaches, and the measured ceiling that bounds every claim below it
+      |segment?[intro-udon-theory].discussion :max discussion-grade
+        Opening: what this corpus joins and where it lands. Forward references to later parts are intended
+      |segment?[scope-document-epistemics].scope :max discussion-grade
+        :see #asf/tst/obs-software-epistemic-properties
+        :see [[tst-grounding]] §2
+        Which of the six epistemic properties documents hold, approximate and lack, and at what tier the source states them
+      |segment?[der-checker-intervention-channel].derived :max discussion-grade
+        :see [[tst-grounding]] §2b
+        Whether a conformance checker supplies the intervention channel documents lack, and under what premises
+      |segment?[der-format-causal-structure].derived :max discussion-grade
+        :see [[db-theory]] §2
+        Whether identity, typed edges and declared vocabulary constitute declared causal structure
+      |segment?[der-git-outcome-function].derived :max discussion-grade
+        :see [[db-theory]] §2
+        Whether checker-plus-version-control is a deterministic re-runnable outcome function, and how far its coverage reaches
+      |segment?[result-epistemic-manufacture].result :max discussion-grade
+        :see [[db-theory]] §2
+        The stack stated as the manufacture of absent epistemic properties for the document domain, and what the statement subsumes
+      |segment?[disc-judgment-ceiling].discussion :max discussion-grade
+        :see [[db-theory]] §2
+        :see [[schema-ideation]] §6.1
+        What no manufactured channel reaches, and the measured ceiling that bounds every claim below it
       |arc
         The three manufacture slots each name one absent property and one supplier; the project
         statement is their conjunction and depends on all three. The ceiling slot sits last
         because it bounds them rather than qualifying any one.
 
     |chapter[success-criterion] :title "What would count as success"
-      |segment[der-ambiguity-lever] :type derived :max-attainable conditional :stage gap :see "#asf/llm/scope-observation-ambiguity-modulation · [[theory-of-agentic-tooling]] §2.1"  The bias bound, which of its two factors a designer can move, and the named premises
-      |segment[der-imported-persistence] :type derived :max-attainable exact      :stage gap :see "#asf/aat/der-turnover-information-recursion · [[persistence-is-imported]]"  The reinjection-channel result and what it forecloses about in-session substitutes
-      |segment[der-interface-latency] :type derived :max-attainable conditional :stage gap :see "[[theory-of-agentic-tooling]] §2.3"  Where tool-loop tempo sits in the persistence condition, and what follows for interface quality
-      |segment[der-turnover-multiplier] :type derived :max-attainable conditional      :stage gap :see "[[tst-grounding]] §3.2"  Whether the turnover multiplier makes the payment options asymmetric rather than a plain trade
-      |segment[norm-tempo-criterion] :type normative :max-attainable decided    :stage gap   What measurement would count as success for this stack, and what would falsify the framing
-      |gap :candidate meas-checker-tempo-delta :see "[[tst-grounding]] §2b · [[empirica]] · [[test/usability]]"  Searched: ASF's empirica registry holds a run validating a tempo claim and a contract for citing it; the 2025-12 usability harness measured agent enablement over UDON contexts; the demand corpus carries one measured comprehension result with a partial non-replication. None measures a checker's effect on tempo over a live UDON corpus
-      |gap :candidate obs-transfer-table-checked-segment-by-segment  The properties table for documents was assembled in one pass; its rows have not been checked against the source segments individually
+      |segment?[der-ambiguity-lever].derived :max conditional
+        :see #asf/llm/scope-observation-ambiguity-modulation
+        :see [[theory-of-agentic-tooling]] §2.1
+        The bias bound, which of its two factors a designer can move, and the named premises
+      |segment?[der-imported-persistence].derived :max exact
+        :see #asf/aat/der-turnover-information-recursion
+        :see [[persistence-is-imported]]
+        The reinjection-channel result and what it forecloses about in-session substitutes
+      |segment?[der-interface-latency].derived :max conditional
+        :see [[theory-of-agentic-tooling]] §2.3
+        Where tool-loop tempo sits in the persistence condition, and what follows for interface quality
+      |segment?[der-turnover-multiplier].derived :max conditional
+        :see [[tst-grounding]] §3.2
+        Whether the turnover multiplier makes the payment options asymmetric rather than a plain trade
+      |segment?[norm-tempo-criterion].normative :max decided
+        What measurement would count as success for this stack, and what would falsify the framing
+      |segment?[meas-checker-tempo-delta]
+        :see [[tst-grounding]] §2b
+        :see [[empirica]]
+        :see [[test/usability]]
+        Searched: ASF's empirica registry holds a run validating a tempo claim and a contract for citing it; the 2025-12 usability harness measured agent enablement over UDON contexts; the demand corpus carries one measured comprehension result with a partial non-replication. None measures a checker's effect on tempo over a live UDON corpus
+      |segment?[obs-transfer-table-checked-segment-by-segment]
+        The properties table for documents was assembled in one pass; its rows have not been checked against the source segments individually
 
   ; ---------------------------------------------------------------------------
   |part[population] :n II
@@ -114,31 +184,69 @@
       the vocabulary the previous one defines.
 
     |chapter[population-and-serving] :title "Population and serving"
-      |segment[def-population] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §1"  A collection as a declared population: typed elements, identity space, labeled edges, and where order is content
-      |segment[def-serving] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §1"  A serving as an assignment of the population to files, directories and regions
-      |segment[form-placement-encoding] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[underlying-logical-model]] §1"  Whether placement encodes a declared property rather than being it, and what a rot-resistant encoding buys
-      |segment[scope-changeset-atom] :type scope :max-attainable axiomatic        :stage gap :see "#asf/tst/def-atomic-changeset"  The changeset as the atom, and what a file becomes when measured against it
-      |segment[der-serving-criterion] :type derived :max-attainable conditional      :stage gap :see "[[acid-for-corpora]] §2"  Atomicity as feasibility constraint and coherence as objective, and the two decision procedures the field already built for it
-      |segment[der-model-channel-split] :type derived :max-attainable conditional :stage gap :see "[[db-theory]] §1"  Whether the split is a model-channel split, and what serving-shaped tools cost each reader
+      |segment?[def-population].definition :max axiomatic
+        :see [[underlying-logical-model]] §1
+        A collection as a declared population: typed elements, identity space, labeled edges, and where order is content
+      |segment?[def-serving].definition :max axiomatic
+        :see [[underlying-logical-model]] §1
+        A serving as an assignment of the population to files, directories and regions
+      |segment?[form-placement-encoding].formulation :max robust-qualitative
+        :see [[underlying-logical-model]] §1
+        Whether placement encodes a declared property rather than being it, and what a rot-resistant encoding buys
+      |segment?[scope-changeset-atom].scope :max axiomatic
+        :see #asf/tst/def-atomic-changeset
+        The changeset as the atom, and what a file becomes when measured against it
+      |segment?[der-serving-criterion].derived :max conditional
+        :see [[acid-for-corpora]] §2
+        Atomicity as feasibility constraint and coherence as objective, and the two decision procedures the field already built for it
+      |segment?[der-model-channel-split].derived :max conditional
+        :see [[db-theory]] §1
+        Whether the split is a model-channel split, and what serving-shaped tools cost each reader
       |arc
         #der-serving-criterion depends on the atom slot above it and on the refuted
         identification catalogued at #app-atomicity-coherence, which carries
         why the earlier form fails.
 
     |chapter[file-roles] :title "File roles"
-      |segment[def-role-atomic] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §5"  Role (a): file as one record, filename as key
-      |segment[def-role-multi-record] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §5"  Role (b): many records as true siblings in one file, and what the declaration adds that recognition cannot
-      |segment[def-role-snippet] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §5"  Role (c): the snippet as the interior of an element whose opening line lives in the host
-      |segment[def-role-view] :type definition :max-attainable axiomatic   :stage gap :see "[[underlying-logical-model]] §5"  Role (d): a stored query that carries its own data, and the generated-versus-authored split
-      |segment[der-role-set-semantics] :type derived :max-attainable conditional :stage gap :see "[[db-theory]] §I"  Whether the roles are three set-theoretic relationships rather than four file formats
-      |segment[der-snippet-seam-closure] :type derived :max-attainable conditional    :stage gap :see "[[underlying-logical-model]] §5"  What closes at the frontmatter seam under the snippet reading, and what the shared address space buys
-      |segment[der-markdown-snippet] :type derived :max-attainable conditional      :stage gap :see "[[underlying-logical-model]] §5"  Whether every markdown file is already a role-(c) snippet, and what interring means if so
-      |segment[form-interring-rules] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[underlying-logical-model]] §5"  The escape pass and the structure-free-file warning, and whether both are reversible and idempotent
-      |segment[der-view-edge-attributes] :type derived :max-attainable conditional :stage gap :see "[[underlying-logical-model]] §5"  Whether a view's per-record fields belong to the membership edge, and the correction story the field already ran
-      |segment[obs-multi-record-lost-update] :type observation :max-attainable empirical :stage gap :see "[[acid-for-corpora]] §role-b"  What a concurrent append under role (b) produces, why it does not appear in a diff, and the prior art's verdict on the shape
-      |segment[disc-view-relative-address] :type discussion :max-attainable discussion-grade   :stage gap :see "[[underlying-logical-model]] §5"  Addressing by identity versus addressing through a view, and whether the fragility belongs to the view
-      |gap :candidate der-role-declaration-surface :see "[[CARVEOUTS]] §PRAGMA"  How a role is declared — filename designator, pragma, collection default — undecided and landing on PRAGMA
-      |gap :candidate der-snippet-root-attributes :see "[[DECISIONS]] L1"  Whether a snippet's root attributes carry meaning; gated on the root-attribute ruling, whose own rationale a declared role may answer
+      |segment?[def-role-atomic].definition :max axiomatic
+        :see [[underlying-logical-model]] §5
+        Role (a): file as one record, filename as key
+      |segment?[def-role-multi-record].definition :max axiomatic
+        :see [[underlying-logical-model]] §5
+        Role (b): many records as true siblings in one file, and what the declaration adds that recognition cannot
+      |segment?[def-role-snippet].definition :max axiomatic
+        :see [[underlying-logical-model]] §5
+        Role (c): the snippet as the interior of an element whose opening line lives in the host
+      |segment?[def-role-view].definition :max axiomatic
+        :see [[underlying-logical-model]] §5
+        Role (d): a stored query that carries its own data, and the generated-versus-authored split
+      |segment?[der-role-set-semantics].derived :max conditional
+        :see [[db-theory]] §I
+        Whether the roles are three set-theoretic relationships rather than four file formats
+      |segment?[der-snippet-seam-closure].derived :max conditional
+        :see [[underlying-logical-model]] §5
+        What closes at the frontmatter seam under the snippet reading, and what the shared address space buys
+      |segment?[der-markdown-snippet].derived :max conditional
+        :see [[underlying-logical-model]] §5
+        Whether every markdown file is already a role-(c) snippet, and what interring means if so
+      |segment?[form-interring-rules].formulation :max robust-qualitative
+        :see [[underlying-logical-model]] §5
+        The escape pass and the structure-free-file warning, and whether both are reversible and idempotent
+      |segment?[der-view-edge-attributes].derived :max conditional
+        :see [[underlying-logical-model]] §5
+        Whether a view's per-record fields belong to the membership edge, and the correction story the field already ran
+      |segment?[obs-multi-record-lost-update].observation :max empirical
+        :see [[acid-for-corpora]] §role-b
+        What a concurrent append under role (b) produces, why it does not appear in a diff, and the prior art's verdict on the shape
+      |segment?[disc-view-relative-address].discussion :max discussion-grade
+        :see [[underlying-logical-model]] §5
+        Addressing by identity versus addressing through a view, and whether the fragility belongs to the view
+      |segment?[der-role-declaration-surface]
+        :see [[CARVEOUTS]] §PRAGMA
+        How a role is declared — filename designator, pragma, collection default — undecided and landing on PRAGMA
+      |segment?[der-snippet-root-attributes]
+        :see [[DECISIONS]] L1
+        Whether a snippet's root attributes carry meaning; gated on the root-attribute ruling, whose own rationale a declared role may answer
 
   ; ---------------------------------------------------------------------------
   |part[algebra] :n III
@@ -149,31 +257,71 @@
       fences what those parts may assume.
 
     |chapter[two-sorts] :title "Two sorts"
-      |segment[intro-the-algebra] :type discussion :max-attainable discussion-grade   :stage gap   Opening: what having an algebra rather than a schema language supplies, and what the two sorts are
-      |segment[der-two-sorts] :type derived :max-attainable exact      :stage gap :see "[[type-algebra]] §0.1"  Row types over per-key stack languages, hedge languages over content, and why faithfulness requires two sorts
-      |segment[result-sort-boundary] :type result :max-attainable robust-qualitative    :stage gap :see "[[type-algebra]] §0.1 · [[CORE]] §6.1  (0.9.1)"  Whether the sort boundary coincides with the attribute-versus-child test, and what follows if it does
-      |segment[result-trace-quotient] :type result :max-attainable exact    :stage gap :see "[[type-algebra]] §2"  The stacking hash as a trace-monoid quotient isomorphic to a product of per-key free monoids, and exactly what the quotient forgets
-      |segment[form-commuted-by-default] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[type-algebra]] §2"  Cross-key order as conformance-invisible by default, and why the election is whole-row
-      |segment[der-four-value-states] :type derived :max-attainable exact      :stage gap :see "[[type-algebra]] §2 · [[CORE]] §11.4  (0.9.1)"  Absent, nil, stacked and list as distinct denotations, and why an algebra over the ergonomic view is unsound
-      |segment[der-designated-keys-as-fields] :type derived :max-attainable exact :stage gap :see "[[type-algebra]] §2"  Identity, traits and flags as ordinary row fields, and what needs no separate machinery as a result
+      |segment?[intro-the-algebra].discussion :max discussion-grade
+        Opening: what having an algebra rather than a schema language supplies, and what the two sorts are
+      |segment?[der-two-sorts].derived :max exact
+        :see [[type-algebra]] §0.1
+        Row types over per-key stack languages, hedge languages over content, and why faithfulness requires two sorts
+      |segment?[result-sort-boundary].result :max robust-qualitative
+        :see [[type-algebra]] §0.1
+        :see [[CORE]] §6.1  (0.9.1)
+        Whether the sort boundary coincides with the attribute-versus-child test, and what follows if it does
+      |segment?[result-trace-quotient].result :max exact
+        :see [[type-algebra]] §2
+        The stacking hash as a trace-monoid quotient isomorphic to a product of per-key free monoids, and exactly what the quotient forgets
+      |segment?[form-commuted-by-default].formulation :max robust-qualitative
+        :see [[type-algebra]] §2
+        Cross-key order as conformance-invisible by default, and why the election is whole-row
+      |segment?[der-four-value-states].derived :max exact
+        :see [[type-algebra]] §2
+        :see [[CORE]] §11.4  (0.9.1)
+        Absent, nil, stacked and list as distinct denotations, and why an algebra over the ergonomic view is unsound
+      |segment?[der-designated-keys-as-fields].derived :max exact
+        :see [[type-algebra]] §2
+        Identity, traits and flags as ordinary row fields, and what needs no separate machinery as a result
 
     |chapter[what-the-algebra-decides] :title "What the algebra decides"
-      |segment[result-shorthand-decidability] :type result :max-attainable exact :stage gap :see "[[type-algebra]] §5 R2"  Decidability across the shorthand fragment, where componentwise checking fails, and the encoding that recovers it
-      |segment[der-difference-types] :type derived :max-attainable exact :stage gap :see "[[type-algebra]] §4"  Closure under union, intersection and complement, and the existence of difference types
-      |segment[der-verdict-composition] :type derived :max-attainable conditional :stage gap :see "[[type-algebra]] §5 R3"  What total recognition gives the judge, and the shape of a verdict that survives anomalies
-      |segment[der-commutation-fence] :type derived :max-attainable exact  :stage gap :see "[[type-algebra]] §5 R2"  Why the normalizing encoding is internal to the checker and would violate the serializer contract if emitted
+      |segment?[result-shorthand-decidability].result :max exact
+        :see [[type-algebra]] §5 R2
+        Decidability across the shorthand fragment, where componentwise checking fails, and the encoding that recovers it
+      |segment?[der-difference-types].derived :max exact
+        :see [[type-algebra]] §4
+        Closure under union, intersection and complement, and the existence of difference types
+      |segment?[der-verdict-composition].derived :max conditional
+        :see [[type-algebra]] §5 R3
+        What total recognition gives the judge, and the shape of a verdict that survives anomalies
+      |segment?[der-commutation-fence].derived :max exact
+        :see [[type-algebra]] §5 R2
+        Why the normalizing encoding is internal to the checker and would violate the serializer contract if emitted
 
     |chapter[discriminators] :title "Discriminators, anonymity, elision"
-      |segment[result-discriminator-ladder] :type result :max-attainable exact       :stage gap :see "[[type-algebra]] §9"  Name, key, traits, row shape and content shape as one family ordered by check cost
-      |segment[der-disjointness-obligation] :type derived :max-attainable exact   :stage gap :see "[[type-algebra]] §9"  Decidability of sibling disjointness per content position, and disjoint-or-discriminated as enforceable
-      |segment[der-discrimination-window] :type derived :max-attainable conditional :stage gap :see "[[type-algebra]] §9"  The content-phase boundary as the deadline for single-pass dispatch, and reporting how early a pair resolves
-      |segment[result-elision-privilege] :type result :max-attainable exact :stage gap :see "[[type-algebra]] §9"  Under what condition anonymity is safe, and what the disjointness check requires when it stops being
-      |segment[disc-dispatch-resolution-parity] :type discussion :max-attainable discussion-grade :stage gap :see "[[type-algebra]] §9"  Type-level dispatch and key-only reference resolution as one condition at two layers
+      |segment?[result-discriminator-ladder].result :max exact
+        :see [[type-algebra]] §9
+        Name, key, traits, row shape and content shape as one family ordered by check cost
+      |segment?[der-disjointness-obligation].derived :max exact
+        :see [[type-algebra]] §9
+        Decidability of sibling disjointness per content position, and disjoint-or-discriminated as enforceable
+      |segment?[der-discrimination-window].derived :max conditional
+        :see [[type-algebra]] §9
+        The content-phase boundary as the deadline for single-pass dispatch, and reporting how early a pair resolves
+      |segment?[result-elision-privilege].result :max exact
+        :see [[type-algebra]] §9
+        Under what condition anonymity is safe, and what the disjointness check requires when it stops being
+      |segment?[disc-dispatch-resolution-parity].discussion :max discussion-grade
+        :see [[type-algebra]] §9
+        Type-level dispatch and key-only reference resolution as one condition at two layers
 
     |chapter[boundaries] :title "Boundaries and open elections"
-      |segment[der-typed-holes] :type derived :max-attainable exact      :stage gap :see "[[type-algebra]] §6 N5"  What an interpolation in value or identity position does to membership, and the stratified verdict it forces
-      |segment[obs-unit-element] :type observation :max-attainable empirical  :stage gap :see "[[type-algebra]] §9"  The absence of a spelling for the pure group element, and the consumer population the blocking incumbent protects
-      |segment[disc-flag-key-election] :type discussion :max-attainable discussion-grade   :stage gap :see "[[type-algebra]] §6 N6 · [[DISCUSSION-THOUGHTS]] O17"  The optionality-marker collision, its consumer count, and the three directions the election is open in
+      |segment?[der-typed-holes].derived :max exact
+        :see [[type-algebra]] §6 N5
+        What an interpolation in value or identity position does to membership, and the stratified verdict it forces
+      |segment?[obs-unit-element].observation :max empirical
+        :see [[type-algebra]] §9
+        The absence of a spelling for the pure group element, and the consumer population the blocking incumbent protects
+      |segment?[disc-flag-key-election].discussion :max discussion-grade
+        :see [[type-algebra]] §6 N6
+        :see [[DISCUSSION-THOUGHTS]] O17
+        The optionality-marker collision, its consumer count, and the three directions the election is open in
       |arc
         What remains here are not no-gos but the algebra's honest edges: a boundary the dynamics
         tier forces, an absence in the spelling space, and an election left open at zero
@@ -189,23 +337,53 @@
       row closing it names the unread evidence its two newest slots rest on.
 
     |chapter[the-unification] :title "The unification"
-      |segment[result-intensional-subsets] :type result :max-attainable exact     :stage gap :see "[[db-theory]] §I · [[type-algebra]] §8"  Whether schemas, views, queries and censuses are intensional subsets of one population, closed under the boolean operations
-      |segment[der-schema-composition] :type derived :max-attainable exact   :stage gap :see "[[type-algebra]] §8"  A schema as a type plus the seats data cannot fill
-      |segment[der-census-cardinality] :type derived :max-attainable exact :stage gap :see "[[type-algebra]] §8"  A census as difference-type cardinality, and burn-down as model-counting
-      |segment[der-coexistence-union] :type derived :max-attainable exact     :stage gap :see "[[type-algebra]] §8"  A migration window as a union type rather than a convention
-      |segment[der-path-selection-type] :type derived :max-attainable conditional :stage gap :see "[[late-misc-synopsis]] §3"  A path's selection half as a type with declared arity bounds, and what that implies about two addressing languages
-      |segment[der-mutation-decomposition] :type derived :max-attainable conditional      :stage gap :see "[[db-theory]] §I"  Whether update exists at the semantic layer, and what append-plus-supersede inherits from stacking
-      |segment[disc-shared-metaphysics] :type discussion :max-attainable discussion-grade :stage gap :see "[[db-theory]] §I"  Keep-everything and severity-by-loss read as event sourcing's axiom reached from the data-preservation side
+      |segment?[result-intensional-subsets].result :max exact
+        :see [[db-theory]] §I
+        :see [[type-algebra]] §8
+        Whether schemas, views, queries and censuses are intensional subsets of one population, closed under the boolean operations
+      |segment?[der-schema-composition].derived :max exact
+        :see [[type-algebra]] §8
+        A schema as a type plus the seats data cannot fill
+      |segment?[der-census-cardinality].derived :max exact
+        :see [[type-algebra]] §8
+        A census as difference-type cardinality, and burn-down as model-counting
+      |segment?[der-coexistence-union].derived :max exact
+        :see [[type-algebra]] §8
+        A migration window as a union type rather than a convention
+      |segment?[der-path-selection-type].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        A path's selection half as a type with declared arity bounds, and what that implies about two addressing languages
+      |segment?[der-mutation-decomposition].derived :max conditional
+        :see [[db-theory]] §I
+        Whether update exists at the semantic layer, and what append-plus-supersede inherits from stacking
+      |segment?[disc-shared-metaphysics].discussion :max discussion-grade
+        :see [[db-theory]] §I
+        Keep-everything and severity-by-loss read as event sourcing's axiom reached from the data-preservation side
 
     |chapter[the-co-occurrence-boundary] :title "The co-occurrence boundary"
-      |segment[der-grammar-co-occurrence-limit] :type derived :max-attainable exact :stage gap :see "[[MINEFIELD-MAP]] §M13"  What a grammar-based schema language structurally cannot state, and where the ecosystems that shipped grammar-only put those constraints instead
-      |segment[result-shorthand-boundary] :type result :max-attainable exact :stage gap :see "[[type-algebra]] §5"  Whether boolean closure denotes finite co-occurrence over declared keys, where the remaining gap sits if it does, and whether the external pass's fetched primaries support the narrowing this slot claims
-      |segment[der-seat-co-occurrence] :type derived :max-attainable exact :stage gap :see "[[type-algebra]] §8"  Whether the declared-closed-carries-its-reason seat is itself a co-occurrence constraint, and whether the shorthand can express it
-      |segment[hyp-typed-extraction] :type hypothesis :max-attainable empirical :stage gap :see "[[MINEFIELD-MAP]] §M13"  Whether the disjointness obligation supplies the stable element-to-type map full regular tree grammars could not, and at what cost
-      |segment[der-purity-insufficiency] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M13"  What separating validation from typing does and does not supply, and where the strategic risk actually sits
-      |segment[form-arity-axis] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[late-misc-synopsis]] §3 · [[type-algebra]] §5 R4"  The four arity bounds at four sites, and how bounds compose through nesting
-      |gap :candidate der-assertion-tier-shape  The tier arithmetic and cross-document constraints require is unshaped
-      |gap :candidate der-shorthand-co-occurrence-spelling  No spelling exists for the union-of-rows case, which is what makes the fiat seats currently unwritable
+      |segment?[der-grammar-co-occurrence-limit].derived :max exact
+        :see [[MINEFIELD-MAP]] §M13
+        What a grammar-based schema language structurally cannot state, and where the ecosystems that shipped grammar-only put those constraints instead
+      |segment?[result-shorthand-boundary].result :max exact
+        :see [[type-algebra]] §5
+        Whether boolean closure denotes finite co-occurrence over declared keys, where the remaining gap sits if it does, and whether the external pass's fetched primaries support the narrowing this slot claims
+      |segment?[der-seat-co-occurrence].derived :max exact
+        :see [[type-algebra]] §8
+        Whether the declared-closed-carries-its-reason seat is itself a co-occurrence constraint, and whether the shorthand can express it
+      |segment?[hyp-typed-extraction].hypothesis :max empirical
+        :see [[MINEFIELD-MAP]] §M13
+        Whether the disjointness obligation supplies the stable element-to-type map full regular tree grammars could not, and at what cost
+      |segment?[der-purity-insufficiency].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M13
+        What separating validation from typing does and does not supply, and where the strategic risk actually sits
+      |segment?[form-arity-axis].formulation :max robust-qualitative
+        :see [[late-misc-synopsis]] §3
+        :see [[type-algebra]] §5 R4
+        The four arity bounds at four sites, and how bounds compose through nesting
+      |segment?[der-assertion-tier-shape]
+        The tier arithmetic and cross-document constraints require is unshaped
+      |segment?[der-shorthand-co-occurrence-spelling]
+        No spelling exists for the union-of-rows case, which is what makes the fiat seats currently unwritable
 
   ; ---------------------------------------------------------------------------
   |part[resolution] :n V
@@ -215,27 +393,66 @@
       which both depend on and which currently has no owner.
 
     |chapter[one-mechanism] :title "One mechanism, four customers"
-      |segment[result-registry-resolution] :type result :max-attainable robust-qualitative      :stage gap :see "[[paths-ideation]] §3b · [[dialects-ideation]] §4"  Whether dialect labels, verbatim labels, references and filename designators are one mechanism resolving a name against a declared registry, and whether the shipped designator machinery has the shape this depends on
-      |segment[der-kinded-failure] :type derived :max-attainable conditional :stage gap :see "[[doc-store-and-schemas-report]] §8"  What a result carrying its kind on failure makes possible that a bare failure does not
-      |segment[form-designator-rigidity] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[doc-store-and-schemas-report]] §8"  The designator rigidity spectrum, and resolution-as-migration as a recorded lifecycle
-      |segment[der-failure-vocabulary] :type derived :max-attainable conditional  :stage gap :see "[[paths-ideation]] §2d"  Four failure names, the four repairs they route to, and what one name covering two costs
-      |segment[der-name-minting] :type derived :max-attainable empirical :stage gap :see "[[dialects-ideation]] §4"  Whether the name-minting question has an answer in machinery already running, and what the registration-tree prior art adds
+      |segment?[result-registry-resolution].result :max robust-qualitative
+        :see [[paths-ideation]] §3b
+        :see [[dialects-ideation]] §4
+        Whether dialect labels, verbatim labels, references and filename designators are one mechanism resolving a name against a declared registry, and whether the shipped designator machinery has the shape this depends on
+      |segment?[der-kinded-failure].derived :max conditional
+        :see [[doc-store-and-schemas-report]] §8
+        What a result carrying its kind on failure makes possible that a bare failure does not
+      |segment?[form-designator-rigidity].formulation :max robust-qualitative
+        :see [[doc-store-and-schemas-report]] §8
+        The designator rigidity spectrum, and resolution-as-migration as a recorded lifecycle
+      |segment?[der-failure-vocabulary].derived :max conditional
+        :see [[paths-ideation]] §2d
+        Four failure names, the four repairs they route to, and what one name covering two costs
+      |segment?[der-name-minting].derived :max empirical
+        :see [[dialects-ideation]] §4
+        Whether the name-minting question has an answer in machinery already running, and what the registration-tree prior art adds
 
     |chapter[addressing] :title "Addressing as one circuit"
-      |segment[obs-speaking-occasions] :type observation :max-attainable empirical  :stage gap :see "[[late-misc-synopsis]] §3"  The seven places a path is uttered, their speakers and media, and what each demands of a spelling
-      |segment[der-pasteback-closure] :type derived :max-attainable conditional      :stage gap :see "[[late-misc-synopsis]] §3"  The condition under which read and edit are one loop, and what a tool's output must satisfy
-      |segment[der-reference-subset] :type derived :max-attainable conditional      :stage gap :see "[[late-misc-synopsis]] §3 · [[DECISIONS]] S14"  Whether in-document references are a true subset of one address language, and what a second dialect of addressing would cost
-      |segment[der-resolver-only-v0] :type derived :max-attainable conditional :stage gap :see "[[late-misc-synopsis]] §3"  Which of the seven vectors touch the recognizer, and what a resolver-plus-convention could cover without a new recognition rule
-      |segment[form-expectation-bounds] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[DISCUSSION-THOUGHTS]] O15"  Operational and epistemic bounds as two jobs, and divergence as a dialogue trigger rather than a failure
-      |segment[der-preregistered-expectation] :type derived :max-attainable conditional :stage gap :see "[[late-misc-synopsis]] §3 · #asf/aat/der-loop-interventional-access"  What a bound stated before the act removes at the comparison moment, and what it does not restore
-      |segment[der-cascade-enforcement] :type derived :max-attainable conditional :stage gap :see "[[late-misc-synopsis]] §3 · #asf/aat/der-orient-cascade"  Whether a tool contract can enforce belief-update before re-planning where a norm cannot
-      |gap :candidate der-bare-form-chaining-joiner :see "[[DISCUSSION-THOUGHTS]] O13"  Space terminates bare tokens, so the fused bare spelling needs a joiner or forgoes chaining
+      |segment?[obs-speaking-occasions].observation :max empirical
+        :see [[late-misc-synopsis]] §3
+        The seven places a path is uttered, their speakers and media, and what each demands of a spelling
+      |segment?[der-pasteback-closure].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        The condition under which read and edit are one loop, and what a tool's output must satisfy
+      |segment?[der-reference-subset].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        :see [[DECISIONS]] S14
+        Whether in-document references are a true subset of one address language, and what a second dialect of addressing would cost
+      |segment?[der-resolver-only-v0].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        Which of the seven vectors touch the recognizer, and what a resolver-plus-convention could cover without a new recognition rule
+      |segment?[form-expectation-bounds].formulation :max robust-qualitative
+        :see [[DISCUSSION-THOUGHTS]] O15
+        Operational and epistemic bounds as two jobs, and divergence as a dialogue trigger rather than a failure
+      |segment?[der-preregistered-expectation].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        :see #asf/aat/der-loop-interventional-access
+        What a bound stated before the act removes at the comparison moment, and what it does not restore
+      |segment?[der-cascade-enforcement].derived :max conditional
+        :see [[late-misc-synopsis]] §3
+        :see #asf/aat/der-orient-cascade
+        Whether a tool contract can enforce belief-update before re-planning where a norm cannot
+      |segment?[der-bare-form-chaining-joiner]
+        :see [[DISCUSSION-THOUGHTS]] O13
+        Space terminates bare tokens, so the fused bare spelling needs a joiner or forgoes chaining
 
     |chapter[lineage] :title "Identity over time"
-      |segment[obs-lineage-ownerless] :type observation :max-attainable empirical  :stage gap :see "[[schema-ideation]] §4 · [[CORE]] §1.1  (0.9.1)"  What identity-over-time claims, and which row of the owner table holds it
-      |segment[der-lineage-presupposition] :type derived :max-attainable exact   :stage gap :see "[[type-algebra]] §8"  What the difference type presupposes about a renamed key, and which slots become undefined without it
-      |segment[der-lineage-keying] :type derived :max-attainable conditional    :stage gap :see "[[db-theory]] §V"  What identity through rekey, split and merge does to a document event stream
-      |gap :candidate der-lineage-owner :see "[[schema-ideation]] §4"  Two placements are laid out with their consequences and neither is chosen; three slots in this outline depend on the choice
+      |segment?[obs-lineage-ownerless].observation :max empirical
+        :see [[schema-ideation]] §4
+        :see [[CORE]] §1.1  (0.9.1)
+        What identity-over-time claims, and which row of the owner table holds it
+      |segment?[der-lineage-presupposition].derived :max exact
+        :see [[type-algebra]] §8
+        What the difference type presupposes about a renamed key, and which slots become undefined without it
+      |segment?[der-lineage-keying].derived :max conditional
+        :see [[db-theory]] §V
+        What identity through rekey, split and merge does to a document event stream
+      |segment?[der-lineage-owner]
+        :see [[schema-ideation]] §4
+        Two placements are laid out with their consequences and neither is chosen; three slots in this outline depend on the choice
 
   ; ---------------------------------------------------------------------------
   |part[fiat] :n VI
@@ -246,16 +463,37 @@
       and owes its own honest maximum for observation.
 
     |chapter[the-strata] :title "The four strata"
-      |segment[post-descriptive-normative-split] :type postulate :max-attainable axiomatic :stage gap :see "[[late-misc-synopsis]] §4"  The descriptive-normative distinction the rest of the part accepts, and what it declines to argue for
-      |segment[der-p1-closure] :type derived :max-attainable conditional      :stage gap :see "[[late-misc-synopsis]] §4 · [[type-algebra]] §6 N1"  What observation can supply about vocabulary exhaustion, and what remains an act. An earlier form asserted closure was unobservable and was falsified by missing-mass estimation
-      |segment[der-p2-law] :type derived :max-attainable conditional      :stage gap :see "[[late-misc-synopsis]] §4"  Enforcement records as evidence, adoption as the act, and how much of the record is not retained
-      |segment[der-p3-reasons] :type derived :max-attainable conditional      :stage gap :see "[[late-misc-synopsis]] §4"  Where reasons exist in data at all, and which kinds existing schema languages have slots for
-      |segment[der-p4-bindingness] :type derived :max-attainable empirical      :stage gap :see "[[late-misc-synopsis]] §4 · [[extraction-probe]] §2"  What extraction does to incidental convention at scale, and what an adjudication state is for
-      |segment[der-decision-layer] :type derived :max-attainable conditional  :stage gap :see "[[late-misc-synopsis]] §4"  What the authored schema principally contains once the description layer regenerates on demand
-      |segment[der-arguable-constraint] :type derived :max-attainable conditional  :stage gap :see "[[DISCUSSION-THOUGHTS]] O10"  What a reason changes about a constraint's relation to its reader
-      |segment[obs-rationale-quadrant] :type observation :max-attainable empirical :stage gap :see "[[external-rationale-structure-2026-07-29]]"  What two literature lineages built toward reasons-as-structure, how far each went, and what the search that found the gap covered
-      |segment[norm-undecided-default] :type normative :max-attainable decided :stage gap :see "[[late-misc-synopsis]] §4"  The default state for an extracted regularity, and why a declared bound is not an observed extremum
-      |gap :candidate der-capture-problem-is-adoption-law  Reasons-as-structure carries an adoption constraint the literature names; no slot here clears it
+      |segment?[post-descriptive-normative-split].postulate :max axiomatic
+        :see [[late-misc-synopsis]] §4
+        The descriptive-normative distinction the rest of the part accepts, and what it declines to argue for
+      |segment?[der-p1-closure].derived :max conditional
+        :see [[late-misc-synopsis]] §4
+        :see [[type-algebra]] §6 N1
+        What observation can supply about vocabulary exhaustion, and what remains an act. An earlier form asserted closure was unobservable and was falsified by missing-mass estimation
+      |segment?[der-p2-law].derived :max conditional
+        :see [[late-misc-synopsis]] §4
+        Enforcement records as evidence, adoption as the act, and how much of the record is not retained
+      |segment?[der-p3-reasons].derived :max conditional
+        :see [[late-misc-synopsis]] §4
+        Where reasons exist in data at all, and which kinds existing schema languages have slots for
+      |segment?[der-p4-bindingness].derived :max empirical
+        :see [[late-misc-synopsis]] §4
+        :see [[extraction-probe]] §2
+        What extraction does to incidental convention at scale, and what an adjudication state is for
+      |segment?[der-decision-layer].derived :max conditional
+        :see [[late-misc-synopsis]] §4
+        What the authored schema principally contains once the description layer regenerates on demand
+      |segment?[der-arguable-constraint].derived :max conditional
+        :see [[DISCUSSION-THOUGHTS]] O10
+        What a reason changes about a constraint's relation to its reader
+      |segment?[obs-rationale-quadrant].observation :max empirical
+        :see [[external-rationale-structure-2026-07-29]]
+        What two literature lineages built toward reasons-as-structure, how far each went, and what the search that found the gap covered
+      |segment?[norm-undecided-default].normative :max decided
+        :see [[late-misc-synopsis]] §4
+        The default state for an extracted regularity, and why a declared bound is not an observed extremum
+      |segment?[der-capture-problem-is-adoption-law]
+        Reasons-as-structure carries an adoption constraint the literature names; no slot here clears it
 
   ; ---------------------------------------------------------------------------
   |part[governance] :n VII
@@ -266,23 +504,57 @@
       chapter, and the gap row closing it names the premise that fails.
 
     |chapter[membranes-and-clocks] :title "Membranes and clocks"
-      |segment[def-strata-tower] :type definition :max-attainable axiomatic   :stage gap :see "[[db-theory]] §3"  Five layers and the membrane each adjacent pair already carries
-      |segment[form-membrane-dials] :type formulation :max-attainable robust-qualitative :stage gap :see "[[db-theory]] §3"  One template with a clock ratio and a sensitivity, and the governance menu read as enforcement substrates for dial settings
-      |segment[der-condition-repair-split] :type derived :max-attainable robust-qualitative      :stage gap :see "[[db-theory]] §3 · #asf/aat/der-multi-timescale-stability"  Two condition violations, why their repairs do not substitute, and what the tempting merge conceals
-      |segment[der-permeable-membrane] :type derived :max-attainable conditional   :stage gap :see "[[db-theory]] §3"  Recognition read as a membrane at full permeability, and why refusal need not live in the parser
-      |segment[der-vertical-scope] :type derived :max-attainable conditional :stage gap :see "[[db-theory]] §3"  Which questions the template answers, and which draw from composition machinery or partition instead
-      |segment[hyp-semifreeze-dial] :type hypothesis :max-attainable empirical   :stage gap :see "[[db-theory]] §3 · [[DECISIONS]] C8"  What a semi-freeze does to canon sensitivity during high churn, and what the warm-start refinement prices
-      |gap :candidate obs-shared-capacity-couples-the-clocks :see "[[db-theory]] §3"  The layers draw on one attention pool, violating the theorem's per-level capacity premise
+      |segment?[def-strata-tower].definition :max axiomatic
+        :see [[db-theory]] §3
+        Five layers and the membrane each adjacent pair already carries
+      |segment?[form-membrane-dials].formulation :max robust-qualitative
+        :see [[db-theory]] §3
+        One template with a clock ratio and a sensitivity, and the governance menu read as enforcement substrates for dial settings
+      |segment?[der-condition-repair-split].derived :max robust-qualitative
+        :see [[db-theory]] §3
+        :see #asf/aat/der-multi-timescale-stability
+        Two condition violations, why their repairs do not substitute, and what the tempting merge conceals
+      |segment?[der-permeable-membrane].derived :max conditional
+        :see [[db-theory]] §3
+        Recognition read as a membrane at full permeability, and why refusal need not live in the parser
+      |segment?[der-vertical-scope].derived :max conditional
+        :see [[db-theory]] §3
+        Which questions the template answers, and which draw from composition machinery or partition instead
+      |segment?[hyp-semifreeze-dial].hypothesis :max empirical
+        :see [[db-theory]] §3
+        :see [[DECISIONS]] C8
+        What a semi-freeze does to canon sensitivity during high churn, and what the warm-start refinement prices
+      |segment?[obs-shared-capacity-couples-the-clocks]
+        :see [[db-theory]] §3
+        The layers draw on one attention pool, violating the theorem's per-level capacity premise
 
     |chapter[time-and-grain] :title "Time, grain, channels"
-      |segment[form-commit-fold] :type formulation :max-attainable robust-qualitative  :stage gap :see "[[db-theory]] §II"  Commits read as a transaction log, and which temporal verbs become folds over commit ranges
-      |segment[der-verb-grain] :type derived :max-attainable conditional      :stage gap :see "[[MINEFIELD-MAP]] §3.10"  File grain versus record grain per verb, and what the prior art says about which instrument fits which
-      |segment[der-event-composition] :type derived :max-attainable conditional :stage gap :see "[[db-theory]] §II"  What a schema-aware diff supplies, what no diff supplies, and where the remainder must be captured
-      |segment[der-channel-count] :type derived :max-attainable conditional      :stage gap :see "[[MINEFIELD-MAP]] §M8 · #asf/aat/deriv-tempo-additivity"  When gates are one channel wearing several badges, and the signed correction the source makes to the general claim
-      |segment[obs-declaration-free-channel] :type observation :max-attainable robust-qualitative :stage gap :see "[[db-theory]] §3 · [[MINEFIELD-MAP]] §M8"  What extraction-based drift detection can catch that declaration-reading channels cannot
-      |segment[der-substitution-table] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §3.11"  Disposition and scope as two independent knobs, and what stating them converts
-      |gap :candidate der-record-grain-escape-hatch :see "[[MINEFIELD-MAP]] §3.10"  #app-second-store and record-grain history are in tension that current scale conceals
-      |gap :candidate der-erasure-meets-append-supersede :see "[[MINEFIELD-MAP]] §3.13"  Supersede is not erasure while prior versions remain reconstructable, and the common workaround's sufficiency is contested
+      |segment?[form-commit-fold].formulation :max robust-qualitative
+        :see [[db-theory]] §II
+        Commits read as a transaction log, and which temporal verbs become folds over commit ranges
+      |segment?[der-verb-grain].derived :max conditional
+        :see [[MINEFIELD-MAP]] §3.10
+        File grain versus record grain per verb, and what the prior art says about which instrument fits which
+      |segment?[der-event-composition].derived :max conditional
+        :see [[db-theory]] §II
+        What a schema-aware diff supplies, what no diff supplies, and where the remainder must be captured
+      |segment?[der-channel-count].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M8
+        :see #asf/aat/deriv-tempo-additivity
+        When gates are one channel wearing several badges, and the signed correction the source makes to the general claim
+      |segment?[obs-declaration-free-channel].observation :max robust-qualitative
+        :see [[db-theory]] §3
+        :see [[MINEFIELD-MAP]] §M8
+        What extraction-based drift detection can catch that declaration-reading channels cannot
+      |segment?[der-substitution-table].derived :max conditional
+        :see [[MINEFIELD-MAP]] §3.11
+        Disposition and scope as two independent knobs, and what stating them converts
+      |segment?[der-record-grain-escape-hatch]
+        :see [[MINEFIELD-MAP]] §3.10
+        #app-second-store and record-grain history are in tension that current scale conceals
+      |segment?[der-erasure-meets-append-supersede]
+        :see [[MINEFIELD-MAP]] §3.13
+        Supersede is not erasure while prior versions remain reconstructable, and the common workaround's sufficiency is contested
 
   ; ---------------------------------------------------------------------------
   |part[minefield] :n VIII
@@ -293,26 +565,61 @@
       on theory plus recall rather than fetched primaries, and a segment inherits that mark.
 
     |chapter[the-mines] :title "Thirteen mechanisms"
-      |segment[intro-the-minefield] :type discussion :max-attainable discussion-grade   :stage gap :see "[[MINEFIELD-MAP]] §1"  Opening: the five recurring structural moves, and which four UDON is defended against by construction
-      |segment[der-frozen-set-kind] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M1"  Type sniffing as a non-injectivity floor, and why a frozen set is a different object rather than a disciplined table
-      |segment[der-silent-corner] :type derived :max-attainable conditional    :stage gap :see "[[MINEFIELD-MAP]] §M2"  Loud versus silent as the repair-relevant axis, and what a silent misparse does to update gain
-      |segment[result-specified-recovery] :type result :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M2"  Which axis the historical move actually travelled, and which half of keep-everything that makes load-bearing
-      |segment[der-repair-regimes] :type derived :max-attainable conditional      :stage gap :see "[[MINEFIELD-MAP]] §M3"  Four repair-distinct regimes, their orthogonality to severity-by-loss, and the shipped design pattern for the hardest one
-      |segment[der-convention-certificate] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M4"  A behavioral bound against a certificate, and why the step function explains a decade-late discovery
-      |segment[der-additivity-requirement] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M5"  What an unbounded settling time does to the admissible spec-change rate, under the stated modeling identification
-      |segment[der-blame-radius] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M6"  Declared bounded extents as observable intermediates, and the intractability they sidestep rather than solve
-      |segment[der-spec-length] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M7"  What a specification's length measures, and what the shared-context term does to an adoption floor
-      |segment[der-inert-reference-freeze] :type derived :max-attainable conditional      :stage gap :see "[[MINEFIELD-MAP]] §M9"  An unresolved reference as an unobservable edge, and what one trivial resolver is an instrument for
-      |segment[obs-collapse-catalog] :type observation :max-attainable empirical  :stage gap :see "[[MINEFIELD-MAP]] §M10"  Five merges of repair-distinct things, and the repair each merge conceals
-      |segment[der-conformance-target] :type derived :max-attainable conditional  :stage gap :see "[[MINEFIELD-MAP]] §M11"  Why a grammar defined by an implementation has no fixed point, and which failure mode that names
-      |segment[der-positional-commitment] :type derived :max-attainable conditional :stage gap :see "[[MINEFIELD-MAP]] §M12"  Escaping as behavioral against position as structural, and what the difference is in kind
-      |segment[obs-host-profile-fork] :type observation :max-attainable empirical  :stage gap :see "[[MINEFIELD-MAP]] §6.10"  How two conformant hosts can disagree with no spec move, and why this is a distinct failure class
+      |segment?[intro-the-minefield].discussion :max discussion-grade
+        :see [[MINEFIELD-MAP]] §1
+        Opening: the five recurring structural moves, and which four UDON is defended against by construction
+      |segment?[der-frozen-set-kind].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M1
+        Type sniffing as a non-injectivity floor, and why a frozen set is a different object rather than a disciplined table
+      |segment?[der-silent-corner].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M2
+        Loud versus silent as the repair-relevant axis, and what a silent misparse does to update gain
+      |segment?[result-specified-recovery].result :max conditional
+        :see [[MINEFIELD-MAP]] §M2
+        Which axis the historical move actually travelled, and which half of keep-everything that makes load-bearing
+      |segment?[der-repair-regimes].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M3
+        Four repair-distinct regimes, their orthogonality to severity-by-loss, and the shipped design pattern for the hardest one
+      |segment?[der-convention-certificate].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M4
+        A behavioral bound against a certificate, and why the step function explains a decade-late discovery
+      |segment?[der-additivity-requirement].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M5
+        What an unbounded settling time does to the admissible spec-change rate, under the stated modeling identification
+      |segment?[der-blame-radius].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M6
+        Declared bounded extents as observable intermediates, and the intractability they sidestep rather than solve
+      |segment?[der-spec-length].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M7
+        What a specification's length measures, and what the shared-context term does to an adoption floor
+      |segment?[der-inert-reference-freeze].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M9
+        An unresolved reference as an unobservable edge, and what one trivial resolver is an instrument for
+      |segment?[obs-collapse-catalog].observation :max empirical
+        :see [[MINEFIELD-MAP]] §M10
+        Five merges of repair-distinct things, and the repair each merge conceals
+      |segment?[der-conformance-target].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M11
+        Why a grammar defined by an implementation has no fixed point, and which failure mode that names
+      |segment?[der-positional-commitment].derived :max conditional
+        :see [[MINEFIELD-MAP]] §M12
+        Escaping as behavioral against position as structural, and what the difference is in kind
+      |segment?[obs-host-profile-fork].observation :max empirical
+        :see [[MINEFIELD-MAP]] §6.10
+        How two conformant hosts can disagree with no spec move, and why this is a distinct failure class
 
     |chapter[standing-on-mines] :title "Where UDON stands on one"
-      |segment[obs-defense-kinds] :type observation :max-attainable empirical :stage gap :see "[[MINEFIELD-MAP]] §3"  Which commitments are certificates, which are conventions, and how each should be budgeted
-      |segment[obs-anomaly-cascade] :type observation :max-attainable empirical :stage gap :see "[[MINEFIELD-MAP]] §3.3"  What one unclosed construct produces without a root-versus-derived distinction, and which regime that manufactures
-      |segment[obs-evaluation-channel] :type observation :max-attainable empirical :stage gap :see "[[MINEFIELD-MAP]] §3.6"  The shape the dynamics tier shares with template injection, and at which layer the historical instances became incidents
-      |gap :candidate obs-measured-indentation-failure  Two independent passes marked measured indentation-failure rates as unreached
+      |segment?[obs-defense-kinds].observation :max empirical
+        :see [[MINEFIELD-MAP]] §3
+        Which commitments are certificates, which are conventions, and how each should be budgeted
+      |segment?[obs-anomaly-cascade].observation :max empirical
+        :see [[MINEFIELD-MAP]] §3.3
+        What one unclosed construct produces without a root-versus-derived distinction, and which regime that manufactures
+      |segment?[obs-evaluation-channel].observation :max empirical
+        :see [[MINEFIELD-MAP]] §3.6
+        The shape the dynamics tier shares with template injection, and at which layer the historical instances became incidents
+      |segment?[obs-measured-indentation-failure]
+        Two independent passes marked measured indentation-failure rates as unreached
 
   ; ---------------------------------------------------------------------------
   |part[consequences] :n IX
@@ -323,23 +630,45 @@
       ruled; the ledger and the steward carry that.
 
     |chapter[spec-delta] :title "Consequences for the spec"
-      |segment[norm-lineage-owner] :type normative :max-attainable decided    :stage gap   Following #obs-lineage-ownerless: an owner row, or a carve-out entry with its closing condition
-      |segment[norm-schema-carveout] :type normative :max-attainable decided    :stage gap   Following Part IV: the schema layer is the only major deferred layer with no carve-out entry, and three mines converge there
-      |segment[norm-resolution-statement] :type normative :max-attainable decided    :stage gap   Following #result-registry-resolution: label-to-handler resolution stated once rather than as a reference-resolution row alone
-      |segment[norm-stacking-array] :type normative :max-attainable decided    :stage gap :see "[[thoughts-on-multiline-array]]"  Following #result-trace-quotient: one severity row is the sole dissent from what the model already states
-      |segment[norm-repair-class] :type normative :max-attainable decided    :stage gap :see "[[MINEFIELD-MAP]] §M3"  Following #der-repair-regimes, with the root-versus-derived bit as the cheaper first form
-      |segment[norm-substitution-table] :type normative :max-attainable decided  :stage gap :see "[[MINEFIELD-MAP]] §3.11"  Following #der-substitution-table: the two knobs, and where the table lives
-      |segment[norm-recognition-profile] :type normative :max-attainable decided    :stage gap :see "[[MINEFIELD-MAP]] §6.10"  Following #obs-host-profile-fork: float profile and Unicode version as a pinnable profile
-      |segment[norm-leading-zero] :type normative :max-attainable decided    :stage gap :see "[[MINEFIELD-MAP]] §3.1"  The two readings of the explicit-base rule the source records, and which remaining case each closes
+      |segment?[norm-lineage-owner].normative :max decided
+        Following #obs-lineage-ownerless: an owner row, or a carve-out entry with its closing condition
+      |segment?[norm-schema-carveout].normative :max decided
+        Following Part IV: the schema layer is the only major deferred layer with no carve-out entry, and three mines converge there
+      |segment?[norm-resolution-statement].normative :max decided
+        Following #result-registry-resolution: label-to-handler resolution stated once rather than as a reference-resolution row alone
+      |segment?[norm-stacking-array].normative :max decided
+        :see [[thoughts-on-multiline-array]]
+        Following #result-trace-quotient: one severity row is the sole dissent from what the model already states
+      |segment?[norm-repair-class].normative :max decided
+        :see [[MINEFIELD-MAP]] §M3
+        Following #der-repair-regimes, with the root-versus-derived bit as the cheaper first form
+      |segment?[norm-substitution-table].normative :max decided
+        :see [[MINEFIELD-MAP]] §3.11
+        Following #der-substitution-table: the two knobs, and where the table lives
+      |segment?[norm-recognition-profile].normative :max decided
+        :see [[MINEFIELD-MAP]] §6.10
+        Following #obs-host-profile-fork: float profile and Unicode version as a pinnable profile
+      |segment?[norm-leading-zero].normative :max decided
+        :see [[MINEFIELD-MAP]] §3.1
+        The two readings of the explicit-base rule the source records, and which remaining case each closes
 
     |chapter[territory-paths] :title "What each territory inherits"
-      |segment[disc-paths-inheritance] :type discussion :max-attainable discussion-grade   :stage gap   What Part V leaves the paths work, and which of its questions are resolver questions rather than syntax questions
-      |segment[disc-schema-inheritance] :type discussion :max-attainable discussion-grade :stage gap   What Parts III, IV and VI leave the schema work: the fence, the three seats, and the adoption order
-      |segment[disc-dialect-inheritance] :type discussion :max-attainable discussion-grade :stage gap :see "[[dialects-ideation]] §1"  What Part V leaves the dialect work: four jobs separated by when they act, and the fork a named falsifier would settle
-      |segment[disc-typing-inheritance] :type discussion :max-attainable discussion-grade :stage gap   What Part III leaves the typing work, and where dialects enter the value lattice
-      |segment[disc-embed-inheritance] :type discussion :max-attainable discussion-grade   :stage gap   What Part V leaves embed dispatch, and whether a verbatim label is a registry lookup rather than a second mechanism
-      |segment[disc-tooling-inheritance] :type discussion :max-attainable discussion-grade :stage gap :see "[[db-theory]] §IV"  What Parts IV and VII leave the tooling work: which verbs fall out of the algebra and what each already rests on
-      |gap :candidate disc-corpus-boundary-with-udon-needs  Where this corpus ends and the demand evidence begins is undrawn; they touch at typing, addressing and schema
+      |segment?[disc-paths-inheritance].discussion :max discussion-grade
+        What Part V leaves the paths work, and which of its questions are resolver questions rather than syntax questions
+      |segment?[disc-schema-inheritance].discussion :max discussion-grade
+        What Parts III, IV and VI leave the schema work: the fence, the three seats, and the adoption order
+      |segment?[disc-dialect-inheritance].discussion :max discussion-grade
+        :see [[dialects-ideation]] §1
+        What Part V leaves the dialect work: four jobs separated by when they act, and the fork a named falsifier would settle
+      |segment?[disc-typing-inheritance].discussion :max discussion-grade
+        What Part III leaves the typing work, and where dialects enter the value lattice
+      |segment?[disc-embed-inheritance].discussion :max discussion-grade
+        What Part V leaves embed dispatch, and whether a verbatim label is a registry lookup rather than a second mechanism
+      |segment?[disc-tooling-inheritance].discussion :max discussion-grade
+        :see [[db-theory]] §IV
+        What Parts IV and VII leave the tooling work: which verbs fall out of the algebra and what each already rests on
+      |segment?[disc-corpus-boundary-with-udon-needs]
+        Where this corpus ends and the demand evidence begins is undrawn; they touch at typing, addressing and schema
 
 
   ; ---------------------------------------------------------------------------
@@ -352,12 +681,24 @@
       are load-bearing detail for claims stated elsewhere. Each names what it forecloses and
       what would reopen it.
 
-    |segment[app-inference-floor] :type derived :max-attainable exact      :stage gap :see "[[type-algebra]] §6 N1"  Why no proper generalization of a corpus is least among the alternatives, and what the inference floor forces on an extractor
-    |segment[app-interleave-cliff] :type derived :max-attainable exact      :stage gap :see "[[type-algebra]] §6 N2"  The complexity cliff for interleaved ordered sub-patterns, and the counting-only fence that keeps the shorthand cheap
-    |segment[app-cross-key-order] :type derived :max-attainable exact     :stage gap :see "[[type-algebra]] §6 N3"  What per-key-pair order sensitivity costs, and why the election is whole-row or nothing
-    |segment[app-prose-order] :type derived :max-attainable robust-qualitative      :stage gap :see "[[type-algebra]] §6 N4"  Why segment order inside flow is not typeable by the format's own text law, and how far the algebra does reach into prose
-    |segment[app-slow-layer-limit] :type derived :max-attainable robust-qualitative    :stage gap :see "[[MINEFIELD-MAP]] §M5"  Which condition slowing the slow layer addresses, and what it buys when the fast layer has no settled state
-    |segment[app-second-store] :type derived :max-attainable conditional      :stage gap :see "[[db-theory]] §1"  Why a materialized index is a correlated channel under persistent bias, and what that forces on corpus verbs
+    |segment?[app-inference-floor].derived :max exact
+      :see [[type-algebra]] §6 N1
+      Why no proper generalization of a corpus is least among the alternatives, and what the inference floor forces on an extractor
+    |segment?[app-interleave-cliff].derived :max exact
+      :see [[type-algebra]] §6 N2
+      The complexity cliff for interleaved ordered sub-patterns, and the counting-only fence that keeps the shorthand cheap
+    |segment?[app-cross-key-order].derived :max exact
+      :see [[type-algebra]] §6 N3
+      What per-key-pair order sensitivity costs, and why the election is whole-row or nothing
+    |segment?[app-prose-order].derived :max robust-qualitative
+      :see [[type-algebra]] §6 N4
+      Why segment order inside flow is not typeable by the format's own text law, and how far the algebra does reach into prose
+    |segment?[app-slow-layer-limit].derived :max robust-qualitative
+      :see [[MINEFIELD-MAP]] §M5
+      Which condition slowing the slow layer addresses, and what it buys when the fast layer has no settled state
+    |segment?[app-second-store].derived :max conditional
+      :see [[db-theory]] §1
+      Why a materialized index is a correlated channel under persistent bias, and what that forces on corpus verbs
   ; ---------------------------------------------------------------------------
   |appendix[retired] :title "Retired paths"
     |arc
@@ -365,9 +706,20 @@
       appendix when its refutation has been worked into a stated no-go, at which point it is
       present-truth content and belongs in the part it constrains.
 
-    |segment[app-atomicity-coherence] :type detail :max-attainable empirical :stage gap :see "[[acid-for-corpora]] §2"  The identification of coherence with atomicity, the quantifier on which it was refuted, and what replaced it
-    |segment[app-monotonic-debt] :type detail :max-attainable empirical       :stage gap :see "[[schema-ideation]] §1.0"  Absent contraction read as a law, and the corpus's own thesis that contradicts it
-    |segment[app-membrane-recurrences] :type detail :max-attainable empirical :stage gap :see "[[db-theory]] §3"  A count of five recurrences narrowed to four when two proved horizontal, and what the narrowing established
-    |segment[app-glob-prohibition] :type detail :max-attainable empirical       :stage gap :see "[[DISCUSSION-THOUGHTS]] O14"  A selector prohibition traced to a spelling incumbency, and the three candidate readings that replaced it
-    |segment[app-flag-key-foreclosure] :type detail :max-attainable empirical       :stage gap :see "[[type-algebra]] §6 N6"  The flag-key collision read as a foreclosure, the consumer count that refuted it, and the mechanism by which a spike ratified what it was told to ignore
-    |segment[app-checker-first] :type detail :max-attainable empirical       :stage gap   Building a conformance checker before the foundation, and why priming forecloses the work it would support
+    |segment?[app-atomicity-coherence].detail :max empirical
+      :see [[acid-for-corpora]] §2
+      The identification of coherence with atomicity, the quantifier on which it was refuted, and what replaced it
+    |segment?[app-monotonic-debt].detail :max empirical
+      :see [[schema-ideation]] §1.0
+      Absent contraction read as a law, and the corpus's own thesis that contradicts it
+    |segment?[app-membrane-recurrences].detail :max empirical
+      :see [[db-theory]] §3
+      A count of five recurrences narrowed to four when two proved horizontal, and what the narrowing established
+    |segment?[app-glob-prohibition].detail :max empirical
+      :see [[DISCUSSION-THOUGHTS]] O14
+      A selector prohibition traced to a spelling incumbency, and the three candidate readings that replaced it
+    |segment?[app-flag-key-foreclosure].detail :max empirical
+      :see [[type-algebra]] §6 N6
+      The flag-key collision read as a foreclosure, the consumer count that refuted it, and the mechanism by which a spike ratified what it was told to ignore
+    |segment?[app-checker-first].detail :max empirical
+      Building a conformance checker before the foundation, and why priming forecloses the work it would support
