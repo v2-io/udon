@@ -156,7 +156,7 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 
 ## 2026-07-28 session brainstorms — routed OUT of this ledger
 
-Joseph's continuing brainstorms from the 2026-07-28 big-picture session (IDs O1–O7) were briefly recorded here as steward marks — a mis-routing: they are **pre-validation brainstorms, not rulings or steers**, and the ledger's form was lending them authority they don't claim. They now live, verbatim with per-item assessment and needed validations, at [`spikes/schema-review/DISCUSSION-THOUGHTS.udon`](spikes/schema-review/DISCUSSION-THOUGHTS.udon). The O-IDs remain stable there so same-day citations resolve. If Joseph decides any item by fiat he will expressly mark it as such.
+Joseph's continuing brainstorms from the 2026-07-28 big-picture session (IDs O1–O7) were briefly recorded here as steward marks — a mis-routing: they are **pre-validation brainstorms, not rulings or steers**, and the ledger's form was lending them authority they don't claim. They now live, verbatim with per-item assessment and needed validations, at [`theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`](theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon). The O-IDs remain stable there so same-day citations resolve. If Joseph decides any item by fiat he will expressly mark it as such.
 
 ## Overturns
 

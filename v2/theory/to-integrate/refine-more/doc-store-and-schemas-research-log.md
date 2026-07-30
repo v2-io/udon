@@ -1,6 +1,7 @@
 # Checkpoint — second-pass source investigation
 
-Started 2026-07-23. Working file; the deliverable is `README.md` in this dir.
+Started 2026-07-23. Working file; the deliverable is `doc-store-and-schemas-report.md`
+(see PASS 4 note below — moved from its original spikes/ home).
 
 ## Immediate gaps spotted in the existing report (from directory listings alone)
 
@@ -165,8 +166,8 @@ Final: ~3,180 lines / ~29,200 words / 247 footnotes; 1 deliberate tombstone.
 
 ## PASS 4 COMPLETE (2026-07-23) — side-cars / the cluster record
 
-Deliverable moved to `~/src/udon/v2/spikes/doc-store-and-schemas-report.md` (this file is
-the sibling checkpoint). Added **§12.4** (~250 lines, 11 new footnotes; 258 total).
+Deliverable moved to `~/src/udon/v2/theory/to-integrate/refine-more/doc-store-and-schemas-report.md`
+(this file is the sibling research log). Added **§12.4** (~250 lines, 11 new footnotes; 258 total).
 
 Findings:
 - **Two in-file regions with opposite dispositions, five headings apart.**

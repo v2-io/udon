@@ -116,7 +116,7 @@ The non-invasive-judge position makes this coherent in a way other formats can't
 
 [^membrane2]: relata's two-outcome refusal (`.rejected` = submitter erred vs `.needs-review` = system uncertainty) already *produces* the P2 evidence stream; nothing yet retains it as schema-evidence. `doc-store-and-schemas-report.md` §7.
 
-[^o10]: O10, `schema-review/DISCUSSION-THOUGHTS.udon` — constraints carrying their removal-reasons; "a schema without reasons can only be obeyed or defied; with reasons it can be argued with."
+[^o10]: O10, `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon` — constraints carrying their removal-reasons; "a schema without reasons can only be obeyed or defied; with reasons it can be argued with."
 
 [^rowanlist]: O4/O5 (same register) carry rowan's intended expand-contract affordance and the shipped-embryo/stalled-adoption history; the actual intended-feature inventory (`~/src/rowan/`) has not been gathered against these principles — flagged as next-artifact material, not done work.
 
@@ -138,7 +138,7 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^persistence]: The reinjection-channel result — cross-session persistence exists *only* through externalized state; no tuning of in-session behavior substitutes. Surveyed in `../udon-needs/02-tooling-needs/reports/theory-of-agentic-tooling.md` §4.1 (the `#der-turnover-information-recursion` exact result), bridged in `../udon-needs/02-tooling-needs/src/persistence-is-imported.md`.
 
-[^vivarium]: The live-usage field report: `../udon-needs/01-ideation/02-provenanced/copies/I5-live-consumers/consumer-vivarium-fable-day-report-2026-07-28.md` ("reads beautifully under grep — I pulled the LEXICON's term[beacon] mid-design and got an unambiguous, settled, dated answer in one look"). Headline-density entry also in `ONLY-IN-UDON.udon`.
+[^vivarium]: The live-usage field report: `../udon-needs/01-ideation/02-provenanced/copies/I5-live-consumers/consumer-vivarium-fable-day-report-2026-07-28.md` ("reads beautifully under grep — I pulled the LEXICON's term[beacon] mid-design and got an unambiguous, settled, dated answer in one look"). Headline-density entry also in `../BEST-WITH-UDON.md`.
 
 [^refguard]: Same field report — vivarium `bin/check` caught a renamed slug within the hour; main went red; fixed same day. Registered as consumer-side stop-gap tooling in `../../CONSUMERS.md` (§stop-gap tooling; validates the demand class, not its own shape).
 
@@ -146,7 +146,7 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^keepeverything]: CORE §14 (Keep-Everything; severity defined by loss) and §13.3 (EOF closes everything, content kept, `incomplete-input` as a document verdict), `../current-0.9.1-spec/CORE.md`.
 
-[^o11]: Joseph's brainstorm O11 (deliberate-vs-incidental legibility), recorded with assessment at `schema-review/DISCUSSION-THOUGHTS.udon`. Its own UDON-shaped consequence: since training won't mark deliberateness by default, the format must make marking it cheaper than not marking it.
+[^o11]: Joseph's brainstorm O11 (deliberate-vs-incidental legibility), recorded with assessment at `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`. Its own UDON-shaped consequence: since training won't mark deliberateness by default, the format must make marking it cheaper than not marking it.
 
 [^easegradient]: "Make the right thing the easiest thing" — constraint layer + ease gradient, `../udon-needs/02-tooling-needs/reports/the-pattern.md`.
 
@@ -154,11 +154,11 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^cluster]: `doc-store-and-schemas-report.md` §12.4 — side-cars, in-file regions, the cluster record: the `rindex` truncation, "the kept region has a schema; the discarded one does not — backwards from a durability standpoint," and the `<slug> WN:` commit-subject convention (11 of 392 commits) as evidence the demand for region addresses already exists.
 
-[^o2]: Joseph's brainstorm O2 (current-truth + safe-deletability; "a very honest current-full-state with history discoverable"), `schema-review/DISCUSSION-THOUGHTS.udon`.
+[^o2]: Joseph's brainstorm O2 (current-truth + safe-deletability; "a very honest current-full-state with history discoverable"), `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`.
 
 [^membrane]: relata's ingest spool — canonical write-protected by construction, happy path untouched, and the two-outcome refusal (`.rejected` = submitter erred vs `.needs-review` = the system's own uncertainty; "collapsing it would mislabel system-uncertainty as user-error"). `doc-store-and-schemas-report.md` §7. Demand side: `../udon-needs/02-tooling-needs/src/schema-guarded-mutation.md` (the corpus's #1-ranked demand).
 
-[^o1]: Joseph's brainstorm O1 (schema-debt payment time), `schema-review/DISCUSSION-THOUGHTS.udon`; adopted as the top frame of `schema-ideation/README.md` §1.0, with the who-holds-it refinement (recorded-vs-rederived may outweigh early-vs-late) and TST's sharpening that only the late payments are multiplied by the per-reader turnover multiplier (`tst-grounding/README.md` §3.2).
+[^o1]: Joseph's brainstorm O1 (schema-debt payment time), `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`; adopted as the top frame of `schema-ideation/README.md` §1.0, with the who-holds-it refinement (recorded-vs-rederived may outweigh early-vs-late) and TST's sharpening that only the late payments are multiplied by the per-reader turnover multiplier (`../theory/to-integrate/primary/tst-grounding.md` §3.2).
 
 [^relational]: "Agents address relationally, not positionally" — nearly every real query began `||type[key]` at any depth; the tree served as storage. `../udon-needs/02-tooling-needs/src/addressing-is-the-long-pole.md` (finding 1; one-day sample, honestly flagged) and `../udon-needs/02-tooling-needs/reports/addressing-exploration.md` §1. Directory-as-table as the same lookup one altitude up: `doc-store-and-schemas-report.md` §18.
 
@@ -166,13 +166,13 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^speechacts]: The speech-act framing (resolve / propose / hand-off / authorize / present / remember / recover) and "paths are the coordinate system of action": `paths-ideation/paths-testimony-grok-2026-07-23.md` (§10 names path-proposal as the uniquely agentic failure — "high-confidence lies until verified"). Failure vocabulary and loud-miss: `paths-ideation/README.md` §2d; the resolution ladder and designator rigidity spectrum: `doc-store-and-schemas-report.md` §8.
 
-[^o6]: Joseph's brainstorm O6 (de-facto schema at birth), `schema-review/DISCUSSION-THOUGHTS.udon`. Evidence: `schema-ideation/specimen-vivarium-decision-2026-07-28.md` (a conforming dense record produced from grep + one exemplar, verified byte-identical to the primary). The vocabulary-vs-statistics sharpening (two inference problems reduced to one): `schema-ideation/README.md` §1.0. The extraction probe is probe 8 there.
+[^o6]: Joseph's brainstorm O6 (de-facto schema at birth), `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`. Evidence: `schema-ideation/specimen-vivarium-decision-2026-07-28.md` (a conforming dense record produced from grep + one exemplar, verified byte-identical to the primary). The vocabulary-vs-statistics sharpening (two inference problems reduced to one): `schema-ideation/README.md` §1.0. The extraction probe is probe 8 there.
 
 [^drift]: De-facto-schema drift detection as the convention modality's silence-breaker — continuous extraction + diffing, no declared schema, no enrollment, warn-don't-block: `schema-ideation/README.md` §1.0.
 
-[^timing]: TST's *Strategic test timing* discussion ("write thorough tests *when* refactoring for domain alignment, not *before* the domain model has stabilized"), substitute schema for tests: `tst-grounding/README.md` §3.3; the specification-bound brake on paying earlier than the content exists: §3.5.
+[^timing]: TST's *Strategic test timing* discussion ("write thorough tests *when* refactoring for domain alignment, not *before* the domain model has stabilized"), substitute schema for tests: `../theory/to-integrate/primary/tst-grounding.md` §3.3; the specification-bound brake on paying earlier than the content exists: §3.5.
 
-[^judge]: The non-invasive-judge candidate — four separately-decided constraints (judge-not-shape, dialects≠schemas, frozen bare set, keep-everything) describing one position; the corrected closure finding (closure is cheap because enforcement-by-removal is foreclosed, not closure): `schema-ideation/README.md` §1.1. "Judged from first byte" (recognition is total, so there is always a model to judge): same §1.0; also `ONLY-IN-UDON.udon` (judged-from-first-byte, closure-without-loss).
+[^judge]: The non-invasive-judge candidate — four separately-decided constraints (judge-not-shape, dialects≠schemas, frozen bare set, keep-everything) describing one position; the corrected closure finding (closure is cheap because enforcement-by-removal is foreclosed, not closure): `schema-ideation/README.md` §1.1. "Judged from first byte" (recognition is total, so there is always a model to judge): same §1.0; also `../BEST-WITH-UDON.md` (judged-from-first-byte, closure-without-loss).
 
 [^ceiling]: ~70% of silent failures caught only by human product-use, none by 4,286 tests; "validation catches malformation, not plausible wrongness": `schema-ideation/README.md` §6.1; `../udon-needs/02-tooling-needs/src/counter-register.md` row 5.
 
@@ -180,7 +180,7 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^falsifier]: The cheap falsifier — find a legitimate dialect body that balanced-span capture mis-captures; candidate in hand: the `!` baseline's comparison operators make `<q: a > b>` mis-capture under depth-counting. `dialects-ideation/README.md` §2, `concern-map.md` §5.5.
 
-[^envelope]: The power envelope as a criterion on Evaluate alone — bounded, digestible, a guest, "without turning into rebol" (Joseph, 2026-07-28, steward statement): `living-documents/README.md` §1; Liquid/Mustache/Rebol as the envelope's two walls and its cautionary tale: `dialects-ideation/prior-art.md` §§1–3.
+[^envelope]: The power envelope as a criterion on Evaluate alone — bounded, digestible, a guest, "without turning into rebol" (Joseph, 2026-07-28, steward statement): `../theory/to-integrate/refine-more/living-documents/README.md` §1; Liquid/Mustache/Rebol as the envelope's two walls and its cautionary tale: `dialects-ideation/prior-art.md` §§1–3.
 
 [^degradation]: The Degradation Contract (agy testimony): an extension declares what frozen bare-core primitive it degrades to when unloadable. `dialects-ideation/README.md` Appendix B item 2, §7.
 
@@ -188,7 +188,7 @@ And underneath everything, O11[^o11] may be the deepest question in the estate: 
 
 [^liveloop]: The ref-guard incident and day-report (see [^refguard], [^vivarium]); the specimen (see [^o6]); the calibration loop catching a seed prior 20× too confident (`firstauthor+year` +0.114 vs seed +2.5): `doc-store-and-schemas-report.md` §17.5.
 
-[^o9]: Joseph's brainstorm O9 (spontaneous adoption as canary; the danger is friction *differential* — right-way entry feeling heavy while throw-together stays easy), `schema-review/DISCUSSION-THOUGHTS.udon`.
+[^o9]: Joseph's brainstorm O9 (spontaneous adoption as canary; the danger is friction *differential* — right-way entry feeling heavy while throw-together stays easy), `../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon`.
 
 [^governance]: Joseph, 2026-07-29, in-session correction of this paragraph's first draft: "it's not a foregone conclusion that 'writes can't be constrained.' relata's solution is make the location of the files opaque so only viewable via the correct tooling. At a project level it wouldn't be hard to have a document administrator for many project, tied with at least git-commit or something, that detects which edits are conformant and which ones are not, or even specifically which ones were performed by the sanctioned tool (with overrides as appropriate)." Opacity precedent: `doc-store-and-schemas-report.md` §4.3 ("one outward-facing address; everything else opaque and relocatable").
 

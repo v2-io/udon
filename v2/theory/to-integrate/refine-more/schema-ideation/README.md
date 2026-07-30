@@ -8,7 +8,7 @@ version tries to correct it. Verbs here are meant to carry their actual certaint
 law, it says so and is the only part of this document that is solid.
 
 **Two documents, not one.** The first pass is preserved whole at
-[`pass-1-explication.md`](../../.archived/schema-ideation-pass-1-explication.md) — the draft Joseph read on 2026-07-28 (archived to `v2/.archived/` per his 2026-07-28 call),
+[`pass-1-explication.md`](../../../../.archived/schema-ideation-pass-1-explication.md) — the draft Joseph read on 2026-07-28 (archived to `v2/.archived/` per his 2026-07-28 call),
 kept intact at his suggestion so this revision isn't fighting its structure and its
 survey layer stays available. This file is the revision; where the two disagree, this is
 the later thinking, and where pass 1 carries detail this one compressed, pass 1 is the
@@ -32,7 +32,7 @@ are **Joseph's continuing brainstorms, pre-validation** — his framing: *"My id
 different treatment because if they get silently dropped I'll want to know exactly why,
 and because they embue my experience, but it doesn't promote them beyond that. They
 aren't steers unless you are convinced of the underlying principledness of them."* They
-live at [`../schema-review/DISCUSSION-THOUGHTS.udon`](../schema-review/DISCUSSION-THOUGHTS.udon)
+live at [`../../primary/DISCUSSION-THOUGHTS.udon`](../../primary/DISCUSSION-THOUGHTS.udon)
 with per-item status, not in the decisions ledger; earlier drafts of this file called
 them "steward marks," which lent them an authority they do not claim. That mis-citation
 is worth naming rather than quietly fixing, because it is **the exact failure O3's own
@@ -48,12 +48,12 @@ to show the gap rather than the conclusion alone; where I generated something wi
 source, that is marked.
 
 **Sources.** Primary: `../../current-0.9.1-spec/` (CORE, MODEL, CARVEOUTS read whole);
-`../doc-store-and-schemas-report.md` + its checkpoint; the demand corpus
+`../doc-store-and-schemas-report.md` + its research log; the demand corpus
 `../../udon-needs/02-tooling-needs/` (swept whole); `~/src/rowan/docs/` and current Ash
 (Appendix D); the vivarium live-usage field report and the verified specimen filed
 beside this file; three de-novo testimony transcripts, also filed here (Appendix C); and
 Joseph's pre-validation brainstorms at
-[`../schema-review/DISCUSSION-THOUGHTS.udon`](../schema-review/DISCUSSION-THOUGHTS.udon).
+[`../../primary/DISCUSSION-THOUGHTS.udon`](../../primary/DISCUSSION-THOUGHTS.udon).
 
 **Why this exists (Joseph, 2026-07-28):** the lay of the land before design — what kinds
 of schema "drive or foreclose various capabilities (either fully or by way of
@@ -78,7 +78,7 @@ intrinsic.** Separating those is the most useful thing this section can do.
 
 ### 1.0 The frame this map was missing — schema debt, and who holds it
 
-*Brainstorm **O1** (Joseph, pre-validation — `../schema-review/DISCUSSION-THOUGHTS.udon`),
+*Brainstorm **O1** (Joseph, pre-validation — `../../primary/DISCUSSION-THOUGHTS.udon`),
 which arrived after this map was drafted.* Joseph's adage, verbatim: *"the
 data will always want a schema — you can use a technology that forces a schema
 prematurely up front, before document consumption, or you trade that check and end up
@@ -1220,7 +1220,7 @@ skeleton generation needs an indentation unit immediately.
   markers declare it.
 - **Citation-class correction (2026-07-28, last pass).** Earlier drafts cited O1–O7 as
   "steward marks" in the decisions ledger. They are Joseph's pre-validation brainstorms
-  and now live at `../schema-review/DISCUSSION-THOUGHTS.udon` with per-item status. I did
+  and now live at `../../primary/DISCUSSION-THOUGHTS.udon` with per-item status. I did
   a pass over every O-citation asking the §4 question of my own cites — *does my material
   warrant this, or am I leaning on who said it?* Result: **O1, O4, O6, O7 are
   independently warranted here** (three corpus payment-instances predating O1; the

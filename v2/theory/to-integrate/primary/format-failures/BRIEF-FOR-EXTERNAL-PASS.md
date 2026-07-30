@@ -154,8 +154,8 @@ If you're running with repository access, the artifacts are:
 
 | Path | What it is |
 |---|---|
-| `v2/spikes/format-failures/MINEFIELD-MAP.md` | The synthesis to verify — twelve mechanisms, register-marked |
-| `v2/spikes/format-failures/UDON-PRIMER.md` | The data-model distillation §1 above is condensed from |
+| `v2/theory/to-integrate/primary/format-failures/MINEFIELD-MAP.md` | The synthesis to verify — twelve mechanisms, register-marked |
+| `v2/udon-0.9.1-primer.md` | The data-model distillation §1 above is condensed from |
 | `v2/current-0.9.1-spec/` | The actual spec suite (`CORE.md`, `MODEL.md`, `SEMANTICS.md`, `CARVEOUTS.md`, `RATIONALE.md`, …) — the authority |
 | `misc-db-theory.md` (repo root) | The corpus-as-database proposal §1's last paragraph summarizes |
 | `~/src/arch/asf/` | The ASF/AAT theory corpus the "derived" claims cite by slug |

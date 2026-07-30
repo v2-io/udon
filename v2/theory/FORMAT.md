@@ -69,7 +69,7 @@ A segment's head is its attribute section:
 ```udon
 |segment[der-row-hedge-sorts] :type derived :status conditional :stage draft
   :depends [def-corpus-population def-attribute-edge]
-  :from spikes/type-algebra§2
+  :from theory/to-integrate/primary/type-algebra.md§2
   :from spec/MODEL§3
 ```
 

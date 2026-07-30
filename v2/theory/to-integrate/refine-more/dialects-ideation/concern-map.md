@@ -15,7 +15,7 @@ answers to "can loading one retype my document." That is §1, and it is *propose
 map's own load-bearing claim, and the one to attack first. If it holds, it is why the
 area has felt like one intractable question instead of four tractable ones.
 
-**Sibling maps:** `../markdown/usage-topics.md` (same shape, markdown territory);
+**Sibling maps:** `../../theory/to-integrate/refine-more/markdown/usage-topics.md` (same shape, markdown territory);
 `../paths-ideation/README.md` §2 (the neighbouring seed — paths and dialects meet at
 §5.1 and at the `<path:…>` possibility).
 
@@ -60,7 +60,7 @@ Three consequences, each *proposed* but each mechanically checkable:
 
 - **The power envelope applies to exactly one job.** Joseph's durable criterion —
   bounded, digestible evaluation that stays a guest, *"without turning into rebol"*
-  (2026-07-28, steward statement, `../living-documents/README.md` §1) — is a
+  (2026-07-28, steward statement, `../../theory/to-integrate/refine-more/living-documents/README.md` §1) — is a
   criterion on **Evaluate**. A temporal dialect needs *zero* evaluation power; a path
   dialect needs resolution, not evaluation. Applying one power envelope to "dialects"
   either over-powers temporal (a date type that can execute) or under-powers dynamics.

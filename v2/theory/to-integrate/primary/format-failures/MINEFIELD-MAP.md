@@ -633,4 +633,4 @@ In rough order of leverage, and all **[hypothesized]** as priorities — the und
 
 ---
 
-*Written 2026-07-29 as the second artifact of the format-failures research thread, against `UDON-PRIMER.md` (this spike), `misc-db-theory.md`, and the ASF/AAT corpus. Revised the same day against `ADJUDICATED-CLAIMS.md` — the cross-substrate pass, which closed nine open questions, added M13 whole, and falsified two of my claims (§4). Registers are load-bearing; §4 and §5 are part of the finding, not apparatus.*
+*Written 2026-07-29 as the second artifact of the format-failures research thread, against `../../../udon-0.9.1-primer.md` (this spike), `misc-db-theory.md`, and the ASF/AAT corpus. Revised the same day against `ADJUDICATED-CLAIMS.md` — the cross-substrate pass, which closed nine open questions, added M13 whole, and falsified two of my claims (§4). Registers are load-bearing; §4 and §5 are part of the finding, not apparatus.*

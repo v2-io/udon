@@ -111,7 +111,7 @@
     with the estate's own directory-is-a-table thesis (dropping an
     attribute across N documents is DROP COLUMN -- well-defined, merely
     gateless). The sketch syntax is explicitly no-lean.
-    TST-grounding update (2026-07-28, spikes/tst-grounding/): the
+    TST-grounding update (2026-07-28, theory/to-integrate/primary/tst-grounding.md): the
     renaming half is evidenced in TST near-verbatim (a Realignment-as-
     Feature corollary with an ROI threshold; its worked example
     friends/posts -> teammates/documents is this thought's site ->

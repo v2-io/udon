@@ -195,7 +195,7 @@ Added after the fact; this section is **evidence**, and it does not re-rule
 anything above. Full reports:
 [`commonmark-non-conflict-table.md`](commonmark-non-conflict-table.md) ·
 [`fence-knot-table.md`](fence-knot-table.md) · instrument
-[`probes/`](probes/). Measured: the full CommonMark corpus (652 examples, spec
+[`markdown-probe/`](../../../../spikes/markdown-probe/). Measured: the full CommonMark corpus (652 examples, spec
 0.31.2) run through the reference parser recognizes zero elements, attributes,
 comments, directives, references, or inline forms — the only UDON structure any
 CommonMark construct triggers is the **fence**. 76.2% of examples survive

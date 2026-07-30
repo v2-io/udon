@@ -3,7 +3,7 @@
 **Status:** broad ideation, not a spike. Possibility-opening, not decision-making.
 Everything here is **proposed / leaning / open** unless it cites a ratified source —
 and where it does, that ruling is the authority, not this page. Sibling in shape and
-register to `../paths-ideation/README.md` and `../markdown/thoughts-on-scope.md`.
+register to `../../../spikes/paths-ideation/README.md` and `../markdown/thoughts-on-scope.md`.
 
 **Register note.** Claims are marked in their true voice: *decided* (a ledger ruling
 or Joseph's on-record statement — cited), *evidenced* (the corpus supports it —

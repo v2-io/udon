@@ -135,7 +135,7 @@ keeping separate in any future extraction baseline.
 
 ### 3.2 In this estate's own register (fixed this run)
 
-`schema-review/DISCUSSION-THOUGHTS.udon` line 534: an assessment prose line
+`../theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon` line 534: an assessment prose line
 began with `@element[key]:attribute …` at column start → the parser read a
 **Reference plus a stray attribute** (`AttributeAfterChildren`), so the O13
 assessment's prose was partially structure. Fixed by `\`-escaping the

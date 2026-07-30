@@ -98,7 +98,7 @@ So the cluster record is not an exception the rule tolerates. Per the estate's o
 
 *inference, resting on facts the estate already states.*
 
-`tst-grounding/README.md` §6.3 says it in passing: *"git records commits, and a commit is the observational grain."* A commit is also, and more usefully, a **transaction**:
+`../tst-grounding.md` §6.3 says it in passing: *"git records commits, and a commit is the observational grain."* A commit is also, and more usefully, a **transaction**:
 
 | | What a git commit supplies | Caveat |
 |---|---|---|

@@ -101,7 +101,7 @@ with element types usable as value types (node values), $\mathrm{flow}\langle S 
 
 ## 7. The shorthand (spec-grounded against ruled 0.9.1 text; parser runs demoted to typo-checks)
 
-See [`decision-record.schema.udon`](decision-record.schema.udon). The spelling table — the third column cites where the *ruled model* puts each spelling; it is the recognition story CORE's text specifies, not a claim about any implementation, and not a constraint on the design:
+See [`type-algebra.decision-record-example-schema.udon`](type-algebra.decision-record-example-schema.udon). The spelling table — the third column cites where the *ruled model* puts each spelling; it is the recognition story CORE's text specifies, not a claim about any implementation, and not a constraint on the design:
 
 | Schema meaning | Spelling | Where the ruled model puts it |
 |---|---|---|

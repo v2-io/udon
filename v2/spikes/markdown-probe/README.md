@@ -1,7 +1,7 @@
-# probes/ — the reproducible instrument behind the two markdown tables
+# markdown-probe/ — the reproducible instrument behind the two markdown tables
 
-Everything in [`../commonmark-non-conflict-table.md`](../commonmark-non-conflict-table.md)
-and [`../fence-knot-table.md`](../fence-knot-table.md) comes from here. A table
+Everything in [`commonmark-non-conflict-table.md`](../../theory/to-integrate/refine-more/markdown/commonmark-non-conflict-table.md)
+and [`fence-knot-table.md`](../../theory/to-integrate/refine-more/markdown/fence-knot-table.md) comes from here. A table
 someone can re-run is worth more than twice one they can't, so this is the
 whole apparatus: four small scripts, one Rust crate, no hidden steps.
 
@@ -45,7 +45,7 @@ concat(Text events, BlankLine events) == input bytes   AND   no structure events
 ## Reproduce
 
 ```bash
-cd v2/spikes/markdown/probes
+cd v2/spikes/markdown-probe
 
 # 0. corpus (already vendored as commonmark-spec-0.31.2.txt; re-fetch if you like)
 curl -sL -o commonmark-spec-0.31.2.txt https://spec.commonmark.org/0.31.2/spec.txt

@@ -177,7 +177,7 @@ embodying the wrong rule and didn't find one:
   an explicit flag that the Collecting-paragraph consistency question (§2a
   above) was open and being checked separately. This document is that
   check, and it closes clean.
-- `v2/spikes/format-failures/UDON-PRIMER.md` doesn't make a competing claim
+- `v2/udon-0.9.1-primer.md` doesn't make a competing claim
   about tail ownership at all — its one relevant line (97) just states that
   "a multi-word tail is a flow value," which is compatible with everything
   above and doesn't take a position on the block/element asymmetry.

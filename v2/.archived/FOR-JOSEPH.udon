@@ -3,9 +3,9 @@
 ; satisfying YES/NO at this stage — he uses these to surface issues with
 ; the decisions either way (more brainstorm fuel, DISCUSSION-THOUGHTS
 ; style). Items get :status open until his reaction lands; reactions
-; route to spikes/schema-review/DISCUSSION-THOUGHTS.udon or wherever
+; route to theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon or wherever
 ; they belong. Sibling registers: OPEN.md (formal steward calls),
-; spikes/schema-review/DISCUSSION-THOUGHTS.udon (his brainstorms).
+; theory/to-integrate/primary/DISCUSSION-THOUGHTS.udon (his brainstorms).
 
 |item[staging-question] :date 2026-07-28 :status answered :class direction
   The meta-call under the fixture question: do the schema / paths /
@@ -136,7 +136,7 @@
   Charter: what TST already supplies for the payment-time/four-whens,
   strata-clocks, co-location/coupling, and expand-contract questions —
   and what mathematics is genuinely missing. Report expected at
-  spikes/tst-grounding/.
+  theory/to-integrate/primary/tst-grounding.md.
 
 |item[steward-evident-register] :date 2026-07-28 :status parked :class vocabulary
   Coined and steward-approved this session ("perfect"): **steward-evident

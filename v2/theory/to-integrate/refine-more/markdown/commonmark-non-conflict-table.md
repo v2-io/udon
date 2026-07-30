@@ -13,7 +13,7 @@ caveats are in the appendices.
 
 **Run:** 2026-07-28 · CommonMark spec 0.31.2 (`spec.txt`, all **652** embedded
 examples, no sampling) · reference parser at `core/` HEAD. Scripts and raw
-per-case output: [`probes/`](probes/).
+per-case output: [`markdown-probe/`](../../../../spikes/markdown-probe/).
 
 ---
 
@@ -86,7 +86,7 @@ Two readings of the same data, kept apart on purpose:
 ## 2. Clashes the seed's §3 table does not have
 
 The section with new information in it. All five were found by direct probe
-(`probes/out/glyph-cases.frame`), since GFM is absent from the corpus.
+(`../../../../spikes/markdown-probe/out/glyph-cases.frame`), since GFM is absent from the corpus.
 
 | # | Construct | What UDON does | Register |
 |---|---|---|---|
@@ -221,7 +221,7 @@ Confirmatory detail; nothing new. This is the evidence behind bottom-line item 1
 ## Appendix C — instrument caveats
 
 - **The parser implements 0.9.0-alpha.2, not 0.9.1.** The eleven ledgered
-  differences are in [`DELTAS.md`](../../current-0.9.1-spec/DELTAS.md); rows 1
+  differences are in [`DELTAS.md`](../../../../current-0.9.1-spec/DELTAS.md); rows 1
   (tab-in-indent) and 2 (root `:key`) are hit here and flagged inline. Where a
   measured row sits on a DELTAS row, **0.9.1 is the authority and the
   measurement is of the older behavior.**
@@ -240,5 +240,5 @@ Confirmatory detail; nothing new. This is the evidence behind bottom-line item 1
   an elaborate oracle would quietly make the script the spec. Cases are labeled
   by observable mechanism; register is assigned in prose, with cites.
 
-**Reproduce:** [`probes/README.md`](probes/README.md) — one `curl`, one
+**Reproduce:** [`markdown-probe/README.md`](../../../../spikes/markdown-probe/README.md) — one `curl`, one
 `cargo build`, three commands.

@@ -79,7 +79,7 @@ What the format contributes, rung by rung: the voices are **elements** (typed, a
 
 ## 4. The literature connection — what it confirms, what it adds, what it lacks
 
-Grounding: the same-day verified sweep, [`../udon-needs/01-ideation/02-provenanced/syntheses/external-rationale-structure-2026-07-29.md`](../udon-needs/01-ideation/02-provenanced/syntheses/external-rationale-structure-2026-07-29.md). Multi-agent-debate remarks below are training-knowledge, marked.
+Grounding: the same-day verified sweep, [`../../../udon-needs/01-ideation/02-provenanced/syntheses/external-rationale-structure-2026-07-29.md`](../../../udon-needs/01-ideation/02-provenanced/syntheses/external-rationale-structure-2026-07-29.md). Multi-agent-debate remarks below are training-knowledge, marked.
 
 **What the literature confirms:** the tribunal's *node-typing* instinct is the IBIS/QOC lineage — IBIS's Issues/Positions/Arguments as typed deliberation nodes (Kunz & Rittel, 1970[^kunz-rittel]), gIBIS's hypertext realization (Conklin & Begeman, 1988[^gibis]), QOC's Questions/Options/Criteria (MacLean et al., 1991[^qoc]) — surveyed as a recognized field by 2000 (Regli et al.[^regli2000]). The decision layer as first-class architectural content was mainstream by 2016: architecture redefined around the set of design decisions (van Vliet & Tang[^vanvliet-tang], on the lineage of Jansen & Bosch 2005[^jansen-bosch] and Kruchten's decision ontology[^kruchten]), with ISO/IEC/IEEE 42010:2011 *requiring* rationale in architecture descriptions[^iso42010]. The field walked toward this for decades.
 

@@ -3,7 +3,7 @@
 **Status:** broad ideation, first pass. Possibility-opening; decides nothing and closes
 no carve-out. Claims are register-marked *decided* (ratified, cited) · *evidenced* ·
 *proposed* (generated here) · *open*. Vocabulary orientation is **Appendix A**; sibling
-seeds are `../paths-ideation/`, `../living-documents/`, `../markdown/`.
+seeds are `../paths-ideation/`, `../../theory/to-integrate/refine-more/living-documents/`, `../../theory/to-integrate/refine-more/markdown/`.
 
 ---
 
@@ -61,7 +61,7 @@ and one of the four testimony voices is same-family and weighted lower.
 
 **The companion artifact is the map.** [`concern-map.md`](concern-map.md) is the MECE
 (mutually exclusive, collectively exhaustive) inventory — every concern with its
-boundary and owner, in the shape of `../markdown/usage-topics.md`. This page is the
+boundary and owner, in the shape of `../../theory/to-integrate/refine-more/markdown/usage-topics.md`. This page is the
 argument; the map is the reference. Read the map if you read one.
 
 ---
