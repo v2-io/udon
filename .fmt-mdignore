@@ -16,3 +16,12 @@ v2/udon-needs/01-ideation/02-provenanced/copies/
 # Real fix if ever wanted: 4-backtick outer fences (but these are archived
 # archaeology — left verbatim).
 v2/.archived/first-pass/greenfield-*/snippets/from-spec/CORE.md
+
+# Carries a verbatim appendix: an agent's original first-encounter reading,
+# reproduced unprocessed as the primary record, plus nested verbatim quotes
+# inside each commentary callout. The whole point of both is that they are
+# un-edited, so a render-equivalent reflow is exactly the silent damage this
+# file exists to prevent. (Added 2026-07-30 after the file had already been
+# fmt-md'd four times during authoring — no damage: the in-place runs all
+# predate the appendix, and every --check since has reported clean.)
+v2/theory/to-integrate/refine-more/de-novo-audit.md
