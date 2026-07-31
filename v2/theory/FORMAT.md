@@ -25,7 +25,7 @@ Every gate below is proxy-discipline — machinery for not being fooled by the c
 
 1. the artifact carries its **honest tier**, not an inflated one;
 2. its **Working Notes state precisely what is unresolved and what would resolve it**; and
-3. the open remainder is **released to the standing cycle** (a `--GAP--` row, a spike, the open-questions ledger).
+3. the open remainder is **released to the standing cycle** (a bare `|gap` in the outline, a spike, the open-questions ledger).
 
 Then stop. Strengthen-before-soften means *attempt* the strong result; it does not mean an honest landing at "conditional, and here is exactly what is open" is a failure. That landing is the discipline succeeding.
 
@@ -45,7 +45,7 @@ Two mechanisms, both from the cross-corpus analysis at [`arch/notes/outline-segm
 
 **Collision.** A segment forces a present-truth claim, and two present-truth claims about one thing can *collide*. An append-only history layer is collision-free by construction — every entry stays true as a historical fact, so a buried correction has nowhere to surface. Staleness detection is therefore a byproduct of demanding present truth rather than a separate audit step. This is the reason granularity is not a stylistic preference: **a file carrying three claims can be half-stale without colliding with anything.**
 
-**Named absence.** Collision finds what a claim contradicts; it cannot find what nothing contradicts. Missing claims need the complementary instrument. A named absence is part of the structure; an unnamed one is a hole nobody can see. Hence `--GAP--` rows sit inline in the outline, and adding one is a contribution.
+**Gap as discontinuity.** Collision finds what a claim contradicts; it cannot find what nothing contradicts. Missing structure needs the complementary instrument: a **visible break** in the outline between neighbors. A bare `|gap` (no key, no slug, no predicted fill) states only that what precedes and what follows do not link directly, and that what follows may lack foundation. It does **not** know how many segments belong in the hole — inventing a typed inventory of future claims is the retired possibility-outline failure mode. Visibility without prediction; an invisible hole is still the worse default.
 
 ---
 
@@ -53,7 +53,7 @@ Two mechanisms, both from the cross-corpus analysis at [`arch/notes/outline-segm
 
 - **Segment files** live in `src/` — one claim per file.
 - **Filename = slug**: `src/{slug}.udon`. No numbering in filenames.
-- **Canonical ordering** is meant to live in an outline, not in filenames — the slug is the stable identity; reordering rows costs nothing, renaming a slug costs everything downstream of it. As of 2026-07-30 there is no canonical outline: `OUTLINE.udon` was renamed to [`OUTLINE-possibilities.outline.udon`](OUTLINE-possibilities.outline.udon) (its 166 rows are a possibility space — unreviewed, unverified — not an ordering to build against), and its provisional successor, [`UDON-THEORY-canon.outline.udon`](UDON-THEORY-canon.outline.udon), is empty. Until that file is populated, this section is aspirational.
+- **Canonical ordering** lives in an outline, not in filenames — the slug is the stable identity; reordering rows costs nothing, renaming a slug costs everything downstream of it. Provisional canon: [`UDON-THEORY-canon.outline.udon`](UDON-THEORY-canon.outline.udon) (Part I seeded 2026-07-31). The older [`OUTLINE-possibilities.outline.udon`](OUTLINE-possibilities.outline.udon) is possibility texture only — not an ordering to build against (keyed gaps and mass provisional slots were a known failure mode).
 - **Cross-references** use `#slug` — everywhere, always.
 
 **Segment-set principle.** Every file in `src/` is a segment and conforms to the cadence in §4. This holds for drafts and for segments orphaned from the outline. Stages describe progress *within* these conventions, not exemption from them. Working material — notes, scratch, spikes — does not belong in `src/`.
@@ -122,7 +122,7 @@ Section-precise pointers to the material a segment would be written from. This f
 6. `|discussion` — interpretation and connections; brief
 7. `|working-notes` — *optional*
 
-**Cadence exemption.** `intro-*` segments and most `disc-*` segments are exempt from `|formal-expression` and `|epistemic-status`. They do expository, framing, or meta-architectural work rather than making one formal claim, so the claim mould is the wrong shape. An intro segment may state where an argument lands before the argument exists. The exemption records that their free-form structure is deliberate rather than drift; membership in the outline and the frontmatter requirements still apply.
+**Cadence exemption.** `intro-*` segments and pure connective `disc-*` segments are exempt from `|formal-expression` and `|epistemic-status`. They do expository or framing work rather than making one formal claim, so the claim mould is the wrong shape. **They carry no independent warrant** — status `discussion-grade` means exactly that, not "uncertain but sort of a claim." Anything load-bearing (a mechanism, a norm, a hypothesis, a transmitted result) is a formulation / normative / hypothesis / derived / observation segment with a status that can be wrong. Using `discussion-grade` as a soft dump for undefended claims is a register failure. An intro may *point at* where weight lives; it may not *be* the weight.
 
 ### Epistemic Status is a section, not a caveat
 
@@ -130,7 +130,7 @@ Scope conditions, limits, and honest strength belong **inside** the segment that
 
 State the **maximum attainable status** and *the evidence-action that would raise it*: "Max attainable: empirical. Currently hypothesis because no experiment has run; the experiment is X." Naming the action turns the field into a strengthen-before-soften work generator. A ceiling that is inherently empirical will never become `exact`, and effort spent proving it is wasted; a sketch whose ceiling is `exact` should not be left at sketch.
 
-**The ceiling is a first-class field, meant to be authoritative in the canonical outline.** (As of 2026-07-30 no canonical outline exists — see §2 — so this authority is not yet exercised anywhere; the field's definition holds regardless.) This is a divergence from ASF and vivarium, where max-attainable is a prose convention inside Epistemic Status only, and the reason is that a ceiling behaves differently from a status: it follows from the **kind** of claim rather than from work done, so it can be assigned before a source is opened, where a status cannot. A segment carries it as metadata and in its prose; the outline carries it as `:max-attainable`, and a disagreement between the two is a finding. Two conventions travel with it:
+**The ceiling is a first-class field, meant to be authoritative in the canonical outline.** Provisional exercise began with Part I of [`UDON-THEORY-canon.outline.udon`](UDON-THEORY-canon.outline.udon) (2026-07-31). This is a divergence from ASF and vivarium, where max-attainable is a prose convention inside Epistemic Status only, and the reason is that a ceiling behaves differently from a status: it follows from the **kind** of claim rather than from work done, so it can be assigned before a source is opened, where a status cannot. A segment carries it as metadata and in its prose; the outline carries it as `:max`, and a disagreement between the two is a finding. Two conventions travel with it:
 
 - **A transmitted claim's ceiling is its source's own tier, never higher** (§8). A claim resting on a `discussion-grade` segment has a `discussion-grade` ceiling however well it is argued here.
 - **A normative slot's ceiling is `decided`.** A decision is not truth-apt, so it has no strength rung (§9); recording that as the ceiling is more informative than leaving the field blank, because it says plainly that no amount of work turns this row into a result.
@@ -229,7 +229,7 @@ A refuted claim is **deleted**, not kept-softened-with-a-pointer. The epistemic 
 
 **A load-bearing citation carries its read-status.** Material actually read is marked (*read YYYY-MM-DD*) apart from material named-not-read. A source list that cannot tell the two apart has failed here before: a proposed term carve was retracted when its spike's sources turned out to be named rather than read.
 
-The enforcement is structural rather than clerical, and it lives in the segment layer. A segment cites densely because its claims are transmitted or derived from named material; a source that was not read cannot be cited at the precision a claim needs, so the omission surfaces on the page and is checkable by anyone holding the source. **This is why the outline carries no ledger of who read what** — a read-state table records a fact about an author rather than about the claims, it is stale the moment anyone else reads anything, and it defends against a failure the absence of `status` in the outline already prevents. Where unread material genuinely threatens a specific slot, that is a `|gap` row beside the slot, naming the doubt rather than the reader.
+The enforcement is structural rather than clerical, and it lives in the segment layer. A segment cites densely because its claims are transmitted or derived from named material; a source that was not read cannot be cited at the precision a claim needs, so the omission surfaces on the page and is checkable by anyone holding the source. **This is why the outline carries no ledger of who read what** — a read-state table records a fact about an author rather than about the claims, it is stale the moment anyone else reads anything, and it defends against a failure the absence of `status` in the outline already prevents. Where unread material breaks the link between two neighbors, that is a bare `|gap` between them (discontinuity only — no id, no predicted fill).
 
 **A load-bearing measured number carries its era.** A measurement is a property of the artifact and version that produced it; crossing a version boundary requires a re-run or an era-scoped quote. Numbers pinned to the current parser carry that framing explicitly (ratified **S2**), because a descriptive pin read as language behavior is the reproduced mistake this corpus exists downstream of.
 
@@ -354,7 +354,7 @@ A `.fmt-mdignore` (gitignore syntax, at or above a file) marks material as not-f
 
 ## 11. Ambiguity
 
-Ambiguity is information. A claim whose placement is unclear becomes an `explore-` segment or a `--GAP--` row with the reason stated; the arrangement absorbs that additively. Two segments that contradict is the collision mechanism working: report the disagreement factually — what each says, with cites — rather than picking a winner, because which resolution applies is a reasoning call that verdicts have gotten wrong.
+Ambiguity is information. A claim whose placement is unclear becomes an `explore-` segment or a bare `|gap` between the neighbors it fails to join; the arrangement absorbs that additively. Two segments that contradict is the collision mechanism working: report the disagreement factually — what each says, with cites — rather than picking a winner, because which resolution applies is a reasoning call that verdicts have gotten wrong.
 
 This is a corpus under construction, and the outline is a proposal about organization rather than a finding about it. Moving rows costs nothing.
 

@@ -1,15 +1,12 @@
-> [!note] **This is still a working orientation, but its map is dated 2026-07-28**
-> This was `spikes/README.md` — read it, it's doing real work below. Most of
-> what it describes has since moved into `theory/to-integrate/primary/` and
-> `theory/to-integrate/refine-more/`, and `spikes/` itself is now mostly
-> empty, so treat filenames and locations here as pointers to re-find rather
-> than exact paths. The substance — what exists, what it cost to read, why
-> it mattered — is not stale; only the "where things currently live" layer
-> is. It should be replaced with a version that reflects the new locations
-> within the next session or two; until then, this is genuinely the fastest
-> orientation available, more useful read than skipped. (Moved 2026-07-30.)
+> [!warning] **Archived 2026-07-31 — not the live orientation**
+> Live entry: [`../../README.md`](../../README.md) + [`../../UDON-THEORY-canon.outline.udon`](../../UDON-THEORY-canon.outline.udon).
+> This file is kept for substance (what sources exist, why they mattered, expensive
+> lessons). Paths and counts are pre-move / pre-canon. Do not treat its outline
+> advice or keyed-gap patterns as current — bare `|gap` discontinuity only (see
+> `#norm-gap-as-discontinuity`). Originally `spikes/README.md`, then
+> `theory/spikes-README.md`.
 
-# v2/spikes — orientation notes + index
+# v2/spikes — orientation notes + index (archived)
 
 You're arriving at the ideation/spike layer of UDON's demand-first v2 effort. This file was written by the agents who came before you, for you — and your judgment about your own context budget and reading order may well exceed ours, since you can see the task in front of you and we couldn't. What follows is what we found, what it cost, where we got burned, and why each piece mattered to us; the shape it suggests is a starting point, and what serves the project outranks conforming to this file.
 

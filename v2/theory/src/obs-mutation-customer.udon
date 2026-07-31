@@ -1,0 +1,43 @@
+|segment[obs-mutation-customer] :type observation :status robust-qualitative :stage draft
+  :max-attainable robust-qualitative
+  :depends [intro-udon-theory]
+  :from v2/udon-needs/02-tooling-needs/src/schema-guarded-mutation.md
+  :from v2/udon-needs/02-tooling-needs/src/priorities-and-spike-agenda.md
+
+  |title Schema-guarded structural mutation is the design agenda's customer
+  |summary
+    The demand report ranks schema-guarded structural mutation first among its demands; paths, schema, spans, and round-trip are inputs to that customer, not a flat peer backlog.
+  |formal-expression
+    **Observation about the demand evidence base — not a theory result and not a shipped product.**  
+    The agentic-tooling demand report ranks **schema-guarded structural mutation** first by evidence strength among its demand inventory. The legs, as that report states them:
+
+    | Leg | Kind | What it contributes |
+    |---|---|---|
+    | Owner-stated edit-tool demand | design intent | path-addressed, indent-owned, schema-refusing mutation |
+    | Shipping survey | observational | no examined harness edit tool provides validity-inside-write |
+    | YAML recovery stress | measured | recovery ~100%→16% without backup infra; silent duplicate-key loss unrecoverable after the fact |
+    | Theory channel | theoretic (in the report) | sharp write boundary; teaching refusal — *not re-derived here* |
+    | External fault taxonomies | external | schema-serialization mismatch as dominant tool-fault class |
+
+    **Organizing consequence (formulation over that ranking):** paths, schema, span-accurate round-trip, and partial-document verdicts are **inputs to this customer**, not a flat backlog of peer features. Addressing is the long pole *for build dependency*; demand strength still allows near-term $A$-reduction (teaching refusals, partial-document honesty) to ship before the pole closes — as the report's own sequencing dissent states.
+
+    **Pinned transaction shape** (from the report; not re-derived):
+
+    ```text
+    re-resolve path → mutate assembly model → syntax-validate
+    → (if schema bound) conformance check → span-splice write
+    ```
+
+    Refusal mutates nothing. Staged first version (syntax + indent + atomic; schema next) is an allowed product cut.
+
+    **Not observed here:** a measured save from shipping this transaction on UDON. That measurement is absent (bare gap after these anchors).
+  |epistemic-status
+    **Status: `robust-qualitative`.** This segment **transmits and cites** the demand report's multi-legged ranking; it does not re-run the stress test or re-survey harnesses. Strength matches the report's own assignment for the guarded-mutation demand (`robust-qualitative` there), under the report's evidence-tier discipline (agreement across kinds with independent failure modes).  
+    **Max attainable: `robust-qualitative`** as a claim about *what the evidence base asks for*. Raising to empirical would require a new measurement of the *product* (guarded edit on UDON), which is a different claim.  
+    Carriage risk: if the report's ranking is overturned, this observation is overturned with it.
+  |discussion
+    Later path/schema parts should be wrong *against* this customer: a path design that cannot target an edit, or a schema that cannot refuse inside a write, fails even if elegant elsewhere.
+
+    Ontology threads (corpus-as-db) do not automatically outrank this without an explicit overturn of the demand ranking.
+  |working-notes
+    Re-open the demand-report chapters at primary before raising stage past draft.
