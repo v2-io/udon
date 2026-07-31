@@ -25,3 +25,10 @@ v2/.archived/first-pass/greenfield-*/snippets/from-spec/CORE.md
 # fmt-md'd four times during authoring — no damage: the in-place runs all
 # predate the appendix, and every --check since has reported clean.)
 v2/theory/to-integrate/refine-more/de-novo-audit.md
+
+# Verbatim transcript extraction: every one of Joseph's messages from the
+# 2026-07-30 session, reproduced complete and unprocessed as the primary that
+# methodology-seeds*.md quote from. Reflowing it is render-equivalent and still
+# wrong — the point of the file is that nothing has been done to the text.
+# (Added 2026-07-30, when the file was created.)
+v2/methodology-seeds-dialog-quotes.md
