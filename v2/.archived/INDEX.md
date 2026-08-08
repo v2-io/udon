@@ -121,6 +121,10 @@ The phase-1.1 mining-spot maps, archived after their content was **fully chopped
 | `spec/msc/CHANGELOG.md` | Append-only rulings ledger (stays in `spec/msc/`) |
 | `core/` | Differential parser oracle (C4) |
 
+## 2026-08-08 additions
+
+- `attr-as-element-spike-2026-08-07.md` — the spike (+ same-day addendum) behind rulings **K2–K7** (attribute-content unification, identity-interior grammar, inert directives, explicit-nil, first-line value position). Fully adjudicated; archived once its residuals were routed to OPEN **UNIF-PASS** / **ATTR-GROUP** and CARVEOUTS §PATHS. Entry point for the future unification authoring pass and ATTR-GROUP design.
+
 ## 2026-07-28 additions
 
 - `schema-ideation-pass-1-explication.md` — the schema seed's first pass, preserved whole when the register revision replaced it (its banner carries the O2 safe-deletability assessment); archived per jaw 2026-07-28 ("don't delete the meat and don't obscure it with rubbish"). The living seed is `../spikes/schema-ideation/README.md`.

@@ -77,7 +77,8 @@ Scalar = String | Integer | Float | Boolean | Nil | List | Envelope
 List   = [Value]                     ; items: any Value kind except FlowValue
 Envelope   = { dialect: String?, type: String?, body: String,
                resolved: DialectResult | Unresolved }
-NodeValue  = Element | Verbatim     ; the attribute IS the node — no wrapper
+NodeValue  = Element | Verbatim | Directive   ; the attribute IS the node — no wrapper
+                                    ; (Directive carried unresolved — ruled K3)
 FlowValue  = [Segment]
 Segment    = Text | InlineElement | Interpolation
            | InlineDirective | InlineVerbatim

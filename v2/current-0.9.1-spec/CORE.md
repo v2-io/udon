@@ -176,7 +176,8 @@ The flag-suffix characters `? ! * +` are **not** name-continue characters for el
 |element[key].trait1.trait2
 ```
 
-- **Identity `[key]`** — what makes this element *this one*. The bracket interior uses the normal value rules (§11): `[1]` is integer `1`, `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`. An interpolation may be the whole key: `|div[!{{id}}]` → `$key` carries the interpolation, host-evaluated (ruled — CHANGELOG S5).
+- **Identity `[key]`** — what makes this element *this one*. The bracket interior follows the **attribute-value grammar** (§6.4) with `]` as an additional unconsumed terminator and **block forms excluded** (no `|name` node values inside a bracket — the `$partial-key` fail-safe depends on the bracket staying flat): `[1]` is integer `1`, `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`, `[one two]` the flow text `"one two"`, `[[one two]]` the list `["one","two"]`, `[<2026>]` an envelope. An interpolation as the whole key (`|div[!{{id}}]`) is the ordinary value case, not an exception (formerly ruled separately — CHANGELOG S5). Material after a finished value inside the bracket is a **further stacked `$key` assignment, without warning**: `["one" two]` ≡ `|x["one"][two]`. *(Ruled K2, 2026-08-07; `@` inside identity brackets is unruled — with paths.)*
+- **Multiple identity designators stack** (ruled K1, 2026-08-07): `|x[a][<uuid7:38493…>]` — each bracket desugars to its own `:'$key'` assignment, in order, like any repeated attribute.
 - **Traits `.trait`** — what *kinds* of thing it is; plural, stackable, order-preserved. A bare trait is an identifier whose continue-set also includes `? ! * +` (so `.foo?` is the trait `foo?`); other characters take quotes (`.'ns.kind'`).
 
 **Both desugar** into ordinary assignments to designated attributes:
@@ -278,10 +279,10 @@ An assignment's value is one of:
 
 | Kind | Forms |
 |---|---|
-| **Scalar** | quoted string, number, `true`/`false`/`null`/`nil` alone, list `[…]`, envelope `<…>` |
+| **Scalar** | quoted string, bare single-token string (§11.3), number, `true`/`false`/`null`/`nil` alone, list `[…]`, envelope `<…>` |
 | **Reference** | `@…` (an inert selector, §12.2) |
 | **Interpolation** | `!{{…}}` (carried unparsed; host evaluates) |
-| **Node value** | block-form `\|element`, block verbatim `!:lang:`, or a fence — the value *is* that node |
+| **Node value** | block-form `\|element`, block verbatim `!:lang:`, a fence, or a block directive `!name` (carried inert — §9) — the value *is* that node |
 | **Flow value** | prose-shaped text, including any value that begins with or contains an inline brace form |
 
 Types live on the map side — attribute values and array items. The envelope is meaningful in value position and nowhere in free prose.
@@ -343,7 +344,7 @@ When a flow value commits, its owner is decided by priority:
 ; first="value"; another="with"; el tail "some text"    (row 2)
 ```
 
-**Deferred values.** If a key ends its line with no finished value — **sameline and block attributes uniformly** — the deeper lines under it are the value's body, under ordinary column and content-base rules: a multi-line flow value, or a node. While that body is open, the attribute owns it (ownership row 1); a first body line that is itself `:key` is the attribute-under-attribute error (§6.8), not a new attribute of the element:
+**Deferred values.** If a key ends its line with no finished value — **sameline and block attributes uniformly** — the deeper lines under it are the value's body, under ordinary column and content-base rules: a multi-line flow value, or a node. **The body's first line carries the value-expected position** (ruled K7, 2026-08-07): §6.4's machinery applies there verbatim — a lone bare token types (`:port` + deeper `5432` → Integer 5432), `nil` alone is Nil, a flow-committing line begins prose. Only the first line is ever value-special; later lone tokens are ordinary prose — no per-line typing, so re-wrapping prose can never retype a document — with `\` and quoting as the first-line escapes. While that body is open, the attribute owns it (ownership row 1); a first body line that is itself `:key` is the attribute-under-attribute error (§6.8), not a new attribute of the element:
 
 ```udon
 |el
@@ -394,7 +395,7 @@ The warning marks a real refactoring hazard: joining that block line onto the el
 
 ### 6.8 Node values
 
-An attribute's value may **be** a node — a block-form element, block verbatim, or fence — with no anonymous wrapper:
+An attribute's value may **be** a node — a block-form element, block verbatim, fence, or block directive (inert, §9) — with no anonymous wrapper:
 
 ```udon
 |api :headers |header :name Content-Type :value application/json
@@ -517,6 +518,10 @@ The `!` marker introduces **dynamics**. The core recognizes five forms and carri
 
 Directives nest by column like elements; a dedent closes them. `!else` / `!elif` chains are dialect semantics over adjacent directives, not core structure.
 
+**Placement (ruled K3, 2026-08-07).** A block directive may sit anywhere an element can — child position, and value position as a node value (§6.3, §6.8). In 0.9.1 directives are **inert**: recognized, carried verbatim (head unparsed, body as UDON), never resolved — this version exists to let dialect experiments run on faithfully carried forms.
+
+> [!warning] The head swallows the rest of the line. A directive's head-line remainder is carried **unparsed**: in `|el :x !if cond :y 2`, the `:y 2` is part of the head string — not an attribute of `el`, not an attribute of anything. This is one step harsher than the node-value one-way door (§6.8), where a trailing `:key` at least binds to the node. Put the outer element's attributes first, or defer the directive to a block line.
+
 Interpolations may appear in flow, as whole attribute values, as list items, and as a whole identity key. A mixed literal-and-interpolation value (`pre!{{x}}post`, `!{{base}}/path`) is a **flow value** — text and interpolation segments, whole-value `!{{x}}` the one-segment degenerate (a consequence of the inline-brace principle).
 
 A **nameless** `!{` at end of input (nothing after the opener) is prose text `"!{"` — no directive ever started (ruled 2026-07-18).
@@ -615,6 +620,8 @@ Lowercase only, typed only when alone at the boundary (§6.4). `null` ≡ `nil`.
 - **Nil** — key present, explicitly no value
 - **False** — boolean false
 - **True** — flag key bare, or explicit `true`
+
+Attributes require a value; there is no implicit nil (ruled K6, 2026-08-07 — a bare plain `:key` remains the §6.2 Error with value Nil). Absent = no assignment; Nil = an assignment whose value is Nil, written `nil` or Error-produced.
 
 ### 11.5 Lists
 
