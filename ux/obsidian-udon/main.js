@@ -8,8 +8,10 @@
  * a plugin (verified live 2026-07-16).
  *
  * Scope (deliberate, in priority order):
- *   1. .udon files open at all (extension registration + a TextFileView
- *      wrapping a CodeMirror 6 editor).
+ *   1. .udon / .un / .don files open at all (extension registration + a
+ *      TextFileView wrapping a CodeMirror 6 editor). .un and .don are
+ *      short aliases for the same surface (vanilla udon; .un is the
+ *      transitional short form used in verisectorium-style instances).
  *   2. Indentation behavior: Enter maintains the current line's indent;
  *      Tab / Shift-Tab indent and dedent by 2 spaces; tabs are never
  *      inserted (the spec forbids them).
@@ -20,7 +22,7 @@
  *      the spec; rebuild udon.wasm and the highlighting IS the current
  *      parser. (A hand-written "safeset" line scanner played this role
  *      until 2026-07-16 -- retired in favor of the wasm walk; git has it.)
- *      Applies to both .udon files and ```udon fences in markdown notes.
+ *      Applies to .udon/.un/.don files and ```udon fences in markdown notes.
  *   4. Folding on indentation.
  *   4b. Autocolors (editors/autocolors/PLAN.md): the same wasm module
  *      generates a named, deterministic color scheme (the scheme NAME is
@@ -32,7 +34,7 @@
  *
  * Known trade-off of parser-driven highlighting: the wasm walk re-parses the
  * whole document on each edit (cheap -- the parser runs at hundreds of MB/s
- * and .udon documents are small; the span cache absorbs scroll/viewport
+ * and udon documents are small; the span cache absorbs scroll/viewport
  * churn). If a parser bug mis-paints, there is no independent second
  * opinion -- by design: spec/CORE.md is the authority and the parser is
  * measured against it by the compliance fixtures.
@@ -209,7 +211,7 @@ class UdonView extends TextFileView {
  * Engine: core/udon-wasm (udon-core compiled to wasm32-unknown-unknown; raw
  * ABI, no wasm-bindgen). Landed as a spike 2026-07-16; both markdown-fence
  * surfaces validated in a live vault the same day, then promoted to the sole
- * highlighting source (the .udon-file view below uses it too).
+ * highlighting source (the udon-file view below uses it too).
  *
  * Wasm ABI (core/udon-wasm/src/lib.rs):
  *   udon_alloc(len) -> ptr ; udon_highlight(ptr,len) -> [n,(start,end,cls)*n]
@@ -225,7 +227,7 @@ class UdonView extends TextFileView {
  *      ```udon fences (regex on fence lines -- deliberately NOT dependent
  *      on Obsidian's internal HyperMD syntax-node names) and decorates the
  *      fence body with mark decorations.
- *   3. The .udon-file view: udonDocEditorExtension paints the whole
+ *   3. The udon-file view (.udon / .un / .don): udonDocEditorExtension paints the whole
  *      document from one wasm walk.
  */
 
@@ -453,7 +455,7 @@ function udonFenceEditorExtension(highlighter) {
   );
 }
 
-/* ------------------------------------- surface 3: whole .udon documents */
+/* ----------------------- surface 3: whole .udon / .un / .don documents */
 
 function buildDocDecorations(view, highlighter) {
   const builder = new RangeSetBuilder();
@@ -472,9 +474,9 @@ function buildDocDecorations(view, highlighter) {
   return builder.finish();
 }
 
-/** The .udon-file view's highlighter: one wasm walk paints the whole
- *  document. The highlight cache is keyed by full text, so scroll and
- *  selection churn cost nothing; only real edits re-parse. */
+/** The udon-file view's highlighter: one wasm walk paints the whole
+ *  document (.udon / .un / .don). The highlight cache is keyed by full text,
+ *  so scroll and selection churn cost nothing; only real edits re-parse. */
 function udonDocEditorExtension(highlighter) {
   return ViewPlugin.fromClass(
     class {
@@ -561,11 +563,14 @@ module.exports = class UdonPlugin extends Plugin {
       .catch((e) => console.error('UDON: wasm highlighter failed to load', e));
 
     this.registerView(VIEW_TYPE_UDON, (leaf) => new UdonView(leaf, highlighter));
-    try {
-      this.registerExtensions(['udon'], VIEW_TYPE_UDON);
-    } catch (e) {
-      // Another plugin may have claimed .udon; don't break load.
-      console.error('UDON: could not register .udon extension', e);
+    // Register each extension independently so a conflict on one (another
+    // plugin claiming it) does not block the others.
+    for (const ext of ['udon', 'un', 'don']) {
+      try {
+        this.registerExtensions([ext], VIEW_TYPE_UDON);
+      } catch (e) {
+        console.error(`UDON: could not register .${ext} extension`, e);
+      }
     }
 
     this.registerMarkdownPostProcessor(udonReadingViewProcessor(highlighter), -50);

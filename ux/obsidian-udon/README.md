@@ -1,7 +1,8 @@
 # UDON plugin for Obsidian
 
-Views and edits `.udon` files, and highlights ```` ```udon ```` fences in
-markdown notes — in Reading view, Live Preview, and Source mode.
+Views and edits `.udon`, `.un`, and `.don` files (same surface — `.un` /
+`.don` are short aliases for vanilla udon), and highlights ```` ```udon ````
+fences in markdown notes — in Reading view, Live Preview, and Source mode.
 
 Highlighting is **parser-driven**: `udon.wasm` is the real udon-core parser
 (built from `core/udon-wasm/`), and its event stream with exact spans is
