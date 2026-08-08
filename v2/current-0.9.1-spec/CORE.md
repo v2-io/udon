@@ -192,6 +192,8 @@ Two traits are two `$traits` assignments (stacking, §6.7) — never one list.
 
 **Designated, not reserved.** Any `$`-key is legal. Because `$` is not a bare-key character, longhand takes quotes (`:'$key' 3890`) — friction by convention, not proscription — so a generator that only writes attributes can produce a document indistinguishable from the sugared form.
 
+**Sugar-produced assignments are born finished** (ruled K8, 2026-08-08): deeper lines never attach to a `$key`/`$traits`/flag assignment produced by sugar — they are the element's content, as always. (Longhand `:'$key'` is an ordinary attribute and takes deferred content like any other.)
+
 **Identity is contiguous** with the name (plus one optional trailing space-separated flag suffix). A `.trait` after a space is not identity — `|p .gitignore is a file` has no traits.
 
 **Unclosed identity → `$partial-key` (fail-safe).** If the `]` never arrives — end of input, or an interior newline under this version's current behavior (§13.2) — the captured-so-far value desugars under **`$partial-key`**, not `$key`, with a Warning citing the opener. The distinct name is deliberate: a consumer reading `$key`, or resolving a reference, automatically **excludes** a truncated identity rather than acting on it — for references especially, acting on a truncated key would be dangerous. The partial value is kept. The same rule protects a reference's selector key.
@@ -393,6 +395,8 @@ What is *allowed* (e.g. forbidding a multi-valued `$key`) is schema territory, n
 
 The warning marks a real refactoring hazard: joining that block line onto the element's line would change ownership (row 2 — the tail would become the element's). Deliberate multiplicity is written by stacking the key or using a list. Flags are exempt from same-line extension (flag rule 2 re-owns instead); deeper material under a flag follows the ordinary rule.
 
+A deeper line under a finished value that is itself `:key`-shaped is kept as **text** with the same Warning family as §6.9's late `:` — text that looks like an attribute (ruled K8, 2026-08-08). Elements and attributes share one rule: once an owner is past the point where an attribute can open, a `:`-line in its interior is warned text.
+
 ### 6.8 Node values
 
 An attribute's value may **be** a node — a block-form element, block verbatim, fence, or block directive (inert, §9) — with no anonymous wrapper:
@@ -407,13 +411,13 @@ An attribute's value may **be** a node — a block-form element, block verbatim,
 
 - **Block form binds; brace form is text**: `:x |em hi` → `x` is the `|em` node; `:x |{em hi}` → `x` is flow containing an inline element. *Drop the braces to bind an element as the value; keep them to inline it as text.*
 - **The one-way door.** Once the node opens, its Line Scan owns the rest of the line — identity, attributes, prose, children. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*. Put the outer element's attributes first, or defer the node to a block.
-- **No attribute-under-attribute.** A deeper line that is itself `:key` directly under an open attribute value (not inside a node value) is an **Error**; the offending line is kept as **text of the open value**, the Error annotating it (ruled L6 — see DELTAS). Maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
+- **No attribute-under-attribute.** A deeper line that is itself `:key` directly under an open attribute value (not inside a node value) is kept as **text of the open value** with a **Warning** — text that looks like an attribute, the same family as late `:` (§6.9). *(Keep shape ruled L6; severity Warning per K8, 2026-08-08, overturning L6's Error: after K4 the language has no nested attributes, so no intended structure is absent — and warn-before-disallow keeps the grouping-sugar door open.)* Maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
 - One node per declaration is the warning-free shape; stack the key for more. A second sibling node at the value's depth is a warned extension.
 - To set a flag *and* give the element a child node: `|el :a? |beta`.
 
 ### 6.9 Content phase and late `:`
 
-All attributes of an element precede its content. Once content has begun — a child, text, or a sameline tail (row 2) — the element is in **content phase**: a later line-initial `:` at what would have been that element's attribute column is **text** of whoever owns the column, with a **Warning** (text that looks like an attribute).
+All attributes of an element precede its content. Once content has begun — a child, text, or a sameline tail (row 2) — the element is in **content phase**: a later line-initial `:` at what would have been that element's attribute column is **text** of whoever owns the column, with a **Warning** (text that looks like an attribute). Attributes share this rule (K8): under an attribute's value, open or finished, a `:`-line is the same warned text (§6.7, §6.8).
 
 ```udon
 |el :a 1 and a tail
@@ -737,7 +741,7 @@ For streaming input, "end of input" is the producer's explicit signal, never a c
 | **Warning** | everything kept; may not match author intent |
 | **Error** | something was **lost**, or a required value is **genuinely absent** as written; recognition continues |
 
-**Error = loss** (ruled L0) is mechanically checkable: if every author-visible byte is represented in the model as structure or text, severity MUST be Warning — unless a more specific rule names Error because something the author *intended* is genuinely absent from the model even though the bytes survive. Two current cases carry that justification: plain `:key` with no value → assignment with Nil + Error (§6.2 — the intended **value** is absent), and attribute-under-attribute → text of the open value + Error (§6.8, ruled R6/L6 — the intended **nested-attribute structure** is absent; the bytes survive only as flat text). An Error MUST NOT halt recognition; nothing after an error point may be silently discarded.
+**Error = loss** (ruled L0) is mechanically checkable: if every author-visible byte is represented in the model as structure or text, severity MUST be Warning — unless a more specific rule names Error because something the author *intended* is genuinely absent from the model even though the bytes survive. **One case carries that justification** — plain `:key` with no value → assignment with Nil + Error (§6.2 — the intended **value** is absent). It is the language's sole core Error: "fail on error" means a genuinely missing required value or truncation (`incomplete-input`), nothing else. *(Attribute-under-attribute, formerly the second case, demoted to Warning — K8 overturning L6's severity; §6.8.)* An Error MUST NOT halt recognition; nothing after an error point may be silently discarded.
 
 ### 14.2 Keep-Everything
 
@@ -756,8 +760,8 @@ The response ladder above (a) warn-and-keep — (b) warn-and-drop, (c) error-and
 | Inconsistent prose indent | Warning | re-base content base |
 | Root-level `:key` | Warning | document-level text |
 | Tab in indentation | Warning | best-effort keep as text of current owner |
-| Plain `:key` missing its value | Error | assignment with Nil |
-| Attribute under attribute | Error | offending line kept as text of the open value |
+| Attribute under attribute | Warning (K8) | offending line kept as text of the open value |
+| Plain `:key` missing its value | Error *(the sole core Error)* | assignment with Nil |
 
 ---
 
@@ -830,8 +834,8 @@ The current working vocabulary of anomaly codes, carried so tooling and spike ag
 | `AttributeAfterChildren` | late `:` after content phase (§6.9) | Warning |
 | `Unclosed<Construct>` family | each delimited construct's missing closer (§13.3): String, Array, InlineElement, InlineComment, Interpolation, TypeEnvelope, Fence, IdentityKey, InlineDirective, InlineRaw | Warning |
 | `NoTabs` | tab in indentation (§2) — **severity now Warning per L4** (the code name predates the ruling) | Warning |
-| `MissingAttributeValue` | plain `:key` with no value material → Nil (§6.2) | Error |
-| `AttributeUnderAttribute` | `:key` directly under an open value (§6.8) → text of the open value | Error |
+| `AttributeUnderAttribute` | `:key` directly under an open value (§6.8) → text of the open value — **severity now Warning per K8** (the code name predates the ruling) | Warning |
+| `MissingAttributeValue` | plain `:key` with no value material → Nil (§6.2) — the sole core Error | Error |
 | `EscapeOutsideHeadPosition` | past-base `\` (§4) — consumer-layer, optional | advisory |
 | `CommentMissingFollowingSpace` | `;comment` in a no-frame position (§8) — host style advisory, optional | advisory |
 
@@ -867,7 +871,7 @@ Document { result: complete, anomalies: [Warning UnclosedIdentityKey @1:6] }
 
 The truncated key lands under `$partial-key`, so nothing that reads `$key` or resolves `@[jw]` acts on it. (Under this version's *current behavior* the newline closes the bracket and the rest of the document parses normally — that route is descriptive, §13.2/ML; the `$partial-key` fail-safe itself is law. Had the input *ended* inside a delimited construct, `result` would be `incomplete-input`.)
 
-**3. The two non-loss Errors** (§14.1 — intended value / structure absent, bytes kept):
+**3. The sole core Error, and the looks-like-attribute Warning** (§14.1 / §6.8 — bytes kept throughout):
 
 ```udon
 |server :host
@@ -879,11 +883,11 @@ The truncated key lands under `$partial-key`, so nothing that reads `$key` or re
 ```text
 Document { result: complete,
            anomalies: [Error MissingAttributeValue @1:9,
-                       Error AttributeUnderAttribute @4:5] }
+                       Warning AttributeUnderAttribute @4:5] }
 ├ Element server
 │   attributes: host=Nil
 └ Element db
-    attributes: port=":nested 1\n"   (text of the open value — L6)
+    attributes: port=":nested 1\n"   (text of the open value — L6 shape, K8 severity)
 ```
 
-`host` had no value material and nothing indented under it (the dedent to `|db` closed server), so it stands with Nil — the intended value is absent. `port` ended its line with no value, so its **deferred body opened** — and the body's first line is itself `:key`, the attribute-under-attribute case: the line survives as text of `port`'s open value while the intended nested-attribute *structure* is absent. Recognition continued; every byte is in the model. (Note what did *not* happen: a deeper `:key` under an open-valued attribute is never a fresh attribute of the element — the open value collects first. §6.5/§6.8.)
+`host` had no value material and nothing indented under it (the dedent to `|db` closed server), so it stands with Nil — the intended value is absent, the language's one Error. `port` ended its line with no value, so its **deferred body opened** — and the body's first line is itself `:key`, the attribute-under-attribute case: the line survives as text of `port`'s open value with a Warning (K8 — the language has no nested attributes, so nothing the author could legitimately intend is missing from the model). Recognition continued; every byte is in the model. (Note what did *not* happen: a deeper `:key` under an open-valued attribute is never a fresh attribute of the element — the open value collects first. §6.5/§6.8.)

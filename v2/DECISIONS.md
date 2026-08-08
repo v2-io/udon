@@ -166,6 +166,7 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 | **K5** | **Attribute-content unification stands, block-context only.** Sameline attribute semantics **stay exactly as they are** — the honest name is *attribute-content unification*, not attribute-as-element (on the line axis attributes must not become element-like, or `\|el :a 1 :b 2` dies). Initially partial (nil model pending); **ratified same day** once K6/K7 resolved the blockers. Full spec-text restructuring (MODEL `Assignment`, CORE §6) is an authoring pass of its own, not yet landed. | jaw 2026-08-07 |
 | **K6** | **Explicit `nil`; the four-state model stays; R6's Error survives.** Implicit-nil rejected — not on grammar (§6.2's "nothing indented under it" clause already waits at that geometry; cost would be zero) but semantically: `\|el :a :b 1` Erroring on `a` catches deletions/forgotten values, and implicit-nil silences exactly that detector. Ontology ground: K5 unified *content*, not ontology — an edge with no terminus is malformed, not smaller; `nil` is the explicit "terminates at nothing." Coexistence law: **Absent** = no assignment; **Nil** = assignment with value Nil (written, or Error-produced); empty attribute content never legitimately exists. | jaw 2026-08-07, ratifying spike addendum |
 | **K7** | **Value position is a position, not a mode — deferred attributes' first body line carries it.** An attribute grants exactly one value-expected position (its first content token); deferral moves it to the body's first line, where §6.4/§6.5 apply verbatim (`:port` + deeper `5432` → Integer; `nil` alone → Nil — deferred-nil works for free). Only the first line is ever value-special: later lone tokens are prose — no per-line typing (re-wrapping prose must never retype a document), no Warning; `\` and quoting are the first-line escapes. Joseph's worked example → `[1234, "and here is\n  a bunch of prose...\nso what do we do?\n"]`. | jaw 2026-08-07, ratifying spike addendum |
+| **K8** | Three closes on K5 residuals: (1) **sugar-produced assignments are born finished** — deeper lines never attach to `$key`/`$traits`/flag assignments produced by sugar; (2) **attribute-under-attribute demotes to Warning** — L6's keep shape (text of the open value) stands, severity overturned (see Overturns): K4 removed the legitimate nested-attribute intent the Error's L0 justification relied on, and warn-not-error keeps ATTR-GROUP's door open (warn-before-disallow); (3) **the §6.7/§6.8 seam closes as the same Warning** — a `:`-shaped line deeper under a *finished* value is warned text-that-looks-like-an-attribute. Net: elements (§6.9) and attributes now share **one rule** — once an owner is past the point where an attribute can open, a `:`-line in its interior is warned text. Sole remaining core Error: `MissingAttributeValue` (K6). | jaw 2026-08-08 |
 
 ## 2026-07-28 session brainstorms — routed OUT of this ledger
 
@@ -173,7 +174,9 @@ Joseph's continuing brainstorms from the 2026-07-28 big-picture session (IDs O1�
 
 ## Overturns
 
-*(none yet)*
+| Overturned | By | What changed |
+|---|---|---|
+| **L6** (severity only) | **K8**, jaw 2026-08-08 | Attribute-under-attribute: Error → **Warning**. The keep shape (offending line as text of the open value) stands unchanged. Ground: K4 (no attributes-of-attributes) removed the "intended nested-attribute structure is absent" premise L6's Error rested on. |
 
 ---
 
