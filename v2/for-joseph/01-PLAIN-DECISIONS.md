@@ -23,12 +23,21 @@ probe scored 5/5 with this framing vs 4/5 without — n=1, suggestive).
 **Recommendation: keep.** (Separate sub-item, no urgency: the full physical
 reorder of sections is *proposed only* — approving §0 does not trigger it.)
 
-## D2 — Where does "brace form = its own value" work? *(fork concurrence in flight)*
+## D2 — Where does "brace form = its own value" work? *(both forks CONCUR — awaiting your word)*
 
 Your intuition: `:attr |{a} |{b}` ≈ `:attr [|{a} |{b}]` "generally."
-Proposed resolution (overturns the forks' leans — they're checking it now):
+Resolution, unanimously concurred after both forks tried to refute it (each
+retracted its own contrary lean with reasons; pass 2 showed its axiom A3
+*derives* this, and that R17 had already conceded the list case):
 **wherever a value is expected, the full value grammar applies** — plus one
-labeled carve: identity/selector keys stay non-structural until paths.
+labeled carve: identity/selector brackets stay non-structural until paths
+(written as explicit subtraction *with its reason*, covering `@[…]` too, so
+incorporation-by-reference can't leak it). "Generally the same" lands as
+view-level: same items through a values-view, ordinary stacked-vs-list in the
+model. Two one-liners ride along: a host projection-policy note for
+structured list items, and an OPEN-ML line for the unclosed-`|{`-item edge.
+Pass 1's fork left a seven-point landing checklist (its final message) so the
+fold-in is mechanical once you say yes.
 
 ```udon
 |el |{a} |{b}          ; two stacked $main values (ruled)
