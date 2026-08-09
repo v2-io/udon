@@ -2,37 +2,41 @@
 
 **Normative.** The source of truth for every formal term in this suite. A capitalized or bolded formal noun not defined here is not a defined term. Each entry names the owning section; the sentence here is the authoritative short form. Retired synonyms at the end MUST NOT be used in new spec text, tooling messages, or documentation.
 
+**The three-way name split (0.10.0-alpha.1):** **key** = identity/selector sense only (`[k]`, `$key`, `$partial-key`, `@x[k]`); **label** = an assignment's name-side (`:label value`); **kind** = a verbatim form's tag (`!:kind:`, a fence's info string). The disambiguation exemplar: *`$key` is the identity key, held by an assignment whose label is `$key`.*
+
 ---
 
 ## Structure
 
-- **Element** — the structural unit: optional name + ordered attributes + ordered content. Nothing else; identity, traits, and suffixes are sugar over designated attributes. (CORE §5; MODEL §3.)
+- **Element** — the structural unit: optional name + ordered assignments + ordered content. Nothing else; identity, traits, suffixes, and sameline text are sugar over designated attributes. (CORE §5; MODEL §3.)
 - **Anonymous element** — an element with no name (`|[k]`, `|.trait`, `|?`).
-- **Attribute** — a labeled edge from its element: a key plus one value per assignment. The key names what the value is *to the element*; same-key assignments stack in source order. (CORE §6; MODEL §3.)
-- **Assignment** — one key-value pair in an element's ordered attribute sequence. (MODEL §3.)
+- **Attribute / Assignment** — a labeled edge from its element: a **label** plus ordered, heterogeneous **content** (ruled K5 — the common case is one value). The label names what the content is *to the element*; same-label assignments stack in source order, silently. (CORE §6; MODEL §3.)
+- **Label** — an assignment's name-side: a contiguous non-space run after `:` (bare — expressive character set, K12) or a quoted label. No built-in label semantics. (CORE §6.2.)
 - **Child** — a node in an element's content sequence; names what it *is*; positional, heterogeneous. (CORE §6.1.)
-- **Content** — the ordered node sequence belonging to an element, following all its attributes. (MODEL §3.)
-- **Content phase** — the state an element enters once any content exists; its attribute window is closed. (CORE §6.9.)
-- **Designated attribute** — an ordinary attribute whose `$`-key is a sugar target (`$key`, `$traits`, `$?`, `$!`, `$*`, `$+`, `$partial-key`). Designated, not reserved. (CORE §5.3.)
-- **Identity** — the `[key]` sugar; desugars to `$key`. Duplicate `(name, key)` pairs are a Document-layer *policy* concern (menu, default error — CORE §12.3 / R14), not a definitional property. (CORE §5.3.)
+- **Content** — the ordered node sequence belonging to an element. Block content follows the (silently-placed) assignments; late assignments are accepted with a Warning (K14). (MODEL §3; CORE §6.9.)
+- **Designated attribute** — an ordinary attribute whose `$`-label is a sugar target (`$key`, `$traits`, `$?`, `$!`, `$*`, `$+`, `$main`, `$partial-key`). Designated, not reserved; bare-writable (K12). (CORE §5.3, §6.10.)
+- **`$main`** — the designated attribute carrying an element's sameline text/values; sugar, stacked per value, not text material, host-presented. (CORE §6.10; ruled K9.)
+- **Identity / key** — the `[key]` sugar; desugars to `$key`, one assignment per bracket (K1). "Key" always means this sense. Duplicate `(name, key)` pairs are a Document-layer *policy* concern (menu, default error — CORE §12.3 / R14). (CORE §5.3.)
 - **Trait** — the `.name` sugar; classification, plural, ordered; desugars to stacked `$traits`. (CORE §5.3.)
-- **Flag suffix** — trailing `?` `!` `*` `+` on element identity, desugared to a designated boolean attribute; suffixes stack. (CORE §5.4.)
-- **Node** — any unit that can appear in content: element, text, comment, verbatim, directive, reference, blank line. (Interpolations appear only as flow segments and values — MODEL §2.)
-- **Node value** — an attribute value that *is* a node (block-form element, block verbatim, or fence), no wrapper. (CORE §6.8.)
+- **Suffix** — trailing `?` `!` `*` `+` on element identity, desugared to a designated attribute with explicit value `true`; suffixes stack. (CORE §5.4.)
+- **Node** — any unit that can appear in content: element, text, comment, verbatim, directive, reference, blank line. (MODEL §2.)
+- **Node value** — a value that *is* a node (block-form element, block verbatim, fence, or inert directive), no wrapper. (CORE §6.8; MODEL §4.)
 - **Reference** — `@…`: an inert selector `(name?, key?, traits)` naming an element defined elsewhere; recognition core, resolution consumer. (CORE §12.2.)
 - **Document** — a complete input: top-level nodes + anomalies + result. (MODEL §1.)
 
-## Positions and recognition
+## Spaces, positions, recognition
 
-- **Structure Position** — the state in which markers are recognized: line start at a structural column, or along the Line Scan. Canonical name (ruled N-pos; "open position" is an allowed alias in prose, once). (CORE §2.2.)
-- **Line Scan** — the left-to-right pass along an element-rooted line through elements and attributes, collecting each attribute's value and continuing for the current owner. Canonical name (ruled N-scan; "the scan" allowed once). (CORE §6.4.)
+- **Value-space** — every sameline position: all sameline material is an attribute value; the only question is which attribute. No prose category exists there. (CORE §2.2; ruled K9/K10.)
+- **Text-space** — the block interior where prose lives; lines that do not open structure are text of their column owner; markers literal within, framed ` ; ` the one carve-out. (CORE §2.2, §7.)
+- **Structure Position** — the state in which markers are recognized: line start at a structural column, or along the Line Scan between values. (CORE §2.2.)
+- **Line Scan** — the left-to-right pass along a line through elements, assignments, and values. (CORE §6.4.)
 - **Marker** — a character that can begin structure at Structure Position: `|` `:` `!` `;` `@` or a fence opener. (CORE §2.2.)
 - **Guard** — the bounded lookahead confirming a marker; failure means the character is literal. (CORE §3.)
-- **Commit (to prose)** — the moment Structure Position ends for a line: from there markers are literal, except the framed sameline comment. (CORE §2.2.)
-- **Escape `\`** — the one escape; meaning fixed by position alone. (CORE §4.)
-- **Bare token** — an unquoted single-token value candidate; its fate is settled at the bare-token boundary. (CORE §6.4.)
-- **Bare-token boundary** — the one-character decision at a bare token's end: a guard-confirmed block-form marker finishes it as a value; anything else commits a flow value. (CORE §6.4.)
-- **Inline-brace principle** — no inline brace form is ever a boundary marker or mode exit; inline forms commit/continue text mode and fire as segments. (CORE §6.4.)
+- **Value terminator** — what ends an unquoted text value: space + guard-confirmed block-form marker, framed `\`, framed ` ; `, end of line, or the context terminator. (CORE §6.4; ruled K10.)
+- **Clean value position** — a value slot where no text has committed; brace forms self-delimit as values there. (CORE §6.4; ruled K9.)
+- **Line root** — the owner of post-value material on a line: the element (`$main` stack) on element-rooted lines; the label's stack on block attribute lines. (CORE §6.5.)
+- **Escape `\`** — the one escape; two operations by frame: framed ` \ ` commits text mode, attached `\X` escapes one character; literal elsewhere. (CORE §4; ruled K13.)
+- **Text mode** — the state after a framed `\`: rest of line is text, spaces preserved, dead to markers and comments. (CORE §4.)
 - **Column / base column** — leading-space count; the column of an item's introducing marker, driving the Nesting Rule. (CORE §2, §2.1.)
 - **Nesting Rule** — `pop while new_column <= stack_top.base_column`, then push. (CORE §2.1.)
 - **Sameline / block** — on the element's definition line vs on its own indented line. (CORE §6.1.)
@@ -41,13 +45,13 @@
 
 ## Text and flow
 
-- **Flow** — the one prose-shaped content model: ordered segments resolving to text once each segment's layer processes it. Three homes, one rule set: element prose, flow values, inline-form interiors. (CORE §7.1.)
-- **Flow value** — an attribute value that is flow. (CORE §6.4–6.5.)
+- **Flow** — the one prose-shaped content model: ordered segments resolving to text once each segment's layer processes it. Three homes, one rule set: block text, text values, inline-form interiors. (CORE §7.1.)
+- **Text value** — an assignment value that is flow (unquoted text or `\`-forced). (CORE §6.4–6.5.)
 - **Segment** — one piece of flow: text run, inline element, interpolation, inline directive, inline verbatim (inline comments contribute no segment text). (MODEL §4.)
 - **Inline form** — a brace-delimited construct inside flow: `|{…}`, `;{…}`, `!{{…}}`, `!{…}`, `!{:kind:…}`. (CORE §7.3.)
-- **Inline element** — the `|{…}` form; bracket mode inside. (CORE §5.6.)
+- **Inline element** — the `|{…}` form; bracket mode inside; a value at clean value positions, a segment mid-flow. (CORE §5.6, §6.4.)
 - **Text** — literal character data including its line terminators; the only channel that carries text. (MODEL §6.)
-- **The text law** — document text reconstructs by pure in-order concatenation of text; no fabricated joins, no source consultation. (MODEL §6.)
+- **The text law** — document text reconstructs by pure in-order concatenation of text; no fabricated joins, no source consultation. Assignments — `$main` included — are not text material. (MODEL §6.)
 - **Blank line** — a whitespace-only line not protruding past the content base; contributes `"\n"`; interior = text, edges = ornamentation. (CORE §7.4.)
 - **Ornamentation** — UDON-level decoration (edge blanks, trimmed final terminators) that is not text content. (CORE §7.4.)
 
@@ -56,14 +60,12 @@
 - **Syntactic typing** — type from written syntax, never sniffing. (CORE §11.1.)
 - **Bare scalar set** — the closed, frozen set recognized bare: string, integer, float, boolean, nil, list. The envelope is *recognized* bare but is not a core scalar — it is the hand-off to dialects. (CORE §11.1.)
 - **Envelope** — `<…>` in value position; depth-counted to the matching `>`; multi-line; the visible core/dialect boundary. (CORE §11.6.)
-- **Label ladder** — `<content>` / `<type:content>` / `<dialect:type:content>`. (CORE §11.6.)
+- **Envelope ladder** — `<content>` / `<type:content>` / `<dialect:type:content>`. *(Rename from "label ladder" pending the Q7 steward call — UNIF-PASS-QUESTIONS.)* (CORE §11.6.)
 - **Dialect** — a named layer giving meaning/typing to envelope contents (e.g. `temporal@1`). Types, never constrains. (CORE §1.1.)
 - **Schema** — the layer saying what is allowed or required; constraint lives only here. (CORE §1.1.)
-- **Flag key** — a key with terminal `?`: presence/boolean semantics; bare presence = true; only a lone keyword is an explicit value. (CORE §6.2.)
-- **Stacking** — repeated same-key assignments accumulate, ordered; last-wins does not exist. (CORE §6.7.)
-- **Warned extension** — post-finished-value material kept as a further assignment under the key, with a Warning. (CORE §6.7.)
-- **List** — `[…]`: space-delimited items, each typed by the full value rules; no flow inside. (CORE §11.5.)
-- **Nil** — explicit no-value (`null` ≡ `nil`); distinct from absent and from false. (CORE §11.4.)
+- **Stacking** — repeated same-label assignments accumulate, ordered, silently; last-wins does not exist. (CORE §6.7; ruled K11.)
+- **List** — `[…]`: space-delimited items, each typed by the full value rules; no multi-word unquoted text inside. (CORE §11.5.)
+- **Nil** — explicit no-value (`null` ≡ `nil`); distinct from absent and from false. No implicit nil, no implicit true (K6/K12). (CORE §11.4.)
 - **Interpolation** — `!{{expr}}`, carried unparsed for the host. (CORE §9.)
 - **`$partial-key`** — the designated attribute an *unclosed* identity or selector key desugars to; fail-safe non-identity. (CORE §5.3.)
 
@@ -71,27 +73,26 @@
 
 - **Geometric extent** — closed by geometry: EOL, dedent, or end of input. (CORE §13.1.)
 - **Delimited extent** — closed only by a matching printed end-sequence. (CORE §13.1.)
-- **Verbatim** — content never parsed as UDON: one family (block `!:label:`, fence, inline `!{:label:…}`) around an opaque body. (CORE §10.)
-- **Fence** — the ``` form: byte-exact, no dedent, opener tail is the info label. (CORE §10.3.)
-- **Label** — a verbatim form's optional tag, passed to the host uninterpreted. (CORE §10.)
-- **Directive** — `!name …` at Structure Position; any name; body parsed as UDON; meaning is a dialect's. (CORE §9.)
+- **Verbatim** — content never parsed as UDON: one family (block `!:kind:`, fence, inline `!{:kind:…}`) around an opaque body. (CORE §10.)
+- **Fence** — the ``` form: byte-exact, no dedent, opener tail is its kind. (CORE §10.3.)
+- **Kind** — a verbatim form's optional tag, passed to the host uninterpreted. (CORE §10.)
+- **Directive** — `!name …` at Structure Position; any name; body parsed as UDON; inert this version; meaning is a dialect's. (CORE §9; ruled K3.)
 - **Incomplete-input** — the document result when a delimited extent was open at true end of input. (CORE §13.3; MODEL §1.)
-
-- **ADM / Abstract Document Model** — the Document Model (MODEL.md); one pillar, two names. "ADM" is the term used by defining-udon §5, the DECISIONS charter (C3/C5), and the greenfield drafts; this suite's prose says "the model" / "Document Model." Formal synonyms — not a retirement.
+- **ADM / Abstract Document Model** — the Document Model (MODEL.md); one pillar, two names. Formal synonyms — not a retirement.
 - **Recognizer / Recognition** — the conformance target of this suite: the layer performing surface recognition (source text → the ADM plus anomalies), below every Consumer. (CORE §1.)
 
 ## Anomalies and layers
 
 - **Anomaly** — a Warning or Error attached to recognition. (MODEL §7.)
 - **Warning** — everything kept, possibly not as intended. (CORE §14.1.)
-- **Error** — something lost, or a required value genuinely absent; non-halting. (CORE §14.1.)
+- **Error** — something lost, or a required value genuinely absent; non-halting. The sole core Error is the missing required value. (CORE §14.1.)
 - **Keep-Everything** — wherever a coherent keep exists, keep and warn rather than drop. (CORE §14.2.)
 - **Consumer** — any layer above recognition: document builder, schema validator, host application. (CORE §1.1.)
-- **Host** — the embedding environment supplying projection, dialects, dynamics evaluation, resolution. (CORE §1.1.)
+- **Host** — the embedding environment supplying projection, dialects, dynamics evaluation, resolution, `$main` presentation. (CORE §1.1.)
 - **Document layer** — the consumer assembling/judging a whole tree (duplicate policy, uniqueness) as opposed to streaming recognition. (CORE §12.3.)
 - **Menu vs knob** — core fixes an option space and default; consumers pick within it, never outside it. (CORE §1.1.)
-- **Projection** — host turning a validated string into a native value.
-- **View** — a recommended accessor shape over the attribute substrate. (MODEL §3.2.)
+- **Projection** — host turning a validated value into a native value.
+- **View** — a recommended accessor shape over the assignment substrate. (MODEL §3.2.)
 
 ---
 
@@ -99,14 +100,22 @@
 
 | Retired | Use instead |
 |---|---|
-| blob, text blob | **flow**, **flow value** |
+| key (attribute name-side) | **label** — "key" is identity/selector only |
+| label (verbatim/fence tag) | **kind** |
+| flag key, flag semantics | *(retired concept — K12; presence is explicit)* |
+| warned extension | *(retired concept — K11; stacking is silent)* |
+| content phase | **late attributes** (accepted + warned — K14); the closing-window concept is retired |
+| commit (to prose), open→commit | **text-space** rules (CORE §2.2); sameline never commits to prose |
+| bare-token boundary | **value terminator** (K10) |
+| inline-brace principle (as universal) | mid-flow segment rule (K9 narrowed it; clean positions self-delimit) |
+| blob, text blob | **flow**, **text value** |
 | freeform | **fence** (form) / **verbatim** (family) |
 | raw (as a free noun) | **verbatim** (block form: "block verbatim") |
 | embedded (element) | **inline element** |
-| head position, open position | **Structure Position** (alias "open position" once in prose) |
+| head position, open position | **Structure Position** |
 | the scan (as formal term) | **Line Scan** |
 | positional (extent) | **geometric extent** |
-| segment-ingest, warn-and-stack | **warned extension** |
+| segment-ingest, warn-and-stack | *(retired with warned extension)* |
 | multi-segment value | stacked assignments |
-| sameline decompress | element tail (plain description) |
+| sameline decompress, element tail | **`$main`** (K9) |
 | wire, event (in this suite's contract) | *(absent by design — see README)* |

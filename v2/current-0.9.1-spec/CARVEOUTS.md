@@ -1,6 +1,6 @@
 # Carve-outs — deliberately unspecified, with reasons
 
-**Normative as to scope:** every item here is *deliberately not specified* in 0.9.1. Authors MUST NOT rely on any particular behavior; implementations MUST NOT treat their own behavior as settling one. Each carve-out carries the **demand-side reason it is open** — so no future reader closes it in a framing the reason has already invalidated — and what would actually close it.
+**Normative as to scope:** every item here is *deliberately not specified* in this suite (0.10.0-alpha.1; register unchanged from 0.9.1 except as noted in rows). Authors MUST NOT rely on any particular behavior; implementations MUST NOT treat their own behavior as settling one. Each carve-out carries the **demand-side reason it is open** — so no future reader closes it in a framing the reason has already invalidated — and what would actually close it.
 
 This register exists because of a measured failure: three clean-room rewrites (2026-07-20) were handed the spec without these reasons, and all three diligently *closed* the multi-line question per-construct — diligence on a wrongly-framed question producing well-organized irrelevance. The openness is design intent; the reason is the load-bearing part.
 
