@@ -20,8 +20,16 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
 - [ ] **Obsidian plugin** (`obsidian-udon/`) — Joseph's live-use feedback
       lands here. Open items (drained from the former plugin sub-tracker,
       2026-07-16):
-      - [ ] **Get editing to work** — the umbrella item for the editing
-            experience (Joseph; to be detailed with an Obsidian-focused agent).
+      - [x] **Markdown host for .udon/.un/.don** (0.2.0, 2026-08-08) —
+            register as `markdown` so wikilinks, vim, and editor plugins
+            attach; gate wasm whole-doc highlight + UDON Tab/Enter + indent
+            fold as guest extensions; force pure Source mode (Live Preview
+            mangles structure). Live check: `terms/descriptor.term.un`
+            click-through / backlinks / vim.
+      - [ ] **Get editing to work** — residual after host switch: soft-wrap
+            hanging indent, reading surface for prose, stem-resolution
+            conventions (`[[term/X]]` vs `terms/X.term.un`), taste-test
+            highlight vs HyperMD decorations fighting in Source mode.
       - [ ] **Soft-wrap prose to a hanging indent at its own column** —
             display-wrapped continuations currently return to column 1; give
             wrapped prose a hanging indent to the prose column. *Display-only*
@@ -42,7 +50,9 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
       - [ ] **Live Preview fences: anchor on Obsidian's syntax tree** instead
             of the whole-document line-regex fence scan — correct at note
             scale but blind to exotic containers (nested callout depth,
-            indented-code ambiguity) and O(doc) per edit.
+            indented-code ambiguity) and O(doc) per edit. (Whole UDON
+            files stay in Source; this item is for ```` ```udon ```` inside
+            ordinary `.md` notes.)
 - [ ] **autocolors — remaining phases.** The engine is live (Rust beside
       the parser in `core/udon-wasm/src/`: 32-role kinship tree, OKLCH +
       WCAG-contrast-band solver, name-is-the-seed determinism, driving the

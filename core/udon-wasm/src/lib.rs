@@ -342,7 +342,7 @@ pub unsafe extern "C" fn udon_theme(
     fg: u32,
 ) -> *mut u8 {
     let name_bytes = std::slice::from_raw_parts(name_ptr, name_len);
-    let name = std::str::from_utf8(name_bytes).unwrap_or("tony-the-tiger");
+    let name = std::str::from_utf8(name_bytes).unwrap_or("mochi");
     let (br, bgc, bb) = color::rgb_u32(bg);
     let (fr, fgc, fb) = color::rgb_u32(fg);
     let css = scheme::css(

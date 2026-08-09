@@ -1,9 +1,9 @@
 {
   "id": "udon",
   "name": "UDON",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "minAppVersion": "1.1.0",
-  "description": "View and edit .udon / .un / .don files (Universal Document & Object Notation): correct indentation behavior, parser-driven syntax highlighting, indent-based folding.",
+  "description": "Edit .udon / .un / .don on the markdown host (wikilinks, vim) with parser-driven highlighting and UDON indent behavior.",
   "author": "Joseph Wecker",
   "isDesktopOnly": false
 }

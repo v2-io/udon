@@ -1,96 +1,88 @@
 " Vim syntax file for UDON (Universal Document & Object Notation)
-" Spec: spec/CORE.md v0.7-draft (December 2025)
+" Spec: spec/CORE.md (syntax is safeset; always under-highlight vs mis-highlight)
 "
-" Safeset highlighting: only constructs whose parse is unambiguous from local
-" context get color. Under-highlight rather than mis-highlight.
+" Architecture:
+"   - Default substrate is stock Markdown (syn include → @udonMarkdown),
+"     owned by a whole-buffer region (udonMarkdownRoot).
+"   - Structure (| : ! ; raw freeform) is *contained* in that root so the
+"     root still covers prose lines (a top-level structure region on line 1
+"     would steal \%^ and leave prose unhighlighted).
+"   - Inline UDON forms (|{…}, ;{…}, !{{…}}, …) remain available in prose.
+"
+" Safeset notes:
 "   - `;` is a comment ONLY line-initial, or whitespace-preceded on a
-"     structure line. Semicolons in block prose stay plain (they are literal).
+"     structure line. Semicolons in block prose stay markdown-literal.
 "   - `|` opens an element only when followed by letter / [ / . / { / ' and
-"     only line-initial or space-preceded on a structure line. Markdown table
-"     pipes in prose stay plain.
-"   - `!:lang:` raw bodies and ``` freeform bodies are uncolored verbatim.
+"     only line-initial or space-preceded on a structure line. Markdown
+"     table pipes in prose stay with the markdown syntax.
+"   - `!:lang:` raw bodies and ``` freeform bodies are uncolored verbatim
+"     (UDON freeform claims ``` over markdown fenced-code).
 
 if exists("b:current_syntax")
   finish
 endif
 
-" Indentation-scoped regions need full-file sync.
 syn sync fromstart
 
 " ---------------------------------------------------------------------------
-" Raw and freeform bodies (defined first; later rules must not fire inside)
+" Markdown substrate (stock runtime markdown.vim / Tim Pope)
 " ---------------------------------------------------------------------------
-
-" !:lang: raw directive -- body is every following line indented past it.
-syn region udonRawBlock matchgroup=udonRawLabel
-      \ start=/^\z(\s*\)!:[[:alpha:]][[:alnum:]_-]*:\s*$/
-      \ skip=/^\s*$/
-      \ end=/^\%(\z1\s\)\@!/
-      \ keepend contains=NONE
-
-" ``` freeform block -- verbatim, indentation-insensitive. May open mid-line.
-syn region udonFreeform matchgroup=udonFence
-      \ start=/```/ end=/```/
-      \ contains=NONE
+if !exists('main_syntax')
+  let main_syntax = 'udon'
+endif
+unlet! b:current_syntax
+syn include @udonMarkdown syntax/markdown.vim
+unlet! b:current_syntax
+if exists('main_syntax') && main_syntax ==# 'udon'
+  unlet main_syntax
+endif
 
 " ---------------------------------------------------------------------------
-" Comments and escapes
+" Inline UDON forms
 " ---------------------------------------------------------------------------
 
-" Line-initial `;` is a block comment.
-syn match udonComment /^\s*;.*$/ contains=udonTodo
-syn keyword udonTodo TODO FIXME XXX NOTE contained
-
-" Block-level escape: \ followed by a marker char, at line start only.
-syn match udonEscape /^\s*\\[|;:!\\]/
-
-" ---------------------------------------------------------------------------
-" Inline forms (usable in prose and on structure lines)
-" ---------------------------------------------------------------------------
-
-" Transparent balanced-brace helper so inner { } don't close inline forms.
 syn region udonBraceInner start=/{/ end=/}/ transparent contained
       \ contains=udonBraceInner
 
-" |{element ...} embedded element
 syn region udonEmbedded matchgroup=udonSigil start=/|{/ end=/}/
+      \ contained
       \ contains=udonEmbeddedName,udonSamelineAttr,udonEmbedded,
       \udonAttrValueQuoted,udonAttrValueNumber,udonAttrValueConst,udonAttrValueList,
       \udonInlineComment,udonInterpolation,udonInlineRaw,udonInlineDirective,
       \udonBraceInner
 syn match udonEmbeddedName /\%(|{\)\@2<=[[:alpha:]][[:alnum:]_-]*/ contained
 
-" ;{...} inline comment (brace-counted)
 syn region udonInlineComment matchgroup=udonComment start=/;{/ end=/}/
+      \ contained
       \ contains=udonCommentBraceInner
 syn region udonCommentBraceInner start=/{/ end=/}/ contained transparent
       \ contains=udonCommentBraceInner
 
-" !{{expr | filter}} interpolation
 syn region udonInterpolation matchgroup=udonSigil start=/!{{/ end=/}}/
+      \ contained
       \ contains=udonFilterPipe,udonQuotedString
 syn match udonFilterPipe /|\s*[[:alpha:]][[:alnum:]_-]*/ contained
       \ contains=udonFilterName
 syn match udonFilterName /[[:alpha:]][[:alnum:]_-]*/ contained
 
-" !{:kind: raw payload} inline raw (payload uncolored)
 syn region udonInlineRaw matchgroup=udonRawLabel start=/!{:[[:alpha:]][[:alnum:]_-]*:/ end=/}/
+      \ contained
       \ contains=udonBraceInner
 
-" !{directive body} inline directive (body may nest inline forms)
 syn region udonInlineDirective matchgroup=udonSigil start=/!{\%({\)\@!/ end=/}/
+      \ contained
       \ contains=udonInlineDirectiveName,udonEmbedded,udonInlineComment,
       \udonInterpolation,udonBraceInner
 syn match udonInlineDirectiveName /\%(!{\)\@2<=[[:alpha:]][[:alnum:]_-]*/ contained
 
+syn match udonQuotedString /"\%([^"\\]\|\\.\)*"/ contained
+
 " ---------------------------------------------------------------------------
-" Structure-line pieces (contained; only fire inside the line regions below)
+" Structure-line pieces (contained in structure line regions)
 " ---------------------------------------------------------------------------
 
-" Whitespace-preceded `;` comment (sameline context only).
 syn match udonSamelineComment /\s\@1<=;\%({\)\@!.*$/ contained contains=udonTodo
 
-" Element identity chain: |name?[id].class1.class2?
 syn match udonElementChain /\%(^\s*\|\s\)\@<=|\%([[:alpha:]]\|[\[.']\)\@=[^ \t]*/
       \ contained contains=udonElemPipe,udonElemName,udonElemId,udonElemClass,
       \udonElemSuffix,udonSamelineAttr
@@ -102,14 +94,9 @@ syn match udonElemClass /\.[[:alnum:]_-]\+/ contained contains=udonElemDot
 syn match udonElemDot /\./ contained
 syn match udonElemSuffix /[?*+!]/ contained
 
-" Sameline attribute `:key value` -- value colored only when it is a single
-" typed token (quoted / number / bool / nil / list); bare values stay plain.
 syn match udonSamelineAttr /\%(^\|\s\)\@<=:\%('[^']*'\|"[^"]*"\|[[:alpha:]_$][[:alnum:]_.$-]*\)/
       \ contained contains=udonAttrColon
 syn match udonAttrColon /:/ contained
-" Values: must sit directly after `:key ` and be a complete token (followed
-" by end-of-line, another attr, a comment, `}` or `]`). This keeps `42` in
-" the bare block value `:note has 42 things` uncolored (it is string data).
 syn match udonAttrValueQuoted /\%(:[[:alnum:]_.$'"-]\+\s\+\)\@<=\%("\%([^"\\]\|\\.\)*"\|'\%([^'\\]\|\\.\)*'\)\ze\%(\s*$\|\s\+[:;|]\|[}\]]\)/ contained
 syn match udonAttrValueNumber /\%(:[[:alnum:]_.$'"-]\+\s\+\)\@<=-\?\%(0[xX]\x[0-9a-fA-F_]*\|0[oO][0-7][0-7_]*\|0[bB][01][01_]*\|\d[0-9_]*\%(\.\d[0-9_]*\)\?\%([eE][+-]\?\d\+\)\?\%(\/\d[0-9_]*r\)\?\)\ze\%(\s*$\|\s\+[:;|]\|[}\]]\)/ contained
 syn match udonAttrValueConst /\%(:[[:alnum:]_.$'"-]\+\s\+\)\@<=\%(true\|false\|null\|nil\)\ze\%(\s*$\|\s\+[:;|]\|[}\]]\)/ contained
@@ -120,36 +107,58 @@ syn match udonListString /"\%([^"\\]\|\\.\)*"\|'\%([^'\\]\|\\.\)*'/ contained
 syn match udonListNumber /\%(^\|[\[ ]\)\@1<=-\?\d[0-9_]*\%(\.\d[0-9_]*\)\?\%([eE][+-]\?\d\+\)\?\ze[ \]]/ contained
 syn match udonListConst /\%(^\|[\[ ]\)\@1<=\%(true\|false\|null\|nil\)\ze[ \]]/ contained
 
-" Block directive name (!if, !for, !include, ...)
 syn match udonDirectiveName /^\s*\zs![[:alpha:]][[:alnum:]_-]*/ contained
 
 " ---------------------------------------------------------------------------
-" Structure-line regions (line-scoped contexts)
+" Structure / exclusive regions (contained in the markdown root)
 " ---------------------------------------------------------------------------
 
-" Element line: first non-space char is | followed by letter / [ / . / { / '
-syn region udonElementLine start=/^\s*\ze|[[:alpha:]\[.{']/ end=/$/ keepend
+syn region udonElementLine start=/^\s*\ze|[[:alpha:]\[.{']/ end=/$/ keepend contained
       \ contains=udonElementChain,udonEmbedded,udonSamelineAttr,
       \udonAttrValueQuoted,udonAttrValueNumber,udonAttrValueConst,udonAttrValueList,
       \udonSamelineComment,udonInlineComment,udonInterpolation,udonInlineRaw,
-      \udonInlineDirective,udonFreeform
+      \udonInlineDirective
 
-" Block attribute line: first non-space char is : followed by a key char
-syn region udonAttrLine start=/^\s*\ze:[[:alpha:]_'"$]/ end=/$/ keepend
+syn region udonAttrLine start=/^\s*\ze:[[:alpha:]_'"$]/ end=/$/ keepend contained
       \ contains=udonSamelineAttr,udonSamelineComment,udonInlineComment,
       \udonAttrValueQuoted,udonAttrValueNumber,udonAttrValueConst,udonAttrValueList,
-      \udonEmbedded,udonInterpolation,udonFreeform
+      \udonEmbedded,udonInterpolation
 
-" Directive line: !name args (raw `!:lang:` is claimed by udonRawBlock above)
-syn region udonDirectiveLine start=/^\s*\ze![[:alpha:]]/ end=/$/ keepend
+syn region udonDirectiveLine start=/^\s*\ze![[:alpha:]]/ end=/$/ keepend contained
       \ contains=udonDirectiveName,udonElementChain,udonEmbedded,udonSamelineAttr,
       \udonAttrValueQuoted,udonAttrValueNumber,udonAttrValueConst,udonAttrValueList,
       \udonSamelineComment,udonInlineComment,udonInterpolation,udonInlineRaw,
-      \udonInlineDirective,udonFreeform
+      \udonInlineDirective
 
-" Anything else is prose: no line region; only the global inline forms above
-" (udonEmbedded, udonInlineComment, udonInterpolation, udonInlineRaw,
-" udonInlineDirective) apply. Mid-line ; | : stay plain -- by design.
+syn match udonComment /^\s*;.*$/ contained contains=udonTodo
+syn keyword udonTodo TODO FIXME XXX NOTE contained
+
+syn match udonEscape /^\s*\\[|;:!\\]/ contained
+
+syn region udonRawBlock matchgroup=udonRawLabel
+      \ start=/^\z(\s*\)!:[[:alpha:]][[:alnum:]_-]*:\s*$/
+      \ skip=/^\s*$/
+      \ end=/^\%(\z1\s\)\@!/
+      \ keepend contained contains=NONE
+
+" Freeform ``` — listed in the root contains= after @udonMarkdown so it can
+" claim fences over markdown fenced-code (same start; later group wins when
+" both are contained candidates — definition order + contains list order).
+syn region udonFreeform matchgroup=udonFence
+      \ start=/```/ end=/```/
+      \ keepend contained contains=NONE
+
+" ---------------------------------------------------------------------------
+" Whole-buffer root: markdown default + structure punches
+" ---------------------------------------------------------------------------
+" Defined last so it is the top-level owner of \%^. Everything else is
+" contained here — never a competing top-level region at the same start.
+
+syn region udonMarkdownRoot start=/\%^/ end=/\%$/ keepend
+      \ contains=@udonMarkdown,
+      \udonEmbedded,udonInlineComment,udonInterpolation,udonInlineRaw,udonInlineDirective,
+      \udonElementLine,udonAttrLine,udonDirectiveLine,
+      \udonComment,udonEscape,udonRawBlock,udonFreeform
 
 " ---------------------------------------------------------------------------
 " Highlight links
@@ -187,7 +196,5 @@ hi def link udonInlineDirectiveName Keyword
 hi def link udonRawLabel          Special
 hi def link udonInterpolation     Special
 hi def link udonFilterName        Function
-
-syn match udonQuotedString /"\%([^"\\]\|\\.\)*"/ contained
 
 let b:current_syntax = "udon"

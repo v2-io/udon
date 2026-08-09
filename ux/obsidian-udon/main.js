@@ -7,30 +7,36 @@
  * Obsidian's loader only loads main.js, and relative require() fails inside
  * a plugin (verified live 2026-07-16).
  *
+ * Architecture (hybrid host, 2026-08-08):
+ *   .udon / .un / .don open as Obsidian's built-in **markdown** view so the
+ *   real note stack applies: wikilinks (click, complete, backlinks), vim mode,
+ *   vimrc-support, editor settings, and other registerEditorExtension plugins.
+ *   UDON-specific behavior (wasm highlighting, indent Tab/Enter, indent fold)
+ *   is layered as gated CM6 extensions that arm only for those file types.
+ *   Source mode is forced for UDON files so Live Preview does not mangle
+ *   structure lines. Reading-view rendering of UDON prose is still FUTURE.
+ *
  * Scope (deliberate, in priority order):
- *   1. .udon / .un / .don files open at all (extension registration + a
- *      TextFileView wrapping a CodeMirror 6 editor). .un and .don are
- *      short aliases for the same surface (vanilla udon; .un is the
- *      transitional short form used in verisectorium-style instances).
- *   2. Indentation behavior: Enter maintains the current line's indent;
- *      Tab / Shift-Tab indent and dedent by 2 spaces; tabs are never
- *      inserted (the spec forbids them).
+ *   1. .udon / .un / .don open as markdown notes (wikilinks + editor host).
+ *      .un and .don are short aliases for the same surface (vanilla udon;
+ *      .un is the transitional short form used in verisectorium-style
+ *      instances, e.g. terms/*.term.un).
+ *   2. Indentation behavior on UDON files: Enter maintains the current
+ *      line's indent; Tab / Shift-Tab indent and dedent by 2 spaces; tabs
+ *      are never inserted (the spec forbids them).
  *   3. Syntax highlighting -- driven by the REAL parser: udon-core compiled
  *      to WebAssembly (core/udon-wasm), whose event stream with byte spans
  *      is painted directly. Same walk as core/udon-core/examples/
  *      highlight.rs. There is no hand-maintained grammar here to drift from
  *      the spec; rebuild udon.wasm and the highlighting IS the current
- *      parser. (A hand-written "safeset" line scanner played this role
- *      until 2026-07-16 -- retired in favor of the wasm walk; git has it.)
- *      Applies to .udon/.un/.don files and ```udon fences in markdown notes.
- *   4. Folding on indentation.
+ *      parser. Applies to whole .udon/.un/.don documents and to ```udon
+ *      fences inside ordinary .md notes.
+ *   4. Folding on indentation (UDON files only).
  *   4b. Autocolors (editors/autocolors/PLAN.md): the same wasm module
  *      generates a named, deterministic color scheme (the scheme NAME is
  *      the SEED) anchored to the live theme, injected as #udon-autocolors.
  *      Scheme name + on/off live in plugin settings.
- *   5. Markdown rendering of prose is FUTURE. The seam is UdonView: it owns
- *      a single "source" editor today; a reading sub-view that walks prose
- *      spans through MarkdownRenderer can be added beside it.
+ *   5. Markdown reading-view of UDON prose is FUTURE (force Source for now).
  *
  * Known trade-off of parser-driven highlighting: the wasm walk re-parses the
  * whole document on each edit (cheap -- the parser runs at hundreds of MB/s
@@ -42,29 +48,68 @@
 
 'use strict';
 
-const { Plugin, TextFileView } = require('obsidian');
-const { EditorState } = require('@codemirror/state');
+const { Plugin } = require('obsidian');
 const {
-  EditorView, keymap, drawSelection, highlightActiveLine,
-  Decoration, ViewPlugin,
+  EditorView, keymap, Decoration, ViewPlugin,
 } = require('@codemirror/view');
+const { indentMore, indentLess } = require('@codemirror/commands');
+const { indentUnit, foldService } = require('@codemirror/language');
 const {
-  history, historyKeymap, defaultKeymap, indentMore, indentLess,
-} = require('@codemirror/commands');
-const {
-  indentUnit, foldService, foldGutter, codeFolding, foldKeymap,
-} = require('@codemirror/language');
-const { RangeSetBuilder } = require('@codemirror/state');
+  EditorState, Prec, RangeSetBuilder, Compartment,
+} = require('@codemirror/state');
 
-const VIEW_TYPE_UDON = 'udon-view';
 const INDENT = '  '; // 2 spaces; spec: "Spaces only, no tabs"
+const UDON_EXTS = new Set(['udon', 'un', 'don']);
+
+/** Per-editor compartment: indent unit + indent fold only on UDON files. */
+const udonFileConf = new Compartment();
 
 /* ========================================================================
- * CodeMirror integration
+ * File / editor host helpers
+ * ======================================================================== */
+
+function isUdonExtension(ext) {
+  return !!ext && UDON_EXTS.has(ext);
+}
+
+function isUdonFile(file) {
+  return !!(file && isUdonExtension(file.extension));
+}
+
+/**
+ * Resolve the vault file that owns a CM6 EditorView. Multi-pane safe:
+ * match leaf.view.editor.cm, then fall back to activeEditor.
+ */
+function fileForEditorView(app, cmView) {
+  let found = null;
+  app.workspace.iterateAllLeaves((leaf) => {
+    if (found) return;
+    const v = leaf.view;
+    if (!v || typeof v.getViewType !== 'function') return;
+    if (v.getViewType() !== 'markdown') return;
+    const cm = v.editor && v.editor.cm;
+    if (!cm) return;
+    if (cm === cmView || cm.dom === cmView.dom) found = v.file;
+  });
+  if (!found) {
+    const ae = app.workspace.activeEditor;
+    const cm = ae && ae.editor && ae.editor.cm;
+    if (cm && (cm === cmView || cm.dom === cmView.dom)) found = ae.file;
+  }
+  return found;
+}
+
+function isUdonEditorView(app, cmView) {
+  return isUdonFile(fileForEditorView(app, cmView));
+}
+
+/* ========================================================================
+ * CodeMirror integration (UDON files only; gated at run time)
  * ======================================================================== */
 
 /** Indentation-based folding (spec "Hierarchy"): a line folds the maximal
- *  run of following lines that are blank or more-indented. */
+ *  run of following lines that are blank or more-indented.
+ *  Installed only via udonFileConf on UDON editors (not on ordinary notes). */
 const udonFoldService = foldService.of((state, lineStart, _lineEnd) => {
   const doc = state.doc;
   const line = doc.lineAt(lineStart);
@@ -82,6 +127,20 @@ const udonFoldService = foldService.of((state, lineStart, _lineEnd) => {
   if (!lastContent) return null;
   return { from: line.to, to: lastContent.to };
 });
+
+/** Extensions that should exist only while the editor is a UDON file. */
+function udonFileOnlyExtensions() {
+  return [
+    indentUnit.of(INDENT),
+    EditorState.tabSize.of(2),
+    udonFoldService,
+    // Hook for styles.css: monospace structure, proportional prose.
+    // data-* attribute (not class) so we cannot lose a class-merge fight
+    // with Obsidian's own editorAttributes.
+    EditorView.editorAttributes.of({ 'data-udon-doc': '1' }),
+    EditorView.contentAttributes.of({ 'data-udon-doc': '1' }),
+  ];
+}
 
 /** Enter: maintain the current line's leading indentation. */
 function insertNewlineKeepIndent(view) {
@@ -115,94 +174,19 @@ function tabCommand(view) {
   return true;
 }
 
-const udonKeymap = keymap.of([
-  { key: 'Enter', run: insertNewlineKeepIndent },
-  { key: 'Tab', run: tabCommand },
-  { key: 'Shift-Tab', run: indentLess },
-]);
-
-function udonExtensions(onDocChanged, highlighter) {
-  return [
-    indentUnit.of(INDENT),
-    EditorState.tabSize.of(2),
-    udonKeymap,
-    history(),
-    drawSelection(),
-    highlightActiveLine(),
-    EditorView.lineWrapping, // soft-wrap: sidesteps the reflow hazard entirely
-    codeFolding(),
-    udonFoldService,
-    foldGutter(),
-    udonDocEditorExtension(highlighter),
-    keymap.of([...defaultKeymap, ...historyKeymap, ...foldKeymap]),
-    EditorView.updateListener.of((u) => {
-      if (u.docChanged) onDocChanged();
-    }),
-    EditorView.contentAttributes.of({ 'aria-label': 'UDON editor' }),
-  ];
-}
-
-/* ========================================================================
- * Obsidian view + plugin
- * ======================================================================== */
-
-class UdonView extends TextFileView {
-  constructor(leaf, highlighter) {
-    super(leaf);
-    this.highlighter = highlighter;
-    this.editor = null;
-    this.pendingData = '';
-  }
-
-  getViewType() { return VIEW_TYPE_UDON; }
-  getDisplayText() { return this.file ? this.file.basename : 'UDON'; }
-  getIcon() { return 'file-text'; }
-
-  async onOpen() {
-    this.contentEl.empty();
-    this.contentEl.addClass('udon-view');
-    const host = this.contentEl.createDiv({ cls: 'udon-editor' });
-    this.editor = new EditorView({
-      state: EditorState.create({
-        doc: this.pendingData || '',
-        extensions: udonExtensions(() => this.requestSave(), this.highlighter),
-      }),
-      parent: host,
-    });
-  }
-
-  async onClose() {
-    if (this.editor) { this.editor.destroy(); this.editor = null; }
-  }
-
-  getViewData() {
-    return this.editor ? this.editor.state.doc.toString() : this.pendingData;
-  }
-
-  setViewData(data, clear) {
-    this.pendingData = data;
-    if (!this.editor) return;
-    if (clear) {
-      // Fresh file: reset the editor state (drops undo history).
-      this.editor.setState(EditorState.create({
-        doc: data,
-        extensions: udonExtensions(() => this.requestSave(), this.highlighter),
-      }));
-    } else {
-      this.editor.dispatch({
-        changes: { from: 0, to: this.editor.state.doc.length, insert: data },
-      });
-    }
-  }
-
-  clear() {
-    this.pendingData = '';
-    if (this.editor) {
-      this.editor.dispatch({
-        changes: { from: 0, to: this.editor.state.doc.length, insert: '' },
-      });
-    }
-  }
+/** Keymap that no-ops (returns false) unless this CM view is a UDON file. */
+function makeUdonKeymap(app) {
+  const onlyUdon = (fn) => (view) => {
+    if (!isUdonEditorView(app, view)) return false;
+    return fn(view);
+  };
+  // Prec.high so we win over markdown list/indent handlers on UDON files;
+  // on non-UDON files we return false and the next handler runs.
+  return Prec.high(keymap.of([
+    { key: 'Enter', run: onlyUdon(insertNewlineKeepIndent) },
+    { key: 'Tab', run: onlyUdon(tabCommand) },
+    { key: 'Shift-Tab', run: onlyUdon(indentLess) },
+  ]));
 }
 
 /* ========================================================================
@@ -211,7 +195,7 @@ class UdonView extends TextFileView {
  * Engine: core/udon-wasm (udon-core compiled to wasm32-unknown-unknown; raw
  * ABI, no wasm-bindgen). Landed as a spike 2026-07-16; both markdown-fence
  * surfaces validated in a live vault the same day, then promoted to the sole
- * highlighting source (the udon-file view below uses it too).
+ * highlighting source.
  *
  * Wasm ABI (core/udon-wasm/src/lib.rs):
  *   udon_alloc(len) -> ptr ; udon_highlight(ptr,len) -> [n,(start,end,cls)*n]
@@ -223,12 +207,10 @@ class UdonView extends TextFileView {
  *      `pre > code.language-udon` blocks and span-paints them (bypassing
  *      Prism -- the language-* class is stripped so Prism's async pass
  *      leaves the block alone).
- *   2. Live Preview / Source mode: a CM6 ViewPlugin scans lines for
- *      ```udon fences (regex on fence lines -- deliberately NOT dependent
- *      on Obsidian's internal HyperMD syntax-node names) and decorates the
- *      fence body with mark decorations.
- *   3. The udon-file view (.udon / .un / .don): udonDocEditorExtension paints the whole
- *      document from one wasm walk.
+ *   2. Live Preview / Source mode on .md notes: a CM6 ViewPlugin scans
+ *      lines for ```udon fences and decorates the fence body.
+ *   3. Whole .udon / .un / .don documents (markdown host): gated ViewPlugin
+ *      paints the whole document from one wasm walk.
  */
 
 /* Token role names are read from the wasm module itself (udon_role_names),
@@ -383,7 +365,7 @@ function udonReadingViewProcessor(highlighter) {
   };
 }
 
-/* --------------------------------- surface 2: Live Preview / Source (CM6) */
+/* --------------------------------- surface 2: ```udon fences in .md (CM6) */
 
 const FENCE_OPEN = /^(?:>\s*)*(\s*)(`{3,}|~{3,})\s*udon\b/;
 
@@ -393,10 +375,13 @@ const FENCE_OPEN = /^(?:>\s*)*(\s*)(`{3,}|~{3,})\s*udon\b/;
  * independent of Obsidian's internal markdown syntax-node naming, at the
  * cost of not handling exotic containers (nested callout depth changes,
  * indented-code ambiguity). Spike trade-off, noted.
+ *
+ * Skipped entirely on .udon/.un/.don files (whole-doc paint owns those).
  */
-function buildFenceDecorations(view, highlighter) {
+function buildFenceDecorations(view, highlighter, app) {
   const builder = new RangeSetBuilder();
   if (!highlighter.ready) return builder.finish();
+  if (isUdonEditorView(app, view)) return builder.finish();
   const doc = view.state.doc;
   // Whole-document line scan: correct when a fence opens above the viewport,
   // and O(doc) per update is fine at note scale (spike trade-off; the
@@ -432,22 +417,22 @@ function buildFenceDecorations(view, highlighter) {
   return builder.finish();
 }
 
-function udonFenceEditorExtension(highlighter) {
+function udonFenceEditorExtension(app, highlighter) {
   return ViewPlugin.fromClass(
     class {
       constructor(view) {
-        this.decorations = buildFenceDecorations(view, highlighter);
+        this.decorations = buildFenceDecorations(view, highlighter, app);
         // If the wasm engine finishes loading after first paint, refresh.
         if (!highlighter.ready && highlighter.loading) {
           highlighter.loading.then(() => {
-            this.decorations = buildFenceDecorations(view, highlighter);
+            this.decorations = buildFenceDecorations(view, highlighter, app);
             view.update([]); // no-op update to trigger redraw
           }).catch(() => {});
         }
       }
       update(u) {
         if (u.docChanged || u.viewportChanged) {
-          this.decorations = buildFenceDecorations(u.view, highlighter);
+          this.decorations = buildFenceDecorations(u.view, highlighter, app);
         }
       }
     },
@@ -474,23 +459,66 @@ function buildDocDecorations(view, highlighter) {
   return builder.finish();
 }
 
-/** The udon-file view's highlighter: one wasm walk paints the whole
- *  document (.udon / .un / .don). The highlight cache is keyed by full text,
- *  so scroll and selection churn cost nothing; only real edits re-parse. */
-function udonDocEditorExtension(highlighter) {
+/**
+ * Whole-document highlighter for UDON files on the markdown host.
+ * Arms only when the owning file's extension is udon/un/don; otherwise
+ * empty decorations so ordinary notes are untouched.
+ *
+ * Also owns udonFileConf: reconfigures indent unit + indent fold when the
+ * editor's file type flips (or on first attach after a race).
+ */
+function udonDocEditorExtension(app, highlighter) {
   return ViewPlugin.fromClass(
     class {
       constructor(view) {
-        this.decorations = buildDocDecorations(view, highlighter);
-        if (!highlighter.ready && highlighter.loading) {
+        this.app = app;
+        this.highlighter = highlighter;
+        this.isUdon = isUdonEditorView(app, view);
+        this.confOn = null; // last udonFileConf arm state; null = never synced
+        this.decorations = this.isUdon
+          ? buildDocDecorations(view, highlighter)
+          : Decoration.none;
+        // Defer reconfigure: cannot dispatch during EditorView construction.
+        queueMicrotask(() => this.syncFileConf(view));
+        if (this.isUdon && !highlighter.ready && highlighter.loading) {
           highlighter.loading.then(() => {
+            if (!this.isUdon) return;
             this.decorations = buildDocDecorations(view, highlighter);
             view.update([]); // no-op update to trigger redraw
           }).catch(() => {});
         }
       }
+      syncFileConf(view) {
+        if (this.confOn === this.isUdon) return;
+        this.confOn = this.isUdon;
+        try {
+          view.dispatch({
+            effects: udonFileConf.reconfigure(
+              this.isUdon ? udonFileOnlyExtensions() : []
+            ),
+          });
+        } catch (e) {
+          // View may already be destroyed.
+          this.confOn = null;
+        }
+      }
       update(u) {
-        if (u.docChanged) this.decorations = buildDocDecorations(u.view, highlighter);
+        // Re-resolve file on any update: leaf can rebind, and first paint
+        // sometimes races file attachment.
+        const now = isUdonEditorView(this.app, u.view);
+        if (now !== this.isUdon) {
+          this.isUdon = now;
+          this.decorations = now
+            ? buildDocDecorations(u.view, this.highlighter)
+            : Decoration.none;
+          this.syncFileConf(u.view);
+          return;
+        }
+        // First-paint race: file was missing at construct, attached since.
+        if (this.confOn !== this.isUdon) this.syncFileConf(u.view);
+        if (this.isUdon && u.docChanged) {
+          this.decorations = buildDocDecorations(u.view, this.highlighter);
+        }
       }
     },
     { decorations: (v) => v.decorations },
@@ -512,7 +540,7 @@ function udonDocEditorExtension(highlighter) {
 
 const DEFAULT_SETTINGS = {
   autocolors: true,
-  schemeName: 'tony-the-tiger',
+  schemeName: 'mochi',
 };
 
 /** Resolve a CSS color (var reference, hex, rgb()) to a 0xRRGGBB int by
@@ -562,19 +590,36 @@ module.exports = class UdonPlugin extends Plugin {
       .then(() => this.applyAutocolors())
       .catch((e) => console.error('UDON: wasm highlighter failed to load', e));
 
-    this.registerView(VIEW_TYPE_UDON, (leaf) => new UdonView(leaf, highlighter));
-    // Register each extension independently so a conflict on one (another
-    // plugin claiming it) does not block the others.
-    for (const ext of ['udon', 'un', 'don']) {
+    // Host: open UDON files as markdown so wikilinks, vim, and the rest of
+    // the note editor stack apply. Register each extension independently so
+    // a conflict on one (another plugin claiming it) does not block others.
+    for (const ext of UDON_EXTS) {
       try {
-        this.registerExtensions([ext], VIEW_TYPE_UDON);
+        this.registerExtensions([ext], 'markdown');
       } catch (e) {
-        console.error(`UDON: could not register .${ext} extension`, e);
+        console.error(`UDON: could not register .${ext} as markdown`, e);
       }
     }
 
+    // Guest: UDON behavior layered on the markdown host (gated by file type).
+    // udonFileConf starts empty; udonDocEditorExtension reconfigures it when
+    // the editor is a .udon/.un/.don file (indent unit + indent fold).
+    this.registerEditorExtension([
+      udonFileConf.of([]),
+      makeUdonKeymap(this.app),
+      udonDocEditorExtension(this.app, highlighter),
+      udonFenceEditorExtension(this.app, highlighter),
+    ]);
+
     this.registerMarkdownPostProcessor(udonReadingViewProcessor(highlighter), -50);
-    this.registerEditorExtension(udonFenceEditorExtension(highlighter));
+
+    // Force pure Source mode for UDON files (Live Preview mangles structure;
+    // Reading view of UDON prose is future work).
+    const forceSource = () => this.forceUdonSourceMode();
+    this.app.workspace.onLayoutReady(forceSource);
+    this.registerEvent(this.app.workspace.on('file-open', forceSource));
+    this.registerEvent(this.app.workspace.on('layout-change', forceSource));
+    this.registerEvent(this.app.workspace.on('active-leaf-change', forceSource));
 
     // Regenerate when the user switches Obsidian theme / light-dark mode:
     // the scheme is anchored to the live bg/fg, so it follows.
@@ -587,6 +632,30 @@ module.exports = class UdonPlugin extends Plugin {
         console.error('UDON: settings tab unavailable', e);
       }
     }
+  }
+
+  /**
+   * Keep every open UDON markdown leaf in pure Source mode
+   * (mode: 'source', source: true). Live Preview treats structure lines as
+   * markdown; Reading view is not yet a UDON surface.
+   */
+  forceUdonSourceMode() {
+    this.app.workspace.iterateAllLeaves((leaf) => {
+      const view = leaf.view;
+      if (!view || typeof view.getViewType !== 'function') return;
+      if (view.getViewType() !== 'markdown') return;
+      if (!isUdonFile(view.file)) return;
+
+      const vs = leaf.getViewState();
+      const st = vs.state || {};
+      // mode 'source' + source true = pure Source (not Live Preview).
+      if (st.mode === 'source' && st.source === true) return;
+
+      leaf.setViewState({
+        ...vs,
+        state: Object.assign({}, st, { mode: 'source', source: true }),
+      });
+    });
   }
 
   /** (Re)generate and inject the autocolors stylesheet. */
@@ -602,7 +671,7 @@ module.exports = class UdonPlugin extends Plugin {
       return;
     }
     const { bg, fg } = themeAnchors();
-    const css = this.highlighter.themeCss(this.settings.schemeName || 'tony-the-tiger', bg, fg);
+    const css = this.highlighter.themeCss(this.settings.schemeName || 'mochi', bg, fg);
     if (css) this.styleEl.textContent = css;
   }
 
@@ -638,10 +707,10 @@ class UdonSettingTab {
         .setName('Scheme name')
         .setDesc('Any string is a scheme. Same name, same colors, everywhere, forever. Try a few until one sings.')
         .addText((t) => t
-          .setPlaceholder('tony-the-tiger')
+          .setPlaceholder('mochi')
           .setValue(plugin.settings.schemeName)
           .onChange(async (v) => {
-            plugin.settings.schemeName = v.trim() || 'tony-the-tiger';
+            plugin.settings.schemeName = v.trim() || 'mochi';
             await plugin.saveSettings();
           }));
     };

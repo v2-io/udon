@@ -77,36 +77,39 @@ cp -r ux/obsidian-udon "<vault>/.obsidian/plugins/udon"
 ```
 
 Then in Obsidian: Settings → Community plugins → reload/enable **UDON**.
-`.udon` files in the vault now open in a dedicated editor view.
+`.udon` / `.un` / `.don` files open on the **markdown** host (wikilinks,
+vim, editor plugins) with UDON guest extensions layered on top.
 
 ### What works
 
-1. **Opening**: registers the `.udon` extension with a `TextFileView`
-   wrapping a CodeMirror 6 editor. Live files (ASF process maps, LEXICON)
-   open, edit, and save (standard Obsidian debounced save).
-2. **Indentation**: Enter maintains the current line's indent; Tab indents
-   the line by 2 spaces when in leading whitespace (or with a selection),
-   inserts 2 spaces mid-line; Shift-Tab dedents. Tabs are never inserted
-   (spec: "Spaces only, no tabs").
-3. **Safeset highlighting** per above, themed via Obsidian's own
-   `--code-*` CSS variables (light/dark both fine).
-4. **Folding on indentation**: fold gutter + fold commands; a line folds
+1. **Opening (hybrid host, 0.2.0)**: registers `.udon` / `.un` / `.don` as
+   the built-in `markdown` view so the note stack applies — wikilinks
+   (click, autocomplete, backlinks), vim mode, vimrc-support, and other
+   `registerEditorExtension` plugins. Pure Source mode is forced for
+   those files (Live Preview mangles structure lines).
+2. **Indentation** (UDON files only): Enter maintains the current line's
+   indent; Tab indents by 2 spaces when in leading whitespace (or with a
+   selection), inserts 2 spaces mid-line; Shift-Tab dedents. Tabs are
+   never inserted (spec: "Spaces only, no tabs").
+3. **Parser-driven highlighting** via `udon.wasm` — whole-document paint
+   on UDON files; ```` ```udon ```` fence paint inside ordinary `.md`
+   notes (Reading + Live Preview + Source). Autocolors or static fallback.
+4. **Folding on indentation** (UDON files, when focused): a line folds
    everything blank-or-more-indented below it (mirrors the spec's
    hierarchy rule).
-5. **Soft wrap** is on — per REVIEW §3.6, soft-wrap sidesteps the
-   reflow-reparenting hazard entirely; never hard-wrap UDON prose.
+5. **Soft wrap** follows the markdown editor settings — never hard-wrap
+   UDON prose (reflow-reparenting hazard, REVIEW §3.6).
 
 ### Deferred (and the seam for it)
 
-- **Markdown rendering of prose** (the "reading view"): not attempted.
-  The seam: `UdonView` owns a single source-mode CM editor; a reading
-  sub-view can be added beside it that walks prose spans (the tokenizer
-  already knows which lines are prose vs structure vs raw) and renders
-  them through Obsidian's `MarkdownRenderer` — without touching the
-  tokenizer or the editing extensions.
+- **UDON reading view of prose**: not attempted. Files stay in Source.
+  Future: a reading surface that walks prose spans through
+  `MarkdownRenderer` without treating structure lines as HyperMD.
 - No linting (reflow-damage heuristics are the linter's job, per REVIEW).
 - Whole-document mode scan runs per edit — fine for daily-use documents
   (hundreds of lines); would want incremental state for very large files.
+- Stem-resolution conventions (`[[term/X]]` vs `terms/X.term.un`) are a
+  naming-community concern (paths D8), not rewritten by the plugin.
 
 ### Known limitations (honest list)
 
@@ -114,11 +117,11 @@ Then in Obsidian: Settings → Community plugins → reload/enable **UDON**.
   comment) are displayed as prose, not comment — determining them needs
   cross-line indent state we deliberately don't guess at yet. This is the
   one place the display is *lighter* than the parse (under-highlight).
-- Not verified inside a live Obsidian instance yet — the API usage is the
-  standard TextFileView + CM6 pattern, but first-load should be sanity
-  checked on a scratch vault. (The tokenizer itself is test-verified.)
-- `.udon` files won't appear in some link/search affordances that are
-  markdown-only; that's an Obsidian platform boundary.
+- Indent unit + indent fold are compartment-scoped to UDON editors only
+  (ordinary notes keep their own indent settings).
+- HyperMD decorations in Source mode may still fight structure lines in
+  places (links/work is the point of the host switch; residual taste-test
+  open in `TODO-HUMAN-UX.md`).
 
 ---
 
@@ -200,8 +203,10 @@ ln -s "$(pwd)/ux/vim" ~/.vim/pack/udon/start/udon
   `indentexpr`, which would be actively dangerous in a
   layout-significant format).
 - **Folding for free**: `foldmethod=indent` — matches UDON's hierarchy.
-- Safeset highlighting per above, including raw/freeform body
-  suppression (indent-scoped via `\z(...\)` regions) and mid-line fences.
+- Safeset highlighting: **prose defaults to stock Markdown** (`syn include`
+  of `syntax/markdown.vim`); structure lines (`|` / `:` / `!` / `;`),
+  raw `!:lang:` bodies, and ```` ``` ```` freeform punch through as UDON.
+  Inline UDON forms (`|{…}`, `;{…}`, `!{{…}}`) still work inside prose.
 - `formatoptions` strips auto-wrap and `comments`/`commentstring` are set
   for `;` so comment toggles work. **Do not `gq` UDON prose** — until a
   udon-aware fill exists (tree-sitter path), reflow can silently promote

@@ -131,7 +131,7 @@ open decision) so targets stay cheap.
     pass. WCAG ratio stands in for APCA (open: upgrade).
   - Name IS the seed: FNV-1a 64 + SplitMix64, **pinned** in rng.rs with a
     pinning test — same name, same scheme, forever.
-  - Obsidian: scheme name is a plugin setting (default `tony-the-tiger`),
+  - Obsidian: scheme name is a plugin setting (default `mochi`),
     CSS generated at load + on `css-change`, injected as `#udon-autocolors`;
     role names read from the wasm module so JS can't drift.
   - Proven headless (unit tests + node end-to-end on the real onload path);

@@ -1,43 +1,59 @@
-/* UDON view: editor shell */
-.udon-view {
-  padding: 0;
+/* ------------------------------------------------------------------------
+ * Typography — structure mono, prose proportional.
+ *
+ * Obsidian’s markdown host sets --font-text on .cm-scroller / .cm-content
+ * with high specificity. Without matching that (and !important) the whole
+ * UDON buffer inherits the note face — including ids, keys, and inter-block
+ * spaces that never looked like “prose” to the eye.
+ *
+ * Strategy:
+ *   1. Force mono on the entire UDON editor surface (and descendants),
+ *      beating the host. Hook is data-udon-doc (set by main.js), not a
+ *      class, so we cannot lose an editorAttributes class-merge fight.
+ *   2. Only role `text` (parser event Text / Tier::Prose) escapes to
+ *      --font-text. Comments, dim, keys, values, sigils stay mono.
+ *
+ * .udon-fence is Reading-view ```udon.
+ */
+
+/* --- UDON documents (markdown host) ----------------------------------- */
+.markdown-source-view.mod-cm6 .cm-editor[data-udon-doc="1"] .cm-scroller,
+.markdown-source-view.mod-cm6 .cm-editor[data-udon-doc="1"] .cm-content,
+.markdown-source-view.mod-cm6 .cm-editor[data-udon-doc="1"] .cm-line,
+.markdown-source-view.mod-cm6 .cm-content[data-udon-doc="1"],
+.markdown-source-view.mod-cm6 .cm-content[data-udon-doc="1"] .cm-line,
+.markdown-source-view.mod-cm6 .cm-content[data-udon-doc="1"] .cm-line * {
+  font-family: var(--font-monospace) !important;
 }
-.udon-editor {
-  height: 100%;
+
+/* Prose spans only — and HyperMD children inside them (wikilinks, etc.).
+ * Must beat the `*` mono rule above (equal !important → higher specificity). */
+.markdown-source-view.mod-cm6 .cm-editor[data-udon-doc="1"] .udon-hl-text,
+.markdown-source-view.mod-cm6 .cm-editor[data-udon-doc="1"] .udon-hl-text *,
+.markdown-source-view.mod-cm6 .cm-content[data-udon-doc="1"] .udon-hl-text,
+.markdown-source-view.mod-cm6 .cm-content[data-udon-doc="1"] .udon-hl-text * {
+  font-family: var(--font-text) !important;
 }
-.udon-editor .cm-editor {
-  height: 100%;
-  font-family: var(--font-monospace);
-  font-size: var(--font-text-size, 16px);
-  background: var(--background-primary);
-  color: var(--text-normal);
+
+/* --- ```udon fences in ordinary notes / Reading view ------------------ */
+.udon-fence,
+.udon-fence * {
+  font-family: var(--font-monospace) !important;
 }
-.udon-editor .cm-scroller {
-  font-family: var(--font-monospace);
-  line-height: var(--line-height-normal, 1.5);
-  padding: var(--size-4-4) var(--size-4-2);
+.udon-fence .udon-hl-text,
+.udon-fence .udon-hl-text * {
+  font-family: var(--font-text) !important;
 }
-.udon-editor .cm-content {
-  caret-color: var(--caret-color, var(--text-normal));
+
+/* Fence paint in Live Preview / Source on ordinary .md notes: non-prose
+ * role marks mono; prose proportional. */
+.markdown-source-view.mod-cm6 .cm-line [class*="udon-hl-"]:not(.udon-hl-text),
+.markdown-source-view.mod-cm6 .cm-line [class*="udon-hl-"]:not(.udon-hl-text) * {
+  font-family: var(--font-monospace) !important;
 }
-.udon-editor .cm-activeLine {
-  background: var(--background-secondary);
-}
-.udon-editor .cm-selectionBackground,
-.udon-editor .cm-content ::selection {
-  background: var(--text-selection) !important;
-}
-.udon-editor .cm-foldGutter {
-  width: 1em;
-  color: var(--text-faint);
-}
-.udon-editor .cm-foldPlaceholder {
-  background: var(--background-modifier-hover);
-  border: none;
-  color: var(--text-muted);
-  border-radius: var(--radius-s);
-  padding: 0 4px;
-  margin: 0 2px;
+.markdown-source-view.mod-cm6 .cm-line .udon-hl-text,
+.markdown-source-view.mod-cm6 .cm-line .udon-hl-text * {
+  font-family: var(--font-text) !important;
 }
 
 /* ------------------------------------------------------------------------
@@ -47,7 +63,11 @@
  * after this file and wins. These rules keep documents legible when
  * autocolors is toggled off (or the theme call fails). Role names come from
  * the wasm role table (core/udon-wasm/src/roles.rs); kin roles fall back to
- * their family's color here — the kinship *shading* only exists generated. */
+ * their family's color here — the kinship *shading* only exists generated.
+ *
+ * Host: .udon / .un / .don open as the built-in markdown editor, so these
+ * classes paint inside .markdown-source-view .cm-content (and ```udon
+ * fences in ordinary notes / Reading view). No custom view shell. */
 .udon-hl-dim            { color: var(--text-faint); }
 .udon-hl-element-name   { color: var(--color-cyan, #56b6c2); font-weight: 600; }
 .udon-hl-element-sigil, .udon-hl-inline-sigil, .udon-hl-inline-close,
