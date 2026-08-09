@@ -4,6 +4,8 @@
 **Status:** normative for surface recognition and core semantics.  
 **Companions:** [GLOSSARY.md](GLOSSARY.md) (vocabulary) · [MODEL.md](MODEL.md) (what recognition produces) · [SEMANTICS.md](SEMANTICS.md) (equivalence) · [CARVEOUTS.md](CARVEOUTS.md) (deliberately unspecified, with reasons) · [DELTAS.md](DELTAS.md) (behavior changes vs 0.9.0-alpha.2, ledgered) · [RATIONALE.md](RATIONALE.md) (non-normative why).
 
+> [!important] **Ledger-ahead transition (2026-08-08/09).** Rulings **K5–K13** ([`../DECISIONS.md`](../DECISIONS.md)) supersede substantial parts of this text: attribute-content unification (K5) · sameline-as-value-space + `$main` sugar (K9, with R4/S11 scope Overturns) · value terminators replacing flow-to-EOL (K10) · silent stacking, warned extension retired (K11) · expressive keys + flag-semantics retirement (K12 — §6.2's flag rules and §6.4's flag machinery are DEAD text) · the `\` frame split (K13 — §4 conflates two operators). **Where this document and the ledger disagree, the ledger wins.** The unification authoring pass (OPEN **UNIF-PASS**) is rewriting this suite; only minimal K6–K8 patches are inline so far.
+
 This document is the contract for how UDON source text maps to the model in MODEL.md. It does not teach style (pedagogy is a separate pillar), define an event/wire encoding (deliberately absent — see README), or specify Host projection, Schema constraint, or Dialect meaning beyond what recognition must carry.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are per RFC 2119.
