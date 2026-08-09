@@ -156,7 +156,7 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 
 ## Steward marks (2026-08-07/09 — identity, attribute-shape, value-space sessions)
 
-> [!important] **Provenance of the K-rows.** Joseph never ratified any row below *as written* — he ratified statements in conversation; the K-labels and row prose are the coordinating agent's after-the-fact compression. **Authority is his verbatim in-session statements and worked examples**; a row is an index into those, and where a row diverges from what he actually said, the row is wrong (two riders have already been caught and struck — K9's flow-to-EOL and no-tier lines). Agents adjudicating from this ledger without the session transcript: treat direct quotes inside rows as primary and unquoted row prose as secondhand.
+> [!important] **Provenance of the K-rows, and what to do at a conflict.** Joseph never ratified any row below *as written* — he ratified statements in live collaboration; the K-labels and row prose are the coordinating agent's good-faith interpretation made at the time (his comments often need it: anti-examples, hedges, "I would prefer" meaning not-yet-decided). That interpretation work was legitimate — but it is **interpretation, not ratified text**. So when a row later conflicts with something else (another row, a worked example, an implementation question), do not adjudicate rule-vs-rule: the conflict is evidence an inference has become load-bearing, and the protocol is to return to Joseph with *"when you said 'xyz' — were you also implying 'abc'? I assumed yes at the time, now I'm wondering."* Two struck riders (K9's flow-to-EOL and no-tier lines) are the specimens of what skipping that protocol produces.
 
 | ID | Holds | Cite |
 |----|--------|------|
