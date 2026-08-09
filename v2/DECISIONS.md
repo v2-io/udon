@@ -154,7 +154,9 @@ These are **cross-cutting authoring conventions**, not language law; they bind a
 |----|--------|------|
 | **C8** | **0.9.1 is semi-frozen (provisionally frozen) and spec-only.** "We'll call 0.9.1 semi-frozen or provisionally frozen, recognizing that further audits on the old 0.9 and fixtures etc. may reveal more modifications needed, and remaining potentially open for critical parser-grammar facing nuance that needs to get into 0.9.1 to avoid it painting us into a corner. Similarly, we'll declare 0.9.1 spec-only for now — not intended *necessarily* to be implemented — unknown depending on findings etc. coming up." Refines C7's baseline status; fixture posture stays deferred-lean. | jaw 2026-07-28, FOR-JOSEPH answers |
 
-## Steward marks (2026-08-07 — identity & attribute-shape session)
+## Steward marks (2026-08-07/09 — identity, attribute-shape, value-space sessions)
+
+> [!important] **Provenance of the K-rows.** Joseph never ratified any row below *as written* — he ratified statements in conversation; the K-labels and row prose are the coordinating agent's after-the-fact compression. **Authority is his verbatim in-session statements and worked examples**; a row is an index into those, and where a row diverges from what he actually said, the row is wrong (two riders have already been caught and struck — K9's flow-to-EOL and no-tier lines). Agents adjudicating from this ledger without the session transcript: treat direct quotes inside rows as primary and unquoted row prose as secondhand.
 
 | ID | Holds | Cite |
 |----|--------|------|
