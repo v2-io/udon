@@ -23,7 +23,17 @@ probe scored 5/5 with this framing vs 4/5 without — n=1, suggestive).
 **Recommendation: keep.** (Separate sub-item, no urgency: the full physical
 reorder of sections is *proposed only* — approving §0 does not trigger it.)
 
-## D2 — Where does "brace form = its own value" work? *(both forks CONCUR — awaiting your word)*
+## D2 — RULED → K16 (2026-08-09, in chat)
+
+**A key is a value slot, not a different syntax.** Full value grammar in every
+value-expected position including identity/selector bracket interiors — the
+fork-concurred brace carve was *rejected* (my "keys are for matching" rationale
+was an invented essence; jaw caught it live). Block forms out of bracket sugar:
+held lightly, "OK for right now," not law — the longhand `:$key` form covers
+complex keys. Matching semantics stay paths-era, default inert. Original
+presentation kept below for the record:
+
+## ~~D2 — Where does "brace form = its own value" work?~~ *(superseded by K16 above)*
 
 Your intuition: `:attr |{a} |{b}` ≈ `:attr [|{a} |{b}]` "generally."
 Resolution, unanimously concurred after both forks tried to refute it (each
