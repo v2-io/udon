@@ -14,6 +14,14 @@
 > Questions raised *by this rewrite* live in
 > [UNIF-PASS-QUESTIONS.md](UNIF-PASS-QUESTIONS.md) until adjudicated; where a
 > subsection below flags one, the flagged reading is a lean, not law.
+>
+> **Known lag (2026-08-10, at merge to main):** rulings **K15–K16** postdate
+> this text and are not yet folded in — K15 (spelling flavors are
+> ornamentation; collection default-read; assembler flavor annotation) and
+> K16 (a key is a value slot — full value grammar in bracket interiors; the
+> brace-form carve this text's §6.4/§5.3 still implies is **rejected**;
+> block-forms-out and `@{key}`-only-for-refs held lightly). The ledger wins;
+> fold-in checklists are in the ledger rows and Q2's resolution notes.
 
 This document is the contract for how UDON source text maps to the model in MODEL.md. It does not teach style (pedagogy is a separate pillar), define an event/wire encoding (deliberately absent — see README), or specify Host projection, Schema constraint, or Dialect meaning beyond what recognition must carry.
 
