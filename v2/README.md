@@ -4,7 +4,7 @@
 
 | Here | Role |
 |------|------|
-| [`current-0.9.1-spec/`](current-0.9.1-spec/) | **The language baseline.** Ruled law consolidated into one clean suite — the base of operations agents work *from*. Not the 0.10 successor (see **C7** in the ledger). |
+| [`spec-0.09.01/`](spec-0.09.01/) | **The language baseline.** Ruled law consolidated into one clean suite — the base of operations agents work *from*. Not the 0.10 successor (see **C7** in the ledger). |
 | [`udon-needs/`](udon-needs/) | **The demand-side work.** Gathering (phase 1, complete) → synthesis (phase 2, the tooling report) → priorities → decisions → parsers/utilities → … → Parsing Framework. |
 | [`theory/`](theory/) | **Claim layer (early).** Process norms + demand ranking only; **no theory foundation yet** (sterilized P* frame deleted). Start at [`theory/README.md`](theory/README.md). |
 | [`DECISIONS.md`](DECISIONS.md) | Thin present-truth ledger — ruled language law and steward marks; append-only. |
@@ -13,7 +13,7 @@
 
 ## How they relate
 
-The 0.9.1 suite says **what the language is right now**, including — deliberately — [what it leaves unspecified and why](current-0.9.1-spec/CARVEOUTS.md). The demand-side work says **what agents actually need**. The theory corpus integrates consequences of both into **one claim per file**, under collision and bare-gap discipline, so design probes can cite a slug rather than re-open a spike. Neither demand nor theory is the 0.10 design; that comes when demand work reaches its decision stages. A spike or design probe should read the suite's carve-out register first — each open item carries the demand-side reason it is open and what would close it.
+The 0.9.1 suite says **what the language is right now**, including — deliberately — [what it leaves unspecified and why](spec-0.09.01/CARVEOUTS.md). The demand-side work says **what agents actually need**. The theory corpus integrates consequences of both into **one claim per file**, under collision and bare-gap discipline, so design probes can cite a slug rather than re-open a spike. Neither demand nor theory is the 0.10 design; that comes when demand work reaches its decision stages. A spike or design probe should read the suite's carve-out register first — each open item carries the demand-side reason it is open and what would close it.
 
 ## Origin of the demand-first turn
 

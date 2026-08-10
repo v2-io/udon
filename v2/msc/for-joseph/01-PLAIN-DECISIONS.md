@@ -134,7 +134,7 @@ document-layer duplicate checks already work whole-element.
 
 - **Merge**: bless pass 1+2 (branch `unif-pass-2`) onto main once D1/D2 land.
 - **Directory rename**: suite says 0.10.0-alpha.1 but lives in
-  `current-0.9.1-spec/` — rename (`current-spec/`?) or leave.
+  `spec-0.10.00/` — rename (`current-spec/`?) or leave.
 - **`.un` extension** — intentional convention? One line somewhere if so.
 - **REF-SLASH / REF-BRACKET** (old OPEN rows) — soonest-relevant of the old
   steward calls, since the paths corpus is live.

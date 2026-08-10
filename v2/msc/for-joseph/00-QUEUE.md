@@ -11,7 +11,7 @@ adjudication. All work is committed on branches; nothing merges without you
 | **Pass 1** — UNIF-PASS rewrite (K1–K14 native; two-space model; `{label, content}`; key/label/kind split; 0.10.0-alpha.1) | `worktree-agent-a2a87c49aab940bdc` | `2de5907` | `.claude/worktrees/agent-a2a87c49aab940bdc/` |
 | **Pass 2** — arc reframing on top of pass 1 (§0 seven-axiom spine; Q2 sharpened; Q8 found) | `unif-pass-2` | `4ccd9f8` | `.claude/worktrees/agent-a1e3f81f5f517acd7/` |
 
-**Primary read:** `v2/current-0.9.1-spec/MORNING-ADJUDICATION.md` on `unif-pass-2`
+**Primary read:** `v2/spec-0.10.00/MORNING-ADJUDICATION.md` on `unif-pass-2`
 (pass 2 wrote it for you specifically), then `UNIF-PASS-QUESTIONS.md` beside it
 (pass 1's said/assumed/ask items). Everything below is the index, not a
 substitute.
@@ -43,7 +43,7 @@ substitute.
    advisory probably describes nothing post-K13 (axioms strengthen this).
 7. **Merge** — whichever of pass 1 / pass 1+2 you bless lands on main.
 8. **Standing small list** (pre-overnight): directory rename
-   (`current-0.9.1-spec/` → ?); `.un` extension intentional?; the older OPEN
+   (`spec-0.10.00/` → ?); `.un` extension intentional?; the older OPEN
    steward closes — **REF-SLASH / REF-BRACKET soonest** (paths corpus live);
    S4, N-jargon, IND/IND-2, FIX-FRAME whenever.
 

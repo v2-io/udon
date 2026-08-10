@@ -94,7 +94,7 @@ stop being "labels" — and if so, is "envelope ladder" (or another word —
 
 ## Q6 — versioning (RESOLVED)
 
-0.10.0-alpha.1 inside `current-0.9.1-spec/`, banner explains, directory
+0.10.0-alpha.1 inside `spec-0.10.00/`, banner explains, directory
 rename deferred to you. Done per coordinator relay.
 
 ## Pass inventory (what changed where)
