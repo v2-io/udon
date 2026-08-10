@@ -65,7 +65,7 @@
  * the wasm role table (core/udon-wasm/src/roles.rs); kin roles fall back to
  * their family's color here — the kinship *shading* only exists generated.
  *
- * Host: .udon / .un / .don open as the built-in markdown editor, so these
+ * Host: .udon / .ud / .un / .don open as the built-in markdown editor, so these
  * classes paint inside .markdown-source-view .cm-content (and ```udon
  * fences in ordinary notes / Reading view). No custom view shell. */
 .udon-hl-dim            { color: var(--text-faint); }

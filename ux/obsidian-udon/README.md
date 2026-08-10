@@ -1,18 +1,18 @@
 # UDON plugin for Obsidian
 
-Views and edits `.udon`, `.un`, and `.don` files on Obsidian’s **markdown
+Views and edits `.udon`, `.ud`, `.un`, and `.don` files on Obsidian’s **markdown
 editor host** (same stack as notes: wikilinks, vim, editor plugins), and
 highlights ```` ```udon ```` fences in ordinary markdown notes — in Reading
 view, Live Preview, and Source mode.
 
-`.un` / `.don` are short aliases for vanilla udon (e.g. verisectorium-style
-`terms/*.term.un`).
+`.ud` / `.un` / `.don` are short aliases for vanilla udon (e.g. paths-style
+`def/*.ud`, verisectorium-style `terms/*.term.un`).
 
 ## Architecture
 
 | Layer | What |
 |---|---|
-| **Host** | `registerExtensions(['udon','un','don'], 'markdown')` — real note editor |
+| **Host** | `registerExtensions(['udon','ud','un','don'], 'markdown')` — real note editor |
 | **Guest** | Gated CM6 extensions: wasm whole-doc highlight, Tab/Enter indent, indent fold |
 | **Guardrail** | Force pure **Source** mode for UDON files (Live Preview mangles structure) |
 
@@ -70,7 +70,7 @@ other vault, copy or symlink this directory to
 `<vault>/.obsidian/plugins/udon/` and enable it. Four files matter at
 runtime: `main.js`, `styles.css`, `manifest.json`, `udon.wasm`.
 
-Reload the plugin (or restart Obsidian) after updating. If a `.udon`/`.un`
+Reload the plugin (or restart Obsidian) after updating. If a `.udon`/`.ud`/`.un`
 file was already open under the old custom view, close and reopen it so it
 binds to markdown.
 

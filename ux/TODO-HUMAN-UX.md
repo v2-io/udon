@@ -20,12 +20,12 @@ Obsidian, syntax highlighting, editors, and how UDON reads/edits for humans.
 - [ ] **Obsidian plugin** (`obsidian-udon/`) — Joseph's live-use feedback
       lands here. Open items (drained from the former plugin sub-tracker,
       2026-07-16):
-      - [x] **Markdown host for .udon/.un/.don** (0.2.0, 2026-08-08) —
-            register as `markdown` so wikilinks, vim, and editor plugins
-            attach; gate wasm whole-doc highlight + UDON Tab/Enter + indent
-            fold as guest extensions; force pure Source mode (Live Preview
-            mangles structure). Live check: `terms/descriptor.term.un`
-            click-through / backlinks / vim.
+      - [x] **Markdown host for .udon/.ud/.un/.don** (0.2.0, 2026-08-08;
+            `.ud` 0.2.1) — register as `markdown` so wikilinks, vim, and
+            editor plugins attach; gate wasm whole-doc highlight + UDON
+            Tab/Enter + indent fold as guest extensions; force pure Source
+            mode (Live Preview mangles structure). Live check:
+            `terms/descriptor.term.un` click-through / backlinks / vim.
       - [ ] **Get editing to work** — residual after host switch: soft-wrap
             hanging indent, reading surface for prose, stem-resolution
             conventions (`[[term/X]]` vs `terms/X.term.un`), taste-test

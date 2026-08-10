@@ -77,16 +77,16 @@ cp -r ux/obsidian-udon "<vault>/.obsidian/plugins/udon"
 ```
 
 Then in Obsidian: Settings → Community plugins → reload/enable **UDON**.
-`.udon` / `.un` / `.don` files open on the **markdown** host (wikilinks,
+`.udon` / `.ud` / `.un` / `.don` files open on the **markdown** host (wikilinks,
 vim, editor plugins) with UDON guest extensions layered on top.
 
 ### What works
 
-1. **Opening (hybrid host, 0.2.0)**: registers `.udon` / `.un` / `.don` as
-   the built-in `markdown` view so the note stack applies — wikilinks
-   (click, autocomplete, backlinks), vim mode, vimrc-support, and other
-   `registerEditorExtension` plugins. Pure Source mode is forced for
-   those files (Live Preview mangles structure lines).
+1. **Opening (hybrid host, 0.2.0; `.ud` added 0.2.1)**: registers
+   `.udon` / `.ud` / `.un` / `.don` as the built-in `markdown` view so the
+   note stack applies — wikilinks (click, autocomplete, backlinks), vim mode,
+   vimrc-support, and other `registerEditorExtension` plugins. Pure Source
+   mode is forced for those files (Live Preview mangles structure lines).
 2. **Indentation** (UDON files only): Enter maintains the current line's
    indent; Tab indents by 2 spaces when in leading whitespace (or with a
    selection), inserts 2 spaces mid-line; Shift-Tab dedents. Tabs are

@@ -1,9 +1,9 @@
 {
   "id": "udon",
   "name": "UDON",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "minAppVersion": "1.1.0",
-  "description": "Edit .udon / .un / .don on the markdown host (wikilinks, vim) with parser-driven highlighting and UDON indent behavior.",
+  "description": "Edit .udon / .ud / .un / .don on the markdown host (wikilinks, vim) with parser-driven highlighting and UDON indent behavior.",
   "author": "Joseph Wecker",
   "isDesktopOnly": false
 }

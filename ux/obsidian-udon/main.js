@@ -8,7 +8,7 @@
  * a plugin (verified live 2026-07-16).
  *
  * Architecture (hybrid host, 2026-08-08):
- *   .udon / .un / .don open as Obsidian's built-in **markdown** view so the
+ *   .udon / .ud / .un / .don open as Obsidian's built-in **markdown** view so the
  *   real note stack applies: wikilinks (click, complete, backlinks), vim mode,
  *   vimrc-support, editor settings, and other registerEditorExtension plugins.
  *   UDON-specific behavior (wasm highlighting, indent Tab/Enter, indent fold)
@@ -17,10 +17,11 @@
  *   structure lines. Reading-view rendering of UDON prose is still FUTURE.
  *
  * Scope (deliberate, in priority order):
- *   1. .udon / .un / .don open as markdown notes (wikilinks + editor host).
- *      .un and .don are short aliases for the same surface (vanilla udon;
+ *   1. .udon / .ud / .un / .don open as markdown notes (wikilinks + editor host).
+ *      .ud, .un, and .don are short aliases for the same surface (vanilla udon;
  *      .un is the transitional short form used in verisectorium-style
- *      instances, e.g. terms/*.term.un).
+ *      instances, e.g. terms/*.term.un; .ud is the short form used in
+ *      paths-style instances, e.g. def/*.ud).
  *   2. Indentation behavior on UDON files: Enter maintains the current
  *      line's indent; Tab / Shift-Tab indent and dedent by 2 spaces; tabs
  *      are never inserted (the spec forbids them).
@@ -29,7 +30,7 @@
  *      is painted directly. Same walk as core/udon-core/examples/
  *      highlight.rs. There is no hand-maintained grammar here to drift from
  *      the spec; rebuild udon.wasm and the highlighting IS the current
- *      parser. Applies to whole .udon/.un/.don documents and to ```udon
+ *      parser. Applies to whole .udon/.ud/.un/.don documents and to ```udon
  *      fences inside ordinary .md notes.
  *   4. Folding on indentation (UDON files only).
  *   4b. Autocolors (editors/autocolors/PLAN.md): the same wasm module
@@ -59,7 +60,7 @@ const {
 } = require('@codemirror/state');
 
 const INDENT = '  '; // 2 spaces; spec: "Spaces only, no tabs"
-const UDON_EXTS = new Set(['udon', 'un', 'don']);
+const UDON_EXTS = new Set(['udon', 'ud', 'un', 'don']);
 
 /** Per-editor compartment: indent unit + indent fold only on UDON files. */
 const udonFileConf = new Compartment();
@@ -209,7 +210,7 @@ function makeUdonKeymap(app) {
  *      leaves the block alone).
  *   2. Live Preview / Source mode on .md notes: a CM6 ViewPlugin scans
  *      lines for ```udon fences and decorates the fence body.
- *   3. Whole .udon / .un / .don documents (markdown host): gated ViewPlugin
+ *   3. Whole .udon / .ud / .un / .don documents (markdown host): gated ViewPlugin
  *      paints the whole document from one wasm walk.
  */
 
@@ -376,7 +377,7 @@ const FENCE_OPEN = /^(?:>\s*)*(\s*)(`{3,}|~{3,})\s*udon\b/;
  * cost of not handling exotic containers (nested callout depth changes,
  * indented-code ambiguity). Spike trade-off, noted.
  *
- * Skipped entirely on .udon/.un/.don files (whole-doc paint owns those).
+ * Skipped entirely on .udon/.ud/.un/.don files (whole-doc paint owns those).
  */
 function buildFenceDecorations(view, highlighter, app) {
   const builder = new RangeSetBuilder();
@@ -440,7 +441,7 @@ function udonFenceEditorExtension(app, highlighter) {
   );
 }
 
-/* ----------------------- surface 3: whole .udon / .un / .don documents */
+/* ----------------------- surface 3: whole .udon / .ud / .un / .don documents */
 
 function buildDocDecorations(view, highlighter) {
   const builder = new RangeSetBuilder();
@@ -461,7 +462,7 @@ function buildDocDecorations(view, highlighter) {
 
 /**
  * Whole-document highlighter for UDON files on the markdown host.
- * Arms only when the owning file's extension is udon/un/don; otherwise
+ * Arms only when the owning file's extension is udon/ud/un/don; otherwise
  * empty decorations so ordinary notes are untouched.
  *
  * Also owns udonFileConf: reconfigures indent unit + indent fold when the
@@ -603,7 +604,7 @@ module.exports = class UdonPlugin extends Plugin {
 
     // Guest: UDON behavior layered on the markdown host (gated by file type).
     // udonFileConf starts empty; udonDocEditorExtension reconfigures it when
-    // the editor is a .udon/.un/.don file (indent unit + indent fold).
+    // the editor is a .udon/.ud/.un/.don file (indent unit + indent fold).
     this.registerEditorExtension([
       udonFileConf.of([]),
       makeUdonKeymap(this.app),
