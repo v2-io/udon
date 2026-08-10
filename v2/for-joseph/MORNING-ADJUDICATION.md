@@ -45,7 +45,7 @@ Revert cost if you dislike §0: one commit, self-contained.
 
 ## Q2, sharpened — pick a principle, not cells
 
-Pass 1 left clean-value-position scope as three per-context leans (lists YES ·
+Pass 1 left clean-ovalue-position scope as three per-context leans (lists YES ·
 identity NO · deferred-first-line NO). Working the axioms against them exposed
 that **those leans don't follow from any single principle** — two candidate
 principles are each internally uniform and give different tables:
