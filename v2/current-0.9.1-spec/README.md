@@ -1,7 +1,7 @@
 # current-0.9.1-spec — the consolidated UDON spec suite
 
 ```udon
-|article[intro].featured :author "Joseph Wecker" :draft?
+|article[intro].featured :author "Joseph Wecker" :draft? true
   Structure and prose, freely interleaved — no closing tags, and prose
   is just prose (Markdown survives; ; only a framed semicolon comments).
   |section :title Typed values
@@ -11,7 +11,7 @@
 
 **Bare recognition is frozen forever, so adding a dialect can never silently retype an existing document — UDON's dates structurally cannot be Norway'd.** New readers: [TUTORIAL.md](TUTORIAL.md) (twenty minutes, settled core only), then CORE's Appendix A.
 
-**What this is.** The single place to learn what UDON *is* right now: 0.9-era law consolidated from four scattered sources — the live `spec/CORE.md` (0.9.0-alpha.2), the `spec/msc/CHANGELOG.md` rulings ledger, the three greenfield clean-room rewrites (2a/3a/3b, archived at `../.archived/first-pass/`), and the `v2/DECISIONS.md` closes — into one coherent suite, organized per `defining-udon.md`'s pillar discipline. Version **0.9.1**: essentially 0.9, with the ledgered rulings landed in prose and the deliberately-open questions carrying their reasons.
+**What this is.** The single place to learn what UDON *is* right now: 0.9-era law consolidated from four scattered sources — the live `spec/CORE.md` (0.9.0-alpha.2), the `spec/msc/CHANGELOG.md` rulings ledger, the three greenfield clean-room rewrites (2a/3a/3b, archived at `../.archived/first-pass/`), and the `v2/DECISIONS.md` closes — into one coherent suite, organized per `defining-udon.md`'s pillar discipline. Version **0.10.0-alpha.1 (value-space unification)**: the 0.9.1 consolidation plus the K-series rulings (DECISIONS K1–K14, 2026-08-07/09 — sameline as value-space, `$main`, value terminators, silent stacking, expressive labels, the `\` frame split, accepted late attributes) stated natively. Open questions raised by the rewrite: [UNIF-PASS-QUESTIONS.md](UNIF-PASS-QUESTIONS.md). The directory name lags the version pending a steward call.
 
 **Authority.** This suite is the working base for all v2-route work (steward mark **C7**, `../DECISIONS.md`: the 0.9.1 consolidation is the baseline; the C0–C2 0.10 design line is unchanged and builds on it). **Status refinement (C8, jaw 2026-07-28): semi-frozen and spec-only** — provisionally frozen, remaining open for audit-revealed modifications from the old 0.9/fixtures and for critical parser-grammar-facing nuance that must land to avoid corner-painting; and not *necessarily* intended to be implemented as-is — unknown, pending findings from the territory work. The old route (`spec/CORE.md` + companions) is the published 0.9.0-alpha.2 record — no work continues there, and it will be archived when v2 becomes the main route. Behavior differences between this suite and the old text are exactly the ledgered rows in [DELTAS.md](DELTAS.md) — if you find one not listed there, that's a defect here; say so rather than picking a side. Language-law history stays in `../../spec/msc/CHANGELOG.md` (append-only); new rulings land in `../DECISIONS.md` and get folded into this prose.
 
@@ -29,6 +29,8 @@
 | [DELTAS.md](DELTAS.md) | The complete behavior-change ledger vs 0.9.0-alpha.2. |
 | [RATIONALE.md](RATIONALE.md) | Non-normative why. |
 | [TUTORIAL.md](TUTORIAL.md) | Non-normative provisional baseline tutorial — the settled core in twenty minutes. |
+| [UNIF-PASS-QUESTIONS.md](UNIF-PASS-QUESTIONS.md) | Open questions + probe data from the unification rewrite, for adjudication. |
+| [MORNING-ADJUDICATION.md](MORNING-ADJUDICATION.md) | Pass 2 (arc reframing): the §0 axioms decision, the Q2 sharpening, Q8, and the proposed reorder — read first. |
 | [PEDAGOGY.md](PEDAGOGY.md) | Teaching-ladder outline + committed mental models (manual deferred — P4). |
 
 Deliberately **absent**: an event/wire encoding (the 0.9 flat wire was deratified; the successor is demand-gated — see CARVEOUTS §W), full dialect specs (the old DYNAMICS/TIME-SPEC companions remain reference for the baseline `!` dialect and `temporal@1` value grammar, pending the dialect architecture work), and a formal grammar document (the Nesting Rule's mechanical spelling is in CORE §2.1).
