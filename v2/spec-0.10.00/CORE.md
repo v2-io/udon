@@ -10,29 +10,27 @@ This document is the contract for how UDON source text maps to the model in MODE
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are per RFC 2119.
 
-*New to UDON? Read [TUTORIAL.md](TUTORIAL.md) or Appendix A (the annotated surface map) first. Implementers pressed for time: **§0 is the spec in one page** — every section below is one of its axioms in full detail.*
+*New to UDON? Read [TUTORIAL.md](TUTORIAL.md) or Appendix A (the annotated surface map) first. Implementers pressed for time: **§0 is the map** — the sections make it law.*
 
 ---
 
-## 0. The machine (the axioms)
+## 0. The guiding model
 
-Seven ideas generate this language. Everything in §§1–15 is one of them stated in full; a rule that cannot be traced to one of them is either sugar over one or a defect worth reporting.
+This section is orientation, not law — a **guiding model** of the machine the sections define. Each item points at the sections that make it precise; where the model and a section disagree, the section governs, and where a reading of the model would decide something the sections leave open (CARVEOUTS, working-notes), it decides nothing — the tension is a finding to surface, never a derivation to apply silently. *(These are deliberately not axioms: the sections are not derived from them, and the model may lag the law it summarizes.)*
 
-- **A1 — Columns are the syntax.** A document is lines; a line's column (its leading-space count) is the only structural operator. Deeper = child, same = sibling, shallower = closed (the Nesting Rule, §2.1). There are no closing tags because the column *is* the closing tag.
+- **G1 — Indentation is the hierarchy.** For geometric constructs, nesting comes from columns alone: deeper = child, same = sibling, shallower = closed (the Nesting Rule, §2.1) — no closing tags. Delimited constructs are the counterpart, closing by their printed closer, never by geometry (G5, §13).
 
-- **A2 — A line is a compressed stack of virtual lines.** Structure written mid-line sits at its true column, exactly as if written vertically (§2.1); along a line, each space-preceded, guard-confirmed block-form marker begins the next virtual line — that set *is* the value-terminator set (§6.4). Two operators manipulate the stream: a framed `\` is an explicit break into text (§4), and an inline form's `}` closes without a break — which is why only inline forms nest inside braces (§5.6: a block form's only closer is a break, and braces suspend them).
+- **G2 — Why sameline works.** Blocks-plus-indent give every geometric construct a place to end without a closing tag; sameline syntax exploits exactly that: structure written mid-line sits at its true column as if written vertically (§2.1), and the markers that would open block-form structure are the same set that terminates values (§6.4).
 
-- **A3 — Sameline is value-space; block interiors are text-space.** All sameline material is an attribute value — the only question is which attribute (§2.2, §6). Prose lives in block interiors, where markers are literal (§7). One value grammar serves every value context; contexts differ only in added terminators and line root (§6.6). *(Inline-form interiors are the one deliberately mixed region — flow, §5.6/§7.3.)*
+- **G3 — Sameline is value-space; block interiors are text-space.** All sameline material is an attribute value — the only question is which attribute (§2.2, §6). Prose lives in block interiors, where markers are literal (§7). One value grammar serves every value context; contexts differ only in added terminators and line root (§6.6). *(Inline-form interiors are the one deliberately mixed region — flow, §5.6/§7.3.)*
 
-- **A4 — Everything named about an element is an assignment.** An element is name? + ordered assignments + ordered content, nothing else (§5.1). Every convenience — identity `[k]`, traits `.t`, suffixes, sameline text — is sugar desugaring to designated assignments (`$key`, `$traits`, `$?`…, `$main`), never a parallel mechanism (§5.3, §6.10). Assignments carry a label and ordered heterogeneous content (§6.1); repetition stacks, silently, and last-wins does not exist (§6.7); every assignment takes a value (§6.2).
+- **G4 — Everything named about an element is an assignment.** An element is name? + ordered assignments + ordered content, nothing else (§5.1). Every convenience — identity `[k]`, traits `.t`, suffixes, sameline text — is sugar desugaring to designated assignments (`$key`, `$traits`, `$?`…, `$main`), never a parallel mechanism (§5.3, §6.10). Assignments carry a label and ordered heterogeneous content (§6.1); repetition stacks, silently, and last-wins does not exist (§6.7); every assignment takes a value (§6.2).
 
-- **A5 — Every construct closes geometrically or delimitedly.** Geometry (EOL, dedent, EOF) closes silently; a promised printed closer that never arrives warns and keeps (§13). End-of-input behavior is derived, not enumerated: EOF ≡ end-of-line + full dedent.
+- **G5 — Every construct closes geometrically or delimitedly.** Geometry (EOL, dedent, EOF) closes silently; a promised printed closer that never arrives warns and keeps (§13). End-of-input behavior is derived, not enumerated: EOF ≡ end-of-line + full dedent.
 
-- **A6 — Typing is syntactic and the bare set is frozen.** Type comes from written syntax, never content-sniffing; the bare scalar set is closed forever, and all growth lives visibly in the envelope `<…>` (§11). A dialect structurally cannot retype bare space.
+- **G6 — Typing is syntactic and the bare set is frozen.** Type comes from written syntax, never content-sniffing; the bare scalar set is closed forever, and all growth lives visibly in the envelope `<…>` (§11). A dialect structurally cannot retype bare space.
 
-- **A7 — Keep everything; severity is loss.** Recognition never silently drops author-visible bytes; Warning means kept-but-check, Error means loss or a genuinely absent required value — and the sole core Error is the missing required value (§14).
-
-**Scope guard.** The axioms are the arc, not a second rulebook: their normative content is exactly the law of the sections they cite. Where a reading of an axiom would decide something the sections leave open (CARVEOUTS, working-notes), the sections govern — the tension is a finding to surface, never a derivation to apply silently.
+- **G7 — Keep everything; severity is loss.** Recognition never silently drops author-visible bytes; Warning means kept-but-check, Error means something the author wrote for is genuinely absent (§14 — where the current inventory has exactly one core Error: the missing required value).
 
 ---
 
@@ -103,7 +101,7 @@ A consistent sibling indent (commonly 2 spaces) is RECOMMENDED style, not a rule
 
 ### 2.2 The two spaces: value-space and text-space
 
-*(Axiom A3 in full.)* Every position in a document is in one of two spaces, and which one you are in predicts what characters mean. (One deliberately mixed region sits outside both: an inline form's brace interior, which follows flow rules — §5.6, §7.3.)
+*(G3, made precise here.)* Every position in a document is in one of two spaces, and which one you are in predicts what characters mean. (One deliberately mixed region sits outside both: an inline form's brace interior, which follows flow rules — §5.6, §7.3.)
 
 **Value-space** is every sameline position: the run of a line from its first marker through its end, traversed by the **Line Scan** (§6.4). In value-space there is no prose category — *all sameline material is an attribute value; the only question is which attribute*. Markers are live throughout the scan wherever a value has finished (§6.4's terminators); unquoted text is a value like any other, with its own closing delimiters.
 
@@ -258,7 +256,7 @@ Within flow, `|{…}` opens an inline element:
 
 - Brace-balanced; closes at the matching `}` (nested balanced `{}` fine).
 - Name, identity, traits, suffixes, and attributes work as in §5–§6, with `}` as an additional (unconsumed) bare-token terminator.
-- **Bracket mode:** inside `|{…}`, only inline forms nest — the block form `|name` does not exist there (`|ul |{li |{a Home}}`, never `|{li |a Home}`). *(Derivable under the virtual-line model: a block form's only closer is the LF/dedent machinery, and braces suspend LFs — see RATIONALE.)*
+- **Bracket mode:** inside `|{…}`, only inline forms nest — the block form `|name` does not exist there (`|ul |{li |{a Home}}`, never `|{li |a Home}`).
 - **Multi-line** (settled): an inline element may span lines. Continuation indentation is geometry (skipped); each content line carries its terminator; the opener line's terminator belongs to the form when its line ends inside the braces. Consumers concatenate for a single string — exact by the text law.
 - **Empty `|{}`** is a valid, empty anonymous inline element.
 - **Interior text model:** an inline element's interior is genuinely mixed text-and-structure; the `$main` sugar does not apply inside braces, and intervening text between nested inline forms — including a single space — is interior content (round-trip fidelity). *(Contrast with brace forms at value positions, §6.4, where whitespace separates values.)*
@@ -829,7 +827,7 @@ The response ladder above (a) warn-and-keep — (b) warn-and-drop, (c) error-and
 
 ## Appendix A — annotated surface map (non-normative)
 
-The §0 axioms predict nearly everything here — most visibly **A1** (columns are the syntax: deeper = child, same = sibling, shallower = closed) and **A3** (sameline is value-space: everything on a marker-opened line is a value belonging to some attribute — named ones after each `:label`, and `$main` for the element's own text). Elements written on one line sit at their real columns (A2):
+The §0 guiding model predicts nearly everything here — most visibly **G1** (indentation is the hierarchy: deeper = child, same = sibling, shallower = closed) and **G3** (sameline is value-space: everything on a marker-opened line is a value belonging to some attribute — named ones after each `:label`, and `$main` for the element's own text). Elements written on one line sit at their real columns (G2):
 
 ```udon
 |a |b |c        ; three elements, nested — identical to the

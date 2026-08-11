@@ -25,3 +25,9 @@ Append-only, informal. What changed in the suite and why, so nothing needs pick-
 **Register notes preserved:** block-forms-out-of-brackets and bare-`@`-out/`@{key}`-only are *lightly held* ("'I'm OK with' means I am OK with it — not that I think it should be law — I'm ok going either way").
 
 Still open in the suite text: Q7 (envelope-ladder name), Q8 (attached escape under an open value), SEMANTICS item 9's core-equivalence lean for assignment/content interleaving, the suffix-sugar keep/retire option, and the D-sheet items in ../../msc/for-joseph/.
+
+## 2026-08-11 — §0 axioms → guiding model (coordinator, per jaw critique)
+
+jaw: "none of these are axioms. They are 'Guiding Model' items"; A1 "seems unconvincing and unnecessary, or maybe poorly defined"; A2 "isn't a guiding mental model at all… it seems just plain wrong… probably a pseudo-reduction of what makes sameline work — i.e., 'Blocks+indent → pseudo-LF → (allows for) sameline' — which is still appropriate mental model — but as one or two sentences — not promoted axioms with details that conflict with the actual grammar."
+
+Changes: §0 retitled "The guiding model," intro absorbs the scope guard and disclaims axiom status; A1→G1 narrowed to hierarchy (the only-structural-operator claim contradicted A5 and is gone); A2→G2 = jaw's two-sentence pseudo-reduction (virtual-line/dual-operator promotion deleted, not demoted — §5.6's dangling RATIONALE pointer removed too); A3–A6→G3–G6 renumbered; A7→G7 ("loss" → "something the author wrote for is genuinely absent"; sole-Error marked current-inventory). Appendix A and §2.2 references updated. jaw adjusts §0 directly next (D1 jump link in the plain-decisions sheet). Also noted by jaw: defined jargon is fine (bears on OPEN N-jargon); bare §-cites acceptable, [[path#section|ref]]-style preferred eventually.
