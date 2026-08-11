@@ -1,5 +1,10 @@
 # Morning adjudication queue — 2026-08-09 (overnight passes complete)
 
+> **2026-08-10: partially superseded.** The merge/repair/fold-in all happened;
+> branch table and probe results below remain accurate as record. **The live
+> decision sheet is [01-PLAIN-DECISIONS.md](01-PLAIN-DECISIONS.md)** — D1,
+> D3–D9, D11 are what still block Joseph.
+
 *Coordinator's single front door for everything awaiting Joseph. Delete after
 adjudication. All work is committed on branches; nothing merges without you
 (the merge gate is yours by design).*

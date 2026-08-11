@@ -130,11 +130,26 @@ document-layer duplicate checks already work whole-element.
    *behavior* — the late-attribute Warning trigger — remains). FYI only,
    flag if the phrase was doing work for you elsewhere.
 
-## D10 — Housekeeping (whenever)
+## D10 — Housekeeping (whenever; refreshed 2026-08-10)
 
-- **Merge**: bless pass 1+2 (branch `unif-pass-2`) onto main once D1/D2 land.
-- **Directory rename**: suite says 0.10.0-alpha.1 but lives in
-  `spec-0.10.00/` — rename (`current-spec/`?) or leave.
+- ~~Merge~~ done (suites separated: `spec-0.09.01/` + `spec-0.10.00/`).
+- ~~Directory rename~~ resolved by your v2-root cleanup.
 - **`.un` extension** — intentional convention? One line somewhere if so.
 - **REF-SLASH / REF-BRACKET** (old OPEN rows) — soonest-relevant of the old
-  steward calls, since the paths corpus is live.
+  steward calls, since the paths corpus is live. (The other old rows — S4,
+  N-jargon, IND/IND-2, FIX-FRAME — are wait-whenever by your own 07-28 note.)
+
+## D11 — Assignment/content interleaving at core equivalence (surfaced by pass 1's SEMANTICS; was missing from this sheet)
+
+```udon
+|el :a 1          |      |el :a 1 :late 2
+  content            vs    content
+  :late 2
+```
+
+Both have the same assignments and content; they differ in *where* `:late`
+sat relative to content. Recognition identity keeps the difference (source
+order). The open lean: at **core semantic equivalence** the position is NOT
+significant — the late-attribute Warning already marks it, and data-equality
+shouldn't fork on placement. **Recommendation: adopt the lean** (SEMANTICS
+item 9 already carries it as a flag; one word makes it law).
