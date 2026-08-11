@@ -46,7 +46,7 @@ index: ML(closes: dialects/value-typing spike) · ENV-ROUTE(dialect spike)
 
 **What:** the `(name, key, traits)` selector is **frozen at three fields** (ruled S14) — no incremental growth; a path syntax replaces it wholesale. Multiple-keys surface, uniqueness interplay, and `@` resolution semantics (S3) wait with it.
 
-**Why open:** paths are the long pole of the demand side — query, edit targeting, template scope-contexts, and schema addressing all pull on one design. Growing the tuple field-by-field is exactly how path debt accumulates. **Cross-document addressing is in scope for the design** (ruled PATH-1 — do not build tools that assume document-scope is permanent). **Inputs the design inherits:** multi-key elements exist (K1, 2026-08-07 — `$key` designators stack), so what `@x[k]` matches against a stacked-key element is a paths question, not a today question; `@` inside identity brackets is likewise deferred here (K2).
+**Why open:** paths are the long pole of the demand side — query, edit targeting, template scope-contexts, and schema addressing all pull on one design. Growing the tuple field-by-field is exactly how path debt accumulates. **Cross-document addressing is in scope for the design** (ruled PATH-1 — do not build tools that assume document-scope is permanent). **Inputs the design inherits:** multi-key elements exist (`$key` designators stack), so what `@x[k]` matches against a stacked-key element is a paths question, not a today question; structural-key matching, and the `@{…}` inline reference form demanded by key-bracket references (CORE §12.2), are likewise deferred here.
 
 **Closes when:** the paths spike runs against the needs map (prior art: the parked paths spike §8 demand tables).
 

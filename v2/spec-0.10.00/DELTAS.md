@@ -26,10 +26,7 @@ split (defining-udon.md) — GLOSSARY + MODEL + CORE + SEMANTICS + CARVEOUTS as 
 
 ## Post-consolidation amendments — the K-series (2026-08-07/09)
 
-Behavior changes vs 0.9.1, ruled in-session; **authority is Joseph's verbatim
-intent in the session record** (the DECISIONS K-rows are after-the-fact
-compression — see the ledger's provenance banner). One line each; details in
-DECISIONS + the rewritten suite text.
+Behavior changes vs 0.9.1, ruled in-session; **authority is Joseph's verbatim intent in the session record** (the DECISIONS K-rows are after-the-fact compression — see the ledger's provenance banner). One line each; details in DECISIONS + the rewritten suite text.
 
 | # | Change | Ruling |
 |---|---|---|
@@ -47,4 +44,8 @@ DECISIONS + the rewritten suite text.
 | K12 | Expressive labels (any-position charset); flag semantics retired; presence explicit | K12 |
 | K13 | `\` frame split: framed commits text mode; attached escapes one character | K13 (Overturns: 07-15 forced-line scope) |
 | K14 | Late attributes accepted + warned (supersedes K8's element leg) | K14 |
+| K15 | Spelling flavors (stacked vs bracketed contributions) are ornamentation; collection default-read (one contribution → the value; several → list in order, nesting kept); assembler MAY annotate flavor | K15 |
+| K16 | A key is a value slot: full value grammar in key-bracket interiors, brace forms included; sugar carves held lightly — block forms out, references take the brace form `@{key}`; structural-key matching deferred to paths | K16 |
 | — | Terminology: attribute name-side = **label**; verbatim tag = **kind**; "key" = identity only | jaw 2026-08-09 |
+
+**Provenance discipline (2026-08-10):** this table is the sole in-suite map from spec text to ruling IDs — the body prose no longer carries `(ruled Kn)` breadcrumbs (stripped per the breadcrumb law; the record of that pass is `working-notes/CHANGELOG.md`). For the full ruling texts and Joseph's verbatim intent, see `../DECISIONS.md` (its provenance banner governs).

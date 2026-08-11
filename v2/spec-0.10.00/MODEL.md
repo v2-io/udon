@@ -18,7 +18,7 @@ Document = {
 
 - `content` holds every top-level node in source order. There is no implicit root element; multiple top-level elements are true siblings.
 - `result` is `incomplete-input` iff at least one delimited construct was still open at true end of input (CORE §13.3); otherwise `complete`. Warnings and errors never affect `result`.
-- Equivalent API shapes are allowed if information-equivalent (ruled D-pack).
+- Equivalent API shapes are allowed if information-equivalent.
 
 ## 2. Nodes
 
@@ -39,14 +39,14 @@ Element    = {
   assignments: [Assignment]    ; ordered; source order (late ones warned — CORE §6.9)
   content:     [Node]          ; ordered
 }
-Assignment = { label: Label, content: [Item] }   ; ordered, heterogeneous (ruled K5)
+Assignment = { label: Label, content: [Item] }   ; ordered, heterogeneous
 Item       = Value | Node | Comment              ; §4; a comment in a deferred body is kept
 ```
 
-- `assignments` is an **ordered sequence, not a map**. Order is source order, across labels. Late assignments (after the element's block content began) are legal-with-Warning (K14); position relative to content is recoverable from source order for round-trip tooling that needs it (host spans — §8).
-- **Stacking is the model.** Multiple assignments to one label are multiple entries — no last-wins, no merging, no implicit list-formation, no warning (K11). `:x 1 :x 2` is two assignments; `:x [1 2]` is one whose sole item is a List. Implementations MUST preserve the distinction.
-- **The common case is a one-item content.** An assignment whose content is a single Value is the ordinary attribute; a deferred body yields heterogeneous items (CORE §6.5). Sugar-produced assignments always have exactly one item and are born finished (K8).
-- A missing value (label with no material) is an assignment with content `[Nil]` plus an Error — the shape never carries less than the source suggested, and empty content `[]` never legitimately exists (ruled K6).
+- `assignments` is an **ordered sequence, not a map**. Order is source order, across labels. Late assignments (after the element's block content began) are legal-with-Warning; position relative to content is recoverable from source order for round-trip tooling that needs it (host spans — §8).
+- **Stacking is the model.** Multiple assignments to one label are multiple entries — no last-wins, no merging, no implicit list-formation, no warning. `:x 1 :x 2` is two assignments; `:x [1 2]` is one whose sole item is a List. Implementations MUST preserve the distinction.
+- **The common case is a one-item content.** An assignment whose content is a single Value is the ordinary attribute; a deferred body yields heterogeneous items (CORE §6.5). Sugar-produced assignments always have exactly one item and are born finished.
+- A missing value (label with no material) is an assignment with content `[Nil]` plus an Error — the shape never carries less than the source suggested, and empty content `[]` never legitimately exists.
 
 ### 3.1 Designated attributes (sugar targets)
 
@@ -54,10 +54,10 @@ Sugar desugars **before the model is considered complete**:
 
 | Surface | Assignments |
 |---|---|
-| `\|el[k]` | `$key` = recognized value of `k` (each bracket one assignment — K1) |
+| `\|el[k]` | `$key` = recognized value of `k` (each bracket one assignment) |
 | `\|el.a.b` | `$traits` = `a`, then `$traits` = `b` |
 | `\|el?` (`!` `*` `+`) | `$?` (`$!` `$*` `$+`) = true |
-| `\|el some text` | `$main` = the sameline material, value by value (stacked — K9) |
+| `\|el some text` | `$main` = the sameline material, value by value (stacked) |
 | unclosed `[` | **`$partial-key`** = captured value (+ Warning) |
 
 An element written `|el[k].a.b? Title` and one written `|el :$key k :$traits a :$traits b :$? true :$main Title` are **identical** in the model; implementations MUST NOT distinguish them. (`$key` keeps its spelling — it *is* the identity key, held by an assignment whose **label** is `$key`.) Consumers that resolve identity or references MUST treat `$partial-key` as non-identity.
@@ -66,9 +66,11 @@ An element written `|el[k].a.b? Title` and one written `|el :$key k :$traits a :
 
 - **`all_assignments`** — the assignment sequence exactly as parsed, designated entries included. The round-trip view.
 - **`key` / `traits` / `attributes`** — the ergonomic split: `key` = the value(s) of `$key`; `traits` = the values of `$traits`, **always a list**; `attributes` = every non-designated assignment.
-- **`main` / `first_is_main`-style knobs** — `$main` presentation is a host parameter: expose as an attribute, or re-inject as the first content slot ("it's an attribute on the wire, and depends on the parser parameters to decide how you want it in the AST"). Round-trip and provenance-sensitive tooling MUST work from the substrate.
+- **`main` / `first_is_main`-style knobs** — `$main` presentation is a host parameter: expose as an attribute, or re-inject as the first content slot. Round-trip and provenance-sensitive tooling MUST work from the substrate.
+- **The default collection read** — a label names a collection of contributions (CORE §6.7). One contribution reads as the value itself (`:x 1` → `1`; `:x [2 3]` → the list `[2 3]`); several read as the list of contributions in order, nesting preserved (`:x 1 :x [2 3] :x [4 [5 6]]` → `[1 [2 3] [4 [5 6]]]`). Flattening beyond this is the app's. An **always-list accessor** (`values(x)` → `[1]`) serves uniform consumer code.
+- **Flavor annotation** — an assembler MAY annotate how a contribution was spelled (`contributed-as: stacked · array · deferred`), letting faithful round-trip reconstruct ornamentation-class spelling differences without spans.
 
-Ergonomic views can collapse what the model keeps distinct (`:x 1 :x 2` vs `:x [1 2]` may both read `[1,2]`); the substrate keeps them apart.
+The substrate keeps distinct what views may collapse (`:x 1 :x 2` vs `:x [1 2]`).
 
 ## 4. Values
 
@@ -77,10 +79,11 @@ Value  = Scalar | Reference | Interpolation | InlineElement
        | InlineVerbatim | NodeValue | TextValue
 Scalar = String | Integer | Float | Boolean | Nil | List | Envelope
 List   = [Value]                     ; items: any Value kind except TextValue
+                                     ; (InlineElement/InlineVerbatim included)
 Envelope   = { dialect: String?, type: String?, body: String,
                resolved: DialectResult | Unresolved }
 NodeValue  = Element | Verbatim | Directive   ; the value IS the node — no wrapper
-                                              ; (Directive carried unresolved — K3)
+                                              ; (directives carried unresolved)
 TextValue  = [Segment]               ; flow: text runs + inline segments
 Segment    = Text | InlineElement | Interpolation
            | InlineDirective | InlineVerbatim
@@ -94,7 +97,7 @@ Verbatim   = { form: block | fence | inline, kind: String?,
                body: String }                 ; fence byte-exact; block dedented to raw base
 ```
 
-- `InlineElement` / `InlineVerbatim` appear both as **values** (at a clean value position — CORE §6.4, ruled K9) and as **segments** inside a TextValue (mid-flow). The two placements are distinct in the model exactly as far as the surface distinguishes them.
+- `InlineElement` / `InlineVerbatim` appear both as **values** (at a value-expected position — CORE §6.4) and as **segments** inside a TextValue (mid-flow). The two placements are distinct in the model exactly as far as the surface distinguishes them.
 - An unresolved Envelope retains its full lexical body (keep-everything); the model never holds a half-typed value.
 - A Reference with `partial: true` carries the captured-so-far key; the fail-safe lives on the selector so resolvers exclude incomplete references exactly as `$partial-key` excludes incomplete identity.
 - Text values and element block text share one flow model (Segments).
@@ -115,13 +118,13 @@ Text = String    ; may include newlines; dedentation already applied
 
 **The text law (normative invariant).** The document's text material reconstructs by **pure in-order concatenation** of every Text (and every flow text segment of block text, after inline comments are dropped, with `BlankLine` contributing `"\n"`) — no fabricated join characters, no re-consultation of the source.
 
-**Scope (ruled K9):** assignments are not text material — including `$main`. Sameline text lives in the model as `$main` assignments, and presenting it as document text (stitching, ordering against content) is a **host view** over the substrate, not part of the law. This is deliberate: it is what lets the model distinguish sameline text from block text structurally rather than via span metadata.
+**Scope:** assignments are not text material — including `$main`. Sameline text lives in the model as `$main` assignments, and presenting it as document text (stitching, ordering against content) is a **host view** over the substrate, not part of the law. This is deliberate: it is what lets the model distinguish sameline text from block text structurally rather than via span metadata.
 
 Consequences (derived, all normative):
 
 1. Each block-text line's terminator is part of its Text; indentation stripped by dedentation is geometry, not text.
 2. A blank line between two text lines of one flow is text (its newline); blanks at pure structure boundaries are ornamentation a consumer may drop — but never surface as content (CORE §7.4, incl. the final-terminator disposition).
-3. Inline comments contribute no text; their framing whitespace is ordinary text (preserved — ruled S18).
+3. Inline comments contribute no text; their framing whitespace is ordinary text (preserved).
 4. A verbatim body is exact bytes; every body line keeps its terminator.
 5. Adjacent pure Text segments MAY be flattened; concatenation is associative.
 
@@ -139,7 +142,7 @@ Anomaly = {
 }
 ```
 
-Severity is two-valued and defined by loss (CORE §14.1); the sole core Error is the missing required value. Whether accumulated anomalies justify dropping, halting, or rejecting is consumer policy — never encoded in the model. *(Warning-code spellings are working names pending the SPEC-vocabulary + generator-derivation reconciliation — ruled W4; do not cement them as contract.)*
+Severity is two-valued and defined by loss (CORE §14.1); the sole core Error is the missing required value. Whether accumulated anomalies justify dropping, halting, or rejecting is consumer policy — never encoded in the model. *(Warning-code spellings are working names pending the SPEC-vocabulary + generator-derivation reconciliation; do not cement them as contract.)*
 
 ## 8. What the model deliberately excludes
 

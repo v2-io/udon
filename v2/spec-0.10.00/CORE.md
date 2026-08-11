@@ -4,24 +4,7 @@
 **Status:** normative for surface recognition and core semantics.  
 **Companions:** [GLOSSARY.md](GLOSSARY.md) (vocabulary) · [MODEL.md](MODEL.md) (what recognition produces) · [SEMANTICS.md](SEMANTICS.md) (equivalence) · [CARVEOUTS.md](CARVEOUTS.md) (deliberately unspecified, with reasons) · [DELTAS.md](DELTAS.md) (behavior changes, ledgered) · [RATIONALE.md](RATIONALE.md) (non-normative why).
 
-> **Version note.** This text is the UNIF-PASS rewrite: the 2026-08-07/09
-> rulings (DECISIONS K1–K14 — whose authority is Joseph's verbatim intent in
-> the session record, the rows being after-the-fact compression) stated
-> natively rather than as patches on the 0.9.1 consolidation. The version
-> moves to **0.10.0-alpha.1** because several rulings overturn 0.9-era law
-> (ledger, Overturns section); the 0.9.1 consolidation remains in git history
-> as the pre-unification record. Directory naming is pending a steward call.
-> Questions raised *by this rewrite* live in
-> [UNIF-PASS-QUESTIONS.md](UNIF-PASS-QUESTIONS.md) until adjudicated; where a
-> subsection below flags one, the flagged reading is a lean, not law.
->
-> **Known lag (2026-08-10, at merge to main):** rulings **K15–K16** postdate
-> this text and are not yet folded in — K15 (spelling flavors are
-> ornamentation; collection default-read; assembler flavor annotation) and
-> K16 (a key is a value slot — full value grammar in bracket interiors; the
-> brace-form carve this text's §6.4/§5.3 still implies is **rejected**;
-> block-forms-out and `@{key}`-only-for-refs held lightly). The ledger wins;
-> fold-in checklists are in the ledger rows and Q2's resolution notes.
+> **Version note.** 0.10.0-alpha.1 is the value-space unification: the 2026-08 rulings (DELTAS, K-series) stated natively rather than as patches on the 0.9.1 consolidation, which lives beside this suite as the pre-unification record. Open questions raised by the rewrite live in [working-notes/UNIF-PASS-QUESTIONS.md](working-notes/UNIF-PASS-QUESTIONS.md); where a subsection flags one, the flagged reading is a lean, not law.
 
 This document is the contract for how UDON source text maps to the model in MODEL.md. It does not teach style (pedagogy is a separate pillar), define an event/wire encoding (deliberately absent — see README), or specify Host projection, Schema constraint, or Dialect meaning beyond what recognition must carry.
 
@@ -33,59 +16,23 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are per RFC 2119.
 
 ## 0. The machine (the axioms)
 
-Seven ideas generate this language. Everything in §§1–15 is one of them stated
-in full; a rule that cannot be traced to one of them is either sugar over one
-or a defect worth reporting.
+Seven ideas generate this language. Everything in §§1–15 is one of them stated in full; a rule that cannot be traced to one of them is either sugar over one or a defect worth reporting.
 
-- **A1 — Columns are the syntax.** A document is lines; a line's column (its
-  leading-space count) is the only structural operator. Deeper = child, same =
-  sibling, shallower = closed (the Nesting Rule, §2.1). There are no closing
-  tags because the column *is* the closing tag.
+- **A1 — Columns are the syntax.** A document is lines; a line's column (its leading-space count) is the only structural operator. Deeper = child, same = sibling, shallower = closed (the Nesting Rule, §2.1). There are no closing tags because the column *is* the closing tag.
 
-- **A2 — A line is a compressed stack of virtual lines.** Structure written
-  mid-line sits at its true column, exactly as if written vertically (§2.1);
-  along a line, each space-preceded, guard-confirmed block-form marker begins
-  the next virtual line — that set *is* the value-terminator set (§6.4). Two
-  operators manipulate the stream: a framed `\` is an explicit break into text
-  (§4), and an inline form's `}` closes without a break — which is why only
-  inline forms nest inside braces (§5.6: a block form's only closer is a
-  break, and braces suspend them).
+- **A2 — A line is a compressed stack of virtual lines.** Structure written mid-line sits at its true column, exactly as if written vertically (§2.1); along a line, each space-preceded, guard-confirmed block-form marker begins the next virtual line — that set *is* the value-terminator set (§6.4). Two operators manipulate the stream: a framed `\` is an explicit break into text (§4), and an inline form's `}` closes without a break — which is why only inline forms nest inside braces (§5.6: a block form's only closer is a break, and braces suspend them).
 
-- **A3 — Sameline is value-space; block interiors are text-space.** All
-  sameline material is an attribute value — the only question is which
-  attribute (§2.2, §6). Prose lives in block interiors, where markers are
-  literal (§7). One value grammar serves every value context; contexts differ
-  only in added terminators and line root (§6.6). *(Inline-form interiors are
-  the one deliberately mixed region — flow, §5.6/§7.3.)*
+- **A3 — Sameline is value-space; block interiors are text-space.** All sameline material is an attribute value — the only question is which attribute (§2.2, §6). Prose lives in block interiors, where markers are literal (§7). One value grammar serves every value context; contexts differ only in added terminators and line root (§6.6). *(Inline-form interiors are the one deliberately mixed region — flow, §5.6/§7.3.)*
 
-- **A4 — Everything named about an element is an assignment.** An element is
-  name? + ordered assignments + ordered content, nothing else (§5.1). Every
-  convenience — identity `[k]`, traits `.t`, suffixes, sameline text — is
-  sugar desugaring to designated assignments (`$key`, `$traits`, `$?`…,
-  `$main`), never a parallel mechanism (§5.3, §6.10). Assignments carry a
-  label and ordered heterogeneous content (§6.1); repetition stacks, silently,
-  and last-wins does not exist (§6.7); every assignment takes a value (§6.2).
+- **A4 — Everything named about an element is an assignment.** An element is name? + ordered assignments + ordered content, nothing else (§5.1). Every convenience — identity `[k]`, traits `.t`, suffixes, sameline text — is sugar desugaring to designated assignments (`$key`, `$traits`, `$?`…, `$main`), never a parallel mechanism (§5.3, §6.10). Assignments carry a label and ordered heterogeneous content (§6.1); repetition stacks, silently, and last-wins does not exist (§6.7); every assignment takes a value (§6.2).
 
-- **A5 — Every construct closes geometrically or delimitedly.** Geometry
-  (EOL, dedent, EOF) closes silently; a promised printed closer that never
-  arrives warns and keeps (§13). End-of-input behavior is derived, not
-  enumerated: EOF ≡ end-of-line + full dedent.
+- **A5 — Every construct closes geometrically or delimitedly.** Geometry (EOL, dedent, EOF) closes silently; a promised printed closer that never arrives warns and keeps (§13). End-of-input behavior is derived, not enumerated: EOF ≡ end-of-line + full dedent.
 
-- **A6 — Typing is syntactic and the bare set is frozen.** Type comes from
-  written syntax, never content-sniffing; the bare scalar set is closed
-  forever, and all growth lives visibly in the envelope `<…>` (§11). A
-  dialect structurally cannot retype bare space.
+- **A6 — Typing is syntactic and the bare set is frozen.** Type comes from written syntax, never content-sniffing; the bare scalar set is closed forever, and all growth lives visibly in the envelope `<…>` (§11). A dialect structurally cannot retype bare space.
 
-- **A7 — Keep everything; severity is loss.** Recognition never silently
-  drops author-visible bytes; Warning means kept-but-check, Error means loss
-  or a genuinely absent required value — and the sole core Error is the
-  missing required value (§14).
+- **A7 — Keep everything; severity is loss.** Recognition never silently drops author-visible bytes; Warning means kept-but-check, Error means loss or a genuinely absent required value — and the sole core Error is the missing required value (§14).
 
-**Scope guard.** The axioms are the arc, not a second rulebook: their
-normative content is exactly the ruled law of the sections they cite. Where a
-reading of an axiom would decide something the sections leave open (CARVEOUTS,
-UNIF-PASS-QUESTIONS), the sections govern — the tension is a finding to
-surface, never a derivation to apply silently.
+**Scope guard.** The axioms are the arc, not a second rulebook: their normative content is exactly the law of the sections they cite. Where a reading of an axiom would decide something the sections leave open (CARVEOUTS, working-notes), the sections govern — the tension is a finding to surface, never a derivation to apply silently.
 
 ---
 
@@ -131,7 +78,7 @@ A UDON document is a sequence of Unicode scalar values encoded as UTF-8, divided
 
 **Column** is the count of leading U+0020 SPACE characters before a line's first other character, counted from 0.
 
-**Indentation is spaces only.** A tab participating in a line's indentation is an anomaly: the line's structural column cannot be honored, so the line is kept as **text of the current column owner** (best-effort, using the spaces before the tab as its column), with a **Warning** — a coherent keep exists, so by §14's own definition this is not an Error. A tab anywhere else (inside text, values, comments, verbatim bodies) is ordinary content. *(Ruled L4.)*
+**Indentation is spaces only.** A tab participating in a line's indentation is an anomaly: the line's structural column cannot be honored, so the line is kept as **text of the current column owner** (best-effort, using the spaces before the tab as its column), with a **Warning** — a coherent keep exists, so by §14's own definition this is not an Error. A tab anywhere else (inside text, values, comments, verbatim bodies) is ordinary content.
 
 ### 2.1 The Nesting Rule
 
@@ -158,7 +105,7 @@ A consistent sibling indent (commonly 2 spaces) is RECOMMENDED style, not a rule
 
 *(Axiom A3 in full.)* Every position in a document is in one of two spaces, and which one you are in predicts what characters mean. (One deliberately mixed region sits outside both: an inline form's brace interior, which follows flow rules — §5.6, §7.3.)
 
-**Value-space** is every sameline position: the run of a line from its first marker through its end, traversed by the **Line Scan** (§6.4). In value-space there is no prose category — *all sameline material is an attribute value; the only question is which attribute* (ruled K9/K10). Markers are live throughout the scan wherever a value has finished (§6.4's terminators); unquoted text is a value like any other, with its own closing delimiters.
+**Value-space** is every sameline position: the run of a line from its first marker through its end, traversed by the **Line Scan** (§6.4). In value-space there is no prose category — *all sameline material is an attribute value; the only question is which attribute*. Markers are live throughout the scan wherever a value has finished (§6.4's terminators); unquoted text is a value like any other, with its own closing delimiters.
 
 **Text-space** is the block interior: lines that do not open structure at a structural column are **text of their column owner** (§7). Text-space is where prose lives. Within a text line, marker characters are literal, with the framed ` ; ` comment as the one carve-out (§8) — the old *commit* model, now scoped to text-space only.
 
@@ -194,18 +141,13 @@ Every guard resolves within a few characters, single-level, with no unbounded ba
 
 A marker character that **fails its guard** is ordinary text, and the line's (or value's) fate is decided as if it were any other character.
 
-> **Least-surprise note (K12).** Because a bare label may start with characters
-> like `-` and `/`, framed emoticon shapes in *sameline* text (` :-)` ` :/`)
-> pass the `:` guard and open attributes. This is accepted collateral, weighed
-> on frequency: sameline text is value-space and careful territory; escape
-> (`\:-)`) or quote when sameline text must carry such shapes, and syntax
-> highlighting surfaces the misread instantly. Text-space prose is unaffected.
+> **Least-surprise note.** Because a bare label may start with characters like `-` and `/`, framed emoticon shapes in *sameline* text (` :-)` ` :/`) pass the `:` guard and open attributes. This is accepted collateral, weighed on frequency: sameline text is value-space and careful territory; escape (`\:-)`) or quote when sameline text must carry such shapes, and syntax highlighting surfaces the misread instantly. Text-space prose is unaffected.
 
 ---
 
 ## 4. The escape `\`
 
-`\` is UDON's only escape. It has exactly two operations, distinguished by its **frame**, plus a literal fallback (ruled K13):
+`\` is UDON's only escape. It has exactly two operations, distinguished by its **frame**, plus a literal fallback:
 
 | Spelling | Operation |
 |---|---|
@@ -258,8 +200,8 @@ The suffix characters `? ! * +` are **not** name-continue characters for element
 |element[key].trait1.trait2
 ```
 
-- **Identity `[key]`** — what makes this element *this one*. The bracket interior follows the **attribute-value grammar** (§6.4) with `]` as an additional unconsumed terminator and **block forms excluded** (no `|name` node values inside a bracket — the `$partial-key` fail-safe depends on the bracket staying flat; ruled K2): `[1]` is integer `1`, `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`, `[one two]` the text `"one two"`, `[[one two]]` the list `["one","two"]`, `[<2026>]` an envelope. An interpolation as the whole key (`|div[!{{id}}]`) is the ordinary value case, not an exception. Material after a finished value inside the bracket is a **further stacked `$key` assignment, without warning**: `["one" two]` ≡ `|x["one"][two]`. *(`@` and inline brace forms inside identity brackets: unruled — UNIF-PASS-QUESTIONS Q2, CARVEOUTS §PATHS.)*
-- **Multiple identity designators stack** (ruled K1): `|x[a][<uuid7:38493…>]` — each bracket desugars to its own `:$key` assignment, in order, like any repeated attribute.
+- **Identity `[key]`** — what makes this element *this one*. A key is not a different syntax; it is a **value slot**: the bracket interior takes the full value grammar (§6.4) with `]` as an additional unconsumed terminator — `[1]` is integer `1`, `["01"]` the string `"01"`, `[abc-123]` the string `abc-123`, `[one two]` the text `"one two"`, `[[one two]]` the list `["one","two"]`, `[<2026>]` an envelope, `[!{{id}}]` an interpolation, `[|{x}]` an inline element (the same value its longhand `:$key |{x}` binds). Material after a finished value inside the bracket is a **further stacked `$key` assignment, without warning**: `["one" two]` ≡ `|x["one"][two]`. Two spellings are held out of the bracket *sugar* for now, both lightly (either could be revisited): **block forms** (`|name` — geometric forms inside a single-line delimited bracket; a super-complex multiple-child key takes the longhand `:$key` form, always legal), and **bare `@` references** — a reference as a key takes the brace form `@{key}` (delimited slots take delimited forms; a bare selector nests brackets ambiguously). What *matching* a structural key means is a paths-era question (CARVEOUTS §PATHS); resolution defaults to inert meanwhile.
+- **Multiple identity designators stack**: `|x[a][<uuid7:38493…>]` — each bracket desugars to its own `:$key` assignment, in order, like any repeated attribute.
 - **Traits `.trait`** — what *kinds* of thing it is; plural, stackable, order-preserved. A bare trait is an identifier whose continue-set also includes `? ! * +` (so `.foo?` is the trait `foo?`); other characters take quotes (`.'ns.kind'`).
 
 **All sugar desugars** into ordinary assignments to designated attributes:
@@ -273,9 +215,9 @@ The suffix characters `? ! * +` are **not** name-continue characters for element
 
 Two traits are two `$traits` assignments (stacking, §6.7) — never one list.
 
-**Designated, not reserved.** Any `$`-key is legal, and — because `$` is an ordinary key character (K12) — the longhand needs no quotes: `:$key 3890` is writable directly, so a generator that only writes attributes produces a document indistinguishable from the sugared form. (The pre-K12 quoted spelling `:'$key'` remains valid.)
+**Designated, not reserved.** Any `$`-key is legal, and — because `$` is an ordinary key character — the longhand needs no quotes: `:$key 3890` is writable directly, so a generator that only writes attributes produces a document indistinguishable from the sugared form. (The pre-K12 quoted spelling `:'$key'` remains valid.)
 
-**Sugar-produced assignments are born finished** (ruled K8): deeper lines never attach to a `$key`/`$traits`/`$main`/suffix assignment produced by sugar — they are the element's content, as always. (A longhand `:$key` is an ordinary attribute and takes deferred content like any other.)
+**Sugar-produced assignments are born finished**: deeper lines never attach to a `$key`/`$traits`/`$main`/suffix assignment produced by sugar — they are the element's content, as always. (A longhand `:$key` is an ordinary attribute and takes deferred content like any other.)
 
 **Identity is contiguous** with the name (plus one optional trailing space-separated suffix). A `.trait` after a space is not identity — `|p .gitignore is a file` has no traits (`.gitignore is a file` is the element's `$main`).
 
@@ -294,7 +236,7 @@ Positions — after the name, after the key, or space-separated at the end:
 |name[key]?                  |name[key].trait ?
 ```
 
-**Suffixes stack**: `|field?!` ≡ `|field :$? true :$! true` (ruled — CHANGELOG S1).
+**Suffixes stack**: `|field?!` ≡ `|field :$? true :$! true`.
 
 Because suffix characters are trait characters, a suffix touching a trait belongs to the trait:
 
@@ -304,7 +246,7 @@ Because suffix characters are trait characters, a suffix touching a trait belong
 |el?.bar         ; $? = true, traits: ["bar"]
 ```
 
-*(Suffix sugar writes an explicit `true` and is unaffected by K12's retirement of flag-key semantics. It is now the only place a bare `?` carries built-in meaning; retiring it too is an open steward option flagged in K12's ledger row.)*
+*(Suffix sugar writes an explicit `true`; it is now the only place a bare `?` carries built-in meaning. Retiring it too is an open steward option — working-notes.)*
 
 ### 5.5 Anonymous elements
 
@@ -318,7 +260,7 @@ Within flow, `|{…}` opens an inline element:
 - Name, identity, traits, suffixes, and attributes work as in §5–§6, with `}` as an additional (unconsumed) bare-token terminator.
 - **Bracket mode:** inside `|{…}`, only inline forms nest — the block form `|name` does not exist there (`|ul |{li |{a Home}}`, never `|{li |a Home}`). *(Derivable under the virtual-line model: a block form's only closer is the LF/dedent machinery, and braces suspend LFs — see RATIONALE.)*
 - **Multi-line** (settled): an inline element may span lines. Continuation indentation is geometry (skipped); each content line carries its terminator; the opener line's terminator belongs to the form when its line ends inside the braces. Consumers concatenate for a single string — exact by the text law.
-- **Empty `|{}`** is a valid, empty anonymous inline element (ruled — DECISIONS R19).
+- **Empty `|{}`** is a valid, empty anonymous inline element.
 - **Interior text model:** an inline element's interior is genuinely mixed text-and-structure; the `$main` sugar does not apply inside braces, and intervening text between nested inline forms — including a single space — is interior content (round-trip fidelity). *(Contrast with brace forms at value positions, §6.4, where whitespace separates values.)*
 - An inline element in flow is a segment of that flow; an inline element **as a value** is the value (§6.4).
 
@@ -328,13 +270,13 @@ Within flow, `|{…}` opens an inline element:
 
 ### 6.1 Labeled edges
 
-Every element has assignments (a labeled, ordered edge list) and content (a positional node sequence). An assignment's label names what its content is *to the element* (`my author`, `my timeout`); a child names what it *is*. That — **whose name is it?** — is the design test, not "scalars vs structure": an edge may terminate at a leaf value, a node, several stacked values, or a heterogeneous body. Restricting attributes to single scalars was XML residue, not a UDON decision (ruled K5 — *attribute-content unification*).
+Every element has assignments (a labeled, ordered edge list) and content (a positional node sequence). An assignment's label names what its content is *to the element* (`my author`, `my timeout`); a child names what it *is*. That — **whose name is it?** — is the design test, not "scalars vs structure": an edge may terminate at a leaf value, a node, several stacked values, or a heterogeneous body. Restricting attributes to single scalars was XML residue, not a UDON decision — this is *attribute-content unification*.
 
 ```text
 Assignment = { label, content: [Item] }        (MODEL §3)
 ```
 
-The common case — one value — is a one-item content, exactly as an element with one child is unremarkable. **On the line axis attributes are NOT element-like**: the Line Scan's one-value-per-slot discipline is what keeps `|el :a 1 :b 2` two attributes (K5's honest name is attribute-*content* unification, not attribute-as-element).
+The common case — one value — is a one-item content, exactly as an element with one child is unremarkable. **On the line axis attributes are NOT element-like**: the Line Scan's one-value-per-slot discipline is what keeps `|el :a 1 :b 2` two attributes (the honest name is attribute-*content* unification, not attribute-as-element).
 
 Assignments appear **sameline** (on the element's definition line), **block** (on their own indented line), and inside inline elements — one value grammar throughout; only terminator sets and line roots differ (§6.6).
 
@@ -342,14 +284,14 @@ Assignments appear **sameline** (on the element's definition line), **block** (o
 
 ### 6.2 Labels
 
-An assignment's name-side is its **label** ("key" is reserved for identity — §5.3; the disambiguation exemplar: `$key` keeps its spelling because it *is* the identity key, held by an assignment whose **label** is `$key`). A **bare label** is a contiguous run of non-space characters following the `:` (ruled K12). Beyond Unicode identifier characters, the run may contain — **in any position** — `*` `$` `#` `!` `?` `^` `.` `,` `-` `+` `_` `=` `~` `/` `:` `;` `|`, and interior `'` or `"`. A *leading* `'` or `"` instead selects a quoted label (`:'weird key'`), inside which anything but the closing quote is literal. `/` is namespacing convention, core-inert.
+An assignment's name-side is its **label** ("key" is reserved for identity — §5.3; the disambiguation exemplar: `$key` keeps its spelling because it *is* the identity key, held by an assignment whose **label** is `$key`). A **bare label** is a contiguous run of non-space characters following the `:`. Beyond Unicode identifier characters, the run may contain — **in any position** — `*` `$` `#` `!` `?` `^` `.` `,` `-` `+` `_` `=` `~` `/` `:` `;` `|`, and interior `'` or `"`. A *leading* `'` or `"` instead selects a quoted label (`:'weird key'`), inside which anything but the closing quote is literal. `/` is namespacing convention, core-inert.
 
-There are no flag labels and no built-in label semantics (ruled K12, retiring the 0.9 "flag key" rules — the implicit-true default "wasn't worth the awkwardness"): `?` `!` `*` `+` and every other character are simply part of the name. Application-level conventions (arity suffixes, grouping prefixes) are free to assign meaning; the core stores the spelling.
+There are no flag labels and no built-in label semantics — the retired implicit-true default was not worth the complication it bought: `?` `!` `*` `+` and every other character are simply part of the name. Application-level conventions (arity suffixes, grouping prefixes) are free to assign meaning; the core stores the spelling.
 
-**Every assignment takes a value** (ruled K6 — the edge ontology: an edge with no terminus is malformed, not smaller). A `:label` with no value material — end of line with **nothing indented under it**, or a context terminator — is an **Error**; the assignment still stands with value **Nil** (the shape never carries less than the source suggested; the Error explains the Nil). The "nothing indented under it" clause is load-bearing: when deeper lines *do* follow, the assignment's **deferred body opens instead** (§6.5) and no missing-value Error fires. Presence is written explicitly:
+**Every assignment takes a value** — an edge with no terminus is malformed, not smaller. A `:label` with no value material — end of line with **nothing indented under it**, or a context terminator — is an **Error**; the assignment still stands with value **Nil** (the shape never carries less than the source suggested; the Error explains the Nil). The "nothing indented under it" clause is load-bearing: when deeper lines *do* follow, the assignment's **deferred body opens instead** (§6.5) and no missing-value Error fires. Presence is written explicitly:
 
 ```udon
-|button :disabled? true :type submit    ; no implicit-true default (K12)
+|button :disabled? true :type submit    ; presence is explicit
 ```
 
 Four distinct states, one Error (§11.4): **Absent** (no assignment) · **Nil** (`:label nil`, or the Error-produced Nil) · **False** (`:key false`) · **True** (`:key true`, or suffix sugar).
@@ -363,7 +305,7 @@ An item of an assignment's content is one of:
 | **Scalar** | quoted string, bare single-token string (§11.1), number, `true`/`false`/`null`/`nil` alone, list `[…]`, envelope `<…>` |
 | **Reference** | `@…` (an inert selector, §12.2) |
 | **Interpolation** | `!{{…}}` (carried unparsed; host evaluates) |
-| **Inline value** | an inline element `\|{…}` or inline verbatim `!{:kind:…}` standing as a value (§6.4 — ruled K9, narrowing R4/S11) |
+| **Inline value** | an inline element `\|{…}` or inline verbatim `!{:kind:…}` standing as a value (§6.4) |
 | **Node value** | block-form `\|element`, block verbatim `!:lang:`, a fence, or a block directive `!name` (carried inert — §9) — the value *is* that node |
 | **Text value** | unquoted text (§6.4) or `\`-forced text; a flow — it may contain inline segments |
 
@@ -382,16 +324,14 @@ A `:` passing its guard opens an attribute; after the label, its value material 
 
 **Self-announcing values.** Most value shapes announce their extent from their first character — digit or sign → number, `"`/`'` → string, `<` → envelope, `[` → list, `@` → reference, `!{{` → interpolation, block-form `|name` → node — and self-terminate; the scan continues after each. A committed token that goes wrong mid-way (`12ab`) falls through, token-locally, to an ordinary text token (`:x 12ab :y 3` → `x="12ab"`, `y=3`).
 
-**Brace forms at a value position** (ruled K9, narrowing R4/S11 — see the ledger's Overturns): at a **clean value-expected position** — a value slot where no text has committed — an inline element `|{…}` or inline verbatim `!{:kind:…}` **self-delimits as a value** (brace-balanced) and the scan continues; whitespace between values is a separator, not content. In Joseph's words: the pre-K9 space-as-content reading "is the hack — the tell is the space. The new clean model is `:$main [|{embed-1}, |{embed-2}]` period — no space, no implication of being in a text block."
+**Brace forms at a value position.** At a **value-expected position** — a value slot where no text has committed — an inline element `|{…}` or inline verbatim `!{:kind:…}` **self-delimits as a value** (brace-balanced) and the scan continues; whitespace between values is a separator, not content. This holds **wherever a value is expected** — the sameline `$main` slot, attribute value slots (sameline and block), list items, identity/selector bracket interiors, and a deferred body's first line (§6.5) — one value grammar, no per-context table. **Mid-flow the rule inverts**: once a text value has committed, a brace form is a segment of it, never a terminator (`:n value |{em x} :a 1` → `n` holds the whole flow, `:a` included).
 
 ```udon
 |el |{embed-1} |{embed-2}   ; two stacked $main values — siblings, no space content
 |el :n |{em x} :a 1         ; n = the inline element; :a is a real attribute
 ```
 
-The ruled clean positions are the **sameline `$main` slot** and **attribute value slots** (sameline and block). *(List items and identity/selector brackets: unruled — UNIF-PASS-QUESTIONS Q2 carries the leans. A deferred body's first line: likewise unruled — no continuing scan exists there for a self-delimited value to return to, which is the lean's ground.)* **Mid-flow, the inline-brace principle stands unchanged**: once a text value has committed, a brace form is a segment of it, never a terminator (`:n value |{em x} :a 1` → `n` holds the whole flow, `:a` included).
-
-**Unquoted text values** (ruled K10 — "non-quoted text values are now strictly distinct from prose and are just like quoted text except end with a space + valid block-start"). An unquoted text value begins at any value position where the material is not self-announcing, and runs until —
+**Unquoted text values** are just like quoted text values, with different closing delimiters. One begins at any value position where the material is not self-announcing, and runs until —
 
 - a space followed by a **guard-confirmed block-form marker** — `:label`, `|name`, `@ref`, `!name`, `!:…:`, a fence — which terminates the value and continues the scan;
 - a **framed `\`** (§4) — terminates the value and commits the rest of the line to text mode;
@@ -408,7 +348,7 @@ The ruled clean positions are the **sameline `$main` slot** and **attribute valu
 ; unspaced ; and : are token content; b is an attribute (framed ` :b` terminates)
 ```
 
-A marker that **fails its guard** is not a terminator — it is ordinary content of the open value (`3:1` unspaced, `| ` pipe-space, `!=`). An **attached `\X`** escape (§4) makes a would-be terminator ordinary content: with a text value **open** at that position, the escaped material joins it and the value continues — `:a hello \:-) how are you?` → `a = "hello :-) how are you?"`, no `$main`. *(Flagged: MORNING-ADJUDICATION Q8 — Joseph's original worked example of this line predates the K13 frame split and may have intended the framed reading; the open-value reading here is the K13-consistent one.)*
+A marker that **fails its guard** is not a terminator — it is ordinary content of the open value (`3:1` unspaced, `| ` pipe-space, `!=`). An **attached `\X`** escape (§4) makes a would-be terminator ordinary content: with a text value **open** at that position, the escaped material joins it and the value continues — `:a hello \:-) how are you?` → `a = "hello :-) how are you?"`, no `$main`. *(Open lean — working-notes Q8.)*
 
 **Keywords at a terminator.** `true` / `false` / `null` / `nil` are typed only when the token finishes alone — its end meets a terminator. Followed by more text they are the first word of a text value (`:alpha true story :b 1` → `alpha="true story"`, `b=1`).
 
@@ -417,7 +357,7 @@ A marker that **fails its guard** is not a terminator — it is ordinary content
 Ownership on a line follows two rules, in order:
 
 1. **The open slot owns.** An attribute whose value is still expected (label just read, or an escape opening its value) owns the next value material.
-2. **Otherwise, the line root's stack.** After a value finishes, further value material belongs to the **line root**: on an **element-rooted line**, further values stack as the element's **`$main`** (§6.10) and further `:label`s open new attributes; on a **block attribute line** (rooted by `:label`, no element on it), further values **stack on that label** (silent — ruled K11) and further `:label`s open new sibling attributes.
+2. **Otherwise, the line root's stack.** After a value finishes, further value material belongs to the **line root**: on an **element-rooted line**, further values stack as the element's **`$main`** (§6.10) and further `:label`s open new attributes; on a **block attribute line** (rooted by `:label`, no element on it), further values **stack on that label** (silently) and further `:label`s open new sibling attributes.
 
 Block text lines (text-space) follow ordinary column ownership (§7) — not an anomaly, not this section.
 
@@ -430,7 +370,7 @@ Block text lines (text-space) follow ordinary column ownership (§7) — not an 
   :first "one" two                       ; first ≈ ["one","two"] — stacked, silent
 ```
 
-**Deferred bodies** (ruled K5/K7). If an assignment's label ends its line with no finished value — sameline and block attributes uniformly — the deeper lines under it are the assignment's **content**, under ordinary column and content-base rules: heterogeneous items, exactly like element content. **The body's first line carries the value-expected position** (ruled K7): a lone self-announcing token there types (`:port` + deeper `5432` → Integer 5432), `nil` alone is Nil, a text-committing line begins text. Only the first line is ever value-special — later lone tokens are ordinary text (no per-line typing: re-wrapping text must never retype a document) — with `\` and quoting as the first-line escapes.
+**Deferred bodies.** If an assignment's label ends its line with no finished value — sameline and block attributes uniformly — the deeper lines under it are the assignment's **content**, under ordinary column and content-base rules: heterogeneous items, exactly like element content. **The body's first line carries the value-expected position**: a lone self-announcing token there types (`:port` + deeper `5432` → Integer 5432), `nil` alone is Nil, a brace form is a value (§6.4), a text-committing line begins text. Only the first line is ever value-special — later lone tokens are ordinary text (no per-line typing: re-wrapping text must never retype a document) — with `\` and quoting as the first-line escapes.
 
 ```udon
 |el
@@ -457,22 +397,28 @@ One value grammar; contexts differ only in added terminators and line root:
 | Block attribute line | *(none beyond §6.4)* | the label's stack / new attributes |
 | Inline element `\|{…}` | `}` (unconsumed) | the inline element's interior content |
 | List item | `]` (unconsumed) | *(items have no tails — next item)* |
-| Identity / selector bracket | `]` (unconsumed) | further stacked `$key` (silent — K2) |
+| Identity / selector bracket | `]` (unconsumed) | further stacked `$key` (silent) |
 
 - A framed ` ; ` opens a comment on element and block-attribute lines (never inside framed-`\` text mode). An unspaced `;` is token content.
-- Inside `|{…}` there are **no framed sameline comments** — a bare `;` is literal; only `;{…}` comments there (ruled R20; revisit with dialects). One edge is narrower than that rule: a framed ` ; ` after **value-`\` text** inside an inline element (`|{a :title Home \ Welcome! ; hm}`) is **unspecified this version** — do not rely on either reading.
+- Inside `|{…}` there are **no framed sameline comments** — a bare `;` is literal; only `;{…}` comments there (revisit with dialects). One edge is narrower than that rule: a framed ` ; ` after **value-`\` text** inside an inline element (`|{a :title Home \ Welcome! ; hm}`) is **unspecified this version** — do not rely on either reading.
 - `}` is not a terminator inside `[…]`: an inline element's `}` must follow the `]`; a `[` unclosed at the `}` is an unclosed list (content kept, Warning).
 
-### 6.7 Stacking
+### 6.7 Stacking: a label names a collection
 
-Same-label assignments accumulate — ordered, heterogeneous, in source order. Stacking is the uniform rule for *every* attribute; last-wins does not exist in UDON, and stacking is **silent** everywhere (ruled K11 — "no more warning now that multi-value attributes are the fresh new thing"; the 0.9 warned extension is retired). Stacking and list values are orthogonal:
+A label names a **collection of contributions**. Each occurrence of the label appends its value as one item — sameline, block, or interleaved with other labels, all the same act — and a bracketed list is one contribution that *is* a sequence. Nothing flattens and nothing is lost: nesting written is nesting kept.
 
 ```udon
-|el :x 1 :x 2         ; two assignments (x = [1, 2] through a list view)
-|el :x [1 2] :x [3]   ; two assignments whose values are lists
 |el
-  :x "first" and here's another one     ; two stacked values, silent
+  :x 1
+  :x [2 3]
+  :x [4 [5 6]]
+; x's contributions, in order: 1 · [2 3] · [4 [5 6]]
+; default read: [1 [2 3] [4 [5 6]]] — flattening beyond this is the app's call
 ```
+
+The **default read** (MODEL §3.2): one contribution reads as the value itself (`:x 1` → `1`; `:x [2 3]` → the list `[2 3]`); several read as the list of contributions in order. An always-list accessor is available for uniform consumer code. A consequence needing no rule of its own: `:attr |{a} |{b}` (two contributions) and `:attr [|{a} |{b}]` (one contribution that is that list) read the same — until a further contribution stacks, at which point the grouping the author wrote distinguishes them (`[[a b], c]` vs `[a, b, c]`).
+
+Last-wins does not exist in UDON, and stacking is **silent** everywhere. Spelling the same contribution set as stacked occurrences vs a bracketed literal is **ornamentation** — same class as edge blank lines (§7.4): the model records the difference, an assembler MAY annotate the flavor (e.g. `contributed-as: stacked · array · deferred`) so faithful round-trip reconstructs spelling without spans, and data consumers ignore it.
 
 What is *allowed* (e.g. forbidding a multi-valued `$key`) is schema territory, never core.
 
@@ -488,31 +434,31 @@ An assignment's value may **be** a node — a block-form element, block verbatim
 |el :script !:sh: make build
 ```
 
-- **Block form and brace form both bind at a clean value position** (ruled K9 — the 0.9 "drop braces to bind" distinction is retired): `:x |em hi` and `:x |{em hi}` both make the `em` element the value, and are model-equivalent (SEMANTICS §2). They differ mid-flow, where a brace form is a segment and a block form is a terminator.
+- **Block form and brace form both bind at a value-expected position**: `:x |em hi` and `:x |{em hi}` both make the `em` element the value, and are model-equivalent (SEMANTICS §2). They differ mid-flow, where a brace form is a segment and a block form is a terminator.
 - **The one-way door.** Once a block-form node opens, its Line Scan owns the rest of the line — identity, attributes, text, children. `|api :headers |header :k v :timeout 30` gives `timeout` to the *header*. Put the outer element's attributes first, or defer the node to a block.
-- **No attribute-under-attribute.** A deeper line that is itself `:label`-shaped directly under an open assignment body (not inside a node value) is kept as **text of the open body** with a **Warning** — text that looks like an attribute. *(Keep shape ruled L6; severity Warning per K8: the language has no nested attributes (K4), so no intended structure is absent — and warn-before-disallow keeps the grouping-sugar door open, OPEN ATTR-GROUP.)* Maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
+- **No attribute-under-attribute.** A deeper line that is itself `:label`-shaped directly under an open assignment body (not inside a node value) is kept as **text of the open body** with a **Warning** — text that looks like an attribute. *(The language has no nested attributes, so no intended structure is absent — Warning, not Error; and warn-before-disallow keeps the grouping-sugar door open — OPEN ATTR-GROUP.)* Maps-of-maps take a named node carrier: `:theta` + deeper `|config :first 1 :second 2`.
 - To give an element both attributes and a node child on one line, order does it: `|el :a 1 |beta`.
 
 ### 6.9 Late attributes (accept and warn)
 
-Attributes may appear **after** an element's block content has begun: a line-initial `:label` at the element's attribute column is a **real attribute of that element**, with a **Warning** (ruled K14 — Joseph's worked case: "A warning is issued, but still becomes an attribute of `element`"). The Warning marks likely-unintended placement, not invalidity; deliberate late attributes are legal.
+Attributes may appear **after** an element's block content has begun: a line-initial `:label` at the element's attribute column is a **real attribute of that element**, with a **Warning**. The Warning marks likely-unintended placement, not invalidity; deliberate late attributes are legal.
 
 ```udon
 |element this prose is the first child
   :status pretty much open      ; ordinary attribute — silent ($main is sugar,
                                 ; not content: the attribute window is open)
   Some more children
-  :a-rogue-attribute <value>    ; attribute of element, with a Warning (K14)
+  :a-rogue-attribute <value>    ; attribute of element, with a Warning
 ```
 
-- `$main` assignments (sameline text) do **not** begin content (ruled K9): a sameline-only element is fully open to silent block attributes below.
+- `$main` assignments (sameline text) do **not** begin content: a sameline-only element is fully open to silent block attributes below.
 - An attribute's deferred body does not begin its *element's* content: `:desc` + body lines, then `:next 1` at the sibling column, is an ordinary silent attribute.
-- Under an *attribute's* open body the rule is different — there, a `:label`-shaped line is warned **text** (§6.8), because attributes cannot have attributes (K4).
+- Under an *attribute's* open body the rule is different — there, a `:label`-shaped line is warned **text** (§6.8), because attributes cannot have attributes.
 - **Consumer note (streaming identity):** because designated keys are ordinary attributes, a late `:$key` is now possible with only a Warning — resolvers and duplicate-detection MUST NOT treat an element's identity as complete before the element closes.
 
 ### 6.10 The element's value: `$main`
 
-An element's sameline text is sugar for the designated attribute **`$main`** (ruled K9): *sameline is value-space — all sameline material is an attribute value, and unowned material's attribute is `$main`.*
+An element's sameline text is sugar for the designated attribute **`$main`**: *sameline is value-space — all sameline material is an attribute value, and unowned material's attribute is `$main`.*
 
 ```udon
 |element[123]  And here is some sameline text
@@ -523,7 +469,7 @@ An element's sameline text is sugar for the designated attribute **`$main`** (ru
 
 - **The sameline slot is a typed value position.** Self-announcing values become `$main` values and return the scan — `|element "here we go!" |child …` chains; `|element <1234>` gives an envelope `$main`. Unquoted text is a text value per §6.4's terminators. Sequences are **stacked `$main` assignments** (the substrate; an array is the view): `|a "Some text" some more text` → two `$main`s.
 - **Guidance:** sameline text is a scalar — start a *body* of text next-line-indented, especially if it opens with `"`, `<`, or `[`; or escape the opener (`\"Hello," she said` keeps the quotes visible — §4).
-- **`$main` is an ordinary attribute with respect to the text law** (MODEL §6): it is *not* text material — "it's an attribute on the wire, and depends on the parser parameters to decide how you want it in the AST" (e.g. a `first_is_main`-style re-injection knob). Sameline text and block text are therefore **different documents by design** — reflowing between them is a semantic edit (SEMANTICS §3). This also closes a real model hole: sameline-vs-block text position was previously recoverable only via spans.
+- **`$main` is an ordinary attribute with respect to the text law** (MODEL §6): it is *not* text material — it is an attribute on the wire, and parser/host parameters decide its AST presentation (e.g. a `first_is_main`-style re-injection knob). Sameline text and block text are therefore **different documents by design** — reflowing between them is a semantic edit (SEMANTICS §3). This also closes a real model hole: sameline-vs-block text position was previously recoverable only via spans.
 - Inline elements written at the `$main` slot are values (§6.4); inline elements *inside* a committed `$main` text value are its segments. The interior-content rule of §5.6 is untouched.
 - `$main` establishes no content base and does not begin content (§6.9, §7.2).
 
@@ -565,14 +511,12 @@ Brace counting: `|{…}`, `;{…}`, `!{…}`, `!{:kind:…}` close on the balanc
 
 ### 7.4 Blank and whitespace-only lines (the two-layer model)
 
-Ruled — CHANGELOG S6:
-
 - A blank line whose whitespace does **not** protrude past the text content base is a **blank line** at the recognition layer (whitespace covered, round-trip safe) and contributes `"\n"` to text reconstruction.
 - Whitespace protruding **past** the base is text content, extra whitespace preserved (ordinary dedentation).
 - A framed `\` on an otherwise-blank line forces a kept empty text line.
 - **Interpretation is the consumer's**: interior blanks between text lines are newlines; leading/trailing blanks at structure boundaries are **ornamentation** (UDON-level decoration, not text content) — or kept as literal blank-line nodes for reversibility. (Exact placement of blank-vs-dedent at structural seams is deferred — S9, CARVEOUTS.)
 
-**Final-terminator disposition** (ruled, three worked examples): interior newlines within a text run are text. A run's final terminator riding *inside* its last content-bearing line (…`\ tail`⏎ then structure) is ornamental — trimmed by the consumer; an author's `\` at the very *end* of a line (empty forced tail) is an **explicit** newline — kept. "The only reason I'd put the backslash at the end like that is because I *do* want the explicit newline."
+**Final-terminator disposition**: interior newlines within a text run are text. A run's final terminator riding *inside* its last content-bearing line (…`\ tail`⏎ then structure) is ornamental — trimmed by the consumer; an author's `\` at the very *end* of a line (empty forced tail) is an **explicit** newline — kept. "The only reason I'd put the backslash at the end like that is because I *do* want the explicit newline."
 
 ---
 
@@ -597,9 +541,9 @@ The frame requirement is a property of the *framed* positions only. In the no-fr
 
 **Comments are carried, not discarded** — they appear in the model (MODEL §5) and consumers decide their fate (documentation extraction, TODO tracking, stripping). Comment content is inert: never interpreted.
 
-**Continuation.** A line comment owns everything indented deeper than it — markers, structure, fences, everything — until a line at or left of its column. The first continuation line sets the comment's strip column (content-base shape — ruled L7); deeper lines keep their extra indent as comment text. This is what lets one `;` silence an entire block, including structure that is itself failing to parse. Comments participate in the column hierarchy like any node (a comment at column 0 closes everything open).
+**Continuation.** A line comment owns everything indented deeper than it — markers, structure, fences, everything — until a line at or left of its column. The first continuation line sets the comment's strip column (content-base shape); deeper lines keep their extra indent as comment text. This is what lets one `;` silence an entire block, including structure that is itself failing to parse. Comments participate in the column hierarchy like any node (a comment at column 0 closes everything open).
 
-Inline `;{…}` framing whitespace is **preserved** on strip (both framing spaces are prose; pure concatenation keeps them — ruled S18, revisit with dialects). To output a literal `;` at line start, lead with `\` (§4).
+Inline `;{…}` framing whitespace is **preserved** on strip (both framing spaces are prose; pure concatenation keeps them; revisit with dialects). To output a literal `;` at line start, lead with `\` (§4).
 
 ```udon
 ; a comment
@@ -625,13 +569,13 @@ The `!` marker introduces **dynamics**. The core recognizes five forms and carri
 
 Directives nest by column like elements; a dedent closes them. `!else` / `!elif` chains are dialect semantics over adjacent directives, not core structure. *(A directive standing as a value has no sameline adjacency slot for a chain; under K5 a following `!else` on a deeper line lands in the assignment's content, restoring adjacency there.)*
 
-**Placement (ruled K3).** A block directive may sit anywhere an element can — child position, and value position as a node value (§6.3, §6.8) — but not where elements also cannot go (list items, bracket interiors). In this version directives are **inert**: recognized, carried verbatim (head unparsed, body as UDON), never resolved — "we specifically don't want directives to do anything yet — just get emitted as-is so we can experiment."
+**Placement.** A block directive may sit anywhere an element can — child position, and value position as a node value (§6.3, §6.8) — but not where block-form elements also cannot go (list items, bracket interiors). In this version directives are **inert**: recognized, carried verbatim (head unparsed, body as UDON), never resolved — deliberately, so dialect experiments can run on faithfully carried forms.
 
 > [!warning] The head swallows the rest of the line. A directive's head-line remainder is carried **unparsed**: in `|el :x !if cond :y 2`, the `:y 2` is part of the head string — not an attribute of `el`, not an attribute of anything. This is one step harsher than the node-value one-way door (§6.8), where a trailing `:key` at least binds to the node. Put the outer element's attributes first, or defer the directive to a block line.
 
 Interpolations may appear in flow, as whole values, as list items, and as a whole identity key. A mixed literal-and-interpolation value (`pre!{{x}}post`, `!{{base}}/path`) is a **text value** — text and interpolation segments, whole-value `!{{x}}` the one-segment degenerate.
 
-A **nameless** `!{` at end of input (nothing after the opener) is text `"!{"` — no directive ever started (ruled 2026-07-18).
+A **nameless** `!{` at end of input (nothing after the opener) is text `"!{"` — no directive ever started.
 
 ---
 
@@ -657,7 +601,7 @@ A **nameless** `!{` at end of input (nothing after the opener) is text `"!{"` �
     end
 ```
 
-The colon-wrapped kind passes to the host uninterpreted. The body is every deeper line, dedented to the **first content line's column**; deeper indentation is preserved as body; a line at or left of the directive's column ends the block. The body MAY begin on the directive line itself — `!:sh: echo hi` captures `echo hi` — whitespace after the closing `:` separates; a same-line tail does **not** establish the raw base (same shape as fences). An empty same-line body after the separator is an **empty body**, not "no body" (ruled S8). All of this holds uniformly in node-value position (`|el :script !:sh: make build`).
+The colon-wrapped kind passes to the host uninterpreted. The body is every deeper line, dedented to the **first content line's column**; deeper indentation is preserved as body; a line at or left of the directive's column ends the block. The body MAY begin on the directive line itself — `!:sh: echo hi` captures `echo hi` — whitespace after the closing `:` separates; a same-line tail does **not** establish the raw base (same shape as fences). An empty same-line body after the separator is an **empty body**, not "no body". All of this holds uniformly in node-value position (`|el :script !:sh: make build`).
 
 ### 10.2 Inline form
 
@@ -665,7 +609,7 @@ The colon-wrapped kind passes to the host uninterpreted. The body is every deepe
 |p The response was !{:json: {"status": "ok", "count": 42}} as expected.
 ```
 
-Brace-counted (balanced `{}` allowed); a single space after the kind's closing `:` is a separator, not body. Unbalanced braces need the block form. At a clean value position the inline form **is the value** (ruled K9, superseding S11's flow-segment reading there); mid-flow it is a segment, uniform with the other inline brace forms.
+Brace-counted (balanced `{}` allowed); a single space after the kind's closing `:` is a separator, not body. Unbalanced braces need the block form. At a value-expected position the inline form **is the value**; mid-flow it is a segment, uniform with the other inline brace forms.
 
 ### 10.3 Fence
 
@@ -696,7 +640,7 @@ Type comes from written syntax, never from sniffing content. The **bare scalar s
 
 `TRUE`, `True` are strings. A bare `2026-07-11` is the string `"2026-07-11"` — **all temporal values require the envelope** (the `temporal@1` dialect; the old bare-temporal model is superseded).
 
-**Rational and complex are not bare scalars** (`1/3r`, `3+4i`, `5i`). Bare numeric recognition is frozen to integer + float (ruled R21, reaffirmed L5). Their future home is a standard-types dialect via the envelope; the in-dialect spelling is open (CARVEOUTS). Unquoted, those spellings are ordinary text values today.
+**Rational and complex are not bare scalars** (`1/3r`, `3+4i`, `5i`). Bare numeric recognition is frozen to integer + float. Their future home is a standard-types dialect via the envelope; the in-dialect spelling is open (CARVEOUTS). Unquoted, those spellings are ordinary text values today.
 
 ### 11.2 Numbers
 
@@ -715,7 +659,7 @@ A leading `0` before more decimal digits is decimal — `0755` is `755`; `0d` is
 
 ### 11.3 Strings
 
-`"…"` and `'…'` quote. A string closes at the next occurrence of its own quote character; interior bytes — `\` included — pass through untouched (§4 does not apply inside strings). **There are no core in-string escapes**: to contain one quote kind, use the other (`"it's"`, `'say "hi"'`); hosts MUST NOT invent core escapes (ruled L2 — the positional-`\` story stays whole; doubling would collide with adjacent quoted list items, §11.5).
+`"…"` and `'…'` quote. A string closes at the next occurrence of its own quote character; interior bytes — `\` included — pass through untouched (§4 does not apply inside strings). **There are no core in-string escapes**: to contain one quote kind, use the other (`"it's"`, `'say "hi"'`); hosts MUST NOT invent core escapes (the positional-`\` story stays whole; doubling would collide with adjacent quoted list items, §11.5).
 
 The bare fallback: an unquoted single token that is nothing else is a string.
 
@@ -728,11 +672,11 @@ Lowercase only, typed only when alone at a terminator (§6.4). `null` ≡ `nil`.
 - **False** — boolean false
 - **True** — explicit `true`, or element suffix sugar (`$?` etc.)
 
-Attributes require a value; there is no implicit nil and no implicit true (ruled K6, K12 — a bare `:label` is the §6.2 Error with value Nil). Absent = no assignment; Nil = an assignment whose value is Nil, written `nil` or Error-produced.
+Attributes require a value; there is no implicit nil and no implicit true (a bare `:label` is the §6.2 Error with value Nil). Absent = no assignment; Nil = an assignment whose value is Nil, written `nil` or Error-produced.
 
 ### 11.5 Lists
 
-`[…]` in value position: items space-delimited, each typed independently by the **full** value rules — numbers, strings, envelopes, nested lists, references, and interpolations are all valid items (ruled R17). No multi-word unquoted text inside a list — a bare item is one token; quote items with spaces. A quoted item's closing quote ends it: `["x"y]` and `["x""y]` are two items each, like `["x" y]`. `[ ]` (whitespace only, closed) is the empty array. *(Inline-element values as list items: unruled — UNIF-PASS-QUESTIONS Q2.)*
+`[…]` in value position: items space-delimited, each typed independently by the **full** value rules — numbers, strings, envelopes, nested lists, references, interpolations, and inline elements/verbatims (§6.4: item slots are value-expected positions) are all valid items. No multi-word unquoted text inside a list — a bare item is one token; quote items with spaces. A quoted item's closing quote ends it: `["x"y]` and `["x""y]` are two items each, like `["x" y]`. `[ ]` (whitespace only, closed) is the empty array. Two notes: hosts projecting lists to native arrays need a policy for structured items (same knob family as `$main` presentation); an *unclosed* `|{` item at end of line falls under the multi-line carve-out (CARVEOUTS §ML) — the same tension multi-line strings in lists already have, needing no rule of its own.
 
 ### 11.6 The envelope `<…>`
 
@@ -774,7 +718,8 @@ A reference is an inert **selector** `(name?, key?, traits)`:
 | `@licence[mit].realized` | `(licence, mit, [realized])` |
 
 - **Traits are selection criteria** — they filter which definition matches; a reference never decorates or mutates its target. Deliberately absent: suffixes, attributes, predicates, nesting. To vary content, define a new element.
-- The tuple is **frozen at three fields** pending path design — no incremental growth (ruled S14); a path syntax, when it comes, replaces it wholesale, and cross-document addressing is in scope for that design (PATH-1). **Inputs the paths design inherits:** multi-key elements exist (K1 — `$key` designators stack), so what `@x[k]` matches against a stacked-key element is a paths question; `@` inside identity brackets is likewise deferred there. See CARVEOUTS.
+- The tuple is **frozen at three fields** pending path design — no incremental growth; a path syntax, when it comes, replaces it wholesale, and cross-document addressing is in scope for that design. **Inputs the paths design inherits:** multi-key elements exist (`$key` designators stack), so what `@x[k]` matches against a stacked-key element is a paths question; structural-key matching is likewise deferred there. See CARVEOUTS.
+- **Inside a key bracket**, a reference takes the brace form: `|el[@{key}]`. The bare `@` spelling is held out of the bracket sugar (delimited slots take delimited forms — a bare selector nests brackets ambiguously). The `@{…}` inline reference form is thereby demanded; its full grammar is paths-era work.
 - The core recognizes; it never resolves. Resolution **menu**: `transclude` | `merge-attributes` | `leave-inert` (default inert). Key-only `@[k]` may be ambiguous across names; recognition succeeds; resolve time MAY error.
 - An unclosed selector key fails safe exactly like identity: the selector is marked partial and resolvers MUST exclude it (§5.3).
 
@@ -799,7 +744,7 @@ The core sees only what is written; a recognizer that does no mixin resolution i
 ### 12.5 Annotation convention (non-core)
 
 Inline annotation is a named-element convention — e.g.  
-`|{note :confidence 0.7 …}` with a schema-owned vocabulary, strippable by consumers (ruled — CHANGELOG C2). Richer annotation syntax is deferred to the demand-side work (CARVEOUTS).
+`|{note :confidence 0.7 …}` with a schema-owned vocabulary, strippable by consumers. Richer annotation syntax is deferred to the demand-side work (CARVEOUTS).
 
 ---
 
@@ -844,7 +789,7 @@ For streaming input, "end of input" is the producer's explicit signal, never a c
 | **Warning** | everything kept; may not match author intent |
 | **Error** | something was **lost**, or a required value is **genuinely absent** as written; recognition continues |
 
-**Error = loss** (ruled L0) is mechanically checkable: if every author-visible byte is represented in the model as structure or text, severity MUST be Warning — unless a more specific rule names Error because something the author *intended* is genuinely absent from the model even though the bytes survive. **One case carries that justification** — `:label` with no value → assignment with Nil + Error (§6.2 — the intended **value** is absent). It is the language's sole core Error: "fail on error" means a genuinely missing required value or truncation (`incomplete-input`), nothing else. An Error MUST NOT halt recognition; nothing after an error point may be silently discarded.
+**Error = loss** is mechanically checkable: if every author-visible byte is represented in the model as structure or text, severity MUST be Warning — unless a more specific rule names Error because something the author *intended* is genuinely absent from the model even though the bytes survive. **One case carries that justification** — `:label` with no value → assignment with Nil + Error (§6.2 — the intended **value** is absent). It is the language's sole core Error: "fail on error" means a genuinely missing required value or truncation (`incomplete-input`), nothing else. An Error MUST NOT halt recognition; nothing after an error point may be silently discarded.
 
 ### 14.2 Keep-Everything
 
@@ -858,8 +803,8 @@ The response ladder above (a) warn-and-keep — (b) warn-and-drop, (c) error-and
 |---|---|---|
 | Unclosed delimited construct | Warning (+ incomplete-input at EOF) | partial content, opener cited |
 | Unclosed identity/selector `[` | Warning | `$partial-key` / partial selector |
-| Late attribute after block content | Warning (K14) | **accepted** as the element's attribute |
-| `:label` under an open assignment body | Warning (K8) | text of the open body |
+| Late attribute after block content | Warning | **accepted** as the element's attribute |
+| `:label` under an open assignment body | Warning | text of the open body |
 | Inconsistent text indent | Warning | re-base content base |
 | Root-level `:label` | Warning | document-level text |
 | Tab in indentation | Warning | best-effort keep as text of current owner |
@@ -899,7 +844,7 @@ The rest is the marker inventory, annotated:
 ```udon
 ; a comment (owns anything indented deeper than it)
 |element[key].trait :attr value :ok? true
-;        │    │      │           └ presence is explicit — no implicit-true (K12)
+;        │    │      │           └ presence is explicit — no implicit-true
 ;        │    │      └ attribute: the PARENT's label for the value  (§6.1)
 ;        │    └ trait: what KINDs of thing it is — stacks           (§5.3)
 ;        └ identity: what makes it THIS one; @[key] points at it    (§5.3)
@@ -909,7 +854,7 @@ The rest is the marker inventory, annotated:
 ;            └ the |config node IS the value (block or brace form)  (§6.8)
   Block prose with |{em inline}, !{{interp}}, and ;{a note}.
 ; └ text-space: markers literal; braces = inline forms INSIDE text  (§7)
-  :late 1   ; still a real attribute — warned as late (K14)         (§6.9)
+  :late 1   ; still a real attribute — warned as late               (§6.9)
   :when <2026-07-11>
 ;       └ envelope: everything beyond the frozen bare scalars —
 ;         a dialect types it. **Bare recognition is frozen forever,
@@ -926,7 +871,7 @@ Sugar is honest: `|element[key].trait? Title text` and
 
 ## Appendix B — Working anomaly-code inventory (non-normative)
 
-The current working vocabulary of anomaly codes, carried so tooling and spike agents share names. **All spellings are working names** — SPEC vocabulary and generator derivation must agree before any becomes contract (ruled W4); severities and keep shapes follow this suite, which supersedes older per-code definitions. Retired by the K-series: `AttributeValueExtendedByTrailingText`, `AttributeSecondValue` (K11 — stacking is silent).
+The current working vocabulary of anomaly codes, carried so tooling and spike agents share names. **All spellings are working names** — SPEC vocabulary and generator derivation must agree before any becomes contract; severities and keep shapes follow this suite, which supersedes older per-code definitions. Retired: `AttributeValueExtendedByTrailingText`, `AttributeSecondValue` (stacking is silent).
 
 | Code | Situation (§) | Severity |
 |---|---|---|
@@ -995,4 +940,4 @@ Document { result: complete,
     content:     Text "content line\n"
 ```
 
-`host` had no value material and nothing indented under it, so it stands with Nil — the intended value is absent, the language's one Error. `port`'s deferred body opened, and its first line is itself `:label`-shaped — the attribute-under-attribute case: the line survives as text of `port`'s open body with a Warning (K8 — the language has no nested attributes, so nothing the author could legitimately intend is missing). `zone` arrives after `db`'s block content: a real attribute, warned as late (K14). Recognition continued; every byte is in the model.
+`host` had no value material and nothing indented under it, so it stands with Nil — the intended value is absent, the language's one Error. `port`'s deferred body opened, and its first line is itself `:label`-shaped — the attribute-under-attribute case: the line survives as text of `port`'s open body with a Warning — the language has no nested attributes, so nothing the author could legitimately intend is missing. `zone` arrives after `db`'s block content: a real attribute, warned as late. Recognition continued; every byte is in the model.
