@@ -1,0 +1,28 @@
+# Lexical forms — the matrix at current law (2026-08-11; K1–K16 + §0 folded in)
+
+**Register: updated companion to [[lexical-forms-discussion-2026-08]]** — same matrix refreshed against ruled law (0.10.0-alpha.1 through K16 and the §0 guiding-model revision) so the two can be compared back-to-back. The original stays untouched as the record of the 08-09 state. The three-forms question itself (jaw's `@<{ }>` seed and the block/value/embedded crystallization) remains a **pre-validation brainstorm** — nothing here rules on it; what changed is which cells are law vs lean.
+
+## The form matrix (ruled law as of K16; *italic* = borrowed spelling / open)
+
+| Construct | Block / geometric | Sameline (in the scan) | Value (in a slot) | Embedded (in prose) |
+|---|---|---|---|---|
+| **Element** | `\|el` (owns lines below) | `\|a \|b` chaining (true columns) | **ruled, both spellings** — block-form `\|name` binds as node (one-way door) and `\|{…}` self-delimits, at *every* value-expected position (slots, list items, key brackets, deferred first line — K16); model-equivalent at a value position (SEMANTICS §2.5). *Spellings still borrowed from the other two columns* | `\|{el …}` flow segment |
+| **Attribute** | `:a 1` own line (line root, collects) | `:a 1` mid-scan | — (attributes aren't values; K4) | — (` :a` mid-prose literal) |
+| **Reference** | `@name` reference-child line | `@name` mid-scan (equal footing with `\|`) | *still conflated with block:* bare `@…` · the `@<{…}>` value-form **debate remains open** (unruled brainstorm) | `@{…}` — **now ruled-in for key brackets** (`\|el[@{key}]`, K16 addendum; bare `@` held out of bracket sugar, lightly); full inline grammar still paths-era |
+| **Directive** | `!name` (head + geometric body) | `!name` mid-scan — *head swallows rest of line* (§9 warning) | directive as node value (inert) — *borrowed block spelling*; the sketched `!if{cond}{then}{else}` value form remains parked (DYNAMICS) | `!{name …}` (UDON-parsed body) |
+| **Interpolation** | — (line-initial `!{{` fails guard → flow) | via value/flow only | `!{{expr}}` whole-value (also whole-key) | `!{{expr}}` — *same spelling as value* |
+| **Verbatim** | **two forms:** `!:kind:` (geometric) · fence (delimited) | `!:kind: body here` (same-line body); fence openable mid-scan | **ruled, both spellings** — `!:kind:` node value · `!{:kind:…}` *is the value* at any value-expected position (K9/K16) — *spellings still borrowed* | `!{:kind: …}` flow segment |
+| **Comment** | `;` line-initial (geometric — owns deeper lines) | framed ` ; ` (to EOL; terminates an open value) | *deliberately none:* `;{}` at a slot yields `""` | `;{…}` (contributes no text) |
+| **Text itself** | text-space content (block prose) | → `$main` contributions (ruled; typed slot, stacked) | quoted string / unquoted text value (K10 terminators) | it *is* the prose |
+| **List** | — | — | `[…]` only — items now take the **full** value grammar incl. inline elements/verbatims (K16) | — (literal chars) |
+| **Envelope** | — | — | `<…>` only ("envelope ladder" name pending Q7) | — (literal `<`) |
+
+## What changed since the 08-09 matrix, and what didn't
+
+1. **K16 dissolved the per-context position table** — "wherever a value is expected, the full value grammar applies" made the element/verbatim value cells *law* at every slot (list items and key brackets included, with the two lightly-held bracket-sugar carves: block forms out; references spell `@{key}`). The position machinery got *simpler* — one principle instead of a table — which softens but does not remove the original diagnosis:
+2. **The value column still has no minted spellings.** Every value-cell entry remains borrowed (elements/verbatims borrow both other columns; references borrow block; interpolation borrows embedded). K16 made the borrowing *uniform and principled*; three-forms would make it *unnecessary*. The two are sequential, not rival: K16 is the best law for today's spellings, three-forms the possible successor that would retire even the value-expected concept.
+3. **K15 added a dimension the original matrix lacked:** spelling *flavors* within a column (stacked vs bracketed contributions) are ornamentation — the wire sees them, assemblers may annotate, data consumers don't care. If three-forms ripens, "flavor" likely generalizes to it (block vs value vs embedded spellings of the same content as annotatable flavor).
+4. **The `@{…}` cell moved first.** It was "demanded, undefined"; K16 gave it a ruled home (key brackets) ahead of its full grammar — the first construct to gain a new-column spelling since the brainstorm. Consistent with the original observation that references, being least-built, move freest.
+5. **Comments remain the only complete, non-conflated form set** — still the accidental exemplar. The `<…>`-composition instinct (`<>` as the native value-form marker; list/envelope as the frictionless value-only rows) stands unchanged.
+
+*(The Liquid-dialect directive inventory appendix is unchanged from the original — see [[lexical-forms-discussion-2026-08]] — except that the sameline-body-vs-head-swallow tension it flags is now stated in CORE §9's warning rather than only there.)*
