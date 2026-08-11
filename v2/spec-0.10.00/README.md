@@ -30,7 +30,6 @@
 | [RATIONALE.md](RATIONALE.md) | Non-normative why. |
 | [TUTORIAL.md](TUTORIAL.md) | Non-normative provisional baseline tutorial — the settled core in twenty minutes. |
 | [working-notes/](working-notes/) | Open questions, adjudication record, and the post-rewrite change log. |
-| [MORNING-ADJUDICATION.md](MORNING-ADJUDICATION.md) | Pass 2 (arc reframing): the §0 axioms decision, the Q2 sharpening, Q8, and the proposed reorder — read first. |
 | [PEDAGOGY.md](PEDAGOGY.md) | Teaching-ladder outline + committed mental models (manual deferred — P4). |
 
 Deliberately **absent**: an event/wire encoding (the 0.9 flat wire was deratified; the successor is demand-gated — see CARVEOUTS §W), full dialect specs (the old DYNAMICS/TIME-SPEC companions remain reference for the baseline `!` dialect and `temporal@1` value grammar, pending the dialect architecture work), and a formal grammar document (the Nesting Rule's mechanical spelling is in CORE §2.1).
