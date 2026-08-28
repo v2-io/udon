@@ -10,8 +10,9 @@
 
 | File | Role |
 |---|---|
-| [CORE.md](CORE.md) | The contract. §0 guiding model; §9 (Deferred material) is the new part; material sections are **condensed carries** — 0.10.0 stays the nuance-carrier for unchanged behavior until ratification |
-| [DELTAS.md](DELTAS.md) | **Read second.** All ten behavior/surface changes vs 0.10.0, ⟨P⟩-marked where a spelling is minted; the breaking notes |
+| [CORE.md](CORE.md) | The contract, **stated in full** — no condensed carries; theory leads, and where the theory beat an inherited idiom the idiom is overridden with a DELTAS row |
+| [DELTAS.md](DELTAS.md) | **Read second.** All fourteen behavior/surface changes vs 0.10.0, ⟨P⟩-marked where a spelling is minted; the breaking notes |
+| [NUANCE-AUDIT.md](NUANCE-AUDIT.md) | **The test.** Every 0.10.0 nuance with its disposition — derives / convention / overridden / strain — including four honest strains |
 | [MODEL.md](MODEL.md) | Node/Value kinds under the unification (Generator as element-shape; Capture; HeldReference; Interpolation gone) |
 | [GLOSSARY.md](GLOSSARY.md) | Delta-glossary; def/ has primacy for addressing terms |
 | [CARVEOUTS.md](CARVEOUTS.md) | Deferrals **with owners** (PATH · HOLD · CAP · EVAL · VOCAB · SCHED) |
@@ -23,6 +24,7 @@ Deliberately absent: TUTORIAL/PEDAGOGY (write after ratification — teaching an
 
 1. **DELTAS 1/2/5/6** — the four ⟨P⟩ spellings (`@{…}`, parsed generator heads, `@<…>`, cardinality suffixes) are the draft's real bets.
 2. **The capture unification's geometric spelling** (CARVEOUTS §CAP) — the one place the draft retains a spelling (`!:kind:`) its own frame calls misfiled.
-3. **Anything in a condensed carry that changed meaning without a DELTAS row** — by this suite's own rule, a defect here; say so rather than picking a side.
+3. **The NUANCE-AUDIT's strain rows** (the framed-`;` terminator; fences; the block-capture guard; construed) — where the frame is weakest, said out loud.
+4. **Any behavior differing from 0.10.0 without a DELTAS row** — by this suite's own rule, a defect here; say so rather than picking a side.
 
 *Assembled 2026-08-27, same session as the redux/matrix/def-generator arc; single-reader caveat applies to every carry.*
