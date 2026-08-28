@@ -23,7 +23,7 @@ Deliberately absent: TUTORIAL/PEDAGOGY (write after ratification — teaching an
 ## Where a reviewer should push
 
 1. **DELTAS 1/2/5/6** — the four ⟨P⟩ spellings (`@{…}`, parsed generator heads, `@<…>`, cardinality suffixes) are the draft's real bets.
-2. **The capture unification's geometric spelling** (CARVEOUTS §CAP) — the one place the draft retains a spelling (`!:kind:`) its own frame calls misfiled.
+2. **DELTAS 12/14** — the delimited-spans law (lists now span; fail-safes as a declared category) and the capture respelling (`<kind:` block form; in-flow capture dropped pending demand) — the two boldest theory-over-idiom overrides.
 3. **The NUANCE-AUDIT's strain rows** (the framed-`;` terminator; fences; the block-capture guard; construed) — where the frame is weakest, said out loud.
 4. **Any behavior differing from 0.10.0 without a DELTAS row** — by this suite's own rule, a defect here; say so rather than picking a side.
 
