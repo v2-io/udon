@@ -1,0 +1,446 @@
+# 0.10.1-draft fixtures — DESCRIPTIVE: places the text does not settle.
+# NOT gate material. Each case names the audit item it probes (`gap:`), shows the
+# readings the text licenses, and pins nothing. When a ruling lands, the case
+# moves to comprehensive with a single `adm` or is deleted.
+# Audit: ../../working-notes/AUDIT-2026-09-01.md
+
+# ------------------------------------------------- A1 block capture as a value
+
+- id: gap_A1_block_capture_as_assignment_value_sameline
+  profile: descriptive
+  gap: A1
+  desc: "<kind: at a value-expected position: value form (spans to a >) or block form (geometric)?"
+  udon: |
+    |el :code <python:
+      if a > b:
+        pass
+    |next
+  readings:
+    value_form: "capture value kind python, body 'if a ' — closes at the > in the code; then $main 'b:' … and |next becomes … (the rest is a mess); §3 clause 1 + §6.4 self-announcing"
+    block_form: "capture block kind python, body 'if a > b:\\n  pass\\n'; |next a sibling; §3 clause 2 (Structure Position + ident:)"
+  notes: "0.10.0 spelled this |el :code !:python: (§10.1 'uniformly in node-value position'); the draft has no unambiguous spelling for it"
+
+- id: gap_A1_block_capture_as_deferred_body_first_line
+  profile: descriptive
+  gap: A1
+  desc: "a deferred body's first line carries the value-expected position (§6.5) — so <kind: there is again the value form?"
+  udon: |
+    |el
+      :code
+        <python:
+          print(1)
+  readings:
+    value_form: "unclosed value capture → spans to EOF → incomplete-input (body 'python:\\n  print(1)\\n'?)"
+    block_form: "capture block kind python body 'print(1)\\n', complete"
+
+- id: gap_A1_block_capture_line_start_with_closer_on_line
+  profile: descriptive
+  gap: A1
+  desc: "<python:foo> on its own line at Structure Position (no value expected): block with tail 'foo>' or value capture as a … node?"
+  udon: |
+    |el
+      <python:foo>
+  readings:
+    block_form: "block capture kind python, same-line tail body 'foo>'"
+    value_form: "a value capture standing as a child node — no such Node kind in MODEL §2 (Capture is listed, geometry value?)"
+
+# ------------------------------------------- A2 lists span: accident containment
+
+- id: gap_A2_list_forgotten_closer_swallows_document
+  profile: descriptive
+  gap: A2
+  desc: "a forgotten ] under DELTAS 12: the list runs to EOF (incomplete-input) — every later line becomes items"
+  deltas: 12
+  udon: |
+    |post :tags [a b
+      :title Hello
+    |next :x 1
+  readings:
+    spans: "xs = [a b :title Hello |next :x 1]?? — what are ':title' and '|next' as list items (§10.4 forbids multi-word text; §9.2 puts block forms nowhere a list item can be) — and result incomplete-input"
+    failsafe: "the identity-bracket rule applied by analogy: close at EOL, Warning, partial list kept — the 0.10.0 behavior"
+  notes: "§11.2's admission rule ('accident-containment reason') is satisfied here exactly as for |el[k; the draft gives no reason lists differ"
+
+- id: gap_A2_block_form_marker_inside_spanning_list
+  profile: descriptive
+  gap: A2
+  desc: "a block-form marker inside a multi-line list: item? terminator? warning?"
+  udon: |
+    |el :xs [1
+      |other :a 1
+      2]
+  readings:
+    text_item: "items 1, '|other', ':a', 1, 2 — block forms demoted to bare tokens, silently?"
+    terminator: "the list closes (fail-safe-ish) at the block-form marker with a Warning; |other is a child"
+    unspecified: "nothing in §10.4/§9.2/§10.5 addresses it"
+
+# ------------------------------------ A3 trait-continue vs cardinality suffix
+
+- id: gap_A3_trait_question_vs_cardinality
+  profile: descriptive
+  gap: A3
+  desc: "@user.admin? — trait 'admin?' with {1,1}, or trait 'admin' with {0,1}? (the draft's own §9.2 example inside braces)"
+  deltas: 6
+  udon: |
+    |r
+      @user.admin?
+      @user.admin*
+  readings:
+    trait_wins: "traits ['admin?'] card [1,1]; traits ['admin*'] card [1,1] — §5.3 trait-continue includes ? ! * +"
+    cardinality_wins: "traits ['admin'] card [0,1]; ['admin'] card [0,N] — §9.1 trailing suffix"
+
+- id: gap_A3_dot_path_vs_trait
+  profile: descriptive
+  gap: A3
+  desc: "bare @post.title is selector-subset (trait 'title'); @{post.title} is a raw head (an attribute path per the draft's examples). Are they the same reference?"
+  udon: |
+    |r
+      @post.title
+      @{post.title}
+  readings:
+    different: "head {name: post, traits: [title]} vs head {raw: 'post.title'} — SEMANTICS 1 compares by head; they differ"
+    same: "the addressing theory's grammar reads both as a path; the selector subset is only 'this version's' recognizer"
+
+# ---------------------------------------------------- A4 $main value vs child
+
+- id: gap_A4_block_form_at_main_slot
+  profile: descriptive
+  gap: A4
+  desc: "|a |b — b is a sameline child (§2.2) or the $main value of a (§6.4/§6.5/§6.10)?"
+  udon: "|a |b :n 1\n"
+  readings:
+    child: "a { content: [ b {n:1} ] } — §2.2 sameline nesting; spelling-grid Element row"
+    main_value: "a { assignments: [$main = node b {n:1}] } — §6.4 block-form node self-announces, §6.5 stacks as $main"
+  notes: "SEMANTICS 5 makes :x |em hi ≡ :x |{em hi}; under the $main reading |el |em hi ≡ |el |{em hi} too, under the child reading it does not"
+
+- id: gap_A4_generator_at_main_slot
+  profile: descriptive
+  gap: A4
+  desc: "|el !if x — same question for generators (they parse as elements)"
+  udon: "|el !if @flag\n"
+  readings:
+    child: "el { content: [ generator if ] }"
+    main_value: "el { $main = generator if }"
+
+# --------------------------------------- A5 cardinality on delimited heads
+
+- id: gap_A5_cardinality_inside_braces
+  profile: descriptive
+  gap: A5
+  desc: "@{posts*} — does recognition peel the * (cardinality [0,N], head 'posts') or hand 'posts*' whole to the addressing theory?"
+  deltas: 6
+  udon: "!for :item @{posts*} :as post\n"
+  readings:
+    peeled: "reference { head: {raw: posts}, cardinality: [0,N] } — MODEL's Reference wants a cardinality field filled"
+    whole: "reference { head: {raw: 'posts*'}, cardinality: [1,1] } — 'raw balanced head carried whole' (§9.1)"
+
+- id: gap_A5_cardinality_on_held_reference
+  profile: descriptive
+  gap: A5
+  desc: "where does a held reference's cardinality go: @<tags>* or @<tags*>? Neither is written"
+  deltas: 5
+  udon: |
+    |r
+      :a @<tags>*
+      :b @<tags*>
+  readings:
+    outside: ":a held {0,N}; :b head 'tags*' (whole)"
+    inside: ":a held {1,1} then '*' is … $main text '*'?; :b held {0,N}"
+
+- id: gap_A5_bang_after_head
+  profile: descriptive
+  gap: D11
+  desc: "@x! — ! is not a cardinality; is '!' then a generator guard (fails: EOL) → text? part of the head? — nothing says"
+  udon: "|r @x!\n"
+  readings:
+    text: "reference x, then $main '!'"
+    head: "reference with head 'x!' (element names exclude !, so no)"
+
+# ------------------------------------------- A6 annotations at a value slot
+
+- id: gap_A6_framed_annotation_right_after_label
+  profile: descriptive
+  gap: A6
+  desc: ":a ; note — the slot has only annotation material → Error + Nil (DELTAS 11) — and the annotation owns the deeper lines, or does the deferred body?"
+  deltas: 11
+  udon: |
+    |el
+      :desc ; the description
+        line one
+        line two
+  readings:
+    body: "desc content ['line one\\nline two\\n'] (deferred body opens — 'when deeper lines follow'); annotation 'the description' — but then no Error"
+    annotation_owns: "desc = Nil + Error; annotation body 'the description\\nline one\\nline two\\n' (§8: a line annotation owns everything deeper; the framed form is called a line annotation)"
+
+- id: gap_A6_sameline_annotation_owns_element_body
+  profile: descriptive
+  gap: A6
+  desc: "|el ; note ⏎ deeper |child — the annotation's continuation or the element's child?"
+  udon: |
+    |el ; note
+      |child
+  readings:
+    child: "el { content: [annotation 'note', element child] }"
+    annotation_owns: "el { content: [annotation 'note\\n|child\\n'] } — one trailing ; silently swallows the body"
+
+- id: gap_D17_annotation_then_value_in_slot
+  profile: descriptive
+  gap: D17
+  desc: ":a ;{x} 5 — does 5 fill the slot after the annotation (no Error)?"
+  deltas: 11
+  udon: "|el :a ;{x} 5\n"
+  readings:
+    fills: "a = 5; annotation x; no anomaly"
+    error_then_main: "a = Nil + Error; annotation; $main = 5"
+
+# ------------------------------------------------- B4/C2/D5 the ! guard family
+
+- id: gap_B4_bang_colon_alias
+  profile: descriptive
+  gap: B4
+  desc: "!:sh: make build — §3's guard (identifier or {) makes this text; §9.3/DELTAS 14 say the alias is 'optionally retained'"
+  deltas: 14
+  udon: "|el :script !:sh: make build\n"
+  readings:
+    text: "script = text '!:sh: make build' (guard fails on ':')"
+    alias: "script = capture block kind sh body 'make build' (the migration alias)"
+
+- id: gap_D5_nameless_inline_generator_and_old_interpolation
+  profile: descriptive
+  gap: D5
+  desc: "!{{x}} under the new guard: 'an inline generator named nothing' (breaking note) — is !{} valid like |{}? body '{x}'?"
+  deltas: 1
+  udon: |
+    |p
+      Total: !{{total}} and !{} here.
+  readings:
+    nameless_ok: "segments: text, inline_generator {name: null, content: [text '{total}']}, text, inline_generator {name: null}, text"
+    text: "'!{' with no name fails some guard → literal text (R13's spirit)"
+
+- id: gap_D5_nameless_open_brace_bang_at_eof
+  profile: descriptive
+  gap: C1
+  desc: "R13 (0.10.0 §9): a nameless !{ at end of input is text '!{' — dropped from the draft; with { in the block guard, what is it now?"
+  udon: "|p see !{"
+  readings:
+    r13: "$main = text 'see !{', complete"
+    unclosed: "unclosed inline generator (no name), Warning, incomplete-input"
+
+- id: gap_D5_line_initial_brace_forms
+  profile: descriptive
+  gap: C6
+  desc: "line-initial |{ / @{ / !{ at a structural column: 0.10.0 §2.2 said |{ opens an inline element as the first segment of a flow line; the draft dropped the sentence"
+  udon: |
+    |p
+      |{em start} of a line
+      @{who} wrote this
+  readings:
+    flow_line: "two text lines whose first segment is the inline form (0.10.0 §2.2)"
+    unspecified: "the | guard admits { (§3) but nothing says what a line-initial inline form at Structure Position becomes"
+
+- id: gap_D5_line_initial_semicolon_brace
+  profile: descriptive
+  gap: C6
+  desc: ";{note} then prose at line start — by §8's table a ';' at a structural column is a LINE annotation (owning the whole line and deeper lines), not an inline one"
+  udon: |
+    |p
+      ;{note} then prose
+        and deeper
+  readings:
+    line_annotation: "annotation body '{note} then prose\\nand deeper\\n' — the inline form never fires"
+    inline: "flow: annotation 'note', text ' then prose\\n', text 'and deeper\\n'"
+
+- id: gap_D11_bang_digit
+  profile: descriptive
+  gap: D11
+  desc: "'!1' — the guard says 'identifier char' (XID_Start or XID_Continue?); names need XID_Start (§5.2)"
+  udon: "|p wow !1 more\n"
+  readings:
+    text: "$main 'wow !1 more'"
+    generator: "generator named '1' (invalid name?)"
+
+# -------------------------------------------- D6/D7 brackets: bare @ and block forms
+
+- id: gap_D6_bare_at_in_identity_vs_list
+  profile: descriptive
+  gap: D6
+  desc: "[@x] — §6.4 says the full value grammar applies in identity brackets AND list items with @ self-announcing; §5.3 says references in identity take @{…} only. What is bare @x in each?"
+  udon: |
+    |el[@x]
+    |el :xs [@x]
+  readings:
+    both_references: "$key = reference x; xs = [reference x] — K16 'no divergence between key interiors and normal values'"
+    identity_text: "$key = text '@x'; xs = [reference x] — the lightly-held sugar carve (K16 addendum)"
+    both_text: "neither is a reference"
+
+- id: gap_D7_block_forms_inside_brackets
+  profile: descriptive
+  gap: D7
+  desc: "block forms are 'out of the bracket sugar' — but what is the keep shape of [|x], [!if x], [:a 1]?"
+  udon: |
+    |a[|x]
+    |b :xs [!if x]
+    |c :ys [:a 1]
+  readings:
+    text_tokens: "$key text '|x'; xs ['!if' 'x']; ys [':a' 1]"
+    warning: "a Warning naming the disallowed form, tokens kept"
+    unspecified: "the text names the exclusion, not the outcome"
+
+# ------------------------------------------------ D8/D4 fail-safe vs EOF/nesting
+
+- id: gap_D8_identity_unclosed_at_true_eof
+  profile: descriptive
+  gap: D8
+  desc: "|el[abc at EOF: EOF ≡ EOL fires the fail-safe (complete), or §11.3 'delimited still open at EOF' (incomplete-input)?"
+  udon: "|el[abc"
+  readings:
+    complete: "$partial-key 'abc', Warning, result complete (0.10.0 vignette 2's lean)"
+    incomplete: "$partial-key 'abc', Warning, result incomplete-input"
+
+- id: gap_D4_spanning_form_nested_in_failsafe_bracket
+  profile: descriptive
+  gap: D4
+  desc: "|el[\"abc ⏎ — the string spans lines (no fail-safe); the bracket closes at EOL (fail-safe). Innermost-first says the string is still open."
+  udon: |
+    |el["abc
+      :n 1
+  readings:
+    bracket_failsafe_wins: "$partial-key 'abc' (string force-closed), Warning(s); n = 1"
+    string_spans: "the string runs on: '\"abc\\n  :n 1\\n' … until a \" or EOF → the bracket never gets its EOL"
+
+# -------------------------------------------------- D1/D2 capture kind grammar
+
+- id: gap_D1_value_capture_kind_charset
+  profile: descriptive
+  gap: D1
+  desc: "<http://x> — kind 'http' body '//x'? The value form's kind charset is unstated; and is one space after 'kind:' a separator?"
+  udon: "|c :a <http://example.com> :b <u64: 5> :c <2026-01-01T10:00:00>\n"
+  readings:
+    ident_colon: "a: kind http body '//example.com'; b: kind u64 body ' 5' or '5'; c: unlabelled (kind cannot start with a digit) body '2026-01-01T10:00:00'"
+    unspecified: "no rule for the value form's kind charset or the separator"
+
+- id: gap_D2_block_capture_ladder
+  profile: descriptive
+  gap: D2
+  desc: "<temporal:interval: at Structure Position — vocab+kind, or kind 'temporal' with tail 'interval:'?"
+  deltas: 14
+  udon: |
+    |ex
+      <temporal:interval:
+        2026-01/2026-06
+  readings:
+    ladder: "capture block vocab temporal kind interval body '2026-01/2026-06\\n'"
+    tail: "capture block kind temporal body 'interval:\\n2026-01/2026-06\\n'"
+
+- id: gap_D16_held_reference_head_depth
+  profile: descriptive
+  gap: D16
+  desc: "@<a<b>> and @{a{b}} — 'raw balanced head': balanced in which delimiter, depth-counted like captures?"
+  udon: "|r :a @<x<y>> :b @{p{q}}\n"
+  readings:
+    depth_counted: "a: held head 'x<y>'; b: raw head 'p{q}'"
+    first_closer: "a: held head 'x<y' then '>' is $main; b: raw 'p{q' then '}' …"
+
+# ----------------------------------------------------- D10 framed hold in braces
+
+- id: gap_D10_framed_hold_inside_inline_element
+  profile: descriptive
+  gap: D10
+  desc: "framed \\ inside |{…} holds 'the rest of the physical line' — through the } ?"
+  deltas: 13
+  udon: "|p |{a :title Home \\ Welcome! ; hm} after\n"
+  readings:
+    closer_survives: "inline a {title Home, content 'Welcome! ; hm'}; $main 'after' (DELTAS 13's own example assumes this)"
+    hold_swallows_closer: "content 'Welcome! ; hm} after' and the inline element is unclosed → spans lines"
+
+# ----------------------------------------------------- D9 reference with body
+
+- id: gap_D9_block_reference_with_deeper_lines
+  profile: descriptive
+  gap: D9
+  desc: "@head on its own line followed by deeper lines — references are in neither the geometric nor the delimited list (§11.1)"
+  udon: |
+    |doc
+      @user[jw]
+        some text
+  readings:
+    reference_owns: "reference node with content ['some text\\n'] — geometric like an element"
+    element_owns: "doc content: [reference, text '  some text\\n' (deeper than …?)] — the reference has no base column"
+
+# ------------------------------------------------- D12/D13 value edge cases
+
+- id: gap_D12_number_edges
+  profile: descriptive
+  gap: D12
+  desc: "floats with underscores, leading/trailing dot, uppercase exponent"
+  udon: "|n :a 1_000.5 :b .5 :c 1. :d 1E5\n"
+  readings:
+    strict: "a text (underscores are for integers), b text, c text, d float 100000.0"
+    lenient: "a float 1000.5, …"
+
+- id: gap_D13_adjacent_strings_in_slot
+  profile: descriptive
+  gap: D13
+  desc: ":x \"a\"\"b\" — lists rule it two items (§10.4); slots say nothing"
+  udon: "|el :x \"a\"\"b\"\n"
+  readings:
+    two_values: "x = 'a'; $main = 'b' (element-rooted line root)"
+    one_value: "x = 'a' then '\"b\"' is … glued? (no whitespace separator)"
+
+- id: gap_D11_suffix_then_junk
+  profile: descriptive
+  gap: D11
+  desc: "|el?foo — a suffix followed by name characters"
+  udon: "|el?foo\n"
+  readings:
+    main: "$? true; $main 'foo'"
+    name_ends: "element 'el', suffix, then 'foo' stacks as $main — same thing; or a Warning"
+
+# ------------------------------------------------ D14/D15 prose-side carries
+
+- id: gap_D14_inline_annotation_spans_prose
+  profile: descriptive
+  gap: D14
+  desc: ";{ unclosed in prose now spans lines (DELTAS 12): one typo holds the rest of the document as annotation body until a }"
+  deltas: 12
+  udon: |
+    |p
+      Start ;{todo fix this
+      and this whole paragraph
+    |next
+  readings:
+    spans: "annotation body 'todo fix this\\nand this whole paragraph\\n|next\\n' → unclosed at EOF → incomplete-input"
+    eol_failsafe: "closes at EOL with a Warning (the identity-bracket reasoning applied)"
+
+- id: gap_D15_semi_base_open
+  profile: descriptive
+  gap: D15
+  desc: "OPEN SEMI-BASE: a framed ' ; ' mid-line in block prose AT the content base — comment (truncating Markdown prose containing ' ; ') or literal?"
+  udon: |
+    |p
+      one ; two
+  readings:
+    annotation: "text 'one', annotation 'two' (§8 row 'in block text at the content base')"
+    literal: "text 'one ; two\\n' (the row means a line that STARTS with ';' at the base)"
+
+- id: gap_D15_root_base_open
+  profile: descriptive
+  gap: D15
+  desc: "OPEN ROOT-BASE: does root-level text have a content base? §7.2 speaks only of 'the parent'"
+  udon: "  indented root text\n    deeper\n"
+  root_only: true
+  readings:
+    base_at_2: "text 'indented root text\\n  deeper\\n'"
+    no_base: "text '  indented root text\\n    deeper\\n'"
+    strip_all: "the 0.9 parser's silent behavior"
+
+# ------------------------------------------------------ CAP carry: empty capture
+
+- id: gap_CAP_empty_capture
+  profile: descriptive
+  gap: CAP
+  open: CAP
+  desc: "<> and < > — the nil collapse is a vocabulary-era refinement; today the span passes through"
+  udon: "|c :a <> :b < >\n"
+  readings:
+    pass_through: "a: capture body ''; b: capture body ' '"
+    nil: "b → Nil (the empty-brackets rule applied)"

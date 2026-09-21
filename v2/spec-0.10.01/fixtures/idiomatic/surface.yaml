@@ -1,0 +1,316 @@
+# 0.10.1-draft fixtures — idiomatic (happy path, one idea each)
+# Design targets from spec-0.10.01/CORE.md as written 2026-08-27; every case
+# cites its section. No harness yet. adm spellings: assignments/label/value.
+# `deltas: N` = this case pins DELTAS row N (flip it if the row is reverted).
+
+- id: el_bare_name
+  profile: idiomatic
+  desc: bare element closes silently at EOF (geometric) — §11.3
+  udon: "|div\n"
+  result: complete
+  adm:
+    content:
+      - element: { name: div, assignments: [], content: [] }
+  anomalies: []
+
+- id: el_sugar_identity_trait_suffix_main
+  profile: idiomatic
+  desc: "sugar desugars to designated assignments, in order — §5.3/§5.4/§6.10"
+  udon: "|user[jw].admin? Joined 2025.\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: user
+          assignments:
+            - { label: "$key", value: { string: jw } }
+            - { label: "$traits", value: { string: admin } }
+            - { label: "$?", value: { bool: true } }
+            - { label: "$main", value: { text: "Joined 2025." } }
+          content: []
+  notes: identical in the model to `|user :$key jw :$traits admin :$? true :$main "Joined 2025."` (SEMANTICS §2.1)
+
+- id: el_two_sameline_assignments
+  profile: idiomatic
+  desc: one-value-per-slot keeps two assignments — §6.1/§6.4
+  udon: "|el :a 1 :b 2\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 1 } }
+            - { label: b, value: { int: 2 } }
+
+- id: el_block_assignments_then_prose
+  profile: idiomatic
+  desc: block assignments, then block text with its terminator — §6.4/§7.2
+  udon: |
+    |article
+      :author Jo
+      :date "2026-09-01"
+      Body text here.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: article
+          assignments:
+            - { label: author, value: { string: Jo } }
+            - { label: date, value: { string: "2026-09-01" } }
+          content:
+            - text: "Body text here.\n"
+
+- id: sameline_nesting_true_columns
+  profile: idiomatic
+  desc: "|a |b |c is the vertical form written compactly — §2.2 (see gap_A4 for the $main tension)"
+  udon: "|a |b |c\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          content:
+            - element:
+                name: b
+                content:
+                  - element: { name: c }
+
+- id: deferred_body_prose
+  profile: idiomatic
+  desc: label alone; deeper lines are the assignment's content (text) — §6.5
+  udon: |
+    |el
+      :note
+        first line
+        second line
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: note
+              content:
+                - text: "first line\nsecond line\n"
+
+- id: deferred_body_first_line_types
+  profile: idiomatic
+  desc: the body's first line carries the value-expected position — §6.5
+  udon: |
+    |db
+      :port
+        5432
+  result: complete
+  adm:
+    content:
+      - element:
+          name: db
+          assignments:
+            - { label: port, value: { int: 5432 } }
+
+- id: stacking_two_contributions
+  profile: idiomatic
+  desc: same label twice = two contributions, silent — §6.7
+  udon: "|el :t a :t b\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: t, value: { string: a } }
+            - { label: t, value: { string: b } }
+  anomalies: []
+
+- id: list_value
+  profile: idiomatic
+  desc: closed list, items typed by the full value grammar — §10.4
+  udon: "|el :xs [1 \"two\" three]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: xs
+              value: { list: [{ int: 1 }, { string: two }, { string: three }] }
+
+- id: node_value_block_element
+  profile: idiomatic
+  desc: block-form element as an assignment's value, no wrapper — §6.8
+  udon: "|api :headers |header :name Content-Type :value application/json\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: api
+          assignments:
+            - label: headers
+              value:
+                node:
+                  element:
+                    name: header
+                    assignments:
+                      - { label: name, value: { string: Content-Type } }
+                      - { label: value, value: { string: application/json } }
+
+- id: capture_value_unlabelled
+  profile: idiomatic
+  desc: temporal values take the capture; bare space stays frozen — §9.3/§10.1
+  udon: "|el :when <2026-07-11>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: when
+              value: { capture: { geometry: value, vocab: null, kind: null, body: "2026-07-11" } }
+
+- id: capture_block_child
+  profile: idiomatic
+  desc: "block capture <kind: at Structure Position, body dedented to first content line — §9.3 ⟨P⟩"
+  deltas: 14
+  udon: |
+    |example
+      <python:
+        print("| not udon here")
+        x = 1
+  result: complete
+  adm:
+    content:
+      - element:
+          name: example
+          content:
+            - capture: { geometry: block, vocab: null, kind: python, body: "print(\"| not udon here\")\nx = 1\n" }
+
+- id: reference_child_block_line
+  profile: idiomatic
+  desc: "block-line @head is the element's reference child, held, {1,1} — §9.1"
+  udon: |
+    |doc
+      @licence[mit]
+  result: complete
+  adm:
+    content:
+      - element:
+          name: doc
+          content:
+            - reference: { head: { name: licence, key: { string: mit }, traits: [] }, cardinality: [1, 1], partial: false }
+
+- id: reference_value
+  profile: idiomatic
+  desc: "@head at a value position is the assignment's value — §6.3/§9.1"
+  udon: "|book :author @person[jw]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: book
+          assignments:
+            - label: author
+              value: { reference: { head: { name: person, key: { string: jw }, traits: [] }, cardinality: [1, 1], partial: false } }
+
+- id: generator_block_if_else
+  profile: idiomatic
+  desc: generators parse as elements; chains are same-column adjacency — §9.2
+  deltas: 2
+  udon: |
+    !if @flag
+      |admin-panel
+    !else
+      You are not an administrator.
+  result: complete
+  adm:
+    content:
+      - generator:
+          name: if
+          assignments:
+            - { label: "$main", value: { reference: { head: { name: flag }, cardinality: [1, 1], partial: false } } }
+          content:
+            - element: { name: admin-panel }
+      - generator:
+          name: else
+          assignments: []
+          content:
+            - text: "You are not an administrator.\n"
+
+- id: annotation_line_and_trailing
+  profile: idiomatic
+  desc: line annotation owns deeper lines; framed trailing annotation after $main — §8
+  udon: |
+    ; a note
+      still the note, |even this
+    |li Item one ; TODO expand
+  result: complete
+  adm:
+    content:
+      - annotation: { body_contains: "a note" }
+      - element:
+          name: li
+          assignments:
+            - { label: "$main", value: { text: "Item one" } }
+          content:
+            - annotation: { body_contains: "TODO expand" }
+  notes: the annotation's continuation swallows `|even this` (opacity by definition, §8)
+
+- id: prose_with_flow_segments
+  profile: idiomatic
+  desc: "block text with inline element, embedded reference, inline annotation — §7.1 ⟨P⟩ for @{…}"
+  deltas: 1
+  udon: |
+    |p
+      Hello |{em world}, see @{user.name} ;{later} now.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "Hello "
+                - inline_element: { name: em, content: [{ text: world }] }
+                - text: ", see "
+                - reference: { head: { raw: "user.name" }, cardinality: [1, 1] }
+                - text: " "
+                - annotation: { body: later }
+                - text: " now.\n"
+  notes: annotation framing spaces preserved on strip (§8); text law reconstructs "Hello , see   now." after determination
+
+- id: fence_byte_exact
+  profile: idiomatic
+  desc: fence keeps every byte, no dedent; kind is the opener tail — §9.3
+  udon: |
+    |ex
+      ```sh
+        make build
+      ```
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: fence, kind: sh, body: "    make build\n" }
+
+- id: hold_attached_and_framed
+  profile: idiomatic
+  desc: "attached \\X holds one char, scan stays live; framed \\ holds the rest of line — §4"
+  udon: |
+    |el :a x \ y z
+    |el :hello \:value :next 1
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { string: x } }
+            - { label: "$main", value: { text: "y z" } }
+      - element:
+          name: el
+          assignments:
+            - { label: hello, value: { text: ":value" } }
+            - { label: next, value: { int: 1 } }

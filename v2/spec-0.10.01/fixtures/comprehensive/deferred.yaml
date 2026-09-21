@@ -1,0 +1,635 @@
+# 0.10.1-draft fixtures — comprehensive, the DEFERRED half
+# (references, held references, cardinality, generators, captures, dispatch).
+# Most of this half is ⟨PROPOSED⟩: `deltas: N` marks which row a case pins.
+# Design targets from CORE.md §9 as written 2026-08-27. No harness yet.
+
+# ------------------------------------------------------------ §9.1 references
+
+- id: ref_selector_subset_forms
+  profile: comprehensive
+  desc: "the recognized selector subset: name? [key] .trait* — §9.1 (0.10.0 §12.2 table carried)"
+  udon: |
+    |r
+      @[mit]
+      @licence
+      @licence[mit]
+      @.realized
+      @licence[mit].realized
+  result: complete
+  adm:
+    content:
+      - element:
+          name: r
+          content:
+            - reference: { head: { name: null, key: { string: mit }, traits: [] }, cardinality: [1, 1], partial: false }
+            - reference: { head: { name: licence, key: null, traits: [] }, cardinality: [1, 1], partial: false }
+            - reference: { head: { name: licence, key: { string: mit }, traits: [] }, cardinality: [1, 1], partial: false }
+            - reference: { head: { name: null, key: null, traits: [realized] }, cardinality: [1, 1], partial: false }
+            - reference: { head: { name: licence, key: { string: mit }, traits: [realized] }, cardinality: [1, 1], partial: false }
+
+- id: ref_cardinality_suffixes
+  profile: comprehensive
+  desc: "trailing ? * + on a bare head declare {0,1} {0,N} {1,N}; default {1,1}; recorded never enforced — §9.1 ⟨P⟩"
+  deltas: 6
+  udon: |
+    |r
+      @author
+      @reviewer?
+      @tags*
+      @authors+
+  result: complete
+  adm:
+    content:
+      - element:
+          name: r
+          content:
+            - reference: { head: { name: author }, cardinality: [1, 1] }
+            - reference: { head: { name: reviewer }, cardinality: [0, 1] }
+            - reference: { head: { name: tags }, cardinality: [0, N] }
+            - reference: { head: { name: authors }, cardinality: [1, N] }
+  anomalies: []
+
+- id: ref_cardinality_after_key
+  profile: comprehensive
+  desc: "cardinality after a key: @other[key]? (Appendix A) — §9.1 ⟨P⟩"
+  deltas: 6
+  udon: "|r :o @other[key]?\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: r
+          assignments:
+            - { label: o, value: { reference: { head: { name: other, key: { string: key }, traits: [] }, cardinality: [0, 1] } } }
+
+- id: ref_value_vs_child_equal_footing
+  profile: comprehensive
+  desc: "a reference at a value position is the value; after a finished value it is the element's reference child — §6.3"
+  udon: "|el :owner @user[jw] @licence[mit]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: owner, value: { reference: { head: { name: user, key: { string: jw }, traits: [] }, cardinality: [1, 1] } } }
+          content:
+            - reference: { head: { name: licence, key: { string: mit }, traits: [] }, cardinality: [1, 1] }
+
+- id: ref_terminates_open_text_value
+  profile: comprehensive
+  desc: "a framed @head terminates an open unquoted value (the K10 hazard); the reference is the element's child — §6.4/§6.3"
+  udon: "|el :note ping @alice\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: note, value: { string: ping } }
+          content:
+            - reference: { head: { name: alice }, cardinality: [1, 1] }
+
+- id: ref_embedded_in_flow
+  profile: comprehensive
+  desc: "@{head} is a flow segment; the head inside braces is carried raw for the addressing theory — §9.1 ⟨P⟩"
+  deltas: 1
+  udon: |
+    |p
+      Written by @{author.name} on @{post.date}.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "Written by "
+                - reference: { head: { raw: "author.name" }, cardinality: [1, 1] }
+                - text: " on "
+                - reference: { head: { raw: "post.date" }, cardinality: [1, 1] }
+                - text: ".\n"
+
+- id: ref_embedded_held_by_hold_operator
+  profile: comprehensive
+  desc: "\\@ holds the opener; the text is literal — §9.1"
+  udon: |
+    |p
+      Literal \@{not-a-ref} here.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "Literal @{not-a-ref} here.\n"
+
+- id: ref_mixed_literal_and_reference_value_is_text
+  profile: comprehensive
+  desc: "pre@{x}post at a value slot is a text value with reference segments — §9.1"
+  deltas: 1
+  udon: "|el :path @{base}/assets\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: path
+              value:
+                flow:
+                  - reference: { head: { raw: base }, cardinality: [1, 1] }
+                  - text: "/assets"
+  notes: "§6.4 says @{…} at a value-expected position self-delimits as a value — but the text continues with no space, so this is the 'mixed' case of §9.1 rather than a value followed by $main. Lean stated; the boundary between 'self-delimited value' and 'mixed text value' (does adjacency without whitespace glue?) is not spelled out"
+
+- id: ref_whole_value_embedded_form
+  profile: comprehensive
+  desc: "@{x} alone at a value slot is a reference value (the one-segment degenerate) — §9.1/§6.4"
+  deltas: 1
+  udon: "|el :x @{cfg.port} :y 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { reference: { head: { raw: "cfg.port" }, cardinality: [1, 1] } } }
+            - { label: y, value: { int: 1 } }
+
+- id: ref_bare_prose_at_is_literal
+  profile: comprehensive
+  desc: "in block text a bare @ is literal (text-space) — §2.3/§7.1"
+  udon: |
+    |p
+      email me @joseph or 3 @ 4pm
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "email me @joseph or 3 @ 4pm\n"
+
+- id: ref_held_as_value
+  profile: comprehensive
+  desc: "@<head> — the reference itself is the value, type reference — §9.1 ⟨P⟩"
+  deltas: 5
+  udon: "|cite :ref @<user[jw]> :n 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: cite
+          assignments:
+            - { label: ref, value: { held_reference: { reference: { head: { name: user, key: { string: jw }, traits: [] }, cardinality: [1, 1] } } } }
+            - { label: n, value: { int: 1 } }
+
+- id: ref_held_not_equivalent_to_will_be_determined
+  profile: comprehensive
+  desc: "@<x> and @x with the same head are NOT equivalent — SEMANTICS delta 2"
+  deltas: 5
+  udon: |
+    |a :r @<user[jw]>
+    |b :r @user[jw]
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          assignments:
+            - { label: r, value: { held_reference: { reference: { head: { name: user, key: { string: jw }, traits: [] } } } } }
+      - element:
+          name: b
+          assignments:
+            - { label: r, value: { reference: { head: { name: user, key: { string: jw }, traits: [] } } } }
+  notes: a serializer MUST NOT move an item between the two forms (SEMANTICS §3)
+
+- id: ref_selector_key_unclosed_partial
+  profile: comprehensive
+  desc: "an unclosed selector key fails safe: partial head, EOL fail-safe, Warning; resolvers exclude it — §9.1/§10.5"
+  udon: |
+    |r
+      @user[jw
+      |next
+  result: complete
+  adm:
+    content:
+      - element:
+          name: r
+          content:
+            - reference: { head: { name: user, key: { string: jw }, traits: [] }, partial: true }
+            - element: { name: next }
+  anomalies:
+    - { severity: warning, about: unclosed-selector-key }
+
+- id: ref_embedded_unclosed_at_eof_incomplete
+  profile: comprehensive
+  desc: "@{ heads are delimited with no fail-safe: unclosed at EOF → keep + Warning + incomplete-input — §10.5"
+  deltas: 12
+  udon: "|el :x @{cfg"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { reference: { head: { raw: cfg }, partial: true } } }
+  anomalies:
+    - { severity: warning, about: unclosed-embedded-reference }
+
+- id: ref_embedded_spans_lines
+  profile: comprehensive
+  desc: "an @{…} head spans lines (delimited-spans law) — §10.5"
+  deltas: 12
+  udon: |
+    |p
+      See @{very.long
+      .path} here.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "See "
+                - reference: { head: { raw: "very.long\n.path" }, cardinality: [1, 1] }
+                - text: " here.\n"
+  notes: whether continuation indentation is geometry (as for `|{…}`) or head bytes is not stated; shown with the newline kept and the two-space indent stripped — a lean
+
+# ------------------------------------------------------------ §9.2 generators
+
+- id: gen_parses_as_element
+  profile: comprehensive
+  desc: "a generator has name, $main, assignments, body — exactly an element with the ! mark — §9.2"
+  deltas: 2
+  udon: |
+    !for :item @posts* :as post
+      |card :title @{post.title}
+  result: complete
+  adm:
+    content:
+      - generator:
+          name: for
+          assignments:
+            - { label: item, value: { reference: { head: { name: posts }, cardinality: [0, N] } } }
+            - { label: as, value: { string: post } }
+          content:
+            - element:
+                name: card
+                assignments:
+                  - { label: title, value: { reference: { head: { raw: "post.title" }, cardinality: [1, 1] } } }
+
+- id: gen_head_args_are_values_no_swallow
+  profile: comprehensive
+  desc: "the head is parsed: :y 2 after a generator's argument binds to the generator (one-way door), not swallowed — DELTAS 2"
+  deltas: 2
+  udon: "|el :x !if cond :y 2\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: x
+              value:
+                node:
+                  generator:
+                    name: if
+                    assignments:
+                      - { label: "$main", value: { string: cond } }
+                      - { label: y, value: { int: 2 } }
+  notes: "0.10.0 carried ':y 2' inside an opaque head string; the draft's ordinary one-way door replaces that"
+
+- id: gen_as_node_value_sameline_body
+  profile: comprehensive
+  desc: ":script !sh make build — a generator as a node value with a $main — §6.8/§9.2"
+  deltas: 2
+  udon: "|el :script !sh make build\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: script
+              value:
+                node:
+                  generator:
+                    name: sh
+                    assignments:
+                      - { label: "$main", value: { text: "make build" } }
+
+- id: gen_inline_in_flow
+  profile: comprehensive
+  desc: "!{name …} is a flow segment with a UDON-parsed body — §9.2"
+  udon: |
+    |p
+      Hello !{upcase world}, welcome.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "Hello "
+                - inline_generator: { name: upcase, content: [{ text: world }] }
+                - text: ", welcome.\n"
+  notes: assumed to follow the inline-element interior model (§5.6) with the species mark; the text says only "UDON-parsed body"
+
+- id: gen_inline_at_value_position_is_value
+  profile: comprehensive
+  desc: "!{…} at a value-expected position is the value — §6.4/§9.2"
+  udon: "|el :x !{now} :y 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { inline_generator: { name: now } } }
+            - { label: y, value: { int: 1 } }
+
+- id: gen_held_never_evaluated
+  profile: comprehensive
+  desc: "recognition holds every generator; nothing is evaluated — §9.2/G5"
+  deltas: 9
+  udon: |
+    !let :x 1
+    !if @x
+      shown
+  result: complete
+  adm:
+    content:
+      - generator: { name: let, assignments: [{ label: x, value: { int: 1 } }] }
+      - generator:
+          name: if
+          assignments:
+            - { label: "$main", value: { reference: { head: { name: x }, cardinality: [1, 1] } } }
+          content:
+            - text: "shown\n"
+  notes: the model carries both generators whole; no consumer-space result appears (MODEL §4)
+
+- id: gen_placement_child_and_value_not_list
+  profile: comprehensive
+  desc: "a block generator goes anywhere a block-form element can — as a child and as a node value — §9.2"
+  udon: |
+    |el
+      !include @{partials.header}
+      :footer !include @{partials.footer}
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: footer
+              value:
+                node:
+                  generator:
+                    name: include
+                    assignments:
+                      - { label: "$main", value: { reference: { head: { raw: "partials.footer" } } } }
+          content:
+            - generator:
+                name: include
+                assignments:
+                  - { label: "$main", value: { reference: { head: { raw: "partials.header" } } } }
+  anomalies:
+    - { severity: warning, about: late-assignment }
+  notes: ":footer arrives after block content (the child generator) → late, accepted + Warning (§6.9)"
+
+- id: gen_unclosed_inline_at_eof_incomplete
+  profile: comprehensive
+  desc: "!{name … unclosed at EOF → keep + Warning + incomplete-input — §10.5"
+  udon: "|p see !{name body"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - label: "$main"
+              value:
+                flow:
+                  - text: "see "
+                  - inline_generator: { name: name, content: [{ text: body }] }
+  anomalies:
+    - { severity: warning, about: unclosed-inline-generator }
+
+# -------------------------------------------------------------- §9.3 captures
+
+- id: cap_value_ladder
+  profile: comprehensive
+  desc: "<body> · <kind:body> · <vocab:kind:body> — the envelope ladder carries — §9.3"
+  udon: "|c :a <2026-07-11> :b <u64:0xf902> :c <temporal:interval:2026-01/2026-06>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: c
+          assignments:
+            - { label: a, value: { capture: { geometry: value, vocab: null, kind: null, body: "2026-07-11" } } }
+            - { label: b, value: { capture: { geometry: value, vocab: null, kind: u64, body: "0xf902" } } }
+            - { label: c, value: { capture: { geometry: value, vocab: temporal, kind: interval, body: "2026-01/2026-06" } } }
+  notes: "assumes kind = identifier immediately followed by ':' (the block guard's `ident:`); the value form's kind charset is not stated — see gap_D1"
+
+- id: cap_value_depth_counted
+  profile: comprehensive
+  desc: "the matching > is depth-counted: nested <> parse — §9.3"
+  udon: "|c :r <r: <i: 3 -7> 0d83.23>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: c
+          assignments:
+            - { label: r, value: { capture: { geometry: value, kind: r, body: " <i: 3 -7> 0d83.23" } } }
+  notes: "body shown with the leading space kept — whether one space after 'kind:' is a separator (0.10.0's inline-verbatim rule) is not restated for the value form (gap_D1); nested routing is CARVEOUTS §CAP"
+
+- id: cap_value_multiline
+  profile: comprehensive
+  desc: a value capture spans lines; interior newline is body — §9.3/§10.5
+  udon: |
+    |c :poem <haiku:old pond
+      frog jumps in>
+  result: complete
+  adm:
+    content:
+      - element:
+          name: c
+          assignments:
+            - { label: poem, value: { capture: { geometry: value, kind: haiku, body: "old pond\n  frog jumps in" } } }
+  notes: indentation kept as body (delimited; lean, same as str_spans_lines)
+
+- id: cap_value_gt_in_body_closes_early
+  profile: comprehensive
+  desc: "a > inside a value capture's body closes it (depth-counting is the only protection) — §9.3"
+  udon: "|c :code <py:if a > b: pass>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: c
+          assignments:
+            - { label: code, value: { capture: { geometry: value, kind: py, body: "if a " } } }
+            - { label: "$main", value: { text: "b: pass>" } }
+  notes: "the hazard behind AUDIT A1 — with !:kind: retired, code as an assignment value has only this spelling or a fence"
+
+- id: cap_block_body_dedent_and_close
+  profile: comprehensive
+  desc: "block capture: body dedented to first content line; extra indent kept; dedent closes; markers never fire — §9.3 ⟨P⟩"
+  deltas: 14
+  udon: |
+    |ex
+      <elixir:
+          def hello do
+            IO.puts("world")   ; not an annotation — held
+          end
+      |after
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: block, kind: elixir, body: "def hello do\n  IO.puts(\"world\")   ; not an annotation — held\nend\n" }
+            - element: { name: after }
+  anomalies: []
+
+- id: cap_block_sameline_tail_is_body
+  profile: comprehensive
+  desc: "<sh: echo hi — the same-line tail is body and does not set the base — §9.3 ⟨P⟩"
+  deltas: 14
+  udon: |
+    |ex
+      <sh: echo hi
+        echo there
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: block, kind: sh, body: "echo hi\necho there\n" }
+  notes: "tail 'echo hi' (one space after ':' as separator, per 0.10.0 §10.1's shape); 'echo there' sets the base at column 4"
+
+- id: cap_block_empty_body
+  profile: comprehensive
+  desc: "<sh: with nothing after and nothing deeper → an empty body, not no body — §9.3 (S8 carried)"
+  deltas: 14
+  udon: |
+    |ex
+      <sh:
+      |next
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: block, kind: sh, body: "" }
+            - element: { name: next }
+
+- id: cap_fence_openable_mid_scan_as_node_value
+  profile: comprehensive
+  desc: "a fence opens in the Line Scan as a node value; body byte-exact until a line whose first non-space content is ``` — §9.3"
+  udon: |
+    |el :script ```sh
+      make
+        build
+    ```
+    |after
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: script, value: { capture: { geometry: fence, kind: sh, body: "  make\n    build\n" } } }
+      - element: { name: after }
+
+- id: cap_fence_closer_at_any_indent
+  profile: comprehensive
+  desc: a closing fence at any indentation closes; its own indentation was already body on prior lines — §9.3
+  udon: |
+    |ex
+      ```
+      x
+      ```
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: fence, kind: "", body: "  x\n" }
+
+- id: cap_fence_never_inside_text_deeper_than_base
+  profile: comprehensive
+  desc: "``` deeper than an established content base is text — §3"
+  udon: |
+    |p
+      base
+        ```
+        not a fence
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "base\n  ```\n  not a fence\n"
+
+- id: cap_unlabelled_no_vocabulary_passes_through
+  profile: comprehensive
+  desc: "no vocabulary bound: the span passes through lexically; a miss, not an anomaly — §9.3 / DELTAS 8"
+  deltas: 8
+  udon: "|el :dur <5m>\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: dur, value: { capture: { geometry: value, vocab: null, kind: null, body: "5m" } } }
+  anomalies: []
+  notes: 0.10.0 emitted NoDialectsLoaded here; the draft records no anomaly (meaning from cardinality, response from the consumer)
+
+- id: cap_in_identity_bracket
+  profile: comprehensive
+  desc: "[<uuid7:…>] — a capture as a key; multiple designators stack — §5.3"
+  udon: "|x[#x-the-letter][<uuid7:38493284298>]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: x
+          assignments:
+            - { label: "$key", value: { string: "#x-the-letter" } }
+            - { label: "$key", value: { capture: { geometry: value, kind: uuid7, body: "38493284298" } } }
+
+- id: cap_semantics_block_equals_value_modulo_dedent
+  profile: comprehensive
+  desc: "value / block spellings of the same vocab/kind/body compare equal; a fence differs only by byte-exactness — SEMANTICS delta 4 ⟨P⟩"
+  udon: |
+    |a :c <sh:echo hi>
+    |b
+      :c
+        <sh: echo hi
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          assignments:
+            - { label: c, value: { capture: { geometry: value, kind: sh, body: "echo hi" } } }
+      - element:
+          name: b
+          assignments:
+            - label: c
+              value: { capture: { geometry: block, kind: sh, body: "echo hi" } }
+  notes: "PINS THE INTENDED equivalence only if |b's first body line reads as the BLOCK form — which AUDIT A1 shows the text does not settle (value-expected position → value form, unclosed → spans to EOF). Kept comprehensive because SEMANTICS 4 asserts the equivalence; flip to gap_A1 if A1 resolves toward the value form"

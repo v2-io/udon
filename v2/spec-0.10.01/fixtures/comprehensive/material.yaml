@@ -1,0 +1,1675 @@
+# 0.10.1-draft fixtures — comprehensive, the MATERIAL half
+# (geometry, guards, hold, elements, assignments, the Line Scan, text, annotations,
+# values/types, anomalies). Design targets from CORE.md as written 2026-08-27.
+# Each case cites its section. No harness yet.
+
+# ---------------------------------------------------------------- §2 geometry
+
+- id: geo_dedent_closes_innermost_first
+  profile: comprehensive
+  desc: "Nesting Rule: shallower closes everything at >= the new column — §2.2"
+  udon: |
+    |a
+      |b
+        |c
+      |d
+    |e
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          content:
+            - element: { name: b, content: [{ element: { name: c } }] }
+            - element: { name: d }
+      - element: { name: e }
+
+- id: geo_tab_in_indent_kept_warning
+  profile: comprehensive
+  desc: tab in indentation → Warning, line kept as text of current owner — §2
+  udon: "|el\n\tprose\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - text_contains: "prose"
+  anomalies:
+    - { severity: warning, about: tab-in-indentation }
+
+- id: geo_text_interior_deeper_than_base_is_literal
+  profile: comprehensive
+  desc: a line deeper than the content base is inside the text, markers literal — §2.2 exception / §7.2 r5
+  udon: |
+    |p
+      base line
+        |not-an-element :nor an-assignment
+      |child
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "base line\n  |not-an-element :nor an-assignment\n"
+            - element: { name: child }
+
+- id: geo_rebase_shallower_warns
+  profile: comprehensive
+  desc: a text line shallower than the base but inside the element warns and re-bases — §7.2 r4
+  udon: |
+    |p
+        deep first
+      shallower second
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text_contains: "deep first"
+            - text_contains: "shallower second"
+  anomalies:
+    - { severity: warning, about: inconsistent-indentation }
+
+# ------------------------------------------------------------------ §3 guards
+
+- id: guard_pipe_space_literal
+  profile: comprehensive
+  desc: "| followed by space is always text (Markdown tables survive) — §3"
+  udon: |
+    |p
+      | a | b |
+      |---|---|
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "| a | b |\n|---|---|\n"
+
+- id: guard_colon_space_is_text_in_main
+  profile: comprehensive
+  desc: "': ' fails the guard; '3:1' unspaced is token content — §3/§6.4"
+  udon: "|p ratio 3:1 today: fine\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: "ratio 3:1 today: fine" } }
+
+- id: guard_emoticon_opens_assignment_collateral
+  profile: comprehensive
+  desc: "framed ' :-)' in sameline text passes the ':' guard (accepted collateral) — §3 note"
+  udon: "|p hello :-) there\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: hello } }
+            - { label: "-)", value: { string: there } }
+
+- id: guard_emoticon_held
+  profile: comprehensive
+  desc: "attached \\ holds the ':' — the emoticon joins the open text value (Q8 reading, stated as law) — §4/§6.4"
+  udon: "|el :a hello \\:-) how are you?\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { text: "hello :-) how are you?" } }
+
+- id: guard_bang_forms_that_are_text
+  profile: comprehensive
+  desc: "!=, ![img](x), !( are text; framed !important opens a generator — §3"
+  udon: |
+    |p a != b and ![img](x.png) and !(y)
+    |p really !important
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: "a != b and ![img](x.png) and !(y)" } }
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: really } }
+          content:
+            - generator: { name: important }
+  notes: "the second line is the K10-class hazard named in §6.4 — quote or hold sameline text that mentions a framed marker. Whether the generator is a sameline child (shown) or a stacked $main node value is gap_A4; the guard outcome (a generator opens) is what this case pins"
+
+- id: guard_at_email_mid_token_literal
+  profile: comprehensive
+  desc: "@ mid-token is not at Structure Position — literal — §3"
+  udon: "|el :email joe@example.com\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: email, value: { string: joe@example.com } }
+
+- id: guard_lt_mid_token_literal
+  profile: comprehensive
+  desc: "'a<b' mid-token: < is literal; only at a value-expected position does it open a capture — §3"
+  udon: "|el :cmp a<b\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: cmp, value: { string: "a<b" } }
+
+- id: guard_lt_at_value_position_opens_capture_unclosed
+  profile: comprehensive
+  desc: "'< 5' at a value-expected position opens a capture; no closer → keep + Warning + incomplete-input — §3/§9.3/§11.3"
+  udon: "|el :temp < 5\n"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: temp
+              value: { capture: { geometry: value, body: " 5\n" } }
+  anomalies:
+    - { severity: warning, about: unclosed-capture }
+  notes: carried from 0.10.0's envelope behavior; a real hazard now that captures are the only typed growth surface
+
+- id: guard_semicolon_unframed_is_content
+  profile: comprehensive
+  desc: "'1;2' and 'x ;c' do not annotate; only framed ' ; ' does — §8"
+  udon: |
+    |li ratio 1;2 done
+    |li x ;c
+  result: complete
+  adm:
+    content:
+      - element:
+          name: li
+          assignments:
+            - { label: "$main", value: { text: "ratio 1;2 done" } }
+      - element:
+          name: li
+          assignments:
+            - { label: "$main", value: { text: "x ;c" } }
+
+# ------------------------------------------------------------------- §4 hold
+
+- id: hold_line_initial_marker
+  profile: comprehensive
+  desc: "\\| at line start holds the marker; the line is root text — §4"
+  udon: "\\|element not an element\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - text: "|element not an element\n"
+
+- id: hold_double_backslash
+  profile: comprehensive
+  desc: "\\\\x → text \\x — §4"
+  udon: "\\\\path\\to\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - text: "\\path\\to\n"
+
+- id: hold_literal_elsewhere
+  profile: comprehensive
+  desc: "mid-token and trailing backslashes are literal — §4"
+  udon: "|el :dir C:\\Users\\me :w a\\\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: dir, value: { string: "C:\\Users\\me" } }
+            - { label: w, value: { string: "a\\" } }
+
+- id: hold_empty_forced_tail_is_empty_string
+  profile: comprehensive
+  desc: ":a \\ with nothing after → the empty string, no anomaly — §4"
+  udon: "|el :a \\\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { string: "" } }
+  anomalies: []
+
+- id: hold_framed_terminates_open_value
+  profile: comprehensive
+  desc: "framed \\ terminates an open multi-word value and holds the rest — §6.4"
+  udon: "|el :a some words \\ b :not-an-assignment\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { text: "some words" } }
+            - { label: "$main", value: { text: "b :not-an-assignment" } }
+
+- id: hold_framed_dead_to_annotation
+  profile: comprehensive
+  desc: "held text is dead to the framed ' ; ' — G6/§4"
+  udon: "|el :a \\ keep ; this too\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { text: "keep ; this too" } }
+  anomalies: []
+
+- id: hold_attached_digit_makes_text
+  profile: comprehensive
+  desc: "\\7 apples → text, not integer — §6.5"
+  udon: "|el :count \\7 apples\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: count, value: { text: "7 apples" } }
+
+- id: hold_column_anchor_idiom
+  profile: comprehensive
+  desc: "line-initial framed \\ occupies no column; text after it backs into that column as the base — §4"
+  udon: |
+    |el
+      \    indented output
+           deeper lines need no marker
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          content:
+            - text: "    indented output\n     deeper lines need no marker\n"
+  notes: base = column 2 (the backslash's); the 4 spaces after the backslash are preserved; line 2 at column 7 strips 2
+
+- id: hold_semicolon_at_line_start
+  profile: comprehensive
+  desc: "\\; outputs a literal line-initial ';' — §8"
+  udon: "\\; not an annotation\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - text: "; not an annotation\n"
+
+- id: hold_inline_element_edge_dl13
+  profile: comprehensive
+  desc: "framed ' ; ' after value-\\ text inside |{…} is literal — one precedence (was unspecified in 0.10.0)"
+  deltas: 13
+  udon: "|{a :title Home \\ Welcome! ; hm}\n"
+  result: complete
+  adm:
+    content:
+      - flow:
+          - inline_element:
+              name: a
+              assignments:
+                - { label: title, value: { string: Home } }
+              content:
+                - text: "Welcome! ; hm"
+  notes: assumes the `}` still closes (see gap_D10 — the text does not say whether the framed hold runs through the closer)
+
+# --------------------------------------------------------------- §5 elements
+
+- id: el_name_charset
+  profile: comprehensive
+  desc: kebab and slash are name chars; other characters need quotes — §5.2
+  udon: |
+    |my-element
+    |acme/widget
+    |'weird name'
+  result: complete
+  adm:
+    content:
+      - element: { name: my-element }
+      - element: { name: acme/widget }
+      - element: { name: weird name }
+
+- id: el_suffix_chars_end_name
+  profile: comprehensive
+  desc: "? ! * + are suffixes, not name-continue; suffixes stack — §5.2/§5.4"
+  udon: "|field?!\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: field
+          assignments:
+            - { label: "$?", value: { bool: true } }
+            - { label: "$!", value: { bool: true } }
+
+- id: el_suffix_positions
+  profile: comprehensive
+  desc: suffix after name, after key, or space-separated at the end — §5.4
+  udon: |
+    |name?[key]
+    |name[key]?
+    |name[key].trait ?
+  result: complete
+  adm:
+    content:
+      - element:
+          name: name
+          assignments:
+            - { label: "$?", value: { bool: true } }
+            - { label: "$key", value: { string: key } }
+      - element:
+          name: name
+          assignments:
+            - { label: "$key", value: { string: key } }
+            - { label: "$?", value: { bool: true } }
+      - element:
+          name: name
+          assignments:
+            - { label: "$key", value: { string: key } }
+            - { label: "$traits", value: { string: trait } }
+            - { label: "$?", value: { bool: true } }
+  notes: order of `$?` vs `$key` in the first line follows source order (assignments are ordered, MODEL §3)
+
+- id: el_suffix_touching_trait_belongs_to_trait
+  profile: comprehensive
+  desc: ".bar? is trait bar?; .bar ? is trait bar plus $? — §5.3/§5.4"
+  udon: |
+    |el.bar?
+    |el.bar ?
+    |el?.bar
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$traits", value: { string: "bar?" } }
+      - element:
+          name: el
+          assignments:
+            - { label: "$traits", value: { string: bar } }
+            - { label: "$?", value: { bool: true } }
+      - element:
+          name: el
+          assignments:
+            - { label: "$?", value: { bool: true } }
+            - { label: "$traits", value: { string: bar } }
+
+- id: el_identity_is_contiguous
+  profile: comprehensive
+  desc: a .trait after a space is $main, not a trait — §5.3
+  udon: "|p .gitignore is a file\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: ".gitignore is a file" } }
+
+- id: el_identity_value_slot_kinds
+  profile: comprehensive
+  desc: "the bracket interior is a value slot: int, string, text, list, capture — §5.3"
+  udon: |
+    |a[1]
+    |b["01"]
+    |c[one two]
+    |d[[one two]]
+    |e[<2026>]
+  result: complete
+  adm:
+    content:
+      - element: { name: a, assignments: [{ label: "$key", value: { int: 1 } }] }
+      - element: { name: b, assignments: [{ label: "$key", value: { string: "01" } }] }
+      - element: { name: c, assignments: [{ label: "$key", value: { text: "one two" } }] }
+      - element: { name: d, assignments: [{ label: "$key", value: { list: [{ string: one }, { string: two }] } }] }
+      - element: { name: e, assignments: [{ label: "$key", value: { capture: { geometry: value, body: "2026" } } }] }
+
+- id: el_identity_stacks_after_finished_value
+  profile: comprehensive
+  desc: "material after a finished value in the bracket stacks as a further $key, silently — §5.3"
+  udon: "|x[\"one\" two]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: x
+          assignments:
+            - { label: "$key", value: { string: one } }
+            - { label: "$key", value: { string: two } }
+  anomalies: []
+
+- id: el_multiple_brackets_stack
+  profile: comprehensive
+  desc: each bracket is its own $key assignment, in order — §5.3
+  udon: "|x[a][b]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: x
+          assignments:
+            - { label: "$key", value: { string: a } }
+            - { label: "$key", value: { string: b } }
+
+- id: el_identity_embedded_reference
+  profile: comprehensive
+  desc: "a reference as a key takes the brace form @{key} — §5.3/§9.1 ⟨P⟩"
+  deltas: 1
+  udon: "|el[@{key}]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$key", value: { reference: { head: { raw: key }, cardinality: [1, 1], partial: false } } }
+
+- id: el_identity_inline_element_key
+  profile: comprehensive
+  desc: "[|{x}] binds the inline element as the key — §5.3"
+  udon: "|el[|{x}]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$key", value: { inline_element: { name: x } } }
+
+- id: el_empty_closed_identity_nil
+  profile: comprehensive
+  desc: "identity [ ] closed → nil key — §5.3"
+  udon: "|el[ ]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$key", value: { nil: true } }
+
+- id: el_identity_unclosed_eol_failsafe
+  profile: comprehensive
+  desc: "unclosed identity closes at EOL → $partial-key + Warning; document continues — §5.3/§10.5"
+  udon: |
+    |user[jw
+      :name Jo
+  result: complete
+  adm:
+    content:
+      - element:
+          name: user
+          assignments:
+            - { label: "$partial-key", value: { string: jw } }
+            - { label: name, value: { string: Jo } }
+  anomalies:
+    - { severity: warning, about: unclosed-identity-key }
+  notes: "the declared fail-safe (§11.2) — never $key; result complete because the bracket closed at EOL, not at EOF (see gap_D8 for the at-EOF twin)"
+
+- id: el_identity_unclosed_whitespace_kept
+  profile: comprehensive
+  desc: an unclosed whitespace bracket keeps its whitespace + the Warning (no nil collapse) — §5.3
+  udon: "|el[ \n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$partial-key", value: { text: " " } }
+  anomalies:
+    - { severity: warning, about: unclosed-identity-key }
+
+- id: el_anonymous_forms
+  profile: comprehensive
+  desc: "|[k], |.trait, |? — nameless elements, ordinary otherwise — §5.5"
+  udon: |
+    |[k]
+    |.trait :adapter pg
+    |?
+  result: complete
+  adm:
+    content:
+      - element: { name: null, assignments: [{ label: "$key", value: { string: k } }] }
+      - element:
+          name: null
+          assignments:
+            - { label: "$traits", value: { string: trait } }
+            - { label: adapter, value: { string: pg } }
+      - element: { name: null, assignments: [{ label: "$?", value: { bool: true } }] }
+
+- id: el_longhand_equals_sugar
+  profile: comprehensive
+  desc: "designated labels are bare-writable; longhand is indistinguishable from sugar — §5.3"
+  udon: "|el :$key 3890 :$traits a :$main \"T\"\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$key", value: { int: 3890 } }
+            - { label: "$traits", value: { string: a } }
+            - { label: "$main", value: { string: T } }
+
+- id: el_sugar_born_finished
+  profile: comprehensive
+  desc: deeper lines never attach to a sugar-produced assignment; they are content — §5.3
+  udon: |
+    |el[k] title
+      body
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$key", value: { string: k } }
+            - { label: "$main", value: { text: title } }
+          content:
+            - text: "body\n"
+
+# ------------------------------------------------------- §5.6 inline elements
+
+- id: inline_el_bracket_mode_and_interior_text
+  profile: comprehensive
+  desc: "only inline forms nest inside |{…}; intervening single spaces are interior content — §5.6"
+  udon: "|ul |{li |{a Home} |{a Docs}}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: ul
+          assignments:
+            - label: "$main"
+              value:
+                inline_element:
+                  name: li
+                  content:
+                    - inline_element: { name: a, content: [{ text: Home }] }
+                    - text: " "
+                    - inline_element: { name: a, content: [{ text: Docs }] }
+  notes: the first `|{` sits at the $main value-expected slot → the value (§6.4); inside, `$main` sugar does not apply
+
+- id: inline_el_empty
+  profile: comprehensive
+  desc: "|{} is a valid empty anonymous inline element — §5.6"
+  udon: "|el :x |{}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { inline_element: { name: null } } }
+
+- id: inline_el_multiline
+  profile: comprehensive
+  desc: an inline element may span lines; continuation indentation is geometry; each line keeps its terminator — §5.6
+  udon: |
+    |p
+      Start |{em two
+        lines} end.
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "Start "
+                - inline_element: { name: em, content: [{ text: "two\nlines" }] }
+                - text: " end.\n"
+
+- id: inline_el_bare_semicolon_literal
+  profile: comprehensive
+  desc: "inside |{…} a bare ';' is literal; only ;{…} annotates there — §6.6/§8"
+  udon: "|el :x |{a one ; two}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { inline_element: { name: a, content: [{ text: "one ; two" }] } } }
+
+- id: inline_el_close_brace_not_terminator_in_list
+  profile: comprehensive
+  desc: "} is not a terminator inside […]; an unclosed [ at the } is an unclosed list — §6.6"
+  udon: "|el :x |{a [1 2}\n"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: x
+              value:
+                inline_element:
+                  name: a
+                  content:
+                    - list_partial: [{ int: 1 }, { int: 2 }]
+  anomalies:
+    - { severity: warning, about: unclosed-list }
+    - { severity: warning, about: unclosed-inline-element }
+  notes: "under DELTAS 12 the list now spans lines, so the } is a list item-ish byte and both forms are open at EOF (innermost-first) — expectation shape is a lean; see gap_A2"
+
+# ------------------------------------------------------------ §6 assignments
+
+- id: asg_root_level_label_is_text
+  profile: comprehensive
+  desc: "root-level :label → Warning; kept as document text including the ':' — §6.1"
+  udon: ":orphan v\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - text: ":orphan v\n"
+  anomalies:
+    - { severity: warning, about: root-level-assignment }
+
+- id: asg_label_charset
+  profile: comprehensive
+  desc: "bare labels may contain * $ # ! ? ^ . , - + _ = ~ / : ; | anywhere; leading quote selects a quoted label — §6.2"
+  udon: "|el :a:b 1 :x?! 2 :'weird key' 3 :it's 4\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "a:b", value: { int: 1 } }
+            - { label: "x?!", value: { int: 2 } }
+            - { label: "weird key", value: { int: 3 } }
+            - { label: "it's", value: { int: 4 } }
+
+- id: asg_missing_value_sole_error
+  profile: comprehensive
+  desc: ":label with no value material → Nil + Error (the sole core Error) — §6.2/§12.1"
+  udon: "|el :k\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: k, value: { nil: true } }
+  anomalies:
+    - { severity: error, about: missing-value }
+
+- id: asg_missing_value_mid_line
+  profile: comprehensive
+  desc: ":a immediately followed by :b — a is Nil + Error (context terminator), b fine — §6.2"
+  udon: "|el :a :b 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { nil: true } }
+            - { label: b, value: { int: 1 } }
+  anomalies:
+    - { severity: error, about: missing-value }
+
+- id: asg_bare_flag_shaped_label_is_missing_value
+  profile: comprehensive
+  desc: "no flag semantics: a bare :disabled? is a label missing its value — §6.2"
+  udon: "|button :disabled? :type submit\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: button
+          assignments:
+            - { label: "disabled?", value: { nil: true } }
+            - { label: type, value: { string: submit } }
+  anomalies:
+    - { severity: error, about: missing-value }
+
+- id: asg_four_states
+  profile: comprehensive
+  desc: "Absent · Nil · False · True are distinct — §6.2/§10.1"
+  udon: "|el :n nil :m null :f false :t true\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: n, value: { nil: true } }
+            - { label: m, value: { nil: true } }
+            - { label: f, value: { bool: false } }
+            - { label: t, value: { bool: true } }
+  anomalies: []
+
+- id: scan_unquoted_text_terminators
+  profile: comprehensive
+  desc: "unquoted text values run to a framed guard-confirmed marker — four assignments — §6.4"
+  udon: |
+    |element :something something else
+      :another one  :and-another <please>
+  result: complete
+  adm:
+    content:
+      - element:
+          name: element
+          assignments:
+            - { label: something, value: { text: "something else" } }
+            - { label: another, value: { string: one } }
+            - { label: and-another, value: { capture: { geometry: value, body: please } } }
+
+- id: scan_mid_value_marker_mention_terminates
+  profile: comprehensive
+  desc: "a sameline value mentioning a framed guard-passing token terminates early (named hazard) — §6.4"
+  udon: "|el :first with a value and :second with it's own\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: first, value: { text: "with a value and" } }
+            - { label: second, value: { text: "with it's own" } }
+
+- id: scan_url_token_content
+  profile: comprehensive
+  desc: "unspaced ; and : are token content; framed :b terminates — §6.4"
+  udon: "|el :url https://x.io/a?q=1;s=2 :b 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: url, value: { string: "https://x.io/a?q=1;s=2" } }
+            - { label: b, value: { int: 1 } }
+
+- id: scan_committed_token_falls_through_to_text
+  profile: comprehensive
+  desc: "12ab is not a number; falls through token-locally — §6.4"
+  udon: "|el :x 12ab :y 3\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { string: 12ab } }
+            - { label: y, value: { int: 3 } }
+
+- id: scan_keyword_alone_types_else_text
+  profile: comprehensive
+  desc: "true alone types; 'true story' is a text value — §6.4"
+  udon: "|el :a true :b true story :c 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { bool: true } }
+            - { label: b, value: { text: "true story" } }
+            - { label: c, value: { int: 1 } }
+
+- id: scan_brace_form_at_value_position_is_value
+  profile: comprehensive
+  desc: "|{…} at a value-expected position self-delimits; :a is a real assignment — §6.4"
+  udon: "|el :n |{em x} :a 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: n, value: { inline_element: { name: em, content: [{ text: x }] } } }
+            - { label: a, value: { int: 1 } }
+
+- id: scan_brace_form_mid_flow_is_segment
+  profile: comprehensive
+  desc: "once a text value has committed, a brace form is a segment, never a terminator — §6.4"
+  udon: "|el :n value |{em x} :a 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: n
+              value:
+                flow:
+                  - text: "value "
+                  - inline_element: { name: em, content: [{ text: x }] }
+                  - text: " :a 1"
+
+- id: scan_two_stacked_main_values_no_space_content
+  profile: comprehensive
+  desc: "two brace forms at the $main slot are two stacked $main values; whitespace separates — §6.4/§6.10"
+  udon: "|el |{embed-1} |{embed-2}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: "$main", value: { inline_element: { name: embed-1 } } }
+            - { label: "$main", value: { inline_element: { name: embed-2 } } }
+
+- id: own_el_rooted_tail_is_main
+  profile: comprehensive
+  desc: "element-rooted line: material after a finished value stacks as $main — §6.5"
+  udon: "|el :a 1 extra\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 1 } }
+            - { label: "$main", value: { text: extra } }
+
+- id: own_el_rooted_string_then_text
+  profile: comprehensive
+  desc: "quoted value finishes; the rest is $main — §6.5"
+  udon: "|el :first value :another \"with\" some text\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: first, value: { string: value } }
+            - { label: another, value: { string: with } }
+            - { label: "$main", value: { text: "some text" } }
+
+- id: own_block_assignment_line_stacks_silently
+  profile: comprehensive
+  desc: "block-assignment line: further values stack on that label, silently — §6.5/§6.7"
+  udon: |
+    |el
+      :first "one" two
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: first, value: { string: one } }
+            - { label: first, value: { string: two } }
+  anomalies: []
+
+- id: own_deferred_body_heterogeneous
+  profile: comprehensive
+  desc: "deferred body: first line typed; then text, a child element, an annotation — §6.5"
+  udon: |
+    |el
+      :recipe
+        1234
+        and here is prose
+        |step :n 1
+        ; a note
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: recipe
+              content:
+                - { int: 1234 }
+                - text: "and here is prose\n"
+                - element: { name: step, assignments: [{ label: n, value: { int: 1 } }] }
+                - annotation: { body_contains: "a note" }
+
+- id: own_deferred_body_only_first_line_types
+  profile: comprehensive
+  desc: a lone token on a later body line is text, never retyped — §6.5
+  udon: |
+    |el
+      :body
+        prose
+        42
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: body
+              content:
+                - text: "prose\n42\n"
+
+- id: own_deferred_body_nil_alone
+  profile: comprehensive
+  desc: nil alone on the body's first line is Nil (deferred nil works for free) — §6.5
+  udon: |
+    |el
+      :x
+        nil
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { nil: true } }
+
+- id: stack_vs_list_shape
+  profile: comprehensive
+  desc: "contributions compare as written: :x 1 :x [2 3] is two; nesting kept — §6.7"
+  udon: |
+    |el
+      :x 1
+      :x [2 3]
+      :x [4 [5 6]]
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: x, value: { int: 1 } }
+            - { label: x, value: { list: [{ int: 2 }, { int: 3 }] } }
+            - { label: x, value: { list: [{ int: 4 }, { list: [{ int: 5 }, { int: 6 }] }] } }
+  notes: "default read [1 [2 3] [4 [5 6]]] (MODEL §3.2); the model keeps the three contributions"
+
+- id: node_value_one_way_door
+  profile: comprehensive
+  desc: "once a block-form node opens, its scan owns the rest of the line — §6.8"
+  udon: "|api :headers |header :k v :timeout 30\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: api
+          assignments:
+            - label: headers
+              value:
+                node:
+                  element:
+                    name: header
+                    assignments:
+                      - { label: k, value: { string: v } }
+                      - { label: timeout, value: { int: 30 } }
+
+- id: node_value_deferred_block
+  profile: comprehensive
+  desc: a block-form element on the body's first line is the value (maps-of-maps take a named carrier) — §6.8
+  udon: |
+    |el
+      :theta
+        |config :first 1 :second 2
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: theta
+              value:
+                node:
+                  element:
+                    name: config
+                    assignments:
+                      - { label: first, value: { int: 1 } }
+                      - { label: second, value: { int: 2 } }
+
+- id: node_value_block_equals_brace_form
+  profile: comprehensive
+  desc: ":x |em hi and :x |{em hi} are model-equivalent at a value-expected position — §6.8 / SEMANTICS §2.5"
+  udon: |
+    |a :x |em hi
+    |b :x |{em hi}
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          assignments:
+            - { label: x, value: { node: { element: { name: em, assignments: [{ label: "$main", value: { text: hi } }] } } } }
+      - element:
+          name: b
+          assignments:
+            - { label: x, value: { inline_element: { name: em, content: [{ text: hi }] } } }
+  notes: "equivalent under core semantics; note the block form's 'hi' is $main sugar while the brace form's is interior content — the equivalence is by ruling (SEMANTICS 5), not by identical shape"
+
+- id: asg_under_asg_is_warned_text
+  profile: comprehensive
+  desc: ":label-shaped line directly under an open assignment body → text of the body + Warning — §6.8"
+  udon: |
+    |el
+      :outer
+        :inner x
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: outer
+              content:
+                - text: ":inner x\n"
+  anomalies:
+    - { severity: warning, about: assignment-under-assignment }
+
+- id: asg_late_accepted_warned
+  profile: comprehensive
+  desc: "line-initial :label after block content began → real assignment + Warning — §6.9"
+  udon: |
+    |element this prose is $main
+      :status open
+      Some children
+      :rogue <value>
+  result: complete
+  adm:
+    content:
+      - element:
+          name: element
+          assignments:
+            - { label: "$main", value: { text: "this prose is $main" } }
+            - { label: status, value: { string: open } }
+            - { label: rogue, value: { capture: { geometry: value, body: value } } }
+          content:
+            - text: "Some children\n"
+  anomalies:
+    - { severity: warning, about: late-assignment }
+  notes: "$main does not begin content, so :status is silent; :rogue is late"
+
+- id: asg_deferred_body_does_not_begin_element_content
+  profile: comprehensive
+  desc: "an assignment's body does not begin the element's content; the next :label is silent — §6.9"
+  udon: |
+    |el
+      :desc
+        a body
+      :next 1
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: desc, content: [{ text: "a body\n" }] }
+            - { label: next, value: { int: 1 } }
+  anomalies: []
+
+- id: main_self_announcing_values_chain
+  profile: comprehensive
+  desc: "self-announcing values become $main values and return the scan — §6.10"
+  udon: "|element \"here we go!\" |child :n 1\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: element
+          assignments:
+            - { label: "$main", value: { string: "here we go!" } }
+          content:
+            - element: { name: child, assignments: [{ label: n, value: { int: 1 } }] }
+  notes: "|child after the finished string is a sameline child (§2.2); see gap_A4 for the block-form-at-$main-slot tension"
+
+- id: main_vs_block_text_not_equivalent
+  profile: comprehensive
+  desc: "sameline text is $main; block text is content — different documents by design — §6.10 / SEMANTICS §2.10"
+  udon: |
+    |a title
+    |b
+      title
+  result: complete
+  adm:
+    content:
+      - element:
+          name: a
+          assignments:
+            - { label: "$main", value: { text: title } }
+          content: []
+      - element:
+          name: b
+          assignments: []
+          content:
+            - text: "title\n"
+
+# ------------------------------------------------------------------- §7 text
+
+- id: text_blank_line_interior_is_newline
+  profile: comprehensive
+  desc: a non-protruding blank between text lines is a BlankLine contributing "\n" — §7.3
+  udon: |
+    |p
+      one
+
+      two
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "one\n"
+            - blank_line: true
+            - text: "two\n"
+  notes: "text law reconstruction: one\\n\\ntwo\\n (MODEL §6)"
+
+- id: text_whitespace_protruding_is_text
+  profile: comprehensive
+  desc: whitespace protruding past the base is text content — §7.3
+  udon: "|p\n  a\n     \n  b\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "a\n   \nb\n"
+
+- id: text_extra_indent_preserved
+  profile: comprehensive
+  desc: indentation beyond the base is preserved as text — §7.2 r3
+  udon: |
+    |pre
+      line
+          deeper
+  result: complete
+  adm:
+    content:
+      - element:
+          name: pre
+          content:
+            - text: "line\n    deeper\n"
+
+- id: text_markdown_opaque
+  profile: comprehensive
+  desc: "text is opaque: #, <, *, ` mean nothing in block text — §7.1"
+  udon: |
+    |p
+      # not a heading, <not a capture>, `not code`
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "# not a heading, <not a capture>, `not code`\n"
+
+- id: text_annotation_deeper_than_base_literal
+  profile: comprehensive
+  desc: "a ';' deeper than the content base is literal — §8"
+  udon: |
+    |p
+      base
+        ; literal here
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - text: "base\n  ; literal here\n"
+
+# ------------------------------------------------------------ §8 annotations
+
+- id: ann_line_start_owns_deeper_structure
+  profile: comprehensive
+  desc: a line annotation owns everything deeper, including structure that would not parse — §8
+  udon: |
+    ; off
+      |el[unclosed :x
+      ```
+    |after
+  result: complete
+  adm:
+    content:
+      - annotation: { body: "off\n|el[unclosed :x\n```\n" }
+      - element: { name: after }
+  anomalies: []
+  notes: first continuation line sets the strip column (content-base shape)
+
+- id: ann_after_finished_value
+  profile: comprehensive
+  desc: "framed ' ; ' after a finished value opens a line annotation — §8"
+  udon: "|el :a 5 ; note\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 5 } }
+          content:
+            - annotation: { body: note }
+
+- id: ann_terminates_open_text_value
+  profile: comprehensive
+  desc: "framed ' ; ' inside an open unquoted text value terminates it — §8/§6.4"
+  udon: "|el :a some words ; note\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { text: "some words" } }
+          content:
+            - annotation: { body: note }
+
+- id: ann_trailing_empty
+  profile: comprehensive
+  desc: "trailing 'x ;' is an empty annotation — §8"
+  udon: "|el :a x ;\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { string: x } }
+          content:
+            - annotation: { body: "" }
+
+- id: ann_no_space_at_line_start_still_annotates
+  profile: comprehensive
+  desc: "';comment' at a structural column annotates with or without the space — §8"
+  udon: ";comment\n"
+  result: complete
+  root_only: true
+  adm:
+    content:
+      - annotation: { body: comment }
+
+- id: ann_inline_contributes_no_text_framing_kept
+  profile: comprehensive
+  desc: ";{…} contributes no text; framing whitespace is preserved on strip — §8"
+  udon: |
+    |p
+      one ;{note} two
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          content:
+            - flow:
+                - text: "one "
+                - annotation: { body: note }
+                - text: " two\n"
+
+- id: ann_value_slot_only_annotation_is_missing_value
+  profile: comprehensive
+  desc: "an annotation contributes no value; a slot with only ;{…} is the missing-value Error — DELTAS 11"
+  deltas: 11
+  udon: "|el :todo ;{fill in}\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: todo, value: { nil: true } }
+          content:
+            - annotation: { body: "fill in" }
+  anomalies:
+    - { severity: error, about: missing-value }
+  notes: "0.10.0 fabricated \"\" here; the draft overrides. Where the annotation node lands (assignment content vs element content) is not stated — shown as element content"
+
+- id: ann_unframed_after_value_is_content
+  profile: comprehensive
+  desc: "';note' unframed after a finished value is not an annotation — post-value material — §8/§6.5"
+  udon: "|el :a 5 ;note\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 5 } }
+            - { label: "$main", value: { text: ";note" } }
+
+# ------------------------------------------------------------- §10 values
+
+- id: num_integer_bases_and_underscores
+  profile: comprehensive
+  desc: "bases by prefix; _ value-neutral; 0755 is decimal — §10.2"
+  udon: "|n :a 42 :b 1_000_000 :c 0xFF :d 0o755 :e 0b1010 :f 0d42 :g 0755 :h -7 :i +3\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: n
+          assignments:
+            - { label: a, value: { int: 42 } }
+            - { label: b, value: { int: 1000000 } }
+            - { label: c, value: { int: 255 } }
+            - { label: d, value: { int: 493 } }
+            - { label: e, value: { int: 10 } }
+            - { label: f, value: { int: 42 } }
+            - { label: g, value: { int: 755 } }
+            - { label: h, value: { int: -7 } }
+            - { label: i, value: { int: 3 } }
+
+- id: num_floats
+  profile: comprehensive
+  desc: fraction and/or exponent make a float — §10.2
+  udon: "|n :a 3.14 :b 1e10 :c 1.5e-3 :d 2E+2\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: n
+          assignments:
+            - { label: a, value: { float: 3.14 } }
+            - { label: b, value: { float: 1.0e10 } }
+            - { label: c, value: { float: 0.0015 } }
+            - { label: d, value: { float: 200.0 } }
+
+- id: num_bad_prefix_falls_to_text
+  profile: comprehensive
+  desc: "0b102 and 0x alone go wrong mid-token → text tokens — §6.4"
+  udon: "|n :a 0b102 :b 0x :c 1__0\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: n
+          assignments:
+            - { label: a, value: { string: 0b102 } }
+            - { label: b, value: { string: 0x } }
+            - { label: c, value: { string: 1__0 } }
+  notes: "'_ between digits' rules out 1__0; the fall-through is token-local (§6.4)"
+
+- id: str_no_in_string_escapes
+  profile: comprehensive
+  desc: "a string closes at the next same quote; \\ inside is content; embed the other quote kind — §10.3"
+  udon: "|s :a \"it's\" :b 'say \"hi\"' :c \"a\\nb\"\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: s
+          assignments:
+            - { label: a, value: { string: "it's" } }
+            - { label: b, value: { string: "say \"hi\"" } }
+            - { label: c, value: { string: "a\\nb" } }
+
+- id: str_bare_uppercase_keywords_are_strings
+  profile: comprehensive
+  desc: "TRUE, True are strings; a bare date is a string — §10.1"
+  udon: "|s :a TRUE :b True :c 2026-07-11\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: s
+          assignments:
+            - { label: a, value: { string: "TRUE" } }
+            - { label: b, value: { string: "True" } }
+            - { label: c, value: { string: "2026-07-11" } }
+
+- id: str_rational_complex_not_bare
+  profile: comprehensive
+  desc: "1/3r, 3+4i are ordinary strings bare — §10.1"
+  udon: "|s :a 1/3r :b 3+4i\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: s
+          assignments:
+            - { label: a, value: { string: "1/3r" } }
+            - { label: b, value: { string: "3+4i" } }
+
+- id: list_quoted_item_closing_quote_ends_it
+  profile: comprehensive
+  desc: "[\"x\"y] and [\"x\"\"y] are two items each — §10.4"
+  udon: "|l :a [\"x\"y] :b [\"x\"\"y]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: l
+          assignments:
+            - { label: a, value: { list: [{ string: x }, { string: y }] } }
+            - { label: b, value: { list: [{ string: x }, { string: y }] } }
+
+- id: list_empty_and_nested
+  profile: comprehensive
+  desc: "[ ] is the empty list; lists nest — §10.4"
+  udon: "|l :a [ ] :b [[1 2] [3]]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: l
+          assignments:
+            - { label: a, value: { list: [] } }
+            - { label: b, value: { list: [{ list: [{ int: 1 }, { int: 2 }] }, { list: [{ int: 3 }] }] } }
+
+- id: list_items_full_value_grammar
+  profile: comprehensive
+  desc: "items: capture, reference, inline element, embedded reference — §10.4"
+  deltas: 1
+  udon: "|l :xs [<2026> @user[jw] |{em x} @{k}]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: l
+          assignments:
+            - label: xs
+              value:
+                list:
+                  - { capture: { geometry: value, body: "2026" } }
+                  - { reference: { head: { name: user, key: { string: jw }, traits: [] }, cardinality: [1, 1], partial: false } }
+                  - { inline_element: { name: em, content: [{ text: x }] } }
+                  - { reference: { head: { raw: k }, cardinality: [1, 1], partial: false } }
+
+- id: list_comma_is_token_content
+  profile: comprehensive
+  desc: "items are space-delimited; a comma is part of the bare token — §10.4"
+  udon: "|l :xs [a, b]\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: l
+          assignments:
+            - { label: xs, value: { list: [{ string: "a," }, { string: b }] } }
+
+- id: list_spans_lines
+  profile: comprehensive
+  desc: "a list closes at its printed closer; geometry is irrelevant — DELTAS 12 ⟨P⟩ (was closed-at-EOL + Warning)"
+  deltas: 12
+  udon: |
+    |el :xs [1
+      2
+      3] :after 1
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: xs, value: { list: [{ int: 1 }, { int: 2 }, { int: 3 }] } }
+            - { label: after, value: { int: 1 } }
+  anomalies: []
+  notes: the continuation lines' indentation is geometry inside a delimited construct (as for `|{…}`); see gap_A2 for the accident case
+
+- id: str_spans_lines
+  profile: comprehensive
+  desc: "a quoted string closes at its printed closer across lines — §10.5 (0.10.0: deliberately unspecified)"
+  deltas: 12
+  udon: |
+    |el :s "line one
+      line two" :b 1
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: s, value: { string: "line one\n  line two" } }
+            - { label: b, value: { int: 1 } }
+  notes: "the interior newline and the continuation's indentation are string content (a string is a trivially-self-owned span, NUANCE-AUDIT) — whether the indentation is stripped as geometry is NOT stated; lean: kept, since §10.3 says every interior byte passes through"
+
+# ---------------------------------------------------- §11/§12 extent & anomalies
+
+- id: eof_geometric_closes_silently_no_final_newline
+  profile: comprehensive
+  desc: a missing final newline is never an anomaly; geometric constructs close silently — §11.3
+  udon: "|el :a 1\n  :b 2"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 1 } }
+            - { label: b, value: { int: 2 } }
+  anomalies: []
+
+- id: eof_bare_marker_final_byte_is_text
+  profile: comprehensive
+  desc: "a bare marker as the final byte is text by its failed guard — §11.3"
+  udon: "|p see |"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: p
+          assignments:
+            - { label: "$main", value: { text: "see |" } }
+  anomalies: []
+
+- id: eof_semicolon_final_byte
+  profile: comprehensive
+  desc: "';'⟨EOF⟩ ≡ ';'⏎ — an empty annotation — §11.3"
+  udon: "|el :a 1 ;"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: a, value: { int: 1 } }
+          content:
+            - annotation: { body: "" }
+
+- id: eof_string_unclosed_incomplete
+  profile: comprehensive
+  desc: unclosed string at EOF → keep + Warning + incomplete-input — §11.3
+  udon: "|el :k \"abc"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: k, value: { string: abc } }
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+
+- id: eof_string_closed_control
+  profile: comprehensive
+  desc: closed twin for the incomplete case — §11.3
+  udon: "|el :k \"abc\"\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: k, value: { string: abc } }
+  anomalies: []
+
+- id: eof_nested_unclosed_innermost_first
+  profile: comprehensive
+  desc: "nested open delimited constructs: one Warning each, innermost first; content before signal — §11.3"
+  udon: "|el :x |{a \"s"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - label: x
+              value:
+                inline_element:
+                  name: a
+                  content:
+                    - { string: s }
+  anomalies:
+    - { severity: warning, about: unclosed-string }
+    - { severity: warning, about: unclosed-inline-element }
+
+- id: eof_fence_unclosed_incomplete
+  profile: comprehensive
+  desc: unclosed fence at EOF → body kept + Warning + incomplete-input — §11.3
+  udon: "|ex\n  ```\n  body\n"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: ex
+          content:
+            - capture: { geometry: fence, kind: "", body: "  body\n" }
+  anomalies:
+    - { severity: warning, about: unclosed-fence }
+
+- id: eof_capture_value_unclosed_incomplete
+  profile: comprehensive
+  desc: unclosed value capture at EOF → incomplete-input — §11.3
+  udon: "|el :when <2026-07"
+  result: incomplete-input
+  root_only: true
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: when, value: { capture: { geometry: value, body: "2026-07" } } }
+  anomalies:
+    - { severity: warning, about: unclosed-capture }
+
+- id: anomaly_warnings_never_flip_result
+  profile: comprehensive
+  desc: warnings and the sole Error leave result complete — MODEL §1
+  udon: "|el :k\n\tprose\n"
+  result: complete
+  adm:
+    content:
+      - element:
+          name: el
+          assignments:
+            - { label: k, value: { nil: true } }
+          content:
+            - text_contains: prose
+  anomalies:
+    - { severity: error, about: missing-value }
+    - { severity: warning, about: tab-in-indentation }
