@@ -1,0 +1,98 @@
+# Fixtures for src/rule-implied-root.md — sample (proposed, 2026-09-30).
+#
+# Shape (see proposed-verisectorium.md §Fixtures):
+#   id         stable name; never reused
+#   profile    canonical   — normative; a conforming parser must match it
+#              idiomatic   — normative, and written to be read as teaching
+#              counter     — normative, and shows a misguided or surprising
+#                            spelling: what someone expects vs what lite does
+#              descriptive — never gates; records the readings an open
+#                            question leaves available
+#   exercises  rule slugs this case pins (the edge vsect will follow)
+#   per        decision keys in ../DECISIONS.md the expected tree depends on
+#   udon       the input, byte for byte
+#   tree       the expected tree, in the pre-design text notation
+#              (a machine transcript waits on question 86)
+#   anomalies  [] when none; each as "severity: what, where"
+#   readings   descriptive only: one tree per open alternative, keyed by the
+#              question and option it comes from
+#   expects    counter only: what a reader plausibly expects instead
+#   notes      optional, any case: working notes (open threads, the lean
+#              taken, cautions), never normative
+#
+# Trees below use only what rule-implied-root decides. Where a case needs an
+# undecided rule (sameline text, top-level text base), it is descriptive.
+
+- id: root_two_top_level_elements
+  profile: canonical
+  exercises: [rule-implied-root]
+  per: [implied-root]
+  udon: |
+    |person
+    |person
+  tree: |
+    document
+    ├ element person
+    └ element person
+  anomalies: []
+
+- id: root_is_never_spelled
+  profile: counter
+  exercises: [rule-implied-root]
+  per: [implied-root]
+  udon: |
+    |document
+      |section
+  expects: "the |document element is the root, with section as a top-level child"
+  tree: |
+    document
+    └ element document
+        └ element section
+  anomalies: []
+  notes: The root is implied, so an element named document is an ordinary child of it.
+
+- id: root_empty_input
+  profile: descriptive
+  exercises: [rule-implied-root]
+  open: "89"
+  udon: ""
+  readings:
+    my-reading: |
+      document
+    other: "not settled whether empty input is a document at all; see 89"
+
+- id: root_top_level_label
+  profile: descriptive
+  exercises: [rule-implied-root]
+  open: "04 Q2"
+  udon: |
+    :title My Notes
+    |section
+  readings:
+    04-Q2-A: |
+      document
+      ├ text ":title My Notes\n"        ; anomaly: warning, top-level attribute
+      └ element section
+    04-Q2-B: |
+      document
+          title "My Notes"
+      └ element section
+
+- id: root_indented_top_level_text
+  profile: descriptive
+  exercises: [rule-implied-root]
+  open: "04 Q1"
+  udon: |2
+      indented first line
+    back to zero
+  readings:
+    04-Q1-A: |
+      document
+      ├ text "indented first line\n"
+      └ text "back to zero\n"           ; anomaly: warning, re-based
+    04-Q1-B: |
+      document
+      └ text "  indented first line\nback to zero\n"
+    04-Q1-C: |
+      document
+      └ text "indented first line\nback to zero\n"
