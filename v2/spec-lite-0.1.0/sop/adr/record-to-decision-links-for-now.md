@@ -5,7 +5,7 @@ awaiting-decision: false
 needs-work: false
 title: "For now, records cite decisions and the reverse is derived"
 status: accepted
-decided-by: steward
+decided-by: supported
 decided: "2026-09-30"
 updated: 2026-09-30
 deciders: [Joseph (steward)]
@@ -61,7 +61,7 @@ Chosen, as an implementation choice for now:
 >
 > — Joseph, 2026-09-30 (§1.17)
 
-*Joseph's decision: he accepted the one-way link and the `∅` ("That sounds like what we'd expect") and asked that the direction be shown as provisional. The Outcome's wording is the coordinator's.*
+*`supported`: Joseph accepted the one-way link and the `∅` ("That sounds like what we'd expect"), asked that the direction be shown as provisional, and confirmed `supported` over `steward` (§1.18): revisiting it should feel cheap. The Outcome's wording is the coordinator's.*
 
 ### Positive Consequences
 

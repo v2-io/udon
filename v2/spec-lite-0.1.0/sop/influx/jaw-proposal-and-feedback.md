@@ -249,6 +249,14 @@ On how a landed row with no document finds its decision (→ `record-to-decision
 
 > I literally just made the record-to-decision-links-*for-now* decision-- I shouldn't need to also ratify it. I won't ratify any of the others until the udon team has weighed in.
 
+### 1.18 Supported, not ratified; a fuller authority proposal (2026-09-30)
+
+> I was being a little to harsh-- I actually think it was wise of you to double check instead of assume "that's what we'd expect" was a full ratification. It was just the word ratify that threw me off a little. Something like "And as for the new issue, can I mark that as your decided position?"  In vivarium we have a "supported" as well-- which allows me to give a basic support for the agent-decided or agent-described decision, without the full weight of "ratified" -- basically supported implies agent and human alike should feel much more free to say "hold on-- let's rethink this one..." instead of "well, it's official, so off-limits"
+
+Answering whether `record-to-decision-links-for-now` should be `supported` rather than `steward`:
+
+> Hmmm, yes. As a matter of fact-- it's not as well organized in some ways as we are here, but why don't you have an agent read core/src/norm-decision-authority.md (and any adjacent/related ones over there) fully and any related things in verisectorium (especially in it's influx RC1 stuff)-- and give us a more complete proposal that allows for the council, support, and so forth...
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:
