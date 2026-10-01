@@ -245,6 +245,10 @@ On how a landed row with no document finds its decision (→ `record-to-decision
 
 > That sounds like what we'd expect. A decision doesn't point to records though... hmmmm.... that might be problematic. I hope that's shown as an implementation choice for right now in case it needs to be revisited...
 
+### 1.17 Whose decision; when ratification happens (2026-09-30)
+
+> I literally just made the record-to-decision-links-*for-now* decision-- I shouldn't need to also ratify it. I won't ratify any of the others until the udon team has weighed in.
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:

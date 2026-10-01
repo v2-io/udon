@@ -1,17 +1,17 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "For now, records cite decisions and the reverse is derived"
 status: accepted
-decided-by: supported
+decided-by: steward
 decided: "2026-09-30"
 updated: 2026-09-30
-deciders: ["aat-refactored coordinator (agent, Opus 5.5), under delegated authority (setup-delegated-to-coordinator)"]
-consulted: [spec-lite fork (agent, Opus 5.5)]
-informed: [Joseph (steward)]
-wording: verbatim
+deciders: [Joseph (steward)]
+consulted: ["aat-refactored coordinator (agent, Opus 5.5)", spec-lite fork (agent, Opus 5.5)]
+informed: []
+wording: rendering
 grounds-recorded: at-decision
 supersedes: []
 superseded-by: []
@@ -34,7 +34,7 @@ That choice was made for drift, not designed. [[decision:landed-may-be-missing]]
 
 ## Assumptions
 
-* That a linter can invert `per:` across a store, the same way it derives ∂ columns. (**recorded**: the coordinator's, at decision time)
+* That a linter can invert `per:` across a store, the same way it derives ∂ columns. (**inferred, unconfirmed**: the coordinator's)
 
 ## Considered Options
 
@@ -51,15 +51,17 @@ Chosen, as an implementation choice for now:
 - **A decision's "What changes" is its trail at decision time**: the records it moved, as `[[kind:slug]]` links. It is not kept current afterwards, and git holds what followed.
 - **A `landed` row with no document** has no `per:`, so its decision citation shows `∅`, like its flags. The decision is found by searching `adr/`.
 
-Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delegated-to-coordinator]]). It is in force, and awaits his ratification.
-
 ### Quote
 
 > That sounds like what we'd expect. A decision doesn't point to records though... hmmmm.... that might be problematic. I hope that's shown as an implementation choice for right now in case it needs to be revisited...
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.16)
 
-*How this meets the exemplar condition of the delegation: it records as provisional a choice that had been made only by dropping a field, and names what would reopen it, as Joseph asked.*
+> I literally just made the record-to-decision-links-*for-now* decision-- I shouldn't need to also ratify it.
+>
+> — Joseph, 2026-09-30 (§1.17)
+
+*Joseph's decision: he accepted the one-way link and the `∅` ("That sounds like what we'd expect") and asked that the direction be shown as provisional. The Outcome's wording is the coordinator's.*
 
 ### Positive Consequences
 
@@ -81,7 +83,6 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 * A deleted or moved record leaves a decision whose consequences can't be traced without git archaeology.
 * Landed rows without documents become common enough that searching `adr/` for their decisions is a burden.
 * vsect stores links in both directions, so a reverse link costs nothing by hand.
-* Joseph declines to ratify it.
 
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 

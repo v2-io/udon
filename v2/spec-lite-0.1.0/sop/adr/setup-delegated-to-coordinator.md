@@ -77,3 +77,5 @@ Each decision made under this authority:
 
 ## Working notes
 
+* **Ratification waits on the udon team.** Joseph will ratify the decisions made under this delegation only after the udon team has weighed in (§1.17).
+
