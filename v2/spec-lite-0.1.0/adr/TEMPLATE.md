@@ -5,10 +5,10 @@ awaiting-decision: true         # true while the decider's call is still wanted;
 needs-work: false               # true while known work remains; the details go in Working notes
 title: "[Short title: the problem and the chosen solution]"
 status: proposed                # lifecycle: proposed | accepted | rejected | superseded | deprecated
-decided-by: proposed            # authority: steward | ratified | council | supported | defacto | proposed | transition
+decided-by: proposed            # what the store's decider did: proposed | delegated | supported | ratified | ruled | steward | defacto ([[decision:decision-authority]])
 decided: ""                     # YYYY-MM-DD the call was made (empty until accepted or rejected)
 updated: YYYY-MM-DD             # YYYY-MM-DD this file last changed in substance
-deciders: []                    # who made the call, e.g. [Joseph (steward)]; agents count, marked as agents, e.g. "aat-refactored coordinator (agent, Opus 5.5)"; a delegate adds "under delegated authority (<grant slug>)"
+deciders: []                    # who made the call, with a role: steward, agent, or council, e.g. [Joseph (steward)] or "udon-team agent (agent, Opus 5.5)"; a delegate adds "under delegated authority (<grant slug>)". Whose proposal it was goes under the Quote.
 consulted: []                   # whose view was sought before the call, and was given
 informed: []                    # who needs to know the outcome (e.g. parser implementers, vsect, udon team)
 wording: rendering              # verbatim | rendering: whose words the Decision Outcome is in; usually rendering, even when a Quote is located; verbatim when the decider wrote it
@@ -120,7 +120,17 @@ Carried from MADR (the template Joseph supplied), with changes for this corpus. 
   - `awaiting-second`: a decision written up by an agent is a rendering, and the most dangerous failure a decision has is a rendering carried as the decider's words ([[sop/ref:hazards]]). A second reader who checks the Outcome against the Quote clears it. For a delegated decision the Quote is the grant, which can't confirm any particular Outcome, so the second reader asks instead: is it within the grant; does it contradict, narrow or reverse anything the grantor said, anywhere; were the options fairly put, including a stronger one; and is the reasoning stated? (Proposed by the second look of 2026-09-30, `sop/influx/adr-check-notes.md`.)
   - `awaiting-decision`: a `proposed` decision is usually waiting for its decider. It is not waiting when the decider has deliberately deferred it until something happens. The flag keeps "waiting on the steward" apart from "parked".
   - `needs-work`: known work, such as a quote not yet carried into a kept file.
-- **`status` and ⟦decided-by⟧ are separate fields.** `status` is the lifecycle (is this in force?). `decided-by` is authority (who stood behind it, and how firmly). They move independently, so they don't share a field. For example, `accepted` + `supported` is a real and common state: act on it, and revisiting it is cheap. MADR's single Status field fuses the two. `defacto` ("decided without really being decided") and `transition` (rejected, but still present somewhere) live in `decided-by`, because they are honesty states about authority. When parts of one outcome stand on different authority, give the main one and say which part differs under the Quote, or split the decision.
+- **`status`, `deciders` and ⟦decided-by⟧ are three separate fields** ([[decision:decision-authority]]). `status` is the lifecycle (is this in force?). `deciders` is who made the call, with a role (steward, agent, council; a delegate adds its grant). `decided-by` is what the store's decider did about this record, and so what it takes to revisit it:
+  - `proposed`: nobody with standing has decided; change it freely;
+  - `delegated`: a delegate decided under a named grant, and the decider hasn't acted on this record; anyone may raise it;
+  - `supported`: the decider saw it and had no objections at that time; revisiting is cheap: bring what changed;
+  - `ratified`: the decider thought it through and would like to know if someone feels differently; bring the disagreement, with reasons;
+  - `ruled`: the decider's call, which may rest on a reason not stated; work out your best understanding of why it was made, check it with the decider, then decide together;
+  - `steward`: the decider's own call, stated in his own words; revisit as `ratified`;
+  - `defacto`: in force by practice, never decided; it invites a decision.
+
+  Every value can be revisited; they differ in the path, not the license. A decision is never set in stone: its recorded assumptions are what tell a later reader when revisiting serves the real goals rather than momentum or appeals to authority. These fields move independently: `accepted` + `supported` is real and common (act on it; revisiting is cheap). MADR's single Status field fuses them. A rejected or superseded decision with leftovers still somewhere is `status: rejected` or `superseded` with `needs-work: true` and a note saying where. When parts of one outcome stand on different authority, give the main one and say which part differs under the Quote, or split the decision.
+- **At the moment of assent, ask.** When the decider assents to an agent's description, the agent asks then which act it was ("can I mark that as your decided position?"). If nobody asked, record `supported`, and say so under the Quote. An ask made later carries the text of what is being asked about, and offers every act, not just two.
 - **⟦supersedes⟧ is typed and scoped** (verisectorium RC1, 06-EDGES; [[sop/def:supersession]]):
   - `revised`: the same decision, updated;
   - `invalidated`: an assumption broke, or it was shown wrong;
@@ -146,16 +156,16 @@ Carried from MADR (the template Joseph supplied), with changes for this corpus. 
 **Decisions made under delegated authority.** When the decider delegates a class of decisions (e.g. [[sop/decision:setup-delegated-to-coordinator]]), each decision made under the grant:
 
 - names the delegate in `deciders`, under the grant;
-- carries `decided-by: supported` and `status: accepted`: it is in force, on provisional authority;
-- carries `awaiting-decision: true` until the store's decider ratifies it ([[sop/decision:decider-per-store]]), and lists "the decider declines to ratify it" under Reopen when;
+- carries `decided-by: delegated`; whether it is in force before the decider acts (`status: accepted`) or waits for the decider (`status: proposed`) is whatever the grant says;
+- carries `awaiting-decision: true` while the grant reserves the decider's review ([[sop/decision:decider-per-store]]), and lists "the decider declines it" under Reopen when;
 - links the grant in its Outcome. The Outcome is the delegate's own words, so `wording: verbatim`, and the grant is linked rather than quoted again in every record it covers.
 
-On ratification, `decided-by` becomes `ratified` and `awaiting-decision` becomes `false`; neither is an edit to the outcome. The grant's own record never lists the decisions made under it: they are the ones that cite it.
+When the decider acts, `decided-by` becomes `supported`, `ratified` or `ruled`, and `awaiting-decision` becomes `false`; neither is an edit to the outcome. Declining it is a new decision that supersedes it. The grant's own record never lists the decisions made under it: they are the ones that cite it.
 
 **After acceptance** (a proposal inferred from how the process decisions have been kept; no decision records it yet):
 
 - The choice is never changed in place. Changing it takes a new decision that supersedes this one.
-- What may change: `status`, `superseded-by`, `updated`, the flags, `decided-by` when authority firms up (e.g. `supported` to `ratified` once the steward confirms), and Working notes.
+- What may change: `status`, `superseded-by`, `updated`, the flags, `decided-by` when the decider acts (e.g. `delegated` to `supported`, or `supported` to `ratified`), and Working notes.
 - A rendering shown not to match what the decider said is corrected in place, with a note saying what was corrected. That repairs an attribution; it does not reopen the choice.
 - ⟦working-notes⟧ don't hold an accepted decision back. A record with notes cannot be considered frozen ([[sop/decision:working-notes-and-frozen]]), but `accepted` means "in force", not "frozen". A decision's outcome is fixed from acceptance whether or not it has notes.
 

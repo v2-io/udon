@@ -18,6 +18,8 @@ Authors can't accidentally write something that changes meaning later.
 
 ## Decided so far (Joseph, 2026-09-29)
 
+*These are now decision records in [`../adr/`](../adr/), each quoting Joseph from [`STEWARD-VERBATIM.md`](STEWARD-VERBATIM.md). Where this list and a record differ, the record holds; in particular a reserved spelling is now an error that halts parsing ([`reserved-is-an-error`](../adr/reserved-is-an-error.md)), and `<…>` is carried as raw text ([`explicit-typed-value-in`](../adr/explicit-typed-value-in.md)).*
+
 - **Reserve, not ignore** — the contract above.
 - **`|{…}` inline elements are in.** They are essential for the XML/HTML use case.
 - **`<…>` (an explicit typed value) is in.** Lite finds where it ends and carries its text and optional type label, attaching no meaning. Dates, times, and durations are not typed in lite; the existing temporal parser may be reattached at implementation time.
@@ -25,14 +27,14 @@ Authors can't accidentally write something that changes meaning later.
 - **Tables:** undecided, left for later.
 - **AST-centric.** Lite is specified as the tree it produces, not as an event stream.
 - **Implied root node.** Every document has one root node; everything starts as its children. The root may carry metadata such as the filename.
-- **Terminology:** lite uses the addressing theory's vocabulary (`../references/def/`) wherever it applies — lite has no addressing, so only part of it does. Lite's own definitions will live in `lexicon.md` (not yet written). The lite term for an `<…>` or bare value is `typed value` (explicit / implicit).
+- **Terminology:** lite uses the addressing theory's vocabulary (`../references/def/`) wherever it applies — lite has no addressing, so only part of it does. Lite's own definitions live as records in `../def/`, with a generated lexicon view ([`lite-lexicon-in-def`](../adr/lite-lexicon-in-def.md)). The lite term for an `<…>` or bare value is `typed value` (explicit / implicit).
 - **No bespoke lite parser needed.** The mainline recursive-descent grammar (descent) is the implementation route; earlier throwaway Python parsers couldn't track the nuance.
 
 Out of lite (reserved): `!` in all its forms (including `!:kind:` code blocks), `@` references, and `!{{…}}` interpolation.
 
 ## Writing convention
 
-Terms defined in `lexicon.md` (not yet written) are written in backticks when used as the defined term (`typed value`, `element`), so they read as terms rather than as general words.
+Terms defined in `../def/` are written «…» when used as the defined term («typed value», «element»), so they read as terms rather than as general words; backticks are for code ([`lite-term-delimiters`](../adr/lite-term-delimiters.md)).
 
 ## Sources
 
