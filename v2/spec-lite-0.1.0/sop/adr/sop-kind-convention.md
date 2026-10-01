@@ -54,6 +54,8 @@ Chosen: admit `convention` as an SOP kind.
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11), answering "`convention` as an SOP kind. My lean is to admit it."
 
+*`decided-by: ratified`: the kind was the agents' proposal; Joseph accepted it.*
+
 ### Positive Consequences
 
 * Each convention states how a violation would show up, which is the specification for the future linter.
@@ -75,4 +77,3 @@ Chosen: admit `convention` as an SOP kind.
 
 ## Working notes
 
-* `decided-by: ratified`: the kind was the agents' proposal; Joseph accepted it.

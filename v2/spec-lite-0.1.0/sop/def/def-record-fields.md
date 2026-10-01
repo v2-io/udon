@@ -51,10 +51,10 @@ depends: [def:record, def:record-kinds, def:outline]
 - A ※ outline column that disagrees with its record's field is a finding, and the record wins.
 - On a row with no document, ※ columns show `—` (see [[conv:record-flags]]).
 
+## Why
+
+- **No `questions` field.** Open questions live in a record's working notes ([[decision:open-questions-in-working-notes]]), so frontmatter doesn't repeat them. A record waiting on its decider says so with `awaiting-decision`.
+
 ## Working notes
 
-- Removed on 2026-09-30:
-  - `state`, replaced by the outline's ⟦row-type⟧ and the computed ⟦doc-state⟧;
-  - `max`, dropped for udon-lite (decision `no-max-for-lite`).
-- **No `questions` field.** Open questions live in a record's working notes ([[decision:open-questions-in-working-notes]]). The frontmatter field that first listed them was dropped on 2026-09-30, because it duplicated the working notes and had already drifted from the outline. A record still waiting on the steward says so with `awaiting-decision`.
 - **Name collision:** the record field shown as ∂(status) has the same name as a decision's `status` (its lifecycle), which is a different thing. This entry names the record's term ⟦record-status⟧ to keep the two apart. Whether a field gets renamed is not decided here.

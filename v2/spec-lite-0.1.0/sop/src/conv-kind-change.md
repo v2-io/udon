@@ -27,7 +27,7 @@ A record whose `kind:` changed in its own history; a new record that inherited a
 ## Why
 
 - Joseph: "it's rare because it really does require one to essentially retire the old and integrate it reconstructively into new kind(s) -- so much changes (including its authority and verification level etc. etc.) or rather, because the very way 'it can fail' changes, it's really not so much a mutation as a dissolution and emergence of something else. Which allows for was as a historical provinance marker etc." (`sop/influx/jaw-proposal-and-feedback.md` §1.6).
+- The rename-versus-kind-change split in resolution was worked out in feedback (§3.11). What decides it: can the old reference be followed without changing what it claims?
 
 ## Working notes
 
-- The rename-versus-kind-change split in resolution was worked out in feedback (§3.11). What decides it: can the old reference be followed without changing what it claims?

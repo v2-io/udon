@@ -58,6 +58,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it keeps Joseph's definition of the flag, and puts the dependency where [[decision:outline-always-true]] puts every reflection, in a derived cell a linter can check.*
+
 ### Positive Consequences
 
 * Ratifying a decision changes no other record.
@@ -81,4 +83,3 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 ## Working notes
 
-* How this meets the exemplar condition of the delegation: it keeps Joseph's definition of the flag, and puts the dependency where [[decision:outline-always-true]] puts every reflection, in a derived cell a linter can check.

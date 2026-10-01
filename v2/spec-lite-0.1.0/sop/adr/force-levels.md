@@ -81,5 +81,3 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 ## Working notes
 
-* Superseded by [[decision:force-levels-four]]: dropping `critical` reversed a split Joseph had already agreed to (18:23Z, §1.12), which the delegation did not cover.
-

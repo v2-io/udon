@@ -55,6 +55,8 @@ Chosen: `force` takes `non` (an explicit non-goal), `desired` (an objective, met
 >
 > — Joseph, 2026-09-30T18:23Z (§1.12), answering the fork's refinements, the second of which was "Make objective / non-objective / critical a field, not three kinds. … Something like `force: non | desired | required | critical`."
 
+*`decided-by: ratified` because the four values were the fork's proposal and Joseph agreed to it; the definition still open above is not covered by that agreement.*
+
 ### Positive Consequences
 
 * The value Joseph asked to have distinguished is kept.
@@ -77,4 +79,3 @@ Chosen: `force` takes `non` (an explicit non-goal), `desired` (an objective, met
 ## Working notes
 
 * **Open for Joseph: what separates `required` from `critical`?** Candidates, none decided: a `critical` breach blocks a release while a `required` one is a known defect that can ship; or `critical` objectives are the ones no later version may relax (reserve-don't-ignore would be one).
-* `decided-by: ratified` because the four values were the fork's proposal and Joseph agreed to it; the definition still open above is not covered by that agreement.

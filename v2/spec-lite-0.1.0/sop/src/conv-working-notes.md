@@ -35,9 +35,7 @@ A record at its kind's top rung, or in a `final`-like state, whose working notes
 
 ## Why
 
-- Joseph asked for "making sure there is allowances for working-notes everywhere…" (2026-09-30, in the aat-refactored coordinator session, in the message that also asked for Markdown and for decisions to carry reasoning and assumptions; `sop/influx/proposed-verisectorium.md` records the request only as a paraphrase).
+- Joseph asked for "making sure there is allowances for working-notes everywhere…" (2026-09-30, in the message that also asked for Markdown and for decisions to carry reasoning and assumptions; `sop/influx/jaw-proposal-and-feedback.md` §1.12).
 
 ## Working notes
 
-- Revised 2026-09-30 per [[decision:working-notes-and-frozen]]. The earlier rule ("always present, even when empty") is replaced; Joseph: "Whether or not the header has to be there when its empty is irrelevant to me and the engine."
-- The "allowances for working-notes everywhere" quote under Why is from chat, and is not yet in `sop/influx/jaw-proposal-and-feedback.md` §1.

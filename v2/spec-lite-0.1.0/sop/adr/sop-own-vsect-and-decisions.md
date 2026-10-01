@@ -48,6 +48,8 @@ Chosen: the SOP store has its own `sop/.vsect/` (its own `kinds.yaml`) and its o
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.9)
 
+*The directory name `sop/adr/` was chosen by the agent for consistency with lite's `adr/`; Joseph's words were "adr/dec set".*
+
 ### Positive Consequences
 
 * Process decisions don't get mixed into the spec's decisions.
@@ -68,4 +70,3 @@ Chosen: the SOP store has its own `sop/.vsect/` (its own `kinds.yaml`) and its o
 
 ## Working notes
 
-* The directory name `sop/adr/` was chosen by the agent for consistency with lite's `adr/`; Joseph's words were "adr/dec set".

@@ -74,4 +74,3 @@ Chosen: ∂(doc-state) with values `missing`, `drafted`, `conforms`.
 
 ## Working notes
 
-* The agents first called this a ladder; Joseph showed the three values are exhaustive and reversible, and the objection was withdrawn (§1.2).

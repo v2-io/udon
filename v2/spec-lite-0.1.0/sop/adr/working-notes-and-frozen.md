@@ -75,6 +75,3 @@ Chosen:
 
 ## Working notes
 
-* Its reopen condition is answered, without reopening it, by [[decision:notes-disposition-at-freeze]]: notes may hold anything, and each is dispositioned before freeze.
-
-* `adr/TEMPLATE.md` (lite's, the udon team's) still says working notes are "always present, even if empty". That's harmless under this policy, but the udon team may want to align it.

@@ -56,6 +56,8 @@ Chosen: a `.vsect/kinds.yaml` at the root of each store: the project root for li
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.7–§1.8)
 
+*The guards were the agents' proposals, agreed by Joseph; the file format and merge are his.*
+
 ### Positive Consequences
 
 * Adding or changing a kind is an edit to one file, and needs no separate decision ("easy now to simply update the kinds.yaml", §1.9).
@@ -76,4 +78,3 @@ Chosen: a `.vsect/kinds.yaml` at the root of each store: the project root for li
 
 ## Working notes
 
-* The guards were the agents' proposals, agreed by Joseph; the file format and merge are his.

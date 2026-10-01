@@ -86,11 +86,7 @@
 
 ## *Working Notes (outline-level)*
 
-- **Crossings from `sop/influx/` (2026-09-30):**
-  - `jaw-proposal-and-feedback.md` is **needs-review**, and stays in influx. §1–2 and the settled parts of §3–4 are carried into the records above. The rest is spec-store work: its implied-edits list (the spec outline's columns and row-types, renaming `dat/rule-implied-root.yaml`, `test-fixtures:` on the rule), and the open items that go to the udon team.
-  - `proposed-verisectorium.md` is **needs-review**, and stays in influx. Its kinds, fields, purpose layer, decisions, question lifecycle, and rule cadence are carried over. Its spec-store layout and "What needs you" sections are for the spec store and the udon team. Its vsect requirements are already in `.int/vsect-requirements-on-lite.md`.
-- **Resolved 2026-09-30:**
-  - [[conv:working-notes]] now rests on [[decision:working-notes-and-frozen]];
-  - [[conv:record-cadence]] stays "proposed, or even exploratory" (Joseph), with no adopting decision. [[def:sop-kinds]]'s admission of `convention` was accepted on 2026-09-30 ([[decision:sop-kind-convention]]).
-- **Decision rows removed (2026-09-30):** the first carving listed all 22 process decisions as rows. They were removed after Joseph's direction that outlines are current truth, not compilations of decisions ([[decision:outline-is-current-truth]]).
-- **Delimiters:** SOP terms are written `⟦…⟧` throughout this store. A term used inflected puts the ending outside the delimiter (⟦record⟧s), as proposed in [[conv:term-delimiters]].
+- **What is still in `sop/influx/`:**
+  - `jaw-proposal-and-feedback.md` is **needs-review** and stays: it is the live thread of Joseph's rulings, and new ones still arrive there. Its settled parts are carried into the records above; its open items for the udon team are in `../.int/questions-from-the-examples.md`.
+  - `proposed-verisectorium.md` is **needs-review** and stays. Its kinds, fields, purpose layer, decisions, question lifecycle and rule cadence are carried over. Its spec-store layout and "What needs you" sections are for the spec store and the udon team; its vsect requirements are in `../.int/vsect-requirements-on-lite.md`.
+  - `adr-check-notes.md`, the independent check of the delegated decisions: its crossing isn't recorded yet.

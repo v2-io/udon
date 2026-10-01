@@ -69,6 +69,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it restores Joseph's own ruling, and borrows a drain the estate already designed, adjusted for the one failure the estate measured in it.*
+
 ### Positive Consequences
 
 * Joseph's ruling stands unnarrowed.
@@ -96,4 +98,3 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 ## Working notes
 
-* How this meets the exemplar condition of the delegation: it restores Joseph's own ruling, and borrows a drain the estate already designed, adjusted for the one failure the estate measured in it.

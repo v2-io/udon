@@ -51,6 +51,8 @@ Chosen: officially defined terms are always delimited. `«…»` marks domain (l
 >
 > And, on the agent's counter-proposal: "i can sustain your lean" (§1.9).
 
+*`decided-by: ratified`: Joseph proposed delimiting; the glyph assignment was the agent's lean, which he sustained.*
+
 ### Positive Consequences
 
 * Backticks are freed for code.
@@ -71,4 +73,3 @@ Chosen: officially defined terms are always delimited. `«…»` marks domain (l
 
 ## Working notes
 
-* `decided-by: ratified`: Joseph proposed delimiting; the glyph assignment was the agent's lean, which he sustained.

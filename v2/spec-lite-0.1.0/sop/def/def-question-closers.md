@@ -26,10 +26,16 @@ depends: [def:record-kinds, def:decision]
 - Joseph's arguments and measurements count as evidence like anyone's. Only his purpose and his own knowledge are reserved to him.
 - A closed question stays on record, with its answer or its reopen condition, so it is not asked again.
 
-## Working notes
+## Why
+
+- The spec outline's working notes carry the SOP side's closer proposals for the pre-design questions, as input. Routing them belongs to the udon team (`sop/influx/jaw-proposal-and-feedback.md` §1.10); Joseph expects them to want an open-question kind, and intends to vote for a `wut/` directory.
+
+## Sources
 
 - Sources:
   - verisectorium RC1 `07-DISPOSITION-AND-GAP-ECONOMICS` supplies steward-fact, awaiting-ground, and agent-open;
   - steward-purpose was added in the aat-refactored fresh-view review (2026-09-29) for questions only a purpose can decide;
   - this file shortens awaiting-ground to "awaiting".
-- The spec outline's working notes carry the SOP side's closer proposals for the pre-design questions, as input. Routing them belongs to the udon team (`sop/influx/jaw-proposal-and-feedback.md` §1.10); Joseph expects them to want an open-question kind, and intends to vote for a `wut/` directory.
+
+## Working notes
+

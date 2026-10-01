@@ -47,6 +47,8 @@ Undecided. Left open until the outline linter is needed.
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.7)
 
+*`awaiting-decision: false` because Joseph deliberately deferred this call (see Quote); the deferral, not a decision, clears the flag.*
+
 ### Positive Consequences
 
 * None identified.
@@ -64,6 +66,4 @@ Undecided. Left open until the outline linter is needed.
 * The outline linter is needed.
 
 ## Working notes
-
-* `awaiting-decision: false` because Joseph deliberately deferred this call (see Quote); the deferral, not a decision, clears the flag.
 

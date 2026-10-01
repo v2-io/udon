@@ -38,4 +38,3 @@ depends: [def:record-fields, conv:column-notation]
 ## Working notes
 
 - **Optional sharpening** (§3.8, not adopted). `awaiting-second` could name the kind of look it needs (format check, re-derivation, reader test), and `needs-work` could carry its pointer inline. Either would let the linter catch a flag that has outlived its reason. Plain booleans come first.
-- `awaiting-second: true` on every record carved on 2026-09-30 is honest: the carving agent's own reading is not a second look.

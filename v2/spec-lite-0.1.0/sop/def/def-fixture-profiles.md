@@ -31,10 +31,13 @@ depends: [def:record-kinds]
 - Every case names the rules it exercises (⟦exercises⟧) and the decisions its tree depends on (⟦per⟧).
 - Case ids are stable names inside the ⟦fixture⟧ record and are never reused. They are anchors, like headings: a rule cites the file through ⟦test-fixtures⟧, and prose may transclude one case as `![[dat/implied-root.yaml#root_two_top_level_elements]]`. Prose around a transcluded case is stale once that case changes.
 
-## Working notes
+## Sources
 
 - Sources:
   - the profile names idiomatic / comprehensive / descriptive come from `../../../spec-0.10.01/fixtures/README.md`;
   - `counter` is added for Joseph's "examples of misguided usage";
   - `canonical` replaces "comprehensive", because what matters is whether a fixture gates, not how many cases it covers.
+
+## Working notes
+
 - The tree notation in fixtures is the pre-design text form until a machine transcript is decided (question 86).

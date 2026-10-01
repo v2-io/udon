@@ -41,7 +41,7 @@ A linter could find each of these:
 - Joseph, 2026-09-30: "The principle is that THE OUTLINE MUST ALWAYS BE TRUE. That becomes difficult when we are first assembling it and trying things out etc." (`sop/influx/jaw-proposal-and-feedback.md` §1.1).
 - The four concerns are his proposal from the same message. They are what makes that principle achievable: only concern-3 cells can drift, and those are exactly what the linter checks.
 - "Outline = view" is a working theory, not a fixed ideal; there may yet be a call for at least one canonical full view (§1.8). The kinds map, not any outline, is what says what the corpus is.
+- The check for `landed` rows with no decision in ⟦per⟧ was the fork's addition in feedback (§3.2). Joseph accepted it as process, "with notes for the future linter" (§1.7 item 7), and [[decision:row-type]] records it.
 
 ## Working notes
 
-- The check for `landed` rows with no decision in ⟦per⟧ was the fork's addition in feedback (§3.2). Joseph accepted it as process, "with notes for the future linter" (§1.7 item 7), and [[decision:row-type]] records it.

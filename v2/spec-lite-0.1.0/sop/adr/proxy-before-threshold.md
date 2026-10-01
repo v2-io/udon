@@ -47,6 +47,8 @@ Undecided in the SOPs.
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.9, item 9)
 
+*`awaiting-decision: false` because Joseph deliberately deferred this call (see Quote); the deferral, not a decision, clears the flag.*
+
 ### Positive Consequences
 
 * None identified.
@@ -64,6 +66,4 @@ Undecided in the SOPs.
 * The first fitness record is written.
 
 ## Working notes
-
-* `awaiting-decision: false` because Joseph deliberately deferred this call (see Quote); the deferral, not a decision, clears the flag.
 

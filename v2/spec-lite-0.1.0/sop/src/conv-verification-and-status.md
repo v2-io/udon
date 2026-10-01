@@ -35,6 +35,7 @@ depends: [def:record-fields, def:record-kinds, conv:record-flags]
 - On status: "seems like a calculated field that has a different measure depending on the kind (and possibly other flags/fields)" (§1.7 item 2).
 - On max: "Let's drop max altogether for udon-lite for now unless there's something important that it's giving us" (§1.9 item 10).
 - (Quotes from `sop/influx/jaw-proposal-and-feedback.md`.)
+- Recording the hash of the text that was checked was the coordinator's addition in feedback (§3.9). [[decision:per-kind-verification-and-status]] records it as a proposal, not yet decided.
 
 ## Working notes
 
@@ -43,4 +44,3 @@ depends: [def:record-fields, def:record-kinds, conv:record-flags]
   - What this corpus surfaced: verification-level is not one ladder but a ladder each kind declares. In a spec it is mostly authorization; in a theory like AAT it is derivation and evidence.
   - RC1 doesn't yet say how a kind's single level relates to its several dimensions, or how a corpus of mostly *decided* records differs from one of mostly *derived* records.
   - That note is in `sop/influx/jaw-proposal-and-feedback.md` §3.14. It should go back to RC1 03 and 10 through verisectorium's influx.
-- Recording the hash of the text that was checked was the coordinator's addition in feedback (§3.9). [[decision:per-kind-verification-and-status]] records it as a proposal, not yet decided.

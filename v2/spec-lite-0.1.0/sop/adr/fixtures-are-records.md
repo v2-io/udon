@@ -52,6 +52,8 @@ Chosen: a fixture file is a record of kind `fixture`, at file grain, with its ki
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.6), and §1.7 item 10, objecting to the agents' attempt to make fixtures non-records
 
+*Authority: Joseph's own words (§1.6, and his objection in §1.7 item 10) state the core claim, that fixtures are records which no outline need list, so it is `steward`. The details (stable named case ids; parking hash-based change propagation) are the agents'.*
+
 ### Positive Consequences
 
 * Fixtures stay under the same machinery as every other record.
@@ -72,4 +74,3 @@ Chosen: a fixture file is a record of kind `fixture`, at file grain, with its ki
 
 ## Working notes
 
-* **Authority corrected (2026-09-30):** first recorded as `supported`. Joseph's own words (§1.6, and his objection in §1.7 item 10) state the core claim, that fixtures are records which no outline need list, so it is `steward`. The details (stable named case ids; parking hash-based change propagation) are the agents'.

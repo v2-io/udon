@@ -57,6 +57,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*Authority: Joseph ruled "[[kind:slug]] everywhere", and this carves an exception, so it is a partial revision of his ruling (`supersedes`: [[decision:kind-slug-references]]). His ratification of this record is what makes the carve-out his.*
+
 ### Positive Consequences
 
 * Frontmatter stays short where the kind is implied.
@@ -91,7 +93,4 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 ## Working notes
 
-* **Open:** a single-kind field citing a record in another store, e.g. a decision in the SOP store from the spec store, is written `store/slug` (`per: [sop/outline-is-current-truth]`), following [[decision:cross-store-links]]. A fixture case's `exercises` is also single-kind (rule); the `fields:` map covers frontmatter only, and it should say whether case-level fields count.
-
-* **Correction (2026-09-30, after the second look):** the Outcome's "it does not reverse it" understates this. Joseph ruled "[[kind:slug]] everywhere", and this carves an exception, so it is a partial revision of his ruling. `supersedes` and `kind-slug-references`' `superseded-by` now say so, and his ratification of this record is what makes the carve-out his.
-
+* **Open:** a single-kind field citing a record in another store, e.g. a decision in the SOP store from the spec store, is written `store/slug` (`per: [sop/outline-is-current-truth]`), following [[decision:cross-store-links]]. A fixture case's `exercises` is also single-kind (rule). The spec store's `fields:` now declares it, on the fork's reading that the linter checks case-level fields too; this record doesn't yet say whether case-level fields count.

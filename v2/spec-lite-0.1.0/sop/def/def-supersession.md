@@ -34,9 +34,16 @@ depends: [def:decision]
 - An ADR ruling that `<…>` ends at the first `>` is later replaced by one ruling that it ends at the matching `>`, because nested boxes turned out to be needed: ⟦revised⟧, ⟦whole⟧.
 - An ADR whose recorded assumption ("no lite document needs `>` inside `<…>`") broke: ⟦invalidated⟧.
 
-## Working notes
+## Sources
 
 - Source: verisectorium RC1 `06-EDGES` (supersedes, typed as revised-by / invalidated-by / alternate-of, whole or partial, and which types chain), itself adopted from provenance-standards practice. It is carried here in plainer spelling.
+- The fields come from the decision template Joseph asked for ("supersedes, superseded by, etc.", when he supplied the MADR template, `sop/influx/jaw-proposal-and-feedback.md` §1.12), adopted for both decision sets by [[decision:sop-decisions-follow-template]].
+
+## Cautions
+
 - The examples are illustrative only. Neither reflects a decision anyone has made.
-- **Basis.** The fields come from the decision template Joseph asked for ("supersedes, superseded by, etc.", when he supplied the MADR template), adopted for both decision sets by [[decision:sop-decisions-follow-template]]. This entry used to cite [[decision:kind-change-is-dissolution]], which uses the `invalidated` type but does not define supersession, so it is no longer in `per`. No decision adopts RC1's typing itself; that is still open.
+
+## Working notes
+
 - **Scope is open.** These terms are defined for ⟦decision⟧s, but [[conv:kind-change]] applies `invalidated` to records of any kind (`was:` as provenance). Either this entry widens to records, or kind-change names its relation differently.
+- No decision adopts RC1's supersession typing itself; that is still open.

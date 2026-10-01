@@ -47,6 +47,8 @@ Chosen: everything written from the SOP side into lite's corpus is example, prop
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.9)
 
+*Joseph expects the udon team to want an open-question kind, and intends to vote for a `wut/` directory for it (§1.10).*
+
 ### Positive Consequences
 
 * Clear ownership.
@@ -67,4 +69,3 @@ Chosen: everything written from the SOP side into lite's corpus is example, prop
 
 ## Working notes
 
-* Joseph expects the udon team to want an open-question kind, and intends to vote for a `wut/` directory for it (§1.10).

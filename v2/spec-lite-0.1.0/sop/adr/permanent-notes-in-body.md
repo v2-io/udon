@@ -85,5 +85,3 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 ## Working notes
 
-* Superseded by [[decision:notes-disposition-at-freeze]]: restricting working notes to open work narrowed Joseph's ruling in [[decision:working-notes-and-frozen]], and he had not asked for it.
-

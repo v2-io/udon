@@ -56,6 +56,8 @@ Chosen:
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.2–§1.3)
 
+*`⚠` was proposed by the fork and accepted by Joseph ("5- sounds good", §1.8), so that part of this decision is `ratified` rather than `steward`.*
+
 ### Positive Consequences
 
 * Hand-editing a ※ or ∂ cell becomes a detectable lint failure.
@@ -77,4 +79,3 @@ Chosen:
 
 ## Working notes
 
-* `⚠` was proposed by the fork and accepted by Joseph ("5- sounds good", §1.8), so that part of this decision is `ratified` rather than `steward`.

@@ -27,8 +27,8 @@ A row with a document placed before a row it ⟦depends⟧ on, with no forward-r
 
 - Joseph: "Order linting can be considered possibly 2nd concern or 3rd concern or a little of both-- depending on whether or not 'depends-on' or 'prerequisites' or something is in the segments generally" (`sop/influx/jaw-proposal-and-feedback.md` §1.1).
 - On this project: "undecided for now-- you can leave it open until we have enough to start needing the outline linter working" (§1.7, item 6).
+- ASF's `lint-outline` (`~/src/arch/asf/bin/`) already checks outline order against `depends:`. It is the nearest working precedent.
 
 ## Working notes
 
 - The forward-reference marker isn't chosen. When the linter is built, pick one that is cheap to type and easy to grep.
-- ASF's `lint-outline` (`~/src/arch/asf/bin/`) already checks outline order against `depends:`. It is the nearest working precedent.

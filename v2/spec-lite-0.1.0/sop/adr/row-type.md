@@ -54,6 +54,8 @@ Chosen: `row-type`, authored in the outline (concern 2), with values `example`, 
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.1)
 
+*The process rule "a landed row cites a decision" was accepted as process on 2026-09-30 ("sure-- although for now, again, just put that as the process in sops with notes for the future linter", §1.7 item 7).*
+
 ### Positive Consequences
 
 * "Canon" has a precise meaning: row-type `landed`.
@@ -76,6 +78,4 @@ Chosen: `row-type`, authored in the outline (concern 2), with values `example`, 
 
 ## Working notes
 
-* **Rendering error, for Joseph (2026-09-30):** the Outcome's "it implies drafted" comes from the flow-of-thought list in §1.1 ("landed (implies drafted)"), which Joseph then replaced with the orthogonal proposal pairing `row-type` with `doc-state: missing, drafted, …`. Under that proposal a `landed` row with doc-state `missing` is valid, and means known canon not yet drafted (his "missing" in the same list). `sop/src/conv-row-type.md` already allows it. If Joseph confirms, a superseding record drops the clause.
-
-* The process rule "a landed row cites a decision" was accepted as process on 2026-09-30 ("sure-- although for now, again, just put that as the process in sops with notes for the future linter", §1.7 item 7).
+* **Rendering error, for Joseph:** the Outcome's "it implies drafted" comes from the flow-of-thought list in §1.1 ("landed (implies drafted)"), which Joseph then replaced with the orthogonal proposal pairing `row-type` with `doc-state: missing, drafted, …`. Under that proposal a `landed` row with doc-state `missing` is valid, and means known canon not yet drafted (his "missing" in the same list). `sop/src/conv-row-type.md` already allows it. If Joseph confirms, a superseding record drops the clause.

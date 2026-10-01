@@ -47,10 +47,9 @@ Joseph, 2026-09-30, raised objective / principle / fitness as possible higher-le
 - that mixing within a segment is allowed until one part needs reusing or starts collecting changes.
 
 He agreed to three refinements: a third split trigger, force as a field, and one spelling for requirement. He then quoted the two guards back from an earlier reply. The record of that exchange is in `sop/influx/proposed-verisectorium.md`, "The purpose layer".
+- These records live in the spec store (`obj/`), so any records written from the SOP side are `example` or `proposed` rows (see [[dir:scope]]).
 
 ## Working notes
 
-- The process decision `proxy-before-threshold` is undecided, deliberately deferred. That this record rests on it is derived from ⟦per⟧, so its own `awaiting-decision` is false ([[decision:flags-describe-own-record]]).
 - The fork's candidate rule, recorded there as unconfirmed: a threshold waits until there is evidence that the proxy tracks its principle. It fits with the Commitment guard: validate the proxy on cases with known answers, then commit the threshold, then take the measurements it gates.
-- These records live in the spec store (`obj/`), so any records written from the SOP side are `example` or `proposed` rows (see [[dir:scope]]).
 - **The "time to comprehension" example has no recorded source here.** `sop/influx/proposed-verisectorium.md` says it is recorded in `.int/`, but it isn't. A helper traced it to Joseph's earlier temporal-software-theory work; the citation is still to be carried in.

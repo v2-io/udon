@@ -48,6 +48,8 @@ Chosen: each store keeps its terms as definition records (`def/` for lite, `sop/
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.9, item 5, answering the agent's lean "`def/` plus a generated view")
 
+*For lite's own terms this is our example; the udon team decides for lite.*
+
 ### Positive Consequences
 
 * One mechanism for every record.
@@ -68,4 +70,3 @@ Chosen: each store keeps its terms as definition records (`def/` for lite, `sop/
 
 ## Working notes
 
-* For lite's own terms this is our example; the udon team decides for lite.

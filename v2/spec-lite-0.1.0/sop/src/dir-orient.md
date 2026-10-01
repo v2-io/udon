@@ -41,7 +41,7 @@ Orientation is three things, in order.
 - It fires again after a context compaction because a compacted summary feels like knowledge you have, and isn't.
 - The pattern and the failure it answers are verisectorium's `dir-orient` and `form-orientation-triple`. An agent can imitate a corpus's forms long before it knows what the corpus has settled. The theory's own first founding attempt failed exactly that way.
 - The read order puts content first (doctrina), because this store's conventions only make sense once you know what they are conventions *for*.
+- The steward's standing preference, carried from verisectorium: whole reads over sampling, and asking over inferring when someone's meaning is unclear.
 
 ## Working notes
 
-- The steward's standing preference, carried from verisectorium: whole reads over sampling, and asking over inferring when someone's meaning is unclear.

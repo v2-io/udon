@@ -37,11 +37,10 @@ depends: [def:decision, def:supersession]
 
 ## Why
 
-- Joseph asked that decisions include reasoning and assumptions, "since those have ended up being critical" (2026-09-30, in the aat-refactored coordinator session; `sop/influx/proposed-verisectorium.md` records the request only as a paraphrase). He supplied the MADR template that `adr/TEMPLATE.md` adapts.
+- Joseph asked that decisions include reasoning and assumptions, "since those have ended up being critical" (2026-09-30; `sop/influx/jaw-proposal-and-feedback.md` §1.12). He supplied the MADR template that `adr/TEMPLATE.md` adapts.
 - Separate process decisions: "sop absolutely needs its own adr/dec set -- all process decisions, which yes, should all start getting recorded asap-- distinct from udon-lite spec decisions" (`sop/influx/jaw-proposal-and-feedback.md` §1.9 item 4).
 - The conflict protocol comes from `v2/DECISIONS.md`'s provenance note on the K-rows.
 
 ## Working notes
 
 - `adr/TEMPLATE.md` sits in the spec store's `adr/`, but both sets use it. If the two sets' needs diverge, the SOP store may want its own copy, made from it.
-- The reasoning-and-assumptions quote under Why is from chat, and is not yet in `sop/influx/jaw-proposal-and-feedback.md` §1.

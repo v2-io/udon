@@ -48,6 +48,8 @@ Chosen: a ※ flag column shows `—` on rows with no document. A pending decisi
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.7)
 
+*Authority: Joseph's quoted words are a question confirming the coordinator's reading; the reading is the coordinator's, so this is `ratified`.*
+
 ### Positive Consequences
 
 * No authored column hiding among the ※ columns.
@@ -69,6 +71,3 @@ Chosen: a ※ flag column shows `—` on rows with no document. A pending decisi
 ## Working notes
 
 * **Open for Joseph:** a `landed` row whose doc-state is `missing` (known canon, not yet drafted). By his own definitions its flags are applicable but missing, which is `∅`, not `—`. As written, this decision gives `—` to every row with no document. [[decision:row-type]]'s working note gives the reading under which `∅` is right: the orthogonal proposal makes `landed` + `missing` valid. Also, a pending decision now lives in its ADR or in the working notes of the record it concerns, since open questions moved to working notes ([[decision:open-questions-in-working-notes]]).
-
-* **Authority corrected (2026-09-30):** first recorded as `steward`. Joseph's quoted words are a question confirming the coordinator's reading; the reading is the coordinator's, so this is `ratified`.
-

@@ -29,9 +29,15 @@ depends: [def:record]
 - An item leaves the surface only by passing the ⟦delete-test⟧, never half-dispatched. An item counts as ⟦integrated⟧ only if it passes.
 - Integrated and landed combine without contradiction: an influx item can be integrated by carrying its content into a row that is still only `proposed`. Integration is about the item; landing is about the row.
 
-## Working notes
+## Why
+
+- The surfaces are named differently in the two stores: `.int/`, a dot-directory, so it sits behind the canon, and `sop/influx/`, spelled out because it should be prominent there (§1.8). The role is the same.
+
+## Sources
 
 - Sources: verisectorium `form-influx-membrane` (typed outcomes) and `def-integration-replacement` (the delete-test). Joseph's 2026-09-30 amendment separated `landed` from `integrated` (`sop/influx/jaw-proposal-and-feedback.md` §1.4).
-- The surfaces are named differently in the two stores: `.int/`, a dot-directory, so it sits behind the canon, and `sop/influx/`, spelled out because it should be prominent there (§1.8). The role is the same.
+
+## Working notes
+
 - Open: whether `.old/` is the outcome of a crossing (skipped? set down?) or lies outside this model.
-- **⟦crossing⟧ was restated on 2026-09-30.** It used to read "an item leaving the integration surface", which contradicted the invariant that only a passed ⟦delete-test⟧ moves an item off, and contradicted how the word is used: `sop/main.outline.md` records a crossing whose `needs-review` item stays in influx. Still open: which outcomes leave the surface. By the delete-test, an ⟦integrated⟧ item leaves, and a ⟦rejected⟧ one presumably does too, since its content is judged disposable. A ⟦needs-review⟧ or ⟦skipped⟧ item stays. No record says this yet, and [[dir:integrate]] should agree with whatever is settled.
+- **Which outcomes leave the surface** is open. By the ⟦delete-test⟧, an ⟦integrated⟧ item leaves, and a ⟦rejected⟧ one presumably does too, since its content is judged disposable. A ⟦needs-review⟧ or ⟦skipped⟧ item stays. No record says this yet, and [[dir:integrate]] should agree with whatever is settled.

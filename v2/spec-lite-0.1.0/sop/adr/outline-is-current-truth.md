@@ -50,6 +50,8 @@ Chosen: an outline presents current truth, which is the results of decisions. It
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*A decision record's own lifecycle is its `status` (`accepted`, …). `landed` is only ever a row-type in a view.*
+
 ### Positive Consequences
 
 * Outlines stay readable as the current state of things.
@@ -70,4 +72,3 @@ Chosen: an outline presents current truth, which is the results of decisions. It
 
 ## Working notes
 
-* A decision record's own lifecycle is its `status` (`accepted`, …). `landed` is only ever a row-type in a view.

@@ -30,9 +30,9 @@ A delimited term that no `terms:` list contains (a dangle); a term that two defi
 - Joseph: "officially defined terms should always be deliniated-- we need some kind of syntax, even if it's not traditional markdown" (`sop/influx/jaw-proposal-and-feedback.md` §1.8).
 - The glyphs were settled after feedback. Lite terms, the more frequent kind, took `«…»`. `⟦…⟧` went to SOP terms, because single guillemets `‹…›` are easily confused with `<…>` typed values in monospace (§3.15, §4).
 - Lexicon in `def/` with a generated view: settled in §4.
+- **The ending-outside rule is this record's proposal.** Writing ⟦record⟧s with the plural inside would dangle, since the term is `record`. The ending goes outside the delimiter instead.
+- **One name, two terms:** the decision field `status` and the record-level ∂(status) share a name. They are kept apart as ⟦status⟧ (a decision's lifecycle, in [[def:decision]]) and ⟦record-status⟧ (in [[def:record-fields]]).
 
 ## Working notes
 
-- **The ending-outside rule is this record's proposal.** Writing ⟦record⟧s with the plural inside would dangle, since the term is `record`. The ending goes outside the delimiter instead.
 - **Where defined terms are delimited so far:** the carved SOP records use `⟦…⟧` for their main uses. The spec store's samples (`src/`, `def/`, `obj/`, `main.outline.md`) now use `«…»`, but `.int/README.md` still prescribes the old backtick convention and a single `lexicon.md`. Changing it is the udon team's business.
-- **Collision to resolve:** the decision field `status` and the record-level ∂(status) share a name. They are kept apart as ⟦status⟧ (a decision's lifecycle, in `def:decision`) and ⟦record-status⟧ (in `def:record-fields`).

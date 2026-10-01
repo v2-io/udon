@@ -49,6 +49,8 @@ Chosen: in this corpus, open questions live in the working notes of the records 
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*This is a process decision for how this side structures the example spec. Whether lite's own corpus uses a question kind is the udon team's call.*
+
 ### Positive Consequences
 
 * The main outline reads as the spec's current state.
@@ -71,4 +73,3 @@ Chosen: in this corpus, open questions live in the working notes of the records 
 
 ## Working notes
 
-* This is a process decision for how this side structures the example spec. Whether lite's own corpus uses a question kind is the udon team's call.

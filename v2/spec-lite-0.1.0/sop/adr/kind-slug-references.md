@@ -49,6 +49,8 @@ Chosen: every reference is `[[kind:slug]]`. A bare `[[slug]]` is underspecified:
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.6)
 
+*Aliases in links: "I actually see value in allowing both" (§1.7 item 3).*
+
 ### Positive Consequences
 
 * Same-noun pairs across kinds (`rule:implied-root`, `prop:implied-root`) are fine.
@@ -70,6 +72,3 @@ Chosen: every reference is `[[kind:slug]]`. A bare `[[slug]]` is underspecified:
 
 ## Working notes
 
-* Partly revised by [[decision:typed-reference-fields]] (single-kind frontmatter fields take bare slugs), pending Joseph's ratification of that record.
-
-* Aliases in links: "I actually see value in allowing both" (§1.7 item 3).
