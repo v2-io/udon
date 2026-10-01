@@ -257,6 +257,12 @@ Answering whether `record-to-decision-links-for-now` should be `supported` rathe
 
 > Hmmm, yes. As a matter of fact-- it's not as well organized in some ways as we are here, but why don't you have an agent read core/src/norm-decision-authority.md (and any adjacent/related ones over there) fully and any related things in verisectorium (especially in it's influx RC1 stuff)-- and give us a more complete proposal that allows for the council, support, and so forth...
 
+### 1.19 Asides on the authority proposal (2026-09-30)
+
+> (we don't have to hold to anything it recommends obviously-- there are also options like "delegated" etc. -- I think what I'm curious about is how RC1 may have already kind of extended or clarified authority from it's already developed vivarium state)
+
+> One day we'll have very serious councils for these sorts of decisions on more serious topics-- as per ~/src/arch/msc/councils/ :-) :-)
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:
