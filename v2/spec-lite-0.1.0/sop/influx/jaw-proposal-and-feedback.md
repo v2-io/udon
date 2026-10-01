@@ -225,6 +225,13 @@ On the superseded "working notes hold only open work" (→ `notes-drained-not-hi
 
 > First-- maybe re-add your "working notes only hold open work" as "it is highly encouraged but not currently enforced that working notes get drained continually so that they hold open work only for the most part." You can also add this decision I'm articulating now: that working notes are *NOT* for history, changelog, or breadcrumbs for past work that will not be needed. Those things should be part of the changelog records [which we may not have defined yet] and git log history. An empty and "still relevant only" working notes section is, normatively, far superior to an accumulation of historical cruft that has to be constantly readjudicated.
 
+### 1.14 Force stays a separate field; required versus critical (2026-09-30)
+
+Answering whether `force` should give way to the RFC 2119 key words in an objective's Statement (→ `force-critical-is-ctq`):
+
+> Ah right-- objectives (and or principles and or fitness)-- I think that it is appropriate to have this separate force for objective-level kinds here.  
+> And with that in mind, I can tell you the difference between required and critical. Required is an intention for this version. Critical is a CTQ objective-- critical to quality-- where, due to other factors, it is expected to have an outsized impact on the success or utility of the [spec, in this case].
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:

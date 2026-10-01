@@ -14,7 +14,7 @@ informed: [Joseph (steward)]
 wording: verbatim
 grounds-recorded: at-decision
 supersedes: [{adr: force-levels, how: invalidated, scope: full}]
-superseded-by: []
+superseded-by: [{adr: force-critical-is-ctq, how: revised, scope: partial}]
 closes: []
 leaves-open: []
 ---
@@ -78,4 +78,3 @@ Chosen: `force` takes `non` (an explicit non-goal), `desired` (an objective, met
 
 ## Working notes
 
-* **Open for Joseph: what separates `required` from `critical`?** Candidates, none decided: a `critical` breach blocks a release while a `required` one is a known defect that can ship; or `critical` objectives are the ones no later version may relax (reserve-don't-ignore would be one).
