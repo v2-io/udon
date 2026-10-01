@@ -27,8 +27,7 @@ depends: [def:record, def:record-kinds]
 - A prefix that names a different kind than the frontmatter declares.
 - Two records with the same (kind, slug).
 
-## Why
-
+## Discussion
 - Joseph: "frontmatter declares kind, and its home directory and slug prefix *can* be clues / quick indications for kind … So naming one kind of record with a prefix of another kind of record is *definitely* a problem regardless of how they're organized" (`sop/influx/jaw-proposal-and-feedback.md` §1.5).
 - Also Joseph: "subdirectories are … for organizational purposes only-- I don't believe the directory that stores an atom should be used to imply or indicate anything other than that" (§1.4).
 - And: "for right now we need to *not* allow mixing -- because we have no good way to have multiple frontmatters in a single markdown segment, as well as the fact that we've pretty much just landed on addressing having files as a referent" (§1.6).

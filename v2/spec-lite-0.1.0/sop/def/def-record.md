@@ -32,8 +32,7 @@ depends: [def:record-kinds]
 - [[spec/rule:implied-root]] and the fixture file it cites, [[spec/fixture:implied-root]], are two ⟦record⟧s with the same ⟦slug⟧ and different ⟦kind⟧s.
 - A row in `main.outline.md` is a ⟦view⟧ of a record, not the record.
 
-## Why
-
+## Discussion
 - These terms render verisectorium RC1 `02-RECORD-OBJECT-MODEL` (record, projection) and `11-LEXICAL-CORE` (identity as a maintained binding), and Joseph's 2026-09-30 decisions in `sop/influx/jaw-proposal-and-feedback.md` §1.5–1.6 and §1.10. They render those sources; they do not quote them.
 - This entry defines the unit. Which ⟦kind⟧s exist is declared by each store's kinds map (`.vsect/kinds.yaml`), which is what says what a corpus is (Joseph, §1.8); see [[def:record-kinds]].
 

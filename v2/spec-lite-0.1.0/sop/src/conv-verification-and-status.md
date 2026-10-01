@@ -29,8 +29,7 @@ depends: [def:record-fields, def:record-kinds, conv:record-flags]
 - A typed status word.
 - A `max:` field.
 
-## Why
-
+## Discussion
 - Joseph: verification-level "depends on the kind-- depends on how sure it is to not 'fail' per kind" (§1.1). Later: "assuming verification level is kind-specified (since, for example, it's mostly about authorized decision in our case)" (§1.7 item 8).
 - On status: "seems like a calculated field that has a different measure depending on the kind (and possibly other flags/fields)" (§1.7 item 2).
 - On max: "Let's drop max altogether for udon-lite for now unless there's something important that it's giving us" (§1.9 item 10).

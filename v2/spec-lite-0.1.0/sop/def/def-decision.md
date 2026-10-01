@@ -43,8 +43,7 @@ depends: [def:record, def:record-kinds]
 - A decision's ⟦status⟧ (its lifecycle) is not the record-level ∂(status) column; see ⟦record-status⟧ in [[def:record-fields]].
 - When a decision conflicts with something else, go back to the decider ("when you said X, were you also implying Y?"). Do not settle it by weighing one decision against another.
 
-## Why
-
+## Discussion
 - Sources for these terms:
   - the MADR template Joseph supplied (2026-09-30), for the core structure and ⟦deciders⟧ / ⟦consulted⟧ / ⟦informed⟧;
   - the verisectorium template's `DECISIONS.ud` and the references corpus's decision ledger, for the seven-value ⟦decided-by⟧;

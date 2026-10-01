@@ -26,8 +26,7 @@ depends: [def:outline, def:record-kinds]
 
 A hand-typed doc-state; a doc-state value outside the three; a check folded into doc-state as a fourth value.
 
-## Why
-
+## Discussion
 - Joseph: "either the doc is missing, written but not necessarily formatted correctly, or written and formatted correctly. What am I missing?" and "let's just change it to 'conforms'" (`sop/influx/jaw-proposal-and-feedback.md` §1.2).
 
 ## Working notes

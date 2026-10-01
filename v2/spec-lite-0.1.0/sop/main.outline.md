@@ -44,7 +44,7 @@
 | proposed | [[conv:verification-and-status]] | Each kind declares its ladder; the verifying act writes the level and its `evidence` into frontmatter; ∂(status) is computed. |
 | proposed | [[conv:working-notes]] | Any record may have working notes, holding anything; each note is dispositioned (resolved, kept, deferred, promoted) before the record is frozen. |
 | proposed | [[conv:term-delimiters]] | `«…»` for lite terms, `⟦…⟧` for SOP terms; each store's lexicon is in its `def/`. |
-| proposed | [[conv:record-cadence]] | Which sections each kind contains, in order, including the optional Why, Sources, Cautions and Regression guards. `conforms` is checked against this. |
+| proposed | [[conv:record-cadence]] | Which sections each kind contains, in order, including the optional Discussion, Sources, Cautions and Regression guards. `conforms` is checked against this. |
 
 ## *Chapter* The spec store
 

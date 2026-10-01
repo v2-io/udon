@@ -25,8 +25,7 @@ depends: [def:decision, def:record-fields]
 | **An undefined core term.** A synthesis used "canon" without defining it, and the steward's proposal got misread. | A load-bearing word written without its delimiters. | Delimit defined terms, and define before relying on them ([[conv:term-delimiters]]). |
 | **Statements written from titles.** Outline rows were written from question titles without reading the questions. | A Statement cell for a question nobody read whole. | Say which rows came from titles only, and read the question before writing its rule. |
 
-## Why
-
+## Discussion
 - Admission test, carried from the verisectorium template's `ref-hazards`: a hazard belongs here once it has recurred, or once it has a nameable tell and a dated occurrence. One-off mistakes don't qualify.
 
 ## Sources

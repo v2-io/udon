@@ -19,8 +19,7 @@ depends: [def:integration, conv:row-type]
 3. **Pass the ⟦delete-test⟧ before calling an item integrated.** Assume the item disappears. Is every piece of what it carried now in a record, or truly disposable? A note about the remainder does not count as the remainder carried over.
 4. **Only a passed delete-test moves an item off the surface.** Half-integrated items stay where they are, with their remainder named.
 
-## Why
-
+## Discussion
 - Verisectorium's `form-influx-membrane` and `def-integration-replacement`, carried over.
 - Joseph's amendment that `integrated` is the influx side's word and `landed` is a row-type (`sop/influx/jaw-proposal-and-feedback.md` §1.4).
 

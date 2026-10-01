@@ -24,8 +24,7 @@ depends: [def:outline, def:decision]
 - The SOP side does write this corpus's process decisions, in `sop/adr/`, and carries them into `sop/src/`.
 - Input for lite's own questions (for example, vsect's requirements on lite) goes to `.int/` for the udon team, as input rather than decisions.
 
-## Why
-
+## Discussion
 Joseph, 2026-09-30: "leave it to the udon team-- everything from us here is example & proposed & template" (`sop/influx/jaw-proposal-and-feedback.md` §1.9, item 8).
 
 ## Working notes

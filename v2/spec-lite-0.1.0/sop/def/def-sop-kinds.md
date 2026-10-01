@@ -35,8 +35,7 @@ depends: [def:record, def:record-kinds]
 - A ⟦reference⟧ names its source.
 - Directives and conventions take their authority from the decisions they cite in ⟦per⟧, never from their own wording.
 
-## Why
-
+## Discussion
 - **Why these three:** they fail differently. A directive fails at a moment, which only watching work reveals. A convention fails in the artifacts, where a linter can find it. A reference fails as the world moves.
 - **Precedent:** the verisectorium template's SOP outline has `directive` and `reference`. `convention` is new here. It holds what the template spreads across `form-*` and `claim-*` segments, and what this corpus mostly consists of: notation, field values, and reference syntax.
 

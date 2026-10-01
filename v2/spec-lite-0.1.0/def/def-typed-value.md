@@ -33,8 +33,7 @@ depends: []
 - In `:size <u64:0xff>`, the author wrote `u64` as a «type-label». Lite attaches no meaning to it or to `0xff`.
 - In `:name web :port "8080"`, both values are «implicit-typed-value»s, and both are strings.
 
-## Why
-
+## Discussion
 - **"By spelling, never by value-sniffing" is used here as common ground, not as a decided principle.** It is 0.10.0's G6, not yet re-decided for lite. No alternative in 66 or 72 types by content, so the definition holds whichever is chosen. If lite ever adopted content-based typing, these terms would need restating, not just the principle.
 
 

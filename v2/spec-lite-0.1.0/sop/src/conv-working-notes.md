@@ -24,7 +24,7 @@ depends: [def:record]
 - **Drain them continually.** It is highly encouraged, though not enforced, that notes be dispositioned as soon as they can be, so that for the most part they hold open work only. An empty, still-relevant-only notes section is far better than accumulated cruft that has to be re-adjudicated every time it is read.
 - **Each note is dispositioned before the record is frozen**, and may be at any time before that:
   - **resolved:** incorporated into the body, or found moot, and deleted;
-  - **kept:** moved into a body section the kind's cadence names, such as **Why**, **Sources**, **Cautions** or **Regression guards** ([[conv:record-cadence]]); in a fixture file, a case's kept reason goes in `why:`;
+  - **kept:** moved into a body section the kind's cadence names, such as **Discussion**, **Sources**, **Cautions** or **Regression guards** ([[conv:record-cadence]]); in a fixture file, a case's kept reason goes in `why:`;
   - **deferred:** moved to an outline row (`gap` or `proposed`), a question, or the changelog, with its reason;
   - **promoted:** made into a record of its own, and cited.
 - **The evidence behind a verification level is not a working note.** The verifying act writes it into frontmatter, beside the level ([[conv:verification-and-status]]).
@@ -33,8 +33,7 @@ depends: [def:record]
 
 A record at its kind's top rung, or in a `final`-like state, whose working notes are non-empty; a `needs-work: true` flag with no note behind it; a verification level whose evidence is in working notes rather than frontmatter; a working note that records history (encouraged draining is not checked).
 
-## Why
-
+## Discussion
 - Joseph asked for "making sure there is allowances for working-notes everywhere…" (2026-09-30, in the message that also asked for Markdown and for decisions to carry reasoning and assumptions; `sop/influx/jaw-proposal-and-feedback.md` §1.12).
 
 ## Working notes

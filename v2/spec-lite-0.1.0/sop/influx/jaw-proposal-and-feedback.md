@@ -263,6 +263,14 @@ Answering whether `record-to-decision-links-for-now` should be `supported` rathe
 
 > One day we'll have very serious councils for these sorts of decisions on more serious topics-- as per ~/src/arch/msc/councils/ :-) :-)
 
+### 1.20 Discussion, not Why; no notes section in outlines (2026-09-30)
+
+> Ah, this is one of the decisions I didn't ratify-- a separate section in outlines that is for retained working notes?  I think you meant "Discussion" unless you have a good reason for "Why" that I'm just missing somehow
+
+Answering the coordinator's "can I mark 'Discussion, not Why, and no notes section in outlines' as your decided position?" (→ `discussion-not-why`):
+
+> Yes. Could you go ahead and delete the why section and instead set up a link and brief description above the legend (as first thing under "Working on UDON..." that discusses the fact that the SoPs have their own outline which covers, amont other things, how the outlines work etc. etc.
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:

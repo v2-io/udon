@@ -35,8 +35,7 @@ depends: [def:decision, def:supersession]
 - A `supersedes` entry with no matching `superseded-by` entry.
 - A process decision filed with lite's decisions, or the other way round.
 
-## Why
-
+## Discussion
 - Joseph asked that decisions include reasoning and assumptions, "since those have ended up being critical" (2026-09-30; `sop/influx/jaw-proposal-and-feedback.md` §1.12). He supplied the MADR template that `adr/TEMPLATE.md` adapts.
 - Separate process decisions: "sop absolutely needs its own adr/dec set -- all process decisions, which yes, should all start getting recorded asap-- distinct from udon-lite spec decisions" (`sop/influx/jaw-proposal-and-feedback.md` §1.9 item 4).
 - The conflict protocol comes from `v2/DECISIONS.md`'s provenance note on the K-rows.

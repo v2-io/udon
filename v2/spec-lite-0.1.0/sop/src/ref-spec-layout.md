@@ -35,8 +35,7 @@ spec-lite-0.1.0/
     influx/         the SOP store's integration surface (prominent on purpose)
 ```
 
-## Why
-
+## Discussion
 - Why `.int/` but `sop/influx/`: the spec store's integration surface should sit behind the canon, so it is a dot-directory. The SOP store's should stay prominent (`sop/influx/jaw-proposal-and-feedback.md` §1.8).
 
 ## Cautions

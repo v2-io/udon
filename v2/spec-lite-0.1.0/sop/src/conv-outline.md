@@ -36,8 +36,7 @@ A linter could find each of these:
 - a row-type value outside the six;
 - a `landed` row with a document whose record cites no decision in ⟦per⟧. A `landed` row with no document shows `∅` for its decision citation instead ([[decision:record-to-decision-links-for-now]]).
 
-## Why
-
+## Discussion
 - Joseph, 2026-09-30: "The principle is that THE OUTLINE MUST ALWAYS BE TRUE. That becomes difficult when we are first assembling it and trying things out etc." (`sop/influx/jaw-proposal-and-feedback.md` §1.1).
 - The four concerns are his proposal from the same message. They are what makes that principle achievable: only concern-3 cells can drift, and those are exactly what the linter checks.
 - "Outline = view" is a working theory, not a fixed ideal; there may yet be a call for at least one canonical full view (§1.8). The kinds map, not any outline, is what says what the corpus is.
