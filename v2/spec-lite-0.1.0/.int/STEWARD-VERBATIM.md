@@ -199,3 +199,7 @@
 ### 2026-10-01, about 03:30Z — Joseph (on warn versus refuse for reserved syntax)
 
 > I forgot I even *had* a discussion about udon-lite in August. I was wrong about warn. It should error. There is still some flexibility on whether or not we want "error" to be as drastic as in normal udon or streaming etc. But I think we basically halt parsing at that point with all the info and assume an AST only if the udon is compliant.
+
+### 2026-10-01, about 03:45Z — Joseph (the reason for reserved-is-an-error)
+
+> To reiterate-- older 0.9 and 0.10 specs in udon (not lite) also deferred decisions about special syntaxes like ! directives and references-- but retained the bytes. That ambiguity caused a lot of confusion and made the language evolve a lot slower for a season-- hence the very deliberate call right now in udon-lite to go further and disallow them completely.

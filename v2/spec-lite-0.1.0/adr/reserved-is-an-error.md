@@ -33,10 +33,11 @@ Mainline UDON's ledger also gives "error" a specific meaning, "Error = loss only
 ## Decision Drivers
 
 * A lite document must never be read in a way a future full parser would read differently ([[decision:reserve-not-ignore]]).
+* The 0.9 and 0.10 specs also deferred decisions about `!` directives and references, but kept the bytes. That ambiguity caused a lot of confusion and slowed the language's evolution for a season (Joseph, under the Quote).
 
 ## Assumptions
 
-* None recorded.
+* Keeping the bytes of deferred syntax is what made 0.9 and 0.10's deferral ambiguous; refusing them outright removes that ambiguity. (**recorded**, under the Quote)
 
 ## Considered Options
 
@@ -46,7 +47,7 @@ Mainline UDON's ledger also gives "error" a specific meaning, "Error = loss only
 
 ## Decision Outcome
 
-Chosen: a reserved spelling is an error.
+Chosen: a reserved spelling is an error, because keeping the bytes of deferred syntax, as 0.9 and 0.10 did, left an ambiguity that caused confusion and slowed the language; lite deliberately goes further and disallows them completely.
 
 - A lite parser halts at it, and reports what it knows: what was found, and where.
 - A tree is assumed only for a compliant document. A document with a reserved spelling in it has no lite tree.
@@ -60,7 +61,11 @@ Not decided here, by Joseph's own words: whether the error is as drastic as in n
 >
 > — Joseph, 2026-10-01 (about 03:30Z), `.int/STEWARD-VERBATIM.md`
 
-*His own call, so `steward`, made on being shown that his 2026-08-30 request said "warn".*
+> To reiterate-- older 0.9 and 0.10 specs in udon (not lite) also deferred decisions about special syntaxes like ! directives and references-- but retained the bytes. That ambiguity caused a lot of confusion and made the language evolve a lot slower for a season-- hence the very deliberate call right now in udon-lite to go further and disallow them completely.
+>
+> — Joseph, 2026-10-01 (about 03:45Z), `.int/STEWARD-VERBATIM.md`
+
+*His own call, so `steward`, made on being shown that his 2026-08-30 request said "warn". The second quote, minutes later, gives his reasoning; it was added to Drivers, Assumptions and the Outcome's "because" then, as grounds stated at the time of the decision.*
 
 ### Positive Consequences
 
@@ -80,7 +85,7 @@ Not decided here, by Joseph's own words: whether the error is as drastic as in n
 
 ## Reopen when
 
-* The live corpus needs lite tooling on documents that contain reserved forms, and a partial tree with errors turns out to be needed.
+* The live corpus needs lite tooling on documents that contain reserved forms, and a partial tree with errors turns out to be needed, without bringing back the ambiguity this decision exists to remove.
 * The "how drastic" question is settled differently for streaming.
 
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
