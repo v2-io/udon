@@ -1,0 +1,97 @@
+# .vsect/kinds.yaml: the spec store's kinds map (proposed from the SOP side,
+# 2026-09-30; lite's kinds are the udon team's to change).
+#
+# Written because sop/adr/kinds-yaml-resolution.md says each store has one,
+# and without it no [[kind:slug]] link in main.outline.md can resolve. The
+# kinds and aliases are the ones proposed in sop/def/def-record-kinds.md and
+# sop/influx/jaw-proposal-and-feedback.md §3.13. Paths are relative to the
+# spec-lite-0.1.0/ root.
+#
+# Resolving [[kind:slug]]:
+#   1. `bindings` (explicit kind:slug -> path), still frontmatter-checked;
+#   2. the kind's `find` globs in order. <kind> expands to the canonical
+#      name and each alias; <slug> to the slug.
+#   The first existing file whose frontmatter `kind:` equals the canonical
+#   name wins. Paths not listed here (.int/, .old/, sop/) never answer.
+#
+# Frontmatter always uses the canonical name; links may use an alias.
+#
+# `verification` lists each kind's ladder, lowest rung first. Every ladder is
+# a placeholder from §3.9 of the feedback document, led by `authorized`
+# because in this corpus a rule stands mostly on an accepted decision.
+#
+# `requires` lists the frontmatter fields a conforming record of each kind
+# carries (sop/src/conv-record-cadence.md, still proposed). A field that is
+# required but undecided is present and empty, e.g. an objective's `force`.
+#
+# Not declared: fitness (possible, not yet admitted), requirement and
+# non-objective (objectives with a `force`, not kinds), and an open-question
+# kind (the udon team's; Joseph expects them to want one, in `wut/`).
+#
+# Notes for the future linter (not rules yet): check every step, not only the
+# first hit, so collisions surface; write checked resolutions into `bindings`.
+
+bindings: {}
+
+kinds:
+  objective:
+    aliases: [obj]
+    find: ["obj/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, force, per, depends]
+    verification: [authorized, discharge-checked]   # discharged by a threshold met on its fitness, or by a property established over the rules
+  principle:
+    aliases: [prin]
+    find: ["obj/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, per, depends]
+    verification: [authorized]
+  definition:
+    aliases: [def]
+    find: ["def/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, terms, per, depends]
+    verification: [authorized, consistency-of-use-checked]
+  rule:
+    aliases: []
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, layer, per, depends]
+    verification: [authorized, fixtures-written, fixtures-cross-checked, parser-agrees]
+  property:
+    aliases: [prop]
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, per, depends]
+    verification: [derivation-drafted, steps-checked, independently-re-derived]
+  explanation:
+    aliases: [expl]
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, narrates, depends]
+    verification: [reader-tested]
+  fixture:
+    aliases: [fix]
+    find: ["dat/<slug>.yaml"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, depends, cases]   # one YAML mapping, cases under `cases:` (sop/adr/fixture-file-shape.md)
+    verification: [derived-from-rule, cross-checked, parser-run]
+  decision:
+    aliases: [adr, dec]
+    find: ["adr/<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, title, status, decided-by]   # the rest per adr/TEMPLATE.md
+    verification: []      # a decision carries status and decided-by instead
+
+# --- added 2026-09-30 by the coordinator, per sop/adr/ decisions made under
+# delegated authority, pending Joseph's ratification (setup-delegated-to-coordinator).
+
+# Whose call `awaiting-decision: true` waits on (decider-per-store).
+decider: "udon team's decider (Joseph unless the team declares otherwise)"
+
+# Other stores this store may reference as [[store/kind:slug]] (cross-store-links).
+# Paths are relative to this store's root.
+stores:
+  sop: sop
+  references: ../references   # the addressing theory; it has no .vsect/kinds.yaml yet, so [[references/def:<slug>]] resolves by its convention, def/def-<slug>.ud
+
+# Frontmatter fields whose referents are all of one kind take bare slugs (typed-reference-fields).
+fields:
+  per: decision
+  test-fixtures: fixture
+  exercises: rule        # a field on each fixture case, not on frontmatter; `per` on a case is a decision, as above
+
+# Never resolve as records (templates-are-not-records).
+exclude: ["**/TEMPLATE.md", "**/*.template.md"]

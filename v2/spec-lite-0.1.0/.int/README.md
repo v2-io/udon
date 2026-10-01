@@ -2,6 +2,8 @@
 
 **Status: pre-design (started 2026-09-29).** Nothing here is a spec yet. The open questions live in [`pre-design/`](pre-design/), one per file.
 
+**Input from lite's first customer:** [`vsect-requirements-on-lite.md`](vsect-requirements-on-lite.md) lists what vsect needs from lite, mapped to the pre-design questions. The most binding items are robust fences (question 11) and source spans in the tree (questions 60 and 13). Questions the example records raised for lite are in [`questions-from-the-examples.md`](questions-from-the-examples.md).
+
 ## What "lite" is for
 
 The corpus already needs a basic, stable UDON *now*, for data and document layout: an XML/HTML, YAML, or JSON alternative. The parts of the language that point elsewhere or run later (`!`, `@`, interpolation) are still being designed. Lite is the subset that can be used today without waiting for them.

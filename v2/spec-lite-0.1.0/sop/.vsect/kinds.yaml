@@ -1,0 +1,72 @@
+# sop/.vsect/kinds.yaml: the SOP store's kinds map (proposed, 2026-09-30).
+#
+# The kinds map says what this store is: which kinds exist, how a
+# [[kind:slug]] reference finds its record, and each kind's verification
+# ladder. Paths are relative to sop/.
+#
+# Resolving [[kind:slug]]:
+#   1. `bindings` (explicit kind:slug -> path), still frontmatter-checked;
+#   2. the kind's `find` globs in order. <kind> expands to the canonical
+#      name and each alias; <slug> to the slug.
+#   The first existing file whose frontmatter `kind:` equals the canonical
+#   name wins. Paths not listed here (influx/, ../.old/) never answer.
+#
+# Frontmatter always uses the canonical name; links may use an alias.
+#
+# `verification` lists each kind's ladder, lowest rung first. The rungs are
+# placeholders until confirmed kind by kind (see src/conv-verification-and-status.md).
+# A kind with an empty ladder shows `—` in a verification column.
+#
+# Notes for the future linter (not rules yet): check every step, not only the
+# first hit, so collisions surface; write checked resolutions into `bindings`.
+
+bindings: {}
+
+kinds:
+  directive:
+    aliases: [dir]
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, when, per, depends]
+    verification: [authorized, fired-once, fired-for-inheritor]
+  convention:
+    aliases: [conv]
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, per, depends]
+    verification: [authorized, lint-specified, corpus-conforms]
+  reference:
+    aliases: [ref]
+    find: ["src/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, source, per, depends]
+    verification: [sourced, checked-current]
+  definition:
+    aliases: [def]
+    find: ["def/<kind>-<slug>.md"]
+    requires: [kind, awaiting-second, awaiting-decision, needs-work, terms, per, depends]
+    verification: [authorized, consistency-of-use-checked]
+  decision:
+    aliases: [adr, dec]
+    find: ["adr/<slug>.md"]
+    requires: []          # per ../adr/TEMPLATE.md
+    verification: []      # a decision carries status and decided-by instead
+
+# --- added 2026-09-30 by the coordinator, per sop/adr/ decisions made under
+# delegated authority, pending Joseph's ratification (setup-delegated-to-coordinator).
+
+# Whose call `awaiting-decision: true` waits on (decider-per-store).
+decider: "Joseph (steward)"
+
+# Other stores this store may reference as [[store/kind:slug]] (cross-store-links).
+# Paths are relative to this store's root (sop/). `references` has no
+# .vsect/kinds.yaml yet; until it does, [[references/def:<slug>]] resolves by
+# its own convention, def/def-<slug>.ud (e.g. def/def-binding.ud).
+stores:
+  spec: ..
+  references: ../../references
+
+# Frontmatter fields whose referents are all of one kind take bare slugs (typed-reference-fields).
+fields:
+  per: decision
+  test-fixtures: fixture
+
+# Never resolve as records (templates-are-not-records).
+exclude: ["**/TEMPLATE.md", "**/*.template.md"]
