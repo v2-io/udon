@@ -34,6 +34,7 @@ depends: [def:record]
 A record at its kind's top rung, or in a `final`-like state, whose working notes are non-empty; a `needs-work: true` flag with no note behind it; a verification level whose evidence is in working notes rather than frontmatter; a working note that records history (encouraged draining is not checked).
 
 ## Discussion
+
 - Joseph asked for "making sure there is allowances for working-notes everywhere…" (2026-09-30, in the message that also asked for Markdown and for decisions to carry reasoning and assumptions; `sop/influx/jaw-proposal-and-feedback.md` §1.12).
 
 ## Working notes

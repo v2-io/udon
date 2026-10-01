@@ -42,6 +42,7 @@ depends: [def:record-kinds, def:sop-kinds, conv:working-notes]
 A record missing a section its kind requires; sections out of order; RFC capitals outside a spec rule's or objective's Statement.
 
 ## Discussion
+
 - The cadence for spec rules comes from the first proposal (`sop/influx/proposed-verisectorium.md`, "Cadence of a rule file"), as do the spec store's normative-words rule and the per-kind sections.
 - The SOP kinds' sections are this record's proposal. Each kind's check section is named after what it fails by: `when:` for a directive, How a violation shows for a convention (see [[def:sop-kinds]]).
 

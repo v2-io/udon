@@ -35,6 +35,7 @@ depends: []
 - A parser reading `notes.udon` may attach the filename `notes.udon` to the «root-node» as «meta». A `:title Notes` line at the top of the same file is not «meta».
 
 ## Discussion
+
 - **«document» means the source, not the «tree»,** because that is how the rest of the spec store uses the word: "any «document» a lite parser accepts produces the same tree" ([[obj:reserve-dont-ignore]]), "no accepted «document»'s tree changes" ([[prop:forward-stability]]), and 84's "documents per file". A «document» that *is* its «tree» could not have one. If those uses change, this choice should be revisited.
 - **root-scope is written in plain words** with a cross-store link to its record ([[references/def:scope]], per [[sop/decision:cross-store-links]]), so it can't be mistaken for a «…» term of this store. `depends:` doesn't list it, because this record only distinguishes itself from root-scope and uses none of its text.
 

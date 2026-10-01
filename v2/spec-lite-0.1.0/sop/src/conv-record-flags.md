@@ -31,6 +31,7 @@ depends: [def:record-fields, conv:column-notation]
 - `awaiting-decision: true` set only because of something the record cites, rather than something about the record itself.
 
 ## Discussion
+
 - Joseph's proposal defined the three flags, "recorded canonically in the yaml frontmatter" (`sop/influx/jaw-proposal-and-feedback.md` §1.1).
 - The rule for rows with no document answers §1.7 item 1.
 

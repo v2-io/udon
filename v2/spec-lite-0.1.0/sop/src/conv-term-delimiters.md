@@ -26,6 +26,7 @@ depends: [def:record, def:sop-kinds]
 A delimited term that no `terms:` list contains (a dangle); a term that two definitions both list (a collide); an empty pair of delimiters; a defined term used in its defined sense but left undelimited. The last needs a reader, since no linter can catch it.
 
 ## Discussion
+
 - Joseph: "officially defined terms should always be deliniated-- we need some kind of syntax, even if it's not traditional markdown" (`sop/influx/jaw-proposal-and-feedback.md` §1.8).
 - The glyphs were settled after feedback. Lite terms, the more frequent kind, took `«…»`. `⟦…⟧` went to SOP terms, because single guillemets `‹…›` are easily confused with `<…>` typed values in monospace (§3.15, §4).
 - Lexicon in `def/` with a generated view: settled in §4.

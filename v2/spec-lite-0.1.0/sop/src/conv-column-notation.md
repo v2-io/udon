@@ -30,6 +30,7 @@ depends: [def:outline, conv:outline]
 A hand-edited ※ or ∂ cell; an empty computed cell with no mark (once a linter exists); a ※ value on a row with no document.
 
 ## Discussion
+
 - Joseph: "Instead of the lock, let's use ∂(Field Name) for derived by the linter and ※(Field Name) for anything that comes from that field name in the frontmatter (a special simplified case of derived)" (`sop/influx/jaw-proposal-and-feedback.md` §1.2).
 - Also Joseph: "The outline linter / vsect should write a — or something for cells … where the calculated column is not applicable, and a ∅ when it is *applicable* for that kind, but missing" (§1.3).
 - `⚠` was added in feedback so that a failed read never looks like a real absence (§3.7).

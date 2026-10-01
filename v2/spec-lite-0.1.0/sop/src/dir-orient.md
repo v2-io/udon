@@ -37,6 +37,7 @@ Orientation is three things, in order.
 **Feedback channel.** If anything here confused you, fought the reality in front of you, or proved wrong, record it in `sop/influx/`. If it is urgent, raise it with the steward. Confusion at the front line is the signal to re-check what the corpus says, not noise.
 
 ## Discussion
+
 - It fires again after a context compaction because a compacted summary feels like knowledge you have, and isn't.
 - The pattern and the failure it answers are verisectorium's `dir-orient` and `form-orientation-triple`. An agent can imitate a corpus's forms long before it knows what the corpus has settled. The theory's own first founding attempt failed exactly that way.
 - The read order puts content first (doctrina), because this store's conventions only make sense once you know what they are conventions *for*.

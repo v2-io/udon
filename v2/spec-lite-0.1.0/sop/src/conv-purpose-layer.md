@@ -40,6 +40,7 @@ depends: [def:record-kinds, def:record-fields]
 - A mixed segment that is cited by part, or that carries appended modifications to one part.
 
 ## Discussion
+
 Joseph, 2026-09-30, raised objective / principle / fitness as possible higher-level types. He also asked:
 
 - that objectives, non-objectives, and critical objectives be distinguished;

@@ -42,6 +42,7 @@ depends: [def:record]
 - ⟦force⟧ is a field, not a set of kinds. Objectives, ⟦requirement⟧s, and ⟦non-objective⟧s fail and are repaired the same way, so separate kinds would fuse kind with severity.
 
 ## Discussion
+
 - The admission rule comes from verisectorium RC1 `01-SPINE` and `02-RECORD-OBJECT-MODEL`.
 - Considered as kinds, and folded into existing ones because they fail and are repaired the same way:
   - a *lean* is a ⟦decision⟧ with ⟦status⟧ `proposed`;

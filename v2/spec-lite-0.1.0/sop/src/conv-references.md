@@ -31,6 +31,7 @@ depends: [def:record, conv:records]
 A bare `[[slug]]`; a `kind:slug` that no step resolves and no outline row names (a dangle); two files that both resolve one `kind:slug` (a collide); a match whose frontmatter kind disagrees with the link; a `kind:` prefix in a single-kind field, or a bare slug in `depends:`; a cross-store link naming an undeclared store.
 
 ## Discussion
+
 - Joseph: "I agree [[kind:slug]] everywhere-- [[slug]] on its own we will consider underspecified and not resolvable" (`sop/influx/jaw-proposal-and-feedback.md` §1.6).
 - On the kinds file: "a list of globs with <kind> and <slug> replacement tags, first match w/ correct frontmatter marker wins" (§1.7 item 4); and "Another option is to merge the two and have each kind declare its alias(es) *and* the glob for where they're found" (§1.8).
 - "No need to worry about obsidian anymore": limen and vsect resolve links under these rules (§1.6).

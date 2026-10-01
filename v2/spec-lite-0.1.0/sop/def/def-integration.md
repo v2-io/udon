@@ -30,6 +30,7 @@ depends: [def:record]
 - Integrated and landed combine without contradiction: an influx item can be integrated by carrying its content into a row that is still only `proposed`. Integration is about the item; landing is about the row.
 
 ## Discussion
+
 - The surfaces are named differently in the two stores: `.int/`, a dot-directory, so it sits behind the canon, and `sop/influx/`, spelled out because it should be prominent there (§1.8). The role is the same.
 
 ## Sources

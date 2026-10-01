@@ -20,6 +20,7 @@ depends: [def:integration, conv:row-type]
 4. **Only a passed delete-test moves an item off the surface.** Half-integrated items stay where they are, with their remainder named.
 
 ## Discussion
+
 - Verisectorium's `form-influx-membrane` and `def-integration-replacement`, carried over.
 - Joseph's amendment that `integrated` is the influx side's word and `landed` is a row-type (`sop/influx/jaw-proposal-and-feedback.md` §1.4).
 

@@ -52,6 +52,7 @@ depends: [def:record, def:record-kinds, def:outline]
 - On a row with no document, ※ columns show `—`, except on a `landed` row, where the flags apply but have nothing to come from, so they show `∅` ([[decision:landed-may-be-missing]]; see [[conv:record-flags]]).
 
 ## Discussion
+
 - **No `questions` field.** Open questions live in a record's working notes ([[decision:open-questions-in-working-notes]]), so frontmatter doesn't repeat them. A record waiting on its decider says so with `awaiting-decision`.
 
 ## Working notes

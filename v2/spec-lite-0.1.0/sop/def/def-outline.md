@@ -51,4 +51,5 @@ depends: [def:record]
 - `landed` is a ⟦row-type⟧ value. ⟦integrated⟧ belongs to influx items and is never used for rows (see [[def:integration]]).
 
 ## Discussion
+
 - These terms come from Joseph's proposal and follow-ups in `sop/influx/jaw-proposal-and-feedback.md` §1.1–1.4. The `⚠` cell-mark is the feedback round's addition, adopted in §2.

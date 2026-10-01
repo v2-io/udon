@@ -29,6 +29,7 @@ depends: [def:record-kinds, def:fixture-profiles, conv:references]
 - A fixture file named with another kind's prefix.
 
 ## Discussion
+
 - Joseph: "It's a kind of record that is used for mechanisms outside of the outline..." (`sop/influx/jaw-proposal-and-feedback.md` §1.6). He rejected the idea that fixtures should stop being records at all: "I'm all the more confused though by what looks like a suggestion to make them *not* verisectorium records, while simultaneously giving them *more* verisectorium-record machinery" (§1.7 item 10).
 
 ## Working notes

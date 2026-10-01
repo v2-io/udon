@@ -34,6 +34,7 @@ depends: []
 - In `:name web :port "8080"`, both values are «implicit-typed-value»s, and both are strings.
 
 ## Discussion
+
 - **"By spelling, never by value-sniffing" is used here as common ground, not as a decided principle.** It is 0.10.0's G6, not yet re-decided for lite. No alternative in 66 or 72 types by content, so the definition holds whichever is chosen. If lite ever adopted content-based typing, these terms would need restating, not just the principle.
 
 

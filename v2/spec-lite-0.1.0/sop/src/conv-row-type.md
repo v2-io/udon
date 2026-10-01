@@ -40,6 +40,7 @@ depends: [def:outline, conv:outline]
 - `landed` used anywhere as an influx outcome.
 
 ## Discussion
+
 - Joseph's proposal: "row-type: example, gap, template, exploratory, proposed, landed … 'landed' starts them on the ladder below" (`sop/influx/jaw-proposal-and-feedback.md` §1.1).
 - His amendment: "landed != integrated (which should be used for tracking influx stuff…)" (§1.4).
 - One field, not two: an `example` never lands, so the six values exclude one another (§3.2).
