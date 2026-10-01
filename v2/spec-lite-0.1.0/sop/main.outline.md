@@ -87,6 +87,6 @@
 ## *Working Notes (outline-level)*
 
 - **What is still in `sop/influx/`:**
-  - `jaw-proposal-and-feedback.md` is **needs-review** and stays: it is the live thread of Joseph's rulings, and new ones still arrive there. Its settled parts are carried into the records above; its open items for the udon team are in `../.int/questions-from-the-examples.md`.
+  - `jaw-proposal-and-feedback.md` is **needs-review** and stays: it is the live thread of Joseph's rulings, and new ones still arrive there. Its settled parts are carried into the records above.
   - `proposed-verisectorium.md` is **needs-review** and stays. Its kinds, fields, purpose layer, decisions, question lifecycle and rule cadence are carried over. Its spec-store layout and "What needs you" sections are for the spec store and the udon team; its vsect requirements are in `../.int/vsect-requirements-on-lite.md`.
   - `adr-check-notes.md`, the second look at the process decisions, is **needs-review** and stays. Its findings are carried into `adr/`: two superseding decisions, corrected authority, the exemplar line on each delegated decision, and the delegated-decision check in `../adr/TEMPLATE.md`. One suggestion is still open: carrying the question each of Joseph's short answers responds to ("3. sure") into jaw §1 beside the answer, so the records don't depend on the session transcript.

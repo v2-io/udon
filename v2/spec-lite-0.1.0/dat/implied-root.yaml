@@ -61,20 +61,12 @@ notes:
     dangle until the udon team converts it. Nothing about this file itself
     waits on a decision, so awaiting-decision is false; the dependency is
     derived from `per`.
-  - >-
-    No verification-level is written. The fixture ladder's first rung,
-    derived-from-rule, can be written by whoever checks these cases against
-    the rule once both are committed, with the hash of the rule text they
-    were checked against.
 
 cases:
   - id: root_single_top_level_element
     profile: canonical
     exercises: [implied-root]
     per: [implied-root]
-    why: >-
-      The one-element input gives this tree under every answer to 84 Q1, so
-      it can gate the rule while root_two_top_level_elements cannot.
     udon: |
       |person
     tree: |
@@ -102,29 +94,6 @@ cases:
           └ element section
     anomalies: []
 
-  - id: root_two_top_level_elements
-    profile: descriptive
-    exercises: [implied-root]
-    per: [implied-root]
-    open: ["84 Q1"]
-    udon: |
-      |person
-      |person
-    readings:
-      84-Q1-A: |
-        document
-        ├ element person
-        └ element person
-      84-Q1-B: |
-        document
-        ├ element person
-        └ element person
-      84-Q1-C: |
-        document 1
-        └ element person
-        document 2
-        └ element person
-
   - id: root_top_level_label
     profile: descriptive
     exercises: [implied-root]
@@ -142,43 +111,3 @@ cases:
         document
             title "My Notes"
         └ element section
-
-  - id: root_indented_top_level_text
-    profile: descriptive
-    exercises: [implied-root]
-    per: [implied-root]
-    open: ["04 Q1"]
-    udon: |2
-        indented first line
-      back to zero
-    readings:
-      04-Q1-A: |
-        document
-        ├ text "indented first line\n"
-        └ text "back to zero\n"           ; anomaly: warning, re-based
-      04-Q1-B: |
-        document
-        └ text "  indented first line\nback to zero\n"
-      04-Q1-C: |
-        document
-        └ text "indented first line\nback to zero\n"
-
-  - id: root_empty_input
-    profile: descriptive
-    exercises: [implied-root]
-    per: [implied-root]
-    open: ["89"]
-    udon: ""
-    readings:
-      root-no-children: |
-        document
-      not-a-document: "no tree; whether that is an error, and what it reports, is open"
-    notes:
-      - >-
-        No pre-design question lists empty input yet. 89 covers empty and
-        degenerate forms, but not the empty file. So these readings are keyed
-        by what they say, not by question and option, and `open` names 89 as
-        the nearest home. Rekey them when the form has a question.
-      - >-
-        Under 84 Q1 option C, empty input would hold zero documents: the
-        second reading, without an error.

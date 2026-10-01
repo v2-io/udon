@@ -31,11 +31,11 @@ Clause 1 is the promise. Clause 2 is what lite's rules owe to keep it.
 
 ## What discharges it
 
-No threshold: the rules themselves meet this objective or break it, and a derived property says which. None of these records is written yet. Each is a `proposed` row in `main.outline.md`, so a linter reports these links as unwritten, not as dangles ([[sop/decision:links-to-unwritten-records]]).
+No threshold: the rules themselves meet this objective or break it, and a derived property says which. None of these records is written yet, and naming the rules is the udon team's. Only the property has an outline row, so its link is reported as unwritten, not as a dangle ([[sop/decision:links-to-unwritten-records]]).
 
-- the reserved-spelling rules, [[rule:reserved-spellings]], and what the «tree» keeps for a refused spelling, [[rule:reserved-keep-shape]];
-- what "accepts" means, [[rule:valid-lite]];
-- if lite adopts a file marker (84 Q3), the marker rule, [[rule:lite-marker]]. It would let a full parser read a marked file by lite's rules, and so narrow what clause 2 has to reserve;
+- the rules that refuse reserved spellings, and what the «tree» keeps for a refused spelling;
+- what "accepts" means;
+- if lite adopts a file marker (84 Q3), a marker rule. It would let a full parser read a marked file by lite's rules, and so narrow what clause 2 has to reserve;
 - [[prop:forward-stability]], the claim that those rules actually meet clause 1. It can only be stated once they exist, and someone other than its author checks it.
 
 Clause 1 binds full UDON's design as well as lite's rules. Unless there is a marker, a later version may give new meaning only to spellings that lite refuses. That follows from clause 1; it is not a separate decision. The history of 09 shows why it matters: future spellings have repeatedly been chosen *because* they were plain text at the time (`@<`, `@{`, a line-initial `!{`; `09-reserved-syntax.discussion.md`, "Threads worth noticing", item 1).
@@ -48,10 +48,6 @@ No ⟦verification-level⟧ is written. The objective ladder in `.vsect/kinds.ya
 
 ## Working notes
 
-- **⟦force⟧ is empty on purpose.** Setting it is the udon team's ([[sop/dir:scope]]). The lean is `critical`. `required` would say this is an intention for lite 0.1.0; `critical` (CTQ) says that, because of other factors, it is expected to have an outsized impact on whether lite succeeds ([[sop/decision:force-critical-is-ctq]]). The other factors here: `.int/README.md` calls this "the one contract", it binds every future full version as well as this one (*What discharges it*), and a break would silently change the meaning of documents already written. When force is decided, cite that decision in `per`.
-- **`per: [reserve-not-ignore]` dangles until the udon team writes `adr/reserve-not-ignore.md`.** The seeded rendering in `.old/vsect-init/DECISIONS.md` never answers a live lookup, and it records "Quote: not located". The quotes in *Grounds* are that Quote, now located. Once the ADR carries them, *Grounds* can shrink to a citation.
-- **Open questions.** The numbers are files in `.int/pre-design/`.
-  - **12 Q1: what "accepts" means.** Under option B, where warnings are allowed, every warning's keep-shape becomes a permanent promise. Under C, each anomaly is marked forward-stable or not.
-  - **09 Q1 and 84 Q3: how much clause 2 has to reserve.** With no file marker (84 Q3 A), lite must reserve everything that could ever change meaning. That includes spellings no current proposal uses, such as `@name` in prose (09 Q1's sub-question). With a marker (B or D), it must reserve far less.
-  - **87: what clause 2 costs prose.** As 09 reads now, a prose line that starts `@alice` or `!important` is refused rather than read as text.
-  - **How much of the «tree» the promise covers.** There is no pre-design file for this yet; the nearest is 60. STEWARD's lean splits the «tree» into content < content+meta < content+meta+ornament. Suppose "the same «tree»" includes «meta», as vsect wants for source spans (`.int/vsect-requirements-on-lite.md` item 4). Then a later version that counts columns differently (79) would break clause 1, even though no spelling changed meaning. The udon team may want this as a sub-question of 60.
+- **⟦force⟧ is empty on purpose:** setting it is the udon team's ([[sop/dir:scope]]).
+- **`per:` cites seeded decisions that are not ADRs yet** (`.old/vsect-init/DECISIONS.md`), so those entries dangle until the udon team converts them.
+- **Open questions** bearing on it: 12, 09, 84 Q3, 60 (in `.int/pre-design/`).

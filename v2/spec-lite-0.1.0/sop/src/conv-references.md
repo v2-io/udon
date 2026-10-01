@@ -19,7 +19,7 @@ depends: [def:record, conv:records]
 - **A reference into another store is `[[store/kind:slug]]`** ([[decision:cross-store-links]]): `[[sop/conv:outline]]` from the spec store, `[[spec/rule:implied-root]]` from this one, `[[references/def:binding]]` for the addressing theory. Each store names the stores it may reference in its kinds file (`stores:`), and the target store's own kinds file resolves the `kind:slug`. Non-record files (influx documents, READMEs, outlines) are still linked by relative path.
 - **A link to a record that isn't written yet** resolves to the outline row of its store that names the same `kind:slug`, and is reported as *unwritten*: information, not an error ([[decision:links-to-unwritten-records]]). With no such row either, it is a dangle.
 - **Templates are not records.** `TEMPLATE.md` and `<kind>.template.md` files never answer a lookup; each kinds file lists them under `exclude:` ([[decision:templates-are-not-records]]).
-- **Cases inside a fixture record** are referenced by path and anchor, e.g. `![[dat/implied-root.yaml#root_two_top_level_elements]]`. A missing file or case id is a dangle, the same as a `kind:slug` that doesn't resolve.
+- **Cases inside a fixture record** are referenced by path and anchor, e.g. `![[dat/implied-root.yaml#root_top_level_label]]`. A missing file or case id is a dangle, the same as a `kind:slug` that doesn't resolve.
 - **Resolution is set per store in `.vsect/kinds.yaml`** (`sop/.vsect/kinds.yaml` for the SOP store):
   - step 1: explicit bindings;
   - then each kind's `find` globs in order, where `<kind>` expands to the canonical name and each alias, and `<slug>` to the slug, over an explicit list of directories (no `**/`);

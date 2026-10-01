@@ -37,7 +37,6 @@ depends: []
 ## Why
 
 - **«document» means the source, not the «tree»,** because that is how the rest of the spec store uses the word: "any «document» a lite parser accepts produces the same tree" ([[obj:reserve-dont-ignore]]), "no accepted «document»'s tree changes" ([[prop:forward-stability]]), and 84's "documents per file". A «document» that *is* its «tree» could not have one. If those uses change, this choice should be revisited.
-- **Anomalies are left out of these terms.** Parsing also yields a list of anomalies: the fixtures record them beside the tree, and [[prop:determinacy]] says "one tree and one anomaly list". Their place belongs to [[def:anomaly]], not to the definition of «tree».
 - **root-scope is written in plain words** with a cross-store link to its record ([[references/def:scope]], per [[sop/decision:cross-store-links]]), so it can't be mistaken for a «…» term of this store. `depends:` doesn't list it, because this record only distinguishes itself from root-scope and uses none of its text.
 
 ## Cautions
@@ -46,13 +45,6 @@ depends: []
 
 ## Working notes
 
-- **Open questions that bear on these terms** (numbers are files in `.int/pre-design/`):
-  - **84 Q1, documents per file.** «document» is defined so that every answer fits: one per file (A), split by a separator (B), or one per top-level element (C). Under C, a file of two top-level elements is two «document»s with two «tree»s, not one «root-node» with two children.
-  - **13 Q1, 84 Q4, 60: where «meta» lives.** Whether it is part of the «tree» like attributes, a side layer, or kept apart from anything spelled. The term does not depend on the answer; what the «tree» holds does.
-  - **60, and the STEWARD lean on node metadata.** Only the «root-node»'s «meta» is decided (`implied-root`). The lean in `STEWARD-2026-09-29.md` would give every node «meta» (source line and column, span, `same_line`). If 60 settles on "meaning only", «meta» covers only what the parser supplies, such as the filename. Either way the definition stands; only what it covers changes.
-  - **04 Q2, top-level `:label` lines.** If they become attributes of the «root-node» (option B), 13 Q1 asks whether they are kept apart from parser-supplied «meta». The third invariant says they are different things in either case.
-  - **Empty input.** Whether an empty file is a «document» (with a «root-node» and no children) or no «document» at all is recorded as the descriptive fixture case `root_empty_input`, which names 89 as its nearest home. 89 does not list empty input among its forms, so no question file asks it yet.
-  - **Anomalies in or beside the «tree».** No question file asks it. It belongs with [[def:anomaly]] and question 12.
-- **Where the edge between «meta» and ornament falls** is for [[def:ornament]]. The STEWARD lean orders the layers as "content < content+meta < content+meta+ornament". Source line and column read as «meta» there; spacing and list spelling as ornament. Unverified until that record is drafted.
-- **Awaiting the udon team's decider** (`awaiting-decision: true`, [[sop/decision:decider-per-store]]): «document» was redefined here as the source rather than the parse result, and that change of meaning is theirs to confirm. The flag describes only this record ([[sop/decision:flags-describe-own-record]]).
-- **`per:` cites decisions that are not ADRs yet.** `implied-root` and `ast-centric` are seeded decisions, rendered in `.old/vsect-init/DECISIONS.md` from Joseph's 2026-09-29 statements. Converting them into `adr/` records is the udon team's. Until then both entries dangle. They are kept as the seed's slugs, not a path to the rendering, so the citation goes live when the ADRs are written. That this record rests on unconverted decisions is derived from `per:`, not carried in its flags.
+- **Awaiting the udon team's decider:** «document» is defined here as the source, not the parse result, and that choice of meaning is theirs.
+- **`per:` cites seeded decisions that are not ADRs yet** (`.old/vsect-init/DECISIONS.md`), so those entries dangle until the udon team converts them.
+- **Open questions** bearing on these terms: 84 Q1, 13 Q1, 60, 04 Q2.

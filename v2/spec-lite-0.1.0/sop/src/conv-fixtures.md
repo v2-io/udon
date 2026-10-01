@@ -16,8 +16,8 @@ depends: [def:record-kinds, def:fixture-profiles, conv:references]
 - **A fixture file is one record of kind `fixture`**, at file grain, with a slug of its own (`dat/implied-root.yaml` → `[[fixture:implied-root]]` in the spec store).
 - **Its shape is one YAML mapping** ([[decision:fixture-file-shape]]): the record's fields first (`kind: fixture`, the three flags, `depends`, `notes`), then `cases:`, a list of cases each with a stable `id`. `notes:`, on the file or on a case, holds working notes. A case's reason for existing, once *kept*, goes in its `why:` field ([[decision:notes-disposition-at-freeze]]).
 - **No outline lists fixtures.** Being in an outline is a view's choice. It is not what makes something a record.
-- **A rule cites its fixtures** through ⟦test-fixtures⟧ in its frontmatter. Prose may transclude one case: `![[dat/implied-root.yaml#root_two_top_level_elements]]`.
-- **Case ids are stable names that are never reused.** A name like `root_two_top_level_elements` survives reordering; a positional id like `C7` does not.
+- **A rule cites its fixtures** through ⟦test-fixtures⟧ in its frontmatter. Prose may transclude one case: `![[dat/implied-root.yaml#root_top_level_label]]`.
+- **Case ids are stable names that are never reused.** A name like `root_top_level_label` survives reordering; a positional id like `C7` does not.
 - **Each case has a ⟦profile⟧** (see [[def:fixture-profiles]]). Canonical and idiomatic cases are normative even though no outline lists them, so flipping one changes what the spec means.
 - **Prose around a transcluded case goes stale** when that case changes.
 

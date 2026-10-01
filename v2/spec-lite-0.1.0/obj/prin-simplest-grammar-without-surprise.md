@@ -45,19 +45,7 @@ A ⟦principle⟧ is never met or unmet. It only orders alternatives, which is w
 
 No ⟦verification-level⟧ is written. The principle ladder in `.vsect/kinds.yaml` has one rung, `authorized`, and no decision adopts this principle yet.
 
-## Cautions
-
-- **Don't name an audience the sources don't name.** An earlier draft of this record said a decision should not choose an alternative that "would surprise a reader who knows the rest of lite". Nothing in the sources chose that audience, so it shouldn't come back without one (see *Working notes*, whose surprise counts).
-- **The history-reading rule is a different thing.** The README section this principle comes from also says how to weigh history: chronological order, and no special status for Joseph's past comments. That is about weighing evidence, not choosing among alternatives, so it isn't part of this principle. If it is kept, it belongs in the SOP store as practice.
 
 ## Working notes
 
-- **Open: whose surprise counts?** The pre-design files invoke least surprise for different people:
-  - Joseph "as a user" (59, 2026-07-19);
-  - prose authors (62, option C);
-  - "the JSON-minded user" (66);
-  - HTML authors (50);
-  - JSON and YAML users writing lists (83).
-
-  These can disagree. For example, a spelling that a JSON user expects may surprise a Markdown author. The principle doesn't say whose surprise wins. Until someone decides, a decision citing it names the audience it considered.
-- **Open: simpler by what measure?** Fewer productions, fewer special cases, and a shorter rule text can point different ways. If a measure is wanted, it is a ⟦fitness⟧ that serves this principle, kept as a separate record with its own claim that the measure tracks the principle ([[sop/conv:purpose-layer]], the Goodhart guard). `sop/influx/proposed-verisectorium.md` lists "how often agents write lite wrongly" as a candidate fitness, with 67's census as starting material. That would measure the surprise half, not the simplicity half. Fitness is not an admitted kind yet, and no proxy has any evidence that it tracks this principle. So this record has no *Fitness* section.
+- **Open: whose surprise counts?** The pre-design files appeal to different audiences (50, 59, 62, 66, 83), and the principle doesn't say which wins.

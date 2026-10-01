@@ -29,7 +29,7 @@ depends: [def:record-kinds]
 - When a question closes, the matching ⟦reading⟧ becomes the tree, and the case becomes ⟦canonical⟧ or ⟦idiomatic⟧. The change cites the ⟦decision⟧ that closed it.
 - ⟦descriptive⟧ cases never gate. Nobody may pick one of their readings as the answer without a decision.
 - Every case names the rules it exercises (⟦exercises⟧) and the decisions its tree depends on (⟦per⟧).
-- Case ids are stable names inside the ⟦fixture⟧ record and are never reused. They are anchors, like headings: a rule cites the file through ⟦test-fixtures⟧, and prose may transclude one case as `![[dat/implied-root.yaml#root_two_top_level_elements]]`. Prose around a transcluded case is stale once that case changes.
+- Case ids are stable names inside the ⟦fixture⟧ record and are never reused. They are anchors, like headings: a rule cites the file through ⟦test-fixtures⟧, and prose may transclude one case as `![[dat/implied-root.yaml#root_top_level_label]]`. Prose around a transcluded case is stale once that case changes.
 
 ## Sources
 
