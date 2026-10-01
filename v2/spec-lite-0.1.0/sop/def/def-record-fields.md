@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [per, depends, test-fixtures, narrates, flags, awaiting-second, awaiting-decision, needs-work, verification-level, evidence, record-status, layer, force, serves, threshold-on, committed]
-per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records, force-critical-is-ctq]
+per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records, force-critical-is-ctq, critical-implies-required, landed-may-be-missing]
 depends: [def:record, def:record-kinds, def:outline]
 ---
 
@@ -37,7 +37,7 @@ depends: [def:record, def:record-kinds, def:outline]
 ### Spec-store fields
 
 - **layer** (rules): which part of lite a ⟦rule⟧ governs: `source` · `element` · `value` · `text` · `reserved` · `anomaly` · `tree`. It is not a kind.
-- **force** (objective-level kinds: objectives, and principles and fitness where they carry one): `non` (an explicit non-goal) · `desired` (met if possible) · `required` (an intention for this version) · `critical` (critical to quality, CTQ: because of other factors, expected to have an outsized impact on the success or utility of the spec). A requirement is an objective with force `required` or `critical` ([[decision:force-levels-four]], [[decision:force-critical-is-ctq]]). It is a field of its own: the RFC 2119 words in a Statement don't stand in for it.
+- **force** (objective-level kinds: objectives, and principles and fitness where they carry one): `non` (an explicit non-goal) · `desired` (met if possible) · `required` (an intention for this version) · `critical` (critical to quality, CTQ: because of other factors, expected to have an outsized impact on the success or utility of the spec; for now a `critical` objective is also `required`, [[decision:critical-implies-required]]). A requirement is an objective with force `required` or `critical` ([[decision:force-levels-four]], [[decision:force-critical-is-ctq]]). It is a field of its own: the RFC 2119 words in a Statement don't stand in for it.
 - **serves** (fitness): the ⟦principle⟧ or principles a ⟦fitness⟧ measures progress toward.
 - **threshold-on** (objectives): the ⟦fitness⟧ whose minimum passing value this ⟦objective⟧ sets.
 - **committed** (threshold objectives): the date the threshold was set. Every measurement it gates must be dated after this.
@@ -49,7 +49,7 @@ depends: [def:record, def:record-kinds, def:outline]
 - No field holds a hand-typed standing word (see [[def:record]]).
 - `per` and `depends` point only at records that exist, or at records an outline row of their store names but that are not written yet, which a linter reports as *unwritten* ([[decision:links-to-unwritten-records]]). An entry with no document and no outline row is a dangle.
 - A ※ outline column that disagrees with its record's field is a finding, and the record wins.
-- On a row with no document, ※ columns show `—` (see [[conv:record-flags]]).
+- On a row with no document, ※ columns show `—`, except on a `landed` row, where the flags apply but have nothing to come from, so they show `∅` ([[decision:landed-may-be-missing]]; see [[conv:record-flags]]).
 
 ## Why
 

@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [outline, concern, row-type, doc-state, column-marker, cell-mark]
-per: [outline-always-true, row-type, doc-state-conforms, column-notation, landed-not-integrated, no-computed-columns-yet]
+per: [outline-always-true, row-type, doc-state-conforms, column-notation, landed-not-integrated, no-computed-columns-yet, landed-may-be-missing]
 depends: [def:record]
 ---
 
@@ -26,7 +26,7 @@ depends: [def:record]
   - `template`: scaffolding to copy from;
   - `exploratory`: drafted, but not yet sure it wants to be proposed;
   - `proposed`: a candidate, drafted or not;
-  - `landed`: committed canon. It is the one value that needs a ⟦decision⟧, and it implies the row has been drafted.
+  - `landed`: committed canon. It is the one value that needs a ⟦decision⟧. Its record is usually drafted, but may be missing ([[decision:landed-may-be-missing]]).
 - **doc-state:** whether a row's document exists and conforms to its ⟦kind⟧'s format. It is computed, as the ∂(doc-state) column, for every row that should have a document, and takes exactly one of three values:
   - `missing`: no document;
   - `drafted`: a document exists but does not yet conform to its kind's format;
@@ -38,7 +38,7 @@ depends: [def:record]
   - `∂(Field)`: derived by the linter or by vsect (※ is a simple special case of ∂);
   - no marker: the column is authored in the ⟦outline⟧.
 - **cell-mark:** what the linter writes in a ※ or ∂ cell that has no value:
-  - `—`: the column does not apply to this row, because of its ⟦row-type⟧ or ⟦kind⟧, or because the row has no document;
+  - `—`: the column does not apply to this row, because of its ⟦row-type⟧ or ⟦kind⟧, or because the row has no document and isn't `landed` (a `landed` row with no document shows `∅` in its flag cells);
   - `∅`: the column applies, but the value is missing (the linter looked, and nothing was there);
   - `⚠`: the column applies, but the inputs couldn't be read, e.g. unparseable frontmatter or a reference that doesn't resolve.
 

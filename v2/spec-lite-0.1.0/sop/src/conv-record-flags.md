@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [flags-on-docless-rows, decider-per-store, flags-describe-own-record]
+per: [flags-on-docless-rows, decider-per-store, flags-describe-own-record, landed-may-be-missing]
 depends: [def:record-fields, conv:column-notation]
 ---
 
@@ -22,7 +22,7 @@ depends: [def:record-fields, conv:column-notation]
   - The decision clears `awaiting-decision`, and the record cites the decision in ⟦per⟧.
   - The work clears `needs-work`, and its working note is removed or rewritten.
 - **A flag describes only its own record** ([[decision:flags-describe-own-record]]). `awaiting-decision: true` means the decider is being asked to decide something about this record. Whether a record rests on a decision that is deferred, unratified or superseded is derived from its ⟦per⟧ citations, and a view may show it as a ∂ column; it is never copied into the record's flags. A deliberately deferred decision carries `awaiting-decision: false`, because nobody is being asked to decide it now.
-- **Outlines may show a flag as a ※ column.** On rows with no document it shows `—`, and any pending decision about such a row lives in its ADR or question (see [[conv:column-notation]]).
+- **Outlines may show a flag as a ※ column.** On rows with no document it shows `—`, except on a `landed` row, where it shows `∅` ([[decision:landed-may-be-missing]]). Any pending decision about a row with no document lives in its ADR or question (see [[conv:column-notation]]).
 
 ## How a violation shows
 

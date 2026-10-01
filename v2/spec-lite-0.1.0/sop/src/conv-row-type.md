@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [row-type, landed-not-integrated]
+per: [row-type, landed-not-integrated, landed-may-be-missing]
 depends: [def:outline, conv:outline]
 ---
 
@@ -22,9 +22,14 @@ depends: [def:outline, conv:outline]
   | `template` | scaffolding to copy from | yes |
   | `exploratory` | drafted, but not yet sure it wants to be proposed | yes |
   | `proposed` | a candidate | drafted or not |
-  | `landed` | committed canon; implies drafted | yes, unless ∂(doc-state) shows `missing` (committed but not yet written) |
+  | `landed` | committed canon | usually; ∂(doc-state) may show `missing` (see below) |
 
 - Every value except `landed` can be written without a decision. Moving a row to `landed` needs a ⟦decision⟧, and the record cites it in ⟦per⟧.
+- **A `landed` row may have no document** ([[decision:landed-may-be-missing]]). Typically:
+  - the record is small, and its core is covered by the row's description, or still sits in `.int/` or influx, not yet moved out;
+  - the record was refactored away and the outline wasn't updated.
+
+  Its ∂(doc-state) is then `missing`, and its ※ flag cells show `∅`, not `—` ([[conv:column-notation]]).
 - `landed` is a row-type and nothing else. The influx outcome is ⟦integrated⟧ (see [[def:integration]]).
 - A file's location says nothing about row-type. The outline is the authority. A drafted `proposed` or `exploratory` file in `src/` makes no claim of being canon.
 
@@ -43,4 +48,4 @@ depends: [def:outline, conv:outline]
 ## Working notes
 
 - "Hypothesis-grade claims" were in Joseph's first list of things an outline can hold without a decision, "(I don't think those will apply here)". There is no row-type for them. If one is ever needed, it is a proposed new value.
-- **Doubt: does `landed` imply drafted?** Joseph's list says "landed (implies drafted)" and, separately, "missing (implies known-canon missing even a first draft)" (§1.1). The feedback folded the second into `landed` plus ∂(doc-state) `missing` (§3.2), and [[decision:row-type]] states both, as does the table above. Whether he meant "implies drafted" to give way hasn't been asked. By the conflict protocol, ask him rather than choose.
+- **Where a `landed` row with no document cites its decision** is open. The violation "a `landed` row whose record cites no decision in ⟦per⟧" ([[conv:outline]]) has no record to look in.

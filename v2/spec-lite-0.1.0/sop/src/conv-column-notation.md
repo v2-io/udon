@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [column-notation, flags-on-docless-rows, no-computed-columns-yet]
+per: [column-notation, flags-on-docless-rows, no-computed-columns-yet, landed-may-be-missing]
 depends: [def:outline, conv:outline]
 ---
 
@@ -23,7 +23,7 @@ depends: [def:outline, conv:outline]
   - `∅`: applicable, but missing (the linter looked, and nothing was there);
   - `⚠`: applicable, but the inputs couldn't be read (unparseable frontmatter, or a reference that doesn't resolve).
 - **No outline shows a ※ or ∂ column until a linter exists** to compute or check it ([[decision:no-computed-columns-yet]]). Each view adds such columns when they can be kept true, so no cell ever has to mean "not computed yet".
-- **On rows with no document** (`gap` rows, and undrafted `proposed` rows), ※ columns show `—`. A pending decision about such a row lives in its ADR or in the pre-design question it concerns, not in the outline.
+- **On rows with no document** (`gap` rows, and undrafted `proposed` rows), ※ columns show `—`. **On a `landed` row with no document**, the flags apply but have nothing to come from, so its ※ flag cells show `∅` ([[decision:landed-may-be-missing]]). A pending decision about such a row lives in its ADR or in the pre-design question it concerns, not in the outline.
 
 ## How a violation shows
 

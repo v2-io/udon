@@ -28,7 +28,7 @@
 | proposed | [[conv:outline]] | The outline must always be true; the four concerns; `main.outline.md`; views choose their columns. |
 | proposed | [[conv:row-type]] | The six row-types. Only `landed` needs a decision; `landed` is not `integrated`. |
 | proposed | [[conv:doc-state]] | `missing` · `drafted` · `conforms`: computed, exhaustive, and not a ladder. |
-| proposed | [[conv:column-notation]] | ※ and ∂ columns; `—`, `∅`, and `⚠` in computed cells; ※ shows `—` on rows with no document. |
+| proposed | [[conv:column-notation]] | ※ and ∂ columns; `—`, `∅`, and `⚠` in computed cells; on rows with no document, ※ shows `—`, or `∅` on a `landed` row. |
 | proposed | [[conv:ordering]] | Outline order against `depends` (undecided): a candidate practice, held until a linter needs it. |
 | gap | [[conv:outline-lint]] | What the `bin/` outline linter checks, what it writes, and how it reports. The convention records above say what a violation looks like; this would collect those into one contract. |
 | gap | [[conv:applicability]] | The row-type × kind × field table that tells the linter where `—` belongs. |

@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [proxy-before-threshold, force-levels-four, force-critical-is-ctq]
+per: [proxy-before-threshold, force-levels-four, force-critical-is-ctq, critical-implies-required]
 depends: [def:record-kinds, def:record-fields]
 ---
 
@@ -28,7 +28,7 @@ depends: [def:record-kinds, def:record-fields]
 - **Two guards apply to fitness:**
   - **Goodhart.** A fitness serves a named principle, and its claim that the proxy tracks the principle stays on record and stays checkable. Meeting the number is never taken as meeting the principle.
   - **Commitment.** "An objective's threshold on a fitness must be set before the measurement it gates. A threshold chosen after seeing the numbers is tuned, not tested (RC1's commitment law)." The threshold objective records when it was set (⟦committed⟧). Every measurement it gates must be dated after that.
-- **⟦force⟧ has four levels** ([[decision:force-levels-four]], [[decision:force-critical-is-ctq]]): `non` (an explicit non-goal), `desired` (met if possible), `required` (an intention for this version), and `critical` (critical to quality, CTQ: because of other factors, expected to have an outsized impact on the spec's success or utility). A ⟦requirement⟧ is an objective whose force is `required` or `critical`.
+- **⟦force⟧ has four levels** ([[decision:force-levels-four]], [[decision:force-critical-is-ctq]]): `non` (an explicit non-goal), `desired` (met if possible), `required` (an intention for this version), and `critical` (critical to quality, CTQ: because of other factors, expected to have an outsized impact on the spec's success or utility). For now a `critical` objective is also `required` ([[decision:critical-implies-required]]). A ⟦requirement⟧ is an objective whose force is `required` or `critical`.
 - **⟦force⟧ belongs to the objective-level kinds**: objectives always, and principles and fitness where they carry one. It is a field of its own, separate from the RFC 2119 words in a Statement.
 - **Not every objective has a threshold.** One can instead be discharged by a ⟦property⟧ established over the rules, as [[spec/obj:reserve-dont-ignore]] is by the unwritten [[spec/prop:forward-stability]]. The objective ladder in the spec store's kinds file has a `discharge-checked` rung that covers both ways.
 - **Fitness is a possible kind, not yet admitted.** It is admitted when the first real fitness record is written.
