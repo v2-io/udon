@@ -232,6 +232,13 @@ Answering whether `force` should give way to the RFC 2119 key words in an object
 > Ah right-- objectives (and or principles and or fitness)-- I think that it is appropriate to have this separate force for objective-level kinds here.  
 > And with that in mind, I can tell you the difference between required and critical. Required is an intention for this version. Critical is a CTQ objective-- critical to quality-- where, due to other factors, it is expected to have an outsized impact on the success or utility of the [spec, in this case].
 
+### 1.15 Critical implies required; a landed row may lack its document (2026-09-30)
+
+Answering the two questions left open by `force-critical-is-ctq` and `row-type` (→ `critical-implies-required`, `landed-may-be-missing`):
+
+> 1. critical should be assumed (for now) to be required.  
+> 2. landed (a row state) *can* have a doc-state missing. Often this is when it is pretty small and the core is covered in the table description field and/or something in .int / influx that just hasn't been moved to the right place yet. It also comes up when something gets refactored away and the agent forgets to update the outline.
+
 ## 2. The proposal as it now stands (my rendering; check against §1)
 
 **Four concerns.** Every outline cell belongs to exactly one:

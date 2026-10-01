@@ -76,5 +76,3 @@ Chosen:
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
-
-* **Is `critical` also version-scoped?** Joseph's definition scopes `required` to "this version" and defines `critical` by impact. Read literally, a CTQ objective is not tied to a version. Whether a `critical` objective is also an intention for this version (critical ⇒ required, plus outsized impact) is not stated.

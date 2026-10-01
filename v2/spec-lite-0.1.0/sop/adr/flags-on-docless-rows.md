@@ -14,7 +14,7 @@ informed: []
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: landed-may-be-missing, how: revised, scope: partial}]
 closes: []
 leaves-open: []
 ---
@@ -69,5 +69,3 @@ Chosen: a ※ flag column shows `—` on rows with no document. A pending decisi
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
-
-* **Open for Joseph:** a `landed` row whose doc-state is `missing` (known canon, not yet drafted). By his own definitions its flags are applicable but missing, which is `∅`, not `—`. As written, this decision gives `—` to every row with no document. [[decision:row-type]]'s working note gives the reading under which `∅` is right: the orthogonal proposal makes `landed` + `missing` valid. Also, a pending decision now lives in its ADR or in the working notes of the record it concerns, since open questions moved to working notes ([[decision:open-questions-in-working-notes]]).

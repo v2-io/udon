@@ -2,7 +2,7 @@
 kind: decision
 awaiting-second: true
 awaiting-decision: false
-needs-work: true
+needs-work: false
 title: "Every outline row declares a row-type: example, gap, template, exploratory, proposed or landed"
 status: accepted
 decided-by: steward
@@ -14,7 +14,7 @@ informed: []
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: landed-may-be-missing, how: revised, scope: partial}]
 closes: []
 leaves-open: []
 ---
@@ -77,5 +77,3 @@ Chosen: `row-type`, authored in the outline (concern 2), with values `example`, 
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
-
-* **Rendering error, for Joseph:** the Outcome's "it implies drafted" comes from the flow-of-thought list in §1.1 ("landed (implies drafted)"), which Joseph then replaced with the orthogonal proposal pairing `row-type` with `doc-state: missing, drafted, …`. Under that proposal a `landed` row with doc-state `missing` is valid, and means known canon not yet drafted (his "missing" in the same list). `sop/src/conv-row-type.md` already allows it. If Joseph confirms, a superseding record drops the clause.
