@@ -7,45 +7,38 @@ per: []
 depends: []
 ---
 
-# Prefer the simpler grammar, short of surprise
+# Prefer the simpler grammar, short of surprising the agents who use it
 
-*Among alternatives that all meet lite's objectives, prefer the one that makes the grammar or rules simpler, unless it violates least surprise.*
+*Among alternatives that all meet lite's objectives, prefer the one that makes the grammar or rules simpler, unless it would surprise the agents who read and write lite, weighed by how often the case occurs.*
 
 ## Statement
 
-When several alternatives for a rule each meet every objective, a decision prefers the one that makes the grammar or the rules simpler, as long as that alternative does not violate the principle of least surprise.
+When several alternatives for a rule each meet every objective, prefer the one that makes the grammar or the rules simpler, unless it would surprise its users. Surprise is judged:
+
+1. for agents reading and writing lite in plain text, without syntax highlighting, first; for people second;
+2. in proportion to how often the case occurs, so that a surprise in a rare case does not outweigh a simplification that serves a common one.
 
 ## Grounds
 
-- **Joseph, 2026-09-29:** "I will be very persuaded by things that simplify the grammar or rules without violating the principle of least surprise."
-- **Source.** Session `5930da5d-2aed-49ea-ac8b-ed619c1d6a0d` in `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/`, his turn at 2026-09-30T00:18Z (evening of 2026-09-29 local). He said it while briefing the agents who would write the pre-design histories, as part of how to weigh past discussion. `.int/pre-design/README.md` renders it as "Most persuasive: whatever simplifies the grammar or rules without violating least surprise."
-- **What the rendering adds.** His words describe what will persuade him; they do not adopt a principle for lite. Two things in the Statement come from elsewhere:
-  - *"Among alternatives that all meet lite's objectives"* is the principle kind's scope ([[sop/def:record-kinds]]): a principle breaks ties between alternatives that all meet the objectives, and never trades against an objective.
-  - *"Prefers"* renders "very persuaded" as a strong preference. It is not a veto.
-- **Decision.** None yet. No decision adopts this as a lite principle, so `per` is empty and `awaiting-decision` is true.
+- **The principle.** "I will be very persuaded by things that simplify the grammar or rules without violating the principle of least surprise" (Joseph, 2026-09-29, `.int/STEWARD-VERBATIM.md`).
+- **Whose surprise.** "udon is primarily for agents by agents and they are the principle user" (2026-07-21); "think in terms of the consumer and user of UDON (which is targeting *you* as a consumer …) and therefore the principle of least surprise" (2026-07-19); "It is optimized for agents and AI. The fact that it happens to be very comprehensible for humans as well is a fortunate unintended consequence" (2025-12-24) (`~/.claude/history.jsonl` 17060, 16904, 5571).
+- **Without highlighting.** "it needs to be clearly and quickly scannable *without* syntax highlighting-- because right now agents don't have syntax highlighting for the normal read workflow" (2025-12-24, 5572).
+- **Weighed by frequency.** "Almost all my decisions try to reduce to not violating the principle of least surprise the most (so sometimes taking into account estimated or hypothesized frequencies of edge-case occurance etc.-- like 'emoticons in the $main attribute text and forgetting to escape' -- pretty unlikely … so unlikely compared to how often we'll want multiple attributes on the same line or subsequent lines)" (2026-08-09, 18890); and "another instance of limiting an important use-case because of an unimportant failure mode" (18886).
 
 ## How it is used
 
-A principle decides nothing by itself. A ⟦decision⟧ that leans on it cites it as a link in its Decision Drivers section, `[[prin:simplest-grammar-without-surprise]]`, and says three things:
-
-- which alternative it favored;
-- what makes that alternative simpler;
-- whose surprise was considered, and why that alternative doesn't cause it.
-
-The pre-design questions already appeal to both halves. Simplicity shows up as one rule instead of two in 01, 56 and 64, and least surprise shows up in 50, 62, 66 and 83.
-
-Two things are not this principle, though decisions often mention them beside it:
-
-- **An objective.** Objectives bound the alternatives first, and are checked against the rule set. This principle only orders what is left.
-- **Precedent.** A past spec's choice is evidence of what someone once thought, not a tie-breaker. In the same message, Joseph said older discussions are "not necessarily more privileged" than newer ones, and "I reserve the right to change my mind about anything and everything in the past."
+A principle decides nothing by itself. A decision that leans on it says which alternative it favored, what makes that alternative simpler, whose surprise it considered, and how common the surprising case is. Joseph's own way of checking surprise: ask fresh agents what they would expect something to parse to, "not that it's binding or conclusive, but it is definitely useful thinking!" (18890).
 
 ## Epistemic status
 
-A ⟦principle⟧ is never met or unmet. It only orders alternatives, which is what separates it from an ⟦objective⟧. It fails when decisions ignore it, apply it inconsistently, or keep favoring choices that later need reversing. It is repaired by revising it, and every decision that cites it is then re-examined.
+A principle is never met or unmet; it orders alternatives that the objectives leave open. It fails when it is ignored, applied inconsistently, or keeps favoring choices that later need reversing.
 
-No ⟦verification-level⟧ is written. The principle ladder in `.vsect/kinds.yaml` has one rung, `authorized`, and no decision adopts this principle yet.
+## Discussion
 
+- **Precedent is not a tie-breaker.** "I reserve the right to change my mind about anything and everything in the past" (2026-09-29). A past spec's choice is evidence of what someone once thought.
+- **Agents first doesn't mean people last.** The README's claim is "for humans and AI alike", and the 2011 objectives ranked beauty and human readability highest (`_older/udon/doc/objectives.asciidoc`). The order here only says whose surprise wins when the two conflict.
 
 ## Working notes
 
-- **Open: whose surprise counts?** The pre-design files appeal to different audiences (50, 59, 62, 66, 83), and the principle doesn't say which wins.
+- **Awaiting Joseph:** adopting this as a lite principle, with the audience and frequency weighting drawn from his words above. The earlier example version left "whose surprise counts?" open; this answers it from his statements, which is the udon team's reading.
+- A measure for it (time for a fresh agent to read a lite document correctly, or how often agents write lite wrongly) would be a fitness, not yet an admitted kind; see [[sop/conv:purpose-layer]]. The Dec-2025 usability harness (`test/usability/`) is a ready instrument.

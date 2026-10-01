@@ -22,12 +22,9 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 
 | Row-type | Record | Statement |
 |---|---|---|
-| example | [[obj:reserve-dont-ignore]] | Any «document» a lite parser accepts produces the same «tree» under every future full version |
-| example | [[prin:simplest-grammar-without-surprise]] | Among alternatives that meet the objectives, prefer the simpler grammar or rules, unless it violates least surprise |
 | example | [[def:document]] | «document», «tree», «root-node», «meta»: the source, what it parses to, the implied root, and parser-supplied information about nodes |
 | example | [[def:typed-value]] | «typed-value» (explicit `<…>` / implicit bare), «type-label» |
 | example | [[rule:implied-root]] | Exactly one «root-node», never spelled; top-level items are its children in order; it may carry «meta» |
-| proposed | [[prop:forward-stability]] | Do lite's rules meet [[obj:reserve-dont-ignore]]: no accepted «document»'s tree changes under a full parser? |
 
 # The specification
 
@@ -35,13 +32,18 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 
 ## *Part* 0 — Purpose
 
-*What lite is for. Every later decision is argued from these.*
+*What lite is for. Every later decision is argued from these. Each objective's force is Joseph's to set; candidates for later versions are in `obj.future/candidates.md`.*
 
 | Row-type | Record | Statement |
 |---|---|---|
-| proposed | [[obj:reserve-dont-ignore]] | Any «document» a lite parser accepts produces the same «tree» under every future full UDON |
-| proposed | [[obj:data-and-document-layout]] | Is lite usable now as the corpus's alternative to XML/HTML, YAML and JSON, for data and for document layout? |
-| gap | | The other objectives, principles and requirements; a principles survey is under way (`.int/principles-survey-2026-10-01.md`) |
+| proposed | [[obj:reserve-dont-ignore]] | Any «document» a lite parser accepts produces the same «tree» under every future full UDON; reserved spellings are errors |
+| proposed | [[obj:represent-xml-html]] | Lite can represent XML and HTML: elements, attributes, and mixed content, in order |
+| proposed | [[obj:represent-structured-data]] | Lite can carry the data people use JSON and YAML for: records, lists, typed scalars |
+| proposed | [[obj:markdown-text-passes-through]] | Markdown written as lite text stays text, except at named collisions; lite doesn't parse it |
+| proposed | [[obj:no-interpretation]] | (non-objective) Lite resolves, evaluates and interprets nothing: no references, directives, or typed `<…>` contents |
+| proposed | [[prin:simplest-grammar-without-surprise]] | Prefer the simpler grammar, short of surprising the agents who use it, weighed by how often the case occurs |
+| proposed | [[prin:one-rule-everywhere]] | A construct is read by the same rule wherever it appears |
+| proposed | [[prin:demand-before-grammar]] | Choose rules for what lite's users need, not for what is easy in the grammar |
 
 ## *Part* I — Vocabulary and the tree
 
