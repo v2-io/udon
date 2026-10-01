@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [outline-always-true, main-outline-name, column-notation, outline-is-current-truth, row-type, landed-may-be-missing]
+per: [outline-always-true, main-outline-name, column-notation, outline-is-current-truth, row-type, landed-may-be-missing, record-to-decision-links-for-now]
 depends: [def:outline, def:record]
 ---
 
@@ -34,7 +34,7 @@ A linter could find each of these:
 - a ※ or ∂ cell that disagrees with its source;
 - a ※ cell on a row with no document that shows anything other than `—`, or other than `∅` if the row is `landed`;
 - a row-type value outside the six;
-- a `landed` row whose record cites no decision in ⟦per⟧.
+- a `landed` row with a document whose record cites no decision in ⟦per⟧. A `landed` row with no document shows `∅` for its decision citation instead ([[decision:record-to-decision-links-for-now]]).
 
 ## Why
 

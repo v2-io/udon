@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [per, depends, test-fixtures, narrates, flags, awaiting-second, awaiting-decision, needs-work, verification-level, evidence, record-status, layer, force, serves, threshold-on, committed]
-per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records, force-critical-is-ctq, critical-implies-required, landed-may-be-missing]
+per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records, force-critical-is-ctq, critical-implies-required, landed-may-be-missing, record-to-decision-links-for-now]
 depends: [def:record, def:record-kinds, def:outline]
 ---
 
@@ -16,7 +16,7 @@ depends: [def:record, def:record-kinds, def:outline]
 
 ### Links
 
-- **per:** the slugs of the ⟦decision⟧s this ⟦record⟧ rests on. The field is typed to one kind, so its values are bare decision slugs: `per: [row-type]` ([[decision:typed-reference-fields]]).
+- **per:** the slugs of the ⟦decision⟧s this ⟦record⟧ rests on. The field is typed to one kind, so its values are bare decision slugs: `per: [row-type]` ([[decision:typed-reference-fields]]). It is the only maintained link between records and decisions; what rests on a decision is derived by inverting `per:` across the store ([[decision:record-to-decision-links-for-now]], for now).
 - **depends:** the records whose *text* this record uses. The field is untyped, so each value carries its kind: `depends: [def:record]`. When a record listed here changes, the dependent is due for a re-read.
 - **test-fixtures:** on a ⟦rule⟧, the ⟦fixture⟧ records that pin it. The field is typed to one kind, so its values are bare fixture slugs: `test-fixtures: [implied-root]`.
 - **narrates** (explanations): the records an ⟦explanation⟧ describes. A change to any of them marks the explanation stale.

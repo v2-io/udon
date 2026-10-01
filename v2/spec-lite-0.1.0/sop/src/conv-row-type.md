@@ -3,7 +3,7 @@ kind: convention
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-per: [row-type, landed-not-integrated, landed-may-be-missing]
+per: [row-type, landed-not-integrated, landed-may-be-missing, record-to-decision-links-for-now]
 depends: [def:outline, conv:outline]
 ---
 
@@ -29,14 +29,14 @@ depends: [def:outline, conv:outline]
   - the record is small, and its core is covered by the row's description, or still sits in `.int/` or influx, not yet moved out;
   - the record was refactored away and the outline wasn't updated.
 
-  Its ∂(doc-state) is then `missing`, and its ※ flag cells show `∅`, not `—` ([[conv:column-notation]]).
+  Its ∂(doc-state) is then `missing`, and its ※ flag cells show `∅`, not `—` ([[conv:column-notation]]). It has no `per:` either, so its decision citation also shows `∅`; the decision is found by searching `adr/` ([[decision:record-to-decision-links-for-now]]).
 - `landed` is a row-type and nothing else. The influx outcome is ⟦integrated⟧ (see [[def:integration]]).
 - A file's location says nothing about row-type. The outline is the authority. A drafted `proposed` or `exploratory` file in `src/` makes no claim of being canon.
 
 ## How a violation shows
 
 - A row with no row-type, or with a value outside the six.
-- A `landed` row whose record cites no decision.
+- A `landed` row with a document whose record cites no decision.
 - `landed` used anywhere as an influx outcome.
 
 ## Why
@@ -48,4 +48,3 @@ depends: [def:outline, conv:outline]
 ## Working notes
 
 - "Hypothesis-grade claims" were in Joseph's first list of things an outline can hold without a decision, "(I don't think those will apply here)". There is no row-type for them. If one is ever needed, it is a proposed new value.
-- **Where a `landed` row with no document cites its decision** is open. The violation "a `landed` row whose record cites no decision in ⟦per⟧" ([[conv:outline]]) has no record to look in.
