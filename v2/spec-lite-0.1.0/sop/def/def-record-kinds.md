@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [kind, objective, requirement, non-objective, principle, fitness, definition, rule, property, fixture, question, explanation]
-per: [kind-in-frontmatter, directories-organizational, fixtures-are-records, kind-change-is-dissolution, proxy-before-threshold, force-levels-four]
+per: [kind-in-frontmatter, directories-organizational, fixtures-are-records, kind-change-is-dissolution, proxy-before-threshold, force-levels-four, force-critical-is-ctq]
 depends: [def:record]
 ---
 
@@ -36,7 +36,7 @@ depends: [def:record]
 
 - Two things are separate ⟦kind⟧s exactly when they go wrong differently and are fixed differently. A new kind is admitted only by exhibiting a thing that fails and is repaired differently from every kind already declared.
 - The kinds that exist in a store are the ones its `.vsect/kinds.yaml` declares. The kinds map, not any ⟦outline⟧, is what says what the corpus is.
-- Only ⟦rule⟧s and ⟦objective⟧s carry normative force in the spec store. RFC 2119 capitals appear nowhere else there.
+- Only ⟦rule⟧s and ⟦objective⟧s carry RFC 2119 normative words in the spec store; the capitals appear nowhere else there. That is separate from the ⟦force⟧ field, which objective-level kinds carry: objectives always, principles and fitness where they have one ([[decision:force-critical-is-ctq]]).
 - A ⟦decision⟧ never makes a ⟦property⟧ true, and a good ⟦explanation⟧ is never evidence for a rule.
 - A ⟦record⟧'s kind never changes. What looks like a change of kind is a dissolution of the old record and the emergence of a new one (see [[conv:kind-change]]).
 - ⟦force⟧ is a field, not a set of kinds. Objectives, ⟦requirement⟧s, and ⟦non-objective⟧s fail and are repaired the same way, so separate kinds would fuse kind with severity.

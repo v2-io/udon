@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [per, depends, test-fixtures, narrates, flags, awaiting-second, awaiting-decision, needs-work, verification-level, evidence, record-status, layer, force, serves, threshold-on, committed]
-per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records]
+per: [flags-on-docless-rows, per-kind-verification-and-status, no-max-for-lite, fixtures-are-records, kind-slug-references, open-questions-in-working-notes, typed-reference-fields, force-levels-four, decider-per-store, notes-disposition-at-freeze, links-to-unwritten-records, force-critical-is-ctq]
 depends: [def:record, def:record-kinds, def:outline]
 ---
 
@@ -37,7 +37,7 @@ depends: [def:record, def:record-kinds, def:outline]
 ### Spec-store fields
 
 - **layer** (rules): which part of lite a ⟦rule⟧ governs: `source` · `element` · `value` · `text` · `reserved` · `anomaly` · `tree`. It is not a kind.
-- **force** (objectives): `non` (an explicit non-goal) · `desired` (met if possible) · `required` · `critical`. A requirement is an objective with force `required` or `critical` ([[decision:force-levels-four]]). What separates `required` from `critical` is still open with Joseph.
+- **force** (objective-level kinds: objectives, and principles and fitness where they carry one): `non` (an explicit non-goal) · `desired` (met if possible) · `required` (an intention for this version) · `critical` (critical to quality, CTQ: because of other factors, expected to have an outsized impact on the success or utility of the spec). A requirement is an objective with force `required` or `critical` ([[decision:force-levels-four]], [[decision:force-critical-is-ctq]]). It is a field of its own: the RFC 2119 words in a Statement don't stand in for it.
 - **serves** (fitness): the ⟦principle⟧ or principles a ⟦fitness⟧ measures progress toward.
 - **threshold-on** (objectives): the ⟦fitness⟧ whose minimum passing value this ⟦objective⟧ sets.
 - **committed** (threshold objectives): the date the threshold was set. Every measurement it gates must be dated after this.

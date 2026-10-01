@@ -17,7 +17,7 @@ depends: [def:outline, def:decision]
 - Rows the SOP side adds to the spec outline carry row-type `example`, `proposed`, or `template`. They never carry `landed`, because landing needs a lite decision.
 - The SOP side does not write lite's decisions in `adr/`. Examples:
   - converting the eight seeded decisions into ADRs;
-  - setting ⟦force⟧ on an objective;
+  - setting ⟦force⟧ on an objective, principle, or fitness;
   - routing lite's open questions to closers.
 
   These are the udon team's.

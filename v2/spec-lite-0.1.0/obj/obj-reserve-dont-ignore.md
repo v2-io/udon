@@ -48,7 +48,7 @@ No ⟦verification-level⟧ is written. The objective ladder in `.vsect/kinds.ya
 
 ## Working notes
 
-- **⟦force⟧ is empty on purpose.** Setting it is the udon team's ([[sop/dir:scope]]). The agent who first drafted this record leaned toward `critical`, because `.int/README.md` calls this "the one contract" and Joseph's words in *Grounds* are emphatic; `required` is the alternative. What separates the two is still open with Joseph ([[sop/decision:force-levels-four]]). When force is decided, cite that decision in `per`.
+- **⟦force⟧ is empty on purpose.** Setting it is the udon team's ([[sop/dir:scope]]). The lean is `critical`. `required` would say this is an intention for lite 0.1.0; `critical` (CTQ) says that, because of other factors, it is expected to have an outsized impact on whether lite succeeds ([[sop/decision:force-critical-is-ctq]]). The other factors here: `.int/README.md` calls this "the one contract", it binds every future full version as well as this one (*What discharges it*), and a break would silently change the meaning of documents already written. When force is decided, cite that decision in `per`.
 - **`per: [reserve-not-ignore]` dangles until the udon team writes `adr/reserve-not-ignore.md`.** The seeded rendering in `.old/vsect-init/DECISIONS.md` never answers a live lookup, and it records "Quote: not located". The quotes in *Grounds* are that Quote, now located. Once the ADR carries them, *Grounds* can shrink to a citation.
 - **Open questions.** The numbers are files in `.int/pre-design/`.
   - **12 Q1: what "accepts" means.** Under option B, where warnings are allowed, every warning's keep-shape becomes a permanent promise. Under C, each anomaly is marked forward-stable or not.
