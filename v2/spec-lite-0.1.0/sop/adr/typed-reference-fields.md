@@ -59,6 +59,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 
 *Authority: Joseph ruled "[[kind:slug]] everywhere", and this carves an exception, so it is a partial revision of his ruling (`supersedes`: [[decision:kind-slug-references]]). His ratification of this record is what makes the carve-out his.*
 
+*How this meets the exemplar condition of the delegation: it narrows a ruling of Joseph's, so it is offered as a partial revision for his ratification to decide, rather than as a refinement that needs none.*
+
 ### Positive Consequences
 
 * Frontmatter stays short where the kind is implied.

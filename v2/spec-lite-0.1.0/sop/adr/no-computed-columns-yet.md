@@ -52,6 +52,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it is the weakest of these on that test. It keeps the outline true, but the stronger option, writing the linter, wasn't weighed when it was decided; the working notes say so.*
+
 ### Positive Consequences
 
 * No hand-typed reflection can drift.

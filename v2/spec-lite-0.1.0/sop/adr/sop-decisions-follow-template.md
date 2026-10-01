@@ -56,6 +56,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it holds the SOP store to the template Joseph asked for, and leaves every Outcome untouched so ratification can trust them. The second look checked that for 22 of the 26 (`sop/influx/adr-check-notes.md`).*
+
 ### Positive Consequences
 
 * A reader learns one decision shape.

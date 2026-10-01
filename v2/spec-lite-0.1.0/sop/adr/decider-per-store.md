@@ -31,7 +31,7 @@ leaves-open: []
 
 ## Assumptions
 
-* The udon team may designate its own decider. (**inferred, unconfirmed**)
+* The udon team may designate its own decider. (**recorded**: the coordinator's, at decision time; it is the decider under delegation)
 
 ## Considered Options
 
@@ -52,6 +52,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 > If you are looking at everything holistically and thoughfully to be an exemplar for moving the udon work forward which will move verisectorium and the agentic systems framework / theory forward-- I am happy to defer to you for the rest of those and other decisions related to the setup. Just mark decisions as made by you from authority given from me and as still needing ratification (where applicable)
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
+
+*How this meets the exemplar condition of the delegation: it keeps Joseph's definition of the flag ("waiting for steward to review and make a decision") while leaving lite's decisions to the udon team ([[decision:our-side-is-example]]).*
 
 ### Positive Consequences
 

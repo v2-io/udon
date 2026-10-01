@@ -50,6 +50,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it follows Joseph's own counter-example form (`![[dat/stub.yaml#C7]]`, §1.6): one file, one parse, and cases named so that each can be cited. The `why:` it names is now the kept form under [[decision:notes-disposition-at-freeze]].*
+
 ### Positive Consequences
 
 * Any YAML parser reads it in one go; `dat/implied-root.yaml` already has this shape.

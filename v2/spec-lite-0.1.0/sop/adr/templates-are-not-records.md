@@ -50,6 +50,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: a template asserts nothing, so letting it answer a lookup would make the corpus claim something nobody said.*
+
 ### Positive Consequences
 
 * Templates can sit beside the records they shape.

@@ -52,6 +52,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
 
+*How this meets the exemplar condition of the delegation: it takes the outline's concern-2 rows at their word, so the outline Joseph defined is what makes a link to a proposed record meaningful, and a true dangle stays an error.*
+
 ### Positive Consequences
 
 * Records can name what is planned without pretending it exists.

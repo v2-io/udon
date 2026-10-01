@@ -32,7 +32,7 @@ Records in one store sometimes need to cite records in another: the spec store's
 
 ## Assumptions
 
-* Store roots are stable enough to declare once per store. (**inferred, unconfirmed**)
+* Store roots are stable enough to declare once per store. (**recorded**: the coordinator's, at decision time; it is the decider under delegation)
 
 ## Considered Options
 
@@ -56,6 +56,8 @@ Made under the authority Joseph delegated on 2026-09-30 ([[decision:setup-delega
 > If you are looking at everything holistically and thoughfully to be an exemplar for moving the udon work forward which will move verisectorium and the agentic systems framework / theory forward-- I am happy to defer to you for the rest of those and other decisions related to the setup. Just mark decisions as made by you from authority given from me and as still needing ratification (where applicable)
 >
 > — Joseph, 2026-09-30 (`sop/influx/jaw-proposal-and-feedback.md` §1.11)
+
+*How this meets the exemplar condition of the delegation: it extends Joseph's one reference form rather than adding a second, and leaves resolution to the store that owns the record, as his kinds-file design does.*
 
 ### Positive Consequences
 
