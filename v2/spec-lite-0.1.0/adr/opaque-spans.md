@@ -14,7 +14,7 @@ informed: [parser implementers]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: opaque-span-escapes-strict, how: revised, scope: partial}]
 closes: ["07 Q1", "07 Q2", "07 Q3"]
 leaves-open: ["07 Q4", "07 Q5", "89"]
 ---

@@ -511,3 +511,15 @@
 ### Joseph's answer (whole message)
 
 > I'm happy to leave `|p Intro text |em x` decision whether 'Intro text' is $main or first child with same-line set up to you.  *You* can also potentially leave it open to go either way to the parser implementation. Actually-- pick a side (child is fine, I like it), and note in there that if the parser implementer or later consumer has a compelling argument to switch it, we can definitely revisit.
+
+*(Agent text, summary: the agent reported the same-line-material record written; then laid out the shape of text in the tree as six leans with examples — consecutive text lines are one text node with no final newline; inline forms (`|{…}`, `@{…}`, `;{…}`) split text into sibling children; the element's own line and the lines below stay separate nodes; blank lines between text lines are text, at the edges or between other children they're meta only; a `;` comment line splits the text; spaces past the left edge are content — and asked whether a trailing `\` should keep a final newline in lite or stay an error for now. Still pending: the four escape calls and the no-break space.)*
+
+### Joseph's answer (whole message)
+
+> escape sequence responses
+> 1. agree
+> 2. agree about the surrogate pairs
+> 3. I can support dropping \v and \a
+> 4. It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character). That said, I'm fine erroring as reserved for right now.
+>
+> With your \n = three things note-- it's true. I'm not worried about the string versions but I'm now wondering if, for the other opaque delimiters we might be better off in lite-0.1.0 at least only allowing \\ and \<opening-or-closing-delimiter> and *erroring* on every other backslash use for now until something asks us to make an exception-- similar to the "..." unrecognized escape attempts.

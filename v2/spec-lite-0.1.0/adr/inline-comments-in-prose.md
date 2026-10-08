@@ -14,7 +14,7 @@ informed: []
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: opaque-span-escapes-strict, how: revised, scope: partial}]
 closes: ["10 Q2"]
 leaves-open: ["59", "13 Q6"]
 ---

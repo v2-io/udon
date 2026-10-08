@@ -2,7 +2,7 @@
 kind: decision
 awaiting-second: true
 awaiting-decision: false
-needs-work: true
+needs-work: false
 title: "Quoted strings are essentially Ruby's: escapes in \"…\" (an unknown one is an error; #{…} is text), only \\' in '…', the same for quoted names and labels; a raw newline inside is an error"
 status: accepted
 decided-by: steward
@@ -54,7 +54,13 @@ Chosen: `"…"` and `'…'` are essentially Ruby strings.
 - **The same rules apply in quoted names and labels.** Joseph's example: `|'something "hey"\'' weird node name` is an element named `something "hey"'`, followed by `$main` text `weird node name`.
 - **A raw newline inside a quoted string is an error** ([[decision:errors-stop-parsing]]); write `\n` instead, in `"…"`. A `\` at the end of a line inside a string is an error too (the agent's statement in the message Joseph answered "right"; it also follows from the newline error).
 - This is separate from the rule for `<…>`, `@{…}` and `;{…}` ([[decision:opaque-spans]]).
-- **The exact escape list is still open.** Joseph thinks the mainline 0.9 spec has an improved set, and suggests lining it up with lite's number notations; an agent is researching it (`.int/escape-sequences-2026-10-08.md`). The agent's proposal to him was Ruby's set (`\\ \" \n \t \r \0 \s \e \a \b \f \v \xHH \uHHHH \u{…}` and octal).
+- **The escape list for `"…"`**, settled the same day from the research report (`.int/escape-sequences-2026-10-08.md`, which found no earlier set in mainline 0.9) and Joseph's answers:
+  - `\\` `\"` `\'` give the character; `\n` `\t` `\r` `\f` `\e` give LF, TAB, CR, FF, ESC; `\/` gives `/`; `\#` gives `#`.
+  - `\0` gives U+0000, only when no digit follows it (a leading `0` never quietly means octal, as `0755` is decimal).
+  - `\xHH`: exactly two hex digits, value at most `7F`.
+  - `\uHHHH`: exactly four hex digits; a correctly ordered high-low surrogate pair (`\uD83D\uDE00`, as Python's JSON writer emits) is one code point; a lone surrogate is an error.
+  - `\u{…}`: hex digits, with `_` and leading zeros allowed by the integer digit rule; each value at most `10FFFF` and not a surrogate; several code points separated by spaces. Spacing details (at least one code point, single spaces between them, no space just inside the braces) are the report's lean, adopted by the coordinator as an agent default.
+  - **Errors:** `\s` (Ruby's space; refused so `"\s+"` can't silently lose its regex meaning); `\v` and `\a` (dropped); `\b` (reserved for now); octal escapes (`"\033"`, `"\1"`); `\c…`, `\C-…`, `\M-…`; `\U…`, `\N{…}`, `\o{…}`, `\x{…}`; and any other `\X`.
 
 ### Quote
 
@@ -70,7 +76,15 @@ Chosen: `"…"` and `'…'` are essentially Ruby strings.
 >
 > — Joseph, 2026-10-08 (same file, later message)
 
-*His words: "I think … should essentially be just like ruby strings"; on newlines, "I'm going to lean with you"; on the edges, "right" and "go ahead and error". His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
+> escape sequence responses
+> 1. agree
+> 2. agree about the surrogate pairs
+> 3. I can support dropping \v and \a
+> 4. It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character). That said, I'm fine erroring as reserved for right now.
+>
+> — Joseph, 2026-10-08 (same file, later), answering the coordinator's relay of the report: 1 = `\s` an error; 2 = surrogate pairs; 3 = drop `\v` `\a`; 4 = `\b` an error
+
+*His words: "I think … should essentially be just like ruby strings"; on newlines, "I'm going to lean with you"; on the edges, "right" and "go ahead and error". On the list: "agree" (`\s`, surrogate pairs), "I can support" (`\v` `\a`), "I'm fine erroring as reserved for right now" (`\b`). The rest of the list is the report's proposal as relayed to him, unobjected (assent by non-objection); the `\u{…}` spacing details are an agent default. His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 
@@ -82,6 +96,8 @@ Chosen: `"…"` and `'…'` are essentially Ruby strings.
 
 * Windows paths and regexes in `"…"` need doubled backslashes, or `'…'`.
 * A single-quoted string can't hold a newline at all (no raw newline, no `\n`).
+* JSON strings containing `\b` (backspace) are errors until `\b` is allowed.
+* Ruby writers lose octal (`"\033"`, use `\e`), `\s`, and the silent drop of unknown escapes.
 
 ### What changes
 
@@ -91,10 +107,10 @@ Chosen: `"…"` and `'…'` are essentially Ruby strings.
 ## Reopen when
 
 * A Ruby escape proves surprising in practice.
+* `\b` is wanted, e.g. for terminal output (Joseph: "It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character)"). Note that JSON writers emit `\b`, so JSON pasted into lite may hit the error.
 
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
 
-- Open (needs-work): the exact escape list, after the 0.9 research lands in `.int/escape-sequences-2026-10-08.md`.
 - His words group "arrays, typed values, keys, and embeds" under "general matching + escaping". That is the first time he has said `[…]` lists and `[key]` brackets share the opaque spans' rule; it wants its own Quote when the list and key rules are written.
