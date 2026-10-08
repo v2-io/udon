@@ -28,125 +28,71 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 
 # The specification
 
-*The skeleton in the order the spec is meant to be assembled: each part uses only what comes before it. Rows are `proposed` until their records are written; `gap` marks a known hole whose records aren't yet named. Numbers in parentheses are the pre-design questions in `.int/pre-design/` that a row's record will have to answer; they move into the record's working notes when it is drafted. Rows will split and merge as records are drafted: reordering or re-cutting a row costs nothing.*
+*Organized by what a parse produces, lexer before structure: each record uses only what comes before it. Rows are `proposed` until their records are written. "Rests on" names the decisions in `adr/` a record will cite in its `per:`; numbers in parentheses are the pre-design questions in `.int/pre-design/` it still has to answer (they move into its working notes when it is drafted). Rows will split and merge as records are drafted; reordering costs nothing. Organization: [[decision:spec-organization-delegated]]; this cut follows the reorg spike in `.int/reorg-spike-2026-10-08.md`.*
 
-## *Part* 0 — Purpose
+*Three kinds of thing, kept apart. A **record** states a rule a conforming parser must implement, once, with its own errors and warnings and why. A **fixture** (`dat/`) is a specific input and its tree or error; every edge spelling is a fixture, pinned by one sentence in the record that owns it. A **companion** is derived from the records, generated where it can be, and never introduces a rule.*
 
-*What lite is for. Every later decision is argued from these. Each objective's force is Joseph's to set; candidates for later versions are in `obj.future/candidates.md`.*
+## *Part* I — What a parse produces
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[obj:reserve-dont-ignore]] | Any «document» a lite parser accepts produces the same «tree» under every future full UDON; reserved spellings are errors |
-| proposed | [[obj:represent-xml-html]] | Lite can represent XML and HTML: elements, attributes, and mixed content, in order |
-| proposed | [[obj:represent-structured-data]] | Lite can carry the data people use JSON and YAML for: records, lists, typed scalars |
-| proposed | [[obj:markdown-text-passes-through]] | Markdown written as lite text stays text, except at named collisions; lite doesn't parse it |
-| proposed | [[obj:no-interpretation]] | (non-objective) Lite resolves, evaluates and interprets nothing: no references, directives, or typed `<…>` contents |
-| proposed | [[prin:simplest-grammar-without-surprise]] | Prefer the simpler grammar, short of surprising the agents who use it, weighed by how often the case occurs |
-| proposed | [[prin:one-rule-everywhere]] | A construct is read by the same rule wherever it appears |
-| proposed | [[prin:demand-before-grammar]] | Choose rules for what lite's users need, not for what is easy in the grammar |
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[def:document]] | «document» (the source), «tree», «root-node», «meta» (84 Q4) | implied-root, ast-centric, forward-compat-aspiration |
+| proposed | [[def:node]] | Element (optional name, ordered attributes, ordered children), text, comment, fence; what each carries; where `$main` sits; structure positions (13, 60, 61) | line-ownership-main, sameline-element-is-child |
+| proposed | [[def:typed-value]] | «typed-value» explicit and implicit, «reference», lists, elements as values; what a repeated label gives a consumer (65, 66, 72, 13 Q4) | explicit-typed-value-in, term-typed-value, references-in, node-valued-attributes-in, opaque-spans |
+| proposed | [[def:anomaly]] | «error» (parsing stops, no «tree») and «warning» (correct lite that may not do what was meant) (12) | errors-stop-parsing, reserved-is-an-error |
+| proposed | [[rule:tree-transcript]] | The one written form of a «tree», so fixtures and parsers in different languages compare mechanically (86) | ast-centric |
 
-## *Part* I — Vocabulary and the tree
+## *Part* II — Lines and columns
 
-*What a parse produces, named before the rules that produce it, because lite is specified as the tree.*
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[rule:lines-and-columns]] | UTF-8, BOM, line endings, final newline; «empty-line» and «blank-line»; only U+0020 sets columns, and other whitespace that could shift a column is an error (63, 79, 80) | blank-and-empty-lines, column-shifting-whitespace-is-an-error |
+| proposed | [[rule:nesting]] | The one nesting rule; items later on a line sit at their true columns; blank lines never change it; comment lines and fence closers are lines; where blank lines sit in the «tree» (52, 55, 90) | sameline-element-is-child, implied-root, blank-and-empty-lines, fence-closer-is-a-line |
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[def:document]] | «document», «tree», «root-node», «meta» |
-| proposed | [[def:node]] | What kinds of node a «tree» holds (element, text, comment, reserved span) and what each carries (13) |
-| proposed | [[def:typed-value]] | «typed-value», explicit `<…>` and implicit, and what "bare" means (66, 72) |
-| proposed | [[def:anomaly]] | «anomaly», warning, error, keep-shape (12) |
-| proposed | [[rule:tree-transcript]] | One written form of the «tree», so fixtures and parsers can be compared mechanically (86) |
+## *Part* III — Delimited forms
 
-## *Part* II — Source text
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[rule:delimited-forms]] | The shared law: a delimited form closes only at its closer; unclosed is an error; a newline inside is an error unless the form says otherwise; matched pairs need no escape (05) | errors-stop-parsing, opaque-spans |
+| proposed | [[rule:quoted-strings]] | `"…"` and `'…'` as in Ruby, in values, names and labels (75) | quoted-strings-like-ruby |
+| proposed | [[rule:lists-and-keys]] | `[…]` as a list and as a `[key]`: items, separators, empty, nesting (83, 89) | errors-stop-parsing |
+| proposed | [[rule:opaque-spans]] | `<…>`, `@{…}`, `;{…}`: raw text in the «tree», any `\X` gives X (07, 89) | opaque-spans, explicit-typed-value-in, references-in, inline-comments-in-prose |
+| proposed | [[rule:inline-elements]] | `\|{…}`: its extent, attributes versus interior text, several on one line (10, 50, 51) | inline-elements-in |
+| proposed | [[rule:fence-closing]] | Openers of N or more backticks, no backtick in the label, the closer and what may follow it; how this differs from CommonMark (11 Q3) | fence-nesting-by-length, fence-closer-is-a-line, fence-line-comments |
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:encoding-and-lines]] | What a line is: UTF-8, BOM, CRLF, a final newline, and invalid bytes (79) |
-| proposed | [[rule:columns-and-indentation]] | How columns count, including after non-ASCII text; what a tab in indentation does (63, 79 Q4) |
+## *Part* IV — The line
 
-## *Part* III — Structure
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[rule:markers-and-reserved]] | What opens what at a structure position, the guards, and the bare list of what lite refuses and where (09, 56, 87 in part) | reserved-list-form, reserved-is-an-error, reserved-line-starts-in-prose, references-in, suffixes-lose-special-status |
+| proposed | [[rule:element-head]] | Names, keys, traits, the former suffix characters, anonymous elements, quoted names; duplicate name-and-key pairs (06, 54, 58, 61, 69, 76, 77) | suffixes-lose-special-status, quoted-strings-like-ruby |
+| proposed | [[rule:line-scan]] | Who owns the rest of a line, on element and attribute lines alike: `$main`, where an unquoted value ends, same-line elements as children or as an open label's value; a label with no value is an error (01, 02, 53, 71, 73, 12 Q2) | line-ownership-main, sameline-element-is-child, node-valued-attributes-in, errors-stop-parsing |
+| proposed | [[rule:bare-values]] | The frozen typed set — integers, floats, booleans, nil — and every edge spelling, pinned by fixtures (66, 72) | term-typed-value |
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:implied-root]] | Exactly one «root-node», never spelled; top-level items are its children (04, 84, 89) |
-| proposed | [[rule:nesting]] | Deeper is a child, the same column a sibling, shallower closes; siblings at different columns (52) |
-| proposed | [[rule:blank-lines]] | What a blank line ends, and where it sits in the «tree» (55, 90) |
-| proposed | [[rule:comment-lines]] | What a `;` comment line owns: its own line, or the deeper lines under it too (78) |
+## *Part* V — Bodies
 
-## *Part* IV — The element line
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[rule:bodies]] | What lines deeper than an owner hold, for an element and an open label alike: the left edge, dedent with a warning, deeper marker lines as text, the top level; a label's first body line is typed; a label under an open value is an error; attributes after content warn (04, 57, 64, 74, 81, 88) | node-valued-attributes-in, nested-attributes-reserved, blank-and-empty-lines, errors-stop-parsing |
+| proposed | [[rule:comments]] | `;` blocks and what they own; framed ` ; ` on node lines; mid-text ` ; ` is text; `;{…}` in text (03, 59, 78) | framed-comments-on-node-lines, inline-comments-in-prose |
+| proposed | [[rule:fences]] | Where a fence opens and whose child it is; the body is never scanned; first-line dedent; `-` for verbatim; indentation in «meta» (11) | fence-body-indentation, fence-closer-is-a-line, fence-line-comments |
+| proposed | [[rule:text-escapes]] | `\` in text and on lines: the line-start escape, the column anchor, `\|{` and its kin (82) | — |
 
-*Everything from `|` to the end of an element's first line.*
+## *Part* VI — Files
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:element-names]] | Which characters open and continue an element name; case; Unicode (76, 69, 08) |
-| proposed | [[rule:suffix-characters]] | What `? ! * +` are once their special status is gone (06) |
-| proposed | [[rule:keys-and-traits]] | What `[…]` and `.trait` hold, how many, and duplicate name-and-key pairs (77, 54, 58) |
-| proposed | [[rule:anonymous-elements]] | Which spellings open a nameless element, and what the «tree» says for it (61) |
-| proposed | [[rule:line-ownership]] | Who owns the rest of a line after the name, on an element's line and on an attribute's line alike (01, 02, 51, 53, 71, 73) |
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[rule:documents-and-files]] | One document per file; whether a file says it is lite (84) | implied-root |
 
-## *Part* V — Attributes and values
+## *Companions* — derived from the records; not the spec
 
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:attribute-lines]] | Where `:label` lines may sit under an element, and attributes written after content has begun (88, 12 Q3) |
-| proposed | [[rule:values-below-the-label]] | Values written on the lines under a label, including elements as values (74, 64) |
-| proposed | [[rule:unquoted-values]] | How far an unquoted value runs, and which spaces are part of it (71, 80) |
-| proposed | [[rule:quoted-strings]] | Quote kinds, what a string may contain, strings across lines (75, 05) |
-| proposed | [[rule:implicit-typing]] | Which bare spellings are numbers, booleans or nil, if any (66, 72) |
-| proposed | [[rule:explicit-typed-values]] | Where `<…>` ends, whether it spans lines, what the «tree» carries, where it may appear (07, 89) |
-| proposed | [[rule:lists]] | `[…]`: separators, empty, nesting, across lines (83, 05) |
-| proposed | [[rule:repeated-labels]] | What a label written more than once gives a consumer (65, 13 Q4) |
-| proposed | [[rule:missing-value]] | A `:label` with no value (12 Q2) |
-
-## *Part* VI — Text
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:text-blocks]] | The content base, dedentation, lines that shift left, marker lines inside text, which spaces and line breaks are content (04 Q1, 81, 57, 80) |
-| proposed | [[rule:escapes]] | The whole escape set and where each works (82, 02) |
-| proposed | [[rule:inline-elements]] | `\|{…}`: its extent, attributes versus interior text, several on one line (10, 50, 51) |
-| proposed | [[rule:inline-comments]] | `;{…}` and ` ; ` inside text (03, 10 Q2, 59) |
-| proposed | [[rule:fences]] | Lite's only raw form: fences as values, byte-exact or stripped, fences holding backticks (11) |
-| proposed | [[rule:markdown-in-text]] | What lite says about Markdown in text, including tables and pipes (87, 08) |
-
-## *Part* VII — Reserved syntax
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:reserved-spellings]] | Exactly which spellings lite refuses, and where: `!`, `@`, interpolation, and any floated or near-miss forms (09, 56, 62, 87) |
-| proposed | [[rule:reserved-keep-shape]] | What the «tree» keeps for a refused spelling, and for the lines under it (09 Q2–Q3) |
-
-## *Part* VIII — Validity
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:valid-lite]] | What "a lite parser accepts" means (12 Q1) |
-| proposed | [[rule:anomaly-inventory]] | Every anomaly lite reports: trigger, severity, what is kept (12) |
-| proposed | [[rule:limits]] | Nesting and size limits, and one-pass reading (91) |
-
-## *Part* IX — Files
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[rule:documents-and-files]] | Documents per file, and whether a file says it is lite (84) |
-
-## *Part* X — Properties of the rule set
-
-*Derived claims about the rules, each refutable by a counterexample and checked by someone other than its author.*
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[prop:forward-stability]] | Do lite's rules meet [[obj:reserve-dont-ignore]]? |
-| proposed | [[prop:determinacy]] | Does every input give exactly one «tree» and one anomaly list? |
-| proposed | [[prop:equivalences]] | Which different spellings give the same «tree», and which differ only in ornament (60, 85) |
-| proposed | [[prop:append-safety]] | Does appending a top-level block ever change what came before? (68) |
-
-## *Part* XI — Teaching and mappings
-
-| Row-type | Record | Statement |
-|---|---|---|
-| proposed | [[expl:lite-in-one-page]] | The whole of lite, for a newcomer |
-| proposed | [[expl:data-mappings]] | How lite trees correspond to JSON, YAML and XML, and what each loses (86) |
-| proposed | [[expl:common-mistakes]] | Near-miss spellings from other notations, each with its counter fixture (62) |
-| proposed | [[rule:writing-form]] | Whether lite says how tools should write lite (85) |
+| Row-type | Record | Statement | Rests on |
+|---|---|---|---|
+| proposed | [[view:anomalies]] | Every error and warning, generated from the records | — |
+| proposed | [[view:backslash]] | Every use of `\` in lite, in one place (02, 82) | — |
+| proposed | [[expl:markdown]] | What Markdown survives, and the named collisions, each with a counter fixture (08, 87) | — |
+| proposed | [[expl:lite-in-one-page]] | The whole of lite, for a newcomer | — |
+| proposed | [[expl:data-mappings]] | How lite trees correspond to JSON, YAML and XML, and what each loses (86) | — |
+| proposed | [[expl:common-mistakes]] | Near-miss spellings from other notations, each with its counter fixture (62) | — |
+| proposed | [[expl:writing-lite]] | Advice for tools and people who write lite: indentation, where closers go, quoting (85) | — |
+| proposed | [[prop:append-safety]] | Does appending a top-level block ever change what came before? (68) | — |
