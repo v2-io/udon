@@ -84,4 +84,4 @@ Not decided here: how far an unquoted value runs (71), escapes inside an open va
 ## Working notes
 
 - His 2026-09-29 lean on a `same_line` meta flag ("allow sameline=true metadata still…") is not recorded as a decision; meta is free to evolve ([[decision:forward-compat-aspiration]]).
-- Where `$main` material sits in the tree (13 Q3, 53), left open by the Outcome, is now [[decision:main-material-is-first-children]]: the element's first children, each marked `same_line`. `$main` remains the name of the parsing rule.
+- Where `$main` material sits in the tree (13 Q3, 53), left open by the Outcome: [[decision:main-is-an-attribute]] — an attribute, uniformly; same-line text never becomes a text child.

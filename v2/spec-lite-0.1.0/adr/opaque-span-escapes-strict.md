@@ -88,4 +88,4 @@ Joseph's earlier example `@{this { another thing \\ \"Hello\"\} }}` is now an er
 
 ## Working notes
 
-- Joseph earlier grouped "arrays, typed values, keys, and embeds" under one "general matching + escaping" rule ([[decision:quoted-strings-like-ruby]], working notes). Whether `[…]` lists and `[key]` brackets take this rule (with `\[` `\]`) is to decide when their rules are written.
+- `[key]` brackets take bracket matching and this escape rule (`\\`, `\[`, `\]`); `[…]` lists don't ([[decision:key-brackets-and-lists]]).

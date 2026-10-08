@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 title: "What an element's line gives to $main lands in the tree as the element's first children, in written order, each marked same_line"
-status: accepted
+status: superseded
 decided-by: delegated
 decided: "2026-10-08"
 updated: 2026-10-08
@@ -14,7 +14,7 @@ informed: [parser implementers, vsect]
 wording: verbatim
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: main-is-an-attribute, how: invalidated, scope: whole}]
 closes: ["13 Q3", "53"]
 leaves-open: ["13 Q5", "60"]
 ---

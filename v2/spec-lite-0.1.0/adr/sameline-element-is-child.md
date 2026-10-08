@@ -83,4 +83,4 @@ gives `table └ tr ├ td "A1" └ td "A2"`. The cost: `|card |title Hello` fol
 
 ## Working notes
 
-- "Remain `$main` values" in the Outcome is about parsing. In the tree, `$main` material is the element's first children, each marked `same_line` ([[decision:main-material-is-first-children]]), so `|ul |{li one} |{li two}` gives two children.
+- In the tree, `$main` is an attribute ([[decision:main-is-an-attribute]]), so `|ul |{li one} |{li two}` gives two `$main` values, and `|ul |li one` gives a child.

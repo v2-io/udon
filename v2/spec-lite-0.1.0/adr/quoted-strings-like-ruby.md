@@ -113,4 +113,4 @@ Chosen: `"…"` and `'…'` are essentially Ruby strings.
 
 ## Working notes
 
-- His words group "arrays, typed values, keys, and embeds" under "general matching + escaping". That is the first time he has said `[…]` lists and `[key]` brackets share the opaque spans' rule; it wants its own Quote when the list and key rules are written.
+- His words grouped "arrays, typed values, keys, and embeds" under "general matching + escaping". Asked later, he narrowed it: key brackets share that rule, lists are "their own thing completely" ([[decision:key-brackets-and-lists]]).

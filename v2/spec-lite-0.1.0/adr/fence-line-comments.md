@@ -1,11 +1,11 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "A framed ` ; ` comment may follow a fence opener's label and a fence closer; anything else after a closer is an error"
 status: accepted
-decided-by: delegated
+decided-by: supported
 decided: "2026-10-08"
 updated: 2026-10-08
 deciders: ["udon-team agent (agent, Opus 5.5) under delegated authority (Joseph, 2026-10-08: \"I'll leave it up to you\"; no grant slug exists)"]
@@ -56,7 +56,11 @@ make build
 
 The grant: Joseph, 2026-10-08, "I'll leave it up to you whether or not to allow a ' ; ' comment after the backticks on the same line, but recommend an error/failure on anything else. […] Comment being allowed after the fence opener on its line is up to you as well, but if it's no on either or both of those mark it as 'open for future discussion' or something equivalent." (`.int/STEWARD-VERBATIM.md`)
 
-*The grant reserves review only for a "no"; `awaiting-decision` is kept true as a courtesy, so Joseph sees the delegate's call.*
+> I support your decision on the comments
+>
+> — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`, later)
+
+*The delegate's call; Joseph has since supported it, so `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 
@@ -79,4 +83,3 @@ The grant: Joseph, 2026-10-08, "I'll leave it up to you whether or not to allow 
 ## Working notes
 
 - Consequence, confirmed by Joseph ("I like our rules (recorded)"): a body line starting with N or more backticks followed by other text is a closer with trailing text, so an error ([[decision:fence-closer-is-a-line]]).
-- `awaiting-decision` stays true for the ` ; ` allowance only: Joseph has acted on the error part ("I like our rules (recorded)", on its consequence for backtick lines with trailing text), but his words don't touch the allowance itself.

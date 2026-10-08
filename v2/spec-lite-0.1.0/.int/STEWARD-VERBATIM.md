@@ -523,3 +523,43 @@
 > 4. It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character). That said, I'm fine erroring as reserved for right now.
 >
 > With your \n = three things note-- it's true. I'm not worried about the string versions but I'm now wondering if, for the other opaque delimiters we might be better off in lite-0.1.0 at least only allowing \\ and \<opening-or-closing-delimiter> and *erroring* on every other backslash use for now until something asks us to make an exception-- similar to the "..." unrecognized escape attempts.
+
+*(Agent text, summary: the agent reported both escape decisions recorded; noted that Joseph's earlier example `@{this { another thing \\ \"Hello\"\} }}` is now an error at `\"` (a `"` inside a reference never needed escaping), and asked whether `[…]` lists and `[key]` brackets follow the strict opaque-span escape rule — `|el :tags [a\]b c] :k[x\]y]` — or 0.10.0's rule that a backslash mid-word is literal, leaning toward the strict rule.)*
+
+### Joseph's answer (whole message)
+
+> consequences: understood, agreed.  and #2, you're right-- key-brackets should follow the same rules, but arrays are their own thing completely-- multiple whitespace delimited values.
+>
+> Would you recapitulate the remaining things that haven't been addressed-- it will save me from hunting the scrollback
+
+*(Agent text, summary: on request, the agent recapitulated what was open: (1) whether "key-brackets follow the same rules" means only the escape and matching rules carry over, the inside still a value — `|step[1]` an integer — or that a key is an opaque raw-text span, leaning toward the first; (2) six leans on the shape of text in the tree — consecutive text lines one node with no final newline, so `|p Hello` and `|p` + `Hello` give the same tree apart from meta; inline forms split text into siblings; the element's own line and the lines below stay separate text nodes; blank lines between text lines are text, at the edges meta only; a `;` comment line splits text; spaces past the left edge are content; (3) leave the trailing `\` final newline out of lite for now; (4) keep the no-break space an error where it could set a column; plus two confirmations (fence-line comments; node-valued attributes' "see what cluster 2 does" follow-up) and a list of questions coming next.)*
+
+### Joseph's answer (whole message)
+
+> 1. (keys) -- You're right-- I also forgot about key particulars. I agree with your lean toward (a) -- I do worry about "string" being its own distinct type from "text" :-)
+>
+> 2. `|p Hello` I would have thought would be |p with an attribute $main="Hello".  Is this question asking about default behavior of $main? I don't understand your third list item as I thought that was decided by $main vs $children as well. That's kind of a crucial thing to udon and the spec-- newline handling-- I thought it would be super clear by now and I'm now very worried that it seems it's not properly understood or documented?
+>
+> 3. I'm ok leaving it out but only if the earlier undiscussed still issue of blank lines at the edges rules differently from your lean. Otherwise there's no workaround. Which one would you prefer?
+>
+> 4. Please tell me your reasoning, as there's no ambiguity about column positions with that character in particular.
+>
+> confirmations:
+> - I support your decision on the comments
+> - Don't know what you're asking to confirm here. I still lean toward keep them.
+>
+> Let's adjudicate all of this above before moving on to your not decided yet list.
+
+*(Agent text, summary: the agent said the newline rules are 0.10.0's (§7.2, §7.4) and unchanged, admitted presenting them as fresh leans; flagged a conflict — it had recorded Joseph's "child is fine, I like it" as option B (all same-line material becomes the element's first children with `same_line` meta), under which `|p Hello` gives a text child, not `$main="Hello"`, which he now expected — and asked which he meant; preferred keeping 0.10.0's trailing ` \` for a final newline with edge blank lines as ornament; revised its no-break-space lean to one column plus a warning; recorded keys as (a).)*
+
+### Joseph's answer (whole message)
+
+> I read it as you only asking about *|p*'s text in `|p Intro text |em x` -- the reason I was tentatively ok with p's text being a child instead of $main was because |em x (|em with $main="x") is a child of |p and therefore we don't have any of the other weirdness to worry about that constituted the whole reason for having $main distinct in the first place. Were you suggesting we completely get rid of $main?
+
+*(Agent text, summary: the agent confirmed that option B as framed and recorded removed `$main` from the tree for every element (keeping it only as the parsing rule), broader than Joseph meant, and said it would supersede the record; it asked whether his case gets its own rule — "mixed": text on the element's line becomes a child only when a node follows it on the line — or `$main` is uniformly an attribute, leaning uniform: under the mixed rule, deleting ` |em x` would move "Intro text" from child to `$main`, the retroactive shape change he objected to in August, and HTML consumers already read `$main` as first inner content.)*
+
+### Joseph's answer (whole message)
+
+> You can see from the record that it took me quite a while to be reconciled with $main, and then I tried to back out of it again more recently, only to realize the more I thought about all of the edge cases etc. that it really did solve so much:  sameline (whether started with a node or an attribute) started to converge on a simple set of "node nesting + attributes-and-values" -- so "children", yes-- if they are nodes nested in a parent node. *text children* -- never due to how it complicates everything. While I ended up swinging back to being in favor of / reconciled with $main as long as the AST interactions can make it transparently effectively the first child if/when expected -- it grew on me for other reasons-- [mostly] the fact that in practice, text on the same line as the node it's associated with has a different semantic meaning than children text. From a data structure perspective it often tends to be more like the "name" or heading or something-- not the same semantic space as indented child text. In practice, one rarely pulls text from a block up onto the node's line just to save a newline. THAT SAID-- if it turns out that we all end up using $main as the first child all the time anyway and that the concerns about text complicating sameline behavior turn out to be unfounded or overstated-- I am absolutely happy to revisit this stance.
+>
+> Let me know if that doesn't clear things up for now. If it does, you can record it and we can look at what's still open then
