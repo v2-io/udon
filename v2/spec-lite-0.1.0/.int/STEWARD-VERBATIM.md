@@ -499,3 +499,9 @@
 > Tab rule-- right.  I would however suggest that "blank-lines" allow tabs and other unicode ws because blank lines don't set indent/dedent levels.
 >
 > I think that inner some<tab>value throwing an error is the right call here. Excellent edge case to check.
+
+*(Agent text, summary: the agent reported the batch-b fixes and Joseph's string and blank-line answers applied, and asked about `|p Intro⇥text |em x`: the tab is inside `$main` text (exempt) but shifts `|em`'s column (the principle); it leaned error — a tab is fine only after the line's last marker. The tree-shape question — `$main` material as an attribute, or as the element's first children marked `same_line` — was still open.)*
+
+### Joseph's answer (whole message)
+
+> I forgot that $main can have a following node etc.-- I agree, error

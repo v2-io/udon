@@ -1,7 +1,7 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "A tab or other non-space whitespace where it could shift a node's column is an error"
 status: accepted
@@ -50,6 +50,7 @@ Confirmed reading (the agent's, which Joseph answered "right"): an error in inde
 |a :x some⇥value :y 1 ; error: not the final value (Joseph: "the right call")
 |a :x some⇥value      ; fine: inside the final value
 |a Some⇥title         ; fine: inside $main text
+|p Intro⇥text |em x   ; error: inside $main text, but |em follows on the line (Joseph: "I agree, error")
 ⇥|a                   ; error: tab in indentation
 ```
 
@@ -73,7 +74,11 @@ Not decided here: an indentation unit, and a tab in a text block's stripped inde
 >
 > — Joseph, 2026-10-08 (same file, later message)
 
-*His words: "I think"; then "Tab rule-- right", "I would however suggest" (blank lines), "the right call". His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]). `awaiting-decision` is true only for the `$main`-before-a-node conflict in Working notes.*
+*His words: "I think"; then "Tab rule-- right", "I would however suggest" (blank lines), "the right call". His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
+
+> I forgot that $main can have a following node etc.-- I agree, error
+>
+> — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`), on `|p Intro⇥text |em x`, which the exception as first worded would have allowed; so the confirmed reading ("before a later marker → error") governs
 
 ### Positive Consequences
 
@@ -95,12 +100,5 @@ Not decided here: an indentation unit, and a tab in a text block's stripped inde
 
 ## Working notes
 
-- **Open, with Joseph:** his two clauses can conflict when `$main` text sits *before* a later same-line node. The tab is inside `$main` text (the exception) but shifts `|em`'s column (the principle):
-
-  ```udon
-  |p Intro⇥text |em x
-  ```
-
-  The confirmed reading ("before a later marker → error") would make it an error; the exception, as worded, would allow it.
 - Tabs inside block text, past the indentation that places the line, shift no node's column, so under the confirmed reading they are content. That is the agent's reading of "any tab characters found in block mode"; only a case that genuinely conflicts needs to go back to him.
 - Pre-design 79 Q4 (CJK and combining characters before a same-line marker) rests on the same premise, "such whitespaces make the true column position ambiguous"; whoever decides it should start here.
