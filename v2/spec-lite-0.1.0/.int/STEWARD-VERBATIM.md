@@ -1,6 +1,6 @@
 # Joseph's words bearing on lite's decisions, verbatim
 
-*A kept copy of Joseph's typed words (and, where a decision rests on them, the agent text he was answering), so that decision records in `adr/` can quote a file in this corpus rather than a session transcript under `~/.claude/projects/`. Chronological. Nothing here is an interpretation: each entry is copied exactly, typos included, with its timestamp (UTC) and source. Agent text is labeled as such. Collected by the udon-team agent (Opus 5.5), 2026-09-30 Mountain time.*
+*A kept copy of Joseph's typed words (and, where a decision rests on them, the agent text he was answering), so that decision records in `adr/` can quote a file in this corpus rather than a session transcript under `~/.claude/projects/`. Chronological. Nothing here is an interpretation: each entry is copied exactly, typos included, except that from 2026-10-08 on, obvious misspellings are replaced by the corrected word in square brackets (`[elegances]`; the session transcript has the original), at Joseph's invitation that day, with its timestamp (UTC) and source. Agent text is labeled as such. Collected by the udon-team agent (Opus 5.5), 2026-09-30 Mountain time.*
 
 *Sources:*
 - *`5930da5d` = `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/5930da5d-2aed-49ea-ac8b-ed619c1d6a0d.jsonl` (the 2026-09-29 evening session that started lite).*
@@ -81,6 +81,44 @@
 ### 2026-09-30T01:01:23Z — Joseph
 
 > Excellent progress. Thank you for launching the sonnets. I recognize, by the way, that there has been a lot of churn and equivocation on the syntax-- that's what led to v2 and so forth and, for the record, after trying out lots of stuff, the decisions *have* gotten more principled and useful (e.g., doc root). One reason I gave that "older isn't priveleged over newer, provenance isn't priveleged" note was because I've found that otherwise the agents will get too caught up on trying to decide what I said when, which is really irrelevant as far as authority or prominence-- we just need to know what has been tried, what the reasoning was, why it did or didn't end up working etc. And with a lot of these I'll be able to fill in the blank of why I did or didn't decide something etc.  I suspect we'll want to do some serious grouping of the general search aspects.
+
+### 2026-09-30T01:55:54Z — Joseph (whole message; carried in 2026-10-08 from transcript `5930da5d`, where `.int/pre-design/STEWARD-2026-09-29.md` had only excerpts)
+
+> Ahhhhh, yes. OK, it's coming back to me. In particular there are real examples all over where the most natural thing to do is:
+>
+> ```udon
+> |term Lexicon Entry
+>   :added <2026-10-01>
+>   :status frozen
+> ```
+>
+> *that* was a crucial real-world use reason. (your number 3 I believe).
+>
+> Another thing *that may not have been discussed* but only thought at the time-- it allows us to treat sameline processing exactly the same if we are *sameline on an attribute*:
+>
+> ```udon
+> |element
+>    :attr this value :another <34>
+>    :third value
+>    :from |other-element
+>             and a child of it...
+> ```
+>
+> I'll call this "attribute-sameline" and conjecture that $main allows for fully consistent "sameline" behavior whether the line started with an element or an attribute.
+>
+> Some questions:
+> 5. everything named about an element is an attribute? Are you saying children should be $children or something? I don't know what that is talking about.
+>
+> #2 -- I don't know what you mean by "is a box" -- or what it has to do with `|el "hi" |child` ---- oh, are you saying that, without the rule:
+> |el hello |children ; <- potentially illegal, or warning at least that |children is interpreted as text.
+> |el "hello" |children ; <- same, but now the content (without $main) is "\"hello\"" -- causing even more confusion...
+> ...
+>
+> ok... conceptually I am more and more convinced that the feeling that $main was a good idea *is* a truly good idea, [even though] you say only 5 survives and it's the one I don't understand. All other treatments turns sameline into a whole set of special formatting and turns attribute sameline into a *separate* set of craziness.
+>
+> It seems.  This isn't a final verdict-- this is my current understanding. BTW-- if you look in v2/scratch-jaw.md you'll see *my* very simple running list of items that are coming up that I don't consider necessarily nailed down yet.
+
+*(The fenced-block wrappers around his two examples are the recorder's. "Your number 3" and "5" refer to the agent's table of what `$main` bought, reproduced in `.int/pre-design/STEWARD-2026-09-29.md`.)*
 
 ### 2026-09-30T02:04:15Z — Joseph
 
@@ -203,3 +241,234 @@
 ### 2026-10-01, about 03:45Z — Joseph (the reason for reserved-is-an-error)
 
 > To reiterate-- older 0.9 and 0.10 specs in udon (not lite) also deferred decisions about special syntaxes like ! directives and references-- but retained the bytes. That ambiguity caused a lot of confusion and made the language evolve a lot slower for a season-- hence the very deliberate call right now in udon-lite to go further and disallow them completely.
+
+## 2026-10-08 (Mountain), session `293bb1ee`
+
+*Source: `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/293bb1ee-c26c-4c95-bc14-6f01bedb2879.jsonl`. Copied by the udon-team agent (Opus 5.5) that picked up lite assembly that day. The agent text Joseph was answering is summarized, not quoted, and marked as such.*
+
+### Opening message — Joseph (excerpt)
+
+> One main thing I think we may need to consider is allowing @{...} references [after all]-- but not parsing or checking their inner values-- just having them in the AST as references and that's it.
+
+*(Agent text, summary: the agent listed six "root decisions" — what "the same tree" covers (meta/spans; raw text of opaque spans), line ownership, how much to reserve in prose vs Markdown pass-through, bare-value typing, node-valued attributes, raw content/fences — and on `@{…}` argued for carrying it as an opaque delimited span like `<…>`, forward-safe if its end rule is fixed now, the "same tree" promise allows a later parse of the interior, and its positions are settled; and asked whether the tree should call it a reference.)*
+
+### Joseph's answer (whole message)
+
+> Do you still feel the spec will need Parts I-XI and that many rows?
+> 1. Depends on your definition of "meta" and "spans" and "opaque spans" -- I vote yes, raw text, for typed delimited values (<...>) and references @{...}.
+> 2. And that is the final word unless you uncover a nuance that conflicts with some other "latest thinking"
+> 3. To discuss
+> 4. Not sure there's a question since that's been pretty stable, but discuss if needed.
+> 5. My lean is keep. If so, see what cluster 2 does to this "root decisions" list
+> 6. Didn't see what the decision to make is
+>
+> With the opaque delimited spans (typed values and references) -- I think we can adopt an interim convention of matched braces, warn and pseudo-close span on newline, and detect and unescape either just backslash-escaped brackets for that thing, or potentially consider any single backslash '\' followed by another character as just that next character-- e.g.:   `@{this { another thing \\ \"Hello\"\} }}`  ->  `this { another thing \ "Hello"} }` etc. -- some convention that is either already used, intuitive, and/or easily remembered etc.
+>
+> The rule on where it ends doesn't need to be fixed now if the eventual rule is *broader* than what we allow currently.
+> I'm actually not sure what you mean by "same tree" here and earlier.
+>
+> reference is the right name / direction as per address theory.
+>
+> ---
+>
+> Please don't feel somehow attached to the 9-section forty-five segment random stuff that the verisectorium agent put in place as an example without knowing anything really about udon. *You* are supposed to become the deep domain expert on this and co-owner, not him. I didn't look long enough to know for sure, but a brief glance made me suspect that it was (a) too much / much bigger than it needed to be for the official spec (I mean, look at jsons...), and (b) that it also wasn't necessarily organized in a principled way for a spec or for udon.
+
+*(Agent text, summary: the agent explained "same tree" as the forward promise's wording — any accepted document produces the same tree under every future full UDON — and proposed excluding meta from it; pointed out that "broader later" is safe only if lite refuses (errors on) what it doesn't define, e.g. a newline inside an opaque span, so what "accepts" means becomes a root question; leaned toward "any `\X` gives `X`" inside opaque spans, naming the regex/Windows-path cost; proposed a six-part spec organized by the tree; and listed the remaining roots: what "accepts" means, prose reservation, `|a |b`, fence length.)*
+
+### Joseph's answer (whole message)
+
+> wrt "same tree" -- let us downgrade that to an aspiration, not a directive or promise. Opaque spans for example now will be their own branch in the AST later, among other things. We can say that's a design aspiration where practical, and where impractical we attempt to make it as "compatible as possible".  I'm ok though turning the newline in the opaque spans into an error for now, with the caveat that the error message explains that '**lite** doesn't support newlines in ....' so that it doesn't get accidentally adopted in non-lite settings as a prohibition. If some user needs to accept it anyway with a warning we can give a command-line flag to disable it-- *when*/if it's requested/needed. Under this adjustment I think meta is clearly safe to evolve beyond lite.
+>
+> I'm OK with your lean on the opaque escaping -- note that it is still allowing unescaped *matched* brackets (which doesn't help the regex example, but would help, e.g., an html example or something).
+>
+> I will defer to you on the organization of the spec-- I *would* ask you to not feel so much like getting it "done" that you miss signs that it might want a different organization. Please watch for such indications / gut feels -- and launch a fork to do a reorg spike and come back with its solid opinion. (I would definitely think the fork would be right in this case because it would intuit what you're intuiting and know what you would want answered without you having to specify). Also feel free to launch fresh agents as de-novo auditors and validators as you see fit. One of the most valuable things for *me* when deciding on leans and tradeoffs has been to do some diffuse thinking where I construct lots of random permutations of the rules I'm considering-- almost always combining lots of them instead of just the one under the microscope in isolation. These are good advanced composite fixtures, but more specifically they become my "self-introspection" check on how *obvious* it feels, and when if ever it would *not* feel obvious or what it would preclude etc. etc.   Such a set of examples with the different ASTs it *could* create depending on which way something leans, and then a bunch of composite permutations that show it in [many] other contexts-- is by far the best way to communicate to *me* (fwiw) what the issues/tradeoffs are.  Just so you know, because it comes up in udon *all the time* unfortunately-- asking me to make decisions on P12 and B35.3(c) and on the "fragmantic capture" or something that is newly coined for this spec or otherwise ambiguous (like "same tree" -- which I was honestly reading as the doc->ast->doc->ast identity - ornamentation check)-- those kinds of summaries, questions, statements, requests, will *not* save time and will in fact bog the project down further :-) :-)
+
+*(Agent text, summary: on request, the agent restated the open questions as examples: (1) what prose gives up — a text block under `|post` with (a) `@alice said…` at line start, (b) `!important:…` at line start, (c) `email me @joseph or see @{faq}.`, (d) `Keep calm ; carry on.`, (e) `|Name|Role|`, plus where `@{…}` is recognized (prose, values, keys); (2) `|ul |li one` — child or `$main` value; (3) fences holding fences (N-backtick rule); (4) whether warnings still count as lite.)*
+
+### Joseph's answer (whole message)
+
+> 1.  I vote for strict-lean except ' ; ' only counts as a comment when part of sameline and with at least one space on each side. Comments: available on node or attribute started lines, and available as their own block, which also comments everything in that block that is indented further as per the usual with blocks and the indentation. (a), (b) => error,  (c) passed through + reference,  (d) passed through, (e) parsed as a node unless indented further than that in prose that has already started or escaped with \ or a space after the first pipe.
+>
+> sub-question: my lean: all three.
+
+*(Agent text, summary: the agent restated its reading of the answer above — `@name`/`!word` at a prose line start is an error, mid-line they are text; `@{…}` a reference in prose, recorded as a lean for values and keys too; comments only framed on element/attribute-started lines, plus `;`-line blocks owning deeper lines, mid-text ` ; ` now text (a change from 0.10.0); `|Name|Role|` opens an element except in deeper text, escaped, or pipe-space — and listed questions 2–4 as still open.)*
+
+### Joseph's answer (whole message)
+
+> wrt the difference between a lean and a ruling-- either one you can push back on as more understanding and other situations may demand, but it might help with the tone-- "We've got a problem here- due to such-and-such-ruling (upon which we predicated many other decisions) -- this other thing is now problematic it turns out..."  vs, for a lean, "Remember you were leaning toward this?....  If you reconsider that, it would clean up this new thing...."   -- [rulings] seem strong enough to essentially propagate into other decisions and tradeoffs, whereas leans shouldn't cost much to reconsider.
+>
+> Give me the full #2 again if you would. I'll give my thoughts on that one and then you can give me the next one (and so on) when you're satisfied we see eye to eye on the current one. The one thing that might be open for #1 is that note about 0.10.0 -- would you launch an agent to dig deep and find out what if any rationale there was behind the comment being available to prose lines.  OHH, btw-- I *do* think ;{...} comments, with essentially opaque spans [in between] with the same escape rules (matched {} and \ escape-all) as the others-- which *will* be available in prose. (strong lean unless someone has a reason it conflicts with something that is likely)
+
+*(Agent text, summary: the agent laid out whether a bare `|name` later on an element's line is a child (at its true column, "a line break you didn't type") or a `$main` value — history (every explicit statement says child; the value reading entered 0.10.0 through rewording), nine example sets with the trees each reading gives (chain, the aligned table, text then element, attributes below `|card |title Hello`, `:a 1 |beta` vs `:a |beta`, bare vs brace forms, deeper lines, fences/references/reserved forms at the slot, and a composite `|nav`), and recommended child with high confidence.)*
+
+### Joseph's answer (whole message)
+
+> Yes, you already know my lean as well. And the value-reading-uniformity gain isn't very uniform because the parser and spec would still need to special case the indent behavior of the next non-blank line underneath. I am open to revisiting it only if it turns out we were missing some crucial advantage that is worth essentially obfuscating one of udon's most notable [elegances].
+
+*(Agent text, summary: the agent laid out fences as lite's only raw form — whether a fence opened with N backticks closes only at N or more, with a nested-fence example; whether an indented fence keeps its indentation (the July byte-exact ruling) or strips up to the opener's indentation (Markdown's rule), recommending the strip because lite has no dedenting `!:kind:` form; and the consequences already fixed by earlier rulings — fence as an open label's value, as a child after a finished value or on an element's line, literal once text has started; the opener's remainder as a separate raw label; `~~~` staying text.)*
+
+### Joseph's message (whole)
+
+> (I don't know if elegencies is a word-- feel free to correct my spellings and grammar when obviously wrong when adding to the official record! Use square bracket replacements if you really want to be pedantic ;-))
+
+*(Agent text, summary: the agent relayed the history agent's finding (`.int/history-semicolon-in-text-2026-10-08.md`) that 0.10.0's mid-text ` ; ` comment had no recorded rationale and drifted in during the 2026-08-09 rewrite; that row-shaped text lines (Markdown table rows, one-record-per-line lists) are where writers reach for trailing notes; and that `;{…}` in prose serves them. It then reissued the fence question: (A) N-backtick nesting; (B) byte-exact vs strip-to-opener for an indented fence, with a `|bundle` example whose `  ```text` opener is indented two spaces.)*
+
+### Joseph's answer (whole message)
+
+> Decision A:  We should allow nested fences via backtick count >= 3 is my strong preference.  Is there a standard? I know, for example, that we will not want to follow markdown's standard (in some versions) of requiring that a fence be at the beginning of a line or the first non-whitespace of a line-- we need its indent (including sameline) to decide whose child it is. As for *inner* [indentation] retention-- the "markdown rule" would be extremely easy to implement by essentially saying that the "parent's indent column" is (in 1-indexed columns) 0, therefore the normal udon parsing takes effect:
+>
+> ```text
+> |parent-node |child-node
+>              child-prose (parsed without its own indent, just "child-prose...")
+>          still-child-prose (also now parsed without its own indent, but there's a warning issued, "still-child-prose...")
+>              another-one (no warning, "    another-one...")
+> very-dedented prose: normally in udon this line would be a *sibling* to |parent-node-- closing |parent-node in the tree first. Under my proposal for fences, this would act the same as [still-child-prose]-- a warning that it's dedented further than the earlier lines, and outputs without its own indent, because the only way to close this node is via the appropriate number of backticks.
+> ```
+>
+> ---
+>
+> ````text
+> |parent-node ```ruby
+> #!/bin/bash ruby
+>   ...
+>   ...
+> ```   ; all works perfectly normal-- not even any warnings. The following though would give a warning about dedent but would still output ok:
+>
+> |parent-node ```ruby
+>     #!/bin/bash ruby
+>  puts "hmmmm"
+> ```
+> (warning but both lines output with no indentation at all)
+>
+> |parent-node ```ruby
+> \
+>         #!/bin/bash ruby
+>         puts "hmmmm"
+> ```
+> This one will output verbatim since we don't care about backslashes-- and the 2nd and 3rd lines will be highly indented. (and ruby will obviously complain)
+> ````
+>
+> That reminds me-- if it's not already a rule or planned-- we need to make sure we explicitly denote "blank lines" distinct from (a superset with) "empty lines" -- blank lines do *not* change indent levels. In some cases whitespace on blank lines is considered ornamentation, in some cases it can be part of prose:
+>
+> ```udon
+> |node some $main prose
+>     child prose section starting...
+>       
+>     more prose...
+> ```
+>
+> Line 3 there has 6 whitespaces. The reassembled text from the AST would be: "child prose section starting...\n  \nmore prose..."
+>
+> I know, different topic and you didn't ask-- but it's a little bit subtle so I'm just making sure it's clear.
+>
+> Back to the backtick question, I'm a little confused as you show strip-to-opener removing the two spaces of indent from the *second* line within the fence, which is in the source, indented two spaces beyond the first line. That doesn't sound to me like what you described the behavior to be-- I would think in your example:
+>
+> ````text
+> |bundle
+>   ```text
+> #!/bin/sh
+>   echo hi
+>   ```
+> ````
+>
+> that  byte-exact and strip-to-opener would give the exact same result since the opener is at column 1...
+>
+> I haven't read the rest of the item yet -- will see what your thoughts are so far and you decide if you want to recapitulate the rest of that item...
+
+*(Recording note: the fenced-block wrappers around his examples are the recorder's, so the quoted file stays well-formed; his text inside them is unchanged except the bracketed corrections.)*
+
+*(Agent text, summary: the agent cited CommonMark 0.31.2 "Fenced code blocks" as the standard (≥3 opens; closes at ≥ as many; a backtick fence's label may not contain a backtick; CommonMark strips up to the opener's indentation), noted its `|bundle` example had a two-space opener, restated Joseph's rule — a fence body reads like text under an element except only the closer ends it: the first non-blank body line sets the left edge, shallower lines warn and move it, blank lines never set or move it — and showed the case it handles worse: a body whose first line must sit deeper than later ones, e.g. a diff whose first line is a context line with a leading space; asked whether the lone `\` in his third example is content or a consumed anchor; confirmed "empty line" ⊂ "blank line".)*
+
+### Joseph's answer (whole message)
+
+> Correct, excellent. The confusion earlier came from me misreading "indentation of the first line" as the first line within the body/fenced block, whereas you meant it as the indentation of the fence opening itself. Yes, basically with some slightly modified stack behavior for the dedent we get a very "least surprise" and most helpful solution.
+>
+> WRT what let's call the "needs-indented-first-line" problem. First-- to verify what I meant above-- I was acknowledging that in my example, due to fenced blocks needing to preserve everything except the fence opener and closers, my "attempted" workaround to needs-indented-first-line would pass the backslash through, unfortunately.
+> Your defined terms are my intention yes-- empty would be a newline as the first of the document or any newline directly after an earlier newline. blank can be empty or have (unicode specified) whitespace.
+>
+> Some possible solutions to "needs-indented-first-line" as I see them:
+> 1. Switch the lean to "verbatim" and let the ast consumer decide (maybe as a function on that ast node for ease) to remove all common indentation. (not elegant)
+>
+> 2. Notation-- (kind of like `|:--|---|` table notation, or mustache/liquid whitespace handling) --  "```udon-\n"   <- Final dash interpreted as "verbatim", allowing for the first line's indent to be preserved
+>
+> 3. Like #1, but always ensure that a fenced-block has meta about [its] first line's indent level, so that the AST consumer can use a simple boolean to decide whether or not to convert verbatim -> dedented, with error/fail if there's a line dedented further than the first.
+>
+> 4. Like #3, but with the default reversed-- save indent in meta and all indent-resets if any, automatically [dedent] as per my earlier solution as usual, and toggle for AST consumer *re-prepends* all indents.
+>
+> 5. Since lite is AST and not event-based, we *could*, after finding the closer, look at the opaque text and dedent to the most dedented line we see. But it wouldn't port to normal udon, which needs to support streaming, where if it waited to accumulate all of the fenced code before emitting an event, it would be a security/dos/performance issue/vector (hence the usual udon dedent warnings etc.).
+>
+> 6. Allow for a *consumed* leading escape generally that when used on the first (inner) line, sets indent, like udon prose (no good-- defeats the purpose of fences)
+>
+> 7. Allow for a *consumed* leading escape but only consumed as one if it's the very first non-whitespace character in the inner section  (possibility, but I don't like how special-cased it is)
+>
+> 8. Narrow the problem by *allowing fenced blocks to start with a blank line that is *not* considered ornamentation (I like, because we want that for fenced anyway if we can, although I'm not going to promise it-- just a lean), and that whitespace *does* set the initial indent of the inner document. "```\n      \n         indented second line...\n      non-indented third line\n```".  This allows the first *non-blank* line in the inner document to be indented more than the rest, which is a narrower problem, and then something like notation above or a flag in the consumer's lib could potentially `strip` the whole body which would remove the initial blank line....
+>
+> 9. Let the first (inner) line set the indent with whitespaces but always discard the first line if it's blank...
+>
+>
+> Maybe more, or combinations...
+> Thoughts? leans?
+
+*(Agent text, summary: the agent framed the "needs-indented-first-line" problem as an ambiguity when a fence body's first line sits deeper than the fence — indented for looks vs content that starts indented (patches, YAML fragments); gave verdicts on Joseph's options 1–9 (keep #4's meta in any case; against #8/#9 because editors strip whitespace-only lines invisibly); and leaned toward Joseph's first-line rule capped at the fence's own column (CommonMark-compatible), showing what each example yields and what the cap costs.)*
+
+### Joseph's answer (whole message)
+
+> Hold on... I just started reading your response and am concerned with "suppose a fence body's first line sits deeper than the fence itself..."  I am not sure we can *ever* ascribe any intent to the indent level of the fence delimiter itself in udon. I actually am continuing to read and I don't think the rest of anything rests on that supposition, so I think we see eye to eye-- just as long as we're clear that in udon we only start having clues about intent via special notation on the open (if there are any) and the first line's indent level.
+>
+> Oh-- your [comment] on #2 *does* say "strip to the fence's column" -- which is a complete no-go. You *MIGHT* be able to argue though-- "strip to the fence-opener's line's left-most position":
+>
+> `````text
+> ````udon
+> |parent-node
+>   |node
+>     :the-secret-code ```the-code
+>       (in this example the left parenthesis is 2-indented from :the-secret-code -- not the fence column, with the rest of your statement as it stands)
+>     ```
+>
+> ````
+> `````
+>
+> I'm not sure if this would be wise or not...
+>
+> On #5 being the most correct, also not necessarily for udon (independent of our current decisions) simply because where you *close* a fence in udon is recommended to be but not guaranteed to be at the indent level of the fence-line's start so that if it's a very long block of code in there, the closing fence will give you a visual cue as to where in the block parents you are.  e.g.:
+>
+> `````text
+> ````udon
+> |a |b |c |d |e |f ```txt
+>
+>      Some super long text-- say, 300 lines
+>      ...
+>      ...
+> ```
+>    ^ slightly discouraged-- difficult to know that this (the next) line is a sibling of |b and child of |a
+>
+> |a |b |c |d |e |f ```txt
+>
+>
+>                   ```
+>                   ^ recommended-- this line now is sibling to the fenced block, which is visually expected
+>
+> |abcdef |ghijkl :something ```txt
+>
+>      ```
+>      ^ if the text is really long, we depend on this to be a visual [cue] -- something like this where it's neither at the beginning (discouraged) nor aligned with the opening (recommended) might warrant an outright error as it would be very confusing for this subsequent line to know if it was successfully dedenting etc.
+>
+> ````
+> `````
+>
+> Which, as I look at it more and more, I realize we might need to decide first if we want the fence-closer to (a) essentially finish the code-fence but then disappear as if it was a blank line-- which I believe is the current behavior and what I was assuming above-- or (b) be the code-fence finisher *AND* set the current indent level for blocks. So, in the last case above it would be the value for :something but it would force anything under it to be a child of |abcdef (until something dedents to the first column at which point it would close |abcdef and become its sibling)...
+
+*(Recording note: the outer `````text wrappers are the recorder's; Joseph's own ````udon blocks are inside them unchanged.)*
+
+*(Agent text, summary: the agent withdrew its "cap at the fence's column" lean as reading intent from the delimiter's column; showed the remaining problem is narrow and always warns (first body line deeper than a later one, e.g. a diff hunk starting with a context line); argued against "strip to the opener line's left-most position" as a default (it breaks `|job :script ```sh` with an indented body, and Joseph's second example); leaned toward the first-line rule by default, all indentation kept as meta, and a verbatim marker on the opener (Joseph's `-`); and on the closer leaned toward (b): the closing line takes part in nesting at its column like any other line.)*
+
+### Joseph's answer (whole message)
+
+> Excellent. I agree completely with your leans as my leans:   normal first-inner-sets-indent+warn-on-dedent   +   '-' suffix for verbatim & all dent changes in meta.   And for the closer-- *transparent to fence body* (i.e., comes *after* the end of the fenced body), indent level sets new current indent level, with dedenting/closing etc. as appropriate. I'll leave it up to you whether or not to allow a ' ; ' comment after the backticks on the same line, but recommend an error/failure on anything else.
+> Agree no backticks on the fence's label-- which also guarantees that there is no worry about opening and closing a fence on the same line. Comment being allowed after the fence opener on its line is up to you as well, but if it's no on either or both of those mark it as 'open for future discussion' or something equivalent.
+
+*(Agent text, summary: the agent reported 15 decision records drafted (awaiting a second reader) and its delegated calls on fence-line comments; then asked whether documents with warnings still count as lite, proposing three endings — stop with no tree (reserved spellings, newline in opaque spans, junk after a fence closer), a tree plus anomalies, and a tree marked incomplete (delimited construct open at end of input) — with a per-anomaly table leaning toward stopping only for what lite deliberately doesn't define (plus tabs in indentation), and a label with no value as an error that still produces a tree.)*
+
+### Joseph's answer (whole message)
+
+> My current lean is that any *error* right now is a failure / stop. That would include #3 on your ways it can end being part of #1 instead, and I think should apply to a label with no value, any tab characters found in block mode, and unclosed embedded |,;,@ nodes or unclosed strings, etc. I'm going to lean with you on disallowing newlines within delimited strings -- but allowing \n and other common escape sequences. I also think that partial-key, unclosed [...  is an error.   Disallowed == error == stop/fail. In some ways it will be treated more like a standard programming language, where something missing a closing delimiter is just a straight-up error and halt and you've done something wrong. Whereas *warnings* are for "this *is* technically correct udon/udon-lite and does do a specific thing-- but possibly not what you intended it to do..."

@@ -7,14 +7,14 @@ title: "Lite reserves future syntax rather than ignoring it, so no accepted docu
 status: accepted
 decided-by: steward
 decided: "2026-09-29"
-updated: 2026-09-30
+updated: 2026-10-08
 deciders: [Joseph (steward)]
 consulted: [udon agent of session 5930da5d (agent, Opus 5.5)]
 informed: []
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: [{adr: reserved-is-an-error, how: revised, scope: partial}]
+superseded-by: [{adr: reserved-is-an-error, how: revised, scope: partial}, {adr: forward-compat-aspiration, how: revised, scope: partial}, {adr: references-in, how: revised, scope: partial}]
 closes: []
 leaves-open: ["09", "12 Q1", "84 Q3", "87"]
 ---

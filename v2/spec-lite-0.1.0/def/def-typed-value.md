@@ -43,3 +43,4 @@ depends: []
 - **For Joseph:** the seeded `explicit-typed-value-in` says lite "carries its text and optional type label". Did that mean as two separate things (07 Q3)?
 - **`per:` cites seeded decisions that are not ADRs yet** (`.old/vsect-init/DECISIONS.md`), so those entries dangle until the udon team converts them.
 - **Open questions** bearing on these terms: 66, 72, 07, 89.
+- **Bare typing (66, 72): lite takes 0.10.0's frozen bare set** (string, integer, float, boolean, nil, list; `v2/spec-0.10.00/CORE.md` §11). Joseph, 2026-10-08: "Not sure there's a question since that's been pretty stable, but discuss if needed." The agent answered that it's pin work (the frozen set, plus an answer for each edge spelling in 72's table), and Joseph didn't object. Not a new decision: don't reopen it as undecided. The edge spellings are still to pin.
