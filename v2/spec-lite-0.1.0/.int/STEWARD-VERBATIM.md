@@ -505,3 +505,9 @@
 ### Joseph's answer (whole message)
 
 > I forgot that $main can have a following node etc.-- I agree, error
+
+*(Agent text, summary: the agent answered Joseph's NBSP question (Unicode says U+00A0 "should be the same width as the space 0020"; East Asian width Neutral; so not width-ambiguous) and leaned toward keeping it an error where it could set a column — it's invisible, tools disagree on whether it's whitespace, and an error fixes the file once — with its own error message, and NBSP as ordinary content in text, values and fence bodies. It then relayed the escape-sequence report (`.int/escape-sequences-2026-10-08.md`: no improved set existed in mainline 0.9; a proposed set built from Ruby's and lined up with the number rules) with four calls and leans: `\s` an error; accept a correctly ordered surrogate pair, a lone surrogate an error; drop `\v` and `\a`; make `\b` an error; and noted `\n` will read three ways (newline in `"…"`, backslash-n in `'…'`, `n` in the opaque spans). The tree-shape question was still open: `$main` material as an attribute (A) or as the element's first children marked `same_line` (B).)*
+
+### Joseph's answer (whole message)
+
+> I'm happy to leave `|p Intro text |em x` decision whether 'Intro text' is $main or first child with same-line set up to you.  *You* can also potentially leave it open to go either way to the parser implementation. Actually-- pick a side (child is fine, I like it), and note in there that if the parser implementer or later consumer has a compelling argument to switch it, we can definitely revisit.
