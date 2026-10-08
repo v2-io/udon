@@ -162,6 +162,8 @@ Carried from MADR (the template Joseph supplied), with changes for this corpus. 
 
 When the decider acts, `decided-by` becomes `supported`, `ratified` or `ruled`, and `awaiting-decision` becomes `false`; neither is an edit to the outcome. Declining it is a new decision that supersedes it. The grant's own record never lists the decisions made under it: they are the ones that cite it.
 
+**Decided for this version** (the footnote 2026-10-08 records cite). An `accepted` lite decision is in force for this version of lite, whatever word Joseph used for his position (lean, strong lean, preference, vote, ruling); each record keeps his own word under its Quote, so that no sense of orthodoxy attaches to it. "Decided" can be revisited if and when undiscovered confounding factors come up, now or during parser implementation. Joseph, 2026-10-08: "As I explained earlier, no difference from the spec's perspective. Preserve them as what I said so that as other issues come up now or during parser implementation there isn't some sense of orthodoxy to adhere to. You are free to mark them as "decided" for lite-1.0 assuming you have a footnote somewhere that says that decided can be revisited if/when undiscovered confounding factors come up." (`.int/STEWARD-VERBATIM.md`)
+
 **After acceptance** (a proposal inferred from how the process decisions have been kept; no decision records it yet):
 
 - The choice is never changed in place. Changing it takes a new decision that supersedes this one.

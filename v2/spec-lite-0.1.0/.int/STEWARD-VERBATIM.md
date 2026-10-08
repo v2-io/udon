@@ -472,3 +472,18 @@
 ### Joseph's answer (whole message)
 
 > My current lean is that any *error* right now is a failure / stop. That would include #3 on your ways it can end being part of #1 instead, and I think should apply to a label with no value, any tab characters found in block mode, and unclosed embedded |,;,@ nodes or unclosed strings, etc. I'm going to lean with you on disallowing newlines within delimited strings -- but allowing \n and other common escape sequences. I also think that partial-key, unclosed [...  is an error.   Disallowed == error == stop/fail. In some ways it will be treated more like a standard programming language, where something missing a closing delimiter is just a straight-up error and halt and you've done something wrong. Whereas *warnings* are for "this *is* technically correct udon/udon-lite and does do a specific thing-- but possibly not what you intended it to do..."
+
+*(Agent text, summary: the agent asked whether a `:label` line directly under an open attribute value — kept as text with a warning in 0.10.0 — should be an error in lite; then reported the second reading of the day's records and asked three things: (1) whether three calls are leans or rulings (same-line elements are children; fences nest by backtick count; the closing line sets the indent level); (2) whether a newline is allowed inside `;{…}`; (3) whether a line inside a fence that starts with N or more backticks and then has more text is an error (as recorded) or body text (CommonMark). Still pending from before: escapes in strings and spans, and what "tabs in block mode" covers.)*
+
+### Joseph's answer (whole message)
+
+> Right-- nested attributes right now should be a reserved construction that causes an error in lite.
+>
+> 1. As I explained earlier, no difference from the spec's perspective. Preserve them as what I said so that as other issues come up now or during parser implementation there isn't some sense of orthodoxy to adhere to. You are free to mark them as "decided" for lite-1.0 assuming you have a footnote somewhere that says that decided can be revisited if/when undiscovered confounding factors come up.
+> 2. I'm ok keeping it simple with lite 1.0 and saying newlines in embedded comments are simply reserved with error. The main issue is similar to fence-closing lines-- they make dedent level ambiguous in several corner cases.
+> 3. I like our rules (recorded) for both of those as well, definitely. It would probably be useful to mention that nuance vs commonmark in the spec itself.
+>
+> earlier:
+> - :label-under-open-attribute:  error reserved construction
+> - Not sure I saw this question, but I wanted to mention that I think "..." and '...' should essentially be just like ruby strings (including escape sequences in "" but not in '', and including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`), different than our "general matching + escaping" for arrays, typed values, keys, and embeds.
+> - tabs:  I think any tab (or other unicode whitespace other than the normal space) in a spot that changes column positions for nodes is an error/fail.  -- so any on a "sameline" run except as part of the $main text or final attribute's value, would cause a fail, under the premise that such whitespaces make the true column position ambiguous.

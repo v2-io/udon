@@ -1,9 +1,9 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
-title: "<…> and @{…} are opaque spans: raw text in the tree; for now, matched brackets, \\X gives X, and a newline inside is an error in lite"
+title: "<…>, @{…} and ;{…} are opaque spans: raw text in the tree; for now, matched brackets, \\X gives X, and a newline inside is an error in lite"
 status: accepted
 decided-by: steward
 decided: "2026-10-08"
@@ -19,7 +19,7 @@ closes: ["07 Q1", "07 Q2", "07 Q3"]
 leaves-open: ["07 Q4", "07 Q5", "89"]
 ---
 
-# <…> and @{…} are opaque spans: raw text in the tree; for now, matched brackets, \X gives X, and a newline inside is an error in lite
+# <…>, @{…} and ;{…} are opaque spans: raw text in the tree; for now, matched brackets, \X gives X, and a newline inside is an error in lite
 
 ## Context and Problem Statement
 
@@ -51,7 +51,7 @@ Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
 - **Extent: matched brackets.** An unescaped opener inside the span nests and must be matched; the span ends at the closer that balances its own opener.
 - **Escapes: any `\X` gives `X`** inside the span, whatever `X` is; an escaped bracket doesn't count toward matching. Joseph's example: `@{this { another thing \\ \"Hello\"\} }}` carries `this { another thing \ "Hello"} }`.
 - **A newline inside the span is an error in lite, for now.** The message says that *lite* doesn't support newlines in that construct (e.g. "lite doesn't support newlines in a typed value"), so it is not taken as a UDON-wide rule. A command-line flag to accept it with a warning may be added if someone asks for it, not before.
-- **`;{…}`:** Joseph gave it "the same escape rules (matched {} and \ escape-all)". Applying the newline error to `;{…}` as well is the agent's extension, not his; it is open and being put to him (a multi-line comment is the one span where a newline is natural to want).
+- **`;{…}`:** Joseph gave it "the same escape rules (matched {} and \ escape-all)" and, asked separately, made a newline inside it "simply reserved with error" too, because such newlines "make dedent level ambiguous in several corner cases" (second Quote below).
 
 ### Quote
 
@@ -69,7 +69,11 @@ Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
 >
 > — Joseph, 2026-10-08 (same file, next message)
 
-*His words: "I vote" (raw text), "I think we can adopt an interim convention" (matched brackets), "I'm ok … for now" (the newline error, the agent's proposal), "I'm OK with your lean" (the any-`\X` escape, the agent's lean). Raw text and matched brackets are his own calls (`steward`); the newline error and the escape rule are `supported` parts, cheap to revisit. `awaiting-decision` is true only for the `;{…}` newline question.*
+> 2. I'm ok keeping it simple with lite 1.0 and saying newlines in embedded comments are simply reserved with error. The main issue is similar to fence-closing lines-- they make dedent level ambiguous in several corner cases.
+>
+> — Joseph, 2026-10-08 (same file, later), on `;{…}`
+
+*His words: "I vote" (raw text), "I think we can adopt an interim convention" (matched brackets), "I'm ok … for now" (the newline error, the agent's proposal), "I'm OK with your lean" (the any-`\X` escape, the agent's lean), "I'm ok keeping it simple" (the `;{…}` newline). Raw text and matched brackets are his own calls (`steward`); the newline errors and the escape rule are `supported` parts. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
 
 ### Positive Consequences
 
@@ -81,7 +85,7 @@ Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
 * Regexes and Windows paths inside a span double their backslashes (`<re:\\d+>`).
 * An unbalanced bracket in content (`<a -> b>`, `@{x}y}`) has to be escaped.
 * Resolving every `\X` to `X` in the tree means a future interior grammar that gives `\` its own meaning (a path grammar's `\.`, say) reads `@{a\.b}` differently from lite, which hands over `a.b`. Acceptable under [[decision:forward-compat-aspiration]]; keeping the unresolved source text in meta would recover it.
-* A multi-line typed value or reference can't be written in lite.
+* A multi-line typed value, reference or inline comment can't be written in lite.
 
 ### What changes
 
@@ -98,6 +102,5 @@ Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
 
 ## Working notes
 
-- Open, with Joseph: whether a newline inside `;{…}` is also an error in lite.
 - Still open for `<…>`: the empty `<>` and `< >`, and exactly which value positions take it.
-- Unclosed at end of input (no newline involved, e.g. a span on the last line): presumably the same error; not stated by Joseph.
+- Unclosed at end of input (no newline involved): an error, as every unclosed delimiter is ([[decision:errors-stop-parsing]]).

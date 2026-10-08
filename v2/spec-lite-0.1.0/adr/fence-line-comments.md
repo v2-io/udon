@@ -78,4 +78,4 @@ The grant: Joseph, 2026-10-08, "I'll leave it up to you whether or not to allow 
 
 ## Working notes
 
-- Interacts with the open question in [[decision:fence-closer-is-a-line]] (a body line starting with enough backticks followed by text).
+- Consequence, confirmed by Joseph ("I like our rules (recorded)"): a body line starting with N or more backticks followed by other text is a closer with trailing text, so an error ([[decision:fence-closer-is-a-line]]).

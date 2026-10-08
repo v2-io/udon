@@ -1,7 +1,7 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "A fence's closing line comes after the body, then takes part in nesting at its column like any other line"
 status: accepted
@@ -56,7 +56,7 @@ Chosen (b):
 
 What may follow a closer's backticks is in [[decision:fence-line-comments]].
 
-Open, being put to Joseph: a line inside a body that starts with N or more backticks followed by other text. With "anything else after a closer's backticks is an error", such a line becomes an error rather than body content. Two cases:
+A line inside a body that starts with N or more backticks followed by other text is a closer with trailing text, and so an error ([[decision:fence-line-comments]]), not body content. Joseph: "I like our rules (recorded) for both of those as well, definitely." This differs from CommonMark, where such a line is body content; the spec says so, at Joseph's suggestion. Two cases that are now errors:
 
 `````text
 ````md
@@ -68,7 +68,7 @@ Open, being put to Joseph: a line inside a body that starts with N or more backt
 ```x``` is how you write inline code     ← inside a ```md body: an error, or body?
 ```
 
-The alternative reading: a line is a closer only if nothing but spaces or a framed comment follows its backticks; otherwise it is body content.
+The alternative not taken: a line is a closer only if nothing but spaces or a framed comment follows its backticks; otherwise it is body content (CommonMark's reading).
 
 ### Quote
 
@@ -76,7 +76,11 @@ The alternative reading: a line is a closer only if nothing but spaces or a fram
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`), in the message that opens "Excellent. I agree completely with your leans as my leans"
 
-*His words: stated directly, in the message adopting "your leans as my leans", just after the agent leaned (b). It can be read as his own call or as one of the adopted leans. Recorded `supported` for now.*
+> 3. I like our rules (recorded) for both of those as well, definitely. It would probably be useful to mention that nuance vs commonmark in the spec itself.
+>
+> — Joseph, 2026-10-08 (same file, later), on the backtick line with trailing text
+
+*His words: stated directly, in the message adopting "your leans as my leans", just after the agent leaned (b); later, "I like our rules (recorded)". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
 
 ### Positive Consequences
 
@@ -98,6 +102,5 @@ The alternative reading: a line is a closer only if nothing but spaces or a fram
 
 ## Working notes
 
-- The coordinator is asking Joseph whether he means this as a ruling. `decided-by` follows his answer.
-- Open, with Joseph: a backtick line with trailing text inside a body (above).
+- The spec mentions the CommonMark difference (Joseph's suggestion).
 - Style, from Joseph the same day (canonical-form material, 85): a closer aligned with the opening is recommended; one at column 0 under a same-line chain is "slightly discouraged".

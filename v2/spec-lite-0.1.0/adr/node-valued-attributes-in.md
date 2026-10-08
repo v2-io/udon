@@ -1,7 +1,7 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "An attribute's value may be an element in lite"
 status: accepted
@@ -51,7 +51,7 @@ This settles that elements are allowed as attribute values. How values written o
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His word: "lean". Recorded `supported`: cheap to revisit. `awaiting-decision` stays true for the follow-up he attached (working notes).*
+*His word: "lean". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`). The follow-up he attached is open work (working notes), not a pending decision.*
 
 ### Positive Consequences
 

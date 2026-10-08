@@ -62,7 +62,7 @@ Chosen: `@{…}` is in lite.
 >
 > — Joseph, 2026-10-08 (all in `.int/STEWARD-VERBATIM.md`)
 
-*His words: "I vote yes" (in, raw), "reference is the right name" (the name), (c) inside his "I vote for strict-lean" answer (prose), "my lean: all three" (values and keys). Allowing `@{…}`, carrying it raw, naming it a reference, and its recognition in prose are his own calls (`steward`). Values and keys are his lean: cheap to revisit.*
+*His words: "I vote yes" (in, raw), "reference is the right name" (the name), (c) inside his "I vote for strict-lean" answer (prose), "my lean: all three" (values and keys). Allowing `@{…}`, carrying it raw, naming it a reference, and its recognition in prose are his own calls (`steward`). Values and keys are his lean. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
 
 ### Positive Consequences
 

@@ -1,7 +1,7 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: ";{…} inline comments are in lite and work in prose, with the opaque spans' escape rules"
 status: accepted
@@ -41,9 +41,10 @@ Pre-design 10 asked whether `;{…}` is in lite. On 2026-10-08, framed ` ; ` com
 
 Chosen: `;{…}` is in lite and is recognized in prose. Its interior is an "essentially opaque" span with the same escape rules as [[decision:opaque-spans]]: matched `{}`, and `\X` gives `X`.
 
+A newline inside `;{…}` is an error in lite: "simply reserved with error" (Joseph, later the same day; recorded in [[decision:opaque-spans]]).
+
 Not decided here:
 
-- whether a newline inside `;{…}` is an error in lite (the agent's extension of [[decision:opaque-spans]]; open, being put to Joseph);
 - whether comments are carried in the tree and how (13 Q6; "opaque" is read here as "not parsed");
 - where else it is recognized, whether the spaces around it are kept, and what `:x ;{}` means (59).
 
@@ -57,7 +58,7 @@ Not decided here:
 >
 > — Joseph, 2025-12-25 (`~/.claude/history.jsonl:5702`, via `.int/history-semicolon-in-text-2026-10-08.md` §2): earlier words to the same effect
 
-*His word: "strong lean". Recorded `supported`: cheap to revisit; bring a conflict.*
+*His word: "strong lean". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
 
 ### Positive Consequences
 
@@ -65,7 +66,7 @@ Not decided here:
 
 ### Negative Consequences
 
-* If the newline error applies, a comment can't span lines in lite.
+* A comment can't span lines in lite.
 
 ### What changes
 
@@ -78,5 +79,3 @@ Not decided here:
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
-
-- Open, with Joseph: newline inside `;{…}`.

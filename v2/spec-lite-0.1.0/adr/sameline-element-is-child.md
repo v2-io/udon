@@ -1,7 +1,7 @@
 ---
 kind: decision
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 title: "A bare |name later on an element's line is a child at its own column, not a $main value"
 status: accepted
@@ -60,7 +60,7 @@ gives `table └ tr ├ td "A1" └ td "A2"`. The cost: `|card |title Hello` fol
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His word: "my lean", with a high bar for revisiting ("only if … some crucial advantage"). Recorded `supported` for now.*
+*His word: "my lean", with a high bar for revisiting ("only if … some crucial advantage"). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
 
 ### Positive Consequences
 
@@ -83,4 +83,3 @@ gives `table └ tr ├ td "A1" └ td "A2"`. The cost: `|card |title Hello` fol
 
 ## Working notes
 
-- The coordinator is asking Joseph whether he means this as a ruling (his word was "lean", but his bar for revisiting is high, and other decisions build on it). `decided-by` follows his answer.
