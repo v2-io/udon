@@ -46,7 +46,7 @@ UDON has no attributes of attributes (K4). In 0.10.0 a `:label`-shaped line dire
 
 ## Decision Outcome
 
-Chosen: a `:label` line directly under an open attribute value is a reserved construction. In lite it is an error, which stops parsing ([[decision:errors-stop-parsing]]).
+Chosen: right now, a `:label` line directly under an open attribute value is a reserved construction. In lite it is an error, which stops parsing ([[decision:errors-stop-parsing]]).
 
 ### Quote
 
@@ -57,7 +57,7 @@ Chosen: a `:label` line directly under an open attribute value is a reserved con
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His words: "should be a reserved construction". His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
+*His words: "should be a reserved construction". His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 
@@ -65,7 +65,7 @@ Chosen: a `:label` line directly under an open attribute value is a reserved con
 
 ### Negative Consequences
 
-* A value body that genuinely starts with `:word` text must be escaped or quoted.
+* A value body that genuinely starts with `:word` text must be written another way; whether a line-start `\` escape exists in lite is still open (82).
 
 ### What changes
 

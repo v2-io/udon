@@ -80,7 +80,7 @@ The alternative not taken: a line is a closer only if nothing but spaces or a fr
 >
 > — Joseph, 2026-10-08 (same file, later), on the backtick line with trailing text
 
-*His words: stated directly, in the message adopting "your leans as my leans", just after the agent leaned (b); later, "I like our rules (recorded)". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
+*His words: stated directly, in the message adopting "your leans as my leans", just after the agent leaned (b); later, "I like our rules (recorded)". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 

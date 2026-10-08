@@ -93,4 +93,4 @@ Not decided here, by Joseph's own words: whether the error is as drastic as in n
 ## Working notes
 
 - 09 Q2 and Q3 (what the tree keeps for a refused spelling, and the lines under it) now matter only for error reporting: what the report includes, not what a tree holds.
-- The "how drastic" question this record left open is answered by [[decision:errors-stop-parsing]] (2026-10-08): every error in lite stops parsing with no tree.
+- Part of the "how drastic" question this record left open is answered by [[decision:errors-stop-parsing]] (2026-10-08): every error in lite stops parsing with no tree. Whether a parser may report more than the first error is still open.

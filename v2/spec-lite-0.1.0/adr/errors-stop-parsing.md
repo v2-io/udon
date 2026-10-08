@@ -41,14 +41,15 @@ leaves-open: ["12 Q3", "05", "89"]
 
 ## Decision Outcome
 
-Chosen: **an error is a failure: the parser stops, reports what it found and where, and produces no tree.** A document is valid lite when it has no errors; warnings don't make it invalid.
+Chosen: **right now, an error is a failure: the parser stops, reports what it found and where, and produces no tree.** A document is valid lite when it has no errors; warnings don't make it invalid.
 
 Errors (each stops parsing):
 
 - a reserved spelling ([[decision:reserved-is-an-error]]), including a `:label` line directly under an open attribute value ([[decision:nested-attributes-reserved]]);
 - a `:label` with no value;
-- an unclosed `|{…}`, `;{…}`, `@{…}` or `<…>`, an unclosed quoted string, or an unclosed `[` key (no `$partial-key`);
-- input ending inside any delimited construct (the "incomplete" ending folds into this one). The agent reads this as covering an unclosed fence too, from "something missing a closing delimiter is just a straight-up error";
+- an unclosed `|{…}`, `;{…}` or `@{…}`, an unclosed quoted string, or an unclosed `[` key (no `$partial-key`), all in his words;
+- an unclosed `<…>`, an unclosed `[…]` list, or an unclosed fence: not in his words, but covered by "something missing a closing delimiter is just a straight-up error", and listed in the agent's restatement of his errors (2026-10-08 ~20:58Z, summarized in `.int/STEWARD-VERBATIM.md`), which he answered questioning only a different item. Assent by non-objection;
+- input ending inside any delimited construct (the "incomplete" ending folds into this one);
 - a newline inside a quoted string ([[decision:quoted-strings-like-ruby]]; `\n` and the other escapes are allowed) or inside an opaque span ([[decision:opaque-spans]]);
 - a tab or other non-space whitespace where it could shift a node's column ([[decision:column-shifting-whitespace-is-an-error]]);
 - text after a fence closer's backticks, other than a framed comment ([[decision:fence-line-comments]]).
@@ -61,7 +62,7 @@ Warnings are for "technically correct udon/udon-lite" that "does do a specific t
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His words: "My current lean", "I think should apply", "I'm going to lean with you", "I also think". "#3 … being part of #1": the agent's third ending (a tree marked incomplete) merges into the first (stop, no tree). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
+*His words: "My current lean", "I think should apply", "I'm going to lean with you", "I also think". "#3 … being part of #1": the agent's third ending (a tree marked incomplete) merges into the first (stop, no tree). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 
@@ -86,6 +87,8 @@ Warnings are for "technically correct udon/udon-lite" that "does do a specific t
 
 ## Working notes
 
-- Open: whether a `[…]` list may span lines (05). "Newlines within delimited strings" is read here as quoted strings; lists weren't named.
+- Open: whether a `[…]` list may span lines (05). "Newlines within delimited strings" is read here as quoted strings; the agent's restatement had "a newline inside any delimited span", unobjected.
 - Open: what "any tab characters found in block mode" covers beyond what [[decision:column-shifting-whitespace-is-an-error]] records (being asked).
 - Whether a document with only warnings needs any marking beyond the warnings themselves: not stated.
+- For the anomaly inventory: 0.10.0's top-level `:label` warning (pre-design 04 Q2, 12's table) is in neither list yet; to decide with the root's attributes.
+- Not decided: whether a parser may keep scanning after an error to report more errors (still producing no tree).

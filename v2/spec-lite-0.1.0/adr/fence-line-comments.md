@@ -79,3 +79,4 @@ The grant: Joseph, 2026-10-08, "I'll leave it up to you whether or not to allow 
 ## Working notes
 
 - Consequence, confirmed by Joseph ("I like our rules (recorded)"): a body line starting with N or more backticks followed by other text is a closer with trailing text, so an error ([[decision:fence-closer-is-a-line]]).
+- `awaiting-decision` stays true for the ` ; ` allowance only: Joseph has acted on the error part ("I like our rules (recorded)", on its consequence for backtick lines with trailing text), but his words don't touch the allowance itself.

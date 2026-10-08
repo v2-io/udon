@@ -51,7 +51,7 @@ This settles that elements are allowed as attribute values. How values written o
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His word: "lean". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`). The follow-up he attached is open work (working notes), not a pending decision.*
+*His word: "lean". Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]). The follow-up he attached is open work (working notes), not a pending decision.*
 
 ### Positive Consequences
 

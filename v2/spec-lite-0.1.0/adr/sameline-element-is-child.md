@@ -60,7 +60,7 @@ gives `table └ tr ├ td "A1" └ td "A2"`. The cost: `|card |title Hello` fol
 >
 > — Joseph, 2026-10-08 (`.int/STEWARD-VERBATIM.md`)
 
-*His word: "my lean", with a high bar for revisiting ("only if … some crucial advantage"). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
+*His word: "my lean", with a high bar for revisiting ("only if … some crucial advantage"). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 

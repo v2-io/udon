@@ -81,7 +81,7 @@ Chosen:
 >
 > — Joseph, 2026-10-08 (all in `.int/STEWARD-VERBATIM.md`)
 
-*His words: "I agree completely with your leans as my leans". The dedent rule is his proposal; `-` was his option 2 and meta his option 4, combined by the agent. Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`). The principle about the delimiter's column, and fence bodies preserving everything, are his own statements and bind more strongly.*
+*His words: "I agree completely with your leans as my leans". The dedent rule is his proposal; `-` was his option 2 and meta his option 4, combined by the agent. Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]). The principle about the delimiter's column, and fence bodies preserving everything, are his own statements and bind more strongly.*
 
 ### Positive Consequences
 

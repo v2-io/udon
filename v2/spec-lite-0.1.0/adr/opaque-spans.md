@@ -45,11 +45,11 @@ Lite carries `<…>` without reading it ([[decision:explicit-typed-value-in]]), 
 
 ## Decision Outcome
 
-Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
+Chosen, for `<…>`, `@{…}` and `;{…}`, as Joseph's interim convention:
 
 - **The tree carries the raw text** between the delimiters, escapes resolved, with no meaning attached. For `<…>` this is read as: no split into a type label and a body (the reading of "raw text"; answers 07 Q3).
 - **Extent: matched brackets.** An unescaped opener inside the span nests and must be matched; the span ends at the closer that balances its own opener.
-- **Escapes: any `\X` gives `X`** inside the span, whatever `X` is; an escaped bracket doesn't count toward matching. Joseph's example: `@{this { another thing \\ \"Hello\"\} }}` carries `this { another thing \ "Hello"} }`.
+- **Escapes: any `\X` gives `X`** inside the span, whatever `X` is; an escaped bracket doesn't count toward matching. At ~20:58Z the agent proposed changing spans to JSON-style escapes with unknown `\X` kept (its option C); Joseph's next message, unprompted, grouped "typed values, keys, and embeds" under "our 'general matching + escaping'", separate from strings. That reaffirms the any-`\X` rule in his own words and settles the agent's proposal for spans ([[decision:quoted-strings-like-ruby]]). Joseph's example: `@{this { another thing \\ \"Hello\"\} }}` carries `this { another thing \ "Hello"} }`.
 - **A newline inside the span is an error in lite, for now.** The message says that *lite* doesn't support newlines in that construct (e.g. "lite doesn't support newlines in a typed value"), so it is not taken as a UDON-wide rule. A command-line flag to accept it with a warning may be added if someone asks for it, not before.
 - **`;{…}`:** Joseph gave it "the same escape rules (matched {} and \ escape-all)" and, asked separately, made a newline inside it "simply reserved with error" too, because such newlines "make dedent level ambiguous in several corner cases" (second Quote below).
 
@@ -73,7 +73,7 @@ Chosen, for `<…>` and `@{…}`, as Joseph's interim convention:
 >
 > — Joseph, 2026-10-08 (same file, later), on `;{…}`
 
-*His words: "I vote" (raw text), "I think we can adopt an interim convention" (matched brackets), "I'm ok … for now" (the newline error, the agent's proposal), "I'm OK with your lean" (the any-`\X` escape, the agent's lean), "I'm ok keeping it simple" (the `;{…}` newline). Raw text and matched brackets are his own calls (`steward`); the newline errors and the escape rule are `supported` parts. Decided for this version, and revisitable if undiscovered confounding factors come up (the footnote "Decided for this version" in `adr/TEMPLATE.md`).*
+*His words: "I vote" (raw text), "I think we can adopt an interim convention" (matched brackets), "I'm ok … for now" (the newline error, the agent's proposal), "I'm OK with your lean" (the any-`\X` escape, the agent's lean), "I'm ok keeping it simple" (the `;{…}` newline). Raw text and matched brackets are his own calls (`steward`); the newline errors are `supported` parts; the escape rule, first `supported` ("I'm OK with your lean"), was reaffirmed in his own words later that evening ("different than our 'general matching + escaping' for arrays, typed values, keys, and embeds"). Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
 ### Positive Consequences
 

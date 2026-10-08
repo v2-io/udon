@@ -43,7 +43,7 @@ Chosen:
 
 - **Empty line:** a newline that is the first character of the document or directly follows another newline.
 - **Blank line:** an empty line, or a line of only (Unicode-specified) whitespace. Every empty line is blank.
-- **Blank lines never set or change indentation.**
+- **Blank lines never set or change indentation.** So a blank line may hold tabs and other Unicode whitespace; the tab rule doesn't apply to it ([[decision:column-shifting-whitespace-is-an-error]]).
 - In text and in fence bodies, whitespace on a blank line beyond the left edge is kept as content; otherwise the blank line contributes only its newline. (The agent's generalization, which Joseph called "Correct, excellent".) In a verbatim (`-`) fence every byte is kept. Blank lines before a fence body's edge is set: open (working notes). Joseph's example:
 
 ```udon
@@ -64,7 +64,11 @@ Line 3 has six spaces; the text is `"child prose section starting...\n  \nmore p
 >
 > — Joseph, 2026-10-08 (both in `.int/STEWARD-VERBATIM.md`)
 
-*His words: "we need to make sure we explicitly denote" and "Your defined terms are my intention yes". His own call, so `steward`.*
+> I would however suggest that "blank-lines" allow tabs and other unicode ws because blank lines don't set indent/dedent levels.
+>
+> — Joseph, 2026-10-08 (same file, later)
+
+*His words: "we need to make sure we explicitly denote", "Your defined terms are my intention yes", and "I would however suggest" (tabs on blank lines). His own call, so `steward`.*
 
 ### Positive Consequences
 
@@ -87,5 +91,6 @@ Line 3 has six spaces; the text is `"child prose section starting...\n  \nmore p
 ## Working notes
 
 - Which Unicode whitespace counts is not named; probably `White_Space`, to confirm.
+- Open: a tab on a blank line inside text, beyond the left edge: is it content (like spaces there), and how is "beyond the left edge" measured for a tab?
 - Open: blank lines at the start of a fence body, before its first non-blank line sets the edge (with Joseph's lean that a blank first line is content, [[decision:fence-body-indentation]]).
 - Where a blank line between two structures sits in the tree, and whether it is ornamentation, are 55 and 90.
