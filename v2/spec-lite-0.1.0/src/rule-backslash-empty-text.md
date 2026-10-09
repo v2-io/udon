@@ -11,11 +11,11 @@ consequences: []
 
 # `:a \` is an empty text
 
-*A label followed only by a framed backslash gets an empty text.*
+*An attribute followed only by a framed backslash gets an empty text.*
 
 ## Statement
 
-`:label \` with nothing else MUST give the label an empty text.
+`:name \` with nothing else MUST give the attribute an empty text.
 
 ## Grounds
 

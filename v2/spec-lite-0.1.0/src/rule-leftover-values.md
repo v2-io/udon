@@ -5,8 +5,8 @@ awaiting-decision: false
 needs-work: false
 layer: tree
 per: []
-depends: [rule:line-scan, rule:waiting-label]
-consequences: [rule:main-is-attribute, rule:inline-element-value-end, rule:adjacent-quoted-strings]
+depends: [rule:line-scan, rule:attribute-with-no-value-takes-next-value]
+consequences: [rule:main-is-attribute, rule:adjacent-quoted-strings]
 ---
 
 # Values left over on a line go to the line's owner

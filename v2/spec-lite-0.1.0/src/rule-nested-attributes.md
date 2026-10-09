@@ -6,16 +6,16 @@ needs-work: true
 layer: tree
 per: []
 depends: []
-consequences: [rule:reserved-spellings, rule:label-after-empty-label]
+consequences: [rule:reserved-spellings, rule:attribute-after-attribute-with-no-value]
 ---
 
-# A `:label` line owned by an attribute is an error
+# An attribute line owned by an attribute is an error
 
 *An attribute can't have attributes.*
 
 ## Statement
 
-A `:label` line whose owner, by indentation, is an attribute MUST be an error.
+An attribute line whose owner, by indentation, is an attribute MUST be an error.
 
 ## Grounds
 
@@ -32,7 +32,7 @@ Decided for this version ([[decision:decided-for-this-version]]).
   :port
     :nested 1
 ```
-An error at 3:5: nested attributes are reserved. The same holds wherever the `:label` line sits in the attribute's body:
+An error at 3:5: nested attributes are reserved. The same holds wherever the attribute line sits in the attribute's body:
 
 ```udon
 |db
@@ -40,7 +40,7 @@ An error at 3:5: nested attributes are reserved. The same holds wherever the `:l
     Primary only.
     :port 5432
 ```
-An error at 4:5. A `:label` line under an element inside the attribute's body belongs to that element and is fine:
+An error at 4:5. An attribute line under an element inside the attribute's body belongs to that element and is fine:
 
 ```udon
 |book
@@ -53,7 +53,7 @@ An error at 4:5. A `:label` line under an element inside the attribute's body be
 
 *Carried 2026-10-09 from the decision record `adr/nested-attributes-reserved.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-08.*
 
-**Context.** UDON has no attributes of attributes (K4). In 0.10.0 a `:label`-shaped line directly under an open attribute value is kept as text of that value with a warning (K8), leaving the door open to a future grouping sugar (OPEN ATTR-GROUP). The agent asked whether it should be an error in lite.
+**Context.** UDON has no attributes of attributes (K4). In 0.10.0 an attribute-shaped line directly under an open attribute value is kept as text of that value with a warning (K8), leaving the door open to a future grouping sugar (OPEN ATTR-GROUP). The agent asked whether it should be an error in lite.
 
 ```udon
 |el
@@ -88,4 +88,4 @@ An error at 4:5. A `:label` line under an element inside the attribute's body be
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > :label-under-open-attribute:  error reserved construction
-- Scope follows from nesting: a line's owner is the node it sits under, so any `:label` line an attribute owns is covered, wherever in the body it sits. The card used to say "directly under", which read as if the scope were open; Joseph, 2026-10-09: "I don't understand what is still open vs everything already [ruled]". Nothing was open.
+- Scope follows from nesting: a line's owner is the node it sits under, so any attribute line an attribute owns is covered, wherever in the body it sits. The card used to say "directly under", which read as if the scope were open; Joseph, 2026-10-09: "I don't understand what is still open vs everything already [ruled]". Nothing was open.

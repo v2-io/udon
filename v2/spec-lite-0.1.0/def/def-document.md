@@ -25,7 +25,7 @@ consequences: [def:anomaly, def:reading-option, def:node, rule:one-root-node, ru
 
 - A «document» and its «tree» are different things, so two «document»s spelled differently can be compared by their «tree»s. Which pairs have the same «tree» is for the rules to say.
 - Nothing spelled in a «document» becomes the «root-node». A top-level element is a child of the «root-node», whatever its name.
-- «meta» is never spelled. A top-level `:label` line is spelled, so it is never «meta», wherever the «tree» puts it.
+- «meta» is never spelled. A top-level attribute line is spelled, so it is never «meta», wherever the «tree» puts it.
 
 ## Examples
 

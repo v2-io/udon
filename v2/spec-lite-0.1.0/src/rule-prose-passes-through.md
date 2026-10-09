@@ -73,7 +73,7 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - **Why it matters** (the drafter's reasoning): Prose is where Markdown lives, so lite specifies as little there as it can; every rule added to prose is a collision with some Markdown author.
 
-- Line-start structure (`|name`, `:label`, a `;` comment line, a fence) and reserved line starts ([[rule:prose-line-start-reserved]]) are decided before a line becomes prose, so they are not exceptions to this card (the drafter's reading of Joseph's "if memory serves").
+- Line-start structure (`|name`, `:name`, a `;` comment line, a fence) and reserved line starts ([[rule:prose-line-start-reserved]]) are decided before a line becomes prose, so they are not exceptions to this card (the drafter's reading of Joseph's "if memory serves").
 - The tree prints a multi-line text one transcript line per source line, which the notation hasn't settled ([[rule:tree-transcript]]).
 - Folded in 2026-10-09: the cards `rule-semicolon-in-text`, `rule-at-name-mid-prose` and `rule-bang-word-mid-prose` stated consequences of this card as rules of their own. Joseph, 2026-10-09: "partial orientation will also cause you to generalize incorrectly and assert new rules that should be obvious derivations of existing conventions and rules."
 - History behind the ` ; ` case: 0.10.0 §2.2 allowed a framed ` ; ` comment inside text-space lines; `.int/history-semicolon-in-text-2026-10-08.md` found no rationale for that and traced it to drift. Lite's rule restores the earlier one (comments in prose are `;{…}`).

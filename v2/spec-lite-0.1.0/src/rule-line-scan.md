@@ -6,12 +6,12 @@ needs-work: false
 layer: tree
 per: []
 depends: []
-consequences: [rule:waiting-label, rule:leftover-values, rule:text-value-end, rule:inline-element-value-end]
+consequences: [rule:attribute-with-no-value-takes-next-value, rule:leftover-values, rule:text-value-end]
 ---
 
 # One scan for element lines and attribute lines
 
-*Same-line material is read the same way whether the line starts with an element or an attribute.*
+*Sameline material is read the same way whether the line starts with an element or an attribute.*
 
 ## Statement
 
@@ -38,7 +38,7 @@ Both lines give `attr ‹this value›` and `another <34>`.
 
 *Carried 2026-10-09 from the decision record `adr/line-ownership-main.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-08.*
 
-**Context.** What the rest of a line belongs to has been answered five ways since 2011 (pre-design 71). On 2026-09-29 Joseph reaffirmed `$main` and named "attribute-sameline": same-line processing treated exactly the same whether the line starts with an element or an attribute. He said then that it wasn't a final verdict. On 2026-10-08 the agent listed "who owns the rest of a line" as a root question, citing that reaffirmation as the strongest input, and Joseph answered that it is the final word.
+**Context.** What the rest of a line belongs to has been answered five ways since 2011 (pre-design 71). On 2026-09-29 Joseph reaffirmed `$main` and named "attribute-sameline": sameline processing treated exactly the same whether the line starts with an element or an attribute. He said then that it wasn't a final verdict. On 2026-10-08 the agent listed "who owns the rest of a line" as a root question, citing that reaffirmation as the strongest input, and Joseph answered that it is the final word.
 
 **Options considered.**
 
@@ -73,4 +73,4 @@ Both lines give `attr ‹this value›` and `another <34>`.
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > 2. And that is the final word unless you uncover a nuance that conflicts with some other "latest thinking"
-- The rule itself is [[rule:waiting-label]], [[rule:leftover-values]] and [[rule:text-value-end]].
+- The rule itself is [[rule:attribute-with-no-value-takes-next-value]], [[rule:leftover-values]] and [[rule:text-value-end]].

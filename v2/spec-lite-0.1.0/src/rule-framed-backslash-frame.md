@@ -15,7 +15,7 @@ consequences: []
 
 ## Statement
 
-A framed ` \ ` that ends same-line text MUST be consumed, and the spaces on either side of it MUST NOT be part of any text.
+A framed ` \ ` that ends sameline text MUST be consumed, and the spaces on either side of it MUST NOT be part of any text.
 
 ## Grounds
 

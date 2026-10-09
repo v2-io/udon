@@ -9,13 +9,13 @@ depends: [rule:strings-like-ruby]
 consequences: []
 ---
 
-# Quoted names and labels use the string rules
+# Quoted element and attribute names use the string rules
 
-*An element name or attribute label written in quotes is read by the same rules as a quoted string.*
+*An element name or attribute name written in quotes is read by the same rules as a quoted string.*
 
 ## Statement
 
-1. A quoted element name (`|'…'`, `|"…"`) or quoted attribute label (`:'…'`, `:"…"`) MUST be read by the same rules as a quoted string of that quote.
+1. A quoted element name (`|'…'`, `|"…"`) or quoted attribute name (`:'…'`, `:"…"`) MUST be read by the same rules as a quoted string of that quote.
 
 ## Grounds
 

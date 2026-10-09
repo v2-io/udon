@@ -48,4 +48,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - **Why it matters** (the drafter's reasoning): Once prose has started, a deeper line is part of it; a marker there is the prose's own text, such as a Markdown table row.
 
-- Whether this holds for every marker (`:label`, `;`, a fence, reserved starts) was not discussed beyond the `|` case; 0.10.0 said yes for all.
+- Whether this holds for every marker (`:name`, `;`, a fence, reserved starts) was not discussed beyond the `|` case; 0.10.0 said yes for all.

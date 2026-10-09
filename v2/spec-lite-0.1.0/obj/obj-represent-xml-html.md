@@ -41,7 +41,7 @@ Chosen, not derived. Whether the rules meet it is checkable case by case: take a
   - several siblings on one line, like `<li>` items or table cells (51);
   - a value containing both quote kinds, which an HTML attribute can hold (75).
 - **What "represent" doesn't settle:** comments, processing instructions, namespaces, entities and CDATA. Whether lite must carry them, or only the element tree and text, is open.
-- **A tension with node-valued attributes.** Joseph's 2026-01-13 "udon-xml" flavor was "limited to forms that can be expressed in XML naturally-- e.g., no complex elements as an attribute's value". Lite can represent XML and still allow more than XML can (64), but the direction from lite to XML then loses something, which [[expl:data-mappings]] must say.
+- **A tension with element-valued attributes.** Joseph's 2026-01-13 "udon-xml" flavor was "limited to forms that can be expressed in XML naturally-- e.g., no complex elements as an attribute's value". Lite can represent XML and still allow more than XML can (64), but the direction from lite to XML then loses something, which [[expl:data-mappings]] must say.
 
 ## Working notes
 

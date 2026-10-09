@@ -6,16 +6,16 @@ needs-work: false
 layer: tree
 per: []
 depends: []
-consequences: [def:text, rule:backslash-empty-text, rule:label-after-empty-label, rule:reserved-spellings]
+consequences: [def:text, rule:backslash-empty-text, rule:attribute-after-attribute-with-no-value, rule:reserved-spellings]
 ---
 
-# A bare `:label` is an error
+# An attribute with no value is an error
 
 *Implicit missing values aren't supported.*
 
 ## Statement
 
-A `:label` with nothing after it on its line and nothing indented under it MUST be an error, whose message says implicit missing values aren't supported and names `nil`, `''` and `\`.
+An attribute with nothing after it on its line and nothing indented under it MUST be an error, whose message says implicit missing values aren't supported and names `nil`, `''` and `\`.
 
 ## Grounds
 
@@ -45,7 +45,7 @@ An error at 1:5: implicit missing value; write `nil`, `''` or `\`.
 
 **Drivers.**
 
-* Nested attribute labels are reserved ([[rule:nested-attributes]]), so `:a :b 1` must not read as anything (Joseph, under the Quote).
+* Nested attributes are reserved ([[rule:nested-attributes]]), so `:a :b 1` must not read as anything (Joseph, under the Quote).
 * Implicit missing values are not supported; the author spells what they mean (Joseph).
 
 **How firm.** His words: "I agree fully, except…", with his own reason and message. His own call, so `steward`. Decided for this version ([[decision:decided-for-this-version]]).

@@ -9,13 +9,13 @@ depends: [rule:missing-value, rule:nested-attributes]
 consequences: [rule:reserved-spellings]
 ---
 
-# A label with no value followed by another label is an error
+# An attribute with no value followed by another attribute is an error
 
 *`:a :b 1` would nest an attribute under an attribute.*
 
 ## Statement
 
-A `:label` with no value followed on the same line by another `:label` MUST be an error.
+An attribute with no value followed on the same line by another attribute MUST be an error.
 
 ## Grounds
 

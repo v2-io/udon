@@ -59,8 +59,8 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:column-shifting-whitespace-error]] | A tab, or any Unicode whitespace other than a space or a no-break space, in a line's indentation or before a later marker on the line, is an «error». |
 | proposed | [[rule:whitespace-after-last-marker]] | A tab or other whitespace after the last marker on a line shifts no column, so it is content. |
 | gap | [[rule:nesting]] | Deeper is a child, the same column a sibling, shallower closes |
-| proposed | [[rule:same-line-element-is-child]] | A bare `\|name` written later on an element's line is a child of the element before it on the line, at the column of its `\|`. |
-| proposed | [[rule:lines-follow-same-line-columns]] | Lines after a line with same-line elements are placed exactly as if each of those elements had begun its own line at its column. |
+| proposed | [[rule:sameline-element-is-child]] | A bare `\|name` written later on an element's line is a child of the element before it on the line, at the column of its `\|`. |
+| proposed | [[rule:lines-follow-sameline-columns]] | Lines after a line with sameline elements are placed exactly as if each of those elements had begun its own line at its column. |
 | proposed | [[rule:one-root-node]] | Parsing a «document» produces exactly one «root-node». |
 | proposed | [[rule:top-level-items-are-root-children]] | Every node made from a top-level item of the source is a child of the «root-node», in source order. |
 | proposed | [[rule:root-never-spelled]] | No spelling in the source opens, closes or names the «root-node»; a top-level element named `document` or `root` is an ordinary child. |
@@ -78,7 +78,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:double-quote-escapes]] | In `"…"` a backslash must begin one of a fixed list of escapes; any other is an error. |
 | proposed | [[rule:single-quote-escapes]] | In `'…'` only `\'` and `\\` are escapes; every other backslash is literal. |
 | proposed | [[rule:adjacent-quoted-strings]] | Two quoted strings with nothing between them are two values, with a warning (a lean). |
-| proposed | [[rule:quoted-names-and-labels]] | An element name or attribute label written in quotes is read by the same rules as a quoted string. |
+| proposed | [[rule:quoted-element-and-attribute-names]] | An element name or attribute name written in quotes is read by the same rules as a quoted string. |
 | proposed | [[rule:key-holds-a-value]] | The inside of `[key]` is read by the ordinary value rules. |
 | proposed | [[rule:key-escapes]] | In a key's unquoted parts only `\\`, `\[` and `\]` are escapes; any other backslash is an error. |
 | proposed | [[rule:list-items-whitespace-separated]] | A `[…]` list holds values separated by whitespace; the opaque-span escape rule does not apply to it. |
@@ -104,10 +104,10 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:escaped-reserved-is-text]] | Escaping a reserved form is how to write it as text. |
 | gap | [[rule:element-names]] | Characters of a bare name, quoted names, the former suffix characters, anonymous elements |
 | gap | [[rule:keys-and-traits]] | `[key]` and `.trait` as `$key` and `$traits` |
-| proposed | [[rule:line-scan]] | Same-line material is read the same way whether the line starts with an element or an attribute. |
-| proposed | [[rule:waiting-label]] | The next value on the line goes to the label that has none yet. |
+| proposed | [[rule:line-scan]] | Sameline material is read the same way whether the line starts with an element or an attribute. |
+| proposed | [[rule:attribute-with-no-value-takes-next-value]] | The next value on the line goes to the attribute that has none yet. |
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
-| proposed | [[rule:main-is-attribute]] | Same-line text never becomes a text child. |
+| proposed | [[rule:main-is-attribute]] | Sameline text never becomes a text child. |
 | proposed | [[rule:text-value-end]] | On an element's or attribute's line, unquoted text runs until a block form or a framed ` \ `. |
 | proposed | [[rule:space-before-text-end]] | Spaces before whatever ends a text are frame, not content. |
 | proposed | [[rule:framed-backslash-frame]] | The framed backslash and its spaces are consumed; neither is content. |
@@ -115,15 +115,15 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:space-between-embeds]] | Whitespace between two embeds is a run of the text. |
 | proposed | [[rule:inline-comments-kept]] | An inline comment is a piece of its text, even when empty. |
 | proposed | [[rule:value-line-escapes]] | Proposed: an attached `\X` escapes one character from a fixed set; any other is an error. |
-| proposed | [[rule:backslash-empty-text]] | A label followed only by a framed backslash gets an empty text. |
+| proposed | [[rule:backslash-empty-text]] | An attribute followed only by a framed backslash gets an empty text. |
 | proposed | [[rule:missing-value]] | Implicit missing values aren't supported. |
-| proposed | [[rule:label-after-empty-label]] | `:a :b 1` would nest an attribute under an attribute. |
+| proposed | [[rule:attribute-after-attribute-with-no-value]] | `:a :b 1` would nest an attribute under an attribute. |
 | proposed | [[rule:nested-attributes]] | An attribute can't have attributes. |
 | gap | [[rule:bare-typing]] | The frozen typed set by spelling, and every edge spelling |
 | proposed | [[rule:nil-spelling]] | `null` is not typed. |
 | proposed | [[rule:element-values]] | Attributes can hold elements. |
-| proposed | [[rule:element-after-waiting-label]] | A bare `\|name` where a label still waits for its value becomes that value. |
-| gap | [[rule:repeated-labels]] | What a label written more than once gives |
+| proposed | [[rule:element-after-attribute-with-no-value]] | A bare `\|name` where an attribute still waits for its value becomes that value. |
+| gap | [[rule:repeated-attributes]] | What an attribute written more than once gives |
 
 ## *Part* V — Bodies
 
@@ -155,8 +155,8 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:fence-verbatim-label]] | When a fence's label ends in `-`, nothing is stripped from its body. |
 | proposed | [[rule:fence-dedent-in-meta]] | The indentation removed from each fence body line is kept in «meta». |
 | proposed | [[rule:fence-body-line-endings]] | Every fence body line keeps its line ending, the last included. |
-| gap | [[rule:late-attributes]] | A `:label` line after content has begun |
-| gap | [[rule:attribute-bodies]] | Values written on the lines under a label |
+| gap | [[rule:late-attributes]] | An attribute line after content has begun |
+| gap | [[rule:attribute-bodies]] | Values written on the lines under an attribute |
 | proposed | [[rule:top-level-attributes]] | An attribute line at the top level belongs to the root node. |
 | proposed | [[rule:top-level-text-left-edge]] | When a document starts with prose, that text's left edge is column 0 (a lean). |
 | proposed | [[rule:top-level-columns]] | Top-level lines may start at any column; the root counts as column −1 (a lean). |

@@ -50,5 +50,5 @@ The fourth line is an error: `\U` is not an escape here; quote it, `'C:\Users\me
 - Joseph's words (2026-10-09, `.int/STEWARD-VERBATIM.md`):
 
   > 2. Oh-- I forgot we changed those to errors inside embeds if not supported. For lite-- don't you think we should do the same thing for backslashes without a right-fence that we don't know the exact meaning of? ([admittedly], your example shows several instances where we *do* know the meaning-- it is escaping what would otherwise be a type differentiator (number, quote, <, etc.) or what would otherwise be a block beginning (:,|,;) so that it starts some text instead. One issue would be sameline @ (without @{...}) -- … so we would need to allow it to be escaped as well-- same with !.
-- Reasoning (agent's): same-line text is value-space, so it follows the strict rule of the opaque spans; prose is text-space and stays lenient.
+- Reasoning (agent's): sameline text is value-space, so it follows the strict rule of the opaque spans; prose is text-space and stays lenient.
 - Open with Joseph: the set, and the strict rule (asked 2026-10-09).

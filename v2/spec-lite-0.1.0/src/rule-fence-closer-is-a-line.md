@@ -64,7 +64,7 @@ root
 
 **Costs accepted.**
 
-* A closer at column 0 under a deep same-line chain closes the whole chain; under the old reading it didn't.
+* A closer at column 0 under a deep sameline chain closes the whole chain; under the old reading it didn't.
 
 **Joseph's words not already quoted on this card.**
 

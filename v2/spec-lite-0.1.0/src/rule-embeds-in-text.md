@@ -53,7 +53,7 @@ Reading a one-piece text as its piece is a reading option ([[def:reading-option]
 
 **Drivers.**
 
-* Embedded forms are "meant to be embedded in text/string"; same-line text "is always assumed to be non-delimited text which ends with a *block* form of ;, |, or :" (Joseph, under the Quote).
+* Embedded forms are "meant to be embedded in text/string"; sameline text "is always assumed to be non-delimited text which ends with a *block* form of ;, |, or :" (Joseph, under the Quote).
 * His 2026-07-19 principle, which this reaffirms: "All *{...} constructs, embeds if you will, are assumed to *reduce to more text*" and "*{ should never take someone out of text/prose mode, and if encountered as the beginning of something, should start text/prose mode as if it was literal text" (quoted in `.int/pre-design/59-where-an-inline-comment-may-sit.md` and `10-…discussion.md`).
 
 **How firm.** His words: "I am under the impression", then "I am very comfortable … for right now, yes". His own reading, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).

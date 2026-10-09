@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: []
-consequences: [rule:element-after-waiting-label]
+consequences: [rule:element-after-attribute-with-no-value]
 ---
 
 # An attribute's value may be an element
@@ -41,13 +41,13 @@ root
 
 *Carried 2026-10-09 from the decision record `adr/node-valued-attributes-in.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `supported`, 2026-10-08.*
 
-**Context.** 0.10.0 lets an attribute's value be a node (`:author` with `|person` under it; `:x |em hi`). Pre-design 64 asked whether lite keeps that, or limits attributes to scalars, text and lists as Joseph's 2026-01-13 "udon-xml" flavor did. The agent listed it among the root questions on 2026-10-08.
+**Context.** 0.10.0 lets an attribute's value be an element (`:author` with `|person` under it; `:x |em hi`). Pre-design 64 asked whether lite keeps that, or limits attributes to scalars, text and lists as Joseph's 2026-01-13 "udon-xml" flavor did. The agent listed it among the root questions on 2026-10-08.
 
 **Options considered.**
 
-* Keep node-valued attributes (chosen, as a lean).
+* Keep element-valued attributes (chosen, as a lean).
 * Leave them out of lite.
-* Only in block form under the label.
+* Only in block form under the attribute.
 
 **Drivers.**
 
@@ -72,4 +72,4 @@ root
 
   > Don't know what you're asking to confirm here. I still lean toward keep them.
 - His attached follow-up ("see what cluster 2 does to this 'root decisions' list") was later answered by him: "Don't know what you're asking to confirm here. I still lean toward keep them." Nothing further is owed on it.
-- Values written on the lines under a label are [[rule:attribute-bodies]], not yet discussed.
+- Values written on the lines under an attribute are [[rule:attribute-bodies]], not yet discussed.

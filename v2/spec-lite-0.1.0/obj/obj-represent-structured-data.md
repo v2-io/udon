@@ -25,8 +25,8 @@ depends: []
 
 ## What discharges it
 
-- the value rules ([[rule:unquoted-values]], [[rule:quoted-strings]], [[rule:implicit-typing]], [[rule:explicit-typed-values]], [[rule:lists]], [[rule:repeated-labels]]);
-- the rules for values on the lines under a label ([[rule:values-below-the-label]]);
+- the value rules ([[rule:unquoted-values]], [[rule:quoted-strings]], [[rule:implicit-typing]], [[rule:explicit-typed-values]], [[rule:lists]], [[rule:repeated-attributes]]);
+- the rules for values on the lines under an attribute ([[rule:attribute-bodies]]);
 - a correspondence between lite trees and JSON and YAML, with what each loses stated ([[expl:data-mappings]]), and idiomatic fixtures converted from real JSON and YAML.
 
 ## Epistemic status

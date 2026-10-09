@@ -5,7 +5,7 @@ awaiting-decision: true
 needs-work: false
 terms: [element, attribute, comment, fence]
 per: []
-depends: [def:document, def:text, rule:embeds-in-text, rule:fence-body-dedent, rule:inline-comments, rule:main-is-attribute, rule:same-line-element-is-child]
+depends: [def:document, def:text, rule:embeds-in-text, rule:fence-body-dedent, rule:inline-comments, rule:main-is-attribute, rule:sameline-element-is-child]
 consequences: []
 ---
 
@@ -16,14 +16,14 @@ consequences: []
 ## Terms
 
 - **element:** a node with an optional name, an ordered list of «attribute»s, and an ordered list of children: «element»s, «text»s from prose, «comment»s and «fence»s.
-- **attribute:** an attribute-name and a value on an «element», kept in written order. `[key]`, `.trait` and the element's same-line text are the attributes `$key`, `$traits` and `$main`.
+- **attribute:** an attribute-name and a value on an «element», kept in written order. `[key]`, `.trait` and the element's sameline text are the attributes `$key`, `$traits` and `$main`.
 - **comment:** a node carrying a comment's text. A `;{…}` comment inside a «text» is a «piece» of it instead ([[def:text]]).
 - **fence:** a node carrying a label and a body that lite never scans.
 
 ## Invariants
 
-- Same-line text is the `$main` «attribute», never a text child ([[rule:main-is-attribute]]).
-- An «element» written later on an element's line is a child ([[rule:same-line-element-is-child]]).
+- Sameline text is the `$main` «attribute», never a text child ([[rule:main-is-attribute]]).
+- An «element» written later on an element's line is a child ([[rule:sameline-element-is-child]]).
 - Comments are in the «tree» (Joseph, 2026-10-09: "Don't forget comments show up in the AST").
 
 ## Working notes
@@ -38,5 +38,5 @@ consequences: []
   > Don't forget comments show up in the AST--
 
 - Where a framed ` ; ` comment on an element's or attribute's line sits in the «tree» is open.
-- What a repeated label gives a consumer is the gap card `rule:repeated-labels`.
+- What an attribute written more than once gives a consumer is the gap card `rule:repeated-attributes`.
 - Traits are names (Joseph, 2026-10-09, on asking whether they could be text: "this question makes zero sense for anyone who is even vaguely familiar with udon").

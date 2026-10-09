@@ -21,7 +21,7 @@ consequences: [rule:key-holds-a-value, rule:list-items-whitespace-separated, rul
 - **implicit-typed-value:** a «typed-value» not spelled `<…>`, such as an unquoted word, a quoted string, or a list. Lite reads its type from its spelling.
   - *Avoid:* "bare value". The sources use it for two different sets: every value outside `<…>` (0.10's "bare set" includes strings and lists), and unquoted values only.
 - **type-label:** the part of an «explicit-typed-value»'s text that its author writes to name what the rest is meant to be, as `u64` in `<u64:0xff>`.
-  - *Avoid:* "label" alone, which UDON uses for an attribute's name.
+  - *Avoid:* "label" alone, which Joseph uses for the lexical rules all identifying names share (2026-10-09).
 
 ## Invariants
 

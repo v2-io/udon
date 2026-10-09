@@ -6,7 +6,7 @@ needs-work: false
 layer: value
 per: []
 depends: [def:string]
-consequences: [rule:adjacent-quoted-strings, rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-names-and-labels, rule:newline-in-string-is-error, def:string]
+consequences: [rule:adjacent-quoted-strings, rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-element-and-attribute-names, rule:newline-in-string-is-error, def:string]
 ---
 
 # Quoted strings read as Ruby strings

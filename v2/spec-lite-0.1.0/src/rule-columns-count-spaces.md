@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:column-shifting-whitespace-error]
-consequences: [rule:no-break-space-counts-as-space, rule:column-shifting-whitespace-error, rule:same-line-element-is-child]
+consequences: [rule:no-break-space-counts-as-space, rule:column-shifting-whitespace-error, rule:sameline-element-is-child]
 ---
 
 # Columns are counted in spaces

@@ -36,7 +36,7 @@ Chosen. No fixture yet.
 
 *Carried 2026-10-09 from the decision record `adr/no-break-space-counts-as-space.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-09.*
 
-**Context.** [[rule:column-shifting-whitespace-error]] made any Unicode whitespace other than the ordinary space an error where it could shift a node's column; that covered the no-break space. Joseph asked for the reasoning behind keeping it an error, noting "there's no ambiguity about column positions with that character in particular." The coordinator revised its lean to one column plus a warning, and he agreed. This replaces that record's rule for U+00A0 only; every other non-space whitespace stays an error there.
+**Context.** [[rule:column-shifting-whitespace-error]] made any Unicode whitespace other than the ordinary space an error where it could shift an element's or attribute's column; that covered the no-break space. Joseph asked for the reasoning behind keeping it an error, noting "there's no ambiguity about column positions with that character in particular." The coordinator revised its lean to one column plus a warning, and he agreed. This replaces that record's rule for U+00A0 only; every other non-space whitespace stays an error there.
 
 **Options considered.**
 

@@ -6,16 +6,16 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:line-scan]
-consequences: [rule:leftover-values, rule:element-after-waiting-label, rule:inline-element-value-end]
+consequences: [rule:leftover-values, rule:element-after-attribute-with-no-value]
 ---
 
-# A label waiting for its value takes the next value
+# An attribute with no value yet takes the next value
 
-*The next value on the line goes to the label that has none yet.*
+*The next value on the line goes to the attribute that has none yet.*
 
 ## Statement
 
-A `:label` that has no value yet MUST take the next value on its line.
+An attribute that has no value yet MUST take the next value on its line.
 
 ## Grounds
 

@@ -5,21 +5,21 @@ awaiting-decision: false
 needs-work: false
 layer: tree
 per: []
-depends: [rule:same-line-element-is-child]
+depends: [rule:sameline-element-is-child]
 consequences: []
 ---
 
-# Following lines see same-line elements as if written vertically
+# Following lines see sameline elements as if written vertically
 
-*Lines after a line with same-line elements are placed exactly as if each of those elements had begun its own line at its column.*
+*Lines after a line with sameline elements are placed exactly as if each of those elements had begun its own line at its column.*
 
 ## Statement
 
-The lines that follow MUST be placed against the columns of a line's same-line elements exactly as if each had been written on a line of its own at that column.
+The lines that follow MUST be placed against the columns of a line's sameline elements exactly as if each had been written on a line of its own at that column.
 
 ## Grounds
 
-- [[rule:same-line-element-is-child]]; Joseph's teaching rule (2026-07-28): "just pretend the same-line part has each of its parts on consecutive new lines".
+- [[rule:sameline-element-is-child]]; Joseph's teaching rule (2026-07-28): "just pretend the same-line part has each of its parts on consecutive new lines".
 
 ## Epistemic status
 

@@ -51,6 +51,6 @@ A rule, resting on the decisions in `per`. No fixtures yet.
   >
   > — Joseph (`.int/STEWARD-VERBATIM.md`, line 650)
 
-- **Why it matters** (the drafter's reasoning): The same character that ends text on a same-line run escapes a line when it comes first; the position decides the job.
+- **Why it matters** (the drafter's reasoning): The same character that ends text on a sameline run escapes a line when it comes first; the position decides the job.
 
 - That a leading `\` before a marker or a reserved start (`\|`, `\@`) is how such a line is written as text is the drafter's reading of "escape", consistent with Joseph's "don't use them, including by properly escaping them" (2026-10-09).

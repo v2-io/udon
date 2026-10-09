@@ -5,7 +5,7 @@ awaiting-decision: false
 needs-work: true
 layer: tree
 per: [reserve-not-ignore, reserved-is-an-error]
-depends: [rule:prose-line-start-reserved, rule:label-after-empty-label, rule:nested-attributes, rule:nil-spelling, rule:missing-value, rule:opaque-span-raw-text]
+depends: [rule:prose-line-start-reserved, rule:attribute-after-attribute-with-no-value, rule:nested-attributes, rule:nil-spelling, rule:missing-value, rule:opaque-span-raw-text]
 consequences: [obj:reserve-dont-ignore]
 ---
 
@@ -22,8 +22,8 @@ Each spelling in this table MUST be an error where the table says.
 | `!` followed by a name or `:` (`!if`, `!:sh:`) | at the start of a line, and on an element's or attribute's line |
 | `!{` (`!{…}`, `!{{…}}`) | anywhere it would open, prose included |
 | `@` followed by a name (`@jw`) | at the start of a prose line, and as a value |
-| a `:label` with no value followed by another `:label` | on an element's or attribute's line ([[rule:label-after-empty-label]]) |
-| a `:label` line owned by an attribute | in an attribute's body ([[rule:nested-attributes]]) |
+| an attribute with no value followed by another attribute | on an element's or attribute's line ([[rule:attribute-after-attribute-with-no-value]]) |
+| an attribute line owned by an attribute | in an attribute's body ([[rule:nested-attributes]]) |
 | `@` followed by a name, `@[`, `@.` or `@<` (`@jw`, `@[k]`, `@.t`, `@<…>`) | on an element's or attribute's line |
 | a bare `null` where `nil` would be read | as a value ([[rule:nil-spelling]]) |
 

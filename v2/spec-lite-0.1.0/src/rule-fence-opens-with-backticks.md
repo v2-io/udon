@@ -15,7 +15,7 @@ consequences: [rule:fence-anywhere-structure, rule:fence-label-no-backtick, rule
 
 ## Statement
 
-1. A run of three or more backticks (N of them), where a structure line or same-line structure can start, MUST open a fence of length N.
+1. A run of three or more backticks (N of them), where a structure line or sameline structure can start, MUST open a fence of length N.
 
 ## Grounds
 

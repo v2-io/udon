@@ -9,7 +9,7 @@ depends: [rule:columns-count-spaces, def:anomaly]
 consequences: [rule:whitespace-after-last-marker, rule:blank-line-any-whitespace, rule:columns-count-spaces]
 ---
 
-# Other whitespace where it could shift a node's column is an error
+# Other whitespace where it could shift an element's or attribute's column is an error
 
 *A tab, or any Unicode whitespace other than a space or a no-break space, in a line's indentation or before a later marker on the line, is an «error».*
 
@@ -38,13 +38,13 @@ Chosen. No fixture yet.
 
 *Carried 2026-10-09 from the decision record `adr/column-shifting-whitespace-is-an-error.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-08.*
 
-**Context.** UDON's nesting is by column. A tab has no agreed width, so a tab in indentation makes a line's column ambiguous. 0.10.0 kept such a line as text with a warning (L4); earlier versions made it an error. Same-line elements also sit at their true columns ([[rule:same-line-element-is-child]]), so whitespace before a later marker on a line matters as well.
+**Context.** UDON's nesting is by column. A tab has no agreed width, so a tab in indentation makes a line's column ambiguous. 0.10.0 kept such a line as text with a warning (L4); earlier versions made it an error. Sameline elements also sit at their true columns ([[rule:sameline-element-is-child]]), so whitespace before a later marker on a line matters as well.
 
 **Options considered.**
 
 * Warning, line kept as text (0.10.0, L4).
 * A tab counts as a fixed number of columns.
-* An error wherever it could shift a node's column (chosen).
+* An error wherever it could shift an element's or attribute's column (chosen).
 
 **Drivers.**
 
@@ -82,4 +82,4 @@ Chosen. No fixture yet.
 - **Reasoning:** the premise is ambiguity of the true column. Anything that could shift a later marker's column is ambiguous; whitespace after the line's last marker shifts nothing.
 
 - A tab in a text block's stripped indentation: open.
-- Tabs inside block text past the indentation that places the line shift no node's column, so under the confirmed reading they are content. That is the agent's reading of Joseph's "any tab characters found in block mode"; only a case that genuinely conflicts needs to go back to him (carried from the retired record).
+- Tabs inside block text past the indentation that places the line shift no element's or attribute's column, so under the confirmed reading they are content. That is the agent's reading of Joseph's "any tab characters found in block mode"; only a case that genuinely conflicts needs to go back to him (carried from the retired record).

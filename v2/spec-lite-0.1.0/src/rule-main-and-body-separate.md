@@ -45,4 +45,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
   >
   > — Joseph (`.int/STEWARD-VERBATIM.md`, line 563)
 
-- **Why it matters** (the drafter's reasoning): Same-line text is "more like the 'name' or heading", a different semantic space from indented child text.
+- **Why it matters** (the drafter's reasoning): Sameline text is "more like the 'name' or heading", a different semantic space from indented child text.
