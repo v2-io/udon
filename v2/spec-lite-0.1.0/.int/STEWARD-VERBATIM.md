@@ -587,3 +587,11 @@
 ### Joseph's answer (whole message)
 
 > I'm fine with `:n ;{}` yielding a text AST node with an empty comment as its only inner part.
+
+*(Agent text, summary: the agent reported `:n ;{}` recorded, and listed the two things still waiting: keeping 0.10.0's trailing ` \` for a final newline in text with edge blank lines as layout; and counting a no-break space as one column with a warning.)*
+
+### Joseph's answer (whole message)
+
+> 1. it depends on the answer to "border/boundary blank lines" -- whether we preserve those as part of prose or consider them ornamentation. If we consider them ornamentation (probably right), then wouldn't we need a trailing \ to override that? (that's a genuine question asking for your thoughts and lean and for what's missing)
+>
+> 2. Yes-- treat it same as a normal space but with a warning.

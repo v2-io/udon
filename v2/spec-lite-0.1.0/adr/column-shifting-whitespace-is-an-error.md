@@ -7,14 +7,14 @@ title: "A tab or other non-space whitespace where it could shift a node's column
 status: accepted
 decided-by: steward
 decided: "2026-10-08"
-updated: 2026-10-08
+updated: 2026-10-09
 deciders: [Joseph (steward)]
 consulted: ["udon-team agent (agent, Opus 5.5)"]
 informed: [parser implementers]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: no-break-space-counts-as-space, how: revised, scope: partial}]
 closes: []
 leaves-open: ["63", "79 Q4"]
 ---
@@ -102,3 +102,4 @@ Not decided here: an indentation unit, and a tab in a text block's stripped inde
 
 - Tabs inside block text, past the indentation that places the line, shift no node's column, so under the confirmed reading they are content. That is the agent's reading of "any tab characters found in block mode"; only a case that genuinely conflicts needs to go back to him.
 - Pre-design 79 Q4 (CJK and combining characters before a same-line marker) rests on the same premise, "such whitespaces make the true column position ambiguous"; whoever decides it should start here.
+- The no-break space (U+00A0) is the one exception: it counts as a normal space wherever it sets a column, with a warning ([[decision:no-break-space-counts-as-space]]).

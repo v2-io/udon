@@ -92,3 +92,4 @@ Warnings are for "technically correct udon/udon-lite" that "does do a specific t
 - Whether a document with only warnings needs any marking beyond the warnings themselves: not stated.
 - For the anomaly inventory: 0.10.0's top-level `:label` warning (pre-design 04 Q2, 12's table) is in neither list yet; to decide with the root's attributes.
 - Not decided: whether a parser may keep scanning after an error to report more errors (still producing no tree).
+- For the anomaly inventory: a no-break space where it sets a column is a warning, by Joseph's own call ([[decision:no-break-space-counts-as-space]]).
