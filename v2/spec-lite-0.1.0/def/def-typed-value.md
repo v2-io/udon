@@ -6,6 +6,7 @@ needs-work: false
 terms: [typed-value, explicit-typed-value, implicit-typed-value, type-label]
 per: [explicit-typed-value-in, references-vocabulary]
 depends: []
+consequences: [rule:key-holds-a-value, rule:list-items-whitespace-separated, rule:opaque-span-raw-text]
 ---
 
 # typed-value · explicit-typed-value · implicit-typed-value · type-label
@@ -39,6 +40,8 @@ depends: []
 
 
 ## Working notes
+
+- **Since 2026-10-08:** quoted values are «string»s ([[def:string]]) and unquoted material is «text» ([[def:text]]); this record's "implicit-typed-value" (which lists "an unquoted word, a quoted string, or a list") needs reconciling with those two, and `nil` is now the only spelling of nil ([[decision:nil-only]]).
 
 - **For Joseph:** the seeded `explicit-typed-value-in` says lite "carries its text and optional type label". Did that mean as two separate things (07 Q3)?
 - **`per:` cites seeded decisions that are not ADRs yet** (`.old/vsect-init/DECISIONS.md`), so those entries dangle until the udon team converts them.

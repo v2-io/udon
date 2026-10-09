@@ -1,4 +1,5 @@
-# [[fixture:implied-root]]: the cases for [[rule:implied-root]].
+# [[fixture:implied-root]]: the cases for the implied-root cards ([[rule:one-root-node]],
+# [[rule:top-level-items-are-root-children]], [[rule:root-never-spelled]]).
 # An example, proposed from the SOP side on 2026-09-30. Lite's cases are the
 # udon team's to adopt, change, or discard.
 #
@@ -52,20 +53,14 @@ kind: fixture
 awaiting-second: true
 awaiting-decision: false
 needs-work: false
-depends: [rule:implied-root]
+depends: [rule:one-root-node, rule:top-level-items-are-root-children, rule:root-never-spelled]
 
-notes:
-  - >-
-    Every case's `per` names `implied-root`, a seeded decision with no ADR
-    yet (its rendering is in .old/vsect-init/DECISIONS.md). Those entries
-    dangle until the udon team converts it. Nothing about this file itself
-    waits on a decision, so awaiting-decision is false; the dependency is
-    derived from `per`.
+notes: []
 
 cases:
   - id: root_single_top_level_element
     profile: canonical
-    exercises: [implied-root]
+    exercises: [one-root-node, top-level-items-are-root-children]
     per: [implied-root]
     udon: |
       |person
@@ -76,7 +71,7 @@ cases:
 
   - id: root_is_never_spelled
     profile: counter
-    exercises: [implied-root]
+    exercises: [root-never-spelled]
     per: [implied-root]
     why: >-
       It catches a converter that treats a file's one top-level element as
@@ -96,7 +91,7 @@ cases:
 
   - id: root_top_level_label
     profile: descriptive
-    exercises: [implied-root]
+    exercises: [top-level-items-are-root-children]
     per: [implied-root]
     open: ["04 Q2"]
     udon: |

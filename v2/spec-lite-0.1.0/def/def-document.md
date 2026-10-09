@@ -4,8 +4,9 @@ awaiting-second: true
 awaiting-decision: true
 needs-work: false
 terms: [document, tree, root-node, meta]
-per: [implied-root, ast-centric]
+per: [implied-root, ast-centric, forward-compat-aspiration]
 depends: []
+consequences: [def:anomaly, def:reading-option, def:node, rule:one-root-node, rule:root-meta, rule:tree-transcript]
 ---
 
 # document · tree · root-node · meta
@@ -18,7 +19,7 @@ depends: []
 - **tree:** the structure one «document» parses to, which is what lite specifies. It has exactly one «root-node», and every other node in it sits beneath that «root-node».
 - **root-node:** the node at the top of every «tree». It is implied: no spelling in the «document» opens, closes, or names it. The «document»'s top-level items are its children, in order.
   - *Distinct from* the addressing theory's root-scope ([[references/def:scope]]), a scope with no enclosing scope. Lite defines no addressing, so how the two relate is not lite's to state.
-- **meta:** information attached to a node in the «tree» that the «document» does not spell, such as the filename a parser attaches to the «root-node».
+- **meta:** information attached to a node in the «tree» that the «document» does not spell, such as the filename a parser attaches to the «root-node», or a node's source position. «meta» is free to change from one version of lite to the next ([[decision:forward-compat-aspiration]]).
 
 ## Invariants
 
@@ -45,6 +46,8 @@ depends: []
 
 ## Working notes
 
+- **Joseph's words** (2026-10-08, `.int/STEWARD-VERBATIM.md`), downgrading "same tree" to an aspiration:
+  > … Under this adjustment I think meta is clearly safe to evolve beyond lite.
+
 - **Awaiting the udon team's decider:** «document» is defined here as the source, not the parse result, and that choice of meaning is theirs.
-- **`per:` cites seeded decisions that are not ADRs yet** (`.old/vsect-init/DECISIONS.md`), so those entries dangle until the udon team converts them.
 - **Open questions** bearing on these terms: 84 Q1, 13 Q1, 60, 04 Q2.

@@ -246,9 +246,9 @@
 
 *Source: `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/293bb1ee-c26c-4c95-bc14-6f01bedb2879.jsonl`. Copied by the udon-team agent (Opus 5.5) that picked up lite assembly that day. The agent text Joseph was answering is summarized, not quoted, and marked as such.*
 
-### Opening message — Joseph (excerpt)
+### Opening message — Joseph (whole)
 
-> One main thing I think we may need to consider is allowing @{...} references [after all]-- but not parsing or checking their inner values-- just having them in the AST as references and that's it.
+> I have one agent already working here in v2/references/ -- seeing if we should continue to flesh out address-theory or not at this juncture. As for *you*, I need you to, if possible, look into picking up v2/spec-lite-0.1.0/ -- it was getting a bit sidetracked trying to get some better verisectorium machinery in there, but now I'd pretty much like to get it assembled and get the main, triple-checked decisions/tradeoffs in front of me, one at a time (*after* assembling all that can be assembled and after you're fully familiar with the options and histories -- feel free to launch as much help for deep dives and historical context as you like), so that we can get this spec nailed down, after which the parser will be trivial. One main thing I think we may need to consider is allowing @{...} references [after all]-- but not parsing or checking their inner values-- just having them in the AST as references and that's it.  Anyway, if you would get yourself fully oriented, give your brief perspective on what you understand, and your professio, we can plan from there! Thank you!
 
 *(Agent text, summary: the agent listed six "root decisions" — what "the same tree" covers (meta/spans; raw text of opaque spans), line ownership, how much to reserve in prose vs Markdown pass-through, bare-value typing, node-valued attributes, raw content/fences — and on `@{…}` argued for carrying it as an opaque delimited span like `<…>`, forward-safe if its end rule is fixed now, the "same tree" promise allows a later parse of the interior, and its positions are settled; and asked whether the tree should call it a reference.)*
 
@@ -310,6 +310,14 @@
 ### Joseph's message (whole)
 
 > (I don't know if elegencies is a word-- feel free to correct my spellings and grammar when obviously wrong when adding to the official record! Use square bracket replacements if you really want to be pedantic ;-))
+
+### Message — Joseph (2026-10-08T19:07:15Z, whole; carried in 2026-10-09, it had been missed)
+
+> No-- just do "...   [elegences]..."  someone can look at the actual session transcript if they need to know what you corrected. I'm watching anyway and will let you know on the very unlikely chance that you misunderstood my mispelling or grammar :-)
+
+### Message — Joseph (2026-10-08T19:08:01Z, whole; carried in 2026-10-09, it had been missed)
+
+> Thanks :-)  Apologies for that but it scrolled everything prior way up-- could you reissue the next one?
 
 *(Agent text, summary: the agent relayed the history agent's finding (`.int/history-semicolon-in-text-2026-10-08.md`) that 0.10.0's mid-text ` ; ` comment had no recorded rationale and drifted in during the 2026-08-09 rewrite; that row-shaped text lines (Markdown table rows, one-record-per-line lists) are where writers reach for trailing notes; and that `;{…}` in prose serves them. It then reissued the fence question: (A) N-backtick nesting; (B) byte-exact vs strip-to-opener for an indented fence, with a `|bundle` example whose `  ```text` opener is indented two spaces.)*
 
@@ -475,6 +483,13 @@
 
 *(Agent text, summary, 2026-10-08 ~20:58Z, answering the "any *error* … is a failure / stop" message above: the agent restated his errors list as it read it — reserved spellings, a label with no value, tabs in block mode, unclosed `[key`, unclosed `|{` `;{` `@{` `<…>`, unclosed quoted strings or lists, an unclosed fence, a newline inside any delimited span, anything but a framed comment after a fence closer — and listed the remaining warnings (attribute after content; text or fence line shallower than the left edge; a `:label` line under an open attribute value); asked what "tabs in block mode" covers; and put escapes as three options in a table — A: strings take escapes, spans keep any-`\X`-gives-X; B: one rule everywhere, JSON's escapes plus the span's closer, any other `\X` an error; C: the same but any other `\X` kept as written — plus "single quotes are raw", leaning C with raw single quotes. Joseph's next reply questioned only the `:label` item, and gave his own answer on strings, which differs from that lean.)*
 
+### Message — Joseph (2026-10-08T21:02:14Z, whole; carried in 2026-10-09, it had been missed)
+
+> First-- you said under "Warnings are valid lite:... What's left:"
+> - a :label line directly under an open attribute value (it becomes text of that value)
+>
+> This wasn't in your table (that I see-- I might be missing it)-- what is the example and what do you mean?
+
 *(Agent text, summary: the agent asked whether a `:label` line directly under an open attribute value — kept as text with a warning in 0.10.0 — should be an error in lite; then reported the second reading of the day's records and asked three things: (1) whether three calls are leans or rulings (same-line elements are children; fences nest by backtick count; the closing line sets the indent level); (2) whether a newline is allowed inside `;{…}`; (3) whether a line inside a fence that starts with N or more backticks and then has more text is an error (as recorded) or body text (CommonMark). Still pending from before: escapes in strings and spans, and what "tabs in block mode" covers.)*
 
 ### Joseph's answer (whole message)
@@ -505,6 +520,12 @@
 ### Joseph's answer (whole message)
 
 > I forgot that $main can have a following node etc.-- I agree, error
+
+*(Agent text, summary: the agent recorded the tab ruling with `|p Intro⇥text |em x` as an error and re-asked the tree-shape question.)*
+
+### Joseph's message (whole; carried in 2026-10-09, it had been missed)
+
+> It does make me wonder if we need to allow utf non-breaking-space though, since that shouldn't lead to ambiguity (? right? is it by definition supposed to be the same width as a normal space?)
 
 *(Agent text, summary: the agent answered Joseph's NBSP question (Unicode says U+00A0 "should be the same width as the space 0020"; East Asian width Neutral; so not width-ambiguous) and leaned toward keeping it an error where it could set a column — it's invisible, tools disagree on whether it's whitespace, and an error fixes the file once — with its own error message, and NBSP as ordinary content in text, values and fence bodies. It then relayed the escape-sequence report (`.int/escape-sequences-2026-10-08.md`: no improved set existed in mainline 0.9; a proposed set built from Ruby's and lined up with the number rules) with four calls and leans: `\s` an error; accept a correctly ordered surrogate pair, a lone surrogate an error; drop `\v` and `\a`; make `\b` an error; and noted `\n` will read three ways (newline in `"…"`, backslash-n in `'…'`, `n` in the opaque spans). The tree-shape question was still open: `$main` material as an attribute (A) or as the element's first children marked `same_line` (B).)*
 
@@ -582,6 +603,10 @@
 >
 > WRT the "single-piece rule" -- Another option to consider:  `|el :x @<other-one>`   and `|el :x |<val-node ...>` etc.  I like this notation and something we should record, but it is also something that can wait on without disturbing. My lean for lite-0.1.0 is an *aspiration* that a `text` construct with just one embed in a value slot ends up being *processed*/interpreted as if that embed is the value itself (so, kind of pre-emptively having an AST reading flag that defaults to reducing it, in the same category as $main<->children stuff, instead of as part of the language spec). I guess that means in reality we have  source -> wire/event (opaque in lite) -> raw AST -> AST modified by representational-options (usually part of traversal instead of predetermined, I would imagine).
 
+### Message — Joseph (2026-10-09T15:23:59Z, whole; carried in 2026-10-09, it had been missed)
+
+> (also tell the agents they are welcome to use indentation and unicode in their proposals if it makes things more readable etc. I'd prefer that over "json s-expressions" or something verbose and jarring like that)
+
 *(Agent text, summary: the agent reported the embeds and representational-options records committed, and asked, for the values work, whether `:n ;{}` is an empty text (his 07-19 "`:n ;{}` === `:n ""`") or a missing value (an error). Joseph also asked, in between, that the two notation agents be told indentation and Unicode are welcome — "I'd prefer that over "json s-expressions" or something verbose and jarring like that" — which was relayed to them.)*
 
 ### Joseph's answer (whole message)
@@ -595,6 +620,10 @@
 > 1. it depends on the answer to "border/boundary blank lines" -- whether we preserve those as part of prose or consider them ornamentation. If we consider them ornamentation (probably right), then wouldn't we need a trailing \ to override that? (that's a genuine question asking for your thoughts and lean and for what's missing)
 >
 > 2. Yes-- treat it same as a normal space but with a warning.
+
+### Message — Joseph (2026-10-09T15:31:09Z, whole; carried in 2026-10-09, it had been missed)
+
+> Ahhh- you're right-- we already have a workaround for prose blank lines at boundaries-- the *leading* escape (at the right indent level)...  OK, I'm comfortable dropping trailing backslash *as a reserved construct that errors for now*-- except when it is the only non-blank thing on the line == leading backslash. Is that coherent, first, before recording it?
 
 *(Agent text, summary of three messages: (1) on dropping the trailing backslash as a reserved error except when it is the only non-blank thing on the line: coherent, since a lone `\` line is a kept empty line (so `line two` + lone `\` gives "line one\nline two\n"); three things to pin — whether only a framed ` \` errors or an attached `foo\` too (Markdown's hard break), that 0.10.0's `:a \` empty-string idiom goes away in favour of `:a ""`, and that a lone `\` indented past the left edge keeps those spaces ("first\n  \nlast"); (2) both notation agents found that `|nav :aria-label Site |{a :href / Home}` puts the link inside `aria-label`, and that under 0.10.0's value-extent rule `|{a :href /docs the docs}` has no link text; (3) the two AST-notation proposals compared — A: UDON-like lines (`|`, `:label value`, `;`, ``` ``` ```), text in `‹…›`, explicit `root` line; B: `label = value`, text as `t"…" · {…} · "…"`, no root line — leaning A with one transcript line per source line for multi-line text.)*
 
@@ -666,3 +695,36 @@
 > 3. excellent.
 >
 > 4. Pondering... I agree with your lean but there are still some remaining issues to consider...
+
+*(Agent text, summary: the agent reported the prose-backslash, missing-values and nil-only records committed, and listed three open asks: whether a bare `null` is an error; the strict fixed escape set for `\` on element/attribute lines; and which notation issues he is still weighing.)*
+
+### Joseph's answer (whole message)
+
+> So, you've been dutifully recording the discussion pieces and reasonings etc.--  the purpose of using a verisectorium format is the ease with which the spec can be mutated in these earlier stages especially-- reorganize-- write an alternate segment, etc. etc. Usually it doesn't do great for that when we are thinking of the segments as things that are too big-- not just a small rule with its reasons and rules that it impacts and rules that it derives from etc. All of our discussions so far-- each turn almost, could have been simply modifying the spec "cards" / segments themselves. It seems like, instead, you are queueing everything up for some massive final gathering?
+
+*(Agent text, summary: the agent agreed it had been queueing — about 35 decision records and one card — recut the outline into ~45 small cards in six chapters, launched four drafting agents (one per chapter group), and said each answer would change the affected cards in the same turn from now on.)*
+
+### Joseph's answer (whole message)
+
+> Here's the thing also-- no need to be holistic about the cards or outline! Just write cards for the tiny pieces as they come up-- then backfill later. I would be perfectly happy to see one card for each of our numbered items over the past dozen turns...
+
+*(Agent text, summary: the agent said it had told the drafting agents to card only what was discussed, one small card per piece, leaving everything else a gap.)*
+
+### Joseph's answer (whole message)
+
+> Think of a traditional spec or ISO standard or something:
+>
+> 1. The such-and-such MUST such-and-such.   <-  one card.
+> 2. The other thing MAY be this, or that.   <- another card-- with some working notes and why it's important etc...
+
+*(Agent text, summary: the agent said a card would be one normative statement — one MUST or MAY clause with its grounds, an example and working notes — and that the drafting agents were splitting accordingly.)*
+
+### Joseph's answer (whole message)
+
+> As you start putting things in there-- you'll start (hopefully) instinctively using the frontmatter of each card to say which other rulings it depends on or assumes, for example, and the inverse-- which other rules are consequences of it-- with your "verbatim" quotes and reasoning as working notes in that very segment-- easy to find, easy to know what the impact of a change would be, etc. etc. etc.
+
+*(Agent text, summary: the agent passed his frontmatter instruction to the drafting agents — `per:` for decisions, `depends:` for cards assumed, a new hand-written `consequences:` for cards that follow, and his own words and the reasoning in each card's working notes — noting the SOP store's earlier choice to derive reverse links rather than write them, and suggesting a linter check both directions.)*
+
+### Joseph's answer (whole message)
+
+> Isn't a card a decision already?
