@@ -859,3 +859,9 @@
 > > […the side agent's note, quoting his 2026-07-14 example and noting that sameline text mentioning triple backticks would now open a fence, and that `def-head-position` still describes the July behavior…]
 >
 > Just want to state here that I understand it reverses what I said / wrote in July as that old stuff was based on an older and (it turns out) internally inconsistent perspective on sameline non-delimited text.
+
+*(Agent text, summary: the agent recorded his confirmation that the fence-opener ruling deliberately reverses his July example (commit `abdf555`), and repeated the open question: which pieces of `|user[jw].admin :role editor :size <u64:0xff>` are labels, and whether the fence's `sh` is one word or the rest of the line.)*
+
+### Joseph's answer (whole message)
+
+> Since you just compacted-- you're going to want to reread all of the .int/pre-design/ stuff, as well as all of the defs/cards so far.

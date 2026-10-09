@@ -43,4 +43,4 @@ root
 
 - An attribute line after top-level prose or a top-level element gets "the usual warning" for an attribute after content; that rule is the gap card `rule:late-attributes`.
 - History: 0.9.1 and 0.10.0 kept a top-level attribute line as text with a warning, on the ground of "no phantom owner"; with the implied root there is an owner. Joseph had pointed the same way on 2026-08-07 ("a pseudo root element solves the open "what to do with attributes at top-level" question").
-- Not discussed: how attributes the document writes relate to «meta» a parser attaches to the root (a filename); meta is never spelled ([[def:document]]).
+- Not discussed: how attributes the document writes relate to «meta» a parser attaches to the root (a filename). What «meta» covers is open ([[def:meta]]); the earlier claim here that meta is never spelled was dropped with it.
