@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [column-shifting-whitespace-is-an-error]
-depends: []
+per: []
+depends: [rule:column-shifting-whitespace-error]
 consequences: [rule:no-break-space-counts-as-space, rule:column-shifting-whitespace-error, rule:same-line-element-is-child]
 ---
 
@@ -19,7 +19,7 @@ Indentation, and the column of anything later on a line, MUST be counted in U+00
 
 ## Grounds
 
-- [[decision:column-shifting-whitespace-is-an-error]] (Joseph, 2026-10-08): other whitespace "make[s] the true column position ambiguous".
+- [[rule:column-shifting-whitespace-error]] (Joseph, 2026-10-08): other whitespace "make[s] the true column position ambiguous".
 
 ## Epistemic status
 

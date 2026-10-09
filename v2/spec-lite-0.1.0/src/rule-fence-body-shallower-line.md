@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
+per: []
 depends: [rule:fence-body-dedent]
 consequences: []
 test-fixtures: []
@@ -34,7 +34,7 @@ Warning: line 3, fence body line shallower than its left edge.
 
 ## Grounds
 
-- [[decision:fence-body-indentation]]: Joseph's example, "(warning but both lines output with no indentation at all)".
+- [[rule:fence-body-dedent]]: Joseph's example, "(warning but both lines output with no indentation at all)".
 
 ## Epistemic status
 

@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: element
-per: [quoted-strings-like-ruby]
+per: []
 depends: [rule:strings-like-ruby]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`" (Joseph, 2026-10-08): [[decision:quoted-strings-like-ruby]].
+- "including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`" (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
 
 ## Epistemic status
 

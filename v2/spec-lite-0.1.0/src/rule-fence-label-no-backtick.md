@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: text
-per: [fence-nesting-by-length]
-depends: [rule:fence-opens-with-backticks]
+per: []
+depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "Agree no backticks on the fence's label-- which also guarantees that there is no worry about opening and closing a fence on the same line" (Joseph, 2026-10-08): [[decision:fence-nesting-by-length]]; CommonMark's rule.
+- "Agree no backticks on the fence's label-- which also guarantees that there is no worry about opening and closing a fence on the same line" (Joseph, 2026-10-08): [[rule:fence-closes-at-n-or-more]]; CommonMark's rule.
 
 ## Epistemic status
 

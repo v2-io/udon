@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: anomaly
-per: [opaque-spans]
+per: []
 depends: [rule:opaque-span-raw-text]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "turning the newline in the opaque spans into an error for now, with the caveat that the error message explains that '**lite** doesn't support newlines in ....' so that it doesn't get accidentally adopted in non-lite settings as a prohibition" (Joseph, 2026-10-08): [[decision:opaque-spans]].
+- "turning the newline in the opaque spans into an error for now, with the caveat that the error message explains that '**lite** doesn't support newlines in ....' so that it doesn't get accidentally adopted in non-lite settings as a prohibition" (Joseph, 2026-10-08): [[rule:opaque-span-raw-text]].
 - `;{…}`: "newlines in embedded comments are simply reserved with error … they make dedent level ambiguous in several corner cases" (same record).
 
 ## Epistemic status

@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position]
+per: []
 depends: [rule:text-value-end]
 consequences: []
 ---
@@ -19,7 +19,7 @@ A framed ` \ ` that ends same-line text MUST be consumed, and the spaces on eith
 
 ## Grounds
 
-- Joseph, 2026-10-09: "wrt ' \ ' spaces around it as frame-- I support that" ([[decision:backslash-by-position]]).
+- Joseph, 2026-10-09: "wrt ' \ ' spaces around it as frame-- I support that" ([[rule:text-value-end]]).
 
 ## Epistemic status
 

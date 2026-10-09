@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [raw-tree, reading-option]
-per: [representational-options, main-is-an-attribute]
-depends: [def:document, def:text]
+per: [representational-options]
+depends: [def:document, def:text, rule:main-is-attribute]
 consequences: [rule:tree-transcript]
 ---
 

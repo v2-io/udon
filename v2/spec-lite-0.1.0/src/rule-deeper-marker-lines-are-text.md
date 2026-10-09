@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [reserved-line-starts-in-prose]
-depends: [rule:text-left-edge]
+per: []
+depends: [rule:text-left-edge, rule:prose-line-start-reserved]
 consequences: []
 test-fixtures: []
 ---
@@ -32,7 +32,7 @@ root
 
 ## Grounds
 
-- [[decision:reserved-line-starts-in-prose]]: `|Name|Role|` is "parsed as a node unless indented further than that in prose that has already started".
+- [[rule:prose-line-start-reserved]]: `|Name|Role|` is "parsed as a node unless indented further than that in prose that has already started".
 
 ## Epistemic status
 

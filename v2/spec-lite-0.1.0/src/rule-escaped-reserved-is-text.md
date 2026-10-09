@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [reserved-is-an-error, prose-backslash-and-embeds]
-depends: []
+per: [reserved-is-an-error]
+depends: [rule:prose-passes-through]
 consequences: []
 ---
 

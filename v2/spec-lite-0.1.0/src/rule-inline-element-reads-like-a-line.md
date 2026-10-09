@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: text
-per: [backslash-by-position, embeds-are-pieces-of-text, line-ownership-main]
-depends: [rule:line-scan, rule:text-value-end, rule:waiting-label, rule:leftover-values]
+per: []
+depends: [rule:line-scan, rule:text-value-end, rule:waiting-label, rule:leftover-values, rule:embeds-in-text]
 consequences: []
 ---
 
@@ -24,7 +24,7 @@ Inside an inline element `|{name …}`, the material between the name and the cl
   > |{a :href "/" Home}  will do what the user hopes (Home is $main which by default is first child)
   > |{a :href / \ Home}  same
   > |{a :href / Home}    keep as an example to watch for and avoid.
-- His idiom from 2026-10-08/09: `|p See |{a :href /docs \ the docs}` ([[decision:backslash-by-position]]).
+- His idiom from 2026-10-08/09: `|p See |{a :href /docs \ the docs}` ([[rule:text-value-end]]).
 - Joseph's ruling R2, 2026-07-16 (`spec/msc/CHANGELOG.md`, "R2 embedded = element-rooted sameline (+`}`)"): inside braces the material reads as on an element's own line, with `}` as one more terminator. The Statement is R2 carried into lite.
 
 ## Epistemic status

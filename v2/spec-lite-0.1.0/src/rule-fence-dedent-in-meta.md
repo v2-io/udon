@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
+per: []
 depends: [rule:fence-body-dedent]
 consequences: []
 test-fixtures: []
@@ -20,7 +20,7 @@ The indentation removed from each fence body line MUST be kept in «meta», so t
 
 ## Grounds
 
-- [[decision:fence-body-indentation]]: Joseph, "all dent changes in meta".
+- [[rule:fence-body-dedent]]: Joseph, "all dent changes in meta".
 
 ## Epistemic status
 

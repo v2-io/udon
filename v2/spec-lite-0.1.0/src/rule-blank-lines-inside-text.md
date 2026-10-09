@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [blank-and-empty-lines]
+per: []
 depends: [rule:text-lines-join, rule:blank-line-sets-no-indent]
 consequences: []
 test-fixtures: []
@@ -37,7 +37,7 @@ root
 
 ## Grounds
 
-- [[decision:blank-and-empty-lines]], with Joseph's example and his reassembled text.
+- [[rule:blank-line-sets-no-indent]], with Joseph's example and his reassembled text.
 
 ## Epistemic status
 

@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [missing-values, backslash-by-position]
-depends: [rule:text-value-end]
+per: []
+depends: [rule:text-value-end, rule:missing-value]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- Joseph, 2026-10-09: "`:a \` is a perfectly reasonable way to stand in for `:a ''`/`:a ""`"; "\ (for empty text)" ([[decision:missing-values]]). It falls out of [[rule:text-value-end]]: the text ended before it had any piece.
+- Joseph, 2026-10-09: "`:a \` is a perfectly reasonable way to stand in for `:a ''`/`:a ""`"; "\ (for empty text)" ([[rule:missing-value]]). It falls out of [[rule:text-value-end]]: the text ended before it had any piece.
 
 ## Epistemic status
 

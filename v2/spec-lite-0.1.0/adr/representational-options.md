@@ -23,7 +23,7 @@ leaves-open: ["60"]
 
 ## Context and Problem Statement
 
-With embedded forms always pieces of text ([[decision:embeds-are-pieces-of-text]]), `:author @{people/jw}` gives a text whose only piece is a reference. The agent proposed a "single-piece rule" in the language: such a text reads as its one piece. Joseph preferred to keep that out of the language spec, as an aspiration for how trees are read, and in the same category as presenting `$main` as a first child ([[decision:main-is-an-attribute]]). In doing so he named the layers.
+With embedded forms always pieces of text ([[rule:embeds-in-text]]), `:author @{people/jw}` gives a text whose only piece is a reference. The agent proposed a "single-piece rule" in the language: such a text reads as its one piece. Joseph preferred to keep that out of the language spec, as an aspiration for how trees are read, and in the same category as presenting `$main` as a first child ([[rule:main-is-attribute]]). In doing so he named the layers.
 
 ## Decision Drivers
 
@@ -46,7 +46,7 @@ Chosen:
 - **The layers:** source → wire/event (opaque in lite) → raw tree → tree as modified by representational options, usually applied during traversal rather than decided in advance.
 - **Lite's spec specifies the raw tree.** Representational options are reading views over it, not language.
 - **Two options named so far:**
-  - presenting `$main` as the element's first child ([[decision:main-is-an-attribute]]);
+  - presenting `$main` as the element's first child ([[rule:main-is-attribute]]);
   - reading a text whose only piece is one embedded form, in a value slot, as that embedded form. As an aspiration, this option defaults to on.
 
 ### Quote

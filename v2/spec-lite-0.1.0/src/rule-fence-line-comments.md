@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-line-comments]
+per: []
 depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more]
-consequences: [rule:comments-in-tree]
+consequences: [rule:comments-in-tree, rule:fence-closer-trailing-text-is-error]
 test-fixtures: []
 ---
 
@@ -33,11 +33,38 @@ root
 
 ## Grounds
 
-- [[decision:fence-line-comments]] (the coordinator's call under Joseph's grant; "I support your decision on the comments").
+- the Discussion below (the coordinator's call under Joseph's grant; "I support your decision on the comments").
 
 ## Epistemic status
 
 A rule, resting on the decisions in `per`. No fixtures yet.
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/fence-line-comments.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `supported`, 2026-10-08.*
+
+**Context.** Deciding that a fence's closing line takes part in nesting ([[rule:fence-closer-is-a-line]]), Joseph left two calls to the agent: whether a ` ; ` comment may follow the closer, and whether one may follow the opener on its line. He recommended an error for anything else after the closer.
+
+**Options considered.**
+
+* Allow on both (chosen).
+* Disallow on either, and mark it open for future discussion (Joseph's instruction if no).
+
+**Drivers.**
+
+* One comment rule: a framed ` ; ` comments on lines that start structure ([[rule:framed-comments]]); a fence line is such a line.
+
+**Assumptions.**
+
+* Labels containing a framed ` ; ` are not needed (a label is a language name or similar). (**inferred, unconfirmed**: the delegate's)
+
+**Costs accepted.**
+
+* A label can't contain a framed ` ; `.
+
+**Reopen when.**
+
+* The decider declines it.
 
 ## Working notes
 

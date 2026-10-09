@@ -14,7 +14,7 @@ informed: [parser implementers, vsect]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: [{adr: missing-values, how: revised, scope: partial}]
+superseded-by: [{card: rule:missing-value, how: revised, scope: partial}]
 closes: ["12 Q1", "12 Q2"]
 leaves-open: ["12 Q3", "05", "89"]
 ---
@@ -45,14 +45,14 @@ Chosen: **right now, an error is a failure: the parser stops, reports what it fo
 
 Errors (each stops parsing):
 
-- a reserved spelling ([[decision:reserved-is-an-error]]), including a `:label` line directly under an open attribute value ([[decision:nested-attributes-reserved]]);
+- a reserved spelling ([[decision:reserved-is-an-error]]), including a `:label` line directly under an open attribute value ([[rule:nested-attributes]]);
 - a `:label` with no value;
 - an unclosed `|{…}`, `;{…}` or `@{…}`, an unclosed quoted string, or an unclosed `[` key (no `$partial-key`), all in his words;
 - an unclosed `<…>`, an unclosed `[…]` list, or an unclosed fence: not in his words, but covered by "something missing a closing delimiter is just a straight-up error", and listed in the agent's restatement of his errors (2026-10-08 ~20:58Z, summarized in `.int/STEWARD-VERBATIM.md`), which he answered questioning only a different item. Assent by non-objection;
 - input ending inside any delimited construct (the "incomplete" ending folds into this one);
-- a newline inside a quoted string ([[decision:quoted-strings-like-ruby]]; `\n` and the other escapes are allowed) or inside an opaque span ([[decision:opaque-spans]]);
-- a tab or other non-space whitespace where it could shift a node's column ([[decision:column-shifting-whitespace-is-an-error]]);
-- text after a fence closer's backticks, other than a framed comment ([[decision:fence-line-comments]]).
+- a newline inside a quoted string ([[rule:strings-like-ruby]]; `\n` and the other escapes are allowed) or inside an opaque span ([[rule:opaque-span-raw-text]]);
+- a tab or other non-space whitespace where it could shift a node's column ([[rule:column-shifting-whitespace-error]]);
+- text after a fence closer's backticks, other than a framed comment ([[rule:fence-line-comments]]).
 
 Warnings are for "technically correct udon/udon-lite" that "does do a specific thing-- but possibly not what you intended". The tree is produced and carries them. Which anomalies remain warnings is the agent's reading of that definition, to confirm when the anomaly inventory is written: an attribute written after the element's content has begun; a text line, or a fence body line, shallower than the established left edge (the edge moves).
 
@@ -88,9 +88,9 @@ Warnings are for "technically correct udon/udon-lite" that "does do a specific t
 ## Working notes
 
 - Open: whether a `[…]` list may span lines (05). "Newlines within delimited strings" is read here as quoted strings; the agent's restatement had "a newline inside any delimited span", unobjected.
-- Open: what "any tab characters found in block mode" covers beyond what [[decision:column-shifting-whitespace-is-an-error]] records (being asked).
+- Open: what "any tab characters found in block mode" covers beyond what [[rule:column-shifting-whitespace-error]] records (being asked).
 - Whether a document with only warnings needs any marking beyond the warnings themselves: not stated.
 - For the anomaly inventory: 0.10.0's top-level `:label` warning (pre-design 04 Q2, 12's table) is in neither list yet; to decide with the root's attributes.
 - Not decided: whether a parser may keep scanning after an error to report more errors (still producing no tree).
-- For the anomaly inventory: a no-break space where it sets a column is a warning, by Joseph's own call ([[decision:no-break-space-counts-as-space]]).
-- "A `:label` with no value" is refined by [[decision:missing-values]]: `:a \` is an empty text; `:a :b 1` and a bare `:a` are errors.
+- For the anomaly inventory: a no-break space where it sets a column is a warning, by Joseph's own call ([[rule:no-break-space-counts-as-space]]).
+- "A `:label` with no value" is refined by [[rule:missing-value]]: `:a \` is an empty text; `:a :b 1` and a bare `:a` are errors.

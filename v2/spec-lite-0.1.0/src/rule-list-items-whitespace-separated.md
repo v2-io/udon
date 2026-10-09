@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: [key-brackets-and-lists]
-depends: [def:string, def:text, def:typed-value]
+per: []
+depends: [def:string, def:text, def:typed-value, rule:key-holds-a-value]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "arrays are their own thing completely-- multiple whitespace delimited values" (Joseph, 2026-10-08): [[decision:key-brackets-and-lists]].
+- "arrays are their own thing completely-- multiple whitespace delimited values" (Joseph, 2026-10-08): [[rule:key-holds-a-value]].
 
 ## Epistemic status
 

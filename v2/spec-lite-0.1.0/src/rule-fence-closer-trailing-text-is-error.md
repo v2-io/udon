@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: anomaly
-per: [fence-line-comments, fence-closer-is-a-line]
-depends: [rule:fence-closes-at-n-or-more]
+per: []
+depends: [rule:fence-closes-at-n-or-more, rule:fence-closer-is-a-line, rule:fence-line-comments]
 consequences: []
 ---
 
@@ -19,8 +19,8 @@ consequences: []
 
 ## Grounds
 
-- "recommend an error/failure on anything else" (Joseph, adopted by the delegate): [[decision:fence-line-comments]].
-- "I like our rules (recorded) for both of those as well, definitely. It would probably be useful to mention that nuance vs commonmark in the spec itself" (Joseph, 2026-10-08): [[decision:fence-closer-is-a-line]].
+- "recommend an error/failure on anything else" (Joseph, adopted by the delegate): [[rule:fence-line-comments]].
+- "I like our rules (recorded) for both of those as well, definitely. It would probably be useful to mention that nuance vs commonmark in the spec itself" (Joseph, 2026-10-08): [[rule:fence-closer-is-a-line]].
 
 ## Epistemic status
 

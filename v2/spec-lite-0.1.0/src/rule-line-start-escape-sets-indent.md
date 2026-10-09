@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position]
-depends: [rule:line-start-escape, rule:text-left-edge]
+per: []
+depends: [rule:line-start-escape, rule:text-left-edge, rule:text-value-end]
 consequences: []
 test-fixtures: []
 ---
@@ -32,7 +32,7 @@ root
 
 ## Grounds
 
-- [[decision:backslash-by-position]]: "including escaping just a newline (and thereby also setting the indent level...)".
+- [[rule:text-value-end]]: "including escaping just a newline (and thereby also setting the indent level...)".
 
 ## Epistemic status
 

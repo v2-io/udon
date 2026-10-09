@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position]
-depends: [rule:text-lines-join, rule:lone-backslash-line]
+per: []
+depends: [rule:text-lines-join, rule:lone-backslash-line, rule:text-value-end]
 consequences: []
 test-fixtures: []
 ---
@@ -41,7 +41,7 @@ root
 ## Grounds
 
 - 0.10.0 §7.4 "final-terminator disposition" (ornamental, trimmed), reaffirmed in this session.
-- [[decision:backslash-by-position]]: the trailing ` \` that kept a final line ending in 0.10.0 is gone; a lone `\` line is the way to keep one ([[rule:lone-backslash-line]]).
+- [[rule:text-value-end]]: the trailing ` \` that kept a final line ending in 0.10.0 is gone; a lone `\` line is the way to keep one ([[rule:lone-backslash-line]]).
 
 ## Epistemic status
 

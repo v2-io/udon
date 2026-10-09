@@ -5,7 +5,7 @@ awaiting-decision: true
 needs-work: false
 force:
 per: [reserve-not-ignore, reserved-is-an-error, forward-compat-aspiration]
-depends: [def:document]
+depends: [def:document, rule:prose-line-start-reserved, rule:reserved-spellings]
 ---
 
 # Reserve, don't ignore
@@ -29,7 +29,7 @@ depends: [def:document]
 
 No threshold: clause 1 is met or broken by the reserved-spellings rule; clause 2 is reviewed, not tested.
 
-- the rules that list what is reserved and where ([[rule:reserved-spellings]]), written as a bare list ([[decision:reserved-list-form]]);
+- the rules that list what is reserved and where ([[rule:reserved-spellings]]), written as a bare list ([[rule:reserved-spellings]]);
 - what "accepts" means: no reserved spelling at least, and whatever else 12 Q1 decides ([[rule:valid-lite]]);
 - [[prop:forward-stability]]: a review of how far the rules meet clause 2's aspiration, checked by someone other than its author.
 
@@ -46,4 +46,4 @@ An objective is chosen, not derived. What can be checked is whether the rules re
 ## Working notes
 
 - **⟦force⟧ is empty: Joseph's call.** The udon team's lean is `critical`: Joseph calls it the first thing he decided about lite, and a break would silently change documents already written.
-- **The cost to prose** (under clause 1): decided 2026-10-08, a prose line starting `@alice` or `!important` is refused ([[decision:reserved-line-starts-in-prose]]). [[obj:markdown-text-passes-through]] should name those lines as collisions.
+- **The cost to prose** (under clause 1): decided 2026-10-08, a prose line starting `@alice` or `!important` is refused ([[rule:prose-line-start-reserved]]). [[obj:markdown-text-passes-through]] should name those lines as collisions.

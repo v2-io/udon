@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: true
 needs-work: false
 terms: [document, tree, root-node, meta]
-per: [implied-root, ast-centric, forward-compat-aspiration]
-depends: []
-consequences: [def:anomaly, def:reading-option, def:node, rule:one-root-node, rule:root-meta, rule:tree-transcript]
+per: [ast-centric, forward-compat-aspiration]
+depends: [rule:one-root-node]
+consequences: [def:anomaly, def:reading-option, def:node, rule:one-root-node, rule:root-meta, rule:tree-transcript, obj:reserve-dont-ignore]
 ---
 
 # document · tree · root-node · meta

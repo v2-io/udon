@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
-depends: [rule:fence-body-not-scanned]
+per: []
+depends: [rule:fence-body-not-scanned, rule:fence-body-dedent]
 consequences: []
 test-fixtures: []
 ---
@@ -32,7 +32,7 @@ root
 
 ## Grounds
 
-- [[decision:fence-body-indentation]]'s own example (`" context line\n-removed\n"`); 0.10.0 §10.3, every body line keeps its terminator.
+- [[rule:fence-body-dedent]]'s own example (`" context line\n-removed\n"`); 0.10.0 §10.3, every body line keeps its terminator.
 
 ## Epistemic status
 

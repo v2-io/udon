@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: [quoted-strings-like-ruby]
+per: []
 depends: [rule:strings-like-ruby]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "go ahead and error on unknown escape sequences in """ (Joseph, 2026-10-08): [[decision:quoted-strings-like-ruby]].
+- "go ahead and error on unknown escape sequences in """ (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
 - The list: `.int/escape-sequences-2026-10-08.md`, with his answers — `\s` an error ("agree"), surrogate pairs ("agree"), `\v` and `\a` dropped ("I can support"), `\b` reserved ("I'm fine erroring as reserved for right now").
 - No octal escapes, for the same reason bare `0755` is decimal.
 

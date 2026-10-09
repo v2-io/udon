@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [blank-and-empty-lines, column-shifting-whitespace-is-an-error]
+per: []
 depends: [def:blank-line, rule:blank-line-sets-no-indent, rule:column-shifting-whitespace-error]
 consequences: []
 ---
@@ -19,7 +19,7 @@ A «blank-line» MAY hold tabs and any other Unicode whitespace; [[rule:column-s
 
 ## Grounds
 
-- Joseph, 2026-10-08: "I would however suggest that 'blank-lines' allow tabs and other unicode ws because blank lines don't set indent/dedent levels" ([[decision:blank-and-empty-lines]]).
+- Joseph, 2026-10-08: "I would however suggest that 'blank-lines' allow tabs and other unicode ws because blank lines don't set indent/dedent levels" ([[rule:blank-line-sets-no-indent]]).
 
 ## Epistemic status
 

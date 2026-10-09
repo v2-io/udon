@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position]
-depends: [rule:text-lines-join]
+per: []
+depends: [rule:text-lines-join, rule:text-value-end]
 consequences: []
 test-fixtures: []
 ---

@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: true
 layer: tree
-per: [reserved-list-form, reserve-not-ignore, reserved-is-an-error, reserved-line-starts-in-prose, nested-attributes-reserved, missing-values, references-in, nil-only]
-depends: [rule:prose-line-start-reserved, rule:label-after-empty-label, rule:nested-attributes, rule:nil-spelling]
-consequences: []
+per: [reserve-not-ignore, reserved-is-an-error]
+depends: [rule:prose-line-start-reserved, rule:label-after-empty-label, rule:nested-attributes, rule:nil-spelling, rule:missing-value, rule:opaque-span-raw-text]
+consequences: [obj:reserve-dont-ignore]
 ---
 
 # The reserved spellings
@@ -29,12 +29,37 @@ Each spelling in this table MUST be an error where the table says.
 
 ## Grounds
 
-- Reserve, don't ignore; a reserved spelling is an error ([[decision:reserve-not-ignore]], [[decision:reserved-is-an-error]]); listed without explanation ([[decision:reserved-list-form]]).
-- `@{…}` is not reserved: it is a reference ([[decision:references-in]]).
+- Reserve, don't ignore; a reserved spelling is an error ([[decision:reserve-not-ignore]], [[decision:reserved-is-an-error]]); listed without explanation.
+- `@{…}` is not reserved: it is a reference ([[rule:opaque-span-raw-text]]).
 
 ## Epistemic status
 
 Decided for this version, row by row. The list is not complete.
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/reserved-list-form.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-09-29.*
+
+**Context.** Lite refuses future syntax ([[decision:reserve-not-ignore]]). Writing that down raises a question of form: does lite's spec explain what each reserved spelling will mean in full UDON, or only say what is reserved?
+
+**Options considered.**
+
+* Explain each reserved form.
+* List them on their own, saying only which characters or constructions are reserved (chosen).
+
+**Drivers.**
+
+* None recorded beyond the Quote.
+
+**How firm.** His own call, so `steward`.
+
+**Costs accepted.**
+
+* A reader who meets a refusal learns that a spelling is reserved, not why.
+
+**Reopen when.**
+
+* Readers of lite need to know what a reserved form is for, to avoid it sensibly.
 
 ## Working notes
 

@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation, main-is-an-attribute]
-depends: [rule:nesting, rule:blank-line-sets-no-indent]
+per: []
+depends: [rule:nesting, rule:blank-line-sets-no-indent, rule:fence-body-dedent, rule:main-is-attribute]
 consequences: [rule:line-start-escape-sets-indent, rule:lone-backslash-line, rule:text-dedent, rule:text-shallower-line, rule:deeper-marker-lines-are-text, rule:fence-body-dedent]
 test-fixtures: []
 ---
@@ -33,8 +33,8 @@ root
 
 ## Grounds
 
-- Joseph, 2026-10-08, describing "normal udon parsing" to define the fence rule ([[decision:fence-body-indentation]]): `child-prose` "parsed without its own indent".
-- [[decision:main-is-an-attribute]]: `$main` is an attribute; it is not a text line.
+- Joseph, 2026-10-08, describing "normal udon parsing" to define the fence rule ([[rule:fence-body-dedent]]): `child-prose` "parsed without its own indent".
+- [[rule:main-is-attribute]]: `$main` is an attribute; it is not a text line.
 
 ## Epistemic status
 

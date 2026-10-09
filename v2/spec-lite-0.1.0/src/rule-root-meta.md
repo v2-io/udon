@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [implied-root, forward-compat-aspiration]
+per: [forward-compat-aspiration]
 depends: [rule:one-root-node, def:document]
 consequences: []
 test-fixtures: [implied-root]
@@ -20,7 +20,7 @@ A lite parser MAY attach «meta» to the «root-node» that is not written in th
 
 ## Grounds
 
-- [[decision:implied-root]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
+- [[rule:one-root-node]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
 
 ## Epistemic status
 

@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [column-shifting-whitespace-is-an-error]
+per: []
 depends: [rule:column-shifting-whitespace-error]
 consequences: []
 ---
@@ -19,7 +19,7 @@ A tab or other Unicode whitespace after the last marker on a line MUST be kept a
 
 ## Grounds
 
-- [[decision:column-shifting-whitespace-is-an-error]]: the confirmed reading, which Joseph answered "right".
+- [[rule:column-shifting-whitespace-error]]: the confirmed reading, which Joseph answered "right".
 
 ## Epistemic status
 

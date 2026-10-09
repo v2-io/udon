@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [sameline-element-is-child]
+per: []
 depends: [rule:same-line-element-is-child]
 consequences: []
 ---
@@ -19,7 +19,7 @@ The lines that follow MUST be placed against the columns of a line's same-line e
 
 ## Grounds
 
-- [[decision:sameline-element-is-child]]; Joseph's teaching rule (2026-07-28): "just pretend the same-line part has each of its parts on consecutive new lines".
+- [[rule:same-line-element-is-child]]; Joseph's teaching rule (2026-07-28): "just pretend the same-line part has each of its parts on consecutive new lines".
 
 ## Epistemic status
 

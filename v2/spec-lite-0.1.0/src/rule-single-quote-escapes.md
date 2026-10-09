@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: [quoted-strings-like-ruby]
+per: []
 depends: [rule:strings-like-ruby]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "escape sequences in "" but not in ''" with his example `|'something "hey"\'' weird node name` (Joseph, 2026-10-08): [[decision:quoted-strings-like-ruby]]. `\\` follows Ruby's rule ("just like ruby strings").
+- "escape sequences in "" but not in ''" with his example `|'something "hey"\'' weird node name` (Joseph, 2026-10-08): [[rule:strings-like-ruby]]. `\\` follows Ruby's rule ("just like ruby strings").
 
 ## Epistemic status
 

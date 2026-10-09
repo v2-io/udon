@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: [opaque-spans, key-brackets-and-lists]
-depends: [rule:unclosed-delimiter-is-error]
+per: []
+depends: [rule:unclosed-delimiter-is-error, rule:key-holds-a-value, rule:opaque-span-raw-text]
 consequences: [rule:opaque-span-escapes, rule:key-escapes]
 ---
 
@@ -19,8 +19,8 @@ consequences: [rule:opaque-span-escapes, rule:key-escapes]
 
 ## Grounds
 
-- "an interim convention of matched braces"; "it is still allowing unescaped *matched* brackets (which doesn't help the regex example, but would help, e.g., an html example or something)" (Joseph, 2026-10-08): [[decision:opaque-spans]].
-- Keys take the same bracket matching: [[decision:key-brackets-and-lists]].
+- "an interim convention of matched braces"; "it is still allowing unescaped *matched* brackets (which doesn't help the regex example, but would help, e.g., an html example or something)" (Joseph, 2026-10-08): [[rule:opaque-span-raw-text]].
+- Keys take the same bracket matching: [[rule:key-holds-a-value]].
 
 ## Epistemic status
 

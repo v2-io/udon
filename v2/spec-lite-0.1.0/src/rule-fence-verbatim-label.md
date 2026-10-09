@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
+per: []
 depends: [rule:fence-body-dedent]
 consequences: []
 test-fixtures: []
@@ -34,7 +34,7 @@ A bare ```` ```- ```` is a verbatim fence with no label. *(How the transcript pr
 
 ## Grounds
 
-- [[decision:fence-body-indentation]]: Joseph, "'-' suffix for verbatim".
+- [[rule:fence-body-dedent]]: Joseph, "'-' suffix for verbatim".
 
 ## Epistemic status
 

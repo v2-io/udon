@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [sameline-element-is-child]
+per: []
 depends: [rule:columns-count-spaces]
-consequences: [rule:lines-follow-same-line-columns]
+consequences: [rule:lines-follow-same-line-columns, def:node, rule:element-after-waiting-label]
 ---
 
 # An element later on a line is a child, at its true column
@@ -19,7 +19,7 @@ A bare `|name` written later on an element's line MUST be a child of the element
 
 ## Grounds
 
-- [[decision:sameline-element-is-child]] (Joseph, 2026-10-08): every explicit statement since 2011 reads it as a child; the value reading would obscure "one of udon's most notable [elegances]".
+- Joseph, 2026-10-08 (Discussion below): every explicit statement since 2011 reads it as a child; the value reading would obscure "one of udon's most notable [elegances]".
 
 ## Epistemic status
 
@@ -36,6 +36,34 @@ root
     |b
       |c
 ```
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/sameline-element-is-child.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `supported`, 2026-10-08.*
+
+**Context.** 0.10.0 says both: §2.1 makes `|a |b |c` the same as the vertical form (children), while §6.4/§6.10's "self-announcing values become `$main` values" makes `b` a value. The 01 history found every explicit statement since 2011 saying child, including Joseph's own examples, and the value reading entering 0.10.0 through rewording (`.int/pre-design/01-sameline-element-child-or-value.discussion.md`).
+
+**Options considered.**
+
+* Child at its true column (chosen).
+* `$main` value of the element.
+* (Raised in history, not pursued) siblings: `|a |b |c` gives `a` two children.
+
+**Drivers.**
+
+* Same-line writing is the vertical form written sideways ("pseudo-line-feeds", "pretend the same-line part has each of its parts on consecutive new lines": Joseph's earlier words, quoted in the 01 history).
+* The value reading's uniformity is not real: the next non-blank line's indentation would still need special-casing (Joseph, under the Quote).
+
+**How firm.** His word: "my lean", with a high bar for revisiting ("only if … some crucial advantage"). Recorded `supported`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).
+
+**Costs accepted.**
+
+* Bare and non-bare forms on an element's line land in different places (children vs `$main` values).
+* Late-attribute warning in the `|card |title Hello` + block attributes case.
+
+**Reopen when.**
+
+* A crucial advantage of the value reading turns up.
 
 ## Working notes
 

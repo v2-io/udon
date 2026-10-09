@@ -14,7 +14,7 @@ informed: []
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: [{adr: reserved-is-an-error, how: revised, scope: partial}, {adr: forward-compat-aspiration, how: revised, scope: partial}, {adr: references-in, how: revised, scope: partial}]
+superseded-by: [{adr: reserved-is-an-error, how: revised, scope: partial}, {adr: forward-compat-aspiration, how: revised, scope: partial}, {card: rule:opaque-span-raw-text, how: revised, scope: partial}]
 closes: []
 leaves-open: ["09", "12 Q1", "84 Q3", "87"]
 ---

@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [framed-comments-on-node-lines]
-depends: [rule:comment-blocks, rule:nesting]
+per: []
+depends: [rule:comment-blocks, rule:nesting, rule:framed-comments]
 consequences: []
 test-fixtures: []
 ---
@@ -31,7 +31,7 @@ root
 
 ## Grounds
 
-- [[decision:framed-comments-on-node-lines]]: "available as their own block, which also comments everything in that block that is indented further as per the usual with blocks and the indentation".
+- [[rule:framed-comments]]: "available as their own block, which also comments everything in that block that is indented further as per the usual with blocks and the indentation".
 
 ## Epistemic status
 

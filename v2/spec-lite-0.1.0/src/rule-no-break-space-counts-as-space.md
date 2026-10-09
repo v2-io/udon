@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [no-break-space-counts-as-space]
+per: []
 depends: [rule:columns-count-spaces, def:anomaly]
 consequences: []
 ---
@@ -19,7 +19,7 @@ A U+00A0 NO-BREAK SPACE where it sets a column MUST count as one space, and the 
 
 ## Grounds
 
-- [[decision:no-break-space-counts-as-space]] (Joseph, 2026-10-09): "treat it same as a normal space but with a warning". Its column isn't ambiguous (Unicode gives it a space's width); the warning is because it's invisible and other tools disagree about it.
+- Joseph, 2026-10-09 (Discussion below): "treat it same as a normal space but with a warning". Its column isn't ambiguous (Unicode gives it a space's width); the warning is because it's invisible and other tools disagree about it.
 
 ## Epistemic status
 
@@ -31,6 +31,33 @@ Chosen. No fixture yet.
 ⍽⍽|a
 ```
 (`⍽` = U+00A0.) `a` is indented two columns, with a «warning».
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/no-break-space-counts-as-space.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-09.*
+
+**Context.** [[rule:column-shifting-whitespace-error]] made any Unicode whitespace other than the ordinary space an error where it could shift a node's column; that covered the no-break space. Joseph asked for the reasoning behind keeping it an error, noting "there's no ambiguity about column positions with that character in particular." The coordinator revised its lean to one column plus a warning, and he agreed. This replaces that record's rule for U+00A0 only; every other non-space whitespace stays an error there.
+
+**Options considered.**
+
+* An error, as for other non-space whitespace (the coordinator's first lean).
+* A normal space, silently.
+* A normal space with a warning (chosen).
+
+**Drivers.**
+
+* No column ambiguity: Unicode says U+00A0 "should be the same width as the space 0020", and its East Asian width is Neutral (the coordinator's reasoning; Joseph's own point that there is no ambiguity about its column).
+* Still worth a warning: it is invisible, and other tools disagree about whether it is whitespace. (**inferred, unconfirmed** as Joseph's driver: the coordinator's reasoning, which he answered "Yes".)
+
+**How firm.** His words: "Yes-- treat it same as a normal space but with a warning." His own call, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).
+
+**Costs accepted.**
+
+* A no-break space where a column is set goes through with only a warning.
+
+**Reopen when.**
+
+* Tools or authors are surprised by the column a no-break space gives.
 
 ## Working notes
 

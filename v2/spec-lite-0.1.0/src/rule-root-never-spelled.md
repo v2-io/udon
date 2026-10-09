@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [implied-root]
+per: []
 depends: [rule:one-root-node]
 consequences: []
 test-fixtures: [implied-root]
@@ -20,7 +20,7 @@ A lite parser MUST NOT read any spelling in the source as opening, closing or na
 
 ## Grounds
 
-- [[decision:implied-root]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
+- [[rule:one-root-node]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
 
 ## Epistemic status
 

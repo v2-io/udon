@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position, prose-backslash-and-embeds]
-depends: []
+per: []
+depends: [rule:prose-passes-through, rule:text-value-end]
 consequences: [rule:prose-passes-through, rule:line-start-escape-sets-indent, rule:lone-backslash-line]
 test-fixtures: []
 ---
@@ -32,8 +32,8 @@ root
 
 ## Grounds
 
-- [[decision:backslash-by-position]]: "If it's the first thing on a line then it is an escape (and is consumed / not part of the text but probably in meta)".
-- [[decision:prose-backslash-and-embeds]]: "Leading `\` (after any whitespace) on a prose line is read special (and consumed)".
+- [[rule:text-value-end]]: "If it's the first thing on a line then it is an escape (and is consumed / not part of the text but probably in meta)".
+- [[rule:prose-passes-through]]: "Leading `\` (after any whitespace) on a prose line is read special (and consumed)".
 
 ## Epistemic status
 

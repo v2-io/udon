@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: anomaly
-per: [quoted-strings-like-ruby, errors-stop-parsing]
+per: [errors-stop-parsing]
 depends: [rule:strings-like-ruby]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "I'm going to lean with you on disallowing newlines within delimited strings -- but allowing \n and other common escape sequences" (Joseph, 2026-10-08): [[decision:quoted-strings-like-ruby]].
+- "I'm going to lean with you on disallowing newlines within delimited strings -- but allowing \n and other common escape sequences" (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
 
 ## Epistemic status
 

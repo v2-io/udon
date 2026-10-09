@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [framed-comments-on-node-lines]
-depends: [rule:nesting]
+per: []
+depends: [rule:nesting, rule:framed-comments]
 consequences: [rule:comment-block-owns-deeper-lines, rule:comments-in-tree]
 test-fixtures: []
 ---
@@ -32,7 +32,7 @@ root
 
 ## Grounds
 
-- [[decision:framed-comments-on-node-lines]]: comments are "available as their own block".
+- [[rule:framed-comments]]: comments are "available as their own block".
 
 ## Epistemic status
 

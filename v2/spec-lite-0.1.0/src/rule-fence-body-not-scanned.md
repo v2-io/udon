@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
-depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more]
+per: []
+depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-body-dedent]
 consequences: [rule:fence-body-dedent, rule:fence-body-line-endings]
 test-fixtures: []
 ---
@@ -31,7 +31,7 @@ root
 
 ## Grounds
 
-- [[decision:fence-body-indentation]]: Joseph, "fenced blocks needing to preserve everything except the fence opener and closers".
+- [[rule:fence-body-dedent]]: Joseph, "fenced blocks needing to preserve everything except the fence opener and closers".
 - vsect's most binding requirement (`.int/vsect-requirements-on-lite.md` item 1).
 
 ## Epistemic status

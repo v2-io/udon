@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [backslash-by-position]
-depends: [rule:line-start-escape, rule:text-left-edge]
+per: []
+depends: [rule:line-start-escape, rule:text-left-edge, rule:text-value-end]
 consequences: [rule:text-final-line-ending]
 test-fixtures: []
 ---
@@ -34,7 +34,7 @@ root
 
 ## Grounds
 
-- [[decision:backslash-by-position]], with Joseph's yes to `"first\n  \nlast"` ("I'm pretty sure it stays coherent").
+- [[rule:text-value-end]], with Joseph's yes to `"first\n  \nlast"` ("I'm pretty sure it stays coherent").
 - It is the way to keep a blank line at a text's edge, or a final line ending ([[rule:text-final-line-ending]]).
 
 ## Epistemic status

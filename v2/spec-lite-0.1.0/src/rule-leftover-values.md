@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [line-ownership-main]
+per: []
 depends: [rule:line-scan, rule:waiting-label]
-consequences: [rule:main-is-attribute]
+consequences: [rule:main-is-attribute, rule:inline-element-reads-like-a-line]
 ---
 
 # Values left over on a line go to the line's owner
@@ -19,7 +19,7 @@ After a value finishes, a further value on the line MUST be a `$main` value of t
 
 ## Grounds
 
-- Joseph, 2026-09-29: "$main allows for fully consistent 'sameline' behavior whether the line started with an element or an attribute" ([[decision:line-ownership-main]]; the two cases are the agent's rendering of 0.10.0 §6.5).
+- Joseph, 2026-09-29: "$main allows for fully consistent 'sameline' behavior whether the line started with an element or an attribute" ([[rule:line-scan]]; the two cases are the agent's rendering of 0.10.0 §6.5).
 
 ## Epistemic status
 

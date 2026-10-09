@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [implied-root]
+per: []
 depends: [rule:one-root-node]
 consequences: []
 test-fixtures: [implied-root]
@@ -20,7 +20,7 @@ Every node made directly from a top-level item of the source MUST be a child of 
 
 ## Grounds
 
-- [[decision:implied-root]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
+- [[rule:one-root-node]] (Joseph, 2026-09-29): "the document being parsed has an implied root node -- so everything starts as children of that node, which might also have metadata like filename etc..."; [[decision:ast-centric]].
 
 ## Epistemic status
 

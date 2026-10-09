@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation, errors-stop-parsing]
-depends: [rule:text-left-edge, rule:text-dedent]
+per: [errors-stop-parsing]
+depends: [rule:text-left-edge, rule:text-dedent, rule:fence-body-dedent]
 consequences: []
 test-fixtures: []
 ---
@@ -37,7 +37,7 @@ Warning: line 3, text shallower than its left edge.
 
 ## Grounds
 
-- Joseph, 2026-10-08 ([[decision:fence-body-indentation]]): `still-child-prose` "also now parsed without its own indent, but there's a warning issued".
+- Joseph, 2026-10-08 ([[rule:fence-body-dedent]]): `still-child-prose` "also now parsed without its own indent, but there's a warning issued".
 - [[decision:errors-stop-parsing]]: this is one of the anomalies that stays a warning (the drafter's reading there, matching his example).
 
 ## Epistemic status

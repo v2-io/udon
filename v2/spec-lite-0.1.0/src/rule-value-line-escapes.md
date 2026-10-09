@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: true
 needs-work: false
 layer: tree
-per: [backslash-by-position]
+per: []
 depends: [rule:text-value-end]
 consequences: []
 ---

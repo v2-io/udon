@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [string]
-per: [quoted-strings-like-ruby, embeds-are-pieces-of-text]
-depends: []
+per: []
+depends: [rule:embeds-in-text, rule:strings-like-ruby]
 consequences: [def:text, rule:key-holds-a-value, rule:list-items-whitespace-separated, rule:strings-like-ruby]
 ---
 
@@ -15,7 +15,7 @@ consequences: [def:text, rule:key-holds-a-value, rule:list-items-whitespace-sepa
 
 ## Terms
 
-- **string:** a value written `"…"` or `'…'`, following Ruby's quoting with lite's escape list ([[decision:quoted-strings-like-ruby]]). It holds characters only: an embedded form inside quotes is just characters.
+- **string:** a value written `"…"` or `'…'`, following Ruby's quoting with lite's escape list ([[rule:strings-like-ruby]]). It holds characters only: an embedded form inside quotes is just characters.
 
 ## Invariants
 

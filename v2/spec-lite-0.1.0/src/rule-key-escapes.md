@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: element
-per: [key-brackets-and-lists]
-depends: [rule:key-holds-a-value]
+per: []
+depends: [rule:key-holds-a-value, rule:matched-pairs-need-no-escape]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "key-brackets should follow the same rules" as the opaque spans (Joseph, 2026-10-08): [[decision:key-brackets-and-lists]].
+- "key-brackets should follow the same rules" as the opaque spans (Joseph, 2026-10-08): [[rule:key-holds-a-value]].
 
 ## Epistemic status
 

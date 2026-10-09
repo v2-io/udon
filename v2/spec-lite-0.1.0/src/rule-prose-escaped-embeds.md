@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [prose-backslash-and-embeds]
-depends: [rule:embeds-in-text]
+per: []
+depends: [rule:embeds-in-text, rule:prose-passes-through]
 consequences: [rule:prose-passes-through]
 test-fixtures: []
 ---
@@ -30,7 +30,7 @@ root
 
 ## Grounds
 
-- [[decision:prose-backslash-and-embeds]]: "escaped embeds are literal passthrough with the escape consumed."
+- [[rule:prose-passes-through]]: "escaped embeds are literal passthrough with the escape consumed."
 
 ## Epistemic status
 

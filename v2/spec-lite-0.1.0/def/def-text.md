@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [text, piece, run, embed]
-per: [embeds-are-pieces-of-text, main-is-an-attribute, inline-comments-in-prose, references-in]
-depends: [def:string]
+per: []
+depends: [def:string, rule:embeds-in-text, rule:inline-comments, rule:main-is-attribute, rule:missing-value, rule:opaque-span-raw-text]
 consequences: [def:reading-option, def:node, rule:blank-line-whitespace-in-text, rule:key-holds-a-value, rule:list-items-whitespace-separated]
 ---
 
@@ -18,12 +18,12 @@ consequences: [def:reading-option, def:node, rule:blank-line-whitespace-in-text,
 - **text:** an ordered sequence of zero or more «piece»s. A «text» can be an attribute's value (including `$main`) or, from prose, a child of an element.
 - **piece:** one part of a «text»: a «run» or an «embed».
 - **run:** a stretch of characters in a «text».
-- **embed:** an inline element `|{…}`, a reference `@{…}`, or an inline comment `;{…}`, written inside a «text». An «embed» is always a «piece», "a distinct chunk of distinct text as if it were a word" (Joseph), never a value of its own, even when it is the only thing in a value slot ([[decision:embeds-are-pieces-of-text]]).
+- **embed:** an inline element `|{…}`, a reference `@{…}`, or an inline comment `;{…}`, written inside a «text». An «embed» is always a «piece», "a distinct chunk of distinct text as if it were a word" (Joseph), never a value of its own, even when it is the only thing in a value slot ([[rule:embeds-in-text]]).
 
 ## Invariants
 
-- Text on an element's own line is the element's `$main` attribute, never a text child ([[decision:main-is-an-attribute]]).
-- A «text» with no pieces is empty: `:a \` gives an empty «text» ([[decision:missing-values]]).
+- Text on an element's own line is the element's `$main` attribute, never a text child ([[rule:main-is-attribute]]).
+- A «text» with no pieces is empty: `:a \` gives an empty «text» ([[rule:missing-value]]).
 - Spaces between «embed»s are «run»s: `|nav |{a} |{a}` gives `$main` the pieces `a`, `" "`, `a`.
 
 ## Examples

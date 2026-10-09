@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [embeds-are-pieces-of-text]
-depends: [rule:comment-blocks, rule:framed-comments, rule:fence-line-comments, rule:inline-comments]
+per: []
+depends: [rule:comment-blocks, rule:framed-comments, rule:fence-line-comments, rule:inline-comments, rule:embeds-in-text]
 consequences: []
 test-fixtures: []
 ---
@@ -20,7 +20,7 @@ Every comment — a comment block, a framed comment, a fence-line comment, and a
 
 ## Grounds
 
-- Joseph, 2026-10-09: "Don't forget comments show up in the AST" ([[decision:embeds-are-pieces-of-text]]).
+- Joseph, 2026-10-09: "Don't forget comments show up in the AST" ([[rule:embeds-in-text]]).
 
 ## Epistemic status
 

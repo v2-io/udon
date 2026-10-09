@@ -28,7 +28,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 
 # The specification
 
-*Small cards, one normative statement each, grouped in chapters by what a parse produces (lexer before structure); each card uses only what comes before it and cites the decisions in `adr/` it rests on in its `per:`. Cards are cheap to rewrite, split, merge or replace with an alternate; discussion should change the cards directly. Organization: [[decision:spec-organization-delegated]]; the chapter cut follows `.int/reorg-spike-2026-10-08.md`.*
+*Small cards, one normative statement each, grouped in chapters by what a parse produces (lexer before structure); each card uses only what comes before it. A card is the decision for its rule: Joseph's words and how firm they are sit in its Grounds, the options and reasons in its Discussion. `adr/` keeps only the decisions that cut across many cards (the contract, anomaly policy, process, vocabulary), which cards cite in `per:`. Cards are cheap to rewrite, split, merge or replace with an alternate; discussion should change the cards directly. Organization: [[decision:spec-organization-delegated]]; the chapter cut follows `.int/reorg-spike-2026-10-08.md`.*
 
 *A **card** states one rule a conforming parser must implement, with its own errors and warnings. A **fixture** (`dat/`) is a specific input and its tree or error; edge spellings are fixtures. A **companion** is derived from the cards and never introduces a rule. Trees in cards use the notation of `.int/ast-notation-proposal-a.md` until [[rule:tree-transcript]] settles it.*
 

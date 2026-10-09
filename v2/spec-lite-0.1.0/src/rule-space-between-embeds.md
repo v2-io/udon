@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [embeds-are-pieces-of-text]
+per: []
 depends: [rule:embeds-in-text]
 consequences: []
 ---
@@ -19,7 +19,7 @@ Whitespace between embedded forms in a text MUST be part of the text.
 
 ## Grounds
 
-- Joseph, 2026-10-08: `|nav |{a} |{a}` "should give nav $main text[embedded_node(a...),' ',embedded_node(a...)]" ([[decision:embeds-are-pieces-of-text]]).
+- Joseph, 2026-10-08: `|nav |{a} |{a}` "should give nav $main text[embedded_node(a...),' ',embedded_node(a...)]" ([[rule:embeds-in-text]]).
 
 ## Epistemic status
 

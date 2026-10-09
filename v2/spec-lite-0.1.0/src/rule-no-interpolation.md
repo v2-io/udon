@@ -4,7 +4,7 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: [quoted-strings-like-ruby]
+per: []
 depends: [rule:strings-like-ruby]
 consequences: []
 ---
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "no interpolation, #{} gets passed through as normal text" (Joseph, 2026-10-08): [[decision:quoted-strings-like-ruby]].
+- "no interpolation, #{} gets passed through as normal text" (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
 
 ## Epistemic status
 

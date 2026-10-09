@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [fence-body-indentation]
-depends: [rule:text-left-edge]
+per: []
+depends: [rule:text-left-edge, rule:fence-body-dedent]
 consequences: [rule:text-shallower-line]
 test-fixtures: []
 ---
@@ -33,7 +33,7 @@ root
 
 ## Grounds
 
-- Joseph, 2026-10-08 ([[decision:fence-body-indentation]]): `another-one` "no warning, \"    another-one...\"".
+- Joseph, 2026-10-08 ([[rule:fence-body-dedent]]): `another-one` "no warning, \"    another-one...\"".
 
 ## Epistemic status
 

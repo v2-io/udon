@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [reserved-line-starts-in-prose, reserved-is-an-error]
+per: [reserved-is-an-error]
 depends: []
-consequences: [rule:reserved-spellings]
+consequences: [rule:reserved-spellings, obj:reserve-dont-ignore, rule:deeper-marker-lines-are-text, rule:prose-passes-through]
 ---
 
 # `@name` or `!word` at the start of a prose line is an error
@@ -19,7 +19,7 @@ A prose line whose first non-space characters are `@` followed by a name, or `!`
 
 ## Grounds
 
-- Joseph, 2026-10-08: "I vote for strict-lean … (a), (b) => error" ([[decision:reserved-line-starts-in-prose]]).
+- Joseph, 2026-10-08: "I vote for strict-lean … (a), (b) => error".
 
 ## Epistemic status
 
@@ -32,6 +32,43 @@ Decided for this version ([[decision:decided-for-this-version]]).
   @alice said we should ship.
 ```
 An error at 2:3: `@alice` at the start of a prose line is reserved. Written `\@alice said we should ship.`, it is text ([[rule:line-start-escape]]).
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/reserved-line-starts-in-prose.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-08.*
+
+**Context.** Under [[decision:reserved-is-an-error]], how much ordinary Markdown-style prose lite refuses depends on where reserved spellings are recognized inside text. The agent put five lines to Joseph, all in a text block under `|post`:
+
+```udon
+|post
+  @alice said we should ship.         ; (a)
+  !important: read this first.        ; (b)
+  email me @joseph or see @{faq}.     ; (c)
+  Keep calm ; carry on.               ; (d)
+  |Name|Role|                         ; (e)
+```
+
+(d) is recorded in [[rule:framed-comments]].
+
+**Options considered.**
+
+* Strict: (a) and (b) are errors.
+* Lenient: (a), (b) and (e) are plain text, which keeps full UDON from ever giving meaning to `@name` or `!word` at the start of a prose line.
+
+**Drivers.**
+
+* None stated.
+
+**How firm.** His word: "I vote". His own call, so `steward`.
+
+**Costs accepted.**
+
+* Prose that starts a line with `@alice` or `!important` is not lite; the author escapes it.
+* What the rest of `|Name|Role|` becomes after the name `Name` is not yet stated.
+
+**Reopen when.**
+
+* Refusal proves too costly for real prose.
 
 ## Working notes
 

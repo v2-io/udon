@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [embeds-are-pieces-of-text, inline-comments-in-prose]
-depends: [rule:embeds-in-text]
+per: []
+depends: [rule:embeds-in-text, rule:inline-comments]
 consequences: []
 ---
 

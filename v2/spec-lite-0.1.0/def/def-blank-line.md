@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [empty-line, blank-line]
-per: [blank-and-empty-lines]
-depends: []
+per: []
+depends: [rule:blank-line-sets-no-indent]
 consequences: [rule:blank-line-sets-no-indent, rule:blank-line-any-whitespace, rule:blank-line-whitespace-in-text]
 ---
 

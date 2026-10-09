@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [blank-and-empty-lines]
-depends: [def:blank-line, def:text]
+per: []
+depends: [def:blank-line, def:text, rule:blank-line-sets-no-indent]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ Inside a «text» or a fence body, the whitespace on a «blank-line» that reach
 
 ## Grounds
 
-- [[decision:blank-and-empty-lines]]: the agent's generalization, which Joseph called "Correct, excellent"; his example below.
+- [[rule:blank-line-sets-no-indent]]: the agent's generalization, which Joseph called "Correct, excellent"; his example below.
 
 ## Epistemic status
 

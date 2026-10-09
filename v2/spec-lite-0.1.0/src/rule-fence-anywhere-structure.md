@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: text
-per: [fence-nesting-by-length]
-depends: [rule:fence-opens-with-backticks, rule:nesting]
+per: []
+depends: [rule:fence-opens-with-backticks, rule:nesting, rule:fence-closes-at-n-or-more]
 consequences: []
 ---
 
@@ -19,7 +19,7 @@ consequences: []
 
 ## Grounds
 
-- "we will not want to follow markdown's standard (in some versions) of requiring that a fence be at the beginning of a line or the first non-whitespace of a line-- we need its indent (including sameline) to decide whose child it is" (Joseph, 2026-10-08): [[decision:fence-nesting-by-length]].
+- "we will not want to follow markdown's standard (in some versions) of requiring that a fence be at the beginning of a line or the first non-whitespace of a line-- we need its indent (including sameline) to decide whose child it is" (Joseph, 2026-10-08): [[rule:fence-closes-at-n-or-more]].
 
 ## Epistemic status
 

@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [missing-values, nested-attributes-reserved]
-depends: []
+per: []
+depends: [rule:missing-value, rule:nested-attributes]
 consequences: [rule:reserved-spellings]
 ---
 
@@ -19,7 +19,7 @@ A `:label` with no value followed on the same line by another `:label` MUST be a
 
 ## Grounds
 
-- Joseph, 2026-10-09: `:a :b 1` "should error not as a deletion detector (although it serves that purpose) but due to nested attributes being reserved" ([[decision:missing-values]]).
+- Joseph, 2026-10-09: `:a :b 1` "should error not as a deletion detector (although it serves that purpose) but due to nested attributes being reserved" ([[rule:missing-value]]).
 
 ## Epistemic status
 

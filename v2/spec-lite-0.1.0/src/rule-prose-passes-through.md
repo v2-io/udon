@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [prose-backslash-and-embeds, backslash-by-position, framed-comments-on-node-lines, reserved-line-starts-in-prose]
-depends: [rule:line-start-escape, rule:embeds-in-text, rule:prose-escaped-embeds]
-consequences: [rule:text-lines-join]
+per: []
+depends: [rule:line-start-escape, rule:embeds-in-text, rule:prose-escaped-embeds, rule:framed-comments, rule:prose-line-start-reserved, rule:text-value-end]
+consequences: [rule:text-lines-join, rule:escaped-reserved-is-text, rule:line-start-escape, rule:prose-escaped-embeds]
 test-fixtures: []
 ---
 
@@ -38,14 +38,30 @@ Consequences, not separate rules: a ` ; ` partway along a prose line is text; `@
 
 ## Grounds
 
-- [[decision:prose-backslash-and-embeds]] (Joseph, "Agreed, 100%, ruled"): "within prose, those are the only behaviors we specify other than the indent/dedent stuff".
-- [[decision:backslash-by-position]]: in prose that has started, `\` "is just passed through like everything else except embeds", so a Markdown hard break (`foo\`, `foo \`) survives.
-- [[decision:framed-comments-on-node-lines]]: Joseph, 2026-10-08, "(d) passed through" for `Keep calm ; carry on.`
-- [[decision:reserved-line-starts-in-prose]]: Joseph, 2026-10-08, "(c) passed through + reference" for `email me @joseph or see @{faq}.`; on 2026-10-09, "correct" to `!word` mid-line being text.
+- Joseph, "Agreed, 100%, ruled" (Discussion below): "within prose, those are the only behaviors we specify other than the indent/dedent stuff".
+- [[rule:text-value-end]]: in prose that has started, `\` "is just passed through like everything else except embeds", so a Markdown hard break (`foo\`, `foo \`) survives.
+- [[rule:framed-comments]]: Joseph, 2026-10-08, "(d) passed through" for `Keep calm ; carry on.`
+- [[rule:prose-line-start-reserved]]: Joseph, 2026-10-08, "(c) passed through + reference" for `email me @joseph or see @{faq}.`; on 2026-10-09, "correct" to `!word` mid-line being text.
 
 ## Epistemic status
 
 A rule, resting on the decisions in `per`. No fixtures yet.
+
+## Discussion
+
+*Carried 2026-10-09 from the decision record `adr/prose-backslash-and-embeds.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-09.*
+
+**Context.** [[rule:text-value-end]] left open what `\|{` does in prose. The agent asked, leaning toward "makes the embedded form literal". Joseph ruled it, and stated the whole of what lite specifies inside prose.
+
+**Options considered.**
+
+* Only one option was on the table (the agent's lean, which he ruled).
+
+**Drivers.**
+
+* Prose should carry as few rules as possible. (**inferred, unconfirmed** as his driver: the agent's reading of "those are the only behaviors we specify".)
+
+**How firm.** His words: "Agreed, 100%, ruled". His own call, so `steward`. Decided for this version ([[decision:decided-for-this-version]]).
 
 ## Working notes
 

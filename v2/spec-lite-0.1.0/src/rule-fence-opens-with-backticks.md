@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: text
-per: [fence-nesting-by-length]
-depends: [rule:nesting]
+per: []
+depends: [rule:nesting, rule:fence-closes-at-n-or-more]
 consequences: [rule:fence-anywhere-structure, rule:fence-label-no-backtick, rule:fence-closes-at-n-or-more, rule:fence-line-comments, rule:fence-body-not-scanned]
 ---
 
@@ -19,7 +19,7 @@ consequences: [rule:fence-anywhere-structure, rule:fence-label-no-backtick, rule
 
 ## Grounds
 
-- "nested fences via backtick count >= 3 is my strong preference" (Joseph, 2026-10-08): [[decision:fence-nesting-by-length]].
+- "nested fences via backtick count >= 3 is my strong preference" (Joseph, 2026-10-08): [[rule:fence-closes-at-n-or-more]].
 
 ## Epistemic status
 

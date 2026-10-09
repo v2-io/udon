@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 terms: [element, attribute, comment, fence]
-per: [main-is-an-attribute, sameline-element-is-child, embeds-are-pieces-of-text, inline-comments-in-prose, fence-body-indentation]
-depends: [def:document, def:text]
+per: []
+depends: [def:document, def:text, rule:embeds-in-text, rule:fence-body-dedent, rule:inline-comments, rule:main-is-attribute, rule:same-line-element-is-child]
 consequences: []
 ---
 
@@ -22,8 +22,8 @@ consequences: []
 
 ## Invariants
 
-- Same-line text is the `$main` «attribute», never a text child ([[decision:main-is-an-attribute]]).
-- An «element» written later on an element's line is a child ([[decision:sameline-element-is-child]]).
+- Same-line text is the `$main` «attribute», never a text child ([[rule:main-is-attribute]]).
+- An «element» written later on an element's line is a child ([[rule:same-line-element-is-child]]).
 - Comments are in the «tree» (Joseph, 2026-10-09: "Don't forget comments show up in the AST").
 
 ## Working notes

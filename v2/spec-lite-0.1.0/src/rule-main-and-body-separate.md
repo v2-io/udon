@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [main-is-an-attribute]
-depends: [rule:text-lines-join]
+per: []
+depends: [rule:text-lines-join, rule:main-is-attribute]
 consequences: []
 test-fixtures: []
 ---
@@ -31,7 +31,7 @@ root
 
 ## Grounds
 
-- [[decision:main-is-an-attribute]]: "The element's own line and the text below it are different places, so they never merge."
+- [[rule:main-is-attribute]]: "The element's own line and the text below it are different places, so they never merge."
 
 ## Epistemic status
 
