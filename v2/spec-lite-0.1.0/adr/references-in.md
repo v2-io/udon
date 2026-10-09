@@ -86,3 +86,4 @@ Chosen: `@{…}` is in lite.
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
+- In values and keys, `@{…}` is a piece of a text value, not a value of its own ([[decision:embeds-are-pieces-of-text]]): `:author @{people/jw}` gives `text[ref "people/jw"]`. A reading option may present a one-piece text as its piece ([[decision:representational-options]]).

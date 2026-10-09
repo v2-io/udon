@@ -83,4 +83,4 @@ gives `table └ tr ├ td "A1" └ td "A2"`. The cost: `|card |title Hello` fol
 
 ## Working notes
 
-- In the tree, `$main` is an attribute ([[decision:main-is-an-attribute]]), so `|ul |{li one} |{li two}` gives two `$main` values, and `|ul |li one` gives a child.
+- In the tree, `$main` is an attribute ([[decision:main-is-an-attribute]]), and embedded forms are pieces of text ([[decision:embeds-are-pieces-of-text]]): `|ul |{li one} |{li two}` gives one `$main` text with three pieces, and `|ul |li one` gives a child.

@@ -81,3 +81,4 @@ Chosen:
 - To pin: inside a key, a quoted string follows its own escapes ([[decision:quoted-strings-like-ruby]]); the strict span escapes presumably apply only to the unquoted parts. And an unescaped `[` inside a key opens a nested list by the value grammar (`[[one two]]`), which is the "bracket matching".
 - Open: what a backslash does inside a bare list item, and how a list item holds a `]` (quoting, presumably).
 - **For the values work:** Joseph's worry about "string" being its own distinct type from "text". 0.10.0 keeps a quoted string and an unquoted text value as different kinds (§6.3).
+- A key such as `|cite[@{ref.key}]` holds a text whose one piece is a reference ([[decision:embeds-are-pieces-of-text]]).

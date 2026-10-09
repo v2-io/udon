@@ -9,6 +9,7 @@
 - **A file marker saying "this is lite"** (pre-design 84 Q3), which would let a full parser read a marked file by lite's rules and narrow what lite must reserve. Joseph, 2026-01-14: "Just like document schemas end up really needing a HARD schema-version in order to be useful, I wonder if we need one or two elements or directives for udon documents that say 'This is an archema resource flavored udon.'" (survey #20)
 - **Errors that teach.** "World-class error messages and warnings to guide UDON document creation" (Joseph, 2025-12-24, survey #19); and `arch/firmatum/principles`' refusal atoms: a refusal names its class, and offers the next step. Partly lite's now, since a reserved spelling is an error ([[decision:reserved-is-an-error]]).
 - **A structured table construct** ([[decision:tables-deferred]], pre-design 08).
+- **Value spellings that mark an embed as the value itself:** `|el :x @<other-one>` and `|el :x |<val-node ...>`. Joseph, 2026-10-08: "I like this notation and something we should record, but it is also something that can wait on without disturbing." For now a one-piece text is read as its piece only by a reading option ([[decision:representational-options]]).
 
 ## Full UDON
 

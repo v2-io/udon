@@ -74,3 +74,4 @@ Not decided here: what the tree holds (13, 60), its written transcript for compa
 
 - His leans on what the tree holds (node metadata, `same_line`, "content < content+meta < content+meta+ornament") are in `.int/pre-design/STEWARD-2026-09-29.md`; they bear on 13 and 60, which this record leaves open.
 - Whether lite inherits bounded lookahead from the streaming parser it must agree with is 91.
+- Joseph's layering (2026-10-08): source → wire/event (opaque in lite) → raw tree → tree as modified by representational options, usually at traversal. Lite specifies the raw tree; options such as `$main` as first child are reading views ([[decision:representational-options]]).

@@ -14,7 +14,7 @@ informed: [parser implementers, vsect]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: [{adr: main-material-is-first-children, how: invalidated, scope: whole}]
-superseded-by: []
+superseded-by: [{adr: embeds-are-pieces-of-text, how: revised, scope: partial}]
 closes: ["13 Q3", "53"]
 leaves-open: ["13 Q5", "60"]
 ---
@@ -94,3 +94,4 @@ Chosen: `$main` is an attribute of the element in the tree, uniformly. Same-line
 ## Working notes
 
 - 13 Q5 (how text below an element is split into nodes) and whether the tree records `same_line` or other source shape (60) are separate.
+- The `|nav |{a} |{a}` example (two `$main` values) is replaced by [[decision:embeds-are-pieces-of-text]]: one `$main` text with three pieces.
