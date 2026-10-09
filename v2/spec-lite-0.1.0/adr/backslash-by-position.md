@@ -50,11 +50,11 @@ Chosen, by position:
 His examples, as he corrected them:
 
 ```udon
-|nav :area-label Site |a :href / \ Home
+|nav :aria-label Site |a :href / \ Home
 |p See |{a :href /docs \ the docs}
 ```
 ```text
-nav (area-label "Site") └ a (href "/", $main "Home")
+nav (aria-label "Site") └ a (href "/", $main "Home")
 p ($main text["See ", a(href "/docs"; interior "the docs")])
 ```
 
@@ -85,7 +85,7 @@ Still open with Joseph (the coordinator's leans, not decided):
 >
 > ```udon
 >
-> |nav :area-label Site |a :href / \ Home  ; this would be the correct way I would think.
+> |nav :aria-label Site |a :href / \ Home  ; this would be the correct way I would think.
 > |p See |{a :href /docs \ the docs} ; and this for the other.
 >
 > ```
@@ -125,5 +125,4 @@ Still open with Joseph (the coordinator's leans, not decided):
 ## Working notes
 
 - Open with Joseph: `:a \`; attached `\X` on an element's or attribute's line; `\|{` in prose (leans above).
-- His spelling "area-label" in the example is kept as written; the attribute meant is presumably `aria-label`.
 - How boundary blank lines are treated (prose or layout) is still being discussed; with a trailing backslash now a plain character, the remaining way to keep a final newline is a lone `\` line.

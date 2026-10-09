@@ -616,7 +616,7 @@
 >
 > ```udon
 >
-> |nav :area-label Site |a :href / \ Home  ; this would be the correct way I would think.
+> |nav :aria-label Site |a :href / \ Home  ; this would be the correct way I would think.
 > |p See |{a :href /docs \ the docs} ; and this for the other.
 >
 > ```
@@ -630,3 +630,9 @@
 > wrt " \ " spaces around it as frame-- I support that.
 >
 > (btw-- maybe make a note that when I decline to rule on things and instead support of lean or even like-- again those are enough to act decisively on as "working spec" -- the main reason I leave them softer is because I expect there to continue to be slight reworks as remaining open questions interfere with the tentative positions, because (as already recorded) it retains the strength of the position to help calibrate revisiting things, but *also* because I will want the parser implementers to be able to propose changes in these areas especially where, as they work through fixtures and test cases etc. etc., they see some semantic benefit to undoing a lean, or they see a significant grammar simplification or performance improvement etc. etc. In other words, when they start churning and obscuring the grammar in order to get a rule to work right-- they can see "oh, this was a lean that could have potentially gone either way- or was just 'supported'-- let's tell Joseph that if it leaned the *other* way this technical issue or complication would disappear...".  So, there is a critical stakeholder that will only start once the spec is "complete" enough-- but also that is a critical input for the spec. Or, in other words, it's not going to be full-waterfall methodology no matter how good we are at making it coherent :-))
+
+*(Agent text, summary: the agent reported the backslash and leans-are-working-spec records committed, noting it had kept his "area-label" spelling as written.)*
+
+### Joseph's answer (whole message)
+
+> you are always welcome to fix my [misspellings] or ask me without me being offended before putting my stuff on the record. Please just change it to "aria-..." and only fixate on those things that would materially change the parsing :-)
