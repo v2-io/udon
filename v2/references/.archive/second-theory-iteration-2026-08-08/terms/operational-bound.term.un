@@ -1,7 +1,0 @@
-|term[operational-bound] :status settled :defined-by def-cardinality-and-resolution :anchor double-bound
-  :word operational-bound
-  How many the act will touch — "change the first," "take them all."
-  |invariants
-    - Belongs to [[term/expected-cardinality]]
-    - Is the dual of [[term/epistemic-bound]]
-    - Divergence is failure

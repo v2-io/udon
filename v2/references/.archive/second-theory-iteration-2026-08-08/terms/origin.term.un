@@ -1,8 +1,0 @@
-|term[origin] :status settled :defined-by def-locations-and-paths :anchor path
-  :word origin
-  The location a [[term/path]] routes from.
-  |invariants
-    - Belongs to [[term/path]]
-    - Filled by exactly one [[term/location]]
-    - Is the dual of [[term/destination]]
-    - Manner is exactly one of: explicit | implicit | universal

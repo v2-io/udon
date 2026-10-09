@@ -1,7 +1,0 @@
-|term[epistemic-bound] :status settled :defined-by def-cardinality-and-resolution :anchor double-bound
-  :word epistemic-bound
-  How many the actor believes exist — "no more than three, or I've grossly misunderstood the data."
-  |invariants
-    - Belongs to [[term/expected-cardinality]]
-    - Is the dual of [[term/operational-bound]]
-    - Divergence is dialogue, never failure; recorded bounds are free calibration

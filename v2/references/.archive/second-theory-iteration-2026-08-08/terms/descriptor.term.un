@@ -1,8 +1,0 @@
-|term[descriptor] :status settled :defined-by def-descriptors :anchor descriptor-kinds
-  :word descriptor
-  :avoid [selector matcher]
-  One narrowing supplied by a [[term/reference-act]] — connected to its referent by an agreement or by a fact, and nothing else.
-  |invariants
-    - Every descriptor is exactly one of [[term/designator]] or [[term/description]]
-    - Kind is determined by whether anyone maintains the binding, never by the spelling ([[DECISIONS#d8-wikilink-designators|D8 wikilink-designators]])
-    - Kind is per-act: resolution is recursive, and one string designates in its own hop-act while describing in the enclosing act; every chain bottoms out in designators ([[DECISIONS#d12-location-is-description|D12 location-is-description]])

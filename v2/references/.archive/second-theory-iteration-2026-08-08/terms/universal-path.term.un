@@ -1,9 +1,0 @@
-|term[universal-path] :status settled :defined-by def-locations-and-paths :anchor universal-path
-  :word universal-path
-  :synonyms [absolute-path]
-  :avoid [universal-location]
-  A [[term/path]] routable to its destination from any origin (within a bounded context).
-  |invariants
-    - Is a kind of [[term/path]]
-    - Is a path whose [[term/origin]] manner is universal ([[DECISIONS#d11-universal-path|D11 universal-path]])
-    - Is the exact condition under which path, location, and identity safely interchange — the "Universal" URI/URN/URL presuppose

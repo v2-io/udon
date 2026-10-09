@@ -1,7 +1,0 @@
-|term[progressive-routing] :status settled :defined-by def-locations-and-paths :anchor progressive-routing
-  :word progressive-routing
-  Per-hop ownership of resolution: each intermediate location routes only its next hop.
-  |invariants
-    - Performed by exactly one [[term/resolution-engine]] as the composite of per-hop owners
-    - Re-binding one intermediate re-routes every path through it
-    - A default at an intermediate is a routing choice, not an accident

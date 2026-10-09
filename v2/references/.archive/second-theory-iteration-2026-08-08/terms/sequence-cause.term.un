@@ -1,9 +1,0 @@
-|term[sequence-cause] :status settled :defined-by claim-sequence-causes :anchor sequence-causes
-  :word sequence-cause
-  Why order appears in an address at all — and exactly what an engine may optimize.
-  |invariants
-    - Belongs to [[term/path]]
-    - Cause is exactly one of: subset-sequence | resolver-sequence | compositional — per step, never per address
-    - Subset-sequences reorder and fuse; compositional sequences fold when endpoint-only; resolver-sequences are pipeline barriers
-  |open
-    Exhaustiveness: three causes demonstrated, "exactly three" unargued; candidate fourth (mid-address perspective-shift) awaits the act-anatomy adjudication.

@@ -1,7 +1,0 @@
-|term[over-determination] :status settled :defined-by disc-fetch-and-overdetermination :anchor over-determination
-  :word over-determination
-  :avoid [redundancy]
-  Descriptors past the minimum needed to reach one referent — they are verification and redundant routes, never waste.
-  |invariants
-    - Verifies one or more [[term/referent]] by co-reference
-    - Co-referring disagreement is loud, never silently resolved

@@ -1,9 +1,0 @@
-|term[path] :status settled :defined-by def-locations-and-paths :anchor path
-  :word path
-  :alternates [paths]
-  One set of monotonic steps between two locations.
-  |invariants
-    - Has exactly one [[term/origin]]
-    - Has exactly one [[term/destination]]
-    - Steps each carry exactly one [[term/sequence-cause]]
-    - Not necessarily unique, reversible, or shortest; logical by default

@@ -1,7 +1,0 @@
-|term[intermediate-location] :status settled :defined-by def-locations-and-paths :anchor path
-  :word intermediate-location
-  A non-terminal step of a path that is itself a [[term/location]].
-  |invariants
-    - Is a kind of [[term/location]]
-    - Is a non-terminal step of one or more [[term/path]]
-    - Owns routing its own next hop ([[term/progressive-routing]])

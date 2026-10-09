@@ -1,9 +1,0 @@
-|term[expected-cardinality] :status settled :defined-by def-cardinality-and-resolution :anchor expected-cardinality
-  :word expected-cardinality
-  :synonyms [arity]
-  How many referents the actor means to pick out — part of the act's type, knowable before resolution, and what gives a miss its meaning.
-  |invariants
-    - Belongs to [[term/reference-act]]
-    - Has exactly one [[term/operational-bound]]
-    - Has at most one [[term/epistemic-bound]]
-    - Bound is exactly one of: {1,1} | {0,1} | {0,N} | {1,N} — same descriptors, same world, four meanings of the same result

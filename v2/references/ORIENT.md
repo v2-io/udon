@@ -1,1 +1,0 @@
-sop/src/disc-orient.md

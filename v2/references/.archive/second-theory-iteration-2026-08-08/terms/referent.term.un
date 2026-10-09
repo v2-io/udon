@@ -1,7 +1,0 @@
-|term[referent] :status settled :defined-by def-descriptors :anchor reference-act
-  :word referent
-  :avoid [target result]
-  The thing a [[term/reference-act]] intends to pick out.
-  |invariants
-    - Targeted by one or more [[term/reference-act]]
-    - A fetch returns a description-as-of-now of the referent, never the referent itself

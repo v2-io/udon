@@ -1,7 +1,0 @@
-|term[naming-community] :status settled :defined-by def-descriptors :anchor descriptor-kinds
-  :word naming-community
-  :synonyms [registry]
-  Whoever maintains a [[term/designator]]'s binding — a family, a filesystem, a store.
-  |invariants
-    - Maintains zero or more [[term/designator]]
-    - Is a uniqueness scope: polices collisions at mint time, or its designators degrade toward descriptions ([[DECISIONS#d8-wikilink-designators|D8 wikilink-designators]])

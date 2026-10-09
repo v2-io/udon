@@ -1,8 +1,0 @@
-|term[containment-coordinate] :status settled :defined-by def-locations-and-paths :anchor identity-vs-location
-  :word containment-coordinate
-  :synonyms [coordinate]
-  The name of one nesting container inside a [[term/location]] chain.
-  |invariants
-    - Is a kind of [[term/designator]]
-    - Belongs to [[term/location]]
-    - Containers it names nest, which is what lets locations route

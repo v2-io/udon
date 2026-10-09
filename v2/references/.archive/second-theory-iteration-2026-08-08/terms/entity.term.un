@@ -1,9 +1,0 @@
-|term[entity] :status settled :defined-by def-entities-values-promises :anchor entity-value-object
-  :word entity
-  :alternates [entities]
-  A thing whose identity is independent of its current description — it persists through change.
-  |invariants
-    - Is the dual of [[term/value-object]]
-    - Never a [[term/value-object]]
-    - Identified by one or more [[term/designator]] — nothing in its content can testify to its identity
-    - Any content-derived handle silently becomes a handle to a snapshot the moment the entity changes

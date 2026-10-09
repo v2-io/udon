@@ -1,6 +1,0 @@
-|term[identity-component] :status settled :defined-by def-locations-and-paths :anchor identity-vs-location
-  :word identity-component
-  A designator for the target itself, as opposed to its containers.
-  |invariants
-    - Is a kind of [[term/designator]]
-    - If unique enough, no [[term/location]] is required — Santa Claus, google.com, a bare UUID
