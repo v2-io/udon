@@ -76,3 +76,9 @@ Keep «framed» and «frame». They are short, they describe what the eye checks
 - `src/rule-backslash-empty-text.md` ("framed backslash" with end of line after).
 - `src/rule-fence-line-comments.md`, `src/rule-fence-closer-trailing-text-is-error.md` (scope).
 - `src/rule-value-line-escapes.md` ("attached `\X`", the undefined counterpart).
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Keep «framed» / «frame»**; he accepted both, and they name what the eye checks.
+- **End of line:** I lean that end of line **counts** as the right frame. Reasons: it makes `:a \` (already a lean: empty text) and `|li Item ;` (an empty trailing comment) behave alike; `|li Item ;` giving the text `Item ;` would surprise anyone; and it matches the August K13 row ruled with him. Against it: every one of his own typed sentences says "a space on each side". So this is a question for him, with `|li Item ;` as the example.
+- **Tab after:** a tab is not a frame (frames are spaces), so `|el x ;⇥note` is text `x ;⇥note` under the current wording. I'd leave that and let it surface if it bites.

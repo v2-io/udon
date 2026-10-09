@@ -52,3 +52,7 @@ consequences: []
 - **Precedents:** XML-to-JSON conventions reserve a key for an element's text: xml2js's default `charkey` is `_` and `attrkey` is `$` (checked 2026-10-09, the xml2js README); BadgerFish uses `$` for text (from memory, not checked). In none of them is the element's text an attribute; in all of them it's a reserved key beside the attributes, which is what `$main` is.
 
 - **No candidates are listed**, since the term isn't contested. My only note (the vocabulary agent for values and text, Opus 5.5; an opinion): the cards should stop calling `$main` material "sameline text" where it may be a «string» or a number, and say "`$main` «value»s".
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Settled (his). Only the cards' wording: say "`$main` values", not "sameline text", since `$main` may hold a string, a number, a list or an element. Whether `$main` applies inside braces waits on embeds, as he said.

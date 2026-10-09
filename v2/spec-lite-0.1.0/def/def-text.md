@@ -119,3 +119,9 @@ root
 - Whether a «text» whose only piece is one «embed» may be read as that embed is a reading option, not this definition ([[def:reading-option]]).
 - The tree notation writes a «text» as `‹…›` and a «string» as `"…"`. The SOP store chose `«…»` over `‹…›` for terms because single guillemets "are easily confused with `<…>` typed values in monospace" ([[sop/conv:term-delimiters]]). The same hazard applies to the notation's `‹…›`.
 - Trees use the notation of `.int/ast-notation-proposal-a.md`, provisionally.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Keep «text».
+- **Parts:** he flagged "piece" as possibly poor *as a defined term*, and "run" isn't his. I lean: no defined term for the parts. Write "a «text» is a sequence of characters and «embed»s", and state once that adjacent characters form one stretch (maximality), so trees don't vary. "Piece" and "part" stay plain English, which is how he uses them. If a rule later has to speak of the plain stretch as a unit, "run" has the best outside precedent; its verb use in the cards is the cost.
+- **His second sense of "text"** (what a «text» renders to once embeds are processed) needs no term in lite, since lite never processes embeds.

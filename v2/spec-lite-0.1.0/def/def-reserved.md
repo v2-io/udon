@@ -68,3 +68,7 @@ consequences: [rule:reserved-spellings, rule:prose-line-start-reserved, rule:esc
   - Java's `goto` and `const` (from memory).
   - *Contrast:* YAML says unknown directives should be ignored with a warning, and RFC fields are ignored on receipt.
 - **My lean (this agent's):** keep «reserved» (his, and it says the right thing about the future); define it to cover both senses, since they share their rule and his use already spans them; prefer his "construction" over "spelling" as the noun the definition uses; keep "lite doesn't support …" as the message register.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: keep «reserved» (his), covering both senses, since they share one rule (an error now, a later version free to define it). Use his noun **"construction"**, which covers positions and shapes as well as spellings; [[rule:reserved-spellings]] would be retitled. Error messages say "lite doesn't support …" (his register), the spec says «reserved».

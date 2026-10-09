@@ -73,3 +73,8 @@ consequences: []
 - **Candidates:** «opaque-span» (current); "opaque form" (avoids the source-span sense); "raw form"; "delimited raw text"; no group term, with each card naming its three forms.
 
 - **My own lean (the vocabulary agent for values and text, Opus 5.5; an opinion):** "opaque form", for the whole construct with its delimiters, so "span" stays free for source positions in «meta». "opaque" is the useful half of the word, and Joseph uses it unprompted.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Keep "opaque span"**, which he used four times unprompted and builds on ("their own branch in the AST later"). The drafter's "opaque form" avoids the source-span sense; I'd pay for that collision on the other side instead: «meta» says "position", not "span", for where a node came from.
+- Define it as the whole form with its delimiters, and say "its interior" where only the inside is meant.

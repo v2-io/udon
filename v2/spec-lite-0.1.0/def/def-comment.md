@@ -118,3 +118,10 @@ Earlier names and confusions, so a later reader recognizes them. "Joseph" marks 
 - **Collision.** PEP 8's "inline comment" is a trailing comment on a statement's line. A Python reader seeing "inline comment" will picture `|el :a 1 ; note`, not `;{…}`.
 - **Precedent for the brace form.** Raku's delimited comments, headed "Multi-line / embedded comments", start with `#` and a backtick and close at the matching bracket. They nest brackets as `;{…}` does, and can sit mid-line. Common Lisp `#| … |#` and Lua `--[[ … ]]` are delimited "block comments".
 - **My lean (this agent's):** keep "inline comment" (his longest-standing use, and it pairs with "inline element"), and add a Caution about the PEP 8 meaning. If the family is renamed around «embed», "comment embed" would be my second choice.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- «comment» as the general word; **«comment-block»** for the `;` line with its deeper lines (his "their own block"; "block comment" sounds delimited to C-family readers).
+- **For the trailing ` ; `: "sameline comment"**, his own ratified name (2025-12-31, 2026-07-15), which carries the position and so guards against the drift that put ` ; ` into prose in 0.10.0. "Framed" stays the adjective for its spaces. A comment after a fence's backticks is named by its place ("a comment after a fence's backticks"), not by stretching "sameline".
+- **«inline-comment»** for `;{…}`, pairing with "inline element"; both are «embed»s.
+- **A line starting `;{`** is a rule question for him, not a naming one: comment block, or a text line opening with an inline comment? I lean the second, since `;{` is an embed opener everywhere else, but it ties to item 12's "space after `;`".

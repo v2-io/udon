@@ -136,3 +136,8 @@ main-first option on:    |p
 - [[decision:representational-options]] (title and outcome) and [[decision:ast-centric]] (working notes).
 - [[rule:main-is-attribute]] and [[def:embed]] list `def:reading-option` in `consequences:`; [[def:text]] ("may be read as that embed is a reading option").
 - [[rule:tree-transcript]] (`depends:`).
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **"view"**, his earliest word for exactly this ("views"/projections, January; "the views", July). It tells an implementer the data is untouched, so round-trip tooling writes from the specified tree, and it reads naturally beside "AST": "the AST, and views of it". "Reading option" collides with the cards' parse-verb ("MUST be read as text") in normative sentences, which is where a collision costs most.
+- His 2026-10-09 name was "representational-options"; I'd ask with his own sentence ("raw AST -> AST modified by representational-options") and offer "view".

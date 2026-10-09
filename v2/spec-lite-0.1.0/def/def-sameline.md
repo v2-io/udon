@@ -116,3 +116,10 @@ All from `~/.claude/history.jsonl` (his typed prompts), cited by line, unless ma
 - About 17 cards use "element's line" and about 19 use "attribute's line".
 - Outside quotations, "same line" survives only as plain English ("on the same line"), in `rule:element-after-attribute-with-no-value`, `rule:attribute-after-attribute-with-no-value`, `rule:main-is-attribute` and `rule:text-value-end`. Whether those stay depends on the plain-English question above. `def/def-value.md` (another slice) quotes "same-line slot" from an older draft.
 - `main.outline.md`: rows `rule:line-scan`, `rule:leftover-values`, `rule:text-value-end`.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Agree with the drafter on reading (i):** «sameline» is the rest of an element-line or attribute-line, and which kind it is is fixed by what starts the line. Ownership of leftover values is stated by its own rule, so the two compounds never have to carry it.
+- **Drop "line scan"** and retitle `rule-line-scan` in plain words, e.g. "Sameline material is read the same way on element-lines and attribute-lines". He doesn't know the term, and it describes a parser's procedure rather than what the line means.
+- **Fence lines.** Since his 2026-10-09 ruling, a fence opener is "in the same family as |;: and the reserved ones", so a fence opening on an element-line or attribute-line is sameline material. A fence opener at the start of its own line, and a closer line, are not samelines; the comment rules for them should say "after a fence's backticks" separately rather than stretch the word.
+- **Plain English "on the same line"** can stay for literal position; «sameline» (one word) marks the term. That is how he writes himself.

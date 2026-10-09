@@ -71,3 +71,8 @@ From `~/.claude/history.jsonl`.
 - `src/rule-column-shifting-whitespace-error.md` ("before a later marker").
 - `src/rule-deeper-marker-lines-are-text.md` (title and Statement).
 - `main.outline.md` gap row `rule:markers`.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree with the drafter: «marker» = the character plus its guard that begins a «block-form» at a «head-position»: `|`, `:`, `;`, a run of 3+ backticks, and the reserved `@`/`!`. Embed openers (`|{`, `@{`, `;{`) are not markers. "Prefix" and "sigil" both collide inside lite (`$main`, namespace prefixes).
+- This settles [[rule:whitespace-after-last-marker]]'s unstated scope: `|p a⇥b |{em x}` is fine, because `|{` is not a marker and its column never matters.

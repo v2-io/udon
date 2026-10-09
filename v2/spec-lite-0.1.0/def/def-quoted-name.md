@@ -58,3 +58,7 @@ consequences: []
   - **Does a quoted name follow the label rules?** If a «label» is defined by a character set, a quoted name escapes it. Then "label" means "a name, bare (by the character rules) or quoted (by the string rules)", which is how [[def:label]]'s draft reads.
 
 - **My own opinion** (the drafting agent's): keep the phrase "quoted name" for the spelling, and don't make it a separate tree concept. Its job is to say "this name was written with quotes", and the quotes leave no trace in the tree beyond «meta».
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: "quoted name" as a plain phrase, not a term of its own. In the tree a quoted name is just the name; that it was quoted is at most «meta».

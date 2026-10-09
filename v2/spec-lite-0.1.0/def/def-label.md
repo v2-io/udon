@@ -107,3 +107,9 @@ consequences: [def:element-name, def:attribute-name, def:trait, def:quoted-name,
   - **token**: generic, and means something else to every parser author.
 
 - **My own opinion** (the drafting agent's, not a lean of Joseph's): keep "label" in his L sense. Its roots in his own 2011 notes and in Ruby's lexer are real, and every alternative collides with something worse. Let it name spelling only: in spec text, "label" never stands for a role, and every role keeps its "X name" (or «trait»). A spec sentence would then read "an element name is a label", never "the element's label". I'd also put the one-rule-or-family question to him early, as UDON examples, because every name card waits on it.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Agree with the drafter:** «label» in his 2026-10-09 sense, a lexical class only. Spec sentences say "an element name is a label", never "the element's label". The cards' current "label" for the attribute's name, the fence tag and the type tag all go.
+- **One rule or a family?** I lean **one rule** for every label, with quoting as the escape hatch for anything outside it. Reasons: lite's own [[prin:one-rule-everywhere]]; a reader without highlighting can then learn one shape; and 0.10.0's three character sets came from three different design passes, not from a decision that names *need* different sets. The cost is K12's wider attribute names ("attribute identities get [identifiers] that are a lot more expressive"): `:data[1]` would need quotes. That cost is the question to ask him, with that example.
+- **Which names are labels:** element names, attribute names, traits — yes. The fence's word (if it is a word) — yes. The key — no, it is a value ([[rule:key-holds-a-value]]). The `u64` in `<u64:0xff>` — lite never reads it, so the question doesn't arise in lite.

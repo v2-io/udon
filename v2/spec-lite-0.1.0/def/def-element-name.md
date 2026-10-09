@@ -57,3 +57,7 @@ consequences: []
   - **Register:** "element name" reads naturally to anyone who knows XML or HTML, and the role is the same there. The main hazard is the opposite one: readers bringing "tag" in from HTML.
 
 - **My own opinion** (the drafting agent's): «element-name». It follows from his ruling, matches his own phrase for the thing, and is what XML and DOM readers expect. The open questions above are about the thing, not the word.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «element-name». It follows from his ruling and is what XML/DOM readers expect. Whether a bare `|` with no name is allowed is a rule question for [[def:label]]'s card, not this word.

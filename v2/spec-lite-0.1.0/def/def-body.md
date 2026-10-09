@@ -82,3 +82,7 @@ consequences: [def:fence, def:comment]
   3. No generic term: "the lines under X", in plain words, everywhere but fences.
 - **My lean (this agent's):** option 2. "Fence body" is Joseph's settled usage; the attribute case is still open in substance (he said "there are some remaining items to discuss"), so its name can wait for that discussion rather than inherit "body" from 0.10.0's "deferred body"; and comments don't need a separate word. The HTML `body` collision pushes the same way.
 - **Open, from the rules side:** the gap card `rule:attribute-bodies` (pre-design 74, 05) decides what an attribute's indented lines *are* (one text? stacked values? an element?). Its name probably follows from that answer.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree with the drafter's option 2: **«body» only for fences** ("fence body" is his settled usage). A comment-block's deeper lines are just part of the comment-block. An attribute's indented lines wait for that discussion (item "values as indented child blocks of an attribute"), and should not inherit 0.10.0's "deferred body"; his own phrase "child blocks" is the candidate to start from.

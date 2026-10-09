@@ -131,3 +131,8 @@ Nothing: lite carries `u64:0xff` as the «explicit-typed-value»'s text and does
 - **Candidates for the tag:** "type annotation" (KDL; says what it does, doesn't say "label"); "type tag" (EDN/YAML/CBOR; but "tag" reads as HTML); "type prefix" (Joseph's "prefix"; says where it sits); "type name"; or **no term in lite**, since lite never parses it: write "the text `u64:0xff`" and leave naming to the version that splits it.
 
 - **My own lean (the vocabulary agent for values and text, Opus 5.5; an opinion):** for the tag, no defined term in lite 0.1.0, because the «tree» has no such part; when one is needed, "type annotation", which has the best precedent and avoids both "label" and "tag". For «typed-value», I can't lean until Joseph says which sense he meant; if asked: «typed-value» as the umbrella for every «value» that isn't an element, made up of «string», «text», «explicit-typed-value» and the frozen set of numbers, booleans, `nil` and lists (option (b)), with the frozen set renamed to something that doesn't suggest inference. That keeps each name tied to what it is.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Waits on his sense of "typed value"** ([[def:value]]). My lean if asked: «value» is the general word; «explicit-typed-value» names `<…>`; **drop «implicit-typed-value»**, since the other kinds each have their own name (string, text, number, boolean, nil, list) and "implicit" suggests inference, the very thing lite rules out. The umbrella «typed-value» then isn't needed.
+- **«type-label»: no term in lite.** Lite's tree has no such part, and "label" is now lexical. When a later version splits it out, "type annotation" (KDL) is the precedent I'd offer.

@@ -78,3 +78,9 @@ consequences: [rule:no-break-space-counts-as-space, rule:column-shifting-whitesp
 
 - **"The «tree» … carries it."** Is a «warning» *in* the «tree» (as «meta» on a node, say), or reported beside it? The cards' fixtures put warnings in a separate `anomalies:` list next to `tree:`. The Terms line above says "travels with". The «tree» and «meta» owner (slice D) may want to state which.
 - **The word itself is Joseph's,** used consistently, and matches every precedent (compilers, LSP, linters). Nothing to avoid beyond the 0.9/0.10 senses listed above.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Drop «anomaly».** It isn't his word, and an "irregularity" sounds non-fatal, which an «error» is not. Say "errors and warnings" in prose; for the fixture field and the view, "diagnostics" (the compiler/LSP word) if one noun is needed.
+- **"Valid lite":** I'd ask once. "Well-formed" is XML's word for exactly this (no fatal errors), and "valid" there means schema conformance, which lite leaves to schemas. Weak lean "well-formed".
+- Warnings travel beside the AST (the fixtures' separate list), not inside it; the card should say so.

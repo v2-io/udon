@@ -78,3 +78,8 @@ All from `~/.claude/history.jsonl` unless marked otherwise.
 - `src/rule-element-values.md:50` ("Only in block form under the attribute", sense 2).
 - `adr/errors-stop-parsing.md` ("tab characters found in block mode", a quotation; its open note).
 - About 10 cards that say "embedded form": they would gain the counterpart, not lose it.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Keep «block-form» in his sense 1,** always paired with «embed»: `|em` vs `|{em …}`. His 2026-10-08 sentence defines it exactly that way. Stop using "block" for "on its own line" (say that in plain words; [[rule:element-values]] needs the change) and for "not prose".
+- **A fence is a block form.** His 2026-10-09 ruling: "```(+) is in the same family as |;: and the reserved ones". The drafter's "against" (fences close by a printed delimiter) is about how a fence *ends*, which is a different axis from how it *begins*.

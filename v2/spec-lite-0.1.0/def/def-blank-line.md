@@ -67,3 +67,8 @@ Line 3 holds six spaces: a «blank-line» that is not an «empty-line». Joseph'
   So "layout" is the drafter's word, which he accepted as equal to his. *A substantive point for the coordinator:* [[rule:edge-blank-lines]] says an edge blank line "MAY be kept in «meta»". Joseph's 09-30 lean puts ornament in a layer *beyond* meta. Whether ornament is a kind of «meta» or its own layer is a slice D question (document and tree), and it decides where these lines go. Whoever owns «meta» may want an "ornament" term, with "layout" and "decoration" in its Avoid list.
 - **Questions of register.** "Blank" can suggest "missing" or "unfilled" (a blank value, "leave it blank"). Joseph's own phrase on 2026-10-09, "'' for blank string" ([[rule:missing-value]]'s error message), uses "blank" in exactly that sense. In error messages, a «blank-line» and a "blank string" sit close together. "Empty" has the same double use ("empty text", `:a \`). Probably harmless, as each is always followed by its noun.
 - **My lean (this agent's):** keep both words as Joseph defined them; reword «empty-line» as a line ("a line with nothing before its newline"); name the whitespace set and exclude line terminators explicitly once slice B settles line endings; and route "ornament" vs "layout" to the «meta» owner, not here.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- His words, his definitions. Only the wording: define both as lines ("a line with nothing before its newline"), and exclude line terminators from "whitespace" once `rule:source-lines` settles line endings.
+- "Ornament" vs «meta» goes to [[def:meta]]; I lean it is its own layer.

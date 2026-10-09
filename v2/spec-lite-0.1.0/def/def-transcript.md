@@ -117,3 +117,8 @@ They may want two names: Joseph's "notation" for (1), and something for (2).
 - [[rule:fence-verbatim-label]], [[rule:prose-passes-through]], [[rule:prose-escaped-embeds]], [[decision:ast-centric]] ("its written transcript"): "transcript" in prose.
 - `main.outline.md`, the paragraph defining card/fixture/companion ("A **fixture** (`dat/`) is a specific input and its tree or error"): fixture grain.
 - `sop/def/def-fixture-profiles.md` working notes ("until a machine transcript is decided"): the SOP store's, not lite's.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree with the drafter: drop "transcript" (session transcripts are daily vocabulary here, and it isn't his). Use his **"notation"** for the language of printed trees, and "printed form" for the one canonical spelling fixtures compare, promoting it to a term only if more than [[rule:tree-transcript]] needs it. That card's slug would follow.
+- "Fixture" stays in the SOP's sense; the outline sentence should say "a fixture case" for one input and its tree.

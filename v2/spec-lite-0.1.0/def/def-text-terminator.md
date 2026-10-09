@@ -84,3 +84,8 @@ I lean slightly to (a), because he coined it in the act of grouping `\` with the
 - `src/rule-text-value-end.md` (Grounds quote "text terminator"; title "Sameline text ends at a block form" omits the backslash and the end of line).
 - `src/rule-space-before-text-end.md` ("whatever ends it").
 - `src/rule-inline-element-value-end.md` ("ends as on an element's line, or at the `}`").
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Keep «text-terminator», his word, defined by the drafter's table so it's clear only the framed ` \ ` is consumed.
+- **The list has grown since this card was drafted:** his 2026-10-09 ruling added a space followed by a fence opener, and the reserved `@name` / `!word` end the text too (as errors). [[rule:text-value-end]] has the current list; this card's Terms line should cite it rather than repeat it.

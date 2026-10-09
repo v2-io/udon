@@ -103,3 +103,9 @@ make build
 - **An adjacent observation about the spelling (not the term, and the spelling is ruled).** In the precedents Joseph named, and in others, `-` means *strip*: Liquid/Jinja `{%-` / `-%}` trim whitespace; YAML's `|-` chomping indicator strips the final line breaks (YAML 1.2.2 calls it `STRIP`, "remove all trailing newlines"); bash `<<-EOF` strips leading tabs from the heredoc body. In lite, `-` means "strip nothing". An agent fluent in YAML or Jinja reading ```` ```diff- ```` without highlighting may guess the opposite. The name can push back on that: "verbatim" or "keep-indent" says what it does; "dash" or "suffix" doesn't. Raised for the coordinator's judgment, not as a proposal to respell.
 - **"Flag".** Joseph's own word ("its own flag"). UDON's retired boolean "flag attributes" (`:done?`, K12) used the same word, but they are gone from lite, so the collision is mostly with history.
 - **My lean (this agent's):** «verbatim-flag», defined narrowly as "keeps the «body»'s indentation exactly", plus an Avoid on "verbatim" as the family name. If the YAML/Jinja reading of `-` worries the coordinator, that's a spelling question for Joseph, separate from this name.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «fence» for the node (his "I always call it fence"), «fence-opener» and «fence-closer» for the backtick runs (so "the opener's column" is exact mid-line), «verbatim-flag» for the `-`.
+- [[rule:fence-body-dedent]] and the outline still say "unless its label ends in `-`"; that contradicts his "its own flag" and gets fixed with the tag's name ([[def:fence-tag]]).
+- The YAML/Jinja reading of `-` as *strip* is worth one sentence in the flag's card. The spelling is his ruling.

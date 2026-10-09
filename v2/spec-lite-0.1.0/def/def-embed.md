@@ -95,3 +95,9 @@ consequences: [def:text, def:reading-option, rule:space-between-embeds, rule:inl
   - For `|{…}`: «inline-element» (current); "embedded element" (his older word, retired by an agent); "brace element".
 
 - **My own lean (the vocabulary agent for values and text, Opus 5.5; an opinion):** «embed» for the family, since it is his recent word and names the role. "Embedded form" retired from the rule cards rather than kept as a synonym, unless his three-forms idea wants it for the category. For `|{…}` I lean, weakly, toward "embedded element" over «inline-element», because of the HTML collision in exactly the use case it exists for, and because it then pairs with «embed». It reverses a 0.9.1 retirement that an agent made, not Joseph.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **«embed»** for the family (his word since July). Retire "embedded form" from rule cards as a synonym; a card that means the family says «embed».
+- **`|{…}`: keep "inline element"**, his current word (2026-07-29, 2026-09-29: "|{...} inline elements are critical"). The HTML "inline" collision is real but mild: the spec defines it once, and XML/HTML authors will meet `|{div …}` in examples. I'd not reverse his recent usage for a collision he hasn't objected to.
+- His 2026-08-09 "three forms" (block / value / embedded) is thinking out loud; nothing in lite needs a name for the form category yet.

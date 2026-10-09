@@ -70,3 +70,9 @@ An «element» whose «element-name» is `user`, with three «attribute»s in wr
 - **The «root-node»:** is it an «element»? It holds attributes (top-level attribute lines) and children, but has no «element-name» and no spelling. Its term is [[def:root]]'s (slice D); if the root is an «element», this card's Terms should say so.
 - **The slug.** This file is `def:node`, but «node» is now defined in [[def:tree]]; a reader following `[[def:node]]` to learn what a node is lands here. My recommendation (left to the coordinator, since the links are in files I don't own): rename it `def:element` (it defines «element» and «attribute»). Files linking `def:node` on 2026-10-09: `main.outline.md`; `src/` rule-comments-in-tree, rule-embeds-in-text, rule-fence-body-dedent, rule-inline-comments, rule-main-is-attribute, rule-sameline-element-is-child; `def/` def-comment, def-document, def-element-line, def-fence, def-root, def-text, def-tree, and this slice's own cards.
 - Where a framed ` ; ` comment on an element's or attribute's line sits in the «tree» is open.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Words:** «element» and «attribute» are ruled (2026-10-09). Nothing to choose.
+- **Slug:** rename this card `def:element`. It no longer defines "node", and a reader who follows `[[def:node]]` to learn what a node is lands on «element». The generic «node» already lives in [[def:tree]]. 14 files link `def:node`; it is a mechanical sweep.
+- **Is an «attribute» a node?** I lean yes, and would ask before writing «node» into more cards. Reasons: «meta» wants a position on `:x` (where a warning points); the tree notation already gives each attribute its own line; unist and XDM count attributes as nodes. 0.10.0 said no, but that was an agent's choice he never ruled on.

@@ -77,3 +77,7 @@ From `~/.claude/history.jsonl` unless marked otherwise.
 - Every card that says "element's line" or "attribute's line"; `grep -rl "element's line\|attribute's line" src` lists them.
 - `src/rule-framed-comments.md` ("a line that begins with an element or an attribute").
 - `src/rule-fence-opens-with-backticks.md` and `src/rule-fence-line-comments.md` ("structure line", "lines that start structure").
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «element-line» and «attribute-line», decided by the line's first content. They are his phrasing ("the line started with an element or an attribute"), and they retire "element's line" / "attribute's line", whose possessive implies one owner.

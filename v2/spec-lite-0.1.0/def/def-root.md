@@ -130,3 +130,8 @@ Under the 2026-10-09 ruling ("'node' can be used to talk about AST or other grap
 - Card slugs with "root-node": `rule-one-root-node`.
 - [[rule:one-root-node]], [[rule:root-meta]]: `depends: [def:document]` → `def:root`.
 - `dat/implied-root.yaml`: the `document` top line in its trees (old notation).
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Name: "root"**, with "implied" as the adjective in prose (his 09-29 word). It holds whichever way the kind question goes.
+- **Kind:** I lean that the root behaves as an element with no name and no spelling, wherever an element rule applies (late-attribute warning, column −1, unaligned-dedent warning: he already applies all three). That keeps [[prin:one-rule-everywhere]] true at the top. What it can't have is a spelled name, key or traits, since nothing spells it; whether a top-level `:'$key' x` gives it a key is the example to ask with.

@@ -93,3 +93,9 @@ Sense 3 means his "head position" and lite's «left-edge» are, in his July usag
 - `main.outline.md` gap row `rule:markers` ("at a structure position").
 - `src/rule-fence-opens-with-backticks.md` ("where a structure line or sameline structure can start").
 - `src/rule-fence-anywhere-structure.md` ("wherever structure can start").
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Restore his "head position"** for sense 2, a place where a marker may begin structure. It is his word, he asked for it to be "a prominent part of the lexicon", and the 0.10 rename to "Structure Position" was never put to him. «left-edge» keeps sense 3 (the column); sense 1 (the undecided state) no longer exists on a sameline in lite.
+- **The gap the drafter found is closed.** His 2026-10-09 ruling put the fence opener in the family that ends sameline text, and [[rule:text-value-end]] now lists a space followed by 3+ backticks, and a space followed by reserved `@name`/`!word`. So on a sameline the head positions are one set: after a space, wherever no quoted or opaque form is open. Mid-prose they are none ([[rule:prose-passes-through]]).
+- Asking him is still needed for the name, since it would come back after three months of agents using the replacement.

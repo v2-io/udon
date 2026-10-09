@@ -45,3 +45,7 @@ consequences: [def:value, def:main]
 - **Affordances.** "Stack" suggests last-in, first-out, so a programmer may read "the stacked value" as the *top* one, i.e. the last, which is the last-wins reading stacking exists to rule out. "Accumulate" or "append" don't have that pull. The term is his and long-established in this project, so this is a note, not a candidate list.
 
 - **My own note (the vocabulary agent for values and text, Opus 5.5; an opinion):** keep the word, and give the definition one sentence saying that no occurrence is privileged, since the LIFO reading is the one an agent without context will reach for.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Settled (his). Add the drafter's one sentence that no occurrence is privileged (no last-wins, no first-wins), since "stack" pulls an agent toward reading the top one as the value.

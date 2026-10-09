@@ -69,3 +69,7 @@ From `~/.claude/history.jsonl` unless marked otherwise.
 
 - About 14 cards use "left edge"; `grep -rln "left edge" src` lists them.
 - `src/rule-framed-comments.md` (quotes 0.10.0's "content base" in Context; history, fine to keep).
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «left-edge». It is nearly his "leftmost edge", it pictures dedent correctly, and "content base" pairs badly with 0.10's "base column". The graph sense of "edge" is mild because lite has no addressing.

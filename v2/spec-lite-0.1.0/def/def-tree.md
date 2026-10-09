@@ -134,3 +134,8 @@ A keyword count over his typed prompts in udon and descent projects (`history.js
 - 13 card files use «tree», 3 use «raw-tree» (`grep -rlE '«tree»|«raw-tree»' src def obj adr`); 70 use the ```` ```tree ```` fence label.
 - [[def:node]]: its slug is `node`, but since 2026-10-09 it defines «element» and «attribute», and the generic «node» is defined here. A reader following `[[def:node]]` to learn what a node is will land on element. Renaming that card (say `def:element`) is agent A's call.
 - [[def:anomaly]] and [[rule:tree-transcript]] depend on `def:document` for «tree»; they now want `def:tree`.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **"AST"** for what lite specifies. It is his word by a wide margin (83 prompts vs a handful), it is accurate in the classic sense (layout dropped, meaning kept), and it greps cleanly where bare "tree" is everywhere in this corpus. Comments kept as nodes is a difference worth one sentence for compiler-trained readers.
+- **Drop "raw".** With views named as views ([[def:reading-option]]), there is one AST and views of it; "raw" makes the spec's own object sound unfinished and collides with "raw text" in opaque spans. This inverts his "raw AST -> AST modified by…" sentence, so ask with `|el :author @{people/jw}`: "which of these two do you call the AST?"

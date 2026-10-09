@@ -91,3 +91,8 @@ root
 
 - Whether a reading option may present a «text» without embeds as a «string» is in [[def:reading-option]], not here.
 - Trees use the notation of `.int/ast-notation-proposal-a.md`, provisionally.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: keep «string» for the quoted kind only, with one sentence here and in [[def:text]] that a «text» with no embeds is still not a «string». The affordance cost the drafter names is real (to most programmers `hello` *is* a string); the defining sentence and the tree notation's `"…"` vs `‹…›` are what pay it.
+- His "I do worry about 'string' being its own distinct type" is worth one direct question, since a day later he used the split himself ("'' for blank string, or \ for empty text").

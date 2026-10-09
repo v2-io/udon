@@ -52,3 +52,7 @@ consequences: []
   - **Register:** the pull toward "key" is the standing hazard. Agents trained on JSON and YAML will say "key" for this without noticing, and lite also has a «key». The Avoid entry exists mostly to catch that.
 
 - **My own opinion** (the drafting agent's): «attribute-name». It is his phrase, it pairs with «element-name», and XML readers expect it.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «attribute-name». It is his phrase ("the attribute-name", 2026-10-09) and pairs with «element-name». The one thing to watch is the cards' habit of saying "the attribute" when they mean only its name; that is a sweep, not a question.

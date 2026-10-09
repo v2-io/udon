@@ -82,3 +82,8 @@ What the term will name, as lite's cards now describe it: the rest of a fence's 
 - **My own opinion** (the drafting agent's): settle "word or line" first. If it is a word, "language" is the most honest name for its purpose and the one he reaches for, and saying it is a «label» lexically is then true. If it is a line, "info" keeps CommonMark's meaning without "string". Either way, avoid "label" for the slot and "kind" for anything new.
 
 - **Overlap with E's slice.** E writes [[def:fence]]; whatever word lands here should appear there as the fence's part, and the four fence cards that say "label" will need the new word (listed in the coordinator report, not changed here).
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Word or line first.** I lean **word**: the tag is one «label», then an optional `-` flag, then an optional sameline comment; anything else on the opener line (`rust ignore`) is an error for now. Reasons: lite's reserve-don't-ignore posture (an error now leaves a later version free to define the rest of the line); one word makes `diff-` unambiguous (the flag can never be part of a multi-word string); and his own fence examples are all one word (`sh`, `udon`, `diff`, `json`). The cost: CommonMark-style info strings (` ```rust ignore `) don't carry over; they would need quotes or a later feature.
+- **Name, if a word:** "language". It is what he reaches for (`!raw:lang`, `:lang elixir`), what GitHub and CommonMark readers expect ("the fence's language"), and it fits `diff` and `udon` as formats. Spec sentence: "a fence's language is a label". Avoid "label" (now lexical), "kind" (taken three ways), "tag" (HTML), "info string" ("string" is ours).

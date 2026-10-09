@@ -87,3 +87,7 @@ consequences: []
   - "body text": distinguishes from sameline text, but "body" is contested in slice E.
 
 - **My own lean (the vocabulary agent for values and text, Opus 5.5; an opinion):** keep «prose» as a source-side word, as this card has it, *if* Joseph accepts that sameline material is not prose. The string/text/prose triple is then clean: «string» and «text» are kinds of «value», and «prose» is where block «text» comes from. If he wants "sameline prose" to stay a natural phrase, prose becomes the register (any unquoted natural-language material) and the source region needs another name, probably "text lines".
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Keep «prose» as the source region (lines that open no structure), and stop saying "sameline prose" / "$main prose": sameline material is «text», never prose. That is the clean three-way distinction he asked for (2026-10-09) and his own ruling uses the narrow sense ("on a prose line", "within prose"). The `|q "Hi," she said / and then left.` example is the one to confirm it with.

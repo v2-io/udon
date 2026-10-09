@@ -132,3 +132,9 @@ D is content under every proposal so far. The open question is whether «meta» 
 - [[rule:top-level-attributes]], working notes: "meta is never spelled ([[def:document]])".
 - [[rule:root-meta]], [[rule:line-start-escape]], [[rule:blank-line-sets-no-indent]] (working notes), [[rule:tree-transcript]] (`#` meta keys): all use «meta» and would want `def:meta` in `depends:`.
 - [[decision:forward-compat-aspiration]] and [[decision:representational-options]] (working notes) mention meta and `same_line`.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Test:** «meta» is what a consumer can ignore and still read the same content. Under that test, facts from outside the document (filename) and facts about how something was written (positions, fence dedent, a consumed `\`) are meta; authored `:title` is content; and **ornament is its own layer beyond meta**, as his 09-30 "content < content+meta < content+meta+ornament" says.
+- **So [[rule:edge-blank-lines]] is wrong as written**: he called edge blank lines "layout (== ornamental)", so they belong to ornament, not «meta». I'd fix that card's MAY to name ornament, and define "ornament" with his 07-20 definition.
+- **The fence MUST is not a contradiction.** [[rule:fence-dedent-in-meta]] binds lite parsers; "meta is clearly safe to evolve beyond lite" is about later versions. The card can say both.

@@ -103,3 +103,8 @@ consequences: [def:tree, def:root, def:meta, def:anomaly, rule:one-root-node, ru
 - [[def:anomaly]] and [[def:node]] depend on `def:document`, probably for «tree» ([[def:tree]]).
 - [[rule:top-level-attributes]] cites [[def:document]] for "meta is never spelled"; that is now [[def:meta]], where the claim is contested.
 - `main.outline.md` Part I: the `def:document` row's statement, and new rows for [[def:tree]], [[def:root]], [[def:meta]], [[def:transcript]].
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Agree: «document» is the source. His usage since September is consistent with it ("the document being parsed", "doc->ast->doc->ast").
+- When the parser is written, its result type should not be `Document`; it should follow whatever [[def:tree]] settles ("AST"). Worth one line in the card so the default doesn't win silently.

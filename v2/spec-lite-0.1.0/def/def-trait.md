@@ -58,3 +58,7 @@ consequences: []
 - **What the word invites.** A programmer reads "trait" as "a capability or interface the thing implements", not "a category it belongs to". Lite attaches no meaning to traits, so the programmer's reading over-promises. 0.10.0's mixin experiment leaned into that reading. The register cost seems small, since HTML's `class` gives the right picture and readers meet `.name` first; *my reading.*
 
 - **My own opinion** (the drafting agent's): keep «trait», and ask whether "trait name" is needed at all.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- Keep «trait». "Trait name" adds nothing once traits are ruled to be names (2026-10-09): a trait *is* its label. Its character set follows [[def:label]]'s one-rule-or-family answer.

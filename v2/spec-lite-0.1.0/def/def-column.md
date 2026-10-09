@@ -79,3 +79,9 @@ Senses 3 and 4 are why "indent level" overlaps both «left-edge» and his July �
 - Every card with a line:column warning position ([[rule:top-level-columns]], [[rule:framed-comment-owns-deeper-lines]]); whether they print 1-based needs saying.
 - Cards that say "indentation level" in their own voice; `grep -rn "indentation level" src`.
 - "true column" (12 uses) can stay as teaching wording if «column» is defined.
+
+### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
+
+- **Base:** rules count from 0 (the root at −1, top-level prose at 0), and diagnostics print `line:column` 1-based, as compilers and editors do. Both are already true in the cards; the card should say it once so no one "fixes" one to match the other.
+- **«indent-level»:** sense 1 only, a line's own indentation. When he says "sets the indent level" about text, the spec says «left-edge». Python's "indentation level" is the precedent readers bring.
+- **Non-ASCII columns** are pre-design 79 Q4 and the `rule:source-lines` gap; they decide `|p 日本 |em x`. That is a rule question for him, not a naming one.
