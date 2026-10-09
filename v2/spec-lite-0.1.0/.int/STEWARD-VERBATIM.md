@@ -636,3 +636,33 @@
 ### Joseph's answer (whole message)
 
 > you are always welcome to fix my [misspellings] or ask me without me being offended before putting my stuff on the record. Please just change it to "aria-..." and only fixate on those things that would materially change the parsing :-)
+
+*(Agent text, summary: the agent reported the aria-label fix and listed four open items: `:a \` (lean: missing-value error), an attached `\X` on an element's or attribute's line (lean: escapes one character, as in 0.10.0), `\|{` in prose (lean: makes the embed literal), and the tree notation (lean: A, one transcript line per source line).)*
+
+### Joseph's answer (whole message)
+
+> lol [misspellings] -- how's that for a misspelling? Thanks for your patience. Turns out I rely on spellcheck more than I knew, and the harness doesn't provide one and doesn't mark misspelled words, so I often improvise.
+>
+> ---
+>
+> 1. If you'll recall, the primary reason for erroring on missing values was not because they shouldn't be representable -- (equivalent to null/nil or an explicit 'no-value' that is distinct from those in the AST if we would prefer, with a default read-time option to treat it as null) but because we have reserved nested attribute-labels as a potential construct. So I actually lean `:a \` is a perfectly reasonable way to stand in for `:a ''`/`:a ""`, OR as a rule to stand for "explicitly no value specified" which reads by default to be equivalent to null (or nil? I forget which one we landed on in prior iterations).
+> 2. yes, on sameline we can treat it as we would if it were in an embed (right? is that the right reading?)
+> 3. Agreed, 100%, ruled. Leading `\` (after any whitespace) on a prose line is read special (and consumed), embeds are detected, and escaped embeds are literal passthrough with the escape consumed. (And, within prose, those are the only behaviors we specify other than the indent/dedent stuff, if memory serves correctly...)
+> 4. I need the discussion context again please
+
+*(Agent text, summary: (1) the record gives other reasons for the missing-value error (Jul 15: binding; Aug 7: the "deletion detector" he ratified), nested attributes not found as a reason; `:a \` falls out of "a framed `\` ends the text" as an empty text; lean: keep `:a :b 1` and bare `:a` as errors; 0.10.0 accepts `null` and `nil` alike, shown as `nil`. (2) Asked whether an attached `\X` on an element's or attribute's line follows the embed rule (strict: errors on unknown, so `C:\Users\me` errors) or the prose rule (escapes only where the next character would mean something, else literal), leaning the prose rule. (3) Recorded his prose ruling. (4) Re-presented the two AST notation proposals with his two example lines, leaning A plus one transcript line per source line.)*
+
+### Joseph's answer (whole message)
+
+> 1. Consider it a new argument then :-)
+>    I agree fully, except the `:a :b 1` should error not as a deletion detector (although it serves that purpose) but due to nested attributes being reserved, and `:a` by itself should be an error something along the lines of "implicit missing value for attribute is not supported / reserved -- explicitly use nil, '' for blank string, or \ (for empty text)..."
+>
+> Also, let's go ahead and make 'nil' the only spelling for nil/null. I like null better semantically, but nil is less clunky lexically :-).  Now the deterministic typing just got a even tighter.
+>
+> 2. Oh-- I forgot we changed those to errors inside embeds if not supported. For lite-- don't you think we should do the same thing for backslashes without a right-fence that we don't know the exact meaning of? ([admittedly], your example shows several instances where we *do* know the meaning-- it is escaping what would otherwise be a type differentiator (number, quote, <, etc.) or what would otherwise be a block beginning (:,|,;) so that it starts some text instead. One issue would be sameline @ (without @{...}) -- I believe we decided that was a reserved construct that errors if tried-- so we would need to allow it to be escaped as well-- same with !. Which means we have this other side of what the reserved constructs mean: don't use them, including by properly escaping them.
+>
+> Also, does it seem to you settled that we have pretty clear definitions at this point for the spec for string vs text vs prose ?
+>
+> 3. excellent.
+>
+> 4. Pondering... I agree with your lean but there are still some remaining issues to consider...

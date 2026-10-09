@@ -14,7 +14,7 @@ informed: [parser implementers, vsect]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: missing-values, how: revised, scope: partial}]
 closes: ["12 Q1", "12 Q2"]
 leaves-open: ["12 Q3", "05", "89"]
 ---
@@ -93,3 +93,4 @@ Warnings are for "technically correct udon/udon-lite" that "does do a specific t
 - For the anomaly inventory: 0.10.0's top-level `:label` warning (pre-design 04 Q2, 12's table) is in neither list yet; to decide with the root's attributes.
 - Not decided: whether a parser may keep scanning after an error to report more errors (still producing no tree).
 - For the anomaly inventory: a no-break space where it sets a column is a warning, by Joseph's own call ([[decision:no-break-space-counts-as-space]]).
+- "A `:label` with no value" is refined by [[decision:missing-values]]: `:a \` is an empty text; `:a :b 1` and a bare `:a` are errors.

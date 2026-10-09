@@ -126,3 +126,4 @@ Still open with Joseph (the coordinator's leans, not decided):
 
 - Open with Joseph: `:a \`; attached `\X` on an element's or attribute's line; `\|{` in prose (leans above).
 - How boundary blank lines are treated (prose or layout) is still being discussed; with a trailing backslash now a plain character, the remaining way to keep a final newline is a lone `\` line.
+- Settled since: `:a \` is an empty text ([[decision:missing-values]]); `\|{` in prose is literal with the escape consumed ([[decision:prose-backslash-and-embeds]]). Still open: an attached `\X` on an element's or attribute's line.
