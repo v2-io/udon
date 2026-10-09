@@ -15,12 +15,13 @@ consequences: [rule:framed-backslash-frame, rule:embeds-in-text, rule:value-line
 
 ## Statement
 
-On an element's or attribute's line, unquoted text MUST end at the first of: a space followed by `|name`, a space followed by `:name`, a framed ` ; `, a framed ` \ `, or the end of the line.
+On an element's or attribute's line, unquoted text MUST end at the first of: a space followed by `|name`, a space followed by `:name`, a space followed by a fence opener (three or more backticks), a framed ` ; `, a framed ` \ `, or the end of the line.
 
 ## Grounds
 
 - Joseph, 2026-10-08: "text is always assumed to be non-delimited text which ends with a *block* form of ;, |, or :" ([[rule:embeds-in-text]]).
 - Joseph, 2026-10-09: "We definitely still need backslash as our other 'text terminator'".
+- Joseph, 2026-10-09 (a ruling): "I'm ready to rule that ```(+) is in the same family as |;: and the reserved ones-- just wasn't thinking about it at the time."
 
 ## Epistemic status
 
@@ -81,3 +82,5 @@ root
 - Reasoning (agent's): with embeds as pieces, nothing inside a text can end it except a block form or the framed backslash, so the end of sameline text is one rule.
 - The spaces before whatever ends the text are not part of it ([[rule:space-before-text-end]]).
 - Embedded forms don't end the text ([[rule:embeds-in-text]]).
+- The fence opener joined the list 2026-10-09: before that, `|a some text ```js` stayed all text, while [[rule:fence-anywhere-structure]] let a fence open on a sameline (found by the vocabulary work on «block form»). Now it is `$main ‹some text›` and a fence.
+- "The reserved ones" are in the same family: a space followed by a reserved spelling on an element's or attribute's line (`@name`, `!word`) ends the text there too, and is the reserved error ([[rule:reserved-spellings]]).

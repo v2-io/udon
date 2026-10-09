@@ -842,3 +842,9 @@
 ### Joseph's answer (whole message)
 
 > for each entry be sure and have agents add an "Avoid" list that includes all prior names or confusions. Then, for ones not settled, have agents try to determine prior non-conflicting leans of mine and other agents (often implicit for both and ambiguous), examples and precedents in other languages, notations, parsers, grammars, lexers, etc., any questions about the semantic meanings or register or affordances etc.—- all in the working notes, enough for you to add your own lean with reasoning to me
+
+*(Agent text, summary: while the five vocabulary agents reported, the agent relayed findings as they came in: slice B found that `rule:fence-anywhere-structure` lets a fence open on a sameline while `rule:text-value-end` doesn't end sameline text at a fence, so `|a some text ```js` stays text; slice A found the 2011 DECIDED.md "LABEL … APPLIES TO: node-name, class-name, attribute-key" and that the fence tag's name hinges on whether it is one word or the rest of the line.)*
+
+### Joseph's answer (whole message)
+
+> collect as they come up, but I'm ready to rule that ```(+) is in the same family as |;: and the reserved ones-- just wasn't thinking about it at the time.

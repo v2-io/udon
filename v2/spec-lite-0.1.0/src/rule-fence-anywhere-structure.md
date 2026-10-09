@@ -50,3 +50,4 @@ root
 
 - **Reasoning:** In UDON a fence's position decides its parent, so it can't be limited to the start of a line as in Markdown.
 - The spec should name this as a difference from CommonMark (Joseph's suggestion).
+- On an element's or attribute's line, a space followed by a fence opener ends any unquoted text before it, like ` |name` and ` :name` (Joseph, 2026-10-09: "```(+) is in the same family as |;: and the reserved ones"); [[rule:text-value-end]].
