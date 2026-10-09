@@ -1,7 +1,7 @@
 ---
 kind: definition
 awaiting-second: true
-awaiting-decision: false
+awaiting-decision: true
 needs-work: false
 terms: [text, piece, run, embed]
 per: []
@@ -41,6 +41,8 @@ root
 ```
 
 ## Working notes
+
+- **Not reviewed with Joseph.** Joseph, 2026-10-09: "I haven't looked at any or been asked about any of those things … but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue." Every term here is provisional until he rules on it; `.int/lexicon-inventory-2026-10-09.md` lists where each came from.
 
 - **Joseph's words** (2026-10-09, `.int/STEWARD-VERBATIM.md`):
   > I am under the impression that any embedded construct is meant to be embedded in text/string, and that *on sameline* text is always assumed to be non-delimited text which ends with a *block* form of ;, |, or : -- whereas embedded forms just stay part of the text (which is probably the difference between text and a string-- text has any number of pieces some of which are not strings).

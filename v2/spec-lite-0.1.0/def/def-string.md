@@ -1,7 +1,7 @@
 ---
 kind: definition
 awaiting-second: true
-awaiting-decision: false
+awaiting-decision: true
 needs-work: false
 terms: [string]
 per: []
@@ -36,6 +36,8 @@ root
 ```
 
 ## Working notes
+
+- **Not reviewed with Joseph.** Joseph, 2026-10-09: "I haven't looked at any or been asked about any of those things … but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue." Every term here is provisional until he rules on it; `.int/lexicon-inventory-2026-10-09.md` lists where each came from.
 
 - **Joseph's words** (2026-10-08/09, `.int/STEWARD-VERBATIM.md`):
   > I think "..." and '...' should essentially be just like ruby strings (including escape sequences in "" but not in '', and including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`), different than our "general matching + escaping" for arrays, typed values, keys, and embeds.

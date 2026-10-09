@@ -46,6 +46,8 @@ consequences: [def:anomaly, def:reading-option, def:node, rule:one-root-node, ru
 
 ## Working notes
 
+- **Not reviewed with Joseph.** Joseph, 2026-10-09: "I haven't looked at any or been asked about any of those things … but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue." Every term here is provisional until he rules on it; `.int/lexicon-inventory-2026-10-09.md` lists where each came from.
+
 - **Joseph's words** (2026-10-08, `.int/STEWARD-VERBATIM.md`), downgrading "same tree" to an aspiration:
   > … Under this adjustment I think meta is clearly safe to evolve beyond lite.
 

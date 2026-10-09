@@ -1,7 +1,7 @@
 ---
 kind: rule
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 layer: tree
 per: []
@@ -23,7 +23,7 @@ A line indented deeper than the column of a framed ` ; ` comment's `;` MUST be p
 
 ## Epistemic status
 
-Joseph's lean. **The Statement is the agent's reading of "child comments", awaiting his confirmation:** lines past the `;` column are the comment's, as a `;` line owns its deeper lines ([[rule:comment-block-owns-deeper-lines]]); lines deeper than the element but not past the `;` stay the element's children.
+Joseph's lean. The reading — lines past the `;` column are the comment's, as a `;` line owns its deeper lines ([[rule:comment-block-owns-deeper-lines]]); lines deeper than the element but not past the `;` stay the element's children — was the agent's, and Joseph confirmed it (2026-10-09: "your understanding of the comment's children and my lean is correct").
 
 ## Explanation
 

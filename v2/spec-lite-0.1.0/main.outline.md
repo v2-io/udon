@@ -147,7 +147,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:comment-block-owns-deeper-lines]] | Every line indented deeper under a `;` line is part of that comment, never parsed. |
 | proposed | [[rule:framed-comments]] | On a line that begins with an element or an attribute, a ` ; ` with a space on each side starts a comment to the end of the line. |
 | proposed | [[rule:inline-comments]] | In text, `;{…}` is a comment piece. |
-| proposed | [[rule:framed-comment-owns-deeper-lines]] | Lines deeper than a framed comment's `;` belong to the comment, with a warning (a lean; reading to confirm). |
+| proposed | [[rule:framed-comment-owns-deeper-lines]] | Lines deeper than a framed comment's `;` belong to the comment, with a warning (a lean). |
 | proposed | [[rule:comments-in-tree]] | Comments appear in the «tree». |
 | proposed | [[rule:fence-body-not-scanned]] | Everything between a fence's opening and closing lines is body, never scanned for UDON syntax, with no escapes. |
 | proposed | [[rule:fence-body-dedent]] | Unless the label ends in `-`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces. |

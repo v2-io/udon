@@ -80,6 +80,8 @@ consequences: [rule:key-holds-a-value, rule:list-items-whitespace-separated, rul
 > — Joseph, 2026-10-01 (`.int/STEWARD-VERBATIM.md`), confirming the record
 ## Working notes
 
+- **Not reviewed with Joseph.** Joseph, 2026-10-09: "I haven't looked at any or been asked about any of those things … but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue." Every term here is provisional until he rules on it; `.int/lexicon-inventory-2026-10-09.md` lists where each came from.
+
 - **Since 2026-10-08:** quoted values are «string»s ([[def:string]]) and unquoted material is «text» ([[def:text]]); this record's "implicit-typed-value" (which lists "an unquoted word, a quoted string, or a list") needs reconciling with those two, and `nil` is now the only spelling of nil ([[rule:nil-spelling]]).
 
 - The type-label question (07 Q3) is answered: lite carries the raw text, with no label split ([[rule:opaque-span-raw-text]]).
