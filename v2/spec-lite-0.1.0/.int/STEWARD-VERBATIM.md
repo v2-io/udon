@@ -581,3 +581,9 @@
 > I am very comfortable having embeds always be a distinct chunk of distinct text as if it were a word for right now, yes. Don't forget comments show up in the AST-- actually, before we go any further, would you propose or have an agent look at everything and propose a quick syntax/notation for expressing the AST here in chat and in the spec and in the fixtures (all the same ideally if it's elegant enough, but with big or minor differences acceptable if necessary).
 >
 > WRT the "single-piece rule" -- Another option to consider:  `|el :x @<other-one>`   and `|el :x |<val-node ...>` etc.  I like this notation and something we should record, but it is also something that can wait on without disturbing. My lean for lite-0.1.0 is an *aspiration* that a `text` construct with just one embed in a value slot ends up being *processed*/interpreted as if that embed is the value itself (so, kind of pre-emptively having an AST reading flag that defaults to reducing it, in the same category as $main<->children stuff, instead of as part of the language spec). I guess that means in reality we have  source -> wire/event (opaque in lite) -> raw AST -> AST modified by representational-options (usually part of traversal instead of predetermined, I would imagine).
+
+*(Agent text, summary: the agent reported the embeds and representational-options records committed, and asked, for the values work, whether `:n ;{}` is an empty text (his 07-19 "`:n ;{}` === `:n ""`") or a missing value (an error). Joseph also asked, in between, that the two notation agents be told indentation and Unicode are welcome — "I'd prefer that over "json s-expressions" or something verbose and jarring like that" — which was relayed to them.)*
+
+### Joseph's answer (whole message)
+
+> I'm fine with `:n ;{}` yielding a text AST node with an empty comment as its only inner part.

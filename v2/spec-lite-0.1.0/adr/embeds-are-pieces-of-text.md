@@ -79,6 +79,10 @@ How a consumer may read a text whose only piece is one embedded form is a readin
 
 *His words: "I am under the impression", then "I am very comfortable … for right now, yes". His own reading, so `steward`. Decided for this version, and revisitable if undiscovered confounding factors come up ([[decision:decided-for-this-version]]).*
 
+> I'm fine with `:n ;{}` yielding a text AST node with an empty comment as its only inner part.
+>
+> — Joseph, 2026-10-09 (`.int/STEWARD-VERBATIM.md`), settling `|el :n ;{}`: a text whose only piece is an empty comment; not a missing value
+
 ### Positive Consequences
 
 * One rule: embedded forms are always in text, wherever they are.
@@ -103,5 +107,4 @@ How a consumer may read a text whose only piece is one embedded form is a readin
 
 ## Working notes
 
-- Open (59): `|el :n ;{}` gives a text whose only piece is a comment. Joseph's 2026-07-19 view was that this equals `:n ""`; whether lite treats it as an empty text, and whether that counts as a missing value, is to pin.
 - The AST notation used above (`text[…]`) is a placeholder; a notation is being proposed separately.
