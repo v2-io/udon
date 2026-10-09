@@ -781,3 +781,15 @@
 > > Heads up · Your reading that `Home` in `|{a :href "/" Home}` becomes `$main` differs from 0.10.0, which says `$main` doesn't apply inside braces. […] Consider ruling on it as a change when you discuss inline-element interiors.
 >
 > fwiw, the 0.10 assertion that $main doesn't apply in braces was a (poorly reasoned) decision by an agent, not my decision (that I remember- if it was, it was poorly reasoned by me). The truth is we haven't correctly designed embeds yet or thought through the issues fully.
+
+*(Agent text, summary: the agent reported finishing the re-read, said it had "fixed the cards it showed were wrong" (three derivation cards folded into prose-passes-through; the inline-element card grounded in R2 and marked provisional; the unclosed-delimiter card's `|{…}`-must-close-on-its-line flagged as undiscussed; a pitfall spelling removed from an example), launched the fold of rule-level decision records into cards, and put item 3 — the strict `\X` set on element and attribute lines — with examples and a lean for strict.)*
+
+### Joseph's answer (whole message)
+
+> Whoa... "fixed the cards it showed were wrong" -- I thought those cards were only developed based on the most recent discussions that happened *after* the prehistory
+
+*(Agent text, summary: the agent agreed the cards came from this session's discussions, so the history couldn't show them wrong; the fixes came from his derivations note, today's rulings applied consistently, and one drafting overreach (`|{…}` closing on its own line); the history mostly supplied grounds and context.)*
+
+### Joseph's answer (whole message)
+
+> - sorry, what do you mean "three folded cards" -- and do you mean when they occur mid-prose?
