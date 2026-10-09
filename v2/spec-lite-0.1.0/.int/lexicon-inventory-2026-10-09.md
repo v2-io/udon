@@ -13,7 +13,7 @@ None of the contested words was decided with him. Lite's `def/` holds eight defi
 
 So the honest category is the third one: definitions were never nailed down with him. The cards then used inherited words casually, which made them look settled.
 
-He had already flagged one of these. On 2026-09-30 (`history.jsonl:21338`): *"is that "leftover values on a line go to the label that owns the line" verbatim? If so it's very problematic, as "label that owns the line" is ambiguous exactly where the lean is weighing in-- the question is what "label" owns the line for all of the remainder text."* The same message mentions the first lexicon attempt, deleted as "lazy and sloppy" (the day before he had written: *"same_line, same-line, and sameline all in the same document"*, `history.jsonl:21330`).
+He had already flagged one of these. On 2026-09-30 (`history.jsonl` line 21339): *"is that "leftover values on a line go to the label that owns the line" verbatim? If so it's very problematic, as "label that owns the line" is ambiguous exactly where the lean is weighing in-- the question is what "label" owns the line for all of the remainder text."* The same message mentions the first lexicon attempt, deleted as "lazy and sloppy" (the evening before, 2026-09-29, he had written: *"same_line, same-line, and sameline all in the same document"*, `history.jsonl` line 21331).
 
 ## Contested terms, most consequential first
 
@@ -44,7 +44,7 @@ Each entry gives what the cards use the word for, where it came from, Joseph's o
 
 - **Cards:** "sameline" 31 files, "same-line"/"Same-line" 16, "same line" 14, often mixed within one card; also "element's line" (7) and "attribute's line" (9).
 - **From:** "sameline" is Joseph's; "same-line" and "same line" are drafter variations; "element's line"/"attribute's line" are agent phrasings.
-- **Joseph's words:** "sameline" throughout; "attribute-sameline" (2026-09-29, his coinage); "element-sameline vs attribute-sameline" (2026-09-30); "node or attribute started lines" (2026-10-08). He called the mixed spellings sloppy (2026-09-30).
+- **Joseph's words:** "sameline" throughout; "attribute-sameline" (2026-09-29, his coinage); "element-sameline vs attribute-sameline" (2026-09-29); "node or attribute started lines" (2026-10-08). He called the mixed spellings sloppy (2026-09-29).
 - **Ask:** confirm "sameline" as the one spelling, and whether "element-sameline" / "attribute-sameline" are the terms for the two kinds of line (in place of "element's line" / "attribute's line").
 
 ### 3. line scan
@@ -65,7 +65,7 @@ Each entry gives what the cards use the word for, where it came from, Joseph's o
 
 - **Cards:** "left edge" (11 files); "content base" (1, inherited).
 - **From:** "left edge" is a drafter's; "content base" is 0.10.0's; "Structure Position" is 0.10.0's replacement for Joseph's term.
-- **Joseph's words:** "indent level", "active indent", "first-inner-sets-indent"; and **head position**, his July term: *"*Head position*  -- that needs to be a prominent part of the lexicon / spec---  specifies that we're still deciding if it's prose or block and includes same-line..."* (2026-07-11, `history.jsonl:15839`); 0.10.0 renamed it "Structure Position" without him. Lite's cards use neither and paraphrase ("where structure can start").
+- **Joseph's words:** "indent level", "active indent", "first-inner-sets-indent"; and **head position**, his July term: *"*Head position*  -- that needs to be a prominent part of the lexicon / spec---  specifies that we're still deciding if it's prose or block and includes same-line..."* (2026-07-11, `history.jsonl` line 15839); 0.10.0 renamed it "Structure Position" without him. Lite's cards use neither and paraphrase ("where structure can start").
 - **Ask:** the name for the column a block of text is dedented to, and whether "head position" comes back for "a place where a marker is recognized".
 
 ### 6. What sits under an attribute: body, value lines, child block
