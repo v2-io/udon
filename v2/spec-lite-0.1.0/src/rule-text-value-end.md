@@ -22,6 +22,7 @@ On an element's or attribute's line, unquoted text MUST end at the first of: a s
 - Joseph, 2026-10-08: "text is always assumed to be non-delimited text which ends with a *block* form of ;, |, or :" ([[rule:embeds-in-text]]).
 - Joseph, 2026-10-09: "We definitely still need backslash as our other 'text terminator'".
 - Joseph, 2026-10-09 (a ruling): "I'm ready to rule that ```(+) is in the same family as |;: and the reserved ones-- just wasn't thinking about it at the time."
+- Joseph, 2026-10-09, confirming that the ruling deliberately reverses his 2026-07-14 example (`|a |b but not ```this one` stayed text): "I understand it reverses what I said / wrote in July as that old stuff was based on an older and (it turns out) internally inconsistent perspective on sameline non-delimited text." So sameline text that mentions three backticks after a space opens a fence. To keep the backticks, quote the value (it is then a «string», not a «text»), or escape them once the sameline escape set is settled (open item 3; the coordinator's lean includes `` \` ``).
 
 ## Epistemic status
 

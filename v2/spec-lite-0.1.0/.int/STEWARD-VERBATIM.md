@@ -848,3 +848,14 @@
 ### Joseph's answer (whole message)
 
 > collect as they come up, but I'm ready to rule that ```(+) is in the same family as |;: and the reserved ones-- just wasn't thinking about it at the time.
+
+*(Agent text, summary: the agent added its own lean to all 38 vocabulary def cards (commit `2dd272b`), noted that the fence-opener ruling closes the gap slices A/B had found and makes a fence a block form, and asked (1) which of `user`, `role`/`size`, `admin`, `jw`, `u64`, `sh` in a composite example are labels in his lexical sense, and (2) whether the fence's `sh` is one word or the rest of the line, leaning one word called "language".)*
+
+### Joseph's answer (whole message)
+
+> Here is a note offered by a side agent:
+>
+> > Heads up · Your ruling that three backticks end sameline text reverses your own July example, where `|a |b but not ```this one` stayed text.
+> > […the side agent's note, quoting his 2026-07-14 example and noting that sameline text mentioning triple backticks would now open a fence, and that `def-head-position` still describes the July behavior…]
+>
+> Just want to state here that I understand it reverses what I said / wrote in July as that old stuff was based on an older and (it turns out) internally inconsistent perspective on sameline non-delimited text.
