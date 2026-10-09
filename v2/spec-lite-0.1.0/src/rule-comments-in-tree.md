@@ -37,3 +37,18 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 - **Why it matters** (the drafter's reasoning): Comments are a tier of voice, carried for maintainers, not discarded.
 
 - How each kind appears (a comment node, a piece of text) is shown in each card's example; the shape is [[def:node]]'s.
+- Consequence: a `;` comment line between two text lines splits the text, because the comment sits between them in the tree (Joseph, 2026-10-09: "a clear 'yes' by virtue of the fact that comments are preserved in the AST").
+
+  ```udon
+  |p
+    first
+    ; note
+    second
+  ```
+  ````tree
+  root
+    |p
+      ‹first›
+      ; " note"
+      ‹second›
+  ````

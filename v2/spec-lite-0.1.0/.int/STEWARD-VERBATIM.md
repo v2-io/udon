@@ -728,3 +728,34 @@
 ### Joseph's answer (whole message)
 
 > Isn't a card a decision already?
+
+*(Agent text, summary: the agent answered that a card mostly is a decision already, and proposed that single-rule calls live only in their card (outcome in the Statement; his quote and his own word — lean, ruling, support — under Grounds; options and reasoning in a Discussion section; open points in Working notes), with separate decision records kept only for calls spanning many cards (errors stop parsing, the forward-compatibility aspiration, leans as working spec, organization delegated, decision authority). It then reported the 91 cards committed with reconciled `depends:`/`consequences:` links, and listed sixteen numbered items: still waiting — (1) the card-as-decision proposal, (2) bare `null`, (3) the strict escape set on element and attribute lines, (4) what remains in the notation; quick confirmations — (5) `|{a :href / Home}` without ` \ ` gives `href` `"/ Home"` and no link text, (6) `!word` mid-prose is text, (7) `@name`, `@[k]`, `@.t`, `@<…>` and `!` forms reserved on element and attribute lines, (8) spaces before a block form aren't content, (9) edge blank lines are layout, (10) spaces right after a line-start `\` are content; needing a real look — (11) `|{em hi}` vs `|em hi`, (12) comment placement, the space after `;`, and whether a `;` line splits text, (13) nested-attribute scope, (14) adjacent strings `"x""y"` and `"abc"def`, (15) a fence's trailing `-`, a bare ```` ```- ````, and a blank first body line, (16) whether a `.trait` is text or a name.)*
+
+### Joseph's answer (whole message)
+
+> still waiting from before:
+> 1. sounds good.
+> 2. I agree, rule
+> 3. will discuss
+> 4. will discuss
+> 5. that's right-- the version missing the '\' (or some other variation like `|{a :href "/" Home}`) would be an example to understand, watch for, and avoid.
+> 6. correct
+> 7. correct
+> 8. correct-- from a scanning perspective, as text components accumulate, whitespace is considered ornamental but turns into content if the next thing continues as part of the text. If the next thing instead stops the text (including '\'), it was just delimiter+ornamental.
+> 9. correct-- layout (== ornamental) -- because we have a lone /\s*\\\s*\n/ to preserve trailing blank lines in prose if the author needs it.
+> 10. correct- but it should follow from the other rules and already be clear, not its own rule I would think...
+>
+> 11. we haven't discussed embed interiors yet
+> 12. will discuss, although the answer to the third is a clear 'yes' by virtue of the fact that comments are preserved in the AST.
+> 13. I don't understand what is still open vs everything already [ruled]
+> 14. can discuss (with the others, I'll want your well-informed and thoughtful lean)
+> 15. "stay in the label" -- in the AST, no, it would be its own flag. bare ```- should be very obviously a fenced block preserved verbatim. The fact that it's a question worries me. Same with third question-- the answer should have been a very obvious as derived from the rules we finally landed on.
+> 16. this question makes zero sense for anyone who is even vaguely familiar with udon.
+
+### Joseph's follow-up, sent while the agent was working (two messages, whole)
+
+> |{a :href "/" Home}  will do what the user hopes (Home is $main which by default is first child)
+> |{a :href / \ Home}  same
+> |{a :href / Home}    keep as an example to watch for and avoid.
+
+> That's my reading of rules already well established

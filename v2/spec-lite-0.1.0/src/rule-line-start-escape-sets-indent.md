@@ -48,4 +48,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - **Why it matters** (the drafter's reasoning): It lets a text line start with spaces on purpose, or with a marker, without the line's indentation being misread.
 
-- Whether the spaces after the `\` are content (shown kept, as in 0.10.0's column-anchor idiom) was not discussed in this session.
+- The spaces after the `\` are content: the `\` is consumed and the rest of the line is text ([[rule:line-start-escape]]). Joseph, 2026-10-09: "correct- but it should follow from the other rules and already be clear, not its own rule".

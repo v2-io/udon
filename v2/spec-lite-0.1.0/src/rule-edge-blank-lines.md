@@ -1,7 +1,7 @@
 ---
 kind: rule
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
 layer: tree
 per: [backslash-by-position]
@@ -36,11 +36,12 @@ root
 ## Grounds
 
 - Joseph, 2026-10-09: "If we consider them ornamentation (probably right)"; the lone-`\` workaround ([[rule:lone-backslash-line]]) was accepted on that basis.
+- Joseph, 2026-10-09, confirming: "correct-- layout (== ornamental) -- because we have a lone /\s*\\\s*\n/ to preserve trailing blank lines in prose if the author needs it."
 - 0.10.0 §7.4: leading and trailing blank lines at structure boundaries are ornamentation.
 
 ## Epistemic status
 
-A rule resting on Joseph's "probably right"; no decision record states it outright.
+Decided for this version (Joseph's "correct", 2026-10-09).
 
 ## Working notes
 
@@ -56,5 +57,4 @@ A rule resting on Joseph's "probably right"; no decision record states it outrig
 
 - **Why it matters** (the drafter's reasoning): Writers leave a blank line before the next child out of habit; if it were text, layout would silently change content.
 
-- Record it as a decision, or ask him.
 - Not discussed: where an edge blank line sits in «meta».

@@ -84,7 +84,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:opaque-span-raw-text]] | The «tree» holds the text between the delimiters of `<…>`, `@{…}` and `;{…}`, escapes resolved, with no meaning attached. |
 | proposed | [[rule:opaque-span-escapes]] | Inside `<…>`, `@{…}` and `;{…}` only `\\` and the span's own delimiters may be escaped. |
 | proposed | [[rule:newline-in-opaque-span-is-error]] | `<…>`, `@{…}` and `;{…}` must close on their own line; the error says lite doesn't support the newline. |
-| proposed | [[rule:inline-element-backslash-starts-interior]] | In an inline element, ` \ ` ends the current attribute's value and what follows is the element's interior text. |
+| proposed | [[rule:inline-element-reads-like-a-line]] | Inside `|{…}`, the element's material reads like an element's line: text left over after a finished value is its `$main`. |
 | proposed | [[rule:fence-opens-with-backticks]] | A run of N ≥ 3 backticks where structure can start opens a fence of length N. |
 | proposed | [[rule:fence-anywhere-structure]] | Unlike CommonMark, a fence opens at any indentation and on an element's or attribute's line; its position decides its parent. |
 | proposed | [[rule:fence-label-no-backtick]] | A line that starts with backticks and has a backtick later in it does not open a fence. |
@@ -99,6 +99,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 |---|---|---|
 | gap | [[rule:markers]] | What opens what at a structure position, and each marker's guard |
 | proposed | [[rule:prose-line-start-reserved]] | A prose line that starts with a bare reference or a directive spelling is not lite. |
+| proposed | [[rule:bang-word-mid-prose]] | `!word` in the middle of a prose line is text. *(needs-work: may be a derivation)* |
 | proposed | [[rule:at-name-mid-prose]] | Only the start of a prose line reserves `@name`. |
 | proposed | [[rule:reserved-spellings]] | The bare list of what lite refuses, and where. |
 | proposed | [[rule:escaped-reserved-is-text]] | Escaping a reserved form is how to write it as text. |
@@ -109,6 +110,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
 | proposed | [[rule:main-is-attribute]] | Same-line text never becomes a text child. |
 | proposed | [[rule:text-value-end]] | On an element's or attribute's line, unquoted text runs until a block form or a framed ` \ `. |
+| proposed | [[rule:space-before-text-end]] | Spaces before whatever ends a text are frame, not content. *(needs-work: may be a derivation)* |
 | proposed | [[rule:framed-backslash-frame]] | The framed backslash and its spaces are consumed; neither is content. |
 | proposed | [[rule:embeds-in-text]] | `\|{…}`, `@{…}` and `;{…}` are never values of their own. |
 | proposed | [[rule:space-between-embeds]] | Whitespace between two embeds is a run of the text. |

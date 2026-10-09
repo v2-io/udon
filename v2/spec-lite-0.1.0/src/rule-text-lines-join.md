@@ -49,4 +49,4 @@ A rule carried from 0.10.0 and reaffirmed in this session without a decision rec
 - **Why it matters** (the drafter's reasoning): Newline handling in text is, in his words, "a crucial thing to udon and the spec".
 
 - No decision record yet; add one, or cite 0.10.0 formally.
-- Not discussed: whether a `;` comment line between two text lines splits the text in two.
+- A `;` comment line between two text lines splits them into two texts, because the comment is a node in the tree between them ([[rule:comments-in-tree]]). Joseph, 2026-10-09: "a clear 'yes' by virtue of the fact that comments are preserved in the AST".

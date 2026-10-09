@@ -48,4 +48,4 @@ Reading a one-piece text as its piece is a reading option ([[def:reading-option]
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > Under this understanding, the above should give   nav $main  text[embedded_node(a...),' ',embedded_node(a...)] or something.
-- `|{a :href / Home}` gives `href` the text `/ Home`: how far an unquoted value runs inside an inline element is not yet discussed (pre-design 50).
+- `|{a :href / Home}` gives `href` the text `/ Home` and the link no text: an example to watch for and avoid (Joseph, 2026-10-09; [[rule:inline-element-reads-like-a-line]]).

@@ -4,8 +4,8 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: true
 layer: tree
-per: [reserved-list-form, reserve-not-ignore, reserved-is-an-error, reserved-line-starts-in-prose, nested-attributes-reserved, missing-values, references-in]
-depends: [rule:prose-line-start-reserved, rule:label-after-empty-label, rule:nested-attributes]
+per: [reserved-list-form, reserve-not-ignore, reserved-is-an-error, reserved-line-starts-in-prose, nested-attributes-reserved, missing-values, references-in, nil-only]
+depends: [rule:prose-line-start-reserved, rule:label-after-empty-label, rule:nested-attributes, rule:nil-spelling]
 consequences: []
 ---
 
@@ -23,7 +23,9 @@ Each spelling in this table MUST be an error where the table says.
 | `!{` (`!{…}`, `!{{…}}`) | anywhere it would open, prose included |
 | `@` followed by a name (`@jw`) | at the start of a prose line, and as a value |
 | a `:label` with no value followed by another `:label` | on an element's or attribute's line ([[rule:label-after-empty-label]]) |
-| a `:label` line directly under an open attribute value | under an attribute ([[rule:nested-attributes]]) |
+| a `:label` line owned by an attribute | in an attribute's body ([[rule:nested-attributes]]) |
+| `@` followed by a name, `@[`, `@.` or `@<` (`@jw`, `@[k]`, `@.t`, `@<…>`) | on an element's or attribute's line |
+| a bare `null` where `nil` would be read | as a value ([[rule:nil-spelling]]) |
 
 ## Grounds
 
@@ -42,5 +44,6 @@ Decided for this version, row by row. The list is not complete.
 - Joseph's words (2026-09-30T02:12Z, `.int/STEWARD-VERBATIM.md`):
 
   > Let's put reserved ones in their own file and not explain them other than what characters or constructions are reserved.
-- Not yet discussed, so not listed: `@[k]`, `@.t`, `@<…>`, and `@name` in the middle of an element's or attribute's line (`.int/reserved.md` had them reserved); spellings floated in the past (pre-design 56); `!word` mid-line in prose.
-- Whether a bare `null` is reserved is open ([[rule:nil-spelling]]).
+- Joseph, 2026-10-09, confirming the `@` forms on element and attribute lines (as in 0.10.0 and `.int/reserved.md`): "correct".
+- A `!word` in the middle of a prose line is text, not reserved ([[rule:bang-word-mid-prose]]); `!{` stays reserved there.
+- Not yet discussed: spellings floated in the past (pre-design 56).

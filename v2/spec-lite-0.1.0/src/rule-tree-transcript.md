@@ -35,4 +35,4 @@ Proposed, not decided: Joseph agrees with the coordinator's lean but has "remain
 
   > 4. Pondering... I agree with your lean but there are still some remaining issues to consider...
 - **The lean:** proposal A (UDON-like lines, text in `‹…›`, an explicit `root` line), with one transcript line per source line for a text spanning several lines. Proposal A §5 holds a draft of the printing rules this card would adopt.
-- Open, from both proposals: whether a comment keeps the space after `;`; a text's final newline; whether `.trait` is text or a name; whether `-` stays in a fence label; number values versus spellings; what positions count.
+- Open, from both proposals: whether a comment keeps the space after `;`; a text's final newline; number values versus spellings; what positions count. Settled since: traits are names, not text (proposal A prints `:$traits ‹main›`, which is wrong); a fence's `-` is a flag, not part of its label.

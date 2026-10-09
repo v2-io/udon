@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: [embeds-are-pieces-of-text, backslash-by-position]
 depends: [rule:line-scan]
-consequences: [rule:framed-backslash-frame, rule:embeds-in-text, rule:value-line-escapes, rule:backslash-empty-text, rule:framed-comments, rule:inline-element-backslash-starts-interior]
+consequences: [rule:framed-backslash-frame, rule:embeds-in-text, rule:value-line-escapes, rule:backslash-empty-text, rule:framed-comments, rule:inline-element-reads-like-a-line]
 ---
 
 # Same-line text ends at a block form
@@ -48,5 +48,5 @@ root
 
   > We definitely still need backslash as our other "text terminator" in addition to the ones we said earlier-- hitting a new |... ;... or :... (block) construct. That is *different* (maybe significantly) than the previous iterations that treated [\] as the *beginning* of text. This is for sameline only I'm pretty sure.
 - Reasoning (agent's): with embeds as pieces, nothing inside a text can end it except a block form or the framed backslash, so the end of same-line text is one rule.
-- Whether the space before a block form (` :b` above) belongs to the text before it is not stated; the tree shows it trimmed.
+- The spaces before whatever ends the text are not part of it ([[rule:space-before-text-end]]).
 - Embedded forms don't end the text ([[rule:embeds-in-text]]).

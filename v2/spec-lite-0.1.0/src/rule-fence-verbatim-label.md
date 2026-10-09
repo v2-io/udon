@@ -10,13 +10,13 @@ consequences: []
 test-fixtures: []
 ---
 
-# A label ending in `-` keeps every byte
+# A trailing `-` on a fence opener marks it verbatim
 
-*When a fence's label ends in `-`, nothing is stripped from its body.*
+*The `-` is a flag on the fence, not part of its label, and a verbatim fence's body keeps every byte.*
 
 ## Statement
 
-When a fence's label ends in `-`, its body MUST keep every byte; nothing is stripped.
+A `-` ending a fence's opener MUST mark the fence verbatim and MUST NOT be part of its label; a verbatim fence's body MUST keep every byte.
 
 ````udon
 |patch
@@ -28,8 +28,9 @@ When a fence's label ends in `-`, its body MUST keep every byte; nothing is stri
 ```tree
 root
   |patch
-    ```diff- " context line\n-removed\n"
+    ```diff verbatim " context line\n-removed\n"
 ```
+A bare ```` ```- ```` is a verbatim fence with no label. *(How the transcript prints the flag waits on [[rule:tree-transcript]].)*
 
 ## Grounds
 
@@ -49,4 +50,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - **Why it matters** (the drafter's reasoning): A body whose first line must sit deeper than later ones (a patch, a code fragment) needs a way to say "strip nothing".
 
-- Open: whether the `-` stays part of the label in the «tree» (shown kept); what a bare ```` ```- ```` means.
+- Joseph, 2026-10-09: "in the AST, no, it would be its own flag. bare ```- should be very obviously a fenced block preserved verbatim." Both follow from "'-' suffix for verbatim"; they should not have been raised as questions.

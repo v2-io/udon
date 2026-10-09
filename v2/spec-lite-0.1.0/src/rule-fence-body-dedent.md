@@ -56,3 +56,17 @@ A rule, resting on the decisions in `per`. No fixtures yet.
   > — Joseph (`.int/STEWARD-VERBATIM.md`, line 467)
 
 - **Why it matters** (the drafter's reasoning): Only notation on the opener and the first line's indentation tell the parser anything about intent.
+- A blank first body line is body: everything between opener and closer is body ([[rule:fence-body-not-scanned]]), and blank lines never set the left edge, so the first *non-blank* line does. Joseph, 2026-10-09: "the answer should have been a very obvious as derived from the rules we finally landed on."
+
+  ````udon
+  |ex
+    ```text
+
+      x
+    ```
+  ````
+  ```tree
+  root
+    |ex
+      ```text "\nx\n"
+  ```

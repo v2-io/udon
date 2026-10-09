@@ -42,4 +42,4 @@ root
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > (a), (b) => error,  (c) passed through + reference
-- `!word` in the middle of a prose line (`![img](x)`, `!=`, `!important`): the agent's "mid-line they stay plain text" went unobjected; to confirm with Joseph.
+- `!word` in the middle of a prose line is text too ([[rule:bang-word-mid-prose]]).

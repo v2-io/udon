@@ -35,4 +35,4 @@ consequences: []
 
 - Where a framed ` ; ` comment on an element's or attribute's line sits in the «tree» is open.
 - What a repeated label gives a consumer is the gap card `rule:repeated-labels`.
-- Whether a `.trait` value is a «text» or a name is open.
+- Traits are names (Joseph, 2026-10-09, on asking whether they could be text: "this question makes zero sense for anyone who is even vaguely familiar with udon").

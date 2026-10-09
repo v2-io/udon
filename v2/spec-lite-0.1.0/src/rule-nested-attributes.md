@@ -9,13 +9,13 @@ depends: []
 consequences: [rule:reserved-spellings]
 ---
 
-# A `:label` line under an open attribute value is an error
+# A `:label` line owned by an attribute is an error
 
 *An attribute can't have attributes.*
 
 ## Statement
 
-A `:label` line directly under an attribute whose value is still open MUST be an error.
+A `:label` line whose owner, by indentation, is an attribute MUST be an error.
 
 ## Grounds
 
@@ -32,7 +32,22 @@ Decided for this version ([[decision:decided-for-this-version]]).
   :port
     :nested 1
 ```
-An error at 3:5: nested attributes are reserved.
+An error at 3:5: nested attributes are reserved. The same holds wherever the `:label` line sits in the attribute's body:
+
+```udon
+|db
+  :note
+    Primary only.
+    :port 5432
+```
+An error at 4:5. A `:label` line under an element inside the attribute's body belongs to that element and is fine:
+
+```udon
+|book
+  :author
+    |person
+      :name Jane
+```
 
 ## Working notes
 
@@ -42,4 +57,4 @@ An error at 3:5: nested attributes are reserved.
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > :label-under-open-attribute:  error reserved construction
-- Scope: only the line directly under the label, or any `:label`-shaped line anywhere in an open attribute's body (0.10.0's K8 covered both)? Not discussed.
+- Scope follows from nesting: a line's owner is the node it sits under, so any `:label` line an attribute owns is covered, wherever in the body it sits. The card used to say "directly under", which read as if the scope were open; Joseph, 2026-10-09: "I don't understand what is still open vs everything already [ruled]". Nothing was open.
