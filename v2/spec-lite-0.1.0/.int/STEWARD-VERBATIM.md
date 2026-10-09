@@ -836,3 +836,9 @@
 > wrt: line scan--- don't know what it's referring to or why it might or might not be the correct mental model. I do know that I've tried in vain many times to insist on proper use of "sameline" -- which occurs with many different spellings all over. I don't mind saying "element and/or attribute line...." but haven't thought about it to make sure it really covers it well..., and it also might need to wait until we've settled the embed design.
 >
 > It looks like the lexicon in place already has some poor things in it...  "element" + "root-*node*"?, "piece"? etc. etc. etc. -- I haven't looked at any or been asked about any of those things so I shouldn't really comment on them yet, but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue.
+
+*(Agent text, summary: the agent agreed "attribute" names the role while "label" names the shared spelling rules for names; reported def files marked unreviewed, element/attribute recorded, a wording sweep for the three rulings (later committed, with six card renames listed to him); explained "line scan" as the agents' name for reading a sameline left to right; and asked whether the fence tag `sh` and the typed-value tag `u64` are labels and what he calls them.)*
+
+### Joseph's answer (whole message)
+
+> for each entry be sure and have agents add an "Avoid" list that includes all prior names or confusions. Then, for ones not settled, have agents try to determine prior non-conflicting leans of mine and other agents (often implicit for both and ambiguous), examples and precedents in other languages, notations, parsers, grammars, lexers, etc., any questions about the semantic meanings or register or affordances etc.—- all in the working notes, enough for you to add your own lean with reasoning to me
