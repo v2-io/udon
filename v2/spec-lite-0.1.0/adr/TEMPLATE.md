@@ -162,7 +162,7 @@ Carried from MADR (the template Joseph supplied), with changes for this corpus. 
 
 When the decider acts, `decided-by` becomes `supported`, `ratified` or `ruled`, and `awaiting-decision` becomes `false`; neither is an edit to the outcome. Declining it is a new decision that supersedes it. The grant's own record never lists the decisions made under it: they are the ones that cite it.
 
-**Decided for this version.** What `accepted` means for a lite decision, and how it can be revisited, is the record [[decision:decided-for-this-version]].
+**Decided for this version.** What `accepted` means for a lite decision, and how it can be revisited, is the record [[decision:decided-for-this-version]], refined by [[decision:leans-are-working-spec]] (leans are working spec; parser implementers may propose undoing them).
 
 **After acceptance** (a proposal inferred from how the process decisions have been kept; no decision records it yet):
 

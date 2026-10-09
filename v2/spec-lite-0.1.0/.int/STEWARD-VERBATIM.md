@@ -595,3 +595,38 @@
 > 1. it depends on the answer to "border/boundary blank lines" -- whether we preserve those as part of prose or consider them ornamentation. If we consider them ornamentation (probably right), then wouldn't we need a trailing \ to override that? (that's a genuine question asking for your thoughts and lean and for what's missing)
 >
 > 2. Yes-- treat it same as a normal space but with a warning.
+
+*(Agent text, summary of three messages: (1) on dropping the trailing backslash as a reserved error except when it is the only non-blank thing on the line: coherent, since a lone `\` line is a kept empty line (so `line two` + lone `\` gives "line one\nline two\n"); three things to pin — whether only a framed ` \` errors or an attached `foo\` too (Markdown's hard break), that 0.10.0's `:a \` empty-string idiom goes away in favour of `:a ""`, and that a lone `\` indented past the left edge keeps those spaces ("first\n  \nlast"); (2) both notation agents found that `|nav :aria-label Site |{a :href / Home}` puts the link inside `aria-label`, and that under 0.10.0's value-extent rule `|{a :href /docs the docs}` has no link text; (3) the two AST-notation proposals compared — A: UDON-like lines (`|`, `:label value`, `;`, ``` ``` ```), text in `‹…›`, explicit `root` line; B: `label = value`, text as `t"…" · {…} · "…"`, no root line — leaning A with one transcript line per source line for multi-line text.)*
+
+### Joseph's answer (whole message)
+
+> I'm now a few messages behind you. You are right-- I was coherent except for the error / reserved part.
+>
+> Let's see...
+> We definitely still need backslash as our other "text terminator" in addition to the ones we said earlier-- hitting a new |... ;... or :... (block) construct.
+> That is *different* (maybe significantly) than the previous iterations that treated / as the *beginning* of text. This is for sameline only I'm pretty sure.
+>
+> If it's the first thing on a line then it is an escape (and is consumed / not part of the text but probably in meta) -- including escaping just a newline (and thereby also setting the indent level...) and this is distinct from it coming *after* some text which, as noted, in sameline closes `text`, and on a line that is not sameline and already has prose it is just passed through like everything else except embeds.
+>
+> And yes to your #3 there above-- I'm pretty sure it stays coherent that the rules would imply that p's children would, when combined, be: "first\n  \nlast"
+>
+> ---
+>
+> As to the next message you sent:
+>
+> ```udon
+>
+> |nav :area-label Site |a :href / \ Home  ; this would be the correct way I would think.
+> |p See |{a :href /docs \ the docs} ; and this for the other.
+>
+> ```
+>
+> I still haven't read the very latest message you just sent-- if you wouldn't mind taking these comments into the discussion and then rewriting whatever you need about the AST agents' results etc. etc.
+
+*(Agent text, summary: the agent restated the backslash by position — on an element's or attribute's line a framed ` \ ` ends the current text like a block form, with what follows going wherever it would after a normally ended value (`|nav :aria-label Site |a :href / \ Home` → `href "/"`, `a`'s `$main "Home"`; `|p See |{a :href /docs \ the docs}` → the inline link's interior text "the docs"), reading the spaces around the `\` as frame; first on a line it is an escape, consumed, position in meta, setting the indent, a lone `\` line a kept empty line; in prose already started it is just a character — and asked three edges: `:a \` (lean: missing-value error), an attached `\X` on an element's or attribute's line (lean: escapes one character, as in 0.10.0), `\|{` in prose (lean: makes the embed literal). It also re-presented the two AST-notation proposals with his lines, leaning A plus one transcript line per source line.)*
+
+### Joseph's answer (whole message)
+
+> wrt " \ " spaces around it as frame-- I support that.
+>
+> (btw-- maybe make a note that when I decline to rule on things and instead support of lean or even like-- again those are enough to act decisively on as "working spec" -- the main reason I leave them softer is because I expect there to continue to be slight reworks as remaining open questions interfere with the tentative positions, because (as already recorded) it retains the strength of the position to help calibrate revisiting things, but *also* because I will want the parser implementers to be able to propose changes in these areas especially where, as they work through fixtures and test cases etc. etc., they see some semantic benefit to undoing a lean, or they see a significant grammar simplification or performance improvement etc. etc. In other words, when they start churning and obscuring the grammar in order to get a rule to work right-- they can see "oh, this was a lean that could have potentially gone either way- or was just 'supported'-- let's tell Joseph that if it leaned the *other* way this technical issue or complication would disappear...".  So, there is a critical stakeholder that will only start once the spec is "complete" enough-- but also that is a critical input for the spec. Or, in other words, it's not going to be full-waterfall methodology no matter how good we are at making it coherent :-))

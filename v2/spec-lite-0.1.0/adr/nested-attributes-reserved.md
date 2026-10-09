@@ -80,3 +80,4 @@ Chosen: right now, a `:label` line directly under an open attribute value is a r
 ## Working notes
 
 - Scope to confirm when the rule is written: only the line directly under the label, or any `:label`-shaped line anywhere in an open attribute's body (0.10.0's K8 covered both, including a `:`-shaped line deeper under a finished value).
+- The line-start `\` is now settled: first on a line, `\` is a consumed escape ([[decision:backslash-by-position]]).

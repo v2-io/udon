@@ -14,7 +14,7 @@ informed: [parser implementers]
 wording: rendering
 grounds-recorded: at-decision
 supersedes: []
-superseded-by: []
+superseded-by: [{adr: leans-are-working-spec, how: revised, scope: partial}]
 closes: []
 leaves-open: []
 ---
