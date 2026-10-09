@@ -2,7 +2,7 @@
 kind: rule
 awaiting-second: true
 awaiting-decision: false
-needs-work: true
+needs-work: false
 layer: tree
 per: [backslash-by-position]
 depends: [rule:text-value-end]
@@ -45,4 +45,4 @@ The two spaces inside `one  two` are content, because `two` continues the text. 
 ## Working notes
 
 - Joseph's words are the rule's scanning form: hold spaces aside as they come; they become content when the text continues and fall away when it stops.
-- Written 2026-10-09 while only partly oriented after a context compaction. Joseph, same day: "partial orientation will also cause you to generalize incorrectly and assert new rules that should be obvious derivations of existing conventions and rules." Check whether this is its own rule or a derivation of existing ones before relying on it.
+- Its own rule, not a derivation: 0.10.0 says nothing about spaces before a terminator (pre-design 80 searched and found nothing), so Joseph's answer is new law.

@@ -99,8 +99,6 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 |---|---|---|
 | gap | [[rule:markers]] | What opens what at a structure position, and each marker's guard |
 | proposed | [[rule:prose-line-start-reserved]] | A prose line that starts with a bare reference or a directive spelling is not lite. |
-| proposed | [[rule:bang-word-mid-prose]] | `!word` in the middle of a prose line is text. *(needs-work: may be a derivation)* |
-| proposed | [[rule:at-name-mid-prose]] | Only the start of a prose line reserves `@name`. |
 | proposed | [[rule:reserved-spellings]] | The bare list of what lite refuses, and where. |
 | proposed | [[rule:escaped-reserved-is-text]] | Escaping a reserved form is how to write it as text. |
 | gap | [[rule:element-names]] | Characters of a bare name, quoted names, the former suffix characters, anonymous elements |
@@ -110,7 +108,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
 | proposed | [[rule:main-is-attribute]] | Same-line text never becomes a text child. |
 | proposed | [[rule:text-value-end]] | On an element's or attribute's line, unquoted text runs until a block form or a framed ` \ `. |
-| proposed | [[rule:space-before-text-end]] | Spaces before whatever ends a text are frame, not content. *(needs-work: may be a derivation)* |
+| proposed | [[rule:space-before-text-end]] | Spaces before whatever ends a text are frame, not content. |
 | proposed | [[rule:framed-backslash-frame]] | The framed backslash and its spaces are consumed; neither is content. |
 | proposed | [[rule:embeds-in-text]] | `\|{…}`, `@{…}` and `;{…}` are never values of their own. |
 | proposed | [[rule:space-between-embeds]] | Whitespace between two embeds is a run of the text. |
@@ -141,7 +139,6 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:main-and-body-separate]] | An element's own-line text and the text below the element are different values and are never joined. |
 | proposed | [[rule:prose-passes-through]] | In a prose line, everything other than a leading `\`, embedded forms and escaped embedded forms passes through as written. |
 | proposed | [[rule:prose-escaped-embeds]] | In prose, `\\|{`, `\@{` and `\;{` are literal text, with the `\` consumed. |
-| proposed | [[rule:semicolon-in-text]] | A ` ; ` partway along a line of prose is part of the text. |
 | proposed | [[rule:line-start-escape]] | A `\` that is the first non-space character of a line is consumed and is not part of the text. |
 | proposed | [[rule:line-start-escape-sets-indent]] | The column of a line-start `\` counts as the line's indentation. |
 | proposed | [[rule:lone-backslash-line]] | A line holding only `\` gives an empty line of text; spaces before it past the text's left edge are kept. |

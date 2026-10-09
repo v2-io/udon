@@ -48,3 +48,4 @@ A rule, chosen, not derived. Checkable by fixtures.
 - **Reasoning:** Lite is strict here so that a mistake fails loudly at its source; Joseph's model is a programming language's missing delimiter. Stopping with no tree also means no tool ever builds on a half-read document.
 - Error codes are placeholders until the anomaly view names them.
 - Whether a parser reports only the first error or several is open ([[decision:errors-stop-parsing]]).
+- `|{…}` across a line break is not decided: Joseph ruled an *unclosed* embed an error, but whether `|{…}` may continue onto the next line (0.10.0 settled it multi-line) belongs to embed interiors, not yet discussed. The Statement's "by the end of its line" overreaches for `|{…}` until then.

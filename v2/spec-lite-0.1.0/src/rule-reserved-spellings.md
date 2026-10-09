@@ -45,5 +45,5 @@ Decided for this version, row by row. The list is not complete.
 
   > Let's put reserved ones in their own file and not explain them other than what characters or constructions are reserved.
 - Joseph, 2026-10-09, confirming the `@` forms on element and attribute lines (as in 0.10.0 and `.int/reserved.md`): "correct".
-- A `!word` in the middle of a prose line is text, not reserved ([[rule:bang-word-mid-prose]]); `!{` stays reserved there.
+- `@name` and `!word` in the middle of a prose line are text ([[rule:prose-passes-through]]); `!{` stays reserved there.
 - Not yet discussed: spellings floated in the past (pre-design 56).

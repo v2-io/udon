@@ -2,7 +2,7 @@
 kind: rule
 awaiting-second: true
 awaiting-decision: false
-needs-work: true
+needs-work: false
 layer: text
 per: [backslash-by-position, embeds-are-pieces-of-text, line-ownership-main]
 depends: [rule:line-scan, rule:text-value-end, rule:waiting-label, rule:leftover-values]
@@ -25,10 +25,11 @@ Inside an inline element `|{name …}`, the material between the name and the cl
   > |{a :href / \ Home}  same
   > |{a :href / Home}    keep as an example to watch for and avoid.
 - His idiom from 2026-10-08/09: `|p See |{a :href /docs \ the docs}` ([[decision:backslash-by-position]]).
+- Joseph's ruling R2, 2026-07-16 (`spec/msc/CHANGELOG.md`, "R2 embedded = element-rooted sameline (+`}`)"): inside braces the material reads as on an element's own line, with `}` as one more terminator. The Statement is R2 carried into lite.
 
 ## Epistemic status
 
-The three spellings are Joseph's readings. The Statement is the agent's general form of them: one scan for element lines ([[rule:line-scan]]) applied inside the braces. What else an inline element's inside may hold (deeper structure, line breaks) is not discussed yet.
+Joseph's reading for now (R2 plus his three readings of 2026-10-09). Embeds as a whole are not designed yet (Joseph, 2026-10-09: "we haven't correctly designed embeds yet or thought through the issues fully"), so this card is provisional until that discussion.
 
 ## Explanation
 
@@ -50,5 +51,6 @@ The quoted value ends at its closing quote, and the framed ` \ ` ends the unquot
 
 - The same holds on a line: `|nav :aria-label Site |a :href / \ Home` is Joseph's spelling (2026-10-09).
 - The spaces around the `\` are frame, not content ([[rule:text-value-end]]).
-- Consequence: `|{em hi}` and `|em hi` both put `hi` in `$main`, so item 11 of the 2026-10-09 list (do they differ?) appears to dissolve. Embed interiors as a topic remain to be discussed (Joseph, 2026-10-09: "we haven't discussed embed interiors yet").
-- Written 2026-10-09 while only partly oriented after a context compaction. Joseph, same day: "partial orientation will also cause you to generalize incorrectly and assert new rules that should be obvious derivations of existing conventions and rules." Check whether this is its own rule or a derivation of existing ones before relying on it.
+- Consequence: `|{em hi}` and `|em hi` both put `hi` in `$main`.
+- Where lite differs from 0.10.0: 0.10.0 §5.6 said "the `$main` sugar does not apply inside braces" and §6.6 sent material left over inside braces to "the inline element's interior content". Lite puts it in `$main`, as everywhere else ("*text children* -- never", Joseph 2026-10-09). Joseph on that 0.10.0 sentence (2026-10-09): "a (poorly reasoned) decision by an agent, not my decision (that I remember- if it was, it was poorly reasoned by me)."
+- Still to discuss under embed interiors (Joseph, 2026-10-09: "we haven't discussed embed interiors yet"): line breaks inside `|{…}` (0.10.0 settled them multi-line), nested inline forms, `;{…}` inside braces.

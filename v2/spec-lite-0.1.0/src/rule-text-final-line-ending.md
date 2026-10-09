@@ -57,6 +57,6 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
   > Ahhh- you're right-- we already have a workaround for prose blank lines at boundaries-- the *leading* escape (at the right indent level)...  OK, I'm comfortable dropping trailing backslash *as a reserved construct that errors for now*-- except when it is the only non-blank thing on the line == leading backslash. Is that coherent, first, before recording it?
   >
-  > — Joseph (session transcript `293bb1ee`, not yet carried into `.int/STEWARD-VERBATIM.md`)
+  > — Joseph, 2026-10-09T15:31Z (`.int/STEWARD-VERBATIM.md`)
 
 - **Why it matters** (the drafter's reasoning): A final line ending is almost always layout; keeping it would make every text end in a newline nobody meant.

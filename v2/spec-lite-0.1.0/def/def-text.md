@@ -35,7 +35,7 @@ consequences: [def:reading-option, def:node, rule:blank-line-whitespace-in-text,
 ```tree
 root
   |p
-    :$main ‹See |{a :href ‹/docs› ‹the docs›} and @{faq}. ;{todo}›
+    :$main ‹See |{a :href ‹/docs› :$main ‹the docs›} and @{faq}. ;{todo}›
   |el
     :n ‹;{}›
 ```

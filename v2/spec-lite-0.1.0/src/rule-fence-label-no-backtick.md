@@ -49,4 +49,4 @@ root
   > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
 
 - **Reasoning:** CommonMark's rule; it keeps inline code at a line start from opening a fence, and rules out opening and closing on one line.
-- Whether a verbatim `-` at the label's end stays in the label in the «tree» is open ([[rule:fence-verbatim-label]]).
+- A trailing `-` is a verbatim flag, not part of the label ([[rule:fence-verbatim-label]]).

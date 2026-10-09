@@ -4,9 +4,9 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: tree
-per: [prose-backslash-and-embeds, backslash-by-position, framed-comments-on-node-lines]
+per: [prose-backslash-and-embeds, backslash-by-position, framed-comments-on-node-lines, reserved-line-starts-in-prose]
 depends: [rule:line-start-escape, rule:embeds-in-text, rule:prose-escaped-embeds]
-consequences: [rule:text-lines-join, rule:semicolon-in-text]
+consequences: [rule:text-lines-join]
 test-fixtures: []
 ---
 
@@ -23,20 +23,25 @@ Every character of a prose line other than a leading `\` ([[rule:line-start-esca
   Roses are red, \
   Keep calm ; carry on.
   Tables | like | this, and *Markdown*.
+  email me @joseph, see ![the chart](c.png), or @{faq}.
 ```
 ```tree
 root
   |p
     ‹Roses are red, \
     Keep calm ; carry on.
-    Tables | like | this, and *Markdown*.›
+    Tables | like | this, and *Markdown*.
+    email me @joseph, see ![the chart](c.png), or @{faq}.›
 ```
+
+Consequences, not separate rules: a ` ; ` partway along a prose line is text; `@name` and `!word` in the middle of a prose line are text (`@{faq}` is still a reference, being an embed). Only line starts are decided differently ([[rule:prose-line-start-reserved]]).
 
 ## Grounds
 
 - [[decision:prose-backslash-and-embeds]] (Joseph, "Agreed, 100%, ruled"): "within prose, those are the only behaviors we specify other than the indent/dedent stuff".
 - [[decision:backslash-by-position]]: in prose that has started, `\` "is just passed through like everything else except embeds", so a Markdown hard break (`foo\`, `foo \`) survives.
-- [[decision:framed-comments-on-node-lines]]: a ` ; ` inside a line of text is text ([[rule:semicolon-in-text]]).
+- [[decision:framed-comments-on-node-lines]]: Joseph, 2026-10-08, "(d) passed through" for `Keep calm ; carry on.`
+- [[decision:reserved-line-starts-in-prose]]: Joseph, 2026-10-08, "(c) passed through + reference" for `email me @joseph or see @{faq}.`; on 2026-10-09, "correct" to `!word` mid-line being text.
 
 ## Epistemic status
 
@@ -54,3 +59,6 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - Line-start structure (`|name`, `:label`, a `;` comment line, a fence) and reserved line starts ([[rule:prose-line-start-reserved]]) are decided before a line becomes prose, so they are not exceptions to this card (the drafter's reading of Joseph's "if memory serves").
 - The tree prints a multi-line text one transcript line per source line, which the notation hasn't settled ([[rule:tree-transcript]]).
+- Folded in 2026-10-09: the cards `rule-semicolon-in-text`, `rule-at-name-mid-prose` and `rule-bang-word-mid-prose` stated consequences of this card as rules of their own. Joseph, 2026-10-09: "partial orientation will also cause you to generalize incorrectly and assert new rules that should be obvious derivations of existing conventions and rules."
+- History behind the ` ; ` case: 0.10.0 §2.2 allowed a framed ` ; ` comment inside text-space lines; `.int/history-semicolon-in-text-2026-10-08.md` found no rationale for that and traced it to drift. Lite's rule restores the earlier one (comments in prose are `;{…}`).
+- Row notes on table rows are written with `;{…}` ([[rule:inline-comments]]).

@@ -759,3 +759,25 @@
 > |{a :href / Home}    keep as an example to watch for and avoid.
 
 > That's my reading of rules already well established
+
+### Joseph's questions, sent while the agent was recording (whole)
+
+> How oriented are you?
+
+*(Agent text, summary: partly — since the compaction it had re-read about 30 cards and the last 60 lines of this file, not the whole record, the rest of the cards, the decision records, the primer or 0.10.0; questions 13, 15 and 16 were drafting agents' open notes relayed without checking them against landed rules; it would finish recording his answers, then re-read everything whole before bringing the next question.)*
+
+> partial orientation will also cause you to generalize incorrectly and assert new rules that should be obvious derivations of existing conventions and rules.
+
+> most of 0.1.0 is based on spec 0.10* work, and everything you see in the influx that shows a lot of the prior research.
+
+> I thought we had gathered into influx (.int) all of the historical aspects (and made them chronological)
+
+*(Agent text, summary: the agent said it was re-reading those histories whole — `.int/pre-design/` — after reading 0.10.0's CORE first.)*
+
+### Joseph, relaying a side agent's note, then answering it (whole)
+
+> Here is a note offered by a side agent:
+>
+> > Heads up · Your reading that `Home` in `|{a :href "/" Home}` becomes `$main` differs from 0.10.0, which says `$main` doesn't apply inside braces. […] Consider ruling on it as a change when you discuss inline-element interiors.
+>
+> fwiw, the 0.10 assertion that $main doesn't apply in braces was a (poorly reasoned) decision by an agent, not my decision (that I remember- if it was, it was poorly reasoned by me). The truth is we haven't correctly designed embeds yet or thought through the issues fully.

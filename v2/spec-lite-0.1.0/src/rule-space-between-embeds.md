@@ -28,12 +28,12 @@ Decided for this version ([[decision:decided-for-this-version]]).
 ## Explanation
 
 ```udon
-|nav |{a :href / Home} |{a :href /about About}
+|nav |{a :href / \ Home} |{a :href /about \ About}
 ```
 ````tree
 root
   |nav
-    :$main ‹|{a :href ‹/ Home›} |{a :href ‹/about About›}›
+    :$main ‹|{a :href ‹/› :$main ‹Home›} |{a :href ‹/about› :$main ‹About›}›
 ````
 
 ## Working notes

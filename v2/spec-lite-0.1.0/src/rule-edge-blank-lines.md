@@ -53,7 +53,7 @@ Decided for this version (Joseph's "correct", 2026-10-09).
 
   > Ahhh- you're right-- we already have a workaround for prose blank lines at boundaries-- the *leading* escape (at the right indent level)...  OK, I'm comfortable dropping trailing backslash *as a reserved construct that errors for now*-- except when it is the only non-blank thing on the line == leading backslash. Is that coherent, first, before recording it?
   >
-  > — Joseph (session transcript `293bb1ee`, not yet carried into `.int/STEWARD-VERBATIM.md`)
+  > — Joseph, 2026-10-09T15:31Z (`.int/STEWARD-VERBATIM.md`)
 
 - **Why it matters** (the drafter's reasoning): Writers leave a blank line before the next child out of habit; if it were text, layout would silently change content.
 

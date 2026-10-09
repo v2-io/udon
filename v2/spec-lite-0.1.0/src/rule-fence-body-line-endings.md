@@ -49,4 +49,4 @@ A rule resting on a decision's example rather than a stated clause.
 - **Why it matters** (the drafter's reasoning): A fence is the form for exact text, where every line ending counts.
 
 - Not stated by Joseph in so many words; confirm with a second reader.
-- Open: whether a blank first body line is content (Joseph's lean: yes; recorded in [[decision:fence-body-indentation]]).
+- A blank first body line is body ([[rule:fence-body-dedent]]).
