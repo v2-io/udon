@@ -6,7 +6,7 @@ needs-work: false
 layer: value
 per: []
 depends: [def:string]
-consequences: [rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-names-and-labels, rule:newline-in-string-is-error, def:string]
+consequences: [rule:adjacent-quoted-strings, rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-names-and-labels, rule:newline-in-string-is-error, def:string]
 ---
 
 # Quoted strings read as Ruby strings
@@ -94,5 +94,5 @@ Joseph answered with a fourth option of his own, opening "Not sure I saw this qu
 
 - **Reasoning:** A syntax agents already know well; "essentially" leaves room for the departures on the escape cards.
 - "Essentially" is his word; the departures are on [[rule:no-interpolation]], [[rule:double-quote-escapes]] and [[rule:single-quote-escapes]].
-- Open: two strings back to back (`:a "x""y"`), and a closing quote followed directly by letters (`:a "abc"def`).
+- Two strings back to back (`:a "x""y"`): two values with a warning ([[rule:adjacent-quoted-strings]]). A closing quote followed directly by letters (`:a "abc"def`) is not yet discussed.
 - His worry about «string» being a distinct type from «text»: a reading option may present a text without embeds as a string ([[decision:representational-options]]).

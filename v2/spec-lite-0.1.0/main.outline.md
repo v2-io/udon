@@ -77,6 +77,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:newline-in-string-is-error]] | A quoted string must close on the line it opens; `\n` writes a newline in `"…"`. |
 | proposed | [[rule:double-quote-escapes]] | In `"…"` a backslash must begin one of a fixed list of escapes; any other is an error. |
 | proposed | [[rule:single-quote-escapes]] | In `'…'` only `\'` and `\\` are escapes; every other backslash is literal. |
+| proposed | [[rule:adjacent-quoted-strings]] | Two quoted strings with nothing between them are two values, with a warning (a lean). |
 | proposed | [[rule:quoted-names-and-labels]] | An element name or attribute label written in quotes is read by the same rules as a quoted string. |
 | proposed | [[rule:key-holds-a-value]] | The inside of `[key]` is read by the ordinary value rules. |
 | proposed | [[rule:key-escapes]] | In a key's unquoted parts only `\\`, `\[` and `\]` are escapes; any other backslash is an error. |

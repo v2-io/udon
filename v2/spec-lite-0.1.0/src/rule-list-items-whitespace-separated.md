@@ -6,7 +6,7 @@ needs-work: false
 layer: value
 per: []
 depends: [def:string, def:text, def:typed-value, rule:key-holds-a-value]
-consequences: []
+consequences: [rule:adjacent-quoted-strings]
 ---
 
 # List items are whitespace-separated values

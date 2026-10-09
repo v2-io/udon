@@ -793,3 +793,14 @@
 ### Joseph's answer (whole message)
 
 > - sorry, what do you mean "three folded cards" -- and do you mean when they occur mid-prose?
+
+*(Agent text, summary: the agent explained "folded" — three cards deleted and their content moved as examples into "prose passes through" — and that yes, they were the mid-prose cases (` ; `, `@joseph`, `!word` in the middle of a prose line); line-start cases keep their own card. Separately it reported the background fold: 29 rule-level decision records folded into their cards' Discussion sections and retired, 18 cross-cutting ones kept, and the SOP's own conventions not yet updated to match.)*
+
+### Joseph's answer (whole message)
+
+> Got it. Good call.
+> with the others:
+> |{...} with newlines:  not ruled either way-- awaiting discussion on embeds-- I think you might have it all recorded correctly pending the disc.
+> I kind of feel like "x""y" should, as you say, be two items, but also throw a warning. call it a lean for now.
+>
+> What were your [earlier] comments after going through everything and getting properly oriented? (I'm sorry I got scared and jumped to conclusions-- it seems you've got a pretty good grasp at this point on the whole picture)
