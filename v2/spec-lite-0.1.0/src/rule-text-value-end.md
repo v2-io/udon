@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:line-scan, rule:embeds-in-text]
-consequences: [rule:framed-backslash-frame, rule:embeds-in-text, rule:value-line-escapes, rule:backslash-empty-text, rule:framed-comments, rule:inline-element-reads-like-a-line, rule:edge-blank-lines, rule:line-start-escape, rule:line-start-escape-sets-indent, rule:lone-backslash-line, rule:prose-passes-through, rule:space-before-text-end, rule:text-final-line-ending]
+consequences: [rule:framed-backslash-frame, rule:embeds-in-text, rule:value-line-escapes, rule:backslash-empty-text, rule:framed-comments, rule:inline-element-value-end, rule:edge-blank-lines, rule:line-start-escape, rule:line-start-escape-sets-indent, rule:lone-backslash-line, rule:prose-passes-through, rule:space-before-text-end, rule:text-final-line-ending]
 ---
 
 # Same-line text ends at a block form

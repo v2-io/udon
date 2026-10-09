@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: []
-consequences: [rule:waiting-label, rule:leftover-values, rule:text-value-end, rule:inline-element-reads-like-a-line]
+consequences: [rule:waiting-label, rule:leftover-values, rule:text-value-end, rule:inline-element-value-end]
 ---
 
 # One scan for element lines and attribute lines

@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:one-root-node]
-consequences: []
+consequences: [rule:top-level-attributes]
 test-fixtures: [implied-root]
 ---
 
@@ -38,4 +38,4 @@ Chosen. No fixture yet.
   and earlier (2026-08-07):
   > … having all udon documents with a pseudo root element solves the open "what to do with attributes at top-level" question in the spec, as well as "what's the difference between an udon doc meant to be a partial vs whole-record vs store of records..." etc. (just depends on what you decide to do with that root element).
 
-- Top-level `:label` lines and top-level text are open (04; the outline's `rule:top-level` gap); case `root_top_level_label` in [[fixture:implied-root]] holds the readings.
+- Top-level attribute lines belong to the root ([[rule:top-level-attributes]]); top-level text and columns: [[rule:top-level-text-left-edge]], [[rule:top-level-columns]]. Case `root_top_level_label` in [[fixture:implied-root]] is reading 04-Q2-B.

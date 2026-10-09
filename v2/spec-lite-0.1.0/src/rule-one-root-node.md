@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: [ast-centric]
 depends: [def:document]
-consequences: [rule:top-level-items-are-root-children, rule:root-never-spelled, rule:root-meta, def:document]
+consequences: [rule:top-level-items-are-root-children, rule:root-never-spelled, rule:root-meta, def:document, rule:top-level-attributes, rule:top-level-text-left-edge, rule:top-level-columns]
 test-fixtures: [implied-root]
 ---
 

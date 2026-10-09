@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:comment-blocks, rule:nesting, rule:framed-comments]
-consequences: []
+consequences: [rule:framed-comment-owns-deeper-lines]
 test-fixtures: []
 ---
 

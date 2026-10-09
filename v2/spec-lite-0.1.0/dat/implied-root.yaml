@@ -93,7 +93,7 @@ cases:
     profile: descriptive
     exercises: [top-level-items-are-root-children]
     per: [implied-root]
-    open: ["04 Q2"]
+    open: []   # 04 Q2 ruled 2026-10-09: reading B, top-level attributes belong to the root (rule:top-level-attributes)
     udon: |
       :title My Notes
       |section

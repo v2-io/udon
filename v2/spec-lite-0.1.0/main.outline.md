@@ -85,7 +85,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:opaque-span-raw-text]] | The «tree» holds the text between the delimiters of `<…>`, `@{…}` and `;{…}`, escapes resolved, with no meaning attached. |
 | proposed | [[rule:opaque-span-escapes]] | Inside `<…>`, `@{…}` and `;{…}` only `\\` and the span's own delimiters may be escaped. |
 | proposed | [[rule:newline-in-opaque-span-is-error]] | `<…>`, `@{…}` and `;{…}` must close on their own line; the error says lite doesn't support the newline. |
-| proposed | [[rule:inline-element-reads-like-a-line]] | Inside `|{…}`, the element's material reads like an element's line: text left over after a finished value is its `$main`. |
+| proposed | [[rule:inline-element-value-end]] | Inside `|{…}`, an unquoted attribute value ends as on an element's line, or at the `}`. Where left-over text goes waits for embeds. |
 | proposed | [[rule:fence-opens-with-backticks]] | A run of N ≥ 3 backticks where structure can start opens a fence of length N. |
 | proposed | [[rule:fence-anywhere-structure]] | Unlike CommonMark, a fence opens at any indentation and on an element's or attribute's line; its position decides its parent. |
 | proposed | [[rule:fence-label-no-backtick]] | A line that starts with backticks and has a backtick later in it does not open a fence. |
@@ -147,6 +147,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:comment-block-owns-deeper-lines]] | Every line indented deeper under a `;` line is part of that comment, never parsed. |
 | proposed | [[rule:framed-comments]] | On a line that begins with an element or an attribute, a ` ; ` with a space on each side starts a comment to the end of the line. |
 | proposed | [[rule:inline-comments]] | In text, `;{…}` is a comment piece. |
+| proposed | [[rule:framed-comment-owns-deeper-lines]] | Lines deeper than a framed comment's `;` belong to the comment, with a warning (a lean; reading to confirm). |
 | proposed | [[rule:comments-in-tree]] | Comments appear in the «tree». |
 | proposed | [[rule:fence-body-not-scanned]] | Everything between a fence's opening and closing lines is body, never scanned for UDON syntax, with no escapes. |
 | proposed | [[rule:fence-body-dedent]] | Unless the label ends in `-`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces. |
@@ -156,7 +157,9 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:fence-body-line-endings]] | Every fence body line keeps its line ending, the last included. |
 | gap | [[rule:late-attributes]] | A `:label` line after content has begun |
 | gap | [[rule:attribute-bodies]] | Values written on the lines under a label |
-| gap | [[rule:top-level]] | Top-level text and `:label` lines |
+| proposed | [[rule:top-level-attributes]] | An attribute line at the top level belongs to the root node. |
+| proposed | [[rule:top-level-text-left-edge]] | When a document starts with prose, that text's left edge is column 0 (a lean). |
+| proposed | [[rule:top-level-columns]] | Top-level lines may start at any column; the root counts as column −1 (a lean). |
 
 ## *Part* VI — Files
 

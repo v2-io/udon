@@ -33,7 +33,7 @@ Decided for this version ([[decision:decided-for-this-version]]).
 ````tree
 root
   |nav
-    :$main ‹|{a :href ‹/› :$main ‹Home›} |{a :href ‹/about› :$main ‹About›}›
+    :$main ‹|{a :href ‹/› ‹Home›} |{a :href ‹/about› ‹About›}›
 ````
 
 ## Working notes

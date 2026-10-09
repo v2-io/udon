@@ -39,7 +39,7 @@ root
       :href ‹/›
       :$main ‹Home›
   |p
-    :$main ‹See |{a :href ‹/docs› :$main ‹the docs›}›
+    :$main ‹See |{a :href ‹/docs› ‹the docs›}›
 ````
 
 ## Working notes

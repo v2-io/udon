@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:text-value-end]
-consequences: [rule:comments-in-tree, rule:comment-block-owns-deeper-lines, rule:comment-blocks, rule:prose-passes-through]
+consequences: [rule:comments-in-tree, rule:comment-block-owns-deeper-lines, rule:comment-blocks, rule:prose-passes-through, rule:framed-comment-owns-deeper-lines]
 test-fixtures: []
 ---
 
@@ -84,4 +84,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 - **Why it matters** (the drafter's reasoning): Comments belong on structure lines; in prose a ` ; ` is ordinary punctuation.
 
-- Not discussed: where such a comment sits in the «tree» (shown as a child of the element whose line it ends — the drafter's placement); whether it owns deeper lines (78).
+- Not discussed: where such a comment sits in the «tree» (shown as a child of the element whose line it ends — the drafter's placement); whether it owns deeper lines: [[rule:framed-comment-owns-deeper-lines]].

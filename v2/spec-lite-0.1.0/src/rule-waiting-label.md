@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:line-scan]
-consequences: [rule:leftover-values, rule:element-after-waiting-label, rule:inline-element-reads-like-a-line]
+consequences: [rule:leftover-values, rule:element-after-waiting-label, rule:inline-element-value-end]
 ---
 
 # A label waiting for its value takes the next value

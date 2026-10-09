@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:line-scan, rule:waiting-label]
-consequences: [rule:main-is-attribute, rule:inline-element-reads-like-a-line, rule:adjacent-quoted-strings]
+consequences: [rule:main-is-attribute, rule:inline-element-value-end, rule:adjacent-quoted-strings]
 ---
 
 # Values left over on a line go to the line's owner

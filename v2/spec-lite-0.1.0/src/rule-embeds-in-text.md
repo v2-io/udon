@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: [representational-options]
 depends: [rule:text-value-end]
-consequences: [rule:space-between-embeds, rule:inline-comments-kept, rule:inline-comments, rule:prose-escaped-embeds, rule:prose-passes-through, def:node, def:string, def:text, rule:comments-in-tree, rule:inline-element-reads-like-a-line, rule:text-value-end]
+consequences: [rule:space-between-embeds, rule:inline-comments-kept, rule:inline-comments, rule:prose-escaped-embeds, rule:prose-passes-through, def:node, def:string, def:text, rule:comments-in-tree, rule:inline-element-value-end, rule:text-value-end]
 ---
 
 # Embedded forms are pieces of text
@@ -84,4 +84,4 @@ Reading a one-piece text as its piece is a reading option ([[def:reading-option]
 - Joseph's words (2026-10-08, `.int/STEWARD-VERBATIM.md`):
 
   > Under this understanding, the above should give   nav $main  text[embedded_node(a...),' ',embedded_node(a...)] or something.
-- `|{a :href / Home}` gives `href` the text `/ Home` and the link no text: an example to watch for and avoid (Joseph, 2026-10-09; [[rule:inline-element-reads-like-a-line]]).
+- `|{a :href / Home}` gives `href` the text `/ Home` and the link no text: an example to watch for and avoid (Joseph, 2026-10-09; [[rule:inline-element-value-end]]).

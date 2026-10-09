@@ -6,7 +6,7 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:nesting, rule:blank-line-sets-no-indent, rule:fence-body-dedent, rule:main-is-attribute]
-consequences: [rule:line-start-escape-sets-indent, rule:lone-backslash-line, rule:text-dedent, rule:text-shallower-line, rule:deeper-marker-lines-are-text, rule:fence-body-dedent]
+consequences: [rule:line-start-escape-sets-indent, rule:lone-backslash-line, rule:text-dedent, rule:text-shallower-line, rule:deeper-marker-lines-are-text, rule:fence-body-dedent, rule:top-level-text-left-edge]
 test-fixtures: []
 ---
 
