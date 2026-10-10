@@ -59,9 +59,12 @@ decider: "Joseph (steward)"
 # Paths are relative to this store's root (sop/). `references` has no
 # .vsect/kinds.yaml yet; until it does, [[references/def:<slug>]] resolves by
 # its own convention, def/def-<slug>.ud (e.g. def/def-binding.ud).
+# `references` is its own repo since 2026-10-09 (~/src/address-theory,
+# github.com/v2-io/address-theory; was udon's v2/references/); the path assumes
+# the estate layout, udon at ~/src/arch/firmatum/udon.
 stores:
   spec: ..
-  references: ../../references
+  references: ../../../../../../address-theory
 
 # Frontmatter fields whose referents are all of one kind take bare slugs (typed-reference-fields).
 fields:

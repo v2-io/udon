@@ -25,6 +25,13 @@ a submodule.
 > research/testimony license, ideation mandate, and quality bars Joseph
 > ratified 2026-07-22 for every agent on that work, any substrate.
 
+> **The address theory has moved out (2026-10-09).** What was `v2/references/`
+> (earlier `v2/paths/`) is now its own repository, `~/src/address-theory`
+> (`github.com/v2-io/address-theory`), with its history. spec-lite still cites
+> it as `[[references/def:<slug>]]`; the `references` store in its
+> `.vsect/kinds.yaml` files points at the new location. Read and edit the theory
+> there; older paths that say `v2/references` or `v2/paths` mean that repo.
+
 1. **README → Status + How the work is organized** (imported below) — the
    current state, the map of co-located TODO lanes, per-area compliance,
    and how work propagates.
@@ -186,6 +193,10 @@ repo's history.
 - **Live consumers**: see `CONSUMERS.md` — the registry of UDON documents
   outside this repo (ASF process maps, vivarium, autopax), re-scanned per
   spec release with `bin/find-consumers`.
+- `~/src/address-theory` — the addressing theory (references, bindings,
+  scopes, resolution); its own repo (v2-io/address-theory) since 2026-10-09,
+  extracted from `v2/references/` with history. spec-lite and the 0.10.1
+  glossary use its vocabulary.
 - crates.io: `udon-core`/`udon-cli` verified available 2026-07-09 (reserve
   early — TODO-PUBLISHING); `udon` and `descent` are squatted by unrelated
   2021 crates.

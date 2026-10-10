@@ -85,7 +85,7 @@ decider: "udon team's decider (Joseph unless the team declares otherwise)"
 # Paths are relative to this store's root.
 stores:
   sop: sop
-  references: ../references   # the addressing theory; it has no .vsect/kinds.yaml yet, so [[references/def:<slug>]] resolves by its convention, def/def-<slug>.ud
+  references: ../../../../../address-theory   # the addressing theory: its own repo since 2026-10-09 (~/src/address-theory, github.com/v2-io/address-theory; was udon's v2/references/); the path assumes the estate layout, udon at ~/src/arch/firmatum/udon. It has no .vsect/kinds.yaml yet, so [[references/def:<slug>]] resolves by its convention, def/def-<slug>.ud
 
 # Frontmatter fields whose referents are all of one kind take bare slugs (typed-reference-fields).
 fields:
