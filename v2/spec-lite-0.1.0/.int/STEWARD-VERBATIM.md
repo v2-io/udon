@@ -865,3 +865,9 @@
 ### Joseph's answer (whole message)
 
 > Since you just compacted-- you're going to want to reread all of the .int/pre-design/ stuff, as well as all of the defs/cards so far.
+
+*(Agent text, summary: the agent reported the reread done; noted his 2026-07-11 words treat the fence opener's rest-of-line as captured (the "line" reading), against its own "one word" lean; and added the `$key`/`$traits`/`$main` names as a label row tied to pre-design 58 Q2.)*
+
+### Joseph's answer (whole message)
+
+> Sorry-- I had to get into some other areas for a while but I'm back-- can you give me the full example again real quick and then I'll give my lean on which are labels and the code-fence's opener in particular.
