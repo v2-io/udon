@@ -122,7 +122,7 @@ consequences: [def:element-name, def:attribute-name, def:trait, def:quoted-name,
 
 - **For the label-characters discussion** (Joseph, 2026-10-12, his words):
 
-  > When we get to it, to be clear-- *quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\\''  awful but allowed label.
+  > When we get to it, to be clear-- *quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\''  awful but allowed label.
   > The only question is what characters are allowed for labels *without* quoting. Former versions were somewhat restrictive, and then allowed, for example, cardinality-like suffixes as suffixes (ala ruby methods allowing '?' or '!' but only at the end of the identifier). The truth is, I've lost most of my reasons for being so restrictive with labels-- especially since it's a syntactical efficiency question and not a semantic question per se.  Spaces and quotes themselves and backticks and backslashes should probably require being quoted... as should all udon starters in addition to backtick if they are at the beginning... hmmm.. this needs more careful thought. We'll cover this independently shortly I think, where we'll discuss what's not allowed even when quoted (control characters maybe (except via escape sequences in "..." delimited labels)? Invalid unicode codepoints?...) and then what, when unquoted, is allowed as first-character, inner, and final if different from inner.
 
   Already decided that bears on it: an unquoted label can't begin with `.` (provisional, [[rule:traits-may-follow-spaces]]).

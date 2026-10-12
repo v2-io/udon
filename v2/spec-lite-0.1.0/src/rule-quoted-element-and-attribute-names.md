@@ -47,4 +47,4 @@ root
   > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
 
 - **Reasoning:** One quoting rule wherever quotes appear.
-- Joseph, 2026-10-12: "*quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\\'' awful but allowed label." Still open, for the label-characters discussion: control characters (perhaps allowed only through escapes in `"…"`), invalid code points, and whether `\n` written as an escape in `"…"` is allowed in a name.
+- Joseph, 2026-10-12: "*quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\'' awful but allowed label." Still open, for the label-characters discussion: control characters (perhaps allowed only through escapes in `"…"`), invalid code points, and whether `\n` written as an escape in `"…"` is allowed in a name.
