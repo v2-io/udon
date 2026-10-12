@@ -928,3 +928,11 @@
 >
 > When we get to it, to be clear-- *quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\''  awful but allowed label.
 > The only question is what characters are allowed for labels *without* quoting. Former versions were somewhat restrictive, and then allowed, for example, cardinality-like suffixes as suffixes (ala ruby methods allowing '?' or '!' but only at the end of the identifier). The truth is, I've lost most of my reasons for being so restrictive with labels-- especially since it's a syntactical efficiency question and not a semantic question per se.  Spaces and quotes themselves and backticks and backslashes should probably require being quoted... as should all udon starters in addition to backtick if they are at the beginning... hmmm.. this needs more careful thought. We'll cover this independently shortly I think, where we'll discuss what's not allowed even when quoted (control characters maybe (except via escape sequences in "..." delimited labels)? Invalid unicode codepoints?...) and then what, when unquoted, is allowed as first-character, inner, and final if different from inner.
+
+*(Agent text, summary: the agent recorded the fence-as-child correction, his label table and label-character notes, and put the spaced-traits search on hold (commit `0f076ad`); suggested taking label characters before the escape set.)*
+
+### Joseph's answer (whole message)
+
+> Alas, we've run out of context far too soon. Can you use the remainder to set up a handoff document that also has your sincere recommendations for which documents or line-spans within documents to read in order to have your successor fully capable and expert without [if possible, if not, no problem] needing to fill up as much of their context as we did with you?
+
+*(Agent text: the handoff is `.int/HANDOFF-2026-10-12.md`.)*
