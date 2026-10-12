@@ -28,7 +28,7 @@ echo "comment was indented."
 root
   |element
     :attr true
-    :$main ```sh
+    ```sh
       :$traits exact
       "                            # super indented!\necho \"comment was indented.\"\n"
 ```

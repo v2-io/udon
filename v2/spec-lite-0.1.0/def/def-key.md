@@ -70,6 +70,8 @@ consequences: []
 
 - **My own opinion** (the drafting agent's): keep «key». It is his, it has survived nine months, and React and databases give readers the right idea of "which one". The Avoid list is mostly a guard against the JSON habit. Settle "one key or several" before the card text is final, because it decides the article.
 
+- Joseph, 2026-10-12, on `jw` in `|user[jw]`: ":$key value | value | (parsed like any other value after ':attribute ', for example, but with distinct closing delimeter-- might need some rework)".
+
 ### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
 
 - Agree: keep «key», and keep it out of the «label» class, since its inside is read as a value. The article ("the key" vs "a key") waits on whether an element can have one key or several, which is a rule card still to write.

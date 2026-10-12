@@ -37,7 +37,7 @@ Joseph's proposal (2026-10-12), which the coordinator agreed with. What the fenc
 root
   |element
     :attr true
-    :$main ```sh
+    ```sh
       :$key ‹example-7›
       :hidden false
       ; " a note"
@@ -59,6 +59,7 @@ root
   > — Joseph, 2026-10-12 (`.int/STEWARD-VERBATIM.md`)
 
 - **Consequences, not rules of their own:** the word after the backticks is the fence's name, so it is a «label» and is one word (the "word or line" question in [[def:fence-tag]] is answered). The `-` verbatim flag is gone: `-` is a name character, so ```` ```diff- ```` would be a fence named `diff-`; the trait `exact` replaces it ([[rule:fence-exact-trait]]). A nameless fence is spelled like a nameless element (```` ```[k] ````, ```` ```.exact ````).
-- **Where the fence lands on a line:** Joseph, 2026-10-12: "(':attr true ```sh') would have it as the value for $main for the element. If it was the beginning of a line (aside from indent) it would be the child of something." Recorded in [[rule:fence-anywhere-structure]], with the question it raises.
+- **Where the fence lands on a line:** by the element rules, as a child after a finished value, as the value of an attribute still waiting for one (Joseph, 2026-10-12: "I think child is the right call"; [[rule:fence-anywhere-structure]]).
+- Joseph calls `sh` the fence's language (2026-10-12: "'sh' | fence language | label"), and the fence "a specialized element node".
 - **Open:** whether a fence is an «element» of a special kind ("the specialized fenced node that is related to `element`"), and how the tree prints it.
 - An element written later on the opening line (```` ```sh |x ````) parses, and the default handler rejects it.

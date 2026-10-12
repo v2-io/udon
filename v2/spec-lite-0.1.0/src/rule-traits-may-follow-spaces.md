@@ -45,7 +45,7 @@ root
 
 ## Working notes
 
-- **To do (Joseph, 2026-10-12): launch a search of the history for any other reasoning about spaces before traits.** Known so far:
+- **To do (Joseph, 2026-10-12): launch a search of the history for any other reasoning about spaces before traits.** On hold until the topic comes up again (Joseph, same day: "Let's hold on the history-search until we get to that again"). Known so far:
   - mainline dropped the spaced form on 2026-07-15, in the fresh-eyes batch recorded as Joseph's rulings: "Spaced-trait identity form dropped: identity is contiguous except the trailing space-separated suffix; `.trait` after a space is prose" (`spec/msc/CHANGELOG.md`; `spec/CORE.md`: "`|p .gitignore is a file` has no traits; ruled 2026-07-15, dropping the former spaced-trait form `|name[key]? .trait`"). Its reason was tied to the spaced suffix, which lite retired ([[decision:suffixes-lose-special-status]]);
   - 2011 allowed it (`syntax2.udon`: `|namespace:type [id-or-name] .flag .other-flag`);
   - pre-design 77 Q2.

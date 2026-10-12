@@ -51,5 +51,10 @@ root
 - **Reasoning:** In UDON a fence's position decides its parent, so it can't be limited to the start of a line as in Markdown.
 - The spec should name this as a difference from CommonMark (Joseph's suggestion).
 - On an element's or attribute's line, a space followed by a fence opener ends any unquoted text before it, like ` |name` and ` :name` (Joseph, 2026-10-09: "```(+) is in the same family as |;: and the reserved ones"); [[rule:text-value-end]].
-- **Where a fence lands on an element's line** (Joseph, 2026-10-12): "(':attr true ```sh') would have it as the value for $main for the element. If it was the beginning of a line (aside from indent) it would be the child of something." So after a finished value a fence is a `$main` value; right after an attribute still waiting for its value it is that attribute's value; at the start of a line it is a child.
-- **Asked back (2026-10-12):** a bare `|name` after a finished value is a child, not a `$main` value ([[rule:sameline-element-is-child]]: `|p Intro text |em x` gives `em` as a child). Is the fence meant to differ from `|name` there?
+- **Where a fence lands on an element's line** follows the element rules (Joseph, 2026-10-12): after a finished value it is a child of the element before it, as a bare `|name` is ([[rule:sameline-element-is-child]]); right after an attribute still waiting for its value it is that attribute's value ([[rule:element-after-attribute-with-no-value]]); at the start of a line it is a child by its column.
+
+  > wrt `:attr true ```sh ...` -- you are absolutely right. We can literally go either way here-- if it was considered more like prose as if it were a heredoc marker, it would be $main which most of the time (or all of the time with these) would end up as the first child anyway. But as per the other aspects like the key/traits/attributes/comments making it much closer to an element-- we can just as easily decide to have it follow the element rules (becomes a child). Which seems right actually, because otherwise there's ambiguity about attributes after the closing backticks and/or indentation behavior etc. at the end that is already well-decided when thinking of it as a specialized element node. I was wrong in that correction and statement. I think child is the right call.
+  >
+  > — Joseph, 2026-10-12 (`.int/STEWARD-VERBATIM.md`)
+
+  He had first said a fence after a finished value is the element's `$main` value; the coordinator pointed out that a bare `|name` there is a child, and he withdrew it.

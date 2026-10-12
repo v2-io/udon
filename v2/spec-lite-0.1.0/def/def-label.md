@@ -108,6 +108,25 @@ consequences: [def:element-name, def:attribute-name, def:trait, def:quoted-name,
 
 - **My own opinion** (the drafting agent's, not a lean of Joseph's): keep "label" in his L sense. Its roots in his own 2011 notes and in Ruby's lexer are real, and every alternative collides with something worse. Let it name spelling only: in spec text, "label" never stands for a role, and every role keeps its "X name" (or «trait»). A spec sentence would then read "an element name is a label", never "the element's label". I'd also put the one-rule-or-family question to him early, as UDON examples, because every name card waits on it.
 
+- **Joseph's lean on which names are labels** (2026-10-12, `.int/STEWARD-VERBATIM.md`):
+
+  > | 'user' | element name  | label |
+  > | 'admin' | trait        | label |
+  > | 'role', 'size' | attribute names | label |
+  > | '$key', '$traits', '$main' | attribute names (& desugar targets) | label |
+  > | 'jw' | :$key value | value | (parsed like any other value after ':attribute ', for example, but with distinct closing delimeter-- might need some rework)
+  > | 'u64' | opaque for now | (part of a typed-value) |
+  > | 'sh' | fence language | label |
+
+  The fence's `sh` is a label since the opening line reads like an element's line ([[rule:fence-opener-line]]).
+
+- **For the label-characters discussion** (Joseph, 2026-10-12, his words):
+
+  > When we get to it, to be clear-- *quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\\''  awful but allowed label.
+  > The only question is what characters are allowed for labels *without* quoting. Former versions were somewhat restrictive, and then allowed, for example, cardinality-like suffixes as suffixes (ala ruby methods allowing '?' or '!' but only at the end of the identifier). The truth is, I've lost most of my reasons for being so restrictive with labels-- especially since it's a syntactical efficiency question and not a semantic question per se.  Spaces and quotes themselves and backticks and backslashes should probably require being quoted... as should all udon starters in addition to backtick if they are at the beginning... hmmm.. this needs more careful thought. We'll cover this independently shortly I think, where we'll discuss what's not allowed even when quoted (control characters maybe (except via escape sequences in "..." delimited labels)? Invalid unicode codepoints?...) and then what, when unquoted, is allowed as first-character, inner, and final if different from inner.
+
+  Already decided that bears on it: an unquoted label can't begin with `.` (provisional, [[rule:traits-may-follow-spaces]]).
+
 ### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
 
 - **Agree with the drafter:** «label» in his 2026-10-09 sense, a lexical class only. Spec sentences say "an element name is a label", never "the element's label". The cards' current "label" for the attribute's name, the fence tag and the type tag all go.

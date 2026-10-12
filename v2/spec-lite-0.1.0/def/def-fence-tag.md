@@ -13,7 +13,7 @@ consequences: []
 
 *The text after a fence's opening backticks, minus a trailing `-` flag and any framed comment: `sh` in ```` ```sh ````. It is the author's note about the body, usually a language, and lite attaches no meaning to it. The cards call it "the fence's label". What to call it, and whether it is a «label», are both open.*
 
-*Resolved 2026-10-12 (Joseph): the opening line reads like an element's line, so the word after the backticks is the fence's name, an element name like any other, and a «label». No separate term is needed ([[rule:fence-opener-line]]). The notes below are kept as the record of the question.*
+*Resolved 2026-10-12 (Joseph): the opening line reads like an element's line, so the word after the backticks is the fence's name, an element name like any other, and a «label». Joseph's word for its role, 2026-10-12: "fence language" ("'sh' | fence language | label"); it sits where an element's name sits ([[rule:fence-opener-line]]). The notes below are kept as the record of the question.*
 
 *The slug `fence-tag` is a placeholder. "Tag" is one candidate among several and isn't preferred by being the slug.*
 

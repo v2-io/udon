@@ -909,3 +909,22 @@
 > I definitely lean toward allowing traits to be preceeded by a whitespace. I *think* the only ramification is that non-quoted labels (which we haven't adjudicated fully yet) wouldn't be allowed to have a '.' prefix. So |.asdf would not be allowed as an element name (it's an anonymous element with $traits=[asdf]), but (we'll get to it with labels) -- `|'.asdf'` would still be fine for an element with the name '.asdf'.
 >
 > Could you write that as provisional and note that we'll need to launch something to go back and discover if there was ever any other reasoning about spaces before traits etc.?
+
+*(Agent text, summary: the agent recorded the fence opener as an element-like line, the default handler, `.exact`, and provisional spaced traits (commit `d00d1dc`); said the cards had not made `:attr true ```sh` → `$main` clear, and that the closer analog (`|x` after a finished value) is a child; asked whether the fence should differ; offered to launch the spaced-traits history search; and asked again for his lean on the label rows.)*
+
+### Joseph's answer (whole message)
+
+> wrt `:attr true ```sh ...` -- you are absolutely right. We can literally go either way here-- if it was considered more like prose as if it were a heredoc marker, it would be $main which most of the time (or all of the time with these) would end up as the first child anyway. But as per the other aspects like the key/traits/attributes/comments making it much closer to an element-- we can just as easily decide to have it follow the element rules (becomes a child). Which seems right actually, because otherwise there's ambiguity about attributes after the closing backticks and/or indentation behavior etc. at the end that is already well-decided when thinking of it as a specialized element node. I was wrong in that correction and statement. I think child is the right call.
+>
+> Let's hold on the history-search until we get to that again.
+>
+> | 'user' | element name  | label |
+> | 'admin' | trait        | label |
+> | 'role', 'size' | attribute names | label |
+> | '$key', '$traits', '$main' | attribute names (& desugar targets) | label |
+> | 'jw' | :$key value | value | (parsed like any other value after ':attribute ', for example, but with distinct closing delimeter-- might need some rework)
+> | 'u64' | opaque for now | (part of a typed-value) |
+> | 'sh' | fence language | label |
+>
+> When we get to it, to be clear-- *quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\''  awful but allowed label.
+> The only question is what characters are allowed for labels *without* quoting. Former versions were somewhat restrictive, and then allowed, for example, cardinality-like suffixes as suffixes (ala ruby methods allowing '?' or '!' but only at the end of the identifier). The truth is, I've lost most of my reasons for being so restrictive with labels-- especially since it's a syntactical efficiency question and not a semantic question per se.  Spaces and quotes themselves and backticks and backslashes should probably require being quoted... as should all udon starters in addition to backtick if they are at the beginning... hmmm.. this needs more careful thought. We'll cover this independently shortly I think, where we'll discuss what's not allowed even when quoted (control characters maybe (except via escape sequences in "..." delimited labels)? Invalid unicode codepoints?...) and then what, when unquoted, is allowed as first-character, inner, and final if different from inner.
