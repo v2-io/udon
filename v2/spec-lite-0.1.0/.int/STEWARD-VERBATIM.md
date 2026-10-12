@@ -871,3 +871,24 @@
 ### Joseph's answer (whole message)
 
 > Sorry-- I had to get into some other areas for a while but I'm back-- can you give me the full example again real quick and then I'll give my lean on which are labels and the code-fence's opener in particular.
+
+*(Agent text, summary: the agent re-posted the example `|user[jw].admin :role editor :size <u64:0xff>` with a ```` ```sh- ```` fence, the label table, and the fence-opener cases (`sh`, `diff-`, `-`, `rust ignore`, `sh ; note`), leaning one word called "language".)*
+
+### Joseph's answer (whole message)
+
+> OK, good. This is the perfect opportunity to flesh out the fence a bit more.
+>
+> What about this?
+>
+> ````udon
+> |element :attr true ```sh[example-7] :hidden false   ; oh look, on sameline, fence opener is like any other element and can have its own ID which is great for referencing it! and, although they can't span to the next line etc., any kinds of attributes...
+>                       echo "seems ok."
+>                     ```
+>
+> |element :attr true ```sh.exact  ; <- This time all of the whitespace will be retained / no warning on further dedent from first line... Replaces the trailing '-' flag which isn't anywhere else in udon...
+>                             # super indented!
+> echo "comment was indented."
+>                     ```
+> ````
+>
+> That reminds me, have we ruled on `|el.something` being allowed to be written as `|el .something` instead? (I hope there's no problem with that because it's the format I'd prefer in many cases).
