@@ -15,7 +15,7 @@ consequences: []
 
 ## Statement
 
-1. In a `"…"` string, `\` MUST begin one of: `\\` `\"` `\'`; `\n` `\t` `\r` `\f` `\e`; `\/` `\#`; `\0` (only when no digit follows); `\xHH` (exactly two hex digits, at most `7F`); `\uHHHH` (a high-then-low surrogate pair is one code point); or `\u{…}` (hex code points, `_` and leading zeros allowed as in integers, each at most `10FFFF` and not a surrogate, single spaces between). Any other backslash is an error.
+1. In a `"…"` string, `\` MUST begin one of: `\\` `\"` `\'`; `\n` `\t` `\r` `\f` `\e`; `\/` `\#`; `\0` (only when no digit follows); `\xHH` (exactly two hex digits, at most `7F`); `\uHHHH` (a high-then-low surrogate pair is one code point; a surrogate not in such a pair is an error); or `\u{…}` (hex code points, `_` and leading zeros allowed as in integers, each at most `10FFFF` and not a surrogate, single spaces between). Any other backslash is an error.
 
 ## Grounds
 
@@ -62,3 +62,4 @@ root
 - **Reasoning:** An unknown escape that Ruby would silently drop (`"C:\Users"` → `C:Users`) becomes a loud error pointing at single quotes. `\s` and `\b` are refused so regex habits (`"\s+"`, `"\bword\b"`) can't silently turn into a space or a backspace.
 - `\b` is reserved "for right now"; Joseph noted it helps terminal output.
 - The `\u{…}` spacing details are an agent default, not his words.
+- The lone-surrogate error was part of the lean he answered "agree about the surrogate pairs" (`.int/escape-sequences-2026-10-08.md` §2.2: "accept a correctly ordered high-low pair as one code point and … refuse a lone surrogate").
