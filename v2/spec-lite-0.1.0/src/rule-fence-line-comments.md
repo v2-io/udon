@@ -5,18 +5,18 @@ awaiting-decision: false
 needs-work: false
 layer: tree
 per: []
-depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more]
+depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-opener-line]
 consequences: [rule:comments-in-tree, rule:fence-closer-trailing-text-is-error]
 test-fixtures: []
 ---
 
 # Comments on fence lines
 
-*A framed ` ; ` may follow a fence opener's label, or a closer's backticks.*
+*A framed ` ; ` on a fence's opening line is a comment, as on any element line; one may also follow a closer's backticks.*
 
 ## Statement
 
-A framed ` ; ` after a fence opener's label MUST end the label and start a comment; one MAY follow a closer's backticks.
+On a fence's opening line a framed ` ; ` MUST start a comment, as on any element line ([[rule:fence-opener-line]]); one MAY also follow a closer's backticks.
 
 ````udon
 |job :script ```sh ; run in CI
@@ -89,3 +89,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 - **Reasoning:** One comment rule for lines that open or close a node.
 - Where these comments sit in the «tree» is the drafter's placement, not discussed.
 - Anything other than a framed comment after a closer's backticks is an error ([[rule:fence-closer-trailing-text-is-error]]).
+- Since 2026-10-12 the opening line reads like an element's line ([[rule:fence-opener-line]]), so the opener's comment is the ordinary sameline comment. The "label" in the Discussion is now the fence's name.

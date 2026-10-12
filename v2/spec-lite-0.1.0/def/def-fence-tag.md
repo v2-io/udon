@@ -5,7 +5,7 @@ awaiting-decision: true
 needs-work: false
 terms: []
 per: []
-depends: [def:label, rule:fence-opens-with-backticks, rule:fence-label-no-backtick, rule:fence-verbatim-label, rule:fence-line-comments]
+depends: [def:label, rule:fence-opens-with-backticks, rule:fence-label-no-backtick, rule:fence-exact-trait, rule:fence-opener-line, rule:fence-line-comments]
 consequences: []
 ---
 
@@ -13,13 +13,15 @@ consequences: []
 
 *The text after a fence's opening backticks, minus a trailing `-` flag and any framed comment: `sh` in ```` ```sh ````. It is the author's note about the body, usually a language, and lite attaches no meaning to it. The cards call it "the fence's label". What to call it, and whether it is a «label», are both open.*
 
+*Resolved 2026-10-12 (Joseph): the opening line reads like an element's line, so the word after the backticks is the fence's name, an element name like any other, and a «label». No separate term is needed ([[rule:fence-opener-line]]). The notes below are kept as the record of the question.*
+
 *The slug `fence-tag` is a placeholder. "Tag" is one candidate among several and isn't preferred by being the slug.*
 
 ## Terms
 
 *(No term yet. `terms:` is empty until Joseph names it.)*
 
-What the term will name, as lite's cards now describe it: the rest of a fence's opening line after the backticks ([[rule:fence-label-no-backtick]]). A framed ` ; ` ends it ([[rule:fence-line-comments]]), a trailing `-` is a separate flag and not part of it ([[rule:fence-verbatim-label]]), and it may not contain a backtick. Lite carries it in the «tree» beside the body and gives it no meaning.
+What the term will name, as lite's cards now describe it: the rest of a fence's opening line after the backticks ([[rule:fence-label-no-backtick]]). A framed ` ; ` ends it ([[rule:fence-line-comments]]), a trailing `-` is a separate flag and not part of it ([[rule:fence-exact-trait]], since replaced by the trait `exact`), and it may not contain a backtick. Lite carries it in the «tree» beside the body and gives it no meaning.
 
 ## Examples
 

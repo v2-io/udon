@@ -51,3 +51,5 @@ root
 - **Reasoning:** In UDON a fence's position decides its parent, so it can't be limited to the start of a line as in Markdown.
 - The spec should name this as a difference from CommonMark (Joseph's suggestion).
 - On an element's or attribute's line, a space followed by a fence opener ends any unquoted text before it, like ` |name` and ` :name` (Joseph, 2026-10-09: "```(+) is in the same family as |;: and the reserved ones"); [[rule:text-value-end]].
+- **Where a fence lands on an element's line** (Joseph, 2026-10-12): "(':attr true ```sh') would have it as the value for $main for the element. If it was the beginning of a line (aside from indent) it would be the child of something." So after a finished value a fence is a `$main` value; right after an attribute still waiting for its value it is that attribute's value; at the start of a line it is a child.
+- **Asked back (2026-10-12):** a bare `|name` after a finished value is a child, not a `$main` value ([[rule:sameline-element-is-child]]: `|p Intro text |em x` gives `em` as a child). Is the fence meant to differ from `|name` there?

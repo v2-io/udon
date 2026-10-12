@@ -30,7 +30,7 @@ consequences: [def:element-name, def:attribute-name, def:trait, def:quoted-name,
   ```
 ```
 
-`user` (an «element-name»), `admin` (a «trait») and `role` (an «attribute-name») are labels. `jw` is a «key», which lite reads as a value ([[rule:key-holds-a-value]]), so it is not a label by these rules even though it looks like one. Whether `sh` is a label is open ([[def:fence-tag]]).
+`user` (an «element-name»), `admin` (a «trait») and `role` (an «attribute-name») are labels. `jw` is a «key», which lite reads as a value ([[rule:key-holds-a-value]]), so it is not a label by these rules even though it looks like one. `sh` is the fence's name, so it is a label too ([[rule:fence-opener-line]], 2026-10-12).
 
 ## Avoid
 

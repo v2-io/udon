@@ -5,20 +5,20 @@ awaiting-decision: true
 needs-work: true
 terms: [fence, fence-opener, fence-closer, verbatim-flag]
 per: []
-depends: [def:body, def:fence-tag, rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-closer-is-a-line, rule:fence-body-not-scanned, rule:fence-body-dedent, rule:fence-verbatim-label, rule:fence-line-comments]
+depends: [def:body, def:fence-tag, rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-closer-is-a-line, rule:fence-body-not-scanned, rule:fence-body-dedent, rule:fence-exact-trait, rule:fence-line-comments]
 consequences: [def:node]
 ---
 
 # fence · fence-opener · fence-closer · verbatim-flag
 
-*A «fence» is the node made by a run of three or more backticks: its «body» is every line up to a «fence-closer», kept and never scanned. A `-` at the end of the «fence-opener» is the «verbatim-flag»: the «body» then keeps its indentation exactly.*
+*A «fence» is the node made by a run of three or more backticks: its «body» is every line up to a «fence-closer», kept and never scanned. Since 2026-10-12 the rest of the opening line reads like an element's line (a name, keys, traits, attributes), and the trait `exact` replaces the `-` «verbatim-flag».*
 
 ## Terms
 
-- **fence:** the node a «fence-opener» starts. It holds the tag written after the backticks ([[def:fence-tag]], where its name is open; the cards say "label"), whether it has the «verbatim-flag», and its «body», which lite never scans for UDON syntax ([[rule:fence-body-not-scanned]]).
+- **fence:** the node a «fence-opener» starts. It holds what its opening line gives, read as an element's line (a name, keys, traits, attributes, `$main`: [[rule:fence-opener-line]]), and its «body», which lite never scans for UDON syntax ([[rule:fence-body-not-scanned]]).
 - **fence-opener:** the run of N ≥ 3 backticks that starts a «fence», wherever structure can start ([[rule:fence-opens-with-backticks]]). N is the fence's length. The rest of its line holds the tag, the «verbatim-flag» and an optional «framed-comment»; the cards sometimes include that rest in "opener" (open: see Working notes).
 - **fence-closer:** the run of N or more backticks that is the first non-space content of a later line, ending the «fence» at the first such line ([[rule:fence-closes-at-n-or-more]]); the cards also use it for that whole line. It is not part of the «body»; its column then takes part in nesting like any line's ([[rule:fence-closer-is-a-line]]).
-- **verbatim-flag:** a `-` ending the «fence-opener»'s tag (or standing alone after the backticks: ```` ```- ````). It is not part of the tag, and the «body» then keeps every byte, indentation included ([[rule:fence-verbatim-label]]).
+- **verbatim-flag** *(retired 2026-10-12; replaced by the trait `exact`, [[rule:fence-exact-trait]])*: a `-` ending the «fence-opener»'s tag (or standing alone after the backticks: ```` ```- ````). It is not part of the tag, and the «body» then keeps every byte, indentation included ([[rule:fence-exact-trait]]).
 
 ## Invariants
 
@@ -67,7 +67,7 @@ make build
 - **the closer's leading whitespace is part of the body** — Joseph's 2026-07-12 ruling for byte-exact fences ("those whitespaces are part of the fenced text that gets output", L15862). Lite: the closer is "*transparent to fence body* (i.e., comes *after* the end of the fenced body)" (Joseph, 2026-10-08).
 
 **For «verbatim-flag»:**
-- **verbatim label** — the slug of [[rule:fence-verbatim-label]], from before Joseph said the `-` is not part of the tag: "in the AST, no, it would be its own flag" (2026-10-09).
+- **verbatim label** — the slug of [[rule:fence-exact-trait]], from before Joseph said the `-` is not part of the tag: "in the AST, no, it would be its own flag" (2026-10-09).
 - **`-` suffix** — Joseph: "'-' suffix for verbatim" (2026-10-08). "Suffix" is loaded in UDON: element suffixes (`?!*+`) are the retired "suffix characters" ([[decision:suffixes-lose-special-status]]).
 - **trailing dash / final dash** — Joseph, 2026-10-08: "Final dash interpreted as "verbatim"".
 - **verbatim fence** — the cards' and the tree notation's phrasing; fine as a description, not a separate term.

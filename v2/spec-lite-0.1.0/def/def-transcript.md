@@ -114,7 +114,7 @@ They may want two names: Joseph's "notation" for (1), and something for (2).
 ### Cards a change here would touch (left unedited)
 
 - [[rule:tree-transcript]] (title, slug, statement).
-- [[rule:fence-verbatim-label]], [[rule:prose-passes-through]], [[rule:prose-escaped-embeds]], [[decision:ast-centric]] ("its written transcript"): "transcript" in prose.
+- [[rule:fence-exact-trait]], [[rule:prose-passes-through]], [[rule:prose-escaped-embeds]], [[decision:ast-centric]] ("its written transcript"): "transcript" in prose.
 - `main.outline.md`, the paragraph defining card/fixture/companion ("A **fixture** (`dat/`) is a specific input and its tree or error"): fixture grain.
 - `sop/def/def-fixture-profiles.md` working notes ("until a machine transcript is decided"): the SOP store's, not lite's.
 

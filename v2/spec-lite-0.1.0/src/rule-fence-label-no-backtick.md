@@ -5,17 +5,17 @@ awaiting-decision: false
 needs-work: false
 layer: text
 per: []
-depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more]
+depends: [rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-opener-line]
 consequences: []
 ---
 
-# A fence label contains no backtick
+# A fence's opening line has no later backtick
 
 *A line that starts with backticks and has a backtick later in it does not open a fence.*
 
 ## Statement
 
-1. The rest of a fence's opening line is its label; if it contains a backtick, the line MUST NOT open a fence.
+1. If the rest of a line after its opening backticks contains a backtick, the line MUST NOT open a fence.
 
 ## Grounds
 
@@ -49,4 +49,4 @@ root
   > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
 
 - **Reasoning:** CommonMark's rule; it keeps inline code at a line start from opening a fence, and rules out opening and closing on one line.
-- A trailing `-` is a verbatim flag, not part of the label ([[rule:fence-verbatim-label]]).
+- Since 2026-10-12 the rest of the opening line reads like an element's line ([[rule:fence-opener-line]]); "the fence's label" in the quote above is now the fence's name. The slug keeps the old word until the vocabulary sweep.

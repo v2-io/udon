@@ -892,3 +892,20 @@
 > ````
 >
 > That reminds me, have we ruled on `|el.something` being allowed to be written as `|el .something` instead? (I hope there's no problem with that because it's the format I'd prefer in many cases).
+
+*(Agent text, summary: the agent leaned yes on the fence opener reading like an element head. It said the word becomes the fence's name, the `-` flag must go (a name character), and that `:attr true ```sh` would make the fence a child (wrongly drawn as a derivation from `|name`). It asked about leftover text on the opener line (lean error), an element later on the opener line (lean error), and `.exact` as the first meaningful trait. On spaced traits it reported mainline's 2026-07-15 drop and leaned to allow them right after the name or key.)*
+
+### Joseph's answer (whole message)
+
+> well...  no, (':attr true ```sh') would have it as the value for $main for the element. If it was the beginning of a line (aside from indent) it would be the child of something. Is that still not clear via the current spec / rulings / verdicts etc.?
+>
+> Leftover text would also be part of $main on the specialized fenced node that is related to `element` now in this reading. I think we can make a note in the spec that the per-language handlers will have to figure out what they accept etc. for additional attributes including $main. We'll implement a standard handler that just cares about .exact and does the dedenting (or not) as expected, that other language handlers can extend. (or something like that-- basically for now the handling depends on the language specifics other than we apply a default handler for .exact)...
+> w/ #2 though-- you're right. The thing we have to enforce from the udon side is the fact that as soon as we get a newline-- we are capturing everything and handing it off except until we get the fence-closer. While it might make sense to cram a tiny element on the opening line to someone-- I think we can essentially error in our default handler for anything other than a (desugared) :$key(s), :$traits ⊆ {exact}, and a comment. This gives you actually the error you wanted for extra text as well, but post lexical.
+>
+> 3. ah, the "language handler" layer pretty much makes that a lesser issue as well, I think.
+>
+> ---
+>
+> I definitely lean toward allowing traits to be preceeded by a whitespace. I *think* the only ramification is that non-quoted labels (which we haven't adjudicated fully yet) wouldn't be allowed to have a '.' prefix. So |.asdf would not be allowed as an element name (it's an anonymous element with $traits=[asdf]), but (we'll get to it with labels) -- `|'.asdf'` would still be fine for an element with the name '.asdf'.
+>
+> Could you write that as provisional and note that we'll need to launch something to go back and discover if there was ever any other reasoning about spaces before traits etc.?

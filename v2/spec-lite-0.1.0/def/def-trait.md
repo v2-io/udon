@@ -20,7 +20,7 @@ consequences: []
 ## Examples
 
 - `|user[jw].admin.active`: two «trait»s, `admin` and `active`.
-- `|p .gitignore is a file`: no traits. A `.` after a space is text (0.9.1 §5.3, "a `.trait` after a space is not identity").
+- `|p .gitignore is a file`: under the provisional [[rule:traits-may-follow-spaces]] (2026-10-12), the trait `gitignore` and `$main ‹is a file›`. 0.9.1 §5.3 read it as text ("a `.trait` after a space is not identity").
 
 ## Avoid
 

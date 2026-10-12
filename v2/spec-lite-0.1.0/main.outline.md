@@ -60,8 +60,8 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[def:element-line]] | An «element-line» is a line whose first content, at a «head-position», is an element; an «attribute-line» is one whose first content there is an attribute. They are the two kinds of line that have a «sameline». |
 | proposed | [[def:element-name]] | An «element-name» is the «label» written directly after an element's `|`, bare or in quotes: `user` in `|user[jw]`. An «element» may have none. |
 | proposed | [[def:embed]] | An «embed» is a brace form written inside a «text»: an «inline-element» `|{…}`, a reference `@{…}`, or an inline comment `;{…}`. It is always a «piece» of its «text», never a value of its own. |
-| proposed | [[def:fence-tag]] | The text after a fence's opening backticks, minus a trailing `-` flag and any framed comment: `sh` in ```` ```sh ````. It is the author's note about the body, usually a language, and lite attaches no meaning to it. The cards call it "the fence's label". What to call it, and whether it is a «label», are both open. |
-| proposed | [[def:fence]] | A «fence» is the node made by a run of three or more backticks: its «body» is every line up to a «fence-closer», kept and never scanned. A `-` at the end of the «fence-opener» is the «verbatim-flag»: the «body» then keeps its indentation exactly. |
+| proposed | [[def:fence-tag]] | Resolved 2026-10-12: the word after a fence's opening backticks is the fence's name, read as an element's name; no separate term. |
+| proposed | [[def:fence]] | A «fence» is the node made by a run of three or more backticks: its opening line reads like an element's line, and its «body» is every line up to a «fence-closer», kept and never scanned. The trait `exact` keeps the body's indentation exactly. |
 | proposed | [[def:framed]] | A `;` or `\` on a «sameline» is «framed» when it has a space before it and a space after it. The spaces are its «frame»: they decide that it is a comment or a text end rather than text or an escape, and they are not content. Joseph accepted the word ("when you say "framed" you mean at least one space on either side … right?") but has not ruled on it. Whether end of line counts as the right-hand frame is unsettled, and the cards disagree. |
 | proposed | [[def:head-position]] | A «head-position» is a place in the source where a «marker» can begin structure. It is Joseph's July 2026 term, which agents renamed "Structure Position" without him; lite's cards currently paraphrase it as "where structure can start". |
 | proposed | [[def:key]] | A «key» is the value written in `[…]` directly after an element's name (or directly after its `|`): `jw` in `|user[jw]`. It says which one this element is. The «tree» holds it as the attribute `$key`. |
@@ -125,10 +125,12 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:inline-element-value-end]] | Inside `|{…}`, an unquoted attribute value ends as on an element's line, or at the `}`. Where left-over text goes waits for embeds. |
 | proposed | [[rule:fence-opens-with-backticks]] | A run of N ≥ 3 backticks where structure can start opens a fence of length N. |
 | proposed | [[rule:fence-anywhere-structure]] | Unlike CommonMark, a fence opens at any indentation and on an element's or attribute's line; its position decides its parent. |
+| proposed | [[rule:fence-opener-line]] | After the opening backticks, the rest of the line reads as an element's line; it all belongs to the fence, whose body starts on the next line. |
+| proposed | [[rule:fence-default-handler]] | The default fence handler accepts only keys, the trait `exact` and a comment on the opening line, and does the body's dedenting. |
 | proposed | [[rule:fence-label-no-backtick]] | A line that starts with backticks and has a backtick later in it does not open a fence. |
 | proposed | [[rule:fence-closes-at-n-or-more]] | A fence of length N closes at the first later line whose first non-space content is N or more backticks. |
 | proposed | [[rule:fence-closer-trailing-text-is-error]] | After a closing line's backticks only spaces or a framed comment may follow; this also catches a nested opener written with too few backticks. |
-| proposed | [[rule:fence-line-comments]] | A framed ` ; ` may follow a fence opener's label, or a closer's backticks. |
+| proposed | [[rule:fence-line-comments]] | A framed ` ; ` on a fence's opening line is a comment, as on any element line; one may also follow a closer's backticks. |
 | proposed | [[rule:fence-closer-is-a-line]] | The closer is not part of the body; its column then closes open elements at or right of it, like any line. |
 
 ## *Part* IV — The line
@@ -141,6 +143,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:escaped-reserved-is-text]] | Escaping a reserved form is how to write it as text. |
 | gap | [[rule:element-names]] | Characters of a bare name, quoted names, the former suffix characters, anonymous elements |
 | gap | [[rule:keys-and-traits]] | `[key]` and `.trait` as `$key` and `$traits` |
+| proposed | [[rule:traits-may-follow-spaces]] | Provisional: `\|el .something` is the same as `\|el.something`, so an unquoted name can't begin with `.`. |
 | proposed | [[rule:line-scan]] | Sameline material is read the same way whether the line starts with an element or an attribute. |
 | proposed | [[rule:attribute-with-no-value-takes-next-value]] | The next value on the line goes to the attribute that has none yet. |
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
@@ -187,9 +190,9 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:framed-comment-owns-deeper-lines]] | Lines deeper than a framed comment's `;` belong to the comment, with a warning (a lean). |
 | proposed | [[rule:comments-in-tree]] | Comments appear in the «tree». |
 | proposed | [[rule:fence-body-not-scanned]] | Everything between a fence's opening and closing lines is body, never scanned for UDON syntax, with no escapes. |
-| proposed | [[rule:fence-body-dedent]] | Unless the label ends in `-`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces. |
+| proposed | [[rule:fence-body-dedent]] | Unless the fence has the trait `exact`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces. |
 | proposed | [[rule:fence-body-shallower-line]] | A fence body line shallower than the body's left edge warns, and the edge moves to it. |
-| proposed | [[rule:fence-verbatim-label]] | When a fence's label ends in `-`, nothing is stripped from its body. |
+| proposed | [[rule:fence-exact-trait]] | A fence with the trait `exact` keeps every byte of its body; it replaces the `-` flag. |
 | proposed | [[rule:fence-dedent-in-meta]] | The indentation removed from each fence body line is kept in «meta». |
 | proposed | [[rule:fence-body-line-endings]] | Every fence body line keeps its line ending, the last included. |
 | gap | [[rule:late-attributes]] | An attribute line after content has begun |

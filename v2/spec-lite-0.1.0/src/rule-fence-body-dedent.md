@@ -6,17 +6,17 @@ needs-work: false
 layer: tree
 per: []
 depends: [rule:fence-body-not-scanned, rule:text-left-edge]
-consequences: [rule:fence-body-shallower-line, rule:fence-verbatim-label, rule:fence-dedent-in-meta, def:node, rule:fence-body-line-endings, rule:fence-body-not-scanned, rule:text-dedent, rule:text-left-edge, rule:text-shallower-line]
+consequences: [rule:fence-body-shallower-line, rule:fence-exact-trait, rule:fence-dedent-in-meta, def:node, rule:fence-body-line-endings, rule:fence-body-not-scanned, rule:text-dedent, rule:text-left-edge, rule:text-shallower-line]
 test-fixtures: []
 ---
 
 # A fence body is dedented by its first line
 
-*Unless the label ends in `-`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces.*
+*Unless the fence has the trait `exact`, a fence body's first non-blank line sets its left edge, and each line loses that many leading spaces.*
 
 ## Statement
 
-Unless its label ends in `-`, a fence body's first non-blank line MUST set its left edge, and each body line MUST lose that many leading spaces.
+Unless the fence has the trait `exact` ([[rule:fence-exact-trait]]), a fence body's first non-blank line MUST set its left edge, and each body line MUST lose that many leading spaces.
 
 ````udon
 |rule[implied-root]
@@ -73,7 +73,7 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 **Costs accepted.**
 
-* A body whose first line is deeper than a later one is wrong by default (with a warning) unless the author adds `-`.
+* A body whose first line is deeper than a later one is wrong by default (with a warning) unless the author adds `-` (since 2026-10-12, the trait `exact`).
 
 **Reopen when.**
 
@@ -115,3 +115,4 @@ A rule, resting on the decisions in `per`. No fixtures yet.
     |ex
       ```text "\nx\n"
   ```
+- 2026-10-12: the dedenting is done by the default fence handler ([[rule:fence-default-handler]]), and `-` is replaced by the trait `exact` ([[rule:fence-exact-trait]]). The Discussion above keeps the 2026-10-08 wording.
