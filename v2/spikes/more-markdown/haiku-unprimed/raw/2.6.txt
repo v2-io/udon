@@ -1,0 +1,5 @@
+Paragraph one goes here. Write it as a complete, self-contained passage that opens the document and sets up the subject, so a reader on the first printed page gets the full context.
+
+<div style="page-break-after: always;"></div>
+
+Paragraph two goes here. It picks up where the first paragraph left off and carries the subject to a conclusion, so the two pages together read as one coherent piece.

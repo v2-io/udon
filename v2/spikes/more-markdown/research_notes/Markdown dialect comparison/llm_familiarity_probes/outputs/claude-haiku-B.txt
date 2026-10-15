@@ -1,0 +1,17 @@
+1. **Djot.** `_emph_` is emphasis, `*strong*` is strong, `{=marked=}` is highlight, `[text]{.kbd}` is a span with class `kbd`, and `::: warning` is a fenced div.
+
+2. **Obsidian Flavored Markdown.** `> [!tip]-` is a foldable callout (collapsed by default), `[[Setup#Install|install]]` is a wikilink to a heading with alias text, `![[diagram.png|400]]` embeds an image at width 400, and `%%todo%%` is a hidden comment.
+
+3. **Pandoc Markdown.** `@smith04 [p. 33]` is a citation with a locator, `^[...]` is an inline footnote, and `| ...` lines form a line block that preserves line breaks.
+
+4. **MDX.** `import` is a JS import, `{year}` interpolates a JS expression in a heading, `<Chart />` is a JSX component, and `{/* ... */}` is a JS comment that renders nothing.
+
+5. **MyST Markdown (Sphinx/Jupyter Book).** ` ```{note} ` is a directive fence rendered as a note admonition, and `` {sub}`2` `` is a role rendering subscript.
+
+6. **Unsure.** It's a Liquid-style block tag with a `{% /name %}` closer, probably a custom shortcode from a site generator. Standard Liquid closes with `{% endname %}`, so I can't tell which processor this targets.
+
+7. **GitHub Flavored Markdown alert** (`[!NOTE]` in a blockquote, rendered as a Note admonition). Obsidian also accepts this callout syntax, so the flavor is ambiguous between the two.
+
+8. **Djot.** `: Term` followed by an indented body is a definition list, `$`...`$` is inline math, `{+added+}` is insertion, and `{-removed-}` is deletion.
+
+9. **AsciiDoc.** `[NOTE]` is an admonition style applied to the `====` example block, which renders as a Note admonition.

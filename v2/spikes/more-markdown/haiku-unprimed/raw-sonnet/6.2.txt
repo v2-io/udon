@@ -1,0 +1,19 @@
+# Getting Started with the Build Tool
+
+This guide walks you through the basic setup for your project. Follow the steps below to get up and running quickly.
+
+## Installation
+
+Install the dependencies and initialize the project:
+
+```bash
+npm install
+npm run init
+```
+
+> **⚠️ Warning**
+> Running `npm run init` will overwrite any existing configuration files in your project directory. Back up your `config/` folder before proceeding if you have custom settings you want to keep.
+
+## Next Steps
+
+Once initialization completes, you can start the development server with `npm run dev` and open `http://localhost:3000` in your browser.

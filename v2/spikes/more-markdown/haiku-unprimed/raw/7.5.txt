@@ -1,0 +1,8 @@
+**Q: How do I reset my password?**
+
+<details>
+<summary>Show answer</summary>
+
+Go to the sign-in page and click **Forgot password?**. Enter the email address linked to your account, and we'll send you a reset link. The link expires after 24 hours. If you don't see the email, check your spam folder.
+
+</details>

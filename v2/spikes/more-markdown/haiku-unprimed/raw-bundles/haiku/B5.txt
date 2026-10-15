@@ -1,0 +1,40 @@
+**1. Table with no header row**
+
+<table>
+<tr><td>Apple</td><td>Red</td></tr>
+<tr><td>Banana</td><td>Yellow</td></tr>
+</table>
+
+**2. Styled phrase**
+
+Act now for this <span class="promo">limited offer</span> before it ends.
+
+**3. Bold word with raw HTML**
+
+The <b>important</b> detail is in the second section.
+
+**4. Numbered list**
+
+1. The first item has its first paragraph. It explains the setup in a bit more detail.
+
+   This is the second paragraph of the first item. It adds context before the example.
+
+   ```python
+   print("Hello, world!")
+   ```
+
+2. The second item is a single short line.
+
+**5. To-do admonition**
+
+> **TODO:** Review the draft and confirm the figures before Friday.
+
+**6. Formula and power**
+
+Water has the chemical formula H₂O, and 2¹⁰ equals 1,024.
+
+**7. Weather text**
+
+The morning started with light rain and a cool breeze. By afternoon, the clouds had cleared, leaving mild sunshine.
+
+<!-- Note to self: check the forecast wording again before publishing. -->

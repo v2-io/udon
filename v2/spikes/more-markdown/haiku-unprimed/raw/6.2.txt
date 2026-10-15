@@ -1,0 +1,6 @@
+Here's a quick note with a warning admonition:
+
+> [!WARNING]
+> Back up your data before running this script. It permanently overwrites files in the target directory and cannot be undone.
+
+Once you've backed up your data, you can run the script with the `--dry-run` flag first to preview which files will change.

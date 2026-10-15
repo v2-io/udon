@@ -1,0 +1,27 @@
+Use a `<picture>` element with a `prefers-color-scheme` media query. The browser shows `logo-dark.png` when the user's system is in dark mode and falls back to `logo-light.png` otherwise.
+
+```html
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="logo-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="logo-light.png">
+  <img src="logo-light.png" alt="Company logo">
+</picture>
+```
+
+If you prefer CSS, you can swap the images with two `<img>` tags:
+
+```html
+<img class="logo logo-light" src="logo-light.png" alt="Company logo">
+<img class="logo logo-dark" src="logo-dark.png" alt="Company logo">
+
+<style>
+  .logo-dark { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    .logo-light { display: none; }
+    .logo-dark { display: inline; }
+  }
+</style>
+```
+
+Both approaches follow the operating system or browser setting. The `<picture>` version is simpler and loads only the image that's needed. The CSS version is useful if you also want to switch the logo based on a site-level theme toggle, which would require using a `data-theme` attribute instead of the media query.

@@ -1,0 +1,14 @@
+# Simple Process Flowchart
+
+This document shows a basic two-step process: the flow begins at **Start** and ends at **End**.
+
+```mermaid
+flowchart LR
+    A([Start]) --> B([End])
+```
+
+## Text Version
+
+```
+(Start) ───▶ (End)
+```

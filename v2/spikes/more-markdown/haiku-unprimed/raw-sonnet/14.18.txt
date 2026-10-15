@@ -1,0 +1,31 @@
+```html
+<style>
+  .story p::first-letter {
+    float: left;
+    font-size: 4.5em;
+    line-height: 0.8;
+    padding: 0.08em 0.1em 0 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: bold;
+    color: #7a1f1f;
+  }
+</style>
+
+<div class="story">
+  <p>
+    The lighthouse at Marrow Point had been dark for eleven years, which was why
+    Elsie Varga froze when she saw it blink. Once, twice, then a long steady
+    sweep across the black water, as if the old lamp were clearing its throat
+    after a long silence. She had come to the cliffs only to scatter her
+    grandfather's ashes and leave before the tide turned, but the beam swung
+    past her again, slower this time, and settled on the narrow path leading
+    down to the rocks, as if someone inside had been expecting her.
+  </p>
+</div>
+```
+
+A preview of how it reads:
+
+**T**he lighthouse at Marrow Point had been dark for eleven years, which was why Elsie Varga froze when she saw it blink. Once, twice, then a long steady sweep across the black water, as if the old lamp were clearing its throat after a long silence. She had come to the cliffs only to scatter her grandfather's ashes and leave before the tide turned, but the beam swung past her again, slower this time, and settled on the narrow path leading down to the rocks, as if someone inside had been expecting her.
+
+The CSS `::first-letter` rule creates the large drop cap in a browser. Plain Markdown can't do true drop caps, so the bold "T" above is just an approximation.

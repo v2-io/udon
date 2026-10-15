@@ -1,0 +1,9 @@
+Here's a sample table with a totals row:
+
+| Item | Quantity | Unit Price | Subtotal |
+|------|---------:|-----------:|---------:|
+| Widgets | 4 | $12.50 | $50.00 |
+| Gadgets | 3 | $20.00 | $60.00 |
+| **Total** | **7** | | **$110.00** |
+
+If you have specific data you'd like in the table, share it and I'll fill it in.

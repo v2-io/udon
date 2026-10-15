@@ -1,0 +1,3 @@
+The ɴᴀꜱᴀ report was released.
+
+Plain text has no small-caps formatting, so this uses Unicode small-capital letters. In a word processor, you can instead select "NASA" and apply the Small Caps font setting.

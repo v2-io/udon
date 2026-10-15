@@ -1,0 +1,22 @@
+Here's 漢字 with its reading shown above it, using HTML ruby markup:
+
+```html
+<ruby>漢字<rt>かんじ</rt></ruby>
+```
+
+Rendered, it looks like this:
+
+<ruby>漢字<rt>かんじ</rt></ruby>
+
+If your viewer doesn't support ruby tags, here's a plain-text version:
+
+```
+かんじ
+漢字
+```
+
+If you want the reading split per character (each kana aligned over its own kanji), you can use:
+
+```html
+<ruby>漢<rt>かん</rt>字<rt>じ</rt></ruby>
+```

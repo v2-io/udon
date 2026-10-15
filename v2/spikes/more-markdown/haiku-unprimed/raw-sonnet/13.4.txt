@@ -1,0 +1,22 @@
+# Simple Flowchart
+
+This document shows a minimal flowchart with two steps connected by an arrow.
+
+## Flowchart
+
+```mermaid
+flowchart LR
+    A[Start] --> B[End]
+```
+
+## Text version
+
+```
++-------+      +-----+
+| Start | ---> | End |
++-------+      +-----+
+```
+
+## Description
+
+The process begins at **Start** and proceeds directly to **End**, with a single arrow indicating the direction of flow.

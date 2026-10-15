@@ -1,0 +1,10 @@
+1. **Back up your data**
+   Copy all important files to an external drive or cloud storage before making any changes.
+
+2. **Run the update**
+   Start the installer and follow the on-screen prompts.
+
+   > ⚠️ **Warning:** Do not power off or disconnect your device during the update. Interrupting the process can corrupt the system and may leave the device unusable.
+
+3. **Verify the result**
+   Restart the device and confirm that everything works as expected and your files are intact.

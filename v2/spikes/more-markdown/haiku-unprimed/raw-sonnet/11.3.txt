@@ -1,0 +1,32 @@
+Here's a passage with the video embedded inline using the HTML5 `<video>` element:
+
+```html
+<section>
+  <h2>Watch the Talk</h2>
+  <p>
+    In this session, the speaker walks through the key ideas and takeaways
+    from the presentation. Press play below to watch it right here on the page,
+    no download required.
+  </p>
+
+  <video controls preload="metadata" width="720" style="max-width: 100%;">
+    <source src="talk.mp4" type="video/mp4">
+    Your browser doesn't support inline video playback.
+    <a href="talk.mp4">Download the talk (MP4)</a>.
+  </video>
+
+  <p>
+    If the video doesn't load, make sure <code>talk.mp4</code> is in the same
+    folder as this page.
+  </p>
+</section>
+```
+
+**Notes:**
+- `controls` gives the viewer play, pause, seek, and volume controls.
+- `preload="metadata"` loads only the duration and dimensions until the user presses play.
+- The `style="max-width: 100%;"` keeps the video responsive on small screens.
+- The text inside `<video>` is a fallback for browsers that can't play it.
+- On iOS, add `playsinline` to the `<video>` tag if you want it to play within the page rather than going fullscreen.
+
+If you need it in another format (Markdown, MDX, or a specific framework like React), let me know and I'll adapt it.

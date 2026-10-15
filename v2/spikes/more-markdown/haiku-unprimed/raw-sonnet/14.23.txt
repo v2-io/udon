@@ -1,0 +1,13 @@
+Here's a sentence with an inline badge, using HTML so it renders in Markdown viewers that support it:
+
+```html
+Try out our new dashboard experience today <span style="background-color:#7c3aed;color:#fff;font-size:0.7em;font-weight:600;padding:2px 8px;border-radius:999px;vertical-align:middle;">beta</span>
+```
+
+Rendered, it looks like this: Try out our new dashboard experience today <span style="background-color:#7c3aed;color:#fff;font-size:0.7em;font-weight:600;padding:2px 8px;border-radius:999px;vertical-align:middle;">beta</span>
+
+If you'd prefer a plain-Markdown option (for places that strip HTML, like GitHub READMEs), you can use a shields.io badge:
+
+```markdown
+Try out our new dashboard experience today ![beta](https://img.shields.io/badge/beta-7c3aed)
+```

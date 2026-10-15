@@ -1,0 +1,50 @@
+Here's an example of a nested quoted reply in standard email/Markdown style:
+
+```
+On Mon, Oct 12, 2026, Priya Natarajan wrote:
+> On Fri, Oct 9, 2026, Joseph Wecker wrote:
+> > Hi Priya,
+> >
+> > Could we move the design review to Thursday afternoon?
+> > I'd like to give the team time to finish the prototype first.
+> >
+> > Thanks,
+> > Joseph
+>
+> Hi Joseph,
+>
+> Thursday afternoon works for me. I'll update the invite
+> and let the rest of the group know.
+>
+> Best,
+> Priya
+
+Thanks Priya, that's perfect. See everyone Thursday.
+
+Joseph
+```
+
+And here is how it renders in Markdown:
+
+On Mon, Oct 12, 2026, Priya Natarajan wrote:
+> On Fri, Oct 9, 2026, Joseph Wecker wrote:
+> > Hi Priya,
+> >
+> > Could we move the design review to Thursday afternoon?
+> > I'd like to give the team time to finish the prototype first.
+> >
+> > Thanks,
+> > Joseph
+>
+> Hi Joseph,
+>
+> Thursday afternoon works for me. I'll update the invite and let the rest of the group know.
+>
+> Best,
+> Priya
+
+Thanks Priya, that's perfect. See everyone Thursday.
+
+Joseph
+
+Each additional level of reply adds another `>` prefix, so the earliest message sits at the deepest nesting level.

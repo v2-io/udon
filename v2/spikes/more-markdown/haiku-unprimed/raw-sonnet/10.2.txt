@@ -1,0 +1,27 @@
+Standard Markdown requires a header row, so the cleanest way to get a table without one is HTML:
+
+```html
+<table>
+  <tr><td>Apples</td><td>3</td></tr>
+  <tr><td>Oranges</td><td>5</td></tr>
+  <tr><td>Pears</td><td>2</td></tr>
+</table>
+```
+
+If you need to stay in pure Markdown, the usual workaround is an empty header row:
+
+```markdown
+|        |   |
+|--------|---|
+| Apples | 3 |
+| Oranges| 5 |
+| Pears  | 2 |
+```
+
+Rendered, the second version shows as:
+
+|        |   |
+|--------|---|
+| Apples | 3 |
+| Oranges| 5 |
+| Pears  | 2 |

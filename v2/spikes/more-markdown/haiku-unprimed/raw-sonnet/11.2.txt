@@ -1,0 +1,57 @@
+Here are a few ways to show `logo-light.png` in light mode and `logo-dark.png` in dark mode.
+
+## Option 1: HTML `<picture>` element (recommended)
+
+```html
+<picture>
+  <source srcset="logo-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="logo-light.png" alt="Logo">
+</picture>
+```
+
+The browser picks the dark logo when the user's system is in dark mode and falls back to the light logo otherwise.
+
+## Option 2: Markdown (GitHub README)
+
+GitHub supports theme-specific images using the `#gh-light-mode-only` and `#gh-dark-mode-only` fragments:
+
+```markdown
+![Logo](logo-light.png#gh-light-mode-only)
+![Logo](logo-dark.png#gh-dark-mode-only)
+```
+
+Or use the `<picture>` element, which GitHub also supports:
+
+```html
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="logo-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="logo-light.png">
+  <img alt="Logo" src="logo-light.png">
+</picture>
+```
+
+## Option 3: CSS
+
+```html
+<img class="logo logo-light" src="logo-light.png" alt="Logo">
+<img class="logo logo-dark" src="logo-dark.png" alt="Logo">
+
+<style>
+  .logo-dark { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    .logo-light { display: none; }
+    .logo-dark { display: inline; }
+  }
+</style>
+```
+
+This is useful if you also want to toggle themes manually, for example by swapping the media query for a `[data-theme="dark"]` selector.
+
+## Which should you use?
+
+- **Plain web page or README:** Option 1 is simplest and needs no CSS.
+- **GitHub-only Markdown:** Option 2 works without raw HTML.
+- **Site with a manual theme toggle:** Option 3 gives you the most control.
+
+If you tell me which framework or context you're using (plain HTML, React, Docusaurus, etc.), I can tailor the snippet to it.

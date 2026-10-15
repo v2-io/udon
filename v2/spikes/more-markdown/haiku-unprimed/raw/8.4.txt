@@ -1,0 +1,7 @@
+Rounding rules can produce surprising results when values are summed. Consider these two cases.
+
+**Example 1.** A shop sells three items priced at $0.10, $0.10, and $0.10. Each total is computed exactly, so the sum is $0.30, as expected.
+
+**Example 2.** The same shop sells three items priced at $0.105 each, and it rounds each price to the nearest cent before adding them. Each price rounds to $0.11, so the receipt totals $0.33. The exact sum would be $0.315, which rounds to $0.32, so rounding each item first costs the customer an extra cent.
+
+Example 2 shows why accounting systems usually round only the final total, not each line item.

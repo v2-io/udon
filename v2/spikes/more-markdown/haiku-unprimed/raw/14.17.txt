@@ -1,0 +1,24 @@
+Here's a short LaTeX example using the `lineno` package. It numbers each line in the left margin, and the numbers appear in the printed output for reviewers.
+
+```latex
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{lineno}
+\linenumbers                 % turn on margin line numbers
+\modulolinenumbers[5]        % label every fifth line
+\linenumbersep=8pt           % space between numbers and text
+\setlength{\linenumbersep}{8pt}
+\doublespacing               % optional: double spacing gives reviewers room to annotate
+
+\begin{document}
+
+\begin{center}
+\textbf{Manuscript Title}
+\end{center}
+
+This paragraph is set up so that the printed version shows line numbers in the left margin. Each line of text is numbered consecutively, which lets reviewers refer to specific passages by line number in their comments. The numbering restarts on each page by default, and it does not count headings, figures, or captions unless they are explicitly included. Because the numbers are generated at typesetting time, they update automatically whenever the text is edited.
+
+\end{document}
+```
+
+To make numbering continuous across the whole document, add `\linenumbers` once in the preamble and avoid `\nolinenumbers` around sections you want numbered. If you use a different typesetting system, such as Word, tell me which one and I'll give you the equivalent setup.

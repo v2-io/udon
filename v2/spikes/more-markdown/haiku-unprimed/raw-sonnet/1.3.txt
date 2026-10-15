@@ -1,0 +1,5 @@
+To install the application, download the installer package from the official website and save it to your computer. Once the download completes, double-click the installer file to launch the setup wizard, then follow the on-screen prompts to choose an installation location and accept the license agreement. **[Windows only: If prompted by User Account Control, click "Yes" to allow the installer to make changes to your device.]** When installation finishes, click "Finish" to close the wizard, and launch the application from your Start menu or desktop shortcut.
+
+---
+
+**Note:** The bolded bracketed sentence is the one that should appear only in the Windows version of the document. In the non-Windows version, remove it and the paragraph reads naturally without it.

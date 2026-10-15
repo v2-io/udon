@@ -1,0 +1,88 @@
+I'll use Markdown (with a few common extensions) for all six items.
+
+## 1. Inline command
+
+To verify your changes, run the command `make test` from the project root.
+
+## 2. Tip admonition with a lightbulb icon
+
+Using MkDocs Material / Docusaurus-style admonition syntax with a custom lightbulb icon:
+
+```markdown
+!!! tip "Quick tip"
+    Commit small, focused changes often. They are easier to review and easier to revert.
+```
+
+In GitHub-flavored Markdown, which has no custom icons, use an emoji in the title:
+
+```markdown
+> [!TIP]
+> 💡 Commit small, focused changes often. They are easier to review and easier to revert.
+```
+
+## 3. Collapsible FAQ answer
+
+```markdown
+**Q: How do I reset my password?**
+
+<details>
+<summary>Show answer</summary>
+
+Go to **Settings → Account → Reset password**, then follow the link sent to your email.
+
+</details>
+```
+
+## 4. Product name defined once
+
+Using MkDocs `mkdocs-macros-plugin` (define it in `mkdocs.yml`):
+
+```yaml
+extra:
+  product_name: Acme Cloud
+```
+
+Then in the page:
+
+```markdown
+{{ product_name }} is quick to set up.
+{{ product_name }} works with your existing tools.
+{{ product_name }} keeps your data secure.
+```
+
+Tool-agnostic alternative using a reference-style link definition, in plain Markdown:
+
+```markdown
+*[product]: Acme Cloud
+```
+
+(Reference-style definitions don't substitute text in standard Markdown, so a templating or variable mechanism like the macros above is the reliable approach. In Docusaurus, you'd define `const productName = 'Acme Cloud'` in an MDX file and write `{productName}` in each sentence.)
+
+## 5. Flowchart with Start and End
+
+````markdown
+# Process Overview
+
+This diagram shows the basic flow.
+
+```mermaid
+flowchart LR
+    A[Start] --> B[End]
+```
+````
+
+## 6. Section with stable identifier
+
+Using the heading attribute syntax supported by Pandoc, Python-Markdown (`attr_list`), and Docusaurus-style `{#id}`:
+
+```markdown
+# User Guide
+
+Welcome to the guide.
+
+## Installation {#install}
+
+Download the package and run the installer.
+```
+
+Other places can then link to it with `[see installation](#install)`, or from another page with `guide.md#install`.

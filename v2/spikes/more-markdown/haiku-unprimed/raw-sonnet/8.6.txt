@@ -1,0 +1,6 @@
+# To-Do List
+
+- [x] **Set up project repository** — Done
+- [ ] **Draft project proposal** — In progress 🚧
+- [~] ~~Schedule vendor demo~~ — Cancelled
+- [ ] ❗ **Submit quarterly budget report** — Important, due Friday

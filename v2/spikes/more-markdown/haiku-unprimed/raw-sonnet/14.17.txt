@@ -1,0 +1,29 @@
+Here's a minimal LaTeX document using the `lineno` package, which numbers each line in the margin when printed or exported to PDF:
+
+```latex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{lineno}
+
+\linenumbers          % turn on line numbering for the whole document
+\setlength{\linenumbersep}{0.3in}  % gap between numbers and text
+
+\begin{document}
+
+Peer review is most effective when reviewers can point to exact locations
+in a manuscript. Numbering each line in the margin removes ambiguity, so a
+comment such as ``clarify the claim on line 7'' is immediately actionable.
+Authors can then resolve feedback quickly, and editors can track which
+passages drew the most discussion across multiple reviewers.
+
+\end{document}
+```
+
+**Notes**
+
+- Compile with `pdflatex` (or `xelatex`/`lualatex`); line numbers appear in the left margin of the PDF.
+- Use `\linenumbers[1]` to restart numbering at 1, or `\begin{linenumbers}...\end{linenumbers}` to number only a section.
+- Add `\modulolinenumbers[5]` if you'd prefer a number only every 5th line.
+- With `amsmath` equations, load `lineno` with the `[mathlines]` option (`\usepackage[mathlines]{lineno}`) to avoid numbering glitches.
+
+If you'd rather use Word or Google Docs, let me know and I can give the equivalent steps (e.g., Layout → Line Numbers → Continuous in Word).

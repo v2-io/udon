@@ -1,0 +1,10 @@
+**Binary search**
+
+1. Set `low` ← 0 and `high` ← length(array) − 1
+2. While `low` ≤ `high`, repeat steps 3–7
+3. Set `mid` ← ⌊(`low` + `high`) / 2⌋
+4. If array[`mid`] = target, return `mid`
+5. If array[`mid`] < target, set `low` ← `mid` + 1
+6. Otherwise, set `high` ← `mid` − 1
+7. Continue to the next iteration
+8. Return −1 (target not found)

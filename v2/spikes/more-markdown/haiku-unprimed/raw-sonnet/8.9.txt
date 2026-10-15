@@ -1,0 +1,7 @@
+# Frequently Asked Questions
+
+**Q: What is an FAQ?**
+A: An FAQ, or "Frequently Asked Questions," is a collection of common questions and concise answers on a particular topic. It helps readers quickly find the information they need without having to contact support or search through longer documents.
+
+**Q: How do I write a good FAQ?**
+A: Keep questions phrased the way real users would ask them, give clear and direct answers, and organize entries by topic or importance. Review and update the FAQ regularly so it stays accurate and reflects new questions people are asking.

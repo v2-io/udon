@@ -1,0 +1,5 @@
+Einstein's famous insight that mass and energy are interchangeable is captured in the equation $E = mc^2$, where $E$ is energy, $m$ is mass, and $c$ is the speed of light in a vacuum.
+
+In display form:
+
+$$E = mc^2$$

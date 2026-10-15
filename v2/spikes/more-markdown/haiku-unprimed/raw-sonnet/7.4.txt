@@ -1,0 +1,7 @@
+**Main Paragraph**
+
+Good writing begins with a clear sense of who it's for. Before choosing a single word, a writer benefits from picturing one specific reader: what they already know, what they want, and what they're likely to skim past. That picture shapes everything that follows, from which details earn a place on the page to how quickly the main point arrives. A paragraph written for "everyone" tends to satisfy no one, while one written for a particular person often ends up useful to many.
+
+> **Sidebar: The Rubber Duck Principle**
+>
+> Programmers have long used a quirky trick called "rubber duck debugging": explaining a problem aloud to an inanimate duck. The act of putting thoughts into plain words for a patient, imaginary listener often reveals the flaw in the logic. Writers can borrow the idea. If you can't explain your main point to the duck in a sentence or two, the paragraph probably isn't ready yet.

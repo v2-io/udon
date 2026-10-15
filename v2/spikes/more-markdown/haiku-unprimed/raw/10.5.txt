@@ -1,0 +1,6 @@
+| Fruit  |  Description  |
+|--------------|------------------------------------------|
+| Apple        | A round fruit that grows on trees        |
+| Banana       | A long yellow fruit rich in potassium    |
+
+Markdown renderers often ignore spacing and set column widths automatically, so the 1:3 ratio shows up in the raw text. To control the rendered widths, you'd need HTML or a code block.

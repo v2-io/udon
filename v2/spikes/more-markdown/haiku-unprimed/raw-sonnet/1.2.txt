@@ -1,0 +1,25 @@
+Here's a version in JavaScript where the product name is defined once as a constant and interpolated into each sentence:
+
+```js
+const PRODUCT_NAME = "Acme Widget";
+
+const sentences = [
+  `${PRODUCT_NAME} makes everyday tasks faster and simpler.`,
+  `Thousands of teams rely on ${PRODUCT_NAME} to stay organized.`,
+  `Try ${PRODUCT_NAME} today and see the difference for yourself.`,
+];
+
+console.log(sentences.join(" "));
+```
+
+**Output:**
+
+> Acme Widget makes everyday tasks faster and simpler. Thousands of teams rely on Acme Widget to stay organized. Try Acme Widget today and see the difference for yourself.
+
+To rename the product, change only the `PRODUCT_NAME` value on the first line.
+
+If you'd prefer plain text with a placeholder, here's the same idea as a template:
+
+> **{{PRODUCT_NAME}}** makes everyday tasks faster and simpler. Thousands of teams rely on **{{PRODUCT_NAME}}** to stay organized. Try **{{PRODUCT_NAME}}** today and see the difference for yourself.
+
+with `PRODUCT_NAME = Acme Widget` defined once at the top.

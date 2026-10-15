@@ -1,0 +1,7 @@
+Here's a sentence with "limited offer" wrapped in a `span` tagged with the `promo` class:
+
+```html
+<p>Act now, this is a <span class="promo">limited offer</span> you won't want to miss.</p>
+```
+
+A stylesheet can then target it with `.promo { ... }` or `span.promo { ... }`.

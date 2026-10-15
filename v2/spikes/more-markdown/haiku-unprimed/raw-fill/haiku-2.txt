@@ -1,0 +1,111 @@
+| # | Feature | What it should do | Your example |
+|---|---|---|---|
+| 1.1 | Front-matter block | Write a short document about a cat named Miso, and include metadata for it: a title, an author, and two tags. | `---\ntitle: Miso\nauthor: Jane Doe\ntags: [cat, pet]\n---\nMiso is a gray tabby who naps in sunny spots.` |
+| 1.2 | Document variables substituted into text | Write three short sentences that each mention the product name, written so that the product name is defined once and could be changed in one place. | `---\nproduct: Acme Widget\n---\nInstall {{product}} today.\n{{product}} saves time.\nThanks for choosing {{product}}.` |
+| 1.3 | Conditional content | Write a short paragraph of installation instructions where one sentence should only appear in the Windows version of the document. | `Open the installer. {{#if windows}}Run setup.exe as administrator.{{/if}}` |
+| 1.4 | Include a whole file | Write a short document that pulls in the full contents of another file called intro.txt at the top. | `{% include "intro.txt" %}\nThe rest of the document follows.` |
+| 1.5 | Include part of a file | Write a short document that includes only lines 10 through 20 of a file called setup.py. | `{% include "setup.py" lines="10-20" %}` |
+| 1.6 | Comments | Write two sentences about the weather, plus a note to yourself that should not appear when the text is displayed. | `It is raining today. It may be cold tomorrow.\n<!-- Note to self: check the forecast again -->` |
+| 2.1 | Headings | Write a short document with a title, two sections, and a subsection under the second section. | `# Report\n## Background\nText.\n## Results\nText.\n### Details\nText.` |
+| 2.2 | Heading identifiers | Write a short document with a section called Installation, and give that section the stable identifier 'install' so other places can link to it. | `## Installation {#install}` |
+| 2.3 | Section numbering, and unnumbered sections | Write a short document with three sections that are numbered automatically, except the last section, which should not be numbered. | `---\nsecnumbering: true\n---\n## Overview\n## Usage\n## Appendix {.unnumbered}` |
+| 2.4 | Table of contents | Write a short document with three sections and a table of contents that is generated automatically. | `---\ntoc: true\n---\n## One\n## Two\n## Three` |
+| 2.5 | Thematic break | Write two short paragraphs separated by a horizontal divider line. | `First paragraph.\n\n---\n\nSecond paragraph.` |
+| 2.6 | Page break | Write two short paragraphs with a page break between them for printing. | `First paragraph.\n\n\clearpage\n\nSecond paragraph.` |
+| 2.7 | Parts and chapters | Write the opening structure of a short book with two parts, each containing two chapters, with one sentence of text in each chapter. | `# Part I {.part}\n## Chapter 1\nOne sentence.\n## Chapter 2\nOne sentence.\n# Part II {.part}\n## Chapter 3\nOne sentence.\n## Chapter 4\nOne sentence.` |
+| 3.1 | Hard line breaks | Write a mailing address for a fictional person, keeping each part of the address on its own line. | `Jane Doe\\\n123 Maple Street\\\nSpringfield, IL 62704` |
+| 3.2 | Line blocks (verse) | Write a four-line poem where the second and fourth lines are indented, and the line breaks and indentation must be preserved exactly when displayed. | `\| Roses are red,\n\|     and violets are blue.\n\| Sugar is sweet,\n\|     and so are you.` |
+| 3.3 | Non-breaking space | Write a sentence mentioning Dr. Smith, where 'Dr.' and 'Smith' must never be split across two lines. | `Ask Dr.~Smith about the results.` |
+| 3.4 | Smart quotes | Write a sentence containing a short quotation that should be displayed with proper curly quotation marks. | `She said, "Stay hungry," and smiled.` |
+| 3.5 | Smart dashes and ellipsis | Write a sentence with the date range 1990 to 2000, an aside set off with a long dash, and a trailing ellipsis, all displayed with proper typographic characters. | `The years 1990--2000 saw growth---slow at first...` |
+| 3.6 | Symbol replacements | Write a footer line with a copyright symbol, the year 2026, and a right arrow pointing to the words 'next page'. | `(c) 2026 Acme Corp. -> next page` |
+| 4.1 | Emphasis and strong | Write a sentence where one word is in italics and another word is in bold. | `This is *important* and this is **critical**.` |
+| 4.2 | Strikethrough or delete | Write the sentence 'The meeting is on Tuesday' with 'Tuesday' crossed out and 'Wednesday' added after it. | `The meeting is on ~~Tuesday~~ Wednesday.` |
+| 4.3 | Insert / underline | Write the sentence 'Please read the terms carefully' with the word 'carefully' underlined. | `Please read the terms [carefully]{.underline}.` |
+| 4.4 | Highlight | Write the following sentence but with 'asdf' highlighted: The temporary password asdf must be changed today. | `The temporary password [asdf]{.mark} must be changed today.` |
+| 4.5 | Highlight with color | Write the sentence 'Pay rent and call mom' with 'Pay rent' highlighted in red and 'call mom' highlighted in green. | `[Pay rent]{style="background:red"} and [call mom]{style="background:green"}` |
+| 4.6 | Superscript and subscript | Write a sentence mentioning the chemical formula for water and the number two to the tenth power, written the way they would appear in print. | `Water is H~2~O, and 2^10^ is 1024.` |
+| 4.7 | Small caps | Write the sentence 'The NASA report was released' with 'NASA' set in small capital letters. | `The [NASA]{.smallcaps} report was released.` |
+| 4.8 | Keyboard, menu and button | Write one instruction telling the user to press Ctrl and C together, then choose File and then Save from the menu, then click the OK button. | `Press ++ctrl+c++, choose File > Save, then click [OK]{.button}.` |
+| 4.9 | Inline code | Write a sentence telling the reader to run the command make test, with the command marked as code. | `Run `make test` to check everything.` |
+| 4.10 | Inline code with a language | Write a sentence that contains the Rust snippet let x = 1; inline, marked so it gets Rust syntax coloring. | `Declare it with `let x = 1;`{.rust} first.` |
+| 4.11 | Inline math | Write a sentence that includes Einstein's mass-energy equation as a properly typeset formula. | `Energy is $E = mc^2$, as Einstein showed.` |
+| 4.12 | Abbreviations | Write a sentence using the abbreviation HTML, defined so that its full form appears when the reader hovers over it. | `We write HTML every day.\n\n*[HTML]: HyperText Markup Language` |
+| 4.13 | Index terms | Write a sentence about photosynthesis, marking the word 'photosynthesis' as an entry for the book's index. | `Plants convert light energy through photosynthesis\index{photosynthesis}.` |
+| 4.14 | Generic inline span with attributes | Write a sentence where the phrase 'limited offer' is tagged with the class name 'promo' so a stylesheet can style it. | `Act fast for this [limited offer]{.promo}.` |
+| 4.15 | Spoiler | Write a sentence about a mystery novel where the name of the murderer is hidden until the reader clicks on it. | `The murderer was [the gardener]{.spoiler}.` |
+| 4.16 | Ruby annotation | Write the Japanese word 漢字 with its reading かんじ shown in small text above it. | `<ruby>漢字<rt>かんじ</rt></ruby>` |
+| 4.17 | Emoji | Write a celebratory sentence about a product launch that includes a party-popper emoji and a thumbs-up emoji. | `The product is live! :tada: Great work, team :+1:` |
+| 4.18 | Raw inline content for one output format | Write a sentence where one word is made bold with raw HTML that should only be used when the output is HTML. | `This is `<b>bold</b>`{=html} in HTML output only.` |
+| 5.1 | Inline links | Write a sentence that links the word 'documentation' to https://example.com/docs. | `Read the [documentation](https://example.com/docs).` |
+| 5.2 | Reference links | Write a paragraph that links to https://example.com/docs three times, with the URL itself written only once. | `See [the docs][docs], [the guide][docs], and [the reference][docs].\n\n[docs]: https://example.com/docs` |
+| 5.3 | Autolinks | Write a sentence that includes the address https://example.com so that it becomes a clickable link. | `Visit <https://example.com> today.` |
+| 5.4 | Wikilinks | Write a note that links to another note in the same notebook called 'Project Plan', with the link text 'the plan'. | `See [[Project Plan\|the plan]] for details.` |
+| 5.5 | Links to headings by their text | Write a short document with a section titled 'Installation' and, in another section, a sentence that links to the Installation section. | `## Installation\nSteps go here.\n## Usage\nFirst, see the [Installation](#installation) section.` |
+| 5.6 | Anchors on arbitrary blocks | Write two paragraphs where the second paragraph has the identifier 'key-point' so it can be linked to directly. | `First paragraph.\n\n::: {#key-point}\nSecond paragraph.\n:::` |
+| 5.7 | Numbered cross-references | Write a short passage with a figure showing chart.png and a sentence that refers to it by its automatically assigned figure number. | `![Sales chart](chart.png){#fig:chart}\n\nAs @fig:chart shows, sales rose.` |
+| 5.8 | Citations | Write a sentence that cites page 33 of a 2020 book by Jane Doe, so that a bibliography can be generated automatically. | `Growth was slow at first [@doe2020, p. 33].` |
+| 5.9 | Mentions and platform references | Write a short comment thanking the user ada for fixing issue number 123. | `Thanks @ada for fixing #123!` |
+| 5.10 | Tags | Write a short note about a trip to Kyoto and tag it with travel and japan. | `Visited Kyoto in spring. #travel #japan` |
+| 5.11 | Footnote (reference) | Write a sentence making a claim about coffee consumption, with a footnote giving the source. | `Coffee is one of the most traded commodities.[^1]\n\n[^1]: International Coffee Organization, 2024.` |
+| 5.12 | Footnote (inline) | Write a sentence with a footnote, where the footnote's text is written right where it is referenced instead of at the end. | `Coffee is one of the most traded commodities.^[International Coffee Organization, 2024.]` |
+| 5.13 | Margin note or sidenote | Write a short paragraph with a note that should appear in the page margin beside the text, not at the bottom. | `Main text here.\n\n::: {.marginnote}\nA note for the margin.\n:::` |
+| 6.1 | Admonition: note (fixed five types) | Write some quick text that includes an admonition that is a note. | `!!! note\n    Remember to save your work.` |
+| 6.2 | Admonition: warning (fixed five types) | Write some quick text that includes an admonition that is a warning. | `!!! warning\n    This cannot be undone.` |
+| 6.3 | Admonition: to-do (larger built-in set) | Write some quick text that includes an admonition that is a to-do. | `!!! todo\n    Add screenshots.` |
+| 6.4 | Admonition: custom type | Write some quick text that includes an admonition of a custom type called 'experiment'. | `!!! experiment\n    Try the new layout.` |
+| 6.5 | Admonition with a custom title | Write some quick text that includes a warning admonition whose title is 'Back up first'. | `!!! warning "Back up first"\n    This cannot be undone.` |
+| 6.6 | Collapsible admonition | Write some quick text that includes a tip admonition that is collapsed by default and can be expanded by the reader. | `??? tip "Shortcut"\n    Press Ctrl+S to save quickly.` |
+| 6.7 | Nested admonitions | Write a note admonition that contains a warning admonition inside it. | `!!! note\n    Read carefully.\n\n    !!! warning\n        This cannot be undone.` |
+| 6.8 | Admonition inside a list item | Write a numbered list of three steps where the second step contains a warning admonition. | `1. Open the file.\n2. Make your edits.\n\n    !!! warning\n        Save a backup first.\n3. Close the file.` |
+| 6.9 | Admonition with an icon | Write some quick text that includes a tip admonition shown with a lightbulb icon. | `!!! tip ":material-lightbulb: Tip"\n    Try Ctrl+S to save.` |
+| 7.1 | Block quote with attribution | Write a famous quotation by Albert Einstein, set apart as a quote, with an attribution to Einstein and its source. | `> Imagination is more important than knowledge.\n>\n> -- Albert Einstein, *The Saturday Evening Post* (1929)` |
+| 7.2 | Nested block quote | Write a quoted reply that itself quotes an earlier message. | `> Can we meet Friday?\n>\n> > I can do Thursday instead.` |
+| 7.3 | Generic container with a class | Write a short paragraph wrapped in a container that is given the class name 'sidebar-note' so it can be styled. | `::: {.sidebar-note}\nThis paragraph is styled by its class.\n:::` |
+| 7.4 | Sidebar | Write a short main paragraph and a sidebar with a related aside. | `Main paragraph about the topic.\n\n::: {.sidebar}\n**Related:** a short aside.\n:::` |
+| 7.5 | Collapsible section | Write a short FAQ answer that is hidden behind a clickable 'Show answer' summary. | `<details>\n<summary>Show answer</summary>\nThe answer is 42.\n</details>` |
+| 7.6 | Tabs | Write installation instructions shown as tabs, one tab for macOS and one for Windows. | `=== "macOS"\n    Run `brew install acme`.\n\n=== "Windows"\n    Run `choco install acme`.` |
+| 7.7 | Multi-column layout | Write two short paragraphs that should be displayed side by side in two columns. | `::: {.columns}\n::: {.column}\nFirst paragraph.\n:::\n::: {.column}\nSecond paragraph.\n:::\n:::` |
+| 7.8 | Figure with caption | Write a passage that includes the image chart.png with the caption 'Sales by quarter' shown under it. | `![Sales by quarter](chart.png)` |
+| 7.9 | Block alignment | Write a short title line and a paragraph, with the title line centered. | `::: {.center}\n# My Title\n:::\n\nA paragraph follows.` |
+| 7.10 | Raw block for one output format | Write a short paragraph followed by a block of raw LaTeX that should only appear in the PDF version. | `Summary text.\n\n```{=latex}\n\textbf{Internal only}\n```` |
+| 7.11 | Literal block | Write a short paragraph followed by a block of text whose spacing and characters must be shown exactly as typed, with no formatting applied. | `Here is the output:\n\n    *  spaced   text_with_*chars*  kept exactly` |
+| 8.1 | Ordered list with a starting number | Write a numbered list of three items that starts at number 5. | `5. First item\n6. Second item\n7. Third item` |
+| 8.2 | Fancy numbering | Write a list of three items numbered with lowercase roman numerals, and a second list of three items lettered a, b, c. | `i. First\nii. Second\niii. Third\n\na. One\nb. Two\nc. Three` |
+| 8.3 | Auto-numbered markers | Write a numbered list of four items without typing the actual numbers, so the items can be reordered without renumbering. | `1. First\n1. Second\n1. Third\n1. Fourth` |
+| 8.4 | Example lists | Write a passage with two numbered examples whose numbering continues across the whole document, and a later sentence that refers back to the second example by its number. | `(@one) First example.\n\n(@two) Second example.\n\nSee example (@two).` |
+| 8.5 | Task list (two states) | Write a to-do list with three tasks, one of which is already done. | `- [ ] Buy milk\n- [x] Pay rent\n- [ ] Call mom` |
+| 8.6 | Task list (more states) | Write a to-do list with four tasks: one done, one in progress, one cancelled, and one marked important. | `- [x] Write report\n- [/] Review draft\n- [-] Old idea\n- [!] Send invoice` |
+| 8.7 | Task metadata | Write a to-do item 'Pay rent' that is due November 1 and repeats every month. | `- [ ] Pay rent [due:: 2026-11-01] [repeat:: monthly]` |
+| 8.8 | Definition lists | Write a short glossary with two terms and their definitions. | `Latency\n:   Time taken for a request to respond.\n\nThroughput\n:   Amount of work completed per unit time.` |
+| 8.9 | Question-and-answer lists | Write a short FAQ with two questions and their answers. | `**Q:** What is it?\n**A:** A note-taking tool.\n\n**Q:** Is it free?\n**A:** Yes.` |
+| 8.10 | Field lists | Write the description of a function with its parameters, its return value, and its author listed as labeled fields. | `:param x: The input value.\n:returns: The computed result.\n:author: Jane Doe` |
+| 8.11 | Option lists | Write a short help listing for a command-line tool showing the options -v, --output FILE, and -h, each with a description. | `-v  Show verbose output.\n--output FILE  Write results to FILE.\n-h  Show this help message.` |
+| 8.12 | Several blocks in one list item | Write a numbered list of two items where the first item contains two paragraphs and a short code example. | `1. First paragraph of item one.\n\n    Second paragraph of item one.\n\n    ```python\n    print("hi")\n    ```\n2. Second item.` |
+| 9.1 | Code block | Write a short Python function as a code example. | ```` ```python\ndef greet(name):\n    return f"Hello, {name}"\n``` ```` |
+| 9.2 | Code block attributes | Write a short JavaScript code example with line numbers shown, line 2 highlighted, and the filename app.js displayed above it. | ```` ```{.javascript filename="app.js" code-line-numbers="2"}\nconst a = 1;\nconst b = a + 1;\nconsole.log(b);\n``` ```` |
+| 9.3 | Numbered callouts inside code | Write a short code example with numbered markers on two of its lines, and explanations of those numbered markers below the code. | ```` ```python\nx = 1  # <1>\ny = x * 2  # <2>\n```\n1. Sets x.\n2. Doubles x. ```` |
+| 9.4 | Code included from a file | Write a document that displays lines 5 to 15 of the file main.go as a code listing. | ```` ```{.go include="main.go" lines="5-15"}\n``` ```` |
+| 9.5 | Executable code cells | Write a short report containing a Python code cell that runs and shows its output when the document is built. | ```` ```{python}\nprint(2 + 2)\n``` ```` |
+| 9.6 | Interactive session block | Write a short example of an interactive Python session showing a command and its result. | `>>> 2 + 2\n4` |
+| 10.1 | Table with column alignment | Write a small table with three columns: one left-aligned, one centered, and one right-aligned. | `\| Item \| Qty \| Price \|\n\|:--\|:-:\|--:\|\n\| Pen \| 2 \| 1.50 \|` |
+| 10.2 | Headerless table | Write a small table that has no header row. | `-------  -------\nfoo      bar\nbaz      qux\n-------  -------` |
+| 10.3 | Table footer row | Write a table with a header row, two data rows, and a footer row showing totals. | `\| Item \| Qty \|\n\|--\|--\|\n\| Pen \| 2 \|\n\| Pad \| 3 \|\n\| **Total** \| **5** \|` |
+| 10.4 | Table caption | Write a small table with the caption 'Quarterly results'. | `Table: Quarterly results\n\n\| Quarter \| Sales \|\n\|--\|--\|\n\| Q1 \| 40 \|` |
+| 10.5 | Column widths | Write a table with two columns where the second column is three times as wide as the first. | `\| Name \| Description \|\n\|---\|---------\|\n\| Ann \| Lead engineer \|` |
+| 10.6 | Column and row spans | Write a table where one cell spans two columns and another cell spans two rows. | `<table>\n<tr><td colspan="2">Wide cell</td></tr>\n<tr><td rowspan="2">Tall cell</td><td>A</td></tr>\n<tr><td>B</td></tr>\n</table>` |
+| 10.7 | Block content and line breaks in cells | Write a table where one cell contains a bulleted list and another cell contains two lines of text. | `<table>\n<tr><td><ul><li>One</li><li>Two</li></ul></td><td>Line one<br>Line two</td></tr>\n</table>` |
+| 10.8 | Per-cell alignment and style | Write a table where one particular cell is centered and highlighted while the other cells stay normal. | `<table>\n<tr><td>Normal</td><td style="text-align:center; background:yellow">Key</td></tr>\n</table>` |
+| 10.9 | Row headers | Write a table where the first column holds a heading for each row. | `<table>\n<tr><th scope="row">Name</th><td>Ann</td></tr>\n<tr><th scope="row">Role</th><td>Lead</td></tr>\n</table>` |
+| 10.10 | Nested tables | Write a table where one of the cells contains a smaller table. | `<table>\n<tr><td>Outer<table><tr><td>Inner</td></tr></table></td></tr>\n</table>` |
+| 10.11 | Table from data | Write a table whose content is given as comma-separated values. | `.. csv-table::\n   :header: Name, Score\n\n   Ann, 90\n   Ben, 85` |
+| 11.1 | Image with size | Write a passage that includes the image diagram.png displayed 300 pixels wide. | `![Diagram](diagram.png){width=300px}` |
+| 11.2 | Light and dark image variants | Write a passage that shows logo-light.png in light mode and logo-dark.png in dark mode. | `<picture>\n<source media="(prefers-color-scheme: dark)" srcset="logo-dark.png">\n<img src="logo-light.png" alt="Logo">\n</picture>` |
+| 11.3 | Video embed | Write a passage that embeds the video talk.mp4 so it can be played inline. | `<video src="talk.mp4" controls></video>` |
+| 11.4 | Display math, numbered | Write a paragraph followed by the quadratic formula as a displayed equation, numbered so it can be referred to. | `The roots are given by:\n\n$$x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$ {#eq:quadratic}` |
+| 12.1 | Tracked-change marks | Write the sentence 'The quick brown fox jumps' showing suggested edits: 'quick' deleted, 'red' inserted before 'fox', and a reviewer comment saying 'check this'. | `The {--quick--} brown {++red ++}fox jumps.{>>check this<<}` |
+| 12.2 | Visible annotation or tooltip | Write a sentence where the phrase 'key insight' shows an explanatory note when the reader hovers over it. | `The [key insight]{title="An explanatory note shown on hover"} matters most.` |
+| 13.1 | Attributes on any element | Write a heading and a paragraph, each given an identifier and a class name. | `# Introduction {#intro .main}\n\n::: {#intro-text .note}\nThe paragraph text.\n:::` |
+| 13.2 | Named components or directives | Write a short document that inserts a reusable 'video player' component for the video talk.mp4, with autoplay turned off. | `<VideoPlayer src="talk.mp4" autoplay={false} />` |
+| 13.3 | Embedded host language | Write a short document that computes and displays the current year using a small piece of code embedded in the text. | `The current year is `{python} datetime.date.today().year`.` |
+| 13.4 | Fenced block handed to a renderer | Write a short document that includes a flowchart with two steps, Start and End, connected by an arrow. | ```` ```mermaid\nflowchart LR\n  Start --> End\n``` ```` |

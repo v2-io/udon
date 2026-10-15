@@ -1,0 +1,12 @@
+Here is a short paragraph about the value of plain-text notes for long-running projects, followed by LaTeX that will only render in the PDF output.
+
+Keeping notes in plain text makes them easy to search, version, and carry between tools. A project log that records decisions, open questions, and dated observations becomes a reliable record that outlasts any single editor or device. Writing entries in complete sentences, rather than fragments, also tends to clarify thinking, because the act of explaining a decision often reveals gaps in the reasoning behind it.
+
+```{=latex}
+\begin{center}
+\rule{0.5\linewidth}{0.4pt}
+
+\vspace{0.5em}
+\textit{This line and the rule above appear only in the PDF version.}
+\end{center}
+```

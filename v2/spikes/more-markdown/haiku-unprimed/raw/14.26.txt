@@ -1,0 +1,7 @@
+```
+Water boils at 100°C          ⎫
+                              ⎪
+Ice melts at 0°C              ⎬  Phase transitions
+                              ⎪
+Steam is water in gas form    ⎭
+```

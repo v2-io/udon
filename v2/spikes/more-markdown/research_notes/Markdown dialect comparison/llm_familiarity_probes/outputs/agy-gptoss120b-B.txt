@@ -1,0 +1,17 @@
+**1.** *Pandoc‑flavored Markdown* – `{=marked=}` highlights the text; `{.kbd}` adds a `kbd` CSS class (often rendered as a keyboard key); `::: warning … :::` creates a warning call‑out block.  
+
+**2.** *Obsidian (Markdown with wiki‑links & admonitions)* – `[!tip]-` starts a hidden tip admonition; `[[Setup#Install|install]]` is a wiki‑link with alias; `![[diagram.png|400]]` embeds an image with a width hint; `%%todo%%` is an inline comment/placeholder.  
+
+**3.** *Pandoc Markdown (citations & footnotes)* – `@smith04` and `@jones99` are bibliography citation keys; `^[…]` inserts a footnote; the `| …` lines form a simple pipe‑table.  
+
+**4.** *MDX (Markdown with embedded JSX/React)* – `import {Chart} …` imports a component; `# Sales for {year}` is a Markdown header; `<Chart data={data} />` renders the React component; `{/* reviewed */}` is a JSX comment.  
+
+**5.** *Markdown with fenced‑info‑string* – ```` ```{note} ```` starts a fenced code block labeled “note” (often rendered as a highlighted note); `H{sub}`\`2\` renders a subscript “2” using a subscript extension.  
+
+**6.** *Hugo short‑code Markdown* – `{% callout type="warning" %}` … `{% /callout %}` invokes Hugo’s `callout` shortcode, producing a styled warning box.  
+
+**7.** *GitHub/Docs‑style Markdown admonition* – `> [!NOTE]` starts a “NOTE” admonition block; the quoted text is displayed in a highlighted note panel.  
+
+**8.** *GitHub‑flavored Markdown with definition lists & diff markup* – `: Term` begins a definition list; `$`e^{i\pi}`$` renders inline LaTeX math; `{+added+}` and `{-removed-}` show inserted/deleted text (diff styling).  
+
+**9.** *AsciiDoc* – `[NOTE]` sets the block’s role; the surrounding `====` delimiters create a titled block containing the note’s content.

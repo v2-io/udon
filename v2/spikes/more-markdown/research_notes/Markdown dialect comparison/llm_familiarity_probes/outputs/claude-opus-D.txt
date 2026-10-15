@@ -1,0 +1,29 @@
+1. `<p>H<sub>2</sub>O and <del>gone</del></p>`: Pandoc Markdown.
+   GFM would render it as `H<del>2</del>O`, because GFM treats a single tilde as strikethrough too.
+
+2. `<p>See <a href="Setup">install guide</a>.</p>`: wikilink with `[[target|label]]` order (MediaWiki/Obsidian).
+   Gollum (GitHub wiki) uses `[[label|target]]`, so the link text and target would be swapped.
+
+3. `<p>Note {% this is important %} here.</p>`: plain Markdown, which passes the braces through as text.
+   Liquid/Jekyll or Jinja would throw an "unknown tag 'this'" error.
+
+4. `<p>This is <em>x</em> and <em>y</em>.</p>`: CommonMark.
+   Org-mode gives bold and underline; AsciiDoc gives `<strong>x</strong>` and `<em>y</em>`.
+
+5. `<div>\n**x**\n</div>` (output unchanged): CommonMark, where an HTML block runs until a blank line, so the asterisks stay literal.
+   Pandoc would render `<div><p><strong>x</strong></p></div>`.
+
+6. `<p>x<sup>2</sup> and a note<a href="#fn1" class="footnote-ref"><sup>1</sup></a></p>`, plus a footnotes section: Pandoc (superscript and inline notes).
+   In CommonMark or GFM it all stays literal.
+
+7. `<p><mark>marked</mark> and <ins>added</ins></p>`: a mark extension plus GitLab's inline-diff syntax.
+   CommonMark leaves both literal. CriticMarkup would need `{++added++}`.
+
+8. `<p>Groceries:</p><ul><li>milk</li><li>eggs</li></ul>`: CommonMark/GFM, where a list can interrupt a paragraph.
+   Markdown.pl and Pandoc need a blank line before the list, so it would be one paragraph.
+
+9. `<p>Visit <a href="https://example.com">https://example.com</a> today.</p>`: GFM autolinks.
+   Strict CommonMark wouldn't make it a link.
+
+10. `<dl><dt>term</dt><dd>its definition</dd></dl>`: Pandoc / PHP Markdown Extra definition lists.
+    CommonMark renders `<p>term\n: its definition</p>`.

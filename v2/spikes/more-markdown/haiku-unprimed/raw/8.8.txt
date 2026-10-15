@@ -1,0 +1,3 @@
+**API** (Application Programming Interface): A set of defined rules and protocols that allows one software program to request services or data from another. APIs specify the methods, inputs, and outputs that developers can use to interact with a system without needing to know its internal implementation.
+
+**Endpoint**: A specific URL or address within an API where a particular resource or function can be accessed. For example, `https://api.example.com/users` might be an endpoint that returns a list of users when a request is sent to it.

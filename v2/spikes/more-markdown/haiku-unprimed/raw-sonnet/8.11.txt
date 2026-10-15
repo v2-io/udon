@@ -1,0 +1,11 @@
+```
+Usage: mytool [OPTIONS]
+
+Options:
+  -v              Enable verbose output, printing detailed progress
+                  and diagnostic messages while the tool runs.
+  --output FILE   Write results to FILE instead of standard output.
+                  The file is created if it does not exist and
+                  overwritten if it does.
+  -h              Show this help message and exit.
+```

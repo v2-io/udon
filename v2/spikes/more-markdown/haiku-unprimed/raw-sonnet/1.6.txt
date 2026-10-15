@@ -1,0 +1,3 @@
+The morning began with a soft gray mist that slowly burned off as the sun climbed, leaving behind a crisp, clear afternoon. By evening, a cool breeze rolled in from the west, carrying the earthy scent of rain that was still hours away.
+
+<!-- Note to self: keep the tone calm and descriptive; offer to adjust the style if the user wants something more technical, like a forecast. -->

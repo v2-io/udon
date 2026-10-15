@@ -1,0 +1,27 @@
+```markdown
+# Cooking Udon at Home
+
+> [!warning] Boil-over hazard
+> Udon foam and boil over quickly. Use a tall pot and stay nearby while the noodles cook.
+
+Udon are thick wheat noodles. Boil them until tender, then rinse in cold water to stop the cooking.[^1]
+
+## Key Terms
+
+**Dashi**: a basic Japanese stock made by steeping kombu (kelp) and dried bonito flakes in water. It is the broth base for most udon dishes.
+
+## Ingredients
+
+| Ingredient | Purpose |
+| --- | --- |
+| Udon noodles | Chewy main body |
+| Dashi | Savory broth base |
+
+Tip: ==salt the cooking water lightly== for better noodle flavor.
+
+See also [[Dashi Stock Basics]] for the full broth recipe.
+
+[^1]: Cook times vary by brand. Check the package and taste a strand near the end.
+```
+
+I used Obsidian-flavored Markdown because it supports the requested features natively (callouts, `==highlight==`, `[[wiki-links]]` to other notes, and footnotes) in a plain-text format that works in notes collections.

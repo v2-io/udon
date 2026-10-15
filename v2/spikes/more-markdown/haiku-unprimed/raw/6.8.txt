@@ -1,0 +1,6 @@
+1. **Back up your data.** Copy the files you plan to change to a separate location so you can restore them if something goes wrong.
+
+2. **Stop the running service before making changes.**
+   > **Warning:** Making changes while the service is running can corrupt data or leave the system in an inconsistent state. Confirm that no processes are writing to the files before you continue.
+
+3. **Apply your changes and restart the service.** Verify that the service starts correctly and that the changes behave as expected.

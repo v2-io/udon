@@ -1,0 +1,26 @@
+Here's a passage with the image displayed at 300 pixels wide. I'm using an HTML `<img>` tag, since standard Markdown image syntax doesn't support sizing:
+
+```html
+<p>
+  Understanding how the components of a system relate to one another is
+  often easier when you can see them laid out visually. The diagram below
+  illustrates the overall structure, showing how each part connects to the
+  others and how information flows between them.
+</p>
+
+<img src="diagram.png" alt="Diagram illustrating the system structure" width="300">
+
+<p>
+  As the diagram shows, each stage feeds into the next, creating a clear
+  progression from input to output. This layout makes it simple to identify
+  where changes can be made without disrupting the rest of the system.
+</p>
+```
+
+If you need it in a different format:
+
+- **Markdown with inline HTML** (works in most Markdown renderers, including GitHub): the same `<img src="diagram.png" alt="..." width="300">` tag can be placed directly in your `.md` file.
+- **LaTeX:** `\includegraphics[width=300pt]{diagram.png}`
+- **CSS:** `img.diagram { width: 300px; }`
+
+Let me know if you'd like me to save this to a file in your working directory or adapt the passage's wording to a specific topic.

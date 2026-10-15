@@ -1,0 +1,52 @@
+Here's a title block in LaTeX (article class), which you can adapt to your needs:
+
+```latex
+\documentclass[11pt]{article}
+
+\usepackage{authblk}
+\usepackage{hyperref}
+
+\title{Adaptive Sparse Attention for Efficient Long-Context\\Language Modeling}
+
+\author[1]{Alice M.\ Rivera}
+\author[2]{Daniel K.\ Okafor}
+
+\affil[1]{Department of Computer Science, Stanford University, Stanford, CA 94305, USA}
+\affil[2]{School of Informatics, University of Edinburgh, Edinburgh EH8 9AB, United Kingdom}
+
+\date{October 15, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Abstract text goes here.
+\end{abstract}
+
+\noindent\textbf{Keywords:} sparse attention, long-context modeling, language models, computational efficiency, transformers
+
+\end{document}
+```
+
+**Rendered appearance:**
+
+---
+
+**Adaptive Sparse Attention for Efficient Long-Context Language Modeling**
+
+Alice M. Rivera¹ and Daniel K. Okafor²
+
+¹ *Department of Computer Science, Stanford University, Stanford, CA 94305, USA*
+² *School of Informatics, University of Edinburgh, Edinburgh EH8 9AB, United Kingdom*
+
+October 15, 2026
+
+**Keywords:** sparse attention, long-context modeling, language models, computational efficiency, transformers
+
+---
+
+**Notes:**
+- The `authblk` package handles multiple authors and affiliations cleanly; the optional `[1]`/`[2]` arguments link each author to their affiliation.
+- To add corresponding-author emails, use `\author[1]{Alice M.\ Rivera\thanks{Email: ...}}`.
+- If you need a specific journal or conference format (IEEE, ACM, Springer, etc.), let me know and I can adapt the block to that template.

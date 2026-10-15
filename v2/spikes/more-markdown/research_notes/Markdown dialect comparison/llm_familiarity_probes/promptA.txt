@@ -1,0 +1,17 @@
+Answer from memory only. Do not use any tools, files, or web search. Be terse; use code blocks for syntax. If you're unsure about something, write "unsure" rather than guessing — honest uncertainty is more useful to me than a confident guess.
+
+1. DJOT (John MacFarlane's light markup language). (a) Write one Djot document containing: emphasis, strong emphasis, highlighted text, inserted text, deleted text, superscript, subscript, a span with class "kbd", a div with class "warning", a footnote, inline math (x^2), a definition list (term "udon", definition "a noodle"), a table with a caption, a hard line break, a heading with an explicit id, and a raw HTML block. (b) Convert this CommonMark line to Djot: `**bold** and *italic* and ~~gone~~ and <https://x.com>`. (c) Name the reference implementation(s) and their language(s), and the latest version you know of.
+
+2. OBSIDIAN-FLAVORED MARKDOWN. Write: a link to note "Alpha" displayed as "first"; a link to heading "Setup" in note "Alpha"; a link to block id abc123 in "Alpha" plus how that block id is declared; an embed of note "Alpha"; an image embed resized to 300px wide; a callout of type warning, titled "Careful", folded (collapsed) by default; highlighted text; a comment hidden in reading view; a nested tag; YAML frontmatter properties with aliases and tags.
+
+3. GFM (GitHub Flavored Markdown). (a) Which extensions does the GFM *spec* define beyond CommonMark? (b) Write a GitHub alert and list every alert type github.com supports. (c) Are footnotes and math part of the GFM spec, or only of github.com rendering?
+
+4. COMMONMARK. (a) Current spec version and approximate date? (b) How many kinds of HTML block does the spec define? (c) Can an ordered list interrupt a paragraph, and with what restriction? (d) Is `foo_bar_baz` emphasized? (e) What HTML does `*foo**bar**baz*` produce?
+
+5. PANDOC MARKDOWN. (a) Write: a citation with a page locator; an author-in-text citation; a citation that suppresses the author; an inline footnote; a fenced div with an id and a class; a bracketed span with attributes; a line block; an example list; inline raw LaTeX; a title block. (b) Name the four table syntaxes pandoc markdown supports. (c) How do you enable/disable a single extension on the command line? (d) What is `commonmark_x`?
+
+6. MDX. (a) Latest major version and roughly when it was released? (b) List syntax that is valid CommonMark but breaks or changes meaning in MDX 2+. (c) How do you write a comment? (d) How is YAML frontmatter handled?
+
+7. OTHERS. (a) Write a MyST admonition directive and a MyST inline role. (b) Write a Markdoc tag with an attribute. (c) Which markdown dialect does Quarto use under the hood?
+
+8. Self-assessment: rate your confidence 1–5 in writing correct, idiomatic documents in each of: Djot, Obsidian, GFM, CommonMark, Pandoc Markdown, MDX, MyST, Markdoc, AsciiDoc, reStructuredText, Org mode, Typst. One line each.

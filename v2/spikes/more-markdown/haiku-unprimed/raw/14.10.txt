@@ -1,0 +1,19 @@
+Here's a sentence that will update automatically, depending on your tool:
+
+**Microsoft Word:** Bookmark the "Results" heading (select it, then Insert > Bookmark and name it `Results`). Then type this sentence and insert a page-number cross-reference at the blank:
+
+> The results are presented on page **{PAGEREF Results \h}**.
+
+To insert it, go to Insert > Cross-reference, choose Bookmark as the reference type, select "Results," and choose "Page number." Press Alt+F9 to view field codes or F9 to update them.
+
+**LaTeX:** Add a label to the section and reference its page:
+
+```latex
+\section{Results}\label{sec:results}
+...
+The results are presented on page \pageref{sec:results}.
+```
+
+**Google Docs:** Google Docs doesn't support page cross-references natively, so the number won't update automatically there. You'd need to insert a bookmark and link to it, or use a table of contents, which shows page numbers.
+
+If you tell me which application you're using, I can give more specific steps.

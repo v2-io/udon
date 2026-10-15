@@ -1,0 +1,13 @@
+Here's an HTML passage that embeds `talk.mp4` with inline playback controls. Keep the file in the same directory as the HTML page so the relative path resolves.
+
+```html
+<p>Watch the talk below:</p>
+
+<video controls preload="metadata" width="720">
+  <source src="talk.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+  <a href="talk.mp4">Download the talk (MP4)</a>.
+</video>
+```
+
+If you're writing Markdown instead, most renderers don't support inline video, so you'd need to embed the raw HTML above directly in the document. Some platforms, such as GitHub's README, won't render a local `<video>` tag, so you may need to host the file and link to it there.

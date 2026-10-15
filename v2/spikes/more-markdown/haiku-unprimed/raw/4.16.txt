@@ -1,0 +1,3 @@
+<ruby>漢字<rt>かんじ</rt></ruby>
+
+If your display doesn't render HTML, the text is 漢字 with the reading かんじ written above it as furigana, which Japanese uses for readings of kanji.

@@ -1,0 +1,7 @@
+```python
+PRODUCT_NAME = "Lumen"  # Change the product name here only.
+
+sentence_1 = f"{PRODUCT_NAME} helps teams organize their work in one shared place."
+sentence_2 = f"Users can set up {PRODUCT_NAME} in minutes without any special training."
+sentence_3 = f"With {PRODUCT_NAME}, every project stays on track from start to finish."
+```

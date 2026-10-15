@@ -1,0 +1,10 @@
+**Quarterly results**
+
+| Quarter | Revenue ($K) | Expenses ($K) | Profit ($K) |
+|---------|-------------:|--------------:|------------:|
+| Q1      | 120          | 95            | 25          |
+| Q2      | 135          | 102           | 33          |
+| Q3      | 128          | 110           | 18          |
+| Q4      | 150          | 115           | 35          |
+
+I used placeholder figures. If you send me your actual numbers, I'll replace them.

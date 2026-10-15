@@ -1,0 +1,19 @@
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+Our results show a clear upward trend over the observation period, as summarized in Figure~\ref{fig:chart}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{chart.png}
+    \caption{Summary of the measured values over the observation period.}
+    \label{fig:chart}
+\end{figure}
+
+\end{document}
+```
+
+The `\ref{fig:chart}` command inserts the figure number LaTeX assigns automatically, so the number updates if you add or move figures. Compile with `pdflatex` (or your preferred LaTeX engine) from the directory containing `chart.png`.

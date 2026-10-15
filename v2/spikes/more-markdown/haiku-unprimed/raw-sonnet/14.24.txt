@@ -1,0 +1,35 @@
+```markdown
+---
+title: And Then There Were None
+author: Agatha Christie
+genre: mystery
+rating: 5
+status: read
+date_read: 2026-10-15
+tags:
+  - book
+  - mystery
+---
+
+# And Then There Were None
+
+Ten strangers are lured to an island off the Devon coast, and one by one they are killed in a way that matches an old nursery rhyme.
+
+## Thoughts
+
+- The tension builds steadily as the guest list shrinks.
+- The twist holds up on rereads, since the clues are all there.
+- Classic closed-circle mystery at its best.
+```
+
+The fields in the frontmatter (`genre: mystery` and `rating: 5`) are plain YAML, so tools like Obsidian Dataview can query them directly. For example:
+
+````markdown
+```dataview
+TABLE author, rating
+FROM #book
+WHERE genre = "mystery" AND rating = 5
+```
+````
+
+If you'd like, I can save this as a file in the working directory or switch to a different format such as JSON or TOML.

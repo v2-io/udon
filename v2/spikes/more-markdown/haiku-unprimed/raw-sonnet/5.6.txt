@@ -1,0 +1,22 @@
+Here are two paragraphs in HTML, with the second one carrying the `key-point` identifier so you can link straight to it with `#key-point`:
+
+```html
+<p>
+  Good documentation begins with understanding the reader. Before writing a
+  single sentence, it helps to know who will be reading, what they already
+  know, and what they are trying to accomplish. Writing for that specific
+  person keeps the text focused and prevents it from drifting into
+  unnecessary detail.
+</p>
+
+<p id="key-point">
+  The most important principle is to make every section easy to find and
+  easy to reference. Giving key passages stable identifiers lets readers
+  link directly to the exact idea they need, and it lets authors point
+  back to it from elsewhere without forcing anyone to scroll and search.
+</p>
+```
+
+To link to the second paragraph, use `<a href="#key-point">See the key point</a>` on the same page, or `https://example.com/page.html#key-point` from elsewhere.
+
+If you wanted this in another format, such as Markdown with an HTML anchor or a specific static site generator's syntax, let me know and I'll adapt it.

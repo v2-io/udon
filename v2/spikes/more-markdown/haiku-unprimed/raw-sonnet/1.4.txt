@@ -1,0 +1,41 @@
+Plain text and Markdown have no native "include" feature, so the simplest approach is to build the document by concatenating `intro.txt` with the body.
+
+**1. Body file (`body.md`)**
+
+```markdown
+
+## Overview
+
+This document builds on the introduction above. It summarizes the key points
+and outlines next steps.
+
+## Key Points
+
+- The introduction sets the context.
+- This section adds supporting detail.
+- Next steps are listed below.
+
+## Next Steps
+
+1. Review the material.
+2. Share feedback.
+3. Finalize and publish.
+```
+
+**2. Build the document**
+
+```sh
+cat intro.txt body.md > document.md
+```
+
+This puts the full contents of `intro.txt` at the top, followed by the body.
+
+**Alternatives, depending on your tooling**
+
+- **Pandoc / Markdown with includes:** use a filter such as `pandoc-include` and write `` ```{.include}
+intro.txt
+``` `` at the top of the file.
+- **LaTeX:** `\input{intro.txt}` at the top of the document.
+- **AsciiDoc:** `include::intro.txt[]` at the top.
+
+If you tell me which format you're using (Markdown, LaTeX, AsciiDoc, etc.), I can write the document in that form. I can also create the files directly in `/private/tmp/claude-505/hp` if you'd like.

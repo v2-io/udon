@@ -1,0 +1,21 @@
+Here's a reply that quotes an earlier message, shown as nested blockquotes:
+
+> **Alex:** Can we move the release to Friday? The QA team needs another day.
+>
+> > **Sam:** The client demo is Thursday, so we can't slip the build.
+
+Thursday is fixed, so I agree we can't move the build. Could QA start testing the Wednesday build instead? That would give them the extra day without moving the release.
+
+In plain-text email, the same reply looks like this:
+
+```
+On Mon, Alex wrote:
+> Can we move the release to Friday? The QA team needs another day.
+>
+>> Sam: The client demo is Thursday, so we can't slip the build.
+
+Thursday is fixed, so I agree we can't move the build. Could QA start
+testing the Wednesday build instead?
+```
+
+Each extra `>` adds one level of nesting. Most email clients and markdown renderers handle this automatically when you reply.

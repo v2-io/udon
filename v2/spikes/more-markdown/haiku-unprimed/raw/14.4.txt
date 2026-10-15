@@ -1,0 +1,1 @@
+**Definition 1.1 (Prime number).** An integer $p > 1$ is called *prime* if its only positive divisors are $1$ and $p$. An integer greater than $1$ that is not prime is called *composite*.

@@ -1,0 +1,44 @@
+Here is a short HTML document that uses CSS counters, so the section numbers are generated automatically. The last section opts out of numbering with a `no-number` class.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Update</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 40em; margin: 2em auto; line-height: 1.5; }
+  body { counter-reset: section; }
+  h2::before { counter-increment: section; content: counter(section) ". "; }
+  h2.no-number::before { content: none; counter-increment: none; }
+</style>
+</head>
+<body>
+
+<h1>Project Update</h1>
+
+<h2>Background</h2>
+<p>This project began as a small experiment to streamline our weekly reporting process. Early results were promising enough to justify a wider rollout.</p>
+
+<h2>Progress</h2>
+<p>The core features are complete and have been tested by a pilot group. Feedback has been positive, with only minor usability issues reported.</p>
+
+<h2 class="no-number">Conclusion</h2>
+<p>The project is on track. Remaining work focuses on polish and documentation, and we expect to finish within the next month.</p>
+
+</body>
+</html>
+```
+
+**How it works**
+- `counter-reset: section` initializes the counter on `body`.
+- Each `<h2>` increments the counter and displays it via `::before`, so adding or reordering sections renumbers them automatically.
+- `h2.no-number` suppresses both the number and the increment, leaving the final "Conclusion" section unnumbered.
+
+Rendered, it looks like:
+
+> **1. Background**
+> **2. Progress**
+> **Conclusion**
+
+If you'd prefer this in another format (Word, LaTeX, or Markdown), let me know and I can adapt it. In LaTeX, for example, the last section would use `\section*{...}`.

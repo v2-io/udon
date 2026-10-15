@@ -1,0 +1,22 @@
+```asciidoc
+= Cooking Udon
+
+WARNING: Keep the broth at a lively simmer so the noodles stay springy.footnote:[A rolling boil tears the surface and clouds the soup.]
+
+== Stock
+
+dashi:: A Japanese cooking stock simmered from kombu and smoked bonito, used as the broth base for udon.
+
+== Measures
+
+[cols="1,1"]
+|===
+|Ingredient |Amount
+|Dried udon |180 g
+|Dashi |700 ml
+|===
+
+Serve with a #jammy egg# and the method in xref:mentsuyu.adoc[mentsuyu notes].
+```
+
+AsciiDoc, because warning admonitions, footnotes, definition lists, tables, `#highlight#` marks, and same-collection `xref` links are all native syntax.

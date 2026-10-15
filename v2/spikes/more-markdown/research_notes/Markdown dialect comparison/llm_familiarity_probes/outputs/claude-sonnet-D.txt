@@ -1,0 +1,19 @@
+1. `<p>H<sub>2</sub>O and <del>gone</del></p>` — Pandoc-style markdown (`~sub~`, `~~strike~~`). GFM would treat `~2~` as strikethrough (`<del>2</del>`).
+
+2. `<p>See <a href="Setup">install guide</a>.</p>` — Wiki-link with piped label (GitHub/Obsidian-ish; target = Setup). MediaWiki would use `href="/wiki/Setup"`; some flavors put the label first (`[[label|target]]`).
+
+3. `<p>Note  here.</p>` — Jinja/Liquid-style `{% %}` tag treated as a template directive/comment and emitted as nothing. Plain Markdown would render it literally: `Note {% this is important %} here.`
+
+4. `<p>This is <em>x</em> and <em>y</em>.</p>` — CommonMark; both delimiters are emphasis. Some wiki/Slack-style flavors render `*x*` as bold.
+
+5. `<div>\n**x**\n</div>` — CommonMark: HTML block, contents are raw and not parsed. Pandoc and Markdown Extra with `markdown="1"`/`markdown_in_html_blocks` would give `<div><p><strong>x</strong></p></div>`.
+
+6. `<p>x<sup>2</sup> and a note<sup><a href="#fn1">1</a></sup></p>` — Pandoc markdown (`^sup^`, inline notes `^[...]`), with the note moved to a footnote section. Most other flavors leave it literal.
+
+7. `<p><mark>marked</mark> and <ins>added</ins></p>` — Extended markdown (`==mark==`) plus CriticMarkup addition (`{++added++}` is the real form; `{+added+}` is a loose variant). Many flavors would leave it literal.
+
+8. `<p>Groceries:</p><ul><li>milk</li><li>eggs</li></ul>` — CommonMark, where a list can interrupt a paragraph. Original Markdown.pl and Python-Markdown would need a blank line and would give `<p>Groceries: - milk - eggs</p>`.
+
+9. `<p>Visit <a href="https://example.com">https://example.com</a> today.</p>` — GFM autolink extension. Strict CommonMark leaves the URL as plain text.
+
+10. `<dl><dt>term</dt><dd>its definition</dd></dl>` — Definition list (Pandoc/PHP Markdown Extra). CommonMark leaves it as a paragraph: `<p>term : its definition</p>`.

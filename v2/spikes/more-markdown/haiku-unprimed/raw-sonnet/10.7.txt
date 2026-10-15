@@ -1,0 +1,18 @@
+Standard Markdown tables don't support multi-line cells natively, so the usual approach is HTML line breaks (`<br>`). Here's a table that does both:
+
+| Category | Details |
+|----------|---------|
+| Fruits | • Apple<br>• Banana<br>• Cherry |
+| Description | This is the first line of text.<br>This is the second line of text. |
+
+Rendered, it looks like this:
+
+| Category | Details |
+|----------|---------|
+| Fruits | • Apple<br>• Banana<br>• Cherry |
+| Description | This is the first line of text.<br>This is the second line of text. |
+
+**Notes:**
+- The bullets are literal `•` characters separated by `<br>`, since Markdown list syntax (`- item`) doesn't work inside table cells in most renderers.
+- If you need a real `<ul>` list, you can use raw HTML in the cell instead: `<ul><li>Apple</li><li>Banana</li><li>Cherry</li></ul>`.
+- If you want a full HTML table, I can write that out as well.

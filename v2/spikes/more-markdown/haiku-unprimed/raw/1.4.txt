@@ -1,0 +1,27 @@
+I can't read `intro.txt` from here because I don't have file access in this session. If you paste its contents, I'll write the document with them at the top.
+
+In the meantime, here's a template with the rest of the document. Replace the placeholder with your file's contents, or run this in `/private/tmp/claude-505/hp` to build the combined file:
+
+```sh
+{ cat intro.txt; printf '\n\n'; cat body.md; } > document.md
+```
+
+**body.md** (draft):
+
+```markdown
+# Summary
+
+This document provides a short overview of the project. The introduction above sets the context; the sections below cover the main points.
+
+## Key Points
+
+- Point one
+- Point two
+- Point three
+
+## Next Steps
+
+Describe the follow-up actions here.
+```
+
+If you'd like, paste the text of `intro.txt` and I'll combine it with the body into one finished document.

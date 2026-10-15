@@ -1,0 +1,44 @@
+I'll use Markdown with a few HTML tags where Markdown has no native syntax.
+
+**1. Italic and bold**
+
+The *quick* fox jumped over the **lazy** dog.
+
+**2. Highlight**
+
+The temporary password <mark>asdf</mark> must be changed today.
+
+**3. Strikethrough and addition**
+
+The meeting is on ~~Tuesday~~ Wednesday
+
+**4. Underline**
+
+Please read the terms <u>carefully</u>
+
+**5. Footnote**
+
+Moderate coffee consumption of three to four cups per day is associated with a lower risk of type 2 diabetes.[^1]
+
+[^1]: Source: Poole, R., et al. (2017). "Coffee consumption and health: umbrella review of meta-analyses of multiple health outcomes." *BMJ*, 359, j5024.
+
+**6. Note admonition**
+
+> [!NOTE]
+> Remember to save your work before closing the application.
+
+**7. Mailing address**
+
+Eleanor Whitfield  
+1428 Maple Hollow Lane  
+Apartment 3B  
+Springfield, IL 62704  
+USA
+
+**8. Glossary**
+
+Latency
+: The delay between a request being sent and a response beginning to arrive.
+
+Throughput
+: The amount of data or number of operations processed in a given period of time.

@@ -1,0 +1,12 @@
+In this interactive mystery novel, the killer's identity stays concealed behind a blurred spoiler tag until you click **[REVEAL: ████████]**, which only then unveils that it was the butler all along.
+
+If you'd like, I can write it as actual HTML so the name is truly hidden until clicked:
+
+```html
+<p>
+  In this mystery novel, the murderer is
+  <span onclick="this.textContent='the butler'" style="cursor:pointer; background:#000; color:#000;">
+    the butler
+  </span>.
+</p>
+```

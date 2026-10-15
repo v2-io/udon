@@ -1,0 +1,19 @@
+Combustion of methane, typeset with the LaTeX `mhchem` package:
+
+```latex
+\ce{CH4 + 2O2 -> CO2 + 2H2O}
+```
+
+Rendered:
+
+$$\ce{CH4 + 2O2 -> CO2 + 2H2O}$$
+
+With state symbols and energy released:
+
+```latex
+\ce{CH4(g) + 2O2(g) -> CO2(g) + 2H2O(l)}, \quad \Delta H^\circ = -890\ \text{kJ/mol}
+```
+
+Note that `\ce{}` requires `\usepackage[version=4]{mhchem}` in your preamble. If you're using MathJax (e.g., on the web), it's supported through the `mhchem` extension as well.
+
+For a plain-text version with proper subscripts: CH₄ + 2 O₂ → CO₂ + 2 H₂O

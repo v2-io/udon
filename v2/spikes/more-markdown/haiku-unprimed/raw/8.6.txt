@@ -1,0 +1,6 @@
+Here's a to-do list with the four statuses you asked for:
+
+- [x] **Set up the project repository** (done)
+- [ ] **Write the API documentation** (in progress)
+- [~] ~~Migrate the legacy login page~~ (cancelled)
+- [ ] **⚠️ Fix the production database backup failure** (important)

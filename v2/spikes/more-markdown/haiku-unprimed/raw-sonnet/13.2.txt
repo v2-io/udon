@@ -1,0 +1,56 @@
+Here's a short, self-contained HTML document with a reusable `<video-player>` component. It's a custom element, so it works without a framework, and autoplay is off by default.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Talk</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; }
+    video-player { display: block; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+
+  <h1>The Talk</h1>
+  <p>Watch the recording below.</p>
+
+  <video-player src="talk.mp4" title="The Talk"></video-player>
+
+  <script>
+    // Reusable <video-player> component.
+    // Attributes: src (required), title, poster, autoplay (off unless present)
+    class VideoPlayer extends HTMLElement {
+      connectedCallback() {
+        const src    = this.getAttribute("src");
+        const title  = this.getAttribute("title") || "Video";
+        const poster = this.getAttribute("poster");
+
+        const video = document.createElement("video");
+        video.src = src;
+        video.controls = true;
+        video.preload = "metadata";
+        video.autoplay = this.hasAttribute("autoplay"); // off by default
+        video.style.width = "100%";
+        video.setAttribute("aria-label", title);
+        if (poster) video.poster = poster;
+
+        this.replaceChildren(video);
+      }
+    }
+    customElements.define("video-player", VideoPlayer);
+  </script>
+
+</body>
+</html>
+```
+
+**Usage**
+
+- Reuse it anywhere: `<video-player src="other.mp4" title="Another video"></video-player>`
+- Autoplay stays off unless you explicitly add the `autoplay` attribute.
+- Place `talk.mp4` in the same folder as the HTML file, or adjust the `src` path.
+
+If you're using a specific framework (React, MDX, Astro, etc.), tell me and I'll adapt the component to it.

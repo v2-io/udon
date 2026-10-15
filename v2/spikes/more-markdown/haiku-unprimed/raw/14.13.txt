@@ -1,0 +1,1 @@
+The Application Programming Interface (API) lets developers connect their software to external services without rebuilding those services from scratch. Each API request should include authentication credentials, and the API should return clear error messages when a request fails.

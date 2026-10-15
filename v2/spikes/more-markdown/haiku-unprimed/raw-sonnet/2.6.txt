@@ -1,0 +1,7 @@
+The morning light settled slowly over the harbor, turning the water from slate gray to a soft, shimmering gold. Fishing boats rocked gently at their moorings, and the first gulls wheeled overhead, calling out to a town that was only beginning to wake. Somewhere in the distance, a bakery door swung open, releasing the warm smell of fresh bread into the cool air.
+
+<div style="page-break-after: always;"></div>
+
+By afternoon, the harbor had settled into a lazy rhythm. Shopkeepers propped their doors open, children darted between the market stalls, and the sun climbed high enough to warm the old stone piers. It was the kind of day that asked nothing of anyone, and the whole town seemed content to simply let it unfold.
+
+The `<div>` between the paragraphs forces a page break when this is printed from a browser or a Markdown-to-PDF tool. If you paste it into a word processor instead, insert a manual page break (Ctrl+Enter, or Cmd+Enter on Mac) in its place.

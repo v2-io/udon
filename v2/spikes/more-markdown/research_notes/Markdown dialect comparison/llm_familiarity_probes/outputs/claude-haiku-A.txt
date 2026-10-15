@@ -1,0 +1,169 @@
+## 1. Djot
+
+**(a)**
+```djot
+# Title {#intro}
+
+_emphasis_ and *strong* and {=highlight=} and {+insert+} and {-delete-}
+and x^sup^ and H~2~O and [Ctrl]{.kbd}
+
+::: warning
+Careful here.
+:::
+
+Text with a footnote[^1].
+
+[^1]: The note.
+
+Inline math $`x^2`.
+
+: udon
+
+  a noodle
+
+^ Table caption
+
+| a | b |
+|---|---|
+| 1 | 2 |
+
+line one\
+line two
+
+``` =html
+<div class="raw">raw</div>
+```
+```
+
+**(b)**
+```djot
+*bold* and _italic_ and {-gone-} and <https://x.com>
+```
+
+**(c)** Reference implementation: unsure. I believe jgm's `djot.js` (JavaScript) and `djot.lua` (Lua) are the main ones, plus a Haskell library. Latest version: unsure.
+
+## 2. Obsidian-Flavored Markdown
+
+```markdown
+[[Alpha|first]]
+[[Alpha#Setup]]
+[[Alpha#^abc123]]        <- block id declared by appending to the block's line:
+Some paragraph text ^abc123
+![[Alpha]]
+![[image.png|300]]
+> [!warning]- Careful
+> Callout body.
+==highlighted==
+%%hidden in reading view%%
+#parent/child
+```
+```yaml
+---
+aliases:
+  - first
+tags:
+  - example
+---
+```
+
+## 3. GFM
+
+**(a)** Tables, strikethrough (`~~x~~`), task list items (`- [x]`), extended autolinks, and the disallowed raw HTML filter.
+
+**(b)**
+```markdown
+> [!NOTE]
+> Text.
+```
+Types: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
+
+**(c)** Neither. They are github.com rendering features, not part of the GFM spec.
+
+## 4. CommonMark
+
+**(a)** 0.31.2, January 2024, as far as I know. Unsure whether a newer version exists.
+**(b)** Seven.
+**(c)** Yes, but only an ordered list starting with `1` can interrupt a paragraph.
+**(d)** No. Intraword underscores don't emphasize.
+**(e)** `<em>foo<strong>bar</strong>baz</em>`
+
+## 5. Pandoc Markdown
+
+**(a)**
+```markdown
+[@smith2004, p. 33]
+@smith2004 argues that...
+[-@smith2004]
+Text^[Inline footnote.]
+
+::: {#myid .myclass}
+Div content.
+:::
+
+[text]{.smallcaps key=val}
+
+| Line one
+| Line two
+
+(@) First example.
+(@) Second example.
+
+\textcolor{red}{raw LaTeX}
+
+% Title
+% Author
+% Date
+```
+
+**(b)** Pipe, simple, multiline, grid.
+**(c)** `pandoc -f markdown-ext` disables an extension; `-f markdown+ext` enables it. For example, `-f markdown-smart`.
+**(d)** CommonMark plus selected pandoc extensions. The exact extension set: unsure.
+
+## 6. MDX
+
+**(a)** MDX 3, around 2024, as far as I know. Unsure about newer releases.
+**(b)**
+- Raw HTML must be valid JSX: `<br />` not `<br>`, `className` not `class`, all tags closed.
+- `<!-- -->` comments are invalid.
+- `{` and `}` start JS expressions and must be escaped.
+- `<url>` autolinks conflict with JSX tag parsing.
+- Bare `<` followed by a letter is parsed as a tag.
+
+**(c)**
+```mdx
+{/* comment */}
+```
+**(d)** Not built in. It needs a plugin such as `remark-frontmatter`, or the host framework must handle it.
+
+## 7. Others
+
+**(a)**
+````markdown
+```{note}
+Admonition body.
+```
+
+Inline role: {doc}`index` or {math}`x^2`
+````
+**(b)**
+```markdoc
+{% callout type="warning" %}
+Body.
+{% /callout %}
+```
+**(c)** Pandoc Markdown.
+
+## 8. Self-assessment (1–5)
+
+- **Djot:** 3. Syntax above is from memory and may have small errors.
+- **Obsidian:** 4. Common syntax is solid; edge cases are less certain.
+- **GFM:** 4. Spec and alerts are well known.
+- **CommonMark:** 5. Spec details are well known.
+- **Pandoc Markdown:** 4. Core syntax is solid; less sure of obscure extensions.
+- **MDX:** 3. Syntax is fine, but version details and plugin specifics may be off.
+- **MyST:** 3. Directive and role syntax are fine; details may vary by version.
+- **Markdoc:** 3. Tag syntax is fine; less sure of attribute and schema details.
+- **AsciiDoc:** 3. Familiar, but not fully reliable on details from memory.
+- **reStructuredText:** 3. Familiar, but directive details are easy to get wrong.
+- **Org mode:** 3. Core syntax is good; less sure of export and edge syntax.
+- **Typst:** 2. I'm least sure of this one; syntax may have changed.

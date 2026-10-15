@@ -1,0 +1,17 @@
+1. **Djot.** `_…_` is emphasis and `*…*` is strong; `{=marked=}` is highlight; `[Ctrl+C]{.kbd}` is a span with class `kbd` (usually drawn as a key); `::: warning` is a fenced div, rendered as a warning callout.
+
+2. **Obsidian Flavored Markdown.** `[!tip]-` is a tip callout folded shut; `[[Setup#Install|install]]` links to that heading with label “install”; `![[diagram.png|400]]` embeds the image at width 400; `%%todo%%` is a comment left out of reading view.
+
+3. **Pandoc Markdown.** `@smith04 [p. 33]` is an author-in-text citation with a page locator; `^[…]` is an inline footnote; a leading `|` makes a line block (line breaks and indentation kept).
+
+4. **MDX** (Markdown + JSX). `{year}` inserts the expression, `<Chart data={data} />` is a component, and `{/* reviewed */}` is a comment that does not render.
+
+5. **MyST Markdown.** `` ```{note} `` is a note directive (admonition); `` {sub}`2` `` is a subscript role, so H₂O.
+
+6. **Markdoc.** `{% callout type="warning" %} … {% /callout %}` is a warning callout tag. The `{% %}` braces also appear in Liquid; the `/%` close is Markdoc’s.
+
+7. **GitHub alert syntax** (GFM). `> [!NOTE]` renders as a Note alert. The same `[!NOTE]` line is also a valid Obsidian callout; the uppercase type with no fold marker is GitHub’s form.
+
+8. **Djot.** `: Term` plus an indented block is a definition list; `$`e^{i\pi}`$` is inline math; `{+added+}` and `{-removed-}` are insert and delete.
+
+9. **AsciiDoc.** `[NOTE]` sets an admonition style; `====` … `====` delimits the block, so this renders as a note.

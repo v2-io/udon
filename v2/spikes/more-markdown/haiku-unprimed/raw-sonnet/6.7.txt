@@ -1,0 +1,57 @@
+Here's a nested admonition in MkDocs Material / Python-Markdown syntax:
+
+```markdown
+!!! note "Before you begin"
+    Make sure you have backed up your configuration files before making changes.
+
+    !!! warning "Destructive operation"
+        Running this command will permanently delete all cached data.
+        This action cannot be undone.
+
+    Once you've confirmed your backup, continue with the next step.
+```
+
+**Key points:**
+
+- The outer `!!! note` block contains everything indented by 4 spaces.
+- The inner `!!! warning` is indented 4 spaces inside the note, and its content is indented another 4 spaces (8 total).
+- A blank line before the nested admonition is required for it to render correctly.
+
+If you're using a different flavor, here are equivalents:
+
+**GitHub-flavored Markdown** (alerts don't support nesting, so a quote workaround is used):
+
+```markdown
+> [!NOTE]
+> Make sure you have backed up your configuration files.
+>
+> **⚠️ Warning:** Running this command will permanently delete all cached data.
+```
+
+**reStructuredText (Sphinx):**
+
+```rst
+.. note::
+
+   Make sure you have backed up your configuration files.
+
+   .. warning::
+
+      Running this command will permanently delete all cached data.
+```
+
+**AsciiDoc:**
+
+```asciidoc
+[NOTE]
+====
+Make sure you have backed up your configuration files.
+
+[WARNING]
+=====
+Running this command will permanently delete all cached data.
+=====
+====
+```
+
+Let me know which format you're targeting and I can tailor it further.

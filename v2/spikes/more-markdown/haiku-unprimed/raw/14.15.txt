@@ -1,0 +1,7 @@
+The balanced equation for the complete combustion of methane is:
+
+$$\ce{CH4 + 2 O2 -> CO2 + 2 H2O}$$
+
+This uses the LaTeX `mhchem` package, so it needs `\usepackage[version=4]{mhchem}` in the preamble. Without LaTeX, the same equation is written:
+
+CH₄ + 2 O₂ → CO₂ + 2 H₂O

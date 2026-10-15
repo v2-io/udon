@@ -1,0 +1,19 @@
+Here are a few ways to show it, depending on where you'll use it:
+
+**HTML:**
+```html
+Please read the terms <u>carefully</u>
+```
+
+**Markdown (with HTML):**
+Please read the terms <u>carefully</u>
+
+**LaTeX:**
+```latex
+Please read the terms \underline{carefully}
+```
+
+**Plain text (using combining characters):**
+Please read the terms c̲a̲r̲e̲f̲u̲l̲l̲y̲
+
+Let me know if you need it in a specific format, such as Word, Google Docs, or something else.

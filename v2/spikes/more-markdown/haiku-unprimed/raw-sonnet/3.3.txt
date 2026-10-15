@@ -1,0 +1,11 @@
+Here's a sentence using a non-breaking space (U+00A0) between "Dr." and "Smith" so they stay together on one line:
+
+The committee asked Dr. Smith to present the findings at the annual conference.
+
+The space between "Dr." and "Smith" is a non-breaking space, which prevents a line wrap from occurring there.
+
+For other contexts:
+
+- **HTML:** `Dr.&nbsp;Smith`
+- **LaTeX:** `Dr.~Smith`
+- **Markdown/plain text:** use the literal U+00A0 character

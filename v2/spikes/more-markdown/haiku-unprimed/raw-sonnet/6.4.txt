@@ -1,0 +1,36 @@
+Here's a short piece using a custom `experiment` admonition in a few common syntaxes.
+
+## Sourdough Starter Basics
+
+A sourdough starter is just flour and water left to ferment, capturing wild yeast and bacteria from the environment. Feed it regularly and it will become bubbly, tangy, and ready to leaven bread.
+
+!!! experiment "Try This: Temperature Test"
+    Split your starter into two jars. Keep one on the counter (around 22°C) and the other in a cooler spot (around 16°C). Feed both at the same time and mark the starting level with a rubber band.
+
+    **Hypothesis:** The warmer jar will double in size noticeably faster.
+
+    Record how long each takes to double. What differences do you notice in smell and texture?
+
+Once you've observed the results, you'll have a better sense of which spot in your kitchen works best.
+
+---
+
+**Other syntaxes**
+
+MyST / Docusaurus-style:
+
+```markdown
+:::experiment
+Split your starter into two jars and compare rise times at different temperatures.
+:::
+```
+
+reStructuredText:
+
+```rst
+.. experiment::
+
+   Split your starter into two jars and compare rise times at different temperatures.
+```
+
+Note that custom types usually need a bit of configuration (and optionally CSS) to render in your toolchain. If you tell me which one you're using (MkDocs, Docusaurus, Sphinx, etc.), I can help set that up.

@@ -1,0 +1,11 @@
+# A Day in Kyoto
+
+We arrived in Kyoto early in the morning, when the streets were still quiet and the air was cool. Fushimi Inari was our first stop: thousands of vermilion torii gates winding up the mountain, with sunlight filtering through in strips. By midday we'd wandered into Gion, where we found a small tea house tucked down a side street and sampled matcha with wagashi, delicate seasonal sweets.
+
+The afternoon was spent at Kinkaku-ji, the Golden Pavilion, shimmering over its mirror-like pond. We ended the day with a slow walk along the Philosopher's Path as the lanterns came on, feeling like we'd stepped out of time.
+
+**Tags:** #travel #japan
+
+---
+
+I don't have a note-taking tool connected here, so I've written the note above for you to paste into your app of choice. If you'd like, I can save it as a file in the working directory (e.g., `kyoto-trip.md`).

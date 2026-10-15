@@ -1,0 +1,11 @@
+**Suggested edits:**
+
+The ~~quick~~ brown {+red+} fox jumps
+
+- ~~quick~~ : deletion
+- {+red+} : insertion
+- **Comment (reviewer):** "check this" (attached to the sentence)
+
+**Result if all edits are accepted:** "The brown red fox jumps"
+
+If you need this as a Word document with real tracked changes and a margin comment, I can build a .docx for you.

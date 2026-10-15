@@ -1,0 +1,89 @@
+This is written in MyST Markdown for Jupyter Book or Sphinx. It needs the `jupyter-book` and `sphinx-design` extensions, plus `sphinx.ext.todo` for the to-do admonition.
+
+````markdown
+# Quarterly Business Report
+
+```{tableofcontents}
+```
+
+## Introduction
+
+```{container} intro-block
+:name: intro-heading
+:class: section-heading
+
+### About This Report
+```
+
+```{container} intro-block
+:name: intro-paragraph
+:class: body-text
+
+This report summarizes revenue and regional performance for the year. It is intended for internal planning and is updated after each quarter closes.
+```
+
+## Results
+
+Revenue by quarter, computed from the figures below:
+
+```{code-cell} python
+revenue = [120, 135, 150, 142]
+for q, r in enumerate(revenue, start=1):
+    print(f"Q{q}: {r}")
+print("Total:", sum(revenue))
+```
+
+```{table} Quarterly results
+:name: tbl-quarterly
+
+| Quarter | Revenue (k$) |
+|---|---|
+| Q1 | 120 |
+| Q2 | 135 |
+```
+
+A reusable helper for computing averages:
+
+```python
+def average(values):
+    """Return the arithmetic mean of a list of numbers."""
+    if not values:
+        raise ValueError("values must not be empty")
+    return sum(values) / len(values)
+```
+
+Regional sales for the first three quarters:
+
+| Region | Q1 | Q2 | Q3 |
+|---|---|---|---|
+| North | 120 | 135 | 150 |
+| South | 98 | 110 | 125 |
+| **Total** | **218** | **245** | **275** |
+
+The bold final row serves as the totals footer.
+
+Two summary paragraphs, shown side by side:
+
+::::{grid} 2
+:gutter: 3
+
+:::{grid-item}
+Revenue grew in three of the four quarters, with the strongest gain in Q2. Growth slowed slightly in Q4 as seasonal demand eased.
+:::
+
+:::{grid-item}
+The North region outperformed the South in every quarter. The South region's gap narrowed in Q3, suggesting that recent marketing changes are helping.
+:::
+
+::::
+
+## Notes
+
+Plants convert light into chemical energy through {index}`photosynthesis`, which supports nearly every food chain on Earth.
+
+Quick status for the next review cycle:
+
+```{todo}
+Confirm the Q4 figures with the finance team before publishing this report.
+```
+````

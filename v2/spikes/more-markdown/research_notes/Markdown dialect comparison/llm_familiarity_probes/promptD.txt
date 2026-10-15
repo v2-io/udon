@@ -1,0 +1,36 @@
+Answer from memory; do not use tools. Below are ten small unlabeled markup snippets, separated by lines of "-----". For each one, give the single HTML rendering you think is most likely (one line), then in a few words say what flavor/convention you assumed. Only after that, optionally note in one short line if another common flavor would render it differently. Be terse.
+
+1.
+H~2~O and ~~gone~~
+-----
+2.
+See [[Setup|install guide]].
+-----
+3.
+Note {% this is important %} here.
+-----
+4.
+This is *x* and _y_.
+-----
+5.
+<div>
+**x**
+</div>
+-----
+6.
+x^2^ and a note^[like this]
+-----
+7.
+==marked== and {+added+}
+-----
+8.
+Groceries:
+- milk
+- eggs
+-----
+9.
+Visit https://example.com today.
+-----
+10.
+term
+: its definition

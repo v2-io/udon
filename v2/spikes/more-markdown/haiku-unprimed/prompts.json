@@ -1,0 +1,697 @@
+[
+  {
+    "id": "1.1",
+    "feature": "Front-matter block",
+    "prompt": "Write a short document about a cat named Miso, and include metadata for it: a title, an author, and two tags."
+  },
+  {
+    "id": "1.2",
+    "feature": "Document variables substituted into text",
+    "prompt": "Write three short sentences that each mention the product name, written so that the product name is defined once and could be changed in one place."
+  },
+  {
+    "id": "1.3",
+    "feature": "Conditional content",
+    "prompt": "Write a short paragraph of installation instructions where one sentence should only appear in the Windows version of the document."
+  },
+  {
+    "id": "1.4",
+    "feature": "Include a whole file",
+    "prompt": "Write a short document that pulls in the full contents of another file called intro.txt at the top."
+  },
+  {
+    "id": "1.5",
+    "feature": "Include part of a file",
+    "prompt": "Write a short document that includes only lines 10 through 20 of a file called setup.py."
+  },
+  {
+    "id": "1.6",
+    "feature": "Comments",
+    "prompt": "Write two sentences about the weather, plus a note to yourself that should not appear when the text is displayed."
+  },
+  {
+    "id": "2.1",
+    "feature": "Headings",
+    "prompt": "Write a short document with a title, two sections, and a subsection under the second section."
+  },
+  {
+    "id": "2.2",
+    "feature": "Heading identifiers",
+    "prompt": "Write a short document with a section called Installation, and give that section the stable identifier 'install' so other places can link to it."
+  },
+  {
+    "id": "2.3",
+    "feature": "Section numbering, and unnumbered sections",
+    "prompt": "Write a short document with three sections that are numbered automatically, except the last section, which should not be numbered."
+  },
+  {
+    "id": "2.4",
+    "feature": "Table of contents",
+    "prompt": "Write a short document with three sections and a table of contents that is generated automatically."
+  },
+  {
+    "id": "2.5",
+    "feature": "Thematic break",
+    "prompt": "Write two short paragraphs separated by a horizontal divider line."
+  },
+  {
+    "id": "2.6",
+    "feature": "Page break",
+    "prompt": "Write two short paragraphs with a page break between them for printing."
+  },
+  {
+    "id": "2.7",
+    "feature": "Parts and chapters",
+    "prompt": "Write the opening structure of a short book with two parts, each containing two chapters, with one sentence of text in each chapter."
+  },
+  {
+    "id": "3.1",
+    "feature": "Hard line breaks",
+    "prompt": "Write a mailing address for a fictional person, keeping each part of the address on its own line."
+  },
+  {
+    "id": "3.2",
+    "feature": "Line blocks (verse)",
+    "prompt": "Write a four-line poem where the second and fourth lines are indented, and the line breaks and indentation must be preserved exactly when displayed."
+  },
+  {
+    "id": "3.3",
+    "feature": "Non-breaking space",
+    "prompt": "Write a sentence mentioning Dr. Smith, where 'Dr.' and 'Smith' must never be split across two lines."
+  },
+  {
+    "id": "3.4",
+    "feature": "Smart quotes",
+    "prompt": "Write a sentence containing a short quotation that should be displayed with proper curly quotation marks."
+  },
+  {
+    "id": "3.5",
+    "feature": "Smart dashes and ellipsis",
+    "prompt": "Write a sentence with the date range 1990 to 2000, an aside set off with a long dash, and a trailing ellipsis, all displayed with proper typographic characters."
+  },
+  {
+    "id": "3.6",
+    "feature": "Symbol replacements",
+    "prompt": "Write a footer line with a copyright symbol, the year 2026, and a right arrow pointing to the words 'next page'."
+  },
+  {
+    "id": "4.1",
+    "feature": "Emphasis and strong",
+    "prompt": "Write a sentence where one word is in italics and another word is in bold."
+  },
+  {
+    "id": "4.2",
+    "feature": "Strikethrough or delete",
+    "prompt": "Write the sentence 'The meeting is on Tuesday' with 'Tuesday' crossed out and 'Wednesday' added after it."
+  },
+  {
+    "id": "4.3",
+    "feature": "Insert / underline",
+    "prompt": "Write the sentence 'Please read the terms carefully' with the word 'carefully' underlined."
+  },
+  {
+    "id": "4.4",
+    "feature": "Highlight",
+    "prompt": "Write the following sentence but with 'asdf' highlighted: The temporary password asdf must be changed today."
+  },
+  {
+    "id": "4.5",
+    "feature": "Highlight with color",
+    "prompt": "Write the sentence 'Pay rent and call mom' with 'Pay rent' highlighted in red and 'call mom' highlighted in green."
+  },
+  {
+    "id": "4.6",
+    "feature": "Superscript and subscript",
+    "prompt": "Write a sentence mentioning the chemical formula for water and the number two to the tenth power, written the way they would appear in print."
+  },
+  {
+    "id": "4.7",
+    "feature": "Small caps",
+    "prompt": "Write the sentence 'The NASA report was released' with 'NASA' set in small capital letters."
+  },
+  {
+    "id": "4.8",
+    "feature": "Keyboard, menu and button",
+    "prompt": "Write one instruction telling the user to press Ctrl and C together, then choose File and then Save from the menu, then click the OK button."
+  },
+  {
+    "id": "4.9",
+    "feature": "Inline code",
+    "prompt": "Write a sentence telling the reader to run the command make test, with the command marked as code."
+  },
+  {
+    "id": "4.10",
+    "feature": "Inline code with a language",
+    "prompt": "Write a sentence that contains the Rust snippet let x = 1; inline, marked so it gets Rust syntax coloring."
+  },
+  {
+    "id": "4.11",
+    "feature": "Inline math",
+    "prompt": "Write a sentence that includes Einstein's mass-energy equation as a properly typeset formula."
+  },
+  {
+    "id": "4.12",
+    "feature": "Abbreviations",
+    "prompt": "Write a sentence using the abbreviation HTML, defined so that its full form appears when the reader hovers over it."
+  },
+  {
+    "id": "4.13",
+    "feature": "Index terms",
+    "prompt": "Write a sentence about photosynthesis, marking the word 'photosynthesis' as an entry for the book's index."
+  },
+  {
+    "id": "4.14",
+    "feature": "Generic inline span with attributes",
+    "prompt": "Write a sentence where the phrase 'limited offer' is tagged with the class name 'promo' so a stylesheet can style it."
+  },
+  {
+    "id": "4.15",
+    "feature": "Spoiler",
+    "prompt": "Write a sentence about a mystery novel where the name of the murderer is hidden until the reader clicks on it."
+  },
+  {
+    "id": "4.16",
+    "feature": "Ruby annotation",
+    "prompt": "Write the Japanese word 漢字 with its reading かんじ shown in small text above it."
+  },
+  {
+    "id": "4.17",
+    "feature": "Emoji",
+    "prompt": "Write a celebratory sentence about a product launch that includes a party-popper emoji and a thumbs-up emoji."
+  },
+  {
+    "id": "4.18",
+    "feature": "Raw inline content for one output format",
+    "prompt": "Write a sentence where one word is made bold with raw HTML that should only be used when the output is HTML."
+  },
+  {
+    "id": "5.1",
+    "feature": "Inline links",
+    "prompt": "Write a sentence that links the word 'documentation' to https://example.com/docs."
+  },
+  {
+    "id": "5.2",
+    "feature": "Reference links",
+    "prompt": "Write a paragraph that links to https://example.com/docs three times, with the URL itself written only once."
+  },
+  {
+    "id": "5.3",
+    "feature": "Autolinks",
+    "prompt": "Write a sentence that includes the address https://example.com so that it becomes a clickable link."
+  },
+  {
+    "id": "5.4",
+    "feature": "Wikilinks",
+    "prompt": "Write a note that links to another note in the same notebook called 'Project Plan', with the link text 'the plan'."
+  },
+  {
+    "id": "5.5",
+    "feature": "Links to headings by their text",
+    "prompt": "Write a short document with a section titled 'Installation' and, in another section, a sentence that links to the Installation section."
+  },
+  {
+    "id": "5.6",
+    "feature": "Anchors on arbitrary blocks",
+    "prompt": "Write two paragraphs where the second paragraph has the identifier 'key-point' so it can be linked to directly."
+  },
+  {
+    "id": "5.7",
+    "feature": "Numbered cross-references",
+    "prompt": "Write a short passage with a figure showing chart.png and a sentence that refers to it by its automatically assigned figure number."
+  },
+  {
+    "id": "5.8",
+    "feature": "Citations",
+    "prompt": "Write a sentence that cites page 33 of a 2020 book by Jane Doe, so that a bibliography can be generated automatically."
+  },
+  {
+    "id": "5.9",
+    "feature": "Mentions and platform references",
+    "prompt": "Write a short comment thanking the user ada for fixing issue number 123."
+  },
+  {
+    "id": "5.10",
+    "feature": "Tags",
+    "prompt": "Write a short note about a trip to Kyoto and tag it with travel and japan."
+  },
+  {
+    "id": "5.11",
+    "feature": "Footnote (reference)",
+    "prompt": "Write a sentence making a claim about coffee consumption, with a footnote giving the source."
+  },
+  {
+    "id": "5.12",
+    "feature": "Footnote (inline)",
+    "prompt": "Write a sentence with a footnote, where the footnote's text is written right where it is referenced instead of at the end."
+  },
+  {
+    "id": "5.13",
+    "feature": "Margin note or sidenote",
+    "prompt": "Write a short paragraph with a note that should appear in the page margin beside the text, not at the bottom."
+  },
+  {
+    "id": "6.1",
+    "feature": "Admonition: note (fixed five types)",
+    "prompt": "Write some quick text that includes an admonition that is a note."
+  },
+  {
+    "id": "6.2",
+    "feature": "Admonition: warning (fixed five types)",
+    "prompt": "Write some quick text that includes an admonition that is a warning."
+  },
+  {
+    "id": "6.3",
+    "feature": "Admonition: to-do (larger built-in set)",
+    "prompt": "Write some quick text that includes an admonition that is a to-do."
+  },
+  {
+    "id": "6.4",
+    "feature": "Admonition: custom type",
+    "prompt": "Write some quick text that includes an admonition of a custom type called 'experiment'."
+  },
+  {
+    "id": "6.5",
+    "feature": "Admonition with a custom title",
+    "prompt": "Write some quick text that includes a warning admonition whose title is 'Back up first'."
+  },
+  {
+    "id": "6.6",
+    "feature": "Collapsible admonition",
+    "prompt": "Write some quick text that includes a tip admonition that is collapsed by default and can be expanded by the reader."
+  },
+  {
+    "id": "6.7",
+    "feature": "Nested admonitions",
+    "prompt": "Write a note admonition that contains a warning admonition inside it."
+  },
+  {
+    "id": "6.8",
+    "feature": "Admonition inside a list item",
+    "prompt": "Write a numbered list of three steps where the second step contains a warning admonition."
+  },
+  {
+    "id": "6.9",
+    "feature": "Admonition with an icon",
+    "prompt": "Write some quick text that includes a tip admonition shown with a lightbulb icon."
+  },
+  {
+    "id": "7.1",
+    "feature": "Block quote with attribution",
+    "prompt": "Write a famous quotation by Albert Einstein, set apart as a quote, with an attribution to Einstein and its source."
+  },
+  {
+    "id": "7.2",
+    "feature": "Nested block quote",
+    "prompt": "Write a quoted reply that itself quotes an earlier message."
+  },
+  {
+    "id": "7.3",
+    "feature": "Generic container with a class",
+    "prompt": "Write a short paragraph wrapped in a container that is given the class name 'sidebar-note' so it can be styled."
+  },
+  {
+    "id": "7.4",
+    "feature": "Sidebar",
+    "prompt": "Write a short main paragraph and a sidebar with a related aside."
+  },
+  {
+    "id": "7.5",
+    "feature": "Collapsible section",
+    "prompt": "Write a short FAQ answer that is hidden behind a clickable 'Show answer' summary."
+  },
+  {
+    "id": "7.6",
+    "feature": "Tabs",
+    "prompt": "Write installation instructions shown as tabs, one tab for macOS and one for Windows."
+  },
+  {
+    "id": "7.7",
+    "feature": "Multi-column layout",
+    "prompt": "Write two short paragraphs that should be displayed side by side in two columns."
+  },
+  {
+    "id": "7.8",
+    "feature": "Figure with caption",
+    "prompt": "Write a passage that includes the image chart.png with the caption 'Sales by quarter' shown under it."
+  },
+  {
+    "id": "7.9",
+    "feature": "Block alignment",
+    "prompt": "Write a short title line and a paragraph, with the title line centered."
+  },
+  {
+    "id": "7.10",
+    "feature": "Raw block for one output format",
+    "prompt": "Write a short paragraph followed by a block of raw LaTeX that should only appear in the PDF version."
+  },
+  {
+    "id": "7.11",
+    "feature": "Literal block",
+    "prompt": "Write a short paragraph followed by a block of text whose spacing and characters must be shown exactly as typed, with no formatting applied."
+  },
+  {
+    "id": "8.1",
+    "feature": "Ordered list with a starting number",
+    "prompt": "Write a numbered list of three items that starts at number 5."
+  },
+  {
+    "id": "8.2",
+    "feature": "Fancy numbering",
+    "prompt": "Write a list of three items numbered with lowercase roman numerals, and a second list of three items lettered a, b, c."
+  },
+  {
+    "id": "8.3",
+    "feature": "Auto-numbered markers",
+    "prompt": "Write a numbered list of four items without typing the actual numbers, so the items can be reordered without renumbering."
+  },
+  {
+    "id": "8.4",
+    "feature": "Example lists",
+    "prompt": "Write a passage with two numbered examples whose numbering continues across the whole document, and a later sentence that refers back to the second example by its number."
+  },
+  {
+    "id": "8.5",
+    "feature": "Task list (two states)",
+    "prompt": "Write a to-do list with three tasks, one of which is already done."
+  },
+  {
+    "id": "8.6",
+    "feature": "Task list (more states)",
+    "prompt": "Write a to-do list with four tasks: one done, one in progress, one cancelled, and one marked important."
+  },
+  {
+    "id": "8.7",
+    "feature": "Task metadata",
+    "prompt": "Write a to-do item 'Pay rent' that is due November 1 and repeats every month."
+  },
+  {
+    "id": "8.8",
+    "feature": "Definition lists",
+    "prompt": "Write a short glossary with two terms and their definitions."
+  },
+  {
+    "id": "8.9",
+    "feature": "Question-and-answer lists",
+    "prompt": "Write a short FAQ with two questions and their answers."
+  },
+  {
+    "id": "8.10",
+    "feature": "Field lists",
+    "prompt": "Write the description of a function with its parameters, its return value, and its author listed as labeled fields."
+  },
+  {
+    "id": "8.11",
+    "feature": "Option lists",
+    "prompt": "Write a short help listing for a command-line tool showing the options -v, --output FILE, and -h, each with a description."
+  },
+  {
+    "id": "8.12",
+    "feature": "Several blocks in one list item",
+    "prompt": "Write a numbered list of two items where the first item contains two paragraphs and a short code example."
+  },
+  {
+    "id": "9.1",
+    "feature": "Code block",
+    "prompt": "Write a short Python function as a code example."
+  },
+  {
+    "id": "9.2",
+    "feature": "Code block attributes",
+    "prompt": "Write a short JavaScript code example with line numbers shown, line 2 highlighted, and the filename app.js displayed above it."
+  },
+  {
+    "id": "9.3",
+    "feature": "Numbered callouts inside code",
+    "prompt": "Write a short code example with numbered markers on two of its lines, and explanations of those numbered markers below the code."
+  },
+  {
+    "id": "9.4",
+    "feature": "Code included from a file",
+    "prompt": "Write a document that displays lines 5 to 15 of the file main.go as a code listing."
+  },
+  {
+    "id": "9.5",
+    "feature": "Executable code cells",
+    "prompt": "Write a short report containing a Python code cell that runs and shows its output when the document is built."
+  },
+  {
+    "id": "9.6",
+    "feature": "Interactive session block",
+    "prompt": "Write a short example of an interactive Python session showing a command and its result."
+  },
+  {
+    "id": "10.1",
+    "feature": "Table with column alignment",
+    "prompt": "Write a small table with three columns: one left-aligned, one centered, and one right-aligned."
+  },
+  {
+    "id": "10.2",
+    "feature": "Headerless table",
+    "prompt": "Write a small table that has no header row."
+  },
+  {
+    "id": "10.3",
+    "feature": "Table footer row",
+    "prompt": "Write a table with a header row, two data rows, and a footer row showing totals."
+  },
+  {
+    "id": "10.4",
+    "feature": "Table caption",
+    "prompt": "Write a small table with the caption 'Quarterly results'."
+  },
+  {
+    "id": "10.5",
+    "feature": "Column widths",
+    "prompt": "Write a table with two columns where the second column is three times as wide as the first."
+  },
+  {
+    "id": "10.6",
+    "feature": "Column and row spans",
+    "prompt": "Write a table where one cell spans two columns and another cell spans two rows."
+  },
+  {
+    "id": "10.7",
+    "feature": "Block content and line breaks in cells",
+    "prompt": "Write a table where one cell contains a bulleted list and another cell contains two lines of text."
+  },
+  {
+    "id": "10.8",
+    "feature": "Per-cell alignment and style",
+    "prompt": "Write a table where one particular cell is centered and highlighted while the other cells stay normal."
+  },
+  {
+    "id": "10.9",
+    "feature": "Row headers",
+    "prompt": "Write a table where the first column holds a heading for each row."
+  },
+  {
+    "id": "10.10",
+    "feature": "Nested tables",
+    "prompt": "Write a table where one of the cells contains a smaller table."
+  },
+  {
+    "id": "10.11",
+    "feature": "Table from data",
+    "prompt": "Write a table whose content is given as comma-separated values."
+  },
+  {
+    "id": "11.1",
+    "feature": "Image with size",
+    "prompt": "Write a passage that includes the image diagram.png displayed 300 pixels wide."
+  },
+  {
+    "id": "11.2",
+    "feature": "Light and dark image variants",
+    "prompt": "Write a passage that shows logo-light.png in light mode and logo-dark.png in dark mode."
+  },
+  {
+    "id": "11.3",
+    "feature": "Video embed",
+    "prompt": "Write a passage that embeds the video talk.mp4 so it can be played inline."
+  },
+  {
+    "id": "11.4",
+    "feature": "Display math, numbered",
+    "prompt": "Write a paragraph followed by the quadratic formula as a displayed equation, numbered so it can be referred to."
+  },
+  {
+    "id": "12.1",
+    "feature": "Tracked-change marks",
+    "prompt": "Write the sentence 'The quick brown fox jumps' showing suggested edits: 'quick' deleted, 'red' inserted before 'fox', and a reviewer comment saying 'check this'."
+  },
+  {
+    "id": "12.2",
+    "feature": "Visible annotation or tooltip",
+    "prompt": "Write a sentence where the phrase 'key insight' shows an explanatory note when the reader hovers over it."
+  },
+  {
+    "id": "13.1",
+    "feature": "Attributes on any element",
+    "prompt": "Write a heading and a paragraph, each given an identifier and a class name."
+  },
+  {
+    "id": "13.2",
+    "feature": "Named components or directives",
+    "prompt": "Write a short document that inserts a reusable 'video player' component for the video talk.mp4, with autoplay turned off."
+  },
+  {
+    "id": "13.3",
+    "feature": "Embedded host language",
+    "prompt": "Write a short document that computes and displays the current year using a small piece of code embedded in the text."
+  },
+  {
+    "id": "13.4",
+    "feature": "Fenced block handed to a renderer",
+    "prompt": "Write a short document that includes a flowchart with two steps, Start and End, connected by an arrow."
+  },
+  {
+    "id": "14.1",
+    "feature": "Abstract",
+    "prompt": "Write the beginning of a short paper with a title, an author line, and an abstract set apart from the body."
+  },
+  {
+    "id": "14.2",
+    "feature": "Title block with affiliations and keywords",
+    "prompt": "Write a paper's title block with two authors, each with a university affiliation, and a list of keywords."
+  },
+  {
+    "id": "14.3",
+    "feature": "Theorem and proof",
+    "prompt": "Write a short mathematical passage with a numbered theorem followed by its proof, ending with an end-of-proof mark."
+  },
+  {
+    "id": "14.4",
+    "feature": "Numbered definition",
+    "prompt": "Write a numbered definition of a prime number, set apart from the surrounding text the way math books do."
+  },
+  {
+    "id": "14.5",
+    "feature": "Epigraph",
+    "prompt": "Write the opening of a chapter with a short epigraph quotation and its attribution, set apart before the first paragraph."
+  },
+  {
+    "id": "14.6",
+    "feature": "Pull quote",
+    "prompt": "Write a paragraph of an article and a pull quote that repeats a striking line from it in larger type."
+  },
+  {
+    "id": "14.7",
+    "feature": "Framed box",
+    "prompt": "Write a paragraph followed by a short piece of text inside a framed box."
+  },
+  {
+    "id": "14.8",
+    "feature": "Algorithm in pseudocode",
+    "prompt": "Write a short algorithm in numbered pseudocode with the caption 'Binary search'."
+  },
+  {
+    "id": "14.9",
+    "feature": "Subfigures",
+    "prompt": "Write a passage with two images shown side by side, each with its own sub-caption (a) and (b), and one overall caption."
+  },
+  {
+    "id": "14.10",
+    "feature": "Reference to a page number",
+    "prompt": "Write a sentence that refers to the page number where the section called Results begins, so the number updates automatically."
+  },
+  {
+    "id": "14.11",
+    "feature": "List of figures",
+    "prompt": "Write a short document outline that includes an automatically generated list of figures."
+  },
+  {
+    "id": "14.12",
+    "feature": "Appendix",
+    "prompt": "Write a short document with two main sections followed by an appendix labeled with a letter."
+  },
+  {
+    "id": "14.13",
+    "feature": "Acronyms spelled out on first use",
+    "prompt": "Write two sentences that use the acronym API, so that its first use is spelled out automatically and it appears in a generated list of acronyms."
+  },
+  {
+    "id": "14.14",
+    "feature": "Units and quantities",
+    "prompt": "Write a sentence giving a speed of 3.5 × 10^8 meters per second and a temperature of 21 degrees Celsius, with the units typeset correctly."
+  },
+  {
+    "id": "14.15",
+    "feature": "Chemical equation",
+    "prompt": "Write the balanced chemical equation for burning methane, typeset as chemistry."
+  },
+  {
+    "id": "14.16",
+    "feature": "Margin to-do note",
+    "prompt": "Write a paragraph with an editorial to-do note attached to it, shown in the margin."
+  },
+  {
+    "id": "14.17",
+    "feature": "Line numbers for review",
+    "prompt": "Write a short paragraph set up so that the printed version shows line numbers in the margin for reviewers."
+  },
+  {
+    "id": "14.18",
+    "feature": "Drop cap",
+    "prompt": "Write the first paragraph of a story with its first letter set as a large drop cap."
+  },
+  {
+    "id": "14.19",
+    "feature": "Hyphenation hints",
+    "prompt": "Write a sentence containing the word electroencephalography, marking the places where it may be hyphenated."
+  },
+  {
+    "id": "14.20",
+    "feature": "Numbered paragraphs",
+    "prompt": "Write three paragraphs of a contract that are numbered 1.1, 1.2 and 1.3 automatically."
+  },
+  {
+    "id": "14.21",
+    "feature": "Colored text",
+    "prompt": "Write a sentence where the word 'blocked' is shown in red text."
+  },
+  {
+    "id": "14.22",
+    "feature": "Subtext line",
+    "prompt": "Write a heading followed by a line of small, muted subtext under it."
+  },
+  {
+    "id": "14.23",
+    "feature": "Inline badge",
+    "prompt": "Write a sentence ending with a small colored badge that reads 'beta'."
+  },
+  {
+    "id": "14.24",
+    "feature": "Inline data fields",
+    "prompt": "Write a note about a book that includes a rating of 5 and a genre of mystery as data fields a query tool could read."
+  },
+  {
+    "id": "14.25",
+    "feature": "Key-value list",
+    "prompt": "Write a short list of facts about a person (name, year born, occupation) that should display as aligned key-value pairs."
+  },
+  {
+    "id": "14.26",
+    "feature": "Side-brace grouping",
+    "prompt": "Write three related lines grouped together by a large curly brace with a label beside it."
+  },
+  {
+    "id": "14.27",
+    "feature": "Table formula",
+    "prompt": "Write a small table of expenses whose total row is computed by a formula."
+  },
+  {
+    "id": "14.28",
+    "feature": "Callout on one list item",
+    "prompt": "Write a bulleted list where one item is highlighted as a warning by a marker at the start of that item."
+  },
+  {
+    "id": "14.29",
+    "feature": "Note template",
+    "prompt": "Write a daily-note template that inserts today's date and the note's title automatically when a note is created."
+  },
+  {
+    "id": "14.30",
+    "feature": "Inline icon",
+    "prompt": "Write a sentence with a small heart icon from an icon set shown inline."
+  }
+]

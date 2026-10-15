@@ -1,0 +1,9 @@
+Here's a table where each row starts with a heading in the first column:
+
+| Category | Details |
+|---|---|
+| **Name** | Example Item |
+| **Price** | $25.00 |
+| **Availability** | In stock |
+| **Location** | Warehouse A |
+| **Last Updated** | October 15, 2026 |

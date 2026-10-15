@@ -1,0 +1,73 @@
+Here's a daily-note template for Obsidian's core **Templates** plugin. It uses the built-in `{{title}}` and `{{date}}` variables, which are filled in when the template is inserted or when a daily note is created.
+
+## Core Templates / Daily Notes plugin
+
+```markdown
+---
+title: {{title}}
+date: {{date:YYYY-MM-DD}}
+tags: [daily]
+---
+
+# {{title}}
+
+**Date:** {{date:dddd, MMMM D, YYYY}}
+**Time created:** {{time:HH:mm}}
+
+## Top Priorities
+- [ ] 
+- [ ] 
+- [ ] 
+
+## Schedule / Notes
+- 
+
+## Log
+- 
+
+## Gratitude / Wins
+- 
+
+## Tomorrow
+- [ ] 
+```
+
+**Setup:**
+1. Save this as `Templates/Daily Note.md`.
+2. Go to **Settings → Daily notes** and set *Template file location* to `Templates/Daily Note`.
+3. Set the *Date format* to `YYYY-MM-DD` so the title and filename match the date.
+
+## Templater plugin version
+
+If you use Templater, these dynamic tags work well:
+
+```markdown
+---
+title: <% tp.file.title %>
+date: <% tp.date.now("YYYY-MM-DD") %>
+tags: [daily]
+---
+
+# <% tp.file.title %>
+
+**Date:** <% tp.date.now("dddd, MMMM D, YYYY") %>
+**Time created:** <% tp.date.now("HH:mm") %>
+
+[[<% tp.date.yesterday("YYYY-MM-DD") %>]] ← Yesterday | Tomorrow → [[<% tp.date.tomorrow("YYYY-MM-DD") %>]]
+
+## Top Priorities
+- [ ] 
+
+## Schedule / Notes
+- 
+
+## Log
+- 
+```
+
+To have it apply automatically, enable **Trigger Templater on new file creation** in Templater's settings, and add a *Folder Template* mapping your daily notes folder to this template.
+
+## Notes
+- `{{title}}` is the note's filename without the extension.
+- `{{date:FORMAT}}` accepts any Moment.js format string.
+- If you use a different app (Notion, Logseq, Bear, etc.), tell me and I'll adapt the syntax.

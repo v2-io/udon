@@ -1,0 +1,5 @@
+Here is the sentence, marked up with an `<abbr>` element. The `title` attribute holds the full form, which most browsers show as a tooltip on hover:
+
+```html
+<p>Most modern websites are built with <abbr title="HyperText Markup Language">HTML</abbr>, which structures their content.</p>
+```

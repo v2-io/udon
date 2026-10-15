@@ -1,0 +1,121 @@
+I used **Quarto**, since it covers executable cells, captions, attributes, callouts and columns natively. Save the first block as `report.qmd` and render it with `quarto render report.qmd`. The second block is the separate three-section document for item 9.
+
+## `report.qmd`
+
+````markdown
+---
+title: "Quarto Feature Tour"
+format:
+  html: default
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{makeidx}
+        \makeindex
+execute:
+  echo: true
+---
+
+## 1. Report with an executed code cell
+
+This short report computes a statistic when the document is built.
+
+```{python}
+import statistics
+data = [12, 15, 14, 10, 18]
+print("Mean:", statistics.mean(data))
+print("Std dev:", round(statistics.stdev(data), 2))
+```
+
+## 2. Table with a caption
+
+| Quarter | Revenue ($k) |
+|---------|--------------|
+| Q1      | 120          |
+| Q2      | 135          |
+| Q3      | 150          |
+| Q4      | 170          |
+
+: Quarterly results {#tbl-quarterly}
+
+## 3. Heading and paragraph with identifier and class {#sec-custom .highlight}
+
+::: {#para-custom .note-text}
+This paragraph has the identifier `para-custom` and the class `note-text`.
+:::
+
+## 4. Code example
+
+```python
+def fibonacci(n):
+    """Return the first n Fibonacci numbers."""
+    seq = [0, 1]
+    while len(seq) < n:
+        seq.append(seq[-1] + seq[-2])
+    return seq[:n]
+```
+
+## 5. Quick text with a to-do admonition
+
+Quick note before the release goes out:
+
+::: {.callout-tip title="To-do" icon="false"}
+Update the changelog and tag the release.
+:::
+
+## 6. Index entry
+
+Plants convert light into chemical energy through photosynthesis`\index{photosynthesis}`{=latex}.
+
+## 7. Two columns
+
+:::: {.columns}
+::: {.column width="50%"}
+The first paragraph sits on the left. It introduces the idea and sets the context for the reader.
+:::
+::: {.column width="50%"}
+The second paragraph sits on the right. It continues with supporting detail beside the first.
+:::
+::::
+
+## 8. Table with header, data rows and footer
+
++-----------+-----------+
+| Region    | Sales     |
++===========+===========+
+| North     | 120       |
++-----------+-----------+
+| South     | 95        |
++===========+===========+
+| Total     | 215       |
++===========+===========+
+````
+
+## `three-sections.qmd` (item 9)
+
+````markdown
+---
+title: "Short Guide"
+toc: true
+toc-title: "Contents"
+---
+
+## Introduction
+
+This guide explains the basics in three short sections.
+
+## Method
+
+The approach is simple: collect data, analyze it, and report results.
+
+## Conclusion
+
+The three steps together give a repeatable workflow.
+````
+
+## Notes
+
+- **Index (item 6):** Quarto has no built-in index. The `\index{}` entry works for PDF/LaTeX output. In HTML it is ignored, so the sentence still reads normally.
+- **To-do admonition (item 5):** Quarto has no dedicated to-do callout, so I used a `tip` callout titled "To-do".
+- **Table footer (item 8):** Pandoc grid tables treat the second `===` line as the start of the footer.
+- **Code cell (item 1):** It needs Python plus Jupyter available (`pip install jupyter`).

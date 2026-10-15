@@ -1,0 +1,27 @@
+Markdown tables can't hold real multi-line cells, so this uses `<br>` tags for line breaks and `•` characters for the bullets:
+
+| Feature | Details |
+|---|---|
+| Bulleted list | • First item<br>• Second item<br>• Third item |
+| Two lines of text | This is the first line.<br>This is the second line. |
+
+If your renderer supports HTML, you can use real list markup instead:
+
+```html
+<table>
+  <tr>
+    <th>Feature</th>
+    <th>Details</th>
+  </tr>
+  <tr>
+    <td>
+      <ul>
+        <li>First item</li>
+        <li>Second item</li>
+        <li>Third item</li>
+      </ul>
+    </td>
+    <td>This is the first line.<br>This is the second line.</td>
+  </tr>
+</table>
+```

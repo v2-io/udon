@@ -1,0 +1,74 @@
+# Side-by-Side Figure with Sub-captions
+
+## HTML
+
+```html
+<p>
+  As shown in Figure 1, the model's output differs noticeably before and after
+  fine-tuning. The untuned model produces noisy, fragmented results (Figure 1a),
+  whereas the fine-tuned model yields cleaner and more coherent output (Figure 1b).
+</p>
+
+<figure style="text-align:center; margin:1.5em auto; max-width:900px;">
+  <div style="display:flex; justify-content:center; gap:1.5em;">
+    <figure style="margin:0; flex:1;">
+      <img src="image_a.png" alt="Before fine-tuning" style="width:100%;">
+      <figcaption>(a) Before fine-tuning</figcaption>
+    </figure>
+    <figure style="margin:0; flex:1;">
+      <img src="image_b.png" alt="After fine-tuning" style="width:100%;">
+      <figcaption>(b) After fine-tuning</figcaption>
+    </figure>
+  </div>
+  <figcaption style="margin-top:0.75em;">
+    <strong>Figure 1:</strong> Comparison of model output before and after fine-tuning.
+  </figcaption>
+</figure>
+```
+
+## LaTeX
+
+```latex
+\usepackage{subcaption} % in the preamble
+\usepackage{graphicx}
+
+As shown in Figure~\ref{fig:comparison}, the model's output differs noticeably
+before and after fine-tuning. The untuned model produces noisy, fragmented
+results (Figure~\ref{fig:before}), whereas the fine-tuned model yields cleaner
+and more coherent output (Figure~\ref{fig:after}).
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{image_a.png}
+    \caption{Before fine-tuning}
+    \label{fig:before}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{image_b.png}
+    \caption{After fine-tuning}
+    \label{fig:after}
+  \end{subfigure}
+  \caption{Comparison of model output before and after fine-tuning.}
+  \label{fig:comparison}
+\end{figure}
+```
+
+## Markdown (HTML table approach)
+
+```markdown
+<table>
+  <tr>
+    <td align="center"><img src="image_a.png" width="300"><br>(a) Before fine-tuning</td>
+    <td align="center"><img src="image_b.png" width="300"><br>(b) After fine-tuning</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><b>Figure 1:</b> Comparison of model output before and after fine-tuning.</td>
+  </tr>
+</table>
+```
+
+Replace `image_a.png` and `image_b.png` with your image paths, and adjust the captions and passage text to fit your content. If you need a different format (Word, Typst, reStructuredText, etc.), let me know.

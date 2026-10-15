@@ -1,0 +1,7 @@
+Here's a Markdown table with left-aligned, centered, and right-aligned columns:
+
+| Left-aligned | Centered | Right-aligned |
+|:-------------|:--------:|--------------:|
+| Apple        |   Red    |          1.20 |
+| Banana       |  Yellow  |          0.50 |
+| Blueberry    |   Blue   |          3.75 |

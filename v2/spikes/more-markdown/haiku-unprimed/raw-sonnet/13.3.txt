@@ -1,0 +1,25 @@
+Here's a short HTML document that computes the current year with an embedded script:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Current Year</title>
+</head>
+<body>
+  <h1>What year is it?</h1>
+  <p>
+    The current year is <strong><span id="year"></span></strong>.
+  </p>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+```
+
+**How it works:** the `<script>` block runs when the page loads. `new Date().getFullYear()` reads the year from the visitor's system clock, and the result is written into the `<span id="year">` element in the paragraph.
+
+Save it as `year.html` and open it in any browser. It will always show the current year (2026 as of today) without needing to be edited.

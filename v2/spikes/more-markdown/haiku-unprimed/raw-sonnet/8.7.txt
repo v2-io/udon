@@ -1,0 +1,9 @@
+Here's your to-do item:
+
+```
+- [ ] Pay rent
+  Due: 2026-11-01
+  Repeats: Monthly (on the 1st)
+```
+
+If you'd like it in another format, such as an iCalendar (.ics) reminder or a file in your working directory, let me know.

@@ -1,0 +1,6 @@
+Here is a bulleted list with one warning item marked by ⚠️ at the start:
+
+- Back up your data before starting the migration.
+- ⚠️ Warning: This operation permanently deletes all files in the target directory and cannot be undone.
+- Verify that all dependencies are installed.
+- Run the test suite to confirm everything works.

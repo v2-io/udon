@@ -1,0 +1,41 @@
+Here's a passage with the image and caption, in Markdown and HTML so you can use whichever fits your setup.
+
+**Markdown version**
+
+```markdown
+## Quarterly Performance Overview
+
+Sales performance this year has shown a clear seasonal pattern, with the strongest results arriving in the second half. The chart below breaks down revenue by quarter, making it easy to compare momentum across the year and spot where growth accelerated.
+
+![Sales by quarter](chart.png)
+*Sales by quarter*
+
+As the chart illustrates, early quarters established a steady baseline, while later quarters benefited from increased demand and expanded outreach.
+```
+
+**HTML version**
+
+```html
+<h2>Quarterly Performance Overview</h2>
+
+<p>
+  Sales performance this year has shown a clear seasonal pattern, with the
+  strongest results arriving in the second half. The chart below breaks down
+  revenue by quarter, making it easy to compare momentum across the year and
+  spot where growth accelerated.
+</p>
+
+<figure>
+  <img src="chart.png" alt="Bar chart of sales by quarter">
+  <figcaption>Sales by quarter</figcaption>
+</figure>
+
+<p>
+  As the chart illustrates, early quarters established a steady baseline,
+  while later quarters benefited from increased demand and expanded outreach.
+</p>
+```
+
+The HTML version uses `<figure>` and `<figcaption>`, which semantically ties the caption to the image and places it directly beneath it. In Markdown, the italic line immediately after the image serves as the caption.
+
+If you tell me the format you're working in (Word, LaTeX, reStructuredText, etc.), I can adapt it accordingly.

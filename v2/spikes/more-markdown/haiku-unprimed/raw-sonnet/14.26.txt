@@ -1,0 +1,46 @@
+Here's a plain-text version using ASCII characters:
+
+```
+ Roses are red,      ⎫
+ Violets are blue,   ⎬  Classic Rhyme
+ Sugar is sweet.     ⎭
+```
+
+Or with a larger, more traditional brace:
+
+```
+ Roses are red,      ⎧
+ Violets are blue,   ⎨  Classic Rhyme
+ Sugar is sweet.     ⎩
+```
+
+If you'd prefer a different format, here are a few alternatives:
+
+**LaTeX:**
+```latex
+\[
+\left.
+\begin{aligned}
+  &\text{Roses are red,} \\
+  &\text{Violets are blue,} \\
+  &\text{Sugar is sweet.}
+\end{aligned}
+\right\}
+\text{ Classic Rhyme}
+\]
+```
+
+**HTML/CSS:**
+```html
+<div style="display:flex; align-items:center; font-size:1.2em;">
+  <div style="text-align:right;">
+    Roses are red,<br>
+    Violets are blue,<br>
+    Sugar is sweet.
+  </div>
+  <div style="font-size:4em; margin:0 .2em;">}</div>
+  <div>Classic Rhyme</div>
+</div>
+```
+
+Let me know if you'd like different content for the lines, a different label, or a specific output format (SVG, image, etc.).

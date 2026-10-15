@@ -1,0 +1,41 @@
+Here's a short list of facts about a person, formatted as aligned key-value pairs:
+
+```
+Name:        Ada Lovelace
+Born:        1815
+Occupation:  Mathematician and writer
+```
+
+If you'd like this in a specific format for display, here are a couple of options:
+
+**Markdown table**
+
+| Key        | Value                    |
+|------------|--------------------------|
+| Name       | Ada Lovelace             |
+| Born       | 1815                     |
+| Occupation | Mathematician and writer |
+
+**HTML definition list**
+
+```html
+<dl>
+  <dt>Name</dt>        <dd>Ada Lovelace</dd>
+  <dt>Born</dt>        <dd>1815</dd>
+  <dt>Occupation</dt>  <dd>Mathematician and writer</dd>
+</dl>
+```
+
+**CSS to align the HTML version in a grid**
+
+```css
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+}
+dt { font-weight: bold; }
+dd { margin: 0; }
+```
+
+Let me know if you want a different person, more fields, or a particular format (JSON, YAML, etc.).

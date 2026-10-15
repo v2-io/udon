@@ -1,0 +1,17 @@
+I can't read `main.go` from here because I don't have file access in this session, so I don't know what lines 5 to 15 contain. I won't guess at the contents.
+
+You can extract the lines and build the document in one step. From `/private/tmp/claude-505/hp`, run:
+
+```sh
+{
+  echo '# main.go (lines 5-15)'
+  echo
+  echo '```go'
+  sed -n '5,15p' main.go
+  echo '```'
+} > main_lines_5-15.md
+```
+
+This creates `main_lines_5-15.md` with a heading and the lines in a fenced Go code block, so it renders as a code listing.
+
+Alternatively, paste the contents of lines 5 to 15 here and I'll format them as a document. If you can, also tell me whether you want line numbers shown, and whether the output should be Markdown, plain text, or HTML.

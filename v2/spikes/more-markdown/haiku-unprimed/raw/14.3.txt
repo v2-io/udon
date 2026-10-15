@@ -1,0 +1,5 @@
+**Theorem 1.** The sum of two even integers is even.
+
+**Proof.** Let $a$ and $b$ be even integers. By definition, there exist integers $m$ and $n$ such that $a = 2m$ and $b = 2n$. Then
+$$a + b = 2m + 2n = 2(m + n).$$
+Since $m + n$ is an integer, $a + b$ is twice an integer, and therefore $a + b$ is even. $\blacksquare$

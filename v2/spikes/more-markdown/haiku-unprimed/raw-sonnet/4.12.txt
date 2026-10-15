@@ -1,0 +1,7 @@
+Use the `<abbr>` element with a `title` attribute:
+
+```html
+<p>Most web pages are built with <abbr title="HyperText Markup Language">HTML</abbr>, which defines their structure.</p>
+```
+
+When the reader hovers over "HTML," the browser displays a tooltip reading "HyperText Markup Language."

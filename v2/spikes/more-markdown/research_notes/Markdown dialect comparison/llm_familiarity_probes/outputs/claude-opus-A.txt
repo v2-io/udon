@@ -1,0 +1,194 @@
+# 1. Djot
+
+**(a)**
+
+````djot
+{#intro}
+# Introduction
+
+_emphasis_, *strong*, {=highlight=}, {+inserted+}, {-deleted-},
+x^sup^, H~2~O, press [Ctrl]{.kbd}, math $`x^2`, a note[^n1].
+Line one\
+line two (hard break)
+
+::: warning
+Watch out.
+:::
+
+: udon
+
+  a noodle
+
+| a | b |
+|---|---|
+| 1 | 2 |
+^ Table caption
+
+``` =html
+<div class="raw">raw html</div>
+```
+
+[^n1]: The footnote text.
+````
+
+**(b)**
+
+```djot
+*bold* and _italic_ and {-gone-} and <https://x.com>
+```
+
+**(c)** The reference implementation is **djot.js** (TypeScript/JavaScript). The original was **djot.lua** (Lua), now superseded. Both are by jgm. Latest version: unsure (I think djot.js is around 0.3.x). The syntax itself isn't versioned.
+
+# 2. Obsidian
+
+```markdown
+---
+aliases:
+  - A1
+tags:
+  - project/alpha
+---
+
+[[Alpha|first]]
+[[Alpha#Setup]]
+[[Alpha#^abc123]]
+
+Some paragraph in Alpha. ^abc123
+
+![[Alpha]]
+![[image.png|300]]
+
+> [!warning]- Careful
+> Folded by default.
+
+==highlighted==
+%% hidden in reading view %%
+#parent/child
+```
+
+The block id is declared as ` ^abc123` at the end of the block. For lists and quotes, it goes on its own line after the block.
+
+# 3. GFM
+
+**(a)** Tables, task list items, strikethrough, extended autolinks, and disallowed raw HTML (the tagfilter).
+
+**(b)**
+
+```markdown
+> [!WARNING]
+> Be careful.
+```
+
+Supported types: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
+
+**(c)** Footnotes and math are github.com rendering only. They are not in the GFM spec (0.29-gfm). cmark-gfm does implement footnotes as an extension.
+
+# 4. CommonMark
+
+**(a)** 0.31.2, January 2024.
+
+**(b)** 7.
+
+**(c)** Yes, but only if the list starts with `1`. The item must also be non-empty, which applies to any list interrupting a paragraph.
+
+**(d)** No. Intraword `_` doesn't create emphasis.
+
+**(e)**
+
+```html
+<p><em>foo<strong>bar</strong>baz</em></p>
+```
+
+# 5. Pandoc Markdown
+
+**(a)**
+
+```markdown
+% My Title
+% Jane Doe
+% 2026-10-14
+
+See [@doe99, p. 33].
+@doe99 argues this.
+Doe says so [-@doe99].
+Text.^[An inline footnote.]
+
+::: {#box .note}
+Div content.
+:::
+
+[span text]{#s1 .smallcaps key="val"}
+
+| Line one
+|     indented line two
+
+(@) First example.
+(@good) Second example, referenced as (@good).
+
+Inline \emph{raw LaTeX} or `\LaTeX`{=latex}.
+```
+
+**(b)** Simple, multiline, grid, and pipe tables.
+
+**(c)** Add or remove extensions with `+` or `-` on the format, e.g. `pandoc -f markdown-smart+hard_line_breaks`. The same works for `-t`.
+
+**(d)** It is CommonMark plus a set of pandoc extensions, parsed by commonmark-hs. It approximates pandoc markdown on a CommonMark base. Extensions are toggleable with `+`/`-`.
+
+# 6. MDX
+
+**(a)** MDX 3, released around October 2023.
+
+**(b)**
+- `<` and `{` are JSX/expression syntax and must be escaped (`\<`, `\{`).
+- Indented code blocks are disabled.
+- HTML comments `<!-- -->` are unsupported.
+- Autolinks `<https://…>` are unsupported.
+- Raw HTML is parsed as JSX, so it must be well-formed, closed, and use JSX attribute rules (e.g. `style` as an object).
+- Lines starting with `import`/`export` are treated as ESM.
+
+**(c)**
+
+```mdx
+{/* comment */}
+```
+
+**(d)** Not supported natively. Frontmatter needs `remark-frontmatter`, and `remark-mdx-frontmatter` if you want it exported as a variable.
+
+# 7. Others
+
+**(a)** MyST:
+
+````markdown
+```{warning}
+Be careful.
+```
+
+See {ref}`my-label` or {math}`x^2`.
+````
+
+**(b)** Markdoc:
+
+```markdoc
+{% callout type="warning" %}
+Content
+{% /callout %}
+```
+
+**(c)** Pandoc Markdown.
+
+# 8. Self-assessment
+
+| Format | Confidence |
+|---|---|
+| Djot | 3 (syntax mostly solid; version details weak) |
+| Obsidian | 4 |
+| GFM | 5 |
+| CommonMark | 4 (edge cases verifiable but not memorized) |
+| Pandoc Markdown | 4 |
+| MDX | 4 |
+| MyST | 3 |
+| Markdoc | 3 |
+| AsciiDoc | 4 |
+| reStructuredText | 4 |
+| Org mode | 4 |
+| Typst | 3 (syntax evolving between versions) |

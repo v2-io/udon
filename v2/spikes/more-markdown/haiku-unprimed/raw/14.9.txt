@@ -1,0 +1,8 @@
+The two photographs below show the same stretch of coastline at different times of day.
+
+| | |
+|:---:|:---:|
+| ![Morning light over a rocky shoreline with low tide](morning-shoreline.jpg) | ![Evening light over the same shoreline at high tide](evening-shoreline.jpg) |
+| (a) Low tide at dawn, exposing the rock shelf. | (b) High tide at dusk, with waves reaching the cliff base. |
+
+*Figure 1: The same coastline photographed at dawn (a) and dusk (b), showing how the tide changes the shape of the shore.*

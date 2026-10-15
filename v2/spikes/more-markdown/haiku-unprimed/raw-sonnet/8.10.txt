@@ -1,0 +1,37 @@
+Here's a function docstring with labeled fields for parameters, return value, and author:
+
+```python
+def calculate_average(values, ignore_negative=False):
+    """
+    Calculate the arithmetic mean of a collection of numbers.
+
+    Iterates over the supplied values, optionally skipping negative
+    numbers, and returns their average. Raises an error if there are
+    no values to average.
+
+    :param values: A list or other iterable of numeric values (int or float)
+                   to be averaged.
+    :type values: Iterable[float]
+    :param ignore_negative: If True, negative numbers are excluded from the
+                            calculation. Defaults to False.
+    :type ignore_negative: bool
+
+    :return: The arithmetic mean of the included values.
+    :rtype: float
+
+    :raises ValueError: If no values remain after filtering.
+
+    :author: Joseph Wecker
+    """
+    items = [v for v in values if not (ignore_negative and v < 0)]
+    if not items:
+        raise ValueError("No values available to average.")
+    return sum(items) / len(items)
+```
+
+**Labeled fields used:**
+- `:param name:` describes each parameter (with `:type:` for its type)
+- `:return:` describes the return value (with `:rtype:` for its type)
+- `:author:` lists who wrote the function
+
+If you'd prefer a different style (Google, NumPy, or JSDoc/Javadoc), or a different language, let me know and I can adapt it.

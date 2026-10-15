@@ -1,0 +1,9 @@
+Inline code in Markdown can't carry a language tag the way fenced blocks can, so the most portable way to get Rust coloring is to use an HTML `<code>` element with a language class:
+
+In Rust, you declare an immutable binding with <code class="language-rust">let x = 1;</code> and the compiler infers the type as `i32`.
+
+If your renderer supports it, some Markdown flavors (such as Pandoc) also accept the attribute syntax directly:
+
+In Rust, you declare an immutable binding with `let x = 1;`{.rust} and the compiler infers the type as `i32`.
+
+Standard GitHub-flavored Markdown doesn't support highlighting for inline code, so in that case a fenced block with the `rust` tag is the only option.

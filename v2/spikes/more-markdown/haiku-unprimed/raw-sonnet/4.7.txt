@@ -1,0 +1,11 @@
+The sentence with "NASA" in small caps:
+
+The ɴᴀꜱᴀ report was released.
+
+That uses Unicode small-capital characters, so it works in plain text. If you're using markup, these produce true small caps:
+
+- **HTML/CSS:** `The <span style="font-variant: small-caps;">nasa</span> report was released.`
+- **LaTeX:** `The \textsc{nasa} report was released.`
+- **Word/Google Docs:** Type "nasa" in lowercase, then apply Format → Font → Small caps.
+
+For small caps, the text is typically typed in lowercase so the font renders it as small capitals.

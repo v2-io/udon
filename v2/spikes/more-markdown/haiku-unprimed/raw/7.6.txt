@@ -1,0 +1,74 @@
+Here's a template using MDX-style tabs (the `<Tabs>` component used by Mintlify and similar docs platforms). Replace `example-cli` and the commands with your product's details.
+
+<Tabs>
+  <Tab title="macOS">
+
+### Requirements
+
+- macOS 13 (Ventura) or later
+- Terminal access
+
+### Install with Homebrew
+
+1. Install [Homebrew](https://brew.sh) if you don't already have it.
+2. Run:
+
+   ```bash
+   brew install example-cli
+   ```
+
+### Alternative: Install with the script
+
+```bash
+curl -fsSL https://example.com/install.sh | sh
+```
+
+### Verify the installation
+
+```bash
+example-cli --version
+```
+
+If the command is not found, restart your terminal or add the install directory to your `PATH`:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+  </Tab>
+  <Tab title="Windows">
+
+### Requirements
+
+- Windows 10 (version 1809) or later, or Windows 11
+- PowerShell 5.1 or later (included with Windows)
+
+### Install with winget
+
+1. Open **PowerShell** or **Windows Terminal**.
+2. Run:
+
+   ```powershell
+   winget install ExampleCLI
+   ```
+
+### Alternative: Install with the MSI installer
+
+1. Download the latest `.msi` file from [example.com/downloads](https://example.com/downloads).
+2. Double-click the file and follow the setup wizard.
+
+### Verify the installation
+
+Open a new PowerShell window and run:
+
+```powershell
+example-cli --version
+```
+
+If the command is not found, close and reopen your terminal so the updated `PATH` takes effect.
+
+  </Tab>
+</Tabs>
+
+If you tell me the product name, its package names, and the actual install methods and requirements, I can fill in accurate details.

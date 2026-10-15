@@ -1,0 +1,7 @@
+## FAQ
+
+**What can you help me with?**
+I can help with a wide range of tasks, including writing and editing, answering questions, explaining concepts, brainstorming, coding and debugging, and analyzing information. If you share a file or describe your project, I can work with that directly.
+
+**How should I phrase my request to get the best results?**
+Be specific about your goal, the context, and the format you want. For example, "Summarize this article in three bullet points for a non-technical audience" will get a better result than "Summarize this." If you're not sure what you need, tell me that too, and I can ask clarifying questions before I start.

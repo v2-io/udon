@@ -1,0 +1,66 @@
+Since I don't know your project or docs framework, here's a template using MkDocs Material tab syntax, with `your-tool` as a placeholder.
+
+````markdown
+## Installation
+
+=== "macOS"
+
+    **Requirements:** macOS 12 or later
+
+    1. Install [Homebrew](https://brew.sh) if you don't have it:
+
+        ```bash
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        ```
+
+    2. Install your-tool:
+
+        ```bash
+        brew install your-tool
+        ```
+
+    3. Verify the installation:
+
+        ```bash
+        your-tool --version
+        ```
+
+=== "Windows"
+
+    **Requirements:** Windows 10 or later
+
+    1. Open **PowerShell**.
+
+    2. Install your-tool with winget:
+
+        ```powershell
+        winget install YourOrg.YourTool
+        ```
+
+    3. Restart your terminal, then verify the installation:
+
+        ```powershell
+        your-tool --version
+        ```
+````
+
+**Notes**
+
+- In MkDocs Material, enable the extension with `pymdownx.tabbed` (with `alternate_style: true`) in `mkdocs.yml`.
+- For **Docusaurus**, use:
+
+  ```mdx
+  import Tabs from '@theme/Tabs';
+  import TabItem from '@theme/TabItem';
+
+  <Tabs groupId="os">
+    <TabItem value="macos" label="macOS" default>
+      brew install your-tool
+    </TabItem>
+    <TabItem value="windows" label="Windows">
+      winget install YourOrg.YourTool
+    </TabItem>
+  </Tabs>
+  ```
+
+If you tell me the product name, how it's distributed (Homebrew, installer, npm, etc.), and which docs framework you use, I can tailor this exactly.

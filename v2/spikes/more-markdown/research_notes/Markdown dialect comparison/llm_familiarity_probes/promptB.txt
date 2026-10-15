@@ -1,0 +1,52 @@
+Answer from memory only; do not use any tools or web search. For each numbered snippet below: name the markup language or flavor it is written in (if it's ambiguous between several, say which), and in one or two lines say what the distinctive constructs mean or render as. Be terse. If unsure, say so.
+
+1.
+This is _emphasized_ and *strong*, plus {=marked=} and [Ctrl+C]{.kbd}.
+
+::: warning
+Don't.
+:::
+
+2.
+> [!tip]- Hidden tip
+> See [[Setup#Install|install]] and ![[diagram.png|400]] %%todo%%
+
+3.
+As @smith04 [p. 33] argues,^[But see @jones99.] the
+
+| Roses are red,
+|    violets blue.
+
+4.
+import {Chart} from './chart.js'
+
+# Sales for {year}
+
+<Chart data={data} />
+
+{/* reviewed */}
+
+5.
+```{note}
+Water is H{sub}`2`O.
+```
+
+6.
+{% callout type="warning" %}
+Mind the gap.
+{% /callout %}
+
+7.
+> [!NOTE]
+> Useful information.
+
+8.
+: Term
+
+  Definition with $`e^{i\pi}`$ and {+added+} and {-removed-}.
+
+9.
+[NOTE]
+====
+Hello from a delimited block.
+====

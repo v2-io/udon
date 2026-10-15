@@ -1,0 +1,8 @@
+```html
+<h1 id="main-heading" class="page-title">Welcome to My Page</h1>
+<p id="intro-paragraph" class="intro-text">This is an introductory paragraph. It has its own unique identifier and a class name that can be used for styling or scripting.</p>
+```
+
+Each element has:
+- **`id`**: a unique identifier (`main-heading`, `intro-paragraph`) that can be targeted with `#main-heading` in CSS or `document.getElementById()` in JavaScript.
+- **`class`**: a reusable class name (`page-title`, `intro-text`) that can be targeted with `.page-title` in CSS or `document.querySelector()`.

@@ -1,0 +1,1 @@
+Do not use tools. Write a short markup document (under 25 lines) about cooking udon that includes: a warning callout/admonition, a footnote, a definition of the term "dashi", a two-column table, a highlighted phrase, and a link to another document in the same notes collection. Output only the raw source in a code block, then one line saying which markup flavor you chose and why.

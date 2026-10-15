@@ -1,0 +1,15 @@
+# Project Notes
+
+We wrapped up the first round of testing this week. The core features work as expected, and feedback from the team has been positive overall. A few rough edges remain, mostly around error handling and documentation.
+
+> [!TODO]
+> **To-do before the next release:**
+> - [ ] Add clear error messages for failed uploads
+> - [ ] Update the README with setup instructions
+> - [ ] Re-run the full test suite on a clean environment
+
+Once those items are done, we can schedule the release review and share the build with a wider group.
+
+---
+
+*Note: the `> [!TODO]` syntax is the GitHub/Obsidian-style callout. If your renderer doesn't support it, you can use `> **TODO:**` instead.*

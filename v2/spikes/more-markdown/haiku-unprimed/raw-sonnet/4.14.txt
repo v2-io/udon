@@ -1,0 +1,12 @@
+```html
+<p>Don't miss out on our <span class="promo">limited offer</span> this weekend only!</p>
+```
+
+And a matching style rule:
+
+```css
+.promo {
+  color: #c0392b;
+  font-weight: bold;
+}
+```

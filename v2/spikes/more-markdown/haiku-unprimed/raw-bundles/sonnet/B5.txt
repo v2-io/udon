@@ -1,0 +1,57 @@
+Pandoc-flavored Markdown covers all seven items, so here is the source:
+
+````markdown
+## 1. Headerless table
+
+-------  -----
+Apple    Red
+Lime     Green
+-------  -----
+
+## 2. Styled phrase
+
+Sign up today to claim our [limited offer]{.promo} on annual plans.
+
+## 3. HTML-only bold
+
+This sentence has one very `<b>important</b>`{=html} word.
+
+## 4. Numbered list
+
+1. The first item begins with an introductory paragraph.
+
+   This is the second paragraph of the first item, followed by an example:
+
+   ```python
+   print("Hello, world")
+   ```
+
+2. The second item is short.
+
+## 5. To-do admonition
+
+Quick update: the draft is nearly done.
+
+::: todo
+**TODO:** Double-check the figures before publishing.
+:::
+
+## 6. Chemistry and math
+
+Water is H~2~O, and 2^10^ equals 1024.
+
+## 7. Weather with a hidden note
+
+Today is sunny with a light breeze from the west. Tonight, clouds will roll in and temperatures will drop to about 10°C.
+
+<!-- Note to self: verify the forecast source before publishing. -->
+````
+
+Notes on the choices:
+
+- **Item 1:** The simple table syntax lets Pandoc omit the header row.
+- **Item 2:** `[text]{.promo}` renders as `<span class="promo">`.
+- **Item 3:** The `{=html}` raw attribute makes the `<b>` tag appear only in HTML output.
+- **Item 5:** `::: todo` is a fenced div, which renders as `<div class="todo">`, so you can style it with CSS.
+- **Item 6:** `~2~` is subscript and `^10^` is superscript.
+- **Item 7:** The HTML comment is dropped from the rendered output, so readers won't see it.

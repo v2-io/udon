@@ -1,0 +1,46 @@
+Here's a short document in Markdown, with the Installation section given the stable identifier `install`:
+
+```markdown
+# Project Guide
+
+A brief overview of the project and how to get it running.
+
+## Installation {#install}
+
+1. Clone the repository:
+   ```sh
+   git clone https://example.com/project.git
+   cd project
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Verify the installation:
+   ```sh
+   npm test
+   ```
+
+## Usage
+
+After completing the steps in [Installation](#install), start the app with:
+
+```sh
+npm start
+```
+```
+
+**How the identifier works**
+
+- `{#install}` after the heading sets an explicit anchor ID, so the link target stays `#install` even if you later rename the heading (for example, to "Getting Started").
+- Other places in the same document can link with `[Installation](#install)`, as shown in the Usage section.
+- From other files, link with `guide.md#install` (or the published URL plus `#install`).
+
+**Note on compatibility:** the `{#id}` syntax is supported by Pandoc, Python-Markdown (with `attr_list`), kramdown/Jekyll, MkDocs, Hugo, and many others, but not by plain CommonMark or GitHub-flavored Markdown. If you need it to work on GitHub, use an HTML anchor instead:
+
+```markdown
+<a id="install"></a>
+## Installation
+```
+
+Want me to save this to a file in the working directory, or adapt it to a specific format (HTML, reStructuredText, AsciiDoc)?

@@ -1,0 +1,39 @@
+1. `<p>H<sub>2</sub>O and <del>gone</del></p>`
+   Pandoc or GitLab Markdown (`~sub~`, `~~strike~~`).
+   GFM renders `H~2~O and <del>gone</del>`.
+
+2. `<p>See <a href="/wiki/Setup" title="Setup">install guide</a>.</p>`
+   MediaWiki/Creole/Obsidian wikilink: target, then label.
+   TiddlyWiki reads the pipe as label|target, so the text is “Setup” and the target is “install guide”. CommonMark keeps the brackets as text.
+
+3. `<p>Note {% this is important %} here.</p>`
+   CommonMark; `{% %}` is plain text.
+   Liquid, Jinja, and GitBook parse `{% this is important %}` as a template tag and reject the unknown tag `this`.
+
+4. `<p>This is <em>x</em> and <em>y</em>.</p>`
+   CommonMark/GFM: `*` and `_` are both emphasis.
+   Textile and AsciiDoc render `<strong>x</strong>` and `<em>y</em>`; Org renders bold and underline.
+
+5. `<div>\n**x**\n</div>`
+   CommonMark/GFM: a `<div>` block is raw HTML, so the asterisks stay.
+   Default Pandoc (`markdown_in_html_blocks`) emits `<strong>x</strong>` inside the div.
+
+6. `<p>x<sup>2</sup> and a note<a href="#fn1"><sup>1</sup></a></p>` plus an endnote “like this”.
+   Pandoc/MultiMarkdown: `^sup^` and an inline footnote `^[...]`.
+   CommonMark renders the carets as literal text. GitHub footnotes use `[^id]`.
+
+7. `<p><mark>marked</mark> and {+added+}</p>`
+   Obsidian/HedgeDoc-style `==highlight==`; `{+ +}` left as text.
+   PmWiki renders `{+added+}` as `<u>added</u>`. A line that is only `==marked==` is an `<h2>` in MediaWiki, Creole, and DokuWiki.
+
+8. `<p>Groceries:</p><ul><li>milk</li><li>eggs</li></ul>`
+   CommonMark: a list may follow a paragraph with no blank line.
+   MediaWiki list markers are `*`, so the hyphens stay text. reStructuredText wants a blank line before the list.
+
+9. `<p>Visit <a href="https://example.com">https://example.com</a> today.</p>`
+   GFM bare-URL autolink (period stays outside the link).
+   CommonMark and default Pandoc leave `https://example.com` as plain text.
+
+10. `<dl><dt>term</dt><dd><p>its definition</p></dd></dl>`
+    Pandoc/kramdown/Markdown Extra definition list.
+    CommonMark/GFM renders `<p>term : its definition</p>`. MediaWiki uses `; term` on the term line.

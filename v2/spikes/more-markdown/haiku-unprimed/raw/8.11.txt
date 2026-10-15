@@ -1,0 +1,6 @@
+Usage: mytool [OPTIONS]
+
+Options:
+  -v            Enable verbose output, printing extra progress and diagnostic messages.
+  --output FILE Write results to FILE instead of standard output.
+  -h            Show this help message and exit.

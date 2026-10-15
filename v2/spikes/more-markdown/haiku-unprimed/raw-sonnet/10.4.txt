@@ -1,0 +1,10 @@
+**Quarterly results**
+
+| Quarter | Revenue | Expenses | Net Profit |
+|---------|---------|----------|------------|
+| Q1      | $120,000 | $85,000 | $35,000    |
+| Q2      | $135,000 | $90,000 | $45,000    |
+| Q3      | $150,000 | $95,000 | $55,000    |
+| Q4      | $165,000 | $100,000 | $65,000   |
+
+The figures are placeholder values, so swap in your actual numbers as needed.

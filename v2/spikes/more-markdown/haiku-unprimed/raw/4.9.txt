@@ -1,0 +1,1 @@
+Run the test suite by executing `make test` from the project root.

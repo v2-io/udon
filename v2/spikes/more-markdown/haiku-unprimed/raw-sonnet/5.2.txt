@@ -1,0 +1,5 @@
+When you're getting started, the [official documentation][docs] walks you through installation and basic setup. If you run into trouble, the [troubleshooting guide][docs] covers the most common errors and their fixes. Once you're comfortable, the [API reference][docs] has the full details on every endpoint and option.
+
+[docs]: https://example.com/docs
+
+This uses Markdown reference-style links: the URL is defined once in the `[docs]:` line, and all three links point to it by that label.

@@ -1,0 +1,25 @@
+Markdown tables can't style individual cells, so use an HTML table with inline styles on the cell you want to highlight:
+
+```html
+<table>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+    <td>C1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td style="text-align: center; background-color: #ffff99; font-weight: bold;">B2</td>
+    <td>C2</td>
+  </tr>
+  <tr>
+    <td>A3</td>
+    <td>B3</td>
+    <td>C3</td>
+  </tr>
+</table>
+```
+
+The highlighted cell is B2. It's centered with `text-align: center` and given a yellow background and bold text. The other cells use default styling.
+
+Some platforms, such as GitHub's Markdown renderer, strip `style` attributes. If that happens, define a CSS class in your stylesheet and apply it with `class="highlight"` instead.

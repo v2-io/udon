@@ -1,0 +1,16 @@
+Here's a short Python function that checks whether a string is a palindrome, ignoring case and non-alphanumeric characters:
+
+```python
+def is_palindrome(text: str) -> bool:
+    """Return True if text reads the same forwards and backwards,
+    ignoring case and non-alphanumeric characters."""
+    cleaned = [ch.lower() for ch in text if ch.isalnum()]
+    return cleaned == cleaned[::-1]
+
+
+# Example usage
+print(is_palindrome("A man, a plan, a canal: Panama"))  # True
+print(is_palindrome("Hello, World"))                    # False
+```
+
+It filters the input down to lowercase letters and digits, then compares the list to its reverse.

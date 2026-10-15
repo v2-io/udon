@@ -1,0 +1,15 @@
+# Ambiguity in Everyday Language
+
+Ambiguity is not always a flaw in communication. Often it goes unnoticed because context quietly resolves it. Consider a sentence whose structure allows two readings:
+
+**(1)** The teacher saw the student with the telescope.
+
+Here the phrase "with the telescope" could describe how the teacher saw the student, or it could identify which student was seen. Most listeners pick one reading instantly and never notice the other.
+
+Ambiguity can also arise from a single word rather than from sentence structure:
+
+**(2)** She walked to the bank after the storm.
+
+The word "bank" might refer to a financial institution or to the edge of a river, and the mention of a storm nudges the reader toward the second meaning without ruling out the first.
+
+The difference between the two cases is worth noting. In (1), the ambiguity lives in the grammar, so rewording the sentence is the only way to resolve it. In (2), the ambiguity lives in the vocabulary, and a bit of added context, such as the word "river," would settle it immediately. This is why example (2) feels easier to repair than example (1), even though both leave the reader with two possible interpretations.

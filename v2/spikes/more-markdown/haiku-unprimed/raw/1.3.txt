@@ -1,0 +1,7 @@
+**General version:**
+
+To install the application, first download the latest installer from the project's releases page and make sure your system meets the minimum requirements listed in the README. Extract the downloaded archive to a folder of your choice, open a terminal in that folder, and run the setup script with `./install.sh`. Once the script finishes, restart your terminal and run `app --version` to confirm the installation succeeded.
+
+**Windows version:**
+
+To install the application, first download the latest installer from the project's releases page and make sure your system meets the minimum requirements listed in the README. Extract the downloaded archive to a folder of your choice, open PowerShell in that folder, and run the setup script with `.\install.ps1`. If PowerShell reports that script execution is disabled, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once and then retry the installation. Once the script finishes, restart PowerShell and run `app --version` to confirm the installation succeeded.

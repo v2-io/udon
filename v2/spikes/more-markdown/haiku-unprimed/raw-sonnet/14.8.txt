@@ -1,0 +1,24 @@
+**Algorithm 1: Binary search**
+
+```
+Input:  A sorted array A[0..n-1], target value x
+Output: Index of x in A, or -1 if not found
+
+1.  low  ← 0
+2.  high ← n - 1
+3.  while low ≤ high do
+4.      mid ← low + ⌊(high - low) / 2⌋
+5.      if A[mid] = x then
+6.          return mid
+7.      else if A[mid] < x then
+8.          low ← mid + 1
+9.      else
+10.         high ← mid - 1
+11.     end if
+12. end while
+13. return -1
+```
+
+**Notes:**
+- Runs in O(log n) time and O(1) space.
+- Line 4 computes the midpoint as `low + ⌊(high - low)/2⌋` to avoid integer overflow.

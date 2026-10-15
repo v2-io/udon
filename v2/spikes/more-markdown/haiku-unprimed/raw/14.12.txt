@@ -1,0 +1,23 @@
+# Adopting Automated Code Review
+
+## Purpose
+
+This document proposes introducing automated code review into our development workflow. Automated checks can catch common defects, enforce style conventions, and free human reviewers to focus on design and logic. The goal is faster reviews and fewer defects reaching production, without slowing developers down.
+
+## Proposed Approach
+
+Automated review would run on every pull request in three stages:
+
+1. **Static analysis** checks for common bugs, security issues, and dependency vulnerabilities. Findings block merging only for high-severity issues.
+2. **Style and formatting** checks run automatically and are fixed by a bot where possible, so reviewers never comment on whitespace or naming conventions.
+3. **Human review** remains required for every change. Automated tools flag issues but do not approve code.
+
+We will begin with one team for four weeks, track metrics such as review turnaround time, number of defects found after merge, and developer feedback, and then decide whether to expand.
+
+## Appendix A: Tool Comparison
+
+| Tool category | Example options | Strengths | Limitations |
+|---|---|---|---|
+| Static analysis | SonarQube, Semgrep | Finds bugs and security issues across many languages | Can produce false positives that need tuning |
+| Formatting | Prettier, Black | Eliminates style debates entirely | Limited to style; catches no logic errors |
+| Dependency scanning | Dependabot, Snyk | Flags known vulnerable packages | Only covers known CVEs |

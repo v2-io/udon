@@ -1,0 +1,73 @@
+Here's a paragraph with a margin note, as a self-contained HTML snippet:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Georgia, serif;
+    max-width: 720px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+    line-height: 1.6;
+  }
+  .block {
+    position: relative;
+  }
+  .margin-note {
+    position: absolute;
+    left: calc(100% + 1.5rem);
+    top: 0;
+    width: 180px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    background: #fff8c5;
+    border-left: 3px solid #e0a800;
+    padding: 0.5rem 0.6rem;
+    color: #5a4500;
+  }
+  .margin-note strong {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+</style>
+</head>
+<body>
+  <div class="block">
+    <p>
+      The lighthouse at Cape Verrin had stood unattended for nearly forty years
+      before the survey team arrived. Its lamp room was cracked and salt-glazed,
+      and the spiral staircase groaned under every step, yet the foundations
+      were sound. The team's lead engineer remarked that it seemed to have been
+      built not to resist the sea, but to outwait it.
+    </p>
+    <aside class="margin-note">
+      <strong>To do</strong>
+      Verify the "forty years" figure against the harbor authority records, and
+      consider cutting the engineer's quote if we can't attribute it.
+    </aside>
+  </div>
+</body>
+</html>
+```
+
+**Plain-text version of how it would look:**
+
+```
+The lighthouse at Cape Verrin had stood      ┌─ TO DO ─────────────────┐
+unattended for nearly forty years before     │ Verify the "forty       │
+the survey team arrived. Its lamp room was   │ years" figure against   │
+cracked and salt-glazed, and the spiral      │ harbor authority        │
+staircase groaned under every step, yet the  │ records; cut the        │
+foundations were sound. The team's lead      │ engineer's quote if we  │
+engineer remarked that it seemed to have     │ can't attribute it.     │
+been built not to resist the sea, but to     └─────────────────────────┘
+outwait it.
+```
+
+If you'd like it in a different format (Markdown, LaTeX `\marginpar`, Word comment, etc.), let me know and I'll adapt it.

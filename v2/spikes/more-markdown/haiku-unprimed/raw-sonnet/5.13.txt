@@ -1,0 +1,25 @@
+Here is a short paragraph with a margin note in LaTeX, using `\marginpar` so the note sits beside the text instead of at the bottom of the page:
+
+```latex
+\documentclass{article}
+\usepackage[a4paper,margin=1in,marginparwidth=1.5in]{geometry}
+
+\begin{document}
+
+Printing presses changed how ideas travelled across Europe. Where a scribe
+might produce a single volume in months, a workshop could now turn out
+hundreds of copies in a fortnight.%
+\marginpar{\footnotesize Gutenberg's press, c.\,1450, made movable-type
+printing practical in Europe.}
+The effect was a steady drop in the price of books and a matching rise in
+literacy, which in turn fed the demand for still more printed work.
+
+\end{document}
+```
+
+**Notes:**
+- `\marginpar{...}` places the note in the margin next to the line where it appears. `\footnotesize` keeps it from crowding the page.
+- `marginparwidth` in the `geometry` options sets the margin's width, so widen it if your notes are longer.
+- If you need notes that float cleanly at exact positions (or in a two-sided layout), the `marginnote` or `sidenotes` packages are more robust than `\marginpar`.
+
+If you meant HTML/CSS or Markdown instead, tell me and I'll adapt it.

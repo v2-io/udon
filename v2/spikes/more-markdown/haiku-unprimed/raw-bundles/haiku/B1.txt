@@ -1,0 +1,44 @@
+Here's a single AsciiDoc document covering all six items. It needs `:icons: font` for the lightbulb icon and the `asciidoctor-diagram` extension to render the Mermaid flowchart.
+
+```asciidoc
+= {product-name} Guide
+:icons: font
+:product-name: Widgetly
+
+[#install]
+== Installation
+
+Run `make test` from the project root to confirm your setup works.
+
+[TIP]
+====
+Keep a terminal open to `make test` while you work so you catch regressions early.
+====
+
+== Frequently Asked Questions
+
+**Can I rename the product?**
+
+.Show answer
+[%collapsible]
+====
+Yes. Change the `:product-name:` attribute at the top of this file, and every mention of {product-name} updates automatically.
+====
+
+== Overview
+
+{product-name} keeps your project data in one place.
+Teams use {product-name} to automate weekly reports.
+With {product-name}, you can share dashboards without writing any code.
+
+== Process
+
+[mermaid]
+----
+flowchart LR
+  start[Start] --> finish[End]
+----
+```
+
+- **Product name:** It's defined once in the `:product-name:` attribute and referenced as `{product-name}` everywhere else.
+- **Installation anchor:** `[#install]` gives the section the stable ID `install`. Other pages can link to it with `<<install>>`.

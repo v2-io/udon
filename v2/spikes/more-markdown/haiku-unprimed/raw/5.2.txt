@@ -1,0 +1,3 @@
+Our documentation is available in several places, each covering a different part of the product. You can start with the [getting started guide][docs] for installation and setup. Once that's done, the [API reference][docs] describes every endpoint and parameter in detail. For common problems, the [troubleshooting section][docs] has answers to the questions we hear most often.
+
+[docs]: https://example.com/docs

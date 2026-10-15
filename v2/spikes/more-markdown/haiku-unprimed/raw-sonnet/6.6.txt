@@ -1,0 +1,56 @@
+Here's a short piece of text with a collapsed tip admonition. The format depends on your renderer, so I've included the two most common options.
+
+## Option 1: HTML (works in GitHub Markdown, most renderers)
+
+```html
+## Getting Started with Git Branches
+
+Branches let you work on features without touching the main codebase.
+Create one with `git switch -c my-feature`, make your changes, and
+merge when you're ready.
+
+<details>
+<summary>💡 Tip: Keep your branch names descriptive</summary>
+
+Use a consistent prefix like `feature/`, `fix/`, or `docs/` so your
+branch list stays easy to scan, e.g. `fix/login-timeout`.
+
+</details>
+```
+
+## Option 2: MkDocs Material
+
+```markdown
+## Getting Started with Git Branches
+
+Branches let you work on features without touching the main codebase.
+Create one with `git switch -c my-feature`, make your changes, and
+merge when you're ready.
+
+??? tip "Keep your branch names descriptive"
+    Use a consistent prefix like `feature/`, `fix/`, or `docs/` so your
+    branch list stays easy to scan, e.g. `fix/login-timeout`.
+```
+
+In MkDocs Material, `???` makes it collapsed by default; use `???+` if you want it expanded by default instead.
+
+## Option 3: Docusaurus
+
+```markdown
+:::tip[Keep your branch names descriptive]
+Use a consistent prefix like `feature/`, `fix/`, or `docs/`.
+:::
+```
+
+Docusaurus tips aren't collapsible natively. For a collapsed version, wrap in `<details>`:
+
+```markdown
+<details>
+<summary>Tip: Keep your branch names descriptive</summary>
+
+Use a consistent prefix like `feature/`, `fix/`, or `docs/`.
+
+</details>
+```
+
+Let me know which platform you're targeting and I can tailor it further.

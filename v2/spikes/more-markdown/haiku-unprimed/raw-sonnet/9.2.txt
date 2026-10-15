@@ -1,0 +1,30 @@
+Here's a code block using the common fence meta syntax (supported by Docusaurus, Expressive Code, rehype-pretty-code, and similar tools):
+
+````md
+```js title="app.js" showLineNumbers {2}
+function greet(name) {
+  const message = `Hello, ${name}!`;
+  console.log(message);
+}
+
+greet("World");
+```
+````
+
+Rendered as plain text for reference:
+
+```
+app.js
+1  function greet(name) {
+2>   const message = `Hello, ${name}!`;   // highlighted
+3    console.log(message);
+4  }
+5
+6  greet("World");
+```
+
+- `title="app.js"` shows the filename above the block.
+- `showLineNumbers` turns on line numbers.
+- `{2}` highlights line 2.
+
+Plain GitHub-flavored Markdown ignores these options, so the exact syntax depends on your renderer (some use `js:app.js` or `// highlight-next-line` instead).

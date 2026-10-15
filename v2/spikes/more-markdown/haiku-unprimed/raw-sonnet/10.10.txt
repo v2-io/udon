@@ -1,0 +1,94 @@
+Markdown doesn't support true nested tables, so the usual approach is to embed an HTML table inside a cell. Here's an example using HTML, which renders in most Markdown viewers:
+
+```html
+<table>
+  <tr>
+    <th>Department</th>
+    <th>Manager</th>
+    <th>Quarterly Results</th>
+  </tr>
+  <tr>
+    <td>Sales</td>
+    <td>Alice Chen</td>
+    <td>
+      <table>
+        <tr>
+          <th>Quarter</th>
+          <th>Revenue</th>
+          <th>Growth</th>
+        </tr>
+        <tr>
+          <td>Q1</td>
+          <td>$120k</td>
+          <td>+5%</td>
+        </tr>
+        <tr>
+          <td>Q2</td>
+          <td>$135k</td>
+          <td>+12%</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>Engineering</td>
+    <td>Bob Martinez</td>
+    <td>
+      <table>
+        <tr>
+          <th>Quarter</th>
+          <th>Features Shipped</th>
+          <th>Bugs Closed</th>
+        </tr>
+        <tr>
+          <td>Q1</td>
+          <td>8</td>
+          <td>42</td>
+        </tr>
+        <tr>
+          <td>Q2</td>
+          <td>11</td>
+          <td>57</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+```
+
+**How it looks (rendered):**
+
+<table>
+  <tr>
+    <th>Department</th>
+    <th>Manager</th>
+    <th>Quarterly Results</th>
+  </tr>
+  <tr>
+    <td>Sales</td>
+    <td>Alice Chen</td>
+    <td>
+      <table>
+        <tr><th>Quarter</th><th>Revenue</th><th>Growth</th></tr>
+        <tr><td>Q1</td><td>$120k</td><td>+5%</td></tr>
+        <tr><td>Q2</td><td>$135k</td><td>+12%</td></tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>Engineering</td>
+    <td>Bob Martinez</td>
+    <td>
+      <table>
+        <tr><th>Quarter</th><th>Features Shipped</th><th>Bugs Closed</th></tr>
+        <tr><td>Q1</td><td>8</td><td>42</td></tr>
+        <tr><td>Q2</td><td>11</td><td>57</td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+**Notes:**
+- Pure Markdown pipe tables can't contain other tables, so HTML is required for nesting.
+- If your viewer strips HTML (e.g., some chat apps), the table may appear as plain text. GitHub, VS Code preview, and most documentation sites render it fine.
+- Want it in another format (LaTeX, CSV with a sub-structure, or a standalone `.html` file)? I can write it to the working directory.

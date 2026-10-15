@@ -1,0 +1,11 @@
+Here's a short interactive Python session showing a command and its result:
+
+```python
+>>> numbers = [3, 1, 4, 1, 5]
+>>> sorted(numbers)
+[1, 1, 3, 4, 5]
+>>> len(numbers)
+5
+```
+
+In this example, `sorted()` returns a new sorted list without modifying the original, and `len()` returns the number of items.

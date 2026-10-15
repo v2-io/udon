@@ -1,0 +1,300 @@
+<title>Markdown Feature Matrix</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: control bar over one scrolling table (sticky header row + sticky feature column); a detail panel explains the selected cell. */
+:root {
+  --bg: #f4f6f9; --panel: #ffffff; --ink: #14181e; --ink-2: #474e59; --muted: #747c88;
+  --rule: #dde2e8; --track: #eef1f5; --accent: #2a78d6; --accent-ink: #1c5cab;
+  --s-C: #2a78d6; --s-E: #1baf7a; --s-D: #c98500; --s-R: #e34948; --s-U: #9aa1ab; --s-Q: #6250d6; --s-H: #c4527f;
+  --f-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111317; --panel: #181b20; --ink: #eef0f3; --ink-2: #bcc2cb; --muted: #8b929c;
+    --rule: #2b3037; --track: #20252c; --accent: #3987e5; --accent-ink: #86b6ef;
+    --s-C: #3987e5; --s-E: #199e70; --s-D: #c98500; --s-R: #e66767; --s-U: #6b727c; --s-Q: #9085e9; --s-H: #d55181; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111317; --panel: #181b20; --ink: #eef0f3; --ink-2: #bcc2cb; --muted: #8b929c;
+  --rule: #2b3037; --track: #20252c; --accent: #3987e5; --accent-ink: #86b6ef;
+  --s-C: #3987e5; --s-E: #199e70; --s-D: #c98500; --s-R: #e66767; --s-U: #6b727c; --s-Q: #9085e9; --s-H: #d55181; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 10px; }
+.app { height: 100%; display: flex; flex-direction: column; gap: 8px; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.title { font-family: var(--f-display); font-weight: 600; font-size: 17px; letter-spacing: -.01em; margin-right: 4px; }
+.bar input[type="search"] { width: min(260px, 100%); padding: 4px 10px; font-size: 13px; }
+details.pop { position: relative; }
+details.pop > summary { list-style: none; }
+details.pop > summary::-webkit-details-marker { display: none; }
+.popbody { position: absolute; top: calc(100% + 6px); left: 0; z-index: 10; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; box-shadow: 0 8px 28px rgba(0,0,0,.16); width: max-content; max-width: min(620px, calc(100vw - 32px)); display: flex; flex-wrap: wrap; gap: 6px; }
+.pop-r .popbody { left: auto; right: 0; }
+.about { display: grid; gap: 10px; font-size: 13px; color: var(--ink-2); }
+.about p { margin: 0; max-width: 70ch; }
+.about code { font-family: var(--f-mono); font-size: 12px; }
+.xbtn { position: absolute; top: 6px; right: 8px; border: 0; background: none; color: var(--muted); font-size: 18px; cursor: pointer; line-height: 1; padding: 4px; }
+.xbtn:focus-visible { outline: 2px solid var(--accent); }
+header { display: grid; gap: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(28px, 4.5vw, 44px); line-height: 1.05; margin: 0; letter-spacing: -.02em; }
+.lede { margin: 0; max-width: 78ch; color: var(--ink-2); }
+.controls { display: grid; gap: 10px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+.crow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.clabel { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); min-width: 74px; }
+.chip { font: 500 12.5px var(--f-body); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink-2); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.chip[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 10%, var(--panel)); }
+.chip:focus-visible, input:focus-visible, td.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.g { font-weight: 600; font-family: var(--f-mono); }
+input[type="search"] { font: 14px var(--f-body); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--bg); color: var(--ink); min-width: 0; width: min(320px, 100%); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--ink-2); }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.tablewrap { overflow: auto; flex: 1; min-height: 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--panel); }
+table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
+thead th { position: sticky; top: 0; z-index: 3; background: var(--panel); border-bottom: 1px solid var(--rule); padding: 10px 8px; text-align: left; vertical-align: bottom; font-weight: 600; }
+thead th .sub { display: block; font: 400 11px var(--f-mono); color: var(--muted); }
+th.feat, td.feat { position: sticky; left: 0; z-index: 2; background: var(--panel); border-right: 1px solid var(--rule); }
+thead th.feat { z-index: 4; }
+td.feat { padding: 6px 10px; min-width: 210px; max-width: 260px; font-weight: 500; vertical-align: top; }
+tr.grow td { position: sticky; left: 0; background: var(--track); font: 600 11.5px var(--f-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); padding: 6px 10px; border-block: 1px solid var(--rule); }
+td.cell { padding: 5px 7px; vertical-align: top; border-bottom: 1px solid var(--track); min-width: 120px; max-width: 200px; cursor: pointer; background: color-mix(in srgb, var(--sc) 11%, var(--panel)); }
+td.cell.st-U { background: var(--panel); }
+td.cell.st-I { background: var(--panel); --sc: var(--muted); }
+td.cell.st-Q { background: repeating-linear-gradient(135deg, var(--panel) 0 6px, color-mix(in srgb, var(--s-Q) 9%, var(--panel)) 6px 9px); }
+td.cell:hover { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--sc) 55%, transparent); }
+td.cell.sel { box-shadow: inset 0 0 0 2px var(--accent); }
+.gl { font-weight: 600; color: var(--sc); margin-right: 4px; }
+.lb { font-size: 11.5px; color: var(--ink-2); }
+.sx { display: block; font: 12px/1.4 var(--f-mono); color: var(--ink); margin-top: 2px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.compact .sx { display: none; }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sc); margin-left: 4px; vertical-align: middle; opacity: .8; }
+.st-C { --sc: var(--s-C); } .st-E { --sc: var(--s-E); } .st-D { --sc: var(--s-D); } .st-R { --sc: var(--s-R); } .st-U { --sc: var(--s-U); } .st-Q { --sc: var(--s-Q); } .st-H { --sc: var(--s-H); }
+.fd { display: block; font-weight: 400; font-size: 12px; line-height: 1.4; color: var(--muted); margin-top: 2px; }
+.fx { display: block; font: 11.5px/1.35 var(--f-mono); color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 4px; background: var(--track); padding: 3px 6px; border-radius: 4px; }
+.compact .fx { display: none; }
+.asx { display: block; font-size: 11.5px; font-style: italic; color: var(--muted); margin-top: 2px; }
+.compact .asx { display: none; }
+.detail { position: fixed; z-index: 20; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(440px, calc(100vw - 32px)); max-height: 50vh; overflow: auto; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 34px 14px 16px; display: grid; gap: 4px; box-shadow: 0 10px 34px rgba(0,0,0,.2); }
+td.feat[data-feat] { cursor: pointer; }
+td.feat[data-feat]:hover { background: color-mix(in srgb, var(--accent) 6%, var(--panel)); }
+.pv { font-size: 11px; color: var(--accent-ink); margin-left: 5px; }
+.rvl { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.rv { border: 1px dashed var(--rule); border-radius: 8px; padding: 8px 10px; background: var(--bg); font-size: 13.5px; overflow-x: auto; }
+.rv p { margin: 4px 0; } .rv .cap { font-size: 11.5px; color: var(--muted); font-style: italic; margin: 6px 0 2px; }
+.rv h3, .rv h4 { margin: 4px 0; font-family: var(--f-display); }
+.rv table { border-collapse: collapse; margin: 4px 0; } .rv th, .rv td { border: 1px solid var(--rule); padding: 2px 8px; } .rv th { background: var(--track); }
+.rv caption { caption-side: top; font-size: 12px; color: var(--ink-2); text-align: left; } .rv table.kv th { text-align: left; }
+.rv table.dec td { font-family: var(--f-mono); white-space: pre; }
+.rv blockquote { margin: 4px 0; padding: 2px 10px; border-left: 3px solid var(--rule); color: var(--ink-2); }
+.rv pre { background: var(--track); padding: 6px 8px; border-radius: 6px; font: 12px/1.45 var(--f-mono); margin: 4px 0; white-space: pre; overflow: auto; }
+.rv .k { color: var(--accent-ink); } .rv a { color: var(--accent-ink); text-decoration: underline; }
+.rv kbd { font: 12px var(--f-mono); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--panel); }
+.rv .img { display: inline-block; border: 1px solid var(--rule); padding: 10px 14px; background: var(--track); color: var(--muted); font-size: 12px; }
+.rv .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.rv ul, .rv ol { margin: 4px 0; padding-left: 22px; } .rv ul.plain, .rv ol.plain { list-style: none; padding-left: 4px; }
+.rv dt { font-weight: 600; } .rv dd { margin-left: 18px; }
+.rv .licall { background: color-mix(in srgb, var(--s-D) 15%, transparent); border-radius: 4px; padding: 0 4px; }
+.rv .chipr, .rv .tag, .rv .badge { display: inline-block; font-size: 11.5px; padding: 0 6px; border-radius: 999px; background: var(--track); border: 1px solid var(--rule); }
+.rv .tag { color: var(--accent-ink); } .rv .badge { background: color-mix(in srgb, var(--s-E) 22%, transparent); } .rv .badge.warn { background: color-mix(in srgb, var(--s-D) 25%, transparent); }
+.rv .kb { display: flex; gap: 6px; } .rv .kb > div { display: grid; gap: 4px; background: var(--track); padding: 6px; border-radius: 6px; min-width: 80px; font-size: 12px; } .rv .kb span { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 2px 6px; }
+.rv .spoil { background: var(--ink); color: var(--ink); border-radius: 3px; padding: 0 3px; }
+.rv .term { border-bottom: 1px dotted var(--ink-2); } .rv abbr { text-decoration: underline dotted; }
+.rv .cm { background: color-mix(in srgb, var(--s-Q) 18%, transparent); padding: 0 4px; border-radius: 3px; font-size: 12px; }
+.rv .ico { color: var(--accent-ink); } .rv .tk { display: inline-block; width: 1.1em; text-align: center; }
+.rv .fn { border-top: 1px solid var(--rule); margin-top: 6px; font-size: 12px; color: var(--ink-2); } .rv .fn ol { margin: 2px 0; }
+.rv .math { text-align: center; font-family: Georgia, "Times New Roman", serif; font-size: 15px; }
+.rv .co { border-left: 3px solid var(--s-C); background: color-mix(in srgb, var(--s-C) 9%, transparent); padding: 6px 10px; border-radius: 4px; margin: 4px 0; }
+.rv .co.warn { border-color: var(--s-D); background: color-mix(in srgb, var(--s-D) 12%, transparent); } .rv .co.tip { border-color: var(--s-E); background: color-mix(in srgb, var(--s-E) 11%, transparent); } .rv .co.q { border-color: var(--s-Q); background: color-mix(in srgb, var(--s-Q) 10%, transparent); }
+.rv details { border: 1px solid var(--rule); border-radius: 6px; padding: 4px 8px; }
+.rv .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .rv .cols2 > div { background: var(--track); padding: 6px; border-radius: 4px; }
+.rv .sn { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: start; } .rv .sn aside { font-size: 11.5px; color: var(--ink-2); border-left: 1px solid var(--rule); padding-left: 6px; }
+.rv .brace { display: flex; align-items: center; gap: 6px; } .rv .brace .br { font-size: 44px; line-height: 1; font-weight: 200; color: var(--ink-2); }
+.rv .box { border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; background: var(--panel); }
+.rv .tabs { display: flex; gap: 2px; } .rv .tabs span { padding: 2px 10px; border: 1px solid var(--rule); border-bottom: 0; border-radius: 6px 6px 0 0; font-size: 12px; background: var(--track); } .rv .tabs span.on { background: var(--panel); font-weight: 600; }
+.rv .cbh { font: 11.5px var(--f-mono); background: var(--track); border-radius: 6px 6px 0 0; padding: 2px 8px; display: inline-block; } .rv pre .hl { background: color-mix(in srgb, var(--s-D) 22%, transparent); }
+.rv .spark { font-family: var(--f-mono); color: var(--accent-ink); }
+.rv .verse { font-style: italic; } .rv figure { margin: 4px 0; } .rv figcaption { font-size: 12px; color: var(--ink-2); }
+.rv mark { background: color-mix(in srgb, #eda100 45%, transparent); color: inherit; }
+.detail .dh { font-family: var(--f-display); font-weight: 600; font-size: 17px; }
+.detail code { font-family: var(--f-mono); font-size: 13px; background: var(--track); padding: 1px 6px; border-radius: 4px; white-space: pre-wrap; }
+.detail .dn { color: var(--ink-2); max-width: 90ch; }
+.empty { color: var(--muted); }
+footer { font-size: 12.5px; color: var(--muted); display: grid; gap: 4px; }
+footer code { font-family: var(--f-mono); }
+</style>
+
+<div class="app">
+  <div class="bar" role="toolbar" aria-label="Matrix controls">
+    <span class="title">Markdown feature matrix</span>
+    <input type="search" id="q" placeholder="Search features or syntax" aria-label="Search features or syntax">
+    <button class="chip" id="t-compact" aria-pressed="false">Glyphs only</button>
+    <button class="chip" id="t-diff" aria-pressed="false">Only rows that differ</button>
+    <details class="pop"><summary class="chip">Groups ▾</summary><div class="popbody" id="groups"></div></details>
+    <details class="pop"><summary class="chip">Dialects ▾</summary><div class="popbody" id="cols"></div></details>
+    <details class="pop pop-r"><summary class="chip">Key &amp; sources ▾</summary><div class="popbody about">
+      <div class="legend" id="legend"></div>
+      <p>Every feature the dialect research found, across ten dialects plus a column for Obsidian with its community plugins. Select a cell for its note. Hatched cells are ones the research did not establish, which is different from "unsupported". Rows that come only from Obsidian plugins were not researched for the other dialects, so those cells are hatched.</p>
+      <p><b>Core</b> is the dialect's base definition (its spec, or its primary docs where there is no spec). <b>Extension</b> is a named option or plugin that is off by default. <b>De facto</b> is behavior a platform renders that no spec writes down. <b>Workaround</b> means there is no Markdown syntax for the feature and the cell shows the usual fallback, mostly raw HTML. <b>Removed</b> marks a CommonMark feature the dialect deliberately drops. A Core cell with no syntax of its own uses the row's example as written. Renderers that only draw a fenced code block (charts, queries, buttons, diagrams) are left out.</p>
+      <p>Sources: <code>reports/Markdown dialect comparison.md</code> and the research notes it cites, in udon <code>v2/spikes/more-markdown/</code>. Cells marked "prior knowledge" in their note were not re-verified. Most cross-dialect readings come from each dialect's written rules; about 75 inputs were run through real parsers.</p>
+    </div></details>
+  </div>
+
+  <div class="tablewrap"><table id="m" aria-label="Markdown features by dialect"></table></div>
+
+  <section class="detail" id="detail" aria-live="polite" hidden></section>
+</div>
+
+<script src="data-meta.js"></script>
+<script src="data-blocks.js"></script>
+<script src="data-ext-a.js"></script>
+<script src="data-ext-b.js"></script>
+<script>MATRIX.baseEnd = MATRIX.rows.length;</script>
+<script src="data-fine.js"></script>
+<script>MATRIX.fineEnd = MATRIX.rows.length;</script>
+<script src="data-obsidian-plugins.js"></script>
+<script src="merge.js"></script>
+<script src="data-desc-a.js"></script>
+<script src="data-desc-b.js"></script>
+<script src="data-render-a.js"></script>
+<script src="data-render-b.js"></script>
+<script>
+(function () {
+  const M = window.MATRIX;
+  const S = M.statuses;
+  const state = { compact: false, diff: false, q: "", groups: new Set(M.groups), cols: new Set(M.columns.map(c => c.key)), sel: null };
+  try { const saved = JSON.parse(localStorage.getItem("mdmatrix") || "null"); if (saved) { state.compact = !!saved.compact; state.diff = !!saved.diff; if (saved.cols) state.cols = new Set(saved.cols); } } catch (e) {}
+  const save = () => { try { localStorage.setItem("mdmatrix", JSON.stringify({ compact: state.compact, diff: state.diff, cols: [...state.cols] })); } catch (e) {} };
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+  const legend = document.getElementById("legend");
+  legend.innerHTML = ["C", "E", "D", "H", "R", "U", "Q"].map(k => `<span class="st-${k}"><span class="gl">${S[k].glyph}</span>${S[k].label}: ${esc(S[k].desc)}</span>`).join("");
+
+  function chip(parent, label, pressed, onClick) {
+    const b = document.createElement("button"); b.className = "chip"; b.innerHTML = label; b.setAttribute("aria-pressed", pressed);
+    b.addEventListener("click", () => { onClick(b); render(); save(); }); parent.appendChild(b); return b;
+  }
+  const gbox = document.getElementById("groups");
+  const allChip = chip(gbox, "All", "true", b => { const all = state.groups.size === M.groups.length; state.groups = all ? new Set() : new Set(M.groups); syncGroupChips(); });
+  const gchips = M.groups.map(g => chip(gbox, esc(g), "true", b => { state.groups.has(g) ? state.groups.delete(g) : state.groups.add(g); syncGroupChips(); }));
+  function syncGroupChips() { M.groups.forEach((g, i) => gchips[i].setAttribute("aria-pressed", state.groups.has(g))); allChip.setAttribute("aria-pressed", state.groups.size === M.groups.length); }
+  const cbox = document.getElementById("cols");
+  M.columns.forEach(c => chip(cbox, esc(c.name), String(state.cols.has(c.key)), b => {
+    if (state.cols.has(c.key)) { if (state.cols.size > 1) state.cols.delete(c.key); } else state.cols.add(c.key);
+    b.setAttribute("aria-pressed", state.cols.has(c.key));
+  }));
+
+  const tCompact = document.getElementById("t-compact"), tDiff = document.getElementById("t-diff");
+  tCompact.setAttribute("aria-pressed", state.compact); tDiff.setAttribute("aria-pressed", state.diff);
+  tCompact.addEventListener("click", () => { state.compact = !state.compact; tCompact.setAttribute("aria-pressed", state.compact); render(); save(); });
+  tDiff.addEventListener("click", () => { state.diff = !state.diff; tDiff.setAttribute("aria-pressed", state.diff); render(); save(); });
+  document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+
+  const table = document.getElementById("m"), detail = document.getElementById("detail");
+
+  function rowVisible(r, cols) {
+    if (!state.groups.has(r.g)) return false;
+    if (state.q) {
+      const hay = (r.f + " " + (((M.desc || {})[r.f] || {}).d || "") + " " + cols.map(c => (r.c[c.key] || []).slice(1).join(" ")).join(" ")).toLowerCase();
+      if (!hay.includes(state.q)) return false;
+    }
+    if (state.diff) {
+      const sig = new Set(cols.map(c => { const v = r.c[c.key] || ["Q", ""]; return v[0] === "I" ? v[1] : v[0] + "|" + v[1]; }));
+      if (sig.size < 2) return false;
+    }
+    return true;
+  }
+
+  function render() {
+    const cols = M.columns.filter(c => state.cols.has(c.key));
+    table.classList.toggle("compact", state.compact);
+    let h = `<thead><tr><th class="feat" scope="col">Feature</th>${cols.map(c => `<th scope="col">${esc(c.name)}<span class="sub">${esc(c.sub)}</span></th>`).join("")}</tr></thead><tbody>`;
+    let shown = 0;
+    M.groups.forEach(g => {
+      const rows = M.rows.map((r, i) => [r, i]).filter(([r]) => r.g === g && rowVisible(r, cols));
+      if (!rows.length) return;
+      h += `<tr class="grow"><td colspan="${cols.length + 1}">${esc(g)}</td></tr>`;
+      rows.forEach(([r, i]) => {
+        shown++;
+        const D = (M.desc || {})[r.f] || {};
+        const hasR = !!(M.render || {})[r.f];
+        h += `<tr><td class="feat" data-feat="${i}" tabindex="0" title="Show description${hasR ? " and a typical rendering" : ""}">${esc(r.f)}${hasR ? '<span class="pv" aria-hidden="true">◧</span>' : ""}${D.d ? `<span class="fd">${esc(D.d)}</span>` : ""}${D.x ? `<span class="fx">${esc(D.x)}</span>` : ""}</td>`;
+        cols.forEach(c => {
+          const v = r.c[c.key] || ["Q", "", ""];
+          const st = v[0], s = S[st];
+          const isSel = state.sel && state.sel[0] === i && state.sel[1] === c.key;
+          const head = st === "I" ? "" : `<span class="gl">${s.glyph}</span><span class="lb">${s.label}</span>${v[2] ? '<span class="dot" title="has a note"></span>' : ""}`;
+          const body = st === "I" ? `<span class="sx" style="display:block">${esc(v[1])}</span>` : (v[1] ? `<span class="sx">${esc(v[1])}</span>` : ("CED".includes(st) && D.x ? `<span class="asx">as in the example</span>` : ""));
+          h += `<td class="cell st-${st}${isSel ? " sel" : ""}" tabindex="0" data-r="${i}" data-c="${c.key}" aria-label="${esc(r.f)}, ${esc(c.name)}: ${esc(s.label)}${v[1] ? ", " + esc(v[1]) : ""}">${head}${body}</td>`;
+        });
+        h += `</tr>`;
+      });
+    });
+    if (!shown) h += `<tr><td class="feat empty" colspan="${cols.length + 1}">No features match these filters.</td></tr>`;
+    table.innerHTML = h + "</tbody>";
+  }
+
+  function showDetail(i, key) {
+    state.sel = [i, key];
+    const r = M.rows[i], c = M.columns.find(x => x.key === key), v = r.c[key] || ["Q", "", ""], s = S[v[0]];
+    const D = (M.desc || {})[r.f] || {};
+    detail.hidden = false;
+    detail.innerHTML = `<button class="xbtn" type="button" aria-label="Close">×</button><div class="dh">${esc(r.f)} · ${esc(c.name)}</div>` +
+      (D.d ? `<div class="dn">${esc(D.d)}</div>` : "") +
+      (D.x ? `<div>Example: <code>${esc(D.x)}</code></div>` : "") +
+      `<div class="st-${v[0]}">${v[0] === "I" ? "" : `<span class="gl">${s.glyph}</span><b>${s.label}</b> · ${esc(s.desc)}`}</div>` +
+      (v[1] ? `<div><code>${esc(v[1])}</code></div>` : "") +
+      (v[2] ? `<div class="dn">${esc(v[2])}</div>` : (v[0] === "Q" ? `<div class="dn">The research did not establish this cell.</div>` : "")) +
+      (key === "obsp" && r.psrc && r.psrc.length ? `<div class="dn">Plugins cited: ${r.psrc.map(s => `${esc(s[0])} (${typeof s[2] === "number" ? s[2].toLocaleString() + " downloads" : esc(s[2])})`).join(", ")}</div>` : "");
+    detail.innerHTML += renderBlock(r);
+    table.querySelectorAll("td.sel").forEach(td => td.classList.remove("sel"));
+    const td = table.querySelector(`td[data-r="${i}"][data-c="${key}"]`); if (td) td.classList.add("sel");
+  }
+  // Renderings are trusted, hand-written HTML from data-render-*.js.
+  function renderBlock(r) {
+    const R = (M.render || {})[r.f];
+    return R ? `<div class="rvl">Typical rendering (illustrative, drawn by hand, not from a real renderer)</div><div class="rv">${R}</div>` : "";
+  }
+  function showFeature(i) {
+    const r = M.rows[i], D = (M.desc || {})[r.f] || {};
+    state.sel = null;
+    table.querySelectorAll("td.sel").forEach(td => td.classList.remove("sel"));
+    detail.hidden = false;
+    detail.innerHTML = `<button class="xbtn" type="button" aria-label="Close">×</button><div class="dh">${esc(r.f)}</div>` +
+      (D.d ? `<div class="dn">${esc(D.d)}</div>` : "") +
+      (D.x ? `<div>Example: <code>${esc(D.x)}</code></div>` : "") +
+      renderBlock(r) +
+      `<div class="dn" style="font-size:12px">Select a dialect cell in this row for that dialect's syntax and notes.</div>`;
+  }
+  table.addEventListener("click", e => {
+    const td = e.target.closest("td.cell"); if (td) return showDetail(+td.dataset.r, td.dataset.c);
+    const f = e.target.closest("td.feat[data-feat]"); if (f) showFeature(+f.dataset.feat);
+  });
+  table.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    if (e.target.matches("td.cell")) { e.preventDefault(); showDetail(+e.target.dataset.r, e.target.dataset.c); }
+    else if (e.target.matches("td.feat[data-feat]")) { e.preventDefault(); showFeature(+e.target.dataset.feat); }
+  });
+
+  function closeDetail() {
+    detail.hidden = true; state.sel = null;
+    table.querySelectorAll("td.sel").forEach(td => td.classList.remove("sel"));
+  }
+  detail.addEventListener("click", e => { if (e.target.closest(".xbtn")) closeDetail(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { closeDetail(); document.querySelectorAll("details.pop[open]").forEach(d => d.open = false); } });
+  // Close an open dropdown when clicking outside it, and keep only one open at a time.
+  document.addEventListener("click", e => {
+    document.querySelectorAll("details.pop[open]").forEach(d => { if (!d.contains(e.target)) d.open = false; });
+  });
+
+  syncGroupChips();
+  render();
+})();
+</script>

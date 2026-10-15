@@ -1,0 +1,18 @@
+I don't see any comma-separated values in your message. Could you paste the CSV content you'd like turned into a table?
+
+For example, given this input:
+
+```
+Name,Role,Location
+Ada,Engineer,London
+Grace,Admiral,New York
+```
+
+I would produce:
+
+| Name  | Role     | Location |
+|-------|----------|----------|
+| Ada   | Engineer | London   |
+| Grace | Admiral  | New York |
+
+Send your data, and let me know if you want a specific output format (Markdown, HTML, LaTeX, etc.) or if the first row isn't a header.

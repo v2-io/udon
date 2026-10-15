@@ -1,0 +1,5 @@
+**Definition 1.1** (Prime number). A natural number $p$ is called *prime* if $p > 1$ and its only positive divisors are $1$ and $p$ itself. A natural number greater than $1$ that is not prime is called *composite*.
+
+---
+
+For example, $2, 3, 5, 7, 11$ are prime, while $4 = 2 \cdot 2$ and $12 = 3 \cdot 4$ are composite. Note that $1$ is neither prime nor composite.

@@ -1,0 +1,9 @@
+```html
+<div class="sidebar-note">
+  <p>
+    This section offers a quick overview of the key details you should keep in mind.
+    Review the notes below carefully, as they highlight important context that can
+    help you get the most out of the content on this page.
+  </p>
+</div>
+```

@@ -1,0 +1,55 @@
+Here's a short LaTeX outline with an automatically generated list of figures:
+
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+
+\title{Project Report Outline}
+\author{Joseph Wecker}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\listoffigures
+\newpage
+
+\section{Introduction}
+Background, motivation, and goals.
+
+\section{Methods}
+Describe the approach.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{example-image}
+  \caption{Overview of the method}
+  \label{fig:method}
+\end{figure}
+
+\section{Results}
+Present findings (see Figure~\ref{fig:results}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{example-image}
+  \caption{Summary of results}
+  \label{fig:results}
+\end{figure}
+
+\section{Discussion}
+Interpretation and limitations.
+
+\section{Conclusion}
+Key takeaways and next steps.
+
+\end{document}
+```
+
+**How it works**
+- `\listoffigures` builds the list from every `\caption{...}` inside a `figure` environment, including page numbers.
+- Compile twice (`pdflatex file.tex` two times) so the list and cross-references resolve.
+- Replace `example-image` with your actual image files.
+
+If you'd prefer another format (Word, Markdown with Pandoc, or Typst), let me know and I can adapt it.

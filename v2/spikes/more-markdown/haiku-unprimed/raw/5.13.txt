@@ -1,0 +1,21 @@
+Here's a paragraph with a margin note, using HTML and CSS so the note sits beside the text:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .page { position: relative; max-width: 650px; margin: 2em auto; padding-right: 220px; font-family: Georgia, serif; line-height: 1.6; }
+  .margin-note { position: absolute; right: -240px; top: 0; width: 200px; font-size: 0.85em; font-style: italic; color: #555; border-left: 2px solid #bbb; padding-left: 10px; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <p>The old lighthouse stood at the edge of the cliff, its lamp dark for the first time in a century. Villagers gathered at the shore to watch the fog roll in, unsure whether the silence meant a broken machine or a forgotten duty. Nobody had climbed the spiral stairs in years, but tonight someone would have to.</p>
+    <aside class="margin-note">Note: The lamp's shutdown is foreshadowing the keeper's disappearance in Chapter 4.</aside>
+  </div>
+</body>
+</html>
+```
+
+The note is absolutely positioned outside the text column, so it appears in the margin beside the paragraph rather than at the bottom of the page. If you're working in LaTeX instead, the equivalent is `\marginpar{...}`.

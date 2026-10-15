@@ -1,0 +1,57 @@
+Here is a short Quarto report. Save it as `report.qmd`:
+
+````markdown
+---
+title: "Short Report"
+author: "Joseph Wecker"
+date: today
+format: html
+jupyter: python3
+---
+
+## Introduction
+
+This report generates some data, summarizes it, and plots it. The code cell below runs when the document is built, and its output appears inline.
+
+## Analysis
+
+```{python}
+#| label: summary
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(42)
+df = pd.DataFrame({
+    "x": np.arange(50),
+    "y": np.cumsum(rng.normal(size=50)),
+})
+
+print(df["y"].describe().round(3))
+
+plt.figure(figsize=(6, 3))
+plt.plot(df["x"], df["y"])
+plt.title("Random walk")
+plt.xlabel("Step")
+plt.ylabel("Value")
+plt.show()
+```
+
+## Conclusion
+
+The summary statistics and plot above are computed fresh on every build, so the report always reflects the code that produced it.
+````
+
+**Build it:**
+
+```bash
+pip install jupyter numpy pandas matplotlib
+quarto render report.qmd
+```
+
+This produces `report.html` with the code, the printed summary table, and the plot embedded.
+
+**Notes:**
+- A fixed random seed (`42`) makes the output reproducible between builds.
+- To hide the code and show only results, add `echo: false` to the cell options.
+- For PDF output, change `format: html` to `format: pdf` (requires a LaTeX install such as TinyTeX).

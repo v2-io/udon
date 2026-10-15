@@ -1,0 +1,57 @@
+# Video Player Component: `talk.mp4`
+
+This document provides a reusable video player component for `talk.mp4`. Autoplay is disabled.
+
+## Usage
+
+Place `talk.mp4` in the same folder as the HTML file, then add the component:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Talk</title>
+  <script src="video-player.js" defer></script>
+</head>
+<body>
+  <video-player src="talk.mp4" title="Talk"></video-player>
+</body>
+</html>
+```
+
+## Component: `video-player.js`
+
+Save this file in the same folder as your HTML.
+
+```javascript
+class VideoPlayer extends HTMLElement {
+  connectedCallback() {
+    if (this.dataset.ready) return;
+    this.dataset.ready = "true";
+
+    const src = this.getAttribute("src");
+    const title = this.getAttribute("title") || "Video";
+
+    this.innerHTML = `
+      <video
+        src="${src}"
+        controls
+        preload="metadata"
+        playsinline
+        aria-label="${title}"
+        style="width:100%;max-width:800px;display:block;">
+      </video>
+    `;
+  }
+}
+
+customElements.define("video-player", VideoPlayer);
+```
+
+## Notes
+
+- **Autoplay is off.** The `<video>` element has no `autoplay` attribute, and `preload="metadata"` loads only the duration and dimensions until the user presses play.
+- **Reusable.** Add a `<video-player>` tag with a different `src` and `title` to embed any other video.
+- **Accessible.** The native controls are keyboard-operable, and the `aria-label` describes the video to screen readers.
+- **Local viewing.** Some browsers block local file access for media, so serve the folder with a simple local server, such as `python3 -m http.server`, if the video doesn't load when you open the file directly.

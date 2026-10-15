@@ -1,0 +1,23 @@
+Here is a short paragraph followed by a raw LaTeX block. It uses Pandoc's raw attribute syntax, so the block is passed through only when the output format is LaTeX or PDF and is ignored in HTML, DOCX, and other formats.
+
+---
+
+Reproducibility is a cornerstone of good research. When analyses are documented alongside their code and data, other researchers can verify results, build on prior work, and catch errors early. Adopting plain-text formats and version control makes this practice both lightweight and durable.
+
+```{=latex}
+\begin{center}
+  \rule{0.6\textwidth}{0.4pt}\\[0.5em]
+  \textit{This line appears only in the PDF version.}
+\end{center}
+\newpage
+```
+
+---
+
+To build the PDF with the block included:
+
+```sh
+pandoc input.md -o output.pdf
+```
+
+If you'd rather use a different toolchain, let me know. For example, in R Markdown you'd use `` ```{=latex} `` the same way, and in Quarto you can use the same syntax or wrap content in `::: {.content-visible when-format="pdf"}`.

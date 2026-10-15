@@ -1,0 +1,11 @@
+Here's a table where the first column holds a heading for each row:
+
+| | Apple | Banana | Cherry |
+|---|---|---|---|
+| **Color** | Red | Yellow | Dark red |
+| **Taste** | Sweet-tart | Sweet | Sweet-tart |
+| **Season** | Fall | Year-round | Summer |
+| **Typical size** | Medium | Medium-long | Small |
+| **Grown on** | Trees | Plants (herbaceous) | Trees |
+
+Each row's label (Color, Taste, Season, etc.) sits in the first column, with the data for each fruit in the columns to the right. If you'd like a different topic or different row headings, tell me and I'll adjust it.

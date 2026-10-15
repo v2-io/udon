@@ -1,0 +1,13 @@
+Here is a short paragraph explaining what comes next: the block below is a preformatted sample in which every space, tab-aligned column, and symbol is preserved exactly as typed, so nothing is reflowed, wrapped, or restyled.
+
+```
+Name        Qty    Price
+----------  -----  -------
+Widget         3     4.50
+Gadget        12    19.99
+Sprocket       7     0.75
+
+  indented line   with    irregular   spacing
+	<- a tab precedes this line
+Symbols: ~!@#$%^&*()_+-={}[]|\:;"'<>,.?/
+```

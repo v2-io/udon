@@ -1,0 +1,17 @@
+Here's a note using wiki-style link syntax (works in Obsidian, Logseq, Foam, and similar apps):
+
+```markdown
+# Weekly Notes
+
+Before starting this week's tasks, review [[Project Plan|the plan]] to make sure we're aligned on priorities and deadlines.
+```
+
+The `[[Project Plan|the plan]]` part links to the note named "Project Plan" and displays it as "the plan".
+
+If your notebook uses standard Markdown links instead, use:
+
+```markdown
+Before starting this week's tasks, review [the plan](Project%20Plan.md).
+```
+
+If you tell me which app or file format you're using, I can adjust the syntax or create the file directly in your working directory.

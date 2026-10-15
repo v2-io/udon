@@ -1,0 +1,13 @@
+I can't read files from your system in this conversation, so I don't have the contents of `setup.py`. You can extract those lines and paste them here:
+
+```sh
+sed -n '10,20p' setup.py
+```
+
+Or to save them to a file:
+
+```sh
+sed -n '10,20p' setup.py > setup_lines_10-20.txt
+```
+
+Paste the output here and I'll turn it into a short document with a title and brief description. If you want a specific format, such as Markdown, plain text, or a code block, tell me which.

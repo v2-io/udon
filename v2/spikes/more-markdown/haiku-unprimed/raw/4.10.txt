@@ -1,0 +1,1 @@
+Here's a sentence with the snippet formatted as inline Rust code: In Rust, you declare an immutable binding with `let x = 1;`.

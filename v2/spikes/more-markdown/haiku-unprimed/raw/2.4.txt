@@ -1,0 +1,25 @@
+```markdown
+[TOC]
+
+# Remote Work Setup Guide
+
+## 1. Overview
+
+This guide covers the basic equipment, software, and habits needed to work effectively from home. It is meant for new remote employees and anyone refreshing their home office. Following it should take about an hour.
+
+## 2. Setting Up Your Workspace
+
+- **Equipment:** A monitor, keyboard, and mouse, ideally at eye level and a comfortable distance from your chair.
+- **Connectivity:** A wired connection is most reliable. If you use Wi-Fi, test your speed and keep the router within reach of your desk.
+- **Software:** Install the company VPN, messaging app, and video conferencing tool before your first day.
+- **Environment:** Choose a spot with minimal noise and distractions, and keep a consistent work area.
+
+## 3. Working Effectively
+
+- **Schedule:** Set consistent working hours and share them with your team.
+- **Communication:** Update your status when you step away, and respond to messages within a reasonable window.
+- **Breaks:** Step away from the screen at least once an hour to stretch and reset.
+- **Boundaries:** When the workday ends, close your work apps and log off to protect your time off.
+```
+
+To generate the table of contents automatically, render the file with a tool that supports the `[TOC]` marker, such as Python-Markdown, Typora, or Obsidian. With Pandoc, use `pandoc --toc -s guide.md -o guide.html` instead and remove the `[TOC]` line.

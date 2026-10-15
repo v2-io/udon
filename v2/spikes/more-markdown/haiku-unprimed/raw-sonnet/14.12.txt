@@ -1,0 +1,28 @@
+# Remote Work Guidelines
+
+## Section 1: Communication Expectations
+
+Clear communication keeps distributed teams aligned. Team members should:
+
+- **Respond promptly.** Acknowledge direct messages within four working hours, even if only to say a fuller reply is coming.
+- **Default to written updates.** Share progress in the team channel so decisions and context are visible to everyone, including those in other time zones.
+- **Use video selectively.** Reserve meetings for discussions that benefit from real-time interaction, such as brainstorming, sensitive feedback, or resolving disagreements.
+- **State availability.** Keep calendars and status indicators current so colleagues know when to expect responses.
+
+## Section 2: Workspace and Wellbeing
+
+A sustainable remote setup supports both productivity and health. Team members are encouraged to:
+
+- **Set boundaries.** Define working hours and communicate them to the team. Log off at the end of the day.
+- **Take regular breaks.** Step away from the screen at least once every 90 minutes.
+- **Maintain a dedicated space.** Where possible, work from a consistent, comfortable area with good lighting and ergonomic seating.
+- **Stay connected.** Schedule occasional informal check-ins or virtual coffee chats to maintain team relationships.
+
+## Appendix A: Recommended Tools
+
+| Purpose | Example Tools |
+|---|---|
+| Team messaging | Slack, Microsoft Teams |
+| Video meetings | Zoom, Google Meet |
+| Task tracking | Jira, Asana, Trello |
+| Shared documents | Google Docs, Notion |

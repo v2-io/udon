@@ -1,0 +1,32 @@
+| # | Feature | What it should do | Your example |
+|---|---|---|---|
+| 14.1 | Abstract | Write the beginning of a short paper with a title, an author line, and an abstract set apart from the body. | `\title{Short Paper}\n\author{Ann Lee}\n\begin{abstract}We study X.\end{abstract}` |
+| 14.2 | Title block with affiliations and keywords | Write a paper's title block with two authors, each with a university affiliation, and a list of keywords. | `\author{Ann Lee$^{1}$, Ben Park$^{2}$}\n$^{1}$MIT, $^{2}$Stanford\n\textbf{Keywords:} graphs, search` |
+| 14.3 | Theorem and proof | Write a short mathematical passage with a numbered theorem followed by its proof, ending with an end-of-proof mark. | `\begin{theorem}If $n$ is even, $n^2$ is even.\end{theorem}\n\begin{proof}Write $n=2k$, so $n^2=4k^2$. \qed\end{proof}` |
+| 14.4 | Numbered definition | Write a numbered definition of a prime number, set apart from the surrounding text the way math books do. | `\begin{definition}A natural number $p>1$ is \emph{prime} if its only divisors are $1$ and $p$.\end{definition}` |
+| 14.5 | Epigraph | Write the opening of a chapter with a short epigraph quotation and its attribution, set apart before the first paragraph. | `\chapter{Journey}\n\epigraph{The road goes ever on.}{J. R. R. Tolkien}` |
+| 14.6 | Pull quote | Write a paragraph of an article and a pull quote that repeats a striking line from it in larger type. | `The results surprised everyone.\n\pullquote{“The results surprised everyone.”}` |
+| 14.7 | Framed box | Write a paragraph followed by a short piece of text inside a framed box. | `Body paragraph text.\n\begin{tcolorbox}Back up first.\end{tcolorbox}` |
+| 14.8 | Algorithm in pseudocode | Write a short algorithm in numbered pseudocode with the caption 'Binary search'. | `\caption{Binary search}\n1: $lo \gets 1$, $hi \gets n$\n2: \While{$lo \le hi$}\n3: $mid \gets \lfloor (lo+hi)/2 \rfloor$` |
+| 14.9 | Subfigures | Write a passage with two images shown side by side, each with its own sub-caption (a) and (b), and one overall caption. | `\subfloat[First]{\includegraphics{a.png}}\subfloat[Second]{\includegraphics{b.png}}\n\caption{Overall}` |
+| 14.10 | Reference to a page number | Write a sentence that refers to the page number where the section called Results begins, so the number updates automatically. | `The results begin on page \pageref{sec:results}.` |
+| 14.11 | List of figures | Write a short document outline that includes an automatically generated list of figures. | `\section{Outline}\n\listoffigures` |
+| 14.12 | Appendix | Write a short document with two main sections followed by an appendix labeled with a letter. | `\section{Intro}\n\section{Methods}\n\appendix\n\section{Data}` |
+| 14.13 | Acronyms spelled out on first use | Write two sentences that use the acronym API, so that its first use is spelled out automatically and it appears in a generated list of acronyms. | `The \ac{API} returns JSON. Each \ac{API} call is metered.` |
+| 14.14 | Units and quantities | Write a sentence giving a speed of 3.5 × 10^8 meters per second and a temperature of 21 degrees Celsius, with the units typeset correctly. | `Light travels at \SI{3.5e8}{m/s} in water at \SI{21}{\celsius}.` |
+| 14.15 | Chemical equation | Write the balanced chemical equation for burning methane, typeset as chemistry. | `\ce{CH4 + 2 O2 -> CO2 + 2 H2O}` |
+| 14.16 | Margin to-do note | Write a paragraph with an editorial to-do note attached to it, shown in the margin. | `The method is simple.\todo{Add citation here.}` |
+| 14.17 | Line numbers for review | Write a short paragraph set up so that the printed version shows line numbers in the margin for reviewers. | `\linenumbers\nThis paragraph shows numbered lines for reviewers.` |
+| 14.18 | Drop cap | Write the first paragraph of a story with its first letter set as a large drop cap. | `\lettrine{O}{nce} upon a time, a lighthouse keeper lived alone.` |
+| 14.19 | Hyphenation hints | Write a sentence containing the word electroencephalography, marking the places where it may be hyphenated. | `We recorded electroen\-cephalo\-graphy data overnight.` |
+| 14.20 | Numbered paragraphs | Write three paragraphs of a contract that are numbered 1.1, 1.2 and 1.3 automatically. | `\begin{enumerate}[label=1.\arabic*]\n\item The parties agree.\n\item Payment is due monthly.\n\item Either party may terminate.\n\end{enumerate}` |
+| 14.21 | Colored text | Write a sentence where the word 'blocked' is shown in red text. | `The request was \textcolor{red}{blocked} by the firewall.` |
+| 14.22 | Subtext line | Write a heading followed by a line of small, muted subtext under it. | `\section{Settings}\n\textcolor{gray}{\small Changes apply after restart.}` |
+| 14.23 | Inline badge | Write a sentence ending with a small colored badge that reads 'beta'. | `Export is now available <badge color="blue">beta</badge>` |
+| 14.24 | Inline data fields | Write a note about a book that includes a rating of 5 and a genre of mystery as data fields a query tool could read. | `Read *The Glass Key* [rating:: 5] [genre:: mystery]` |
+| 14.25 | Key-value list | Write a short list of facts about a person (name, year born, occupation) that should display as aligned key-value pairs. | `\begin{description}\n\item[Name] Ada Lovelace\n\item[Born] 1815\n\item[Occupation] Mathematician\n\end{description}` |
+| 14.26 | Side-brace grouping | Write three related lines grouped together by a large curly brace with a label beside it. | `\left.\begin{array}{l}a\\b\\c\end{array}\right\}\text{Group}` |
+| 14.27 | Table formula | Write a small table of expenses whose total row is computed by a formula. | `Item,Cost\nRent,1200\nFood,450\nTotal,=SUM(B2:B3)` |
+| 14.28 | Callout on one list item | Write a bulleted list where one item is highlighted as a warning by a marker at the start of that item. | `- Install the package\n- ⚠️ Deletes all saved data\n- Restart the app` |
+| 14.29 | Note template | Write a daily-note template that inserts today's date and the note's title automatically when a note is created. | `# <% tp.file.title %>\nDate: <% tp.date.now("YYYY-MM-DD") %>` |
+| 14.30 | Inline icon | Write a sentence with a small heart icon from an icon set shown inline. | `Thanks so much \faHeart` |

@@ -1,0 +1,39 @@
+Here is a short LaTeX document whose table of contents is generated automatically from the section headings:
+
+```latex
+\documentclass{article}
+
+\title{A Short Document}
+\author{Joseph Wecker}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This document demonstrates a simple structure with three sections.
+The table of contents above is built automatically from the headings.
+
+\section{Main Content}
+This section holds the core material. Add paragraphs, lists, or
+figures here, and the table of contents will update on its own.
+
+\section{Conclusion}
+Three sections, one automatically generated table of contents,
+and no manual numbering to maintain.
+
+\end{document}
+```
+
+**To build it:** save it as `doc.tex` and run `pdflatex doc.tex` **twice**. The first pass collects the headings and the second fills in the table of contents.
+
+**Markdown alternative:** if you'd rather use Markdown, write the three sections as `#` headings in `doc.md` and generate the table of contents with Pandoc:
+
+```sh
+pandoc doc.md --toc -s -o doc.pdf
+```
+
+I can also write either version to a file in your working directory if you'd like.

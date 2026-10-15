@@ -1,0 +1,23 @@
+Using HTML, the browser numbers the items automatically, so no digits are typed:
+
+```html
+<ol>
+  <li>First item</li>
+  <li>Second item</li>
+  <li>Third item</li>
+  <li>Fourth item</li>
+</ol>
+```
+
+Reorder the `<li>` lines freely and the numbering updates itself.
+
+If you're writing Markdown, you can prefix every item with the same marker (`1.`). Renderers ignore the literal value and number the items sequentially:
+
+```markdown
+1. First item
+1. Second item
+1. Third item
+1. Fourth item
+```
+
+This renders as 1-4, and reordering never requires renumbering.

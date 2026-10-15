@@ -1,0 +1,26 @@
+# The Quiet Commons: Attention as a Shared Resource in Networked Communities
+
+**Joseph Wecker**
+*October 15, 2026*
+
+---
+
+> **Abstract**
+>
+> Digital platforms increasingly mediate how communities allocate their most limited collective resource: attention. This paper argues that attention is best understood as a commons, subject to the same dynamics of overuse, enclosure, and stewardship that Ostrom and others identified in physical resource systems. We examine how design choices such as notification defaults, ranking algorithms, and the cost of posting shape the sustainability of shared attention in small online communities. Drawing on a comparative reading of existing governance literature, we propose three principles for attention stewardship: bounded visibility, proportional cost, and legible curation. We conclude that communities which treat attention as a finite, jointly held resource tend to sustain higher-quality discourse than those which treat it as an unlimited input to be maximized.
+>
+> **Keywords:** attention economy, commons governance, online communities, platform design
+
+---
+
+## 1. Introduction
+
+Every community, whether a village, a congregation, or a forum of a few hundred members, depends on a resource that rarely appears in its accounting: the willingness of its members to listen. A town meeting can host only so many speakers before the evening ends. A mailing list can carry only so many threads before readers stop opening them. Attention, in other words, is scarce, and its scarcity is not a defect of any particular platform but a basic condition of collective life.
+
+Yet much of the contemporary design of networked systems proceeds as though attention were abundant, or as though its consumption were an unambiguous good. Engagement is counted, graphed, and optimized, while the question of who bears the cost of that engagement goes largely unasked. The result is a familiar pattern: contributions multiply, signal thins, and participants withdraw not because they have nothing to say, but because they can no longer be heard, or can no longer bear to listen.
+
+This paper approaches the problem through the lens of commons governance. Section 2 reviews the relevant literature on shared-resource management. Section 3 develops the claim that attention exhibits the key features of a commons, namely rivalry, difficulty of exclusion, and vulnerability to overuse. Section 4 presents three design principles for stewardship, and Section 5 considers objections and limits.
+
+## 2. Background
+
+The classic framing of shared resources as inevitably doomed to depletion has long since been complicated by empirical work showing that communities frequently devise durable rules for managing what they hold in common...

@@ -1,0 +1,41 @@
+Here's a short snippet using a Markdown-style admonition:
+
+```markdown
+## Upgrading the Database
+
+Before running the migration script, review the release notes and confirm that your environment meets the minimum requirements.
+
+!!! warning "Back up first"
+    This migration modifies your existing data in place and cannot be undone.
+    Create a full backup of your database before proceeding, and verify that
+    the backup can be restored.
+
+Once your backup is confirmed, run the migration:
+
+    ./migrate --apply
+```
+
+And here's the same admonition in a few other common syntaxes, in case you need a different format:
+
+**GitHub-flavored Markdown**
+```markdown
+> [!WARNING]
+> **Back up first**
+> This operation modifies data in place. Create a full backup before continuing.
+```
+
+**reStructuredText (Sphinx)**
+```rst
+.. warning:: Back up first
+
+   This operation modifies data in place. Create a full backup before continuing.
+```
+
+**Docusaurus / MDX**
+```markdown
+:::warning Back up first
+This operation modifies data in place. Create a full backup before continuing.
+:::
+```
+
+Let me know which documentation system you're using and I can tailor it further.

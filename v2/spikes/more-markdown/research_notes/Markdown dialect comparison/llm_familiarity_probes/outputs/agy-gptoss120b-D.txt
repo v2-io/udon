@@ -1,0 +1,45 @@
+**1.** `H~2~O and ~~gone~~`  
+HTML: `H~2~O and <del>gone</del>`  
+*Flavor:* GitHub‑Flavored Markdown (subscript not supported, strike‑through via `~~`).  
+*Other:* MediaWiki would render `H₂O` with `<sub>`.
+
+**2.** `See [[Setup|install guide]].`  
+HTML: `<a href="Setup">install guide</a>`  
+*Flavor:* MediaWiki/Wiki link syntax.  
+*Other:* In plain Markdown it would appear as literal text.
+
+**3.** `Note {% this is important %} here.`  
+HTML: `Note {% this is important %} here.`  
+*Flavor:* Treated as plain text (e.g., Jinja template fragment, no markup).  
+*Other:* If processed by a template engine the block would be removed.
+
+**4.** `This is *x* and _y_.`  
+HTML: `This is <em>x</em> and <em>y</em>.`  
+*Flavor:* CommonMark Markdown (both delimiters produce emphasis).  
+*Other:* reStructuredText would treat `_y_` as a hyperlink target.
+
+**5.** `<div>
+**x**
+</div>`  
+HTML: `<div><strong>x</strong></div>`  
+*Flavor:* Markdown inside raw HTML (GitHub‑style).  
+*Other:* Pure HTML renderers would show `**x**` as text.
+
+**6.** `x^2^ and a note^[like this]`  
+HTML: `x<sup>2</sup> and a note<sup>like this</sup>`  
+*Flavor:* MediaWiki‑style superscript (`^text^`) plus Markdown footnote shortcut (treated here as a second superscript).  
+*Other:* Standard Markdown treats `^[...]` as a footnote reference, producing a numbered footnote list.
+
+**7.** `==marked== and {+added+}`  
+HTML: `<mark>marked</mark> and <ins>added</ins>`  
+*Flavor:* Markdown extensions (highlight with `==` → `<mark>`, diff insertion `{+...+}` → `<ins>`).  
+*Other:* In MediaWiki `==marked==` would be a level‑2 heading (`<h2>`).
+
+**8.** `Groceries:
+- milk
+- eggs`  
+HTML: `<ul><li>milk</li><li>eggs</li></ul>`  
+*Flavor:* Classic Markdown unordered list.  
+*Other:* reST bullet list renders similarly.
+
+**9.** `Visit https://example.com today

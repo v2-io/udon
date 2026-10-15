@@ -1,0 +1,25 @@
+1. A Python decorator is a function that takes another function as its argument and returns a new function, usually one that wraps the original with extra behavior. Decorators let you add cross-cutting concerns such as logging, timing, caching, or access control without modifying the body of the functions they decorate. The `@` syntax is shorthand for applying the decorator at the point where the function is defined, which keeps the intent visible right above the function signature.
+
+A decorator is especially useful when the same behavior needs to apply to many functions. Instead of copying timing or logging code into each one, you define the logic once and apply it wherever it is needed. Here is a short example that measures how long a function takes to run:
+
+```python
+import time
+from functools import wraps
+
+def timed(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.perf_counter() - start:.4f}s")
+        return result
+    return wrapper
+
+@timed
+def add(a, b):
+    return a + b
+```
+
+2. A Python generator is a function that uses `yield` to produce a sequence of values lazily, one at a time, rather than building the entire sequence in memory. Calling a generator function returns a generator object, which is an iterator; each call to `next()` resumes execution from where it last yielded. This makes generators well suited for processing large files, streams of data, or infinite sequences.
+
+Because generators hold only the current state rather than the full collection, they use constant memory regardless of how many items they eventually produce. They can also be chained together to form processing pipelines, where each stage consumes values from the previous one as needed.

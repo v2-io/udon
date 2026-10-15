@@ -1,0 +1,25 @@
+Here's some text with an `experiment` admonition in MkDocs syntax:
+
+```markdown
+We're testing a new caching layer to see whether it reduces page load times.
+
+!!! experiment "Caching trial"
+    This feature is experimental. Results may change, and it isn't yet recommended for production use. Feedback is welcome.
+
+Once the trial is complete, we'll decide whether to keep the caching layer.
+```
+
+For reStructuredText (Sphinx), you could define a custom admonition with `.. admonition::`:
+
+```rst
+We're testing a new caching layer to see whether it reduces page load times.
+
+.. admonition:: Caching trial
+   :class: experiment
+
+   This feature is experimental. Results may change, and it isn't yet recommended for production use. Feedback is welcome.
+
+Once the trial is complete, we'll decide whether to keep the caching layer.
+```
+
+Let me know if you need it for a different tool, such as Docusaurus or GitHub-flavored Markdown.

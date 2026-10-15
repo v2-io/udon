@@ -1,0 +1,24 @@
+```markdown
+# Cooking udon
+
+Boil thick wheat noodles, warm a light broth, and eat the bowl while it is hot.
+
+> [!warning]
+> The boiling water foams hard once the noodles go in. Leave headroom in the pot.
+
+**dashi.** A clear Japanese stock simmered from kombu and shaved katsuobushi.[^1]
+
+| Piece | Aim |
+| --- | --- |
+| Noodles | Springy, with a faint bite |
+| Broth | Hot, light, and savory |
+| Finish | Scallion and a few drops of soy |
+
+Serve the moment the noodles look ==glossy and bouncy==.
+
+Related note: [[soy-tare]].
+
+[^1]: Kombu is dried kelp; katsuobushi is smoked, dried bonito flakes.
+```
+
+Obsidian Flavored Markdown, because that notes-collection dialect already includes warning callouts, footnotes, `==highlights==`, wikilinks, and two-column pipe tables.

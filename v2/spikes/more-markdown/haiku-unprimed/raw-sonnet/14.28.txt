@@ -1,0 +1,5 @@
+- Back up your data before making any changes to your system.
+- ⚠️ **Warning:** Never share your passwords or API keys, even with people you trust.
+- Keep your software and dependencies up to date.
+- Use version control to track changes to your projects.
+- Review permissions before granting access to third-party apps.

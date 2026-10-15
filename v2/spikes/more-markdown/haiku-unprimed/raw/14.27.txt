@@ -1,0 +1,23 @@
+Here's a small expense table with the total computed by a formula. I've used a spreadsheet-style layout, so it works in Excel, Google Sheets, or LibreOffice:
+
+| | A (Item) | B (Category) | C (Amount) |
+|---|---|---|---|
+| **1** | Item | Category | Amount |
+| **2** | Office supplies | Office | 45.20 |
+| **3** | Client lunch | Meals | 82.50 |
+| **4** | Software subscription | Software | 29.99 |
+| **5** | Taxi to airport | Travel | 38.75 |
+| **6** | **Total** | | **=SUM(C2:C5)** |
+
+The total cell (C6) uses `=SUM(C2:C5)`, which adds the four amounts above it. If you add rows, extend the range (for example, insert rows above row 6 and the formula adjusts automatically).
+
+If you want the same table as CSV with the formula in place:
+
+```csv
+Item,Category,Amount
+Office supplies,Office,45.20
+Client lunch,Meals,82.50
+Software subscription,Software,29.99
+Taxi to airport,Travel,38.75
+Total,,=SUM(C2:C5)
+```

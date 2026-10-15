@@ -1,0 +1,47 @@
+Here's an HTML table where only the center cell is highlighted and centered:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Highlighted Cell Table</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 360px;
+  }
+  td, th {
+    border: 1px solid #999;
+    padding: 12px;
+    text-align: left;       /* normal cells */
+  }
+  td.highlight {
+    text-align: center;     /* centered */
+    background-color: #ffe066;  /* highlighted */
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr><th>Col A</th><th>Col B</th><th>Col C</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>A1</td><td>B1</td><td>C1</td></tr>
+      <tr><td>A2</td><td class="highlight">B2</td><td>C2</td></tr>
+      <tr><td>A3</td><td>B3</td><td>C3</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
+```
+
+**How it works:**
+- All cells share the default style (left-aligned, no background).
+- The `highlight` class is applied to just one `<td>` (B2), which gives it a yellow background, bold text, and `text-align: center`.
+
+To highlight a different cell, move `class="highlight"` to another `<td>`.
+
+If you need it in another format (Markdown, LaTeX, Word, Excel, etc.), let me know and I'll adapt it.

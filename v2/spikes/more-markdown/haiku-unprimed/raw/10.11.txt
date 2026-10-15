@@ -1,0 +1,18 @@
+I don't see any CSV data in your message. Paste the comma-separated values and I'll convert them into a Markdown table.
+
+For example, this CSV:
+
+```
+Name,Role,Location
+Alice,Engineer,Berlin
+Bob,Designer,Austin
+```
+
+becomes:
+
+| Name  | Role     | Location |
+|-------|----------|----------|
+| Alice | Engineer | Berlin   |
+| Bob   | Designer | Austin   |
+
+If your first row is not a header, tell me and I'll add generic column names. If any values contain commas, wrap them in double quotes, as in standard CSV, so they stay in one cell.

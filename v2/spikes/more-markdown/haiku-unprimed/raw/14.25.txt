@@ -1,0 +1,9 @@
+Here's an example with a fictional person:
+
+```
+Name:        Maria Lopez
+Born:        1988
+Occupation:  Civil engineer
+```
+
+If you give me a real person's details, I can format those instead.

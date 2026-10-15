@@ -1,0 +1,18 @@
+Here is a sentence with a citation to page 33, written in Pandoc Markdown so a bibliography can be generated automatically:
+
+```markdown
+Researchers have noted that this pattern persists across multiple contexts [@doe2020, p. 33].
+```
+
+Pandoc will format this as a numbered or author-date citation, depending on your citation style, and it will look up `doe2020` in your bibliography file. Here is a matching BibTeX entry:
+
+```bibtex
+@book{doe2020,
+  author    = {Doe, Jane},
+  title     = {Placeholder Title},
+  year      = {2020},
+  publisher = {Placeholder Publisher}
+}
+```
+
+Replace the title and publisher with the real details. If you're using LaTeX instead of Pandoc, the equivalent citation is `\cite[p.~33]{doe2020}`.

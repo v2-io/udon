@@ -1,0 +1,5 @@
+## To-Do List
+
+- [x] Review project requirements
+- [ ] Draft the initial outline
+- [ ] Send progress update to the team

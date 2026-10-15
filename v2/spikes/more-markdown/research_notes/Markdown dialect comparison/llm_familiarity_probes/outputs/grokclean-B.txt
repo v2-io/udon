@@ -1,0 +1,17 @@
+1. **Djot.** `_emphasized_` is emphasis and `*strong*` is strong; `{=marked=}` is highlighted text; `[Ctrl+C]{.kbd}` is a span with class `kbd` (keyboard styling); `::: warning` is a warning div.
+
+2. **Obsidian Flavored Markdown.** `[!tip]-` is a tip callout folded closed; `[[Setup#Install|install]]` links to the “Install” heading in “Setup,” shown as “install”; `![[diagram.png|400]]` embeds that image at width 400; `%%todo%%` is a comment omitted from the reading view.
+
+3. **Pandoc Markdown** (same syntax in Quarto and R Markdown). `@smith04 [p. 33]` is a citation with a page locator; `^[...]` is an inline footnote; lines that start with `|` are a line block (breaks and indentation kept, as in verse).
+
+4. **MDX.** The import brings in a component; `{year}` inserts that value; `<Chart data={data} />` renders it; `{/* reviewed */}` is a comment and produces no output.
+
+5. **MyST Markdown.** The `{note}` fence is a note admonition; `` {sub}`2` `` is a subscript role, so the line renders as H₂O.
+
+6. **Markdoc.** `{% callout type="warning" %}` … `{% /callout %}` is a warning callout.
+
+7. **GitHub Flavored Markdown** alert (Obsidian also reads it as a note callout). `> [!NOTE]` renders as a Note admonition.
+
+8. **Djot.** `: Term` starts a definition-list entry; `$`e^{i\pi}`$` is inline math; `{+added+}` is an insertion and `{-removed-}` is a deletion.
+
+9. **AsciiDoc.** `[NOTE]` on a `====` delimited block renders as a note admonition.

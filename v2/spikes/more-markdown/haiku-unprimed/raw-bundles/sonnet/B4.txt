@@ -1,0 +1,70 @@
+I used Pandoc Markdown, which has native syntax for most of these. Each snippet below is source text.
+
+## 1. Auto-numbered list
+
+```markdown
+#. Gather the materials
+#. Draft the outline
+#. Review with the team
+#. Publish the result
+```
+
+The `#.` marker makes Pandoc number the items itself, so you can reorder them freely.
+
+## 2. Small capitals
+
+```markdown
+The [NASA]{.smallcaps} report was released.
+```
+
+## 3. Document with an automatic table of contents
+
+```markdown
+---
+title: Field Notes
+toc: true
+---
+
+# Introduction
+
+This section explains why the notes were written.
+
+# Method
+
+This section describes how the observations were collected.
+
+# Results
+
+This section summarizes what was found.
+```
+
+`toc: true` in the header makes Pandoc generate the table of contents from the headings. You can also pass `--toc` on the command line.
+
+## 4. Interactive Python session
+
+````markdown
+```python
+>>> sum(n * n for n in range(1, 5))
+30
+```
+````
+
+## 5. Raw HTML bold, output-format specific
+
+```markdown
+This word is `<b>important</b>`{=html} in HTML output only.
+```
+
+The `{=html}` attribute tells Pandoc to pass the tag through only when the output format is HTML. Other formats drop it.
+
+## 6. Two paragraphs with a horizontal rule
+
+```markdown
+The first paragraph introduces the idea and sets the context for what follows.
+
+---
+
+The second paragraph picks up after the divider and develops the idea further.
+```
+
+To render everything, run `pandoc input.md --standalone -o output.html`, or use a different output extension.

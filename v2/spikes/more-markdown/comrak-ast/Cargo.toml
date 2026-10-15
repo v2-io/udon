@@ -1,0 +1,9 @@
+[package]
+name = "comrak-ast"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# The same comrak md-press uses.
+comrak = "0.54.0"

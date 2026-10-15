@@ -1,0 +1,5 @@
+Here's the sentence with colored highlighting as HTML:
+
+<span style="background-color: red; color: white;">Pay rent</span> and <span style="background-color: green; color: white;">call mom</span>
+
+If your display doesn't render HTML, I can give you a version using ANSI terminal color codes instead.

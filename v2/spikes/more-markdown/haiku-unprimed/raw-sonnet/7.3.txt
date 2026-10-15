@@ -1,0 +1,16 @@
+```html
+<div class="sidebar-note">
+  <p>Good habits are built one small step at a time. Start with a task that takes just five minutes, repeat it daily, and let consistency, rather than intensity, carry you toward lasting change.</p>
+</div>
+```
+
+You can style it with CSS like this:
+
+```css
+.sidebar-note {
+  background: #f5f7fa;
+  border-left: 4px solid #4a90d9;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+```

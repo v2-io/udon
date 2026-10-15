@@ -1,0 +1,212 @@
+1. DJOT
+
+(a) Caption position is the part I'm least sure of (`Table:` after the table).
+
+```djot
+# Udon notes {#udon-notes}
+
+_Emph_ and *strong*, {=highlighted=}, {+inserted+}, {-deleted-}, mc^2^, H~2~O, [Ctrl]{.kbd}.
+Math $x^2$ and a note.[^n]
+Hard break\
+next line.
+
+udon
+: a noodle
+
+| item | note |
+|------|------|
+| udon | wheat |
+
+Table: Noodle table
+
+::: {.warning}
+Hot broth.
+:::
+
+[^n]: Footnote text.
+
+``` =html
+<div>raw</div>
+```
+```
+
+(b)
+
+```djot
+*bold* and _italic_ and {-gone-} and <https://x.com>
+```
+
+(c) Reference implementation: **djot.js** (JavaScript, John MacFarlane). Second implementation by the same author: **djot.lua** (Lua; what Pandoc uses). Latest version: **unsure** (no stable 1.0 that I can cite; knowledge may be stale as of 2026).
+
+2. OBSIDIAN
+
+```markdown
+[[Alpha|first]]
+[[Alpha#Setup]]
+[[Alpha#^abc123]]
+```
+
+Block id, end of the block (or the following line):
+
+```markdown
+Paragraph text. ^abc123
+```
+
+```markdown
+![[Alpha]]
+![[photo.png|300]]
+
+> [!warning]- Careful
+> Folded warning body.
+
+==highlighted==
+%% comment hidden in reading view %%
+
+#project/udon
+```
+
+```yaml
+---
+aliases:
+  - first
+tags:
+  - project/udon
+---
+```
+
+3. GFM
+
+(a) Five spec extensions: tables, task list items, strikethrough, autolinks (bare URL/email), disallowed raw HTML (tagfilter). Spec base is CommonMark 0.29.
+
+(b)
+
+```markdown
+> [!WARNING]
+> Watch the broth.
+```
+
+github.com alert types: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`.
+
+(c) github.com rendering only. The GFM spec includes neither footnotes nor math.
+
+4. COMMONMARK
+
+(a) **0.31.2**, January 2024 (I remember 2024-01-28). Unsure whether a newer spec exists by 2026.
+
+(b) **7** (types 1–7).
+
+(c) Yes, only when the marker’s start number is **1** (`1.` or `1)`).
+
+(d) No. `foo_bar_baz` is literal.
+
+(e)
+
+```html
+<p><em>foo<strong>bar</strong>baz</em></p>
+```
+
+5. PANDOC MARKDOWN
+
+(a)
+
+```markdown
+[@udon2020, p. 12]
+@udon2020
+[-@udon2020]
+
+^[Inline footnote.]
+
+::: {#uid .warning}
+Watch out.
+:::
+
+[span]{#sid .kbd}
+
+| The limerick packs laughs anatomical
+| In space that is quite economical.
+
+(@) First example.
+(@) Second example.
+
+`\emph{hi}`{=latex}
+```
+
+`raw_tex` (on by default) also passes `\emph{hi}` through as raw TeX.
+
+Title block (file start):
+
+```markdown
+% Udon
+% Ada
+% 2020
+```
+
+(b) Pipe tables, simple tables, multiline tables, grid tables.
+
+(c)
+
+```bash
+pandoc -f markdown+footnotes
+pandoc -f markdown-smart
+```
+
+(d) Pandoc’s extended CommonMark: the CommonMark reader/writer with a preset bundle of Pandoc extensions turned on. Format name for `-f` / `-t`.
+
+6. MDX
+
+(a) Latest major I know: **3**, roughly late 2023 or early 2024. Exact month: **unsure**. Unsure if a later major exists by 2026. The syntax break is MDX 2 (Feb 2022).
+
+(b) CommonMark that breaks or changes in MDX 2+:
+- `{...}` is a JavaScript expression.
+- `<...>` is JSX and must be valid JSX (`<br />`, balanced tags). Prose like `a < b` or `<3` fails.
+- Indented code blocks: unsupported; use fences. (Slightly less sure than the two above.)
+- `<!-- comment -->` is not a comment.
+
+Autolinks `<https://...>`: **unsure** whether they still parse as links.
+
+(c)
+
+```mdx
+{/* comment */}
+```
+
+(d) Core MDX leaves YAML frontmatter alone. Add `remark-frontmatter` and `remark-mdx-frontmatter`; the latter exports `frontmatter`.
+
+7. OTHERS
+
+(a)
+
+````markdown
+```{admonition} Careful
+:class: warning
+
+Hot broth.
+```
+````
+
+```markdown
+{math}`x^2`
+```
+
+(b)
+
+```markdoc
+{% callout type="warning" %}Careful{% /callout %}
+```
+
+(c) Pandoc Markdown (Quarto drives Pandoc).
+
+8. CONFIDENCE
+
+- Djot: 3
+- Obsidian: 4
+- GFM: 4
+- CommonMark: 4
+- Pandoc Markdown: 4
+- MDX: 3
+- MyST: 3
+- Markdoc: 3
+- AsciiDoc: 3
+- reStructuredText: 3
+- Org mode: 3
+- Typst: 3

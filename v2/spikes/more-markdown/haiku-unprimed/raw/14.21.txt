@@ -1,0 +1,9 @@
+Here it is as an HTML span, which displays red in renderers that allow inline styles:
+
+<span style="color:red">blocked</span>
+
+In a terminal, you can use an ANSI escape code instead:
+
+```bash
+printf '\033[31mblocked\033[0m\n'
+```

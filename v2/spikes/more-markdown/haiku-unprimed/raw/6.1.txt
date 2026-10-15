@@ -1,0 +1,2 @@
+> [!NOTE]
+> This is a quick example of a note admonition. Notes highlight useful information that readers should keep in mind, even when skimming.

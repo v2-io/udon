@@ -1,0 +1,21 @@
+Here's a short HTML document. The script runs in the browser and fills in the current year when the page loads:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Current Year Document</title>
+</head>
+<body>
+  <h1>Welcome</h1>
+  <p>This document was last viewed in <span id="year">the current year</span>.</p>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+```
+
+When opened in a browser, it displays "This document was last viewed in 2026." The year comes from the visitor's system clock, so it reflects the current year wherever the page is opened.

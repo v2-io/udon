@@ -1,0 +1,47 @@
+**Numbered list**
+
+1. Gather the requirements.
+1. Draft the initial design.
+1. Build a working prototype.
+1. Test and review the results.
+
+**Small caps**
+
+The NASA report was released: "The ɴᴀꜱᴀ report was released." (The "NASA" above uses Unicode small capitals, since Markdown has no small-caps formatting.)
+
+**Document with automatic table of contents**
+
+# Project Overview
+
+[TOC]
+
+## Background
+
+This section explains why the project exists and what problem it addresses.
+
+## Approach
+
+This section describes the methods and tools used to carry out the work.
+
+## Outcomes
+
+This section summarizes the results and lists next steps.
+
+**Interactive Python session**
+
+```python
+>>> 7 * 6
+42
+```
+
+**Bold word with raw HTML**
+
+This is a <b>very</b> important point. (The `<b>` tag only renders as bold in HTML output. In Markdown it may appear as literal tags.)
+
+**Two paragraphs with a divider**
+
+The first paragraph introduces the topic and sets up the context for what follows. It gives the reader enough background to understand why the topic matters.
+
+---
+
+The second paragraph picks up after the divider and develops the idea further. It offers a conclusion or a next step that follows from the first paragraph.

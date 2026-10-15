@@ -1,0 +1,275 @@
+**1. DJOT (John MacFarlane’s light markup)**  
+
+**a) Sample Djot document**
+
+```djot
+# Heading {#my-id}
+This is *emphasis*, **strong**, ==highlighted==, ++inserted++,
+~~deleted~~, ^superscript^, ~subscript~, [kbd]{.kbd}.
+
+{: .warning}
+> Warning: be careful
+
+Here is a footnote.[^1]
+
+$$ x^2 $$
+
+{:term}
+* udon
+{:definition} a noodle
+
+| Table caption |
+|---|
+| Cell 1 |
+| Cell 2 |
+
+Line with a hard break.\\
+Continues on next line.
+
+<raw html>
+<div class="custom">HTML block</div>
+</raw html>
+
+[^1]: The footnote text.
+```
+
+**b) CommonMark → Djot conversion**
+
+```
+**bold** and *italic* and ~~gone~~ and <https://x.com>
+```
+
+becomes
+
+```djot
+**bold** and *italic* and ~~gone~~ and <https://x.com>
+```
+
+*(Djot uses the same syntax for these elements.)*
+
+**c) Reference implementation(s)**  
+
+- **djot** – written in **Rust** (primary implementation).  
+- **djot.js** – JavaScript/TypeScript port.  
+
+Latest stable version (as of 2024‑2025): **0.2.1** (Rust) and **0.2.0** (js). *(unsure if a newer release has appeared after that.)*
+
+
+
+---
+
+**2. Obsidian‑flavored Markdown**
+
+```markdown
+--- 
+aliases: ["Alpha Note"]
+tags: [project/alpha, #nested/tag]
+---
+
+[[Alpha|first]]               <!-- link to note “Alpha” displayed as “first” -->
+[[Alpha#Setup]]               <!-- link to heading “Setup” in note “Alpha” -->
+[[Alpha#^abc123]]            <!-- link to block id -->
+^abc123                       <!-- block id declaration (on its own line) -->
+![[Alpha]]                    <!-- embed of note “Alpha” -->
+![[image.png|300]]            <!-- image embed resized to 300 px wide -->
+
+> [!WARNING]+  
+> **Careful**  
+> *Collapsed content*  
+
+==highlighted==                <!-- highlighted text -->
+
+%% This comment is hidden in reading view %%
+
+#tag1 #tag2/subtag           <!-- nested tag -->
+```
+
+---
+
+**3. GFM (GitHub Flavored Markdown)**  
+
+**a) Extensions defined by the GFM *spec***  
+
+- Tables  
+- Task lists (checkboxes)  
+- Strikethrough (`~~text~~`)  
+- Autolinks for URLs & emails  
+- Disallowed raw HTML sanitisation (but still allowed)  
+- Pipe tables syntax (already covered above)  
+
+**b) GitHub alert and list of supported alert types**
+
+```markdown
+> [!NOTE]  
+> This is a note.
+
+> [!TIP]  
+> This is a tip.
+
+> [!IMPORTANT]  
+> This is important.
+
+> [!WARNING]  
+> This is a warning.
+
+> [!CAUTION]  
+> This is a caution.
+```
+
+Supported types: **NOTE, TIP, IMPORTANT, WARNING, CAUTION**.
+
+**c) Footnotes & Math** – Neither footnotes nor MathJax/LaTeX math are part of the **official GFM spec**; they are **rendered by GitHub.com** as a site‑specific extension (GitHub’s own renderer supports them, but they are not in the spec).  
+
+---
+
+**4. COMMONMARK**  
+
+**a)** Current spec version: **0.31.2** (published **2024‑03‑13**).  
+
+**b)** Number of HTML block kinds: **7** (  
+1. `<script>`/`<style>`/`<pre>`/`<textarea>` blocks,  
+2. HTML comments,  
+3. CDATA sections,  
+4. Processing instructions,  
+5. Doctype,  
+6. Raw HTML blocks that start with a tag,  
+7. Closing tag blocks).  
+
+**c)** An ordered list **can** interrupt a paragraph **only** if the paragraph ends with a **blank line** (i.e., a hard break). Otherwise the list is treated as part of the paragraph.  
+
+**d)** `foo_bar_baz` is **not** emphasized; underscores are treated as literal characters inside a word.  
+
+**e)** `*foo**bar**baz*` renders as HTML:
+
+```html
+<p><em>foo<strong>bar</strong>baz</em></p>
+```
+
+---
+
+**5. PANDOC MARKDOWN**  
+
+**a) Requested constructs**
+
+```markdown
+[@doe2020, p. 23]                <!-- citation with page locator -->
+@Doe (2020) says …               <!-- author‑in‑text citation -->
+[@doe2020, -@doe2020]            <!-- suppress author (only year) -->
+This is a footnote.^[Inline footnote text.]
+
+::: {.my-id .my-class}
+Content of fenced div.
+:::
+
+[span text]{.my-class #my-id key=val}
+
+| Line 1
+| Line 2
+| Line 3
+
+::: example
+- First
+- Second
+:::
+
+\(\LaTeX\) inline raw LaTeX: `\ensuremath{E=mc^2}`
+
+% Title block (YAML metadata)
+% My Document
+% Author Name
+% 2024-10-14
+```
+
+**b) Four table syntaxes**
+
+1. **Pipe tables** (`| a | b |`)  
+2. **Grid tables** (`+---+`)  
+3. **Simple tables** (no pipes, spacing)  
+4. **Multiline (Pandoc) “multiline” tables** using `+`/`|` with `\` line continuations (also called “multiline” or “pandoc‑grid” tables).
+
+**c) Enable/disable a single extension**
+
+```bash
+pandoc -f markdown+footnotes -t html       # enable footnotes
+pandoc -f markdown-footnotes -t html       # disable footnotes
+```
+
+**d) `commonmark_x`** – a Pandoc input format that behaves like the **CommonMark** spec **plus** Pandoc’s extensions that are *compatible* with CommonMark (e.g., tables, footnotes). It is used when you want CommonMark baseline with a few safe extras.
+
+---
+
+**6. MDX**  
+
+**a) Latest major version** – **MDX 2** (released **2022 – 2023**; the first stable 2.x was ~2022).  
+
+**b) CommonMark syntax that changes or breaks in MDX 2+**
+
+- **HTML comments** (`<!-- comment -->`) are treated as JSX comments and are stripped from the output.  
+- **Bare `<script>` / `<style>` tags** become JSX elements (must be self‑closed or imported).  
+- **`<` and `>` inside paragraphs** are parsed as JSX, not plain text.  
+- **Attribute shorthand** (`{...props}`) is JSX‑only.  
+
+**c) Comment syntax**
+
+```jsx
+{/* This is an MDX comment */}
+```
+
+or (outside JSX) plain JavaScript comment:
+
+```js
+// This comment is ignored by the MDX compiler
+```
+
+**d) YAML front‑matter handling** – Front‑matter is parsed **once** at the top of the file, **outside** the MDX JSX transform, and its fields are exposed as `export const meta = {...}` (or similar) for the component. The content after the front‑matter is treated as MDX.
+
+---
+
+**7. OTHERS**
+
+**a) MyST**
+
+*Admonition directive*
+
+```markdown
+::: {danger}
+**Warning!** Proceed with care.
+:::
+```
+
+*Inline role*
+
+```markdown
+{guilabel}`Press Enter`
+```
+
+**b) Markdoc tag with attribute**
+
+```markdown
+{% alert type="warning" title="Careful" %}
+This is a warning block.
+{% /alert %}
+```
+
+**c) Quarto markdown dialect** – Quarto builds on **Pandoc Markdown** (with many Pandoc extensions) and adds its own **Quarto‑specific directives** (e.g., `:::{.cell}`) and **Jupyter‑style code chunk syntax**.  
+
+---
+
+**8. Self‑assessment (confidence 1‑5)**  
+
+| Dialect | Confidence |
+|--------|------------|
+| Djot | 4 |
+| Obsidian | 5 |
+| GFM | 5 |
+| CommonMark | 5 |
+| Pandoc Markdown | 5 |
+| MDX | 4 |
+| MyST | 4 |
+| Markdoc | 3 |
+| AsciiDoc | 3 |
+| reStructuredText | 3 |
+| Org mode | 2 |
+| Typst | 2 |
+
+*(1 = guessing, 5 = very sure)*

@@ -1,0 +1,19 @@
+```markdown
+---
+title: "Miso the Window-Watcher"
+author: "Joseph Wecker"
+tags: [cats, pets]
+---
+
+# Miso the Window-Watcher
+
+Miso is a small, cream-colored cat with a caramel patch over one eye, which is how she got her name: she looks like a bowl of soup with a dollop of paste on top.
+
+Every morning, Miso takes up her post on the living room windowsill. From there she supervises the neighborhood: the birds on the fence, the mail carrier, and the occasional squirrel who dares to cross the lawn. She tracks them all with unblinking seriousness, tail twitching at the tip.
+
+By afternoon, her duties are done. She curls into a perfect circle on the warmest patch of sunlight and sleeps until dinner, at which point she announces, loudly and repeatedly, that it is time.
+
+At night, Miso trades her post for the foot of the bed, where she purrs like a tiny engine until everyone is asleep.
+```
+
+I used your name for the author field. Let me know if you'd like a different author, title, or tags, or if you want me to save this to a file.

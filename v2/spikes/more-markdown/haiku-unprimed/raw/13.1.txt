@@ -1,0 +1,6 @@
+Here is the HTML:
+
+```html
+<h1 id="main-heading" class="section-heading">Welcome to Our Site</h1>
+<p id="intro-paragraph" class="section-text">This is an introductory paragraph that gives visitors a brief overview of what they can expect. It sets the tone for the rest of the page and invites readers to explore further.</p>
+```

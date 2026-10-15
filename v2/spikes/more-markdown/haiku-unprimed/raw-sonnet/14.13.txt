@@ -1,0 +1,33 @@
+This uses the LaTeX `acronym` package, which expands an acronym on first use and builds a list of the acronyms you actually used:
+
+```latex
+\documentclass{article}
+\usepackage{acronym}
+
+\begin{document}
+
+% Two sentences: the first \ac{API} prints the full form, the second prints just "API".
+The server exposes a public \ac{API} for retrieving user data.
+Developers authenticate each request to the \ac{API} using a short-lived token.
+
+\section*{List of Acronyms}
+\begin{acronym}
+  \acro{API}{Application Programming Interface}
+\end{acronym}
+
+\end{document}
+```
+
+**Rendered output:**
+
+> The server exposes a public Application Programming Interface (API) for retrieving user data. Developers authenticate each request to the API using a short-lived token.
+>
+> **List of Acronyms**
+> API: Application Programming Interface
+
+**How it works:**
+- `\acro{API}{Application Programming Interface}` defines the acronym.
+- The first `\ac{API}` expands to "Application Programming Interface (API)". Later uses print only "API".
+- The `acronym` environment prints the list. With the `printonlyused` package option (`\usepackage[printonlyused]{acronym}`), only acronyms actually cited in the text appear in the list.
+
+If you use the `glossaries` package instead, the equivalent is `\newacronym{api}{API}{Application Programming Interface}`, with `\gls{api}` in the text and `\printglossary[type=\acronymtype]` for the list.

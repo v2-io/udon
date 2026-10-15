@@ -1,0 +1,40 @@
+The answer depends on which tool you're using, so here are the common ones.
+
+**Microsoft Word**
+
+1. Select the heading "Results" and apply a Heading style (e.g., Heading 1) if it isn't already.
+2. Place the cursor where you want the reference, and type the beginning of your sentence: *"The results are presented beginning on page "*
+3. Go to **Insert → Cross-reference** (or **References → Cross-reference**).
+4. Set **Reference type** to *Heading*, **Insert reference to** to *Page number*, and select "Results".
+5. Click **Insert**.
+
+The result is a field, so press **Ctrl+A, then F9** (Cmd+A, then F9 on Mac) to update it after edits.
+
+**LaTeX**
+
+Label the section, then reference it with `\pageref`:
+
+```latex
+\section{Results}\label{sec:results}
+
+% elsewhere in the document:
+The results begin on page~\pageref{sec:results}.
+```
+
+Compile twice so the page number resolves. If you use `hyperref`, you can also write `Section~\ref{sec:results} (page~\pageref{sec:results})`.
+
+**Google Docs**
+
+Google Docs doesn't support automatic page-number cross-references to headings directly. The closest option is to insert a link to the heading (**Insert → Link → Headings → Results**), but this won't display the page number.
+
+**Markdown/Pandoc to PDF**
+
+Use raw LaTeX inside your Markdown:
+
+```markdown
+## Results {#sec:results}
+
+The results begin on page `\pageref{sec:results}`{=latex}.
+```
+
+If you tell me which tool you're using, I can tailor the steps or help edit your file directly.

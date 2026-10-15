@@ -1,0 +1,10 @@
+Here's a short paragraph with a collapsed tip:
+
+Markdown supports a lot of formatting, so you can structure long documents without overwhelming readers.
+
+<details>
+<summary><strong>💡 Tip:</strong> Use collapsible sections for optional detail</summary>
+
+Wrap secondary information in a `<details>` element with a `<summary>` line. Readers see only the summary until they click to expand it, so you can keep the main content focused while still providing extra context for those who want it.
+
+</details>

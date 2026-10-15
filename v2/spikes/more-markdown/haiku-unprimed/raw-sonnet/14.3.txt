@@ -1,0 +1,11 @@
+**Theorem 1.** There are infinitely many prime numbers.
+
+*Proof.* Suppose, for contradiction, that there are only finitely many primes, say $p_1, p_2, \dots, p_n$. Consider the integer
+
+$$N = p_1 p_2 \cdots p_n + 1.$$
+
+Since $N > 1$, it has at least one prime divisor $q$. By assumption, $q$ must be one of the $p_i$, so $q$ divides the product $p_1 p_2 \cdots p_n$. But $q$ also divides $N$, and therefore $q$ divides the difference
+
+$$N - p_1 p_2 \cdots p_n = 1.$$
+
+This is impossible, since no prime divides $1$. The contradiction shows that the assumption was false, so there are infinitely many primes. $\blacksquare$

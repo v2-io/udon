@@ -1,0 +1,76 @@
+# Reference renderings of promptD snippets (commonmark.js 0.31.2, pandoc 3.11 -f gfm, pandoc 3.11 -f markdown, djot.js 0.3.2)
+
+== s01.txt
+H~2~O and ~~gone~~
+-- commonmark.js: <p>H~2~O and ~~gone~~</p> 
+-- pandoc gfm:    <p>H~2~O and <del>gone</del></p> 
+-- pandoc md:     <p>H<sub>2</sub>O and <del>gone</del></p> 
+-- djot.js:       <p>H<sub>2</sub>O and <sub><sub>gone</sub></sub></p> 
+
+== s02.txt
+See [[Setup|install guide]].
+-- commonmark.js: <p>See [[Setup|install guide]].</p> 
+-- pandoc gfm:    <p>See [[Setup|install guide]].</p> 
+-- pandoc md:     <p>See [[Setup|install guide]].</p> 
+-- djot.js:       <p>See [[Setup|install guide]].</p> 
+
+== s03.txt
+Note {% this is important %} here.
+-- commonmark.js: <p>Note {% this is important %} here.</p> 
+-- pandoc gfm:    <p>Note {% this is important %} here.</p> 
+-- pandoc md:     <p>Note {% this is important %} here.</p> 
+-- djot.js:       <p>Note  here.</p> 
+
+== s04.txt
+This is *x* and _y_.
+-- commonmark.js: <p>This is <em>x</em> and <em>y</em>.</p> 
+-- pandoc gfm:    <p>This is <em>x</em> and <em>y</em>.</p> 
+-- pandoc md:     <p>This is <em>x</em> and <em>y</em>.</p> 
+-- djot.js:       <p>This is <strong>x</strong> and <em>y</em>.</p> 
+
+== s05.txt
+<div>
+**x**
+</div>
+-- commonmark.js: <div> **x** </div> 
+-- pandoc gfm:    <div> **x** </div> 
+-- pandoc md:     <div> <p><strong>x</strong></p> </div> 
+-- djot.js:       <p>&lt;div&gt; <strong><strong>x</strong></strong> &lt;/div&gt;</p> 
+
+== s06.txt
+x^2^ and a note^[like this]
+-- commonmark.js: <p>x^2^ and a note^[like this]</p> 
+-- pandoc gfm:    <p>x^2^ and a note^[like this]</p> 
+-- pandoc md:     <p>x<sup>2</sup> and a note<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p> <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnote
+-- djot.js:       <p>x<sup>2</sup> and a note^[like this]</p> 
+
+== s07.txt
+==marked== and {+added+}
+-- commonmark.js: <p>==marked== and {+added+}</p> 
+-- pandoc gfm:    <p>==marked== and {+added+}</p> 
+-- pandoc md:     <p>==marked== and {+added+}</p> 
+-- djot.js:       <p>==marked== and <ins>added</ins></p> 
+
+== s08.txt
+Groceries:
+- milk
+- eggs
+-- commonmark.js: <p>Groceries:</p> <ul> <li>milk</li> <li>eggs</li> </ul> 
+-- pandoc gfm:    <p>Groceries:</p> <ul> <li>milk</li> <li>eggs</li> </ul> 
+-- pandoc md:     <p>Groceries: - milk - eggs</p> 
+-- djot.js:       <p>Groceries: - milk - eggs</p> 
+
+== s09.txt
+Visit https://example.com today.
+-- commonmark.js: <p>Visit https://example.com today.</p> 
+-- pandoc gfm:    <p>Visit <a href="https://example.com">https://example.com</a> today.</p> 
+-- pandoc md:     <p>Visit https://example.com today.</p> 
+-- djot.js:       <p>Visit https://example.com today.</p> 
+
+== s10.txt
+term
+: its definition
+-- commonmark.js: <p>term : its definition</p> 
+-- pandoc gfm:    <p>term : its definition</p> 
+-- pandoc md:     <dl> <dt>term</dt> <dd> its definition </dd> </dl> 
+-- djot.js:       <p>term : its definition</p> 

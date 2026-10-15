@@ -1,0 +1,28 @@
+```markdown
+---
+title: "The Silent Ledger"
+author: "Jane Doe"
+rating: 5
+genre: mystery
+status: finished
+date_read: 2026-10-14
+---
+
+# The Silent Ledger
+
+**Rating:** 5/5
+**Genre:** Mystery
+
+## Notes
+
+A tightly plotted mystery that keeps its clues in plain sight. The detective's methodical approach to the accountant's disappearance was satisfying, and the final reveal recontextualizes earlier scenes without feeling like a cheat.
+
+**Highlights:**
+- Strong pacing in the middle section
+- Well-drawn supporting characters
+- A fair-play ending that rewards careful reading
+
+**Would recommend:** Yes, especially to fans of classic whodunits.
+```
+
+I used YAML front matter for the `rating` and `genre` fields, since most note-taking and query tools (such as Obsidian, Dataview, or a simple YAML parser) can read them directly. The title, author, and dates are placeholders, so tell me the real book and I'll update the note.

@@ -1,0 +1,7 @@
+Here's a passage with the diagram embedded at 300 pixels wide:
+
+<img src="diagram.png" alt="Diagram" width="300">
+
+The diagram above shows the overall structure of the system. Each component connects to the others through a defined interface, which keeps the parts independent and easy to modify. Reading the diagram from left to right follows the flow of data from input to output.
+
+If your diagram covers a specific topic, tell me what it shows and I can rewrite the passage to describe its details. I can also change the alt text or the surrounding text. I assumed `diagram.png` is in the same directory as the document, so if it's stored elsewhere, update the `src` path to match.

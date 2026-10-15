@@ -1,0 +1,25 @@
+{
+  "name": "mdx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@djot/djot": "^0.3.2",
+    "@markdoc/markdoc": "^0.5.10",
+    "@mdx-js/mdx": "^3.1.1",
+    "commonmark": "^0.31.2",
+    "markdown-it": "^13.0.2",
+    "myst-parser": "^1.7.4",
+    "myst-to-html": "^1.7.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remark-gfm": "^4.0.1"
+  }
+}

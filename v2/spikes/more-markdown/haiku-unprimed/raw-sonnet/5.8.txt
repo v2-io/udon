@@ -1,0 +1,25 @@
+Here's a sentence using Pandoc-style citation syntax, which a processor like `pandoc --citeproc` can turn into an in-text citation and a bibliography:
+
+```markdown
+Urban green spaces measurably improve community well-being [@doe2020, p. 33].
+```
+
+It needs a matching entry in your bibliography file (e.g. `references.bib`):
+
+```bibtex
+@book{doe2020,
+  author    = {Doe, Jane},
+  title     = {Title of the Book},
+  year      = {2020},
+  publisher = {Publisher Name},
+  address   = {City}
+}
+```
+
+If you're using LaTeX with BibTeX/BibLaTeX instead, the equivalent is:
+
+```latex
+Urban green spaces measurably improve community well-being \cite[p.~33]{doe2020}.
+```
+
+Replace the title, publisher, and city with the book's real details. The key `doe2020` is what links the sentence to the bibliography entry.

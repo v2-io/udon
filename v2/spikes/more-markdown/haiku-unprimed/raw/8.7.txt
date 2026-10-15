@@ -1,0 +1,18 @@
+**To-do:** Pay rent
+**Due:** November 1, 2026
+**Repeats:** Monthly
+
+Here it is as an iCalendar (.ics) entry, which most to-do apps can import:
+
+```ics
+BEGIN:VTODO
+UID:pay-rent-monthly@local
+DTSTAMP:20261015T000000Z
+SUMMARY:Pay rent
+DUE;VALUE=DATE:20261101
+RRULE:FREQ=MONTHLY
+STATUS:NEEDS-ACTION
+END:VTODO
+```
+
+I can't add it to your to-do app directly, so you'll need to paste the text into a to-do list or import the .ics file. If you tell me which app you use, I can give you the steps for that app or format the item for it.

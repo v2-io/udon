@@ -1,0 +1,22 @@
+```python
+def fetch_user_names(users):
+    names = []
+    for user in users:
+        if user.get("active"):          # (1)
+            names.append(user["name"].title())
+    return sorted(names)                # (2)
+
+users = [
+    {"name": "ada lovelace", "active": True},
+    {"name": "alan turing", "active": False},
+    {"name": "grace hopper", "active": True},
+]
+
+print(fetch_user_names(users))  # ['Ada Lovelace', 'Grace Hopper']
+```
+
+**Explanations**
+
+1. **Filtering step:** `user.get("active")` safely reads the `"active"` key, returning `None` if it's missing instead of raising a `KeyError`. Only users with a truthy value pass through, so inactive users (like Alan Turing) are skipped.
+
+2. **Sorted return:** `sorted(names)` returns a new list in alphabetical order, leaving the original `names` list unchanged. Since the names were title-cased earlier, the sort is consistent across entries.

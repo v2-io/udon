@@ -1,0 +1,36 @@
+# Getting Started with Your Project
+
+Setting up a new project doesn't have to be complicated. Start by creating a clear folder structure, initializing version control, and documenting your goals in a short README.
+
+> 💡 **Tip**
+> Commit early and often. Small, focused commits make it much easier to track down bugs and roll back changes when something goes wrong.
+
+Once your foundation is in place, you can begin building out features one piece at a time.
+
+---
+
+**Other formats**, in case your platform renders admonitions differently:
+
+**GitHub-flavored Markdown** (renders a styled callout, though the built-in icon is a lightbulb for `TIP`):
+
+```markdown
+> [!TIP]
+> Commit early and often. Small, focused commits make it much easier to track down bugs.
+```
+
+**Docusaurus / MkDocs-style:**
+
+```markdown
+:::tip
+Commit early and often. Small, focused commits make it much easier to track down bugs.
+:::
+```
+
+**HTML:**
+
+```html
+<div class="admonition tip">
+  <p class="admonition-title">💡 Tip</p>
+  <p>Commit early and often. Small, focused commits make it much easier to track down bugs.</p>
+</div>
+```

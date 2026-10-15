@@ -1,0 +1,7 @@
+Here's a sentence using an HTML `<abbr>` tag, which shows the `title` text as a tooltip on hover:
+
+```html
+The most important finding was a <abbr title="A concise realization that changes how the rest of the problem should be understood.">key insight</abbr> that the data was being double-counted at the source.
+```
+
+Most browsers display the tooltip after a short pause when the cursor rests on "key insight." You can change the text in the `title` attribute to any explanatory note you like.

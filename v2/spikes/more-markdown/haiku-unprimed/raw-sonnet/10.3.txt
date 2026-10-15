@@ -1,0 +1,7 @@
+Markdown doesn't have a native footer row, so the totals row is shown in bold at the bottom:
+
+| Product | Units Sold | Revenue |
+|---------|-----------:|--------:|
+| Widget A | 120 | $2,400 |
+| Widget B | 85 | $1,700 |
+| **Total** | **205** | **$4,100** |

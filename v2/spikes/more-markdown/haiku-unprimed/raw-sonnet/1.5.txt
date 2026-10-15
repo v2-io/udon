@@ -1,0 +1,15 @@
+I can't read files in this session, so I can't see the contents of `setup.py` or produce those lines myself. You can create the document with this command from `/private/tmp/claude-505/hp`:
+
+```sh
+sed -n '10,20p' setup.py > setup_lines_10-20.txt
+```
+
+This writes only lines 10 through 20 of `setup.py` to `setup_lines_10-20.txt`.
+
+If you'd like line numbers included, use:
+
+```sh
+awk 'NR>=10 && NR<=20 {printf "%d: %s\n", NR, $0}' setup.py > setup_lines_10-20.txt
+```
+
+If you paste the contents of `setup.py` here, I can extract the lines and format the document for you.

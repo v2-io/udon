@@ -1,0 +1,966 @@
+######## t01-align.md
+cm    | <p>| L | C | R | N | |:--|:-:|--:|---| | a | b | c | d |</p> 
+gfm   | <table> <thead> <tr> <th align="left">L</th> <th align="center">C</th> <th align="right">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td align="left">a</td> <td align="center">b</td> <td align="right">c</td> <td>d</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th style="text-align: left;">L</th> <th style="text-align: center;">C</th> <th style="text-align: right;">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">a</td> <td style="text-align: center;">b</td> <td style="text-align: right;">c</td> <td>d</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th align="left">L</th> <th align="center">C</th> <th align="right">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td align="left">a</td> <td align="center">b</td> <td align="right">c</td> <td>d</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th align="left">L</th> <th align="center">C</th> <th align="right">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td align="left">a</td> <td align="center">b</td> <td align="right">c</td> <td>d</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th align="left">L</th> <th align="center">C</th> <th align="right">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td align="left">a</td> <td align="center">b</td> <td align="right">c</td> <td>d</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th style="text-align: left;">L</th> <th style="text-align: center;">C</th> <th style="text-align: right;">R</th> <th>N</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">a</td> <td style="text-align: center;">b</td> <td style="text-align: right;">c</td> <td>d</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th style="text-align: left;"><p>L</p></th> <th style="text-align: center;"><p>C</p></th> <th style="text-align: right;"><p>R</p></th> <th><p>N</p></th> </tr> </thead> <tbody> <tr> <td style="text-align: left;"><p>a</p></td> <td style="text-align: center;"><p>b</p></td> <td style="text-align: right;"><p>c</p></td> <td><p>d</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th style="text-align: left;">L</th> <th style="text-align: center;">C</th> <th style="text-align: right;">R</th> <th>N</th> </tr> <tr> <td style="text-align: left;">a</td> <td style="text-align: center;">b</td> <td style="text-align: right;">c</td> <td>d</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align="left" "L") (tableCell header=true align="center" "C") (tableCell header=true align="right" "R") (tableCell header=true align=undefined "N")) (tableRow (tableCell align="left" "a") (tableCell align="center" "b") (tableCell align="right" "c") (tableCell align=undefined "d")))) 
+mdoc  | <article><table><thead><tr><th align="left">L</th><th align="center">C</th><th align="right">R</th><th>N</th></tr></thead><tbody><tr><td align="left">a</td><td align="center">b</td><td align="right">c</td><td>d</td></tr></tbody></table></article> 
+mdx   | <p>| L | C | R | N | |:--|:-:|--:|---| | a | b | c | d |</p> 
+mdxgfm| <table><thead><tr><th style="text-align:left">L</th><th style="text-align:center">C</th><th style="text-align:right">R</th><th>N</th></tr></thead><tbody><tr><td style="text-align:left">a</td><td style="text-align:center">b</td><td style="text-align:right">c</td><td>d</td></tr></tbody></table> 
+######## t02-noouter.md
+cm    | <p>Left-aligned text | Center-aligned text | Right-aligned text :-- | :--: | --: Content | Content | Content</p> 
+gfm   | <table> <thead> <tr> <th align="left">Left-aligned text</th> <th align="center">Center-aligned text</th> <th align="right">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td align="left">Content</td> <td align="center">Content</td> <td align="right">Content</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th style="text-align: left;">Left-aligned text</th> <th style="text-align: center;">Center-aligned text</th> <th style="text-align: right;">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">Content</td> <td style="text-align: center;">Content</td> <td style="text-align: right;">Content</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th align="left">Left-aligned text</th> <th align="center">Center-aligned text</th> <th align="right">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td align="left">Content</td> <td align="center">Content</td> <td align="right">Content</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th align="left">Left-aligned text</th> <th align="center">Center-aligned text</th> <th align="right">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td align="left">Content</td> <td align="center">Content</td> <td align="right">Content</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th align="left">Left-aligned text</th> <th align="center">Center-aligned text</th> <th align="right">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td align="left">Content</td> <td align="center">Content</td> <td align="right">Content</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th style="text-align: left;">Left-aligned text</th> <th style="text-align: center;">Center-aligned text</th> <th style="text-align: right;">Right-aligned text</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">Content</td> <td style="text-align: center;">Content</td> <td style="text-align: right;">Content</td> </tr> </tbody> </table> 
+dj    | <p>Left-aligned text | Center-aligned text | Right-aligned text :– | <span class="symbol">--</span> | –: Content | Content | Content</p> 
+djjs  | <p>Left-aligned text | Center-aligned text | Right-aligned text :– | :--: | –: Content | Content | Content</p> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align="left" "Left-aligned text") (tableCell header=true align="center" "Center-aligned text") (tableCell header=true align="right" "Right-aligned text")) (tableRow (tableCell align="left" "Content") (tableCell align="center" "Content") (tableCell align="right" "Content")))) 
+mdoc  | <article><table><thead><tr><th align="left">Left-aligned text</th><th align="center">Center-aligned text</th><th align="right">Right-aligned text</th></tr></thead><tbody><tr><td align="left">Content</td><td align="center">Content</td><td align="right">Content</td></tr></tbody></table></article> 
+mdx   | <p>Left-aligned text | Center-aligned text | Right-aligned text :-- | :--: | --: Content | Content | Content</p> 
+mdxgfm| <table><thead><tr><th style="text-align:left">Left-aligned text</th><th style="text-align:center">Center-aligned text</th><th style="text-align:right">Right-aligned text</th></tr></thead><tbody><tr><td style="text-align:left">Content</td><td style="text-align:center">Content</td><td style="text-align:right">Content</td></tr></tbody></table> 
+######## t03-onedash.md
+cm    | <p>|a|b| |-|-| |1|2|</p> 
+gfm   | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> <th><p>b</p></th> </tr> </thead> <tbody> <tr> <td><p>1</p></td> <td><p>2</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>a</th> <th>b</th> </tr> <tr> <td>1</td> <td>2</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined "1") (tableCell align=undefined "2")))) 
+mdoc  | <article><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table></article> 
+mdx   | <p>|a|b| |-|-| |1|2|</p> 
+mdxgfm| <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table> 
+######## t04-interrupt.md
+cm    | <p>Para line | a | b | |---|---| | 1 | 2 |</p> 
+gfm   | <p>Para line</p> <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+gfmpd | <p>Para line | a | b | |---|---| | 1 | 2 |</p> 
+gh    | <p>Para line</p> <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+ghc   | <p dir="auto">Para line</p> <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <p>Para line</p> <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+pd    | <p>Para line | a | b | |—|—| | 1 | 2 |</p> 
+dj    | <p>Para line | a | b | |—|—| | 1 | 2 |</p> 
+djjs  | <p>Para line | a | b | |—|—| | 1 | 2 |</p> 
+myst  | (root (paragraph "Para line") (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined "1") (tableCell align=undefined "2")))) 
+mdoc  | <article><p>Para line</p><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table></article> 
+mdx   | <p>Para line | a | b | |---|---| | 1 | 2 |</p> 
+mdxgfm| <p>Para line</p> <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table> 
+######## t05-pipecode.md
+cm    | <p>| a | b | |---|---| | <code>x\|y</code> | z | | <code>p|q</code> | r |</p> 
+gfm   | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code>x|y</code></td> <td>z</td> </tr> <tr> <td>`p</td> <td>q`</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code>x|y</code></td> <td>z</td> </tr> <tr> <td>`p</td> <td>q`</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code>x|y</code></td> <td>z</td> </tr> <tr> <td>`p</td> <td>q`</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code class="notranslate">x|y</code></td> <td>z</td> </tr> <tr> <td>`p</td> <td>q`</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code>x|y</code></td> <td>z</td> </tr> <tr> <td>`p</td> <td>q`</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td><code>x\|y</code></td> <td>z</td> </tr> <tr> <td><code>p|q</code></td> <td>r</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> <th><p>b</p></th> </tr> </thead> <tbody> <tr> <td><p><code>x\|y</code></p></td> <td><p>z</p></td> </tr> <tr> <td><p><code>p|q</code></p></td> <td><p>r</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>a</th> <th>b</th> </tr> <tr> <td><code>x\|y</code></td> <td>z</td> </tr> <tr> <td><code>p|q</code></td> <td>r</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined (inlineCode "x|y")) (tableCell align=undefined "z")) (tableRow (tableCell align=undefined "`p") (tableCell align=undefined "q`")))) 
+mdoc  | <article><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td><code>x|y</code></td><td>z</td></tr><tr><td>`p</td><td>q`</td></tr></tbody></table></article> 
+mdx   | <p>| a | b | |---|---| | <code>x\|y</code> | z | | <code>p|q</code> | r |</p> 
+mdxgfm| <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td><code>x|y</code></td><td>z</td></tr><tr><td>`p</td><td>q`</td></tr></tbody></table> 
+######## t06-ragged.md
+cm    | <p>| a | b | |---|---| | 1 | 2 | 3 | | 4 |</p> 
+gfm   | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>4</td> <td></td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> <th><p>b</p></th> </tr> </thead> <tbody> <tr> <td><p>1</p></td> <td><p>2</p></td> </tr> <tr> <td><p>4</p></td> <td></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>a</th> <th>b</th> </tr> <tr> <td>1</td> <td>2</td> <td>3</td> </tr> <tr> <td>4</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined "1") (tableCell align=undefined "2")) (tableRow (tableCell align=undefined "4") (tableCell align=undefined)))) 
+mdoc  | <article><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr><tr><td>4</td><td></td></tr></tbody></table></article> 
+mdx   | <p>| a | b | |---|---| | 1 | 2 | 3 | | 4 |</p> 
+mdxgfm| <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr><tr><td>4</td><td></td></tr></tbody></table> 
+######## t07-headerless.md
+cm    | <p>|---|---| | 1 | 2 |</p> 
+gfm   | <p>|---|---| | 1 | 2 |</p> 
+gfmpd | <p>|---|---| | 1 | 2 |</p> 
+gh    | <p>|---|---| | 1 | 2 |</p> 
+ghc   | <p dir="auto">|---|---|<br> | 1 | 2 |</p> 
+gl    | <p>|---|---| | 1 | 2 |</p> 
+pd    | <p>|—|—| | 1 | 2 |</p> 
+dj    | <table> <tbody> <tr> <td><p>1</p></td> <td><p>2</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <td>1</td> <td>2</td> </tr> </table> 
+myst  | (root (paragraph "|---|---|\n| 1 | 2 |")) 
+mdoc  | <article><p>|---|---| | 1 | 2 |</p></article> 
+mdx   | <p>|---|---| | 1 | 2 |</p> 
+mdxgfm| <p>|---|---| | 1 | 2 |</p> 
+######## t08-brcell.md
+cm    | <p>| a | |---| | x<br>y |</p> 
+gfm   | <table> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>a</th> </tr> </thead> <tbody> <tr> <td>x<br>y</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> </tr> </thead> <tbody> <tr> <td><p>x&lt;br&gt;y</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>a</th> </tr> <tr> <td>x&lt;br&gt;y</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a")) (tableRow (tableCell align=undefined "x" (html "<br>") "y")))) 
+mdoc  | <article><table><thead><tr><th>a</th></tr></thead><tbody><tr><td>x&lt;br&gt;y</td></tr></tbody></table></article> 
+mdx   |  [ERROR: Expected a closing tag for `<br>` (3:4-3:8) before the end of `paragraph`] 
+mdxgfm|  [ERROR: Expected a closing tag for `<br>` (3:4-3:8) before the end of `tableData`] 
+######## t10-taskcell.md
+cm    | <p>| done | t | |---|---| | [x] | t | | [ ] | u |</p> 
+gfm   | <table> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>done</th> <th>t</th> </tr> </thead> <tbody> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>done</p></th> <th><p>t</p></th> </tr> </thead> <tbody> <tr> <td><p>[x]</p></td> <td><p>t</p></td> </tr> <tr> <td><p>[ ]</p></td> <td><p>u</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>done</th> <th>t</th> </tr> <tr> <td>[x]</td> <td>t</td> </tr> <tr> <td>[ ]</td> <td>u</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "done") (tableCell header=true align=undefined "t")) (tableRow (tableCell align=undefined "[x]") (tableCell align=undefined "t")) (tableRow (tableCell align=undefined "[ ]") (tableCell align=undefined "u")))) 
+mdoc  | <article><table><thead><tr><th>done</th><th>t</th></tr></thead><tbody><tr><td>[x]</td><td>t</td></tr><tr><td>[ ]</td><td>u</td></tr></tbody></table></article> 
+mdx   | <p>| done | t | |---|---| | [x] | t | | [ ] | u |</p> 
+mdxgfm| <table><thead><tr><th>done</th><th>t</th></tr></thead><tbody><tr><td>[x]</td><td>t</td></tr><tr><td>[ ]</td><td>u</td></tr></tbody></table> 
+######## t11-caption.md
+cm    | <p>| a | b | |---|---| | 1 | 2 |</p> <p>Table: My caption</p> 
+gfm   | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> <p>Table: My caption</p> 
+gfmpd | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> <p>Table: My caption</p> 
+gh    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> <p>Table: My caption</p> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table></markdown-accessiblity-table> <p dir="auto">Table: My caption</p> 
+gl    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> <p>Table: My caption</p> 
+pd    | <table> <caption>My caption</caption> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> <th><p>b</p></th> </tr> </thead> <tbody> <tr> <td><p>1</p></td> <td><p>2</p></td> </tr> </tbody> </table> <p>Table: My caption</p> 
+djjs  | <table> <tr> <th>a</th> <th>b</th> </tr> <tr> <td>1</td> <td>2</td> </tr> </table> <p>Table: My caption</p> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined "1") (tableCell align=undefined "2"))) (paragraph "Table: My caption")) 
+mdoc  | <article><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table><p>Table: My caption</p></article> 
+mdx   | <p>| a | b | |---|---| | 1 | 2 |</p> <p>Table: My caption</p> 
+mdxgfm| <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table> <p>Table: My caption</p> 
+######## t11b-djcaption.md
+cm    | <p>| a | b | |:-|-:| | 1 | 2 |</p> <p>^ My caption</p> 
+gfm   | <table> <thead> <tr> <th align="left">a</th> <th align="right">b</th> </tr> </thead> <tbody> <tr> <td align="left">1</td> <td align="right">2</td> </tr> </tbody> </table> <p>^ My caption</p> 
+gfmpd | <table> <thead> <tr> <th style="text-align: left;">a</th> <th style="text-align: right;">b</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">1</td> <td style="text-align: right;">2</td> </tr> </tbody> </table> <p>^ My caption</p> 
+gh    | <table> <thead> <tr> <th align="left">a</th> <th align="right">b</th> </tr> </thead> <tbody> <tr> <td align="left">1</td> <td align="right">2</td> </tr> </tbody> </table> <p>^ My caption</p> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th align="left">a</th> <th align="right">b</th> </tr> </thead> <tbody> <tr> <td align="left">1</td> <td align="right">2</td> </tr> </tbody> </table></markdown-accessiblity-table> <p dir="auto">^ My caption</p> 
+gl    | <table> <thead> <tr> <th align="left">a</th> <th align="right">b</th> </tr> </thead> <tbody> <tr> <td align="left">1</td> <td align="right">2</td> </tr> </tbody> </table> <p>^ My caption</p> 
+pd    | <table> <thead> <tr> <th style="text-align: left;">a</th> <th style="text-align: right;">b</th> </tr> </thead> <tbody> <tr> <td style="text-align: left;">1</td> <td style="text-align: right;">2</td> </tr> </tbody> </table> <p>^ My caption</p> 
+dj    | <table> <caption><p>My caption</p></caption> <thead> <tr> <th style="text-align: left;"><p>a</p></th> <th style="text-align: right;"><p>b</p></th> </tr> </thead> <tbody> <tr> <td style="text-align: left;"><p>1</p></td> <td style="text-align: right;"><p>2</p></td> </tr> </tbody> </table> 
+djjs  | <table> <caption>My caption</caption> <tr> <th style="text-align: left;">a</th> <th style="text-align: right;">b</th> </tr> <tr> <td style="text-align: left;">1</td> <td style="text-align: right;">2</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align="left" "a") (tableCell header=true align="right" "b")) (tableRow (tableCell align="left" "1") (tableCell align="right" "2"))) (paragraph "^ My caption")) 
+mdoc  | <article><table><thead><tr><th align="left">a</th><th align="right">b</th></tr></thead><tbody><tr><td align="left">1</td><td align="right">2</td></tr></tbody></table><p>^ My caption</p></article> 
+mdx   | <p>| a | b | |:-|-:| | 1 | 2 |</p> <p>^ My caption</p> 
+mdxgfm| <table><thead><tr><th style="text-align:left">a</th><th style="text-align:right">b</th></tr></thead><tbody><tr><td style="text-align:left">1</td><td style="text-align:right">2</td></tr></tbody></table> <p>^ My caption</p> 
+######## t12-grid.md
+cm    | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+gfm   | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+gfmpd | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+gh    | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+ghc   | <p dir="auto">+---+---+<br> | a | b |<br> +===+===+<br> | 1 | 2 |<br> +---+---+</p> 
+gl    | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+pd    | <table style="width:11%;"> <colgroup> <col style="width: 5%" /> <col style="width: 5%" /> </colgroup> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+dj    | <p>+—+—+ | a | b | +===+===+ | 1 | 2 | +—+—+</p> 
+djjs  | <p>+—+—+ | a | b | +===+===+ | 1 | 2 | +—+—+</p> 
+myst  | (root (paragraph "+---+---+\n| a | b |\n+===+===+\n| 1 | 2 |\n+---+---+")) 
+mdoc  | <article><p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p></article> 
+mdx   | <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+mdxgfm| <p>+---+---+ | a | b | +===+===+ | 1 | 2 | +---+---+</p> 
+######## t12b-gridspan.md
+cm    | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+gfm   | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+gfmpd | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+gh    | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+ghc   | <p dir="auto">+---+---+<br> | a | b |<br> +===+===+<br> | spans |<br> +---+---+<br> | 1 | 2 |<br> +---+---+</p> 
+gl    | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+pd    | <table style="width:14%;"> <colgroup> <col style="width: 5%" /> <col style="width: 5%" /> <col style="width: 2%" /> </colgroup> <tbody> <tr> <td colspan="3">a | b | ===+===+ spans</td> </tr> <tr> <td>1</td> <td>2</td> <td></td> </tr> </tbody> </table> 
+dj    | <p>+—+—+ | a | b | +===+===+ | spans | +—+—+ | 1 | 2 | +—+—+</p> 
+djjs  | <p>+—+—+ | a | b | +===+===+ | spans | +—+—+ | 1 | 2 | +—+—+</p> 
+myst  | (root (paragraph "+---+---+\n| a | b |\n+===+===+\n| spans |\n+---+---+\n| 1 | 2 |\n+---+---+")) 
+mdoc  | <article><p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p></article> 
+mdx   | <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+mdxgfm| <p>+---+---+ | a | b | +===+===+ | spans | +---+---+ | 1 | 2 | +---+---+</p> 
+######## t13-multiheader.md
+cm    | <p>| a | b | |---|---| | c | d | |---|---| | 1 | 2 |</p> 
+gfm   | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>---</td> <td>---</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>---</td> <td>---</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>---</td> <td>---</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>---</td> <td>---</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>---</td> <td>---</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th>a</th> <th>b</th> </tr> </thead> <tbody> <tr> <td>c</td> <td>d</td> </tr> <tr> <td>—</td> <td>—</td> </tr> <tr> <td>1</td> <td>2</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th><p>a</p></th> <th><p>b</p></th> </tr> </thead> <tbody> <tr> <th><p>c</p></th> <th><p>d</p></th> </tr> <tr> <td><p>1</p></td> <td><p>2</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th>a</th> <th>b</th> </tr> <tr> <th>c</th> <th>d</th> </tr> <tr> <td>1</td> <td>2</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align=undefined "a") (tableCell header=true align=undefined "b")) (tableRow (tableCell align=undefined "c") (tableCell align=undefined "d")) (tableRow (tableCell align=undefined "---") (tableCell align=undefined "---")) (tableRow (tableCell align=undefined "1") (tableCell align=undefined "2")))) 
+mdoc  | <article><table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>c</td><td>d</td></tr><tr><td>---</td><td>---</td></tr><tr><td>1</td><td>2</td></tr></tbody></table></article> 
+mdx   | <p>| a | b | |---|---| | c | d | |---|---| | 1 | 2 |</p> 
+mdxgfm| <table><thead><tr><th>a</th><th>b</th></tr></thead><tbody><tr><td>c</td><td>d</td></tr><tr><td>---</td><td>---</td></tr><tr><td>1</td><td>2</td></tr></tbody></table> 
+######## t14-decimal.md
+cm    | <p>| n | |--:| | 1.5 | | 10.25 |</p> 
+gfm   | <table> <thead> <tr> <th align="right">n</th> </tr> </thead> <tbody> <tr> <td align="right">1.5</td> </tr> <tr> <td align="right">10.25</td> </tr> </tbody> </table> 
+gfmpd | <table> <thead> <tr> <th style="text-align: right;">n</th> </tr> </thead> <tbody> <tr> <td style="text-align: right;">1.5</td> </tr> <tr> <td style="text-align: right;">10.25</td> </tr> </tbody> </table> 
+gh    | <table> <thead> <tr> <th align="right">n</th> </tr> </thead> <tbody> <tr> <td align="right">1.5</td> </tr> <tr> <td align="right">10.25</td> </tr> </tbody> </table> 
+ghc   | <markdown-accessiblity-table><table role="table"> <thead> <tr> <th align="right">n</th> </tr> </thead> <tbody> <tr> <td align="right">1.5</td> </tr> <tr> <td align="right">10.25</td> </tr> </tbody> </table></markdown-accessiblity-table> 
+gl    | <table> <thead> <tr> <th align="right">n</th> </tr> </thead> <tbody> <tr> <td align="right">1.5</td> </tr> <tr> <td align="right">10.25</td> </tr> </tbody> </table> 
+pd    | <table> <thead> <tr> <th style="text-align: right;">n</th> </tr> </thead> <tbody> <tr> <td style="text-align: right;">1.5</td> </tr> <tr> <td style="text-align: right;">10.25</td> </tr> </tbody> </table> 
+dj    | <table> <thead> <tr> <th style="text-align: right;"><p>n</p></th> </tr> </thead> <tbody> <tr> <td style="text-align: right;"><p>1.5</p></td> </tr> <tr> <td style="text-align: right;"><p>10.25</p></td> </tr> </tbody> </table> 
+djjs  | <table> <tr> <th style="text-align: right;">n</th> </tr> <tr> <td style="text-align: right;">1.5</td> </tr> <tr> <td style="text-align: right;">10.25</td> </tr> </table> 
+myst  | (root (table kind=undefined enumerated=undefined class=undefined align=undefined (tableRow (tableCell header=true align="right" "n")) (tableRow (tableCell align="right" "1.5")) (tableRow (tableCell align="right" "10.25")))) 
+mdoc  | <article><table><thead><tr><th align="right">n</th></tr></thead><tbody><tr><td align="right">1.5</td></tr><tr><td align="right">10.25</td></tr></tbody></table></article> 
+mdx   | <p>| n | |--:| | 1.5 | | 10.25 |</p> 
+mdxgfm| <table><thead><tr><th style="text-align:right">n</th></tr></thead><tbody><tr><td style="text-align:right">1.5</td></tr><tr><td style="text-align:right">10.25</td></tr></tbody></table> 
+######## t20-taskstates.md
+cm    | <ul> <li>[ ] a</li> <li>[x] b</li> <li>[X] c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+gfm   | <ul> <li><input type="checkbox" disabled="" /> a</li> <li><input type="checkbox" checked="" disabled="" /> b</li> <li><input type="checkbox" checked="" disabled="" /> c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+gfmpd | <ul class="task-list"> <li><label><input type="checkbox" />a</label></li> <li><label><input type="checkbox" checked="" />b</label></li> <li><label><input type="checkbox" checked="" />c</label></li> </ul> <ul> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+gh    | <ul> <li>[ ] a</li> <li>[x] b</li> <li>[X] c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+ghc   | <ul class="contains-task-list"> <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" aria-label="Incomplete task"> a</li> <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" aria-label="Completed task" checked=""> b</li> <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" aria-label="Completed task" checked=""> c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+gl    | <ul class="contains-task-list"> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="" /> a</li> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="" disabled="" /> b</li> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="" disabled="" /> c</li> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="" disabled="" /> d</li> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="" disabled="" /> e</li> <li 
+pd    | <ul> <li><label><input type="checkbox" />a</label></li> <li><label><input type="checkbox" checked="" />b</label></li> <li><label><input type="checkbox" checked="" />c</label></li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+dj    | <ul> <li>[ ] a</li> <li>[X] b</li> <li>[X] c</li> </ul> <ul> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+djjs  | <ul class="task-list"> <li> <input disabled="" type="checkbox"/> a </li> <li> <input disabled="" type="checkbox" checked=""/> b </li> <li> <input disabled="" type="checkbox" checked=""/> c </li> </ul> <ul> <li> [-] d </li> <li> [/] e </li> <li> [!] f </li> <li> [~] g </li> <li> [&gt;] h </li> </ul> 
+myst  | (root (list ordered=false spread=false (listItem spread=true checked=false (paragraph "a")) (listItem spread=true checked=true (paragraph "b")) (listItem spread=true checked=true (paragraph "c")) (listItem spread=true (paragraph "[-] d")) (listItem spread=true (paragraph "[/] e")) (listItem spread=true (paragraph "[!] f")) (listItem spread=true (paragraph "[~] g")) (listItem spread=true (paragraph "[>] h")))) 
+mdoc  | <article><ul><li>[ ] a</li><li>[x] b</li><li>[X] c</li><li>[-] d</li><li>[/] e</li><li>[!] f</li><li>[~] g</li><li>[&gt;] h</li></ul></article> 
+mdx   | <ul> <li>[ ] a</li> <li>[x] b</li> <li>[X] c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+mdxgfm| <ul class="contains-task-list"> <li class="task-list-item"><input type="checkbox" disabled=""/> a</li> <li class="task-list-item"><input type="checkbox" disabled="" checked=""/> b</li> <li class="task-list-item"><input type="checkbox" disabled="" checked=""/> c</li> <li>[-] d</li> <li>[/] e</li> <li>[!] f</li> <li>[~] g</li> <li>[&gt;] h</li> </ul> 
+######## t21-ordtask.md
+cm    | <ol> <li>[ ] a</li> <li>[x] b</li> </ol> 
+gfm   | <ol> <li><input type="checkbox" disabled="" /> a</li> <li><input type="checkbox" checked="" disabled="" /> b</li> </ol> 
+gfmpd | <ol type="1"> <li>[ ] a</li> <li>[x] b</li> </ol> 
+gh    | <ol> <li>[ ] a</li> <li>[x] b</li> </ol> 
+ghc   | <ol class="contains-task-list"> <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" aria-label="Incomplete task"> a</li> <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" aria-label="Completed task" checked=""> b</li> </ol> 
+gl    | <ol class="contains-task-list"> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="" /> a</li> <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked="" disabled="" /> b</li> </ol> 
+pd    | <ol type="1"> <li><label><input type="checkbox" />a</label></li> <li><label><input type="checkbox" checked="" />b</label></li> </ol> 
+dj    | <ol type="1"> <li>[ ] a</li> <li>[x] b</li> </ol> 
+djjs  | <ol> <li> [ ] a </li> <li> [x] b </li> </ol> 
+myst  | (root (list ordered=true start=1 spread=false (listItem spread=true checked=false (paragraph "a")) (listItem spread=true checked=true (paragraph "b")))) 
+mdoc  | <article><ol><li>[ ] a</li><li>[x] b</li></ol></article> 
+mdx   | <ol> <li>[ ] a</li> <li>[x] b</li> </ol> 
+mdxgfm| <ol class="contains-task-list"> <li class="task-list-item"><input type="checkbox" disabled=""/> a</li> <li class="task-list-item"><input type="checkbox" disabled="" checked=""/> b</li> </ol> 
+######## t30-fancy.md
+cm    | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+gfm   | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+gfmpd | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+gh    | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+ghc   | <p dir="auto">a. one<br> b. two</p> <p dir="auto">i. r1<br> ii. r2</p> <p dir="auto">(1) p<br> (2) q</p> <p dir="auto">A) x<br> B) y</p> <p dir="auto">#. auto<br> #. auto2</p> 
+gl    | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+pd    | <ol type="a"> <li><p>one</p></li> <li><p>two</p></li> <li><p>r1</p></li> </ol> <ol start="2" type="i"> <li>r2</li> </ol> <ol type="1"> <li>p</li> <li>q</li> </ol> <ol type="A"> <li>x</li> <li>y</li> </ol> <ol> <li>auto</li> <li>auto2</li> </ol> 
+dj    | <ol type="a"> <li><p>one</p></li> <li><p>two</p></li> <li><p>r1</p></li> </ol> <ol start="2" type="i"> <li>r2</li> </ol> <ol type="1"> <li>p</li> <li>q</li> </ol> <ol type="A"> <li>x</li> <li>y</li> </ol> <p>#. auto #. auto2</p> 
+djjs  | <ol type="a"> <li> <p>one</p> </li> <li> <p>two</p> </li> <li> <p>r1</p> </li> </ol> <ol start="2" type="i"> <li> r2 </li> </ol> <ol> <li> p </li> <li> q </li> </ol> <ol type="A"> <li> x </li> <li> y </li> </ol> <p>#. auto #. auto2</p> 
+myst  | (root (paragraph "a. one\nb. two") (paragraph "i. r1\nii. r2") (paragraph "(1) p\n(2) q") (paragraph "A) x\nB) y") (paragraph "#. auto\n#. auto2")) 
+mdoc  | <article><p>a. one b. two</p><p>i. r1 ii. r2</p><p>(1) p (2) q</p><p>A) x B) y</p><p>#. auto #. auto2</p></article> 
+mdx   | <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+mdxgfm| <p>a. one b. two</p> <p>i. r1 ii. r2</p> <p>(1) p (2) q</p> <p>A) x B) y</p> <p>#. auto #. auto2</p> 
+######## t31-example.md
+cm    | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+gfm   | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+gfmpd | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+gh    | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+ghc   | <p dir="auto">(@) first<br> (<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/good/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/good">@good</a>) second</p> <p dir="auto">As (<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/good/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/good">@good</a>) shows.</p> <p dir="auto">(@) third</p> 
+gl    | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+pd    | <ol class="example" type="1"> <li>first</li> <li>second</li> </ol> <p>As (2) shows.</p> <ol start="3" class="example" type="1"> <li>third</li> </ol> 
+dj    | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+djjs  | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+myst  | (root (paragraph "(@) first\n(" (cite identifier="good" label="good" kind="narrative" partial=undefined prefix=undefined suffix=undefined) ") second") (paragraph "As (" (cite identifier="good" label="good" kind="narrative" partial=undefined prefix=undefined suffix=undefined) ") shows.") (paragraph "(@) third")) 
+mdoc  | <article><p>(@) first (@good) second</p><p>As (@good) shows.</p><p>(@) third</p></article> 
+mdx   | <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+mdxgfm| <p>(@) first (@good) second</p> <p>As (@good) shows.</p> <p>(@) third</p> 
+######## t32-start.md
+cm    | <ol start="3"> <li>three</li> <li>four</li> </ol> 
+gfm   | <ol start="3"> <li>three</li> <li>four</li> </ol> 
+gfmpd | <ol start="3" type="1"> <li>three</li> <li>four</li> </ol> 
+gh    | <ol start="3"> <li>three</li> <li>four</li> </ol> 
+ghc   | <ol start="3" dir="auto"> <li>three</li> <li>four</li> </ol> 
+gl    | <ol start="3"> <li>three</li> <li>four</li> </ol> 
+pd    | <ol start="3" type="1"> <li>three</li> <li>four</li> </ol> 
+dj    | <ol start="3" type="1"> <li>three</li> <li>four</li> </ol> 
+djjs  | <ol start="3"> <li> three </li> <li> four </li> </ol> 
+myst  | (root (list ordered=true start=3 spread=false (listItem spread=true (paragraph "three")) (listItem spread=true (paragraph "four")))) 
+mdoc  | <article><ol start="3"><li>three</li><li>four</li></ol></article> 
+mdx   | <ol start="3"> <li>three</li> <li>four</li> </ol> 
+mdxgfm| <ol start="3"> <li>three</li> <li>four</li> </ol> 
+######## t34-deflist.md
+cm    | <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+gfm   | <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+gfmpd | <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+gh    | <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+ghc   | <p dir="auto">Term<br> : def one<br> : def two</p> <p dir="auto">Term2</p> <p dir="auto">: indented def</p> 
+gl    | <dl> <dt>Term</dt> <dd>def one</dd> <dd>def two</dd> <dt>Term2</dt> <dd> <p>indented def</p> </dd> </dl> 
+pd    | <dl> <dt>Term</dt> <dd> def one </dd> <dd> def two </dd> <dt>Term2</dt> <dd> <p>indented def</p> </dd> </dl> 
+dj    | <p>Term : def one : def two</p> <p>Term2</p> <dl> <dt>indented def</dt> <dd> </dd> </dl> 
+djjs  | <p>Term : def one : def two</p> <p>Term2</p> <dl> <dt>indented def</dt> <dd> </dd> </dl> 
+myst  | (root (definitionList (definitionTerm "Term") (definitionDescription "def one") (definitionDescription "def two") (definitionTerm "Term2") (definitionDescription "indented def"))) 
+mdoc  | <article><p>Term : def one : def two</p><p>Term2</p><p>: indented def</p></article> 
+mdx   | <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+mdxgfm| <p>Term : def one : def two</p> <p>Term2</p> <p>: indented def</p> 
+######## t34b-djdeflist.md
+cm    | <p>: term</p> <p>definition here</p> 
+gfm   | <p>: term</p> <p>definition here</p> 
+gfmpd | <p>: term</p> <p>definition here</p> 
+gh    | <p>: term</p> <p>definition here</p> 
+ghc   | <p dir="auto">: term</p> <p dir="auto">definition here</p> 
+gl    | <p>: term</p> <p>definition here</p> 
+pd    | <p>: term</p> <p>definition here</p> 
+dj    | <dl> <dt>term</dt> <dd> definition here </dd> </dl> 
+djjs  | <dl> <dt>term</dt> <dd> <p>definition here</p> </dd> </dl> 
+myst  | (root (paragraph ": term") (paragraph "definition here")) 
+mdoc  | <article><p>: term</p><p>definition here</p></article> 
+mdx   | <p>: term</p> <p>definition here</p> 
+mdxgfm| <p>: term</p> <p>definition here</p> 
+######## t35-ordinterrupt.md
+cm    | <p>Para 2. item</p> 
+gfm   | <p>Para 2. item</p> 
+gfmpd | <p>Para 2. item</p> 
+gh    | <p>Para 2. item</p> 
+ghc   | <p dir="auto">Para<br> 2. item</p> 
+gl    | <p>Para 2. item</p> 
+pd    | <p>Para 2. item</p> 
+dj    | <p>Para 2. item</p> 
+djjs  | <p>Para 2. item</p> 
+myst  | (root (paragraph "Para\n2. item")) 
+mdoc  | <article><p>Para 2. item</p></article> 
+mdx   | <p>Para 2. item</p> 
+mdxgfm| <p>Para 2. item</p> 
+######## t40-nestbq.md
+cm    | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+gfm   | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+gfmpd | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+gh    | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+ghc   | <blockquote> <p dir="auto">a</p> <blockquote> <p dir="auto">b<br> c</p> </blockquote> </blockquote> 
+gl    | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+pd    | <blockquote> <p>a &gt; b &gt; c</p> </blockquote> 
+dj    | <blockquote> <p>a &gt;&gt; b &gt; c</p> </blockquote> 
+djjs  | <blockquote> <p>a &gt;&gt; b &gt; c</p> </blockquote> 
+myst  | (root (blockquote (paragraph "a") (blockquote (paragraph "b\nc")))) 
+mdoc  | <article><blockquote><p>a</p><blockquote><p>b c</p></blockquote></blockquote></article> 
+mdx   | <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+mdxgfm| <blockquote> <p>a</p> <blockquote> <p>b c</p> </blockquote> </blockquote> 
+######## t41-mlbq.md
+cm    | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+gfm   | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+gfmpd | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+gh    | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+ghc   | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p dir="auto">multi<br> line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+gl    | <blockquote> <p>multi line</p> </blockquote> 
+pd    | <blockquote> <blockquote> <blockquote> <p>multi line</p> </blockquote> </blockquote> </blockquote> 
+dj    | <p>&gt;&gt;&gt; multi line &gt;&gt;&gt;</p> 
+djjs  | <p>&gt;&gt;&gt; multi line &gt;&gt;&gt;</p> 
+myst  | (root (blockquote (blockquote (blockquote))) (paragraph "multi\nline") (blockquote (blockquote (blockquote)))) 
+mdoc  | <article><blockquote><blockquote><blockquote></blockquote></blockquote></blockquote><p>multi line</p><blockquote><blockquote><blockquote></blockquote></blockquote></blockquote></article> 
+mdx   | <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+mdxgfm| <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> <p>multi line</p> <blockquote> <blockquote> <blockquote> </blockquote> </blockquote> </blockquote> 
+######## t42-bqnospace.md
+cm    | <blockquote> <p>a</p> </blockquote> 
+gfm   | <blockquote> <p>a</p> </blockquote> 
+gfmpd | <blockquote> <p>a</p> </blockquote> 
+gh    | <blockquote> <p>a</p> </blockquote> 
+ghc   | <blockquote> <p dir="auto">a</p> </blockquote> 
+gl    | <blockquote> <p>a</p> </blockquote> 
+pd    | <blockquote> <p>a</p> </blockquote> 
+dj    | <p>&gt;a</p> 
+djjs  | <p>&gt;a</p> 
+myst  | (root (blockquote (paragraph "a"))) 
+mdoc  | <article><blockquote><p>a</p></blockquote></article> 
+mdx   | <blockquote> <p>a</p> </blockquote> 
+mdxgfm| <blockquote> <p>a</p> </blockquote> 
+######## t45-alerts.md
+cm    | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+gfm   | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+gfmpd | <div class="note"> <div class="title"> <p>Note</p> </div> <p>text</p> </div> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+gh    | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+ghc   | <div class="markdown-alert markdown-alert-note" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p dir="auto">text</p> </div> <blockquote> <p dir="auto">[!note] Custom title<b
+gl    | <div class="markdown-alert markdown-alert-note"> <p class="markdown-alert-title">Note</p> <p>text</p> </div> <div class="markdown-alert markdown-alert-note"> <p class="markdown-alert-title">Custom title</p> <p>body</p> </div> <div class="markdown-alert markdown-alert-tip"> <p class="markdown-alert-title">- Folded</p> <p>body</p> </div> <blockquote> <p>[!custom] x</p> </blockquote> 
+pd    | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+dj    | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+djjs  | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+myst  | (root (blockquote (paragraph "[!NOTE]\ntext")) (blockquote (paragraph "[!note] Custom title\nbody")) (blockquote (paragraph "[!tip]- Folded\nbody")) (blockquote (paragraph "[!custom]\nx"))) 
+mdoc  | <article><blockquote><p>[!NOTE] text</p></blockquote><blockquote><p>[!note] Custom title body</p></blockquote><blockquote><p>[!tip]- Folded body</p></blockquote><blockquote><p>[!custom] x</p></blockquote></article> 
+mdx   | <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+mdxgfm| <blockquote> <p>[!NOTE] text</p> </blockquote> <blockquote> <p>[!note] Custom title body</p> </blockquote> <blockquote> <p>[!tip]- Folded body</p> </blockquote> <blockquote> <p>[!custom] x</p> </blockquote> 
+######## t46-alertnest.md
+cm    | <blockquote> <p>[!NOTE] outer</p> <blockquote> <p>[!WARNING] inner</p> </blockquote> </blockquote> 
+gfm   | <blockquote> <p>[!NOTE] outer</p> <blockquote> <p>[!WARNING] inner</p> </blockquote> </blockquote> 
+gfmpd | <div class="note"> <div class="title"> <p>Note</p> </div> <p>outer</p> <div class="warning"> <div class="title"> <p>Warning</p> </div> <p>inner</p> </div> </div> 
+gh    | <blockquote> <p>[!NOTE] outer</p> <blockquote> <p>[!WARNING] inner</p> </blockquote> </blockquote> 
+ghc   | <div class="markdown-alert markdown-alert-note" dir="auto"><p class="markdown-alert-title" dir="auto"><svg data-component="Octicon" class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p dir="auto">outer</p> <blockquote> <p dir="auto">[!WARNING]<br> inner</p> </b
+gl    | <div class="markdown-alert markdown-alert-note"> <p class="markdown-alert-title">Note</p> <p>outer</p> <div class="markdown-alert markdown-alert-warning"> <p class="markdown-alert-title">Warning</p> <p>inner</p> </div> </div> 
+pd    | <blockquote> <p>[!NOTE] outer &gt; [!WARNING] &gt; inner</p> </blockquote> 
+dj    | <blockquote> <p>[!NOTE] outer &gt; [!WARNING] &gt; inner</p> </blockquote> 
+djjs  | <blockquote> <p>[!NOTE] outer &gt; [!WARNING] &gt; inner</p> </blockquote> 
+myst  | (root (blockquote (paragraph "[!NOTE]\nouter") (blockquote (paragraph "[!WARNING]\ninner")))) 
+mdoc  | <article><blockquote><p>[!NOTE] outer</p><blockquote><p>[!WARNING] inner</p></blockquote></blockquote></article> 
+mdx   | <blockquote> <p>[!NOTE] outer</p> <blockquote> <p>[!WARNING] inner</p> </blockquote> </blockquote> 
+mdxgfm| <blockquote> <p>[!NOTE] outer</p> <blockquote> <p>[!WARNING] inner</p> </blockquote> </blockquote> 
+######## t47-alertinlist.md
+cm    | <ul> <li>item <blockquote> <p>[!NOTE] inside list</p> </blockquote> </li> </ul> 
+gfm   | <ul> <li>item <blockquote> <p>[!NOTE] inside list</p> </blockquote> </li> </ul> 
+gfmpd | <ul> <li>item <div class="note"> <div class="title"> <p>Note</p> </div> <p>inside list</p> </div></li> </ul> 
+gh    | <ul> <li>item <blockquote> <p>[!NOTE] inside list</p> </blockquote> </li> </ul> 
+ghc   | <ul dir="auto"> <li>item <blockquote> <p dir="auto">[!NOTE]<br> inside list</p> </blockquote> </li> </ul> 
+gl    | <ul> <li>item <div class="markdown-alert markdown-alert-note"> <p class="markdown-alert-title">Note</p> <p>inside list</p> </div> </li> </ul> 
+pd    | <ul> <li>item &gt; [!NOTE] &gt; inside list</li> </ul> 
+dj    | <ul> <li>item &gt; [!NOTE] &gt; inside list</li> </ul> 
+djjs  | <ul> <li> item &gt; [!NOTE] &gt; inside list </li> </ul> 
+myst  | (root (list ordered=false spread=false (listItem spread=true (paragraph "item") (blockquote (paragraph "[!NOTE]\ninside list"))))) 
+mdoc  | <article><ul><li>item<blockquote><p>[!NOTE] inside list</p></blockquote></li></ul></article> 
+mdx   | <ul> <li>item <blockquote> <p>[!NOTE] inside list</p> </blockquote> </li> </ul> 
+mdxgfm| <ul> <li>item <blockquote> <p>[!NOTE] inside list</p> </blockquote> </li> </ul> 
+######## t50-tilde.md
+cm    | <p>~one~ and ~~two~~ and ~~~three~~~</p> 
+gfm   | <p><del>one</del> and <del>two</del> and ~~~three~~~</p> 
+gfmpd | <p>~one~ and <del>two</del> and ~<del>three</del>~</p> 
+gh    | <p><del>one</del> and <del>two</del> and ~~~three~~~</p> 
+ghc   | <p dir="auto"><del>one</del> and <del>two</del> and ~~~three~~~</p> 
+gl    | <p><del>one</del> and <del>two</del> and ~~~three~~~</p> 
+pd    | <p><sub>one</sub> and <del>two</del> and <sub>three</sub></p> 
+dj    | <p><sub>one</sub> and <sub><sub>two</sub></sub> and <sub><sub><sub>three</sub></sub></sub></p> 
+djjs  | <p><sub>one</sub> and <sub><sub>two</sub></sub> and <sub><sub><sub>three</sub></sub></sub></p> 
+myst  | (root (paragraph "~one~ and ~~two~~ and ~~~three~~~")) 
+mdoc  | <article><p>~one~ and <s>two</s> and ~<s>three</s>~</p></article> 
+mdx   | <p>~one~ and ~~two~~ and ~~~three~~~</p> 
+mdxgfm| <p><del>one</del> and <del>two</del> and ~~~three~~~</p> 
+######## t51-highlight.md
+cm    | <p>==mark== and {=dj=}</p> 
+gfm   | <p>==mark== and {=dj=}</p> 
+gfmpd | <p>==mark== and {=dj=}</p> 
+gh    | <p>==mark== and {=dj=}</p> 
+ghc   | <p dir="auto">==mark== and {=dj=}</p> 
+gl    | <p>==mark== and {=dj=}</p> 
+pd    | <p>==mark== and {=dj=}</p> 
+dj    | <p>==mark== and <mark>dj</mark></p> 
+djjs  | <p>==mark== and <mark>dj</mark></p> 
+myst  | (root (paragraph "==mark== and {=dj=}")) 
+mdoc  | <article><p>==mark== and {=dj=}</p></article> 
+mdx   |  [ERROR: Could not parse expression with acorn] 
+mdxgfm|  [ERROR: Could not parse expression with acorn] 
+######## t52-underline.md
+cm    | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+gfm   | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+gfmpd | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+gh    | <p>++ins++ and <strong>u</strong> and u and <ins>i</ins></p> 
+ghc   | <p dir="auto">++ins++ and <strong>u</strong> and u and <ins>i</ins></p> 
+gl    | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+pd    | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+dj    | <p>++ins++ and <em><em>u</em></em> and &lt;u&gt;u&lt;/u&gt; and &lt;ins&gt;i&lt;/ins&gt;</p> 
+djjs  | <p>++ins++ and <em><em>u</em></em> and &lt;u&gt;u&lt;/u&gt; and &lt;ins&gt;i&lt;/ins&gt;</p> 
+myst  | (root (paragraph "++ins++ and " (strong "u") " and " (html "<u>") "u" (html "</u>") " and " (html "<ins>") "i" (html "</ins>"))) 
+mdoc  | <article><p>++ins++ and <strong>u</strong> and &lt;u&gt;u&lt;/u&gt; and &lt;ins&gt;i&lt;/ins&gt;</p></article> 
+mdx   | <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+mdxgfm| <p>++ins++ and <strong>u</strong> and <u>u</u> and <ins>i</ins></p> 
+######## t53-supsub.md
+cm    | <p>x^2^ and H~2~O and <sup>s</sup> and x^a b^</p> 
+gfm   | <p>x^2^ and H<del>2</del>O and <sup>s</sup> and x^a b^</p> 
+gfmpd | <p>x^2^ and H~2~O and <sup>s</sup> and x^a b^</p> 
+gh    | <p>x^2^ and H<del>2</del>O and <sup>s</sup> and x^a b^</p> 
+ghc   | <p dir="auto">x^2^ and H<del>2</del>O and <sup>s</sup> and x^a b^</p> 
+gl    | <p>x^2^ and H<del>2</del>O and <sup>s</sup> and x^a b^</p> 
+pd    | <p>x<sup>2</sup> and H<sub>2</sub>O and <sup>s</sup> and x^a b^</p> 
+dj    | <p>x<sup>2</sup> and H<sub>2</sub>O and &lt;sup&gt;s&lt;/sup&gt; and x<sup>a b</sup></p> 
+djjs  | <p>x<sup>2</sup> and H<sub>2</sub>O and &lt;sup&gt;s&lt;/sup&gt; and x<sup>a b</sup></p> 
+myst  | (root (paragraph "x^2^ and H~2~O and " (html "<sup>") "s" (html "</sup>") " and x^a b^")) 
+mdoc  | <article><p>x^2^ and H~2~O and &lt;sup&gt;s&lt;/sup&gt; and x^a b^</p></article> 
+mdx   | <p>x^2^ and H~2~O and <sup>s</sup> and x^a b^</p> 
+mdxgfm| <p>x^2^ and H<del>2</del>O and <sup>s</sup> and x^a b^</p> 
+######## t54-spoiler.md
+cm    | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+gfm   | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+gfmpd | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+gh    | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+ghc   | <p dir="auto">||spoiler|| and &gt;!reddit!&lt;</p> 
+gl    | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+pd    | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+dj    | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+djjs  | <p>||spoiler|| and &gt;!reddit!&lt;</p> 
+myst  | (root (paragraph "||spoiler|| and >!reddit!<")) 
+mdoc  | <article><p>||spoiler|| and &gt;!reddit!&lt;</p></article> 
+mdx   |  [ERROR: Unexpected end of file before name, expected a character that can start a name, such as a letter, `$`, or `_`] 
+mdxgfm|  [ERROR: Unexpected end of file before name, expected a character that can start a name, such as a letter, `$`, or `_`] 
+######## t55-kbd.md
+cm    | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+gfm   | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+gfmpd | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+gh    | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+ghc   | <p dir="auto"><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+gl    | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and <a href="Ctrl" data-wikilink="true">Ctrl</a></p> 
+pd    | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+dj    | <p>&lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; and [[Ctrl]]</p> 
+djjs  | <p>&lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; and [[Ctrl]]</p> 
+myst  | (root (paragraph (html "<kbd>") "Ctrl" (html "</kbd>") "+" (html "<kbd>") "C" (html "</kbd>") " and [[Ctrl]]")) 
+mdoc  | <article><p>&lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; and [[Ctrl]]</p></article> 
+mdx   | <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+mdxgfm| <p><kbd>Ctrl</kbd>+<kbd>C</kbd> and [[Ctrl]]</p> 
+######## t56-smart.md
+cm    | <p>&quot;double&quot; 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+gfm   | <p>&quot;double&quot; 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+gfmpd | <p>"double" 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+gh    | <p>"double" 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+ghc   | <p dir="auto">"double" 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+gl    | <p>&quot;double&quot; 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+pd    | <p>“double” ‘single’ it’s – en — em … (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+dj    | <p>“double” ‘single’ it’s – en — em … (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+djjs  | <p>“double” ‘single’ it’s – en — em … (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p> 
+myst  | (root (paragraph "“double” ‘single’ it’s -- en --- em ... (c) (tm) (r) -> <- => <= != >= +- 1/2 << >>")) 
+mdoc  | <article><p>&quot;double&quot; 'single' it's -- en --- em ... (c) (tm) (r) -&gt; &lt;- =&gt; &lt;= != &gt;= +- 1/2 &lt;&lt; &gt;&gt;</p></article> 
+mdx   |  [ERROR: Unexpected character `-` (U+002D) before name, expected a character that can start a name, such as a letter, `$`, or `_`] 
+mdxgfm|  [ERROR: Unexpected character `-` (U+002D) before name, expected a character that can start a name, such as a letter, `$`, or `_`] 
+######## t57-nbsp.md
+cm    | <p>a\ b and 100 km</p> 
+gfm   | <p>a\ b and 100 km</p> 
+gfmpd | <p>a\ b and 100 km</p> 
+gh    | <p>a\ b and 100 km</p> 
+ghc   | <p dir="auto">a\ b and 100 km</p> 
+gl    | <p>a\ b and 100 km</p> 
+pd    | <p>a b and 100 km</p> 
+dj    | <p>a b and 100&amp;nbsp;km</p> 
+djjs  | <p>a&nbsp;b and 100&amp;nbsp;km</p> 
+myst  | (root (paragraph "a\\ b and 100 km")) 
+mdoc  | <article><p>a\ b and 100 km</p></article> 
+mdx   | <p>a\ b and 100 km</p> 
+mdxgfm| <p>a\ b and 100 km</p> 
+######## t58-abbr.md
+cm    | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+gfm   | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+gfmpd | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+gh    | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+ghc   | <p dir="auto">*[HTML]: Hyper Text Markup Language</p> <p dir="auto">HTML is great.</p> 
+gl    | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+pd    | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+dj    | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+djjs  | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+myst  | (root (paragraph "*[HTML]: Hyper Text Markup Language") (paragraph "HTML is great.")) 
+mdoc  | <article><p>*[HTML]: Hyper Text Markup Language</p><p>HTML is great.</p></article> 
+mdx   | <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+mdxgfm| <p>*[HTML]: Hyper Text Markup Language</p> <p>HTML is great.</p> 
+######## t59-emoji.md
+cm    | <p>:tada: :+1: :octocat: :shipit:</p> 
+gfm   | <p>:tada: :+1: :octocat: :shipit:</p> 
+gfmpd | <p><span class="emoji" data-emoji="tada">🎉</span> <span class="emoji" data-emoji="+1">👍</span> :octocat: :shipit:</p> 
+gh    | <p>🎉 👍 <img class="emoji" title=":octocat:" alt=":octocat:" src="https://github.githubassets.com/images/icons/emoji/octocat.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":shipit:" alt=":shipit:" src="https://github.githubassets.com/images/icons/emoji/shipit.png" height="20" width="20" align="absmiddle"></p> 
+ghc   | <p dir="auto">🎉 👍 <img class="emoji" title=":octocat:" alt=":octocat:" src="https://github.githubassets.com/images/icons/emoji/octocat.png" height="20" width="20" align="absmiddle"> <img class="emoji" title=":shipit:" alt=":shipit:" src="https://github.githubassets.com/images/icons/emoji/shipit.png" height="20" width="20" align="absmiddle"></p> 
+gl    | <p>:tada: :+1: :octocat: :shipit:</p> 
+pd    | <p>:tada: :+1: :octocat: :shipit:</p> 
+dj    | <p><span class="emoji" data-emoji="tada">🎉</span> <span class="emoji" data-emoji="+1">👍</span> <span class="symbol">octocat</span> <span class="symbol">shipit</span></p> 
+djjs  | <p>:tada: :+1: :octocat: :shipit:</p> 
+myst  | (root (paragraph ":tada: :+1: :octocat: :shipit:")) 
+mdoc  | <article><p>:tada: :+1: :octocat: :shipit:</p></article> 
+mdx   | <p>:tada: :+1: :octocat: :shipit:</p> 
+mdxgfm| <p>:tada: :+1: :octocat: :shipit:</p> 
+######## t60-critic.md
+cm    | <p>{++add++} {--del--} {~~old~&gt;new~~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+gfm   | <p>{++add++} {--del--} {~~old~&gt;new~~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+gfmpd | <p>{++add++} {--del--} {<del>old~&gt;new</del>} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+gh    | <p>{++add++} {--del--} {~~old~&gt;new~~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+ghc   | <p dir="auto">{++add++} {--del--} {~~old~&gt;new~~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+gl    | <p>{++add++} {--del--} {~~old~&gt;new~~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+pd    | <p>{++add++} {–del–} {<sub></sub>old<sub>&gt;new</sub>~} {==hl==}{&gt;&gt;comment&lt;&lt;}</p> 
+dj    | <p><span class="inserted">+add+</span> <span class="deleted">-del-</span> <sub><sub>old</sub>&gt;new~</sub> <mark>=hl=</mark>{&gt;&gt;comment&lt;&lt;}</p> 
+djjs  | <p><ins>+add+</ins> <del>-del-</del> <sub><sub>old</sub>&gt;new~</sub> <mark>=hl=</mark>{&gt;&gt;comment&lt;&lt;}</p> 
+myst  | (root (paragraph "{++add++} {--del--} {~~old~>new~~} {==hl==}{>>comment<<}")) 
+mdoc  | <article><p>{++add++} {--del--} {<s>old~&gt;new</s>} {==hl==}{&gt;&gt;comment&lt;&lt;}</p></article> 
+mdx   |  [ERROR: Could not parse expression with acorn] 
+mdxgfm|  [ERROR: Could not parse expression with acorn] 
+######## t61-inlinenote.md
+cm    | <p>Text^[an inline note] here.</p> 
+gfm   | <p>Text^[an inline note] here.</p> 
+gfmpd | <p>Text^[an inline note] here.</p> 
+gh    | <p>Text^[an inline note] here.</p> 
+ghc   | <p dir="auto">Text^[an inline note] here.</p> 
+gl    | <p>Text^[an inline note] here.</p> 
+pd    | <p>Text<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> here.</p> <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"> <hr /> <ol> <li id="fn1"><p>an inline note<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li> </ol> </section> 
+dj    | <p>Text^[an inline note] here.</p> 
+djjs  | <p>Text^[an inline note] here.</p> 
+myst  | (root (paragraph "Text^[an inline note] here.")) 
+mdoc  | <article><p>Text^[an inline note] here.</p></article> 
+mdx   | <p>Text^[an inline note] here.</p> 
+mdxgfm| <p>Text^[an inline note] here.</p> 
+######## t62-fnblock.md
+cm    | <p>Text[^n].</p> <p>[^n]: First para.</p> <pre><code>Second para. </code></pre> 
+gfm   | <p>Text[^n].</p> <p>[^n]: First para.</p> <pre class="syntax-highlighting"><code><span class="text plain">Second para. </span></code></pre> 
+gfmpd | <p>Text<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p> <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"> <hr /> <ol> <li id="fn1"><p>First para.</p> <p>Second para.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li> </ol> </section> 
+gh    | <p>Text<sup><a href="#fn-n" id="user-content-fnref-n" data-footnote-ref="">1</a></sup>.</p> <section data-footnotes=""> <ol> <li id="user-content-fn-n"> <p>First para.</p> <p>Second para. <a href="#fnref-n" data-footnote-backref="" aria-label="Back to reference 1">↩</a></p> </li> </ol> </section> 
+ghc   | <p dir="auto">Text<sup><a href="#user-content-fn-n-3302aac2a56067c59342f03f96acec82" id="user-content-fnref-n-3302aac2a56067c59342f03f96acec82" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup>.</p> <section data-footnotes="" class="footnotes"><h2 id="footnote-label" class="sr-only" dir="auto">Footnotes</h2> <ol dir="auto"> <li id="user-content-fn-n-3302aac2a56067c59342f03f96acec82"> <p dir="auto">First para.</p> <p dir="auto">Second para. <a href="#user-content-fnref-n-3302aac2a56067c59342f03f96acec82" data-footnote-backref="" aria-label="Back to reference 1" class="data-foot
+gl    | <p>Text<sup class="footnote-ref"><a href="#fn-n" id="fnref-n" data-footnote-ref>1</a></sup>.</p> <section class="footnotes" data-footnotes> <ol> <li id="fn-n"> <p>First para.</p> <p>Second para. <a href="#fnref-n" class="footnote-backref" data-footnote-backref data-footnote-backref-idx="1" aria-label="Back to reference 1">↩</a></p> </li> </ol> </section> 
+pd    | <p>Text<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p> <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"> <hr /> <ol> <li id="fn1"><p>First para.</p> <p>Second para.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li> </ol> </section> 
+dj    | <p>Text<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p> <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"> <hr /> <ol> <li id="fn1"><p>First para.</p> <p>Second para.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li> </ol> </section> 
+djjs  | <p>Text<a id="fnref1" href="#fn1" role="doc-noteref"><sup>1</sup></a>.</p> <section role="doc-endnotes"> <hr> <ol> <li id="fn1"> <p>First para.</p> <p>Second para.<a href="#fnref1" role="doc-backlink">↩︎</a></p> </li> </ol> </section> 
+myst  | (root (paragraph "Text" (footnoteReference identifier="n" label="n") ".") (footnoteDefinition identifier="n" label="n" (paragraph "First para.") (paragraph "Second para."))) 
+mdoc  | <article><p>Text[^n].</p><p>[^n]: First para.</p><p>Second para.</p></article> 
+mdx   | <p>Text[^n].</p> <p>[^n]: First para.</p> <p>Second para.</p> 
+mdxgfm| <p>Text<sup><a href="#user-content-fn-n" id="user-content-fnref-n" data-footnote-ref="true" aria-describedby="footnote-label">1</a></sup>.</p> <section data-footnotes="true" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2> <ol> <li id="user-content-fn-n"> <p>First para.</p> <p>Second para. <a href="#user-content-fnref-n" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p> </li> </ol> </section> 
+######## t63-math.md
+cm    | <p>a $x^2$ b $<code>y</code>$ c (z) d [w] e $$v$$ f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+gfm   | <p>a $x^2$ b $<code>y</code>$ c (z) d [w] e $$v$$ f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+gfmpd | <p>a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>2</mn></msup><annotation encoding="application/x-tex">x^2</annotation></semantics></math> b <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math> c (z) d [w] e <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math> f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+gh    | <p>a $x^2$ b $<code>y</code>$ c (z) d [w] e $$v$$ f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+ghc   | <p dir="auto">a <math-renderer class="js-inline-math" style="display: inline-block" data-run-id="abae3d7ab7ce03798f0dd50afe7b3f06">$x^2$</math-renderer> b <math-renderer class="js-inline-math" style="display: inline-block" data-run-id="abae3d7ab7ce03798f0dd50afe7b3f06">$y$</math-renderer> c (z) d [w] e <math-renderer class="js-inline-math" style="display: inline-block" data-run-id="abae3d7ab7ce03798f0dd50afe7b3f06">$$v$$</math-renderer> f</p> <p dir="auto">\begin{equation}<br> E=mc^2<br> \end{equation}</p> 
+gl    | <p>a <span data-math-style="inline">x^2</span> b <code data-math-style="inline">y</code> c (z) d [w] e <span data-math-style="display">v</span> f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+pd    | [WARNING] Could not convert TeX math `y`, rendering as TeX: `y` ^ unexpected '`' expecting "%", "\\label", "\\tag", "\\nonumber", whitespace, "\\allowbreak", "\\bangle", "\\brace", "\\brack", "\\choose", "\\displaystyle", "\\textstyle", "\\scriptstyle", "\\scriptscriptstyle", "{", "\\operatorname", letter, digit, ".", "!", "'", "''", "'''", "''''", "*", "+", ",", "-", ".", "/", ":", ":=", ";", "<", "=", ">", "?", "@", "~", "_", "^", "'", "\\left", "\\lVert", "\\", "\\hyperref" or end of input <p>a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>
+dj    | <p>a $x^2$ b <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>$ c (z) d [w] e $$v$$ f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+djjs  | <p>a $x^2$ b <span class="math inline">\(y\)</span>$ c (z) d [w] e $$v$$ f</p> <p>\begin{equation} E=mc^2 \end{equation}</p> 
+myst  | (root (paragraph "a " (inlineMath "x^2") " b " (inlineMath "`y`") " c (z) d [w] e " (math enumerated=undefined "v") " f") (math enumerated=undefined "\\begin{equation}\nE=mc^2\n\\end{equation}")) 
+mdoc  | <article><p>a $x^2$ b $<code>y</code>$ c (z) d [w] e $$v$$ f</p><p>\begin{equation} E=mc^2 \end{equation}</p></article> 
+mdx   |  [ERROR: equation is not defined] 
+mdxgfm|  [ERROR: equation is not defined] 
+######## t63b-mathfence.md
+cm    | <pre><code class="language-math">E=mc^2 </code></pre> 
+gfm   | <pre lang="math" data-math-style="display"><code>E=mc^2 </code></pre> 
+gfmpd | <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">E=mc^2</annotation></semantics></math></p> 
+gh    | <pre lang="math"><code>E=mc^2 </code></pre> 
+ghc   | <math-renderer class="js-display-math" style="display: block" data-run-id="5941ff3fa5e047fc3bff82f4595e79a0">$$E=mc^2$$</math-renderer> 
+gl    | <pre><code class="language-math" data-math-style="display">E=mc^2 </code></pre> 
+pd    | <pre class="math"><code>E=mc^2</code></pre> 
+dj    | <pre class="math"><code>E=mc^2 </code></pre> 
+djjs  | <pre><code class="language-math">E=mc^2 </code></pre> 
+myst  | (root (code lang="math" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "E=mc^2")) 
+mdoc  | <article><pre data-language="math">E=mc^2 </pre></article> 
+mdx   | <pre><code class="language-math">E=mc^2 </code></pre> 
+mdxgfm| <pre><code class="language-math">E=mc^2 </code></pre> 
+######## t65-imgsize.md
+cm    | <p><img src="i.png" alt="a" />{width=100} <img src="j.png" alt="b|100x50" /> ![c](k.png =100x50)</p> 
+gfm   | <p><img src="i.png" alt="a" />{width=100} <img src="j.png" alt="b|100x50" /> ![c](k.png =100x50)</p> 
+gfmpd | <p><img src="i.png" alt="a" />{width=100} <img src="j.png" alt="b|100x50" /> ![c](k.png =100x50)</p> 
+gh    | <p><a target="_blank" rel="noopener noreferrer" href="i.png"><img src="i.png" alt="a" style="max-width: 100%;"></a>{width=100} <a target="_blank" rel="noopener noreferrer" href="j.png"><img src="j.png" alt="b|100x50" style="max-width: 100%;"></a> ![c](k.png =100x50)</p> 
+ghc   | <p dir="auto"><a target="_blank" rel="noopener noreferrer" href="i.png"><img src="i.png" alt="a" style="max-width: 100%;"></a>{width=100} <a target="_blank" rel="noopener noreferrer" href="j.png"><img src="j.png" alt="b|100x50" style="max-width: 100%;"></a> ![c](k.png =100x50)</p> 
+gl    | <p><img src="i.png" alt="a" />{width=100} <img src="j.png" alt="b|100x50" /> ![c](k.png =100x50)</p> 
+pd    | <p><img src="i.png" width="100" alt="a" /> <img src="j.png" alt="b|100x50" /> <img src="k.png%20=100x50" alt="c" /></p> 
+dj    | <p><img src="i.png" width="100" alt="a" /> <img src="j.png" alt="b|100x50" /> <img src="k.png =100x50" alt="c" /></p> 
+djjs  | <p><img alt="a" src="i.png" width="100"><img alt="b|100x50" src="j.png"><img alt="c" src="k.png =100x50"></p> 
+myst  | (root (paragraph (image url="i.png" alt="a" title=undefined class=undefined width=undefined height=undefined align=undefined) "{width=100} " (image url="j.png" alt="b|100x50" title=undefined class=undefined width=undefined height=undefined align=undefined) " ![c](k.png =100x50)")) 
+mdoc  | <article><p><img src="i.png" alt="a">{width=100} <img src="j.png" alt="b|100x50"> ![c](k.png =100x50)</p></article> 
+mdx   |  [ERROR: width is not defined] 
+mdxgfm|  [ERROR: width is not defined] 
+######## t66-imgdark.md
+cm    | <p><img src="i.png#gh-dark-mode-only" alt="a" /></p> <p><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></p> 
+gfm   | <p><img src="i.png#gh-dark-mode-only" alt="a" /></p> <p><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></p> 
+gfmpd | <p><img src="i.png#gh-dark-mode-only" alt="a" /></p> <p><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></p> 
+gh    | <p><a target="_blank" rel="noopener noreferrer" href="i.png#gh-dark-mode-only"><img src="i.png#gh-dark-mode-only" alt="a" style="max-width: 100%;"></a></p> <p><themed-picture data-catalyst-inline="true"><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><a target="_blank" rel="noopener noreferrer" href="l.png"><img src="l.png" alt="x" style="max-width: 100%;"></a></picture></themed-picture></p> 
+ghc   | <p dir="auto"><a target="_blank" rel="noopener noreferrer" href="i.png#gh-dark-mode-only"><img src="i.png#gh-dark-mode-only" alt="a" style="max-width: 100%;"></a></p> <p dir="auto"><themed-picture data-catalyst-inline="true"><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></themed-picture></p> 
+gl    | <p><img src="i.png#gh-dark-mode-only" alt="a" /></p> <p><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></p> 
+pd    | <figure> <img src="i.png#gh-dark-mode-only" alt="a" /> <figcaption aria-hidden="true">a</figcaption> </figure> <p><picture><source media="(prefers-color-scheme: dark)" srcset="d.png"><img src="l.png" alt="x"></picture></p> 
+dj    | <p><img src="i.png#gh-dark-mode-only" alt="a" /></p> <p>&lt;picture&gt;<a href="source media=&quot;(prefers-color-scheme: dark)&quot; srcset=&quot;d.png&quot;" class="uri">source media="(prefers-color-scheme: dark)" srcset="d.png"</a><a href="img src=&quot;l.png&quot; alt=&quot;x&quot;" class="uri">img src="l.png" alt="x"</a>&lt;/picture&gt;</p> 
+djjs  | <p><img alt="a" src="i.png#gh-dark-mode-only"></p> <p>&lt;picture&gt;&lt;source media=“(prefers-color-scheme: dark)” srcset=“d.png”&gt;&lt;img src=“l.png” alt=“x”&gt;&lt;/picture&gt;</p> 
+myst  | (root (image url="i.png#gh-dark-mode-only" alt="a" title=undefined class=undefined width=undefined height=undefined align=undefined) (paragraph (html "<picture>") (html "<source media=\"(prefers-color-scheme: dark)\" srcset=\"d.png\">") (html "<img src=\"l.png\" alt=\"x\">") (html "</picture>"))) 
+mdoc  | <article><p><img src="i.png#gh-dark-mode-only" alt="a"></p><p>&lt;picture&gt;&lt;source media=&quot;(prefers-color-scheme: dark)&quot; srcset=&quot;d.png&quot;&gt;&lt;img src=&quot;l.png&quot; alt=&quot;x&quot;&gt;&lt;/picture&gt;</p></article> 
+mdx   |  [ERROR: Unexpected closing tag `</picture>`, expected corresponding closing tag for `<img>` (3:70-3:95)] 
+mdxgfm|  [ERROR: Unexpected closing tag `</picture>`, expected corresponding closing tag for `<img>` (3:70-3:95)] 
+######## t67-headattr.md
+cm    | <h1>Heading {#myid .cls}</h1> <h2>Closed</h2> 
+gfm   | <h1>Heading {#myid .cls}</h1> <h2>Closed</h2> 
+gfmpd | <h1 id="heading-myid-cls">Heading {#myid .cls}</h1> <h2 id="closed">Closed</h2> 
+gh    | <div class="markdown-heading"><h1>Heading {#myid .cls}</h1></div> <div class="markdown-heading"><h2>Closed</h2></div> 
+ghc   | <h1 dir="auto">Heading {#myid .cls}</h1> <h2 dir="auto">Closed</h2> 
+gl    | <h1>Heading {#myid .cls}</h1> <h2>Closed</h2> 
+pd    | <h1 class="cls" id="myid">Heading</h1> <h2 id="closed">Closed</h2> 
+dj    | <h1 id="Heading">Heading </h1> <h2 id="Closed">Closed ##</h2> 
+djjs  | <section id="Heading"> <h1>Heading </h1> <section id="Closed"> <h2>Closed ##</h2> </section> </section> 
+myst  | (root (heading depth=1 enumerated=undefined "Heading {#myid .cls}") (heading depth=2 enumerated=undefined "Closed")) 
+mdoc  | <article><h1>Heading {#myid .cls}</h1><h2>Closed</h2></article> 
+mdx   |  [ERROR: Could not parse expression with acorn] 
+mdxgfm|  [ERROR: Could not parse expression with acorn] 
+######## t68-details.md
+cm    | <details><summary>Sum</summary> <p><strong>bold</strong> inside</p> </details> 
+gfm   | <details><summary>Sum</summary> <p><strong>bold</strong> inside</p> </details> 
+gfmpd | <details><summary>Sum</summary> <p><strong>bold</strong> inside</p> </details> 
+gh    | <details><summary>Sum</summary> <p><strong>bold</strong> inside</p> </details> 
+ghc   | <details><summary>Sum</summary> <p dir="auto"><strong>bold</strong> inside</p> </details> 
+gl    | <details><summary>Sum</summary> <p><strong>bold</strong> inside</p> </details> 
+pd    | <details> <summary> Sum </summary> <p><strong>bold</strong> inside</p> </details> 
+dj    | <p>&lt;details&gt;&lt;summary&gt;Sum&lt;/summary&gt;</p> <p><strong><strong>bold</strong></strong> inside</p> <p>&lt;/details&gt;</p> 
+djjs  | <p>&lt;details&gt;&lt;summary&gt;Sum&lt;/summary&gt;</p> <p><strong><strong>bold</strong></strong> inside</p> <p>&lt;/details&gt;</p> 
+myst  | (root (html "<details><summary>Sum</summary>") (paragraph (strong "bold") " inside") (html "</details>")) 
+mdoc  | <article><p>&lt;details&gt;&lt;summary&gt;Sum&lt;/summary&gt;</p><p><strong>bold</strong> inside</p><p>&lt;/details&gt;</p></article> 
+mdx   |  [ERROR: Expected a closing tag for `<details>` (1:1-1:10) before the end of `paragraph`] 
+mdxgfm|  [ERROR: Expected a closing tag for `<details>` (1:1-1:10) before the end of `paragraph`] 
+######## t69-align.md
+cm    | <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+gfm   | <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+gfmpd | <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+gh    | <p align="center">centered</p> <div align="right">right</div> c 
+ghc   | <p align="center" dir="auto">centered</p> <div align="right" dir="auto">right</div> c 
+gl    | <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+pd    | <p align="center"> centered </p> <div data-align="right"> right </div> <center> c </center> 
+dj    | <p>&lt;p align=“center”&gt;centered&lt;/p&gt;</p> <p>&lt;div align=“right”&gt;right&lt;/div&gt;</p> <p>&lt;center&gt;c&lt;/center&gt;</p> 
+djjs  | <p>&lt;p align=“center”&gt;centered&lt;/p&gt;</p> <p>&lt;div align=“right”&gt;right&lt;/div&gt;</p> <p>&lt;center&gt;c&lt;/center&gt;</p> 
+myst  | (root (html "<p align=\"center\">centered</p>") (html "<div align=\"right\">right</div>") (html "<center>c</center>")) 
+mdoc  | <article><p>&lt;p align=&quot;center&quot;&gt;centered&lt;/p&gt;</p><p>&lt;div align=&quot;right&quot;&gt;right&lt;/div&gt;</p><p>&lt;center&gt;c&lt;/center&gt;</p></article> 
+mdx   | <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+mdxgfm| <p align="center">centered</p> <div align="right">right</div> <center>c</center> 
+######## t70-html.md
+cm    | <p><abbr title="Hyper">H</abbr> <mark>m</mark> <span style="color:red">red</span> <font color="red">f</font> <small>s</small> <q>q</q> <dfn>d</dfn> <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> <cite>c</cite> <time>t</time> <bdo dir="rtl">b</bdo> <wbr> <dl><dt>t</dt><dd>d</dd></dl></p> 
+gfm   | <p><abbr title="Hyper">H</abbr> <mark>m</mark> <span style="color:red">red</span> <font color="red">f</font> <small>s</small> <q>q</q> <dfn>d</dfn> <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> <cite>c</cite> <time>t</time> <bdo dir="rtl">b</bdo> <wbr> <dl><dt>t</dt><dd>d</dd></dl></p> 
+gfmpd | <p><abbr title="Hyper">H</abbr> <mark>m</mark> <span style="color:red">red</span> <font color="red">f</font> <small>s</small> <q>q</q> <dfn>d</dfn> <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> <cite>c</cite> <time>t</time> <bdo dir="rtl">b</bdo> <wbr> <dl><dt>t</dt><dd>d</dd></dl></p> 
+gh    | <p>H <mark>m</mark> <span>red</span> f s <q>q</q> d <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> c t b </p><dl> <dt>t</dt> <dd>d</dd> </dl><p></p> 
+ghc   | <p dir="auto">H <mark>m</mark> <span>red</span> f s <q>q</q> d <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> c t b </p><dl><dt>t</dt><dd>d</dd></dl><p dir="auto"></p> 
+gl    | <p><abbr title="Hyper">H</abbr> <mark>m</mark> <span style="color:red">red</span> <font color="red">f</font> <small>s</small> <q>q</q> <dfn>d</dfn> <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> <cite>c</cite> <time>t</time> <bdo dir="rtl">b</bdo> <wbr> <dl><dt>t</dt><dd>d</dd></dl></p> 
+pd    | <abbr title="Hyper">H</abbr> <mark>m</mark> <span style="color:red">red</span> <font color="red">f</font> <small>s</small> <q>q</q> <dfn>d</dfn> <var>v</var> <samp>s</samp> <ruby>漢<rt>kan</rt></ruby> <s>s</s> <cite>c</cite> <time>t</time> <bdo dir="rtl">b</bdo> <wbr> <dl> <dt> t </dt> <dd> d </dd> </dl> 
+dj    | <p>&lt;abbr title=“Hyper”&gt;H&lt;/abbr&gt; &lt;mark&gt;m&lt;/mark&gt; <a href="span style=&quot;color:red&quot;" class="uri">span style="color:red"</a>red&lt;/span&gt; &lt;font color=“red”&gt;f&lt;/font&gt; &lt;small&gt;s&lt;/small&gt; &lt;q&gt;q&lt;/q&gt; &lt;dfn&gt;d&lt;/dfn&gt; &lt;var&gt;v&lt;/var&gt; &lt;samp&gt;s&lt;/samp&gt; &lt;ruby&gt;漢&lt;rt&gt;kan&lt;/rt&gt;&lt;/ruby&gt; &lt;s&gt;s&lt;/s&gt; &lt;cite&gt;c&lt;/cite&gt; &lt;time&gt;t&lt;/time&gt; &lt;bdo dir=“rtl”&gt;b&lt;/bdo&gt; &lt;wbr&gt; &lt;dl&gt;&lt;dt&gt;t&lt;/dt&gt;&lt;dd&gt;d&lt;/dd&gt;&lt;/dl&gt;</p> 
+djjs  | <p>&lt;abbr title=“Hyper”&gt;H&lt;/abbr&gt; &lt;mark&gt;m&lt;/mark&gt; &lt;span style=“color:red”&gt;red&lt;/span&gt; &lt;font color=“red”&gt;f&lt;/font&gt; &lt;small&gt;s&lt;/small&gt; &lt;q&gt;q&lt;/q&gt; &lt;dfn&gt;d&lt;/dfn&gt; &lt;var&gt;v&lt;/var&gt; &lt;samp&gt;s&lt;/samp&gt; &lt;ruby&gt;漢&lt;rt&gt;kan&lt;/rt&gt;&lt;/ruby&gt; &lt;s&gt;s&lt;/s&gt; &lt;cite&gt;c&lt;/cite&gt; &lt;time&gt;t&lt;/time&gt; &lt;bdo dir=“rtl”&gt;b&lt;/bdo&gt; &lt;wbr&gt; &lt;dl&gt;&lt;dt&gt;t&lt;/dt&gt;&lt;dd&gt;d&lt;/dd&gt;&lt;/dl&gt;</p> 
+myst  | (root (paragraph (html "<abbr title=\"Hyper\">") "H" (html "</abbr>") " " (html "<mark>") "m" (html "</mark>") " " (html "<span style=\"color:red\">") "red" (html "</span>") " " (html "<font color=\"red\">") "f" (html "</font>") " " (html "<small>") "s" (html "</small>") " " (html "<q>") "q" (html "</q>") " " (html "<dfn>") "d" (html "</dfn>") " " (html "<var>") "v" (html "</var>") " " (html "<samp>") "s" (html "</samp>") " " (html "<ruby>") "漢" (html "<rt>") "kan" (html "</rt>") (html "</ruby>") " " (html "<s>") "s" (html "</s>") " " (html "<cite>") "c" (html "</cite>") " " (html "<time>") "t
+mdoc  | <article><p>&lt;abbr title=&quot;Hyper&quot;&gt;H&lt;/abbr&gt; &lt;mark&gt;m&lt;/mark&gt; &lt;span style=&quot;color:red&quot;&gt;red&lt;/span&gt; &lt;font color=&quot;red&quot;&gt;f&lt;/font&gt; &lt;small&gt;s&lt;/small&gt; &lt;q&gt;q&lt;/q&gt; &lt;dfn&gt;d&lt;/dfn&gt; &lt;var&gt;v&lt;/var&gt; &lt;samp&gt;s&lt;/samp&gt; &lt;ruby&gt;漢&lt;rt&gt;kan&lt;/rt&gt;&lt;/ruby&gt; &lt;s&gt;s&lt;/s&gt; &lt;cite&gt;c&lt;/cite&gt; &lt;time&gt;t&lt;/time&gt; &lt;bdo dir=&quot;rtl&quot;&gt;b&lt;/bdo&gt; &lt;wbr&gt; &lt;dl&gt;&lt;dt&gt;t&lt;/dt&gt;&lt;dd&gt;d&lt;/dd&gt;&lt;/dl&gt;</p></article> 
+mdx   |  [ERROR: Expected a closing tag for `<wbr>` (1:263-1:268) before the end of `paragraph`] 
+mdxgfm|  [ERROR: Expected a closing tag for `<wbr>` (1:263-1:268) before the end of `paragraph`] 
+######## t71-refs.md
+cm    | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+gfm   | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+gfmpd | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+gh    | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+ghc   | <p dir="auto"><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/octocat/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/octocat">@octocat</a> and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+gl    | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+pd    | <p><span class="citation" data-cites="octocat">@octocat</span> and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+dj    | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+djjs  | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+myst  | (root (paragraph (cite identifier="octocat" label="octocat" kind="narrative" partial=undefined prefix=undefined suffix=undefined) " and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e")) 
+mdoc  | <article><p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p></article> 
+mdx   | <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+mdxgfm| <p>@octocat and #1 and github/docs#1 and GH-1 and a5c3785ed8d6a35868bc169f07e40e889087fd2e</p> 
+######## t72-color.md
+cm    | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+gfm   | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+gfmpd | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+gh    | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+ghc   | <p dir="auto"><code class="notranslate">#ff0000<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: #ff0000; height: 8px; width: 8px;"></span></code> and <code class="notranslate">rgb(9, 105, 218)<span class="ml-1 d-inline-block border circle color-border-subtle" style="background-color: rgb(9, 105, 218); height: 8px; width: 8px;"></span></code></p> 
+gl    | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+pd    | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+dj    | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+djjs  | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+myst  | (root (paragraph (inlineCode "#ff0000") " and " (inlineCode "rgb(9, 105, 218)"))) 
+mdoc  | <article><p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p></article> 
+mdx   | <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+mdxgfm| <p><code>#ff0000</code> and <code>rgb(9, 105, 218)</code></p> 
+######## t73-mermaid.md
+cm    | <pre><code class="language-mermaid">graph TD; A--&gt;B </code></pre> 
+gfm   | <pre class="syntax-highlighting"><code><span class="text plain">graph TD; A--&gt;B </span></code></pre> 
+gfmpd | <pre class="mermaid"><code>graph TD; A--&gt;B</code></pre> 
+gh    | <div class="highlight highlight-source-mermaid"><pre><span class="pl-k">graph</span> <span class="pl-ent">TD</span><span class="pl-sg">;</span> <span class="pl-ent">A</span><span class="pl-k">--&gt;</span><span class="pl-ent">B</span></pre></div> 
+ghc   | <section class="js-render-needs-enrichment render-needs-enrichment position-relative" data-identity="9bcd55e9-4156-4c9e-b5c1-94d674809842" data-host="https://viewscreen.githubusercontent.com" data-src="https://viewscreen.githubusercontent.com/markdown/mermaid?docs_host=https%3A%2F%2Fdocs.github.com" data-type="mermaid" aria-label="mermaid rendered output container"> <div class="js-render-enrichment-target" data-json="{&quot;data&quot;:&quot;graph TD; A--&gt;B\n&quot;}" data-plain="graph TD; A--&gt;B " dir="auto"> <div class="render-plaintext-hidden" dir="auto"> <pre lang="mermaid" aria-label="
+gl    | <pre class="syntax-highlighting"><code class="language-mermaid"><span class="text plain">graph TD; A--&gt;B </span></code></pre> 
+pd    | <pre class="mermaid"><code>graph TD; A--&gt;B</code></pre> 
+dj    | <pre class="mermaid"><code>graph TD; A--&gt;B </code></pre> 
+djjs  | <pre><code class="language-mermaid">graph TD; A--&gt;B </code></pre> 
+myst  | (root (code lang="mermaid" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "graph TD; A-->B")) 
+mdoc  | <article><pre data-language="mermaid">graph TD; A--&gt;B </pre></article> 
+mdx   | <pre><code class="language-mermaid">graph TD; A--&gt;B </code></pre> 
+mdxgfm| <pre><code class="language-mermaid">graph TD; A--&gt;B </code></pre> 
+######## t75-fenceattr.md
+cm    | <pre><code class="language-{.python">x = 1 </code></pre> <pre><code class="language-python">y = 2 </code></pre> 
+gfm   | <pre class="syntax-highlighting"><code><span class="text plain">x = 1 </span></code></pre> <pre class="syntax-highlighting"><code><span class="source python"><span class="meta qualified-name python"><span class="meta generic-name python">y</span></span> <span class="keyword operator assignment python">=</span> <span class="constant numeric integer decimal python">2</span> </span></code></pre> 
+gfmpd | <pre class="{.python"><code>x = 1</code></pre> <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">2</span></span></code></pre></div> 
+gh    | <pre lang="{.python"><code>x = 1 </code></pre> <div class="highlight highlight-source-python"><pre><span class="pl-s1">y</span> <span class="pl-c1">=</span> <span class="pl-c1">2</span></pre></div> 
+ghc   | <pre lang="{.python" data-meta=".numberLines startFrom=&quot;5&quot;}" class="notranslate"><code class="notranslate">x = 1 </code></pre> <div class="highlight highlight-source-python" dir="auto"><pre class="notranslate"><span class="pl-s1">y</span> <span class="pl-c1">=</span> <span class="pl-c1">2</span></pre></div> 
+gl    | <pre class="syntax-highlighting"><code class="language-{.python" data-meta=".numberLines startFrom=&quot;5&quot;}"><span class="text plain">x = 1 </span></code></pre> <pre class="syntax-highlighting"><code data-meta="title=&quot;x.py&quot; {1,3}" class="language-python"><span class="source python"><span class="meta qualified-name python"><span class="meta generic-name python">y</span></span> <span class="keyword operator assignment python">=</span> <span class="constant numeric integer decimal python">2</span> </span></code></pre> 
+pd    | <div class="sourceCode" id="cb1" data-startFrom="5"><pre class="sourceCode numberSource python numberLines"><code class="sourceCode python" style="counter-reset: source-line 4;"><span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>x <span class="op">=</span> <span class="dv">1</span></span></code></pre></div> <p><code>python title="x.py" {1,3} y = 2</code></p> 
+dj    | <p><code>{.python .numberLines startFrom="5"} x = 1 </code></p> <p><code>python title="x.py" {1,3} y = 2 </code></p> 
+djjs  | <p><code>{.python .numberLines startFrom="5"} x = 1 </code></p> <p><code>python title="x.py" {1,3} y = 2 </code></p> 
+myst  | (root (mystDirective name="div" args=undefined tight=undefined "x = 1" (div class="python numberLines" (paragraph "x = 1"))) (code lang="python" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "y = 2")) 
+mdoc  | <article><pre data-language="{.python">x = 1 </pre><pre data-language="python">y = 2 </pre></article> 
+mdx   | <pre><code class="language-{.python">x = 1 </code></pre> <pre><code class="language-python">y = 2 </code></pre> 
+mdxgfm| <pre><code class="language-{.python">x = 1 </code></pre> <pre><code class="language-python">y = 2 </code></pre> 
+######## t77-comments.md
+cm    | <p>a %%hidden%% b <!-- html --> c {% comment %}</p> 
+gfm   | <p>a %%hidden%% b <!-- html --> c {% comment %}</p> 
+gfmpd | <p>a %%hidden%% b <!-- html --> c {% comment %}</p> 
+gh    | <p>a %%hidden%% b c {% comment %}</p> 
+ghc   | <p dir="auto">a %%hidden%% b c {% comment %}</p> 
+gl    | <p>a %%hidden%% b <!-- html --> c {% comment %}</p> 
+pd    | <p>a %%hidden%% b <!-- html --> c {% comment %}</p> 
+dj    | <p>a %%hidden%% b &lt;!– html –&gt; c </p> 
+djjs  | <p>a %%hidden%% b &lt;!– html –&gt; c </p> 
+myst  | (root (paragraph "a %%hidden%% b " (html "<!-- html -->") " c {% comment %}")) 
+mdoc  | <article><p>a %%hidden%% b &lt;!-- html --&gt; c <p></p></p></article> [validate: Node 'paragraph' is missing closing; Node 'inline' is missing closing; Can't nest 'paragraph' in 'inline'; Undefined tag: 'comment'; Node 'paragraph' is missing opening] 
+mdx   |  [ERROR: Unexpected character `!` (U+0021) before name, expected a character that can start a name, such as a letter, `$`, or `_` (note: to create a comment in MDX, use `{/* text */}`)] 
+mdxgfm|  [ERROR: Unexpected character `!` (U+0021) before name, expected a character that can start a name, such as a letter, `$`, or `_` (note: to create a comment in MDX, use `{/* text */}`)] 
+######## t79-tags.md
+cm    | <p>#tag and #nested/tag</p> 
+gfm   | <p>#tag and #nested/tag</p> 
+gfmpd | <p>#tag and #nested/tag</p> 
+gh    | <p>#tag and #nested/tag</p> 
+ghc   | <p dir="auto">#tag and #nested/tag</p> 
+gl    | <p>#tag and #nested/tag</p> 
+pd    | <p>#tag and #nested/tag</p> 
+dj    | <p>#tag and #nested/tag</p> 
+djjs  | <p>#tag and #nested/tag</p> 
+myst  | (root (paragraph "#tag and #nested/tag")) 
+mdoc  | <article><p>#tag and #nested/tag</p></article> 
+mdx   | <p>#tag and #nested/tag</p> 
+mdxgfm| <p>#tag and #nested/tag</p> 
+######## t80-wikilink.md
+cm    | <p>[[Target|label]] and [[Page]]</p> 
+gfm   | <p>[[Target|label]] and [[Page]]</p> 
+gfmpd | <p>[[Target|label]] and [[Page]]</p> 
+gh    | <p>[[Target|label]] and [[Page]]</p> 
+ghc   | <p dir="auto">[[Target|label]] and [[Page]]</p> 
+gl    | <p><a href="label" data-wikilink="true">Target</a> and <a href="Page" data-wikilink="true">Page</a></p> 
+pd    | <p>[[Target|label]] and [[Page]]</p> 
+dj    | <p>[[Target|label]] and [[Page]]</p> 
+djjs  | <p>[[Target|label]] and [[Page]]</p> 
+myst  | (root (paragraph "[[Target|label]] and [[Page]]")) 
+mdoc  | <article><p>[[Target|label]] and [[Page]]</p></article> 
+mdx   | <p>[[Target|label]] and [[Page]]</p> 
+mdxgfm| <p>[[Target|label]] and [[Page]]</p> 
+######## t81-import.md
+cm    | <p>@path/to/file.md</p> <p>See @README.md</p> 
+gfm   | <p>@path/to/file.md</p> <p>See @README.md</p> 
+gfmpd | <p>@path/to/file.md</p> <p>See @README.md</p> 
+gh    | <p>@path/to/file.md</p> <p>See @README.md</p> 
+ghc   | <p dir="auto">@path/to/file.md</p> <p dir="auto">See @README.md</p> 
+gl    | <p>@path/to/file.md</p> <p>See @README.md</p> 
+pd    | <p><span class="citation" data-cites="path/to/file.md">@path/to/file.md</span></p> <p>See <span class="citation" data-cites="README.md">@README.md</span></p> 
+dj    | <p>@path/to/file.md</p> <p>See @README.md</p> 
+djjs  | <p>@path/to/file.md</p> <p>See @README.md</p> 
+myst  | (root (paragraph (cite identifier="path/to/file.md" label="path/to/file.md" kind="narrative" partial=undefined prefix=undefined suffix=undefined)) (paragraph "See " (cite identifier="readme.md" label="README.md" kind="narrative" partial=undefined prefix=undefined suffix=undefined))) 
+mdoc  | <article><p>@path/to/file.md</p><p>See @README.md</p></article> 
+mdx   | <p>@path/to/file.md</p> <p>See @README.md</p> 
+mdxgfm| <p>@path/to/file.md</p> <p>See @README.md</p> 
+######## t82-divs.md
+cm    | <p>:::note bare :::</p> <p>::: {.note} attr :::</p> <p>::: warning dj :::</p> 
+gfm   | <p>:::note bare :::</p> <p>::: {.note} attr :::</p> <p>::: warning dj :::</p> 
+gfmpd | <p>:::note bare :::</p> <p>::: {.note} attr :::</p> <p>::: warning dj :::</p> 
+gh    | <p>:::note bare :::</p> <p>::: {.note} attr :::</p> <p>::: warning dj :::</p> 
+ghc   | <p dir="auto">:::note<br> bare<br> :::</p> <p dir="auto">::: {.note}<br> attr<br> :::</p> <p dir="auto">::: warning<br> dj<br> :::</p> 
+gl    | <p>:::note bare :::</p> <p>::: {.note} attr :::</p> <p>::: warning dj :::</p> 
+pd    | <div class="note"> <p>bare</p> </div> <div class="note"> <p>attr</p> </div> <div class="warning"> <p>dj</p> </div> 
+dj    | <div class="note"> <p>bare</p> </div> <div class="{.note}"> <p>attr</p> </div> <div class="warning"> <p>dj</p> </div> 
+djjs  | <div class="note"> <p>bare</p> </div> <p>::: attr :::</p> <div class="warning"> <p>dj</p> </div> 
+myst  | (root (code lang="note" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "bare") (mystDirective name="div" args=undefined tight=undefined "attr" (div class="note" (paragraph "attr"))) (code lang="warning" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "dj")) 
+mdoc  | <article><p>:::note bare :::</p><p>::: {.note} attr :::</p><p>::: warning dj :::</p></article> 
+mdx   |  [ERROR: Could not parse expression with acorn] 
+mdxgfm|  [ERROR: Could not parse expression with acorn] 
+######## t83-cite.md
+cm    | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+gfm   | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+gfmpd | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+gh    | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+ghc   | <p dir="auto">[<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/doe99/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/doe99">@doe99</a>, p. 33] and <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/doe99/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/doe99">@doe99</a> says and [-<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/doe99/hovercard" d
+gl    | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+pd    | <p><span class="citation" data-cites="doe99">[@doe99, p. 33]</span> and <span class="citation" data-cites="doe99">@doe99</span> says and <span class="citation" data-cites="doe99">[-@doe99]</span> and <span class="citation" data-cites="a b">[see @a; @b]</span></p> 
+dj    | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+djjs  | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+myst  | (root (paragraph (citeGroup kind="parenthetical" (cite identifier="doe99" label="doe99" kind="parenthetical" partial=undefined prefix=undefined suffix="p. 33")) " and " (cite identifier="doe99" label="doe99" kind="narrative" partial=undefined prefix=undefined suffix=undefined) " says and " (citeGroup kind="parenthetical" (cite identifier="doe99" label="doe99" kind="parenthetical" partial="year" prefix=undefined suffix=undefined)) " and " (citeGroup kind="parenthetical" (cite identifier="a" label="a" kind="parenthetical" partial=undefined prefix="see" suffix=undefined) (cite identifier="b" labe
+mdoc  | <article><p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p></article> 
+mdx   | <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+mdxgfm| <p>[@doe99, p. 33] and @doe99 says and [-@doe99] and [see @a; @b]</p> 
+######## t86-lineblock.md
+cm    | <p>| line one | indented two</p> 
+gfm   | <p>| line one | indented two</p> 
+gfmpd | <p>| line one | indented two</p> 
+gh    | <p>| line one | indented two</p> 
+ghc   | <p dir="auto">| line one<br> | indented two</p> 
+gl    | <p>| line one | indented two</p> 
+pd    | <div class="line-block">line one<br />     indented two</div> 
+dj    | <p>| line one | indented two</p> 
+djjs  | <p>| line one | indented two</p> 
+myst  | (root (paragraph "| line one\n| indented two")) 
+mdoc  | <article><p>| line one | indented two</p></article> 
+mdx   | <p>| line one | indented two</p> 
+mdxgfm| <p>| line one | indented two</p> 
+######## t90-autolink.md
+cm    | <p>www.example.com and x@y.com and https://x.com/a_(b) and <a href="https://angle.com">https://angle.com</a></p> 
+gfm   | <p><a href="http://www.example.com">www.example.com</a> and <a href="mailto:x@y.com">x@y.com</a> and <a href="https://x.com/a_(b)">https://x.com/a_(b)</a> and <a href="https://angle.com">https://angle.com</a></p> 
+gfmpd | <p><a href="http://www.example.com">www.example.com</a> and <a href="mailto:x@y.com">x@y.com</a> and <a href="https://x.com/a_(b)">https://x.com/a_(b)</a> and <a href="https://angle.com">https://angle.com</a></p> 
+gh    | <p><a href="http://www.example.com" rel="nofollow">www.example.com</a> and <a href="mailto:x@y.com">x@y.com</a> and <a href="https://x.com/a_(b)" rel="nofollow">https://x.com/a_(b)</a> and <a href="https://angle.com" rel="nofollow">https://angle.com</a></p> 
+ghc   | <p dir="auto"><a href="http://www.example.com" rel="nofollow">www.example.com</a> and <a href="mailto:x@y.com">x@y.com</a> and <a href="https://x.com/a_(b)" rel="nofollow">https://x.com/a_(b)</a> and <a href="https://angle.com" rel="nofollow">https://angle.com</a></p> 
+gl    | <p><a href="http://www.example.com">www.example.com</a> and <a href="mailto:x@y.com">x@y.com</a> and <a href="https://x.com/a_(b)">https://x.com/a_(b)</a> and <a href="https://angle.com">https://angle.com</a></p> 
+pd    | <p>www.example.com and x@y.com and https://x.com/a_(b) and <a href="https://angle.com" class="uri">https://angle.com</a></p> 
+dj    | <p>www.example.com and x@y.com and https://x.com/a_(b) and <a href="https://angle.com" class="uri">https://angle.com</a></p> 
+djjs  | <p>www.example.com and x@y.com and https://x.com/a_(b) and <a href="https://angle.com">https://angle.com</a></p> 
+myst  | (root (paragraph "www.example.com and x@y.com and https://x.com/a_(b) and " (link url="https://angle.com" title=undefined "https://angle.com"))) 
+mdoc  | <article><p>www.example.com and x@y.com and https://x.com/a_(b) and <a href="https://angle.com">https://angle.com</a></p></article> 
+mdx   |  [ERROR: Unexpected character `/` (U+002F) before local name, expected a character that can start a name, such as a letter, `$`, or `_` (note: to create a link in MDX, use `[text](url)`)] 
+mdxgfm|  [ERROR: Unexpected character `/` (U+002F) before local name, expected a character that can start a name, such as a letter, `$`, or `_` (note: to create a link in MDX, use `[text](url)`)] 
+######## t91-newline.md
+cm    | <p>line one line two</p> 
+gfm   | <p>line one line two</p> 
+gfmpd | <p>line one line two</p> 
+gh    | <p>line one line two</p> 
+ghc   | <p dir="auto">line one<br> line two</p> 
+gl    | <p>line one line two</p> 
+pd    | <p>line one line two</p> 
+dj    | <p>line one line two</p> 
+djjs  | <p>line one line two</p> 
+myst  | (root (paragraph "line one\nline two")) 
+mdoc  | <article><p>line one line two</p></article> 
+mdx   | <p>line one line two</p> 
+mdxgfm| <p>line one line two</p> 
+######## t93-hr.md
+cm    | <hr /> <hr /> <hr /> 
+gfm   | <hr /> <hr /> <hr /> 
+gfmpd | <hr /> <hr /> <hr /> 
+gh    | <hr> <hr> <hr> 
+ghc   | <hr> <hr> <hr> 
+gl    | <hr /> <hr /> <hr /> 
+pd    | <hr /> <hr /> <hr /> 
+dj    | <hr /> <hr /> <hr /> 
+djjs  | <hr> <hr> <hr> 
+myst  | (root (code lang="yaml" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "\n- - -")) 
+mdoc  | <article><hr><hr><hr></article> 
+mdx   | <hr/> <hr/> <hr/> 
+mdxgfm| <hr/> <hr/> <hr/> 
+######## t94-tildeafterpara.md
+cm    | <p>Para</p> <pre><code>code </code></pre> 
+gfm   | <p>Para</p> <pre class="syntax-highlighting"><code><span class="text plain">code </span></code></pre> 
+gfmpd | <p>Para</p> <pre><code>code</code></pre> 
+gh    | <p>Para</p> <pre><code>code </code></pre> 
+ghc   | <p dir="auto">Para</p> <pre class="notranslate"><code class="notranslate">code </code></pre> 
+gl    | <p>Para</p> <pre class="syntax-highlighting"><code><span class="text plain">code </span></code></pre> 
+pd    | <p>Para <sub></sub>~ code <sub></sub>~</p> 
+dj    | <p>Para ~~~ code ~~~</p> 
+djjs  | <p>Para ~~~ code ~~~</p> 
+myst  | (root (paragraph "Para") (code lang="" class=undefined showLineNumbers=undefined startingLineNumber=undefined emphasizeLines=undefined "code")) 
+mdoc  | <article><p>Para</p><pre>code </pre></article> 
+mdx   | <p>Para</p> <pre><code>code </code></pre> 
+mdxgfm| <p>Para</p> <pre><code>code </code></pre> 
+######## t95-escape.md
+cm    | <p># not heading and * and \a and | and @</p> 
+gfm   | <p># not heading and * and \a and | and @</p> 
+gfmpd | <p># not heading and * and \a and | and @</p> 
+gh    | <p># not heading and * and \a and | and @</p> 
+ghc   | <p dir="auto"># not heading and * and \a and | and @</p> 
+gl    | <p># not heading and * and \a and | and @</p> 
+pd    | <p># not heading and * and and | and @</p> 
+dj    | <p># not heading and * and \a and | and @</p> 
+djjs  | <p># not heading and * and \a and | and @</p> 
+myst  | (root (paragraph "# not heading and * and \\a and | and @")) 
+mdoc  | <article><p># not heading and * and \a and | and @</p></article> 
+mdx   | <p># not heading and * and \a and | and @</p> 
+mdxgfm| <p># not heading and * and \a and | and @</p> 
+######## t96-sizedheading.md
+cm    | <p>#NoSpace</p> <p>####### seven</p> 
+gfm   | <p>#NoSpace</p> <p>####### seven</p> 
+gfmpd | <p>#NoSpace</p> <p>####### seven</p> 
+gh    | <p>#NoSpace</p> <p>####### seven</p> 
+ghc   | <p dir="auto">#NoSpace</p> <p dir="auto">####### seven</p> 
+gl    | <p>#NoSpace</p> <p>####### seven</p> 
+pd    | <p>#NoSpace</p> <p class="heading" id="seven">seven</p> 
+dj    | <p>#NoSpace</p> <p class="heading" id="seven">seven</p> 
+djjs  | <p>#NoSpace</p> <section id="seven"> <h7>seven</h7> </section> 
+myst  | (root (paragraph "#NoSpace") (paragraph "####### seven")) 
+mdoc  | <article><p>#NoSpace</p><p>####### seven</p></article> 
+mdx   | <p>#NoSpace</p> <p>####### seven</p> 
+mdxgfm| <p>#NoSpace</p> <p>####### seven</p> 
+######## t97-imgalign.md
+cm    | <img src="x.png" align="right" width="100"> 
+gfm   | <img src="x.png" align="right" width="100"> 
+gfmpd | <img src="x.png" align="right" width="100"> 
+gh    | <p><a target="_blank" rel="noopener noreferrer" href="x.png"><img src="x.png" align="right" width="100" style="max-width: 100%;"></a></p> 
+ghc   | <p dir="auto"><a target="_blank" rel="noopener noreferrer" href="x.png"><img src="x.png" align="right" width="100" style="max-width: 100%;"></a></p> 
+gl    | <img src="x.png" align="right" width="100"> 
+pd    | <p><img src="x.png" align="right" width="100"></p> 
+dj    | <p><a href="img src=&quot;x.png&quot; align=&quot;right&quot; width=&quot;100&quot;" class="uri">img src="x.png" align="right" width="100"</a></p> 
+djjs  | <p>&lt;img src=“x.png” align=“right” width=“100”&gt;</p> 
+myst  | (root (html "<img src=\"x.png\" align=\"right\" width=\"100\">")) 
+mdoc  | <article><p>&lt;img src=&quot;x.png&quot; align=&quot;right&quot; width=&quot;100&quot;&gt;</p></article> 
+mdx   |  [ERROR: Expected a closing tag for `<img>` (1:1-1:44)] 
+mdxgfm|  [ERROR: Expected a closing tag for `<img>` (1:1-1:44)] 
+######## t98-sparkline.md
+cm    | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+gfm   | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+gfmpd | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+gh    | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+ghc   | <p dir="auto">Sales ▁▂▃▅▇ and <code class="notranslate">spark:1,2,3</code> and {12,30,45}</p> 
+gl    | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+pd    | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+dj    | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+djjs  | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p> 
+myst  | (root (paragraph "Sales ▁▂▃▅▇ and " (inlineCode "spark:1,2,3") " and {12,30,45}")) 
+mdoc  | <article><p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and {12,30,45}</p></article> 
+mdx   | <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and 45</p> 
+mdxgfm| <p>Sales ▁▂▃▅▇ and <code>spark:1,2,3</code> and 45</p> 

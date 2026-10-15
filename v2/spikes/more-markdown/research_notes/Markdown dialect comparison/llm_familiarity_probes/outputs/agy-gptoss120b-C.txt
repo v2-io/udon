@@ -1,0 +1,21 @@
+```markdown
+# Cooking Udon
+
+> [!WARNING]  
+> Do not overcook the noodles; they become mushy.
+
+**Dashi**: a light Japanese stock made from kombu (kelp) and katsuobushi (bonito flakes).[^1]
+
+| Ingredient   | Amount |
+|--------------|--------|
+| Udon noodles | 200 g  |
+| Dashi broth  | 2 cups |
+
+Remember to **==taste==** the broth before serving.
+
+For more variations, see [Udon Variations](udon-variations.md).
+
+[^1]: Dashi is the base of many Japanese soups and sauces.
+```
+
+Chosen markup flavor: GitHub Flavored Markdown (GFM) because it natively supports tables, footnotes, admonition callouts, and inline highlights.

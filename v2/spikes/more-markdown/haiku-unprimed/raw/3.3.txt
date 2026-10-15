@@ -1,0 +1,3 @@
+The appointment was confirmed by Dr.&nbsp;Smith this morning.
+
+The sentence uses a non-breaking space (`&nbsp;` in HTML, U+00A0 in plain text) between "Dr." and "Smith," so line-wrapping can't separate them.

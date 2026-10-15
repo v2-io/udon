@@ -1,0 +1,9 @@
+**app.js**
+
+```
+  1 | const numbers = [1, 2, 3, 4, 5];
+>>2 | const doubled = numbers.map((n) => n * 2);
+  3 | console.log("Doubled:", doubled);
+```
+
+Line 2 is highlighted with the `>>` marker, since Markdown code blocks don't support true line highlighting.

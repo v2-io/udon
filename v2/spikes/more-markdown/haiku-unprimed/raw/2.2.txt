@@ -1,0 +1,40 @@
+```markdown
+# Project Overview
+
+This document describes how to get the project running. It is intentionally short.
+
+## Installation {#install}
+
+1. Make sure you have Python 3.10 or later installed.
+2. Clone the repository:
+
+   ```sh
+   git clone https://example.com/your-org/your-project.git
+   cd your-project
+   ```
+
+3. Create and activate a virtual environment:
+
+   ```sh
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+4. Install the project dependencies:
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+5. Verify the installation:
+
+   ```sh
+   python -m your_project --version
+   ```
+
+## Usage
+
+Run the application with `python -m your_project`. See the project README for configuration options.
+```
+
+The `{#install}` attribute gives the Installation heading the stable identifier `install`, so other pages can link to it as `#install`. This syntax is supported by Pandoc, MkDocs (with the `attr_list` extension), Hugo, and Jekyll. GitHub's Markdown renderer ignores it, so if the document will be viewed there, add `<a id="install"></a>` on the line above the heading instead.

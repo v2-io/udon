@@ -1,0 +1,10 @@
+# Enhancing Multi-Agent Coordination Through Adaptive Communication Protocols
+
+**Jane A. Doe**¹ and **Michael B. Chen**²
+
+¹ Department of Computer Science, University of Example, Springfield, IL 62701, USA
+² School of Electrical Engineering, Sample Institute of Technology, Riverton, CA 94016, USA
+
+Corresponding author: Jane A. Doe (jdoe@example.edu)
+
+**Keywords:** multi-agent systems; adaptive communication; coordination protocols; distributed artificial intelligence; reinforcement learning

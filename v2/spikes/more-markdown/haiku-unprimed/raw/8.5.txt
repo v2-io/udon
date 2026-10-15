@@ -1,0 +1,5 @@
+Here's your to-do list:
+
+- [x] Set up the project folder
+- [ ] Draft the project outline
+- [ ] Review the outline with the team

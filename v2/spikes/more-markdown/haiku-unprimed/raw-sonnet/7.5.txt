@@ -1,0 +1,25 @@
+Here's a collapsible FAQ item using the native HTML `<details>` and `<summary>` elements, with no JavaScript required:
+
+```html
+<details>
+  <summary>Show answer</summary>
+  <p>Yes, you can change your username at any time from Settings → Profile. Changes take effect immediately.</p>
+</details>
+```
+
+**With a question heading:**
+
+```html
+<h3>Can I change my username?</h3>
+<details>
+  <summary>Show answer</summary>
+  <p>Yes, you can change your username at any time from Settings → Profile. Changes take effect immediately.</p>
+</details>
+```
+
+**Notes:**
+- Clicking the summary toggles the answer open and closed.
+- Browsers show a disclosure triangle by default; you can style it with CSS if you want.
+- It's keyboard accessible out of the box (Enter/Space toggles it).
+
+If you'd like, I can save this to a file in your working directory or add some basic styling.

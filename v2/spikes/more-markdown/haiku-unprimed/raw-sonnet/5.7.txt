@@ -1,0 +1,37 @@
+Here is a short passage in LaTeX, where `\ref` fills in the figure number automatically:
+
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+Quarterly sales grew steadily over the past year, with the strongest
+gains in the second half. As shown in Figure~\ref{fig:sales-chart},
+revenue rose in every quarter, and the sharpest increase occurred
+between the third and fourth quarters.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{chart.png}
+  \caption{Quarterly sales over the past year.}
+  \label{fig:sales-chart}
+\end{figure}
+
+\end{document}
+```
+
+- `\label{fig:sales-chart}` must come after `\caption`, because the caption is what assigns the number.
+- `\ref{fig:sales-chart}` resolves to that number (e.g., "Figure 1"). Compile twice so the reference updates.
+- The `~` before `\ref` is a non-breaking space, which keeps "Figure" and its number on the same line.
+- `chart.png` needs to be in the same directory as the `.tex` file, or you can give a path to it.
+
+If you're using Markdown with Pandoc instead, the equivalent is:
+
+```markdown
+As shown in @fig:sales-chart, revenue rose in every quarter.
+
+![Quarterly sales over the past year.](chart.png){#fig:sales-chart}
+```
+
+This requires `pandoc-crossref`.

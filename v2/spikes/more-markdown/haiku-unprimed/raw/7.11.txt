@@ -1,0 +1,9 @@
+The following block preserves its spacing and characters exactly as written.
+
+```
+  Spacing   matters here:
+    indented line
+	tab-indented line
+Symbols: @#$%^&*()_+-=[]{}|;:'",.<>/?`~
+     Trailing spaces follow.     
+```

@@ -1,0 +1,25 @@
+Here's a small expenses table in spreadsheet form, with the total computed by a formula:
+
+| | A | B |
+|---|---|---|
+| **1** | **Expense** | **Amount** |
+| **2** | Rent | 1200.00 |
+| **3** | Groceries | 350.00 |
+| **4** | Utilities | 140.00 |
+| **5** | Transport | 85.50 |
+| **6** | **Total** | `=SUM(B2:B5)` |
+
+The total cell (B6) evaluates to **1775.50**.
+
+If you'd like it as a file, here's the same thing as CSV (most spreadsheet apps will evaluate the formula on import):
+
+```csv
+Expense,Amount
+Rent,1200.00
+Groceries,350.00
+Utilities,140.00
+Transport,85.50
+Total,=SUM(B2:B5)
+```
+
+I can also write it to a `.csv` or `.xlsx` file in the working directory if you want.

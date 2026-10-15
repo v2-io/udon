@@ -1,0 +1,42 @@
+**1. Command-line help listing**
+
+```
+Options:
+  -v               Enable verbose output, showing detailed progress messages.
+  --output FILE    Write results to FILE instead of standard output.
+  -h               Show this help message and exit.
+```
+
+**2. Instruction**
+
+Press Ctrl and C together, then choose File and then Save from the menu, and click the OK button.
+
+**3. Paragraph and preformatted text**
+
+The following block shows a sample table layout. Its spacing and characters should be copied exactly as shown.
+
+```
+Name        Qty    Price
+----------  ---    -----
+Widget        3     4.50
+Gadget       12    19.99
+Gizmo         1   120.00
+```
+
+**4. Note admonition containing a warning admonition**
+
+::: note
+This feature is available only in the premium edition.
+
+:::: warning
+Enabling this feature overwrites existing settings. Back up your configuration before you turn it on.
+::::
+:::
+
+**5. Quick text with a to-do admonition**
+
+Setup is nearly finished. Review the installation steps before the release.
+
+::: todo
+Update the README with the new installation steps and confirm the links still work.
+:::

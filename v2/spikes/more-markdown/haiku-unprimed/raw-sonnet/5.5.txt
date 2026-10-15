@@ -1,0 +1,26 @@
+# Getting Started with ExampleTool
+
+ExampleTool is a lightweight command-line utility for managing project configuration files.
+
+## Overview
+
+ExampleTool simplifies configuration management across environments. Before you use any of its features, make sure you've completed the steps in the [Installation](#installation) section.
+
+## Installation
+
+1. Ensure you have Node.js 18 or later installed.
+2. Install the package globally:
+
+   ```bash
+   npm install -g exampletool
+   ```
+
+3. Verify the installation:
+
+   ```bash
+   exampletool --version
+   ```
+
+## Usage
+
+Run `exampletool init` in your project directory to create a starter configuration file.

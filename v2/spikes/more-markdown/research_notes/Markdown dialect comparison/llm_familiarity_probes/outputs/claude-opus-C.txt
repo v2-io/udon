@@ -1,0 +1,24 @@
+```markdown
+# Cooking Udon
+
+Udon are thick wheat noodles, best served in a hot broth built on dashi.[^1]
+
+**Dashi**: A Japanese stock made by steeping kombu (kelp) and katsuobushi (dried bonito flakes) in water.
+
+> [!warning] Don't rinse hot-serving noodles too long
+> A quick rinse removes surface starch, but over-rinsing cools the noodles and makes them limp in the broth.
+
+| Noodle type | Boil time       |
+| ----------- | --------------- |
+| Fresh       | 2–3 minutes     |
+| Frozen      | 1 minute        |
+| Dried       | 8–10 minutes    |
+
+Bring a large pot to a rolling boil, add the noodles, and ==stir immediately so they don't stick==. Drain, rinse briefly, then add them to the warm broth.
+
+For broth ratios, see [[Dashi Basics]].
+
+[^1]: Vegetarian dashi can use only kombu and shiitake.
+```
+
+I chose Obsidian-flavored Markdown because it natively supports callouts, `==highlights==`, footnotes, tables, and `[[wikilinks]]` between notes in a vault. It has no native definition list, so the "dashi" definition is a bolded term followed by its meaning.

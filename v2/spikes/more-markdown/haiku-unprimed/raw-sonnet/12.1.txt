@@ -1,0 +1,23 @@
+Here's the sentence with the suggested edits shown in tracked-changes style:
+
+The ~~quick~~ brown **{+red+}** fox jumps
+
+Breaking that down:
+
+- **Deletion:** ~~quick~~ is struck through.
+- **Insertion:** {+red+} is added before "fox", giving "brown red fox".
+- **Reviewer comment:** 💬 *"check this"*
+
+In CriticMarkup notation, the same thing looks like this:
+
+```
+The {--quick--} brown {++red++} fox jumps{>>check this<<}
+```
+
+If you want the comment attached to a specific word, you can use a highlight:
+
+```
+The {--quick--} brown {++red++} {==fox==}{>>check this<<} jumps
+```
+
+And the resulting text if all edits are accepted: **"The brown red fox jumps"**

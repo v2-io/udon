@@ -1,0 +1,58 @@
+I used reStructuredText with Sphinx markup, since it has native constructs for all five items.
+
+```rst
+1. Command-line help listing
+============================
+
+Usage: mytool [options]
+
+-v              Enable verbose output.
+--output FILE   Write results to FILE.
+-h              Show this help message and exit.
+
+
+2. Instruction
+==============
+
+Press :kbd:`Ctrl+C`, then choose :menuselection:`File --> Save` from the
+menu, then click the :guilabel:`OK` button.
+
+
+3. Paragraph with literal block
+===============================
+
+The following block is reproduced exactly as typed, including spacing
+and special characters::
+
+    $ mytool   --output   "my  file.txt"   # two  spaces,   then   three
+        indented line with *asterisks* and `backticks` and <angle>
+    |  col1  |  col2  |
+
+
+4. Note containing a warning
+============================
+
+.. note::
+
+   This operation modifies the project configuration.
+
+   .. warning::
+
+      Changes cannot be undone once the file is saved.
+
+
+5. Quick text with a to-do
+==========================
+
+Here is some quick text about the release process.
+
+.. todo::
+
+   Document the rollback procedure before the next release.
+```
+
+Notes:
+
+- The `todo` directive comes from the `sphinx.ext.todo` extension, so add it to `extensions` in `conf.py`: `extensions = ['sphinx.ext.todo']`. Set `todo_include_todos = True` to make the to-dos appear in the output.
+- The `::` at the end of the paragraph in item 3 starts the literal block. The indented text after it is rendered verbatim, with no inline formatting applied.
+- `:kbd:`, `:menuselection:`, and `:guilabel:` are Sphinx roles, so a plain docutils build won't render them with the same styling.

@@ -1,0 +1,15 @@
+The sensor recorded a speed of 3.5 × 10⁸ m/s at a temperature of 21 °C.
+
+The same sentence in LaTeX with `siunitx`:
+
+```latex
+The sensor recorded a speed of \SI{3.5e8}{\meter\per\second} at a temperature of \SI{21}{\celsius}.
+```
+
+Typesetting notes:
+- A (thin) non-breaking space separates each number from its unit.
+- The degree sign and "C" are written as `°C`, with no space between them.
+- The unit "m/s" is upright (roman), not italic.
+- The multiplication sign is `×`, not the letter "x".
+
+Also, 3.5 × 10⁸ m/s is faster than the speed of light (about 2.998 × 10⁸ m/s), so you may want a different value if the sentence describes something physical.

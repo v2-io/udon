@@ -1,0 +1,81 @@
+# Key-Value list - Obsidian plugin
+
+This plugin for [Obsidian](https://obsidian.md/) makes creating formatted key-value lists a breeze.
+
+## What is a Key-Value list?
+A Key-Value list is basically a list containing multiple rows with pairs of keys and values. These can be useful in all kind of different contexts, especially when something is to be described with a range of different attributes. The idea with this plugin is to give lists like that some additional formatting, without the need of any extra input or customizations at all. 
+
+To create a key value list, all you need to do is to make sure the list row contains a specific delimiter. The default one used in this plugin is `:`. So, as an example, a simple list could look like this:
+```
+- First name: Donald
+- Last name: Duck
+- Gender: Male
+```
+
+This plugin will recognize these lists automatically and apply some basic formatting:
+- A fixed width of the key column, so that values are all aligned properly. The width is calculated per list by the browser layout engine.
+- Apply a background color to every other line in the list, to make it easier to read.
+
+The plugin works in **Reading view** (markdown post-processor) and **Live Preview** (editor extension). In Source mode, lists are shown as plain markdown without formatting.
+
+## Preview
+Here's a brief demonstration of the plugin in action::
+
+![key-value-demo](https://github.com/christianwannerstedt/obsidian-key-value-list/assets/25314/8387c00d-8f36-41a0-aa2c-13d8be55cbc1)
+
+If the value (or key) is too long to fit on the row, it will be properly wrapped to the next line. 
+
+![Key-Value list preview](https://github.com/christianwannerstedt/obsidian-key-value-list/assets/25314/b6de6c3a-15ad-43b8-9c43-99c5039cd8d3)
+
+It is possible to use other formats, e.g. bold text, links, tags, in both the key and value part.
+
+## Customization
+Even if the plugin doesn't require any customizations at all, you can fine tune it a bit with some available settings. From the plugin settings page it's possible to change the delimiter, appearence etc.
+
+![Settings preview](https://github.com/christianwannerstedt/obsidian-key-value-list/assets/25314/acf39c55-9471-4e71-97ac-99e14eea36d0)
+
+### File specific settings
+It is possible to choose whether the plugin should be active for individual files by using the frontmatter property `cssclasses`:
+
+- `nokeyvalue` — disable the plugin for the file (overrides global settings)
+- `keyvalue` — enable the plugin in both Live Preview and read mode
+- `keyvalue-edit` — enable the plugin in Live Preview only
+- `keyvalue-read` — enable the plugin in read mode only
+
+When none of these classes are set, the global plugin settings apply. The enable classes are useful when the plugin is disabled by default and you want to opt in on specific files.
+
+### Column alignment
+You can right-align keys and/or values on a per-list basis using marker characters configured in the plugin settings (default for both: `;`):
+
+- **Key right-align marker** — placed immediately *before* the delimiter on the first row
+- **Value right-align marker** — placed immediately *after* the delimiter on the first row
+
+With the default delimiter `:` and markers `;`:
+
+```markdown
+- Total;:; 100
+- Tax: 25
+- Due: 125
+```
+
+The first row sets alignment for the entire list. Following rows use the plain delimiter. Alignment markers are not shown in the rendered output — only the delimiter itself is displayed.
+
+Leave either marker setting empty to disable that alignment option.
+
+## Notes
+In order for a list to be considered a Key-Value list by this plugin, every list item at every nesting level must contain a key-value pair. If one or more rows don't contain a key-value pair, the list will be ignored by the plugin.
+
+Nested lists are supported. Indent child rows under a parent item in markdown and the plugin will render them as an indented key-value table in both Live Preview and Reading view.
+
+## Install
+
+### Manual installation
+Unzip the [latest release](https://github.com/christianwannerstedt/obsidian-key-value-list/releases/latest) into your `<vault>/.obsidian/plugins/` folder.
+
+### Within Obsidian
+1. Go to `Settings > Community plugins`
+2. Ensure that Safe mode is turned off
+3. Click `Community plugins > Browse`
+4. Search for `Key-Value list`
+5. Click install
+6. Once installed, close the community plugins window and activate the newly installed plugin

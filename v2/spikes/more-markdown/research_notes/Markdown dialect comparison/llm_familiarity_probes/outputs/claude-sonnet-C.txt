@@ -1,0 +1,30 @@
+```markdown
+# Cooking Udon
+
+Udon are thick wheat noodles, best served in a hot broth with **==fresh scallions==** on top.
+
+> [!WARNING]
+> Boiling udon water can foam over quickly. Never leave the pot unattended.
+
+## Key Term
+
+**Dashi**
+: A Japanese soup stock made from kombu (kelp) and katsuobushi (bonito flakes), forming the base of most udon broths.
+
+## Basic Ratios
+
+| Ingredient | Amount (per serving) |
+|------------|----------------------|
+| Udon noodles | 200 g |
+| Dashi | 400 ml |
+| Soy sauce | 1 tbsp |
+| Mirin | 1 tbsp |
+
+Boil the noodles for 8–10 minutes, then rinse briefly in cold water[^1].
+
+See also: [Making Dashi from Scratch](./making-dashi.md)
+
+[^1]: Rinsing removes surface starch and keeps the noodles from turning gummy.
+```
+
+I chose Markdown (with GitHub-style alerts, footnotes, and `==highlight==` extensions) because it's the most widely supported plain-text format for notes collections, and it handles all the requested features concisely.

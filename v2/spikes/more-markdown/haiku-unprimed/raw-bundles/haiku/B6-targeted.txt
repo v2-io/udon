@@ -1,0 +1,31 @@
+**1. Italics and bold:** The *quick* team delivered a **reliable** result.
+
+**2. Highlighted text:** The temporary password <mark>asdf</mark> must be changed today.
+
+**3. Strikethrough:** The meeting is on ~~Tuesday~~ Wednesday.
+
+**4. Underline:** Please read the terms <u>carefully</u>.
+
+**5. Footnote:** Moderate coffee consumption, roughly three to four cups a day, is associated with lower risk of premature death in large observational studies.[^1]
+
+**6. Quick text with a note:**
+
+Our new scheduler runs every five minutes and writes its results to the shared log. Logs are rotated weekly.
+
+> [!NOTE]
+> Rotated logs are kept for 30 days before they are deleted.
+
+**7. Fictional mailing address:**
+
+Jane Q. Doe  
+482 Maple Hollow Drive  
+Springfield, IL 62704  
+USA
+
+**8. Glossary:**
+
+**Latency**: The delay between sending a request and receiving the first response.
+
+**Idempotent**: A property of an operation that produces the same result no matter how many times it is applied.
+
+[^1]: Poole, R., Kennedy, O. J., Roderick, P., Fallowfield, J. A., Hayes, P. C., & Parkes, J. (2017). Coffee consumption and health: umbrella review of meta-analyses of multiple health outcomes. *BMJ*, 359, j5024.

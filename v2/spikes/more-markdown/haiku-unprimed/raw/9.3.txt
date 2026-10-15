@@ -1,0 +1,19 @@
+Here's a short Python example that reads a file and counts the words in it:
+
+```python
+def count_words(path):
+    total = 0                                  # (1)
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            total += len(line.split())         # (2)
+    return total
+
+
+print(count_words("notes.txt"))
+```
+
+**Explanations:**
+
+1. **`total = 0`**: Initializes a running counter before reading the file. Starting at zero means that an empty file correctly returns a count of 0.
+
+2. **`total += len(line.split())`**: Splits each line on whitespace, which returns a list of words, then adds the number of words in that line to the running total. Reading line by line keeps memory use low even for large files.

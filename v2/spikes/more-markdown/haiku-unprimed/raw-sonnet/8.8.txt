@@ -1,0 +1,5 @@
+## Glossary
+
+**Idempotent**: Describes an operation that produces the same result no matter how many times it is performed. For example, setting a value to `5` is idempotent, while incrementing a value by `1` is not.
+
+**Latency**: The amount of time that elapses between a request being made and its response being received. Lower latency means a system feels faster and more responsive.

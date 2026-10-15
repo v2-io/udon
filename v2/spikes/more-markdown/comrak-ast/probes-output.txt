@@ -1,0 +1,512 @@
+### Front-matter block   [--front-matter-delimiter ---]
+Document
+  FrontMatter("---\ntitle: x\n---\n")
+  Paragraph
+    Text "Body"
+
+### Comments   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 2, literal: "<!-- block -->\n" })
+  Paragraph
+    Text "Text "
+    HtmlInline("<!-- inline -->")
+    Text " here"
+
+### ATX headings   []
+Document
+  Heading(NodeHeading { level: 2, setext: false, closed: false })
+    Text "H"
+
+### Setext headings   []
+Document
+  Heading(NodeHeading { level: 1, setext: true, closed: false })
+    Text "H"
+
+### Automatic heading ids   [--header-id-prefix x-]
+Document
+  Heading(NodeHeading { level: 1, setext: false, closed: false })
+    Text "My Heading"
+
+### Explicit heading ids `{#id}`   [-e header-attributes]
+Document
+  Heading(NodeHeading { level: 1, setext: false, closed: false })  attrs=Attributes { id: Some("id"), classes: ["c"], pairs: [("key", "v")] }
+    Text "H"
+
+### Thematic break   []
+Document
+  ThematicBreak
+
+### Hard break: two trailing spaces   []
+Document
+  Paragraph
+    Text "a"
+    LineBreak
+    Text "b"
+
+### Hard break: trailing backslash   []
+Document
+  Paragraph
+    Text "a"
+    LineBreak
+    Text "b"
+
+### Every newline as a break   [--hardbreaks]
+Document
+  Paragraph
+    Text "a"
+    SoftBreak
+    Text "b"
+
+### Smart quotes   [--smart]
+Document
+  Paragraph
+    Text "“q” ‘r’"
+
+### Smart dashes and ellipsis   [--smart]
+Document
+  Paragraph
+    Text "a – b — c…"
+
+### Emphasis and strong   []
+Document
+  Paragraph
+    Emph
+      Text "e"
+    Text " "
+    Strong
+      Text "s"
+
+### Strikethrough   [-e strikethrough]
+Document
+  Paragraph
+    Strikethrough
+      Text "x"
+
+### Insert   [-e insert]
+Document
+  Paragraph
+    Insert
+      Text "x"
+
+### Underline   [-e underline]
+Document
+  Paragraph
+    Underline
+      Text "x"
+
+### Highlight   [-e highlight]
+Document
+  Paragraph
+    Highlight
+      Text "x"
+
+### Superscript and subscript   [-e superscript,subscript]
+Document
+  Paragraph
+    Text "x"
+    Superscript
+      Text "2"
+    Text " H"
+    Subscript
+      Text "2"
+    Text "O"
+
+### Keyboard, menu and button   []
+Document
+  Paragraph
+    HtmlInline("<kbd>")
+    Text "Ctrl"
+    HtmlInline("</kbd>")
+
+### Inline code   []
+Document
+  Paragraph
+    Code(NodeCode { num_backticks: 1, literal: "x" })
+
+### Inline code with a language   [-e inline-code-attributes]
+Document
+  Paragraph
+    Code(NodeCode { num_backticks: 1, literal: "x" })  attrs=Attributes { id: None, classes: ["rust"], pairs: [] }
+
+### Inline math   [-e math-dollars,math-code,math-latex]
+Document
+  Paragraph
+    Math(NodeMath { dollar_math: true, display_math: false, literal: "a" })
+    Text " "
+    Math(NodeMath { dollar_math: false, display_math: false, literal: "b" })
+    Text " "
+    Math(NodeMath { dollar_math: true, display_math: false, literal: "c" })
+
+### Spoiler   [-e spoiler]
+Document
+  Paragraph
+    SpoileredText
+      Text "x"
+
+### Ruby annotation   []
+Document
+  Paragraph
+    HtmlInline("<ruby>")
+    Text "漢"
+    HtmlInline("<rt>")
+    Text "kan"
+    HtmlInline("</rt>")
+    HtmlInline("</ruby>")
+
+### Emoji shortcodes   [--gemoji]
+Document
+  Paragraph
+    ShortCode(NodeShortCode { code: "tada", emoji: "🎉" })
+
+### Inline links   []
+Document
+  Paragraph
+    Link(NodeLink { url: "http://a", title: "t" })
+      Text "x"
+
+### Reference links   []
+Document
+  Paragraph
+    Link(NodeLink { url: "http://a", title: "" })
+      Text "x"
+
+### Angle-bracket autolinks   []
+Document
+  Paragraph
+    Link(NodeLink { url: "https://a.org", title: "" })
+      Text "https://a.org"
+
+### Bare-URL autolinks   [-e autolink]
+Document
+  Paragraph
+    Link(NodeLink { url: "http://www.example.com", title: "" })
+      Text "www.example.com"
+
+### Wikilinks, target first `[[target\|label]]`   [-e wikilinks-title-after-pipe]
+Document
+  Paragraph
+    WikiLink(NodeWikiLink { url: "target" })
+      Text "label"
+
+### Wikilinks, label first `[[label\|target]]`   [-e wikilinks-title-before-pipe]
+Document
+  Paragraph
+    WikiLink(NodeWikiLink { url: "target" })
+      Text "label"
+
+### Footnotes   [-e footnotes]
+Document
+  Paragraph
+    Text "a"
+    FootnoteReference(NodeFootnoteReference { name: "1", texts: [("^", 1), ("1", 1)], ref_num: 1, ix: 1 })
+  FootnoteDefinition(NodeFootnoteDefinition { name: "1", total_references: 1 })
+    Paragraph
+      Text "n"
+
+### Inline footnotes `^[…]`   [-e footnotes,inline-footnotes]
+Document
+  Paragraph
+    Text "a"
+    FootnoteReference(NodeFootnoteReference { name: "__inline_1", texts: [], ref_num: 1, ix: 1 })
+  FootnoteDefinition(NodeFootnoteDefinition { name: "__inline_1", total_references: 1 })
+    Paragraph
+      Text "n"
+
+### Five fixed types `> [!NOTE]`   [-e alerts]
+Document
+  Alert(NodeAlert { alert_type: Note, title: None, multiline: false, fence_length: 1, fence_offset: 0 })
+    Paragraph
+      Text "x"
+
+### Larger built-in set (todo, bug, example…)   [-e alerts]
+Document
+  BlockQuote
+    Paragraph
+      Text "[!todo]"
+      SoftBreak
+      Text "x"
+
+### Custom title   [-e alerts]
+Document
+  Alert(NodeAlert { alert_type: Warning, title: Some("Back up first"), multiline: false, fence_length: 1, fence_offset: 0 })
+    Paragraph
+      Text "x"
+
+### Collapsible   [-e alerts]
+Document
+  Alert(NodeAlert { alert_type: Tip, title: Some("- T"), multiline: false, fence_length: 1, fence_offset: 0 })
+    Paragraph
+      Text "x"
+
+### Inside a list item   [-e alerts]
+Document
+  List(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: true, is_task_list: false })
+    Item(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: false, is_task_list: false })
+      Alert(NodeAlert { alert_type: Note, title: None, multiline: false, fence_length: 1, fence_offset: 0 })
+        Paragraph
+          Text "x"
+
+### Fenced container `:::`   [-e block-directive]
+Document
+  BlockDirective(NodeBlockDirective { fence_length: 3, fence_offset: 0, info: "warning" })
+    Paragraph
+      Text "x"
+
+### Block quote, plain and nested   []
+Document
+  BlockQuote
+    Paragraph
+      Text "a"
+    BlockQuote
+      Paragraph
+        Text "b"
+
+### Fenced block quote `>>>`   [-e multiline-block-quotes]
+Document
+  MultilineBlockQuote(NodeMultilineBlockQuote { fence_length: 3, fence_offset: 0 })
+    Paragraph
+      Text "q"
+
+### Collapsible section   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<details><summary>S</summary>\n" })
+  Paragraph
+    Text "x"
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "</details>\n" })
+
+### Literal block   []
+Document
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "", literal: "literal\n", closed: true })
+
+### Ordered list with a starting number   []
+Document
+  List(NodeList { list_type: Ordered, marker_offset: 0, padding: 3, start: 3, delimiter: Period, bullet_char: 0, tight: true, is_task_list: false })
+    Item(NodeList { list_type: Ordered, marker_offset: 0, padding: 3, start: 3, delimiter: Period, bullet_char: 0, tight: false, is_task_list: false })
+      Paragraph
+        Text "a"
+    Item(NodeList { list_type: Ordered, marker_offset: 0, padding: 3, start: 4, delimiter: Period, bullet_char: 0, tight: false, is_task_list: false })
+      Paragraph
+        Text "b"
+
+### Task list, two states   [-e tasklist]
+Document
+  List(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: true, is_task_list: true })
+    TaskItem(NodeTaskItem { symbol: None, symbol_sourcepos: 1:4-1:4 })
+      Paragraph
+        Text "a"
+    TaskItem(NodeTaskItem { symbol: Some('x'), symbol_sourcepos: 2:4-2:4 })
+      Paragraph
+        Text "b"
+
+### Task list, more states   [-e tasklist --relaxed-tasklist-character]
+Document
+  List(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: true, is_task_list: true })
+    TaskItem(NodeTaskItem { symbol: Some('/'), symbol_sourcepos: 1:4-1:4 })
+      Paragraph
+        Text "a"
+
+### Definition lists   [-e description-lists]
+Document
+  DescriptionList
+    DescriptionItem(NodeDescriptionItem { marker_offset: 0, padding: 2, tight: true })
+      DescriptionTerm
+        Paragraph
+          Text "Term"
+      DescriptionDetails
+        Paragraph
+          Text "def"
+
+### Several blocks in one list item   []
+Document
+  List(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: false, is_task_list: false })
+    Item(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: false, is_task_list: false })
+      Paragraph
+        Text "a"
+      Paragraph
+        Text "b"
+
+### Fenced code, backtick and tilde   []
+Document
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "py", literal: "x\n", closed: true })
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 126, fence_length: 3, fence_offset: 0, info: "", literal: "y\n", closed: true })
+
+### Indented code   []
+Document
+  CodeBlock(NodeCodeBlock { fenced: false, fence_char: 0, fence_length: 0, fence_offset: 0, info: "", literal: "code\n", closed: true })
+
+### Fence attributes (id, classes, line numbers, filename)   [-e fenced-code-attributes]
+Document
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "rust", literal: "x\n", closed: true })  attrs=Attributes { id: Some("id"), classes: ["c"], pairs: [] }
+
+### Interactive session blocks   []
+Document
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "console", literal: "$ ls\n", closed: true })
+
+### Pipe tables and column alignment   [-e table]
+Document
+  Table(NodeTable { alignments: [Left, Right], num_columns: 2, num_rows: 2, num_nonempty_cells: 4 })
+    TableRow(true)
+      TableCell
+        Text "a"
+      TableCell
+        Text "b"
+    TableRow(false)
+      TableCell
+        Text "1"
+      TableCell
+        Text "2"
+
+### Column and row spans   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<table><tr><td colspan=2>x</td></tr></table>\n" })
+
+### Line breaks in cells   [-e table]
+Document
+  Table(NodeTable { alignments: [None], num_columns: 1, num_rows: 2, num_nonempty_cells: 2 })
+    TableRow(true)
+      TableCell
+        Text "a"
+    TableRow(false)
+      TableCell
+        Text "x"
+        HtmlInline("<br>")
+        Text "y"
+
+### Images   []
+Document
+  Paragraph
+    Image(NodeLink { url: "a.png", title: "" })
+      Text "alt"
+
+### Image size and attributes   [-e link-attributes]
+Document
+  Paragraph
+    Image(NodeLink { url: "a.png", title: "" })  attrs=Attributes { id: None, classes: [], pairs: [("width", "50%")] }
+      Text "alt"
+  HtmlBlock(NodeHtmlBlock { block_type: 7, literal: "<img src=a.png width=50>\n" })
+
+### Video and audio   []
+Document
+  Paragraph
+    HtmlInline("<video src=a.mp4>")
+    HtmlInline("</video>")
+
+### Display math   [-e math-dollars,math-code]
+Document
+  Paragraph
+    Math(NodeMath { dollar_math: true, display_math: true, literal: "\ny\n" })
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "math", literal: "z\n", closed: true })
+
+### Visible annotations, tooltips   []
+Document
+  Paragraph
+    HtmlInline("<span title=t>")
+    Text "x"
+    HtmlInline("</span>")
+
+### Attributes on any element   [-e header-attributes,link-attributes]
+Document
+  Heading(NodeHeading { level: 1, setext: false, closed: false })  attrs=Attributes { id: None, classes: ["c"], pairs: [] }
+    Text "H"
+  Paragraph
+    Link(NodeLink { url: "u", title: "" })  attrs=Attributes { id: None, classes: ["c"], pairs: [] }
+      Text "x"
+
+### Embedded host language   [-e phoenix-heex]
+Document
+  HeexBlock(NodeHeexBlock { literal: "<.link navigate={~p\"/\"}>Home</.link>\n", node: Tag(".link") })
+  HeexBlock(NodeHeexBlock { literal: "{@name}\n", node: Expression })
+
+### Fence info strings handed to renderers   []
+Document
+  CodeBlock(NodeCodeBlock { fenced: true, fence_char: 96, fence_length: 3, fence_offset: 0, info: "mermaid", literal: "graph TD\n", closed: true })
+
+### Colored text   []
+Document
+  Paragraph
+    HtmlInline("<span style=\"color:red\">")
+    Text "x"
+    HtmlInline("</span>")
+
+### Subtext line   [-e subtext]
+Document
+  Subtext
+    Text "small"
+
+### Hyphenation hints   []
+Document
+  Paragraph
+    Text "hy\u{ad}phen"
+
+### Author-defined types   [-e alerts]
+Document
+  BlockQuote
+    Paragraph
+      Text "[!experiment]"
+      SoftBreak
+      Text "x"
+
+### Generic container with a class   [-e block-directive]
+Document
+  BlockDirective(NodeBlockDirective { fence_length: 3, fence_offset: 0, info: "sidebar-note" })
+    Paragraph
+      Text "x"
+
+### Block content in cells   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<table><tr><td>\n" })
+  List(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: true, is_task_list: false })
+    Item(NodeList { list_type: Bullet, marker_offset: 0, padding: 2, start: 1, delimiter: Period, bullet_char: 45, tight: false, is_task_list: false })
+      Paragraph
+        Text "a"
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "</td></tr></table>\n" })
+
+### Per-cell alignment and style   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<table><tr><td style=\"text-align:right\">x</td></tr></table>\n" })
+
+### Row headers   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<table><tr><th scope=row>h</th><td>x</td></tr></table>\n" })
+
+### Nested tables   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<table><tr><td><table><tr><td>x</td></tr></table></td></tr></table>\n" })
+
+### Block alignment   []
+Document
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "<div align=center>\n" })
+  Paragraph
+    Text "x"
+  HtmlBlock(NodeHtmlBlock { block_type: 6, literal: "</div>\n" })
+
+### Figure with caption   []
+Document
+  Paragraph
+    Image(NodeLink { url: "a.png", title: "Caption" })
+      Text "alt"
+
+### Admonition: label paragraph   [-e alerts,block-directive]
+Document
+  Paragraph
+    Text "NOTE: text"
+  BlockQuote
+    Paragraph
+      Strong
+        Text "Note"
+      SoftBreak
+      Text "x"
+
+### Admonition: !!! block   [-e alerts,block-directive]
+Document
+  Paragraph
+    Text "!!! note \"T\""
+    SoftBreak
+    Text "body"
+
+### Admonition: ::: block   [-e block-directive]
+Document
+  BlockDirective(NodeBlockDirective { fence_length: 3, fence_offset: 0, info: "note" })
+    Paragraph
+      Text "x"
+

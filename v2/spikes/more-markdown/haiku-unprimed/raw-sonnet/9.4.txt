@@ -1,0 +1,47 @@
+Here is a LaTeX document that pulls lines 5 to 15 of `main.go` straight from the file, so the listing stays in sync with the source:
+
+```latex
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  language=Go,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red!60!black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false
+}
+
+\begin{document}
+
+\section*{main.go, lines 5--15}
+
+\lstinputlisting[
+  firstline=5,
+  lastline=15,
+  firstnumber=5,
+  caption={Lines 5 to 15 of \texttt{main.go}},
+  label={lst:maingo}
+]{main.go}
+
+\end{document}
+```
+
+**How it works**
+- `firstline=5` and `lastline=15` select the line range from `main.go`.
+- `firstnumber=5` makes the displayed line numbers match the original file (5 to 15) rather than restarting at 1.
+- `language=Go` enables Go syntax highlighting (supported in recent versions of `listings`).
+
+**To build:** put this file (e.g. `listing.tex`) in the same directory as `main.go` and run:
+
+```sh
+pdflatex listing.tex
+```
+
+If you'd prefer a different format, such as Markdown or HTML with the code embedded directly, let me know. I'd need to read `main.go` to do that, since I haven't seen its contents.

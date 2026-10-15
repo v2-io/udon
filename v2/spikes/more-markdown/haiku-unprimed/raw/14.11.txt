@@ -1,0 +1,47 @@
+Here's a short document outline in LaTeX, which generates the list of figures automatically with `\listoffigures`:
+
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+
+\title{Project Overview}
+\author{Joseph Wecker}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\listoffigures
+
+\section{Introduction}
+\subsection{Background}
+\subsection{Objectives}
+
+\section{Methods}
+\subsection{Data Collection}
+\subsection{Analysis Approach}
+
+\section{Results}
+\subsection{Key Findings}
+\subsection{Visualizations}
+
+\section{Conclusion}
+\subsection{Summary}
+\subsection{Next Steps}
+
+\end{document}
+```
+
+To populate the list, add figures with captions. Each one is numbered and listed automatically:
+
+```latex
+\begin{figure}[h]
+  \centering
+  % \includegraphics[width=0.8\textwidth]{chart1.png}
+  \caption{Overview of data collection process.}
+  \label{fig:collection}
+\end{figure}
+```
+
+Compile twice (for example, `pdflatex` run twice) so the list of figures and the cross-references are resolved.

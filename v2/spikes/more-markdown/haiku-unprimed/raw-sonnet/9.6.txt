@@ -1,0 +1,9 @@
+```python
+>>> numbers = [3, 7, 1, 9, 4]
+>>> sorted(numbers, reverse=True)
+[9, 7, 4, 3, 1]
+>>> sum(numbers) / len(numbers)
+4.8
+```
+
+The `>>>` prompt marks the input you type, and the line beneath each command is the result Python prints back.

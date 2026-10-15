@@ -1,0 +1,1 @@
+For more details on setup and configuration, please refer to the [documentation](https://example.com/docs).

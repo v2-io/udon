@@ -1,0 +1,13 @@
+Here's the note with a link to "Project Plan" using the link text "the plan":
+
+```markdown
+Please see [the plan](Project%20Plan.md) for the full timeline and deliverables.
+```
+
+If your notebook uses wiki-style links (such as Obsidian), use this instead:
+
+```markdown
+Please see [[Project Plan|the plan]] for the full timeline and deliverables.
+```
+
+I can save this as a file in your working directory if you tell me the filename or the notebook's folder.

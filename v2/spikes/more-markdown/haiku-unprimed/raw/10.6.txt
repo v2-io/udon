@@ -1,0 +1,38 @@
+Standard Markdown tables can't span cells, so this uses HTML, which renders in most Markdown viewers and browsers:
+
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="2">Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Alice</td>
+      <td>Email</td>
+      <td>alice@example.com</td>
+    </tr>
+    <tr>
+      <td>Phone</td>
+      <td>555-0100</td>
+    </tr>
+    <tr>
+      <td>Bob</td>
+      <td>Email</td>
+      <td>bob@example.com</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+Rendered, it looks like this:
+
+| Name | Contact (spans 2 columns) | |
+|---|---|---|
+| Alice (spans 2 rows) | Email | alice@example.com |
+| | Phone | 555-0100 |
+| Bob | Email | bob@example.com |
+
+The `colspan="2"` cell in the header covers the "Email" and "Phone" label column and the value column. The `rowspan="2"` cell for Alice covers two rows, so the second row has no name cell.

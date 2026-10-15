@@ -1,0 +1,7 @@
+Quadratic equations are among the most fundamental objects in algebra, appearing in everything from the trajectory of a thrown ball to the design of optical lenses. A quadratic equation has the general form $ax^2 + bx + c = 0$, where $a$, $b$, and $c$ are constants and $a \neq 0$. Rather than factoring by trial and error, we can always find its solutions by completing the square, which yields a closed-form expression that works for any coefficients. This result, known as the quadratic formula, is given in Equation (1) below, and it tells us that the two roots depend entirely on the discriminant $b^2 - 4ac$, whose sign determines whether the roots are real or complex.
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \tag{1}
+$$
+
+As Equation (1) shows, when the discriminant is positive there are two distinct real roots, when it is zero there is exactly one repeated root, and when it is negative the roots form a complex-conjugate pair.

@@ -1,0 +1,18 @@
+B1 4.9(Inline code) 6.9(Admonition with an icon) 7.5(Collapsible section) 1.2(Document variables substituted into text) 13.4(Fenced block handed to a renderer) 2.2(Heading identifiers)
+B2 8.11(Option lists) 4.8(Keyboard, menu and button) 7.11(Literal block) 6.7(Nested admonitions) 6.3(Admonition: to-do (larger built-in set))
+B3 9.5(Executable code cells) 10.4(Table caption) 13.1(Attributes on any element) 9.1(Code block) 6.3(Admonition: to-do (larger built-in set)) 4.13(Index terms) 7.7(Multi-column layout) 10.3(Table footer row) 2.4(Table of contents)
+B4 8.3(Auto-numbered markers) 4.7(Small caps) 2.4(Table of contents) 9.6(Interactive session block) 4.18(Raw inline content for one output format) 2.5(Thematic break)
+B5 10.2(Headerless table) 4.14(Generic inline span with attributes) 4.18(Raw inline content for one output format) 8.12(Several blocks in one list item) 6.3(Admonition: to-do (larger built-in set)) 4.6(Superscript and subscript) 1.6(Comments)
+B6-targeted 4.1(Emphasis and strong) 4.4(Highlight) 4.2(Strikethrough or delete) 4.3(Insert / underline) 5.11(Footnote (reference)) 6.1(Admonition: note (fixed five types)) 3.1(Hard line breaks) 8.8(Definition lists)
+B1 haiku claude-haiku-5-5
+B1 sonnet claude-sonnet-5-5
+B2 haiku claude-haiku-5-5
+B2 sonnet claude-sonnet-5-5
+B3 haiku claude-haiku-5-5
+B3 sonnet claude-sonnet-5-5
+B4 haiku claude-haiku-5-5
+B4 sonnet claude-sonnet-5-5
+B5 haiku claude-haiku-5-5
+B5 sonnet claude-sonnet-5-5
+B6-targeted haiku claude-haiku-5-5
+B6-targeted sonnet claude-sonnet-5-5

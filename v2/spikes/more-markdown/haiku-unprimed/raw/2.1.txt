@@ -1,0 +1,21 @@
+# Getting Started with Our Team Workflow
+
+## Overview
+
+This document explains how our team organizes its work and communicates progress. It is meant as a short starting point for new members and a reference for existing ones.
+
+## Section One: Daily Practices
+
+Our team meets briefly each morning to review priorities and flag blockers. Work is tracked in a shared board, and each task should have a clear owner and a defined outcome before it begins. We keep updates concise and written, so that anyone can follow progress without needing a meeting.
+
+### Communication Norms
+
+When a question or problem arises, we raise it in the team channel first so that others can help or learn from the answer. Direct messages are reserved for sensitive topics. We aim to respond to requests within one business day.
+
+## Section Two: Project Delivery
+
+Each project moves through four stages: planning, development, review, and release. Planning produces a short scope statement agreed upon by the team. Development proceeds in small, reviewable changes. Review is required before any change is merged, and release follows a checklist to ensure nothing is overlooked.
+
+### Handling Feedback
+
+Feedback on a change should be specific and actionable. Reviewers note what should change and why, and authors respond to each comment before resubmitting. Disagreements are resolved by discussion, and unresolved questions are escalated to the project lead.

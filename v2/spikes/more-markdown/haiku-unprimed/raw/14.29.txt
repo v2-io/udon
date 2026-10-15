@@ -1,0 +1,62 @@
+I'll assume you're using **Obsidian**, since "daily note template" and "title/date on creation" are common Obsidian requests. If you use a different app, tell me and I'll adjust.
+
+## Option 1: Core Templates plugin (no extra plugins)
+
+Create a file named `Daily Template.md` in your templates folder:
+
+```markdown
+---
+title: {{title}}
+date: {{date:YYYY-MM-DD}}
+tags: [daily]
+---
+
+# {{title}}
+
+**Date:** {{date:dddd, MMMM D, YYYY}}
+
+## Notes
+
+## Tasks
+- [ ]
+
+## Reflection
+```
+
+**Setup:**
+1. Settings → **Core plugins** → enable **Templates**, and set the template folder.
+2. Settings → **Daily notes** → enable it and set **Template file location** to `Daily Template`. Each new daily note now gets the template automatically.
+
+`{{title}}` is replaced with the note's filename, and `{{date:...}}` uses Moment.js format codes.
+
+## Option 2: Templater plugin (auto-applies to any new note)
+
+Template file (`Templates/Daily Template.md`):
+
+```markdown
+---
+title: <% tp.file.title %>
+date: <% tp.date.now("YYYY-MM-DD") %>
+tags: [daily]
+---
+
+# <% tp.file.title %>
+
+**Date:** <% tp.date.now("dddd, MMMM D, YYYY") %>
+
+## Notes
+
+## Tasks
+- [ ]
+
+## Reflection
+```
+
+**Setup:**
+1. Install and enable **Templater**, and set the template folder to `Templates`.
+2. In Templater settings, turn on **Trigger Templater on new file creation**.
+3. Under **Folder Templates**, map the folder where your notes go (for example `Daily`) to `Templates/Daily Template.md`.
+
+**Caveat:** Templater fills in the title when the file is created, so name the note before it's created (or use the template-on-creation setting with a title prompt). If you rename the file later, the `title` and heading won't update automatically.
+
+Which option you pick depends on whether you want this only for dated daily notes (Option 1) or for every note in a folder (Option 2).

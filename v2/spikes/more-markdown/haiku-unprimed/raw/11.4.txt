@@ -1,0 +1,5 @@
+The quadratic formula gives the solutions to any quadratic equation of the form $ax^2 + bx + c = 0$, where $a \neq 0$. It is derived by completing the square on the general quadratic, and it works for every case, including those where the solutions are complex. The expression under the square root, $b^2 - 4ac$, is called the discriminant: it is positive when there are two distinct real roots, zero when there is one repeated root, and negative when the roots are complex conjugates. The formula is stated below as Equation (1) so it can be referenced later.
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \tag{1}
+$$

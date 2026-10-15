@@ -1,0 +1,3 @@
+Here's a short note with a tip admonition:
+
+> 💡 **Tip:** Save your work often. Committing small, frequent changes makes it easier to track progress and roll back mistakes.

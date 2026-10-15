@@ -1,0 +1,3 @@
+The city's new bike lanes have changed how people move through the downtown core. Commuters who once drove now cycle to work, and small shops along the route report more foot traffic than they expected. Critics argue that the loss of parking has hurt businesses that rely on customers who cannot easily walk or bike, and the debate has grown louder as the city prepares its next budget. The data so far is mixed, but the pattern is clear enough to justify a closer look at how the lanes affect different neighborhoods.
+
+> **[Margin note: TODO]** Verify the foot-traffic claim with the shop-owner survey before publishing. Add the source for the parking-loss figures and check whether "critics" should be named.

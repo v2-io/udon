@@ -1,0 +1,11 @@
+Here's a sentence with the index entry marked in LaTeX style:
+
+Plants convert sunlight, water, and carbon dioxide into glucose and oxygen through \index{photosynthesis}photosynthesis, the process that underpins nearly all life on Earth.
+
+If you're using a different system, here are equivalents:
+
+- **Markdown with Pandoc/other indexers (HTML anchor):** `<span class="index" data-index="photosynthesis">photosynthesis</span>`
+- **Microsoft Word field code:** `{ XE "photosynthesis" }` placed right after the word
+- **DocBook/XML:** `<indexterm><primary>photosynthesis</primary></indexterm>photosynthesis`
+
+Let me know which format your book uses and I can tailor it.

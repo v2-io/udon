@@ -1,0 +1,11 @@
+# Document Overview
+
+1. **Purpose**
+   This document describes how to organize and maintain files in the project workspace. Clear conventions make it easier to find work, review changes, and hand off tasks to others.
+
+2. **Guidelines**
+   Keep source files, scripts, and generated outputs in separate directories. Name files descriptively, using lowercase words separated by hyphens. Record significant changes in a short log so that future readers can see what changed and why.
+
+## Summary
+
+Following these practices keeps the workspace predictable and reduces time spent searching for files or reconstructing past decisions.

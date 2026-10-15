@@ -1,0 +1,194 @@
+## 1. Djot
+
+**(a)**
+````djot
+{#my-id}
+# Heading with id
+
+_emph_ *strong* {=highlight=} {+inserted+} {-deleted-} e=mc^2^ H~2~O
+[Ctrl+C]{.kbd}
+
+Inline math $`x^2` and a footnote[^1].
+
+Hard break\
+next line.
+
+::: warning
+Careful.
+:::
+
+: udon
+
+  a noodle
+
+| a | b |
+|---|---|
+| 1 | 2 |
+
+^ Table caption
+
+``` =html
+<div class="raw">raw</div>
+```
+
+[^1]: The note.
+````
+
+Superscript and subscript can also be written `{^sup^}` and `{~sub~}`. `^sup^` and `~sub~` are shorthand without braces. I'm not fully sure the caption line is `^ caption` in every version.
+
+**(b)**
+```djot
+*bold* and _italic_ and {-gone-} and <https://x.com>
+```
+
+**(c)**
+- The original reference implementation is `jgm/djot`, written in Lua.
+- `djot.js` is a JS/TS port by the same author.
+- Latest version: unsure. I believe `djot.js` was around 0.3.x. Djot has no formal 1.0 that I'm certain of.
+
+## 2. Obsidian
+
+```md
+---
+aliases: [A, First note]
+tags: [project/alpha, idea]
+---
+
+[[Alpha|first]]
+[[Alpha#Setup]]
+[[Alpha#^abc123]]
+
+A paragraph that declares a block id. ^abc123
+
+![[Alpha]]
+![[pic.png|300]]
+
+> [!warning]- Careful
+> Folded by default (`-` = collapsed, `+` = expanded).
+
+==highlighted==
+%%hidden in reading view%%
+#parent/child
+```
+
+For a list or quote, put the `^id` on its own line after the block, with a blank line before it.
+
+## 3. GFM
+
+**(a)** The spec adds:
+- tables
+- task list items
+- strikethrough (`~~`)
+- extended autolinks
+- disallowed raw HTML (tagfilter)
+
+**(b)**
+```md
+> [!NOTE]
+> Text
+```
+Types: NOTE, TIP, IMPORTANT, WARNING, CAUTION.
+
+**(c)** Footnotes and math are github.com rendering features only, not part of the GFM spec.
+
+## 4. CommonMark
+
+- **(a)** 0.31.2, January 2024.
+- **(b)** 7 kinds of HTML block.
+- **(c)** Yes, but only if it starts with `1.` and the item is non-empty. Bullet lists can interrupt a paragraph if the item is non-empty.
+- **(d)** No. Intraword `_` doesn't emphasize.
+- **(e)**
+```html
+<p><em>foo<strong>bar</strong>baz</em></p>
+```
+
+## 5. Pandoc Markdown
+
+**(a)**
+```md
+% Title
+% Author
+% 2026-01-01
+
+[@doe99, pp. 33-35]
+@doe99 [p. 33]
+[-@doe99]
+Text^[inline footnote.]
+
+::: {#note1 .callout}
+Content
+:::
+
+[span text]{.cls key=val}
+
+| line one
+| line two
+
+(@) First example
+(@) Second example
+
+\textbf{raw latex}  or  `\LaTeX`{=latex}
+```
+
+**(b)** The four table syntaxes are simple, multiline, grid, and pipe.
+
+**(c)**
+```sh
+pandoc -f markdown+smart ...
+pandoc -f markdown-smart ...
+```
+
+**(d)** `commonmark_x` is CommonMark plus pandoc's extension set, such as attributes, fenced divs, footnotes, tables, math, and definition lists.
+
+## 6. MDX
+
+- **(a)** MDX 3, released around October 2023. Unsure whether a newer major exists.
+- **(b)** Valid in CommonMark but broken or changed in MDX 2+:
+  - `<https://x.com>` autolinks (the `<` starts JSX).
+  - `<!-- html comments -->`.
+  - Bare `{` and `}` (they're expressions and need escaping).
+  - Bare `<` in text.
+  - Indented code blocks (disabled).
+  - Unclosed HTML such as `<br>` (must be `<br />`).
+  - `class=` and string `style=` (must be `className` and style objects).
+  - Raw HTML generally, since it's parsed as JSX.
+- **(c)**
+```mdx
+{/* comment */}
+```
+- **(d)** Not handled by core MDX. Use `remark-frontmatter`, plus `remark-mdx-frontmatter` to export it. Frameworks like Docusaurus, Astro and Next handle it for you.
+
+## 7. Others
+
+**(a)**
+````md
+:::{warning}
+Careful.
+:::
+
+{ref}`target`   {math}`x^2`
+````
+
+**(b)**
+```
+{% callout type="warning" %}
+Text
+{% /callout %}
+```
+
+**(c)** Pandoc Markdown.
+
+## 8. Confidence (1–5)
+
+- Djot: 3. Syntax is fairly clear; caption and version details are shaky.
+- Obsidian: 5
+- GFM: 5
+- CommonMark: 5
+- Pandoc Markdown: 5
+- MDX: 4
+- MyST: 4
+- Markdoc: 3
+- AsciiDoc: 4
+- reStructuredText: 4
+- Org mode: 4
+- Typst: 4

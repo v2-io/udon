@@ -1,0 +1,24 @@
+Here's a sentence with a small heart icon inline: I really love writing code on quiet mornings ❤️ because it makes the whole day feel calmer.
+
+If you want it from a specific icon set (e.g., Font Awesome, Bootstrap Icons, Lucide), here's how it looks in HTML:
+
+**Font Awesome:**
+```html
+<p>I really love writing code on quiet mornings <i class="fa-solid fa-heart"></i> because it makes the whole day feel calmer.</p>
+```
+
+**Bootstrap Icons:**
+```html
+<p>I really love writing code on quiet mornings <i class="bi bi-heart-fill"></i> because it makes the whole day feel calmer.</p>
+```
+
+**Inline SVG (no dependencies):**
+```html
+<p>I really love writing code on quiet mornings
+  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/>
+  </svg>
+  because it makes the whole day feel calmer.</p>
+```
+
+Setting the icon's size to `1em` keeps it scaled to the surrounding text so it reads as a small inline heart.

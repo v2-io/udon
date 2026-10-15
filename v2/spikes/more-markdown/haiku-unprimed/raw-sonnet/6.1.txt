@@ -1,0 +1,14 @@
+# Getting Started
+
+Welcome! This short guide walks you through the basics of setting up your project.
+
+First, install the dependencies and run the initial setup script. Once that finishes, you can start the development server and begin making changes.
+
+> **Note**
+> Make sure you're running the latest version before you begin. Older versions may not support all of the features described here.
+
+After setup is complete, you're ready to start building.
+
+---
+
+If you need this in a different format (reStructuredText, AsciiDoc, or Docusaurus/MkDocs-style `:::note` blocks), let me know.

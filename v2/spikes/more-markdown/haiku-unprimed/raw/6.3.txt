@@ -1,0 +1,20 @@
+Here's a short text with a to-do admonition in MkDocs/Python-Markdown syntax:
+
+```markdown
+# Project Notes
+
+The sync service runs every five minutes and writes results to the shared cache.
+
+!!! todo "To do"
+    Add retry logic for failed cache writes before the next release.
+
+Monitoring dashboards are still pending review by the ops team.
+```
+
+If you're using reStructuredText with Sphinx, the equivalent is:
+
+```rst
+.. todo::
+
+   Add retry logic for failed cache writes before the next release.
+```

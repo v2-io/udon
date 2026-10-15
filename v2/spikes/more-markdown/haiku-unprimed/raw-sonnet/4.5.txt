@@ -1,0 +1,15 @@
+Here's the sentence with the highlights, as HTML:
+
+```html
+<p><mark style="background-color: red; color: white;">Pay rent</mark> and <mark style="background-color: green; color: white;">call mom</mark></p>
+```
+
+Rendered, it looks like this: <span style="background-color:red;color:white;">Pay rent</span> and <span style="background-color:green;color:white;">call mom</span>
+
+If you want it in a terminal, use ANSI escape codes:
+
+```bash
+printf '\e[41mPay rent\e[0m and \e[42mcall mom\e[0m\n'
+```
+
+Plain Markdown has no color support, so which format works best depends on where you plan to use it.

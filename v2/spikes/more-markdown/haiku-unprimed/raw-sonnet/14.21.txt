@@ -1,0 +1,6 @@
+The connection attempt was <span style="color:red">blocked</span> by the firewall.
+
+Many Markdown renderers strip inline styles, so here are two alternatives:
+
+- **HTML:** `The connection attempt was <span style="color:red">blocked</span> by the firewall.`
+- **Terminal (ANSI):** `echo -e "The connection attempt was \033[31mblocked\033[0m by the firewall."`

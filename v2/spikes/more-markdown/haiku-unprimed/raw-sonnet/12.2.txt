@@ -1,0 +1,42 @@
+Here's a sentence using HTML, with a CSS tooltip that appears when the reader hovers over "key insight":
+
+```html
+<p>
+  The <span class="tip" data-note="A central realization that makes the rest of the problem easier to understand or solve.">key insight</span>
+  was that the simplest solution had been hiding in plain sight all along.
+</p>
+
+<style>
+  .tip {
+    position: relative;
+    border-bottom: 1px dotted #555;
+    cursor: help;
+  }
+  .tip::after {
+    content: attr(data-note);
+    position: absolute;
+    left: 0;
+    bottom: 125%;
+    width: 220px;
+    padding: 6px 8px;
+    background: #222;
+    color: #fff;
+    font-size: 0.85em;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+  .tip:hover::after {
+    opacity: 1;
+  }
+</style>
+```
+
+If you want the simplest possible version, the native `title` attribute works too:
+
+```html
+<p>The <span title="A central realization that makes the rest of the problem easier to solve.">key insight</span> was that the simplest solution had been hiding in plain sight.</p>
+```
+
+The CSS version gives you control over styling, while the `title` version needs no CSS and works everywhere, though it has a short delay and can't be styled.

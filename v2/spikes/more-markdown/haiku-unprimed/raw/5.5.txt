@@ -1,0 +1,13 @@
+# Project Notes
+
+This document covers the basic setup for the project. For first-time setup steps, see the [Installation](#installation) section.
+
+## Overview
+
+This project provides a small set of tools and utilities. It is intended to be simple to set up and run locally.
+
+## Installation
+
+1. Clone the repository.
+2. Install the required dependencies.
+3. Run the setup command to verify the installation.

@@ -1,0 +1,9 @@
+**Description:** Brief summary of what the function does and when to use it.
+
+**Parameters:**
+- `name` (type): What this parameter represents and any constraints on its value.
+- `name` (type, optional): What this parameter represents. Default: `value`.
+
+**Return value:** (type) What the function returns, including the meaning of the value and any special cases, such as returning `null` on failure.
+
+**Author:** Author's name or handle, and optionally contact information.

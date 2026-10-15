@@ -1,0 +1,7 @@
+| Left-aligned | Centered | Right-aligned |
+|:-------------|:--------:|--------------:|
+| Apples       | Red      | $1.20         |
+| Bananas      | Yellow   | $0.50         |
+| Cherries     | Dark red | $4.75         |
+
+The alignment is set by the colons in the separator row: `:---` for left, `:---:` for center, and `---:` for right.

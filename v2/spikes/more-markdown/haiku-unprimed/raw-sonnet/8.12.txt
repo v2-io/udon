@@ -1,0 +1,11 @@
+1. Start by defining a small, focused function that does one thing well. Keeping functions narrow in scope makes them easier to read, test, and reuse across a project.
+
+   When you write the function, give it a descriptive name and document its inputs and outputs. This way, anyone reading the code later can understand its purpose without digging through the implementation.
+
+   ```python
+   def greet(name: str) -> str:
+       """Return a friendly greeting for the given name."""
+       return f"Hello, {name}!"
+   ```
+
+2. Next, call the function from the rest of your program and verify its behavior with a quick test, such as `assert greet("Ada") == "Hello, Ada!"`.

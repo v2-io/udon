@@ -1,0 +1,33 @@
+Here's an HTML table with a cell spanning two columns (`colspan`) and a cell spanning two rows (`rowspan`):
+
+```html
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr>
+    <th colspan="2">Header spanning two columns</th>
+    <th>Column C</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Cell spanning two rows</td>
+    <td>B2</td>
+    <td>C2</td>
+  </tr>
+  <tr>
+    <td>B3</td>
+    <td>C3</td>
+  </tr>
+</table>
+```
+
+**How it renders:**
+
+| | | |
+|---|---|---|
+| **Header spanning two columns** (cols 1–2) | | **Column C** |
+| **Cell spanning two rows** (rows 2–3) | B2 | C2 |
+| *(continued)* | B3 | C3 |
+
+**Key points:**
+- `colspan="2"` makes the header cell stretch across the first two columns.
+- `rowspan="2"` makes the cell in column 1 stretch down across rows 2 and 3, so row 3 only needs two `<td>` elements.
+
+Markdown doesn't support spans natively, so HTML is the standard way to do this. If you need it in another format (LaTeX, Word, etc.), let me know.
