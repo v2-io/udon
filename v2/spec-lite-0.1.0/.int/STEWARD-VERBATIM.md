@@ -1128,3 +1128,11 @@
 ### 2026-10-20 — Joseph (whole)
 
 > we can also, grammar-like, do some early aliases like  «BACKTICK» = {`}    or something
+
+*(Agent text, summary: the agent drafted `def/def-characters.md`: upper-case names for the characters lite's syntax uses, each with glyph, code point and Unicode name, a name standing for one code point and acting as a grammar terminal; brackets and the rest left until cards need them.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> Yes-- essentially specialized character classes. Those will get more and more useful.   I need a little break-- will you commit what we have that's not committed, remove the old handoff, replace it with a new handoff that just casually discusses where we're at and where we think we're headed (probably tightening up our spec notation etc. still and then more defs and PEG etc.) etc.-- your thoughts on the various things raised that we haven't had a chance to discuss yet-- your recapitulation of several of my guides for working with me and what helps and what to assume and what not to assume etc., a warning against filling up context with stuff outside the *-lite-* directory-- send agents out scouting instead because there's not a ton of room right now even with just *lite* stuff in context and I need help with the big cross-cutting and big-picture adjudication (like these spec norms and definitions)... all of the meta-learnings etc. so far etc. -- get everything into a good spot. You'll probably have some context left afterward to do a little more work when I get back, but that + your leans on various things should give you plenty of productive work to do in the meantime.
+>
+> If you have a lean on the label characters / identifiers or a report that needs to be written to .int for the next agent to go over and get a lean etc. that would be useful too if not already done. I know I have had you bouncing all over the place. You may also want to look in your context at everything that filled it up that *isn't* particularly relevant or useful and warn any successor agents away from those if there are any...

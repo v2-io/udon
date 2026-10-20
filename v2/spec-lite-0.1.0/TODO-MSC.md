@@ -21,7 +21,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Also in discussion now
 
-1. **Label characters.** The options are in `.int/labels-unicode-options-2026-10-20.md` ([[def:label]]). In order:
+1. **Label characters.** The options are in `.int/labels-unicode-options-2026-10-20.md`, and the coordinator's lean on the rest in `.int/labels-ascii-and-positions-2026-10-20.md` ([[def:label]]). In order:
    - the Unicode repertoire for bare labels (default identifiers, immutable identifiers, XML's fixed ranges, ASCII only, KDL-style), and separating "does this open an element?" from "is this a valid name?";
    - ASCII punctuation in bare labels, every character of which is `Pattern_Syntax`: `-` `_` `:` `/` `$` `?` `!` `*` `+` `@` …; one character set for every label or a wider one for attribute names; first, inner and last positions;
    - what a label may never hold, even quoted: controls, bidi and other default-ignorable characters, noncharacters, private use, unpaired surrogates via `\u`;
