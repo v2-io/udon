@@ -94,4 +94,4 @@ fields:
   exercises: rule        # a field on each fixture case, not on frontmatter; `per` on a case is a decision, as above
 
 # Never resolve as records (templates-are-not-records).
-exclude: ["**/TEMPLATE.md", "**/*.template.md"]
+exclude: ["**/TEMPLATE.md", "**/*.template.md", "**/*.context.md"]   # *.context.md: history sidecars beside cards (Joseph, 2026-10-20), never records

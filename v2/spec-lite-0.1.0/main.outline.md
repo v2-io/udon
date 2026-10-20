@@ -7,7 +7,7 @@ version: 0.1.0
 
 # Contributing
 
-How this corpus is worked (record kinds, their fields, row-types, references, decisions, and how outlines like this one work) is in the Standard Operating Procedures (SOP) store, which has its own outline: [`sop/main.outline.md`](sop/main.outline.md). Start there to learn the conventions used for this spec. Some basic templates and info are provided below. There are other examples if desired in `.old/vsect-init/**` although they were written based on some random things in influx (now `.int`) and before the SOPs were fully developed.
+How this corpus is worked (record kinds, their fields, row-types, references, decisions, and how outlines like this one work) is in the Standard Operating Procedures (SOP) store, which has its own outline: [`sop/main.outline.md`](sop/main.outline.md). Start there to learn the conventions used for this spec. Open work across the store, ranked, is collected in [`TODO-MSC.md`](TODO-MSC.md). Some basic templates and info are provided below. There are other examples if desired in `.old/vsect-init/**` although they were written based on some random things in influx (now `.int`) and before the SOPs were fully developed.
 
 ### Legend / Key
 | Column | Meaning |
