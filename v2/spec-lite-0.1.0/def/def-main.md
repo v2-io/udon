@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [$main]
 per: [representational-options]
 depends: [rule:main-is-attribute, rule:leftover-values, def:stacking]

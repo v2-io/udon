@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [element, attribute]
 per: []
 depends: [def:tree, def:root, def:text, def:embed, def:element-name, def:attribute-name, def:key, def:trait, rule:main-is-attribute, rule:sameline-element-is-child, rule:top-level-attributes]

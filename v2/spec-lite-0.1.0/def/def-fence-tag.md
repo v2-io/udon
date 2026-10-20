@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: []
 per: []
 depends: [def:label, rule:fence-opens-with-backticks, rule:fence-label-no-backtick, rule:fence-exact-trait, rule:fence-opener-line, rule:fence-line-comments]

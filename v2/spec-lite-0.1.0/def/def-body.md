@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [body]
 per: []
 depends: [rule:fence-body-not-scanned, rule:fence-closer-is-a-line, rule:comment-block-owns-deeper-lines, rule:nested-attributes, rule:nesting]

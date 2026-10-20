@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [string]
 per: []
 depends: [rule:embeds-in-text, rule:strings-like-ruby]

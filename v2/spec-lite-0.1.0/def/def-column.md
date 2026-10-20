@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [column, indent-level]
 per: []
 depends: [rule:columns-count-spaces, rule:no-break-space-counts-as-space]

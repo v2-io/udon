@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [anomaly, error, warning]
 per: [errors-stop-parsing, reserved-is-an-error]
 depends: [def:document]

@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [prose]
 per: []
 depends: [def:text, rule:prose-passes-through, rule:text-lines-join, rule:main-and-body-separate]

@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [tree, raw-tree, node]
 per: [ast-centric, representational-options]
 depends: [def:document]

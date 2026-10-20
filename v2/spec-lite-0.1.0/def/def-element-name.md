@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [element-name]
 per: [suffixes-lose-special-status, references-vocabulary]
 depends: [def:node, def:label, def:quoted-name]

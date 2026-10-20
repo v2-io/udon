@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [reading-option]
 per: [representational-options]
 depends: [def:tree, def:text, rule:main-is-attribute]

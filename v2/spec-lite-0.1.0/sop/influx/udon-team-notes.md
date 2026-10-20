@@ -14,7 +14,7 @@ Proposed for the SOP side's conventions ([[conv:record-cadence]], [[conv:working
 
 - **History sidecars.** A card's history and provenance go to `<card-file>.context.md` beside it (Joseph: "sidecars like segment-slug.context.md or something for historical notes … only really be relevant to spec researchers or something very specialized in the future (usually just me wondering why I did something)"). A sidecar is not a record and never resolves (`.vsect/kinds.yaml` excludes `**/*.context.md`). This changes [[conv:working-notes]]'s "history goes to the changelog and git": a card's own history now has a sidecar.
 - **`context:` frontmatter field**, the sidecar's file name ("I wouldn't be opposed to having the frontmatter point directly to its context file").
-- **`strength:` frontmatter field**, how revisitable the card is ("You are welcome to put a "strength" scalar maybe in the frontmatter-- how revisitable it is -- not sure what values per se"). Values the udon team is trying, not yet put to Joseph:
+- **`strength:` frontmatter field**, how revisitable the card is ("You are welcome to put a "strength" scalar maybe in the frontmatter-- how revisitable it is -- not sure what values per se"). Values Joseph approved on 2026-10-20 ("love your strength values-- yes. well done."):
   - `forced`: follows from other cards; revisiting it means revisiting those, which Grounds names;
   - `decided`: debated and decided; revisit with a reason (a new case, a conflict, an implementer's finding);
   - `lean`: working spec, cheap to revisit; implementers are invited to propose the other way ([[spec/decision:leans-are-working-spec]]);

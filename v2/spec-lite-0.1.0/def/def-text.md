@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [text, piece, run]
 per: []
 depends: [def:string, def:embed, rule:embeds-in-text, rule:inline-comments, rule:main-is-attribute, rule:missing-value, rule:opaque-span-raw-text]

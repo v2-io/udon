@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [embed, inline-element]
 per: [inline-elements-in]
 depends: [def:text, rule:embeds-in-text, rule:inline-comments, rule:opaque-span-raw-text]

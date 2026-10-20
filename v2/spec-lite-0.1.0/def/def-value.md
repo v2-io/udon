@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [value]
 per: [term-typed-value]
 depends: [def:string, def:text, def:typed-value, def:stacking, def:prose, rule:element-values, rule:missing-value]

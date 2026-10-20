@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [empty-line, blank-line]
 per: []
 depends: [rule:blank-line-sets-no-indent]

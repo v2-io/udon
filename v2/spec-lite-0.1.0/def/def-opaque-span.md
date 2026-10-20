@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [opaque-span]
 per: []
 depends: [rule:opaque-span-raw-text, rule:opaque-span-escapes, rule:matched-pairs-need-no-escape, rule:newline-in-opaque-span-is-error]

@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [element-line, attribute-line]
 per: []
 depends: [def:node, def:head-position]

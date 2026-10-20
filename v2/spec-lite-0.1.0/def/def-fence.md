@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [fence, fence-opener, fence-closer, verbatim-flag]
 per: []
 depends: [def:body, def:fence-tag, rule:fence-opens-with-backticks, rule:fence-closes-at-n-or-more, rule:fence-closer-is-a-line, rule:fence-body-not-scanned, rule:fence-body-dedent, rule:fence-exact-trait, rule:fence-line-comments]

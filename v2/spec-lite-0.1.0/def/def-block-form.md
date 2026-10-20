@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [block-form]
 per: []
 depends: [def:marker, def:head-position, def:text, def:embed]

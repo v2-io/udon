@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [typed-value, explicit-typed-value, implicit-typed-value, type-label]
 per: [references-vocabulary, term-typed-value]
 depends: [rule:nil-spelling, def:text, def:string, rule:opaque-span-raw-text]

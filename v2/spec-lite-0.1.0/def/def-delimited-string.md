@@ -1,9 +1,10 @@
 ---
 kind: definition
 awaiting-second: true
-awaiting-decision: true
+awaiting-decision: false
 needs-work: false
-strength: lean
+strength: decided
+context: def-delimited-string.context.md
 terms: [delimited-string, double-quoted-string, single-quoted-string, escape-sequence]
 per: []
 depends: [def:string, rule:strings-like-ruby]
@@ -50,6 +51,5 @@ consequences: [rule:strings-like-ruby]
 
 ## Working notes
 
-- **Asked for by Joseph, 2026-10-20** ("a def/delimited-string file that defines what we call a delimited string, double-quoted string, single-quoted string, <<escape-sequence>>, etc."). Not reviewed with him.
-- Open: whether «delimited-string» (the spelling) and «string» (the value) need two terms, or one term should cover both. The cards say "string" in both senses today.
+- Open: whether «string» needs its own definition at all. The plan: change every mention that means the spelling to «delimited-string», then see what is left of «string» ([[def:string]]) and whether it needs a definition.
 - Open: «escape-sequence» covers the prose and sameline escapes above only if those are settled to stand for a character; if the sameline set stays undecided, its bullet waits.

@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: false
+strength: provisional
 terms: [quoted-name]
 per: []
 depends: [def:label, def:string, rule:quoted-element-and-attribute-names, rule:strings-like-ruby]

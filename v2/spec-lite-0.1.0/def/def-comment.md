@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [comment, comment-block, framed-comment, inline-comment]
 per: []
 depends: [def:text, def:embed, def:body, rule:comment-blocks, rule:comment-block-owns-deeper-lines, rule:framed-comments, rule:framed-comment-owns-deeper-lines, rule:inline-comments, rule:fence-line-comments, rule:comments-in-tree]

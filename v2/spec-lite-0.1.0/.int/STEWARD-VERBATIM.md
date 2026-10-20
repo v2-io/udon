@@ -1041,3 +1041,9 @@
 ### 2026-10-20 — Joseph (whole)
 
 > (If grounds can point to one of the objectives strongly, that would be appropriate also)
+
+*(Agent text, summary: the agent reported the objective added to `rule-strings-like-ruby`'s Grounds and to the shape conventions; still waiting: the label Unicode option and the split between opening an element and validating a name; whether «delimited-string» and «string» are two terms.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> love your strength values-- yes. well done.  As for whether <<string>> is its own term-- put it on the todo list to discuss-- we'll pull up all the mentions that need to read delimited-string instead and fix them and then see what's left and whether it needs its own definition. I have kind of expected that  body/string/text/prose/delimited-string/string-value/raw/label etc. will all be early parts of the definitions that need to be nailed down. Hopefully everything else (if there is anything) in def/ is clearly marked as provisional- because those entries on delimited-string etc. are literally the first I've (tacitly) approved of and accepted.

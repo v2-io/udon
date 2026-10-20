@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [framed, frame]
 per: []
 depends: [def:sameline, def:marker, def:comment]

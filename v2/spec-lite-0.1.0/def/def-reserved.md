@@ -3,6 +3,7 @@ kind: definition
 awaiting-second: true
 awaiting-decision: true
 needs-work: true
+strength: provisional
 terms: [reserved]
 per: [reserve-not-ignore, reserved-is-an-error]
 depends: [def:anomaly]
