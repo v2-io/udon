@@ -2,7 +2,24 @@
 
 *Started 2026-10-20 at Joseph's request: "we should start a distinct TODO-MSC.md in v2/*lite*/ that collects it all into one place potentially-- or at least captures all the ones not part of the working notes and notes the priority of the working notes etc....." For whoever works lite with him next: what is open, roughly in the order to take it. It holds open items only; a closed item is deleted (git and the card keep what was decided). An item's detail lives in the card named, if any; an item with no card is written out here. Ordering and priorities are the coordinator's judgment unless marked as Joseph's.*
 
-## Now: in discussion with Joseph
+## Top priority: the definitions
+
+Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicate and settle as the "rules", from a spec readability, execution, adoption, and inculcation perspective." **None of the definition cards marked `strength: provisional` has been discussed with Joseph or accepted by him.** They are agents' drafts, with research and leans in their working notes. The only definition he has accepted is [[def:delimited-string]] (tacitly, 2026-10-20). Joseph, 2026-10-20: "In my mind that's pretty much top priority (hence labels / strings / text ...)". He expects these to come early: "body/string/text/prose/delimited-string/string-value/raw/label etc. will all be early parts of the definitions that need to be nailed down." Suggested order, each put to him as "what do you call this piece?" with a UDON example:
+
+0. **«string» and «delimited-string»** (Joseph, 2026-10-20: "put it on the todo list to discuss-- we'll pull up all the mentions that need to read delimited-string instead and fix them and then see what's left and whether it needs its own definition"). Then the rest of his early set: [[def:body]], [[def:text]], [[def:prose]], "string-value", "raw" (the raw tree vs the opaque spans' raw text), [[def:label]].
+1. With the labels: [[def:label]], [[def:element-name]], [[def:attribute-name]], [[def:trait]], [[def:quoted-name]].
+2. [[def:sameline]], [[def:element-line]], and retiring "line scan".
+3. [[def:tree]] (AST? drop "raw"?), [[def:reading-option]] ("view"?).
+4. [[def:value]], [[def:typed-value]] (which sense of "typed value").
+5. [[def:text]] (pieces and runs), [[def:prose]] (if not already taken up under 0).
+6. [[def:meta]] vs ornament (also decides [[rule:edge-blank-lines]]).
+7. [[def:block-form]], [[def:embed]], [[def:marker]], [[def:head-position]].
+8. [[def:framed]], [[def:text-terminator]].
+9. [[def:root]] ("root"?), [[def:transcript]] ("notation"?), [[def:anomaly]] ("errors and warnings"?).
+10. [[def:comment]], [[def:body]], [[def:column]], [[def:left-edge]], [[def:fence]], [[def:blank-line]], [[def:document]], [[def:opaque-span]], [[def:reserved]].
+11. Confirm the ones that look settled: [[def:key]], [[def:main]], [[def:stacking]], [[def:node]] (element / attribute).
+
+## Also in discussion now
 
 1. **Label characters.** The options are in `.int/labels-unicode-options-2026-10-20.md` ([[def:label]]). In order:
    - the Unicode repertoire for bare labels (default identifiers, immutable identifiers, XML's fixed ranges, ASCII only, KDL-style), and separating "does this open an element?" from "is this a valid name?";
@@ -42,23 +59,6 @@ Joseph, 2026-10-20: "I suspect we could get through the missing cards pretty qui
 7. [[rule:late-attributes]]: an attribute line after content has begun.
 8. [[rule:source-lines]]: UTF-8, line endings (incl. the Unicode line terminators), BOM, final newline, how a column counts after non-ASCII characters.
 9. [[rule:documents-and-files]]: one document per file; whether a file says it is lite.
-
-## Vocabulary (co-equal with the rules)
-
-Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicate and settle as the "rules", from a spec readability, execution, adoption, and inculcation perspective." Every def card in `def/` is `strength: provisional` except [[def:delimited-string]], the first he has accepted (tacitly, 2026-10-20). He expects these to come early: "body/string/text/prose/delimited-string/string-value/raw/label etc. will all be early parts of the definitions that need to be nailed down." Suggested order, each put to him as "what do you call this piece?" with a UDON example:
-
-0. **«string» and «delimited-string»** (Joseph, 2026-10-20: "put it on the todo list to discuss-- we'll pull up all the mentions that need to read delimited-string instead and fix them and then see what's left and whether it needs its own definition"). Then the rest of his early set: [[def:body]], [[def:text]], [[def:prose]], "string-value", "raw" (the raw tree vs the opaque spans' raw text), [[def:label]].
-1. With the labels: [[def:label]], [[def:element-name]], [[def:attribute-name]], [[def:trait]], [[def:quoted-name]].
-2. [[def:sameline]], [[def:element-line]], and retiring "line scan".
-3. [[def:tree]] (AST? drop "raw"?), [[def:reading-option]] ("view"?).
-4. [[def:value]], [[def:typed-value]] (which sense of "typed value").
-5. [[def:text]] (pieces and runs), [[def:prose]] (if not already taken up under 0).
-6. [[def:meta]] vs ornament (also decides [[rule:edge-blank-lines]]).
-7. [[def:block-form]], [[def:embed]], [[def:marker]], [[def:head-position]].
-8. [[def:framed]], [[def:text-terminator]].
-9. [[def:root]] ("root"?), [[def:transcript]] ("notation"?), [[def:anomaly]] ("errors and warnings"?).
-10. [[def:comment]], [[def:body]], [[def:column]], [[def:left-edge]], [[def:fence]], [[def:blank-line]], [[def:document]], [[def:opaque-span]], [[def:reserved]].
-11. Confirm the ones that look settled: [[def:key]], [[def:main]], [[def:stacking]], [[def:node]] (element / attribute).
 
 ## Cleanup
 

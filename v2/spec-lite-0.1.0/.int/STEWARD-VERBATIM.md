@@ -1047,3 +1047,15 @@
 ### 2026-10-20 — Joseph (whole)
 
 > love your strength values-- yes. well done.  As for whether <<string>> is its own term-- put it on the todo list to discuss-- we'll pull up all the mentions that need to read delimited-string instead and fix them and then see what's left and whether it needs its own definition. I have kind of expected that  body/string/text/prose/delimited-string/string-value/raw/label etc. will all be early parts of the definitions that need to be nailed down. Hopefully everything else (if there is anything) in def/ is clearly marked as provisional- because those entries on delimited-string etc. are literally the first I've (tacitly) approved of and accepted.
+
+*(Agent text, summary: the agent reported the strength values recorded as approved, every other def card marked `strength: provisional`, `def-delimited-string` `decided` with a sidecar, and the «string» pass and his early vocabulary set at the top of TODO-MSC's vocabulary section; proposed doing the «string» pass next, then the label Unicode question.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> (If it's helpful, a general rule that allows working-notes to build up context is totally acceptable, and even to allow agents to assume it will be preserved in some form after adjudicated and decided, in the context file-- so separating out into the context file really can be part of the tightening/truthifying/verifying/stress-testing/polish work)
+>
+> Go ahead and do the string work I suppose. I guess that's the other thing that is most helpful-- you are a "principle target end-user" of udon. Your "beginners mind" trained instincts are actually quite an asset, as is your intuition. It's just the history of things that have been tried etc. that we don't have room for in your context. What that means is that *your* lean and recommendations on anything/everything are very useful data-points to me even if I end up leaning another direction-- in which case it allows me to see if my reasoning really outweighs any additional factors you bring to the table. A simple "this seems to be what I would expect" is a perfectly valid rationale for you! (and for me, to be honest)
+
+### 2026-10-20 — Joseph, sent mid-turn while the agent began the «string» pass (whole)
+
+> Does the TODO-MSC note that all of the existing defs marked provisional have not been discussed or accepted yet? In my mind that's pretty much top priority (hence labels / strings / text ...)
