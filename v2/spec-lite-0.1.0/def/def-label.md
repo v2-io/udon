@@ -127,6 +127,8 @@ consequences: [def:element-name, def:attribute-name, def:trait, def:quoted-name,
 
   Already decided that bears on it: an unquoted label can't begin with `.` (provisional, [[rule:traits-may-follow-spaces]]).
 
+- **Which characters (2026-10-20).** Joseph: "Since it's time to take it on, let's do it right and first talk about our options as far as XID, UAX31, etc." The options, from UAX #31 (Unicode 18), UTS #55, XML 1.0, CSS Syntax 3 and KDL v2, are laid out in `.int/labels-unicode-options-2026-10-20.md`: default identifiers (XID), immutable identifiers, XML's fixed ranges, ASCII only, a KDL-style negative definition; the guard-versus-validation split; and the case, normalization and invisible-character choices any option still needs.
+
 ### Coordinator's lean (Opus 5.5, 2026-10-09; my opinion for Joseph, not a lean of his)
 
 - **Agree with the drafter:** «label» in his 2026-10-09 sense, a lexical class only. Spec sentences say "an element name is a label", never "the element's label". The cards' current "label" for the attribute's name, the fence tag and the type tag all go.
