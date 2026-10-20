@@ -43,7 +43,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 - **Every existing warning marked default-on or default-off** ([[rule:warnings-can-be-toggled]]), with the anomaly view ([[view:anomalies]]) collecting them.
 - **Framed at end of line:** is `|li Item ;` an empty comment, and `|el :a x \` the text `x`? ([[def:framed]]; the cards disagree.)
 - **Comments:** where a framed comment sits in the tree; whether a comment's text keeps the space after `;`; whether a line starting `;{` is a comment block or text opening with an inline comment.
-- **The tree notation** ([[rule:tree-transcript]]; Joseph has "remaining issues to consider").
+- **The tree notation** ([[rule:tree-transcript]], which is the notation card). Joseph's 2026-10-20 constraints are on it: `‹…›` and `<…>` look alike; `<…>` must not mean "raw"; lesser-used single-width brackets welcome; an AST list must never be confused with a UDON list value. The coordinator's glyph proposal is in its working notes.
 - **What a fence handler is in the spec**: who supplies one, how it is picked, whether its error stops parsing ([[rule:fence-default-handler]]). Joseph allows `awaiting-implementers` past his lean.
 - **Kinds of node:** is an attribute a node; is the root an element ([[def:tree]], [[def:root]]).
 - **His string/text worry** ([[def:string]]).

@@ -11,7 +11,7 @@ depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# A raw line ending in a delimited string is an error
+# A raw line ending in a «delimited-string» is an error
 
 *A «delimited-string» must close on the line it opens; `\n` writes a newline in a «double-quoted-string».*
 

@@ -11,7 +11,7 @@ depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# Escapes in double-quoted strings
+# Escapes in «double-quoted-string»s
 
 *In a «double-quoted-string» a backslash must begin one of a fixed list of «escape-sequence»s; any other is an error.*
 

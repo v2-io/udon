@@ -11,7 +11,7 @@ depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# Quoted element and attribute names follow the delimited-string rules
+# Quoted element and attribute names follow the «delimited-string» rules
 
 *An element name or attribute name written in quotes is read by the same rules as a «delimited-string» of that quote.*
 
