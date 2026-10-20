@@ -18,6 +18,7 @@ consequences: [rule:no-break-space-counts-as-space, rule:column-shifting-whitesp
 - **anomaly:** an «error» or a «warning» a parser reports, with where it is.
 - **error:** something a lite «document» may not contain. Parsing stops, the parser reports what it found and where, and no «tree» is produced. A «document» with no «error» is valid lite.
 - **warning:** something that "*is* technically correct udon/udon-lite and does do a specific thing-- but possibly not what you intended it to do" (Joseph). The «tree» is produced; the «warning» travels with it.
+- **default-on / default-off:** every «warning» is one or the other; a parser reports default-on warnings unless turned off, and default-off warnings only when turned on ([[rule:warnings-can-be-toggled]]; Joseph, 2026-10-20).
 
 ## Invariants
 

@@ -78,3 +78,6 @@ Chosen:
 *Reopening means a new decision that supersedes this one. This outcome is never edited in place.*
 
 ## Working notes
+
+- **The `awaiting-implementers` tag** (named by the coordinator at Joseph's request, 2026-10-20: "we're getting into the realm where I'm happy to say "*final decisions pending from implementers*" -- a tag you can come up with a short name for that we will be using more and more"). A card or a part of one marked `awaiting-implementers` states Joseph's direction so far, and leaves the final shape to whoever implements the parser, who brings back what they chose and why. It is written in the card's Epistemic status, naming which part it covers. It parallels the three record flags (`awaiting-second`, `awaiting-decision`, `needs-work`), which say who moves next; whether it becomes a fourth frontmatter flag is a process question for the SOP store, not decided.
+

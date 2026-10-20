@@ -998,3 +998,25 @@
 > I suspect we could get through the missing cards pretty quickly if we fire them off one at a time-- you just give me your full understanding as concisely as you can. Same with the remaining open issues. Same with definitions etc.
 >
 > I recommend you *avoid* reading the unadjudicated, undisciplined, incomplete v2/spec-0** directories(!!) -- instead, if there is information missing from spec-lite and the .int/ research etc.-- send an agent into those *as well as v2/*.md and v2/theory/ and v2/spikes and v2/.archived/**/*.md , v2/msc/**/*.md  , ~/.claude/history.jsonl (for direct quotes from me with dates), and the udon/ non-v2 stuff (the old parser) as well as doing some git pickaxe work and come back with essentially the timeline of various thinking on a given subject. (*please remember or write down those references, as you are almost guaranteed to need an agent to go digging at some point even if just to satisfy your curiosity and reading those yourself will put some very strong biases and misinformation in your context incidental to this work today*). Always look first at everything we have in v2/spec-lite-0.1.0/** and then v2/spec-lite-0.1.0/.int/ fully and the git-log associated with v2/spec-lite-0.1.0/ -- cleaning up and fixing as we go-- before launching an agent to do deeper older searching. Be sure you are *extremely* familiar with the concepts and everything laid out here in the spec-lite-0.1.0/???/** directories.
+
+*(Agent text, summary: the agent recorded his verbatim and his open thoughts on their cards (commit `ea7ef0c`), and replied to them: on `~~~`, that a Markdown code fence written in UDON prose is protected today only because ```` ``` ```` opens a lite fence, so with `~~~` as the only fence a `|name` line inside such a block would open an element; on the fence's tree, his shape (element-like; children an optional comment, the raw body with meta, an optional closing comment) drawn as an example, the body's name and whether a fence is a kind of element still open; the no-break space already counts as a space with a warning; "embeds resolve to text" read as resolution belonging to consumers, the raw tree keeping embeds as pieces; the backslash also escaping embeds, already carded; `@{<…>}` already parsing as a reference whose raw text is `<…>`. Then, after reading the rest of the store, it put "item 1, labels": «label» as a spelling rule, his 10-12 label table, and the open question of one character set for every label versus a wider one for attribute names, with examples and trees, leaning one set.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> Cards quote 0.10.0? They really shouldn't-- we need to put that on the list of things to fix. I can't see that adding any value whatsoever-- bread-crumbs to a broken draft from another agent working on a problem that was completely distinct from ours and a spec that was never published and that no one knows....
+>
+> Oohhh, great point with the ``` in udon incidentally protecting ``` in markdown. Make that note in there please-- I still might want to recommend ~~~ for udon even if we accept both, and I think we'd need to accept both in light of no conflict with markdown and the protection obligation you bring up.
+>
+> wrt fences: raw body would still just as easily be <<text>> with each line saved independently for easy dedentation where desired.
+> After that, we're getting into the realm where I'm happy to say "*final decisions pending from implementers*" -- a tag you can come up with a short name for that we will be using more and more I can already tell the closer we get.
+>
+> warning on non-breaking space -- let's distinguish between default-on and default-off warnings and specify that the parser should allow them to be toggled. This would be a default-off (our first, AFAIK)
+>
+> backslash: are we clear about allowing or escaping embeds in delimited strings (or reserving that?)
+>
+>
+>
+> (These were comments from your earlier response ^^^)
+>
+>
+> Now, as for labels... uh, that's a basic starting point for the discussion with handwaving for "almost anything but space" etc. Since it's time to take it on, let's do it right and first talk about our options as far as XID, UAX31, etc.

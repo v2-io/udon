@@ -5,17 +5,17 @@ awaiting-decision: false
 needs-work: false
 layer: tree
 per: []
-depends: [rule:columns-count-spaces, def:anomaly]
+depends: [rule:columns-count-spaces, def:anomaly, rule:warnings-can-be-toggled]
 consequences: []
 ---
 
-# A no-break space counts as a space, with a warning
+# A no-break space counts as a space, with a default-off warning
 
-*A U+00A0 NO-BREAK SPACE where it sets a column counts as one space, with a «warning».*
+*A U+00A0 NO-BREAK SPACE where it sets a column counts as one space; the parser has a «warning» for it, off unless turned on.*
 
 ## Statement
 
-A U+00A0 NO-BREAK SPACE where it sets a column MUST count as one space, and the parser MUST report a «warning».
+A U+00A0 NO-BREAK SPACE where it sets a column MUST count as one space. The parser MUST have a «warning» for it, which is off by default ([[rule:warnings-can-be-toggled]]).
 
 ## Grounds
 
@@ -71,3 +71,4 @@ Chosen. No fixture yet.
 
 - A no-break space inside text, values or fence bodies, where it sets no column, is plain content with no warning: the agent's reading, not yet put to Joseph.
 - **Joseph, 2026-10-20:** "I'm considering allowing non-breakings spaces if they aren't already as equivalent to spaces." They already are, with a warning (this card); open whether the warning stays.
+- **Default-off, Joseph 2026-10-20:** "warning on non-breaking space -- let's distinguish between default-on and default-off warnings and specify that the parser should allow them to be toggled. This would be a default-off (our first, AFAIK)". The 2026-10-09 Discussion above says "with a warning"; the warning stays, now off unless a user turns it on.

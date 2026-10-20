@@ -42,6 +42,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[def:text]] | A «text» is an ordered sequence of «piece»s: «run»s of characters and «embed»s. It is what unquoted material on an element's or attribute's line becomes, and what prose becomes. |
 | proposed | [[def:typed-value]] | A «typed-value» gets its type from its spelling alone. Spelled `<…>`, it is an «explicit-typed-value», whose text lite carries without attaching meaning. Spelled any other way, it is an «implicit-typed-value». |
 | proposed | [[def:anomaly]] | An «error» stops parsing: there is no «tree». A «warning» marks correct lite that may not do what was meant: the «tree» is produced and carries it. |
+| proposed | [[rule:warnings-can-be-toggled]] | Each «warning» is default-on or default-off, and a parser lets its user turn each one on or off. |
 | proposed | [[def:reading-option]] | Lite specifies the «raw-tree». A «reading-option» is a view over it that a consumer may apply, usually while traversing; it is not language. |
 | proposed | [[def:blank-line]] | An «empty-line» is a newline with nothing before it on its line; a «blank-line» is an «empty-line» or a line of only whitespace. |
 | proposed | [[rule:tree-transcript]] | A fixture's expected «raw-tree» is written in one canonical printed form, and a parser's tree is checked by printing it in that form and comparing the text byte for byte. |
@@ -92,7 +93,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:blank-line-any-whitespace]] | A «blank-line» may hold tabs and any other Unicode whitespace; the column error does not apply to it. |
 | proposed | [[rule:blank-line-whitespace-in-text]] | Inside a text or a fence body, whitespace on a «blank-line» that reaches past the left edge is kept; otherwise the line contributes only its newline. |
 | proposed | [[rule:columns-count-spaces]] | Indentation, and the column of anything later on a line, are counted in U+0020 SPACE characters. |
-| proposed | [[rule:no-break-space-counts-as-space]] | A U+00A0 NO-BREAK SPACE where it sets a column counts as one space, with a «warning». |
+| proposed | [[rule:no-break-space-counts-as-space]] | A U+00A0 NO-BREAK SPACE where it sets a column counts as one space, with a default-off «warning». |
 | proposed | [[rule:column-shifting-whitespace-error]] | A tab, or any Unicode whitespace other than a space or a no-break space, in a line's indentation or before a later marker on the line, is an «error». |
 | proposed | [[rule:whitespace-after-last-marker]] | A tab or other whitespace after the last marker on a line shifts no column, so it is content. |
 | gap | [[rule:nesting]] | Deeper is a child, the same column a sibling, shallower closes |
@@ -219,3 +220,10 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[expl:common-mistakes]] | Near-miss spellings from other notations |
 | proposed | [[expl:writing-lite]] | Advice for writers: indentation, closer placement, quoting |
 | proposed | [[prop:append-safety]] | Does appending a top-level block ever change what came before? |
+
+---
+
+## *Working Notes (outline-level)*
+
+- **Cleanup: cards cite 0.10.x.** On 2026-10-20, 33 rule cards and 37 definition cards (plus a few objectives and decisions) mention 0.10.0 or 0.10.x: as grounds, as precedent, in Avoid lists. Joseph, 2026-10-20: "Cards quote 0.10.0? They really shouldn't-- we need to put that on the list of things to fix. I can't see that adding any value whatsoever-- bread-crumbs to a broken draft from another agent working on a problem that was completely distinct from ours and a spec that was never published and that no one knows...." Each mention is to be removed or replaced by the lite reasoning it stood in for; where a card's only ground was 0.10.0, that card's rule needs its own grounds or goes back to Joseph.
+

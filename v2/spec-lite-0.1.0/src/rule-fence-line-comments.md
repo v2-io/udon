@@ -26,10 +26,12 @@ make build
 ```tree
 root
   |job
-    :script ```sh "make build\n"
-    ; " run in CI"
-    ; " end of script"
+    :script ```sh
+      ; " run in CI"
+      ‹make build›
+      ; " end of script"
 ```
+Both comments are children of the fence, around its body (Joseph's lean on the fence's tree, 2026-10-20; [[rule:fence-opener-line]]).
 
 ## Grounds
 
@@ -87,6 +89,6 @@ A rule, resting on the decisions in `per`. No fixtures yet.
   > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
 
 - **Reasoning:** One comment rule for lines that open or close a node.
-- Where these comments sit in the «tree» is the drafter's placement, not discussed.
+- Where these comments sit in the «tree»: children of the fence, the opening line's comment before the body and the closer's after it (Joseph's lean, 2026-10-20, in [[rule:fence-opener-line]]).
 - Anything other than a framed comment after a closer's backticks is an error ([[rule:fence-closer-trailing-text-is-error]]).
 - Since 2026-10-12 the opening line reads like an element's line ([[rule:fence-opener-line]]), so the opener's comment is the ordinary sameline comment. The "label" in the Discussion is now the fence's name.

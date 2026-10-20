@@ -26,6 +26,8 @@ After a fence's opening backticks, the rest of the line MUST be read as an eleme
 
 Joseph's proposal (2026-10-12), which the coordinator agreed with. What the fence's attributes, traits and `$main` mean is up to its handler ([[rule:fence-default-handler]]).
 
+The fence's shape in the tree is Joseph's lean (2026-10-20): a node of its own type, element-like, holding the opening line's attributes, then as children in source order an optional comment, the body as a «text» with each line kept separately, and an optional closing comment. The rest of the fence's tree is `awaiting-implementers` ([[decision:leans-are-working-spec]]).
+
 ## Explanation
 
 ````udon
@@ -41,9 +43,9 @@ root
       :$key ‹example-7›
       :hidden false
       ; " a note"
-      "echo \"seems ok.\"\n"
+      ‹echo "seems ok."›        ← the body: a «text», each line kept separately
 ```
-*(Tree notation provisional. `:hidden false` is an error under the default handler ([[rule:fence-default-handler]]); a handler for `sh` may accept it.)*
+*(Tree notation provisional; how the body's lines and their line endings print is part of what awaits implementers. `:hidden false` is an error under the default handler ([[rule:fence-default-handler]]); a handler for `sh` may accept it.)*
 
 ## Working notes
 
@@ -64,3 +66,4 @@ root
 - **Open:** whether a fence is an «element» of a special kind ("the specialized fenced node that is related to `element`"), and how the tree prints it.
 - An element written later on the opening line (```` ```sh |x ````) parses, and the default handler rejects it.
 - **Joseph's thought on the fence's tree (2026-10-20, a question, not a ruling):** "I don't know what the AST for a fence already looks like-- presumably it is element-like but with a different node-type and with children consisting of an optional comment, a body raw text with meta, and an optional closing comment. Thoughts?" That would also settle where a closer's comment goes, and would correct [[rule:fence-line-comments]], whose example still draws both comments as children of the enclosing element.
+- **The fence's tree, Joseph 2026-10-20.** Asked first: "presumably it is element-like but with a different node-type and with children consisting of an optional comment, a body raw text with meta, and an optional closing comment. Thoughts?" Then, on the coordinator's drawing of that shape: "raw body would still just as easily be <<text>> with each line saved independently for easy dedentation where desired. After that, we're getting into the realm where I'm happy to say "*final decisions pending from implementers*"". The body as a «text» has no embeds (the body is never scanned, [[rule:fence-body-not-scanned]]); keeping each line separately is what lets a consumer re-dedent or re-indent from «meta» ([[rule:fence-dedent-in-meta]]).

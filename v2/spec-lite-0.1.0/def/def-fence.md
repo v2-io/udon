@@ -56,7 +56,7 @@ make build
 - **triple-backtick block / escape** — 0.9 CORE; lite fences are N ≥ 3 backticks, not exactly three.
 - **blob** — retired in 0.10.0 for text; never a lite word.
 - **heredoc** — Joseph's 2011 analogy: "fence == filter == encoders/decoders ~= heredoc ~= processing-instruction" (`_older/udon/doc/syntax2.udon`). An analogy only; then "fence" meant a delimiter naming a processor (`<uuu<`).
-- **`~~~` fence** — CommonMark allows tildes; lite doesn't (not taken in [[rule:fence-closes-at-n-or-more]]).
+- **`~~~` fence** — CommonMark allows tildes; lite's cards so far don't. Joseph, 2026-10-20, leans toward accepting both, possibly recommending `~~~` for UDON's own fences ([[rule:fence-opens-with-backticks]], working notes).
 
 **For «fence-opener» and «fence-closer»:**
 - **opening/closing code fence** — CommonMark's phrasing. There the "code fence" is the backtick run itself, not the block (see Working notes).
