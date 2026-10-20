@@ -58,6 +58,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[def:body]] | A «body» is the lines that belong to a construct below the line it starts on. Lite's cards use the word for three things that behave differently: a «fence»'s lines up to its «fence-closer», a «comment-block»'s deeper lines, and an attribute's indented lines. |
 | proposed | [[def:column]] | A «column» is how far into its line a character sits, counted in spaces. A line's «indent-level» is the column of its first non-space character. "Indent level" is Joseph's most-used word in this whole territory, and he uses it for four different things. |
 | proposed | [[def:comment]] | A «comment» is text written for the document's maintainers that lite carries in the «tree» and never interprets. Lite has three spellings of one: a `;` line with its deeper lines (a «comment-block»), a ` ; ` with a space on each side after structure on a line (a «framed-comment»), and `;{…}` inside a «text» (an «inline-comment»). |
+| proposed | [[def:delimited-string]] | A «delimited-string» is a value written between matching quotes, `"…"` (a «double-quoted-string») or `'…'` (a «single-quoted-string»); an «escape-sequence» is a backslash and what follows it, standing for one character in a form that defines it. |
 | proposed | [[def:element-line]] | An «element-line» is a line whose first content, at a «head-position», is an element; an «attribute-line» is one whose first content there is an attribute. They are the two kinds of line that have a «sameline». |
 | proposed | [[def:element-name]] | An «element-name» is the «label» written directly after an element's `|`, bare or in quotes: `user` in `|user[jw]`. An «element» may have none. |
 | proposed | [[def:embed]] | An «embed» is a brace form written inside a «text»: an «inline-element» `|{…}`, a reference `@{…}`, or an inline comment `;{…}`. It is always a «piece» of its «text», never a value of its own. |
@@ -110,7 +111,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 |---|---|---|
 | proposed | [[rule:unclosed-delimiter-is-error]] | If a string, list, key, `<…>`, `@{…}`, `;{…}`, `\|{…}` or fence is still open where it must close, parsing stops. |
 | proposed | [[rule:matched-pairs-need-no-escape]] | Inside `<…>`, `@{…}`, `;{…}` and a key, an unescaped opener nests and is closed by its own closer; the form ends at the closer that matches its opener. |
-| proposed | [[rule:strings-like-ruby]] | `"…"` and `'…'` make a «string» read essentially as Ruby reads it, closed at the next unescaped matching quote. |
+| proposed | [[rule:strings-like-ruby]] | A «delimited-string» reads essentially as a Ruby string literal, closed at the next unescaped matching quote; nothing inside it is UDON syntax. |
 | proposed | [[rule:no-interpolation]] | `#{…}` inside a quoted string is ordinary text. |
 | proposed | [[rule:newline-in-string-is-error]] | A quoted string must close on the line it opens; `\n` writes a newline in `"…"`. |
 | proposed | [[rule:double-quote-escapes]] | In `"…"` a backslash must begin one of a fixed list of escapes; any other is an error. |

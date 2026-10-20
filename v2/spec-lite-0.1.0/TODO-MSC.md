@@ -51,7 +51,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 2. [[def:sameline]], [[def:element-line]], and retiring "line scan".
 3. [[def:tree]] (AST? drop "raw"?), [[def:reading-option]] ("view"?).
 4. [[def:value]], [[def:typed-value]] (which sense of "typed value").
-5. [[def:text]] (pieces and runs), [[def:string]], [[def:prose]].
+5. [[def:text]] (pieces and runs), [[def:string]], [[def:delimited-string]] (new 2026-10-20; one term or two for spelling and value?), [[def:prose]].
 6. [[def:meta]] vs ornament (also decides [[rule:edge-blank-lines]]).
 7. [[def:block-form]], [[def:embed]], [[def:marker]], [[def:head-position]].
 8. [[def:framed]], [[def:text-terminator]].
@@ -62,7 +62,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 ## Cleanup
 
 - **Defunct citations.** Cards cite 0.10.x (33 rule cards and 37 def cards on 2026-10-20), and also 0.9 drafts, pre-design numbers and retired records. Joseph, 2026-10-20: strip them from any card opened for editing; a settled card carries no working notes; history goes to a sidecar `<card-file>.context.md`. Done so far: [[rule:strings-like-ruby]].
-- **The sidecar convention and the `awaiting-implementers` tag** need recording in the SOP store (its [[sop/conv:working-notes]] still sends history only to the changelog and git). `.vsect/kinds.yaml` already excludes `*.context.md` from resolving.
+- **The new card shape** (history sidecars, `context:` and `strength:` frontmatter, one-line Grounds, Implications, Decisions carried, dropping Epistemic status, the `awaiting-implementers` tag) is proposed to the SOP store in `sop/influx/udon-team-notes.md`; the `strength:` values (`forced`, `decided`, `lean`, `provisional`) are the udon team's trial, not yet put to Joseph. `.vsect/kinds.yaml` already excludes `*.context.md` from resolving.
 - **Renames:** `def:node` → `def:element` (14 links); slugs still saying "label" (`rule-fence-label-no-backtick`); `rule-line-scan`.
 - **Stale text:** `.int/README.md` (reserved spellings "keep the bytes"; "the same tree"); the `def:document` row in `main.outline.md`; `dat/implied-root.yaml` in the pre-design tree notation; `sop/src/conv-decisions.md` and `sop/adr/record-to-decision-links-for-now.md` should say cards are the decisions.
 

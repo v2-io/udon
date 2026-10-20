@@ -2,6 +2,11 @@
 
 *History and provenance for the card beside it, kept for whoever later wonders why the rule is what it is. Not spec text and not a record; nothing here binds.*
 
+- **His words, as decided.**
+  - 2026-10-08: "I think "..." and '...' should essentially be just like ruby strings (including escape sequences in "" but not in '', and including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`), different than our "general matching + escaping" for arrays, typed values, keys, and embeds."
+  - 2026-10-08, on its two edges: "ruby strings:  right--- no interpolation, #{} gets passed through as normal text, and go ahead and error on unknown escape sequences in ""."
+  - 2026-10-20, on clause 2 (an embed inside quotes is just characters, `"\|{"` an error, `'\|{'` literal): "backslash embeds-- ok, that all seems correct for now."
+  - On `\b`: "It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character). That said, I'm fine erroring as reserved for right now."
 - **Before lite.** In the 0.10.0 draft a quoted string had no escapes: it ended at the next quote of its own kind, so a string holding both quote kinds, or a newline, had no single-line spelling (its L2; lite pre-design 75).
 - **How it was decided (2026-10-08).** The agent put escapes to Joseph as three options, leaning C with raw single quotes:
   - A: strings take escapes; opaque spans keep "any `\X` gives `X`";

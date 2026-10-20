@@ -7,3 +7,20 @@
 - Lite adopted `sop/influx/proposed-decision-authority.md` §3, taking the lean on all ten of its §5 questions: [[spec/decision:decision-authority]] (`supported` by Joseph). In short, `deciders` says who made the call (with a role), `decided-by` says what the store's decider did, and the values are `proposed`, `delegated`, `supported`, `ratified`, `ruled`, `steward`, `defacto`. `council` became a role; `transition` moved to `status` plus `needs-work`. Joseph asked that the decision record say plainly that it, and every decision, can be revisited: the recorded assumptions exist so a later reader can tell when revisiting serves the real goals rather than momentum or appeals to authority.
 - **`adr/TEMPLATE.md` was edited to match** (its `decided-by` and `deciders` comments, the About notes on these fields, the delegated-decisions section, and the after-acceptance rules). The SOP store's decisions are also made from this template ([[conv:decisions]]), so its existing records now use the older meanings. Bringing them into line (the proposal's groups A and B), and updating `sop/def/def-decision.md`, is yours to do or not. If the SOP store declines the split, that is a reopen condition on the lite record, since one template would then carry two meanings.
 - The proposal's question 10 convention ("can I mark that as your decided position?" at the moment of assent) is now in the template.
+
+## 2026-10-20 — card shape changes Joseph asked for in lite's spec store
+
+Proposed for the SOP side's conventions ([[conv:record-cadence]], [[conv:working-notes]], [[def:record-fields]]); in use in lite since 2026-10-20, first on `src/rule-strings-like-ruby.md`.
+
+- **History sidecars.** A card's history and provenance go to `<card-file>.context.md` beside it (Joseph: "sidecars like segment-slug.context.md or something for historical notes … only really be relevant to spec researchers or something very specialized in the future (usually just me wondering why I did something)"). A sidecar is not a record and never resolves (`.vsect/kinds.yaml` excludes `**/*.context.md`). This changes [[conv:working-notes]]'s "history goes to the changelog and git": a card's own history now has a sidecar.
+- **`context:` frontmatter field**, the sidecar's file name ("I wouldn't be opposed to having the frontmatter point directly to its context file").
+- **`strength:` frontmatter field**, how revisitable the card is ("You are welcome to put a "strength" scalar maybe in the frontmatter-- how revisitable it is -- not sure what values per se"). Values the udon team is trying, not yet put to Joseph:
+  - `forced`: follows from other cards; revisiting it means revisiting those, which Grounds names;
+  - `decided`: debated and decided; revisit with a reason (a new case, a conflict, an implementer's finding);
+  - `lean`: working spec, cheap to revisit; implementers are invited to propose the other way ([[spec/decision:leans-are-working-spec]]);
+  - `provisional`: holds the place until a named discussion settles it.
+- **Grounds as one line of kind, not quotes.** Joseph: "Grounds -- "Joseph, 2026-10-09: …" blah blah blah-- that's historical breadcrumbs, not a spec. Try: Grounds: debated-decided, see [context](...) file. Revisit as needed. (distinct from, for example: Only option that leaves ... and ... consistent- revision blocked by those." His words move to the sidecar.
+- **`## Implications`**, an optional rule section for the user-facing costs a decision accepts ("nor would I mind a simple "**Implications**" for some of the user-facing costs accepted").
+- **"Decisions carried"**: a card that holds several decisions lists them (Joseph: "ideally each its own file but I'm not going to be a pedant about it when the organization really wants something like this instead").
+- **Epistemic status** becomes redundant with `strength:` plus the one-line Grounds; lite's reshaped cards drop it.
+- **`awaiting-implementers`**: a tag (perhaps a fourth flag) for a card whose final shape is left to the parser's implementers past Joseph's direction (defined in [[spec/decision:leans-are-working-spec]]'s working notes).
