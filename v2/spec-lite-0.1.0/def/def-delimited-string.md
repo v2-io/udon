@@ -57,3 +57,23 @@ consequences: [rule:strings-like-ruby]
 
 - Open: whether «string» needs its own definition at all. The plan: change every mention that means the spelling to «delimited-string», then see what is left of «string» ([[def:string]]) and whether it needs a definition.
 - Open: «escape-sequence» covers the prose and sameline escapes above only if those are settled to stand for a character; if the sameline set stays undecided, its bullet waits.
+- **Draft productions** (the coordinator's, 2026-10-20, for the grammar-notation question in `TODO-MSC.md`; PEG, `←` for definition, `/` ordered choice, `!` not-followed-by, `.` any character). Terminals are the named characters of [[def:characters]]; `DIGIT`, `HEX` and `line-ending` are character classes not yet defined.
+
+  ```peg
+  delimited-string      ← double-quoted-string / single-quoted-string
+
+  double-quoted-string  ← DOUBLE-QUOTE (dq-escape / dq-char)* DOUBLE-QUOTE
+  dq-char               ← !(DOUBLE-QUOTE / BACKSLASH / line-ending) .
+  dq-escape             ← BACKSLASH ( [\\"'/#ntrfe]
+                                    / "0" !DIGIT
+                                    / "x" [0-7] HEX
+                                    / "u{" hex-run (SPACE hex-run)* "}"
+                                    / "u" HEX HEX HEX HEX )
+                        / BACKSLASH . ⇒ error unknown-escape
+  hex-run               ← HEX (HEX / "_")*
+
+  single-quoted-string  ← SINGLE-QUOTE (sq-escape / sq-char)* SINGLE-QUOTE
+  sq-escape             ← BACKSLASH (SINGLE-QUOTE / BACKSLASH)
+  sq-char               ← !(SINGLE-QUOTE / line-ending) .
+  ```
+  What the grammar can't say, and stays in [[rule:double-quote-escapes]]'s prose: a `\uHHHH` surrogate must be one half of a high-then-low pair; a `\u{…}` value must be at most `10FFFF` and not a surrogate. A string still open at a line ending is [[rule:unclosed-delimiter-is-error]]. Writing it surfaced one choice to confirm: `"u{"` must be tried before `"u"` (ordered choice), which the prose doesn't state but implies.
