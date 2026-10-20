@@ -85,3 +85,4 @@ Reading a one-piece text as its piece is a reading option ([[def:reading-option]
 
   > Under this understanding, the above should give   nav $main  text[embedded_node(a...),' ',embedded_node(a...)] or something.
 - `|{a :href / Home}` gives `href` the text `/ Home` and the link no text: an example to watch for and avoid (Joseph, 2026-10-09; [[rule:inline-element-value-end]]).
+- **Joseph's rewording, 2026-10-20:** "WRT embeds are always -> more accurately "embeds resolve to text (including empty string in the case of comments in most cases)". There are already some ideas floating around how something that is transforming into xml, for example, might treat certain embeds differently from something that is going to markdown, for example." Not yet folded into the Statement: how "resolve to text" sits with the raw tree keeping each embed as a piece (resolution as a reading/target concern, [[decision:representational-options]]) is to confirm with him.

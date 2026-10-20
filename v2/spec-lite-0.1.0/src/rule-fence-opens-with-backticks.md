@@ -52,3 +52,4 @@ root
   > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
 
 - **Reasoning:** Fence length lets a fence hold a fence, which the spec corpus needs for its own examples.
+- **Open thought (Joseph, 2026-10-20, to adjudicate later):** "I'm thinking about potentially changing ``` to ~~~  to better distinguish between udon and markdown and to make the ```` type stuff less necessary in the sunny-day case." Not decided; it would touch every fence card and [[rule:text-value-end]]'s list of text terminators.

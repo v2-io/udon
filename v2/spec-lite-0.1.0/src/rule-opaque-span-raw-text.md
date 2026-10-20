@@ -142,3 +142,4 @@ root
 
 - **Reasoning:** Lite attaches no meaning to typed values or references; a later version may parse their insides (a type label, a path) without lite having guessed.
 - Empty spans `<>` and `@{}` are not decided; `:n ;{}` is a text whose only piece is an empty comment (Joseph, 2026-10-09).
+- **Joseph, 2026-10-20, from the Markdown dialect spike:** "we will almost certainly want @{<....>} "embeds" as well-- they basically are the non-resolving version where the reference is embedded instead of the referent. Doesn't necessarily change udon-lite spellings etc. since that was always up to the dialect anyway, but this might need to get into the spec and grammar and ast sooner rather than later." Under this card as written, `@{<x>}` already parses: a reference whose raw text is `<x>` (only braces match inside `@{…}`, so `<` needs no escape). What is open is whether the tree tells it apart from `@{x}`. Compare `|el :x @<other-one>` in `obj.future/candidates.md`.

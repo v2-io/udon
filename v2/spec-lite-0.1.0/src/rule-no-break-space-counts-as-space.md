@@ -70,3 +70,4 @@ Chosen. No fixture yet.
 - **Reasoning:** Unicode's note on U+00A0 says it "should be the same width as the space 0020", so its column isn't ambiguous and an error would be the wrong tool. The agent's case for a warning: it's invisible, and other tools disagree about whether it is whitespace (`grep '^  |el'` misses the line; Python's `lstrip()` strips it, `lstrip(' ')` doesn't), so it is correct lite that may not be what was meant.
 
 - A no-break space inside text, values or fence bodies, where it sets no column, is plain content with no warning: the agent's reading, not yet put to Joseph.
+- **Joseph, 2026-10-20:** "I'm considering allowing non-breakings spaces if they aren't already as equivalent to spaces." They already are, with a warning (this card); open whether the warning stays.

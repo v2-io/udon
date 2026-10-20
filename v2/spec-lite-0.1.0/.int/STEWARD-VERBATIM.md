@@ -936,3 +936,65 @@
 > Alas, we've run out of context far too soon. Can you use the remainder to set up a handoff document that also has your sincere recommendations for which documents or line-spans within documents to read in order to have your successor fully capable and expert without [if possible, if not, no problem] needing to fill up as much of their context as we did with you?
 
 *(Agent text: the handoff is `.int/HANDOFF-2026-10-12.md`.)*
+
+## 2026-10-20 (Mountain), session `9fa643a2`
+
+*Source: `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/9fa643a2-3558-4d5a-a12d-174523c74ee4.jsonl`. Copied by the udon-team agent (Opus 5.5) that picked up lite from the 2026-10-12 handoff. Agent text summarized, not quoted.*
+
+### Opening message — Joseph (whole)
+
+> I don't know if it is actually stale or not, but there is a handoff in the udon-lite spec that should probably be your starting point-- then orient yourself as best you can and we'll see how close we can get to a complete udon-lite spec!
+
+### Joseph, sent mid-turn (whole)
+
+> (look at the full git log messages for the last little while too to help me remember where we actually are if you would)
+
+*(Agent text, summary: the agent reported what it had read (handoff, this file, the outline, all 90 cards, seven cross-cutting decision records, def-label, pre-design 76, the lexicon inventory, vsect's requirements, commit messages since 2026-10-06) and what it had not (the other def cards, the pre-design store, 0.10.0's CORE, the primer); a dated summary of where lite stands; the ten gap rows in the outline; an inconsistency between `rule-fence-opener-line` (opener comment belongs to the fence) and `rule-fence-line-comments` (drawn under the parent); its professio, naming as hardest "stating an inference as 'that follows from…'" and filling gap cards from 0.10.0; and two next steps: label characters, or drafting the "stable" spine (nesting, markers, bare typing) as proposed cards.)*
+
+### Joseph's answer (whole message)
+
+> Some minor thoughts as they occur to me to fit in with the discussion and adjudicate later:
+>
+> I'm thinking about potentially changing ``` to ~~~  to better distinguish between udon and markdown and to make the ```` type stuff less necessary in the sunny-day case.
+> I don't know what the AST for a fence already looks like-- presumably it is element-like but with a different node-type and with children consisting of an optional comment, a body raw text with meta, and an optional closing comment. Thoughts?
+> I'm considering allowing non-breakings spaces if they aren't already as equivalent to spaces.
+> WRT embeds are always -> more accurately "embeds resolve to text (including empty string in the case of comments in most cases)". There are already some ideas floating around how something that is transforming into xml, for example, might treat certain embeds differently from something that is going to markdown, for example.
+> The backslash's job as stated there in your writeup is incomplete. It also escapes what would otherwise be embeds (and is consumed).
+> We need to discuss the labels a lot more and the label table and allowed charactersets etc.
+> One thing out of the markdown dialect spike is the realization that we will almost certainly want @{<....>} "embeds" as well-- they basically are the non-resolving version where the reference is embedded instead of the referent. Doesn't necessarily change udon-lite spellings etc. since that was always up to the dialect anyway, but this might need to get into the spec and grammar and ast sooner rather than later.
+>
+> IIRC the main work we were doing was due to prior agents discounting the importance of definitions and vocabulary, and my insistance that the definitions / the shared vocabulary, is at least as important to adjudicate and settle as the "rules", from a spec readability, execution, adoption, and inculcation perspective.  It looks like that lesson still didn't really get driven home yet. I appreciate your professio, but I'm not sure how the thing you expect to be hardest is keeping 0.10.0 out when you spared yourself from reading 0.10.x specs.  In any case-- you have all the pre stuff for finding out if something is "as settled as it seems to you" -- if it is-- you say "This is right, right?"  If not, you say "I'm not sure such-and-such is settled..."    A few examples and counter-examples, with other syntactical complications thrown in the mix, and the potential ASTs based on a decision are my optimal way of communicating -- at least until the terminology is more nailed down- and usually even after that in order to reinforce the practical aspect of the terminology.
+>
+> I suspect we could get through the missing cards pretty quickly if we fire them off one at a time-- you just give me your full understanding as concisely as you can. Same with the remaining open issues. Same with definitions etc.
+
+## 2026-10-20 (Mountain), session `9fa643a2`
+
+*Source: `~/.claude/projects/-Users-josephwecker-v2-src-arch-firmatum-udon/9fa643a2-3558-4d5a-a12d-174523c74ee4.jsonl`. Recorded by the udon-team agent (Opus 5.5) that picked up lite from the 2026-10-12 handoff. Agent text is summarized and marked.*
+
+### 2026-10-20T20:49:54Z — Joseph, opening message (whole)
+
+> I don't know if it is actually stale or not, but there is a handoff in the udon-lite spec that should probably be your starting point-- then orient yourself as best you can and we'll see how close we can get to a complete udon-lite spec!
+
+### Joseph, sent mid-turn while the agent was reading (whole)
+
+> (look at the full git log messages for the last little while too to help me remember where we actually are if you would)
+
+*(Agent text, summary: the agent reported what it had read whole (handoff, this file, the outline, all 90 cards, the seven cross-cutting decision records, def-label, pre-design 76, the lexicon inventory, vsect's requirements, the commit messages since 2026-10-06); a dated recap of where lite stands from the commits; the ten gap rows in the outline (nesting, markers, element names, keys and traits, bare typing, repeated attributes, late attributes, attribute bodies, source lines, documents and files) and the open items; an inconsistency between `rule-fence-opener-line` (the opener's comment belongs to the fence) and `rule-fence-line-comments` (drawn as a child of the element); what it had not read (the other def cards, pre-design, 0.10.0, the primer); its professio, naming as hardest "stating an inference as 'that follows from…'" and filling gap cards from 0.10.0 by memory; and two next steps, label characters or drafting the "stable" gap cards as proposed.)*
+
+### 2026-10-20T21:24:38Z — Joseph (whole)
+
+> Some minor thoughts as they occur to me to fit in with the discussion and adjudicate later:
+>
+> I'm thinking about potentially changing ``` to ~~~  to better distinguish between udon and markdown and to make the ```` type stuff less necessary in the sunny-day case.
+> I don't know what the AST for a fence already looks like-- presumably it is element-like but with a different node-type and with children consisting of an optional comment, a body raw text with meta, and an optional closing comment. Thoughts?
+> I'm considering allowing non-breakings spaces if they aren't already as equivalent to spaces.
+> WRT embeds are always -> more accurately "embeds resolve to text (including empty string in the case of comments in most cases)". There are already some ideas floating around how something that is transforming into xml, for example, might treat certain embeds differently from something that is going to markdown, for example.
+> The backslash's job as stated there in your writeup is incomplete. It also escapes what would otherwise be embeds (and is consumed).
+> We need to discuss the labels a lot more and the label table and allowed charactersets etc.
+> One thing out of the markdown dialect spike is the realization that we will almost certainly want @{<....>} "embeds" as well-- they basically are the non-resolving version where the reference is embedded instead of the referent. Doesn't necessarily change udon-lite spellings etc. since that was always up to the dialect anyway, but this might need to get into the spec and grammar and ast sooner rather than later.
+>
+> IIRC the main work we were doing was due to prior agents discounting the importance of definitions and vocabulary, and my insistance that the definitions / the shared vocabulary, is at least as important to adjudicate and settle as the "rules", from a spec readability, execution, adoption, and inculcation perspective.  It looks like that lesson still didn't really get driven home yet. I appreciate your professio, but I'm not sure how the thing you expect to be hardest is keeping 0.10.0 out when you spared yourself from reading 0.10.x specs.  In any case-- you have all the pre stuff for finding out if something is "as settled as it seems to you" -- if it is-- you say "This is right, right?"  If not, you say "I'm not sure such-and-such is settled..."    A few examples and counter-examples, with other syntactical complications thrown in the mix, and the potential ASTs based on a decision are my optimal way of communicating -- at least until the terminology is more nailed down- and usually even after that in order to reinforce the practical aspect of the terminology.
+>
+> I suspect we could get through the missing cards pretty quickly if we fire them off one at a time-- you just give me your full understanding as concisely as you can. Same with the remaining open issues. Same with definitions etc.
+>
+> I recommend you *avoid* reading the unadjudicated, undisciplined, incomplete v2/spec-0** directories(!!) -- instead, if there is information missing from spec-lite and the .int/ research etc.-- send an agent into those *as well as v2/*.md and v2/theory/ and v2/spikes and v2/.archived/**/*.md , v2/msc/**/*.md  , ~/.claude/history.jsonl (for direct quotes from me with dates), and the udon/ non-v2 stuff (the old parser) as well as doing some git pickaxe work and come back with essentially the timeline of various thinking on a given subject. (*please remember or write down those references, as you are almost guaranteed to need an agent to go digging at some point even if just to satisfy your curiosity and reading those yourself will put some very strong biases and misinformation in your context incidental to this work today*). Always look first at everything we have in v2/spec-lite-0.1.0/** and then v2/spec-lite-0.1.0/.int/ fully and the git-log associated with v2/spec-lite-0.1.0/ -- cleaning up and fixing as we go-- before launching an agent to do deeper older searching. Be sure you are *extremely* familiar with the concepts and everything laid out here in the spec-lite-0.1.0/???/** directories.

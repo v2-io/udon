@@ -63,3 +63,4 @@ root
 - Joseph calls `sh` the fence's language (2026-10-12: "'sh' | fence language | label"), and the fence "a specialized element node".
 - **Open:** whether a fence is an «element» of a special kind ("the specialized fenced node that is related to `element`"), and how the tree prints it.
 - An element written later on the opening line (```` ```sh |x ````) parses, and the default handler rejects it.
+- **Joseph's thought on the fence's tree (2026-10-20, a question, not a ruling):** "I don't know what the AST for a fence already looks like-- presumably it is element-like but with a different node-type and with children consisting of an optional comment, a body raw text with meta, and an optional closing comment. Thoughts?" That would also settle where a closer's comment goes, and would correct [[rule:fence-line-comments]], whose example still draws both comments as children of the enclosing element.
