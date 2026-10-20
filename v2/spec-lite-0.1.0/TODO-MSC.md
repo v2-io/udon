@@ -32,6 +32,9 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Next: to settle (items with no card of their own, or spanning several)
 
+- **The value model** (Joseph's 2026-10-20 sketch, ideation; [[def:value]] working notes): every value has a kind and a form; whether bare `hello` and `"hello"` are both strings; whether a stack of occurrences and a list are one tree; comments as members of an attribute's values (pushed back); unlabeled `<…>` as a bare string (pushed back); a kind/form ontology for the tree and its «meta».
+- **A grammar notation** for the lexical layer (Joseph, 2026-10-20: "It probably wouldn't hurt to consider formulating some of the definitions at least and maybe even rules in terms of an EBNF or PEG grammar"): which notation, how indentation is handled, and which definitions get productions first.
+
 - **Embeds inside other forms:** whether embeds are recognized, and how backslash escapes them, inside keys (`|x[a |{em b}]`), list items, and `|{…}` interiors. Joseph, 2026-10-20: "the not settled needs some settling". Settled so far: inside quoted strings an embed is just characters ([[rule:strings-like-ruby]]); inside `<…>`, `@{…}`, `;{…}` nothing is recognized.
 - **Embeds as a whole** (Joseph: "we haven't correctly designed embeds yet"): where left-over text goes inside `|{…}`; whether `$main` applies in braces; multi-line `|{…}`; nested embeds; `;{…}` inside braces; his 2026-10-20 rewording, "embeds resolve to text (including empty string in the case of comments in most cases)", with target-dependent resolution (XML vs Markdown).
 - **`@{<…>}`**, the reference embedded instead of the referent: whether the tree marks it ([[rule:opaque-span-raw-text]], working notes).

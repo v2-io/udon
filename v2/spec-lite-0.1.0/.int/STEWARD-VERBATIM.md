@@ -1059,3 +1059,34 @@
 ### 2026-10-20 — Joseph, sent mid-turn while the agent began the «string» pass (whole)
 
 > Does the TODO-MSC note that all of the existing defs marked provisional have not been discussed or accepted yet? In my mind that's pretty much top priority (hence labels / strings / text ...)
+
+*(Agent text, summary: the agent reported the first part of the «string» pass (commit `48fc6b5`): every use meaning the quoted spelling now reads «delimited-string», the string and escape rule cards reshaped with sidecars; and put what is left of «string», the value kind a delimited string gives, as a question with `|el :a "hello" :b hello :c "3" :d 3 :e "|{em x}" :f |{em x}` under A (separate string and text kinds) and B (one «text» kind, quoting kept in meta), leaning B.)*
+
+### 2026-10-20 — Joseph (whole; ideation, "just playing with AST form-- don't take it as a ruling")
+
+> ```udon
+> |el :a "hello" :b hello :c "3" :d 3 :e "|{em x}" :f |{em x} :g <hello there>
+>     :f another bare string ; and a comment...
+> :a <"hello">::string.delimited
+> :b <hello>::string.bare ; equivalent to :a in this case-- often in the past called "bare value"==(value without <...> delimiters, and sometimes having a space)
+> :c <"3">::string.delimited
+> :d <3>::numeric ; (or more specific depending on that parser, like ::numeric.uint, still not discussed IIRC but I will lean toward what the old parser already had set up, pre 0.8/9 stuff)
+> :e <"|{em x}">::string.delimited
+> :f [<|em <x>>::element  ; <-- not a ruling-- embed values have *not* been nailed down yet that I know of.
+>     <another bare string>::string.bare
+>     ;{and a comment...}
+>    ]
+> :g <hello there>::value.string.bare  ; <- this is what we haven't really discussed either and should probably be the same behavior within key syntax sugar [...]=[<...>]=?[<"...">] (when third form is just a simple string, anyway [a term we haven't defined...]).
+> ```
+>
+> (just playing with AST form-- don't take it as a ruling if you have a better way of representing any/all of the above.
+>
+> Let's back up a little bit: correct me if I'm mistaken or this isn't coherent, but:  *an attribute has a (typed) value or potentially heterogenous array of typed values, including comments*.  There is no "typeless" value (just <<undetermined-value>> by lite [needs discussion]). Elements are a value type. Attributes are *not* currently supported as typed values of attributes.
+>
+> It's not lost on me that in some ways we're specifying a grammar here. It probably wouldn't hurt to consider formulating some of the definitions at least and maybe even rules in terms of an EBNF or PEG grammar or something? (even though the indent/dedent etc. won't allow it to be complete....)
+>
+> I know I haven't gotten back to label/identifier characters yet. tiny pieces at a time, eh?
+>
+> ^^^
+>
+> When you get ideation work from me like this-- feel free to write down what I said somewhere *and* engage it / discuss / push-back / remind / counter / etc....   Again, the collaboration and your first instincts are key. BTW-- all of the above I *think* still reflects your instincts for "principle of least surprise" -- mine too I'm pretty sure, and we can talk about automatic transmutations of the more granular types above but will want them anyway for round-trip / meta-data even if most of the above are reduced to <<string>> -- I'll bet you can help with a better ontology-- something like   ::value-type-result.input-form ...  not sure...
