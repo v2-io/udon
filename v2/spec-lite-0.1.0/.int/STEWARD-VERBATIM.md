@@ -1122,3 +1122,9 @@
 ### 2026-10-20 — Joseph (whole)
 
 > Oh--- one thing we decided elsewhere is that we'll have the definition file show which parts of speach and inflections are covered so that  «texts» etc. can stay more natural when referencing them...
+
+*(Agent text, summary: the agent found the earlier decision (`~/src/address-theory/DECISIONS.ud`, `declared-inflections`, 2026-10-09) and applied it: `def-delimited-string`'s `terms:` became a mapping of each singular form to its part of speech and plural, uses of those terms now read «delimited-strings», other def cards to declare theirs as reviewed, the convention proposed to the SOP side; verb conjugation not adopted, since it is only proposed there.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> we can also, grammar-like, do some early aliases like  «BACKTICK» = {`}    or something
