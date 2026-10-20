@@ -74,7 +74,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[def:meta]] | «meta» is information a parser attaches to the «node»s of a «tree» beside their content: a filename on the «root-node», a node's position, the indentation a fence body lost. What exactly counts, and what sets it apart from content, is not settled. |
 | proposed | [[def:opaque-span]] | An «opaque-span» is one of the delimited forms `<…>`, `@{…}` and `;{…}`, whose text lite carries without attaching meaning, under one rule for nesting, escapes and line ends. |
 | proposed | [[def:prose]] | «prose» is source: the lines under an element (or at the top level) that open no structure. Consecutive prose lines under one owner become one «text» child. |
-| proposed | [[def:quoted-name]] | A «quoted-name» is a «label» written in quotes, so it can hold characters a bare name can't: `|'weird name'`, `:"data[1]"`. It is read by the string rules. The quotes are spelling: a quoted name is the same name as the bare spelling of the same characters. |
+| proposed | [[def:quoted-name]] | A «quoted-name» is a «label» written in quotes, so it can hold characters a bare name can't: `|'weird name'`, `:"data[1]"`. It is read by the «delimited-string» rules. The quotes are spelling: a quoted name is the same name as the bare spelling of the same characters. |
 | proposed | [[def:reserved]] | Something is «reserved» when lite gives it no meaning and refuses it with an «error», so that a later version of UDON is free to give it one. |
 | proposed | [[def:root]] | Every «tree» has one «root-node»: the «node» at its top, which no spelling in the «document» opens, closes or names. The «document»'s top-level items are its children, and its top-level attribute lines are its attributes. |
 | proposed | [[def:sameline]] | «sameline» is the rest of a line after the element or attribute that starts it. Joseph's two kinds, «element-sameline» and «attribute-sameline», are read by one rule. Only the spelling "sameline" is ruled; what the word covers and the two compounds are not. |
@@ -109,15 +109,15 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 
 | Row-type | Record | Statement |
 |---|---|---|
-| proposed | [[rule:unclosed-delimiter-is-error]] | If a string, list, key, `<…>`, `@{…}`, `;{…}`, `\|{…}` or fence is still open where it must close, parsing stops. |
+| proposed | [[rule:unclosed-delimiter-is-error]] | If a «delimited-string», list, key, `<…>`, `@{…}`, `;{…}`, `\|{…}` or fence is still open where it must close, parsing stops. |
 | proposed | [[rule:matched-pairs-need-no-escape]] | Inside `<…>`, `@{…}`, `;{…}` and a key, an unescaped opener nests and is closed by its own closer; the form ends at the closer that matches its opener. |
 | proposed | [[rule:strings-like-ruby]] | A «delimited-string» reads essentially as a Ruby string literal, closed at the next unescaped matching quote; nothing inside it is UDON syntax. |
-| proposed | [[rule:no-interpolation]] | `#{…}` inside a quoted string is ordinary text. |
-| proposed | [[rule:newline-in-string-is-error]] | A quoted string must close on the line it opens; `\n` writes a newline in `"…"`. |
-| proposed | [[rule:double-quote-escapes]] | In `"…"` a backslash must begin one of a fixed list of escapes; any other is an error. |
-| proposed | [[rule:single-quote-escapes]] | In `'…'` only `\'` and `\\` are escapes; every other backslash is literal. |
-| proposed | [[rule:adjacent-quoted-strings]] | Two quoted strings with nothing between them are two values, with a warning (a lean). |
-| proposed | [[rule:quoted-element-and-attribute-names]] | An element name or attribute name written in quotes is read by the same rules as a quoted string. |
+| proposed | [[rule:no-interpolation]] | `#{…}` inside a «delimited-string» is ordinary characters. |
+| proposed | [[rule:newline-in-string-is-error]] | A «delimited-string» must close on the line it opens; `\n` writes a newline in a «double-quoted-string». |
+| proposed | [[rule:double-quote-escapes]] | In a «double-quoted-string» a backslash must begin one of a fixed list of «escape-sequence»s; any other is an error. |
+| proposed | [[rule:single-quote-escapes]] | In a «single-quoted-string» only `\'` and `\\` are «escape-sequence»s; every other backslash is literal. |
+| proposed | [[rule:adjacent-quoted-strings]] | Two «delimited-string»s with nothing between them are two values, with a warning (a lean). |
+| proposed | [[rule:quoted-element-and-attribute-names]] | An element name or attribute name written in quotes is read by the same rules as a «delimited-string». |
 | proposed | [[rule:key-holds-a-value]] | The inside of `[key]` is read by the ordinary value rules. |
 | proposed | [[rule:key-escapes]] | In a key's unquoted parts only `\\`, `\[` and `\]` are escapes; any other backslash is an error. |
 | proposed | [[rule:list-items-whitespace-separated]] | A `[…]` list holds values separated by whitespace; the opaque-span escape rule does not apply to it. |

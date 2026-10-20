@@ -4,28 +4,31 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: []
-depends: [rule:strings-like-ruby]
+strength: decided
+context: rule-double-quote-escapes.context.md
+per: [decided-for-this-version]
+depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
 # Escapes in double-quoted strings
 
-*In `"…"` a backslash must begin one of a fixed list of escapes; any other is an error.*
+*In a «double-quoted-string» a backslash must begin one of a fixed list of «escape-sequence»s; any other is an error.*
 
 ## Statement
 
-1. In a `"…"` string, `\` MUST begin one of: `\\` `\"` `\'`; `\n` `\t` `\r` `\f` `\e`; `\/` `\#`; `\0` (only when no digit follows); `\xHH` (exactly two hex digits, at most `7F`); `\uHHHH` (a high-then-low surrogate pair is one code point; a surrogate not in such a pair is an error); or `\u{…}` (hex code points, `_` and leading zeros allowed as in integers, each at most `10FFFF` and not a surrogate, single spaces between). Any other backslash is an error.
+1. In a «double-quoted-string», `\` MUST begin one of: `\\` `\"` `\'`; `\n` `\t` `\r` `\f` `\e`; `\/` `\#`; `\0` (only when no digit follows); `\xHH` (exactly two hex digits, at most `7F`); `\uHHHH` (a high-then-low surrogate pair is one code point; a surrogate not in such a pair is an error); or `\u{…}` (hex code points, `_` and leading zeros allowed as in integers, each at most `10FFFF` and not a surrogate, single spaces between). Any other backslash is an error.
 
 ## Grounds
 
-- "go ahead and error on unknown escape sequences in """ (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
-- The list: `.int/escape-sequences-2026-10-08.md`, with his answers — `\s` an error ("agree"), surrogate pairs ("agree"), `\v` and `\a` dropped ("I can support"), `\b` reserved ("I'm fine erroring as reserved for right now").
-- No octal escapes, for the same reason bare `0755` is decimal.
+Serves [[obj:represent-structured-data]]: every character JSON and YAML strings carry has a spelling. Debated and decided; see the [context](rule-double-quote-escapes.context.md) file. `\b` is refused only "for right now" (provisional); the `\u{…}` spacing details are a default nobody has discussed (provisional). Revisit as needed.
 
-## Epistemic status
+## Implications
 
-A rule, chosen, not derived. Checkable by fixtures.
+- `"C:\Users"` is an error, not `C:Users`: write `'C:\Users'` or `"C:\\Users"`.
+- Regex habits fail loudly instead of changing meaning: `"\s+"` and `"\bword\b"` are errors (`'\s+'` keeps the backslash).
+- No octal escapes: `"\033"` is an error; use `"\e"`.
+- JSON text containing `\b` (backspace) fails until `\b` is allowed.
 
 ## Explanation
 
@@ -44,22 +47,9 @@ root
 ✗ error unknown-escape 2:10   ← "\U isn't an escape; use '…' for literal backslashes, or \\"
 ```
 
-## Working notes
+## Discussion
 
-- **Joseph's words:**
-
-  > ruby strings:  right--- no interpolation, #{} gets passed through as normal text, and go ahead and error on unknown escape sequences in "".
-  >
-  > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
-  > escape sequence responses
-  > 1. agree
-  > 2. agree about the surrogate pairs
-  > 3. I can support dropping \v and \a
-  > 4. It sure makes certain terminal behavior easier by having it instead of ansi sequences... (like animated character). That said, I'm fine erroring as reserved for right now.
-  >
-  > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
-
-- **Reasoning:** An unknown escape that Ruby would silently drop (`"C:\Users"` → `C:Users`) becomes a loud error pointing at single quotes. `\s` and `\b` are refused so regex habits (`"\s+"`, `"\bword\b"`) can't silently turn into a space or a backspace.
-- `\b` is reserved "for right now"; Joseph noted it helps terminal output.
-- The `\u{…}` spacing details are an agent default, not his words.
-- The lone-surrogate error was part of the lean he answered "agree about the surrogate pairs" (`.int/escape-sequences-2026-10-08.md` §2.2: "accept a correctly ordered high-low pair as one code point and … refuse a lone surrogate").
+- **Unknown escapes are errors, not dropped.** Ruby silently drops the backslash of an unknown escape; lite refuses it, so a mistyped path or pattern is caught where it is written.
+- **No octal**, for the same reason bare `0755` is decimal: a leading zero means nothing special anywhere in lite.
+- **`\s` and `\b` refused**, so `"\s+"` and `"\bword\b"` can't silently turn into a space or a backspace.
+- **Surrogates only in pairs**: a lone surrogate is not a character, and JSON's paired `\uD83D\uDE00` still works.

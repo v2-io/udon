@@ -25,7 +25,7 @@ consequences: [def:value, def:opaque-span, rule:key-holds-a-value, rule:list-ite
     - **"self-announcing value"** (0.10.1).
 - **explicit-typed-value:** a value spelled `<…>`. Lite finds where it ends and carries its text, and attaches no meaning to the text or to any «type-label» in it.
   - *Avoid:* **"box"** and **"untyped box"** (the 2026-09-01 FIX text, then lite's pre-design files until 2026-09-29, where 07 settled it as an "untyped box"), **"envelope"**, **"explicit-typing envelope"** (0.9–0.10.0, from 2026-07-11), **"capture"**, **"value capture"** (0.10.1), **"dialect-typed value"** (0.9.1 primer), **"explicit typing annotation"** (Joseph, 2026-07-11, for the idea before `<…>` was chosen), **"typed delimited value"** (Joseph, 2026-10-08).
-- **implicit-typed-value:** a «typed-value» not spelled `<…>`, such as an unquoted word, a quoted string, or a list. Lite reads its type from its spelling.
+- **implicit-typed-value:** a «typed-value» not spelled `<…>`, such as an unquoted word, a «delimited-string», or a list. Lite reads its type from its spelling.
   - *Avoid:* "bare value". The sources use it for two different sets: every value outside `<…>` (0.10's "bare set" includes strings and lists), and unquoted values only. Also **"single-word string"** (the 2026-09-29 lexicon's member of this set): in lite an unquoted word is a «text» ([[def:text]]).
 - **type-label:** the part of an «explicit-typed-value»'s text that its author writes to name what the rest is meant to be, as `u64` in `<u64:0xff>`. *(Provisional name; it collides with "label", see below.)*
   - *Avoid:*

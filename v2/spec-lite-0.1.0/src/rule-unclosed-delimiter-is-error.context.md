@@ -1,0 +1,7 @@
+# Context: [[rule:unclosed-delimiter-is-error]]
+
+*History and provenance for the card beside it. Not spec text and not a record; nothing here binds.*
+
+- **His words.** 2026-10-08: "My current lean is that any *error* right now is a failure / stop. That would include #3 on your ways it can end being part of #1 instead, and I think should apply to a label with no value, any tab characters found in block mode, and unclosed embedded |,;,@ nodes or unclosed strings, etc. I'm going to lean with you on disallowing newlines within delimited strings -- but allowing \n and other common escape sequences. I also think that partial-key, unclosed [...  is an error.   Disallowed == error == stop/fail. In some ways it will be treated more like a standard programming language, where something missing a closing delimiter is just a straight-up error and halt and you've done something wrong. Whereas *warnings* are for "this *is* technically correct udon/udon-lite and does do a specific thing-- but possibly not what you intended it to do...""
+- `<…>`, lists and fences aren't named in his words. They are covered by "something missing a closing delimiter is just a straight-up error", and by the agent's restatement of his errors, which he answered questioning only a different item.
+- **Before lite** (the 0.10.0 draft), an unclosed key gave a `$partial-key` and an unclosed construct at end of input gave a tree marked incomplete. His "#3 … being part of #1" folded the incomplete ending into the stop.

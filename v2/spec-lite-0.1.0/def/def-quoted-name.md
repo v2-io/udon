@@ -12,11 +12,11 @@ consequences: []
 
 # quoted-name
 
-*A «quoted-name» is a «label» written in quotes, so it can hold characters a bare name can't: `|'weird name'`, `:"data[1]"`. It is read by the string rules. The quotes are spelling: a quoted name is the same name as the bare spelling of the same characters.*
+*A «quoted-name» is a «label» written in quotes, so it can hold characters a bare name can't: `|'weird name'`, `:"data[1]"`. It is read by the «delimited-string» rules. The quotes are spelling: a quoted name is the same name as the bare spelling of the same characters.*
 
 ## Terms
 
-- **quoted-name:** an «element-name» or «attribute-name» written in `'…'` or `"…"`, read by the same rules as a quoted «string» of that quote ([[rule:quoted-element-and-attribute-names]]). It is the same name as an unquoted spelling of the same characters, where one exists.
+- **quoted-name:** an «element-name» or «attribute-name» written in `'…'` or `"…"`, read by the same rules as a «delimited-string» of that quote ([[rule:quoted-element-and-attribute-names]]). It is the same name as an unquoted spelling of the same characters, where one exists.
 
 ## Examples
 

@@ -4,26 +4,28 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: value
-per: []
-depends: [rule:strings-like-ruby]
+strength: decided
+context: rule-no-interpolation.context.md
+per: [decided-for-this-version]
+depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# No interpolation in strings
+# No interpolation in delimited strings
 
-*`#{…}` inside a quoted string is ordinary text.*
+*`#{…}` inside a «delimited-string» is ordinary characters.*
 
 ## Statement
 
-1. `#{…}` inside a quoted string MUST be kept as the characters written; nothing is interpolated.
+1. `#{…}` inside a «delimited-string» MUST be kept as the characters written; nothing is interpolated.
 
 ## Grounds
 
-- "no interpolation, #{} gets passed through as normal text" (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
+Lite evaluates nothing, so `#{…}` stays characters for a full UDON or a consumer to decide about later. Debated and decided; see the [context](rule-no-interpolation.context.md) file. Revisit as needed.
 
-## Epistemic status
+## Implications
 
-A rule, chosen, not derived. Checkable by fixtures.
+- A Ruby writer's `"#{x}"` gives the six characters `#{x}`; so does the escaped `"\#{x}"`, since `\#` is an escape ([[rule:double-quote-escapes]]).
 
 ## Explanation
 
@@ -37,14 +39,3 @@ root
   |q
     :a "x #{y} z"
 ```
-
-## Working notes
-
-- **Joseph's words:**
-
-  > ruby strings:  right--- no interpolation, #{} gets passed through as normal text, and go ahead and error on unknown escape sequences in "".
-  >
-  > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
-
-- **Reasoning:** Lite resolves and evaluates nothing; `#{…}` stays text so a full UDON or a consumer can decide later.
-- `\#` is also an escape in `"…"` ([[rule:double-quote-escapes]]), so a Ruby writer's reflex `"\#{x}"` gives the same `#{x}`.

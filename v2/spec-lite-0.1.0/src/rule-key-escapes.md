@@ -4,26 +4,28 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: element
-per: []
-depends: [rule:key-holds-a-value, rule:matched-pairs-need-no-escape]
+strength: decided
+context: rule-key-escapes.context.md
+per: [decided-for-this-version]
+depends: [rule:key-holds-a-value, rule:matched-pairs-need-no-escape, rule:opaque-span-escapes]
 consequences: []
 ---
 
 # Escapes in a key
 
-*In a key's unquoted parts only `\\`, `\[` and `\]` are escapes; any other backslash is an error.*
+*In a key's unquoted parts only `\\`, `\[` and `\]` are «escape-sequence»s; any other backslash is an error.*
 
 ## Statement
 
-1. In the unquoted parts of a key, `\\`, `\[` and `\]` MUST give `\`, `[` and `]`; any other backslash MUST be reported as an error. A quoted string inside a key follows its own escapes.
+1. In the unquoted parts of a key, `\\`, `\[` and `\]` MUST give `\`, `[` and `]`; any other backslash MUST be reported as an error. A «delimited-string» inside a key follows its own escapes.
 
 ## Grounds
 
-- "key-brackets should follow the same rules" as the opaque spans (Joseph, 2026-10-08): [[rule:key-holds-a-value]].
+The same strict rule as the opaque spans ([[rule:opaque-span-escapes]]): only the form's own brackets and the backslash escape, so a later version can add escapes without changing what any accepted document means. Debated and decided; see the [context](rule-key-escapes.context.md) file. Revisit as needed.
 
-## Epistemic status
+## Implications
 
-A rule, chosen, not derived. Checkable by fixtures.
+- A `]` or `\` in a bare key needs an escape: `|x[a\]b]`.
 
 ## Explanation
 
@@ -40,10 +42,4 @@ root
 
 ## Working notes
 
-- **Joseph's words:**
-
-  > consequences: understood, agreed.  and #2, you're right-- key-brackets should follow the same rules, but arrays are their own thing completely-- multiple whitespace delimited values.
-  >
-  > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
-
-- **Reasoning:** Strict for now, like the opaque spans, so later versions can add escapes without changing accepted documents.
+- Not stated anywhere yet: whether a `]` inside a «delimited-string» inside a key (`|x["a]b"]`) ends the key or belongs to the string. The value rules suggest the string is read first; to confirm with the key cards.

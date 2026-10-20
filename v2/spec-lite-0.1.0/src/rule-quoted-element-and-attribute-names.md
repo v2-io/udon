@@ -4,26 +4,29 @@ awaiting-second: true
 awaiting-decision: false
 needs-work: false
 layer: element
-per: []
-depends: [rule:strings-like-ruby]
+strength: decided
+context: rule-quoted-element-and-attribute-names.context.md
+per: [decided-for-this-version]
+depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# Quoted element and attribute names use the string rules
+# Quoted element and attribute names follow the delimited-string rules
 
-*An element name or attribute name written in quotes is read by the same rules as a quoted string.*
+*An element name or attribute name written in quotes is read by the same rules as a «delimited-string» of that quote.*
 
 ## Statement
 
-1. A quoted element name (`|'…'`, `|"…"`) or quoted attribute name (`:'…'`, `:"…"`) MUST be read by the same rules as a quoted string of that quote.
+1. A quoted element name (`|'…'`, `|"…"`) or quoted attribute name (`:'…'`, `:"…"`) MUST be read by the same rules as a «delimited-string» of that quote.
 
 ## Grounds
 
-- "including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`" (Joseph, 2026-10-08): [[rule:strings-like-ruby]].
+One quoting rule wherever quotes appear ([[prin:one-rule-everywhere]]). Debated and decided; see the [context](rule-quoted-element-and-attribute-names.context.md) file. Revisit as needed.
 
-## Epistemic status
+## Implications
 
-A rule, chosen, not derived. Checkable by fixtures.
+- Any name a bare label can't spell can be quoted: `|'weird name'`, `:"data[1]"`, `:'@click'`.
+- The escapes are the string escapes: `|'it\'s'`, `:"tab\there"`.
 
 ## Explanation
 
@@ -40,11 +43,4 @@ root
 
 ## Working notes
 
-- **Joseph's words:**
-
-  > Not sure I saw this question, but I wanted to mention that I think "..." and '...' should essentially be just like ruby strings (including escape sequences in "" but not in '', and including within the special constructs for labels, e.g. `|'something "hey"\'' weird node name`), different than our "general matching + escaping" for arrays, typed values, keys, and embeds.
-  >
-  > — Joseph, 2026-10-08/09 (`.int/STEWARD-VERBATIM.md`)
-
-- **Reasoning:** One quoting rule wherever quotes appear.
-- Joseph, 2026-10-12: "*quoted* labels can hold just about anything except newlines-- :'#$%^&  WOW -----|>>><>[]\'' awful but allowed label." Still open, for the label-characters discussion: control characters (perhaps allowed only through escapes in `"…"`), invalid code points, and whether `\n` written as an escape in `"…"` is allowed in a name.
+- Open, with the label characters: what a quoted name may hold beyond "anything except newlines": control characters, perhaps only through escapes in `"…"`; invalid code points; whether a `\n` escape is allowed in a name. Whether quoted traits exist (`.'ns.kind'`), and whether a quoted name is always the same name as its bare spelling, are open there too.
