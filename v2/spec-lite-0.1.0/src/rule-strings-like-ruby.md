@@ -7,7 +7,7 @@ layer: value
 strength: decided
 context: rule-strings-like-ruby.context.md
 per: [decided-for-this-version]
-depends: [def:string, def:delimited-string]
+depends: [def:string, def:delimited-string, obj:represent-structured-data]
 consequences: [rule:adjacent-quoted-strings, rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-element-and-attribute-names, rule:newline-in-string-is-error, def:string]
 ---
 
@@ -35,7 +35,7 @@ This card states two decisions, and is the umbrella for six more, each with its 
 
 ## Grounds
 
-Debated and decided; see the [context](rule-strings-like-ruby.context.md) file. Revisit as needed.
+Serves [[obj:represent-structured-data]]: the strings JSON and YAML carry may hold any character, and escapes give every one of them a one-line spelling. Debated and decided; see the [context](rule-strings-like-ruby.context.md) file. Revisit as needed.
 
 ## Implications
 

@@ -1035,3 +1035,9 @@
 
 > Excellent work. I'm looking at your diff on the ruby strings segment and separate context. I wouldn't be opposed to having the frontmatter point directly to its context file; nor would I mind a simple "**Implications**" for some of the user-facing costs accepted. This one in particular should also note that it is several decisions (ideally each its own file but I'm not going to be a pedant about it when the organization really wants something like this instead) -- ruby escape characters for "", rules for '', no embeds in delimited strings, error (reserved) on unrecognized escape sequences, (am I missing more?). Also a def/delimited-string file that defines what we call a delimited string, double-quoted string, single-quoted string, <<escape-sequence>>, etc. etc.
 > You are welcome to put a "strength" scalar maybe in the frontmatter-- how revisitable it is -- not sure what values per se...   Interestingly, although you pulled a ton of stuff into context and out of it, you left all sorts of breadcrumbs that I for one would be surprised to see in an official spec-- Grounds -- "Joseph, 2026-10-09: "I think "..." and '...' should essentially...." blah blah blah-- that's historical breadcrumbs, not a spec. Try:  Grounds: debated-decided, see [context](...) file. Revisit as needed.   (distinct from, for example:  Only option that leaves ... and ... consistent- revision blocked by those.
+
+*(Agent text, summary: the agent reported `rule-strings-like-ruby` reshaped (strength and context frontmatter, one-line Grounds, Decisions carried with the six sibling cards, Implications, Epistemic status dropped), trial `strength` values forced / decided / lean / provisional, `def/def-delimited-string.md`, and the shape changes proposed to the SOP side; asked whether spelling and value need two terms.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> (If grounds can point to one of the objectives strongly, that would be appropriate also)
