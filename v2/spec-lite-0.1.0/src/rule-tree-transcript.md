@@ -49,3 +49,4 @@ Proposed, not decided: Joseph agrees with the coordinator's lean but has "remain
   - `<…>` never appears as a result: what it produced prints by its kind (`<3>` as `3`; a raw interior as `⟬u64:0xff⟭`), and that it was written with `<…>` is «meta» (form `angle`);
   - `⟦…⟧` is left alone, since the SOP store uses it for its own terms.
 
+- **Backticks** (Joseph, 2026-10-20: "We also have `...` available if we want in the AST..."). The coordinator's lean is to keep them for the fence node only. Tree fragments are quoted inline in spec prose inside backtick code spans, where a backtick in the fragment forces double-backtick spans. A tree line beginning with three backticks would also close the Markdown fence a card's tree sits in. Their best use would be raw content, since everyone reads `` `…` `` as "verbatim".

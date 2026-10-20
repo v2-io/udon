@@ -1110,3 +1110,9 @@
 ### 2026-10-20 — Joseph (whole)
 
 > Ahh-- that will get tough for me because the <> and guillamets are too indisdinguishable visibly to me (let's start a card on AST notation if we haven't).  «defined terms / phrases» btw I think we are very solid on-- love that-- would ask for it even in headers etc.-- possibly reuse for  «nil» meaning the characters 'nil'?  Not sure... The problem with <...> representing "raw" instead of "typed value" (that just happens to be raw in some cases in udon) is that those are different things.... I know this is a tree representation distinct from (but somewhat coherent with / analogous to, IIUC) udon itself, but that would be a direct conflict that makes it extra difficult. I would be happy adopting some more lesser-used unicode brackets for the tree: ⦅ ⦆, 〚 〛(double-wide so not ideal), ⸨ ⸩, ﹝ ﹞(double-wide also), any of the asian brackets, bracket parts ⎨ :-), ⌈ ⌉ • ⌊ ⌋,  ⟮ ⟯ • ⟬ ⟭, ⟦ ⟧, ⦑ ⦒ ⧼ ⧽, ⦓ ⦔, ⸦ ⸧, ... :-) :-)     We will also need to be careful to distinguish between an **AST list** vs **udon-list-value** (which will also be represented as an AST-list, but which has already caused you and me confusion and disagreement! ;-)
+
+*(Agent text, summary: the agent pointed to `rule-tree-transcript` as the existing notation card, now carrying his constraints and its glyph proposal: `⸨…⸩` for a «text», `⟬…⟭` for raw content, `"…"` for strings, `[…]` only for a UDON list value, no brackets ever for AST sequences, `<…>` never in a tree; leaned against reusing `«nil»` for literal characters.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> We also have `...` available if we want in the AST...
