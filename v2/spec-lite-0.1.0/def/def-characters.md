@@ -34,8 +34,8 @@ consequences: []
 
 | Name | Character | Code point and Unicode name |
 |---|---|---|
-| **SPACE** | ` ` | U+0020 SPACE |
-| **NO-BREAK-SPACE** | ` ` | U+00A0 NO-BREAK SPACE |
+| **SPACE** | (space) | U+0020 SPACE |
+| **NO-BREAK-SPACE** | (no-break space) | U+00A0 NO-BREAK SPACE |
 | **TAB** | (tab) | U+0009 CHARACTER TABULATION |
 | **LINE-FEED** | (line feed) | U+000A LINE FEED |
 | **CARRIAGE-RETURN** | (carriage return) | U+000D CARRIAGE RETURN |
