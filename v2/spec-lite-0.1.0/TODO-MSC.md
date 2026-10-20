@@ -32,6 +32,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Next: to settle (items with no card of their own, or spanning several)
 
+- **`<…>` reopened** (Joseph, 2026-10-20): inside `<…>`, `nil`, `true`, `false`, a number or a delimited string would be a value of that kind, and anything else raw ([[rule:opaque-span-raw-text]], now provisional and awaiting decision). With it: the name for those kinds («primitive typed values»?), and the spelling of namespaces or type labels.
 - **The value model** (Joseph's 2026-10-20 sketch, ideation; [[def:value]] working notes): every value has a kind and a form; whether bare `hello` and `"hello"` are both strings; whether a stack of occurrences and a list are one tree; comments as members of an attribute's values (pushed back); unlabeled `<…>` as a bare string (pushed back); a kind/form ontology for the tree and its «meta».
 - **A grammar notation** for the lexical layer (Joseph, 2026-10-20: "It probably wouldn't hurt to consider formulating some of the definitions at least and maybe even rules in terms of an EBNF or PEG grammar"): which notation, how indentation is handled, and which definitions get productions first.
 
