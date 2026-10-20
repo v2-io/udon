@@ -11,7 +11,7 @@ depends: [def:string, def:delimited-string, obj:represent-structured-data]
 consequences: [rule:adjacent-quoted-strings, rule:no-interpolation, rule:double-quote-escapes, rule:single-quote-escapes, rule:quoted-element-and-attribute-names, rule:newline-in-string-is-error, def:string]
 ---
 
-# «delimited-string»s read as Ruby strings
+# «delimited-strings» read as Ruby strings
 
 *A «delimited-string» is read essentially as Ruby reads a string literal of the same quote, closed at the next unescaped matching quote. Nothing inside the quotes is UDON syntax.*
 

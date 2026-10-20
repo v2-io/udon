@@ -13,7 +13,7 @@ consequences: []
 
 # Escapes in a key
 
-*In a key's unquoted parts only `\\`, `\[` and `\]` are «escape-sequence»s; any other backslash is an error.*
+*In a key's unquoted parts only `\\`, `\[` and `\]` are «escape-sequences»; any other backslash is an error.*
 
 ## Statement
 

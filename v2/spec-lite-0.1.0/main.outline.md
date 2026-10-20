@@ -114,9 +114,9 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:strings-like-ruby]] | A «delimited-string» reads essentially as a Ruby string literal, closed at the next unescaped matching quote; nothing inside it is UDON syntax. |
 | proposed | [[rule:no-interpolation]] | `#{…}` inside a «delimited-string» is ordinary characters. |
 | proposed | [[rule:newline-in-string-is-error]] | A «delimited-string» must close on the line it opens; `\n` writes a newline in a «double-quoted-string». |
-| proposed | [[rule:double-quote-escapes]] | In a «double-quoted-string» a backslash must begin one of a fixed list of «escape-sequence»s; any other is an error. |
-| proposed | [[rule:single-quote-escapes]] | In a «single-quoted-string» only `\'` and `\\` are «escape-sequence»s; every other backslash is literal. |
-| proposed | [[rule:adjacent-quoted-strings]] | Two «delimited-string»s with nothing between them are two values, with a warning (a lean). |
+| proposed | [[rule:double-quote-escapes]] | In a «double-quoted-string» a backslash must begin one of a fixed list of «escape-sequences»; any other is an error. |
+| proposed | [[rule:single-quote-escapes]] | In a «single-quoted-string» only `\'` and `\\` are «escape-sequences»; every other backslash is literal. |
+| proposed | [[rule:adjacent-quoted-strings]] | Two «delimited-strings» with nothing between them are two values, with a warning (a lean). |
 | proposed | [[rule:quoted-element-and-attribute-names]] | An element name or attribute name written in quotes is read by the same rules as a «delimited-string». |
 | proposed | [[rule:key-holds-a-value]] | The inside of `[key]` is read by the ordinary value rules. |
 | proposed | [[rule:key-escapes]] | In a key's unquoted parts only `\\`, `\[` and `\]` are escapes; any other backslash is an error. |

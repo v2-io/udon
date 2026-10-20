@@ -11,13 +11,13 @@ depends: [def:delimited-string, rule:strings-like-ruby, rule:leftover-values, ru
 consequences: []
 ---
 
-# Two «delimited-string»s with nothing between them are two values, with a warning
+# Two «delimited-strings» with nothing between them are two values, with a warning
 
 *`"x""y"` is two values, not one string and not an error; the parser warns.*
 
 ## Statement
 
-Two «delimited-string»s written with nothing between them MUST be read as two values, and the parser MUST report a default-on «warning».
+Two «delimited-strings» written with nothing between them MUST be read as two values, and the parser MUST report a default-on «warning».
 
 ## Grounds
 

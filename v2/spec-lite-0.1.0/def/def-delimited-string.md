@@ -5,7 +5,11 @@ awaiting-decision: false
 needs-work: false
 strength: decided
 context: def-delimited-string.context.md
-terms: [delimited-string, double-quoted-string, single-quoted-string, escape-sequence]
+terms:
+  delimited-string: {pos: noun, pl: -s}
+  double-quoted-string: {pos: noun, pl: -s}
+  single-quoted-string: {pos: noun, pl: -s}
+  escape-sequence: {pos: noun, pl: -s}
 per: []
 depends: [def:string, rule:strings-like-ruby]
 consequences: [rule:strings-like-ruby]
@@ -18,8 +22,8 @@ consequences: [rule:strings-like-ruby]
 ## Terms
 
 - **delimited-string:** a value written between a pair of matching quotes: a «double-quoted-string» or a «single-quoted-string». It is the spelling; the value it gives in the «tree» is a «string» ([[def:string]]). It is read by [[rule:strings-like-ruby]]: it ends at the next unescaped quote of its own kind, holds no UDON syntax, and must close on the line it opens.
-- **double-quoted-string:** a «delimited-string» written `"…"`. A backslash in it must begin one of a fixed list of «escape-sequence»s ([[rule:double-quote-escapes]]).
-- **single-quoted-string:** a «delimited-string» written `'…'`. Only `\'` and `\\` are «escape-sequence»s in it; every other backslash is a literal backslash ([[rule:single-quote-escapes]]).
+- **double-quoted-string:** a «delimited-string» written `"…"`. A backslash in it must begin one of a fixed list of «escape-sequences» ([[rule:double-quote-escapes]]).
+- **single-quoted-string:** a «delimited-string» written `'…'`. Only `\'` and `\\` are «escape-sequences» in it; every other backslash is a literal backslash ([[rule:single-quote-escapes]]).
 - **escape-sequence:** a backslash and the characters after it that, together, stand for a single character, in a form that defines it. The «tree» holds the character, never the sequence. Each form has its own set:
   - in a «double-quoted-string», the list in [[rule:double-quote-escapes]] (`\n`, `\t`, `\"`, `\u{…}`, …);
   - in a «single-quoted-string», `\'` and `\\`;

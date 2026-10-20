@@ -1116,3 +1116,9 @@
 ### 2026-10-20 — Joseph (whole)
 
 > We also have `...` available if we want in the AST...
+
+*(Agent text, summary: the agent agreed backticks would be the natural mark for raw content, but leaned to keep them for the fence node: tree fragments are quoted inside backtick code spans in prose, and a tree line starting with three backticks would close the card's Markdown fence.)*
+
+### 2026-10-20 — Joseph (whole)
+
+> Oh--- one thing we decided elsewhere is that we'll have the definition file show which parts of speach and inflections are covered so that  «texts» etc. can stay more natural when referencing them...

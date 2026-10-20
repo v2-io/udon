@@ -11,9 +11,9 @@ depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# Escapes in «single-quoted-string»s
+# Escapes in «single-quoted-strings»
 
-*In a «single-quoted-string» only `\'` and `\\` are «escape-sequence»s; every other backslash is literal.*
+*In a «single-quoted-string» only `\'` and `\\` are «escape-sequences»; every other backslash is literal.*
 
 ## Statement
 

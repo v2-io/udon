@@ -11,7 +11,7 @@ depends: [def:delimited-string, rule:strings-like-ruby]
 consequences: []
 ---
 
-# No interpolation in «delimited-string»s
+# No interpolation in «delimited-strings»
 
 *`#{…}` inside a «delimited-string» is ordinary characters.*
 

@@ -15,7 +15,7 @@ consequences: []
 
 ## Statement
 
-*Proposed by the coordinator, awaiting Joseph.* On an element's or attribute's line, outside «delimited-string»s and opaque spans, an attached `\` MUST be followed by one of `|` `:` `;` `@` `!` `{` `}` `"` `'` `[` `<` `0`–`9` `+` `-` `` ` `` `\`, and gives that character as text; any other character after it MUST be an error.
+*Proposed by the coordinator, awaiting Joseph.* On an element's or attribute's line, outside «delimited-strings» and opaque spans, an attached `\` MUST be followed by one of `|` `:` `;` `@` `!` `{` `}` `"` `'` `[` `<` `0`–`9` `+` `-` `` ` `` `\`, and gives that character as text; any other character after it MUST be an error.
 
 ## Grounds
 
