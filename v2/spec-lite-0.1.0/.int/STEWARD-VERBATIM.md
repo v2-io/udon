@@ -1292,3 +1292,11 @@
 > You are introducing a lot of ambiguous and/or overlapping alternative terms, in fact-- like "run" and no definition of "prose" as we had planned but rather "text" and "pieces". Extra confusing is something like { type: **:text**, :pieces: [ { type: :run, **text:**  -- emphasis mine... and "content:" but only for strings etc....   kind of feels still like it's output casually without much thought on making it true, wise, strong, beautiful, etc.-- but rather plausibly generated...
 
 *(Agent text, summary: agreed; named the four field names it had used for "the characters this holds" and the reuse of a kind name as a field. Rebuilt the data-model vocabulary from his words only: `kind` (not `type`), `form`, `name`, `values`, `children`, `meta`, `comment`, `body`; a text's parts are strings and embeds (his 2026-10-08 "text has any number of pieces some of which are not strings"), so "run" is dropped; `pieces` kept as his word for the slot pending his say; «prose» kept as the source lines, which the tree never holds; `chars` flagged as the one invented placeholder. Redrew his `|p` example, and put the next question: whether a prose child holding one bare string and no embed is a string or always a text.)*
+
+### Joseph (whole; with a screenshot of the two renderings of "1. A line")
+
+> I have mermaid's PEG railroad diagrams working now if you look in the modified copy in spec-lite*/railroad-2026-10-21.md  [Image #3] (for example) -- Could you go ahead and remove the bespoke diagrams once you're satisfied the right things are preserved etc. and clean up this document and have the PEG conform for now to https://mermaidstudio.dev/docs/diagram-types/railroad/ conventions?
+
+> You can also deduplicate-- I had to move a copy out of .int to see if obsidian would render it (it didn't do very well-- my new limen ide is much better)
+
+*(Agent text, summary: fetched the conventions page; diffed the root copy (converted to `railroad-peg-beta` by session `016b7usvoaq7iyZwPtgrs2BD`) against the `.int` original; carried every OPEN and error branch of the flowcharts into the PEG as productions or `%%` notes; removed the flowcharts; renamed `run` to `bare-string` per the day's vocabulary; recorded that a comment line is a child; deleted the root copy; the one file is `.int/railroad-2026-10-21.md`.)*
