@@ -1286,3 +1286,9 @@
 > You're putting a child (comment) node inside of text when it's a child of |p-- peer to the other children.
 
 *(Agent text, summary: withdrew reading B: a `;` line is a child node, a peer of the other children; the iolist's string-reducible pieces are runs and brace embeds. Drew his example by the cards, and put the one open question it lands on: a line starting `;{` is a comment line with text `{preliminary}` by [[rule:comment-blocks]], or an inline comment that is a piece of the surrounding prose; the agent expects the second.)*
+
+### Joseph (whole)
+
+> You are introducing a lot of ambiguous and/or overlapping alternative terms, in fact-- like "run" and no definition of "prose" as we had planned but rather "text" and "pieces". Extra confusing is something like { type: **:text**, :pieces: [ { type: :run, **text:**  -- emphasis mine... and "content:" but only for strings etc....   kind of feels still like it's output casually without much thought on making it true, wise, strong, beautiful, etc.-- but rather plausibly generated...
+
+*(Agent text, summary: agreed; named the four field names it had used for "the characters this holds" and the reuse of a kind name as a field. Rebuilt the data-model vocabulary from his words only: `kind` (not `type`), `form`, `name`, `values`, `children`, `meta`, `comment`, `body`; a text's parts are strings and embeds (his 2026-10-08 "text has any number of pieces some of which are not strings"), so "run" is dropped; `pieces` kept as his word for the slot pending his say; «prose» kept as the source lines, which the tree never holds; `chars` flagged as the one invented placeholder. Redrew his `|p` example, and put the next question: whether a prose child holding one bare string and no embed is a string or always a text.)*
