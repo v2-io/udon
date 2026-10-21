@@ -1308,3 +1308,9 @@
 > maybe it's not tenable PEG-wise, but it seems to me that lines generally (after indent/dedent closing) are either   (blank / blockline / prose) (I'm saying blockline-- testing as an alternative to "sameline")-- where blockline recurses and handles the reserved blockstarts etc... ?
 
 *(Agent text, summary: tenable and already how the cards work; `line <- SPACE* (blank-line / block-line / prose-line)`, with `block-line` grouping element-line, attribute-line, comment-line, fence-opener and the reserved starts, recursion through the sameline's items; a leading backslash falls through to prose; `;{` at a line start is the one place the split can't decide alone. Pushed back on replacing «sameline»: block-line names a kind of line, sameline the region after an element, attribute or fence opener, and a comment line has none; suggested the spelling `block-line` beside `block-form`. Applied to section 1 of the railroad file.)*
+
+### Joseph (whole)
+
+> now block-line it would make more sense to me if it was (element-start / attribute-start / comment-start / fence-start / reserved-start) ?
+
+*(Agent text, summary: agreed, and more than a rename: the `-start` rules are the guards (the `rule:markers` gap; "start" is his own word, "special starts", 2026-07-12, where the cards say "marker"), and the same starts begin the sameline's items and end unquoted text, which closes the item/terminator duplication. Rewrote the railroad file: a new section 2 "The starts" with each guard and its OPEN; block-line as each start plus what it owns; `item` and `text-end` both built from `start`; `text-terminator` renamed `text-end` as a placeholder.)*
