@@ -1,0 +1,653 @@
+### line-scan (Joseph 09-29: :attr this value :another <34>)
+|element[k] :attr this value :another <34>
+|element
+   :attr this value :another <34>
+-->
+root
+  |element[?key-text:[('key-bare', 'k')]]
+    :attr ‹this value›
+    :another <34>
+  |element
+    PROSE[':attr this value :another <34>\n']
+
+### Joseph 09-29 attribute-sameline
+|element
+   :attr this value :another <34>
+   :third value
+   :from |other-element
+            and a child of it...
+-->
+root
+  |element
+    PROSE[':attr this value :another <34>\n', '   :third value\n', '   :from |other-element\n', '            and a child of it...\n']
+
+### element after attribute with no value
+|el :x |em hi :y 2
+-->
+root
+  |el
+    :x 
+      |em
+        :$main ‹hi›
+        :y 2
+
+### text-value-end
+|el :a x \ y :b 2
+-->
+root
+  |el
+    :a ‹x›
+    :$main ‹y›
+    :b 2
+
+### framed backslash
+|nav :aria-label Site |a :href / \ Home
+|p See |{a :href /docs \ the docs}
+-->
+root
+  |nav
+    :aria-label ‹Site›
+    |a
+      :href ‹/›
+      :$main ‹Home›
+  |p
+    :$main ‹See |{a :href /docs \ the docs}›
+
+### space-before-text-end
+|el :a x   :b 1
+|el :c one  two \ more
+-->
+root
+  |el
+    :a ‹x›
+    :b 1
+  |el
+    :c ‹one  two›
+    :$main ‹more›
+
+### backslash empty text
+|el :a \ :b ''
+-->
+root
+  |el
+    :a ‹›
+    :b STR''
+
+### missing value
+|el :d
+-->
+ERROR ERROR-missing-value at 6 (line 1 col 6)
+
+### a :b nested
+|el :a :b 1
+-->
+ERROR ERROR-missing-value at 6 (line 1 col 6)
+
+### one sameline attr value (Joseph lean 10-21)
+|el :c 1 z
+-->
+root
+  |el
+    :c 1
+    :$main ‹z›
+
+### attribute line stacks
+:c 1 z
+-->
+root
+  :c 1 ‹z›
+
+### attribute line with element after value
+:c 1 |x
+-->
+root
+  PROSE[':c 1 |x\n']
+
+### framed comments
+|li Item ; TODO
+|el :a 1 ; note
+|el :url x;y
+-->
+root
+  |li
+    :$main ‹Item›
+    ; (framed)';TODO'
+  |el
+    :a 1
+      ; (framed)';note'
+  |el
+    :url ‹x;y›
+
+### framed comment at EOL
+|li Item ;
+-->
+root
+  |li
+    :$main ‹Item›
+    ; (framed)';'
+
+### smiley guard
+|el :a hello :-) there
+-->
+root
+  |el
+    :a ‹hello :-) there›
+
+### pipe-space is text
+|el a | b
+-->
+root
+  |el
+    :$main ‹a | b›
+
+### embeds
+|nav |{a} |{a}
+|el :n ;{} :m 1
+|book :author @{people/jw}
+-->
+root
+  |nav
+    :$main ‹|{a} |{a}›
+  |el
+    :n ‹;{}›
+    :m 1
+  |book
+    :author ‹@{people/jw}›
+
+### reserved
+|el :x @jw
+-->
+root
+  PROSE['|el :x @jw\n']
+
+### reserved bang
+|el !if x
+-->
+ERROR ERROR-reserved at 4 (line 1 col 4)
+
+### null
+|el :b null
+-->
+root
+  |el
+    :b ‹null›
+
+### nil
+|el :a nil :b true :c 3
+-->
+root
+  |el
+    :a nil
+    :b true
+    :c 3
+
+### numbers boundary
+|el :a 7apples :b nilly
+-->
+root
+  |el
+    :a ‹7apples›
+    :b ‹nilly›
+
+### quoted names
+|'something "hey"\'' weird node name
+-->
+root
+  |something "hey"\'
+    :$main ‹weird node name›
+
+### key cases
+|step[1]
+|step["01"]
+|cite[@{ref.key}]
+|x[a\]b]
+-->
+root
+  |step[1]
+  |step[STR'01']
+  |cite[?key-text:[('embed', [('reference', [('RAW', 'ref.key')])])]]
+  |x[?key-text:[('key-bare', 'a\\]b')]]
+
+### key with string holding ]
+|x["a]b"]
+-->
+root
+  |x[STR'a]b']
+
+### list
+|cfg :tags [a "b c" 3]
+-->
+root
+  |cfg
+    :tags [‹a› STR'b c' 3]
+
+### adjacent strings
+|el :a "x""y"
+-->
+root
+  PROSE['|el :a "x""y"\n']
+
+### abc def
+|el :a "abc"def
+-->
+root
+  PROSE['|el :a "abc"def\n']
+
+### angle
+|el :when <2026-07-11> :size <u64:0xff> :x <a <b> c>
+-->
+root
+  |el
+    :when <2026-07-11>
+    :size <u64:0xff>
+    :x <a <b> c>
+
+### angle bad escape
+|el :bad <re:\d+>
+-->
+ERROR unknown escape in span at 13
+
+### dq escapes
+|q :a "tab\there" :b "\u{1F600}" :c "\e[1m" :d "\x41"
+-->
+root
+  |q
+    :a STR'tab\\\\there'
+    :b STR'\\1F600'
+    :c STR'\\\\e[1m'
+    :d STR'\\\\x41'
+
+### dq bad escape
+|q :d "C:\Users"
+-->
+ERROR ERROR-unknown-escape at 10 (line 1 col 10)
+
+### sq
+|q :p 'C:\Users\me' :s 'it\'s'
+-->
+root
+  |q
+    :p STR'C:\\Users\\me'
+    :s STR"it\\\\'s"
+
+### value-line escapes
+|el :count \7 apples :b 2
+|el :a hello \:-) there
+|post :by \@alice
+-->
+root
+  |el
+    :count ‹\\7›
+    :b 2
+  |el
+    :a ‹\\:›
+  |post
+    :by ‹\\@›
+
+### value-line bad escape
+|el :path C:\Users\me
+-->
+ERROR ERROR-unknown-escape at 13 (line 1 col 13)
+
+### traits
+|user[jw].admin :role editor
+|el .a .b :x 1
+|.asdf
+-->
+root
+  |user[?key-text:[('key-bare', 'jw')]].admin
+    :role ‹editor›
+  |el.a.b
+    :x 1
+  |.asdf
+
+### trait after value (coordinator reading: text)
+|el :x 1 .y
+-->
+root
+  |el
+    :x 1
+    :$main ‹.y›
+
+### p .gitignore
+|p .gitignore is a file
+-->
+root
+  |p.gitignore
+    :$main ‹is a file›
+
+### fence on sameline after finished value
+|element :attr true ```sh[example-7] :hidden false   ; a note
+                      echo "seems ok."
+                    ```
+-->
+root
+  |element
+    :attr true
+    ```sh[?key-text:[('key-bare', 'example-7')]]
+      :hidden false
+        ; (framed)';a note'
+      BODY'                      echo "seems ok."\n'
+      (closer)
+
+### fence as attribute value
+|job :script ```sh
+make build
+```
+-->
+root
+  |job
+    :script 
+      ```sh
+        BODY'make build\n'
+        (closer)
+
+### fence closer comment
+|job :script ```sh ; run in CI
+make build
+``` ; end of script
+-->
+root
+  |job
+    :script 
+      ```sh
+        ; (framed)';run in CI'
+        BODY'make build\n'
+        ; (framed)';end of script'
+
+### fence closer trailing text
+|doc
+  ```md
+  ```js
+  ```
+-->
+root
+  |doc
+    PROSE['```md\n', '  ```js\n', '  ```\n']
+
+### fence nesting
+````md
+```js
+x
+```
+````
+-->
+root
+  ```md
+    BODY'```js\nx\n```\n'
+    (closer)
+
+### fence closer nests at its column
+|abcdef |ghijkl :something ```txt
+     body
+     ```
+       |next
+-->
+root
+  |abcdef
+    |ghijkl
+      :something 
+        ```txt
+          BODY'     body\n'
+          (closer)
+    |next
+
+### sameline text with backticks
+|a some text ```js
+code
+```
+-->
+root
+  |a
+    :$main ‹some text›
+    ```js
+      BODY'code\n'
+      (closer)
+
+### inline code at line start in prose
+|p
+  ```x``` is how you write inline code
+-->
+root
+  |p
+    PROSE['```x``` is how you write inline code\n']
+
+### comment block owns deeper
+; a note
+  still the note |el
+|el
+-->
+root
+  ;' a note\n  still the note |el\n'
+  |el
+
+### haml-style comment out
+  ;|bunch-of-future-stuff
+    Don't have to clutter the left edge
+    :warnable attributes! Yay   ; And this
+|after
+-->
+root
+  ;"|bunch-of-future-stuff\n    Don't have to clutter the left edge\n    :warnable attributes! Yay   ; And this\n"
+  |after
+
+### semicolon-brace line start
+|p
+  first line
+  ;{preliminary}
+  more
+-->
+root
+  |p
+    PROSE['first line\n', 'preliminary', '  more\n']
+
+### comment line splits prose
+|p
+  first
+  ; note
+  second
+-->
+root
+  |p
+    PROSE['first\n', '  ; note\n', '  second\n']
+
+### framed comment owns deeper
+|el :a 1 ; note
+  |child
+|el2 ; note
+         more
+-->
+root
+  |el
+    :a 1
+      ; (framed)';note'
+    |child
+  |el2
+    ; (framed)';note'
+    PROSE['more\n']
+
+### prose passes through
+|p
+  Roses are red, \
+  Keep calm ; carry on.
+  Tables | like | this, and *Markdown*.
+  email me @joseph, see ![the chart](c.png), or @{faq}.
+-->
+root
+  |p
+    PROSE['Roses are red, \\\n', '  Keep calm ; carry on.\n', '  Tables | like | this, and *Markdown*.\n', 'faq']
+
+### prose line-start reserved
+|post
+  @alice said we should ship.
+-->
+ERROR ERROR-reserved at 8 (line 2 col 2)
+
+### prose escaped
+|p
+  \|not an element
+  \@alice said so.
+  See \|{em this} written literally, and |{em this} as an element.
+-->
+root
+  |p
+    PROSE['\\|not an element\n', '  \\@alice said so.\n', '\\|{em this']
+
+### deeper marker lines are text
+|doc
+  Intro text.
+    |Name|Role|
+-->
+root
+  |doc
+    PROSE['Intro text.\n', '    |Name|Role|\n']
+
+### Markdown table row at edge
+|doc
+  |Name|Role|
+-->
+root
+  |doc
+    PROSE['|Name|Role|\n']
+
+### main and body
+|p Intro text |em x
+  more text
+-->
+root
+  |p
+    :$main ‹Intro text›
+    |em
+      :$main ‹x›
+    PROSE['more text\n']
+
+### blank line inside prose
+|node some $main prose
+    child prose section starting...
+      
+    more prose...
+-->
+root
+  |node
+    :$main ‹some $main prose›
+    PROSE['child prose section starting...\n', '      \n', '    more prose...\n']
+
+### edge blank lines
+|section
+
+  First paragraph.
+
+  |note A child
+-->
+root
+  |section
+    PROSE['First paragraph.\n', '\n', '  |note A child\n']
+
+### lone backslash
+|p
+  first
+    \
+  last
+-->
+root
+  |p
+    PROSE['first\n', '    \\\n', '  last\n']
+
+### top-level prose
+  indented first line
+    more indented
+back to zero
+-->
+root
+  PROSE['indented first line\n', '    more indented\n', 'back to zero\n']
+
+### top-level columns
+  |a
+  |b
+|c
+-->
+root
+  |a
+  |b
+  |c
+
+### nested attribute
+|db
+  :port
+    :nested 1
+-->
+ERROR ERROR-missing-value at 11 (line 2 col 7)
+
+### attribute body element
+|book
+  :author
+    |person
+      :name Jane
+-->
+ERROR ERROR-missing-value at 15 (line 2 col 9)
+
+### lines follow sameline columns
+|table |tr |td A1
+           |td A2
+-->
+root
+  |table
+    |tr
+      |td
+        :$main ‹A1›
+      |td
+        :$main ‹A2›
+
+### pipe-brace at line start
+|{em x} starts a line
+-->
+root
+  PROSE['em x']
+
+### bang-brace in prose
+|p
+  some !{x} here
+-->
+ERROR ERROR-reserved-embed at 10 (line 2 col 7)
+
+### at-name sameline after text
+|el some @jw text
+-->
+ERROR ERROR-reserved at 9 (line 1 col 9)
+
+### quoted attr name
+|el :"data[1]" 3 :'@click' go
+-->
+root
+  |el
+    :data[1] 3
+    :@click ‹go›
+
+### element with no name, key only
+|[jw] hi
+-->
+root
+  |[?key-text:[('key-bare', 'jw')]]
+    :$main ‹hi›
+
+### unicode label
+|café :naïve 1
+-->
+root
+  PROSE['|café :naïve 1\n']
+
+### tab after last marker
+|a :x some	value
+-->
+root
+  |a
+    :x ‹some	value›
+
+### tab before marker
+|a :x some	value :y 1
+-->
+root
+  |a
+    :x ‹some	value›
+    :y 1
+

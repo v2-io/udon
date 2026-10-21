@@ -1,0 +1,11 @@
+|p
+  first line
+  ; a note
+  |a :href https://www.google.com \ Google
+
+  :some-attribute  yeah, I know this will cause a warning.
+  now some more prose etc.
+
+  ### More!
+  ;{preliminary}
+  ...

@@ -1,0 +1,45 @@
+== jp peg
+root
+  |p
+    PROSE['first line\n', '  ; a note\n', '  |a :href https://www.google.com \\ Google\n', '\n', '  :some-attribute  yeah, I know this will cause a warning.\n', '  now some more prose etc.\n', '\n', '  ### More!\n', 'preliminary', '  ...\n']
+== jp peg_fix
+root
+  |p
+    PROSE['first line\n', '  ; a note\n', '  |a :href https://www.google.com \\ Google\n', '\n', '  :some-attribute  yeah, I know this will cause a warning.\n', '  now some more prose etc.\n', '\n', '  ### More!\n', 'preliminary', '  ...\n']
+== jp peg_repair
+root
+  |p
+    PROSE['first line']
+    ;' a note\n'
+    |a
+      :href ‹https://www.google.com›
+      :$main ‹Google›
+    :some-attribute ‹yeah, I know this will cause a warning.›
+    PROSE['now some more prose etc.', '### More!', 'preliminary', '...']
+== nest peg
+root
+  |element-1
+    |element-2
+      |element-3
+        |element-4
+          PROSE['child of element-4\n']
+      PROSE['child of element-2 (sibling of |element-3)\n', '              same, but now with a dedent warning.\n']
+    PROSE['now element-2 is closed as well...\n']
+== nest peg_fix
+root
+  |element-1
+    |element-2
+      |element-3
+        |element-4
+          PROSE['child of element-4\n']
+      PROSE['child of element-2 (sibling of |element-3)\n', '              same, but now with a dedent warning.\n']
+    PROSE['now element-2 is closed as well...\n']
+== nest peg_repair
+root
+  |element-1
+    |element-2
+      |element-3
+        |element-4
+          PROSE['child of element-4']
+      PROSE['child of element-2 (sibling of |element-3)', 'same, but now with a dedent warning.']
+    PROSE['now element-2 is closed as well...']

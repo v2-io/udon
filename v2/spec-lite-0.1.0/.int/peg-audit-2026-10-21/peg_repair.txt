@@ -1,0 +1,109 @@
+railroad-peg-beta
+title "UDON lite, block grammar over the lexer's tokens (tentative 2026-10-21, repaired)"
+root <- _blocks EOF ;
+%% the root is an element with no spelled name at column -1 (Joseph's lean, 2026-10-21, def:root); parser-supplied facts (file, hash) are its $-attributes
+_blocks <- _block* ;
+_block <- BLANK / comment-block / &element-start (element / ERROR-bad-element) / &attribute-start (attribute-line / ERROR-bad-attribute) / &fence-start fence / ERROR-reserved / prose ;
+ERROR-bad-element <- . ;
+ERROR-bad-attribute <- . ;
+%% ordered choice: prose is whatever is left. Where a block begins (its column) and ends (EOB) is the lexer's; a block may begin mid-line and then owns the later lines deeper than its own column
+_start <- element-start / attribute-start / framed-semicolon / fence-start / reserved-start ;
+%% what ends a text in value mode, and what begins an item on a line
+element-start <- "|" !"{" !(WS / EOL) ;
+%% guard: "a space after the first pipe" is text (Joseph, 2026-10-08). OPEN: which characters may follow | (the labels discussion); after a passed guard a bad name is an error, not text
+attribute-start <- ":" &(NAME-FIRST / "\"" / "'") ;
+%% guard: :name (rule:text-value-end), so " :-)" in text stays text. OPEN with the labels: NAME-FIRST
+framed-semicolon <- ";" !"{" &(WS / EOL) ;
+%% guard: a sameline comment needs a space each side (rule:framed-comments). OPEN: end of line as the right frame (def:framed); taken as yes here, and likewise for the framed backslash in :a \
+fence-start <- FENCE !"{" ;
+%% FENCE: three or more backticks with no later backtick on the line (rule:fence-opens-with-backticks, rule:fence-label-no-backtick). OPEN: TILDE fences (Joseph leans accept both)
+reserved-start <- ("@" / "!") &(NAME-FIRST / ":" / "[" / "." / "<") ;
+%% the rows of rule:reserved-spellings; @{ is a reference and !{ a reserved embed, both caught elsewhere
+element <- element-start head _line-rest _line-end _blocks EOB ;
+_line-end <- EOL / BOL ;
+%% the element's own line is value mode; after its EOL it holds blocks (prose mode). An element begun mid-line sits at its own column, so later lines nest under it (rule:sameline-element-is-child, rule:lines-follow-sameline-columns)
+head <- name? key* trait* ;
+name <- LABEL / delimited-string ;
+%% OPEN: LABEL's characters; a quoted name is read by the delimited-string rules (rule:quoted-element-and-attribute-names)
+key <- "[" (delimited-string / number / boolean / nil / angle / key-text) "]" ;
+%% commit. rule:key-holds-a-value; inside, only \\ \[ \] escape (rule:key-escapes). OPEN: one key or several
+key-text <- (embed / key-bare)+ ;
+key-bare <- ("\\" ("\\" / "[" / "]") / !("]" / embed / "\\" / EOL) .)+ ;
+trait <- WS* "." LABEL ;
+%% OPEN, provisional: spaces before a trait (rule:traits-may-follow-spaces)
+_line-rest <- (_sep _item)* BS-SEP? framed-comment? ;
+_sep <- BS-SEP / WS ;
+%% BS-SEP is the framed backslash. It only ends the text before it (R1 in the verbatim record, 2026-10-21) and is consumed; so in |a :href / \ Home, Home is a's $main
+_item <- attribute / element / fence / ERROR-reserved / main ;
+main <- value ;
+%% a value with no attribute before it on the line is a value of the implicit attribute $main; several stack (rule:leftover-values)
+attribute <- attribute-start name (WS (element / fence) / empty-text / WS value framed-comment? / WS ERROR-reserved / ERROR-missing-value) ;
+%% a sameline attribute takes one value (Joseph's lean, 2026-10-21), so in |el :c 1 z the z is $main. An element or fence only as that one value (rule:element-after-attribute-with-no-value, rule:fence-anywhere-structure). :a \ is an empty text (rule:backslash-empty-text)
+empty-text <- &BS-SEP ;
+ERROR-missing-value <- &(WS attribute-start / EOL) ;
+%% rule:missing-value; :a :b is the reserved nested-attribute error (rule:attribute-after-attribute-with-no-value)
+attribute-line <- attribute-start name (WS (element / fence) / empty-text / (_sep value framed-comment?)+ / ERROR-missing-value) _line-rest _line-end _values-below EOB ;
+%% an attribute that starts its line: its values stack (rule:leftover-values, :x "one" two). OPEN: _values-below, the lines under an attribute (rule:attribute-bodies gap); Joseph, 2026-08-08: attributes are "a typed scalar until proven otherwise", so they are values, not prose
+_values-below <- !"\u0000" ;
+framed-comment <- WS framed-semicolon (WS RAW / &EOL) ;
+%% attaches to the item before it (Joseph, 2026-10-20); on an element with no item before it, it is the element's next child. Deeper lines are its, with a warning (rule:framed-comment-owns-deeper-lines)
+comment-block <- ";" !"{" RAW EOB ;
+%% the rest of its line and every deeper line, unparsed (rule:comment-blocks, rule:comment-block-owns-deeper-lines). No space is needed after the semicolon; the lookahead keeps ;{ out, so ;|whole-block comments it out
+fence <- fence-start head _line-rest _line-end (FENCE-BODY fence-closer / ERROR-unclosed-fence) ;
+ERROR-unclosed-fence <- . ;
+%% the opener's line reads like an element's line (rule:fence-opener-line); the default handler accepts keys, the trait exact and a comment, post-lexically (rule:fence-default-handler). FENCE-BODY: raw lines to the closer, each keeping its ending, dedented by the handler unless exact
+fence-closer <- FENCE-CLOSE framed-comment? (EOL / ERROR-closer-trailing-text) ;
+ERROR-closer-trailing-text <- . ;
+%% FENCE-CLOSE: at least the opener's count of backticks, first on its line (rule:fence-closes-at-n-or-more); anything else after them is an error (rule:fence-closer-trailing-text-is-error). The closer's comment is kept (rule:comments-in-tree); its column then nests like any line (rule:fence-closer-is-a-line)
+ERROR-reserved <- reserved-start ;
+prose <- prose-line (BLANK* (DEEPER / !(IND _block-start)) IND prose-line)* ;
+_block-start <- ";" !"{" / element-start / attribute-start / fence-start / reserved-start ;
+%% captures a «text» node of prose origin (def:prose). Prose mode (rule:prose-passes-through): a start mid-line is text. Blank lines between its lines are part of it (rule:blank-lines-inside-text); blank lines at its edges are not (rule:edge-blank-lines), which this production leaves to the lexer. The first line sets the left edge; a deeper line is text whatever it begins with; a shallower line still inside the owner is text with a warning and moves the edge (rule:text-shallower-line); at or left of the owner's column is EOB. Not yet executed
+prose-line <- "\\"? (embed / escaped-embed / chars)* EOL ;
+chars <- CHAR+ ;
+%% a leading backslash is consumed and sets the indent (rule:line-start-escape); a line holding only one is a kept empty line (rule:lone-backslash-line)
+escaped-embed <- "\\" ("|{" / "@{" / ";{" / "!{") ;
+%% the opener becomes literal text, the backslash consumed (rule:prose-escaped-embeds); \!{ follows from rule:escaped-reserved-is-text, to add to that card
+value <- delimited-string / number / boolean / nil / ERROR-null / list / angle / text ;
+ERROR-null <- "null" &BOUND ;
+%% kind by spelling, never by sniffing. OPEN: bare hello with no embed is a string of form bare (Joseph's 2026-10-20 sketch) or a one-piece text (the cards; what these productions give)
+delimited-string <- double-quoted-string / single-quoted-string ;
+%% def:delimited-string, the one accepted definition; commit on the opening quote
+double-quoted-string <- "\"" (dq-escape / dq-char)* "\"" ;
+dq-char <- !("\"" / "\\" / EOL) . ;
+dq-escape <- "\\" ( ("\\" / "\"" / "'" / "/" / "#" / "n" / "t" / "r" / "f" / "e") / "0" !DIGIT / "x" "[0-7]" HEX / "u{" hex-run (WS hex-run)* "}" / "u" HEX HEX HEX HEX ) / "\\" ERROR-unknown-escape ;
+%% rule:double-quote-escapes
+hex-run <- HEX (HEX / "_")* ;
+single-quoted-string <- "'" (sq-escape / sq-char)* "'" ;
+sq-escape <- "\\" ("'" / "\\") ;
+sq-char <- !("'" / EOL) . ;
+%% rule:single-quote-escapes: every other backslash is literal. A raw line ending in either string is an error (rule:newline-in-string-is-error)
+number <- NUMBER &BOUND ;
+%% OPEN: NUMBER, the frozen bare set and its spellings (rule:bare-typing gap). BOUND is WS, EOL or ] so that 7apples is an error rather than a text and nilly is a text (the reviewer's choice, to confirm)
+boolean <- ("true" / "false") &BOUND ;
+nil <- "nil" &BOUND ;
+%% rule:nil-spelling; a bare null is an error
+list <- "[" WS* (list-item (WS list-item)*)? WS* "]" ;
+%% commit. rule:list-items-whitespace-separated. OPEN: an unquoted item's extent (taken here as up to WS or ]), escapes, nesting, embeds as items
+list-item <- delimited-string / number / boolean / nil / list / angle / list-text ;
+list-text <- (!("]" / WS / EOL) .)+ ;
+angle <- "<" RAW ">" ;
+%% commit. rule:opaque-span-raw-text: matched brackets nest; escapes only \\ \< \> (rule:opaque-span-escapes); must close on its line. OPEN, reopened 2026-10-20: an interior that is exactly nil, true, false, a number or a string would be a value of that kind
+text <- !_start piece+ &text-end ;
+%% limited prose (Joseph, 2026-10-21): an unquoted value that never begins at a start and ends at a start or the framed backslash. Its parts are bare strings and embeds; "piece" is his word for the slot
+piece <- embed / bare-string ;
+bare-string <- (escape / chars-v)+ ;
+chars-v <- (!(embed / text-end / "\\") .)+ ;
+escape <- "\\" ESCAPABLE / "\\" ERROR-unknown-escape ;
+%% OPEN: ESCAPABLE, the set of attached escapes in value mode (rule:value-line-escapes); any other backslash is an error
+text-end <- BS-SEP / WS &_start / EOL ;
+%% the spaces before are frame, not content (rule:space-before-text-end); embeds never end a text (rule:embeds-in-text)
+embed <- inline-element / reference / inline-comment / ERROR-reserved-embed ;
+inline-element <- "|{" INTERIOR "}" ;
+%% commit. OPEN: the interior is undesigned (Joseph, 2026-10-09); inside it an unquoted value also ends at } (rule:inline-element-value-end)
+reference <- "@{" RAW "}" ;
+inline-comment <- ";{" RAW "}" ;
+%% both commit; matched braces nest; escapes only \\ \{ \}; must close on the line
+ERROR-reserved-embed <- "!{" ;
+%% !{…} and !{{…}} are reserved everywhere, prose included
+ERROR-unknown-escape <- . ;

@@ -1,0 +1,226 @@
+### comment swallows fence
+|el
+  ; commented out
+    ```
+    |x
+    ```
+  live prose
+-->
+root
+  |el
+    ;' commented out\n    ```\n    |x\n    ```\n'
+    PROSE['live prose']
+
+### comment pieces
+|p a ;{c1};{c2} b
+-->
+root
+  |p
+    :$main ‹a ;{c1};{c2} b›
+
+### edge moves then marker deeper than moved edge
+|el
+    deep
+  shallow
+   |x
+-->
+root
+  |el
+    PROSE['deep', 'shallow']
+    |x
+
+### closer with trailing text at top
+```
+body
+``` not the closer
+```
+-->
+ERROR ERROR-closer-trailing-text at 12 (line 3 col 3)
+
+### framed backslash as first item
+|p \ tail |{em x} and ;{note} more ; still prose
+-->
+root
+  |p
+    :$main ‹tail |{em x} and ;{note} more›
+    ; (framed)';still prose'
+
+### element head then framed backslash then text
+|el \ x
+-->
+root
+  |el
+    :$main ‹x›
+
+### at-bracket on sameline
+|el :a 1 @[x]
+-->
+ERROR ERROR-reserved at 9 (line 1 col 9)
+
+### hierarchy alpha beta
+|one |two |three
+       |alpha
+     |beta
+-->
+root
+  |one
+    |two
+      |three
+      |alpha
+    |beta
+
+### hierarchy child-of-c
+|a |b |c |d
+         |child-of-c
+   |child-of-a
+-->
+root
+  |a
+    |b
+      |c
+        |d
+        |child-of-c
+    |child-of-a
+
+### table caption
+|table |tr |td A1
+           |td A2
+       |tr |td B1
+  |caption Table 1
+-->
+root
+  |table
+    |tr
+      |td
+        :$main ‹A1›
+      |td
+        :$main ‹A2›
+    |tr
+      |td
+        :$main ‹B1›
+    |caption
+      :$main ‹Table 1›
+
+### digit after pipe
+|1 not an element
+-->
+ERROR ERROR-bad-element at 0 (line 1 col 0)
+
+### dash after pipe
+|-
+-->
+ERROR ERROR-bad-element at 0 (line 1 col 0)
+
+### lone pipe
+|
+-->
+root
+  PROSE['|']
+
+### md image at prose line start
+|p
+  ![img](pic.jpg)
+-->
+ERROR ERROR-reserved at 5 (line 2 col 2)
+
+### md image on sameline
+|p ![img](pic.jpg)
+-->
+ERROR ERROR-reserved at 3 (line 1 col 3)
+
+### at-bracket prose start
+|p
+  @[key] text
+-->
+ERROR ERROR-reserved at 5 (line 2 col 2)
+
+### true story
+|el :alpha true story
+-->
+root
+  |el
+    :alpha true
+    :$main ‹story›
+
+### count apples
+|el :count 7 apples
+-->
+root
+  |el
+    :count 7
+    :$main ‹apples›
+
+### another with
+|el :first value :another "with" some text
+-->
+root
+  |el
+    :first ‹value›
+    :another STR'with'
+    :$main ‹some text›
+
+### version-like
+|el :v 1.0.3 :w -5 :x +3 :y .5
+-->
+root
+  |el
+    :v ‹1.0.3›
+    :w -5
+    :x +3
+    :y ‹.5›
+
+### attr then element value then deeper
+|el :x |em hi
+          deeper
+-->
+root
+  |el
+    :x 
+      |em
+        :$main ‹hi›
+        PROSE['deeper']
+
+### quote inside text
+|el :a it's "quoted" here
+-->
+root
+  |el
+    :a ‹it's "quoted" here›
+
+### url with semicolon and colon
+|el :u http://x.com/a;b :c d
+-->
+root
+  |el
+    :u ‹http://x.com/a;b›
+    :c ‹d›
+
+### colon word in text
+|el :a see :this and that
+-->
+root
+  |el
+    :a ‹see›
+    :this ‹and that›
+
+### prose then deeper structure
+|a
+  prose base
+    |not-an-element
+-->
+root
+  |a
+    PROSE['prose base', '|not-an-element']
+
+### element body prose then element then prose
+|a
+  some prose
+  |b
+  more prose
+-->
+root
+  |a
+    PROSE['some prose']
+    |b
+    PROSE['more prose']
+

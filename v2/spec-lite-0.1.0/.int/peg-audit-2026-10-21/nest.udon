@@ -1,0 +1,5 @@
+|element-1 |element-2 |element-3 |element-4
+                                   child of element-4
+                 child of element-2 (sibling of |element-3)
+              same, but now with a dedent warning.
+  now element-2 is closed as well...

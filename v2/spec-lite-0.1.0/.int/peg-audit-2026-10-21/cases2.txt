@@ -1,0 +1,78 @@
+### comment swallows fence
+|el
+  ; commented out
+    ```
+    |x
+    ```
+  live prose
+### comment pieces
+|p a ;{c1};{c2} b
+### edge moves then marker deeper than moved edge
+|el
+    deep
+  shallow
+   |x
+### closer with trailing text at top
+```
+body
+``` not the closer
+```
+### framed backslash as first item
+|p \ tail |{em x} and ;{note} more ; still prose
+### element head then framed backslash then text
+|el \ x
+### at-bracket on sameline
+|el :a 1 @[x]
+### hierarchy alpha beta
+|one |two |three
+       |alpha
+     |beta
+### hierarchy child-of-c
+|a |b |c |d
+         |child-of-c
+   |child-of-a
+### table caption
+|table |tr |td A1
+           |td A2
+       |tr |td B1
+  |caption Table 1
+### digit after pipe
+|1 not an element
+### dash after pipe
+|-
+### lone pipe
+|
+### md image at prose line start
+|p
+  ![img](pic.jpg)
+### md image on sameline
+|p ![img](pic.jpg)
+### at-bracket prose start
+|p
+  @[key] text
+### true story
+|el :alpha true story
+### count apples
+|el :count 7 apples
+### another with
+|el :first value :another "with" some text
+### version-like
+|el :v 1.0.3 :w -5 :x +3 :y .5
+### attr then element value then deeper
+|el :x |em hi
+          deeper
+### quote inside text
+|el :a it's "quoted" here
+### url with semicolon and colon
+|el :u http://x.com/a;b :c d
+### colon word in text
+|el :a see :this and that
+### prose then deeper structure
+|a
+  prose base
+    |not-an-element
+### element body prose then element then prose
+|a
+  some prose
+  |b
+  more prose

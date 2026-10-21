@@ -1,0 +1,231 @@
+### line-scan (Joseph 09-29: :attr this value :another <34>)
+|element[k] :attr this value :another <34>
+|element
+   :attr this value :another <34>
+### Joseph 09-29 attribute-sameline
+|element
+   :attr this value :another <34>
+   :third value
+   :from |other-element
+            and a child of it...
+### element after attribute with no value
+|el :x |em hi :y 2
+### text-value-end
+|el :a x \ y :b 2
+### framed backslash
+|nav :aria-label Site |a :href / \ Home
+|p See |{a :href /docs \ the docs}
+### space-before-text-end
+|el :a x   :b 1
+|el :c one  two \ more
+### backslash empty text
+|el :a \ :b ''
+### missing value
+|el :d
+### a :b nested
+|el :a :b 1
+### one sameline attr value (Joseph lean 10-21)
+|el :c 1 z
+### attribute line stacks
+:c 1 z
+### attribute line with element after value
+:c 1 |x
+### framed comments
+|li Item ; TODO
+|el :a 1 ; note
+|el :url x;y
+### framed comment at EOL
+|li Item ;
+### smiley guard
+|el :a hello :-) there
+### pipe-space is text
+|el a | b
+### embeds
+|nav |{a} |{a}
+|el :n ;{} :m 1
+|book :author @{people/jw}
+### reserved
+|el :x @jw
+### reserved bang
+|el !if x
+### null
+|el :b null
+### nil
+|el :a nil :b true :c 3
+### numbers boundary
+|el :a 7apples :b nilly
+### quoted names
+|'something "hey"\'' weird node name
+### key cases
+|step[1]
+|step["01"]
+|cite[@{ref.key}]
+|x[a\]b]
+### key with string holding ]
+|x["a]b"]
+### list
+|cfg :tags [a "b c" 3]
+### adjacent strings
+|el :a "x""y"
+### abc def
+|el :a "abc"def
+### angle
+|el :when <2026-07-11> :size <u64:0xff> :x <a <b> c>
+### angle bad escape
+|el :bad <re:\d+>
+### dq escapes
+|q :a "tab\there" :b "\u{1F600}" :c "\e[1m" :d "\x41"
+### dq bad escape
+|q :d "C:\Users"
+### sq
+|q :p 'C:\Users\me' :s 'it\'s'
+### value-line escapes
+|el :count \7 apples :b 2
+|el :a hello \:-) there
+|post :by \@alice
+### value-line bad escape
+|el :path C:\Users\me
+### traits
+|user[jw].admin :role editor
+|el .a .b :x 1
+|.asdf
+### trait after value (coordinator reading: text)
+|el :x 1 .y
+### p .gitignore
+|p .gitignore is a file
+### fence on sameline after finished value
+|element :attr true ```sh[example-7] :hidden false   ; a note
+                      echo "seems ok."
+                    ```
+### fence as attribute value
+|job :script ```sh
+make build
+```
+### fence closer comment
+|job :script ```sh ; run in CI
+make build
+``` ; end of script
+### fence closer trailing text
+|doc
+  ```md
+  ```js
+  ```
+### fence nesting
+````md
+```js
+x
+```
+````
+### fence closer nests at its column
+|abcdef |ghijkl :something ```txt
+     body
+     ```
+       |next
+### sameline text with backticks
+|a some text ```js
+code
+```
+### inline code at line start in prose
+|p
+  ```x``` is how you write inline code
+### comment block owns deeper
+; a note
+  still the note |el
+|el
+### haml-style comment out
+  ;|bunch-of-future-stuff
+    Don't have to clutter the left edge
+    :warnable attributes! Yay   ; And this
+|after
+### semicolon-brace line start
+|p
+  first line
+  ;{preliminary}
+  more
+### comment line splits prose
+|p
+  first
+  ; note
+  second
+### framed comment owns deeper
+|el :a 1 ; note
+  |child
+|el2 ; note
+         more
+### prose passes through
+|p
+  Roses are red, \
+  Keep calm ; carry on.
+  Tables | like | this, and *Markdown*.
+  email me @joseph, see ![the chart](c.png), or @{faq}.
+### prose line-start reserved
+|post
+  @alice said we should ship.
+### prose escaped
+|p
+  \|not an element
+  \@alice said so.
+  See \|{em this} written literally, and |{em this} as an element.
+### deeper marker lines are text
+|doc
+  Intro text.
+    |Name|Role|
+### Markdown table row at edge
+|doc
+  |Name|Role|
+### main and body
+|p Intro text |em x
+  more text
+### blank line inside prose
+|node some $main prose
+    child prose section starting...
+      
+    more prose...
+### edge blank lines
+|section
+
+  First paragraph.
+
+  |note A child
+### lone backslash
+|p
+  first
+    \
+  last
+### top-level prose
+  indented first line
+    more indented
+back to zero
+### top-level columns
+  |a
+  |b
+|c
+### nested attribute
+|db
+  :port
+    :nested 1
+### attribute body element
+|book
+  :author
+    |person
+      :name Jane
+### lines follow sameline columns
+|table |tr |td A1
+           |td A2
+### pipe-brace at line start
+|{em x} starts a line
+### bang-brace in prose
+|p
+  some !{x} here
+### at-name sameline after text
+|el some @jw text
+### quoted attr name
+|el :"data[1]" 3 :'@click' go
+### element with no name, key only
+|[jw] hi
+### unicode label
+|café :naïve 1
+### tab after last marker
+|a :x some	value
+### tab before marker
+|a :x some	value :y 1
