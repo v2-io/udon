@@ -149,7 +149,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:traits-may-follow-spaces]] | Provisional: `\|el .something` is the same as `\|el.something`, so an unquoted name can't begin with `.`. |
 | proposed | [[rule:line-scan]] | Sameline material is read the same way whether the line starts with an element or an attribute. |
 | proposed | [[rule:attribute-with-no-value-takes-next-value]] | The next value on the line goes to the attribute that has none yet. |
-| proposed | [[rule:unquoted-run-is-one-value]] | An unquoted run up to the next start is one value: typed only if the whole run spells a number, `true`, `false` or `nil`, else a «text». Provisional, under impact review. |
+| proposed | [[rule:unquoted-run-is-one-value]] | An unquoted run up to the next start is one «text», whatever it spells; other kinds are written in `<…>`, and a view may read an exact number, `true`, `false` or `nil` as that value (a lean). |
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
 | proposed | [[rule:main-is-attribute]] | Sameline text never becomes a text child. |
 | proposed | [[rule:text-value-end]] | On an element's or attribute's line, unquoted text runs until a block form or a framed ` \ `. |
@@ -163,7 +163,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:missing-value]] | Implicit missing values aren't supported. |
 | proposed | [[rule:attribute-after-attribute-with-no-value]] | `:a :b 1` would nest an attribute under an attribute. |
 | proposed | [[rule:nested-attributes]] | An attribute can't have attributes. |
-| gap | [[rule:bare-typing]] | The frozen typed set by spelling, and every edge spelling |
+| gap | [[rule:bare-typing]] | What may stand inside `<…>` as a number, `true`, `false` or `nil`, and every edge spelling |
 | proposed | [[rule:nil-spelling]] | `null` is not typed. |
 | proposed | [[rule:element-values]] | Attributes can hold elements. |
 | proposed | [[rule:element-after-attribute-with-no-value]] | A bare `\|name` where an attribute still waits for its value becomes that value. |

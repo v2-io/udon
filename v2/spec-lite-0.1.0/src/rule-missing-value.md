@@ -36,7 +36,7 @@ An error at 1:5: implicit missing value; write `nil`, `''` or `\`.
 
 *Carried 2026-10-09 from the decision record `adr/missing-values.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-09.*
 
-**Context.** [[decision:errors-stop-parsing]] listed "a `:label` with no value" as an error, carrying 0.10.0's missing-value error. [[rule:text-value-end]] left `:a \` open. Joseph recalled the error's main reason as nested attribute labels being reserved, and leaned toward `:a \` standing for an empty or explicit no-value. The agent replied that the record gives other reasons (2026-07-15: binding; 2026-08-07: the "deletion detector" he ratified), and that `:a \` falls out of "a framed `\` ends the current text" as an empty text. He took that, gave his reason as a new one, and set the message for a bare `:a`.
+**Context.** [[decision:errors-stop-parsing]] listed "a `:label` with no value" as an error, carrying the earlier drafts' missing-value error. [[rule:text-value-end]] left `:a \` open. Joseph recalled the error's main reason as nested attribute labels being reserved, and leaned toward `:a \` standing for an empty or explicit no-value. The agent replied that the record gives other reasons (2026-07-15: binding; 2026-08-07: the "deletion detector" he ratified), and that `:a \` falls out of "a framed `\` ends the current text" as an empty text. He took that, gave his reason as a new one, and set the message for a bare `:a`.
 
 **Options considered.**
 
@@ -66,6 +66,7 @@ An error at 1:5: implicit missing value; write `nil`, `''` or `\`.
 > — Joseph, 2026-10-09 (both in `.int/STEWARD-VERBATIM.md`)
 ## Working notes
 
+- **To ask Joseph, under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]):** the message's `nil` would be read as text unless the typed-primitive view is on; does the message say `<nil>`?
 - Joseph's words (2026-10-09, `.int/STEWARD-VERBATIM.md`):
 
   > `:a` by itself should be an error something along the lines of "implicit missing value for attribute is not supported / reserved -- explicitly use nil, '' for blank string, or \ (for empty text)..."

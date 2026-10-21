@@ -16,9 +16,10 @@ consequences: [rule:tree-transcript]
 
 ## Terms
 
-- **reading-option** (provisional; Joseph's own word was "representational-options"): a named way of presenting the «raw-tree» to a consumer, usually applied during traversal rather than by building a second tree ([[decision:representational-options]]). Two are named so far:
+- **reading-option** (provisional; Joseph's own word was "representational-options"): a named way of presenting the «raw-tree» to a consumer, usually applied during traversal rather than by building a second tree ([[decision:representational-options]]). Three are named so far:
   - presenting `$main` as an element's first child ([[rule:main-is-attribute]]);
   - reading a «text» whose only «piece» is one «embed», in a value slot, as that «embed». As an aspiration, this one defaults to on.
+  - the typed-primitive view: reading a «text» whose whole content is one run spelling exactly a number, `true`, `false` or `nil` as that value ([[rule:unquoted-run-is-one-value]], Joseph's lean 2026-10-21). Whether it is on by default is open.
 
 ## Invariants
 

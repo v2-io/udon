@@ -135,6 +135,7 @@ root
 
 ## Working notes
 
+- **Under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]),** `<…>` is where every non-text kind is written (`<8080>`, `<nil>`, `<"…">`), committing at its first character and an error if the interior doesn't match (Joseph, 2026-10-21: "<920px> error I can understand"). To ask: is a non-primitive interior such as `<2026-10-01>` raw text (his 2026-10-20 option, "passing bare-words … through raw") or an error (his 2026-10-21 `<uint32|0x992BC>` "error- reserved for now")?
 - **Joseph's words:**
 
   > I vote yes, raw text, for typed delimited values (<...>) and references @{...}. […] With the opaque delimited spans (typed values and references) -- I think we can adopt an interim convention of matched braces, warn and pseudo-close span on newline, and detect and unescape either just backslash-escaped brackets for that thing, or potentially consider any single backslash '\' followed by another character as just that next character […] The rule on where it ends doesn't need to be fixed now if the eventual rule is *broader* than what we allow currently.

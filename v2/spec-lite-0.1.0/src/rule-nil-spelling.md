@@ -42,11 +42,11 @@ root
 
 *Carried 2026-10-09 from the decision record `adr/nil-only.md`, retired when cards became the decisions (Joseph, 2026-10-09: "sounds good"); git keeps the record. Recorded there as `steward`, 2026-10-09.*
 
-**Context.** 0.10.0 typed both `null` and `nil` as nil (§11.4: "`null` ≡ `nil`"). Lite takes 0.10.0's frozen bare set (`def/def-typed-value.md` working notes). The agent mentioned that 0.10.0 accepted both; Joseph narrowed it.
+**Context.** Earlier drafts typed both `null` and `nil` as nil. The agent mentioned it; Joseph narrowed it to `nil`.
 
 **Options considered.**
 
-* `null` and `nil` both (0.10.0).
+* `null` and `nil` both (earlier drafts).
 * `nil` only (chosen).
 
 **Drivers.**
@@ -62,8 +62,8 @@ root
 
 ## Working notes
 
+- **To ask Joseph, under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]):** a bare `nil` is then the text `nil`, which the typed-primitive view reads as nil. Is the spelling of nil now `<nil>`? Does the bare-`null` warning stay, and does it point to `<nil>`?
 - Joseph's words (2026-10-09, `.int/STEWARD-VERBATIM.md`):
 
   > Also, let's go ahead and make 'nil' the only spelling for nil/null. I like null better semantically, but nil is less clunky lexically :-).  Now the deterministic typing just got a even tighter.
 - Why error rather than text (the agent's reasoning, ruled by Joseph): a writer who types `null` means nil; reading it as the text `null` would silently change the value's type, and an error fixes the file once.
-- The rest of the typed set (integers, floats, `true`, `false`) is [[rule:bare-typing]], not yet written; Joseph called it "pretty stable" (2026-10-08).
