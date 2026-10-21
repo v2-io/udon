@@ -21,6 +21,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Also in discussion now
 
+0. **The tree's shape, then its notation** (Joseph, 2026-10-20: "higher priority than just about everything else"). Settle the AST first: root as an element with column −1 (his lean, 2026-10-21); uniform vectors with cardinality enforced by strict getters (2026-10-21); attachments (comments, meta) that change no arity; a «text» as an iolist of string-reducible pieces; every value with kind and form. Then a printing of it that is udon-like but never conflates udon forms with AST primitives. Grounding: `.int/ast-sketch-2026-10-20.rs`; constraints on [[rule:tree-transcript]].
 1. **Label characters.** The options are in `.int/labels-unicode-options-2026-10-20.md`, and the coordinator's lean on the rest in `.int/labels-ascii-and-positions-2026-10-20.md` ([[def:label]]). In order:
    - the Unicode repertoire for bare labels (default identifiers, immutable identifiers, XML's fixed ranges, ASCII only, KDL-style), and separating "does this open an element?" from "is this a valid name?";
    - ASCII punctuation in bare labels, every character of which is `Pattern_Syntax`: `-` `_` `:` `/` `$` `?` `!` `*` `+` `@` …; one character set for every label or a wider one for attribute names; first, inner and last positions;

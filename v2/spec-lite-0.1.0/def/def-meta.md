@@ -56,6 +56,7 @@ The fence body is `make\n`. That 4 spaces were removed from the line is «meta»
 
 ## Working notes
 
+- **Bearing of the root lean, 2026-10-21:** if the root is an element whose parser-supplied facts (filename, hash, mtime) are `$`-attributes (Joseph, 2026-10-21, [[def:root]]), then sense A in the table below leaves «meta» and becomes root attributes, and «meta» keeps sense B (how and where something was written). The agent's reading of his lean, to confirm.
 - **Not reviewed with Joseph.** The term came to this card from [[def:document]] on 2026-10-09.
 
 ### Joseph's words, in date order

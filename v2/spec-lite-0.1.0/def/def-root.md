@@ -53,6 +53,7 @@ root
 
 ## Working notes
 
+- **Joseph's lean, 2026-10-21** (`.int/STEWARD-VERBATIM.md`): "I think most of the discussions have revolved around $root (or something like that) being nothing more than an element with some extra metadata attributes and an indentation column (not sure what the term we'll land on) as -1 or something..." *Reading (the agent's):* the root is an «element» with no spelled name (perhaps a designated one), column −1, and parser-supplied facts (path, hash, mtime) as `$`-attributes in its attribute space rather than in a separate meta bag; element rules then apply to it by default. The separate `Root` struct in `.int/ast-sketch-2026-10-20.rs` collapses into `Element` under this lean.
 - **Not reviewed with Joseph.** The term came to this card from [[def:document]] on 2026-10-09.
 
 ### Joseph's words, in date order

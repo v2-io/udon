@@ -76,6 +76,7 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 
 ## Working notes
 
+- **Where a framed comment sits, Joseph 2026-10-20** (`.int/STEWARD-VERBATIM.md`): "I feel a framed comment on a sameline structure should attach, just like the value if there is one preceeding it, to the nearest :attribute or |element (or, now ```fence)"; on an element, "just the next child even if most children are "prose"". So `|el :a 1 ; note` attaches the comment to `a`'s value on that line (not a value, no change of arity); `|el ; note` makes it `el`'s next child. The Explanation above draws comments as children of the element in both cases and needs redrawing for the attribute case.
 - **Joseph's words** (copied with the file's bracketed corrections):
 
   > 1.  I vote for strict-lean except ' ; ' only counts as a comment when part of sameline and with at least one space on each side. Comments: available on node or attribute started lines, and available as their own block, which also comments everything in that block that is indented further as per the usual with blocks and the indentation. (a), (b) => error,  (c) passed through + reference,  (d) passed through, (e) parsed as a node unless indented further than that in prose that has already started or escaped with \ or a space after the first pipe.

@@ -17,9 +17,12 @@ pub type ParseResult = Result<Parse, Error>;
 /// top-level attribute lines ([[rule:top-level-attributes]]) and the
 /// top-level items, in order.
 ///
-/// OPEN: is the root an `Element` with no name, or its own kind
-/// ([[def:root]])? Its own kind here, because nothing can spell its name,
-/// key or traits; if it becomes an `Element`, `Root` collapses into one.
+/// OPEN, leaning closed: Joseph, 2026-10-21: the root is "nothing more than
+/// an element with some extra metadata attributes and an indentation column
+/// … as -1". Under that lean this struct collapses into `Element` (no spelled
+/// name, column -1 in meta, parser-supplied facts as `$`-attributes), and
+/// `Held` collapses into `Vec<Occurrence>` with cardinality enforced by
+/// getters rather than by shape (same day). Kept as written for the record.
 pub struct Root {
     pub attributes: Vec<Attribute>,
     pub children: Vec<Node>,

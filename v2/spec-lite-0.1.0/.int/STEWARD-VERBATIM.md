@@ -1136,3 +1136,123 @@
 > Yes-- essentially specialized character classes. Those will get more and more useful.   I need a little break-- will you commit what we have that's not committed, remove the old handoff, replace it with a new handoff that just casually discusses where we're at and where we think we're headed (probably tightening up our spec notation etc. still and then more defs and PEG etc.) etc.-- your thoughts on the various things raised that we haven't had a chance to discuss yet-- your recapitulation of several of my guides for working with me and what helps and what to assume and what not to assume etc., a warning against filling up context with stuff outside the *-lite-* directory-- send agents out scouting instead because there's not a ton of room right now even with just *lite* stuff in context and I need help with the big cross-cutting and big-picture adjudication (like these spec norms and definitions)... all of the meta-learnings etc. so far etc. -- get everything into a good spot. You'll probably have some context left afterward to do a little more work when I get back, but that + your leans on various things should give you plenty of productive work to do in the meantime.
 >
 > If you have a lean on the label characters / identifiers or a report that needs to be written to .int for the next agent to go over and get a lean etc. that would be useful too if not already done. I know I have had you bouncing all over the place. You may also want to look in your context at everything that filled it up that *isn't* particularly relevant or useful and warn any successor agents away from those if there are any...
+
+## 2026-10-20 evening → 2026-10-21 (Mountain), session `014uHM6yNW767ksMmVtWt7Sn`
+
+*Source: the Claude Code session `https://claude.ai/code/session_014uHM6yNW767ksMmVtWt7Sn` (Fable 5.1). Recorded by the agent of that session. Agent text is summarized and marked. Messages carry no timestamps; the order is the conversation's.*
+
+### Joseph, opening message (whole)
+
+> Hello! would you look at the handoff document in v2/spec-lite-0.1.0/.int/ and orient yourself -- staying mostly in spec-lite as to not have older defunct spec efforts spoil your thinking-- and give your big-picture thoughts?
+
+*(Agent text, summary: the agent read the handoff, outline, TODO-MSC, every def and rule card, obj and adr, the fixture, both label reports, this file whole and the spec-lite git log; gave its professio; and reported: the method has converged; the spine (nesting, markers, bare typing) is the hole; a lean to do the structural cluster before the value-layer defs; on the value model, that bare material with no embeds is a string of form bare and only material holding embeds is a «text»; three things it thought unasked: where a framed comment lives (child of the element vs item of the attribute), that a comment line splits prose into two texts, and that «text» had two shapes (prose joined vs fence body by line); label leans matching the handoff's; a proposed next order.)*
+
+### Joseph (whole)
+
+> Your things nobody has put to me plainly first:  #1 - framed comments in the AST-- I often include them in the tree the same way I think about them when they are top-level children -- just the next child even if most children are "prose". But it doesn't matter a whole lot to me. I feel a framed comment on a sameline structure should attach, just like the value if there is one preceeding it, to the nearest :attribute or |element (or, now ```fence) -- whereas `|a :attr some text ;{this is inside the text}` is specifically for wanting the comment associated with (and even internal to) the value. Most of the confusion earlier has come from the undetermined notation for the AST-- making it similar enough to take advantage of udon convention but making it distinct and not conflating udon forms with AST primitives. I feel like having that nailed down -- even if we have to revert to s-expressions in the worst case -- is higher priority than just about everything else so we can be *sure* about whether we're talking about notation semantics that affect the meaning vs AST-centric decisions that affect the API and maybe roundtripping--  allowing also for *metadata* like row/col/span info that we've been similarly saying "attached to the tree in the right places" like comments and ignoring the fact that it's going to cause confusion. So we can start hiding metadata and comments and ornamentation once those things are well-defined and worth hiding, IMO. That said, I'm hoping for something more convenient and pretty than s-expressions. Cardinality of certain things is poorly defined and leading to confusion. My argument about a comment being seen in the AST as a "child of the attribute" caused the other agent to object because now that attribute has an array value with the second element being the comment, changing the expected cardinality. I pushed back back and said he was objecting to my AST notation, not meaning. Whatever you decide to recommend as AST notation-- allow for metadata and comments to be attached without it changing the cardinality, and distinguish between multiple hetero values being an AST array vs an UDON multi-value (array or stacked). I should be able to attach a comment or metadata about what line I'm on and whether it had blanks before it and the time of day right now without it changing the cardinality or arity of anything structural.   AST-representation-list != udon-value list != (necessarily) udon multiple values (children, etc.) != ... ....
+>
+>
+> Past versions of Udon, and we'll say this one, even with lite, never guarantee that text/prose is pre-collapsed. It's critical for streaming, but it also makes <<text>> as its own thing that is expected to have "string-reducable forms" including comments that reduce to an empty string etc. scattered throughout, kind of like an erlang iolist I guess now that I think about it. But the fact that you're acting as if <<text>> is defined, when it has not been discussed yet-- makes me think that the handoff was sorely lacking or represented certain things as settled that were just barely beginning to be discussed. I would have thought the verbatim log would make that clear and provisional tags etc. but now I'm not sure...
+
+*(Agent text, summary: the agent agreed the record was clear (the def card says not reviewed; the handoff and TODO say no provisional def is accepted) and that it had reasoned from the drafted definition as if settled; took his iolist framing as dissolving its "two shapes of text" point; and proposed a notation: the tree as UDON's fully desugared spelling plus four marks (`⸨…⸩` text, `⟬…⟭` raw, `#key value` meta, indentation under an attribute as attachment), AST sequences never bracketed, `[…]` only for a udon list, stacking as repeated lines; redrew his 2026-10-20 example with `#form bare` annotations; asked whether a text prints collapsed and whether form is meta or kind.)*
+
+### Joseph (whole; the paste is his 2026-10-20 value-model message, already recorded above, and is not repeated here)
+
+> I'm not fully convinced about not showing stacking in the AST-- I mean, I appreciate that it's more conceptual and leaves implementation as a separate concern, but it seems almost too abstract at that point. On the first :f I have no idea what #form bare is attached to. (x? the embed? both?) -- you have the typing for :d completely wrong and opposed to the magic of udon values and everything I told the prior agent about values-- pasted here since it apparently didn't make it into verbatim?
+>
+> […his 2026-10-20 value-model message, pasted from his terminal…]
+>
+> forgive the mangled formatting.
+> And lots more. Of course, now that I went searching, I at least have (I think) the example you gave an AST representation for to reference (?)
+>
+> What exactly within spec-lite**/ have you *not* read?
+
+*(Agent text, summary: the agent said the paste was already in this record and in def-value's notes, and that it had read it, so the `:d` error was its own: it had invented an orthogonal "form" axis and hung `bare` on a number. It listed what it had not read in the store (`.int/pre-design/`, the lexicon inventory, both notation proposals, the escape and history reports, `sop/`, `.old/`), then read both notation proposals and the three small `.int` files, and re-proposed: values in udon's own spelling, stacking shown as `⟮ … ⟯` (one attribute, an array), attachments trailing on the one item of a line, `::kind.form` only on request. It asked three questions: one-item arrays, element comments trailing vs child, bare strings printed bare.)*
+
+### Joseph (whole)
+
+> Maybe some of the lack of thinking through some suggestions or something is due to the effort being set too low for this task. Hopefully from here on in you'll have room to ponder and correct and polish a bit more-- because we're to the point where casual mistakes ripple into serious misunderstandings and a broken spec just when I was hoping for thoughtful cleansing...
+> (with apologies-- I hadn't gotten to your very good questions yet)
+
+*(Agent text, summary: the agent checked `⟮⟯` `⸨⸩` `⟬⟭` are single-width (UCD 18), and listed slips in its own proposal: sugar left in a tree that was meant to be desugared (which had manufactured its question 2, withdrawn); an embed's interior printed as if designed; "the printer merges adjacent runs" being wrong for fences (corrected to one printed line per source line); bare strings colliding with the `#` and `;` marks; invented meta keys; no root line stated. It noted question 1 matched his 2026-08-09 statement on stacking.)*
+
+### Joseph (whole)
+
+> I'm still a bit confused-- Could you do several examples with
+> ```udon[ex-1]
+> ...
+> ```
+>
+> followed by their suggested
+> ```udon-ast[ex-1]
+>
+> ```
+> expansion?
+>
+> I'm seeing things like "   #at ... " in what I would assume is the udon you're drawing an AST for, which doesn't make any sense to me...
+
+*(Agent text, summary: ten labeled udon / udon-ast pairs: strings and numbers by spelling; stacking vs list; `$main` and a prose child; a text with embeds, inline and expanded one piece per line; framed comments attaching to attribute vs element, and an element as a value; a lone reference as a one-piece text; a fence as an attribute's value with opener/closer comments and body by line; meta shown only when requested; `<…>` as raw; his 2026-10-20 example redrawn. Values were printed in source spelling with no kind or form annotation.)*
+
+### Joseph (whole)
+
+> OK, just starting to work through this-- first obvious thing I see is that you have decided not to have value types in the tree, nor form information, which is a little baffling to me. What is your reasoning?
+
+*(Agent text, summary: the reasoning had been economy (spelling determines kind); it conceded that this makes the reader re-derive the parser's decision, conflates udon forms with AST primitives, and loses form; proposed every scalar carry `::kind.form`, bracketed kinds marked by their bracket; redrew ex-1 and ex-10; asked about the form vocabulary and annotations inside lists.)*
+
+### Joseph (whole)
+
+> OK-- that's like saying "the parser outputs this AST, but the AST shows it pre-parsed, because the parser already knows how to parse it..."
+
+*(Agent text, summary: agreed; noted it settles its own question 3: with `::kind.form` present, content can always be delimited (`"hello" ::string.bare`), removing the mark collisions; said it would wait on his stacking answer before writing to `rule:tree-transcript`.)*
+
+### Joseph (whole)
+
+> I think the abstract notations have you thinking about an alternative udon syntax instead of an actual concrete useful explanation of how to parse udon. Would it help if you simply tried putting together a rust AST to be more grounded?
+
+*(Agent text, summary: wrote `.int/ast-sketch-2026-10-20.rs` (compiles; commit `111b8bf`): `Parse { root, warnings }`, `Root`, `Node` enum, `Element`, `Attribute { held: Held::One | Held::Stacked }`, `Occurrence { value, comment, meta }`, `Value` enum with per-kind forms, `Text { pieces }` as an iolist, `Piece` enum, `Fence` with opener/closer comments and a body text by line, `Meta`; every undecided point marked OPEN, including the root as its own struct, bare `hello` as a string vs the cards' text, a comment line inside prose as a piece vs a splitting sibling, embed interiors as raw strings, and `<…>` reopened.)*
+
+### Joseph (whole)
+
+> I don't mean to be evasive about that one simple question that keeps coming up-- but let me evade a little longer. It seems we have several constructs that *often* have an arity of 0-1 (attribute values), *reduce* to something that's essentially 0-1 (like text), vs things that are assumed to have 1+ cardinality where '+' is frequent enough that it just makes sense to always assume a vector (children, text again), etc., with the things that are *usually* 0-1 cardinality (usually 1, as a matter of fact) allowed to have multiples. We don't have a spec language yet but will soon, and there would be certain expectations set by the spec, but we might not need that here... I wonder if we can simply have the parser in those "usually 1, sometimes 0, sometimes N+" structures to be specially designated so that they have an api that enforces cardinality? So if you are generically having all attribute' values as vectors, you use the generic 'getter' -- but if you specifically expect one child (or one non-array child?) use a different function that throws an api error (doesn't discard the tree- just raises on the call etc.) that expects there to only be one item in the vector... I think I'm missing several cases and nuances-- getting ready to eat dinner ;-)
+
+*(Agent text, summary: a table of structures and arities with strict vs generic getters (`value()`/`values()`, `child()`/`children()`, `as_string()`/`pieces()`, `Option` for 0–1 slots); nuances: `value()` on `:x [1 2]` succeeds (one value, a list) while on `:x 1 :x 2` it fails, and a separate `items()` could flatten both (the K15 default read); `as_string()` succeeds only when every piece is a run or a comment; two error kinds now exist (parse vs API cardinality); the spec language declares expectations later, the parser API supplies the mechanism; `Held` goes away in favor of uniform vectors.)*
+
+### Joseph (whole)
+
+> It seems like maybe there is more indirection than necessary. Can you do another pass at an AST maybe? Possibly something like ruby?:
+>
+> ```ruby
+> # Representing: x = 1 + 2
+> ast = {
+>   type: :assignment,
+>   left: { type: :identifier, name: :x },
+>   right: {
+>     type: :binary_expression,
+>     operator: :+,
+>     left: { type: :numeric_literal, value: 1 },
+>     right: { type: :numeric_literal, value: 2 }
+>   }
+> }
+> ```
+>
+> ---
+>
+> or, for my sake, maybe even an AST as an ERD? :-)
+
+*(Agent text, summary: a Ruby hash for a concrete document with the occurrence wrapper removed (a value hash carries its own attached `comment` and `meta`; `values` always an array; `$main` an ordinary attribute; embeds as `raw`), and a mermaid ERD of the kinds and edges, noting three open points it makes visible: a text as both child and value, no comment-line piece yet, and ROOT and ELEMENT having identical edges.)*
+
+### Joseph (whole)
+
+> What would this be for you?:
+> ```udon
+> |el :a "hello" :b hello :d 3 :f |{em x} ;{yeah, definitely 'x'} ; not done yet!
+>     :f another string ;{well, eventually} if we want ; ok, no more :f for now.
+> ```
+
+*(Agent text, summary: the Ruby hash by the cards: `f` has two values, both texts since each holds an embed (`;{…}` counts); the space between `|{em x}` and `;{…}` is a run piece, the space before the framed ` ; ` is frame; each framed comment attaches to the `f` value on its line; `:f for now.` inside the comment is never parsed; line 2 is an attribute line of `el` with no late-attribute warning. It flagged that dropping the inline comment when reducing the second text to a string leaves two spaces, a view question dialect authors will hit.)*
+
+### Joseph (whole)
+
+> I think most of the discussions have revolved around $root (or something like that) being nothing more than an element with some extra metadata attributes and an indentation column (not sure what the term we'll land on) as -1 or something...
+
+*(Agent text, summary: the agent took it as his lean: the root is an element with no spelled name (or a designated one), column −1 in meta, and parser-supplied facts (path, hash, mtime) as `$`-attributes rather than a separate meta bag, which splits def-meta's two senses; recorded this session's messages here and on the affected cards.)*
