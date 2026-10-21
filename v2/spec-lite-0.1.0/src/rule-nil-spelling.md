@@ -11,16 +11,16 @@ consequences: [rule:reserved-spellings, def:typed-value]
 
 # `nil` is the only spelling of nil
 
-*A bare `null` is an error that points to `nil`.*
+*A bare `null` is text, with a warning that points to `nil`.*
 
 ## Statement
 
-`nil` standing alone as a value MUST be nil. A bare `null` where `nil` would be read as nil MUST be an error whose message points to `nil`.
+`nil` standing alone as a value MUST be nil. A bare `null` where `nil` would be read as nil is text, and the parser MUST report a default-on «warning» that points to `nil`.
 
 ## Grounds
 
 - Joseph, 2026-10-09: "let's go ahead and make 'nil' the only spelling for nil/null. I like null better semantically, but nil is less clunky lexically".
-- Joseph, 2026-10-09, on the agent's lean that a bare `null` errors with a hint to use `nil`: "I agree, rule" — a ruling.
+- Joseph, 2026-10-21, revising the 2026-10-09 ruling that a bare `null` is an error: "null as text should cause a warning, not an error, IMO." His word is "IMO": a lean, superseding the earlier "I agree, rule".
 
 ## Epistemic status
 
@@ -36,7 +36,7 @@ root
   |el
     :a nil
 ````
-`|el :b null` is an error at 1:8, with no tree: `null` is not lite's nil; write `nil`.
+`|el :b null` gives `b` the text `null`, with a warning at 1:8: `null` is not lite's nil; write `nil`. (Until 2026-10-21 this was an error.)
 
 ## Discussion
 
@@ -58,7 +58,7 @@ root
 
 **Costs accepted.**
 
-* JSON-trained writers will write `null`; unless it is reserved, it silently becomes text. (Since ruled: a bare `null` is an error that points to `nil`.)
+* JSON-trained writers will write `null`; it becomes text, with a warning (2026-10-21; from 2026-10-09 to then it was an error).
 
 ## Working notes
 

@@ -38,7 +38,8 @@ Chosen, not derived. Checkable by measurement. One measurement exists, made with
   - a Markdown code fence at the text's left edge is a lite fence (11, 87);
   - tight pipe tables `|a|b|` open elements; spaced ones `| a | b |` don't (08);
   - a line-initial `\` is consumed as an escape (82, 87);
-  - a line-initial `:word` may read as an attribute (88, 87).
+  - a line-initial `:word` may read as an attribute (88, 87);
+  - a Markdown image `![alt](src)` at a line start is a reserved construct and an error (Joseph, 2026-10-21; [[rule:reserved-spellings]]); mid-line it is text. Escape it with a leading `\\` or indent it past the text's left edge.
 - **The sharp one is a conflict with [[obj:reserve-dont-ignore]].** Under [[decision:reserved-is-an-error]], if a prose line starting `@alice said` or `!important` counts as reserved syntax, the whole «document» has no tree. Either lite reserves less in prose than elsewhere, which constrains what full UDON may later do with prose, or this objective names those lines as collisions. That is 09 Q1 and 87, and it is Joseph's call, because the two objectives pull against each other.
 
 ## Working notes

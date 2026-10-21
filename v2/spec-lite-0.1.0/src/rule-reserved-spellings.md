@@ -19,13 +19,12 @@ Each spelling in this table MUST be an error where the table says.
 
 | Reserved | Where |
 |---|---|
-| `!` followed by a name or `:` (`!if`, `!:sh:`) | at the start of a line, and on an element's or attribute's line |
+| `!` followed by a name, `:`, `[`, `.` or `<` (`!if`, `!:sh:`, `![img](src)`) | at the start of any line, prose included, and on an element's or attribute's line |
 | `!{` (`!{…}`, `!{{…}}`) | anywhere it would open, prose included |
-| `@` followed by a name (`@jw`) | at the start of a prose line, and as a value |
+| `@` followed by a name, `[`, `.` or `<` (`@jw`, `@[k]`, `@.t`, `@<…>`) | at the start of any line, prose included, and as a value |
 | an attribute with no value followed by another attribute | on an element's or attribute's line ([[rule:attribute-after-attribute-with-no-value]]) |
 | an attribute line owned by an attribute | in an attribute's body ([[rule:nested-attributes]]) |
 | `@` followed by a name, `@[`, `@.` or `@<` (`@jw`, `@[k]`, `@.t`, `@<…>`) | on an element's or attribute's line |
-| a bare `null` where `nil` would be read | as a value ([[rule:nil-spelling]]) |
 
 ## Grounds
 
@@ -71,4 +70,5 @@ Decided for this version, row by row. The list is not complete.
   > Let's put reserved ones in their own file and not explain them other than what characters or constructions are reserved.
 - Joseph, 2026-10-09, confirming the `@` forms on element and attribute lines (as in 0.10.0 and `.int/reserved.md`): "correct".
 - `@name` and `!word` in the middle of a prose line are text ([[rule:prose-passes-through]]); `!{` stays reserved there.
+- **Joseph, 2026-10-21**, confirming the de novo audit's reading of the PEG against this table: "The card's do need to be updated to reflect the ![img](src) and @[k] errors that are now standard errors as they should have been (as reserved constructs)." So the `!` and `@` rows cover every form (name, `:`, `[`, `.`, `<`) wherever a start is recognized, a Markdown image at a line start included; the bare `null` row left this table the same day ([[rule:nil-spelling]]: text with a warning).
 - Not yet discussed: spellings floated in the past (pre-design 56).

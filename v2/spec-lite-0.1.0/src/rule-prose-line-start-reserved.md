@@ -15,7 +15,7 @@ consequences: [rule:reserved-spellings, obj:reserve-dont-ignore, rule:deeper-mar
 
 ## Statement
 
-A prose line whose first non-space characters are `@` followed by a name, or `!` followed by a word, MUST be an error.
+A prose line whose first non-space characters are `@` or `!` followed by a name, `:`, `[`, `.` or `<` MUST be an error (the rows of [[rule:reserved-spellings]]; Joseph, 2026-10-21: a Markdown image `![img](src)` at a line start is such an error, "as reserved constructs").
 
 ## Grounds
 
