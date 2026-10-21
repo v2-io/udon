@@ -264,3 +264,36 @@ Bold rows are groups. Italic rows are families within a group. **Domain** is the
 - **Domain or language?** I treated language (Chinese titles, Russian stress marks) as a separate parameter from domain, because the same field writes differently in different languages. They could be one column.
 - **Style guides disagree** (Chicago, APA, AP, the Microsoft guide), and none of the conventions here were checked against one.
 - **Where speaker labels belong.** They're filed under signposting, but they could equally be their own family under voice.
+
+## References
+
+Each entry says what it backs here, and whether it was read for this document or is a pointer for checking. The URLs were checked to resolve on 2026-10-21, except where noted.
+
+**Read for this document**
+- WHATWG, *HTML Living Standard*, §4.5 "Text-level semantics": the definitions of `<i>`, `<b>` and `<u>` quoted in Table B, and the phrase elements generally. <https://html.spec.whatwg.org/multipage/text-level-semantics.html>; also §4.4 "Grouping content" (`<dl>`, `<figure>`) <https://html.spec.whatwg.org/multipage/grouping-content.html> and §4.7 "Edits" (`<ins>`, `<del>`) <https://html.spec.whatwg.org/multipage/edits.html>.
+- TEI Consortium, *TEI P5 Guidelines*, chapter 3, "Highlighting and Quotation". The `hi` / `model.emphLike` split was confirmed from the class pages on a mirror: <https://digitalhumanities.unl.edu/resources/schemas/tei/TEIP5.2.0.2/doc/tei-p5-doc/en/html/ref-model.emphLike.html>, <https://digitalhumanities.unl.edu/resources/schemas/tei/TEIP5.2.0.2/doc/tei-p5-doc/en/html/ref-model.highlighted.html>. The canonical chapter is <https://www.tei-c.org/release/doc/tei-p5-doc/en/html/CO.html>, which refused connections from this machine on 2026-10-21. TEI is the finest-grained existing meaning vocabulary for spans, and the first place to look when extending Table B.
+- W3C, *Digital Publishing WAI-ARIA Module 1.1* (Recommendation, 12 June 2025): the `doc-*` roles. <https://www.w3.org/TR/dpub-aria-1.1/>
+- W3C, *WAI-ARIA 1.3*, editor's draft: the `comment`, `suggestion`, `mark`, `insertion`, `deletion`, `term` and `definition` roles. <https://w3c.github.io/aria/>. The current Recommendation is WAI-ARIA 1.2: <https://www.w3.org/TR/wai-aria-1.2/>.
+- DAISY Knowledge Base, "ARIA roles" (DPUB-ARIA support and its relation to `epub:type`). <https://kb.daisy.org/publishing/docs/html/roles.html>
+
+**Pointers for checking the conventions (not read for this document)**
+- *The Chicago Manual of Style*, 18th ed.: titles (italic versus quotation marks), foreign words, words used as words, vessel names, index cross-references. Behind a paywall. <https://www.chicagomanualofstyle.org/home.html>
+- Robert Bringhurst, *The Elements of Typographic Style*: small caps for acronyms, lede and run-in typography, letterspacing. A book, with no online edition.
+- ISO 80000-2 (mathematical signs and symbols) and BIPM, *The International System of Units (SI Brochure)*: italic quantity symbols, upright units and named functions, bold vectors. <https://www.bipm.org/en/publications/si-brochure>. ISO's own page blocks scripted access.
+- HGNC, gene-naming guidelines: italic gene symbols, upright protein names. <https://www.genenames.org/about/guidelines/>
+- APA Style, italics: statistical symbols, among other things. <https://apastyle.apa.org/style-grammar-guidelines/italics-quotations/italics>
+- *The Bluebook: A Uniform System of Citation*: case names and citation signals. <https://www.legalbluebook.com/>, which blocks scripted access.
+- Microsoft Writing Style Guide, "Formatting text in instructions": bold interface labels, key names, menu paths. <https://learn.microsoft.com/en-us/style-guide/procedures-instructions/formatting-text-in-instructions>
+- The Leiden conventions, the editorial brackets in Table B's scholarly-edition family: an overview at <https://en.wikipedia.org/wiki/Leiden_Conventions>. EpiDoc, the TEI-based encoding guidelines for epigraphy, maps each Leiden mark to a TEI element: <https://epidoc.stoa.org/gl/latest/>.
+- CriticMarkup, as documented by MultiMarkdown 6: the tracked-change and comment syntax. <https://fletcher.github.io/MultiMarkdown-6/syntax/critic.html>
+
+**Sources for Table A's markup**
+- W3C, *CSS Text Decoration Module Level 3*: wavy underlines, `text-emphasis` (CJK emphasis dots). <https://www.w3.org/TR/css-text-decor-3/>
+- W3C, *MathML Core*: `<math>`, `<mi>`, `mathvariant`. <https://www.w3.org/TR/mathml-core/>
+- ECMA-48 (also ISO/IEC 6429), the control functions behind ANSI SGR codes; curly underline (`4:3`) and OSC 8 hyperlinks are later terminal extensions, not part of it. <https://ecma-international.org/publications-and-standards/standards/ecma-48/>
+- WCAG 2.2, Success Criterion 1.4.1 "Use of Color": color can't be the only signal. <https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html>
+- CTAN, for every LaTeX package named (ulem, soul, csquotes, menukeys, microtype, xcolor, censor, changebar, ruby, hyperref, …). <https://ctan.org/>. Installation was checked against TeX Live 2025 for about thirty-five of them while building `idioms-md-html-latex.md`; changebar, censor and microtype weren't checked.
+
+**In this repository**
+- `feature-union.md`, `feature-table.md`, `feature-support.md`: the Markdown syntax and dialect support behind Table A's Markdown column, tested against comrak 0.54 and pandoc 3.11 on 2026-10-15.
+- `idioms-md-html-latex.md`: the companion table of idioms across Markdown, HTML and LaTeX.

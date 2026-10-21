@@ -205,3 +205,12 @@ These lists are read off the marks above, so they're only as good as the cells.
 **LaTeX has nothing where the web has the idiom:** collapsible sections, tabs, video and audio, media captions, embedded pages, responsive images, image maps, dialogs, popovers, gauges, live regions, hidden or inert content, page landmarks, explicit section containers, attributes on any element, longer descriptions and widget state for assistive technology, mentions, tags and wikilinks. Hyperlinks need a package (hyperref). Text alternatives depend on tagging support: graphicx accepts `alt=` and ignores it unless that support is loaded.
 
 **Markdown alone has:** link definitions referred to by label (`[ref]: url`), task lists as syntax (the other two fake the checkbox), wikilinks, and raw passthrough to another format.
+
+## References
+
+The URLs were checked to resolve on 2026-10-21.
+
+- **The Markdown column:** this spike's `feature-union.md`, `feature-table.md` and `feature-support.md`, tested against comrak 0.54 and pandoc 3.11 on 2026-10-15; behind them, the CommonMark spec 0.31.2 <https://spec.commonmark.org/0.31.2/>, the GFM spec <https://github.github.com/gfm/>, and the Pandoc manual <https://pandoc.org/MANUAL.html>.
+- **The HTML column:** WHATWG, *HTML Living Standard* <https://html.spec.whatwg.org/multipage/text-level-semantics.html> (the `<i>`, `<b>` and `<u>` definitions were read; the rest is from memory); W3C, *Digital Publishing WAI-ARIA Module 1.1* <https://www.w3.org/TR/dpub-aria-1.1/> (role list read); W3C, *WAI-ARIA 1.3* editor's draft <https://w3c.github.io/aria/> (role list read); DAISY Knowledge Base on DPUB-ARIA support <https://kb.daisy.org/publishing/docs/html/roles.html> (read).
+- **The LaTeX column:** from memory. Package names were checked against TeX Live 2025 on this machine. Documentation is on CTAN: <https://ctan.org/>.
+- **Companion:** `span-semantics.md` breaks the inline rows down into meaning, visual distinction and markup, and has a longer reference list.
