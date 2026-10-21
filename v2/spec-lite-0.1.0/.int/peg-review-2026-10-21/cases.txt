@@ -1,0 +1,67 @@
+# sanity
+|el
+|el hello world
+|el :a 1
+|el :a x
+:title My Notes
+# two attributes on one line (rule-attribute-with-no-value-takes-next-value example)
+|el :a 1 :b "two"
+|element[k] :attr this value :another <34>
+# framed backslash (rule-framed-backslash-frame, Joseph's own spelling)
+|nav :aria-label Site |a :href / \ Home
+|el :a x \ y :b 2
+# empty text (rule-backslash-empty-text)
+|el :a \ :b ''
+# leftover values (rule-leftover-values)
+|q "hello," she said
+:x "one" two
+# sameline element is a child after a finished value (rule-sameline-element-is-child)
+|el :a 1 |b
+|a |b |c
+# element after a waiting attribute (rule-element-after-attribute-with-no-value)
+|el :x |em hi :y 2
+# framed comments (rule-framed-comments)
+|li Item ; TODO
+|el :a 1 ; note
+|el :url x;y
+|el text ;note
+|el ; note
+# guards from Joseph's words: pipe-space is text; emoticon in $main
+|p this | that
+|p smile :-) ok
+|p wow ! amazing
+# keys and lists
+|x[a]
+|step[1]
+|cfg :tags [a "b c" 3]
+|el :e [1 2]
+# typed-ish spellings
+|el :a true story
+|el :count 7 apples
+|el :n nilly
+# adjacent strings (rule-adjacent-quoted-strings: two values + warning)
+|el :a "x""y"
+# unclosed delimiters (rule-unclosed-delimiter-is-error)
+|el :a "unfinished
+|el :when <2026-01-01
+# :c 1 z (the TODO-MSC gap)
+|el :c 1 z
+# fence after a finished value (rule-fence-anywhere-structure: a child)
+# (fence production not modelled; FENCE only as a start)
+# embeds
+|nav |{a :href / \ Home} |{a :href /about \ About}
+|el :n ;{} :m 1
+|el :x !{y}
+# more edges for the repaired run
+|el :a :b 1
+|el :d
+|el :x |em hi \ more
+:x one \ two
+|p see @alice now
+|post :by \@alice
+|nav :aria-label Site |{a :href / Home}
+|el :c 1 z ; note
+|x["a]b"]
+|x[a\]b]
+|el :tags [a\]b c]
+|el :a "abc"def
