@@ -1412,3 +1412,24 @@
 > Would you have an opus 5.5 agent look over it and compare to the cards and discussion items etc. and give any feedback / validations / verifications / suggestions / questions etc. so far?
 
 *(Agent text, summary: launched an Opus 5.5 reviewer with a bare brief (his words, the file and store locations, his constraint about staying inside the lite store with its reason, where to write). The review is `.int/peg-review-2026-10-21.md`, its executable checks in `.int/peg-review-2026-10-21/` (a one-for-one Python transcription of the PEG, a repaired variant, and card-derived cases). Its findings, confirmed by this session running both scripts: as written the PEG reads every mid-line attribute, fence and reserved spelling as `$main` text and every sameline element as a `$main` value, from three local causes (a value may begin at a start; no slot for the space before a mid-line block, and BS-SEP eats the next value's space; the start/embed lookahead used as the whole guard, dropping the start/text guards); with about ten local repairs every card example comes out as the cards draw it. Further: fences can't be an attribute's value; the closer's comment is lost in EOFB; end-of-line as a frame answered both ways; prose splits at blank lines and ends at a shallower line, against the text cards; rule names rename «delimited-string», the accepted definition. Judgments: the lexer can own EOB only if every decision it needs is lexical, i.e. the labels lean (invalid name is an error, not text) is also the grammar's architecture; `|el :c 1 z` → `$main` is the consistent reading since the rulings already deny attributes ownership of later items on their line, which also revives R1 (the backslash ends only the text). Five questions for Joseph as examples.)*
+
+### Joseph (whole)
+
+> I was surprised you could get EOB to work with Python's lexer at all-- we had ruled it out a long time ago -- especially because it couldn't handle (we thought at the time) proper child-assignment of the next line, e.g.:
+>
+> ```udon
+>
+> |element-1 |element-2 |element-3 |element-4
+>                                    child of element-4
+>                  child of element-2 (sibling of |element-3)
+>               same, but now with a dedent warning.
+>   now element-2 is closed as well...
+>
+> ```
+>
+> But I trust you have that core part of udon well in hand here. I am perfectly fine with sameline attributes closing after the first value closes I think-- we didn't really have that full conversation in depth yet which is fine for now-- this is more about the spine and terminology still I think-- the main anatomy of the udon...
+>
+> Please feel free to repair the PEG and adjust what you would like
+> (as it's provisional and illuminating still)
+
+*(Agent text, summary: corrected the premise: nobody has executed EOB; the reviewer's harness runs one-line inputs only and its lexer claim was conditional on lexical guards. Gave the tree his example should produce by the cards and made it the first multi-line case to execute. Recorded his lean that a sameline attribute closes after its first value (so `:c 1 z` gives z to $main, and the framed backslash ends only a text). Repaired the PEG per the review (text never begins at a start; items separated by WS or the framed backslash; element or fence as a value only as an attribute's first; each start's card guard; key and list text extents; framed comment as an item; closer comment kept; blank lines inside prose; the accepted string names; root not document; three-kind capture convention with `_lowercase` and `ERROR-…`), and transcribed it into `peg-review-2026-10-21/peg_v2.py`: all card cases come out as the cards draw them; the PEG block parses under mermaid 12.2.)*
