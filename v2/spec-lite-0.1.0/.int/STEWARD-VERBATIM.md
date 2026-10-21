@@ -1499,3 +1499,13 @@
 > excellent work. Will you make sure everything is written down for a handoff? I'm afraid we've reached the end of your context window
 
 *(Agent text, summary: wrote `.int/HANDOFF-2026-10-21.md` (replacing the 2026-10-20 one; git has it): the day's artifacts and which to trust as gates, the decisions and leans in his words with the cards they landed on, the open question that matters most (how a bare value gets its kind: A first character, B whole run, C always text except typed, with the one bit he left open), where it's headed, the agent's leans, how to work with him, and the session's mistakes. Saved the mermaid checker and probe to `.int/tools/`. Updated the spec-lite memory for the udon project with the "checks must read the primary" lesson.)*
+
+## 2026-10-21 (Mountain), session `017CGtyMCtyw6NYVNMD12Y2s`
+
+*Source: the Claude Code session `https://claude.ai/code/session_017CGtyMCtyw6NYVNMD12Y2s` (Opus 5.5). Recorded by the agent of that session. Agent text is summarized and marked. Messages carry no timestamps; the order is the conversation's.*
+
+### Joseph, opening message (whole)
+
+> I *think* we got a handoff written, somewhat in v2/spec-lite-0.1.0/ (where we'll be spending most if not all of our time if you're willing)
+
+*(Agent text, summary: confirmed the handoff is `.int/HANDOFF-2026-10-21.md` (commit `e2fd7a5`) and that it is willing; gave its professio, naming as hardest reasoning from a provisional card as if settled and calling a transcription a check. It then read the outline, TODO-MSC, every def and rule card, the adr records from ast-centric through representational-options, obj/, and this file's 2026-10-20 and 2026-10-21 sections, and said what it had not read (the remaining adr records, the fixture, `sop/`, the PEG, the two reviews, the impact report, the railroad and AST sketch). On the open question of how a bare value gets its kind, it offered a reading to check: whole-run typing (B) defers only the type decision, and only while the run still spells a prefix of a primitive, so its decision lookahead is the text-end guard's few characters, as under first-character commitment (A).)*
