@@ -1356,3 +1356,36 @@
 > for clarity, can we have WS-SEP <- NON-DENTATION-SPACE+ --- actually a whole set of whitespace/delimiter shorthands would be nice -- but I'm starting to think we're overstretching the PEG at that point (I'm fuzzy on whether or not the lexer and indent/child/implicit-linefeeds work fits particularly nicely with PEG well enough...)
 
 *(Agent text, summary: PEG over tokens, as Python's reference grammar does with INDENT/DEDENT/NEWLINE; the lexer owns columns (a start mid-line sets its own column), EOB (at or left of an open block's column, root at −1), modes (value mode on a block's start line and below an attribute; prose mode below an element's line with the left edge; raw inside a fence to EOFB), and the delimited forms that close on their line. Proposed shorthands: DENT, WS-SEP, EOL, EOB, EOFB, EOF, BLANK, the starts PIPE COLON SEMI-SEP FENCE AT BANG, and BS-SEP for the framed backslash, to live in def-characters as named classes. Noted that descent's grammar already handles these modes in practice.)*
+
+### Joseph (whole)
+
+> "space after the semicolon" was, I thought, only for sameline. Could you check the reasoning?  (because it is sure nice to be able to comment out an entire block, haml-style, e.g.,
+>
+> ```udon
+>
+>   ;|bunch-of-future-stuff
+>     Don't have to clutter the left edge with more comment indicators
+>     :warnable attributes! Yay   ; And this is all just raw parts of the comment...
+> ```
+> )
+>
+>
+> Getting closer and closer-- Would you please write up a new, very careful, very thoughtful PEG based on what we know so far? (I wouldn't mind ABNF either as it's nice for optional groups etc. while essentially creating the same parser, AFAIK... I guess it might not have lookahead?  anyway...  The thing they are *all* missing as far as mermaid rendering goes is a way to designate capture variables vs grammar constructs.   Ideally I would want something like `':' LABEL:name (WS VALUE)+:values` or something. Maybe you know good ways to do that-- like all uppercase are logical/disposable and lowercase are captured in the AST...)
+
+*(Agent text, summary: confirmed the space condition is sameline-only, by [[rule:comment-blocks]] and his 2026-10-08 words; the `"; "` had come from his own draft and the agent had repeated it unchecked. Proposed the capture convention: UPPERCASE lexical and disposable, lowercase captured with the rule's name as the AST field; PEG over ABNF because ordered choice is what makes "prose is what's left" work. Claimed the PEG was saved to `.int/peg-2026-10-21.md` when it had not been written.)*
+
+### Joseph (whole)
+
+> That's what the lookahead was for that I put in
+>
+> Am I missing something?
+>
+> ('|' / ':' / ';' / '@' / '!' / '```' ) !'{'   -> beginning of a block structure, otherwise an embed. It seems very simple to me
+
+*(Agent text, summary: agreed it is simpler and right; it settles `;{` at a line start as an inline comment in prose and lets the comment block drop its space; flagged `!{` as reserved rather than an embed; owned that the PEG file had not been written.)*
+
+### Joseph (whole)
+
+> reserved block / reserved embed ---  potato potato
+
+*(Agent text, summary: `!{` is a reserved embed, caught at the same lookahead. Wrote `.int/peg-2026-10-21.md`: the block grammar over the lexer's tokens with the capture convention, every open point marked, a table of what the lexer owns, and the one divergence it found: `|el :c 1 z` stacks `z` on `c` here but goes to `$main` by [[rule:leftover-values]].)*
