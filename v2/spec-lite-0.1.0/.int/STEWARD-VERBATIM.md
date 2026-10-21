@@ -1493,3 +1493,9 @@
 > As for `|el asdf / ghijk`  -- that seems to me like perfectly reasonable `|el :$main asdf :$main ghijk` -> `|el :$main ⟦'asdf', 'ghijk'⟧` (stacked)
 
 *(Agent text, summary: recorded the gotcha on [[rule:inline-comments]] and the new rule; the trailing-whitespace position on [[rule:space-before-text-end]] and [[rule:whitespace-after-last-marker]] with the two things it has to reconcile (the tab/NBSP disagreement between those cards, and "the backslash keeps the ending ws" against his 2026-10-09 "delimiter+ornamental"); "run" accepted on [[def:text]]; his always-text-except-typed branch on the new rule's notes and in TODO-MSC as option (C) beside first-character commitment (A) and the whole run (B); `|el asdf \ ghijk` as stacked `$main`; the pipeline "udon -> stream/wire -> full-ast -> logical-ast -> API". Then the contrast in the reply.)*
+
+### Joseph (whole)
+
+> excellent work. Will you make sure everything is written down for a handoff? I'm afraid we've reached the end of your context window
+
+*(Agent text, summary: wrote `.int/HANDOFF-2026-10-21.md` (replacing the 2026-10-20 one; git has it): the day's artifacts and which to trust as gates, the decisions and leans in his words with the cards they landed on, the open question that matters most (how a bare value gets its kind: A first character, B whole run, C always text except typed, with the one bit he left open), where it's headed, the agent's leans, how to work with him, and the session's mistakes. Saved the mermaid checker and probe to `.int/tools/`. Updated the spec-lite memory for the udon project with the "checks must read the primary" lesson.)*
