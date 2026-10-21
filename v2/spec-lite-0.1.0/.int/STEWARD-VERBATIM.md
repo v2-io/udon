@@ -1398,3 +1398,11 @@
 >        some more stuff -- visually child of :attribute. but :attribute already closed... ok or not? hmmm....
 
 *(Agent text, summary: four readings with trees: R1 the backslash ends only the text (contradicts his `\ Home` example); R2 it ends the attribute, the deeper line is el's prose with a warning; R3 it ends the attribute's part of the line, the deeper line is still the attribute's; R4 his "one sameline value, more go below", under which `:c 1 z` gives z to $main as the card says and the backslash only ends a text, at the cost of `:x "one" two` on an attribute's own line and a $main exemption. Leaned R4, else R3. Gap added to TODO-MSC.)*
+
+### Joseph (two messages, whole; the first with a screenshot of mermaid's parse errors on the PEG file)
+
+> (fwiw -- [Image #4] )
+
+> (sorry! didn't mean to interrupt!  fwiw according to the docs PEG railroad allows # comments)
+
+*(Agent text, summary: installed mermaid 12.2 under node with jsdom and reproduced the errors; probed thirty constructs, all of which pass in isolation (lookahead, `.`, `"|{"`, `"["`, `"<"`, `"???"`, `"\\"`, `%%` comments); the whole cascade came from `"\"`, a lone backslash in double quotes, which the lexer reads as an escaped closing quote. Fixed to `"\\"`; the PEG block now parses. The checker (`check.mjs`) runs every mermaid block in a file through `mermaid.parse`.)*
