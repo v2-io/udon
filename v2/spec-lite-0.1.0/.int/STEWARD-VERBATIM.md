@@ -1314,3 +1314,9 @@
 > now block-line it would make more sense to me if it was (element-start / attribute-start / comment-start / fence-start / reserved-start) ?
 
 *(Agent text, summary: agreed, and more than a rename: the `-start` rules are the guards (the `rule:markers` gap; "start" is his own word, "special starts", 2026-07-12, where the cards say "marker"), and the same starts begin the sameline's items and end unquoted text, which closes the item/terminator duplication. Rewrote the railroad file: a new section 2 "The starts" with each guard and its OPEN; block-line as each start plus what it owns; `item` and `text-end` both built from `start`; `text-terminator` renamed `text-end` as a placeholder.)*
+
+### Joseph (whole)
+
+> With sameline ending up still necessary-- would it make more sense to have line <- (blank-line comment-block block-line prose-line)    and then block-line == sameline?
+
+*(Agent text, summary: agreed; the comment block pulled out as its own line kind makes every block-line a sequence of items beginning with a start, so the region "sameline" named needs no separate name. `block-line <- reserved-start / fence / (element / attribute) rest`, with `rest <- SPACE+ fence / (SPACE+ item)* (SPACE+ framed-comment)? EOL` (a fence can only be last, since it owns the rest of its line and the lines to its closer). Ownership by what started the line survives as "element block-line" / "attribute block-line". Noted that «sameline» is his ruled spelling (2026-10-09), so retiring it is his to confirm. Applied to the railroad file.)*
