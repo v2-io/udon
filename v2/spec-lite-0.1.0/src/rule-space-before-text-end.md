@@ -44,5 +44,6 @@ The two spaces inside `one  two` are content, because `two` continues the text. 
 
 ## Working notes
 
+- **Joseph, 2026-10-21, on trailing and boundary whitespace of any kind:** "trailing whitespace and term boundary whitespace needs ' \\ ' or to be delimited in \"...\" in the first place or else it counts as ornamentation-- otherwise we have problems all over the spec"; "bare \"text\" values (or whatever they're named) will always be trimmed on both sides, except where an explicit \"finished with text\" backslash keeps the ending ws." Two things to reconcile: (1) this card and [[rule:whitespace-after-last-marker]] disagree about a trailing TAB or U+00A0 (content there, ornament here); his 2026-10-21 words make every kind of trailing whitespace ornament. (2) "the backslash keeps the ending ws" sits against his 2026-10-09 words this card rests on ("If the next thing instead stops the text (including '\\'), it was just delimiter+ornamental"): is `:a x   \\` the text `x` or `x   `? To ask with that example.
 - Joseph's words are the rule's scanning form: hold spaces aside as they come; they become content when the text continues and fall away when it stops.
 - Its own rule, not a derivation: 0.10.0 says nothing about spaces before a terminator (pre-design 80 searched and found nothing), so Joseph's answer is new law.

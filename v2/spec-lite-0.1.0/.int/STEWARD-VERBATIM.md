@@ -1468,3 +1468,28 @@
 *(Agent text, summary: wrote [[rule:unquoted-run-is-one-value]] (provisional, awaiting decision, with a context sidecar), added its outline row, and launched a fresh Opus 5.5 agent to find inconsistencies between the rule and the store, the verbatim record and his leans, reporting to `.int/impact-unquoted-run-2026-10-21.md`.)*
 
 *(Agent text, summary, continued: the impact review is `.int/impact-unquoted-run-2026-10-21.md`. Its findings: the run's extent is exactly [[rule:text-value-end]]'s list and every card resting on it draws the same trees; the record supports a whole-run boundary (his 2026-08-08 "typed scalar until proven otherwise", the 2026-07-15 "no keyword carve-out"). Three conflicts inside the card's Statement, each needing a sentence: an empty run would make `:a` an empty text where [[rule:missing-value]] errors; clause 3 is false when the run ends at a framed backslash, colliding with stacking; "the same value rules" would carry the start-end into keys. Two open questions the card settled without saying so: bare `hello` as a «text» (the value model leans string of form bare), and the word "run", which Joseph had objected to that day and which [[def:text]] defines as never holding an embed. Tensions with his earlier words for him to weigh: a leading digit committing the kind (2026-10-09 escapes; a 2026-07-15 "unlimited lookahead" excerpt); the 2025-12-31 YAML "value-peeking" line (the rule is YAML's mechanism with a tiny fixed set); "the element's own line is typed: to discuss". New edge behavior: an invisible trailing tab or no-break space turns `8080` into a text; `:width 7 ;{px}` is a text while `:height 7 ; px` is a number. Edit radius about a dozen cards plus the PEG. Five questions as examples.)*
+
+### Joseph (whole)
+
+> :width 7 ;{px} as text while :height 7 ; px is a number is expected behavior as far as my instincts lean-- and exactly one of the ways I would have at my disposal to essentially coerce it into a string sometimes. It should be noted in the spec for sure though in whatever we call the "gotchas" and corner-case sections of the appropriate cards.
+>
+> Originally the idea was that udon could stream / parse a document with no more than ~4 character lookahead (and between 0-1 lookahead for the vast majority of udon). If it was a programming language instead of a notation I would be happy saying digit (and -/+ etc.) commit to numeric and error if it encounters something like 920-lumens-- but in notation there are units all the time-- 920px  920MB, etc.  We have another option to consider-- always text except typed:
+>
+> |p :held <nil>
+> |q :hold <901.2>
+> |r :some 9 - 13>2? yes?.... ; finally ended the text...
+> |s :more-text <"this is \n\t\t something else altogether-- required \" or ' even though inside the <> in order to be explicitly typed">
+> |t :wow <uint32|0x992BC> ; error- reserved for now-- only allow bare nil, booleans, numeric in all their compexity (see the older udon numeric syntax) (now we *can* commit/error) and an explicit text delimiter. Most of the time I would assume we'd want   (value (type-delimited (string (raw 'asdf')))) (for example) to reduce to / be equivalent to (value (string (raw 'asdf')) -- that goes for your earlier question of AST issues-- we haven't yet discussed "udon -> stream/wire -> full-ast -> logical-ast" (which, the last one, would include collapsing equivalences, and whatnot etc.) " -> API"....
+>
+>
+> This isn't an adjudication, decision, or even a lean yet-- this is a branch to explore and contrast with the other options.
+>
+> I'm ok with "run" describing accumulating something on the sameline or whatever-- I was more critiquing earlier the overlap with many other related concepts that we have mostly moved beyond now.
+>
+> :port 8080 with trailing whitespace of any kind:  I think we should be pretty clear that trailing whitespace and term boundary whitespace needs ' \ ' or to be delimited in "..." in the first place or else it counts as ornamentation-- otherwise we have problems all over the spec (I thought this was already nailed down but it could be an implicit assumption from old grammars that forgot to get explicit. double check that we have good "what constitutes blank line ornamentation" as well....)
+>
+> so bare "text" values (or whatever they're named) will always be trimmed on both sides, except where an explicit "finished with text" backslash keeps the ending ws.
+>
+> As for `|el asdf / ghijk`  -- that seems to me like perfectly reasonable `|el :$main asdf :$main ghijk` -> `|el :$main ⟦'asdf', 'ghijk'⟧` (stacked)
+
+*(Agent text, summary: recorded the gotcha on [[rule:inline-comments]] and the new rule; the trailing-whitespace position on [[rule:space-before-text-end]] and [[rule:whitespace-after-last-marker]] with the two things it has to reconcile (the tab/NBSP disagreement between those cards, and "the backslash keeps the ending ws" against his 2026-10-09 "delimiter+ornamental"); "run" accepted on [[def:text]]; his always-text-except-typed branch on the new rule's notes and in TODO-MSC as option (C) beside first-character commitment (A) and the whole run (B); `|el asdf \ ghijk` as stacked `$main`; the pipeline "udon -> stream/wire -> full-ast -> logical-ast -> API". Then the contrast in the reply.)*

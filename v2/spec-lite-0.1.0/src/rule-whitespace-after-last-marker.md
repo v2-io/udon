@@ -35,6 +35,7 @@ Both are fine: nothing follows the tab on its line.
 
 ## Working notes
 
+- **Joseph, 2026-10-21:** trailing whitespace of any kind at the end of a value is ornamentation unless kept with ` \\ ` or quoted (see [[rule:space-before-text-end]]'s note). This card's Statement (a tab after the last marker is content) then holds only for whitespace *inside* a value, not at its end. To reconcile.
 - **Joseph's words** (2026-10-08 and 10-09, `.int/STEWARD-VERBATIM.md`):
   > tabs:  I think any tab (or other unicode whitespace other than the normal space) in a spot that changes column positions for nodes is an error/fail.  -- so any on a "sameline" run except as part of the $main text or final attribute's value, would cause a fail, under the premise that such whitespaces make the true column position ambiguous.
 

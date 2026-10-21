@@ -68,6 +68,7 @@ A rule, resting on the decisions in `per`. No fixtures yet.
 > — Joseph, 2025-12-25 (`~/.claude/history.jsonl:5702`, via `.int/history-semicolon-in-text-2026-10-08.md` §2): earlier words to the same effect
 ## Working notes
 
+- **Gotcha to carry into the spec (Joseph, 2026-10-21):** `|box :width 7 ;{px} :height 7 ; px` gives `width` the text `7 ;{px}` (the inline comment is a piece, so the run no longer spells a number) and `height` the number 7 with a framed comment attached. His words: "expected behavior as far as my instincts lean-- and exactly one of the ways I would have at my disposal to essentially coerce it into a string sometimes. It should be noted in the spec for sure though in whatever we call the \"gotchas\" and corner-case sections of the appropriate cards."
 - **Joseph's words** (copied with the file's bracketed corrections):
 
   > Give me the full #2 again if you would. I'll give my thoughts on that one and then you can give me the next one (and so on) when you're satisfied we see eye to eye on the current one. The one thing that might be open for #1 is that note about 0.10.0 -- would you launch an agent to dig deep and find out what if any rationale there was behind the comment being available to prose lines.  OHH, btw-- I *do* think ;{...} comments, with essentially opaque spans [in between] with the same escape rules (matched {} and \ escape-all) as the others-- which *will* be available in prose. (strong lean unless someone has a reason it conflicts with something that is likely)
