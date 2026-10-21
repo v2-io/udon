@@ -1389,3 +1389,12 @@
 > reserved block / reserved embed ---  potato potato
 
 *(Agent text, summary: `!{` is a reserved embed, caught at the same lookahead. Wrote `.int/peg-2026-10-21.md`: the block grammar over the lexer's tokens with the capture convention, every open point marked, a table of what the lexer owns, and the one divergence it found: `|el :c 1 z` stacks `z` on `c` here but goes to `$main` by [[rule:leftover-values]].)*
+
+### Joseph (whole)
+
+> Note that last gap that you see so we can come back to it if you haven't already-- it was something missed in the overall discussion about multiple attribute values. It would be appropriate from a pure linefeed perspective as if `  :c 1 z` where on its own line, and I don't mind having '\' on sameline -- but we've used that in the past to close out a text -- not necessarily a value (although that would follow) -- but not necessarily the whole attribute -- it might need to be one of the nuance of sameline attribute values that if they are multiple they need to be in indented children blocks or something. That leaves more ambiguity:
+>
+> |el :attribute some stuff \ and now $main
+>        some more stuff -- visually child of :attribute. but :attribute already closed... ok or not? hmmm....
+
+*(Agent text, summary: four readings with trees: R1 the backslash ends only the text (contradicts his `\ Home` example); R2 it ends the attribute, the deeper line is el's prose with a warning; R3 it ends the attribute's part of the line, the deeper line is still the attribute's; R4 his "one sameline value, more go below", under which `:c 1 z` gives z to $main as the card says and the backslash only ends a text, at the cost of `:x "one" two` on an attribute's own line and a $main exemption. Leaned R4, else R3. Gap added to TODO-MSC.)*
