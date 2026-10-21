@@ -1320,3 +1320,25 @@
 > With sameline ending up still necessary-- would it make more sense to have line <- (blank-line comment-block block-line prose-line)    and then block-line == sameline?
 
 *(Agent text, summary: agreed; the comment block pulled out as its own line kind makes every block-line a sequence of items beginning with a start, so the region "sameline" named needs no separate name. `block-line <- reserved-start / fence / (element / attribute) rest`, with `rest <- SPACE+ fence / (SPACE+ item)* (SPACE+ framed-comment)? EOL` (a fence can only be last, since it owns the rest of its line and the lines to its closer). Ownership by what started the line survives as "element block-line" / "attribute block-line". Noted that «sameline» is his ruled spelling (2026-10-09), so retiring it is his to confirm. Applied to the railroad file.)*
+
+### Joseph (whole; his alternative grammar is in the working copy of `.int/railroad-2026-10-21.md`, section "1. A line", uncommitted at the time of this entry)
+
+> Could you look at my alternative (or beginning of it) there in "## A line" and give your thoughts?
+
+*(His grammar, copied from the file so the record holds it:)*
+
+> ```
+> root <- sub-nodes EOF ;
+> sub-nodes       <- block-construct* ;
+> block-construct <- blank-line / comment-block / fenced-block / element-block / attribute-block / reserved-block / prose-block ;
+> comment-block   <- "; "                   raw   EOB ;
+> fenced-block    <- "```" extra-delimiter* name? (id / trait)* (attribute / child)* EOL raw* EOFB ;
+> element-block   <- "|"                    name? (id / trait)* sub-nodes EOB ;
+> attribute-block <- ":"                    name  (value comment-block?)+ EOB ;
+> reserved-block  <- ("@" / "!") !LEFT-CURLY "(ERROR)" ;
+> prose-block     <- ( text-part / embed )* EOB ;
+> name <- LABEL ;
+> ```
+> with his notes: EOB = end of block (a dedent closing one or more open blocks); EOFB = end of fenced block; "Indent level for the block is set at block-start"; prose-block "needs: something to consume any appropriate opening escape backslash etc."
+
+*(Agent text, summary: called it a better spine than the line grammar: a block grammar where every construct runs from its start to its EOB, so "sameline" stops existing (his July "pretend the same-line part has each of its parts on consecutive new lines"), and sameline-element-is-child, element-after-attribute-with-no-value, leftover stacking, attribute bodies and the framed backslash as an inline EOB all fall out. Flagged six points: `$main` disappears unless an EOL token or builder meta marks the seam; `"; "` requires the space (answers the `;{` question, changes `;note`); the `!LEFT-CURLY` exception should apply to `@` only; element-as-value must be the attribute's first value, not any; prose-block ends at a start at its own column, so it has an indent level too; `id` is «key». Offered to make his grammar the file's spine with the value/text/string/fence/prose/comment sections as the detail.)*
