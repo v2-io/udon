@@ -1452,3 +1452,17 @@
 > with #3 and #4 of the spec probes, I think the only thing I see so far is we forgot to explicitly treat '| ' with that lookahead single whitespace character as normal prose pretty much for the sake of markdown tables.
 
 *(Agent text, summary: applied the two card changes: [[rule:nil-spelling]] now makes a bare `null` text with a default-on warning (his "IMO", a lean superseding the 2026-10-09 ruling); [[rule:reserved-spellings]], [[rule:prose-line-start-reserved]] and [[obj:markdown-text-passes-through]] carry the full `!`/`@` rows wherever a start is recognized, the Markdown image named as a collision. Noted that the `| ` guard is already in the PEG's `element-start` (`!(WS / EOL)`, from his 2026-10-08 words), and that the audit's 4.4 is about tight tables. On the question, see the reply.)*
+
+### Joseph (two messages, whole)
+
+> It might be hard to come up with examples that don't semantically give away a preference... I'm not sure how to do it in a reliable way...
+>
+> Can I first try and see if I have your proposal correct?  Could I restate it as, possibly:
+>
+> when expecting a value and there is no explicit delimeter (whether <...> or '...' or "..." etc...) -- scan until one of the block-start sequences and then parse that as the value and close the attribute. Does that sound like it?
+
+*(Agent text, summary: yes, with three precisions: what ends the scan (a start after a space, the framed backslash, end of line; embeds inside); the whole run is one value, typed only if the entire run spells a primitive, so `7apples` is a text not an error; closing the attribute is automatic for a run and a separate lean for self-ending values followed by bare material. Agreed the fresh-agent probe would leak and dropped it.)*
+
+> OK-- write it up as a card and have a fresh agent look for any inconsistencies between that rule and everything else including verbatim statements and leans etc.-- in order for us to know what the impact radius is
+
+*(Agent text, summary: wrote [[rule:unquoted-run-is-one-value]] (provisional, awaiting decision, with a context sidecar), added its outline row, and launched a fresh Opus 5.5 agent to find inconsistencies between the rule and the store, the verbatim record and his leans, reporting to `.int/impact-unquoted-run-2026-10-21.md`.)*
