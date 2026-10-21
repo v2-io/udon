@@ -1300,3 +1300,11 @@
 > You can also deduplicate-- I had to move a copy out of .int to see if obsidian would render it (it didn't do very well-- my new limen ide is much better)
 
 *(Agent text, summary: fetched the conventions page; diffed the root copy (converted to `railroad-peg-beta` by session `016b7usvoaq7iyZwPtgrs2BD`) against the `.int` original; carried every OPEN and error branch of the flowcharts into the PEG as productions or `%%` notes; removed the flowcharts; renamed `run` to `bare-string` per the day's vocabulary; recorded that a comment line is a child; deleted the root copy; the one file is `.int/railroad-2026-10-21.md`.)*
+
+### Joseph (whole)
+
+> I'm going to start from the top and make suggestions as I go-- feel free to push back.
+>
+> maybe it's not tenable PEG-wise, but it seems to me that lines generally (after indent/dedent closing) are either   (blank / blockline / prose) (I'm saying blockline-- testing as an alternative to "sameline")-- where blockline recurses and handles the reserved blockstarts etc... ?
+
+*(Agent text, summary: tenable and already how the cards work; `line <- SPACE* (blank-line / block-line / prose-line)`, with `block-line` grouping element-line, attribute-line, comment-line, fence-opener and the reserved starts, recursion through the sameline's items; a leading backslash falls through to prose; `;{` at a line start is the one place the split can't decide alone. Pushed back on replacing «sameline»: block-line names a kind of line, sameline the region after an element, attribute or fence opener, and a comment line has none; suggested the spelling `block-line` beside `block-form`. Applied to section 1 of the railroad file.)*
