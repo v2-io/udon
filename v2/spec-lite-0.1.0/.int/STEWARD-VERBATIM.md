@@ -1348,3 +1348,11 @@
 > That's the main downside to it right now is that it doesn't correctly handle the fact that prose is more generous when not "sameline" -- `text |el` in prose is just verbatim. on sameline it's not really prose-- it's more "limited-prose" (which is essentially == value which is where $main makes sense but it's hard to express -- just a value where the attribute block is implicit, rather than an earlier approach to the language which had sameline as prose but with special cases...)
 
 *(Agent text, summary: expressed it as `element-block <- "|" head line-rest sub-nodes EOB` with `line-rest <- (SPACE+ (value / block-construct))* (SPACE+ comment-block)? EOL`, each value on the line a value of the implicit attribute `$main`; `attribute-block` takes an element only as its first value, else values on the line or below, which stack (his 2026-08-08 "attributes are assumed to be a typed scalar … element body parts are assumed to be prose"); `prose-block` is the generous one. Noted the vocabulary resolves: «text» is limited prose (an unquoted value ending at a start), «prose» the generous block; and one PEG tangle, a block begun on the line consuming the EOL before line-rest sees it.)*
+
+### Joseph (whole)
+
+> Yes, getting there :-)
+>
+> for clarity, can we have WS-SEP <- NON-DENTATION-SPACE+ --- actually a whole set of whitespace/delimiter shorthands would be nice -- but I'm starting to think we're overstretching the PEG at that point (I'm fuzzy on whether or not the lexer and indent/child/implicit-linefeeds work fits particularly nicely with PEG well enough...)
+
+*(Agent text, summary: PEG over tokens, as Python's reference grammar does with INDENT/DEDENT/NEWLINE; the lexer owns columns (a start mid-line sets its own column), EOB (at or left of an open block's column, root at −1), modes (value mode on a block's start line and below an attribute; prose mode below an element's line with the left edge; raw inside a fence to EOFB), and the delimited forms that close on their line. Proposed shorthands: DENT, WS-SEP, EOL, EOB, EOFB, EOF, BLANK, the starts PIPE COLON SEMI-SEP FENCE AT BANG, and BS-SEP for the framed backslash, to live in def-characters as named classes. Noted that descent's grammar already handles these modes in practice.)*
