@@ -1256,3 +1256,33 @@
 > I think most of the discussions have revolved around $root (or something like that) being nothing more than an element with some extra metadata attributes and an indentation column (not sure what the term we'll land on) as -1 or something...
 
 *(Agent text, summary: the agent took it as his lean: the root is an element with no spelled name (or a designated one), column −1 in meta, and parser-supplied facts (path, hash, mtime) as `$`-attributes rather than a separate meta bag, which splits def-meta's two senses; recorded this session's messages here and on the affected cards.)*
+
+### Joseph (two messages sent while the agent drew the railroad tracks, whole)
+
+> I think nailing down a lot more of the terminology will go hand in hand with this and the AST and any shorthands/notations for it can fall out of that effort...
+
+> (I could be wrong)
+
+*(Agent text, summary: agreed; listed the terms the railroad tracks use, in dependency order, and put «text» as the first piece with his `|p` example in two readings: A, the cards' (a `;` comment line is a sibling node that splits the prose); B, a comment line as a piece inside the text. It leaned B.)*
+
+### Joseph (whole)
+
+> Doesn't seem quite right, from the perspective of:
+>
+> ```udon
+> |p
+>   first line
+>   ; a note
+>   |a :href https://www.google.com \ Google
+>
+>   :some-attribute  yeah, I know this will cause a warning.
+>   now some more prose etc.
+>
+>   ### More!
+>   ;{preliminary}
+>   ...
+> ```
+>
+> You're putting a child (comment) node inside of text when it's a child of |p-- peer to the other children.
+
+*(Agent text, summary: withdrew reading B: a `;` line is a child node, a peer of the other children; the iolist's string-reducible pieces are runs and brace embeds. Drew his example by the cards, and put the one open question it lands on: a line starting `;{` is a comment line with text `{preliminary}` by [[rule:comment-blocks]], or an inline comment that is a piece of the surrounding prose; the agent expects the second.)*
