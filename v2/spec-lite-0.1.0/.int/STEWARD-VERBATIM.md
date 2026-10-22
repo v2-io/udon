@@ -1660,3 +1660,9 @@
 > (you don't have to retain breadcrumbs of prior thinking in this CTQ other than a single note at the bottom referring to the two locations and our session id maybe-- certainly don't need to retain notes about what you thought and how it changed just since the two of us have been working on it)
 
 *(Agent text, summary: rewrote the CTQ draft to state only its current content, with an "Open" list and one provenance line at the bottom (the 2011 table, `obj/`, this session); recorded the convention in its memory for working drafts.)*
+
+### Joseph (whole)
+
+> Excellent. To clean it up a bit more-- it seems like the extra text in "Factor" and the Measure columns are a bit redundant, and notes can mostly be footnotes. Keep the 2011 column for a moment longer while I go over it, but then we'll remove that as well.
+
+*(Agent text, summary: reduced each table to short factor names, the 2011 column and the proposed weight; moved definitions-in-detail, measures and notes into footnotes.)*
