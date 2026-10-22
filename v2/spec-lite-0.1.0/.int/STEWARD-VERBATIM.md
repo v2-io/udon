@@ -1749,3 +1749,9 @@
 > 2. remove the deliberate primer but don't restrict, prescribe, proscribe any files or history for any agent or its forks. We may want to recommend though that "maybe such-and-such has ideas for this" get launched as a 'decision-point' fork itself, basically allowing the fork to look at stuff or research a bit before proceeding with its own decision-point forks etc. Boy I hope the harness allows this sort of deep forking... fun experiment in its own right... I also probably recommend we start with three fresh initial agents, all as opus 5.5 with their own scratch space, and let them know there are others also forking etc. so watch their toes and try to be both cold (ensuring that the most promising decision-points get adjudicated well) and warm (ensuring that there is creative variation and genuine play-like experimentation and assumption-revisiting happening)...
 
 *(Agent text, summary: launched three Opus 5.5 spike agents from the spike template with the same peer brief, each with its own directory under `.int/spike-values-2026-10-22/`, given this record from his "OK, I'm convinced … Taking a few steps back" message onward rather than a scope statement; no primer and no file restrictions, with his research-fork idea and the cold/warm framing in his words; the coordinator commits their directories.)*
+
+### Joseph (whole)
+
+> Excellent briefs. Would you recapitulate to them that the CTQ file we spent time on just before this is the guiding light and compass-- any past stuff they come across is only useful inasmuch as it meets those factors, and much of what they come across probably doesn't.
+
+*(Agent text, summary: sent the same short note to all three running spike agents (CTQ-FACTORS.md as compass; older material only as evidence weighed against it), and appended it to the spikes' BRIEF.md.)*

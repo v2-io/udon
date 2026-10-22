@@ -41,3 +41,7 @@ A few facts I checked today that the span only mentions: every definition card i
 Push it as far as you can. Novelty is common in this work but isn't expected; truth is what counts. You're welcome to send a short milestone note midway and keep pushing the open edges.
 
 I genuinely don't know which way this goes, and it decides how a lot of lite reads. Surprise us. If you're willing, stay on the line after your report for follow-ups.
+
+---
+
+**Follow-up sent to all three shortly after launch (Joseph's point, relayed):** CTQ-FACTORS.md is the guiding light and compass for this spike. It's the file he and I spent the time just before your launch on, and it's the one thing in the store he has worked through for exactly this purpose. Anything older you come across (earlier spec drafts, past decisions, the old typing machine, history) is useful only inasmuch as it meets those factors, and he expects much of it doesn't. So treat precedent as evidence to weigh against the factors, never as a reason in itself. Nothing else changes; carry on.
