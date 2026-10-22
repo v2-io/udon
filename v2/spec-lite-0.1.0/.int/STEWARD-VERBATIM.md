@@ -1596,3 +1596,22 @@
 > Originally, wrt to storage hints--- not sure yet for myself, but you can record your lean. When I was thinking about dialects more naively months ago I just assumed we could drop in a `<rust:i64: 0x73DDF>` -- the model might shrink back down to something like that, don't know yet. You're welcome to record your lean, but for me my brain is still exploring the space and hasn't started the "consolidating / recollapsing" principled resimplification with decisions part of the creative process yet-- it's still on the "allowing it to fully expand" mode :-)
 
 *(Agent text, summary: agreed host types have near-universal equivalents for elementary kinds; recorded his words, his earlier `<rust:i64: …>` model, his expansion mode, and its own lean on storage hints in the ideation file; offered, as expansion, a test for the "just parses correctly" core (every plausible host has an obvious near-lossless equivalent) that would explain why temporal kept surprising and rationals and complex stayed provisional, with JSON's 2^53 caveat as a mapping-guide precedent; then more directions to expand into.)*
+
+### Joseph (whole)
+
+> Excellent thoughts and notes. I really appreciate the collaboration here and your patience.
+> As part of your orientation, did you happen to read udon's underlying goals / guiding "critical to quality" factors/objectives? If so, can you list those very briefly-- just a quick bullet point list?
+
+*(Agent text, summary: listed lite's four objectives and two principles from `obj/`, their `force` still empty; said it had not read a udon-wide critical-to-quality list, knowing only by citation of his 2026-07-08 list and the 2011 `objectives.asciidoc`.)*
+
+### Joseph (whole)
+
+> How big is objectives.asciidoc ? I haven't looked at that in many years...
+
+*(Agent text, summary: 63 lines, 308 words, at `~/src/_older/udon/doc/objectives.asciidoc`, last committed 2011-07-22; the umbrella README's `_ref` path for it no longer exists.)*
+
+### Joseph (whole)
+
+> just looked at it-- yes, please read it -- it's just a simple table. I'm impressed at myself from 2011 for even considering most of those factors, let alone ranking them...
+
+*(Agent text, summary: read it; four groups (Beauty "Highest": readability, learnability, self-description 10, syntactic simplicity 8, Turing completeness 0; Performance "Very High": throughput and stability 10, parse/generate speed 9; Utility "Very High": semantic declarative data and hierarchy 10, document mixing, templating and language mixing 9, extensibility, standard API and in-document API 8, in-doc and standard schema 7, narrative texts 5; Support "High"). Noted where it bears on today: self-description at 10 against in-document type and notation claims; stability and parse speed against the streaming law; narrative texts at 5 against today's Markdown objective.)*
