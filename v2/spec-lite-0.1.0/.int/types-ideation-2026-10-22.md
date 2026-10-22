@@ -58,3 +58,11 @@ The agent's notes on making it runnable are in the verbatim record (2026-10-22):
 The agent's shape for it: one semantic content set, rendered in each branch's spelling; a fixed exposure set (mostly idiomatic, a few rarer forms) and a fixed held-out set of rarer forms, the same content for every branch; both directions (read: UDON → tree; write: tree as JSON → UDON); scored at several exposure levels, so each branch gets a curve, not a point; misses sorted into those the parser would catch (an error) and those that silently give a different tree, the second weighing more.
 
 The factors and their measures are now [`CTQ-FACTORS.md`](../CTQ-FACTORS.md) (steward-supported, 2026-10-22).
+
+## A creative beam search: the agent's proposal (2026-10-22, not yet discussed)
+
+- **Quality-diversity rather than top-k.** Keep the best branch in each *niche* (where notation and slot type are declared; how a value is marked; whether quotation is split from typing; how units are spelled), not the k best overall, so the beam can't collapse into one family. One wildcard slot per round for a branch that questions the frame.
+- **Shared instruments, built before round 1:** a semantic corpus (meanings, not spellings) with an exposure set and a held-out set; panel protocols for writing, reading and pairwise beauty; a holdback check from each branch's grammar; a one-page dossier template.
+- **Rounds:** seed (6–8 designers, bare briefs, some from the map's axes, some open, other model families included) → cheap screens (vetoes, can the corpus be rendered) → expensive measures on survivors only (fresh panels) → Joseph picks what to expand → children (one decision each, or crossovers of two branches) → repeat, narrowing.
+- **Roles kept apart:** designers, panelists (never designers, no UDON context) and synthesis (the coordinator, then Joseph).
+- **Dead branches keep their reason**, as findings.
