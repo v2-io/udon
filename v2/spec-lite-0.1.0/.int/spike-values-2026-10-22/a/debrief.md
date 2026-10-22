@@ -2,6 +2,8 @@
 
 *To Joseph, from spike a (Opus 5.5 and six forks of it), 2026-10-22. Written last, from [synthesis.md](synthesis.md) and the fork pages. Scores are my hypotheses against CTQ-FACTORS, never measurements. In the trees, because `‹…›` and `<…>` blur for you: `⸨…⸩` is a «text», `"…"` a «string», `⟬…⟭` raw carried content, and `#integer` a classification attached to a text. All four are illustrative, not a proposal for the transcript.*
 
+*A second, inventive round followed your note on creativity; it's §7, and where its taste differs from §3 (it retires `<…>` from values), §7 is the newer word.*
+
 ## The short of it
 
 1. **Lite never gives a value its meaning; a reader does.** Lite only decides three things: what the tree keeps about a value, which spellings it commits, carries or refuses, and the one default reading every consumer gets. Slot types, aliases (`port` = u16 | standard-port), unit meanings, coercion and canonical display live in the reader's layer, your dialect. Lite owes that layer the spelling, the form, the address (which element, which attribute) and the order, and it already gives most of them.
@@ -251,6 +253,54 @@ later:      :at ⸨2026-07-21⸩ #date      :span notation iv ⟬2026-01/2026-06
 4. **Is a date a leaf or a node?** (`<date: 2026-07-21>` vs `|{date 2026-07-21}`)
 5. **`:` never at the end of a bare label,** and then optional ornament or none?
 
+## 7. Second round: inventing instead of adjudicating
+
+After your note about low creativity, I agree the first pass spent itself judging the record. Four of us invented from different wells: programming languages, typography, and notations outside programming. The whole pass is in [invent/README.md](invent/README.md). The short of it:
+
+**The finding.** Notations made for reading put the qualifier after the value:
+- physics' `30 s`;
+- furigana, the reading set beside the base text;
+- interlinear glosses;
+- F#'s `5<min>`.
+
+Notations made for parsers put it first. §1's finding says lite's parser doesn't need it first. So the reading can go where a reader expects it, and the old "decides late" objection to suffixes goes away.
+
+**The frame the inventions converged on**, which I think names your distinctions:
+- **natural:** quotes, exactly these characters;
+- **accidental:** a reading on one value, saying what this literal represents;
+- **signature:** the same reading on the slot, or in a legend written once, saying what the slot is;
+- **default key:** the parser's class.
+
+The five spellings, for your eye:
+
+```udon
+|server[web] :timeout ~dur 30s :started ~datetime 2026-07-21T14:20                 ; A  Elixir's sigil, at home
+|server[web] :timeout dur`30s` :started datetime`2026-07-21T14:20`                 ; B  a fence at value size
+|server[web] :timeout 30s⟪duration⟫ :started 2026-07-21T14:20⟪datetime⟫            ; C  ruby: the reading after
+|server[web] :timeout 30s<duration> :started 2026-07-21T14:20<datetime>            ; D  F#'s ASCII form
+:$legend |server :timeout duration :started datetime                               ; E  the signature, once…
+|server[web] :timeout 30s :started 2026-07-21T14:20                                ;    …then plain data
+```
+
+The trees agree in substance:
+
+````tree
+root
+  |server
+    :$key ⸨web⸩
+    :timeout ⸨30s⸩ ⟪duration⟫
+    :started ⸨2026-07-21T14:20⸩ ⟪datetime⟫
+````
+
+**My taste:**
+- E is the most beautiful document.
+- C is the most beautiful single value. The value comes first, so columns still align; the glyph means nothing else; and `1.10⟪version⟫` withholds a decimal.
+- B is the best home for foreign text: `` re`^\d+$` `` with no escapes.
+
+The composed design uses all three, plus bare-with-class and quotes, and retires `<…>` from values. Its cost: no agent guesses `⟪` untaught, while A and B borrow training (Elixir, Markdown).
+
+**Which of A to E do you find beautiful, and which ugly?** For beauty, your eye is the instrument.
+
 ## What this doesn't cover, honestly
 
 - **No score was measured.** They are one agent family's hypotheses, and the forks' scales differ (compare only within a decision point).
@@ -261,4 +311,4 @@ later:      :at ⸨2026-07-21⸩ #date      :span notation iv ⟬2026-01/2026-06
   - a notation head is decided at its label's end, which is token-bounded like an element name, but that wants your yes.
 - **No deployed format I know of streams a bare value and trails its class.** Both halves exist separately (Tcl, YAML); the combination is new.
 - **Nothing here is a card edit.** The proposed card changes are in [synthesis.md](synthesis.md) §7.
-- **Six forks ran one level deep.** None forked further.
+- **Nine forks ran one level deep:** six in the first round, three inventors in the second. None forked further.

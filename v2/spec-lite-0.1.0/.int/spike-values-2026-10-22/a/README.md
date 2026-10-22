@@ -4,6 +4,14 @@
 
 **Start with [debrief.md](debrief.md)**, written to Joseph. This README is the map.
 
+**Second round (inventive pass, after Joseph's "very low creativity" note): [invent/README.md](invent/README.md).** It covers:
+- four inventors and five spellings of a notation, rendered side by side;
+- what each makes beautiful;
+- a composed design ("natural, accidental, signature": quotes, a reading after the value `30s⟪duration⟫`, a legend written once, and backticks for foreign bodies);
+- `<…>` retired from values.
+
+The first round's branch map below stands as the adjudication layer the inventions rest on.
+
 ## What I took the question to be
 
 Joseph's scope was a type system: slot types, notation hints, units, algebraic names, the standard set, and how `<…>` fits. Most of it dissolves for lite on a fact the cards already state: lite evaluates nothing. The questions left for lite are three:
@@ -65,4 +73,4 @@ The scales differ by fork (most use weighted 0–10; the angle fork summed weigh
 ## On the forking experiment
 
 - **Six forks of this agent ran in parallel.** Each inherited my full context and was briefed in one sentence naming its role, plus its folder. The harness allowed forking from inside a spike agent and messaging the forks mid-run: Joseph's two notes reached all six while they worked, and each acknowledged or applied them.
-- **As far as I can tell, no fork forked further.** Two said so explicitly; the other four didn't say, and their folders hold no sub-fork output. All six branched in files. So deep (second-level) forking went untested; one level worked.
+- **As far as I can tell, no fork forked further.** Two said so explicitly; the other four didn't say, and their folders hold no sub-fork output. All six branched in files. So deep (second-level) forking went untested; one level worked. The second round added three invention forks (`forks/invent-*`), also one level deep.
