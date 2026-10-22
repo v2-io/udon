@@ -62,3 +62,9 @@ The factors and their measures are now [`CTQ-FACTORS.md`](../CTQ-FACTORS.md) (st
 ## How to run the exploration (Joseph, 2026-10-22)
 
 A single spike agent from the spike template, with agent-decided forking: it forks at each distinct decision point, pushes branches toward their implications, prunes with reasons, and scores by its own best hypothesis against [`CTQ-FACTORS.md`](../CTQ-FACTORS.md). Joseph: "I don't have the resources / usage tokens available to run the full panel protocols and to empirically calculate any of the ctq metrics. I'll be happy with a single agent's best hypothesis on scores... forking whenever it comes to a distinct decision-point?" An earlier, heavier proposal (niches, panels, rounds) was set aside as likely to "explode into lots and lots of data and content and buried signal".
+
+## The kind on the attribute name, `:mass.kg 3.2` (spike b, round 2)
+
+Joseph, 2026-10-22, on the worry that TOML-trained readers would read it as a nested key: ""mass, then kg inside it, followed by a raw number" = an *affordance*, in my opinion-- kg as a subset of mass, which makes the raw number well-described now. A +1 for the notation IMO, at least as far as that anecdote sees it. (other contexts where the vocabulary was more foreign and random might cause a different inference)". And on dots no longer being free in bare attribute names: "dots in attribute names are already an issue on the API side a lot of the time: .Attributes["dispatch.status.arrival"].Value instead of .dispatch.status.arrival ...".
+
+The agent's addition: attributes can't nest in lite (nested attributes are reserved), so a dot after an attribute name can only ever mean its kind, never a sub-key.
