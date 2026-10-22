@@ -12,6 +12,12 @@
 
 The first round's branch map below stands as the adjudication layer the inventions rest on.
 
+**Last round, after reading spikes b and c: [final-thoughts.md](final-thoughts.md).** It does four things:
+- shows that Joseph's own `:when:dt(YY-MM-DD)<27-03-05>` from the span, debugged, is the spine: `:when.dt(YY-MM-DD) 27-03-05`;
+- proposes a combined design, a reading spelled `.kind` on names and `kind(…)` on values, with b's stand-alone rule;
+- withdraws my `⟪…⟫` lead;
+- gives feedback on b and c, and asks four questions none of us asked.
+
 ## What I took the question to be
 
 Joseph's scope was a type system: slot types, notation hints, units, algebraic names, the standard set, and how `<…>` fits. Most of it dissolves for lite on a fact the cards already state: lite evaluates nothing. The questions left for lite are three:
