@@ -5,6 +5,8 @@
 2. *after Joseph said that "reserved for now" restated our premise, the notation values designed (page 50);*
 3. *after his note on creativity, an inventive pass, invent first and judge after (page 60).*
 
+*A fourth round, after reading spikes a and c: **`final-thoughts.md`**. Its proposal, K, combines my label traits with Joseph's parenthesis canary (`date(2026-10-01)`), which my stand-alone rule makes safe in ASCII. With K, `<…>` retires from values. Where K differs from rounds 1–3, K is the newer word.*
+
 *Nothing here is committed by me, and no card was edited; proposed card changes are named on each page. Joseph's mid-run notes (CTQ-FACTORS is the compass; the corpus is ideation, never evidence) were carried into every page and passed to all three forks.*
 
 ## The question as I took it
@@ -64,6 +66,7 @@ Underneath "explore type systems and notations": **which layer decides a value's
 ## Files
 
 - `debrief.md`: to Joseph, in examples and trees. **Start here.**
+- `final-thoughts.md`: after reading a and c: the K design, flaws in mine and theirs, questions none of us asked.
 - `60-inventions.md`: the inventive pass and the recommended system (LW).
 - `50-notation-values.md`: the cold pass on notation values: the registry, the reading layers, NA/NB/NC/ND scored.
 - `10-who-decides-kind.md`: D1–D3: the bit, the set, the branches.

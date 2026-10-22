@@ -2,6 +2,18 @@
 
 *From the spike-b agent (Opus 5.5), 2026-10-22, after three rounds. Trees use the cards' notation: `‹…›` a text, `"…"` a string, bare `8080`/`false`/`nil` values of those kinds. `(.kg)` is a trait on an attribute occurrence. `⇒` is what a reader attaches. My leans are leans; the scores behind them are my own hypotheses, totalled by script, on the pages named.*
 
+## Latest word: after reading spikes a and c (`final-thoughts.md`)
+
+Your parenthesis canary works in ASCII once a delimited value has to stand alone (my page 30). Spike c found `date(2026-10-01)` and demoted it because `|li printf(x) prints x` would turn into a call. Under the stand-alone rule that line is plain text, so the objection goes away. Combined with the label trait, your first imagining comes back almost word for word:
+
+```udon
+|part :mass.kg 3.2 :price.money(USD) 9.99
+|ev :on.date(YY-MM-DD pivot 1950) 27-03-05 :span interval(date(2026-01) date(2026-06))
+|meta :values [date(2026-10-01) qty(3.2 kg) 42 hello]
+|li printf(x) prints x
+```
+The first three lines read 3.2 kg, 9.99 USD, the date 2027-03-05, an interval, and a list with a date, a quantity, 42 and ‹hello›. The last is plain text. With calls on values, traits on labels, signatures for tables, and backticks for verbatim, `<…>` isn't needed for values at all, and `<` is free for HTML and Markdown. The rest of this debrief is rounds 1–3, and still holds where K doesn't replace it. First question for you, from spike a: **is a refinement a change?** Every notation design here depends on the answer being no.
+
 ## In one paragraph
 
 Bare values stay text in the tree, as your (C) has it. One normative default reading (JSON's grammar plus `true`, `false`, `nil`) keeps `:debug false` from becoming a truthy string. For everything richer, **the label wears the reading**:
