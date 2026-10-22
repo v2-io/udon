@@ -1522,3 +1522,20 @@
 > I like that a lot-- go ahead and record that as my current lean-- C with the view. I agree 920px being an error violates least surprisal, <920px> error I can understand, 8080 being text that I haven't turned into a number yet and in this case don't intend to because I use it passed along as text instead of for it's mathematical value, is definitely ok to me surprisal-wise-- with my "ensure the ports add up to less than 1million" imaginary function doing just fine either way.
 
 *(Agent text, summary: recorded the lean. [[rule:unquoted-run-is-one-value]] now says a bare run is always a «text» (strength lean), with the typed-primitive view in its Implications and A, B and the lean in its context file; the view is the third option on [[def:reading-option]]; the outline rows for the card and the `rule:bare-typing` gap are updated; TODO-MSC carries the lean. Conflicts the lean opens were noted on their cards as questions for him: nil's spelling and the `null` warning, the missing-value message, a non-primitive `<…>` interior, keys and lists holding texts, the view's default.)*
+
+### Joseph (whole)
+
+> A new feature, before I forget:   `<>` completely empty, == `<nil>` (if that becomes the rule, or == `nil`-value if that is retained). Distinct from "",<"">,'',<''> -> all empty strings, and `<false>` (or currently `false`), obviously.
+>
+> Keep those questions recorded somewhere (working notes I assume) so we can get to them in a bit. Before that, I would like your thoughtful opinion on something that's been eating at me for a while that I haven't brought up yet-- colons. I remember Ruby's progression from symbols/atoms  :like_this used in maps: {:like_this => val} progressing to syntactical sugar there and elixir more {like_this: val}, which reads much nicer to me at least.
+>
+> Here's what I'm wondering-- if we had a length limit on attribute name labels, and kept ':' as a block attribute opening, if we could do this:
+>
+> ```udon.alternate-ideation
+> |element first: 1 second: 2 'a longer more ::: complex one': 329
+>    :some-more: hey there :$another!: hmmmm
+> ```
+>
+> It might just be a rule like 'attribute names can always have a `: ` after the label that is consumed' (making `|el :attr: hi` => `|el('attr'=>'hi')`) and a narrow rule that 'same-line attribute names can have a suffix ':' instead of a prefix ':' if they are "simple" names (not requiring quotes, no whitespaces-- so invalidating the longer complex example above but allowing all the rest)...
+
+*(Agent text, summary: recorded `<>` as nil on [[rule:opaque-span-raw-text]] and in TODO-MSC, and the colon ideation in TODO-MSC; said the five questions from the lean were already on their cards and in TODO-MSC. Its opinion on suffix colons, against: under the bare-run lean a `word: ` inside any sameline value or `$main` text would end the run, so `|h1 Chapter 3: The Return` and `|li Note: keep it dry` become attributes, and that text shape is common in the XML/HTML and Markdown documents lite serves; a sameline-only form breaks "pretend each sameline part is on its own line" unless a line-start `word:` is also an attribute, which takes prose lines like `Note: …`; a name-length limit puts a cliff in the grammar and still holds a word back before deciding; `key:` with values below reads as YAML and invites its nesting. For: agents trained on YAML and Elixir will write `|server host: localhost` anyway, and today that is silently `$main` text. Its lean: no suffix form; the consumed trailing colon (`:host: localhost`) is cheap but gives two spellings for one thing, a mild no; a possible default-off warning when `$main` text begins `label: ` for the accidental case.)*
