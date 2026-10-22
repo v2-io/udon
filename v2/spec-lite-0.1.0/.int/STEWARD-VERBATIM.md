@@ -1817,3 +1817,25 @@
 > Go ahead and make a note to all three about our thoughts here.
 
 *(Agent text, summary: sent all three spikes his words, the coordinator's reading of why creativity was low, and the ask to invent first and judge after; appended to BRIEF.md.)*
+
+### Joseph (whole)
+
+> (to me, the biggest "unexplored" syntactical/sigil area is the simple fact that we have '(...)' attached to any name freely available and easily used. If that's not a good canary for how imaginative or creative they even attempted, I don't know what is ;-))  If they come back having just run with elixir sigils and some unicode brackets but no real good design, I'll still be disappointed but will just look forward to when agents are a little better at creative design ;-))
+
+*(Agent text, summary: did not relay it, to keep the canary clean; held this entry out of the verbatim record until the spikes report, since they may read that file; noted that the spikes touched parentheses only as KDL's `(type)value` prefix, which they killed.)*
+
+### Joseph (whole)
+
+> oooohh, now we're talking --- :attr.type is *definitely* along the creative lines I was hoping for in the same way (...) is...
+
+*(Agent text, summary: also held back from the verbatim record until the spikes report (it names the canary). Noted what makes the form attractive (it mirrors an element's `.trait`, and the kind is known before the value), and the two costs earlier spikes raised: TOML-trained readers may read `:mass.kg` as a nested key, and a `.` in bare attribute names (`data.x`) would then need quotes.)*
+
+### Joseph (whole)
+
+> "mass, then kg inside it, followed by a raw number" = an *affordance*, in my opinion-- kg as a subset of mass, which makes the raw number well-described now. A +1 for the notation IMO, at least as far as that anecdote sees it. (other contexts where the vocabulary was more foreign and random might cause a different inference)
+>
+> dots in attribute names are already an issue on the API side a lot of the time: .Attributes["dispatch.status.arrival"].Value instead of .dispatch.status.arrival ...
+
+*(Agent text, summary: agreed both costs turn into gains; added that in lite attributes can't nest (nested attributes are reserved), so a dot after an attribute name can only ever mean its kind, never a sub-key; recorded both points in the ideation notes.)*
+
+*(The three entries above were held out of this file while the spikes ran, since they could read it and the first two name Joseph's "canary" (a name with parentheses attached, `date(…)`). All three spikes have now reported; spike c's inventions page found constructor values, `date(2026-10-01)`, CSS-style, and its synthesis kept them only as parameter syntax inside `<…>`.)*
