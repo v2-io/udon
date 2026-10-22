@@ -33,6 +33,16 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Exploration before `<…>` is settled
 
+- **The spikes have landed; Joseph's review is next** (2026-10-22). Three spikes and their forks designed lite's value notation against [`CTQ-FACTORS.md`](CTQ-FACTORS.md); their work is in `.int/spike-values-2026-10-22/` (start with each `final-thoughts.md`; `adjudication.md` is an earlier, partly superseded synthesis). Where they ended up, together: bare values stay text, with nil/true/false/JSON numbers given a standard reading; a reading on the attribute name (`:mass.kg 3.2`, `:when.date(YY-MM-DD) 27-03-05`; spike c prefers `:mass(kg)`); constructor values standing alone (`date(2026-10-01)`); spike b's rule that a delimited value counts only if it stands alone, else the run is text; tagged backticks for foreign text; `<…>` possibly leaving values altogether. **No card has been changed from them yet**; that waits on his decisions:
+  - Is adding a reading later a change (reserve-don't-ignore)? Every notation design assumes not.
+  - `.kind` or `(kind)` on attribute names, and whether `.`/`(` may appear in bare labels.
+  - The body of `name(…)`: read as list items, or kept verbatim.
+  - Unprefixed notation names for the standard set only, every other name prefixed (spike b, after EDN).
+  - A bad notation body (`date(2026-13-45)`): an error at parse time or only when read.
+  - The stand-alone rule against his one-value lean (2026-10-21).
+  - CTQ: "visible in the text" under A5 (spike c); B1's wording (kind of the construct vs a value's classification).
+  - A bare URL ending at its first space (`|a :href https://x Click here`, spike a).
+  - Whether `<…>` stays for values, and as what.
 - **A type system and its notation, explored from the whole range of possibilities** (Joseph, 2026-10-22: "we could have a much more complete type-system in place, and we could use different brackets/combinations, and we should visit all of that in conjunction with or before "nailing down" '<...>' vs implicit angled brackets etc."). Pure ideation first; branches are scored against [`CTQ-FACTORS.md`](CTQ-FACTORS.md). What waits on it: every `<…>` question ([[rule:opaque-span-raw-text]]); `<>` as nil; how a value of another kind is written under the bare-run lean ([[rule:unquoted-run-is-one-value]]); the trailing `:` on attribute names ([[def:attribute-name]]); the `rule:bare-typing` gap; `@{<…>}`.
 
 ## Next: to settle (items with no card of their own, or spanning several)
