@@ -2,7 +2,11 @@
 
 *Spike c of three (`a/`, `b/`, `c/`), launched 2026-10-22 from the brief in `../BRIEF.md`. Worked by one Opus 5.5 spike agent and the forks it launched: four in round one (`Cv`, `B`, `mark`, `core`), and in round two five careful notation designs plus three inventive ones (`notations/`). Nothing here is decided. Every score is an agent's hypothesis against `CTQ-FACTORS.md`, with its basis and confidence; nothing was measured except the two checks in `checks/`. The other spikes' directories were not read, so this one branches independently.*
 
-**Start with [`debrief.md`](debrief.md)**: it is written to Joseph, in UDON examples and trees.
+**Start with [`debrief.md`](debrief.md)**: it is written to Joseph, in UDON examples and trees. **Then [`final-thoughts.md`](final-thoughts.md)**, written after reading spikes a and b. Where it differs from the debrief, it is the newer word:
+- it concedes the clef to b's label-worn readings;
+- it rehabilitates `name(…)` constructors under b's stand-alone rule;
+- it proposes the scientific-header form `:mass(kg) 3.2`;
+- it states the B2 law as "named values are the only refinement path".
 
 ## The question as I took it
 

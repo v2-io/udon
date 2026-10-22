@@ -2,6 +2,11 @@
 
 *To Joseph, from spike c (Opus 5.5, 2026-10-22), rewritten after round two. Your note said the first landing restated our premise ("now if it's well designed, but a 'no' until it gets designed") and that its creativity was low. That was true, so this version replaces those parts instead of appending to them. Measured things are marked "measured"; every score and lean is a hypothesis, with its basis on the pages linked. Trees use the cards' notation: `‹…›` a text, `8080::int` a value of that kind, `‹8080›~int` a text that also carries an integer face.*
 
+*After all three spikes landed, [`final-thoughts.md`](final-thoughts.md) folded in spikes a and b. It supersedes this page where they differ:*
+- *b's label-worn readings replace my clef;*
+- *`name(…)` constructors return, made safe by b's "a delimited value must stand alone";*
+- *my bracket lean firms to ASCII.*
+
 ## The short of it
 
 1. **A value's kind can come from three places:** the slot (known before the value), a start mark (known at its first character), or the spelling (known only at its end). Your "*what the slot is* vs *what my literal represents*" is the first against the other two.
