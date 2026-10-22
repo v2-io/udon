@@ -1773,3 +1773,15 @@
 > (fwiw, I see lots of forked agents now-- the harness may have been in error when it told you they were being woken up-- I definitely see them receiving your messages)
 
 *(Agent text, summary: withdrew its report that spike A had stopped, which rested only on the harness's "Resuming agent" reply; noted that deep forking evidently works.)*
+
+### Joseph (whole)
+
+> sorry, what's the point?
+
+*(Agent text, summary: two points: the lean survives with its reading on by default (`:debug false`); one new decision, `|p "Hello," she said.`)*
+
+### Joseph (whole)
+
+> I'm not really interested in fact checking casual conversations held days ago about this stuff and reporting that as some kind of finding or conclusion. I'm interested in the CTQ weights adjudicating various design proposals.
+
+*(Agent text, summary: all three spikes landed and were committed; wrote `.int/spike-values-2026-10-22/adjudication.md`: by decision point, the proposals, their fate in each spike and the CTQ factors that decided them, with what only he can decide. All three converge on: bare text plus a fixed standard reading (nil, true, false, JSON numbers); unlabeled `<…>` asserts or errors, `<>` nil; slot types in vocabularies and typed getters, no slot syntax; units as text read by the slot; a bare label never ends in `:`.)*
