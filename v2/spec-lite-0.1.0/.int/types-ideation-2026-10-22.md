@@ -30,5 +30,12 @@ Per value, five things that can each be stated or left unstated:
 | T | what the literal represents | a date, 2027-03-05 |
 | S | what the slot accepts | `port` = u16 \| standard-port |
 | C | how it is written back, canonically | `2027-03-05` |
+| H | the host (storage) type a parser gives it, unique to each host language; in UDON itself it is always a span of characters | Rust `chrono::NaiveDate`, Ruby `Date`, JS `Temporal.PlainDate` |
 
 N maps R to T; T must fit S (or be coerced to it); C is N's canonical spelling of T. Where N and S are declared is its own axis: on the literal, on the slot (the attribute name), in a document header, in an external schema; most specific wins, as locales and CSS cascade.
+
+**H added by Joseph (2026-10-22)**, "since otherwise it will keep getting implied and conflated": "*storage*/host-type, with the caveat being that it will be parser-host-language-unique a lot of the time, and with the caveat that, by definition, the Udon "stores" it as a span of characters within the udon file :-)". His four questions, the same map from another side:
+
+> "what does the domain expect here that is meaningful?", "what notations can it be understood in and checked against?", "what host-language stuff can be done with it when parsed?", and "what should it normally be displayed like if different from what is accepted?"
+
+The agent's reading: domain = S and T; notations = N (several accepted, each a check); host = H; display = C. Two of the four are portable across consumers (domain, notation) and two belong to the consumer (host; and display, at least where it is locale or audience). Names like `u16` straddle the line: a domain range (0–65535) and a storage type at once.
