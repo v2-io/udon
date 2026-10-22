@@ -45,5 +45,6 @@ Chosen, not derived. Checkable by conversion: take real JSON and YAML data, writ
 
 ## Working notes
 
+- **Subject to the type-system exploration and feeding it (Joseph, 2026-10-22):** how scalar kinds are written and read is reopened there (`.int/types-ideation-2026-10-22.md`); this objective's Statement 2 ("each value's kind decided by how it is written") and its "how strong is 'the same data'" question are inputs to it, and may change with it. Under the 2026-10-21 lean, bare values are texts and other kinds are written explicitly ([[rule:unquoted-run-is-one-value]]).
 - **⟦force⟧ is empty: Joseph's call.** The udon team's lean is `required`: an intention for this version.
 - Whether this should be "lossless for JSON" (stronger) or "fit for JSON's and YAML's uses" (weaker) is the first thing to ask him; the rules above differ under each.

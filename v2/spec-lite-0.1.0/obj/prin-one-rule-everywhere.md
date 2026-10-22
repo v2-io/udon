@@ -31,5 +31,6 @@ A principle; it orders alternatives. It is a sharper form of [[prin:simplest-gra
 
 ## Working notes
 
+- **Why it is not ratified and has no strength (Joseph, 2026-10-22):** he is "not convinced" the two principles "are principled"; "The old list from 2011 already gives me a better grounding than those two somewhat arbitrary principles seem to be" (`~/src/_older/udon/doc/objectives.asciidoc`, a ranked table of concerns; summarized in `.int/STEWARD-VERBATIM.md`, 2026-10-22). Not to be cited as settled grounds until he takes it up.
 - **Awaiting Joseph:** adopting this as a lite principle.
 - It bears most directly on line ownership (01, 71, 73, 74) and on value positions (77, 83).

@@ -40,5 +40,6 @@ A principle is never met or unmet; it orders alternatives that the objectives le
 
 ## Working notes
 
+- **Why it is not ratified and has no strength (Joseph, 2026-10-22):** he is "not convinced" the two principles "are principled"; "The old list from 2011 already gives me a better grounding than those two somewhat arbitrary principles seem to be" (`~/src/_older/udon/doc/objectives.asciidoc`, a ranked table of concerns; summarized in `.int/STEWARD-VERBATIM.md`, 2026-10-22). Not to be cited as settled grounds until he takes it up.
 - **Awaiting Joseph:** adopting this as a lite principle, with the audience and frequency weighting drawn from his words above. The earlier example version left "whose surprise counts?" open; this answers it from his statements, which is the udon team's reading.
 - A measure for it (time for a fresh agent to read a lite document correctly, or how often agents write lite wrongly) would be a fitness, not yet an admitted kind; see [[sop/conv:purpose-layer]]. The Dec-2025 usability harness (`test/usability/`) is a ready instrument.
