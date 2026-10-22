@@ -184,7 +184,7 @@ Single-agent hypotheses, 0–10 per factor. Each basis is in brackets and the co
 | C1 structured data (10) | 8 | **9** | 4 | 6 | JSON round-trip without plumbing |
 | C10 round-trip (7) | 6 | **9** | 9 | 8 | lossless default |
 | D2 host mapping (7) | 4 | **9** | 9 | 7 | the JSON core maps everywhere |
-| **weighted sum** | 432 | **785** | 600 | 494 | 88 × 10 = 880 max over these factors |
+| **weighted sum** | 437 | **748** | 585 | 492 | 88 × 10 = 880 max over these factors (sums recomputed by script) |
 
 Confidence: the **ranking** β3 > β4 > β5 > β2 is moderate-high. The margins are low-confidence. The β3/β4 gap rests almost entirely on the `false` hazard's frequency, which is a judgment, not a measurement. β1 and β6 are dead on factors Joseph has already spoken to.
 

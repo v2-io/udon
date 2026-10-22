@@ -1,5 +1,7 @@
 # Branch page: the literal side (D4), given the other pages
 
+> **Superseded in part (2026-10-22, later rounds).** This page's landing, that labelled forms are reserved in lite 0.1 and left to full UDON, is withdrawn: Joseph called it the starting premise restated. The designs are now on page 50 (the cold pass: NA, NB, NC, ND, scored) and page 60 (the inventive pass, whose system LW is the recommendation). What still stands here: the synergy with page 30 (δ3 dissolves most collisions of a value-initial `<`) and the strict primitives inside `<…>`.
+
 *Spike b, 2026-10-22. Synthesizes `fork-P-literal-notation.md` (the play) and `fork-R-precedents.md` (§4 EDN, §6 sigils) against pages 10 and 30. Read fork P for the full branch set, the renderings and the deaths.*
 
 ## What the other decisions do to this one

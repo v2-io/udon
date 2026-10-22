@@ -120,6 +120,6 @@ Under σ1 the trailing colon has no type role. It stands or falls on looks and r
 | B6 headroom (7) | 10 (spends no syntax) | 4 |
 | C2 XML (10) | 10 | 3 (with the `:` spelling) |
 | C5 schemas and slot types (8) | 9 | 5 |
-| **weighted** | **513** | 238 |
+| **weighted** | **509** | 242 |
 
 Confidence high that σ1 dominates. The one place σ2 wins (self-description) is the factor Joseph lowered on purpose, for exactly this reason: "it implies a verbosity / config+explicit over convention+implicit."

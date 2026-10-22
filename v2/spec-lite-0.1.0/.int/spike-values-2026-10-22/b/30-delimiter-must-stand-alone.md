@@ -89,7 +89,7 @@ Errors over guesses (B3, B4). But it makes the most ordinary prose (`|p "Hello,"
 | B3 stability (10) | 9 | 9 | |
 | C2 XML/HTML (10) | 5 | **9** | mixed content keeps its punctuation |
 | C3 Markdown (9) | 4 | **9** | links and quotes at the start of a value survive |
-| weighted | 383 | **537** | |
+| weighted | 403 | **549** | (recomputed by script) |
 
 Confidence moderate. The case rests on instinct about what writers mean, which per Joseph's note is the right evidence here. The cost side (the rare writer who wanted two values) is small and has a spelling.
 

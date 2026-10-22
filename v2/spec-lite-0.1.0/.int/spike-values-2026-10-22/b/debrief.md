@@ -1,42 +1,144 @@
 # Debrief for Joseph: spike b
 
-*From the spike-b agent (Opus 5.5), 2026-10-22. Trees use the cards' notation: `‹…›` a text, `"…"` a string, bare `8080`/`false`/`nil` values of those kinds. `⇒` is what the default reading gives a consumer that has no slot type. Everything marked "my lean" is a lean; the scores behind it are my own hypotheses, written out on the pages named.*
+*From the spike-b agent (Opus 5.5), 2026-10-22, after three rounds. Trees use the cards' notation: `‹…›` a text, `"…"` a string, bare `8080`/`false`/`nil` values of those kinds. `(.kg)` is a trait on an attribute occurrence. `⇒` is what a reader attaches. My leans are leans; the scores behind them are my own hypotheses, totalled by script, on the pages named.*
 
 ## In one paragraph
 
-Streaming turned out not to separate your option (B) from (C): the 0.9 parser, run, already holds every run whole to its end. What does separate them is `:debug false`. So I'd keep your (C) as it stands in the tree (bare is text, always) and make the view **normative and on**, with JSON's number grammar plus `true`, `false` and `nil` as its whole set. The rest of the old numeric zoo goes inside `<…>`, where it commits and errors. Slot types need no syntax in lite: a slot declared on one value is just a literal claim, so real slot types live in vocabularies (lite documents) and in typed getters. Separately, a quoted or bracketed value at the start of a line's text should count only if it stands alone; otherwise `|p "Hello," she said.` loses its quote marks today.
+Bare values stay text in the tree, as your (C) has it. One normative default reading (JSON's grammar plus `true`, `false`, `nil`) keeps `:debug false` from becoming a truthy string. For everything richer, **the label wears the reading**:
+- `:mass.kg 3.2`, `:on.date 2026-10-01`: lite's own trait mark, put on attribute names;
+- a key signature, `$sig`, that says it once for a whole table;
+- backtick raw values, so regexes never escape;
+- a hinged literal, `<date: 2026-10-01>`, for slots with no fixed kind.
 
-## 1. Streaming: measured, and it doesn't decide B vs C
+A reader attaches meaning in layers over a tree that never changes. Streaming, which seemed to decide all this, turned out not to (it was measured).
 
-A fork fed the 0.9 pushdown parser 200 KB runs in 1 KB chunks. Not one content event came out before the run ended: digits, words, `4…4p`, spaced text, prose and quoted strings all behaved alike. Your `4938422…2412124p` is held whole today and emitted as a bare value at the `p`. "Knows in the first few characters" was true of structure (`|`, `:`, `;`), and not of values in any UDON parser we checked: the 0.9 pushdown parser was run, the recursive one read, and the old value machine taken from its archaeology report, which tagged each value at its end.
+## 1. Labels wear the reading
 
-Under B and C alike the holdback is one run, bounded by its line. If the wire ever emits content in pieces, C streams text from its first character, and B streams the same text with its kind reported after it, at constant memory. The streaming question that's real is separate from typing: emit content in pieces, or cap the line. Today the only cap is the 4 KB line buffer in the recursive wrapper; the pushdown parser has none.
-
-So the note on [[rule:unquoted-run-is-one-value]]'s context file, that the streaming objection decided C's open bit, doesn't hold. The bit is open on other grounds. The fork also proposes a B1 wording that says what you described rather than "kind known within a few characters", which no UDON parser has met for values (`fork-S-streaming.md`, "What I'd change in the CTQ wording"):
-
-> **Bounded streaming.** Where a construct ends and what contains it are known within a few characters. A parser never needs to hold an unbounded stretch of input to decide them. A classification of a finished span (its kind) may be reported after the span.
-
-## 2. The example that decides the open bit
+The sigil idea, made beautiful by moving it off the value. You know at the first character what a value's kind is, because the kind is on its name:
 
 ```udon
-|server :name web :port 8080 :debug false :owner nil
+|event :on.date 2026-10-01 :start.datetime 2026-10-01T14:30-06:00[America/Denver] :lasts.duration 3mo 5d
+|part :mass.kg 3.2 :width.px 920 :price.decimal 83.23 :sku.acme/sku AB-12-rev3
+|rule :pattern.re `\d+(\.\d+)?` :path `C:\Users\me`
+|cfg :port.u16 8080 :timeout.ms 500 :holidays.date [2026-11-26 2026-12-25]
 ```
-
-**If a consumer with no slot type sees bare runs as text:**
-
 ````tree
 root
-  |server
-    :name ‹web›
-    :port ‹8080›
-    :debug ‹false›
-    :owner ‹nil›
+  |event
+    :on (.date) ‹2026-10-01›                    ⇒ Date 2026-10-01
+    :start (.datetime) ‹2026-10-01T14:30-06:00[America/Denver]›   ⇒ ZonedDateTime
+    :lasts (.duration) ‹3mo 5d›                  ⇒ Duration 3 months 5 days
+  |part
+    :mass (.kg) ‹3.2›                            ⇒ 3.2 kg
+    :width (.px) ‹920›                           ⇒ 920 px
+    :price (.decimal) ‹83.23›                    ⇒ exact decimal
+    :sku (.acme/sku) ‹AB-12-rev3›                ⇒ unresolved acme/sku (a reader that knows it reads it; the tree is complete either way)
+  |rule
+    :pattern (.re) raw "\d+(\.\d+)?"             ⇒ Regex
+    :path raw "C:\Users\me"
+  |cfg
+    :port (.u16) ‹8080›                          ⇒ 8080, range-checked
+    :timeout (.ms) ‹500›                         ⇒ 500 ms
+    :holidays (.date) [‹2026-11-26› ‹2026-12-25›]  ⇒ two Dates
 ````
 
-`if server["debug"]` is then true: the string `"false"` is truthy in Python, JS, Ruby and Elixir (I ran it). A JSON export writes `"debug": "false"`. Nothing errors. `:port ‹8080›` is harmless, as you said, but `‹false›` and `‹nil›` aren't.
+- **Why `.`:** it already means "what kind of thing" (`|user.admin`), and the label lean already makes `.` inside an attribute name an error, "until there's a reason". This is the reason.
+- **Why I think agents will write it:** everyone already names fields `timeout_ms` and `size_px`. This makes that habit mean something. (It's an instinct, mine; it's the claim most worth a small probe.)
+- **Occurrences:** the trait belongs to the occurrence, so `:mass.kg 3` and `:mass.lb 7` stack as two masses.
+- **Errors:** an unregistered unprefixed kind is an error with "did you mean"; a namespaced one (`.acme/sku`) is carried.
 
-**If the default reading applies:**
+**The key signature**, for a table: say it once at the top of the staff. An occurrence's own trait overrides it, like an accidental:
 
+```udon
+|samples :$sig [mass.kg temp.degC taken.datetime]
+  |sample :mass 3.2 :temp 21.5 :taken 2026-10-01T14:30Z
+  |sample :mass 2.9 :temp 22.0 :taken 2026-10-01T15:10Z :mass.lb 6.6
+```
+````tree
+root
+  |samples
+    :$sig [‹mass.kg› ‹temp.degC› ‹taken.datetime›]
+    |sample
+      :mass ‹3.2›                  ⇒ 3.2 kg
+      :temp ‹21.5›                 ⇒ 21.5 °C
+      :taken ‹2026-10-01T14:30Z›   ⇒ DateTime UTC
+    |sample
+      :mass ‹2.9›                  ⇒ 2.9 kg
+      :temp ‹22.0›                 ⇒ 22.0 °C
+      :taken ‹2026-10-01T15:10Z›   ⇒ DateTime UTC
+      :mass (.lb) ‹6.6›            ⇒ 6.6 lb (the accidental)
+````
+
+**Backticks mean verbatim, sized by the run.** Three or more on an attribute's line already open a fence (the block raw value). One or two, standing alone as a value, is the inline raw value. In text, Markdown's code spans stay as written:
+
+```udon
+|cmd :run `rm -rf ./build` :match ``a`b``
+|li `npm install` first
+```
+````tree
+root
+  |cmd
+    :run raw "rm -rf ./build"
+    :match raw "a`b"
+  |li
+    :$main ‹`npm install` first›
+````
+
+**The hinged literal**, for slots with no fixed kind (a metadata bag, a mixed list) and for nesting. It's your `<dt: …>`, with the colon and space as the hinge between the name and the items:
+
+```udon
+|meta :values [<date: 2026-10-01> <qty: 3.2 kg> <duration: P1W> 42 hello]
+|math :z <rational: <complex: 3 -7> 2>
+|link :to <ref: people/jw> :also @{people/jw}
+|p Due |{time Oct 1 :datetime <date: 2026-10-01>} at noon.
+```
+````tree
+root
+  |meta
+    :values [literal date [‹2026-10-01›] literal qty [‹3.2› ‹kg›] literal duration [‹P1W›] ‹42› ‹hello›]
+                                    ⇒ [Date, 3.2 kg, Duration, 42, ‹hello›]
+  |math
+    :z literal rational [literal complex [‹3› ‹-7›] ‹2›]   ⇒ Rational(Complex(3, −7), 2)
+  |link
+    :to literal ref [‹people/jw›]   ⇒ a reference as a value (Lisp's quote)
+    :also ‹@{people/jw}›            (the referent's place, as today)
+  |p
+    :$main ‹Due |{time …} at noon.›
+      |time
+        :$main ‹Oct 1›
+        :datetime literal date [‹2026-10-01›]   ⇒ Date
+````
+
+A literal's items are read by lite's own list rules, so a parser that has never heard of `rational` still builds the whole tree. A later UDON adds *readings*, never different trees. That is how reserve-don't-ignore holds without reserving anything. `<>` is nil and `<0xFF>` an asserted number, as before. `@{<…>}` becomes `<ref: …>`.
+
+**How meaning attaches**, highest first, all over one raw tree:
+1. the occurrence's trait;
+2. the signature;
+3. the vocabulary (a lite document, addressed by element and attribute names: your "algebraic names", `port = u16 | standard-port`);
+4. the default reading.
+
+An asserted literal decides its own type and the slot only checks it; a bare value is read by its slot. Typed getters (`get_date(:on)`) are the API's version of the same layers: the twin of your strict getters for cardinality.
+
+**The registry I'd propose for lite 0.1:**
+- kinds: `text` (switches the default reading off), `date`, `time`, `datetime` (RFC 3339, plus RFC 9557's `[Zone]`), `duration` (ISO `P…`, or items like `3mo 5d` from a closed unit set, where a lone `m` is an error: "mo or min?"), `decimal`, `ref`, ranged integers `u8`…`i64`, and `re`;
+- unit symbols as writers write them: `kg`, `ms`, `px`, `degC`, `pct`.
+
+Two-digit years go in a slot's format, with a pivot, never on a literal. A literal must stand on its own, or its meaning changes with the clock.
+
+**What I tried and why it lost:**
+- The bra-ket `<date|2026-10-01>`: your own `<uint32|0x992BC>`, and Unicode itself calls `⟨` "bra". Lovely, but `|` would mean two things.
+- Elements as notation values (`|{date 2026-10-01}`): the runner-up. It needs no new construct, but a typo like `|{dtae …}` is silently just an element.
+- Emoji sigils (`📅2026-10-01`): instantly understood, but `⚖` and `⚖️` are two spellings, and widths break alignment.
+- Superscript kind marks (`ᵈᵃᵗᵉ2026-10-01`): NFKC folds them to `date2026-10-01`.
+- A tie for per-item units (`[12‿px 1.5‿em]`): strange, unfinished, and still alive if you like it.
+
+Scores (page 60 §3; Beauty first, computed by script): this system 1234 of 1520, elements 1134, bra-ket 1131, the plain angle literal 1119. The lead comes from the Beauty group and holds even if its spec-clarity, simplicity and parsimony scores drop by two each.
+
+## 2. The default reading, and the example that decides it
+
+```udon
+|server :name web :port 8080 :debug false :owner nil :ratio 0.75 :zip 01234 :version 1.0
+```
 ````tree
 root
   |server
@@ -44,143 +146,54 @@ root
     :port ‹8080›      ⇒ 8080
     :debug ‹false›    ⇒ false
     :owner ‹nil›      ⇒ nil
+    :ratio ‹0.75›     ⇒ 0.75
+    :zip ‹01234›      (leading zero: stays text)
+    :version ‹1.0›    ⇒ 1.0   ← the residual hazard; `:version.text 1.0` or a vocabulary fixes it
 ````
 
-The tree is identical in both cases. Only the consumer's view differs, and leaving it to each consumer means one document means two things. That's why I think the bit has to be normative, one way or the other. My lean: on.
+Without the reading, `:debug` is the string `"false"`, which is truthy in Python, JS, Ruby and Elixir (I ran it). The set is chosen by one test: guess only where nothing is lost, so the spelling comes back as written. That is JSON's grammar, the one every agent already knows. It makes the reading normative, which closes the open bit of (C) the other way from the context file's note. Your gotcha keeps its meaning: `:width 7 ;{px}` stays text, `:height 7 ; px` reads 7. [[rule:nil-spelling]] and [[rule:missing-value]] stay true as written.
 
-## 3. What the default reading reads: JSON's grammar, chosen by one test
+## 3. Streaming: measured, and it doesn't decide B vs C
 
-A default reading is a guess the writer didn't make, so it should guess only where nothing is lost: the value written back out is the spelling written. That test keeps `true`, `false`, `nil`, and numbers spelled as JSON spells them (no leading zero, no `+`, no `.5`, no `_`, no `0x`). It drops everything else:
+A fork fed the 0.9 parser 200 KB runs in 1 KB chunks. No content event came out before a run ended, for numbers, words, text, prose or quoted strings. Your `4938…2p` is held whole today and emitted at the `p`. Value kinds were never known in the first few characters, in any parser we checked; structure kinds were. The real streaming question is whether the wire emits content in fragments or caps the line. Today only the recursive wrapper's 4 KB line buffer caps it; the pushdown parser has no cap. The fork proposes this for B1:
 
-```udon
-|pkg :zip 01234 :mode <0o755> :mask <0xFF> :big <1_000_000> :ratio 0.75 :exp 1.5e-3
-|pkg :version 1.0 :size 920px :when 2026-01-10 :sha 1e10a3f
-```
-````tree
-root
-  |pkg
-    :zip ‹01234›        (leading zero: stays text)
-    :mode 0o755         (asserted; the integer 493, spelling kept)
-    :mask 0xFF
-    :big 1_000_000
-    :ratio ‹0.75›       ⇒ 0.75
-    :exp ‹1.5e-3›       ⇒ 0.0015
-  |pkg
-    :version ‹1.0›      ⇒ 1.0          ← the one residual hazard; a slot type fixes it
-    :size ‹920px›
-    :when ‹2026-01-10›
-    :sha ‹1e10a3f›
-````
+> **Bounded streaming.** Where a construct ends and what contains it are known within a few characters. A parser never needs to hold an unbounded stretch of input to decide them. A classification of a finished span (its kind) may be reported after the span.
 
-Composite lines with the other rules:
+The traits above go further than that: the kind is known *before* the value.
 
-```udon
-|el :c 1 z               ; ‹1 z›: one run, stays text
-|el :c 1 \ z             ; :c ‹1› ⇒ 1, then $main ‹z›
-|el :width 7 ;{px}       ; ‹7 ;{px}›: a comment piece, not one plain run, stays text
-|el :height 7 ; px       ; :height ‹7› ⇒ 7, with the framed comment attached
-|el :a null              ; ‹null›, with the existing warning: did you mean nil?
-|q :x "8080" :y <8080> :z <>   ; a string (never re-read), 8080, nil
-```
-
-Your earlier gotcha keeps its meaning (`:width 7 ;{px}` text, `:height 7 ; px` a number), now as a property of the reading. [[rule:nil-spelling]] and [[rule:missing-value]] stay true as written: bare `nil` reads as nil, so their "is it `<nil>` now?" questions go away.
-
-`<…>` carries the rich set strictly, as you put it: "now we *can* commit/error". For lite 0.1, `<>` is nil, a primitive is checked, and **anything else in `<…>` is an error**, labels included (your `<uint32|0x992BC>` "error- reserved for now"). That keeps every notation and composite spelling free for full UDON.
-
-## 4. Slot types: a slot declared on one value is a literal
-
-A slot type speaks for *every* value in a place: every `port` of every `server`. Written on one occurrence, it speaks only for that value, which makes it a literal claim:
-
-```udon
-|event :when:iso8601 <dt: 2026 PDT>
-```
-
-Both halves speak about this one value; neither carries over to the next `|event`. And `:port:u16` reads as `xml:lang` does, a name that C2 needs. So I'd give lite **no slot syntax**. Your "algebraic names" fit, as data, in a vocabulary that is itself a lite document (spelling illustrative only):
-
-```udon
-; server.schema.ud
-|type standard-port :one-of [smtp ssh http https]
-|type port :one-of [<u16> standard-port]
-|element server
-  :port port
-  :version <text>
-  :width length
-```
-```udon
-|server :port ssh :version 1.0 :width 920px
-|server :port 22
-```
-````tree
-root
-  |server
-    :port ‹ssh›        ⇒ (port) standard-port ssh
-    :version ‹1.0›     ⇒ (text) ‹1.0›      ← the residual hazard, gone
-    :width ‹920px›     ⇒ (length) 920 px
-  |server
-    :port ‹22›         ⇒ (port) 22
-````
-
-The tree is the same with or without the vocabulary; only the reading changes. So a schema can never change what a document parses to. Units fall apart along your own "a bit of both": the **dimension** (length) is the slot's, the **unit** (px) is the spelling's, the **conversion** is the consumer's.
-
-The lightest slot type needs no file at all: **typed getters**, the twin of your strict getters for cardinality. `get_bool(:debug)`, `get_int(:port)`, `get_text(:version)` each read the spelling by their own notation and raise on a mismatch without touching the tree. `get_text(:version)` gives `1.0` whatever the default reading says.
-
-Overlapping unions (`size = int | {0 small big}`): a vocabulary whose arms both read some spelling can be flagged when it loads, because for notations like these the overlap is computable. Then `<0>` or `"0"` picks the arm at the value.
-
-## 5. A quoted or bracketed value at the start of text should stand alone
-
-Today:
+## 4. A quoted or bracketed value should stand alone
 
 ```udon
 |p "Hello," she said.
 |li [Docs](https://x.org) for more
-|li <kbd>Ctrl</kbd> to copy
+|el :a "x" y
+|el :a "x" \ y
 ```
-````tree
-root
-  |p
-    :$main "Hello,"
-    :$main ‹she said.›
-  |li
-    :$main [‹Docs›]
-    :$main ‹(https://x.org) for more›
-  |li
-    :$main <kbd>
-    :$main ‹Ctrl</kbd> to copy›
-````
-
-The quote marks are gone from the speech, the link is gone, and `<kbd>` is a typed value. My proposal: **a value is either exactly one delimited form standing alone (followed by a space and a start, a framed ` \ `, or the end of the line) or it is a run**, with the delimited form's characters kept as scanned:
-
+Today: `$main "Hello,"` + `$main ‹she said.›` (the quote marks are gone), and a list `[‹Docs›]` + text (the link is gone). Proposed:
 ````tree
 root
   |p
     :$main ‹"Hello," she said.›
   |li
     :$main ‹[Docs](https://x.org) for more›
-  |li
-    :$main ‹<kbd>Ctrl</kbd> to copy›
+  |el
+    :a ‹"x" y›
+  |el
+    :a "x"
+    :$main ‹y›
 ````
+**The rule:** a value is one delimited form standing alone, or it is a run. It makes `:c "1" z` behave like `:c 1 z`, and it's what lets the hinged literal and the backtick raw value never collide with HTML or Markdown in text. It crosses your 2026-10-21 lean on the residue after a self-ending value ("perfectly fine … I think"), so it's yours to call.
 
-```udon
-|el :a "x" :b [1 2] :c <8080>    ; each stands alone: string, list, 8080
-|el :a "x" y                     ; :a ‹"x" y›
-|el :a "x" \ y                   ; :a "x", then $main ‹y›
-|el :token <your-api-token>      ; alone, so a literal: error, did you mean \<your-api-token>?
-```
+## 5. What I'd ask you, as examples
 
-That makes `:c "1" z` behave like `:c 1 z` (one text) instead of differently. It also crosses your 2026-10-21 lean that the residue after a self-ending value goes to `$main` ("perfectly fine … I think"), so it's yours to call. The decision waits only until the closer, which is on the same line and already held today.
+1. `:mass.kg 3.2` and `:on.date 2026-10-01`: does the label wearing the reading feel like UDON to you?
+2. `|samples :$sig [mass.kg temp.degC]`, then rows of bare numbers: worth having in lite 0.1?
+3. `|server :debug false` with no schema: `false`, or `"false"`?
+4. `|p "Hello," she said.`: one text?
+5. `<date: 2026-10-01>`: the hinge as the spelling for notation values in generic slots, and the same `:` as your trailing colon on attribute names, decided together?
 
-## 6. What I'd ask you, as examples
+## 6. Where I'm unsure
 
-1. `|server :debug false`, read with no schema: `false`, or the text `"false"`?
-2. Should the default reading be exactly JSON's grammar plus `true`/`false`/`nil`, so that `01234` stays text and `0xFF` needs `<0xFF>`?
-3. `|p "Hello," she said.`: one text, or a string stacked with a text?
-4. Typed getters (`get_int`, `get_text`) as the API twin of your cardinality getters?
-5. For lite 0.1, every labelled `<…>` an error, so that dates and composites are left wholly to full UDON?
-
-## 7. Where I'm unsure
-
-- The `false`-vs-`1.0` frequency judgment that decides question 1 is my own instinct as a writer, not a measurement.
-- The scores (`10` §5, `20` §6, `30`, fork P §3) are one agent's hypotheses. The rankings I'd defend; the margins I wouldn't.
-- Keys: whether `|step[1]` should get the default reading. I'd guess not, since keys compare by spelling, but I haven't pushed it.
-- The trailing `:` on attribute names has no type role in this design. It's a pure question of looks: a name can't end in `:` if the ornament is allowed, which costs XML nothing. I leaned "ornamental, allowed" and left it to you.
-- I read your messages in the span whole. The coordinator's summaries in it I read as framing only.
+- That agents will guess `:timeout.ms 500` after one example rests on my own instinct, and so does the `false`-vs-`1.0` frequency. Both are the cheapest things to probe if a probe is ever affordable.
+- The scores are mine. The margins between the runners-up are inside my error; the leader's margin isn't, by my own estimate, but that estimate is mine too.
+- My first two rounds surveyed and adjudicated more than they invented. The third round's inventions are less pushed than the first round's adjudications: the key signature's scoping and the registry's exact contents in particular are sketched, not finished.

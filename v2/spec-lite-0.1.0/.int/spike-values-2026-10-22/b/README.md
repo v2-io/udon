@@ -1,62 +1,80 @@
 # Spike b: how lite's values come to mean what they mean
 
-*Opus 5.5, 2026-10-22, from the brief in `../BRIEF.md`. Nothing here is committed by me, and no card was edited; proposed card changes are named on each page. Joseph's two mid-run notes (CTQ-FACTORS is the compass; the corpus is ideation, never evidence) were carried into every page and passed to all three forks, which amended their files.*
+*Opus 5.5, 2026-10-22, from the brief in `../BRIEF.md`, in three rounds:*
+1. *the first pass (pages 00–40, three forks);*
+2. *after Joseph said that "reserved for now" restated our premise, the notation values designed (page 50);*
+3. *after his note on creativity, an inventive pass, invent first and judge after (page 60).*
+
+*Nothing here is committed by me, and no card was edited; proposed card changes are named on each page. Joseph's mid-run notes (CTQ-FACTORS is the compass; the corpus is ideation, never evidence) were carried into every page and passed to all three forks.*
 
 ## The question as I took it
 
-The span asks for a type system and its notation to be explored "over the whole range of possibilities", with `<…>` reopened. Underneath, I think, is a smaller and sharper question: **which layer decides a value's kind, and what does each form of a value (bare, quoted, angled) say about who decides?** Once that is settled, most notation choices follow, and several disputes turn out to be one design described twice.
+Underneath "explore type systems and notations": **which layer decides a value's kind, and what does each form of a value (bare, quoted, angled, labelled) say about who decides?** Once that is settled, most spellings follow.
 
-## Headline findings (each on its page, with labels for what was checked)
+## Headline findings
 
-1. **Streaming does not decide between whole-run typing (B) and "bare is text" (C).** Fork S *ran* the 0.9 parser: it holds every run (numbers, words, text, quoted strings) to its end before emitting anything, and calls `4938…2p` a `BareValue` at the `p`. Both options are bounded by the line, and with a fragmenting wire both could stream, the kind trailing. The open bit of (C) was recorded as decided by streaming; it wasn't. → `fork-S-streaming.md`, `10` §1.
-2. **The bit that does decide it is `:debug false`.** With no default reading, a schema-less consumer gets the string `"false"`, which is truthy in Python, JS, Ruby and Elixir (run). The opposite hazard, `:version 1.0` read as a float, is rarer. → `10` §2.
-3. **The default reading should be JSON's number grammar plus `true`/`false`/`nil`: normative, frozen, on.** It is picked by a lossless test (only spellings every host reads back as written), so leading-zero integers like `01234` stay text. The rich set (`0xFF`, `1_000`, `0o755`) moves inside `<…>`, where it commits and errors. This is (C) completed rather than reversed: the raw tree is still all text. → `10` §3–4 (β3).
-4. **A slot declared on one occurrence is a literal assertion in disguise**, so per-occurrence slot syntax (`:port:u16`) adds nothing over `<…>`. It also collides with `xml:lang`. Slot types belong in vocabularies that are themselves lite documents, addressed by element and attribute names (Joseph's "algebraic names"), and in **strict getters for kinds**, the twin of his strict getters for cardinality. Lite needs no slot syntax at all. → `20`.
-5. **A delimited value should stand alone, or the whole run is text.** Today `|p "Hello," she said.` loses its quote marks to a string-plus-text stack, and `|li [Docs](https://x.org) for more` loses its link to a list. With the stand-alone rule both are one text, `:c 1 z` and `:c "1" z` behave alike, and most of `<`'s collisions with HTML and Markdown dissolve too. → `30`, `40`.
-6. **Precedent (weighed, not obeyed):** the three-layer split of spelling in the document, slot type declared once elsewhere, and override on the value is what every mature schema system converged on (XSD, JSON-LD, YAML). Lite's combination, all text in the tree with a JSON-sized default reading, has no exact precedent. KDL 2.0 recently made bare words strings and put marks on keywords. → `fork-R-precedents.md`.
+1. **Streaming does not decide between whole-run typing (B) and "bare is text" (C).** Fork S *ran* the 0.9 parser: it holds every run to its end before emitting anything. The B1 wording that says "kind known within a few characters" is stricter than Joseph's concern; a rewording is proposed. → `fork-S-streaming.md`, `10` §1.
+2. **`:debug false` decides the open bit.** With no default reading it is the truthy string `"false"` (run in four languages). So: the tree stays all text, as in (C), and a **normative default reading** applies JSON's number grammar plus `true`/`false`/`nil`. The rich set (`0xFF`, `1_000`) lives in `<…>`, checked strictly. → `10`.
+3. **Labels wear the reading (the main invention).** `:mass.kg 3.2`, `:on.date 2026-10-01`, `:port.u16 8080`, `:pattern.re `\d+``: lite's trait mark `.`, "what kind of thing", is put on attribute names. The value stays bare domain data, the kind is known before the value's first character, and it turns the universal `timeout_ms` naming habit into meaning. The spelling is already held open: the label lean makes `.` in an attribute name an error now. With:
+   - a **`$sig` key signature**, a container saying once how its descendants' values read, overridden per occurrence like an accidental in music;
+   - **backtick raw values** (one or two backticks standing alone; three or more is the fence that already exists), so regexes and paths never escape;
+   - a **hinged literal** `<date: 2026-10-01>` for slots with no fixed kind and for nesting (`<rational: <complex: 3 -7> 2>`).
+
+   This system leads every alternative by about 100 of 1520 weighted points, from the Beauty group. → `60`.
+4. **How meaning attaches:** four layers over one unchanging raw tree. In precedence order: the occurrence's trait, the signature, the vocabulary, then the default reading. A reader without a notation gets `unresolved(name, items)`; the tree never differs. That is how reserve-don't-ignore holds without reserving: the items are readable by lite's own rules (EDN's principle). → `50` §2, `60` §4.
+5. **Slot types need no syntax:** vocabularies are lite documents addressed by element and attribute names (Joseph's "algebraic names"), and typed getters are the twin of his strict getters for cardinality. → `20`.
+6. **A delimited value must stand alone, or the run is text.** This fixes `|p "Hello," she said.` (its quote marks are lost today) and `|li [Docs](…) for more` (its link becomes a list), and it dissolves most `<` collisions with HTML. → `30`.
+7. **Precedent, weighed:** YAML's `?`/`!` tags already resolve bare values by path. XSD, JSON-LD and YAML converged on spelling / slot-declared-once / override-on-value. → `fork-R-precedents.md`.
 
 ## Branch map
 
 | Decision | Branch | Fate | Why | Page |
 |---|---|---|---|---|
-| D1 who reads a bare run | β1 first character commits (A) | dead | `920px` an error; Joseph's own reason | 10 |
-| | β2 whole run, the old rich set | dead as a default | every old surprise becomes a silent misread (B3, A3); the set lives on inside `<…>` | 10 |
-| | **β3 text in the tree; a JSON-grammar default reading, normative** | **recommended** | best on A2, A3, B3, C1 | 10 |
-| | β3b canonical-only (`1.0` stays text) | pruned | fixes one case, and inconsistently (A6, A7) | 10 |
-| | β4 no default reading | pruned after three attempts to make it work | `:debug false` is a truthy string | 10 |
-| | β5 the view optional per consumer (the lean as written) | pruned | it is β3 or β4 depending on the consumer; it adds variability | 10 |
-| | β6 no primitives in lite | dead | C1 | 10 |
-| | β7 kind by strict getter | kept, inside β3 | the lightest slot type | 10, 20 |
-| D2 what a delimiter commits | δ1 commit and stack (today) | incumbent | loses quotes and links in text | 30 |
-| | δ2 only `$main` is exempt | pruned | breaks element/attribute sameness | 30 |
-| | **δ3 must stand alone, else a run** | **recommended** | C2, C3, A3; one rule for both value shapes | 30 |
-| | δ4 residue is an error | pruned | errors on the most ordinary prose (A2) | 30 |
-| D3 the standard set | JSON grammar by default, the rich set in `<…>` | recommended | lossless test; "now we *can* commit/error" | 10, 40 |
-| | units, temporal and rationals in the default | dead | no host equivalent; old surprises | 10, 20 |
-| D4 the literal-side spelling | `<…>` strict, standing alone; labels reserved in lite | recommended for lite 0.1 | δ3 removes the prose collisions; B2 | 40 |
-| | `⟨…⟩` | alive, weaker after δ3 | clashes with the transcripts' `‹›`; cold agents write `<` | P, 40 |
-| | attached tag `date"…"` | alive for full UDON | most guessable for notations; needs a tag-length bound | P, 40 |
-| | KDL `(t)v`, EDN `#t`, REBOL bare forms, carrying `<…>` raw | dead | silent prose collisions; the CTQ's own headroom note | P |
-| D5 where slot types live | **σ1 data (vocabularies) + getters** | **recommended** | A5, B6, C2; no syntax | 20 |
-| | σ2 per occurrence (`:port:u16`) | dead | a literal assertion in disguise; `xml:lang` | 20 |
-| | σ3 header, σ4 trait-selected | collapsed into σ1 | conventions, not syntax | 20 |
-| D6 overlapping unions | ordered | pruned | B3 | 20 |
-| | disjoint arms checked when the vocabulary loads, plus an error at read | recommended | decidable for regular notations | 20 |
-| D7 units | dimension = slot, unit = spelling, conversion = consumer | recommended | Joseph's "a bit of both", taken apart | 20 |
-| D9 trailing `:` | ornamental or compulsory | open, beauty only | no type role under σ1; a name can't end in `:` | 20 |
+| D1 who reads a bare run | β1 first character commits | dead | `920px` an error | 10 |
+| | β2 the old rich set by default | dead as a default | silent misreads; it lives on inside `<…>` | 10 |
+| | **β3 text tree + normative JSON-grammar reading** | **recommended** | A2, A3, B3, C1 | 10 |
+| | β3b canonical-only | pruned | too clever, inconsistent | 10 |
+| | β4 no default reading | pruned after three attempts | `:debug false` truthy | 10 |
+| | β5 view optional per consumer | pruned | it is β3 or β4 per consumer | 10 |
+| | β6 no primitives | dead | C1 | 10 |
+| | β7 kind by strict getter | kept, inside β3 | lightest slot type | 10, 20 |
+| D2 what a delimiter commits | δ1 commit and stack (today) | incumbent | loses quotes and links | 30 |
+| | **δ3 must stand alone** | **recommended** | C2, C3, A3 | 30 |
+| | δ2, δ4 | pruned | sameness; errors on ordinary prose | 30 |
+| D4/J2 notation values | **LW: labels wear the reading** (`:mass.kg 3.2`, `$sig`, backtick raw, `<kind: …>`) | **recommended** | 1234 / 1520; Beauty, A5, A2 | 60 |
+| | NB elements as notation values (`|{date …}`) | runner-up | parsimony; silent typos; flips an embed decision | 50, 60 |
+| | BK bra-ket `<date|2026-10-01>` | recorded | lovely, but `|` would get a second meaning | 60 |
+| | NA `<date 2026-10-01>` | absorbed into LW as the hinged form | reads like an HTML tag without the hinge | 50 |
+| | NA+E unlabelled `<2026-10-01>` | not adopted | two spellings per date | 50 |
+| | NC attached tag `date"…"` | dominated by NA | needs a tag-length bound | 50, P |
+| | ND slot-only | kept as a layer, not the answer | fails generic slots | 50 |
+| | I5 the tie `3.2‿kg` | alive, for taste | per-item units; strange and unfinished | 60 |
+| | I6 emoji sigils, I7 superscripts | dead | variation selectors and widths; NFKC folding | 60 |
+| | "reserved for lite 0.1" | **withdrawn** | it was the premise restated | 40 |
+| | KDL `(t)v`, EDN `#t`, REBOL bare forms, `<…>` carried raw | dead | silent prose collisions | P |
+| J3 composites | nesting inside `<kind: …>` | designed | | 50, 60 |
+| J4 quote | `<ref: path>`, and `@{…}` stays the referent | designed | Lisp quote | 50 |
+| D5 where slot types live | **σ1 vocabularies as data + getters** | **recommended** | | 20 |
+| | σ2 per-occurrence *slot* types | dead as slot types; its spelling revived as LW traits | | 20, 60 |
+| D6 overlapping unions | disjointness checked when the vocabulary loads; error at read | recommended | | 20 |
+| D7 units | the unit on the label (`.kg`) or in a slot notation; `<qty: …>` in generic slots | recommended | | 20, 60 |
+| keys | no default reading; identity by spelling | designed | | 50 |
+| D9 trailing `:` | Joseph's taste; coupled with the hinge `<date: …>` | open | | 20, 50 |
 
 ## Files
 
 - `debrief.md`: to Joseph, in examples and trees. **Start here.**
-- `00-working-frame.md`: the first framing, the decision map, the composite example set (E1–E12).
-- `10-who-decides-kind.md`: D1, D2, D3 (the bit, the set, the branches, scores).
-- `20-slot-side.md`: D5, D6, D7, D9.
+- `60-inventions.md`: the inventive pass and the recommended system (LW).
+- `50-notation-values.md`: the cold pass on notation values: the registry, the reading layers, NA/NB/NC/ND scored.
+- `10-who-decides-kind.md`: D1–D3: the bit, the set, the branches.
+- `20-slot-side.md`: D5–D7, D9.
 - `30-delimiter-must-stand-alone.md`: D2 on the `$main` side.
-- `40-literal-side.md`: D4, given the above.
-- `fork-S-streaming.md`: fork S; a run of the 0.9 parser, a shape inventory, a proposed B1 rewording.
-- `fork-R-precedents.md`: fork R; YAML, KDL, XSD, JSON-LD, EDN, REBOL, Elixir, CUE, CSS, StrictYAML, with sources.
-- `fork-P-literal-notation.md`: fork P; the literal side as play: ten branches, renderings, deaths.
+- `40-literal-side.md`: first-round D4 (its "reserved" landing withdrawn).
+- `00-working-frame.md`: the first framing and the composite example set.
+- `fork-S-streaming.md`, `fork-R-precedents.md`, `fork-P-literal-notation.md`: the three forks.
+
+**Corrections made along the way:** my hand-added score totals on pages 10, 20 and 30 were wrong and have been recomputed by script; no ranking changed. Labels that said "checked from memory" were either verified at the source (RFC 8259, Namespaces in XML, RFC 9557, YAML 1.2.2) or relabeled.
 
 ## On the forking experiment (Joseph asked)
 
-Three `fork` agents (full inherited context), launched in parallel at the first decision map. Their briefs were each one paragraph: a role and a file. The harness allowed it, and the forks resumed cleanly when the relayed notes arrived. What it bought: one real measurement I would not otherwise have made (S), one independent arrival at the same E6 collision (P, confirming it), and one source check I leaned on (R, YAML §3.3.2, which I re-read myself). What it didn't buy: variety of frame. Forks inherit the parent's framing, so they push branches hard but rarely reject the parent's frame. For "warm" variation a fresh agent with a bare brief would likely do better. I didn't fork deeper than one level; no branch got messy enough to need it.
+Three `fork` agents (full inherited context), launched in parallel at the first decision map, with one-paragraph briefs. The harness allowed it, and the forks resumed cleanly when the relayed notes arrived. What it bought: one real measurement (S), an independent arrival at the same text collision (P), and a primary-source check I leaned on (R). What it didn't buy: variety of frame. Forks inherit the parent's framing, so they push hard inside it. The inventive round showed the same limit in me: my first two rounds surveyed and adjudicated, because the brief and my habits pointed backward. For warm variation, a fresh agent briefed only "invent" would likely do better than a fork.
