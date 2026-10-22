@@ -1666,3 +1666,12 @@
 > Excellent. To clean it up a bit more-- it seems like the extra text in "Factor" and the Measure columns are a bit redundant, and notes can mostly be footnotes. Keep the 2011 column for a moment longer while I go over it, but then we'll remove that as well.
 
 *(Agent text, summary: reduced each table to short factor names, the 2011 column and the proposed weight; moved definitions-in-detail, measures and notes into footnotes.)*
+
+### Joseph (whole)
+
+> I think we should renumber A to remove the A3b and possibly to put them in priority order.  Rename "Proposed" to Priority.
+> I'm not sure A8 should be a goal at all.
+> I wonder if A7 is redundant with B4.
+> Domain-forward is part of beauty as well. I feel like the current A3, A3b, and A6 fail to capture "Beauty" as written. I'm ok with it staying somewhat subjective. A concrete thing that the current mix doesn't capture is ornamentation and the ability to vertically line things up ala markdown tables and to use blank lines and so forth to further enhance speed-to-comprehension of the domain information (distinct from speed to comprehension of the spec)...    I don't want to get too padentic about it if this is a CTQ list primarily for the value+typing beam search, but... well, honestly so far the 2011 taxonomy seems a lot less fuzzy and a lot more MECE than this one does so far...
+
+*(Agent text, summary: rebuilt group A on 2011's own split: least surprise; conceptual beauty (domain-forward, absorbing self-description and coherence); visual beauty (layout freedom and ornament: alignment, blank lines, grouping, scannable without highlighting); spec clarity; syntactic simplicity; in priority order, "Priority" for "Proposed". Homoiconicity, algorithmic declaration and Turing completeness listed as not goals; conciseness merged into size in B. For the same MECE reason: reserve-don't-ignore moved from utility to robustness, and utility split into what lite can carry and how it fits the systems around it.)*
