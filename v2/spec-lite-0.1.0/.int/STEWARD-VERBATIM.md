@@ -1722,3 +1722,11 @@
 > I'm fine with Stability staying a 10-- bounded gets to be veto because one can always put a bound. There may be some things though that require different trees in certain rare contexts that are unavoidable and we want that as a weight, not a veto, IMO (not knowing what those things might be). I feel good about this list. Do you feel good about this list?
 
 *(Agent text, summary: closed the open item with his reason in a footnote on B3. Said yes, with two reservations: several Beauty contributors are correlated, so a weighted sum can count the same strength more than once, which his final judgment over the dossiers offsets; and a possible missing factor, room for full UDON to grow (a branch can pass the reserve veto and still use up spellings full UDON will want).)*
+
+### Joseph (whole)
+
+> The nice thing about #1 there (which I agree with), is that it prevents reward-hacking. Each one could be theoretically maximized at the expense of others (some people think perl 5 is beautiful. It's certainly concise. At the expense of speed-to-comprehension...).
+> [Request interrupted by user]
+> Good call on #2-- please add as you see fit. For #1, I do wonder if we should call out "generate" vs "recognize" a little more distinctly in the table somehow... maybe change least surprise into "cold comprehension" and "generative guessability" or something is what's in my mind... ponder it some more and play around with some things and see if it makes the whole thing feel more holistic or if it's just noise...
+
+*(Agent text, summary: added to the scoring paragraph that the factors overlap on purpose so none can be gamed alone, with his Perl 5 example, and that totals inform his judgment rather than replace it; added B6 "Headroom: spends little of the syntax a later UDON will want" (7); split least surprise into A2 "Generative guessability" and A3 "Cold comprehension" (10 each), finding it signal rather than noise: the two come apart in real notations (YAML reads more easily than it writes; a compulsory mark helps a reader and trips a writer), and agentic readability (A4) stays distinct as reading forms already known.)*

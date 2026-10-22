@@ -13,7 +13,7 @@
 - **Values and their types are central.**
 - **Lite evaluates nothing:** templating, algorithmic declaration and relational data belong to full UDON.
 
-**How a branch is scored.** A **veto** is pass/fail; a branch that fails one stops. The rest are weighted 0–10. A branch's **impact radius** is a cost, not a quality: the cards it changes, adds or deletes, weighted by each card's `strength` (forced > decided > lean > provisional), plus whatever it reopens. A branch is pruned when it fails a veto or can no longer render the composite example set honestly.
+**How a branch is scored.** A **veto** is pass/fail; a branch that fails one stops. The rest are weighted 0–10. A branch's **impact radius** is a cost, not a quality: the cards it changes, adds or deletes, weighted by each card's `strength` (forced > decided > lean > provisional), plus whatever it reopens. A branch is pruned when it fails a veto or can no longer render the composite example set honestly. The factors overlap on purpose: none can be maximized at the others' expense (Perl 5 is concise, and some find it beautiful, at a cost to comprehension), so a branch can't score well by gaming one. The totals inform Joseph's judgment over the branches; they don't replace it.
 
 ## A. Beauty, visual and conceptual (highest)
 
@@ -22,16 +22,17 @@ Beauty is judged directly (A1), and also through contributors (A2 on), which are
 | | Factor | Weight |
 |---|---|---|
 | A1 | **Agent-subjective**: a judge's open-ended, reasoned sense of which is more beautiful[^a1] | 9 |
-| A2 | **Least surprise**[^a2] | 10 |
-| A3 | **Agentic readability**[^a3] | 10 |
-| A4 | **Domain-forward**[^a4] | 9 |
-| A5 | **Spec clarity**[^a5] | 9 |
-| A6 | **Syntactic simplicity**[^a6] | 8 |
-| A7 | **Parsimony**: a small, well-chosen set of special characters[^a7] | 8 |
-| A8 | **Conciseness**, in tokens | 6 |
-| A9 | **Self-description**[^a9] | 5 |
-| A10 | **Human readability** | 5 |
-| A11 | **Human writability** (typing) | 2 |
+| A2 | **Generative guessability**: writing what hasn't been seen yet[^a2] | 10 |
+| A3 | **Cold comprehension**: reading what hasn't been seen yet[^a3] | 10 |
+| A4 | **Agentic readability**[^a4] | 10 |
+| A5 | **Domain-forward**[^a5] | 9 |
+| A6 | **Spec clarity**[^a6] | 9 |
+| A7 | **Syntactic simplicity**[^a7] | 8 |
+| A8 | **Parsimony**: a small, well-chosen set of special characters[^a8] | 8 |
+| A9 | **Conciseness**, in tokens | 6 |
+| A10 | **Self-description**[^a10] | 5 |
+| A11 | **Human readability** | 5 |
+| A12 | **Human writability** (typing) | 2 |
 
 Not goals: homoiconicity (it doesn't make lite more beautiful), algorithmic declaration, Turing completeness.
 
@@ -44,7 +45,8 @@ Not goals: homoiconicity (it doesn't make lite more beautiful), algorithmic decl
 | B3 | **Stability**: one tree per document in every parser; errors, not guesses[^b3] | 10 |
 | B4 | **Errors that teach**: each error and warning says what was probably meant | 8 |
 | B5 | **Parse speed** (throughput)[^b5] | 9 |
-| B6 | **Document size**, in bytes | 3 |
+| B6 | **Headroom**: spends little of the syntax a later UDON will want[^b6] | 7 |
+| B7 | **Document size**, in bytes | 3 |
 
 Dropped: transportation speed.
 
@@ -73,7 +75,7 @@ Full UDON, not lite: universal templating, relational data. Folded in elsewhere:
 | D2 | **Language and framework integration**, portability[^d2] | 7 |
 | D3 | **Editor integration** (highlighting for people) | 5 |
 
-Folded in elsewhere: documentation (A5), "chic" (A). Settled: the license (MIT). Not scored: community, standardization, commercial support.
+Folded in elsewhere: documentation (A6), "chic" (A). Settled: the license (MIT). Not scored: community, standardization, commercial support.
 
 ## Open
 
@@ -81,18 +83,20 @@ Folded in elsewhere: documentation (A5), "chic" (A). Settled: the license (MIT).
 
 [^beauty]: Beauty is left to each judge's own sense, on purpose. Aspects Joseph has named, as examples: the domain's model showing rather than the plumbing; ornament such as alignment and blank lines; a small, well-chosen set of special characters; constraints such as meaningful indentation, which restrict layout freedom in a way that is more conceptually beautiful.
 [^a1]: Judged by asking agents (other model families included) which of two renderings of the same content seems more beautiful, and why. A reason like "this seems more beautiful to me, I think because it's less ambiguous about which value belongs to which name" counts even when no other contributor covers it, and may point to a missing one.
-[^a2]: Having seen a few idiomatic forms and a few rarer ones, an agent correctly guesses the rest. Measured by exposure curves: fresh panels read held-out UDON into trees and write UDON from trees given as JSON, at several exposure levels. Silent misreads weigh more than errors.
-[^a3]: Read by a model in plain text: no highlighting, no position made ambiguous (tabs), structure visible from the shape of the lines, alignment where it helps. Measured by panel accuracy and effort on unhighlighted documents.
-[^a4]: The domain's model shows, not the plumbing between the domain and the machine; conventions (file and schema naming, the logical store, slot vocabularies) carry what would otherwise be declared on each value. Measured as plumbing per domain fact in the composite set.
-[^a5]: The spec's spine is short, coherent and easy to apply. Measured by a fresh agent given only the spine answering held-out questions.
-[^a6]: Few rules, one reading per construct. Measured from the grammar: size, choice points, exceptions; checked by an interpreter that reads the grammar text.
-[^a7]: Each special character has one role, and there are few of them. Measured by counting characters and the roles each carries.
-[^a9]: Weighted low on purpose: weighted high, it pulls toward explicit declaration over convention, which doesn't compose into higher levels of abstraction.
+[^a2]: Least surprise, writing: having seen a few idiomatic forms and a few rarer ones, an agent given a meaning writes UDON it hasn't seen for it. Measured by exposure curves: fresh panels write UDON from held-out trees given as JSON, at several exposure levels. Silent misses (it parses, to a different tree) weigh more than errors.
+[^a3]: Least surprise, reading: with the same exposure, an agent reads held-out UDON into the right tree; measured the same way. A2 and A3 come apart in real notations (YAML is easier to read than to write correctly; a compulsory mark helps a reader and trips a writer who forgets it), which is why both are here.
+[^a4]: Read by a model in plain text: no highlighting, no position made ambiguous (tabs), structure visible from the shape of the lines, alignment where it helps. Unlike A3, about forms already known: how fast and surely a document reads. Measured by panel accuracy and effort on unhighlighted documents.
+[^a5]: The domain's model shows, not the plumbing between the domain and the machine; conventions (file and schema naming, the logical store, slot vocabularies) carry what would otherwise be declared on each value. Measured as plumbing per domain fact in the composite set.
+[^a6]: The spec's spine is short, coherent and easy to apply. Measured by a fresh agent given only the spine answering held-out questions.
+[^a7]: Few rules, one reading per construct. Measured from the grammar: size, choice points, exceptions; checked by an interpreter that reads the grammar text.
+[^a8]: Each special character has one role, and there are few of them. Measured by counting characters and the roles each carries.
+[^a10]: Weighted low on purpose: weighted high, it pulls toward explicit declaration over convention, which doesn't compose into higher levels of abstraction.
 [^b1]: No construct holds an unbounded stretch before its kind is known; lite documents parse the same under a streaming full parser. Measured as the longest holdback per construct, from the grammar.
 [^b3]: A weight, not a veto: bounded streaming can always be met by setting a bound, but some rare contexts may unavoidably need different trees (Joseph, 2026-10-22).
 [^b5]: Bounded streaming (B1) says nothing is held without limit; it doesn't say parsing is fast. Speed matters to adoption and lets implementers weigh costs. Joseph: "order-of-magnitude speed/performance differentials tend to qualitatively change how humans and agents alike think of a tool. Every 10x increase in speed opens up the imagination to how small or elemental of an operation it is-- the mind starts using it in composition with a bunch of other things, instead of costing out the cost of 'normal usage' like before" (`git checkout` feels atomic). "Udon that parses as fast and conveniently as TOML will simply get used in significantly more scenarios than one that feels like choosing a markdown parsing engine." Measured against JSON and TOML parsers on the same content, in orders of magnitude.
+[^b6]: Reserve-don't-ignore (B2) makes lite refuse what a later UDON may define; this asks how much of that future a branch uses up. A branch that makes `( … )` its type mark has spent a bracket pair that dynamics, references or directives might have wanted. Measured against UDON's known directions (directives `!`, references `@`, dialects, typed values, templating) and the reserved list: what a branch claims, and what it leaves.
 [^c1]: The portable core (nil, booleans, strings, numbers) parses "without extra effort" into every host; a host mapping guide covers the edges (integers past 2^53, NaN, nil versus absent). Measured by converting real JSON and YAML.
-[^c4]: The territory of the type exploration. Measured by how much of the composite set a branch renders, and with how much plumbing (A4).
+[^c4]: The territory of the type exploration. Measured by how much of the composite set a branch renders, and with how much plumbing (A5).
 [^c7]: Cardinality by strict getters; attachments (comments, meta) change no arity.
 [^d2]: Through the host mapping guide (C1).
 
