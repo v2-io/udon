@@ -1,0 +1,12 @@
+--- cap = None
+4938…2p (Joseph's)       {'kind': 'text', 'B kind-first parser holds': 1000000, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 1000000, 'C parser holds': 4096}
+4938…2 (an integer)      {'kind': 'integer', 'B kind-first parser holds': 1000000, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 1000000, 'C parser holds': 4096}
+7 apples                 {'kind': 'text', 'B kind-first parser holds': 2, 'B kind-at-close parser holds': 8, 'JSON transcoder after B-close holds': 2, 'C parser holds': 8}
+text from the start      {'kind': 'text', 'B kind-first parser holds': 0, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 0, 'C parser holds': 4096}
+1984 is a novel          {'kind': 'text', 'B kind-first parser holds': 5, 'B kind-at-close parser holds': 15, 'JSON transcoder after B-close holds': 5, 'C parser holds': 15}
+--- cap = 64
+4938…2p (Joseph's)       {'kind': 'text', 'B kind-first parser holds': 64, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 64, 'C parser holds': 4096}
+4938…2 (an integer)      {'kind': 'text', 'B kind-first parser holds': 64, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 64, 'C parser holds': 4096}
+7 apples                 {'kind': 'text', 'B kind-first parser holds': 2, 'B kind-at-close parser holds': 8, 'JSON transcoder after B-close holds': 2, 'C parser holds': 8}
+text from the start      {'kind': 'text', 'B kind-first parser holds': 0, 'B kind-at-close parser holds': 4096, 'JSON transcoder after B-close holds': 0, 'C parser holds': 4096}
+1984 is a novel          {'kind': 'text', 'B kind-first parser holds': 5, 'B kind-at-close parser holds': 15, 'JSON transcoder after B-close holds': 5, 'C parser holds': 15}
