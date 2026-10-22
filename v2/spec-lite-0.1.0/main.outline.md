@@ -42,6 +42,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[def:text]] | A «text» is an ordered sequence of «piece»s: «run»s of characters and «embed»s. It is what unquoted material on an element's or attribute's line becomes, and what prose becomes. |
 | proposed | [[def:typed-value]] | A «typed-value» gets its type from its spelling alone. Spelled `<…>`, it is an «explicit-typed-value», whose text lite carries without attaching meaning. Spelled any other way, it is an «implicit-typed-value». |
 | proposed | [[def:anomaly]] | An «error» stops parsing: there is no «tree». A «warning» marks correct lite that may not do what was meant: the «tree» is produced and carries it. |
+| proposed | [[rule:anomalies-suggest-a-fix]] | Every error and warning says "Did you mean …?" where a likely intended spelling exists (a lean). |
 | proposed | [[rule:warnings-can-be-toggled]] | Each «warning» is default-on or default-off, and a parser lets its user turn each one on or off. |
 | proposed | [[def:reading-option]] | Lite specifies the «raw-tree». A «reading-option» is a view over it that a consumer may apply, usually while traversing; it is not language. |
 | proposed | [[def:blank-line]] | An «empty-line» is a newline with nothing before it on its line; a «blank-line» is an «empty-line» or a line of only whitespace. |
@@ -150,6 +151,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:line-scan]] | Sameline material is read the same way whether the line starts with an element or an attribute. |
 | proposed | [[rule:attribute-with-no-value-takes-next-value]] | The next value on the line goes to the attribute that has none yet. |
 | proposed | [[rule:unquoted-run-is-one-value]] | An unquoted run up to the next start is one «text», whatever it spells; other kinds are written in `<…>`, and a view may read an exact number, `true`, `false` or `nil` as that value (a lean). |
+| proposed | [[rule:main-label-colon-warns]] | `$main` text beginning `label: ` warns, suggesting `:label value` (a lean). |
 | proposed | [[rule:leftover-values]] | On an element's line they are `$main` values; on an attribute's line they stack on the attribute. |
 | proposed | [[rule:main-is-attribute]] | Sameline text never becomes a text child. |
 | proposed | [[rule:text-value-end]] | On an element's or attribute's line, unquoted text runs until a block form or a framed ` \ `. |

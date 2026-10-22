@@ -35,6 +35,7 @@ consequences: []
 
 ## Working notes
 
+- **A trailing `:` on attribute names** (Joseph's light lean, 2026-10-22, "pending a separate discussion on types and the type system"): `:attr: hi` means `:attr hi`, the trailing `:` ornamental, "or even making it compulsary". To settle with it: whether `:` may also stand inside a bare label (`xlink:href`), since a trailing `:` must then always be the ornament and never part of the name; whether the slot after the trailing `:` is where a type could later go (`:port:u16 8080`).
 - **Not reviewed with Joseph as a term,** but the phrase is his. On 2026-10-09 he listed "the node-name, the attribute-name, a trait-name" as the things that are labels; the same day the coordinator's wording sweep wrote "attribute name" throughout the cards. *Reading:* this looks settled by his own usage. It's worth one confirming question rather than a full one.
 
 - **His other uses** (`history.jsonl`): 2026-01-01 (L6561) "proper element and attribute names"; 2026-07-12 (L15814) "I want to also leave '$*' as perfectly reasonable attribute names"; 2026-07-13 (L16047) "a special-attribute-name delimiter" (the single quote).
