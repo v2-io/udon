@@ -1716,3 +1716,9 @@
 > Excellent, let's remove the 2011 columns, move the rest of dropped, shifted, or non-goals to notes under the tables, and move the file to the spec-lite*/ toplevel as CTQ-FACTORS.md and mark it as steward-supported but still subject to revision :-)
 
 *(Agent text, summary: moved the draft to `CTQ-FACTORS.md` at the store's top level, marked "steward-supported (Joseph, 2026-10-22); still subject to revision"; removed the 2011 columns; put dropped, folded and out-of-scope factors in notes under each table; fixed a stale footnote reference (types measured with plumbing per A4); pointed TODO-MSC and the ideation notes at it.)*
+
+### Joseph (whole)
+
+> I'm fine with Stability staying a 10-- bounded gets to be veto because one can always put a bound. There may be some things though that require different trees in certain rare contexts that are unavoidable and we want that as a weight, not a veto, IMO (not knowing what those things might be). I feel good about this list. Do you feel good about this list?
+
+*(Agent text, summary: closed the open item with his reason in a footnote on B3. Said yes, with two reservations: several Beauty contributors are correlated, so a weighted sum can count the same strength more than once, which his final judgment over the dossiers offsets; and a possible missing factor, room for full UDON to grow (a branch can pass the reserve veto and still use up spellings full UDON will want).)*

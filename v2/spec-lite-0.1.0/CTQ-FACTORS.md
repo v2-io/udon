@@ -41,7 +41,7 @@ Not goals: homoiconicity (it doesn't make lite more beautiful), algorithmic decl
 |---|---|---|
 | B1 | **Bounded streaming**[^b1] | veto |
 | B2 | **Reserve, don't ignore**: lite refuses what a later UDON may define | veto |
-| B3 | **Stability**: one tree per document in every parser; errors, not guesses | 10 |
+| B3 | **Stability**: one tree per document in every parser; errors, not guesses[^b3] | 10 |
 | B4 | **Errors that teach**: each error and warning says what was probably meant | 8 |
 | B5 | **Parse speed** (throughput)[^b5] | 9 |
 | B6 | **Document size**, in bytes | 3 |
@@ -77,7 +77,6 @@ Folded in elsewhere: documentation (A5), "chic" (A). Settled: the license (MIT).
 
 ## Open
 
-- Stability (B3) as a weighted 10 or a veto.
 - What 2011's "in-document API usage" means now (C7).
 
 [^beauty]: Beauty is left to each judge's own sense, on purpose. Aspects Joseph has named, as examples: the domain's model showing rather than the plumbing; ornament such as alignment and blank lines; a small, well-chosen set of special characters; constraints such as meaningful indentation, which restrict layout freedom in a way that is more conceptually beautiful.
@@ -90,6 +89,7 @@ Folded in elsewhere: documentation (A5), "chic" (A). Settled: the license (MIT).
 [^a7]: Each special character has one role, and there are few of them. Measured by counting characters and the roles each carries.
 [^a9]: Weighted low on purpose: weighted high, it pulls toward explicit declaration over convention, which doesn't compose into higher levels of abstraction.
 [^b1]: No construct holds an unbounded stretch before its kind is known; lite documents parse the same under a streaming full parser. Measured as the longest holdback per construct, from the grammar.
+[^b3]: A weight, not a veto: bounded streaming can always be met by setting a bound, but some rare contexts may unavoidably need different trees (Joseph, 2026-10-22).
 [^b5]: Bounded streaming (B1) says nothing is held without limit; it doesn't say parsing is fast. Speed matters to adoption and lets implementers weigh costs. Joseph: "order-of-magnitude speed/performance differentials tend to qualitatively change how humans and agents alike think of a tool. Every 10x increase in speed opens up the imagination to how small or elemental of an operation it is-- the mind starts using it in composition with a bunch of other things, instead of costing out the cost of 'normal usage' like before" (`git checkout` feels atomic). "Udon that parses as fast and conveniently as TOML will simply get used in significantly more scenarios than one that feels like choosing a markdown parsing engine." Measured against JSON and TOML parsers on the same content, in orders of magnitude.
 [^c1]: The portable core (nil, booleans, strings, numbers) parses "without extra effort" into every host; a host mapping guide covers the edges (integers past 2^53, NaN, nil versus absent). Measured by converting real JSON and YAML.
 [^c4]: The territory of the type exploration. Measured by how much of the composite set a branch renders, and with how much plumbing (A4).
