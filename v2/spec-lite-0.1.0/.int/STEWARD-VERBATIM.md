@@ -1839,3 +1839,9 @@
 *(Agent text, summary: agreed both costs turn into gains; added that in lite attributes can't nest (nested attributes are reserved), so a dot after an attribute name can only ever mean its kind, never a sub-key; recorded both points in the ideation notes.)*
 
 *(The three entries above were held out of this file while the spikes ran, since they could read it and the first two name Joseph's "canary" (a name with parentheses attached, `date(…)`). All three spikes have now reported; spike c's inventions page found constructor values, `date(2026-10-01)`, CSS-style, and its synthesis kept them only as parameter syntax inside `<…>`.)*
+
+### Joseph (whole)
+
+> ".(...)" is interesting to me because it's the opposite of ':' in that normal prose almost never has whitespace *before* the colon, whereas normal prose almost never has an opening parenthase directliy after a letter or number or most other non-whitespace characters. (this is an aside-- not a response to your message which I'm now reading)
+
+*(Agent text, summary: recorded it in the ideation notes, with the two prose exceptions it knew of: code (`printf(x)`) and the optional plural (`file(s)`).)*
