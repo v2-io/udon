@@ -1681,3 +1681,13 @@
 > See-- you interpret "Beauty" as "Visual Beauty", which is a subset, and then further narrow it to "layout freedom", which is the one small example I thought of becoming the most prime aspect and precondition rather than an example of beauty that prescriptions aren't carrying-- and which itself works against other aspects of even visual beauty-- where things like the indentation *restrict* layout freedom (same with the decision on fence-ending line indentation) -- in a way that is more conceptually beautiful. You are anxious to have these terms well defined by your own conceptions of them right now, while I am more inclined to allow future agents doing the beam search to surprise us and have variety in the direction of their interpretation of these things.
 
 *(Agent text, summary: agreed it had turned his example into the definition; restored Beauty, visual and conceptual, as one undefined factor at "highest", with his named aspects in a footnote marked as examples rather than a definition, including the one that pulls the other way (indentation restricting layout for conceptual beauty); group A is now Beauty, least surprise, spec clarity, syntactic simplicity. Saved the lesson to memory.)*
+
+### Joseph (whole)
+
+> Ok, it's almost back to 2011. Is there a reason you still rename the highest priority group "Reading, writing, and learning" with a group within it and then other individuation of those things instead of the original--
+>
+> (he pasted the Beauty block of the 2011 table: "[Beauty] (visual & conceptual) | Highest", then human readability 10, learnability 10, self-description-ability 10, syntactic simplicity 8, conciseness 6, homoiconicity 5, algorithmic declaration 3, Turing completeness 0)
+>
+> ?
+
+*(Agent text, summary: no good reason; it had re-sorted his structure into its own. Restored group A as "Beauty, visual and conceptual" (Highest), with his items under it: human readability 10, learnability 10 (least surprise as its measure), spec clarity 9 (his newer factor), syntactic simplicity 8, self-description lowered to 6 per his concern about explicitness; Beauty's examples moved to the group's note; homoiconicity, algorithmic declaration and Turing completeness as not goals; conciseness kept with size in B.)*
