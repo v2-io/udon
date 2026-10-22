@@ -1761,3 +1761,9 @@
 > thank you. Please also send another note to them that they should not read any "live" documents in the corpus as empirical evidence of anything whatosever. Their own instincts will serve far better as empirical evidence-- all "udon" (and markdown etc. for that matter) they may come across, or analyses of it, were by fiat and arbitrary decisions by me and agents in this work and do not have the epistemic value of sampling things in the wild. They are only good for ideation, they are not evidence.
 
 *(Agent text, summary: sent the note to all three spike agents and appended it to BRIEF.md; spike A had already stopped and was resumed by the message; saved the principle to memory.)*
+
+### Joseph (whole)
+
+> Yes, they all started exploring the corpus as if it were evidence and the main thing they are trying to design against. I should have anticipated it, but hopefully the note propagates. Would you let them know they need to propagate these notes to forks they've spawned if they haven't already?
+
+*(Agent text, summary: asked all three spike agents to pass both notes to their existing forks and include them in new ones; appended to BRIEF.md.)*
