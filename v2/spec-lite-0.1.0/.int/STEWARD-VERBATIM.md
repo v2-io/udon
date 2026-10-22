@@ -1755,3 +1755,9 @@
 > Excellent briefs. Would you recapitulate to them that the CTQ file we spent time on just before this is the guiding light and compass-- any past stuff they come across is only useful inasmuch as it meets those factors, and much of what they come across probably doesn't.
 
 *(Agent text, summary: sent the same short note to all three running spike agents (CTQ-FACTORS.md as compass; older material only as evidence weighed against it), and appended it to the spikes' BRIEF.md.)*
+
+### Joseph (whole)
+
+> thank you. Please also send another note to them that they should not read any "live" documents in the corpus as empirical evidence of anything whatosever. Their own instincts will serve far better as empirical evidence-- all "udon" (and markdown etc. for that matter) they may come across, or analyses of it, were by fiat and arbitrary decisions by me and agents in this work and do not have the epistemic value of sampling things in the wild. They are only good for ideation, they are not evidence.
+
+*(Agent text, summary: sent the note to all three spike agents and appended it to BRIEF.md; spike A had already stopped and was resumed by the message; saved the principle to memory.)*
