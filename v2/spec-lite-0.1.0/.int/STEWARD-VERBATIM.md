@@ -1615,3 +1615,10 @@
 > just looked at it-- yes, please read it -- it's just a simple table. I'm impressed at myself from 2011 for even considering most of those factors, let alone ranking them...
 
 *(Agent text, summary: read it; four groups (Beauty "Highest": readability, learnability, self-description 10, syntactic simplicity 8, Turing completeness 0; Performance "Very High": throughput and stability 10, parse/generate speed 9; Utility "Very High": semantic declarative data and hierarchy 10, document mixing, templating and language mixing 9, extensibility, standard API and in-document API 8, in-doc and standard schema 7, narrative texts 5; Support "High"). Noted where it bears on today: self-description at 10 against in-document type and notation claims; stability and parse speed against the streaming law; narrative texts at 5 against today's Markdown objective.)*
+
+### Joseph (whole)
+
+> btw-- before I forget again-- one reason the objectives are not ratified is because they are still a bit wrong. in particular this error jumps out at me that we should fix while we're here: "Markdown written as lite text stays text: byte for byte, except at named collisions; lite never parses Markdown."
+> Actual:  "Markdown in lite prose stays markdown except at named collisions and with udon block indentation in mind; lite never *unintentionally* parses Markdown as udon constructs."
+
+*(Agent text, summary: rewrote [[obj:markdown-text-passes-through]]'s title, summary and Statement to his wording, with what was replaced and why noted in its working notes; the slug still says "text".)*

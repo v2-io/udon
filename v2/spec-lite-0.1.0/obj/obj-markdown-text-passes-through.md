@@ -8,14 +8,14 @@ per: []
 depends: []
 ---
 
-# Markdown written as lite text stays text
+# Markdown in lite prose stays Markdown
 
-*Markdown written as the text of a lite «document» reads as text, unchanged, except where lite names a collision; lite does not parse Markdown.*
+*Markdown in lite prose stays Markdown, except at named collisions and with UDON's block indentation in mind; lite never unintentionally parses Markdown as UDON constructs.*
 
 ## Statement
 
-1. Markdown prose written as lite text MUST read as text, byte for byte, except at collisions lite's rules name explicitly.
-2. A lite parser MUST NOT interpret Markdown. What the text means as Markdown is for whoever renders it.
+1. Markdown written in lite prose MUST stay the same Markdown, except at collisions lite's rules name explicitly, and allowing for UDON's block indentation (a prose block is dedented to its left edge, so Markdown's own indentation counts from there).
+2. Lite MUST NOT read a Markdown spelling as a UDON construct unintentionally: every place where it does is a collision named in a rule.
 
 ## Grounds
 
@@ -44,4 +44,5 @@ Chosen, not derived. Checkable by measurement. One measurement exists, made with
 
 ## Working notes
 
+- **Statement corrected by Joseph, 2026-10-22** (one reason the objectives aren't ratified: "they are still a bit wrong"). His wording: "Markdown in lite prose stays markdown except at named collisions and with udon block indentation in mind; lite never *unintentionally* parses Markdown as udon constructs." It replaced "reads as text, byte for byte" (dedenting alone changes bytes) and "A lite parser MUST NOT interpret Markdown" (his clause is about Markdown read as UDON constructs, not about whether anything may ever read the Markdown). The slug still says "text".
 - **⟦force⟧ is empty: Joseph's call.** The udon team's lean is `required`.
