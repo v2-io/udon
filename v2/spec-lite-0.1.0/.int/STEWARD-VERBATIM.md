@@ -1636,3 +1636,9 @@
 > least surprise is a bit more than recognition -- it needs to be "having x-level of exposure, correctly guesses how to do 'y'" (especially, having seen a few idiomatic and normal things with just a few "rarer" notational things, it correctly or nearly correctly guesses a lot more of the rarer things. related would be giving them the AST in json or something and having them guess an appropriate udon notation, given x-exposure...)
 
 *(Agent text, summary: recorded it in the ideation file; proposed the measure's shape: the same semantic content per branch, a fixed exposure set and held-out rarer set, both reading and writing directions, several exposure levels giving a curve per branch, and misses split into caught (an error) and silent (a different tree), the silent ones weighing more.)*
+
+### Joseph (whole)
+
+> Yes please- perfect. I think you have enough context and history to get it very nearly as I would on a first pass.
+
+*(Agent text, summary: drafted `.int/ctq-draft-2026-10-22.md`: the 2011 table merged with lite's objectives, reread for agents, in four groups (reading and writing; performance and robustness; utility; support), each factor with its 2011 level, a proposed weight, a measure and a note; three vetoes (bounded streaming, reserve-don't-ignore, no Turing completeness); impact radius as a cost weighted by card strength; pruning on a failed veto or an example set that can't be rendered honestly; and the four places it was least sure.)*
