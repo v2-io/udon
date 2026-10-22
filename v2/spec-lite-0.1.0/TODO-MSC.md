@@ -33,7 +33,7 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Exploration before `<…>` is settled
 
-- **A type system and its notation, explored from the whole range of possibilities** (Joseph, 2026-10-22: "we could have a much more complete type-system in place, and we could use different brackets/combinations, and we should visit all of that in conjunction with or before "nailing down" '<...>' vs implicit angled brackets etc."). Pure ideation first. What waits on it: every `<…>` question ([[rule:opaque-span-raw-text]]); `<>` as nil; how a value of another kind is written under the bare-run lean ([[rule:unquoted-run-is-one-value]]); the trailing `:` on attribute names ([[def:attribute-name]]); the `rule:bare-typing` gap; `@{<…>}`.
+- **A type system and its notation, explored from the whole range of possibilities** (Joseph, 2026-10-22: "we could have a much more complete type-system in place, and we could use different brackets/combinations, and we should visit all of that in conjunction with or before "nailing down" '<...>' vs implicit angled brackets etc."). Pure ideation first; branches are scored against [`CTQ-FACTORS.md`](CTQ-FACTORS.md). What waits on it: every `<…>` question ([[rule:opaque-span-raw-text]]); `<>` as nil; how a value of another kind is written under the bare-run lean ([[rule:unquoted-run-is-one-value]]); the trailing `:` on attribute names ([[def:attribute-name]]); the `rule:bare-typing` gap; `@{<…>}`.
 
 ## Next: to settle (items with no card of their own, or spanning several)
 

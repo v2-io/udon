@@ -1710,3 +1710,9 @@
 > Would you like to name A7 "Parsimony" maybe? (if you want a single word for it)
 
 *(Agent text, summary: renamed A7 "Parsimony", keeping "a small, well-chosen set of special characters" as its gloss so it isn't read as general economy overlapping syntactic simplicity (A6) and conciseness (A8).)*
+
+### Joseph (whole)
+
+> Excellent, let's remove the 2011 columns, move the rest of dropped, shifted, or non-goals to notes under the tables, and move the file to the spec-lite*/ toplevel as CTQ-FACTORS.md and mark it as steward-supported but still subject to revision :-)
+
+*(Agent text, summary: moved the draft to `CTQ-FACTORS.md` at the store's top level, marked "steward-supported (Joseph, 2026-10-22); still subject to revision"; removed the 2011 columns; put dropped, folded and out-of-scope factors in notes under each table; fixed a stale footnote reference (types measured with plumbing per A4); pointed TODO-MSC and the ideation notes at it.)*
