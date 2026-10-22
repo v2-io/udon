@@ -1654,3 +1654,9 @@
 > Are you saying "Turing complete" -> Veto/NEVER, meaning if someone figures out that you can express something as turing complete (like one can do with a lot of effort with the game of life or with excel spreadsheets) it would be a HARD NO and completely disqualify that branch?
 
 *(Agent text, summary: yes, as drafted, and that was wrong: 2011's 0 is a concern level (worth nothing), not a prohibition, and a veto would disqualify branches for accidental Turing completeness that nobody meant. Changed it to "0: not a goal"; the vetoes are now two.)*
+
+### Joseph (whole)
+
+> (you don't have to retain breadcrumbs of prior thinking in this CTQ other than a single note at the bottom referring to the two locations and our session id maybe-- certainly don't need to retain notes about what you thought and how it changed just since the two of us have been working on it)
+
+*(Agent text, summary: rewrote the CTQ draft to state only its current content, with an "Open" list and one provenance line at the bottom (the 2011 table, `obj/`, this session); recorded the convention in its memory for working drafts.)*
