@@ -1799,3 +1799,9 @@
 > These spikes were for designing meaning. A conclusion of "now if it's well designed, but a 'no' until it gets designed" is our premise when we started restated to ourselves by the spike agent whose job it was do actually consider all of the designs and propose them in a weighted way.
 
 *(Agent text, summary: agreed; b and c deferred notation values rather than designing them, and the adjudication had reported the deferral as a position. Marked that on the adjudication page; proposed sending b and c back to design it.)*
+
+### Joseph (whole)
+
+> sounds good to me. we're fine for now on usage.
+
+*(Agent text, summary: sent spikes b and c his words and a request to design labeled notation values, without spike a's design; recorded the round in BRIEF.md.)*
