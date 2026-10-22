@@ -1,0 +1,69 @@
+# M1 primitives and keywords
+<8080>
+<0.5>
+<>
+<nil>
+<"1.10">
+<920px>
+<true story>
+# N1-N3 dates and times
+<date 2026-10-01>
+<instant 2026-01-10T14:30Z>
+<instant 2026-01-10T14:30Z[America/Denver]>
+<instant 2026-01-10T14:30Z America/Denver>
+<time 09:00>
+<dt 2026 PDT>
+# N4 domain format as a parameter (a string arg names the pattern)
+<date "YY-MM-DD" 27-03-05>
+# N5 durations
+<duration PT30S>
+<duration P1Y2M>
+<duration 5m>
+<qty 5 min>
+# N6 interval: nested, or ISO's own spelling
+<interval <date 2026-01> <date 2026-06>>
+<interval 2026-01/2026-06>
+# N7 quantities
+<css/length 920px>
+<qty 5 m>
+<qty 1.5 GiBy>
+<qty 50 %>
+<qty 37.5 Cel>
+# N8 money, N9 host
+<money 9.99 USD>
+<rust/i64 0x73DDF>
+# N10 algebraic name used as a notation
+<port ssh>
+<port 22>
+# N11
+<re '\d+-\w+'>
+<url https://example.com/a?b=c>
+<uuid 0f8fad5b-d9cb-469f-a165-70867728950e>
+<b64 SGVsbG8sIHdvcmxk>
+# N13 a list of dates, one notation per item
+<list [<date 2026-01-01> <date 2026-07-04>]>
+# N14 unknown
+<acme/sku AB-12>
+# N16 prose embed
+<{date 2026-10-01}>
+# N17 kept reference; structure as an argument
+<ref people/jw>
+<poly |{pt 1 2} |{pt 3 4}>
+# near-misses
+<date: 2026-10-01>
+<rust: i64 0x73DDF>
+<re a>b>
+<re "a>b">
+<https://example.com>
+<kbd>Ctrl</kbd> to copy
+<br>
+<b>Note</b>: keep it dry
+<a href="x">link</a>
+<= 5 items
+<std/date 2026-10-01>
+<date 20261001>
+<instant 2026-01-10T14:30Z> as the start
+<zoned 2026-01-10T14:30Z[America/Denver]>
+<zoned 2026-01-10T14:30Z America/Denver>
+<re a  b>
+<qty 5m>

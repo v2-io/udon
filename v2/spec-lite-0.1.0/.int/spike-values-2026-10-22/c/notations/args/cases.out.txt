@@ -1,0 +1,69 @@
+# M1 primitives and keywords
+<8080>                                                     => 8080::int
+<0.5>                                                      => 0.5::float
+<>                                                         => nil
+<nil>                                                      => nil
+<"1.10">                                                   => "1.10"
+<920px>                                                    => ERROR: `920px` is not a number, nil, a boolean or a string: did you mean the text `920px` (unmarked), or a named notation?
+<true story>                                               => ERROR: a marked primitive holds exactly one value
+# N1-N3 dates and times
+<date 2026-10-01>                                          => nv(date ‹2026-10-01›)
+<instant 2026-01-10T14:30Z>                                => nv(instant ‹2026-01-10T14:30Z›)
+<instant 2026-01-10T14:30Z[America/Denver]>                => nv(instant ‹2026-01-10T14:30Z[America/Denver]›)
+<instant 2026-01-10T14:30Z America/Denver>                 => nv(instant ‹2026-01-10T14:30Z› ‹America/Denver›)
+<time 09:00>                                               => nv(time ‹09:00›)
+<dt 2026 PDT>                                              => nv(dt ‹2026› ‹PDT›)
+# N4 domain format as a parameter (a string arg names the pattern)
+<date "YY-MM-DD" 27-03-05>                                 => nv(date "YY-MM-DD" ‹27-03-05›)
+# N5 durations
+<duration PT30S>                                           => nv(duration ‹PT30S›)
+<duration P1Y2M>                                           => nv(duration ‹P1Y2M›)
+<duration 5m>                                              => nv(duration ‹5m›)
+<qty 5 min>                                                => nv(qty ‹5› ‹min›)
+# N6 interval: nested, or ISO's own spelling
+<interval <date 2026-01> <date 2026-06>>                   => nv(interval nv(date ‹2026-01›) nv(date ‹2026-06›))
+<interval 2026-01/2026-06>                                 => nv(interval ‹2026-01/2026-06›)
+# N7 quantities
+<css/length 920px>                                         => nv(css/length ‹920px›)
+<qty 5 m>                                                  => nv(qty ‹5› ‹m›)
+<qty 1.5 GiBy>                                             => nv(qty ‹1.5› ‹GiBy›)
+<qty 50 %>                                                 => nv(qty ‹50› ‹%›)
+<qty 37.5 Cel>                                             => nv(qty ‹37.5› ‹Cel›)
+# N8 money, N9 host
+<money 9.99 USD>                                           => nv(money ‹9.99› ‹USD›)
+<rust/i64 0x73DDF>                                         => nv(rust/i64 ‹0x73DDF›)
+# N10 algebraic name used as a notation
+<port ssh>                                                 => nv(port ‹ssh›)
+<port 22>                                                  => nv(port ‹22›)
+# N11
+<re '\d+-\w+'>                                             => nv(re "\d+-\w+")
+<url https://example.com/a?b=c>                            => nv(url ‹https://example.com/a?b=c›)
+<uuid 0f8fad5b-d9cb-469f-a165-70867728950e>                => nv(uuid ‹0f8fad5b-d9cb-469f-a165-70867728950e›)
+<b64 SGVsbG8sIHdvcmxk>                                     => nv(b64 ‹SGVsbG8sIHdvcmxk›)
+# N13 a list of dates, one notation per item
+<list [<date 2026-01-01> <date 2026-07-04>]>               => nv(list [nv(date ‹2026-01-01›) nv(date ‹2026-07-04›)])
+# N14 unknown
+<acme/sku AB-12>                                           => nv(acme/sku ‹AB-12›)
+# N16 prose embed
+<{date 2026-10-01}>                                        => nv(date ‹2026-10-01›)
+# N17 kept reference; structure as an argument
+<ref people/jw>                                            => nv(ref ‹people/jw›)
+<poly |{pt 1 2} |{pt 3 4}>                                 => nv(poly element(pt 1 2) element(pt 3 4))
+# near-misses
+<date: 2026-10-01>                                         => ERROR: `date:` ends in a colon: did you mean `<date …>`?
+<rust: i64 0x73DDF>                                        => ERROR: `rust:` ends in a colon: did you mean `<rust …>`?
+<re a>b>                                                   => ERROR: text runs straight on after `>` ('b>'): if this is HTML, escape the `<` as `\<`
+<re "a>b">                                                 => nv(re "a>b")
+<https://example.com>                                      => ERROR: `<https://…>` looks like a URL autolink: write the text `\<https://…>`, or `<url https://…>` for a URL value
+<kbd>Ctrl</kbd> to copy                                    => ERROR: `<kbd>` has no argument: if this is HTML or a placeholder, escape it as text (`\<kbd>`)
+<br>                                                       => ERROR: `<br>` has no argument: if this is HTML or a placeholder, escape it as text (`\<br>`)
+<b>Note</b>: keep it dry                                   => ERROR: `<b>` has no argument: if this is HTML or a placeholder, escape it as text (`\<b>`)
+<a href="x">link</a>                                       => ERROR: text runs straight on after `>` ('link</a>'): if this is HTML, escape the `<` as `\<`
+<= 5 items                                                 => ERROR: `=` is not a number, nil, a boolean or a string: did you mean the text `=` (unmarked), or a named notation?
+<std/date 2026-10-01>                                      => nv(std/date ‹2026-10-01›)
+<date 20261001>                                            => nv(date ‹20261001›)
+<instant 2026-01-10T14:30Z> as the start                   => nv(instant ‹2026-01-10T14:30Z›)   [then 'as the start']
+<zoned 2026-01-10T14:30Z[America/Denver]>                  => nv(zoned ‹2026-01-10T14:30Z[America/Denver]›)
+<zoned 2026-01-10T14:30Z America/Denver>                   => nv(zoned ‹2026-01-10T14:30Z› ‹America/Denver›)
+<re a  b>                                                  => nv(re ‹a› ‹b›)
+<qty 5m>                                                   => nv(qty ‹5m›)

@@ -1,0 +1,51 @@
+<2026-10-01>                                 date             class fixed at char 5    
+<2026-01-10T14:30Z>                          datetime.offset  class fixed at char 5    
+<2026-01-10T14:30Z[America/Denver]>          datetime.zoned   class fixed at char 5    
+<09:00>                                      time.local       class fixed at char 3    
+<dt: 2026 PDT>                               named            class fixed at char 3    name=dt params=None body='2026 PDT'
+<date(YY-MM-DD): 27-03-05>                   named            class fixed at char 5    name=date params=(YY-MM-DD) body='27-03-05'
+<PT30S>                                      duration         class fixed at char 2    
+<30 s>                                       quantity         class fixed at char 4    UCUM-shaped unit 's'; atom checked by the reader
+<P1Y2M>                                      duration         class fixed at char 2    
+<5 min>                                      quantity         class fixed at char 3    UCUM-shaped unit 'min'; atom checked by the reader
+<5 m>                                        quantity         class fixed at char 3    UCUM-shaped unit 'm'; atom checked by the reader
+<2026-01/2026-06>                            interval         class fixed at char 8    year-month / year-month
+<css: 920px>                                 named            class fixed at char 4    name=css params=None body='920px'
+<1.5 GiBy>                                   quantity         class fixed at char 5    UCUM-shaped unit 'GiBy'; atom checked by the reader
+<50 %>                                       quantity         class fixed at char 4    UCUM-shaped unit '%'; atom checked by the reader
+<37.5 Cel>                                   quantity         class fixed at char 6    UCUM-shaped unit 'Cel'; atom checked by the reader
+<9.99 USD>                                   quantity.money   class fixed at char 6    ISO 4217 USD
+<rust/i64: 0x73DDF>                          named            class fixed at char 5    name=rust/i64 params=None body='0x73DDF'
+<22>                                         number           class fixed at char 1    
+<re: \d+-\w+>                                named            class fixed at char 3    name=re params=None body='\\d+-\\w+'
+<https://example.com>                        uri              class fixed at char 6    absolute URI, hierarchical (CommonMark autolink shape)
+<uuid: 0f8fad5b-d9cb-469f-a165-70867728950e> named            class fixed at char 5    name=uuid params=None body='0f8fad5b-d9cb-469f-a165-70867728950e'
+<b64: SGVsbG8=>                              named            class fixed at char 4    name=b64 params=None body='SGVsbG8='
+<acme/sku: AB-12>                            named            class fixed at char 5    name=acme/sku params=None body='AB-12'
+<20261001>                                   number           class fixed at char 1    
+<jw@example.com>                             email            class fixed at char 3    CommonMark email-autolink shape
+<>                                           nil              class fixed at char 1    
+<nil>                                        nil              class fixed at char 4    
+<true>                                       true             class fixed at char 5    
+<8080>                                       number           class fixed at char 1    
+<"1.10">                                     string           class fixed at char 1    
+<-P1D>                                       duration         class fixed at char 2    
+<2026-01-10T14:30:00.123456789+05:30>        datetime.offset  class fixed at char 5    
+<2026-01-10T14:30/PT1H>                      interval         class fixed at char 17   datetime.local / duration
+<2026-13-01>                                 ERROR            class fixed at char 5    month 13 is out of range (01–12)
+<2026-02-29>                                 ERROR            class fixed at char 5    day 29 is not in 2026-02
+<2024-02-29>                                 date             class fixed at char 5    
+<2026-1-5>                                   ERROR            class fixed at char 5    dates are zero-padded YYYY-MM-DD: did you mean <2026-01-05>?
+<5m>                                         ERROR            class fixed at char 2    a quantity has a space before its unit: <5 m> (metres) or <5 min> (minutes); a duration is <PT5M>
+<50%>                                        ERROR            class fixed at char 3    a quantity has a space before its unit: <50 %>
+<2026-01-10 14:30>                           ERROR            class fixed at char 5    date and time are joined with T: <2026-01-10T14:30>
+<09:00 PDT>                                  ERROR            class fixed at char 3    zone abbreviations are ambiguous: use an offset or an IANA zone with a date, <2026-01-10T09:00-07:00[America/Los_Angeles]>
+<9:30>                                       ERROR            class fixed at char 2    times are zero-padded HH:MM: did you mean <09:30>?
+<27-03-05>                                   ERROR            class fixed at char 3    not a number, and a date needs a four-digit year: <YYYY-MM-DD>; for a two-digit year use a named notation, <date(YY-MM-DD): …>
+<PT>                                         ERROR            class fixed at char 2    not an ISO 8601 duration (PnYnMnDTnHnMnS, or PnW alone): components in order
+<P1W2D>                                      ERROR            class fixed at char 2    not an ISO 8601 duration (PnYnMnDTnHnMnS, or PnW alone): components in order
+<hello>                                      ERROR            class fixed at char 6    `hello` isn't a value inside <…>: did you mean the text hello (bare), the string <"hello">, or a named notation <hello: …>?
+<date:2026-10-01>                            named            class fixed at char 5    name=date params=None body='2026-10-01'
+<kbd>                                        ERROR            class fixed at char 4    `kbd` isn't a value inside <…>: did you mean the text kbd (bare), the string <"kbd">, or a named notation <kbd: …>?
+<= 5>                                        ERROR            class fixed at char 1    `=` can't start a value inside <…>
+<920 px>                                     quantity         class fixed at char 5    UCUM-shaped unit 'px'; atom checked by the reader
