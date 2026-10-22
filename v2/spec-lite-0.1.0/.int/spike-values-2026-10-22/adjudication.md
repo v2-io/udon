@@ -32,7 +32,7 @@ Under the lead, `8080` reads as 8080 and `false` as false; `01234`, `920px` and 
 |---|---|---|
 | Carry any interior raw (today's provisional card) | dead, all three | B2 veto: can't refuse what a later UDON may define; can't reject `<920px>` |
 | Unlabeled `<…>` asserts one standard value or is an error with "did you mean"; `<>` is nil | **the lead, all three** | B4 errors that teach, B2, A8 parsimony (one job per mark) |
-| Labeled `<name: body>`, body carried for whatever reads `name` | a: now, if adding a reading later isn't a change; b and c: reserved in 0.1, later | B6 headroom, C4 types and notations; B2 depending on the question below |
+| Labeled `<name: body>`, body carried for whatever reads `name` | a: proposed a design (ANG-4c), allowed now if adding a reading later isn't a change; b and c: deferred it ("reserved in 0.1, later") instead of designing it, which leaves this decision point undone (Joseph, 2026-10-22: deferral restates the premise the spikes were meant to resolve) | B6 headroom, C4 types and notations; B2 depending on the question below |
 | KDL `(t)v`, EDN `#t`, YAML `!!t`, suffix tags, Unicode brackets | dead, all three | A3/A4: silent collisions with text; A8 |
 
 `<8080>` gives the same tree as bare `8080` (a's reconciliation): the angle form is «meta» plus an assertion that held.

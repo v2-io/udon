@@ -1785,3 +1785,17 @@
 > I'm not really interested in fact checking casual conversations held days ago about this stuff and reporting that as some kind of finding or conclusion. I'm interested in the CTQ weights adjudicating various design proposals.
 
 *(Agent text, summary: all three spikes landed and were committed; wrote `.int/spike-values-2026-10-22/adjudication.md`: by decision point, the proposals, their fate in each spike and the CTQ factors that decided them, with what only he can decide. All three converge on: bare text plus a fixed standard reading (nil, true, false, JSON numbers); unlabeled `<…>` asserts or errors, `<>` nil; slot types in vocabularies and typed getters, no slot syntax; units as text read by the slot; a bare label never ends in `:`.)*
+
+### Joseph (whole)
+
+> Can you explain line 35?
+
+*(Agent text, summary: explained labeled `<name: body>` with an example, and the split: a allows it now under a condition; b and c make it an error in 0.1.)*
+
+### Joseph (whole)
+
+> - Spikes b and c: make it an error in lite 0.1 ("lite doesn't support notation values yet"), and allow it later. That keeps the spelling free until its meaning is designed.
+>
+> These spikes were for designing meaning. A conclusion of "now if it's well designed, but a 'no' until it gets designed" is our premise when we started restated to ourselves by the spike agent whose job it was do actually consider all of the designs and propose them in a weighted way.
+
+*(Agent text, summary: agreed; b and c deferred notation values rather than designing them, and the adjudication had reported the deferral as a position. Marked that on the adjudication page; proposed sending b and c back to design it.)*
