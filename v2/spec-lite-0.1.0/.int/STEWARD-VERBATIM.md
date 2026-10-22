@@ -1767,3 +1767,9 @@
 > Yes, they all started exploring the corpus as if it were evidence and the main thing they are trying to design against. I should have anticipated it, but hopefully the note propagates. Would you let them know they need to propagate these notes to forks they've spawned if they haven't already?
 
 *(Agent text, summary: asked all three spike agents to pass both notes to their existing forks and include them in new ones; appended to BRIEF.md.)*
+
+### Joseph (whole)
+
+> (fwiw, I see lots of forked agents now-- the harness may have been in error when it told you they were being woken up-- I definitely see them receiving your messages)
+
+*(Agent text, summary: withdrew its report that spike A had stopped, which rested only on the harness's "Resuming agent" reply; noted that deep forking evidently works.)*
