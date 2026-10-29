@@ -1947,3 +1947,66 @@
 *(Agent text, summary: launched two Haiku agents, one primed with the spec and one not, beside the six Sonnet, Fable and Opus agents of the trial (`.int/trial-values-2026-10-28/`).)*
 
 *(Agent text, summary, after the trial: all eight reports landed (`trial-values-2026-10-28/RESULTS.md`). Untaught, every agent put the unit in the value and every fresh agent wrote `null`; `.kind` 0 of 8, `(kind)` 5; the sigil 0 of 8; no trailing colon 8 of 8; quoted-alone split by position; constructor and element 4 each. The guide gained a trial section and revised recommendations (D4, D5, D6, D10, D12).)*
+
+### Joseph (whole)
+
+> Excellent. So... is all of that integrated into the file that's meant for me?
+
+*(Agent text, summary: not fully; folded the trial into each decision of the guide and its opening.)*
+
+### Joseph (whole)
+
+> Sorry-- I'm already lost at the beginning-- "The picture in one screen"-- ??   "Without the vocabulary [??], in the composition most of the final-thoughts point toward. Contested pieces are marked." ??????   And then a big chunk of udon. Is this a recommendation? What vocabulary? What "picture in one screen"? The first line of the udon then has "nil" instead of null, notwithstanding what you said earlier-- so I don't think this is a recommendation or maybe I don't understand what it is or why that wasn't "contested"?  Sorry-- it's probably just me, but I have no idea what's going on here. I can't attend to the future parts of the document.
+
+*(Agent text, summary: not him; the opening was written to a reader who had read everything the agent had. Rewrote the guide from the top to read in order, in plain words (nine decisions, examples first, recommendation per decision); the long version kept as `ADJUDICATION-DETAIL.md`.)*
+
+### Joseph (whole)
+
+> So it was... a picture of what exactly if not a recommendation? and what was the purpose? (or is it irrelevant in the rewrite? :-))
+
+> So it was a recommendation from three other agents given as a starting context for a later recommendation or something?  Actually, I'll drop the matter and just read the rewritten one :-)
+
+### Joseph (whole)
+
+> Better. Still some minor confusion-- what does this mean? "`port` is the text `8080`, which every program reads as the number 8080"  so is 8080 text or number? what do you mean program, and "reads as"?
+
+*(Agent text, summary: separated "what the parser keeps" (the characters as written) from "the value" (what anything using the parsed file gets); replaced "program" and "reads as" throughout.)*
+
+### Joseph (whole)
+
+> So, this is an *example* of notation for this file, or is this a first recommendation?
+
+*(Agent text, summary: it presumed decision 1; replaced with an example every option agrees on.)*
+
+### Joseph (whole)
+
+> Forgive me for being pedantically picky :-) 
+> "Today's lean on name characters would make `:host: localhost` an attribute named `host:`"  -- Today's lean?  My lean was explicitly a consumed optional ':' at the end so the name would be `host` -- I have no idea what you are saying here.
+
+> Are you trying to say:   "If ':' are allowed on the end of names they never actually become part of the name." As the thing agreed on?
+
+> Once again-- trying to base it on what some random agent from 10-20 not discussed with me thought about or drafted as a premise you're working from--- that's just bad writing if that's not too harsh...
+
+> (if anyone feels the need to argue with an unread agent from weeks ago-- please feel free to put your arguments as addenda to that agent's files where it will continue to be unread)
+
+> I was trying to be a little funny to lighten the mood a bit-- the real point is that the other agent isn't around to argue with anymore, so no one should really feel obligated to (just like they shouldn't feel like fact-checking 0.9). In this case though you found an .int/ toplevel file and by putting that addendum in it you've effectively "integrated" that part of it-- so it actually was wise :-)  OK-- I'm still reading :-)
+
+*(Agent text, summary: restated the agreed point in his terms ("a `:` at the end of a name is never part of the name"; allowed-and-dropped or an error is the trailing-colon decision); removed a second place resting on the undiscussed name-character draft; added a one-line addendum to `labels-ascii-and-positions-2026-10-20.md`.)*
+
+### Joseph (whole)
+
+> OK-- can we try a different format actually? Could you write "typing-recommendation.md" -- show your preferred recommendation, explain any nuance, and explain any downsides (effects it would have on udon syntax elsewhere, frictions vs json or markdown or agent cold choices-- but not necessarily here comparing to alternatives- that's later). Then have detailed sections below it for each of the decision points that has a more detailed "options considered" with reasons they were excluded, and the full pros + cons list of the recommended choice.
+
+*(Agent text, summary: wrote `spike-values-2026-10-22/typing-recommendation.md`: one design as eight rules with examples, nuances, downsides, then each decision with options set aside and pros and cons.)*
+
+### Joseph (whole)
+
+> So you do think we should do `nil` instead of `null`?
+
+*(Agent text, summary: no; it had kept `nil` out of deference to his 10-09 call without weighing the trial; its lean is `null` (every text data format that has one spells it so; every basics-only trial agent wrote it), not both.)*
+
+### Joseph (whole)
+
+> I'll always be comfortable changing something by fiat to fit my own preferences -- please go ahead and switch it to null if that's a bit more honest to a cold read by you-- I appreciate the unity in shared intent regardless.  Question though-- what do the following use for the value?   zig, rust, nim, typescript (null via json I assume), odin,... protocol buffers, toml?, swift, python (None IIRC), Kotlin, Cobol, Julia, Dart, Camel, erlang, closure, haskell, xml?, jsonc/5, kdl, Cue, Dhall, HCL, messagepack, cbor...?
+
+*(Agent text, summary: listed each from memory (text data formats with a null all spell it `null`, KDL v2 `#null`; TOML, XML, protobuf scalars and Dhall have none; `nil` is the Lisp/Ruby/Go/Swift/Odin/Nim family; Rust, OCaml and Haskell use option types); switched the recommendation and guide to `null`; rewrote [[rule:nil-spelling]] (decided, with a context file) and [[rule:missing-value]]'s message; the rest of the sweep in TODO-MSC.)*
