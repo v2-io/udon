@@ -50,3 +50,7 @@ Each is an error. Reasons: these make two names look identical while differing, 
 - **Quoted equals bare.** `|'a'` is the same name as `|a`, and `:'ready?'` the same as `:ready?` (he said this for attribute names, 2026-07-16). Lean: true for every label; the quotes are spelling, kept in «meta».
 - **Case.** Never folded: `|Div` and `|div` differ. Lean: obviously; it's what every XML and JSON consumer expects.
 - **Normalization.** Lean: byte equality in lite, plus the default-off warning from part 1 for a label not in NFC. NFC equality would put normalization tables in every tiny parser, and the warning catches the real-world case (an editor that decomposed an accent).
+
+---
+
+*Addendum, 2026-10-28 (session `01Hgdj3fobqBFEmAFmJi6Zup`): the value explorations of 2026-10-22 all found that a `:` at the end of a name must never be part of the name (`:host: localhost` names `host`); the table above allows `:` last. Whether a trailing colon is consumed or an error is Joseph's open decision on the trailing colon (`spike-values-2026-10-22/ADJUDICATION-GUIDE.md`, decision 7).*
