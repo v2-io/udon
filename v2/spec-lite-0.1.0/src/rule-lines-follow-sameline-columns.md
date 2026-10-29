@@ -7,6 +7,7 @@ layer: tree
 per: []
 depends: [rule:sameline-element-is-child]
 consequences: []
+context: rule-lines-follow-sameline-columns.context.md
 ---
 
 # Following lines see sameline elements as if written vertically
@@ -40,6 +41,10 @@ root
       |td
         :$main ‹A2›
 ```
+
+## Cautions
+
+- **A child one column too far right silently gets a different parent.** With the example above, `|td A2` at column 12 instead of 11 is a child of the first `|td`, a cell inside a cell, and nothing warns; at column 10 it lands under `|tr` as intended. (Unlike Python, where an unexpected indent is an error, indenting under any element is legal in lite.) Judged a minor practical risk, not something to design around: agents edit through path-based tools that place indentation themselves, write indentation correctly when generating, and schemas refuse impossible nesting (a `td` inside a `td`). What's left is genuinely recursive structure, where only the writer knows the intent. See the [context](rule-lines-follow-sameline-columns.context.md) file.
 
 ## Working notes
 

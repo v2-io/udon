@@ -2010,3 +2010,31 @@
 > I'll always be comfortable changing something by fiat to fit my own preferences -- please go ahead and switch it to null if that's a bit more honest to a cold read by you-- I appreciate the unity in shared intent regardless.  Question though-- what do the following use for the value?   zig, rust, nim, typescript (null via json I assume), odin,... protocol buffers, toml?, swift, python (None IIRC), Kotlin, Cobol, Julia, Dart, Camel, erlang, closure, haskell, xml?, jsonc/5, kdl, Cue, Dhall, HCL, messagepack, cbor...?
 
 *(Agent text, summary: listed each from memory (text data formats with a null all spell it `null`, KDL v2 `#null`; TOML, XML, protobuf scalars and Dhall have none; `nil` is the Lisp/Ruby/Go/Swift/Odin/Nim family; Rust, OCaml and Haskell use option types); switched the recommendation and guide to `null`; rewrote [[rule:nil-spelling]] (decided, with a context file) and [[rule:missing-value]]'s message; the rest of the sweep in TODO-MSC.)*
+
+### Joseph (whole)
+
+> Would you launch a fresh agent to honestly and dispassionately rate KDL vs Udon lite (as defined for now by your recommendation and the cards written etc.)?
+
+> While it runs-- I would ask you-- what are your thoughts on udon lite vs KDL -- in just a few sentences.
+
+> (let the other agent know that we're not going to be reserving '<>' after all, fwiw)
+
+*(Agent text, summary: launched the comparison (`.int/kdl-vs-lite-2026-10-29.md`): KDL better today for config and data and on maturity; lite's lead is prose and mixed content; Beauty-group judgment KDL 6.7, lite 6.4; totals "as it stands" KDL 6.2 / lite 5.7, "design alone" lite 6.5 / KDL 6.0. The agent read the `<>` note as `<…>` becoming ordinary text; the coordinator asked Joseph whether that's what he meant (open).)*
+
+### Joseph (whole)
+
+> On design alone, lite 6.5 and kdl 6.0 -- what does that mean?
+>
+> "A child written later on the same line, one column off, silently gets a different parent..."  I don't understand this issue-- can you give an example?
+
+*(Agent text, summary: "design alone" leaves out the factors only maturity moves (spec clarity, schemas, tooling, editors). The example: under `|table |tr |td A1`, a second `|td` at column 12 instead of 11 becomes a child of the first cell, silently.)*
+
+### Joseph (whole)
+
+> Ah, so if the td is indented further than earlier td's. Yes, true. A problem with python also,.
+
+> Most agentic indentation issues hope to be factored away by the agentic tooling, where the intent is to insert/modify/delete via logical path without specifying indents for most things. For continuous writing/generation in the first place, I haven't seen agents mess up indentation in years at this point-- even the smallest models. And then schemas would prevent, for example, `|td |td` without an error-- leaving just the cases where you actually do have a node-type that can be recursive-- in which case the user is obviously just going to have to be extra careful.  So yes, it's a potential pitfall, but it's not particularly high on the practical worries, IMO
+
+> (if you would go ahead and record all of that somewhere / steward-verbatim for next time it comes up that would be great-- maybe in the working notes or cautions in a card that covers indentation rules?)
+
+*(Agent text, summary: recorded here, and as a caution on [[rule:lines-follow-sameline-columns]] with his words in its new context file.)*
