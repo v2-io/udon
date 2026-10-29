@@ -54,7 +54,7 @@ What each line gives:
   - a quoted value, `name(…)` or backticks followed by more text in an *attribute* value (`:href "https://example.com" Click here`), suggesting ` \ `;
   - a space between an attribute's name and its parentheses (`:mass (kg) 3.2`, which is the text "(kg) 3.2");
   - a value starting `https://` (or another scheme) that contains a space (`:href https://example.com Click here`), suggesting ` \ `.
-- **`null`, not `nil`** (your call, 2026-10-29, reversing the 2026-10-09 choice): it's what JSON, YAML, HCL, CUE and CBOR write, and what every trial agent wrote untaught. A bare `nil` is text, with a warning (on by default) suggesting `null`.
+- **`null`, not `nil`** (my recommendation; lite's current spelling, your 2026-10-09 choice, is `nil`): it's what JSON, YAML, HCL, CUE and CBOR write, and what every trial agent wrote untaught. A bare `nil` would be text, with a warning (on by default) suggesting `null`.
 
 ---
 

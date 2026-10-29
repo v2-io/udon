@@ -69,9 +69,9 @@ A and B give every tool the same value; they differ only in whether the spec sta
 
 1. **Which spellings get read?** The explorers chose JSON's: null, `true`, `false`, and numbers as JSON writes them (no leading zero, no `0x`, no `_`). So `:zip 01234` stays text, keeping its zero. But you wrote on 2026-07-14 that "0x 0o 0d 0b *definitely* help as literal qualifiers, as does '_' agnostic digit separators". Under JSON's set, `0xFF` and `1_000` are text.
 2. **The version-number problem.** The value of `:version 1.10` is the number 1.1. Every remedy needs the writer to quote it (`"1.10"`) or a schema to say it's text. In the trial, five of eight agents quoted versions untaught anyway.
-3. **`null` or `nil`.** Lite's spelling was `nil` (your 2026-10-09 call). **In the trial, every agent that hadn't read the spec wrote `:owner null`**, as JSON, YAML, HCL, CUE and CBOR all spell it. On 2026-10-29 you switched it to `null`; a bare `nil` is then text, with a warning suggesting `null`.
+3. **`null` or `nil`.** Lite's spelling was `nil` (your 2026-10-09 call). **In the trial, every agent that hadn't read the spec wrote `:owner null`**, as JSON, YAML, HCL, CUE and CBOR all spell it. My recommendation is now `null`, with a bare `nil` as text and a warning suggesting `null`; the spelling is still yours to decide.
 
-**My recommendation: A.** The same value for every tool, and the parser keeps only what was written. B also works, but it makes the parser record types as well. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) stay text: a key names something, it isn't a quantity. `null`, with a warning on `nil` (your call, 2026-10-29).
+**My recommendation: A.** The same value for every tool, and the parser keeps only what was written. B also works, but it makes the parser record types as well. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) stay text: a key names something, it isn't a quantity. `null`, with a warning on `nil`.
 
 ---
 
