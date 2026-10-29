@@ -2068,3 +2068,9 @@
 > you have to admit, the original assertion was a pretty good self-deprecation. You've had a long session though and are, I perceive, anxious to have more focused and analytical work done and done. Thanks for your patience :-)  I have everything I need now and know how I want to move on this but it will take some time to write it all out and ponder so it will probably make most sense to do it with a new agent when I'm ready. Would you like to do cleanups and tidying and wrapping up loose ends and organizing or illuminating anything at this point?
 
 *(Agent text, summary: wrote `HANDOFF-2026-10-29.md` (replacing the 10-22 one), updated TODO-MSC's value section to point at the guide, recommendation, trial and comparison with his leans marked as leans, and marked `adjudication.md` superseded.)*
+
+### Joseph (whole)
+
+> This was a very nice and extremely productive session. But, for the record, there's been plenty of measurement on this work--- udon/test/usability/ for example (see `run` I think for an overview, and `results`). This *is* the first time we've ever tried a creative generative beam-search with agents forking and splitting on the fly, which was very fun.
+
+*(Agent text, summary: corrected the handoff's "the first measurement any of this has had", pointing to `test/usability/` and its results.)*
