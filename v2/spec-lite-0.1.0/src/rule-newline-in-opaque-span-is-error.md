@@ -11,11 +11,11 @@ consequences: []
 
 # A newline in an opaque span is an error, worded as lite's limit
 
-*`@{…}` and `;{…}` must close on their own line; the error says lite doesn't support the newline.*
+*`<…>`, `@{…}` and `;{…}` must close on their own line; the error says lite doesn't support the newline.*
 
 ## Statement
 
-1. A line ending inside `@{…}` or `;{…}` MUST be reported as an error whose message says that lite doesn't support newlines in that construct.
+1. A line ending inside `<…>`, `@{…}` or `;{…}` MUST be reported as an error whose message says that lite doesn't support newlines in that construct.
 
 ## Grounds
 
@@ -39,8 +39,6 @@ A rule, chosen, not derived. Checkable by fixtures.
 ```
 
 ## Working notes
-
-- **`<…>` is ordinary text (Joseph, 2026-10-29: not reserved, "such as html or xml"):** this card now covers `@{…}` and `;{…}` only. Notes below that discuss `<…>` are history, to move to a context file at the next edit.
 
 - **Joseph's words:**
 

@@ -12,11 +12,11 @@ consequences: []
 
 # opaque-span
 
-*An «opaque-span» is one of the delimited forms `@{…}` and `;{…}`, whose text lite carries without attaching meaning, under one rule for nesting, escapes and line ends.*
+*An «opaque-span» is one of the delimited forms `<…>`, `@{…}` and `;{…}`, whose text lite carries without attaching meaning, under one rule for nesting, escapes and line ends.*
 
 ## Terms
 
-- **opaque-span:** a reference `@{…}` or an inline comment `;{…}`. Its delimiters nest when matched ([[rule:matched-pairs-need-no-escape]]); inside it only `\\` and its own delimiters may be escaped ([[rule:opaque-span-escapes]]); it closes on its own line ([[rule:newline-in-opaque-span-is-error]]); and the «tree» holds the text between its delimiters, escapes resolved, with no meaning attached ([[rule:opaque-span-raw-text]]).
+- **opaque-span:** an «explicit-typed-value» `<…>`, a reference `@{…}`, or an inline comment `;{…}`. Its delimiters nest when matched ([[rule:matched-pairs-need-no-escape]]); inside it only `\\` and its own delimiters may be escaped ([[rule:opaque-span-escapes]]); it closes on its own line ([[rule:newline-in-opaque-span-is-error]]); and the «tree» holds the text between its delimiters, escapes resolved, with no meaning attached ([[rule:opaque-span-raw-text]]).
   - *Avoid:*
     - **"box"** (the 2026-09-01 FIX text; lite's pre-design files until 2026-09-29), **"envelope"** and **"explicit-typing envelope"** (0.9–0.10.0), **"capture"**, **"value capture"**, **"held span"** (0.10.1). All were names for `<…>` alone, and some for a wider family. None covers `@{…}` and `;{…}` the way this term does.
     - **"delimited span"**, **"delimited extent"** (0.10.0: anything closed by a printed closer, strings, lists and fences included): wider than this term.
@@ -30,8 +30,6 @@ consequences: []
 - A `[…]` list is not an «opaque-span» ([[rule:list-items-whitespace-separated]]).
 
 ## Working notes
-
-- **`<…>` is ordinary text (Joseph, 2026-10-29: not reserved, "such as html or xml"):** this card now covers `@{…}` and `;{…}` only. Notes below that discuss `<…>` are history, to move to a context file at the next edit.
 
 - **Not reviewed with Joseph; drafted 2026-10-09.** The term was coined by the coordinating agent on 2026-10-08 and used back by Joseph the same day. Ten card files use it.
 

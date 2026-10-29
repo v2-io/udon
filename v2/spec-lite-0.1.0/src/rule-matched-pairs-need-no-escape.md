@@ -11,11 +11,11 @@ consequences: [rule:opaque-span-escapes, rule:key-escapes]
 
 # Matched pairs inside a delimited form need no escape
 
-*Inside `@{…}`, `;{…}` and a key, an unescaped opener nests and is closed by its own closer; the form ends at the closer that matches its opener.*
+*Inside `<…>`, `@{…}`, `;{…}` and a key, an unescaped opener nests and is closed by its own closer; the form ends at the closer that matches its opener.*
 
 ## Statement
 
-1. Inside an opaque span (`@{…}`, `;{…}`) or a key (`[…]`), an unescaped occurrence of the form's opening bracket MUST be matched by a closing bracket before the form itself can close; such matched pairs are content and need no escape.
+1. Inside an opaque span (`<…>`, `@{…}`, `;{…}`) or a key (`[…]`), an unescaped occurrence of the form's opening bracket MUST be matched by a closing bracket before the form itself can close; such matched pairs are content and need no escape.
 
 ## Grounds
 
@@ -41,8 +41,6 @@ root
 ```
 
 ## Working notes
-
-- **`<…>` is ordinary text (Joseph, 2026-10-29: not reserved, "such as html or xml"):** this card now covers `@{…}` and `;{…}` only. Notes below that discuss `<…>` are history, to move to a context file at the next edit.
 
 - **Joseph's words:**
 

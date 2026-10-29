@@ -11,11 +11,11 @@ consequences: []
 
 # Escapes inside opaque spans
 
-*Inside `@{…}` and `;{…}` only `\\` and the span's own delimiters may be escaped.*
+*Inside `<…>`, `@{…}` and `;{…}` only `\\` and the span's own delimiters may be escaped.*
 
 ## Statement
 
-1. Inside an opaque span, `\\` and the span's own delimiters (`\{` `\}` in `@{…}` and `;{…}`) MUST be read as escapes, and any other backslash MUST be reported as an error.
+1. Inside an opaque span, `\\` and the span's own delimiters (`\<` `\>` in `<…>`; `\{` `\}` in `@{…}` and `;{…}`) MUST be read as escapes, and any other backslash MUST be reported as an error.
 
 ## Grounds
 
@@ -74,8 +74,6 @@ root
 * Something asks for an exception (Joseph's condition).
 
 ## Working notes
-
-- **`<…>` is ordinary text (Joseph, 2026-10-29: not reserved, "such as html or xml"):** this card now covers `@{…}` and `;{…}` only. Notes below that discuss `<…>` are history, to move to a context file at the next edit.
 
 - **Joseph's words:**
 

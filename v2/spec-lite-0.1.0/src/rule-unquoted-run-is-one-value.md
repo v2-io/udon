@@ -70,8 +70,6 @@ Under the typed-primitive view, the first `:year` reads as 1869 and the last `:c
 
 ## Working notes
 
-- **2026-10-29: `<…>` is ordinary text** (Joseph), so it no longer starts a value, and "other kinds are written in `<…>`" no longer holds; this card's Statement waits on the bare-values decision (`.int/spike-values-2026-10-22/typing-recommendation.md`).
-
 - **Conflicts this lean opens, each to put to Joseph** (his earlier words are the other side of each):
   - [[rule:nil-spelling]]: "make 'nil' the only spelling for nil/null" (2026-10-09). Is the spelling now `<nil>`, with bare `nil` text that the view reads as nil? Does the bare-`null` warning stay, and does it point to `<nil>`?
   - [[rule:missing-value]]: the error message names `nil`, `''` and `\`; `nil` there would read as text unless the view is on.

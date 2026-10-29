@@ -37,7 +37,7 @@ What each line gives:
 3. **A name followed by parentheses, standing alone in an attribute value**, is a value in that notation: `date(…)`. It means exactly what the inline element `|{date …}` means; the parentheses hold what that element's line would. Not recognized in an element's own text (`$main`) or in prose, where `|{…}` does the job.
 4. **Parentheses on an attribute's name** say what its value is: `:on(date) 2026-10-01` means `:on date(2026-10-01)`, and `:mass(kg) 3.2` means `:mass qty(3.2 kg)`.
 5. **Backticks standing alone** are verbatim text; a name in front says what it is: ``re`…` ``.
-6. **`<…>` means nothing special.** In a value or in text it's just characters, so HTML and XML pass through: `|li <kbd>Ctrl</kbd> to copy`. (Your call, 2026-10-29.)
+6. **`<…>` is not a value.** It stays reserved.
 7. **No trailing colon on attribute names.** `:host: localhost` is an error that suggests `:host localhost`.
 8. **What a later UDON may change:** it may give meaning to a named value (rules 3–5) that lite kept for a reader; it may never give new meaning to anything lite left as text.
 
@@ -125,7 +125,7 @@ What each line gives:
 **Options set aside.**
 - *A tilde and a name* (`~date 2026-10-01`): `~` means "approximately" exactly where dates and quantities appear, and home directories and version ranges besides; its extent changes between a value and a list item. No trial agent chose it.
 - *Only inline elements* (`|{date 2026-10-01}`): no new syntax, and the only form that works in prose, which is why it stays. As the only form, it's heavy in lists and tables, and drops braces into a trap (`:due |date 2026-10-30 :renew |duration 30d` gives `renew` to the date).
-- *`<date: 2026-10-01>`:* needs `<…>` to mean something, and rule 6 makes it plain text; the parentheses do the same with no new bracket.
+- *`<date: 2026-10-01>`:* needs `<…>`, which rule 6 retires; the parentheses do the same with no new bracket.
 - *`name(…)` recognized everywhere, `$main` included:* every trial agent read `|h3 date(format)` as a heading; API documentation is full of them.
 - *Body kept verbatim to the closing parenthesis:* kind to regular expressions, but nesting is then the notation's business, and backticks already give verbatim text.
 - *Unknown names quietly carried:* `dtae(…)` would pass unnoticed.
@@ -159,13 +159,13 @@ What each line gives:
 
 ### 6. `<…>`
 
-**Decided (your call, 2026-10-29): `<…>` is ordinary text,** in a value as anywhere else, so HTML and XML can be written as they are. It is not reserved. (My recommendation had been to keep it reserved, so full UDON could use it later; you chose otherwise.)
+**Recommendation.** Not a value in lite. It stays reserved, so full UDON is free to give it a meaning.
 
 **Options set aside.** *Holding any text unread* (today's card): can't refuse `<920px>`, and with numbers read bare it has nothing left to do. *Holding a checked standard value or a named notation:* rules 1, 3 and 5 already do every job it would. *Printed quantities by shape* (`<90 min>`, `<9.99 USD>`): beautiful, but the largest grammar anyone proposed; they can live inside `qty(…)` instead.
 
-**Pros.** HTML and XML in text and values with no escapes and no errors. One fewer bracket and one fewer rule. Nothing a writer types with `<` can go wrong.
+**Pros.** Frees `<` for HTML and Markdown in text. One fewer bracket. Your strong lean.
 
-**Cons.** Under rule 8, text never gains a meaning later, so full UDON can never give `<…>` a meaning either: the bracket pair is spent on plain text for good (`@<ref>` is unaffected, since it starts with `@`). `<>` as null has no home (bare `null` covers it). Two spec-primed trial agents reached for `<3.2 kg>` to make a value checkable; they'll need `qty(3.2 kg)`.
+**Cons.** `<>` as null has no home (bare `null` covers it). Two spec-primed trial agents reached for `<3.2 kg>` to make a value checkable; they'll need `qty(3.2 kg)`.
 
 ### 7. The trailing colon
 
