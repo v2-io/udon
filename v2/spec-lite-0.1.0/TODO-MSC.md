@@ -86,7 +86,6 @@ Joseph, 2026-10-20: "I suspect we could get through the missing cards pretty qui
 
 ## Cleanup
 
-
 - **Defunct citations.** Cards cite 0.10.x (33 rule cards and 37 def cards on 2026-10-20), and also 0.9 drafts, pre-design numbers and retired records. Joseph, 2026-10-20: strip them from any card opened for editing; a settled card carries no working notes; history goes to a sidecar `<card-file>.context.md`. Done so far: [[rule:strings-like-ruby]].
 - **The new card shape** (history sidecars, `context:` and `strength:` frontmatter, one-line Grounds, Implications, Decisions carried, dropping Epistemic status, the `awaiting-implementers` tag) is proposed to the SOP store in `sop/influx/udon-team-notes.md`; the `strength:` values (`forced`, `decided`, `lean`, `provisional`) Joseph approved on 2026-10-20 ("love your strength values-- yes"); recording them in the SOP store is what remains. `.vsect/kinds.yaml` already excludes `*.context.md` from resolving.
 - **Declared forms on every def card** (`terms:` as a mapping to `pos` and `pl`, as in [[def:delimited-string]]), each card as it is reviewed; then cards write «texts» instead of «text»s. On 2026-10-20, 44 uses still put the ending outside the delimiters for undeclared terms.
