@@ -36,7 +36,7 @@ Faces: Inter 400 for UDON, Inter 300 for the subtitle, and Noto Serif JP for う
 
 ## The specimen
 
-`specimen/stillness.html` is the brand specimen: the same `stillness.udon` example in a paper editor window and a slate one, with the header lockup above each and the stones and inkwells from `props/` around them. It is a single file, the published artifact (https://claude.ai/artifact/QdtrbFRU1TfjtBuvihjKHr) with its images pointed at `../props/`. Open it in a browser.
+`specimen/stillness.html` is the brand specimen: the same `stillness.udon` example in a paper editor window and a slate one, with the header lockup above each and the stones and inkwells from `props/` around them. It is a single file, the published artifact (https://claude.ai/artifact/QdtrbFRU1TfjtBuvihjKHr) with its images pointed at `../props/`. Open it in a browser. `specimen/stillness.png` is a screenshot of it (2400 px wide), shown at the top of the repository's README.
 
 - **Embedded:** the logo parts, as inline SVG, and Victor Mono for the code (Joseph's Nerd Font Mono build, subset to the characters the page uses; SIL Open Font License).
 - **From Google Fonts:** Inter, Jost and Noto Serif JP.

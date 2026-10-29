@@ -2,6 +2,8 @@
 
 **Universal Document & Object Notation**
 
+![The stillness.udon example in a light editor window and a dark one, under the UDON brush mark](ux/brand/specimen/stillness.png)
+
 UDON is what you get when "Markdown with YAML frontmatter" grows up—structure and prose interleaved freely, at any depth, without the seams, crystal clear even without syntax highlighting, for humans and AI alike.
 
 ```
