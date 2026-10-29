@@ -24,6 +24,7 @@ synID dumps). Spec of record: `spec/CORE.md` v0.8.0-alpha.1.
 | `obsidian-udon/` | Loadable community plugin (no build step) | Obsidian |
 | `udon.tmLanguage.json` | TextMate grammar | VS Code, Sublime, anything TextMate |
 | `vim/` | syntax + ftdetect + ftplugin | vim / neovim |
+| `brand/` | the logo and its parts, the stones-and-inkwells props, and the `stillness.udon` specimen page (2026-10) | branding material |
 
 There is also the tree-sitter grammar spike at `tree-sitter-udon/`
 (same spec version, Dec 2025). It targets tree-sitter consumers (neovim
