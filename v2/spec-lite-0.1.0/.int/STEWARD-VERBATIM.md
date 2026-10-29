@@ -1884,7 +1884,7 @@
 
 ## 2026-10-28 (Mountain), session `01Hgdj3fobqBFEmAFmJi6Zup`
 
-*Recorded by this session's agent (Opus 5.5). One message from this session is held back until the value trial reports, because the trial agents may read this file; it will be added in its place.*
+*Recorded by this session's agent (Opus 5.5). One message was held back while the value trial ran, since the trial agents could read this file; it is now in its place.*
 
 ### Joseph (whole)
 
@@ -1930,6 +1930,20 @@
 
 ### Joseph (whole)
 
+*(Held out of this file until the value trial reported, since the trial agents could read it and it states his lean on one of the trial's questions; added after all eight reports landed.)*
+
+> (sorry--- still reading your summary above-- I got distracted by the irrelevant discussion about 0.9 as if it had some bearing on lite somehow despite explicitly saying several places that it has zero value as an exemplar or precedent except possibliy for specific things that were learned because of it, independent of it).
+>
+> W/ your recommendation-- even before opening the document and starting to read, I can tell you that I'm already leaning pretty strongly in support of retiring <...> syntax from values. I'm also still convinced that I will very much like the (consumed and optional) trailing colons-- but I'm persuadable and no need to bias any tests with my lean there. For me it very much makes the syntax look cleaner at a glance...
+>
+> Please go ahead and launch :-)
+
+*(Agent text, summary: launched the trial (`.int/trial-values-2026-10-28/`): six agents, Sonnet, Fable and Opus each once from a one-page basics sheet and once after reading the spec; kept his trailing-colon lean out of every trial file and out of this record until the reports landed. Recorded both leans here: retiring `<…>` from values (a strong lean) and the optional, consumed trailing colon (a lean, "persuadable").)*
+
+### Joseph (whole)
+
 > While I wouldn't put too much stock in its answers, you might as well launch a couple of haikus as well for kicks :-)
 
 *(Agent text, summary: launched two Haiku agents, one primed with the spec and one not, beside the six Sonnet, Fable and Opus agents of the trial (`.int/trial-values-2026-10-28/`).)*
+
+*(Agent text, summary, after the trial: all eight reports landed (`trial-values-2026-10-28/RESULTS.md`). Untaught, every agent put the unit in the value and every fresh agent wrote `null`; `.kind` 0 of 8, `(kind)` 5; the sigil 0 of 8; no trailing colon 8 of 8; quoted-alone split by position; constructor and element 4 each. The guide gained a trial section and revised recommendations (D4, D5, D6, D10, D12).)*
