@@ -1,167 +1,175 @@
 # Lite values: the decisions, laid out for adjudication
 
-*For Joseph. Written 2026-10-28 by the agent of the session after the spikes (Opus 5.5). It is built from the spikes' own files: the three READMEs, the three debriefs, the four `final-thoughts.md`, b's stand-alone page, the two composite sets, a's and c's invention pages, c's round-two synthesis, and your messages in the verbatim record. I did not read every fork page; two auditors are asked to go deeper, and their findings are added at the end. This page replaces `adjudication.md` as the entry point. That file was written before the inventive round, and several of its "dead" verdicts were revived afterwards, so read it only as history.*
+*For Joseph. Written 2026-10-28 by the agent of the session after the spikes (Opus 5.5), then revised the same day with two independent audits folded in: [`audit-opus.md`](audit-opus.md) (Opus 5.5) and [`audit-fable.md`](audit-fable.md) (Fable 5.1, who read every fork page and re-ran the three scripted checks; all reproduce). Their findings are woven into each decision below rather than appended; their files hold the detail and paths. My recommendations are at the end, after everything else, and are marked as mine.*
 
-*Nothing here is decided. Scores in the spikes are one agent's hypothesis each, on scales that differ by fork; I quote rankings, not totals. Every spike is the same model, so where they agree, that is shared priors as much as confirmation.*
+*This page replaces `adjudication.md` as the entry point; that file predates the inventive round, and several of its "dead" verdicts were later revived.*
 
-**Tree glyphs on this page** (illustrative only, not a proposal for the transcript): `⸨…⸩` a «text»; `"…"` a «string»; `⟬…⟭` content carried verbatim; `~int` a face attached to a text (see D2); `(.kg)` a reading on an attribute occurrence; `⇒` what a reader would make of it.
+**What I read whole:** the three READMEs and debriefs, the four `final-thoughts.md`, b's stand-alone page (`b/30`), both composite sets, a's and c's invention pages, c's round-two synthesis, the labels lean, and your messages in the verbatim record. Not most fork pages; the auditors covered those (Fable all of them). **"Converged" on this page means converged in the final-thoughts,** which are cross-read syntheses by one model; underneath, several of those points split (marked where so).
+
+**What decides it.** Each decision ends with the CTQ factors that pull on it, with their weights, so you can see what's being traded. Scores from the spikes are one agent's hypothesis each, on scales that differ by fork; I quote rankings, not totals.
+
+**Tree glyphs on this page** (illustrative only, not a proposal for the transcript): `⸨…⸩` a «text»; `"…"` a «string»; `⟬…⟭` content carried verbatim; `#int` a standard reading or face (see D2; I avoid `~` here because `~` is one of the source spellings in D6b); `(.kg)` a reading on an attribute occurrence; `⇒` what a reader would make of it.
 
 ---
 
 ## The picture in one screen
 
-**Where all three ended up (after their final cross-reading).** One example, in the composition most of the final-thoughts point toward, with the spellings still under dispute marked:
+**Without a vocabulary** (the schema-less case: what a lone file says by itself), in the composition most of the final-thoughts point toward. Contested pieces are marked.
 
 ```udon
 |server[web] :port 8080 :debug false :zip 01234 :name "8080" :owner nil
-|part :mass.kg 3.2 :mass.lb 7.1 :version.text 1.10            ; .kind or (kind)? (D5)
-|ev :on date(2026-10-01) :when.date(YY-MM-DD) 27-03-05         ; constructor (D6); reading with parameters (D5)
+|part :mass.kg 3.2 :mass.lb 7.1 :version.text 1.10            ; .kind vs (kind) (D5); does .text withhold a face? (D2)
+|ev :on date(2026-10-01) :when.date(YY-MM-DD pivot 1950) 27-03-05   ; the century needs a rule (D6)
 |rule :pattern re`^\d{3}-\d{4}$`                               ; tagged backticks (D7)
-|p "Hello," she said; meet on [Oct 1st](date:2026-10-01).      ; stand-alone rule (D4); a typed value in prose (D11)
-|li printf(x) prints x                                         ; not a constructor: doesn't stand alone
+|p "Hello," she said; meet on [Oct 1st](date:2026-10-01).      ; stand-alone rule (D4)
+|li printf(x) prints x                                         ; text: doesn't stand alone
+|h3 date(format)                                               ; a heading that is a constructor? (D6)
 ```
-````tree
-root
-  |server
-    :$key ⸨web⸩
-    :port ⸨8080⸩~int
-    :debug ⸨false⸩~bool
-    :zip ⸨01234⸩                    ← no face: a leading zero isn't a JSON number
-    :name "8080"
-    :owner ⸨nil⸩~nil
-  |part
-    :mass (.kg) ⸨3.2⸩               ⇒ 3.2 kg
-    :mass (.lb) ⸨7.1⸩               ⇒ 7.1 lb (two occurrences, two readings)
-    :version (.text) ⸨1.10⸩         ⇒ the text 1.10, face withheld
-  |ev
-    :on date(⸨2026-10-01⸩)          ⇒ a date
-    :when (.date(⸨YY-MM-DD⸩)) ⸨27-03-05⸩   ⇒ 2027-03-05
-  |rule
-    :pattern re ⟬^\d{3}-\d{4}$⟭
-  |p
-    :$main ⸨"Hello," she said; meet on [Oct 1st](date:2026-10-01).⸩
-  |li
-    :$main ⸨printf(x) prints x⸩
-````
 
-**Converged (all three, final rounds):**
+**With a vocabulary** (a document that says, by file name or reader configuration, what `server`, `part` and `ev` are). Every spike said this is where values go bare:
 
-- A bare run stays a text in the tree. A fixed set of spellings gets a standard reading: `nil`, `true`, `false`, and JSON's number grammar. Streaming doesn't decide this (measured; see D3).
-- Slot types, aliases ("algebraic names": `port = u16 | standard-port`), unit meanings and coercion live outside the value: in vocabularies, schemas and typed getters. No slot-type syntax in the value.
-- Units are text that the slot (or a reading) completes. `5m` is minutes for `:timeout` and metres for `:length`.
-- A bare label never *ends* in `:` (today's labels lean allows it, so `:host: localhost` names an attribute `host:`).
+```udon
+|server[web] :port 8080 :debug false :zip 01234 :owner nil
+|part :mass 3.2 :version 1.10
+|ev :on 2026-10-01 :when 27-03-05
+```
 
-**Not converged, and the order to take it in:**
+The CTQ question at the end (does domain-forward mean "visible in the text"?) is the choice between those two pictures as the *normal* case.
+
+**Converged in the final rounds:**
+
+- A bare run stays a text in the tree, and a fixed set gets a standard reading: `nil`, `true`, `false`, JSON's number grammar. (Underneath: c's core fork wanted hex and `_` too; keys split; see D2.)
+- Slot types, aliases ("algebraic names"), unit meanings and coercion live outside the value: vocabularies, schemas, typed getters.
+- Units are text that the slot (or a reading) completes: `5m` is minutes for `:timeout`, metres for `:length`.
+- A bare label never *ends* in `:`.
+
+**Not converged, in dependency order:**
 
 | # | Decision | Depends on |
 |---|---|---|
-| D1 | Is adding a reading later a change? | nothing; everything else depends on it |
-| D2 | The standard reading: in the tree, normative, or a view? Which face does a converter pick? | D1 |
-| D3 | B1's wording: may a value's classification arrive at its close? | D2 |
-| D4 | A delimited value counts only if it stands alone (reverses a decided example) | — |
-| D5 | A reading on a name: `.kind`, `(kind)`, or neither | D1, D4 |
-| D6 | Constructor values `name(…)`: their body, unknown names, when bodies are checked | D1, D4, D5 |
-| D7 | Verbatim foreign text: backticks | D4 |
-| D8 | What `<…>` is, if anything, in lite | D5–D7 |
-| D9 | Typeset shapes (`<90 min>`, `<2026-01 – 06>`): lite grammar, notation-body grammar, or neither | D6, D8 |
-| D10 | Region-wide readings: `$sig`, legends, clefs | D5 |
+| D1 | What lite's tree is for a carried notation; may faces ever grow? | — |
+| D2 | The standard reading: in the tree, normative, a view, or off by default? Which set? Keys? | D1 |
+| D3 | B1's wording, and the streaming question that is actually open | D2 |
+| D4 | A delimited value counts only if it stands alone; is a quoted value a string or a text? | — |
+| D5 | A reading on an attribute name: `.kind`, `(kind)`, or none | D1, D6 |
+| D6 | Notation values: `name(…)`, the sigil `~name`, or elements | D1, D4 |
+| D7 | Verbatim foreign text: backticks | D4, D6 |
+| D8 | What `<…>` is, if anything | D4–D7 |
+| D9 | Typeset shapes (`37.5 ± 0.2 °C`): lite grammar, notation body grammar, or not now | D6, D8 |
+| D10 | Region-wide readings, precedence, and which way a writer goes | D5 |
 | D11 | Prose: typed values in text; bare URLs | D4 |
-| D12 | The trailing colon on attribute names | D5 |
-| D13 | Smaller items: is a date a leaf or a node; `nan`/`inf`; keys and lists | — |
+| D12 | The trailing colon | D5 |
+| D13 | Smaller items | — |
 
-A CTQ question sits across several of these: c's proposal to make domain-forward (A5) mean "visible in the text itself" (end of page).
+Across all of them: **the order of commitment** (just below), and a CTQ wording question (the end).
 
 ---
 
-## D1. Is adding a reading later a change?
+## Before the decisions: commitment runs one way
 
-**The question.** Lite 0.1 carries something it doesn't interpret: a name on a value (`date(2026-10-01)`, `:mass.kg`), or a fence body. A later UDON reads it and attaches meaning. Did the accepted tree change? Reserve-don't-ignore (B2) is a veto, so the answer decides whether every notation design here is legal.
+From c's mark fork (`c/branches/mark/branch.md`, "What they leave out is reversibility"), raised by the Opus audit. Going from *an error* to *an accepted spelling* changes no accepted tree. Going back breaks documents. So a designed form can ship in 0.1 as an error that teaches ("lite doesn't accept notation values yet; this would read as …") and be switched on later at no cost, while a form shipped as accepted can never be withdrawn.
 
-```udon
-|ev :at 2026-07-21 :on date(2026-07-21) :pattern re`\d+`
-```
-````tree
-lite 0.1:   :at ⸨2026-07-21⸩         :on date(⸨2026-07-21⸩)            :pattern re ⟬\d+⟭
-later:      :at ⸨2026-07-21⸩ ~date?  :on date(⸨2026-07-21⸩) ⇒ a Date   :pattern re ⟬\d+⟭ ⇒ a Regex
-````
+This is not "reserved for later", which you rejected as the premise restated. Every design on this page is designed. The question this adds is only *which designed pieces 0.1 accepts*, and it applies to D5, D7, D9, D10 and D12. It is also the principled form of the coordinator's "minimal lite 0.1" (`coordinator-final-thoughts.md` §4).
 
-**The options.**
+---
 
-- **(a) Never a change** (spike a's first framing): any later version may add faces and readings anywhere.
-- **(b) Names may be read later; faces never grow** (spike c's final sentence, which the coordinator put first): *a later version may read what lite marked as named, and may never give a new face to what lite marked as text.* So `:on date(…)` may become a Date later; bare `:at 2026-07-21` stays a text forever (no `~date` face added).
-- **(c) Any addition is a change**: lite 0.1 has no notation values at all, the face set is fixed now, and every widening is its own later decision.
+## D1. What lite's tree is for a carried notation, and whether faces may grow
 
-**Facts.**
-- Lite already answers it once, for fences: a fence named `sh` carries its body for whatever handler later reads `sh` ([[rule:fence-default-handler]]). Under (c) that would be a breach too. (Spike a found this; checked against the card.)
-- Your 2026-10-08 downgrade of "same tree" to an aspiration covers forward reading, and "«meta» is free to evolve beyond lite" ([[obj:reserve-dont-ignore]] clause 2). Readings are not meta in any card yet.
+**The question as first posed:** lite 0.1 carries something it doesn't interpret (a name on a value, `date(2026-10-01)`; a reading on a name, `:mass.kg`). A later UDON reads it. Did the accepted tree change? Reserve-don't-ignore (B2) is a veto.
 
-**Pros and cons.**
-- (b) keeps bare text stable forever (B3 stability, 10), gives notations exactly one path (A6 spec clarity), and matches the fence precedent. Its cost: nothing bare can ever become a date by spelling alone, even if a later UDON wants that; a later typed date must be written with a name. Most of the spikes' work suggests that's a feature (the old line's temporal surprises).
-- (a) is maximally open (B6 headroom) but makes "no face" mean "not classified *yet*", which every converter has to treat as unstable.
-- (c) is the most conservative and kills every notation design in this page; it is the "reserved for later" landing you rejected as the premise restated.
+**The sharper form both audits found in the files** (a's angle fork, c's `raw` design): it is a *definition*, not a law. If lite's tree holds `date(…)` as a node of its own kind (named, carried, unread: a's "raw, never a string", c's `unread{name, body}`, b's `unresolved(name, items)`), then a later reader adds meaning to a node that already said "a reader will interpret this", and the raw tree is unchanged by construction. Two cards already read that way (both audits checked):
 
-**Cards touched.** [[obj:reserve-dont-ignore]] (a third clause or a rewording), [[decision:forward-compat-aspiration]], [[def:reserved]].
+- [[obj:reserve-dont-ignore]] clause 1 reserves spellings "that a future full version gives meaning to, **and that lite does not define**". A notation value lite *defines*, as a carried named node, is outside the clause. c's `raw`: "B2: pass, by definition rather than reservation".
+- [[decision:forward-compat-aspiration]]: your 2026-10-08 words, "Opaque spans for example now will be their own branch in the AST later, among other things."
+
+The load-bearing condition (a's angle fork): **the tree must mark the body as unread, never as text or string.** If a constructor's body were held as a plain «text», a later reading *would* change its kind. That constrains D6.1 and D7.
+
+**The Opus audit's further split, by who owns a name (its inference, not a spike's):** under the EDN policy b proposed and a adopted, an *unprefixed* name belongs to UDON's standard set, and lite refuses one it hasn't defined yet. That is B2 working as designed (an error becomes accepted later). A *namespaced* name (`acme/sku(…)`) belongs to its owner, never to UDON, like an element name or a fence language: lite never interprets `|invoice`, and no later UDON will. Carrying it isn't "retaining the bytes for a later UDON".
+
+**Your own ground for B2, which weighs against carrying anything loosely** ([[obj:reserve-dont-ignore]] Grounds, 2026-10-01): "older 0.9 and 0.10 specs … deferred decisions about special syntaxes … but retained the bytes. That ambiguity caused a lot of confusion and made the language evolve a lot slower for a season-- hence the very deliberate call right now in udon-lite to go further and disallow them completely."
+
+**What's left of D1 after that:**
+
+- **(a) Faces may grow:** a later UDON may give bare `2026-07-21` a date face.
+- **(b) Faces are closed for good** (c's sentence, which the coordinator put first): *a later version may read what lite marked as named, and may never give a new face to what lite marked as text.*
+- **And a second, smaller question the Opus audit found:** may body checks tighten later? If standard bodies are checked only when read in 0.1, adding parse-time checks later turns accepted documents (`date(2026-13-45)`) into errors, which is a change. So D6.3 is decided here.
+
+**The fence precedent, stated accurately** (Fable): lite already carries a named body unread ([[rule:fence-body-not-scanned]]); what a fence *handler* is remains open on [[rule:fence-default-handler]]. So fences share D1's question; they support the definitional reading but don't settle it.
+
+**Interactions.** D1(b) removes one of a's two reasons for D2(a) over D2(d) ("the class can grow; the kind can't"); under (b) that difference rests on identity by spelling alone.
+
+**What decides it:** B2 reserve (veto), B3 stability (10), B6 headroom (7), A6 spec clarity (9).
+
+**Cards touched:** [[obj:reserve-dont-ignore]] (clause 1 wording, or a note that carried notation nodes are defined), [[decision:forward-compat-aspiration]], [[def:reserved]], a new definition for the carried notation node.
 
 ---
 
 ## D2. The standard reading of bare values
 
-**The question.** All three agree a bare run is a text and that `nil`, `true`, `false` and JSON numbers get a standard reading. They differ on *where that reading lives*, and that is your 2026-10-21 lean ("C with the view") being revisited.
+**The question.** All three agree a bare run is a text and that `nil`, `true`, `false` and JSON numbers get a standard reading. They differ on where that reading lives; this revisits your 2026-10-21 lean ("C with the view").
 
 ```udon
 |server :port 8080 :debug false :zip 01234 :version 1.10 :id 1e10 :title 1984 :name "8080"
+|step[3]
 ```
 
 **The options.**
 
-| | Tree | `:debug false` with no schema | From |
+| | Tree | `:debug false`, no schema | From |
 |---|---|---|---|
-| **(a) attached face** | `⸨8080⸩~int`, `⸨false⸩~bool`; the text is kept, the face is an attachment like a comment or meta (changes no arity) | false | spike a ("text + class", 8.20 vs B 7.48 in its scoring); spike c's "allomorph" (Raku's `IntStr`) |
-| **(b) normative default reading** | all texts; the spec says every reader applies the JSON-grammar reading unless told otherwise | false | spike b |
+| **(a) attached face** | `⸨8080⸩ #int`, `⸨false⸩ #bool`; the text kept, the face an attachment that changes no arity | false | a ("text + class", 8.20 vs B 7.48 in its scoring); c's allomorph (Raku's `IntStr`) |
+| **(b) normative reading** | all texts; the spec defines one reading every consumer applies unless told otherwise; fixtures show the raw tree | false | b |
 | **(c) the view, default open** (your lean as carded) | all texts; a consumer may apply the view | depends on the consumer | the card today |
-| **(d) the face *is* the kind** ("B") | `8080` an integer node, `1984` an integer | false | rejected by a and c on `|h1 1984`, keys |
-
-(a) and (b) give the same answers to every consumer; they differ in whether the tree records the face (a) or the spec prescribes a read (b). Spike c's final word folds them: the face is in the tree, and the *only* open choice is which face a generic converter (to JSON) uses by default: the primitive face (c's lean, JSON's convention) or the text face (c's Cv fork).
+| **(c′) strings unless asked** | all texts; a generic converter emits strings; classification on request (`int(:port)`) | `"false"` | c's Cv fork, which *survived* c's round one |
+| **(d) the face is the kind** ("B") | `8080` an integer node | false | nobody chose it; nobody killed it (a ranked it second and alive; c's B fork made it survive) |
 
 **Facts.**
-- `:debug false` read as the text `"false"` is truthy in Python, JavaScript, Ruby and Elixir (spike b ran it in four languages). This is what sank (c) in all three spikes: two consumers disagree on `:enabled true`, which is YAML's competing-schemas failure.
-- The set is JSON's: no leading zeros, no `0x`, no `_`, no `+`, no `.5`. So `01234` gets no face (the zip keeps its zero), and every classified number copies byte for byte into JSON (spike a).
-- **The hazard no spelling rule fixes:** `:version 1.10` and `:id 1e10` get a number face. Remedies offered: quotes, a vocabulary, or withholding the face with a reading (`:version.text 1.10`, `1.10⟪version⟫`).
-- **Your gotcha survives in every option:** `:width 7 ;{px}` has an inline comment piece, so no face; `:height 7 ; px` gets `~int` (the framed comment isn't part of the value).
-- **Host limits:** converting a huge digit run to a host number is the real resource limit (jackson caps at 1000 digits; CPython at 4300, CVE-2020-10735). It belongs in the host mapping guide under every option (spike a; numbers quoted from the fork, not re-checked by me).
+- `"false"` is truthy in Python, JavaScript, Ruby and Elixir: b ran it. That's b's argument. a killed the open view on stability generally (two consumers disagree on `:enabled true`, YAML's competing-schemas failure). c's final narrowed its own open bit to "which face does a converter pick" without using the boolean argument.
+- **(c′) at its strongest** (c's own scores, `c/branches/Cv/branch.md`): spec clarity 9, simplicity 9, stability 9 (one tree; differing readings live outside it), parse speed 9 (bare runs never classified), XML 8 ("XML attribute values are all strings, typed by the schema: Cv is XML's model"), round-trip 9, and no `1.10` or `01234` trap anywhere. Its costs: structured data (C1) 5 and guessability 5. Shown here because you reverted to C on 10-21 for reasons of your own.
+- **The set.** JSON's: no leading zeros, no `0x`, no `_`, no `+`, no `.5`. `01234` keeps its zero (no face); every classified number copies byte for byte into JSON. **But c's core fork wanted `0x`/`0o`/`0b`, `_` between digits and `+`** by a different test (no *lossy* silent miss, `c/branches/core/kinds-and-test.md`), and **your own words, 2026-07-14** (`history.jsonl` L16173, checked by the Opus audit): "0x 0o 0d 0b *definitely* help as literal qualifiers, as does '_' agnostic digit separators, as does scientific notation shorthands-- all work to allow the udon reflect the literal value without the agent/user needing to translate it from a natural representation". Under the JSON set those are texts, and where they go instead is open (b's K: `int(0xFF)`; a: a slot).
+- **The hazard: `:version 1.10`, `:id 1e10`.** Remedies in the files: quotes; a vocabulary; withholding with a reading (`:version.text`); **no float faces at all** (c's core fork, "alive, Joseph's call": integers, booleans and nil get faces, floats don't); **no exponent faces** (a's dp3; also fixes `12e4567`, valid JSON that overflows to infinity); a default-off lint for decimals ending in `0` (a's dp3).
+- **Your gotcha survives every option:** `:width 7 ;{px}` has an inline comment piece, so no reading; `:height 7 ; px` reads 7.
+- **Host limits:** converting a huge digit run is the real resource limit (jackson's `maxNumberLength`, CPython's 4300-digit cap: fetched by a's research fork). Host mapping guide, under every option.
 
-**Pros and cons (CTQ).** (a)/(b) win on B3 stability (one answer everywhere), C1 structured data (JSON round-trips), A2/A3 (what agents expect: `false` is false). (a) additionally makes the face visible in fixtures and gives typed getters something to check against (`int(:port)` on `3x` raises without touching the tree: your strict-getter idea applied to kind). (c) wins only on A7 simplicity of the grammar, and loses B3.
+**Nuances the audits surfaced.**
+- **`.text` and (a) collide** (Opus). Under (a) every parser attaches the face, so withholding it (`:version.text 1.10`) needs the parser to interpret the reading `text`: lite would be evaluating readings. a says the reading replaces the face; c keeps both. Under (b) the question doesn't arise. That counts for (b).
+- **Fixtures:** (a) shows the face in fixtures; b chose deliberately to show only the raw tree ("one tree per fixture"). A transcript choice, available either way.
+- **Keys are not converged.** b: "A key gets **no** default reading. A key is an identity, compared by spelling … a typed key is written as a literal" (`b/50` §4). c's Cv: keys hold texts. Only a faces keys. `|step[3]` vs `|step[3.0]`: different keys under every option (identity by spelling).
+- **Is prose ever read?** `$main` is an attribute value, so `|h1 1984` gets a reading under (a)/(b). Prose children don't. Unstated in the cards.
+- **nil:** [[rule:nil-spelling]] stands as written under (a)/(b); its open "is the spelling now `<nil>`?" dissolves.
 
-**Nuances.**
-- Is prose ever faced? The forks read "never" (`|p 42` under a `|p` heading is a text child; `$main` is an attribute value, so `|h1 1984` *would* get a face under (a)). Unstated in the cards.
-- Keys and lists under the same rule: `|step[3]` gets `⸨3⸩~int`; `|step[3]` and `|step[3.0]` are different keys (identity by spelling), which avoids needing a numeric-equality rule.
-- nil: [[rule:nil-spelling]] stands as written (`nil` faced, `null` text with a warning). The open question on that card ("is the spelling now `<nil>`?") dissolves under (a)/(b).
+**What decides it:** B3 stability (10), C1 structured data (10), A2 guessability (10), A3 cold comprehension (10) for (a)/(b); A6 clarity (9), A7 simplicity (8), B5 parse speed (9), C2 XML (10) for (c′).
 
-**Cards touched.** [[rule:unquoted-run-is-one-value]] (Statement 2 and the view), [[def:reading-option]] (the typed-primitive view leaves it, or becomes the converter default), [[def:typed-value]] (implicit typed values reappear as faces), [[rule:nil-spelling]], [[rule:missing-value]] (their open questions close), the `rule:bare-typing` gap (becomes "the face grammar").
+**Cards touched:** [[rule:unquoted-run-is-one-value]] (Statement 2, the view, **and its Grounds**, which say "a streaming parser knows every value's kind from its first character" — contradicted by the measurement in D3), [[def:reading-option]], [[def:typed-value]], [[rule:nil-spelling]], [[rule:missing-value]], [[rule:key-holds-a-value]], the `rule:bare-typing` gap.
 
 ---
 
-## D3. B1's wording
+## D3. B1's wording, and the streaming question that is actually open
 
-**The question.** CTQ B1 says "every construct's kind is known within a few characters". Under D2(a), a bare run is known at its first character (it's a run), and its face arrives at its close. Does "kind" include the face?
+**Facts (measured; Fable re-ran the scripts).**
+- The 0.9 pushdown parser, fed 1 MB of bare text, a 1 MB digit run, a 1 MB quoted string and a 1 MB prose line, emits 0 bytes before each terminator (c); the same in 1 KB chunks (b's fork S).
+- A constant-state classifier agrees with a regex on 200,000 random spellings, fed whole and chunked (c's B fork), and with the post-hoc view on 400,000 runs, emitting from the first character (a).
+- So `4938…2412124p` doesn't separate whole-run typing from "C with the view": the classification is the same work at the same moment.
 
-**Facts (measured).** Spike c fed the 0.9 pushdown parser a 1 MB text, a 1 MB digit run, a 1 MB quoted string and a 1 MB prose line: 0 bytes emitted before each terminator. Spike b's fork did the same in 1 KB chunks. Spike a's check: a streaming classifier agrees with the post-hoc view on 400,000 fuzzed runs, emitting from the first character. So the objection that moved you from whole-run typing to "C with the view" (`4938…2412124p`) doesn't separate them: the old parser already held every value to its end, and a classifier needs constant state.
+**The fact that changes the urgency** (b's fork S; Fable): **the pushdown parser has no line cap today.** Only the older recursive wrapper caps a line, at 4 KB. So the exposure you described ("forced to buffer essentially unlimited amount … DoS type attacks and buffer overflows") exists now for every bare text, independent of D2. The fork's conclusion: the real streaming decision is *emit content in fragments, or cap the line*, and it is orthogonal to typing.
 
-**What still holds back.** Telling `1984` from `1984 is a novel` means reading past the space (across any alignment spaces). Under D2(a) that's fine: the run is text from the first character, and only the face waits.
+**The one word B1 turns on** (c's B fork): whole-run typing is bounded in *memory* (bytes held) but not in *characters scanned before the kind is known*, because `1984` vs `1984 is a novel` needs a look past any number of alignment spaces. c's allomorph was designed to pass B1 *as currently worded*: the kind is "text" at the first character, and the face is an attachment at the close. So under D2(a)/(b) rewording is optional; it's needed only if "kind" includes the classification.
 
-**The proposed rewording** (spike b's fork):
+**b's proposed rewording, whole** (four sentences; the guide's first version dropped the last):
 
-> **Bounded streaming.** Where a construct ends and what contains it are known within a few characters. A parser never needs to hold an unbounded stretch of input to decide them. A classification of a finished span may be reported after the span.
+> **Bounded streaming.** Where a construct ends and what contains it are known within a few characters. A parser never needs to hold an unbounded stretch of input to decide them. A classification of a finished span may be reported after the span. Whether content itself is emitted in fragments or held to its line end is a wire choice, measured as the longest holdback (today: one line).
 
-**Nuance.** The same question recurs for D4 (the stand-alone decision is made at the closer plus one character) and D6 (a constructor is decided at the end of its name). Spike a asks whether labels need a maximum length (say 64) so these are provably bounded; it costs nothing anyone writes.
+**Same question elsewhere:** the stand-alone decision (D4) is made at the closer plus one character; a constructor (D6) at the end of its name. c's `std` design already spelled a 64-character cap on notation names (and caps on fractions and zone names); a asked whether all labels should have one.
 
-**Cards touched.** `CTQ-FACTORS.md` B1's footnote.
+**What decides it:** B1 (veto), B5 parse speed (9), B3 (10).
+
+**Cards touched:** `CTQ-FACTORS.md` B1's footnote; a new card or note on line length / content fragments.
 
 ---
 
 ## D4. A delimited value counts only if it stands alone
 
-**The question** (spike b's page 30; adopted by a and c in their final thoughts). Today a value that starts with `"`, `'`, `<` or `[` commits there, and the rest of the line stacks. That loses things writers mean:
+**The question** (b's `b/30`; adopted by a and c in their final thoughts). Today a value that starts with `"`, `'`, `<` or `[` commits there, and the rest stacks. That loses what writers mean:
 
 ```udon
 |p "Hello," she said.
@@ -175,7 +183,7 @@ TODAY (the cards):
   |p   :$main "Hello,"   :$main ⸨she said.⸩           ← the quote marks are gone
   |li  :$main [⸨Docs⸩]   :$main ⸨(https://x.org) for more⸩   ← the link is gone
   |li  :$main <kbd>      :$main ⸨Ctrl</kbd> to copy⸩
-  |el  :a "x"            :$main ⸨y⸩   (your 2026-10-21 lean on the residue)
+  |el  :a "x"            :$main ⸨y⸩
   |el  :a "x"            :$main ⸨y⸩
 
 STAND-ALONE RULE:
@@ -186,72 +194,89 @@ STAND-ALONE RULE:
   |el  :a "x"            :$main ⸨y⸩
 ````
 
-**The rule.** A value is exactly one delimited form followed by the end of the value (a space and a start, a framed ` \ `, or the end of the line), or it is a run, and the delimiters are content.
+**The rule.** A value is exactly one delimited form followed by the end of the value, or it is a run and the delimiters are content. **The end of a value must include every terminator** in [[rule:text-value-end]]: a space and a start, a framed ` \ `, the end of the line, **a framed ` ; `, and a space followed by a fence opener** (Fable: b's text lists only the first three, so `:a "x" ; note` would silently become a run).
 
-**Spike c's stronger form, which the coordinator called the most important structural result:** *every sameline value is a run, and a closed form standing alone, or a run spelling a primitive, gives it a face.* One rule for extent (the run), plus a short list of things that give a run a face. It absorbs D2, D4 and D6: `"x"` alone gets a string face, `8080` an int face, `date(…)` a constructor face, and `"x" y` gets none.
+**A decision hidden inside D4** (Opus): **is a quoted value standing alone a string, or a text with a string face?**
+
+```udon
+|p "To be, or not to be."
+|el :name "8080" :q "a\"b"
+```
+- **b's form:** `$main` is the string `To be, or not to be.`; the quote marks are delimiters, the form kept in «meta». A consumer that reads the value (a JSON export, a getter) loses the quotation marks from a whole-line quotation: the loss the rule was invented to fix, in the whole-line case.
+- **c's unified form** ("every sameline value is a run, and a closed form standing alone, or a run spelling a primitive, gives it a face"; offered tentatively by c, elevated by the coordinator): the text is `"To be, or not to be."` with its quotes, plus a string face. Nothing is lost; but D2's converter question then applies to every quoted value (with a text-face default, `:name "8080"` exports as `"\"8080\""`).
 
 **Facts.**
-- No re-scan is needed (b): the delimited form is scanned by its own rules, so `:a "a :b c" d` keeps ` :b` inert and gives `⸨"a :b c" d⸩`.
-- Escapes stay compatible with the proposed value-line escape set (`\"` is a quote either way).
-- `|li '90s music, mostly` is still an unclosed-string error (no closer on the line); b keeps that, with a "did you mean `\'90s`?".
-- Streaming: decided at the closer plus one character, on the same line.
+- No re-scan (b): the delimited form is scanned by its own rules, so `:a "a :b c" d` gives `⸨"a :b c" d⸩` and ` :b` stays inert.
+- `|li '90s music, mostly` stays an unclosed-string error ("did you mean `\'90s`?").
+- Decided at the closer plus one character, on the same line (D3).
 
-**Pros and cons.** b's scoring: guessability and cold comprehension 5→8, XML/HTML 5→9, Markdown 4→9, simplicity 8→7 (one more check). The cost: a writer who meant a string then a stacked text on one line writes ` \ ` between them, the spelling already ruled for stacking (`|el asdf \ ghijk`).
+**Dead alternatives, with reasons** (`b/30`): δ2, `$main` never commits but attributes do (breaks the sameline sameness you ruled 2026-09-29); δ4, the residue is an error ("an error on the thing everyone writes is a guessability failure, not a teaching moment").
 
-**What it reverses.** [[rule:leftover-values]] is decided, and its own example is `|q "hello," she said` as two `$main` values. That example inverts, and its Statement narrows to values separated by ` \ ` or a start. Also: your 2026-10-21 lean on the residue after a self-ending value; [[rule:adjacent-quoted-strings]] (`"x""y"` becomes one run, not two strings with a warning: worth its own look); [[def:main]] and [[def:prose]] examples.
+**What it reverses.** [[rule:leftover-values]] is decided, and its own example is `|q "hello," she said` as two `$main` values; it inverts. Also your 2026-10-21 lean on the residue; [[rule:adjacent-quoted-strings]] (`"x""y"` becomes one run); [[def:main]] and [[def:prose]] examples.
+
+**What decides it:** b's scoring, A2 and A3 (10, 10) 5→8, C2 XML (10) 5→9, C3 Markdown (9) 4→9, A7 simplicity (8) 8→7.
 
 ---
 
 ## D5. A reading on an attribute name
 
-**The question.** Where a slot needs to say what its value is, in the text, how is that spelled? This is your "what the slot is" made visible per occurrence, and the one idea all three final-thoughts adopted (b invented it; you called it "*definitely* along the creative lines" and "mass, then kg inside it" an affordance).
+**The question.** Where a slot needs to say, in the text, what its value is, how is that spelled?
 
 ```udon
 |part :mass.kg 3.2 :mass.lb 7.1 :width.px 920 :version.text 1.10
-|ev :on.date 2026-10-01 :when.date(YY-MM-DD) 27-03-05 :span.daterange 2026-01–06
+|ev :on.date 2026-10-01 :when.date(YY-MM-DD pivot 1950) 27-03-05
 |sample :mass(kg) 3.2 :temp(°C) 21.5 :born(date YY-MM-DD) 27-03-05
 ```
 
+**Who found it** (both audits): all three spikes had `.kind` in round one. a's wildcard killed `:port.u16` on stacking; c's mark fork kept `:when.date` but scored guessability 5 for a silent miss; b kept it by reframing the reading as belonging to the *occurrence*, not the slot (`:mass.kg 3 :mass.lb 7` stack as two masses), which dissolved a's objection. You endorsed b's form. a's final names its own kill as the failure your creativity note described.
+
+**The framing, corrected** (Opus): a reading on one occurrence is a claim about the literal ("accidental", in b's music table). "What the slot is" is the signature or vocabulary (D10). b/20: "a slot type, to be one, has to be stated once and range over occurrences."
+
 **The options.**
-- **(a) `.kind`**, with parameters in parentheses (`.date(YY-MM-DD)`). Spikes a and b. Mirrors `|user.admin` (a trait says what kind of thing).
-- **(b) `(kind)`**, the scientific column header, "Mass (kg)". Spike c's taste and the coordinator's lean ("one spelling, `name(…)`, at every scope").
-- **(c) `:` (`:when:dt`).** Dead in all three: `:xml:lang` and `:xlink:href` read silently wrong.
-- **(d) `<kind>` after the name (`:when<date>`).** c's `slot` design; free headroom today because it's an error.
-- **(e) None:** readings live only in vocabularies. Kept by all as a layer, rejected as the whole answer because an agent reading the file sees no unit (c's §6).
+- **(a) `.kind`**, parameters in parentheses (`.date(YY-MM-DD pivot 1950)`). a and b.
+- **(b) `(kind)`**, the scientific column header, "Mass (kg)". c's taste; the coordinator's lean.
+- **(c) `:name<type>`**: reached independently by a's slots fork (7.0), c's mark fork and c's slot design; free today because it's an error.
+- **(d) `:when:dt`**: dead in all three (`:xml:lang`).
+- **(e) None:** readings only in vocabularies. Kept as a layer by all; rejected as the whole answer because an agent reading the file sees no unit.
 
 **Facts.**
-- The labels lean (a coordinator's lean of 2026-10-20, not decided) makes `.` an error in a bare *attribute* name and `(`/`)` errors in every bare label. So both spellings widen an error and change no accepted tree.
-- In lite, attributes can't nest (reserved), so a `.` after an attribute name can only mean its kind, never a sub-key.
-- The reading belongs to the *occurrence*, not the slot: `:mass.kg 3 :mass.lb 7` stack as two masses. This is how b answered a's first-round objection that `:port.u16 8080 :port 443` gives one slot two types.
-- Your note: dots in attribute names are already a pain on the API side (`.Attributes["dispatch.status.arrival"]`).
+- The labels lean (a coordinator's lean, not decided) makes `.` an error in bare *attribute* names and `(`/`)` errors in every bare label. Both spellings widen an error; neither changes an accepted tree (the B2 half).
+- **Both spend held headroom** (the B6 half; Opus, Fable). Nested attributes are *reserved*, not impossible ([[rule:nested-attributes]]: "keep the construction free for later use"); dotted nesting (`:server.port`) is the obvious later meaning, and `.kind` spends it. `(…)` spends the spelling a's dp10 kept as an error for a later in-document declaration (R6: `:name<…>`, `:name(…)`, `:name[…]`).
+- **Your note:** dots in attribute names are already a pain on the API side.
 
-**A finding of mine, which none of the spikes raised: `(…)` swaps roles between names and values.** With constructors (D6) also in play, the coordinator's "one spelling at every scope" puts these side by side:
+**Costs of `.kind`.**
+- **The TOML/Spring reader** (c's mark fork, never answered by a spike): `|config :server.port 8080` written to mean nesting. Your "affordance" remark answers `:mass.kg`, where the two readings agree, and you added the caveat yourself: "other contexts where the vocabulary was more foreign and random might cause a different inference". **Whether the miss is silent depends on D6.2:** under b's registry (an unprefixed reading not in the registry is an error with "did you mean"), `:server.port` errors unless `port` is a registered kind. That registry is "a spec appendix that grows by version", unit codes included (b/60).
+- **XSL-FO's dotted property names** (a's slots fork; Fable): `keep-with-previous.within-column`, `space-before.optimum`. Today an error (quote them); under `.kind`, a misread, silent unless the registry catches `within-column`. C2 (10).
+- **"Mirrors `|user.admin`" is weaker than it looks** (b/60 "Limits found by pushing it"): element traits must stay free words, or a user's own trait named `date` would type their text by accident. So `.` would mean a free word on elements and a registered kind on attributes.
+- **Unit symbols aren't label characters:** `°`, `%`, `²`, `/` (so `:temp.°C`, `:fill.%` aren't bare labels; b fell back to `degC`, `pct`, which c criticized, since you took typing cost off the table). `µ` and `Ω` *are* letters (Opus checked UCD 18). And MICRO SIGN and GREEK MU look identical and fold only under NFKC, so with byte equality `:len.µm` and `:len.μm` differ.
 
-```udon
-|samples :$sig [mass(kg) temp(°C)]
-|meta :values [qty(3.2 kg) date(2026-10-01) 42]
-```
-In the first list, the part outside the parentheses is the *slot* and the part inside is the *kind*. In the second, the part outside is the *kind* and the part inside is the *body*. Same shape, opposite roles, and inside a list only the enclosing attribute says which. Under (a) the shapes differ visibly: `[mass.kg temp.degC]` against `[qty(3.2 kg) date(2026-10-01)]`. (a)'s own residue: if constructor names could ever be dotted (`geo.point(…)`), they'd collide with dotted readings; EDN's `/` for namespaces (`acme/sku(…)`; `/` is already allowed inside labels by the labels lean) avoids it.
+**Costs of `(kind)`.**
+- **It swaps roles between names and values** (my finding, strengthened by the Opus audit). With constructors (D6) in play: `[mass(kg) temp(°C)]` puts the kind inside; `[qty(3.2 kg) date(2026-10-01)]` puts the kind outside. And under D4 and D6 as stated, each item in `:$sig [mass(kg) temp(°C)]` stands alone in a list, so it *is* a constructor named `mass`, an unknown name, an error. The coordinator's one-spelling signature doesn't parse unless `$sig`'s items are exempted by attribute name.
+- In its favour: it holds anything inside (`°C`, parameters with spaces), and reads like every scientific table.
 
-**A nuance against (a):** unit symbols don't fit label characters. `°`, `%`, `²`, `µ`, `Ω` aren't identifier characters, so `:temp.°C` and `:fill.%` aren't bare labels; b fell back to `degC` and `pct`, which c criticized (you took typing cost off the table, and `°C` is what everyone reads). Under (b), `:temp(°C)` holds anything inside the parentheses. Under (a), the parameter form covers it: `:temp.unit(°C)`, or the reading's own character set could be wider than a label's. This is the strongest argument for (b) on the page.
+**What decides it:** A2, A3 (10, 10), A5 domain-forward (9), A4 agentic readability (10) against A8 parsimony (8), C2 XML (10, XSL-FO), B6 headroom (7).
 
-**Pros and cons.** Both put the kind before the value (good for a streaming JSON writer deciding whether to write `"`), both keep values bare and aligned (A5, visual beauty), both are guessable from habits agents already have (`timeout_ms`, `size_px`; "Mass (kg)"). (a) reads like UDON's own trait; to TOML-trained eyes it may read as a nested key (you called that an affordance). (b) reads like science and spreadsheets and holds parameters with spaces.
-
-**Cards touched.** [[def:attribute-name]], [[def:label]] (characters), [[def:trait]] (if `.` on attributes is "the same mark"), the `rule:repeated-attributes` gap (readings per occurrence).
+**Cards touched:** [[def:attribute-name]], [[def:label]], [[def:trait]], the `rule:repeated-attributes` gap.
 
 ---
 
-## D6. Constructor values: `name(…)`
+## D6. Notation values
 
-**The question.** Your canary. A value that is a label immediately followed by `(`, standing alone, is a notation value. What is its body, what happens to unknown names, and when is the body checked?
+Three designed families, each with a different trade. The guide's first version showed only the first; the audits found the other two were never weighed against it.
+
+### D6a. Constructors: `name(…)`
+
+Your canary.
 
 ```udon
 |ev :on date(2026-10-01) :lasts duration(3mo 5d) :span interval(date(2026-01) date(2026-06))
 |meta :values [date(2026-10-01) qty(3.2 kg) 42 hello]
-|math :z rational(complex(3 -7) 2)
 |li printf(x) prints x
 |li Upload the file(s) here
 |x :call printf(x)
+|h3 parse()
+|h3 date(format)
+|td SUM(A1:A9)
 ```
 ````tree
 root
@@ -260,28 +285,67 @@ root
     :lasts duration(⸨3mo⸩ ⸨5d⸩)                  ⇒ 3 months 5 days
     :span interval(date(⸨2026-01⸩) date(⸨2026-06⸩))
   |meta
-    :values [date(⸨2026-10-01⸩) qty(⸨3.2⸩ ⸨kg⸩) ⸨42⸩~int ⸨hello⸩]
-  |math
-    :z rational(complex(⸨3⸩~int ⸨-7⸩~int) ⸨2⸩~int)
+    :values [date(⸨2026-10-01⸩) qty(⸨3.2⸩ ⸨kg⸩) ⸨42⸩ #int ⸨hello⸩]
   |li  :$main ⸨printf(x) prints x⸩               ← not alone: text
   |li  :$main ⸨Upload the file(s) here⸩
-  |x   ✗ error: `printf` is not a lite notation; for the text, write "printf(x)"
+  |x   ✗ `printf` is not a lite notation; for the text, write "printf(x)"
+  |h3  ✗ `parse` is not a lite notation …
+  |h3  :$main date(⸨format⸩)  ← a standard name: an error at parse time, or a silently bad date if bodies are checked only when read
+  |td  ✗ `SUM` is not a lite notation …
 ````
 
-**Facts.** Your observation: prose almost never puts `(` directly after a letter or digit. The exceptions are code (`printf(x)`, `f(x)`) and the optional plural (`file(s)`), and the stand-alone rule (D4) leaves both safe in running text. The one remaining collision is a whole value that is exactly a call to an unknown name: an error that teaches, not a silent misread. Spike c found `date(…)` first and then demoted it to parameter syntax inside `<…>` because of `printf(x)`; b's stand-alone rule removed that objection.
+**Facts.** Your observation: prose almost never puts `(` straight after a letter. The exceptions (code, `file(s)`) are safe in running text under D4. **But `$main` is a value** (Opus): any element whose whole sameline text is `name(…)` is a constructor. In API documentation and spreadsheets that is common: loud errors for unknown names (a C2/C3 tax larger than "almost never"), and a standard name (`date`, `int`, `re`, `time`, `range`, `url`) taking over a heading. One option: exempt `$main` from constructor recognition, at the cost of `|li date(2026-10-01)` being text and of one-rule-everywhere.
 
-**Decision points inside D6.**
+**Decision points inside D6a.**
 
-1. **The body: list items or verbatim?**
-   - *Items* (b, a): read by lite's own list rules, so a parser that knows no notation still builds the whole tree and shows nesting (EDN's principle). A regex with spaces or unbalanced parentheses can't be a body; it goes in backticks (D7). Then parentheses mean "structured" and backticks mean "verbatim" everywhere, fences included.
-   - *Verbatim to the matching `)`* (c): kind to regexes (`re(\d+(\.\d+)?)` needs no escapes, since matched parentheses nest); nesting is then the notation's business.
-2. **Unknown names.** b and a: an unprefixed name not in the standard set is an error with "did you mean"; a namespaced name (`acme/sku(…)`) is carried for whatever reads it (EDN's rule). b warns against c's resolution of short names through vocabularies in scope: loading a vocabulary that defines its own `date` changes what existing documents mean, which is YAML's competing-schemas failure moved to names; and a user's unprefixed `colour(…)` today squats on a name a later standard set may want (B6).
-3. **When is a body checked** (b's question none answered): `date(2026-13-45)` an error at parse time (the parser carries each standard notation's grammar; one verdict in every parser, B3, B4) or only when read (the parser stays small; an accepted document can hold a bad date). b's lean: standard notations checked at parse time, namespaced ones at read time.
-4. **Are readings equal across positions?** `:mass.kg 3.2`, `:mass qty(3.2 kg)`, and `:mass 3.2` under a signature saying kg: the same logical value? If yes, a tool can hoist repeated readings into a signature safely; if any reader distinguishes them, it can't (b).
+1. **The body: items or verbatim?**
+   - *Items* (b, a): read by lite's list rules, so a parser that knows no notation still builds the tree and shows nesting (EDN's principle). Then parentheses mean "structured", backticks mean "verbatim" everywhere. c's `args` prototype (`nargs.py`, the items model inside `<…>`) found its **one silent miss**: `re(a  b)` loses the double space when a notation joins its items, so exact text must go in quotes or backticks. It also offered **parameters as quoted strings** (`date("YY-MM-DD" 27-03-05)`), so a parameter can never be confused with a body token, and named the honest boundary: the moment the form accepts `:format …` inside, it *is* an inline element with a different bracket.
+   - *Verbatim to the matching `)`* (c): kind to regexes, since matched parentheses nest.
+2. **Do the items get readings?** The first version of this guide drew it both ways in one tree. a: yes (`complex(⸨3⸩ #int …)`). b: "The items get no default reading. The notation is their slot, and only it reads them" (b/50 rule 3). Faced items help a converter that meets an unknown notation; unfaced items keep the notation the only reader.
+3. **Unknown names.** b and a: an unprefixed name not in the standard set is an error with "did you mean"; a namespaced one (`acme/sku(…)`, `/` already allowed inside labels by the labels lean) is carried (EDN's rule). c's `args` fork independently reserved the standard short names ("A vocabulary can't redefine `date`"), so this isn't a b-vs-c split. b's warning against resolving short names through vocabularies in scope (YAML's competing schemas, moved to names); c's wild W7 answers it a different way (content-addressed names: a lockfile pins `date` to its definition's hash).
+4. **When are bodies checked?** Decided by D1's second question. Parse time: one verdict in every parser (B3, B4), at a cost to B5 parse speed (each standard notation's grammar, calendar validation included, lives in the parser). Read time: a small parser, and an accepted document can hold a bad date.
+5. **Two-digit years.** `:when.date(YY-MM-DD) 27-03-05 ⇒ 2027-03-05` doesn't say which century. b (fork R checked REBOL): with no stated century "a document's meaning changes with the clock", a B3 failure; b writes `pivot 1950`. a and c assert 2027 without one (c's slot defaults to 2000–2099; c's `elem` makes `YY` mean 20YY unless `:century`). The rule has to be stated somewhere.
+6. **Durations disagree on `m`:** c's `std` reads `5m` as minutes; b's registry makes a lone `m` an error ("`mo` or `min`?").
+7. **Are readings equal across positions?** `:mass.kg 3.2`, `:mass qty(3.2 kg)`, and `:mass 3.2` under a signature saying kg: one logical value? If yes, a formatter can hoist safely (D10).
 
-**Pros and cons.** Guessability is the highest of any notation found (every agent writes `rgb(…)`, `url(…)` without thinking: c scored it 9); no new bracket; nesting reads as mathematics. Costs: a label of unbounded length before the `(` (D3's label-length question); every standard name in the set becomes, in effect, reserved in value position.
+**What decides it:** A2 guessability (10; c scored β-ascii 9, the highest of any notation found), A3 (10), A8 parsimony (8, no new bracket), C2/C3 (10, 9; the `$main` tax), B4 errors that teach (8), B5 (9; parse-time checks).
 
-**Cards touched.** New cards (constructor values; the standard notation set), [[rule:unquoted-run-is-one-value]], [[rule:value-line-escapes]] (`(` after a label in value position), [[def:value]].
+### D6b. The sigil: `~name body`
+
+a's coordinator invented it (`a/invent/coordinator-inventions.md`) and called it "the strongest thing I've seen in either pass" (A1 9, A2 8 from Elixir, A5 9). c's mark fork kept `~name[…]` on file as the one glyph that frees `<` with no new cost. b called `.kind` "the sigil idea, made beautiful by moving it off the value". **It was never compared against `name(…)` and never killed.** You asked for exactly this by name ("elixir-like sigils, but made more beautiful").
+
+```udon
+|server :timeout ~dur 30s :started ~datetime 2026-07-21T14:20 :pattern ~re/^\d+$/i
+|price :amount ~money 9.99 USD
+|li ~5min is about right; ~~struck~~ stays Markdown
+```
+````tree
+root
+  |server
+    :timeout ~dur ⸨30s⸩
+    :started ~datetime ⸨2026-07-21T14:20⸩
+    :pattern ~re ⟬^\d+$⟭ /i
+  |price
+    :amount ~money ⸨9.99 USD⸩       ← the body is a run: no closer needed
+  |li
+    :$main ⸨~5min is about right; ~~struck~~ stays Markdown⸩   ← `~` before a digit, and `~~`, are text
+````
+
+The comparison (Fable's judgment, with mine): both name first. `~name` needs no closer for a run body and **no stand-alone rule** (`~` + label collides with nothing in prose; `~` is an error in bare labels today); `name(…)` needs D4 to be safe, and makes a heading that is a whole call an error. The sigil's costs: one more special character (A8), a body that ends by the run rule (so `~money 9.99 USD :x 1` is fine, but `~re` needs its own delimiters for spaces), and guessability resting on Elixir rather than on CSS and every function call ever written. Nesting reads worse (`~interval ~date 2026-01 ~date 2026-06`?).
+
+### D6c. Notations as elements: no new grammar
+
+All three spikes kept it alive to the end as the cheapest design (a's W1 "alive, worth his attention"; b's NB runner-up, "if Joseph weighs 'one construct' above typo errors, NB wins"; c's `elem`: simplicity 10, parsimony 10, headroom 10, "the right design if grammar size matters more than CTQ says"). **It is the baseline every other design's grammar cost should be read against** (Fable).
+
+```udon
+|server[web] :timeout |{dur 30s} :port 8080
+|p Doors open at |{time 19:30} sharp.
+```
+Costs: the value is a piece of a text, so a reading option has to lift it into a value; a typo (`|{dtae …}`) is silently just an element; without braces, `:timeout |dur 30s :port 8080` gives `port` to the `dur` element ([[rule:element-after-attribute-with-no-value]]), caught only for known notations. Its real strength, a typed value inside prose, costs nothing under any design, since inline elements exist.
+
+**Is a date a leaf of the tree or a node?** That's the question under D6c against D6a/b.
+
+**Cards touched (D6 as a whole):** new cards (the notation value; the standard set and its registry), [[rule:unquoted-run-is-one-value]], [[rule:value-line-escapes]], [[def:value]].
 
 ---
 
@@ -290,139 +354,267 @@ root
 ```udon
 |cmd :run `rm -rf ./build` :match ``a`b``
 |rule :pattern re`^\d{3}-\d{4}$` :path `C:\Users\me`
+|rule :pattern.re `^\d{3}-\d{4}$`                    ; a's spelling: the reading on the name
 |li `npm install` first
+|li `npm install`
 ```
 ````tree
 root
-  |cmd
-    :run ⟬rm -rf ./build⟭
-    :match ⟬a`b⟭
-  |rule
-    :pattern re ⟬^\d{3}-\d{4}$⟭
-    :path ⟬C:\Users\me⟭
-  |li
-    :$main ⸨`npm install` first⸩                ← not alone: Markdown code span stays text
+  |cmd   :run ⟬rm -rf ./build⟭   :match ⟬a`b⟭
+  |rule  :pattern re ⟬^\d{3}-\d{4}$⟭   :path ⟬C:\Users\me⟭
+  |rule  :pattern (.re) ⟬^\d{3}-\d{4}$⟭
+  |li    :$main ⸨`npm install` first⸩   ← not alone: a Markdown code span, text
+  |li    :$main ⟬npm install⟭           ← alone: a raw value (form kept, so Markdown can restore it)
 ````
 
-**The idea.** One or two backticks, standing alone as a value, are an inline verbatim value; three or more is the fence that already exists (b). A label touching the backticks names the body's notation, a fence at value size (a's languages fork). Backticks already mean "verbatim" to every agent.
+**The idea.** One or two backticks standing alone are an inline verbatim value; three or more is the existing fence (b). A label touching them names the body's notation (a's languages fork N1), or the reading goes on the attribute name (a's final).
 
-**Facts.** Today `:path 'C:\Users\me'` already works (single quotes keep backslashes). What backticks add is a body with *no* escapes at all and a name for its notation. The fence opener is a text terminator ([[rule:text-value-end]]: a space followed by three or more backticks), so one-or-two-backtick values must not trip it.
+**Facts and costs.**
+- `'C:\Users\me'` already works; backticks add a body with no escapes at all and a name for its notation. The fence opener is a text terminator ([[rule:text-value-end]]), so one or two backticks must not trip it. `` \` `` is already in the proposed value-line escape set.
+- **A whole `$main` that is one code span becomes a raw value** (b/60 I2), the C3 cost named above.
+- **The name sits on opposite sides** (N1's own unease): a fence puts its name after the backticks; a tagged value before, because an untagged `` `make all` `` can't tell a tag from content.
+- **A carried body can't be checked** (N1): `` num`8O80` `` is carried, not refused, so "insist this is a number" (K14) needs `int(…)` or a reading, not backticks.
+- It kills the backslash-doubling [[rule:opaque-span-escapes]] accepted for `<re:\\d+>`.
 
-**Pros and cons.** Kills the backslash-doubling cost [[rule:opaque-span-escapes]] accepted for `<re:\\d+>` (C8, B4). Another delimiter (A8 parsimony). Spike a notes the trailing-reading spelling (`⟪…⟫`) can't carry a regex with a space; backticks can.
+**What decides it:** C8 other languages exactly (8), B4 (8), A2 (10; every agent reads backticks as verbatim), A8 (8).
 
-**Cards touched.** [[rule:text-value-end]], [[rule:value-line-escapes]] (`` \` ``), [[rule:fence-opens-with-backticks]] (the size boundary), [[rule:unclosed-delimiter-is-error]].
+**Cards touched:** [[rule:text-value-end]], [[rule:fence-opens-with-backticks]], [[rule:unclosed-delimiter-is-error]].
 
 ---
 
 ## D8. What `<…>` is, if anything
 
-You reopened it wholesale ("still very cheap to change"). The spikes moved through four answers:
-
-| | What `<…>` is | Example | Status in the final round |
+| | What `<…>` is | Example | Where it stands |
 |---|---|---|---|
-| **(a) Retired from values** | nothing in values; back to full UDON whole; `<` free for HTML and Markdown in text | `|li <kbd>Ctrl</kbd> to copy` is plain text | a's final, b's final (K), the coordinator's lean |
-| **(b) Closed when unlabeled, open when labeled** | `<8080>` asserts a standard value or errors; `<>` is nil; `<date: 2026-10-01>` carries a notation | `<920px>` → "did you mean `920px` bare, or `<px: 920>`?" | a's first round (ANG-4c, 1250 of 1660); superseded by a itself |
-| **(c) The typeset value bracket** | the value written as the domain prints it, read by shape; `<scheme:body>` names a notation; a bodiless `<date>` is a clef | `<90 min>`, `<9.99 USD>`, `<2026-01 – 06>`, `<css:920px>`, `<https://example.com>` | c's round-two design; c's final keeps it beside constructors |
-| **(d) Carried raw** (the card today) | any interior carried as text | | dead in all three: fails the B2 veto (can't refuse `<920px>`) and can't hold a number once bare runs are text |
+| **(a) Retired from values** | nothing in values; back to full UDON whole | `|li <kbd>Ctrl</kbd> to copy` is text | b's final (K); the coordinator's lean. a's final is softer: "becomes free for c's typeset shapes if Joseph wants them, or it can be given back to full UDON" |
+| **(b) Closed unlabeled, open labeled** | `<8080>` asserts or errors; `<>` nil; `<date: 2026-10-01>` carries | `<920px>` → "did you mean `920px` bare, or `<px: 920>`?" | a's first round (ANG-4c, 1250 of 1660), superseded by a. Collapses three body grammars (raw, items, URI-shaped) that live on in D6a.1 |
+| **(c) The typeset value bracket** | the value as the domain prints it, read by shape | `<90 min>`, `<9.99 USD>`, `<2026-01 – 06>`, `<https://example.com>` | c's round two. c's final keeps the shapes and keeps `<scheme:…>` **only for URIs**, dropping `<css:920px>`-style names for constructors |
+| **(d) Closed, primitives only** | `<8080>` asserts a standard value; nothing else | `<0xFF>`? | a's ANG-3, c's M1, b's page-40 landing. Under D2(a)/(b) mostly redundant, except to *insist* (K14) |
+| **(e) Carried raw** (the card today) | any interior as text | | dead in all three: fails B2 (can't refuse `<920px>`), can't hold a number once bare runs are text |
+
+Plus **(f) no value bracket at all, notations are elements** (D6c): the zero-grammar row.
 
 **Facts and consequences.**
-- Under (a), your `<>`-is-nil lean needs a new home or simply goes (bare `nil` carries nil). `@{<…>}` ("reference kept, not resolved") needs its own spelling: c proposes `@<people/jw>` (kept) beside `@{x}` (resolved); b proposes `ref(people/jw)` / `<ref: …>`.
-- Under (c), ASCII `<` collides with HTML and autolinks only where a tag is the *whole* value (thanks to D4); `|li <https://example.com>` becomes a URI value, which is what CommonMark means by it. c's alternative bracket `⟨…⟩` (Unicode's informal aliases for U+27E8/9 are "bra" and "ket", checked by c) frees `<` entirely but no agent writes it unprompted.
-- [[rule:opaque-span-raw-text]], [[rule:opaque-span-escapes]], [[rule:newline-in-opaque-span-is-error]], [[rule:matched-pairs-need-no-escape]] and [[def:opaque-span]] all group `<…>` with `@{…}` and `;{…}`. Under (a), the group shrinks to the two embeds, and [[def:typed-value]]'s explicit/implicit split mostly dissolves (so do several of the definitions' open questions).
+- **(a)'s HTML/Markdown advantage is mostly already delivered by D4** (Fable; c's final moved its ASCII-bracket confidence from low to medium on that alone). With the stand-alone rule, `<` collides only where a tag or autolink is the *whole* value. The case left: `|li <https://example.com>`. Three answers in the files: a URI value, meaning what CommonMark means (c's combo, std); an error with a fix (c's raw, args); text, under (a).
+- **`@<ref>` is your spelling** (`history.jsonl` L22354, 2026-10-11): "`@{ref}` is an immediate dereference. `@<ref>` is a reference, as a value in udon, which also serves as an inline mention." [[rule:reserved-spellings]] reserves `@<` as a value. It survives (a), since `@<` isn't a value-initial `<`. c's `@<people/jw>` restates your design; b's `ref(people/jw)` is the alternative.
+- Under (a), your `<>`-is-nil lean has no home (bare `nil` carries nil). The opaque-span family ([[def:opaque-span]], [[rule:opaque-span-raw-text]], [[rule:opaque-span-escapes]], [[rule:newline-in-opaque-span-is-error]], [[rule:matched-pairs-need-no-escape]]) shrinks to the two embeds; [[def:typed-value]]'s explicit/implicit split mostly dissolves.
+- Unicode brackets (`⟨reader|spelling⟩`, `⟦name body⟧`, `⟪…⟫`) died on A2 (no agent writes them unprompted) and were each offered as the thing to measure with a three-example panel. `⟨` and `<` also look alike to your eye.
 
-**Pros and cons.** (a): parsimony (A8), headroom (B6), HTML and Markdown in text (C2, C3), spec clarity; but every notation value then needs a name (`date(2026-10-01)` rather than `<2026-10-01>`). (c): the most beautiful values on the page by c's judgment and arguably the most domain-forward; the largest grammar in lite (c's own scores: clarity ~6, simplicity ~4).
-
----
-
-## D9. Typeset shapes: where printed quantities live
-
-**The question.** c's typeset values (`<37.5 ± 0.2 °C>`, `<1920 × 1080 px>`, `<2026-01 – 06>` with the end elided, money with ISO codes, the symbol rule: letter units spaced, symbol units may glue, so `<5m>` asks "metres `<5 m>` or minutes `<5 min>`?") are the most daring values the spikes produced. Where should they live?
-
-- **(a) In lite's grammar**, recognized by shape (c's lean: "carry it all"; if it must shrink, cut size pairs and `× 10ⁿ` first, never dates, quantities, durations or dash ranges).
-- **(b) In the body grammar of standard notations** (b's and the coordinator's lean): `qty(37.5 ± 0.2 °C)`, `range(2026-01 – 06)`. Lite's parser needn't know any of it; the beauty is kept and the grammar cost moves to the notation.
-- **(c) Not in 0.1.**
-
-**Facts.** c checked UCUM's codes (`Cel`, `GiBy`, no number-unit syntax) and RFC 9557's `[Zone]` suffix; it reports NIST's SI spacing rules without re-checking them. No other data notation carries uncertainty (`±`).
-
-**Nuance.** Elision (`<2026-01 – 06>`, `[<date> 2026-01-01 07-04 12-25]`) reads beautifully, but a reader without the notation sees `07-04` as text.
+**What decides it:** A8 parsimony (8), B6 headroom (7), A6/A7 (9, 8) for (a); A1 beauty (9), A4 (10), A5 (9), C4 notations and units (8) for (c).
 
 ---
 
-## D10. Region-wide readings: signature, legend, clef
+## D9. Typeset shapes
+
+c's most daring values: `37.5 ± 0.2 °C`, `1920 × 1080 px`, `2026-01 – 06` with the end elided, money with ISO codes, and the symbol rule (letter units spaced, symbol units may glue, so `5m` asks "metres `5 m` or minutes `5 min`?").
+
+- **(a) In lite's grammar,** by shape (c's lean: carry it all; cut size pairs and `× 10ⁿ` first, never dates, quantities, durations or dash ranges).
+- **(b) In the body grammar of standard notations** (b's and the coordinator's lean): `qty(37.5 ± 0.2 °C)`, `range(2026-01 – 06)`. The beauty kept; the grammar cost moved to the notation.
+- **(c) Not in 0.1** (the order of commitment above: designed, shipped later).
+
+**Facts** (c's `std`, which fetched UCUM 2.2's essence file): UCUM's `B` is the **bel**, so `1.5 GB` would be gigabel (c's raw split out a `bytes` notation); there is no `px`; `Cel` is Celsius. ISO basic format `20261001` is an integer under any shape-based design. If agents don't produce the en dash, c's fallback is to accept ` to `. No other data notation carries uncertainty.
+
+**What decides it:** A1 (9), A5 (9), C4 (8) against A6 (9), A7 (8), B5 (9), D2 portability (7).
+
+---
+
+## D10. Region-wide readings, precedence, and which way a writer goes
 
 ```udon
 |samples :$sig [mass.kg temp.degC taken.datetime]
   |sample :mass 3.2 :temp 21.5 :taken 2026-10-01T14:30Z
-  |sample :mass 2.9 :temp 22.0 :mass.lb 6.6          ; an occurrence's own reading overrides (the accidental)
+  |sample :mass 2.9 :temp 22.0 :mass.lb 6.6          ; the accidental overrides
 
-:$legend |server :port u16 :timeout duration         ; every |server, wherever it is
+:$legend |server :port u16 :timeout duration         ; every |server
 |server[web] :port 8080 :timeout 30s
+
+|server.inet :port ssh                                ; a's N4: a trait as the clef
 ```
 
-- **`$sig`** (b): a container says once how its descendants' values read; scoped by position.
-- **Legend** (a): says how every element of a kind reads, document-wide; scoped by element name.
-- **Clef** (c): a bodiless `<date>` before values in a list or body. c conceded it to b's form in its final thoughts.
+Four forms: b's **`$sig`** (by position), a's **legend** (by element kind; "until changed" its lean, so it streams; it covers slot readings only, never structure, and must not grow into a schema language), c's **clef** (conceded to b), a's **trait as clef** (no syntax spent; but a reader can't tell a vocabulary trait from a class name, the registry problem again).
 
-**Facts and open edges.** Precedence between a signature and a legend is unanswered (b). Hand-written `$` names must be allowed (`$` first is in the labels lean). c's caution: *action at a distance*. An agent editing row 400 of a signed table must look up row 1 to know what `3.2` means, which is YAML-anchor-shaped and costs agent readability (A4) and agent tooling (D1); c suggests a signature is for tables you'd print with a header row, not for scoping a whole document. b's matching idea: a formatter that *hoists* repeated `:mass.kg` into one `$sig` (needs D6.4's "readings are equal across positions").
+**What the reader needs, which the files carry and the first version didn't:**
+- **Precedence** (b): the occurrence's reading, then the signature, then the vocabulary, then the default. Signature vs legend: unanswered.
+- **A literal's reading is checked against the slot, not coerced** (b/50, c's reader model): `instant(…)` in a `date` slot is an error at read.
+- **Which way a writer goes** (b): a serializer, formatter or agent writing back needs a canonical choice ("write the least plumbing that reads back identically"), or round trips aren't stable (B3, C10). It enables **hoisting** repeated `:mass.kg` into a `$sig`, if readings are equal across positions (D6a.7).
+- **Action at a distance** (c): editing row 400 of a signed table means looking up row 1. c: a signature is for tables you'd print with a header row.
+
+**What decides it:** A5 (9), A9 conciseness (6) against A4 (10), D1 agent tooling (8), A6 (9).
 
 ---
 
 ## D11. Prose and text
 
 ```udon
-|p Meet on [Oct 1st](date:2026-10-01); the review is due |{time Oct 15 :datetime date(2026-10-15)}.
+|p Meet on [Oct 1st](date:2026-10-01); due |{time Oct 15 :datetime date(2026-10-15)}.
 |a :href https://example.com Click here
 ```
 
-- **A typed value in prose as a Markdown link** (c): `[Oct 1st](date:2026-10-01)` already pairs human words with a machine value, and lite passes it through untouched. b called it the loveliest single idea of the three spikes. It costs lite nothing; it's a convention for readers.
-- **An inline element** (`|{time …}`) works today under every option.
-- **The bare URL hazard** (c found it): under the bare-run lean, `href` above is ⸨https://example.com Click here⸩, silently. a asks whether a run starting `scheme://` should end at its first space, which gives exactly `<a href="…">Click here</a>`. It's one shape-dependent exception to "a bare run is one value", the kind of exception that sank first-character typing for numbers; URLs differ in never meeting a word without a space. Open.
+- **A Markdown link carrying a typed value** (c; b: "the loveliest single idea across the three spikes"): costs lite nothing. But any Markdown renderer turns it into `<a href="date:2026-10-01">`, a dead link for a human reading the rendered page (Opus).
+- **An inline element** works today under every option.
+- **The gloss tier** (a's invent-beyond I2: readings on the line below, carets pointing up) is the only design that types a span inside a Markdown paragraph with the paragraph untouched. Dead as syntax (column-exact writing); kept as a reader-layer idea.
+- **c's `<{2026-10-15}>` value embed** in prose: c's own mark fork said it must stay reserved, a contradiction inside c.
+- **The bare URL** (c): `href` above is ⸨https://example.com Click here⸩, silently. a asks whether a run starting `scheme://` should end at its first space. That's one shape-dependent exception to "a bare run is one value", the kind that sank first-character typing for numbers; URLs differ in never meeting a word without a space.
 
 ---
 
-## D12. The trailing colon on attribute names
+## D12. The trailing colon
 
-Your light lean (2026-10-22): `:attr: hi` means `:attr hi`, the colon ornamental, "or even making it compulsory", pending this discussion.
+Your light lean (2026-10-22): `:attr: hi` = `:attr hi`, ornamental, "or even making it compulsory".
 
-- All three: **a bare label never ends in `:`** (today's labels lean lets it, so `:host:` is an attribute named `host:`). No XML name ends in `:`, so it costs nothing.
-- Then: optional ornament (your lean; c gives it your meaning now), none, or compulsory (pruned by a and c: changes every attribute on every card, matches no common notation).
-- If ornament: the `$main` colon warning's fix becomes one inserted character (`|server :host: localhost`).
-- b coupled the colon to its hinged literal `<date: …>`; under D8(a) that coupling goes.
-- c's mark fork leaned to reserving it first (reserving then accepting breaks nothing; accepting then reversing breaks documents).
+- All three: a bare label never ends in `:` (no namespace-valid XML name does; plain XML 1.0 `Name` technically allows it, b's fork R checked).
+- Then: optional ornament (your lean; c gives it your meaning now; b leaned ornamental-allowed, "no branch dies here"), none, or compulsory (pruned by a and c: changes every attribute; matches no common notation).
+- The ornament invites the colon-*less* `host: localhost`, which [[rule:main-label-colon-warns]] already catches, and its fix becomes one character.
+- Your history has a lineage for it (a's research-internal): 2011 allowed `:` in labels "ala ruby labels", and 2025-12 `!:json:` used a colon-closed label before a body. The ornament reads, in your own history, as a label closer before a body.
+- c's mark fork's T4: reserve the colon now, accept later (the order of commitment).
 
 ---
 
 ## D13. Smaller items
 
-- **Is a date a leaf of the tree or a node?** (a) `date(2026-07-21)` / `:on.date 2026-07-21` (a leaf) vs `|{date 2026-07-21}` (a node, no new grammar: c's `elem` design, b's runner-up). Elements as notation values have one silent trap: `|{dtae …}` is just an element; and `:timeout |dur 30s :port 8080` gives `port` to the `dur` element ([[rule:element-after-attribute-with-no-value]]).
-- **`nan`, `inf`, `-inf`**: c's core fork and c lean to allowing them somewhere explicit (`<nan>` in c's bracket); JSON has none.
-- **Keys and lists**: under D2 they get faces by the same rule (`|step[3]`, `:tags [1 2]`).
+- **Where `0xFF`, `0b1010`, `1_000` go** if the face set is JSON's (D2): `int(0xFF)`, a slot, or the face set widens (your 2026-07-14 words).
+- **`nan`, `inf`, `-inf`**: c leans to allowing them somewhere explicit; JSON has none.
+- **`∅` for nil** (a's invent-beyond I4b and languages N5, "the one glyph here I'd put in front of Joseph"): a second spelling under D2.
+- **`<[1 2 3]>`** (c's Cv: one mark over a numeric list, "where plumbing hurts most"): dead under D8(a).
 - **`-0xFF`, `+1`, `.5`**: text under the JSON grammar.
 
 ---
 
-## A CTQ question, raised by spike c and endorsed by the coordinator
+## A CTQ question
 
-Agents, the principal readers, read the source text, not a tree through a vocabulary-aware library. A unit declared in a vocabulary is invisible to them; `:mass.kg` isn't. The coordinator had written A5 domain-forward as "conventions … carry what would otherwise be declared on each value", which leans toward invisible meaning. Proposed rewording of A5's note: *the domain's model is visible in the text itself, in the domain's own words; conventions and vocabularies check what the text says rather than replace it.* Self-description (A10) stays low, since the target was always declaration plumbing, not the domain's words.
+Agents, the principal readers, read the source, not a tree through a vocabulary-aware library. A unit declared in a vocabulary is invisible to them; `:mass.kg` isn't. The coordinator had written A5 as "conventions … carry what would otherwise be declared on each value", which leans toward invisible meaning. c's proposed rewording: *the domain's model is visible in the text itself, in the domain's own words; conventions and vocabularies check what the text says rather than replace it.* A10 self-description stays low. The two pictures at the top of this page are the examples to judge it on.
 
----
-
-## What was measured, and what was only judged
-
-- **Measured:** the 0.9 parser's holdback (c, b's fork); a constant-state classifier against a regex on 200,000 random spellings (c's B fork, re-run by c) and against the view on 400,000 runs (a); `"false"` truthy in four languages (b).
-- **Checked against sources by the spikes:** RFC 8259, Namespaces in XML, RFC 9557, YAML 1.2.2 (b); UCUM codes, Unicode's bra/ket aliases (c).
-- **Judged only:** every CTQ score; every claim about what agents would guess (`:timeout.ms`, `date(…)`, the en dash, `⟨…⟩`). These are the cheapest things to measure, and none has been.
+A related observation from a's `instincts.md`, the one pre-registered instinct record (written before any fork reported): "the attribute name carries most of the meaning I read into a value … a spelling-only classifier is right for the JSON-shaped cases and wrong for the identifier-shaped ones, and I can't tell which case I'm in without the name."
 
 ---
 
-## Audits
+## Dead branches, with why
 
-*(Added after the two audits; see below.)*
+From Fable's audit (§4), drawn from the files; paths there.
+
+| Branch | Where | Why it died |
+|---|---|---|
+| First character commits | all three | `920px` an error; `1984 is a novel` splits silently |
+| The old line's whole set, bare | all three | every extra member fails "parameter-free" or "host-portable"; the old surprises sit inside them |
+| Quantity as a bare class (`920px`) | a, c, a I4 | captures `10am`, `3rd`, `1080p`, `401k`; `5m` still ambiguous |
+| REBOL-maximal lexical typing | a W4 | the spine becomes a catalog |
+| `:name:type` | all three | `xml:lang`, `xlink:href` |
+| Compulsory trailing colon | a, c | changes every attribute; no common precedent |
+| `<…>` carried raw | all three | fails B2 |
+| Standard set else raw | a angle | can't reject `<920px>` |
+| KDL `(type)value` | a, b, c | prose starts with `(`; CTQ's own B6 footnote |
+| EDN `#tag value` | b, c | `#` is colours, ids, hashtags |
+| YAML `!tag` | c | `!` is reserved for directives |
+| Suffix `8080u16`, `<…:dt>` | b, a | B by another name; decides late |
+| Attached tag `date"…"` | b, c | needs a tag-length bound; `point[…]` looks like an element head |
+| Space as head separator `<dt 2026-01-10>` | a, c | `<today>`, `<true story>` become notations |
+| Pipe as separator `<u32\|0xff>` | a, c, b | `\|` reads as an element; reads as a union in your algebraic names |
+| Unicode brackets `⟨⟩` `⟦⟧` `⟪⟫` | a, c | no agent writes them unprompted; `⟨` confusable with `<` |
+| β-white `date⦅…⦆` | c | unnecessary once D4 holds |
+| Emoji sigils | b, a | variation selectors make two spellings; widths break alignment |
+| Superscript tags `ᵈᵃᵗᵉ` | b, a | NFKC folds them |
+| Undertie `3.2‿kg` | b | strange and unfinished; kept for taste |
+| `№`, ℕℤℚℝℂ | a | not worth a character |
+| Narrow no-break space as SI binder | a | invisible in plain text |
+| Gloss tier / carets | a | column-exact writing; kept as a reader-layer idea |
+| Prime tags `90'min` | c | `the 90's` |
+| Plain-language dates | c | B3, A2 unless opt-in |
+| Bare scheme-colon as a typing mark (`date:2026-07-21`) | a | `localhost:8080`, `C:\tmp` get schemes |
+| Aliases declared in the lite document | a | lite has no declarations; `!` refused |
+| Subtree "classify" switch `\|server.typed` | c | a parse-mode directive in disguise |
+| δ2 (`$main` never commits at a delimiter) | b | breaks sameline sameness |
+| δ4 (residue after a delimited value is an error) | b | an error on `\|p "Hello," she said.` fails A2 |
+
+---
+
+## What was measured, checked, and only judged
+
+- **Measured, and reproduced by Fable on 2026-10-28:** a's `f1_check.py` (a 1,000,011-character run emitted after 1 character; 400,000-run fuzz); c's `classify_stream.py` (0 bytes held on a kind-at-close wire); c's `wire_model.py`. Not re-run: c's `holdback-probe.rs` and b's fork S crate. Also run by the spikes: `"false"` truthy in four languages (b); c's `args` prototype `nargs.py`; c's `std/discriminate.py`; a's `gloss.py`.
+- **Checked against sources by the spikes:** a's research-external fork fetched about twenty primaries on 2026-10-22 (XSD 1.1, YAML 1.2.2, KDL, EDN, CSS Syntax 3, TOML 1.0, I-JSON, RDF 1.1, UCUM, F#, Elixir, REBOL, StrictYAML, NestedText, Tcl, jackson's limits, CPython's cap, among others; URLs in `precedents.md`); b checked RFC 8259, Namespaces in XML, RFC 9557, YAML 1.2.2; c checked UCUM 2.2's essence file and Unicode's bra/ket aliases. c's mark fork's web readings (KDL, EDN, Elixir, REBOL, CommonMark) were re-checked by no one.
+- **Judged only:** every CTQ score; every claim about what agents would guess. These are the cheapest things to measure, and none has been.
+
+---
 
 ## My recommendations
 
-*(Added after the audits.)*
+*Mine (Opus 5.5, this session), as a principal end-user of lite: an agent reading and writing it without highlighting. Where my basis is "this is what I'd expect", I say so; you said that's valid evidence. Confidence is marked. These are leans for you to weigh, not findings.*
+
+### The shape of 0.1
+
+Take the order of commitment seriously. **Accept in 0.1 only the pieces that are both designed and cheap to state; ship every other designed piece as an error that teaches.** Errors are free to widen later; acceptances are forever. That keeps 0.1's spine short (A6) without "reserving for later": each refused form has a design, and its error message can show it.
+
+### D1: make it a definition. Faces closed. Bodies checked at parse time.
+
+- Define a carried notation node: a name plus a body the tree marks as unread. Unprefixed names belong to UDON's standard set; an unprefixed name lite 0.1 doesn't define is an error. Namespaced names (`acme/sku`) belong to their owners and are carried. **Confidence: high.** It answers B2 by construction and keeps your 2026-10-01 ground (no retained bytes waiting on UDON), because nothing unprefixed is carried unread.
+- **Faces closed for good** (c's sentence). Bare text stays text forever; new kinds arrive only by name. High: the old line's temporal surprises are exactly what an open face set grows into.
+- **Standard bodies checked at parse time from 0.1**, so checks never tighten later. Medium: it costs parse speed, but only for values that are named, and it gives one verdict in every parser.
+
+### D2: (b), a normative reading over an all-text tree. Keys unread.
+
+- **(b) over (a).** The tree holds texts; the spec defines one reading every consumer applies by default; fixtures show the raw tree. The `.text` collision decides it for me: under (a) the parser would have to interpret readings to withhold a face, and lite evaluates nothing. Both give every consumer the same answer for `:debug false`, which is what matters. **Medium-high.**
+- **Not (c′).** As a writer, `:debug false` meaning a truthy string is the single most surprising thing on this page. It fails my own guessability test outright.
+- **The set: JSON's, plus `0x`/`0o`/`0b` integers and `_` between digits.** Your 2026-07-14 words, and my instinct as a writer: I write `0xFF` meaning 255 and `1_000_000` meaning a million, and no word is spelled either way, so nothing is misread. A converter writes 255 to JSON, which loses the spelling but not the value. **Medium.** I'd keep floats and exponents faced (JSON's convention; a writer who means a version quotes it, as every JSON- and YAML-trained agent already does) and add the default-off lint for decimals ending in `0`.
+- **Keys get no reading** (b): a key identifies; it isn't arithmetic. High.
+- **Prose children are never read; `$main` is,** since it's a value. Say so on the card.
+
+### D3: adopt b's four-sentence B1, and decide the line cap now
+
+The rewording is optional under D2(b), but it says the true thing, so I'd take it. Separately, the missing line cap is a real exposure today: I'd let a parser emit text content in fragments, and allow an implementation limit on line length that errors (with a message saying it's a limit, not lite), as JSON parsers do for numbers. Medium.
+
+### D4: adopt the stand-alone rule, with every terminator. A quoted value alone is a string.
+
+- **Adopt it.** As a reader, `|p "Hello," she said.` as one sentence is what I'd expect without thinking; the current tree surprised me when I first read the card. High.
+- **Include ` ; ` and the fence opener in "the end of a value."** High.
+- **A quoted value standing alone is a string** (b's form), not a text with a face. `|p "To be, or not to be."`: as a writer, I'd take the quotes as delimiters there, the same as `:name "8080"`. It's a real loss for whole-line quotations, but the form is in «meta» for any renderer, and a writer who wants the marks writes `|p \"To be, or not to be."`. **Medium-low**; this is one I'd like the trial to test.
+
+### D5: `.kind`, low confidence, and the trial should decide it
+
+I still lean `.kind` with parameters in parentheses, mostly on the role swap: `(kind)` makes the same shape mean slot-plus-kind on a name and kind-plus-body on a value, and its one-spelling signature doesn't parse. But the audits moved me from medium to **low**. `.kind` spends the nesting headroom (`:server.port`, which I'd also read as nesting if I'd come from TOML), can't spell `°C` or `%` bare, and needs a registry of reading names in the spec to keep the TOML reading from being silent. If you weigh full UDON's dotted nesting highly, `(kind)` is the better spend, with `$sig` rethought.
+
+A middle path I'd put to you: **ship D5 in 0.1 as an error that teaches** ("readings on attribute names aren't in lite 0.1; write `:mass qty(3.2 kg)`"), let constructors (D6a) carry the in-text unit for now, and decide `.` vs `(…)` once the trial and full UDON's nesting plans are in. Nothing is lost, since constructors already put the unit in the text.
+
+### D6: constructors, items as structure, items unread, `$main` included
+
+- **`name(…)` for notation values.** High. It is the most guessable form anyone found, it nests like mathematics, and with D4 it's safe in prose.
+- **Body as items, unread** (b's rule): the notation is the items' only reader. Parameters as quoted strings (`date("YY-MM-DD" 27-03-05)`), so a parameter can never be mistaken for a body token. Exact text in backticks. Medium.
+- **`$main` included,** with the cost stated: `|h3 parse()` is an error that teaches ("not a lite notation; for the text, write `\parse()` or quote it"), and `|h3 date(format)` is a parse-time error, not a silent date, because bodies are checked (D1). One rule everywhere outweighs the API-doc tax for me, but it's close. Medium-low.
+- **A two-digit year requires a stated century** (`pivot 1950`), or it's an error. High: a document must not change meaning with the clock.
+- **0.1's standard set small:** `date`, `time`, `datetime`, `duration` (with `mo`/`min`, a lone `m` an error), `int` (for the radix forms if the face set stays JSON-only), `qty` with ASCII units. Everything else waits as "not a lite notation yet".
+- **The sigil (D6b):** I'd keep it out. `~money 9.99 USD` is lovely, but its body ends by the run rule, which makes nesting and spaced regexes awkward, and it adds a special character that `name(…)` doesn't need. Low-medium; it belongs in the trial.
+- **Elements (D6c):** the right tool for typed values *in prose* (`|{time Oct 15 :datetime date(2026-10-15)}`), and already available. Not the value notation.
+
+### D7: tagged backticks, yes
+
+`` re`…` `` and plain `` `…` `` standing alone. High. They're what I'd write for a regex or a Windows path without being told. The name-before-backticks asymmetry with fences doesn't bother me as a reader.
+
+### D8: retire `<…>` from values in 0.1, as an error that teaches
+
+`<` free for HTML in text, `@<ref>` (your spelling) stays reserved for its meaning, `<>`-as-nil dropped (bare `nil` covers it). `|li <https://example.com>` is text. Medium-high: D4 already removed most of the collision, so the main gain is parsimony and a shorter spine, and c's typeset bracket stays available for full UDON or a later lite.
+
+### D9: typeset shapes inside notation bodies, later than 0.1
+
+`qty(37.5 ± 0.2 °C)` and `range(2026-01 – 06)` are beautiful, and they belong to the notations' body grammars, not to lite's. Not in 0.1 beyond plain `qty(3.2 kg)`. Medium.
+
+### D10: no region-wide readings in 0.1
+
+Vocabularies outside the document cover the tables, and action at a distance costs agents like me more than it costs a library. Keep `$sig` designed and erroring. Medium.
+
+### D11: no exception for bare URLs; a default-on warning instead
+
+A run that starts `scheme://` and contains a space gets a warning: "`href` holds `https://example.com Click here`; did you mean `:href https://example.com \ Click here`?". That keeps one rule and still catches the HTML-trained writer. Medium-high.
+
+### D12: no ornament, but it's your taste
+
+I'd make `:` never end a bare label (high), and then have no ornament: two spellings for one thing, and I never feel the lack. Low confidence, and it's the one decision here that's purely beauty, so your eye should win.
+
+### The CTQ wording: yes
+
+Make A5 "visible in the text". As an agent, I can't see a vocabulary while reading a file. High.
+
+### Next: the agent trial
+
+The decisions that rest only on judgment about what agents expect: D5 (`.kind` vs `(kind)` vs none), D4's quoted-value question, D6a vs D6b vs D6c, and D12. I'd run them as you suggested: agents on Sonnet, Fable and Opus write and read made-up UDON for several contexts (a config, a science data table, an HTML page, a notes file with dates in prose), under each option, independently. Half read the lite cards first; half see only a few examples. Each reports friction, what it guessed unprompted, and which felt most beautiful and fluid. It's the first measurement any of this would have.
 
 ---
 
-*Sources: `.int/spike-values-2026-10-22/{a,b,c}/` and the four final-thoughts; `.int/types-ideation-2026-10-22.md`; `.int/STEWARD-VERBATIM.md` from "OK, I'm convinced" to the end; `CTQ-FACTORS.md`; the cards named. Session of 2026-10-28.*
+*Sources: `.int/spike-values-2026-10-22/{a,b,c}/`, the four final-thoughts, `audit-opus.md`, `audit-fable.md`; `.int/types-ideation-2026-10-22.md`; `.int/STEWARD-VERBATIM.md` from "OK, I'm convinced" to the end; `CTQ-FACTORS.md`; the cards named. Session of 2026-10-28.*
