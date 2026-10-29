@@ -140,18 +140,18 @@ The load-bearing condition (a's angle fork): **the tree must mark the body as un
 
 **What decides it:** B3 stability (10), C1 structured data (10), A2 guessability (10), A3 cold comprehension (10) for (a)/(b); A6 clarity (9), A7 simplicity (8), B5 parse speed (9), C2 XML (10) for (c′).
 
-**Cards touched:** [[rule:unquoted-run-is-one-value]] (Statement 2, the view, **and its Grounds**, which say "a streaming parser knows every value's kind from its first character" — contradicted by the measurement in D3), [[def:reading-option]], [[def:typed-value]], [[rule:nil-spelling]], [[rule:missing-value]], [[rule:key-holds-a-value]], the `rule:bare-typing` gap.
+**Cards touched:** [[rule:unquoted-run-is-one-value]] (Statement 2, the view, **and its Grounds**, which say "a streaming parser knows every value's kind from its first character": still true of a bare run as text, but it was given as the reason against whole-run typing, and D3 shows the classification costs no holdback either way, so the reason needs restating), [[def:reading-option]], [[def:typed-value]], [[rule:nil-spelling]], [[rule:missing-value]], [[rule:key-holds-a-value]], the `rule:bare-typing` gap.
 
 ---
 
 ## D3. B1's wording, and the streaming question that is actually open
 
 **Facts (measured; Fable re-ran the scripts).**
-- The 0.9 pushdown parser, fed 1 MB of bare text, a 1 MB digit run, a 1 MB quoted string and a 1 MB prose line, emits 0 bytes before each terminator (c); the same in 1 KB chunks (b's fork S).
-- A constant-state classifier agrees with a regex on 200,000 random spellings, fed whole and chunked (c's B fork), and with the post-hoc view on 400,000 runs, emitting from the first character (a).
+- A constant-state classifier agrees with a regex on 200,000 random spellings, fed whole and chunked (c's B fork), and with the post-hoc view on 400,000 runs, emitting text from the first character (a). So classifying a run needs no holdback of its own: text can stream from its first character, and the classification arrives at the run's close.
 - So `4938…2412124p` doesn't separate whole-run typing from "C with the view": the classification is the same work at the same moment.
+- (Context only, not about lite: the spikes also ran the old 0.9 parser, to test the premise that typing makes a parser hold values back. It held every value to its end whether typed or not, so the premise didn't describe existing practice either. Lite has no parser yet; nothing here is a property of one.)
 
-**The fact that changes the urgency** (b's fork S; Fable): **the pushdown parser has no line cap today.** Only the older recursive wrapper caps a line, at 4 KB. So the exposure you described ("forced to buffer essentially unlimited amount … DoS type attacks and buffer overflows") exists now for every bare text, independent of D2. The fork's conclusion: the real streaming decision is *emit content in fragments, or cap the line*, and it is orthogonal to typing.
+**The streaming question that is actually open, and independent of typing** (b's fork S; Fable): a sameline value is bounded by its line, so a lite parser either caps line length (with an error that names the limit) or emits long text content in pieces as it reads. That is the real answer to your "forced to buffer essentially unlimited amount … DoS" concern, and it is a design requirement for lite's parser whatever D2 decides.
 
 **The one word B1 turns on** (c's B fork): whole-run typing is bounded in *memory* (bytes held) but not in *characters scanned before the kind is known*, because `1984` vs `1984 is a novel` needs a look past any number of alignment spaces. c's allomorph was designed to pass B1 *as currently worded*: the kind is "text" at the first character, and the face is an attachment at the close. So under D2(a)/(b) rewording is optional; it's needed only if "kind" includes the classification.
 
@@ -557,9 +557,9 @@ Take the order of commitment seriously. **Accept in 0.1 only the pieces that are
 - **Keys get no reading** (b): a key identifies; it isn't arithmetic. High.
 - **Prose children are never read; `$main` is,** since it's a value. Say so on the card.
 
-### D3: adopt b's four-sentence B1, and decide the line cap now
+### D3: adopt b's four-sentence B1, and give lite's parser an answer for long lines
 
-The rewording is optional under D2(b), but it says the true thing, so I'd take it. Separately, the missing line cap is a real exposure today: I'd let a parser emit text content in fragments, and allow an implementation limit on line length that errors (with a message saying it's a limit, not lite), as JSON parsers do for numbers. Medium.
+The rewording is optional under D2(b), but it says the true thing, so I'd take it. Separately, lite's parser needs a stated answer for long lines: I'd let it emit text content in pieces, and allow an implementation limit on line length that errors (with a message saying it's a limit, not lite), as JSON parsers do for numbers. Medium.
 
 ### D4: adopt the stand-alone rule, with every terminator. A quoted value alone is a string.
 
