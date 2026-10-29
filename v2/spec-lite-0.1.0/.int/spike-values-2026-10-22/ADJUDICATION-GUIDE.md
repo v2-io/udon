@@ -535,9 +535,24 @@ From Fable's audit (§4), drawn from the files; paths there.
 
 ---
 
+## What the agent trial showed
+
+Eight agents (Haiku, Sonnet, Opus, Fable; each once from a one-page basics sheet and once after reading the lite spec) wrote values untaught, then wrote made-up UDON under four questions' options. Full write-up: [`../trial-values-2026-10-28/RESULTS.md`](../trial-values-2026-10-28/RESULTS.md); the eight reports beside it. Eight instincts, one run each, with leakier arms than designed (the fresh agents all had the repo README loaded), so read it as evidence about surprise, not a measurement.
+
+- **Untaught, every agent put the unit in the value** (`:mass 3.2 kg`). None wrote a reading on the name or a constructor.
+- **Every fresh agent wrote `null`.** The primed ones wrote `nil` because the cards say so.
+- **D5 (reading on the name):** `(kind)` 5, nothing-on-the-name 3, **`.kind` 0 of 8.** Two agents made the dotted-nesting slip (`:listen.port`, `:db.host`) while writing under `.kind` on purpose; five noticed unprompted that they read the dot as a unit in one line and a path in the next. `(kind)`'s predicted slip: `:mass (kg) 3.2`, with a space, silently text.
+- **D4 (quoted value alone):** split, 4 text-with-quotes, 3 string, 1 by position. The fresh agents leaned text, the primed string. Everyone wanted quote marks kept in `$main` and prose, and quotes as delimiters in attribute values. **New trap:** `|a :href "https://example.com" Click here`, written by two agents and named by two more as their first instinct, is silently one text under the stand-alone rule.
+- **D6 (notation values):** `name(…)` 4, elements 4, **sigil 0 of 8** (`~` reads as "approximately", a home directory, a Cargo version range; Fable fresh wrote `~2026-11-15` meaning "around" before thinking about the question). Every agent read `|h3 date(format)` as a plain heading and flagged API docs as the constructor's hazard. Two agents, separately, proposed `date(2026-10-01)` as a second spelling of the same tree as `|{date 2026-10-01}`.
+- **D7 (backticks):** liked by all who tried them; "the best thing on the sheet" (Opus primed).
+- **D12 (trailing colon):** **no colon, 8 of 8.** Reading `:host:` cold, most guessed it meant something different (a name `host:`, a YAML block opener), at 20–50% confidence; the commonest reason against was two spellings for one thing. Fable fresh gave the colon its best case (a visible name/value boundary for long values) before choosing against it.
+- **Asked for, unprompted:** a way to declare kinds once for a table (five agents; D10); a standard reading for ISO dates, and for number-with-unit tokens (both Fables, separately); a warning when a delimited value is followed by one more word in an attribute (Sonnet primed); `<…>` on the comparison (all four primed agents).
+
+---
+
 ## My recommendations
 
-*Mine (Opus 5.5, this session), as a principal end-user of lite: an agent reading and writing it without highlighting. Where my basis is "this is what I'd expect", I say so; you said that's valid evidence. Confidence is marked. These are leans for you to weigh, not findings.*
+*Mine (Opus 5.5, this session), as a principal end-user of lite: an agent reading and writing it without highlighting. Where my basis is "this is what I'd expect", I say so; you said that's valid evidence. Confidence is marked. These are leans for you to weigh, not findings. Revised after the trial; where it moved me, I say so.*
 
 ### The shape of 0.1
 
@@ -565,22 +580,24 @@ The rewording is optional under D2(b), but it says the true thing, so I'd take i
 
 - **Adopt it.** As a reader, `|p "Hello," she said.` as one sentence is what I'd expect without thinking; the current tree surprised me when I first read the card. High.
 - **Include ` ; ` and the fence opener in "the end of a value."** High.
-- **A quoted value standing alone is a string** (b's form), not a text with a face. `|p "To be, or not to be."`: as a writer, I'd take the quotes as delimiters there, the same as `:name "8080"`. It's a real loss for whole-line quotations, but the form is in «meta» for any renderer, and a writer who wants the marks writes `|p \"To be, or not to be."`. **Medium-low**; this is one I'd like the trial to test.
+- **A quoted value standing alone is a string** (b's form), not a text with a face. `|p "To be, or not to be."`: as a writer, I'd take the quotes as delimiters there, the same as `:name "8080"`. It's a real loss for whole-line quotations, but the form is in «meta» for any renderer, and a writer who wants the marks writes `|p \"To be, or not to be."`. **Still medium-low after the trial,** which split along exactly this line (fresh agents wanted the marks kept; primed agents wanted protective quoting to work). The position rule two agents proposed (quotes are characters in `$main`, delimiters in attribute values) fits what every agent expected, but breaks one scan for element and attribute lines; if you'd accept that break anywhere, here is where the evidence is.
+- **New from the trial: warn when a delimited value is followed by more text in an attribute value** (`:href "https://example.com" Click here`, `:on date(2026-10-01) extra`): "`href` holds `"https://example.com" Click here` as one text; did you mean `:href "https://example.com" \ Click here`?". Default-on. In `$main`, demotion is what the writer means (`|p "Hello," she said.`), so no warning there. High.
 
-### D5: `.kind`, low confidence, and the trial should decide it
+### D5: `(kind)`, not `.kind` (the trial moved me)
 
-I still lean `.kind` with parameters in parentheses, mostly on the role swap: `(kind)` makes the same shape mean slot-plus-kind on a name and kind-plus-body on a value, and its one-spelling signature doesn't parse. But the audits moved me from medium to **low**. `.kind` spends the nesting headroom (`:server.port`, which I'd also read as nesting if I'd come from TOML), can't spell `°C` or `%` bare, and needs a registry of reading names in the spec to keep the TOML reading from being silent. If you weigh full UDON's dotted nesting highly, `(kind)` is the better spend, with `$sig` rethought.
+I had leaned `.kind`, at low confidence. **The trial settles it against me:** zero of eight agents chose it, two made the dotted-nesting slip while writing under it on purpose, and five noticed unprompted that the same dot read as a unit in one line and a path in the next. That's the silent miss I'd underweighted. So: **`(kind)` when a reading goes on a name**, which five chose and which holds `°C`, `m/s`, `%` and parameters. The role swap with constructors that I raised is real but mild in practice (one agent found it a pleasing symmetry: `:on(date) 2026-10-01` ≡ `:on date(2026-10-01)`), and the `$sig` parse problem goes away with D10 below. Add a default-on warning for `:mass (kg) 3.2` (a value starting with `(` straight after a name), the slip four agents predicted. Medium-high.
 
-A middle path I'd put to you: **ship D5 in 0.1 as an error that teaches** ("readings on attribute names aren't in lite 0.1; write `:mass qty(3.2 kg)`"), let constructors (D6a) carry the in-text unit for now, and decide `.` vs `(…)` once the trial and full UDON's nesting plans are in. Nothing is lost, since constructors already put the unit in the text.
+Whether it's in 0.1: I'd now decide it together with D10, since the trial says the real want is to state a kind once per column, not on every row.
 
 ### D6: constructors, items as structure, items unread, `$main` included
 
 - **`name(…)` for notation values.** High. It is the most guessable form anyone found, it nests like mathematics, and with D4 it's safe in prose.
 - **Body as items, unread** (b's rule): the notation is the items' only reader. Parameters as quoted strings (`date("YY-MM-DD" 27-03-05)`), so a parameter can never be mistaken for a body token. Exact text in backticks. Medium.
-- **`$main` included,** with the cost stated: `|h3 parse()` is an error that teaches ("not a lite notation; for the text, write `\parse()` or quote it"), and `|h3 date(format)` is a parse-time error, not a silent date, because bodies are checked (D1). One rule everywhere outweighs the API-doc tax for me, but it's close. Medium-low.
+- **`$main`: I've changed my mind.** I had `$main` included, so `|h3 parse()` was an error that teaches. Every one of the eight agents read `|h3 date(format)` as a plain heading, several said they'd be alarmed if it fired, and API references are full of such headings. An error on an ordinary heading is a guessability failure, not a teaching moment (b's own reason for killing δ4). So: **in `$main`, `name(…)` is text; in attribute values, it's a notation value, with unknown unprefixed names an error that teaches.** That breaks one scan for element and attribute lines in one place, for a reason the lines really do differ in (a heading is prose-shaped; an attribute value is data-shaped), which is the kind of reason [[prin:one-rule-everywhere]] asks for. Medium. If you'd rather keep the uniformity, the alternative is registered names only, with unknown ones text everywhere (Sonnet fresh's proposal), which loses the teaching error for typos like `dtae(…)`.
+- **New from the trial: make `date(2026-10-01)` the same tree as `|{date 2026-10-01}`** in a value position (Opus primed and Fable primed, separately). One model, two spellings: the compact one for values and lists, the element for prose, where only it works. It needs the one-embed-as-value reading made normative for notation names. Medium; worth a design pass of its own.
 - **A two-digit year requires a stated century** (`pivot 1950`), or it's an error. High: a document must not change meaning with the clock.
 - **0.1's standard set small:** `date`, `time`, `datetime`, `duration` (with `mo`/`min`, a lone `m` an error), `int` (for the radix forms if the face set stays JSON-only), `qty` with ASCII units. Everything else waits as "not a lite notation yet".
-- **The sigil (D6b):** I'd keep it out. `~money 9.99 USD` is lovely, but its body ends by the run rule, which makes nesting and spaced regexes awkward, and it adds a special character that `name(…)` doesn't need. Low-medium; it belongs in the trial.
+- **The sigil (D6b):** out. Zero of eight agents chose it, for a reason none of the spikes weighed enough: `~` already means "approximately" in exactly the data where kinds appear, plus home directories and version ranges. High now.
 - **Elements (D6c):** the right tool for typed values *in prose* (`|{time Oct 15 :datetime date(2026-10-15)}`), and already available. Not the value notation.
 
 ### D7: tagged backticks, yes
@@ -595,9 +612,9 @@ A middle path I'd put to you: **ship D5 in 0.1 as an error that teaches** ("read
 
 `qty(37.5 ± 0.2 °C)` and `range(2026-01 – 06)` are beautiful, and they belong to the notations' body grammars, not to lite's. Not in 0.1 beyond plain `qty(3.2 kg)`. Medium.
 
-### D10: no region-wide readings in 0.1
+### D10: design "declare once" next (the trial moved me)
 
-Vocabularies outside the document cover the tables, and action at a distance costs agents like me more than it costs a library. Keep `$sig` designed and erroring. Medium.
+I had said no region-wide readings in 0.1. Five of eight agents named repetition per row, not spelling, as their main friction with data, and four sketched the same fix unprompted (`|table :cols [t(s) mass(kg) temp(°C)]`; kinds on the parent). Opus primed: "without it each option is judged at its noisiest". c's action-at-a-distance cost is still real, so I'd scope it to what a printed table does: a header for its own rows, on the parent, in the same `(kind)` spelling as D5. It's the most-requested thing in the trial, and the one design here I'd now do before settling D5's place in 0.1. Medium.
 
 ### D11: no exception for bare URLs; a default-on warning instead
 
@@ -605,15 +622,16 @@ A run that starts `scheme://` and contains a space gets a warning: "`href` holds
 
 ### D12: no ornament, but it's your taste
 
-I'd make `:` never end a bare label (high), and then have no ornament: two spellings for one thing, and I never feel the lack. Low confidence, and it's the one decision here that's purely beauty, so your eye should win.
+I'd make `:` never end a bare label (high), and then have no ornament: two spellings for one thing, and I never feel the lack. The trial is one-sided here (eight of eight chose no colon), and its most useful finding isn't the vote: reading `:host:` cold, most agents guessed it *meant something* (a name `host:`, a YAML block opener), so an optional colon invites readers to look for a difference that isn't there. Several would make `:host:` an error that teaches instead. That's evidence about surprise for agents; whether the colon is more beautiful at a glance is still your eye's to judge. Medium.
 
 ### The CTQ wording: yes
 
 Make A5 "visible in the text". As an agent, I can't see a vocabulary while reading a file. High.
 
-### Next: the agent trial
+### Two things the trial raised that I'd put to you
 
-The decisions that rest only on judgment about what agents expect: D5 (`.kind` vs `(kind)` vs none), D4's quoted-value question, D6a vs D6b vs D6c, and D12. I'd run them as you suggested: agents on Sonnet, Fable and Opus write and read made-up UDON for several contexts (a config, a science data table, an HTML page, a notes file with dates in prose), under each option, independently. Half read the lite cards first; half see only a few examples. Each reports friction, what it guessed unprompted, and which felt most beautiful and fluid. It's the first measurement any of this would have.
+- **`null`.** Every fresh agent wrote it. [[rule:nil-spelling]] already warns (default-on) and points to `nil`; I'd keep that, since the warning is exactly where it earns its keep. Accepting `null` as a second spelling is the alternative, and it's your earlier call (you chose `nil` as "less clunky").
+- **A standard reading for ISO dates** (both Fables, separately: "every context was most beautiful bare"). It's in tension with closing faces (D1): if dates aren't in 0.1's face set, they never get one. My lean is still to leave them out, because dates are exactly where the old line's typing surprises lived, and a slot or `date(…)` reads them; but it's a choice to make with eyes open, now, not a default.
 
 ---
 
