@@ -1,3 +1,5 @@
+*Superseded (2026-10-28) by [`ADJUDICATION-GUIDE.md`](ADJUDICATION-GUIDE.md), which was written after the inventive round revived several of the verdicts below. Kept as history.*
+
 # The three value spikes, by decision point, against CTQ-FACTORS
 
 *The coordinator's synthesis of spikes a, b and c. Every score in the spikes is one agent's hypothesis against [`CTQ-FACTORS.md`](../../CTQ-FACTORS.md), and their scales differ, so this page compares rankings and names the factors that decided them, not totals. "All three" means the spikes reached it independently (none read another's directory). Factor IDs are CTQ-FACTORS': A = beauty, B = robustness, C = utility.*

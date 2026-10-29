@@ -33,16 +33,13 @@ Joseph, 2026-10-20: the shared vocabulary "is at least as important to adjudicat
 
 ## Exploration before `<…>` is settled
 
-- **The spikes have landed; Joseph's review is next** (2026-10-22). Three spikes and their forks designed lite's value notation against [`CTQ-FACTORS.md`](CTQ-FACTORS.md); their work is in `.int/spike-values-2026-10-22/` (start with each `final-thoughts.md`; `adjudication.md` is an earlier, partly superseded synthesis). Where they ended up, together: bare values stay text, with nil/true/false/JSON numbers given a standard reading; a reading on the attribute name (`:mass.kg 3.2`, `:when.date(YY-MM-DD) 27-03-05`; spike c prefers `:mass(kg)`); constructor values standing alone (`date(2026-10-01)`); spike b's rule that a delimited value counts only if it stands alone, else the run is text; tagged backticks for foreign text; `<…>` possibly leaving values altogether. **No card has been changed from them yet**; that waits on his decisions:
-  - Is adding a reading later a change (reserve-don't-ignore)? Every notation design assumes not.
-  - `.kind` or `(kind)` on attribute names, and whether `.`/`(` may appear in bare labels.
-  - The body of `name(…)`: read as list items, or kept verbatim.
-  - Unprefixed notation names for the standard set only, every other name prefixed (spike b, after EDN).
-  - A bad notation body (`date(2026-13-45)`): an error at parse time or only when read.
-  - The stand-alone rule against his one-value lean (2026-10-21).
-  - CTQ: "visible in the text" under A5 (spike c); B1's wording (kind of the construct vs a value's classification).
-  - A bare URL ending at its first space (`|a :href https://x Click here`, spike a).
-  - Whether `<…>` stays for values, and as what.
+- **Where it stands (2026-10-29): the decisions are laid out; Joseph has what he needs and will write out his thinking, with a new agent.** Nothing is decided and no card has changed from this work. The documents, in reading order:
+  - `.int/spike-values-2026-10-22/ADJUDICATION-GUIDE.md`: nine decisions in plain words, each with examples, what the agents found, and the coordinator's recommendation (the long version, with sources, is `ADJUDICATION-DETAIL.md` beside it);
+  - `.int/spike-values-2026-10-22/typing-recommendation.md`: the coordinator's design stated whole (eight rules), its nuances and costs, then each decision's options set aside and pros and cons;
+  - `.int/trial-values-2026-10-28/RESULTS.md`: eight agents (Haiku, Sonnet, Opus, Fable; basics-only and spec-primed) writing values untaught and trying four questions' options;
+  - `.int/kdl-vs-lite-2026-10-29.md`: a fresh agent's comparison of KDL v2 with lite as the cards and the recommendation stand;
+  - the spikes' own work (`a/`, `b/`, `c/`, the four final-thoughts) and two audits of the guide (`audit-opus.md`, `audit-fable.md`).
+- **Joseph's leans as of 2026-10-29 (leans, not rulings):** retiring `<…>` from values, strongly; and not reserving it either, so that it's ordinary text "such as html or xml" (the recommendation keeps it reserved; [[rule:opaque-span-raw-text]] working notes). An optional, consumed trailing colon on attribute names, "persuadable" (the trial and the recommendation are against it). `nil` from 2026-10-09, with `null` under discussion (the recommendation; [[rule:nil-spelling]] working notes).
 - **A type system and its notation, explored from the whole range of possibilities** (Joseph, 2026-10-22: "we could have a much more complete type-system in place, and we could use different brackets/combinations, and we should visit all of that in conjunction with or before "nailing down" '<...>' vs implicit angled brackets etc."). Pure ideation first; branches are scored against [`CTQ-FACTORS.md`](CTQ-FACTORS.md). What waits on it: every `<…>` question ([[rule:opaque-span-raw-text]]); `<>` as nil; how a value of another kind is written under the bare-run lean ([[rule:unquoted-run-is-one-value]]); the trailing `:` on attribute names ([[def:attribute-name]]); the `rule:bare-typing` gap; `@{<…>}`.
 
 ## Next: to settle (items with no card of their own, or spanning several)
