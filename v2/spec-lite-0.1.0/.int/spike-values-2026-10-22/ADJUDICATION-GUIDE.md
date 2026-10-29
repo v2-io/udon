@@ -1,6 +1,6 @@
 # Lite values: the decisions, laid out for adjudication
 
-*For Joseph. Written 2026-10-28 by the agent of the session after the spikes (Opus 5.5), then revised the same day with two independent audits folded in: [`audit-opus.md`](audit-opus.md) (Opus 5.5) and [`audit-fable.md`](audit-fable.md) (Fable 5.1, who read every fork page and re-ran the three scripted checks; all reproduce). Their findings are woven into each decision below rather than appended; their files hold the detail and paths. My recommendations are at the end, after everything else, and are marked as mine.*
+*For Joseph. Written 2026-10-28 by the agent of the session after the spikes (Opus 5.5), then revised the same day twice: with the results of an eight-agent trial of the options folded into each decision (summary under "What the agent trial showed"; detail in [`../trial-values-2026-10-28/RESULTS.md`](../trial-values-2026-10-28/RESULTS.md)), and before that with two independent audits folded in: [`audit-opus.md`](audit-opus.md) (Opus 5.5) and [`audit-fable.md`](audit-fable.md) (Fable 5.1, who read every fork page and re-ran the three scripted checks; all reproduce). Their findings are woven into each decision below rather than appended; their files hold the detail and paths. My recommendations are at the end, after everything else, and are marked as mine.*
 
 *This page replaces `adjudication.md` as the entry point; that file predates the inventive round, and several of its "dead" verdicts were later revived.*
 
@@ -18,7 +18,7 @@
 
 ```udon
 |server[web] :port 8080 :debug false :zip 01234 :name "8080" :owner nil
-|part :mass.kg 3.2 :mass.lb 7.1 :version.text 1.10            ; .kind vs (kind) (D5); does .text withhold a face? (D2)
+|part :mass.kg 3.2 :mass.lb 7.1 :version.text 1.10            ; .kind vs (kind) (D5: the trial chose (kind), 5 to 0); does .text withhold a face? (D2)
 |ev :on date(2026-10-01) :when.date(YY-MM-DD pivot 1950) 27-03-05   ; the century needs a rule (D6)
 |rule :pattern re`^\d{3}-\d{4}$`                               ; tagged backticks (D7)
 |p "Hello," she said; meet on [Oct 1st](date:2026-10-01).      ; stand-alone rule (D4)
@@ -35,6 +35,16 @@
 ```
 
 The CTQ question at the end (does domain-forward mean "visible in the text"?) is the choice between those two pictures as the *normal* case.
+
+**What eight agents actually wrote, untaught, for the same content** (the trial; see "What the agent trial showed" below):
+
+```udon
+|sample :mass 3.2 kg :temperature 21.5 °C
+|server :host localhost :port 8080 :debug false :retries 3 :owner null
+|part :version "1.10" :zip "01234"
+|a :href https://example.com \ Click here
+```
+Unit in the value, `null` for nil (every agent without the spec), defensive quotes, and the link as BASICS showed it. Nobody wrote a reading on a name or a notation value.
 
 **Converged in the final rounds:**
 
@@ -136,7 +146,9 @@ The load-bearing condition (a's angle fork): **the tree must mark the body as un
 - **Fixtures:** (a) shows the face in fixtures; b chose deliberately to show only the raw tree ("one tree per fixture"). A transcript choice, available either way.
 - **Keys are not converged.** b: "A key gets **no** default reading. A key is an identity, compared by spelling … a typed key is written as a literal" (`b/50` §4). c's Cv: keys hold texts. Only a faces keys. `|step[3]` vs `|step[3.0]`: different keys under every option (identity by spelling).
 - **Is prose ever read?** `$main` is an attribute value, so `|h1 1984` gets a reading under (a)/(b). Prose children don't. Unstated in the cards.
-- **nil:** [[rule:nil-spelling]] stands as written under (a)/(b); its open "is the spelling now `<nil>`?" dissolves.
+- **nil:** [[rule:nil-spelling]] stands as written under (a)/(b); its open "is the spelling now `<nil>`?" dissolves. **In the trial, every agent working from the basics sheet wrote `:owner null`** (the spec-primed ones wrote `nil` only because the cards say so), so the card's default-on warning on `null` will fire often; whether to accept `null` as a second spelling is the alternative.
+- **Does `$main` get the reading?** A trial agent's first question for you (Sonnet fresh): `|td 1.10`, `|li true`, `|h2 2026`, `|p nil`. HTML-ish content is mostly text, and the numeric reading is where it rubs.
+- **Two trial agents (both Fables, separately) asked for ISO dates in the standard reading** by the same argument as numbers ("every context was most beautiful bare"), and Fable primed for number-with-unit tokens too (`3.2kg`, `220°C`, `90min`). Under D1(b) that has to be decided for 0.1 or never. Against it: dates are where the old line's typing surprises lived.
 
 **What decides it:** B3 stability (10), C1 structured data (10), A2 guessability (10), A3 cold comprehension (10) for (a)/(b); A6 clarity (9), A7 simplicity (8), B5 parse speed (9), C2 XML (10) for (c′).
 
@@ -210,6 +222,11 @@ STAND-ALONE RULE:
 - `|li '90s music, mostly` stays an unclosed-string error ("did you mean `\'90s`?").
 - Decided at the closer plus one character, on the same line (D3).
 
+**In the trial.**
+- **The rule itself was welcomed.** Most agents avoided writing `|p "Hello," she said.` on one line because they couldn't tell what a leading quote would do; reading it, the basics-only agents expected one text with its quotes (55–65%) and the spec-primed ones expected today's two values and called it a trap.
+- **The quoted-value question split, by position:** 4 text-with-quotes, 3 string, 1 by position. Everyone wanted the marks kept in `$main` and prose (`|blockquote "…"`), and quotes as delimiters in attribute values (`:name "8080"`, protective quoting). Two agents proposed exactly that as the rule; two others noted it breaks one scan for element and attribute lines. Fable primed: text-with-quotes doesn't really rescue `|p "To be…"` anyway, since a consumer applying the standard reading strips them too.
+- **A new silent miss the rule creates:** `|a :href "https://example.com" Click here`. Two agents wrote it untaught and two more named it as an HTML-trained writer's first instinct; under the rule the quoted URL isn't standing alone, so `href` is the text `"https://example.com" Click here`, quotes included. Sonnet primed's remedy: a default-on warning when a delimited value (quoted, `name(…)`, backticks) is followed by more text in an attribute value, and silence in `$main`, where the demotion is what the writer means.
+
 **Dead alternatives, with reasons** (`b/30`): δ2, `$main` never commits but attributes do (breaks the sameline sameness you ruled 2026-09-29); δ4, the residue is an error ("an error on the thing everyone writes is a guessability failure, not a teaching moment").
 
 **What it reverses.** [[rule:leftover-values]] is decided, and its own example is `|q "hello," she said` as two `$main` values; it inverts. Also your 2026-10-21 lean on the residue; [[rule:adjacent-quoted-strings]] (`"x""y"` becomes one run); [[def:main]] and [[def:prose]] examples.
@@ -253,6 +270,12 @@ STAND-ALONE RULE:
 **Costs of `(kind)`.**
 - **It swaps roles between names and values** (my finding, strengthened by the Opus audit). With constructors (D6) in play: `[mass(kg) temp(°C)]` puts the kind inside; `[qty(3.2 kg) date(2026-10-01)]` puts the kind outside. And under D4 and D6 as stated, each item in `:$sig [mass(kg) temp(°C)]` stands alone in a list, so it *is* a constructor named `mass`, an unknown name, an error. The coordinator's one-spelling signature doesn't parse unless `$sig`'s items are exempted by attribute name.
 - In its favour: it holds anything inside (`°C`, parameters with spaces), and reads like every scientific table.
+
+**In the trial: `(kind)` 5, nothing on the name 3, `.kind` 0 of 8.**
+- **`.kind`'s silent miss happened in practice.** Opus fresh wrote `:tls.cert` and `:db.host` meaning namespaces, and Opus primed `:listen.port` meaning a path, all while writing under `.kind` on purpose; neither noticed until rereading. Reading cold, five agents noticed that they took the dot as a unit in `:mass.kg` and as a path in `:server.port`. Sonnet primed added Vue/Alpine names (`v-model.trim`, `@click.prevent`). Opus primed found the idea lovely as a parallel to element traits if restricted to types, never units, and said the dotted-path habit is what sinks it.
+- **`(kind)`:** "how every scientist writes a column header"; held `°C`, `m/s²`, `µg/mL` first try. Its predicted slip, from four agents independently: `:mass (kg) 3.2`, with a space as in CSV headers, which silently gives the text `(kg) 3.2`; worth a default-on warning. Three agents noted the role swap with `name(…)`; Fable fresh found it a symmetry instead (`:on(date) 2026-10-01` ≡ `:on date(2026-10-01)`). Fable primed took it as sugar for the value-side form.
+- **Unit vs type in one slot:** two agents hesitated over `:max-body.bytes 512MB` vs `:max-body.MB 512`, and over `:lasts(min) 90` vs `:lasts(duration) 90min`; both were written in one sitting.
+- **Untaught, nobody put anything on the name:** every agent wrote `:mass 3.2 kg`.
 
 **What decides it:** A2, A3 (10, 10), A5 domain-forward (9), A4 agentic readability (10) against A8 parsimony (8), C2 XML (10, XSL-FO), B6 headroom (7).
 
@@ -308,6 +331,8 @@ root
 6. **Durations disagree on `m`:** c's `std` reads `5m` as minutes; b's registry makes a lone `m` an error ("`mo` or `min`?").
 7. **Are readings equal across positions?** `:mass.kg 3.2`, `:mass qty(3.2 kg)`, and `:mass 3.2` under a signature saying kg: one logical value? If yes, a formatter can hoist safely (D10).
 
+**In the trial: `name(…)` 4, elements 4.** Every agent read `|h3 date(format)` as a plain heading (60–95%), several adding that they'd be alarmed if it fired; their own examples: `|h3 now()`, `|code main()`, `:onclick toggle()`, `|method parse(input)`. The remedies they proposed: recognize only registered names, with unknown ones text (Sonnet fresh; Fable fresh's "floor"); never in `$main`, only attribute values (which Opus primed noted breaks one scan for element and attribute lines); or make it a reading over text, not a parse rule (both Opus agents). Fable fresh's recipe slip: `|i qty(1.5 cup) flour` isn't standing alone, so it's text; it needs an attribute and a ` \ `.
+
 **What decides it:** A2 guessability (10; c scored β-ascii 9, the highest of any notation found), A3 (10), A8 parsimony (8, no new bracket), C2/C3 (10, 9; the `$main` tax), B4 errors that teach (8), B5 (9; parse-time checks).
 
 ### D6b. The sigil: `~name body`
@@ -331,6 +356,8 @@ root
     :$main ⸨~5min is about right; ~~struck~~ stays Markdown⸩   ← `~` before a digit, and `~~`, are text
 ````
 
+**In the trial: 0 of 8.** One reason dominated: `~` already means "approximately" exactly where kinds live. Fable fresh wrote `follow-up ~2026-11-15` meaning "around" before thinking about sigils at all; three agents read `~date` as "approximately a date". Opus primed's config collisions: `~deploy/releases` (a home directory), `~0.4` (a Cargo/npm version range), `~5 min`, `:eta ~two weeks`. Its extent also changes between a value and a list item (the options sheet itself wrote `~qty 3.2kg` in a list and `3.2 kg` elsewhere), and Fable primed couldn't write `[~duration 3mo 5d ~duration 1y]` at all.
+
 The comparison (Fable's judgment, with mine): both name first. `~name` needs no closer for a run body and **no stand-alone rule** (`~` + label collides with nothing in prose; `~` is an error in bare labels today); `name(…)` needs D4 to be safe, and makes a heading that is a whole call an error. The sigil's costs: one more special character (A8), a body that ends by the run rule (so `~money 9.99 USD :x 1` is fine, but `~re` needs its own delimiters for spaces), and guessability resting on Elixir rather than on CSS and every function call ever written. Nesting reads worse (`~interval ~date 2026-01 ~date 2026-06`?).
 
 ### D6c. Notations as elements: no new grammar
@@ -342,6 +369,10 @@ All three spikes kept it alive to the end as the cheapest design (a's W1 "alive,
 |p Doors open at |{time 19:30} sharp.
 ```
 Costs: the value is a piece of a text, so a reading option has to lift it into a value; a typo (`|{dtae …}`) is silently just an element; without braces, `:timeout |dur 30s :port 8080` gives `port` to the `dur` element ([[rule:element-after-attribute-with-no-value]]), caught only for known notations. Its real strength, a typed value inside prose, costs nothing under any design, since inline elements exist.
+
+**In the trial: 4 of 8 chose it, and prose is why.** It's the only option that can mark a value inside a sentence ("Met Marta on |{date 2026-10-26}"), HTML already does it this way (`<time>`), and Fable fresh's recipe under it "was the most pleasant thing I wrote in this trial". Its costs, from the reports: heavy in tables and lists; kinds share a namespace with element names (a document can't have its own `|date` meaning something else); and a brace-less trap (Opus primed): `:cert-expires |date 2027-01-15 :renew |duration 30d` is legal lite in which `:renew` silently becomes the `date` element's attribute.
+
+**A synthesis two agents reached separately** (Opus primed, Fable primed): make `date(2026-10-01)` in a value position *the same tree* as `|{date 2026-10-01}`. One model with two spellings: the compact one for values and lists, the element in prose. Fable primed: C "is the fence mechanism" (an element whose name selects a handler), and it would take `name(…)` only if unknown names are a loud error. It needs the one-embed-as-value reading ([[def:reading-option]]) made normative for notation names.
 
 **Is a date a leaf of the tree or a node?** That's the question under D6c against D6a/b.
 
@@ -375,6 +406,7 @@ root
 - **The name sits on opposite sides** (N1's own unease): a fence puts its name after the backticks; a tagged value before, because an untagged `` `make all` `` can't tell a tag from content.
 - **A carried body can't be checked** (N1): `` num`8O80` `` is carried, not refused, so "insist this is a number" (K14) needs `int(…)` or a reading, not backticks.
 - It kills the backslash-doubling [[rule:opaque-span-escapes]] accepted for `<re:\\d+>`.
+- **In the trial,** everyone who tried backticks liked them; Opus primed called them "the best thing on the sheet" and found the case that makes them necessary: a value ending in a backslash (`` `C:\ProgramData\api\logs\` ``) can't be written in single quotes at all. Untaught, nobody reached for them (single quotes, mostly), so they have to be known. Open edges the agents raised: how a backtick is written inside the body; and `|li `ls -l`` standing alone becomes a raw value, so a list item that is only a Markdown code span stops being Markdown (Sonnet primed).
 
 **What decides it:** C8 other languages exactly (8), B4 (8), A2 (10; every agent reads backticks as verbatim), A8 (8).
 
@@ -398,6 +430,7 @@ Plus **(f) no value bracket at all, notations are elements** (D6c): the zero-gra
 - **(a)'s HTML/Markdown advantage is mostly already delivered by D4** (Fable; c's final moved its ASCII-bracket confidence from low to medium on that alone). With the stand-alone rule, `<` collides only where a tag or autolink is the *whole* value. The case left: `|li <https://example.com>`. Three answers in the files: a URI value, meaning what CommonMark means (c's combo, std); an error with a fix (c's raw, args); text, under (a).
 - **`@<ref>` is your spelling** (`history.jsonl` L22354, 2026-10-11): "`@{ref}` is an immediate dereference. `@<ref>` is a reference, as a value in udon, which also serves as an inline mention." [[rule:reserved-spellings]] reserves `@<` as a value. It survives (a), since `@<` isn't a value-initial `<`. c's `@<people/jw>` restates your design; b's `ref(people/jw)` is the alternative.
 - Under (a), your `<>`-is-nil lean has no home (bare `nil` carries nil). The opaque-span family ([[def:opaque-span]], [[rule:opaque-span-raw-text]], [[rule:opaque-span-escapes]], [[rule:newline-in-opaque-span-is-error]], [[rule:matched-pairs-need-no-escape]]) shrinks to the two embeds; [[def:typed-value]]'s explicit/implicit split mostly dissolves.
+- **The trial didn't test `<…>`** (left off the options sheet, given your lean to retire it). All four spec-primed agents noticed it missing; Opus primed's own untaught reach to make a value checkable was `:mass <3.2 kg>`, and Fable primed used `<…>` in four of its eight untaught answers. Their argument for it: it commits at its first character, with no stand-alone holdback, and can't collide with `printf(x)` or `~5 min`. That's priming by the current cards as much as instinct; none of the basics-only agents reached for it.
 - Unicode brackets (`⟨reader|spelling⟩`, `⟦name body⟧`, `⟪…⟫`) died on A2 (no agent writes them unprompted) and were each offered as the thing to measure with a three-example panel. `⟨` and `<` also look alike to your eye.
 
 **What decides it:** A8 parsimony (8), B6 headroom (7), A6/A7 (9, 8) for (a); A1 beauty (9), A4 (10), A5 (9), C4 notations and units (8) for (c).
@@ -439,6 +472,16 @@ Four forms: b's **`$sig`** (by position), a's **legend** (by element kind; "unti
 - **Which way a writer goes** (b): a serializer, formatter or agent writing back needs a canonical choice ("write the least plumbing that reads back identically"), or round trips aren't stable (B3, C10). It enables **hoisting** repeated `:mass.kg` into a `$sig`, if readings are equal across positions (D6a.7).
 - **Action at a distance** (c): editing row 400 of a signed table means looking up row 1. c: a signature is for tables you'd print with a header row.
 
+**In the trial, this was the most-requested thing, unprompted.** Five of eight agents said their main friction with data was repeating the kind on every row, not how it was spelled, and four sketched a fix:
+
+```udon
+|table[runs] :cols [t(s) mass(kg) temp(°C) p(kPa)]     ; Sonnet fresh
+  |row 0.0 3.2 21.5 101.3
+|samples :mass(kg) :temp(°C) :ph                        ; Fable fresh: kinds on the parent
+  |s[1] :mass 3.2 :temp 21.5 :ph 7.1
+```
+Opus primed: "without it each option is judged at its noisiest". Every sketch reused the `(kind)` spelling.
+
 **What decides it:** A5 (9), A9 conciseness (6) against A4 (10), D1 agent tooling (8), A6 (9).
 
 ---
@@ -467,6 +510,7 @@ Your light lean (2026-10-22): `:attr: hi` = `:attr hi`, ornamental, "or even mak
 - The ornament invites the colon-*less* `host: localhost`, which [[rule:main-label-colon-warns]] already catches, and its fix becomes one character.
 - Your history has a lineage for it (a's research-internal): 2011 allowed `:` in labels "ala ruby labels", and 2025-12 `!:json:` used a colon-closed label before a body. The ornament reads, in your own history, as a label closer before a body.
 - c's mark fork's T4: reserve the colon now, accept later (the order of commitment).
+- **In the trial: no colon, 8 of 8** (the options sheet presented both spellings neutrally, with your lean kept out). Reading `:host: localhost` cold, before seeing the options, agents gave 20–50% to any single reading, and most guessed it *meant something*: an attribute named `host:`, a YAML-style block opener, or a typo; so an optional colon "invites readers to look for a distinction that isn't there" (Fable fresh). Other reasons given: two spellings in one file (`:host: x :port 8080`, and `grep ':host '` missing half); clutter with `(kind)` (`:mass(kg): 3.2`); it doesn't help the commoner slip, `|server host: localhost`; and it invites the rest of YAML (`:tls:` with indented `:cert:`), which lite refuses. Fable fresh gave it the fairest hearing: without highlighting, `:title: War and Peace` makes the name/value boundary visible at a glance, "a genuine readability gain" for long values. Most would make `:host:` an error that teaches.
 
 ---
 
