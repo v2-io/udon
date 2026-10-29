@@ -135,6 +135,8 @@ root
 
 ## Working notes
 
+- **Under discussion (2026-10-29), not decided:** Joseph is leaning toward not reserving `<…>` at all, so that it's ordinary text, "such as html or xml". He said so in a note relayed to an agent comparing KDL with lite (`.int/kdl-vs-lite-2026-10-29.md`), and confirmed that's what he meant. The coordinator's typing recommendation keeps it reserved instead, so full UDON could use it later; it notes that under its rule about later versions, `<…>` left as text could never gain a meaning. If it goes his way: this card and [[rule:opaque-span-escapes]], [[rule:newline-in-opaque-span-is-error]], [[rule:matched-pairs-need-no-escape]] and [[def:opaque-span]] narrow to `@{…}` and `;{…}`.
+
 - **`<…>` reopened wholesale (Joseph, 2026-10-22):** "Right now `<...>` in all of its forms is still very cheap to change." It is to be revisited with a type system and its notation explored generally (other brackets and combinations; REBOL as the original analogy), before or together with nailing down explicit typing. Its embed use, "reference kept as a reference, not resolved in place" (`@{<…>}`), "is already a little unprincipled and could use some fixing." Everything below about `<…>` waits on that.
 - **Under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]),** `<…>` is where every non-text kind is written (`<8080>`, `<nil>`, `<"…">`), committing at its first character and an error if the interior doesn't match (Joseph, 2026-10-21: "<920px> error I can understand"). To ask: is a non-primitive interior such as `<2026-10-01>` raw text (his 2026-10-20 option, "passing bare-words … through raw") or an error (his 2026-10-21 `<uint32|0x992BC>` "error- reserved for now")?
 - **Joseph's words:**

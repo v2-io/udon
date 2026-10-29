@@ -62,6 +62,8 @@ root
 
 ## Working notes
 
+- **Under discussion (2026-10-29), not decided:** the coordinator's typing recommendation (`.int/spike-values-2026-10-22/typing-recommendation.md`) recommends `null` instead of `nil`, from the value trial (every agent working from a basics sheet wrote `:owner null` untaught) and from the text data formats (JSON, YAML, HCL, CUE and CBOR all spell it `null`). Joseph has been leaning toward `nil` (2026-10-09, "less clunky lexically") and said he'd be comfortable switching; he hasn't decided. If it switches: this card's Statement, [[rule:missing-value]]'s message, and every card that names `nil`.
+
 - **To ask Joseph, under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]):** a bare `nil` is then the text `nil`, which the typed-primitive view reads as nil. Is the spelling of nil now `<nil>`? Does the bare-`null` warning stay, and does it point to `<nil>`?
 - Joseph's words (2026-10-09, `.int/STEWARD-VERBATIM.md`):
 
