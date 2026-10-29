@@ -86,6 +86,8 @@ Joseph, 2026-10-20: "I suspect we could get through the missing cards pretty qui
 
 ## Cleanup
 
+- **`<…>` is ordinary text** (Joseph, 2026-10-29). Statements narrowed to `@{…}`/`;{…}`: [[rule:opaque-span-raw-text]], [[rule:opaque-span-escapes]], [[rule:newline-in-opaque-span-is-error]], [[rule:matched-pairs-need-no-escape]], [[def:opaque-span]]. Still to do: move their `<…>` working notes to context files; [[def:typed-value]] mostly dissolves; [[rule:unquoted-run-is-one-value]] Statement 1 lists `<` among value delimiters; `main.outline.md` rows that mention `<…>`; the `rule:bare-typing` gap ("what may stand inside `<…>`") goes. The "Exploration before `<…>` is settled" section above is answered for `<…>` itself.
+
 - **`nil` → `null` sweep** (Joseph's fiat, 2026-10-29; [[rule:nil-spelling]] and [[rule:missing-value]] done): the cards and definitions that still say `nil` as lite's null, as found that day: [[def:value]], [[def:typed-value]], [[def:string]], [[def:anomaly]], [[def:element-name]], [[def:reading-option]], [[rule:anomalies-suggest-a-fix]], [[rule:backslash-empty-text]], [[rule:opaque-span-raw-text]], [[rule:reserved-spellings]], [[rule:unquoted-run-is-one-value]] and its context, [[decision:errors-stop-parsing]], and two `main.outline.md` rows. Quotes of Joseph keep `nil` as written.
 
 - **Defunct citations.** Cards cite 0.10.x (33 rule cards and 37 def cards on 2026-10-20), and also 0.9 drafts, pre-design numbers and retired records. Joseph, 2026-10-20: strip them from any card opened for editing; a settled card carries no working notes; history goes to a sidecar `<card-file>.context.md`. Done so far: [[rule:strings-like-ruby]].

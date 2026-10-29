@@ -97,6 +97,8 @@ Nothing: lite carries `u64:0xff` as the «explicit-typed-value»'s text and does
 
 ## Working notes
 
+- **Mostly dissolved (2026-10-29):** `<…>` is ordinary text (Joseph: not reserved, "such as html or xml"), so «explicit-typed-value» and «type-label» name nothing in lite. Whether «typed-value» survives at all waits on the bare-values decision (`.int/spike-values-2026-10-22/typing-recommendation.md`, rule 1).
+
 - **Not reviewed with Joseph.** Joseph, 2026-10-09: "I haven't looked at any or been asked about any of those things … but the idea that they can just kind of organically be whatever would cause serious trouble really soon if allowed to continue." Every term here is provisional until he rules on it; `.int/lexicon-inventory-2026-10-09.md` lists where each came from.
 
 - **Since 2026-10-08:** quoted values are «string»s ([[def:string]]) and unquoted material is «text» ([[def:text]]); this record's "implicit-typed-value" (which lists "an unquoted word, a quoted string, or a list") needs reconciling with those two, and `nil` is now the only spelling of nil ([[rule:nil-spelling]]).

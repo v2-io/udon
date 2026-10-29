@@ -219,7 +219,7 @@ You called A's reading ("mass, then kg inside it") an affordance.
 
 **What the trial found:** the trial didn't test it (left out, given your lean). The four agents who'd read the spec all noticed it was missing, and two reached for `<3.2 kg>` when they wanted a checked value, but that's the current cards talking as much as instinct. None of the four who hadn't read the spec reached for it.
 
-**My recommendation: retire it from values.** It stays an error in lite 0.1, so full UDON is free to use it later.
+**My recommendation was to retire it from values and keep it reserved, so full UDON could use it later. Decided otherwise (your call, 2026-10-29): `<…>` is ordinary text, in a value as anywhere else, so HTML and XML pass through as they are.** The cost: under decision 8, plain text never gains meaning later, so full UDON can't give `<…>` a meaning either.
 
 ---
 

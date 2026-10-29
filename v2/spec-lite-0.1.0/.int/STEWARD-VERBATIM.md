@@ -2038,3 +2038,9 @@
 > (if you would go ahead and record all of that somewhere / steward-verbatim for next time it comes up that would be great-- maybe in the working notes or cautions in a card that covers indentation rules?)
 
 *(Agent text, summary: recorded here, and as a caution on [[rule:lines-follow-sameline-columns]] with his words in its new context file.)*
+
+### Joseph (whole)
+
+> Yes, that's what I meant. (such as html or xml)
+
+*(Agent text, summary: `<…>` is ordinary text, not reserved. Updated the recommendation (rule 6 now decided, with its cost: under rule 8 full UDON can never give `<…>` a meaning) and the guide; narrowed the opaque-span cards' Statements to `@{…}` and `;{…}`; notes and the rest in TODO-MSC.)*

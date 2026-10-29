@@ -12,11 +12,11 @@ consequences: [rule:opaque-span-escapes, rule:newline-in-opaque-span-is-error, r
 
 # Opaque spans carry raw text
 
-*The «tree» holds the text between the delimiters of `<…>`, `@{…}` and `;{…}`, escapes resolved, with no meaning attached.*
+*The «tree» holds the text between the delimiters of `@{…}` and `;{…}`, escapes resolved, with no meaning attached.*
 
 ## Statement
 
-1. For an explicit typed value `<…>`, a reference `@{…}` or an inline comment `;{…}`, the «tree» MUST carry the raw text between the delimiters, escapes resolved, and lite MUST NOT attach meaning to it (no type-label split, no resolving).
+1. For a reference `@{…}` or an inline comment `;{…}`, the «tree» MUST carry the raw text between the delimiters, escapes resolved, and lite MUST NOT attach meaning to it (no type-label split, no resolving).
 
 ## Grounds
 
@@ -31,13 +31,12 @@ A rule, chosen, not derived. Checkable by fixtures.
 *(Teaching; adds nothing to the Statement.)*
 
 ```udon
-|el :when <2026-07-11> :size <u64:0xff>
+|book :author @{people/jw}
 ```
 ```tree
 root
-  |el
-    :when <2026-07-11>       ← text, not a date
-    :size <u64:0xff>
+  |book
+    :author ‹@{people/jw}›   ← a text whose one piece is the reference; its raw text is people/jw
 ```
 
 ## Discussion
@@ -134,6 +133,8 @@ root
 > — Joseph, 2026-10-08 (all in `.int/STEWARD-VERBATIM.md`)
 
 ## Working notes
+
+- **`<…>` is ordinary text (Joseph, 2026-10-29: not reserved, "such as html or xml"):** this card now covers `@{…}` and `;{…}` only. Notes below that discuss `<…>` are history, to move to a context file at the next edit.
 
 - **`<…>` reopened wholesale (Joseph, 2026-10-22):** "Right now `<...>` in all of its forms is still very cheap to change." It is to be revisited with a type system and its notation explored generally (other brackets and combinations; REBOL as the original analogy), before or together with nailing down explicit typing. Its embed use, "reference kept as a reference, not resolved in place" (`@{<…>}`), "is already a little unprincipled and could use some fixing." Everything below about `<…>` waits on that.
 - **Under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]),** `<…>` is where every non-text kind is written (`<8080>`, `<nil>`, `<"…">`), committing at its first character and an error if the interior doesn't match (Joseph, 2026-10-21: "<920px> error I can understand"). To ask: is a non-primitive interior such as `<2026-10-01>` raw text (his 2026-10-20 option, "passing bare-words … through raw") or an error (his 2026-10-21 `<uint32|0x992BC>` "error- reserved for now")?
