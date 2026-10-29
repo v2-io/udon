@@ -35,7 +35,7 @@ These came out the same in all three explorations, and nothing in the checks or 
 
 1. **Lite never interprets a value's meaning beyond a small built-in set.** What a port is, what unit a mass is in, what an alias means: all of that belongs to schemas and to the tools using the file, not to lite's grammar.
 2. **Units are written in the value, as text, and whatever knows the attribute gives them meaning.** `:timeout 5m` is five minutes and `:length 5m` is five metres; lite keeps `5m` as written. (In the trial, every agent wrote units this way untaught: `:mass 3.2 kg`.)
-3. **A name never ends in `:`.** Today's lean on name characters would make `:host: localhost` an attribute named `host:`; all three said that shouldn't be possible, whatever you decide about the trailing colon (decision 7).
+3. **A name never ends in `:`.** An agent's draft on which characters names may contain (2026-10-20, not yet discussed with you) allows `:` inside a name, so that `xml:lang` works, but as drafted it also allows `:` at the end, which would make `:host: localhost` an attribute named `host:`. All three explorers said a name should never end in `:`. That fits either answer to decision 7: with your optional colon it's consumed and the name is `host`; with no colon allowed, `:host:` is an error.
 
 ---
 
