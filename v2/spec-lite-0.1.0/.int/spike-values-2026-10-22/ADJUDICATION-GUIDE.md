@@ -23,9 +23,11 @@ Nothing here is decided, and no spec card has been changed. Where the evidence c
 - **the value:** what anything using the parsed file gets when it asks (a config loader, a converter to JSON, an editor tool).
 
 ```udon
-|server :port 8080
+|server :host localhost
 ```
-→ the parser keeps `8080` as written; the value is the number 8080 (converted to JSON, `8080`, not `"8080"`).
+→ the parser keeps `localhost` as written; the value is the text "localhost".
+
+(That one is the same under every option on this page. Examples that depend on a decision say so.)
 
 ## What everyone already agrees on
 
