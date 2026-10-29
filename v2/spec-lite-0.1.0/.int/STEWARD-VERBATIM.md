@@ -2038,3 +2038,11 @@
 > (if you would go ahead and record all of that somewhere / steward-verbatim for next time it comes up that would be great-- maybe in the working notes or cautions in a card that covers indentation rules?)
 
 *(Agent text, summary: recorded here, and as a caution on [[rule:lines-follow-sameline-columns]] with his words in its new context file.)*
+
+### Joseph (whole)
+
+> Yes, that's what I meant. (such as html or xml)
+
+> goodness. I thought I was just clarifying what I meant for you to pass onto the other agent-- not adjudicating that fully and officially and thoroughly in the code yet
+
+*(Agent text, summary: the agent had taken the clarification as a ruling and edited the recommendation, guide and five cards; reverted all of it (`git revert`). Recorded instead as his lean: `<…>` not reserved, ordinary text such as HTML or XML; noted beside rule 6 of the recommendation and decision 6 of the guide, with its cost under rule 8.)*

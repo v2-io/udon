@@ -159,7 +159,7 @@ What each line gives:
 
 ### 6. `<…>`
 
-**Recommendation.** Not a value in lite. It stays reserved, so full UDON is free to give it a meaning.
+**Recommendation.** Not a value in lite. It stays reserved, so full UDON is free to give it a meaning. *(Your lean, 2026-10-29, not a ruling: don't reserve it; `<…>` would be ordinary text, "such as html or xml". Its cost against my recommendation: under rule 8, text never gains a meaning later, so full UDON could never give `<…>` one.)*
 
 **Options set aside.** *Holding any text unread* (today's card): can't refuse `<920px>`, and with numbers read bare it has nothing left to do. *Holding a checked standard value or a named notation:* rules 1, 3 and 5 already do every job it would. *Printed quantities by shape* (`<90 min>`, `<9.99 USD>`): beautiful, but the largest grammar anyone proposed; they can live inside `qty(…)` instead.
 
