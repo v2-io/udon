@@ -4,7 +4,7 @@
 
 ## What this is
 
-Lite has to decide how a value written in a file comes to mean something: when a program reads `:port 8080`, does it get the number 8080 or the text "8080"? How does a writer say "this is a date" or "this is in kilograms"? And what is `<…>` for, if anything?
+Lite has to decide how a value written in a file comes to mean something: is the value of `:port 8080` the number 8080 or the text "8080"? How does a writer say "this is a date" or "this is in kilograms"? And what is `<…>` for, if anything?
 
 Three agents explored this on 2026-10-22, each with helpers, and each proposed a design. Today, two more agents checked that work, and eight agents (two each of Haiku, Sonnet, Opus and Fable) tried the leading options by writing made-up UDON and saying what felt natural and what tripped them up.
 
@@ -17,18 +17,21 @@ This file turns all of that into **nine decisions**, in an order where each one 
 
 Nothing here is decided, and no spec card has been changed. Where the evidence came from, and everything left out to keep this readable, is in [`ADJUDICATION-DETAIL.md`](ADJUDICATION-DETAIL.md) and in the trial's [`RESULTS.md`](../trial-values-2026-10-28/RESULTS.md).
 
-**How the examples read.** Each example is a line of UDON, followed by what a program reading the file gets, in plain words:
+**How the examples read.** Each example is a line of UDON, followed by what it gives, in plain words. Two things can differ, and the examples keep them apart:
+
+- **what the parser keeps:** always the characters exactly as written;
+- **the value:** what anything using the parsed file gets when it asks (a config loader, a converter to JSON, an editor tool).
 
 ```udon
 |server :port 8080
 ```
-→ `port` is the text `8080`, which every program reads as the number 8080.
+→ the parser keeps `8080` as written; the value is the number 8080 (converted to JSON, `8080`, not `"8080"`).
 
 ## What everyone already agrees on
 
 These came out the same in all three explorations, and nothing in the checks or the trial argued against them. They're the ground the decisions stand on.
 
-1. **Lite never interprets a value's meaning beyond a small built-in set.** What a port is, what unit a mass is in, what an alias means: all of that belongs to schemas and to the programs reading the file, not to lite's grammar.
+1. **Lite never interprets a value's meaning beyond a small built-in set.** What a port is, what unit a mass is in, what an alias means: all of that belongs to schemas and to the tools using the file, not to lite's grammar.
 2. **Units are written in the value, as text, and whatever knows the attribute gives them meaning.** `:timeout 5m` is five minutes and `:length 5m` is five metres; lite keeps `5m` as written. (In the trial, every agent wrote units this way untaught: `:mass 3.2 kg`.)
 3. **A name never ends in `:`.** Today's lean on name characters would make `:host: localhost` an attribute named `host:`; all three said that shouldn't be possible, whatever you decide about the trailing colon (decision 7).
 
@@ -36,37 +39,37 @@ These came out the same in all three explorations, and nothing in the checks or 
 
 ## Decision 1: do bare values get types?
 
-**The question.** A value written without quotes, `:port 8080` or `:debug false`: does a program get the number 8080 and the boolean false, or the text "8080" and the text "false"?
+**The question.** A value written without quotes, `:port 8080` or `:debug false`: is its value the number 8080 and the boolean false, or the text "8080" and the text "false"? (Either way the parser keeps the characters as written.)
 
-Your lean of 2026-10-21 ("C with the view"): a bare value is always text, and a program *may* choose to read `8080` as a number.
+Your lean of 2026-10-21 ("C with the view"): the value is always text, and anything using the file *may* choose to treat `8080` as a number.
 
-**What the agents found.** If reading the number is optional, two programs disagree about the same file, and the dangerous case is booleans:
+**What the agents found.** If treating it as a number is each tool's choice, two tools disagree about the same file, and the dangerous case is booleans:
 
 ```udon
 |server :debug false
 ```
-→ a program that didn't opt in gets the text "false", which is *true* in Python, JavaScript, Ruby and Elixir (one explorer ran it in all four).
+→ a tool that didn't choose to gets the text "false", which counts as *true* in Python, JavaScript, Ruby and Elixir (one explorer ran it in all four).
 
-All three explorers, and both checkers, concluded the reading has to be the same for every program. The streaming worry that moved you to "C with the view" (`4938…2p`) turned out not to separate the options: recognizing whether a run spells a number takes a tiny fixed amount of memory, whichever way this goes.
+All three explorers, and both checkers, concluded the value has to be the same for every tool. The streaming worry that moved you to "C with the view" (`4938…2p`) turned out not to separate the options: recognizing whether a run spells a number takes a tiny fixed amount of memory, whichever way this goes.
 
 **The options.**
 
-| | What the file's tree holds | `:debug false` with no schema |
+| | What the parser keeps | The value of `:debug false`, with no schema |
 |---|---|---|
-| **A** | the text, and the spec says every program reads `nil`, `true`, `false` and numbers as those values unless told otherwise | false |
-| **B** | the text, plus the type recorded beside it by the parser | false |
-| **C** (your lean as written) | the text; reading it as a number is each program's choice | depends on the program |
-| **D** | the text; programs get strings unless they ask for a number | the text "false" |
+| **A** | the characters; the spec says the value of `nil`, `true`, `false` or a number is that value | false |
+| **B** | the characters, plus the type, recorded by the parser beside them | false |
+| **C** (your lean as written) | the characters; whether the value is a number is each tool's choice | depends on the tool |
+| **D** | the characters; the value is text unless a tool asks for a number | the text "false" |
 
-A and B give every program the same answer; they differ only in where it lives. C and D don't.
+A and B give every tool the same value; they differ only in whether the spec states it (A) or the parser records it (B). C and D don't.
 
 **Three smaller questions that come with it:**
 
 1. **Which spellings get read?** The explorers chose JSON's: `nil`, `true`, `false`, and numbers as JSON writes them (no leading zero, no `0x`, no `_`). So `:zip 01234` stays text, keeping its zero. But you wrote on 2026-07-14 that "0x 0o 0d 0b *definitely* help as literal qualifiers, as does '_' agnostic digit separators". Under JSON's set, `0xFF` and `1_000` are text.
-2. **The version-number problem.** `:version 1.10` reads as the number 1.1. Every remedy needs the writer to quote it (`"1.10"`) or a schema to say it's text. In the trial, five of eight agents quoted versions untaught anyway.
+2. **The version-number problem.** The value of `:version 1.10` is the number 1.1. Every remedy needs the writer to quote it (`"1.10"`) or a schema to say it's text. In the trial, five of eight agents quoted versions untaught anyway.
 3. **`null`.** Lite's spelling is `nil` (your 2026-10-09 call), and a bare `null` is text with a warning. **In the trial, every agent that hadn't read the spec wrote `:owner null`.** So that warning will fire a lot. Accepting `null` too is the alternative.
 
-**My recommendation: A.** Same answer for every program, and the tree stays simple. B also works, but it makes the parser record types, and lite otherwise records only what was written. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) not read as numbers: a key names something, it isn't a quantity. Keep `nil`, with the warning on `null`.
+**My recommendation: A.** The same value for every tool, and the parser keeps only what was written. B also works, but it makes the parser record types as well. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) stay text: a key names something, it isn't a quantity. Keep `nil`, with the warning on `null`.
 
 ---
 
@@ -103,7 +106,7 @@ This reverses a decided example: the card on leftover values shows `|q "hello," 
 - **As a string:** `p`'s `$main` is `To be, or not to be.`, and `name` is the string `8080`. Quotes are delimiters, as in JSON.
 - **As text keeping its quotes:** `p`'s `$main` is `"To be, or not to be."`, quote marks included.
 
-**What the trial found.** The agents split, and the split followed position: everyone wanted a paragraph's quote marks kept, and everyone wanted `:name "8080"` to be the string 8080 (quoting is how they protect a value from being read as a number). Two agents suggested exactly that rule: quotes are characters in an element's own text, delimiters in attribute values.
+**What the trial found.** The agents split, and the split followed position: everyone wanted a paragraph's quote marks kept, and everyone wanted `:name "8080"` to be the string 8080 (quoting is how they keep a value from being a number). Two agents suggested exactly that rule: quotes are characters in an element's own text, delimiters in attribute values.
 
 **A new trap the rule creates.** Four of the eight agents wrote, or named as their first instinct, this:
 
