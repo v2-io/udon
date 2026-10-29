@@ -1881,3 +1881,55 @@
 > Perfect! Thank you!
 
 *(Agent text, summary: a short closing reply.)*
+
+## 2026-10-28 (Mountain), session `01Hgdj3fobqBFEmAFmJi6Zup`
+
+*Recorded by this session's agent (Opus 5.5). One message from this session is held back until the value trial reports, because the trial agents may read this file; it will be added in its place.*
+
+### Joseph (whole)
+
+> Hello!!  Last time I was in udon/v2/spec-lite*  some agents and I had had a very interesting and, I believe, fruitful beam-search about typing and type-systems and syntactical branches that could be taken. Typing wasn't supposed to be a particularly big part of udon-lite, but it seemed like a ripe time to visit it in a more thorough way -- the least expensive time to do something altogether new with the syntax. And lots of really good facts came out of it-- but then I had to put remaining usage toward other things and it's been at least a week since I've even thought about it. Would you use aspectus to get a feel for what files were most recent there and see if we left a handoff or anything and generally where we left things, and then orient yourself with udon-lite (I recommend staying in udon-lite and not reading 0.9/0.10 specs or anything-- having agents go outside of 'lite' to find things for you etc. so you can keep your mind uncluttered with historical baggage) and we can strategize next steps?
+
+*(Agent text, summary: oriented from the 10-22 handoff, TODO-MSC, CTQ-FACTORS, the rule cards whole, the value-related definitions, the four final-thoughts and the end of this record; reported that nothing had changed since 10-22 and no card had been edited from the spikes; added one finding of its own (`(…)` swaps roles between names and values); proposed six decisions in dependency order with its leans, and a decision sheet.)*
+
+### Joseph (whole)
+
+> Is everything synthesized into one primary markdown file that has the variations, examples, relevant facts/pros/cons/nuances?
+
+*(Agent text, summary: no; `adjudication.md` predates the inventive round and calls revived ideas dead; the final-thoughts are deliberately partial; offered to write one after reading the spike directories itself.)*
+
+### Joseph (whole)
+
+> If you would put together a file that's specifically to help me get the necessary picture and adjudicate all of this that would be great-- have an agent or two audit it afterward so they can search even deeper and find what may not surface enough when you put yours together? After the audits go ahead and note your recommendations as well (as per your work aspiration statement earlier, which correctly identified you as an enduser).  By the way, the CTQs should really help lay the groundwork for pros/cons (but aren't the only things really-- or not at that high-level of abstraction anyway).  In the end, you can always have several agents try several variations/options on lots of fake udon examples for different contexts and say what frictions they experienced and which ones seemed most "beautiful" and fluid and useful in the end... ... (ask sonnet too, and fable)
+
+*(Agent text, summary: wrote `spike-values-2026-10-22/ADJUDICATION-GUIDE.md` (D1–D13) and launched two auditors, Opus and Fable, with open briefs.)*
+
+### Joseph (whole)
+
+> Make sure they read CTQ and that they are free to roam and read and research wherever they see fit
+
+*(Agent text, summary: relayed both points to the two running auditors.)*
+
+### Joseph (whole)
+
+> Hopefully they will read enough of the lite spec to have context for the typing stuff. *although*-- don't send them a message about it since the unprimed even by lite spec might be valuable...
+
+*(Agent text, summary: sent nothing; suggested the later trial split agents into spec-primed and unprimed.)*
+
+### Joseph (whole)
+
+> I'm not sure what you mean by having come back "positive" -- I guess I'll see once you've put everything together :-)  Good luck :-)
+
+*(Agent text, summary: both audits had landed (`audit-opus.md`, `audit-fable.md`); "good" meant useful, not approving: they found more than a dozen real problems. Revised the guide with both folded in, added a dead-branches table, the order-of-commitment section and its recommendations; asked whether to launch the trial.)*
+
+### Joseph (whole)
+
+> 0.9 parser? what does that have to do with anything?
+
+*(Agent text, summary: agreed it has no bearing on lite; the spikes ran it only to test a premise behind the 10-21 lean. Corrected the guide: the old parser is context only, and the long-line question is restated as a design requirement for lite's own parser (cap line length with an error, or emit text in pieces).)*
+
+### Joseph (whole)
+
+> While I wouldn't put too much stock in its answers, you might as well launch a couple of haikus as well for kicks :-)
+
+*(Agent text, summary: launched two Haiku agents, one primed with the spec and one not, beside the six Sonnet, Fable and Opus agents of the trial (`.int/trial-values-2026-10-28/`).)*
