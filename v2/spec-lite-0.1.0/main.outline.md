@@ -166,7 +166,7 @@ This view shows no ※ or ∂ columns until a linter exists to compute them ([[s
 | proposed | [[rule:attribute-after-attribute-with-no-value]] | `:a :b 1` would nest an attribute under an attribute. |
 | proposed | [[rule:nested-attributes]] | An attribute can't have attributes. |
 | gap | [[rule:bare-typing]] | What may stand inside `<…>` as a number, `true`, `false` or `nil`, and every edge spelling |
-| proposed | [[rule:nil-spelling]] | `null` is not typed. |
+| proposed | [[rule:nil-spelling]] | `null` is the only spelling of null; a bare `nil` is text, with a warning. |
 | proposed | [[rule:element-values]] | Attributes can hold elements. |
 | proposed | [[rule:element-after-attribute-with-no-value]] | A bare `\|name` where an attribute still waits for its value becomes that value. |
 | gap | [[rule:repeated-attributes]] | What an attribute written more than once gives |

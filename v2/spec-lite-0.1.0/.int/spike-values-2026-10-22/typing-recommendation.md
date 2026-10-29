@@ -9,7 +9,7 @@
 ## The recommendation
 
 ```udon
-|server[web] :host localhost :port 8080 :debug false :owner nil :mask 0xFF
+|server[web] :host localhost :port 8080 :debug false :owner null :mask 0xFF
 |part :version "1.10" :zip 01234 :weight 3.2 kg
 |sample :mass(kg) 3.2 :temp(°C) 21.5 :taken(datetime) 2026-10-01T14:30Z
 |ev :on date(2026-10-01) :lasts duration(90 min) :when date(27-03-05 :format YY-MM-DD :pivot 1950)
@@ -21,7 +21,7 @@
 
 What each line gives:
 
-- **`server`:** `host` is the text "localhost"; `port` the number 8080; `debug` false; `owner` nil; `mask` the number 255.
+- **`server`:** `host` is the text "localhost"; `port` the number 8080; `debug` false; `owner` null; `mask` the number 255.
 - **`part`:** `version` is the string "1.10" (quoted, so it stays text); `zip` is the text "01234" (a leading zero is never a number); `weight` is the text "3.2 kg", which a schema that knows `weight` can read as a quantity.
 - **`sample`:** `mass` is 3.2 in kilograms; `temp` 21.5 in °C; `taken` an instant. The parentheses on the name say what the value is.
 - **`ev`:** `on` is the date 2026-10-01; `lasts` a duration of 90 minutes; `when` the date 2027-03-05, read with the format and century it states.
@@ -32,7 +32,7 @@ What each line gives:
 
 **The whole design, as eight rules:**
 
-1. **A bare value is read** if it's `nil`, `true`, `false`, or a number (JSON's way of writing numbers, plus `0x`/`0o`/`0b` and `_` between digits). Anything else bare is text. Keys and prose are never read.
+1. **A bare value is read** if it's `null`, `true`, `false`, or a number (JSON's way of writing numbers, plus `0x`/`0o`/`0b` and `_` between digits). Anything else bare is text. Keys and prose are never read.
 2. **A quoted value counts only if it stands alone**; then it's a string. Followed by more text, the whole thing is text, quotes included.
 3. **A name followed by parentheses, standing alone in an attribute value**, is a value in that notation: `date(…)`. It means exactly what the inline element `|{date …}` means; the parentheses hold what that element's line would. Not recognized in an element's own text (`$main`) or in prose, where `|{…}` does the job.
 4. **Parentheses on an attribute's name** say what its value is: `:on(date) 2026-10-01` means `:on date(2026-10-01)`, and `:mass(kg) 3.2` means `:mass qty(3.2 kg)`.
@@ -54,7 +54,7 @@ What each line gives:
   - a quoted value, `name(…)` or backticks followed by more text in an *attribute* value (`:href "https://example.com" Click here`), suggesting ` \ `;
   - a space between an attribute's name and its parentheses (`:mass (kg) 3.2`, which is the text "(kg) 3.2");
   - a value starting `https://` (or another scheme) that contains a space (`:href https://example.com Click here`), suggesting ` \ `.
-- **`null` stays text, with the existing warning** pointing to `nil`.
+- **`null`, not `nil`** (your call, 2026-10-29, reversing the 2026-10-09 choice): it's what JSON, YAML, HCL, CUE and CBOR write, and what every trial agent wrote untaught. A bare `nil` is text, with a warning (on by default) suggesting `null`.
 
 ---
 
@@ -71,7 +71,6 @@ What each line gives:
 
 **Against JSON.**
 - `:version 1.10` is the number 1.1; a version must be quoted. Agents mostly do that already (five of eight in the trial).
-- `null` is text; every agent in the trial that hadn't read the spec wrote `null`. The warning will fire often.
 - `0xFF` goes to JSON as 255: the value survives, the spelling doesn't.
 - `$main` is read like any value, so `|td 1.10` has the value 1.1 and `|h1 1984` the value 1984. A renderer uses the characters and is unaffected; a converter to JSON is not.
 
@@ -81,7 +80,7 @@ What each line gives:
 
 **Against what agents write untaught (the trial).**
 - They write units in the value (`:mass 3.2 kg`). That stays text, which is right, but nothing checks it unless a schema reads it.
-- They write `null`, and quote versions out of habit (harmless).
+- They quote versions out of habit (harmless). (They also write `null`, which is now the spelling.)
 - Some write `:href "https://…" Click here`, which is why the first new warning exists.
 - None of them reached for `date(…)`, parentheses on a name, or backticks. These have to be learned; the trial suggests they're easy to like once seen.
 
@@ -91,7 +90,7 @@ What each line gives:
 
 ### 1. Bare values
 
-**Recommendation.** A bare value's characters are kept, and its value is `nil`, `true`, `false` or a number when it spells one, by JSON's rules plus `0x`/`0o`/`0b` and `_` between digits; otherwise text. This is part of the spec, the same for every tool. Keys stay text. Prose is never read; `$main`, being a value, is.
+**Recommendation.** A bare value's characters are kept, and its value is `null`, `true`, `false` or a number when it spells one, by JSON's rules plus `0x`/`0o`/`0b` and `_` between digits; otherwise text. This is part of the spec, the same for every tool. Keys stay text. Prose is never read; `$main`, being a value, is.
 
 **Options set aside.**
 - *Always text, reading optional per tool* (your 10-21 lean): two tools disagree about the same file, and `:debug false` is the text "false", which counts as true in Python, JavaScript, Ruby and Elixir.
@@ -103,7 +102,7 @@ What each line gives:
 
 **Pros.** The same value for every tool (stability). `:debug false` is false, as agents expect. Lite to JSON copies numbers exactly. `0xFF` and `1_000` work as you asked for in July, and no word is spelled that way, so nothing is misread. The characters are always kept.
 
-**Cons.** `:version 1.10` is 1.1 unless quoted. `null` is text. Keys and values differ (`|step[3]` is text, `:step 3` a number). `$main` values get read too (`|td 1.10`).
+**Cons.** `:version 1.10` is 1.1 unless quoted. A Ruby- or Go-trained writer's `nil` is text (with a warning). Keys and values differ (`|step[3]` is text, `:step 3` a number). `$main` values get read too (`|td 1.10`).
 
 ### 2. Quoted values
 
@@ -166,7 +165,7 @@ What each line gives:
 
 **Pros.** Frees `<` for HTML and Markdown in text. One fewer bracket. Your strong lean.
 
-**Cons.** `<>` as nil has no home (bare `nil` covers it). Two spec-primed trial agents reached for `<3.2 kg>` to make a value checkable; they'll need `qty(3.2 kg)`.
+**Cons.** `<>` as null has no home (bare `null` covers it). Two spec-primed trial agents reached for `<3.2 kg>` to make a value checkable; they'll need `qty(3.2 kg)`.
 
 ### 7. The trailing colon
 

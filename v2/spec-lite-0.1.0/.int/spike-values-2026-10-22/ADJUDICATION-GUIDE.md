@@ -58,7 +58,7 @@ All three explorers, and both checkers, concluded the value has to be the same f
 
 | | What the parser keeps | The value of `:debug false`, with no schema |
 |---|---|---|
-| **A** | the characters; the spec says the value of `nil`, `true`, `false` or a number is that value | false |
+| **A** | the characters; the spec says the value of `null`, `true`, `false` or a number is that value | false |
 | **B** | the characters, plus the type, recorded by the parser beside them | false |
 | **C** (your lean as written) | the characters; whether the value is a number is each tool's choice | depends on the tool |
 | **D** | the characters; the value is text unless a tool asks for a number | the text "false" |
@@ -67,11 +67,11 @@ A and B give every tool the same value; they differ only in whether the spec sta
 
 **Three smaller questions that come with it:**
 
-1. **Which spellings get read?** The explorers chose JSON's: `nil`, `true`, `false`, and numbers as JSON writes them (no leading zero, no `0x`, no `_`). So `:zip 01234` stays text, keeping its zero. But you wrote on 2026-07-14 that "0x 0o 0d 0b *definitely* help as literal qualifiers, as does '_' agnostic digit separators". Under JSON's set, `0xFF` and `1_000` are text.
+1. **Which spellings get read?** The explorers chose JSON's: null, `true`, `false`, and numbers as JSON writes them (no leading zero, no `0x`, no `_`). So `:zip 01234` stays text, keeping its zero. But you wrote on 2026-07-14 that "0x 0o 0d 0b *definitely* help as literal qualifiers, as does '_' agnostic digit separators". Under JSON's set, `0xFF` and `1_000` are text.
 2. **The version-number problem.** The value of `:version 1.10` is the number 1.1. Every remedy needs the writer to quote it (`"1.10"`) or a schema to say it's text. In the trial, five of eight agents quoted versions untaught anyway.
-3. **`null`.** Lite's spelling is `nil` (your 2026-10-09 call), and a bare `null` is text with a warning. **In the trial, every agent that hadn't read the spec wrote `:owner null`.** So that warning will fire a lot. Accepting `null` too is the alternative.
+3. **`null` or `nil`.** Lite's spelling was `nil` (your 2026-10-09 call). **In the trial, every agent that hadn't read the spec wrote `:owner null`**, as JSON, YAML, HCL, CUE and CBOR all spell it. On 2026-10-29 you switched it to `null`; a bare `nil` is then text, with a warning suggesting `null`.
 
-**My recommendation: A.** The same value for every tool, and the parser keeps only what was written. B also works, but it makes the parser record types as well. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) stay text: a key names something, it isn't a quantity. Keep `nil`, with the warning on `null`.
+**My recommendation: A.** The same value for every tool, and the parser keeps only what was written. B also works, but it makes the parser record types as well. For the set: JSON's, plus `0x`/`0o`/`0b` and `_` between digits, as you wrote in July; no word is spelled that way, so nothing is misread. Keys (`|step[3]`) stay text: a key names something, it isn't a quantity. `null`, with a warning on `nil` (your call, 2026-10-29).
 
 ---
 
@@ -214,7 +214,7 @@ You called A's reading ("mass, then kg inside it") an affordance.
 **With decisions 1, 3 and 5, nothing needs it:** numbers are read bare, kinds are written `date(…)`, verbatim text goes in backticks. Retiring it frees `<` for HTML and Markdown in text (`|li <kbd>Ctrl</kbd> to copy` is just text).
 
 **What changes with it:**
-- your lean that `<>` means nil has no home; bare `nil` covers it;
+- your lean that `<>` means null has no home; bare `null` covers it;
 - `@<ref>`, your own spelling (2026-10-11) for "a reference kept as a reference", isn't affected: it starts with `@`.
 
 **What the trial found:** the trial didn't test it (left out, given your lean). The four agents who'd read the spec all noticed it was missing, and two reached for `<3.2 kg>` when they wanted a checked value, but that's the current cards talking as much as instinct. None of the four who hadn't read the spec reached for it.

@@ -15,7 +15,7 @@ consequences: [def:text, rule:backslash-empty-text, rule:attribute-after-attribu
 
 ## Statement
 
-An attribute with nothing after it on its line and nothing indented under it MUST be an error, whose message says implicit missing values aren't supported and names `nil`, `''` and `\`.
+An attribute with nothing after it on its line and nothing indented under it MUST be an error, whose message says implicit missing values aren't supported and names `null`, `''` and `\`.
 
 ## Grounds
 
@@ -30,7 +30,7 @@ Decided for this version ([[decision:decided-for-this-version]]).
 ```udon
 |el :d
 ```
-An error at 1:5: implicit missing value; write `nil`, `''` or `\`.
+An error at 1:5: implicit missing value; write `null`, `''` or `\`.
 
 ## Discussion
 
@@ -66,7 +66,8 @@ An error at 1:5: implicit missing value; write `nil`, `''` or `\`.
 > — Joseph, 2026-10-09 (both in `.int/STEWARD-VERBATIM.md`)
 ## Working notes
 
-- **To ask Joseph, under the 2026-10-21 lean that a bare run is always a «text» ([[rule:unquoted-run-is-one-value]]):** the message's `nil` would be read as text unless the typed-primitive view is on; does the message say `<nil>`?
+- The message names `null` since 2026-10-29 ([[rule:nil-spelling]]); Joseph's quoted words below say `nil`, the spelling then.
+
 - Joseph's words (2026-10-09, `.int/STEWARD-VERBATIM.md`):
 
   > `:a` by itself should be an error something along the lines of "implicit missing value for attribute is not supported / reserved -- explicitly use nil, '' for blank string, or \ (for empty text)..."
