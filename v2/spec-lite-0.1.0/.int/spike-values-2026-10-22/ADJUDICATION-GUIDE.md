@@ -176,7 +176,7 @@ You called A's reading ("mass, then kg inside it") an affordance.
 
 **What the trial found: B 5, C 3, A none.**
 - **The dot already means nesting to agents.** Two agents made the mistake while writing in style A *on purpose*: one wrote `:db.host` and `:tls.cert` meaning "the host inside db", another `:listen.port`. Five noticed, reading cold, that they took the dot in `:mass.kg` as a unit and the dot in `:server.port` as a path.
-- **The dot can't hold most units:** `°C`, `%`, `m/s` aren't name characters, which is why the example says `degC`.
+- **With a dot, the unit becomes part of the name**, so `°C`, `%` and `m/s` would all have to be allowed in names (the example dodges this with `degC`). Parentheses can hold any unit without touching what a name may contain.
 - **B reads like a scientist's column header** ("Mass (kg)") and holds any unit. Its likely slip: `:mass (kg) 3.2`, with a space, which silently makes the value `(kg) 3.2`.
 - **What agents actually wanted most** (five of eight, unprompted): to say the kind *once* for a whole table, not on every row:
 
