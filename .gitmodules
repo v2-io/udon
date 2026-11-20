@@ -1,4 +1,0 @@
-[submodule "_archive/udon-ruby"]
-	path = .archive/_archive/udon-ruby
-	url = https://github.com/v2-io/udon-ruby.git
-	update = none
