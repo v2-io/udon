@@ -1,0 +1,72 @@
+// The term kind: one spec-defined term, one file, spec/def/<term>.md.
+//
+// DRAFT, 2026-11-20, by a Claude Fable 5.2 session; not yet looked at by Joseph.
+// Taken from the def form in verisectorium core (core/templates/def.md and
+// core/def/README.md there, read whole), with two things from address-theory's
+// term groups that core's form does not have: declared verb forms, and `dual`.
+// The node names below (kind, frontmatter, section, standalone, ...) are this
+// file's own; no tool reads it yet.
+// KDL 2.0. A value containing " is a raw string, #"like this"#.
+
+kind "term" {
+  file "spec/def/<term>.md"
+  // One term per file. Two terms defined against each other (reference and
+  // referent) are two files, each naming the other with `dual`.
+  one-per-file #true
+
+  // How a term is written where it is used, in any segment.
+  notation {
+    term "«term»"
+    subtype "‹subtype›"
+    multi-word "joined with ·, as «root·scope»; the file name uses - for ·"
+  }
+
+  // The leading ```kdl block of the file.
+  frontmatter {
+    node "term" args="the term, singular base form" required=#true {
+      prop "pos" values="noun verb adjective" note=#"space-separated when a term is more than one, as pos="noun verb""#
+      prop "pl" note="for a count noun: a suffix (-s, -es) or the whole irregular plural"
+      // Regular verbs declare nothing more; these only for an irregular verb.
+      prop "3sg"
+      prop "past"
+      prop "pp"
+      prop "ing"
+      child "dual" args="the other term" note="the two are defined only in relation to each other"
+      child "subtypes" args="one or more; they have no file of their own"
+      child "synonyms" args="one or more"
+      child "avoid" args="the word, then why it is avoided"
+      child "rel" args="a verb" props="term card note informal provisional" note=#"card is "{min,max}"; informal=#true when the target is a plain word"#
+    }
+    node "status" args="provisional | accepted" props="by on" required=#true
+  }
+
+  // The body, in order. standalone=#true: states present truth and points at
+  // nothing outside the file except other terms, written «term».
+  section "title" heading="# «term»" required=#true standalone=#true {
+    holds "the heading, then one sentence saying what the term is"
+  }
+  section "intro" heading="## Intro" standalone=#true {
+    holds "how the term sits among its neighbours, for a cold reader"
+  }
+  section "definition" heading="## Definition" required=#true standalone=#true {
+    holds "the elaboration, or the senses; present tense"
+  }
+  section "invariants" heading="### Invariants" standalone=#true {
+    holds "what must always hold, and how the thing fails; only invariants whose failure breaks this term"
+  }
+  section "discussion" heading="## Discussion" {
+    holds "why it is cut this way; may lean outward with care"
+  }
+  section "examples" heading="## Examples" standalone=#true {
+    holds "concrete cases, named plainly"
+  }
+  section "history" heading="## History" {
+    holds "how this definition came to be as it is"
+  }
+  section "historical-context" heading="## Historical Context" {
+    holds "where it came from: sources, earlier attempts, pointers into .influx and .archive"
+  }
+  section "working-notes" heading="## Working Notes" required=#true {
+    holds "the inbox: what is open, each with a lean; drained as items resolve"
+  }
+}
