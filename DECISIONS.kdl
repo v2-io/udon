@@ -9,6 +9,7 @@
 //   expects   - the steward's prediction about where the work will go; not a choice
 //   possible  - named as an option, expressly undecided
 //   assented  - put to the steward by someone else, and he agreed
+//   stated    - the steward said how something already decided is meant to work
 // `words` are the steward's own, from the session of 2026-11-20, with an
 // obvious misspelling replaced by the whole corrected word in [brackets].
 // `holds` is the recording agent's reading of them, and is the weaker of the two.
@@ -105,4 +106,23 @@ decision "spec-version-form" how="assented" by="Joseph" at="2026-11-20" {
 decision "spec-version-file" how="lean" by="Joseph" at="2026-11-20" {
   holds "The spec's version lives in VERSION.SPEC at the root, named `spec` in .dx.yml, and is shown and changed with `dx version spec …`. This replaces the file name in version-is-the-spec's; the file name itself was offered loosely."
   words "we'll move VERSION here to VERSION.SPEC or something and add a line and have it `dx version spec bump pre` (with no version subcommand defaulting to VERSION file or whatever its current behavior is)..."
+}
+
+decision "term-forms-inside-guillemets" how="stated" by="Joseph" at="2026-11-20" {
+  holds "A term is written in guillemets in whichever grammatical form the sentence needs, with the whole form inside: «attribute», «attributes». A term's other forms (plural, possessive where needed) are declared for exactly this. The convention holds in the outline as well as in segments."
+  words "It looks like you are using the guillemet convention almost correctly in the element.md -- keep in mind that we specify the other grammatical forms (plural, possessive if necessary, etc.) specifically so we can say «attribute» and «attributes» interchangeably as the sentence's grammar demands."
+}
+
+decision "outline-kinds-inline-term-and-full-term" how="lean" by="Joseph" at="2026-11-20" {
+  holds "The canonical outline has a kind column. A term defined only by its row is of kind inline-term; a term with its own file is of kind full-term; they are different kinds because different things can be asked of them. More kinds come as rows need them. This replaces outline-columns: the columns are now mark, kind, term, description, with mark entered by hand as in verisectorium core."
+  words "kind can be  inline-term vs full-term (vs other things we'll have soon-- but an inline term *is* a different kind, because it has different (mostly much fewer) dimensions)."
+}
+
+decision "outline-shows-version-by-transclusion" how="lean" by="Joseph" at="2026-11-20" {
+  holds "The outline shows the spec's version by transcluding VERSION.SPEC, not by repeating it."
+  words "`Version: ![[../VERSION.SPEC]]` (etc.)"
+}
+
+decision "inline-terms-take-guillemets" how="proposed" by="Claude Fable 5.2 session" at="2026-11-20" {
+  holds "An inline-term is written in guillemets like a full-term («node», «AST»), which departs from verisectorium core, where inline words are written plainly. Reason: a reader cannot otherwise tell a defined word from the ordinary one, and which kind of term it is shows in the outline's kind column. Applied in the outline and in def/element.md; Joseph has not answered it."
 }

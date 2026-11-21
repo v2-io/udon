@@ -17,6 +17,7 @@ kind "term" {
   // How a term is written where it is used, in any segment.
   notation {
     term "«term»"
+    forms "any form the term declares goes inside the guillemets, whichever the sentence needs: «attribute», «attributes», «attribute's». The forms are declared so that this works."
     subtype "‹subtype›"
     multi-word "joined with ·, as «root·scope»; the file name uses - for ·"
   }
