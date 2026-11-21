@@ -143,3 +143,9 @@ decision "outline-order-is-for-comprehension" how="stated" by="Joseph" at="2026-
   holds "Rows may use a term before its own row. Order is chosen for a reader's comprehension, not to avoid forward references."
   words "I removed the zero-forward-reference false constraint, so this is a comprehension question now [as] it should be rather than a pedanticity question."
 }
+
+decision "ast-means-ast" how="stated" by="Joseph" at="2026-11-20" {
+  holds "AST keeps its ordinary meaning. Parsing a partial gives any number of root nodes, root in the tree sense. A document's AST has exactly one root node: an element named $root, an element like any other, whose child nodes other than its metadata are the AST of the document's partial. No anonymous holder element, and no special sense of AST."
+  words "AST means AST, a partial gets parsed into any number of udon root nodes (in the tree sense), but a document's AST has a single root node, which is an element with the name $root, whose (non-meta-data) node children are the AST of the content partial."
+  rejected "The session's two proposals before this: that the root is a position and not a named element, and that an AST is a pair of attributes and nodes distinct from a node. His words on the second: \"still too much hoop-jumping in my opinion-- the tail wagging the dog so-to-speak\"."
+}

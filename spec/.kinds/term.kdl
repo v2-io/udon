@@ -38,7 +38,7 @@ kind "term" {
       child "avoid" args="the word, then why it is avoided"
       child "rel" args="a verb" props="term card note informal provisional" note=#"card is "{min,max}"; informal=#true when the target is a plain word"#
     }
-    node "status" args="provisional | accepted" props="by on" required=#true
+    node "status" args="draft | accepted" props="by on" required=#true
   }
 
   // The body, in order. standalone=#true: states present truth and points at
