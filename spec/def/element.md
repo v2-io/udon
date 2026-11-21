@@ -45,7 +45,6 @@ The XML Information Set describes an element the same way, as recalled and not r
 ## Working Notes
 - For «attribute»: when one name is written more than once on an «element», whether the order of those «values» is kept. Lean: yes; "unordered" is across names.
 - For «attribute»: a «partial's» top-level attributes are among its root «nodes» (Joseph, 2026-11-20: "a partial gets parsed into any number of udon root nodes"), so an «attribute» is a «node». How that sits with an «element's» «attributes» being a separate part from its ordered child «nodes» is «attribute's» to say.
-- «element-name» is marked as a term and nothing defines it yet.
 - Open: may a «document» write the `$` «attributes» directly (`:$key jw` for `[jw]`)? Belongs to a rule. Lean: refused, so each has one spelling.
 - Open: which other kinds of «node» may be child «nodes».
 - Open: whether an «element» written inline inside a «text» is an «element» by this definition. Waits on how embedded forms are designed.
