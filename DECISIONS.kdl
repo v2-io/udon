@@ -101,3 +101,8 @@ decision "spec-version-form" how="assented" by="Joseph" at="2026-11-20" {
   words "I agree with your lean. We just need to be clear somewhere that we're adopting the semver form for the spec's version-- distinct from (the currently non-existing) rust-implementation's version."
   open "Whether VERSION names the last delivered state or the one being worked toward. Recorded for now as the former: 2.0.0-alpha.0 until a first resting state is delivered. Not put to Joseph yet."
 }
+
+decision "spec-version-file" how="lean" by="Joseph" at="2026-11-20" {
+  holds "The spec's version lives in VERSION.SPEC at the root, named `spec` in .dx.yml, and is shown and changed with `dx version spec …`. This replaces the file name in version-is-the-spec's; the file name itself was offered loosely."
+  words "we'll move VERSION here to VERSION.SPEC or something and add a line and have it `dx version spec bump pre` (with no version subcommand defaulting to VERSION file or whatever its current behavior is)..."
+}
