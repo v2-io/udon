@@ -126,3 +126,20 @@ decision "outline-shows-version-by-transclusion" how="lean" by="Joseph" at="2026
 decision "inline-terms-take-guillemets" how="proposed" by="Claude Fable 5.2 session" at="2026-11-20" {
   holds "An inline-term is written in guillemets like a full-term («node», «AST»), which departs from verisectorium core, where inline words are written plainly. Reason: a reader cannot otherwise tell a defined word from the ordinary one, and which kind of term it is shows in the outline's kind column. Applied in the outline and in def/element.md; Joseph has not answered it."
 }
+
+decision "inline-terms-take-guillemets-agreed" how="assented" by="Joseph" at="2026-11-20" {
+  holds "Terms defined inline in the outline are written in guillemets like terms with their own file. This settles inline-terms-take-guillemets, which was the session's proposal."
+  put-by "Claude Fable 5.2 session"
+  words "Agreed."
+}
+
+decision "single-guillemets-for-meta-terms" how="lean" by="Joseph" at="2026-11-20" {
+  holds "Single guillemets mark meta-terms: words of the verisectorium method and of this store's own ontology (column names and values such as ‹draft›, ‹definition›, ‹inline·def›), and the requirement words ‹must›, ‹should›, ‹may›. Double guillemets stay for terms the specification defines about Udon. This takes single guillemets away from subtypes, which term-notation had given them after verisectorium core; subtypes have no notation for now. The meta-terms are not defined yet."
+  words #"I also added single-guillemets for meta-defined special definitions like column values (verisectorium stuff) and special markers like RFC 2119 definitions etc., instead of "semi-defined/semi-special" meanings as the old verisectorium core has them."#
+  words-2 "We'll probably define them at some point and/or put a legend in here, but no point in doing that before we have any SOPs written and before Verisectorium is settled-- the single-guillemets will help us distinguish them as meta-special in the spec for now regardless."
+}
+
+decision "outline-order-is-for-comprehension" how="stated" by="Joseph" at="2026-11-20" {
+  holds "Rows may use a term before its own row. Order is chosen for a reader's comprehension, not to avoid forward references."
+  words "I removed the zero-forward-reference false constraint, so this is a comprehension question now [as] it should be rather than a pedanticity question."
+}

@@ -18,7 +18,7 @@ kind "term" {
   notation {
     term "«term»"
     forms "any form the term declares goes inside the guillemets, whichever the sentence needs: «attribute», «attributes», «attribute's». The forms are declared so that this works."
-    subtype "‹subtype›"
+    // Single guillemets are for meta-terms (verisectorium words, column values, ‹must›/‹should›/‹may›), by Joseph's decision of 2026-11-20. A subtype therefore has no notation of its own yet.
     multi-word "joined with ·, as «root·scope»; the file name uses - for ·"
   }
 
