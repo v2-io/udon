@@ -1,0 +1,103 @@
+// Working decisions for udon v2, kept by hand. Newest last; a later entry that
+// overturns an earlier one says which.
+//
+// Everything here so far is a LIGHT WORKING LEAN: cheap to reconsider, and
+// recorded so that a later mind does not read it back as a ruling. `how` says
+// what was actually done in deciding, as the least the words support:
+//   proposed  - put forward by the named party; nobody else has taken it up
+//   lean      - the steward's current inclination, in his words
+//   expects   - the steward's prediction about where the work will go; not a choice
+//   possible  - named as an option, expressly undecided
+//   assented  - put to the steward by someone else, and he agreed
+// `words` are the steward's own, from the session of 2026-11-20, with an
+// obvious misspelling replaced by the whole corrected word in [brackets].
+// `holds` is the recording agent's reading of them, and is the weaker of the two.
+// `by` and `at` are typed by the recording agent, not read from a harness.
+// KDL 2.0. A value containing " is a raw string, #"like this"#.
+
+decision "bootstrap-from-markdown-and-kdl" how="lean" by="Joseph" at="2026-11-20" {
+  holds "Until udon can be pinned and used for its own spec, segments are markdown and KDL; the mix is moved into udon as soon as udon is far enough along."
+  words "the plan is for us to transition the markdown/KDL mix into udon as soon as udon is far enough along to pin and bootstrap it."
+}
+
+decision "segment-formats" how="proposed" by="Joseph" at="2026-11-20" {
+  holds "Prose-primary segments are markdown; structure-heavy segments are KDL; a markdown segment's frontmatter is a leading ```kdl block, not --- YAML."
+  words #"I'd like to propose that we use markdown for segments that are prose-primary for now in udon (pre-bootstrap), and kdl for structure-heavy segments as well as "```kdl" first lines in the markdowns instead of '---' yaml for frontmatter blocks (so, like we have in ~/src/verisectorium/core/def/*.md )."#
+}
+
+decision "term-notation" how="proposed" by="Joseph" at="2026-11-20" {
+  holds "Spec-defined terms are written as verisectorium core writes its terms: «term», ‹subtype›."
+  words "Also that we go with that same core's notation for spec-defined terms"
+}
+
+decision "one-term-per-file" how="lean" by="Joseph" at="2026-11-20" {
+  holds "A term definition is one term in one file; terms defined against each other name each other with a dual field. Whether this is a default or a restriction is not settled."
+  words "a 1:1 between term:file should be the default-- or even restriction-- dual-terms etc. can just depend on each other in their dual field or something."
+}
+
+decision "definitions-first" how="lean" by="Joseph" at="2026-11-20" {
+  holds "The spec's term definitions are worked first, before the rules that use them."
+  words "One thing we'll improve on significantly over spec-lite-0.1.0 is we will focus initially on the lexicon / term definitions which were, in the spec-lite project, left as afterthoughts-- causing enormous churn and confusion and exponentially exploding jargon-size."
+}
+
+decision "canonical-outline-reader" how="lean" by="Joseph" at="2026-11-20" {
+  holds "spec/canonical.outline.md is for someone implementing a compliant parser whose output, for fully parsed input, is an AST of the shape the spec gives."
+  words "It will be written as if to someone implementing a compliant parser that outputs (in non-streaming contexts / fully parsed chunks) a [compliantly] shaped AST."
+}
+
+decision "ast-with-the-spec" how="expects" by="Joseph" at="2026-11-20" {
+  holds "The non-streaming AST is specified together with the spec, as what the spec is tested against."
+  words "I think that the non-streaming AST representation will be hand in hand with the spec to give the spec concrete reality to test against."
+}
+
+decision "pedagogy-outline" how="expects" by="Joseph" at="2026-11-20" {
+  holds "A pedagogy outline comes later, over the same segments plus its own."
+  words "It is likely that pedagogy will end up being a superset that also pulls in some spec segments as appropriate and depends on most/all of them."
+}
+
+decision "grammar-placement" how="expects" by="Joseph" at="2026-11-20" {
+  holds "No separate grammar outline yet; grammar begins as sections and segments inside the spec."
+  words "Grammar, however, is more difficult for us I think to say this early-- it might start evolving -- at least at first, as sections and segments within spec that are PEG representations of parts of the stuff, or railway diagrams etc."
+}
+
+decision "fixtures-from-segments" how="expects" by="Joseph" at="2026-11-20" {
+  holds "Exemplar, idiom, edge-case and avoid segments, and fixtures, sit among the spec segments they depend on and are assembled into the test fixtures."
+  words "I suspect we'll have exemplars/idioms/edge-cases/avoid/ etc. + thorough fixtures that will all be assembled into actual testing fixtures as well-- sprinkled throughout and depending on parts of the spec."
+}
+
+decision "spec-lite-is-the-source" how="lean" by="Joseph" at="2026-11-20" {
+  holds "Segments, and the other segment kinds to adopt, are pulled first from .archive/v2/spec-lite-0.1.0/."
+  words "the *actual* segments we'll start pulling from are in .archive/v2/spec-lite-0.1.0/"
+}
+
+decision "address-theory-defs-in-influx" how="lean" by="Joseph" at="2026-11-20" {
+  holds "address-theory's definitions are kept as a copy in spec/.influx/at-defs/ and placed one at a time as the spec needs them."
+  words "They at least belong, as a copy, in spec/.influx/at-defs/ or something and we can adjudicate them and add them as needed etc."
+}
+
+decision "outline-columns" how="proposed" by="Claude Fable 5.2 session" at="2026-11-20" {
+  holds "The canonical outline starts with a slot reference, a kind and a one-line claim, and gains a standing column only when something computes it."
+  words #"Joseph, of that proposal: "Agreed as far as what I feel is minimal... mostly. I think verisectorium/core/ outline(s) have what it is more likely to evolve into." And: "It wouldn't surprise me if individual RFC 2119 "requirement levels" ends up being a column.""#
+}
+
+decision "version-is-the-spec's" how="lean" by="Joseph" at="2026-11-20" {
+  holds "The VERSION file at the root versions the spec only, for now."
+  words "initially we're just versioning the spec, not the parser or tooling."
+}
+
+decision "project-tooling-in-ruby-under-tools" how="lean" by="Joseph" at="2026-11-20" {
+  holds "Project-level scripts are Ruby, written as dx tools in tools/; bin/ is not used for now."
+  words #"I'm actually leaning toward Ruby again for "project-level" work / one-off scripts etc. If devex/dx is ready as it is, let's skip bin/ for now and just write what we need in tools/ (including a spec-bump command or something)."#
+}
+
+decision "vsect-alpha-pilot" how="possible" by="Joseph" at="2026-11-20" {
+  holds "Assembly and linting of the spec might be done by a vsect-alpha tool developed in verisectorium and piloted here."
+  words "we could, if we decide, *actually* pilot vsect-alpha, developing it over there and using it here for the assembly of the spec etc."
+}
+
+decision "spec-version-form" how="assented" by="Joseph" at="2026-11-20" {
+  holds #"The spec's version is written in SemVer 2.0 form, MAJOR.MINOR.PATCH-stage.N: a hyphen, the stage, a dot, a counter (2.0.0-alpha.1). It is the spec's version only. A Rust implementation does not exist yet; when it does it has a version of its own, and nothing here says what that will be. Stages, with the meanings the 0.9 line gave them: alpha (evolving), beta (feature-complete), rc (frozen, being validated), then the bare version. N goes up each time a resting state of the canonical outline is delivered."#
+  put-by "Claude Fable 5.2 session, as its lean among the prerelease conventions it laid out"
+  words "I agree with your lean. We just need to be clear somewhere that we're adopting the semver form for the spec's version-- distinct from (the currently non-existing) rust-implementation's version."
+  open "Whether VERSION names the last delivered state or the one being worked toward. Recorded for now as the former: 2.0.0-alpha.0 until a first resting state is delivered. Not put to Joseph yet."
+}
