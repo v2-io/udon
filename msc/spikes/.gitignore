@@ -1,0 +1,11 @@
+*.cmi
+*.cmo
+*.cmx
+*.o
+*.byte
+__pycache__/
+_probe_tmp/
+spike-1-literate-udon-ocaml/udon_lit
+spike-1-literate-udon-ocaml/gen/udon_ast_verify
+spike-2-udon-ddd-adts/build/
+thread2-verify/test_eg

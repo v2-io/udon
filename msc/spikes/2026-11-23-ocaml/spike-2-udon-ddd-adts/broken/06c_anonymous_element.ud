@@ -1,0 +1,9 @@
+; Breakage 06c: Anonymous UDON element (`|` with no element-name)
+; Legal in raw UDON v2 (spec/def/element.md: "An element with none is still an element"),
+; but has no OCaml variant constructor name!
+
+|document[broken-06c]
+  :context verisectorium
+
+  | :kind claim :author "Alice" :version 1
+    Anonymous element has no OCaml ADT constructor.

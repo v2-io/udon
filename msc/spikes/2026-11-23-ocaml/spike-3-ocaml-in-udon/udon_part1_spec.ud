@@ -1,0 +1,526 @@
+; UDON Part 1 AST & Observer-Set Equality — Executable Specification in UDON-OCaml
+
+Universal Document Object Notation (@{UdonAst}) Part 1 Specification.
+This literate document defines the abstract syntax tree types, implicit `$root`
+@{document} construction, layered observer-set equality (`partitioned by`),
+recursive invariant validation, and canonical transcript rendering — written
+1:1 in UDON and compiled directly to OCaml via `udon2ml.py` + `ocamlc`.
+
+|sig[UDON-AST]
+  The consumer-facing contract for UDON Part 1 @{element} and @{node} values.
+  Following PRAXIS.md Rule 1, this signature pins down the observable AST
+  algebra and invariants without exposing internal sorting or traversal helpers.
+
+  |type[value].variant
+    A typed value carried by an @{attribute}.
+    |VText :of string
+      Unquoted or delimited text scalar.
+    |VInt :of int
+      Integer scalar.
+    |VBool :of bool
+      Boolean scalar.
+    |VNil
+      Explicit nil value.
+    |VList :of value list
+      Ordered list of nested @{value}s.
+    |VExplicit.record
+      An explicit angle-bracketed value `<tag:raw>`.
+      :tag string
+      :raw string
+    |VElem :of element
+      An @{element} held directly as an @{attribute} value.
+
+  |type[attribute].record.and
+    An unordered named slot on an @{element}. Repeated occurrences of the same
+    name stack into `values` in written order (`element.md` Working Notes).
+    :attr-name string
+    :values    value list
+
+  |type[element].record.and
+    A @{node} with at most one element-name, unordered @{attribute}s, and
+    ordered child @{node}s. Key (`$key`), traits (`$traits`), and sameline
+    text (`$main`) live as @{attribute}s rather than separate record fields.
+    :name     string option
+    :attrs    attribute list
+    :children node list
+
+  |type[node].variant.and
+    Any vertex in a UDON AST.
+    |Element :of element
+      A structured @{element} vertex.
+    |Text :of string
+      A prose or text child.
+    |Comment :of string
+      A comment preserved in the raw tree; invisible to `ContentOnly` equality.
+    |Fence.record
+      A fenced verbatim block whose body is never scanned for UDON syntax.
+      :tag   string option
+      :exact bool
+      :body  string
+
+  |type[partial] :is node list
+    A parsed UDON partial: zero, one, or many root @{node}s.
+
+  |type[document].record
+    A full parsed UDON file: its sole parentless @{node} is the implicit
+    `$root` @{element}, carrying file metadata as `$`-prefixed @{attribute}s.
+    :root element
+
+  |type[eq-layer].variant
+    Observer-set layers for `partitioned by` AST equality (`PRAXIS.md` Rule 2).
+    |ContentOnly
+      Ignores @{attribute} order across distinct names and ignores @{Comment} nodes.
+    |ContentAndOrnament
+      Ignores @{attribute} order across distinct names, but distinguishes @{Comment} nodes.
+
+  |type[violation].variant
+    Domain invariant violations surfaced by @{validate-document}.
+    |RootNotNamedDollarRoot :of string option
+      The @{document}'s top @{element} was not named `"$root"`.
+    |NestedRootElement
+      An @{element} named `"$root"` appeared beneath the document root.
+    |EmptyAttrValues :of string
+      An @{attribute} existed with an empty stacked value list.
+    |UnstackedDuplicateAttr :of string
+      Two separate @{attribute} entries shared the same name instead of stacking.
+
+  |val[make-document]     :type file-path:string -> partial:partial -> document
+  |val[equiv-element]     :type layer:eq-layer -> element -> element -> bool
+  |val[equiv-node]        :type layer:eq-layer -> node -> node -> bool
+  |val[validate-document] :type document -> violation list
+  |val[count-nodes]       :type node -> int
+  |val[find-by-key]       :type string -> element -> element option
+  |val[element-traits]    :type element -> string list
+  |val[render-node]       :type node -> string
+
+|module[UdonAst] :sig UDON-AST
+  Reference implementation of @{UDON-AST}. Every helper below is written in
+  UDON without tuples or raw OCaml escapes.
+
+  |type[value].variant
+    |VText :of string
+    |VInt :of int
+    |VBool :of bool
+    |VNil
+    |VList :of value list
+    |VExplicit.record
+      :tag string
+      :raw string
+    |VElem :of element
+
+  |type[attribute].record.and
+    :attr-name string
+    :values    value list
+
+  |type[element].record.and
+    :name     string option
+    :attrs    attribute list
+    :children node list
+
+  |type[node].variant.and
+    |Element :of element
+    |Text :of string
+    |Comment :of string
+    |Fence.record
+      :tag   string option
+      :exact bool
+      :body  string
+
+  |type[partial] :is node list
+
+  |type[document].record
+    :root element
+
+  |type[eq-layer].variant
+    |ContentOnly
+    |ContentAndOrnament
+
+  |type[violation].variant
+    |RootNotNamedDollarRoot :of string option
+    |NestedRootElement
+    |EmptyAttrValues :of string
+    |UnstackedDuplicateAttr :of string
+
+  |fn[make-document] :labeled [file-path partial] :ret document
+    Wraps a @{partial} into a @{document}'s implicit `$root` @{element},
+    attaching `$file` metadata as an @{attribute}.
+    |let[file-attr]
+      |record[attribute]
+        :attr-name "$file"
+        :values    [ |{VText file-path} ]
+    |record[document]
+      :root
+        |record[element]
+          :name     |Some "$root"
+          :attrs    [ file-attr ]
+          :children partial
+
+  ; --- Layered Observer-Set Equality (`partitioned by`) ---
+
+  |fn[list-equiv].rec :args [cmp xs ys] :ret bool
+    Elementwise equality over two lists of equal length using comparator `cmp`.
+    |match xs
+      |empty
+        |match ys
+          |empty :is true
+          |_     :is false
+      |cons[xh][xt]
+        |match ys
+          |empty :is false
+          |cons[yh][yt]
+            |if |cmp xh yh
+              |then |list-equiv cmp xt yt
+              |else false
+
+  |fn[opt-string-eq] :args [a b] :ret bool
+    |match a
+      |None
+        |match b
+          |None    :is true
+          |Some[_] :is false
+      |Some[sa]
+        |match b
+          |None     :is false
+          |Some[sb] :is |eq sa sb
+
+  |fn[sort-attrs] :args [attrs] :ret attribute list
+    Canonicalizes @{attribute} order by `attr-name` so unordered comparison
+    reduces to exact list comparison while preserving stacked value order.
+    |pipe attrs
+      |List/sort |fun[a][b] |String/compare a.attr-name b.attr-name
+
+  |fn[filter-children] :labeled [layer] :args [kids] :ret node list
+    Applies the active @{eq-layer} projection to an @{element}'s children.
+    In `ContentOnly` mode, @{Comment} nodes are dropped; in `ContentAndOrnament`,
+    every child participates in written order.
+    |match layer
+      |ContentAndOrnament :is kids
+      |ContentOnly
+        |pipe kids
+          |List/filter
+            |fun[n]
+              |match n
+                |Comment[_] :is false
+                |_          :is true
+
+  |fn[equiv-value].rec :labeled [layer] :args [v1 v2] :ret bool
+    Structural equality on @{value}s under the chosen @{eq-layer}.
+    |match v1
+      |VText[s1]
+        |match v2
+          |VText[s2] :is |eq s1 s2
+          |_         :is false
+      |VInt[n1]
+        |match v2
+          |VInt[n2] :is |eq n1 n2
+          |_        :is false
+      |VBool[b1]
+        |match v2
+          |VBool[b2] :is |eq b1 b2
+          |_         :is false
+      |VNil
+        |match v2
+          |VNil :is true
+          |_    :is false
+      |VList[xs]
+        |match v2
+          |VList[ys] :is |list-equiv |{equiv-value :layer layer} xs ys
+          |_         :is false
+      |VExplicit :tag t1 :raw r1
+        |match v2
+          |VExplicit :tag t2 :raw r2 :is |and |{eq t1 t2} |{eq r1 r2}
+          |_                         :is false
+      |VElem[e1]
+        |match v2
+          |VElem[e2] :is |equiv-element e1 e2 :layer layer
+          |_         :is false
+
+  |fn[equiv-attr].and :labeled [layer] :args [a1 a2] :ret bool
+    Compares two @{attribute}s: names must match and stacked `values` must
+    match in written order.
+    |and
+      |eq a1.attr-name a2.attr-name
+      |list-equiv |{equiv-value :layer layer} a1.values a2.values
+
+  |fn[equiv-element].and :labeled [layer] :args [e1 e2] :ret bool
+    Compares two @{element}s under `layer`: same optional name, same unordered
+    @{attribute}s, and same ordered projected children.
+    |let[same-name]  |opt-string-eq e1.name e2.name
+    |let[sa1]        |sort-attrs e1.attrs
+    |let[sa2]        |sort-attrs e2.attrs
+    |let[same-attrs] |list-equiv |{equiv-attr :layer layer} sa1 sa2
+    |let[k1]         |filter-children e1.children :layer layer
+    |let[k2]         |filter-children e2.children :layer layer
+    |let[same-kids]  |list-equiv |{equiv-node :layer layer} k1 k2
+    |and same-name same-attrs same-kids
+
+  |fn[equiv-node].and :labeled [layer] :args [n1 n2] :ret bool
+    |match n1
+      |Element[e1]
+        |match n2
+          |Element[e2] :is |equiv-element e1 e2 :layer layer
+          |_           :is false
+      |Text[t1]
+        |match n2
+          |Text[t2] :is |eq t1 t2
+          |_        :is false
+      |Comment[c1]
+        |match n2
+          |Comment[c2] :is |eq c1 c2
+          |_           :is false
+      |Fence :tag t1 :exact x1 :body b1
+        |match n2
+          |Fence :tag t2 :exact x2 :body b2
+            |and
+              |opt-string-eq t1 t2
+              |eq x1 x2
+              |eq b1 b2
+          |_ :is false
+
+  ; --- Recursive Invariant Validator ---
+
+  |fn[check-attr-list] :args [attrs] :ret violation list
+    Verifies two @{attribute} invariants on a single @{element}:
+    every attribute has at least one stacked value, and no two separate entries
+    repeat the same `attr-name`.
+    |fn[loop].rec :args [seen rest]
+      |match rest
+        |empty :is []
+        |cons[a][tl]
+          |let[v-empty]
+            |match a.values
+              |empty :is [ |{EmptyAttrValues a.attr-name} ]
+              |_     :is []
+          |let[v-dup]
+            |if |List/mem a.attr-name seen
+              |then [ |{UnstackedDuplicateAttr a.attr-name} ]
+              |else []
+          |let[tail-vs] |loop |{cons a.attr-name seen} tl
+          |append v-empty |append v-dup tail-vs
+    |loop [] attrs
+
+  |fn[validate-element].rec :args [is-root el] :ret violation list
+    Recursively audits an @{element} and its descendant @{node}s.
+    |let[root-v]
+      |if is-root
+        |then
+          |match el.name
+            |Some[n] :when |{eq n "$root"} :is []
+            |default[other]                :is [ |{RootNotNamedDollarRoot other} ]
+        |else
+          |match el.name
+            |Some[n] :when |{eq n "$root"} :is [ NestedRootElement ]
+            |_                             :is []
+    |let[attr-vs] |check-attr-list el.attrs
+    |let[val-elem-vs]
+      |pipe el.attrs
+        |List/concat_map |fun[a] a.values
+        |List/concat_map validate-value
+    |let[child-vs]
+      |List/concat_map validate-node el.children
+    |append root-v attr-vs val-elem-vs child-vs
+
+  |fn[validate-value].and :args [v] :ret violation list
+    |match v
+      |VElem[e]  :is |validate-element false e
+      |VList[vs] :is |List/concat_map validate-value vs
+      |_         :is []
+
+  |fn[validate-node].and :args [n] :ret violation list
+    |match n
+      |Element[e] :is |validate-element false e
+      |_          :is []
+
+  |fn[validate-document] :args [doc] :ret violation list
+    Validates all Part 1 structural invariants on a @{document}.
+    |validate-element true doc.root
+
+  ; --- Queries & Transcript Rendering ---
+
+  |fn[count-nodes].rec :args [n] :ret int
+    Counts every vertex in an AST branch, including the branch root.
+    |match n
+      |Text[_]    :is 1
+      |Comment[_] :is 1
+      |Fence[_]   :is 1
+      |Element[e]
+        |let[sub]
+          |pipe e.children
+            |List/map count-nodes
+            |List/fold_left |{fun[a][b] |add a b} 0
+        |add 1 sub
+
+  |fn[find-attr] :args [target attrs] :ret attribute option
+    |List/find_opt |{fun[a] |eq a.attr-name target} attrs
+
+  |fn[element-traits] :args [el] :ret string list
+    Extracts an @{element}'s `$traits` @{attribute} as a list of trait names.
+    |match |find-attr "$traits" el.attrs
+      |None :is []
+      |Some[a]
+        |pipe a.values
+          |List/filter_map
+            |fun[v]
+              |match v
+                |VText[s] :is |Some s
+                |_        :is None
+
+  |fn[has-key?] :args [want el] :ret bool
+    |match |find-attr "$key" el.attrs
+      |None :is false
+      |Some[a]
+        |match a.values
+          |cons[hd][_]
+            |match hd
+              |VText[k] :is |eq k want
+              |_        :is false
+          |empty :is false
+
+  |fn[find-by-key].rec :args [want el] :ret element option
+    Depth-first search for the first @{element} carrying `$key = want`.
+    |if |has-key? want el
+      |then |Some el
+      |else
+        |fn[search-kids].rec :args [ks]
+          |match ks
+            |empty :is None
+            |cons[hd][tl]
+              |match hd
+                |Element[child]
+                  |match |find-by-key want child
+                    |Some[found] :is |Some found
+                    |None        :is |search-kids tl
+                |_ :is |search-kids tl
+        |search-kids el.children
+
+  |fn[render-value].rec :args [v] :ret string
+    |match v
+      |VText[s]                :is |cat "\"" s "\""
+      |VInt[n]                 :is |Int/to_string n
+      |VBool[b]                :is |Bool/to_string b
+      |VNil                    :is "nil"
+      |VExplicit :tag t :raw r :is |cat "<" t ":" r ">"
+      |VList[vs]
+        |let[inner] |String/concat " " |{List/map render-value vs}
+        |cat "[" inner "]"
+      |VElem[e]                :is |render-element e
+
+  |fn[render-element].and :args [el] :ret string
+    |let[head]
+      |match el.name
+        |Some[n] :is |cat "|" n
+        |None    :is "|"
+    |let[attr-str]
+      |pipe el.attrs
+        |List/map
+          |fun[a]
+            |let[vs] |String/concat " " |{List/map render-value a.values}
+            |cat " :" a.attr-name " " vs
+        |String/concat ""
+    |let[kid-str]
+      |match el.children
+        |empty :is ""
+        |default[ks]
+          |let[rendered] |String/concat "; " |{List/map render-node ks}
+          |cat " { " rendered " }"
+    |cat head attr-str kid-str
+
+  |fn[render-node].and :args [n] :ret string
+    Produces a compact one-line canonical transcript of any @{node}.
+    |match n
+      |Element[e]  :is |render-element e
+      |Text[s]     :is |cat "Text(\"" s "\")"
+      |Comment[c]  :is |cat "Comment(\"" c "\")"
+      |Fence.partial :exact ex :body b
+        |let[flag]
+          |if ex
+            |then ".exact"
+            |else ""
+        |cat "Fence" flag "(\"" b "\")"
+
+; --- Executable Conformance Tests ---
+
+|open[UdonAst]
+
+|fn[mk-attr] :args [name vals] :ret attribute
+  |record[attribute]
+    :attr-name name
+    :values    vals
+
+|fn[mk-el] :args [name attrs children] :ret element
+  |record[element]
+    :name     name
+    :attrs    attrs
+    :children children
+
+|test[attribute-order-invariance]
+  Two elements differing only in attribute declaration order must be equal
+  in both ContentOnly and ContentAndOrnament layers (`element.md` L25).
+  |let[a1] |mk-attr "role" [ |{VText "editor"} ]
+  |let[a2] |mk-attr "$key" [ |{VText "jw"} ]
+  |let[e1] |mk-el |{Some "user"} [ a1 a2 ] [ |{Text "Hello"} ]
+  |let[e2] |mk-el |{Some "user"} [ a2 a1 ] [ |{Text "Hello"} ]
+  |assert |equiv-element e1 e2 :layer ContentOnly
+  |assert |equiv-element e1 e2 :layer ContentAndOrnament
+
+|test[stacked-attribute-values-preserve-order]
+  Repeated values for the same attribute name preserve written order (`element.md` L46).
+  |let[e1] |mk-el |{Some "item"} [ |{mk-attr "$traits" [ |{VText "good"} |{VText "green"} ]} ] []
+  |let[e2] |mk-el |{Some "item"} [ |{mk-attr "$traits" [ |{VText "green"} |{VText "good"} ]} ] []
+  |assert |not |equiv-element e1 e2 :layer ContentOnly
+
+|test[child-order-is-strict]
+  A parser never reorders an element's child nodes (`element.md` L24).
+  |let[e1] |mk-el |{Some "doc"} [] [ |{Text "first"} |{Text "second"} ]
+  |let[e2] |mk-el |{Some "doc"} [] [ |{Text "second"} |{Text "first"} ]
+  |assert |not |equiv-element e1 e2 :layer ContentOnly
+
+|test[layered-observer-equality-comments]
+  ContentOnly ignores Comment nodes; ContentAndOrnament distinguishes them (`PRAXIS.md` Rule 2).
+  |let[e-plain]
+    |mk-el |{Some "sec"} []
+      |list
+        |Text "Core claim"
+  |let[e-commented]
+    |mk-el |{Some "sec"} []
+      |list
+        |Comment "draft note"
+        |Text "Core claim"
+  |assert |equiv-element e-plain e-commented :layer ContentOnly
+  |assert |not |equiv-element e-plain e-commented :layer ContentAndOrnament
+
+|test[document-root-and-invariants]
+  A document built via make-document satisfies all invariants; mutating its root
+  or nesting a $root element surfaces exact violations.
+  |let[user-el]
+    |mk-el |{Some "user"}
+      |list
+        |mk-attr "$key" [ |{VText "jw"} ]
+        |mk-attr "$traits" [ |{VText "admin"} |{VText "active"} ]
+      |list
+        |Text "Joseph"
+        |Fence
+          :tag   |Some "ocaml"
+          :exact true
+          :body  "1 + 1"
+  |let[doc] |make-document :file-path "spec.ud" :partial [ |{Element user-el} ]
+  |assert |eq |{validate-document doc} []
+  |assert |eq |{count-nodes |{Element doc.root}} 4
+  |assert |eq |{element-traits user-el} [ "admin" "active" ]
+  |match |find-by-key "jw" doc.root
+    |Some[found] :is |assert |equiv-element found user-el :layer ContentOnly
+    |None        :is |assert false
+  ; Now construct a deliberately broken document with 3 distinct violations
+  |let[nested-root] |mk-el |{Some "$root"} [] []
+  |let[bad-root]
+    |mk-el |{Some "not-root"}
+      |list
+        |mk-attr "empty" []
+        |mk-attr "dup" [ |{VInt 1} ]
+        |mk-attr "dup" [ |{VInt 2} ]
+      |list
+        |Element nested-root
+  |let[bad-doc] |record[document] :root bad-root
+  |let[vs] |validate-document bad-doc
+  |assert |eq |{List/length vs} 4
+  |do |Printf/printf "    Rendered sample: %s\n" |{render-node |{Element doc.root}}

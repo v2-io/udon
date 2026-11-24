@@ -1,0 +1,82 @@
+; Breakage 07: Well-typed OCaml that violates Verisectorium Ubiquitous Language invariants!
+; Enacts Note 30 §10's exact formal-spec scenario + maker-is-checker + cycle + deliverable on-approval.
+; Expected: COMPILES cleanly with `ocamlc`, then caught by compiled `Checks.check_verisectorium`!
+
+|document[broken-07]
+  :context verisectorium
+
+  |piece[p-steward-quote].accepted.steward-words Steward quote on regular grammar
+    :kind    quote
+    :author  "Joseph"
+    :version 1
+    Keep the grammar regular; nobody nests deeper than two.
+
+  |piece[p-ground-g].accepted Ground G: nobody nests deeper than two levels
+    :kind    claim
+    :author  "Spec-Author"
+    :version 1
+    Empirical premise supporting the depth limit.
+
+  |piece[p-decision-d].accepted Decision D: cap nesting at two levels
+    :kind    decision
+    :author  "Joseph"
+    :version 1
+    |relies-on :kind for-truth :target @[p-ground-g]
+    Grounded in @{p-ground-g}.
+
+  |piece[p-rule-r].accepted.derived Rule R: nesting stops at two levels
+    :kind    rule
+    :author  "Spec-Author"
+    :version 1
+    |relies-on :kind for-truth :target @[p-decision-d]
+    Derived from @{p-decision-d}.
+
+  |piece[p-tab-choice].draft Weak choice: tab at depth three treated as four spaces
+    :kind    decision
+    :author  "Agent-A"
+    :version 1
+    Closed an unspecified hole in passing.
+
+  |piece[p-rule-tab].draft.derived Rule 9: tab indentation semantics
+    :kind    rule
+    :author  "Agent-A"
+    :version 1
+    |relies-on :kind for-truth :target @[p-tab-choice]
+    Rests on @{p-tab-choice}.
+
+  |piece[p-cycle-a].draft Cyclic claim A
+    :kind    claim
+    :author  "Agent-C"
+    :version 1
+    |relies-on :kind for-truth :target @[p-cycle-b]
+    Depends on B.
+
+  |piece[p-cycle-b].draft Cyclic claim B
+    :kind    claim
+    :author  "Agent-C"
+    :version 1
+    |relies-on :kind for-truth :target @[p-cycle-a]
+    Depends on A.
+
+  |outline[impl].deliverable Deliverable implementer outline (illegally holding an on-approval slot!)
+    :reader "Implementers"
+    |settled     :piece @[p-rule-r]
+    |on-approval :piece @[p-rule-tab]
+
+  ; Decision D named ground G
+  |decided :by "Joseph" :about @[p-decision-d] :how ruling :at "2026-11-10"
+    :grounds [@[p-ground-g]]
+    :words
+      |located :source @[p-steward-quote] :span "L1" :verbatim "Keep the grammar regular"
+
+  ; Usage report refutes Ground G! (Note 30 §10) -> unsettles Decision D AND downstream Rule R!
+  |checked :by "Field-Auditor" :about @[p-ground-g] :version 1 :method "usage-report-chunk-4" :outcome refuted :at "2026-11-19"
+    :main "Usage report shows real users nesting to four levels."
+
+  ; Weak hole-close decision without located words, with downstream Rule 9 resting on it
+  |decided :by "Agent-A" :about @[p-tab-choice] :how hole-close :at "2026-11-18"
+    :words
+      |attributed-not-located :who "Agent-A"
+
+  ; Maker == Checker violation! Spec-Author checks their own piece!
+  |checked :by "Spec-Author" :about @[p-rule-r] :version 1 :method "self-review" :outcome confirmed :at "2026-11-19"

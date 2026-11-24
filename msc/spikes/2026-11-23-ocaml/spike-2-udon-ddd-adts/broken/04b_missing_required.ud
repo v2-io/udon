@@ -1,0 +1,15 @@
+; Breakage 04b: Missing required attribute `:how` on `|decided`
+; Expected: `ocamlc` reports `Some record fields are undefined: how`!
+
+|document[broken-04b]
+  :context verisectorium
+
+  |piece[p1].accepted Some decision
+    :kind    decision
+    :author  "Joseph"
+    :version 1
+    Decision body.
+
+  |decided :by "Joseph" :about @[p1] :at "2026-11-24"
+    :words
+      |attributed-not-located :who "Joseph"

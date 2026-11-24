@@ -1,0 +1,13 @@
+; Breakage 01: Prose sentence uses an undefined Ubiquitous Language term @{block}
+; (Direct echo of Verisectorium Note 30 §3: "rule 14 uses «block» in a sense its definition does not give")
+; Expected: `ocamlc` compile error pointing to line 13 of THIS .ud file!
+
+|document[broken-01]
+  :context udon-spec
+
+  |term[element].draft.foundation A node with name?, unordered attrs, and ordered children.
+    :kind    full-term
+    :pos     noun
+    |invariant Children are strictly ordered.
+    |example An element with one text child.
+    Inside a @{block}, every @{element} preserves child order.

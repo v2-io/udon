@@ -1,0 +1,11 @@
+; Breakage 06a: Conflicting traits on disjoint trait-axis (`.draft.accepted`)
+; Expected: translator rejects before OCaml codegen.
+
+|document[broken-06a]
+  :context verisectorium
+
+  |piece[p1].draft.accepted Paradoxical piece
+    :kind    claim
+    :author  "Alice"
+    :version 1
+    Cannot be both draft and accepted.

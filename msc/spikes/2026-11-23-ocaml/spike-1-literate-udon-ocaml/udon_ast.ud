@@ -1,0 +1,847 @@
+; Literate UDON v2 + OCaml Spike (Spike 1 of 3)
+; Domain slice: UDON Part 1 Foundation AST, Element, Root & Observer Equality
+; Grounded in: udon/spec/{canonical.outline.md, PRAXIS.md, def/{AST,element,root}.md, DECISIONS.kdl}
+
+|context[udon-ast] UDON Part 1 — Foundation AST Bounded Context
+  :version 2.0.0-alpha.0-spike
+  :module Udon_ast
+  :projections [consumer implementer author]
+
+  This document is a single literate «Udon» source that holds three projections
+  side by side in human comprehension order:
+  1. **Author / Pedagogy** — prose definitions, ubiquitous-language relations, and rationale.
+  2. **AST Consumer** (`.mli`) — the abstract module signature that callers ‹must› rely on, hiding concrete representation details.
+  3. **Parser Implementer** (`.ml`) — the concrete representation, internal invariants, and observer-set equality implementations.
+
+  Every defined term is written in double guillemets in whichever grammatical form the
+  sentence needs (e.g., «element», «elements», «ASTs»). Meta-terms from ‹verisectorium›
+  and requirement levels use single guillemets: ‹draft›, ‹must›, ‹should›, ‹may›.
+
+  ; ---------------------------------------------------------------------------
+  ; Tangling layout — how comprehension-order chunks assemble into valid OCaml
+  ; ---------------------------------------------------------------------------
+
+  |tangle[consumer-sig] :file udon_ast.mli :projection consumer :traits [mli shared]
+    :layout [preamble types-rec types-derived values]
+    :join-type-rec types-rec
+
+  |tangle[implementer-body] :file udon_ast.ml :projection implementer :traits [ml shared]
+    :layout [preamble impl-preamble types-rec types-derived helpers eq-rec values]
+    :join-type-rec types-rec
+    :join-let-rec eq-rec
+
+  |tangle[verify-harness] :file udon_ast_verify.ml :projection verification :traits [check test]
+    :layout [check-helpers checks tests]
+    :auto-runner true
+
+  ; ---------------------------------------------------------------------------
+  ; Standing Decisions (verisectorium "decided" atoms, from DECISIONS.kdl)
+  ; ---------------------------------------------------------------------------
+
+  |decision[ast-means-ast] :how stated :by Joseph :at 2026-11-20
+    :holds "«AST» keeps its ordinary meaning: a «partial» yields any number of root «nodes»; a «document» yields a single «root» «element» named $root."
+    :words "AST means AST, a partial gets parsed into any number of udon root nodes (in the tree sense), but a document's AST has a single root node, which is an element with the name $root, whose (non-meta-data) node children are the AST of the content partial."
+
+  |decision[outline-order-is-for-comprehension] :how stated :by Joseph :at 2026-11-20
+    :holds "Terms are presented in human comprehension order, not compiler declaration order; forward references to later defined terms are allowed."
+    :words "I removed the zero-forward-reference false constraint, so this is a comprehension question now [as] it should be rather than a pedanticity question."
+
+  |decision[shorthands-are-attributes] :how lean :by Joseph :at 2026-11-20
+    :holds "An «element's» key, traits, and own-line text are «attributes» named $key, $traits, and $main — not separate structural parts."
+    :words "What is written as an element's key, as its traits, and as the text on its own line are the attributes named $key, $traits and $main."
+
+  |decision[observer-partitioned-equality] :how draft :by Praxis :at 2026-11-23
+    :holds "«AST» equality is defined by explicit observer sets (content vs. content+meta), making unordered «attributes» and ordered child «nodes» mechanically checkable."
+    :words "Define AST equality by explicit observer sets (partitioned by). State exactly which observations distinguish two AST values and which do not."
+
+  ; ---------------------------------------------------------------------------
+  ; Preamble — Source Metadata Layer
+  ; ---------------------------------------------------------------------------
+
+  |section[source-meta] Source Metadata Layer
+    Parsers ‹may› attach source-location metadata to «nodes». Following the
+    `content < content+meta` layering, metadata is carried orthogonally so that
+    content-level equality can ignore it while diagnostic-aware consumers can
+    inspect it.
+
+    Transparent record types marked `.shared` are written once here and tangled into
+    both `udon_ast.mli` and `udon_ast.ml`, avoiding OCaml's usual `.mli`/`.ml`
+    type-definition duplication.
+
+    ```ocaml[meta-types].shared :section preamble
+    (** Source-location metadata optionally attached to AST nodes. *)
+    type span = {
+      source : string;
+      line : int;
+      col : int;
+    }
+
+    type meta = {
+      span : span option;
+    }
+    ```
+
+    ```ocaml[meta-sig].mli :section preamble
+    val no_meta : meta
+    val make_span : source:string -> line:int -> col:int -> span
+    ```
+
+    ```ocaml[meta-impl].ml :section impl-preamble
+    let no_meta = { span = None }
+    let make_span ~source ~line ~col = { source; line; col }
+    ```
+
+  ; ---------------------------------------------------------------------------
+  ; 1. «Udon» (inline foundation term)
+  ; ---------------------------------------------------------------------------
+
+  |term[Udon] Universal Document Object Notation — an indentation-sensitive prose/markdown-first structured textual notation tuned to agentic and logocentric affordances.
+    :status draft
+    :pos noun
+    :forms [Udon's]
+
+  ; ---------------------------------------------------------------------------
+  ; 2. «AST» — introduced FIRST for human comprehension, even though OCaml
+  ;    must declare «node» and «element» before it!
+  ; ---------------------------------------------------------------------------
+
+  |term[AST] The Abstract Syntax Tree resulting from a «partial» being parsed by a compliant parser.
+    :status draft
+    :pos noun
+    :pl -s
+    :synonyms [abstract-syntax-tree]
+    :avoid [tree]
+    |rels
+      :made-of «node» {0,N}
+      :root-of-a-document «root» {0,1}
+
+    «AST» has its ordinary meaning: the graph structure a parser builds from source text.
+    Four things are particular to «Udon's» «AST»:
+    - It is what the specification pins down for a «partial».
+    - A «partial» gives any number of root «nodes» (none, one, or many).
+    - A «document» gives exactly one root «node», the «root», with the «partial's» root «nodes» inside it.
+    - Any branch is an «AST»: a «node» taken together with everything under it is itself an «AST».
+
+    |contract :for AST
+      In the AST Consumer projection, an «AST» is an ordered list of root «nodes»
+      (empty, singleton, or forest). Notice this sits right here in comprehension order,
+      before «node» is defined below; the tangler places `:section types-derived` after
+      `:section types-rec`.
+
+      ```ocaml[ast-type].shared :section types-derived
+      (** An «AST» is an ordered sequence of zero or more root «nodes». *)
+      type ast = node list
+      ```
+
+      ```ocaml[ast-ops-sig].mli :section values
+      (** Any single «node» together with its descendants forms a valid «AST» branch. *)
+      val branch_of_node : node -> ast
+
+      (** Content-level equality of two «ASTs» (order-sensitive over root «nodes»). *)
+      val equal_ast_content : ast -> ast -> bool
+
+      (** Metadata-sensitive equality of two «ASTs». *)
+      val equal_ast_with_meta : ast -> ast -> bool
+      ```
+
+    |impl :for AST
+      ```ocaml[ast-impl-ops].ml :section values
+      let branch_of_node (n : node) : ast = [ n ]
+
+      let equal_ast_content (a : ast) (b : ast) : bool =
+        list_equal equal_node_content a b
+
+      let equal_ast_with_meta (a : ast) (b : ast) : bool =
+        list_equal equal_node_with_meta a b
+      ```
+
+    |invariant[branch-is-ast].ie
+      I.e. Taking any child «node» from inside an «element» via `branch_of_node` yields
+      a self-contained «AST» whose content equality is reflexive and independent of its
+      former parent.
+
+      ```ocaml[inv-branch-is-ast].check.helper :section check-helpers
+      let inv_branch_is_ast (e : Udon_ast.element) : unit =
+        List.iter
+          (fun child ->
+            let branch = Udon_ast.branch_of_node child in
+            assert (List.length branch = 1);
+            assert (Udon_ast.equal_ast_content branch branch))
+          (Udon_ast.children e)
+      ```
+
+    |example[empty-partial-ast].eg
+      E.g. An empty «partial» gives an «AST» with no «nodes».
+
+      ```ocaml[ex-empty-partial].test :section tests
+      let ast = Udon_ast.ast_of_partial (Udon_ast.make_partial []) in
+      assert (ast = []);
+      assert (Udon_ast.equal_ast_content ast [])
+      ```
+
+    |working-notes
+      - Open: whether "directed acyclical graph" or "tree" is the final wording; OCaml's algebraic data types natively enforce acyclicity without parent pointers.
+
+  ; ---------------------------------------------------------------------------
+  ; 3. «node» — the general vertex of an «AST»
+  ; ---------------------------------------------------------------------------
+
+  |term[node] A vertex in an «AST» — an «element», a «text» leaf, or a top-level «attribute».
+    :status draft
+    :pos noun
+    :pl -s
+    |rels
+      :part-of «AST» {0,N}
+
+    An «AST» is composed of «nodes». In this Part 1 slice, a «node» is one of three
+    variants: an «element», a «text» leaf (carrying prose or string content with optional
+    source metadata), or a bare «attribute» (which ‹may› appear among a «partial's» root
+    «nodes» before being absorbed into a «root»).
+
+    |contract :for node
+      ```ocaml[node-type].shared :section types-rec
+      type node =
+        | Element of element
+        | Text of string * meta
+        | Attribute of attribute
+      ```
+
+      ```ocaml[node-ops-sig].mli :section values
+      val text_node : ?meta:meta -> string -> node
+      val element_node : element -> node
+      val attribute_node : attribute -> node
+      val equal_node_content : node -> node -> bool
+      val equal_node_with_meta : node -> node -> bool
+      ```
+
+    |impl :for node
+      ```ocaml[node-ops-impl].ml :section values
+      let text_node ?(meta = no_meta) s = Text (s, meta)
+      let element_node e = Element e
+      let attribute_node a = Attribute a
+      ```
+
+  ; ---------------------------------------------------------------------------
+  ; 4. «element-name»
+  ; ---------------------------------------------------------------------------
+
+  |term[element-name] The name an «element» has, when it has one; it says what the «element» is.
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [element-name's]
+
+    An «element-name» is a non-empty string when present. Note that an «element» ‹may›
+    lack an «element-name» (represented as `None` in OCaml).
+
+    |contract :for element-name
+      ```ocaml[ename-type].shared :section preamble
+      type element_name = string
+      ```
+
+  ; ---------------------------------------------------------------------------
+  ; 5. «element» — the central structural abstraction (opaque in .mli!)
+  ; ---------------------------------------------------------------------------
+
+  |term[element] A «node» with at most one «element-name», any number of unordered «attributes», and zero or more ordered child «nodes».
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [element's]
+    :avoid [tag]
+    |rels
+      :has «attribute» {0,N}
+      :has-child «node» {0,N}
+
+    An «element» has three parts and no others:
+    - An optional «element-name» (an anonymous «element» is still an «element»).
+    - Its «attributes»: unordered across distinct names; repeated occurrences of the same name retain their written order.
+    - Its child «nodes»: kept strictly in written order.
+
+    Crucially, `$key`, `$traits`, and `$main` are NOT separate structural fields of an
+    «element» — they are ordinary «attributes» under those `$`-prefixed names.
+
+    |contract :for element
+      Here the `.mli`/`.ml` split earns its keep: `type element` is **abstract** in the
+      Consumer projection, so callers cannot pattern-match on internal attribute storage
+      and cannot depend on attribute insertion order (`PRAXIS.md` Abstraction Integrity).
+
+      ```ocaml[element-sig].mli :section types-rec
+      type element
+      ```
+
+      ```ocaml[element-ops-sig].mli :section values
+      (** Smart constructor for an «element».
+          Shorthand helpers [?key], [?traits], and [?main] desugar directly into
+          the [$key], [$traits], and [$main] «attributes» — never separate fields. *)
+      val make_element :
+        ?meta:meta ->
+        ?name:element_name ->
+        ?key:value ->
+        ?traits:string list ->
+        ?main:string ->
+        ?attrs:attribute list ->
+        ?children:node list ->
+        unit ->
+        element
+
+      val element_name : element -> element_name option
+      val element_meta : element -> meta
+      val children : element -> node list
+
+      (** Lookup all values associated with an attribute name, in written order. *)
+      val attr_values : element -> string -> value list
+
+      (** Distinct attribute names present on this «element» (sorted for deterministic observation). *)
+      val attr_names : element -> string list
+
+      (** Convenience observers over the [$key], [$traits], and [$main] attributes. *)
+      val element_key : element -> value option
+      val element_traits : element -> string list
+      val element_main : element -> string option
+
+      val equal_element_content : element -> element -> bool
+      val equal_element_with_meta : element -> element -> bool
+      ```
+
+    |impl :for element
+      Internally, attributes are stored as a canonical sorted map (`StringMap`) from
+      attribute name to non-empty `value list` — preserving repeated-value order while
+      forgetting cross-name insertion order by construction.
+
+      ```ocaml[element-impl-helpers].ml :section impl-preamble
+      module StringMap = Map.Make (String)
+      ```
+
+      ```ocaml[element-impl-type].ml :section types-rec
+      type element = {
+        el_name : element_name option;
+        el_attrs : value list StringMap.t;
+        el_children : node list;
+        el_meta : meta;
+      }
+      ```
+
+      ```ocaml[element-impl-ops].ml :section values
+      let add_attr_to_map (m : value list StringMap.t) (a : attribute) =
+        let existing = Option.value ~default:[] (StringMap.find_opt a.attr_name m) in
+        StringMap.add a.attr_name (existing @ a.attr_values) m
+
+      let make_element
+          ?(meta = no_meta)
+          ?name
+          ?key
+          ?(traits = [])
+          ?main
+          ?(attrs = [])
+          ?(children = [])
+          () =
+        let m = List.fold_left add_attr_to_map StringMap.empty attrs in
+        let m =
+          match key with
+          | None -> m
+          | Some v -> add_attr_to_map m { attr_name = "$key"; attr_values = [ v ] }
+        in
+        let m =
+          match traits with
+          | [] -> m
+          | ts ->
+              let vs = List.map (fun t -> VString t) ts in
+              add_attr_to_map m { attr_name = "$traits"; attr_values = [ VList vs ] }
+        in
+        let m =
+          match main with
+          | None -> m
+          | Some s -> add_attr_to_map m { attr_name = "$main"; attr_values = [ VString s ] }
+        in
+        { el_name = name; el_attrs = m; el_children = children; el_meta = meta }
+
+      let element_name e = e.el_name
+      let element_meta e = e.el_meta
+      let children e = e.el_children
+      let attr_values e k = Option.value ~default:[] (StringMap.find_opt k e.el_attrs)
+      let attr_names e = StringMap.bindings e.el_attrs |> List.map fst
+
+      let element_key e =
+        match attr_values e "$key" with
+        | v :: _ -> Some v
+        | [] -> None
+
+      let element_traits e =
+        match attr_values e "$traits" with
+        | [ VList vs ] ->
+            List.filter_map (function VString s -> Some s | _ -> None) vs
+        | _ -> []
+
+      let element_main e =
+        match attr_values e "$main" with
+        | VString s :: _ -> Some s
+        | _ -> None
+      ```
+
+    |invariant[attributes-unordered].ie
+      I.e. Two «elements» that differ only in the order their distinct «attributes» were
+      written are equal under `equal_element_content`.
+
+      ```ocaml[inv-attrs-unordered].check :section checks
+      let a1 = Udon_ast.make_attr "role" [ Udon_ast.VString "steward" ] in
+      let a2 = Udon_ast.make_attr "active" [ Udon_ast.VBool true ] in
+      let e1 = Udon_ast.make_element ~name:"user" ~attrs:[ a1; a2 ] () in
+      let e2 = Udon_ast.make_element ~name:"user" ~attrs:[ a2; a1 ] () in
+      assert (Udon_ast.equal_element_content e1 e2)
+      ```
+
+    |invariant[children-ordered].ie
+      I.e. A parser never reorders an «element's» child «nodes»; reversing two distinct
+      children produces a non-equal «element».
+
+      ```ocaml[inv-children-ordered].check :section checks
+      let c1 = Udon_ast.text_node "first" in
+      let c2 = Udon_ast.text_node "second" in
+      let e1 = Udon_ast.make_element ~name:"seq" ~children:[ c1; c2 ] () in
+      let e2 = Udon_ast.make_element ~name:"seq" ~children:[ c2; c1 ] () in
+      assert (not (Udon_ast.equal_element_content e1 e2))
+      ```
+
+    |invariant[shorthands-desugar-to-attributes].ie
+      I.e. Writing `?key`, `?traits`, and `?main` on an «element» produces an «element»
+      strictly indistinguishable from supplying `$key`, `$traits`, and `$main` as explicit
+      «attributes».
+
+      ```ocaml[inv-shorthands-are-attrs].check :section checks
+      let via_shorthand =
+        Udon_ast.make_element
+          ~name:"user"
+          ~key:(Udon_ast.VString "jw")
+          ~traits:[ "steward"; "active" ]
+          ~main:"Joseph"
+          ()
+      in
+      let via_explicit =
+        Udon_ast.make_element
+          ~name:"user"
+          ~attrs:
+            [
+              Udon_ast.make_attr "$key" [ Udon_ast.VString "jw" ];
+              Udon_ast.make_attr "$traits"
+                [ Udon_ast.VList [ Udon_ast.VString "steward"; Udon_ast.VString "active" ] ];
+              Udon_ast.make_attr "$main" [ Udon_ast.VString "Joseph" ];
+            ]
+          ()
+      in
+      assert (Udon_ast.equal_element_content via_shorthand via_explicit);
+      assert (Udon_ast.element_key via_shorthand = Some (Udon_ast.VString "jw"));
+      assert (Udon_ast.element_traits via_shorthand = [ "steward"; "active" ]);
+      assert (Udon_ast.element_main via_shorthand = Some "Joseph")
+      ```
+
+    |example[element-user-with-text].eg
+      E.g. A `user` «element» with «attributes» `$key`, `$traits`, `role`, and one child «node», a «text».
+
+      ```ocaml[ex-element-user].test :section tests
+      let el =
+        Udon_ast.make_element
+          ~name:"user"
+          ~key:(Udon_ast.VString "jw")
+          ~traits:[ "founding" ]
+          ~attrs:[ Udon_ast.make_attr "role" [ Udon_ast.VString "steward" ] ]
+          ~children:[ Udon_ast.text_node "Hello from UDON." ]
+          ()
+      in
+      assert (Udon_ast.element_name el = Some "user");
+      assert (List.length (Udon_ast.children el) = 1);
+      assert (Udon_ast.attr_names el = [ "$key"; "$traits"; "role" ]);
+      inv_branch_is_ast el
+      ```
+
+    |example[element-anonymous].eg
+      E.g. An anonymous «element» with no «element-name», no «attributes», and two child «nodes», both «elements».
+
+      ```ocaml[ex-element-anon].test :section tests
+      let a = Udon_ast.element_node (Udon_ast.make_element ~name:"a" ()) in
+      let b = Udon_ast.element_node (Udon_ast.make_element ~name:"b" ()) in
+      let anon = Udon_ast.make_element ~children:[ a; b ] () in
+      assert (Udon_ast.element_name anon = None);
+      assert (Udon_ast.attr_names anon = []);
+      assert (List.length (Udon_ast.children anon) = 2);
+      inv_branch_is_ast anon
+      ```
+
+    |example[element-title-main].eg
+      E.g. An «element» with an «element-name», one «attribute» (`$main`), and no child «nodes» (representing `|title Hello`).
+
+      ```ocaml[ex-element-title].test :section tests
+      let title = Udon_ast.make_element ~name:"title" ~main:"Hello" () in
+      assert (Udon_ast.element_name title = Some "title");
+      assert (Udon_ast.element_main title = Some "Hello");
+      assert (Udon_ast.children title = []);
+      assert (Udon_ast.attr_names title = [ "$main" ]);
+      inv_branch_is_ast title
+      ```
+
+    |working-notes
+      - Open: may source text write `:$key jw` directly, or is `$` reserved? That belongs to parser rules (Part 2), not the AST value model here.
+
+  ; ---------------------------------------------------------------------------
+  ; 6. «text», «attribute», and «value»
+  ; ---------------------------------------------------------------------------
+
+  |term[text] A leaf «node» carrying textual or Markdown prose content.
+    :status draft
+    :pos noun
+    :pl -s
+
+  |term[attribute] A named property of an «element» (or top-level «node» in a «partial»), associating an attribute name with one or more ordered «values».
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [attribute's]
+    |rels
+      :holds «value» {1,N}
+
+    Across distinct attribute names, «attributes» on an «element» are unordered. When the
+    same attribute name is repeated on one «element», the written order of its «values»
+    is preserved (per the current lean in `def/element.md` Working Notes).
+
+    |contract :for attribute
+      ```ocaml[attr-type].shared :section types-rec
+      type attribute = {
+        attr_name : string;
+        attr_values : value list;
+      }
+      ```
+
+      ```ocaml[attr-ops-sig].mli :section values
+      val make_attr : string -> value list -> attribute
+      ```
+
+    |impl :for attribute
+      ```ocaml[attr-ops-impl].ml :section values
+      let make_attr attr_name attr_values = { attr_name; attr_values }
+      ```
+
+    |invariant[repeated-attr-order-preserved].ie
+      I.e. Repeating the same attribute name on an «element» preserves the order of its
+      «values» (e.g., `:pos noun` then `:pos verb` differs from `:pos verb` then `:pos noun`).
+
+      ```ocaml[inv-repeated-attr-order].check :section checks
+      let e1 =
+        Udon_ast.make_element ~name:"term"
+          ~attrs:
+            [
+              Udon_ast.make_attr "pos" [ Udon_ast.VString "noun" ];
+              Udon_ast.make_attr "pos" [ Udon_ast.VString "verb" ];
+            ]
+          ()
+      in
+      let e2 =
+        Udon_ast.make_element ~name:"term"
+          ~attrs:
+            [
+              Udon_ast.make_attr "pos" [ Udon_ast.VString "verb" ];
+              Udon_ast.make_attr "pos" [ Udon_ast.VString "noun" ];
+            ]
+          ()
+      in
+      assert (Udon_ast.attr_values e1 "pos" = [ Udon_ast.VString "noun"; Udon_ast.VString "verb" ]);
+      assert (not (Udon_ast.equal_element_content e1 e2))
+      ```
+
+  |term[value] A typed datum carried by an «attribute» — scalar, list, or nested «node».
+    :status draft
+    :pos noun
+    :pl -s
+
+    Because an «attribute» in «Udon» can hold a nested «element» (e.g., `:headers |header ...`),
+    «value» is mutually recursive with «node» and «element».
+
+    |contract :for value
+      ```ocaml[value-type].shared :section types-rec
+      type value =
+        | VString of string
+        | VInt of int
+        | VBool of bool
+        | VNil
+        | VList of value list
+        | VNode of node
+      ```
+
+  ; ---------------------------------------------------------------------------
+  ; 7. «partial», «document», and «root»
+  ; ---------------------------------------------------------------------------
+
+  |term[partial] «Udon» source text considered complete, yielding an «AST» of zero or more root «nodes» without an implicit «root».
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [partial's]
+
+    A «partial» parsed on its own has no «root»; its top-level «attributes» remain bare
+    `Attribute` «nodes» in its «AST» until wrapped into a «document».
+
+    |contract :for partial
+      ```ocaml[partial-sig].mli :section types-derived
+      type partial
+      ```
+
+      ```ocaml[partial-ops-sig].mli :section values
+      val make_partial : node list -> partial
+      val ast_of_partial : partial -> ast
+      ```
+
+    |impl :for partial
+      ```ocaml[partial-impl-type].ml :section types-derived
+      type partial = { partial_nodes : node list }
+      ```
+
+      ```ocaml[partial-impl-ops].ml :section values
+      let make_partial partial_nodes = { partial_nodes }
+      let ast_of_partial p = p.partial_nodes
+      ```
+
+  |term[document] A «partial» contained in a file (actual or asserted), whose «AST» has a single «root» «element» as the sole parent of the «partial's» content.
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [document's]
+
+    |contract :for document
+      ```ocaml[file-meta-type].shared :section types-derived
+      type file_metadata = {
+        path : string option;
+        encoding : string;
+      }
+      ```
+
+      ```ocaml[doc-sig].mli :section types-derived
+      type document
+      ```
+
+      ```ocaml[doc-ops-sig].mli :section values
+      (** Promote a «partial» and file metadata into a «document» whose sole root «node» is «root». *)
+      val make_document : ?meta:file_metadata -> partial -> document
+
+      (** Return the «document's» «root» «element» directly. *)
+      val root_of_document : document -> element
+
+      (** Return the «document's» «AST» — guaranteed to be a singleton list containing only «root». *)
+      val ast_of_document : document -> ast
+      ```
+
+    |impl :for document
+      ```ocaml[doc-impl-type].ml :section types-derived
+      type document = {
+        doc_root : element;
+      }
+      ```
+
+      ```ocaml[doc-impl-ops].ml :section values
+      let default_file_metadata = { path = None; encoding = "utf-8" }
+
+      let make_document ?(meta = default_file_metadata) (p : partial) : document =
+        let top_attrs, child_nodes =
+          List.fold_left
+            (fun (acc_a, acc_c) n ->
+              match n with
+              | Attribute a -> (a :: acc_a, acc_c)
+              | Element _ | Text _ -> (acc_a, n :: acc_c))
+            ([], [])
+            p.partial_nodes
+        in
+        let top_attrs = List.rev top_attrs in
+        let child_nodes = List.rev child_nodes in
+        let meta_attrs =
+          let enc = make_attr "$encoding" [ VString meta.encoding ] in
+          match meta.path with
+          | None -> [ enc ]
+          | Some path -> [ make_attr "$path" [ VString path ]; enc ]
+        in
+        let doc_root =
+          make_element
+            ~name:"$root"
+            ~attrs:(meta_attrs @ top_attrs)
+            ~children:child_nodes
+            ()
+        in
+        { doc_root }
+
+      let root_of_document d = d.doc_root
+      let ast_of_document d = [ Element d.doc_root ]
+      ```
+
+  |term[root] An implicit «element» with the «element-name» `$root` that is the sole parent of a «document's» «partial» and carries file metadata as «attributes».
+    :status draft
+    :pos noun
+    :pl -s
+    :forms [root's]
+    :avoid [root-node]
+    |rels
+      :is-a «element» {1,1}
+      :of «document» {1,1}
+
+    Nothing in source text writes the «root». Top-level «attributes» from the «partial»
+    join the «root's» «attributes» unchanged, while file metadata uses `$`-prefixed
+    names (`$path`, `$encoding`) so they cannot collide with user «attributes».
+
+    |invariant[document-has-unique-root].ie
+      I.e. A «document's» «AST» always has length 1, and its sole «node» is an «element»
+      named `$root` carrying `$encoding` (and `$path` when supplied).
+
+      ```ocaml[inv-doc-unique-root].check.helper :section check-helpers
+      let inv_document_unique_root (doc : Udon_ast.document) : unit =
+        let ast = Udon_ast.ast_of_document doc in
+        assert (List.length ast = 1);
+        match ast with
+        | [ Udon_ast.Element r ] ->
+            assert (Udon_ast.element_name r = Some "$root");
+            assert (Udon_ast.attr_values r "$encoding" <> []);
+            inv_branch_is_ast r
+        | _ -> assert false
+      ```
+
+    |example[three-line-partial-vs-document].eg
+      E.g. From `def/AST.md`: a «partial» of three top-level lines (an «attribute» and two
+      «elements») gives three root «nodes»; as a «document», it gives one «root» with the
+      «attribute» merged onto `$root` and the two «elements» as its ordered children.
+
+      ```ocaml[ex-partial-vs-doc].test :section tests
+      let attr = Udon_ast.attribute_node (Udon_ast.make_attr "lang" [ Udon_ast.VString "en" ]) in
+      let e1 = Udon_ast.element_node (Udon_ast.make_element ~name:"h1" ~main:"Title" ()) in
+      let e2 = Udon_ast.element_node (Udon_ast.make_element ~name:"p" ~main:"Body" ()) in
+      let partial = Udon_ast.make_partial [ attr; e1; e2 ] in
+      assert (List.length (Udon_ast.ast_of_partial partial) = 3);
+      let doc =
+        Udon_ast.make_document
+          ~meta:{ Udon_ast.path = Some "hello.ud"; encoding = "utf-8" }
+          partial
+      in
+      inv_document_unique_root doc;
+      let r = Udon_ast.root_of_document doc in
+      assert (Udon_ast.attr_values r "lang" = [ Udon_ast.VString "en" ]);
+      assert (Udon_ast.attr_values r "$path" = [ Udon_ast.VString "hello.ud" ]);
+      assert (List.length (Udon_ast.children r) = 2);
+      assert (Udon_ast.equal_ast_content (Udon_ast.children r) [ e1; e2 ])
+      ```
+
+    |example[empty-document-has-root].eg
+      E.g. From `def/root.md`: an empty file gives an «AST» containing only the «root»
+      with the file's metadata «attributes» and no child «nodes».
+
+      ```ocaml[ex-empty-doc].test :section tests
+      let doc =
+        Udon_ast.make_document
+          ~meta:{ Udon_ast.path = Some "empty.ud"; encoding = "utf-8" }
+          (Udon_ast.make_partial [])
+      in
+      inv_document_unique_root doc;
+      let r = Udon_ast.root_of_document doc in
+      assert (Udon_ast.children r = []);
+      assert (Udon_ast.attr_values r "$path" = [ Udon_ast.VString "empty.ud" ])
+      ```
+
+    |working-notes
+      - Gap: full list of ‹must›/‹should›/‹may› metadata «attributes» on «root» is still undecided in `spec/def/root.md`; `$path` and `$encoding` are provisional placeholders here.
+
+  ; ---------------------------------------------------------------------------
+  ; 8. Observer-Set Equality (`partitioned by`, per PRAXIS.md Rule 2)
+  ; ---------------------------------------------------------------------------
+
+  |section[observer-equality] Layered Equality (`content` vs. `content+meta`)
+    Following Liskov & Guttag's `partitioned by` discipline (`PRAXIS.md` Rule 2), we
+    define two explicit equivalence relations:
+    - **`content` equality** observes: `element_name`, the unordered map of `attr_name -> ordered value list`, and ordered `children`. It ignores source `meta` spans and attribute insertion order.
+    - **`content+meta` equality** additionally observes `meta` (`span` source/line/col) on every «element» and «text» «node».
+
+    |impl :for observer-equality
+      ```ocaml[eq-list-helper].ml :section helpers
+      let rec list_equal eq xs ys =
+        match (xs, ys) with
+        | [], [] -> true
+        | x :: xr, y :: yr -> eq x y && list_equal eq xr yr
+        | _ -> false
+
+      let map_equal eq m1 m2 = StringMap.equal eq m1 m2
+      ```
+
+      ```ocaml[eq-node-impl].ml :section eq-rec
+      let rec equal_node_content n1 n2 =
+        match (n1, n2) with
+        | Element e1, Element e2 -> equal_element_content e1 e2
+        | Text (s1, _), Text (s2, _) -> String.equal s1 s2
+        | Attribute a1, Attribute a2 -> equal_attr_content a1 a2
+        | _ -> false
+      ```
+
+      ```ocaml[eq-element-impl].ml :section eq-rec
+      let rec equal_element_content e1 e2 =
+        e1.el_name = e2.el_name
+        && map_equal (list_equal equal_value_content) e1.el_attrs e2.el_attrs
+        && list_equal equal_node_content e1.el_children e2.el_children
+      ```
+
+      ```ocaml[eq-attr-impl].ml :section eq-rec
+      let rec equal_attr_content a1 a2 =
+        String.equal a1.attr_name a2.attr_name
+        && list_equal equal_value_content a1.attr_values a2.attr_values
+      ```
+
+      ```ocaml[eq-value-impl].ml :section eq-rec
+      let rec equal_value_content v1 v2 =
+        match (v1, v2) with
+        | VString a, VString b -> String.equal a b
+        | VInt a, VInt b -> Int.equal a b
+        | VBool a, VBool b -> Bool.equal a b
+        | VNil, VNil -> true
+        | VList xs, VList ys -> list_equal equal_value_content xs ys
+        | VNode n1, VNode n2 -> equal_node_content n1 n2
+        | _ -> false
+      ```
+
+      ```ocaml[eq-node-meta-impl].ml :section eq-rec
+      let rec equal_node_with_meta n1 n2 =
+        match (n1, n2) with
+        | Element e1, Element e2 -> equal_element_with_meta e1 e2
+        | Text (s1, m1), Text (s2, m2) -> String.equal s1 s2 && m1 = m2
+        | Attribute a1, Attribute a2 -> equal_attr_with_meta a1 a2
+        | _ -> false
+      ```
+
+      ```ocaml[eq-element-meta-impl].ml :section eq-rec
+      let rec equal_element_with_meta e1 e2 =
+        e1.el_name = e2.el_name
+        && e1.el_meta = e2.el_meta
+        && map_equal (list_equal equal_value_with_meta) e1.el_attrs e2.el_attrs
+        && list_equal equal_node_with_meta e1.el_children e2.el_children
+      ```
+
+      ```ocaml[eq-attr-meta-impl].ml :section eq-rec
+      let rec equal_attr_with_meta a1 a2 =
+        String.equal a1.attr_name a2.attr_name
+        && list_equal equal_value_with_meta a1.attr_values a2.attr_values
+      ```
+
+      ```ocaml[eq-value-meta-impl].ml :section eq-rec
+      let rec equal_value_with_meta v1 v2 =
+        match (v1, v2) with
+        | VString a, VString b -> String.equal a b
+        | VInt a, VInt b -> Int.equal a b
+        | VBool a, VBool b -> Bool.equal a b
+        | VNil, VNil -> true
+        | VList xs, VList ys -> list_equal equal_value_with_meta xs ys
+        | VNode n1, VNode n2 -> equal_node_with_meta n1 n2
+        | _ -> false
+      ```
+
+    |invariant[content-ignores-meta].ie
+      I.e. Two «elements» identical in name, «attributes», and children but carrying
+      different source spans are equal under `equal_element_content` and distinct under
+      `equal_element_with_meta`.
+
+      ```ocaml[inv-content-ignores-meta].check :section checks
+      let m1 = { Udon_ast.span = Some (Udon_ast.make_span ~source:"a.ud" ~line:1 ~col:0) } in
+      let m2 = { Udon_ast.span = Some (Udon_ast.make_span ~source:"b.ud" ~line:9 ~col:4) } in
+      let e1 = Udon_ast.make_element ~meta:m1 ~name:"item" ~main:"x" () in
+      let e2 = Udon_ast.make_element ~meta:m2 ~name:"item" ~main:"x" () in
+      assert (Udon_ast.equal_element_content e1 e2);
+      assert (not (Udon_ast.equal_element_with_meta e1 e2))
+      ```

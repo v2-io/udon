@@ -1,0 +1,14 @@
+; Breakage 04a: Attribute typo `:metod` instead of `:method` on `|checked`
+; Translator passes unknown attributes straight into the OCaml record literal!
+; Expected: `ocamlc` reports `Unbound record field metod` at exact .ud line!
+
+|document[broken-04a]
+  :context verisectorium
+
+  |piece[p1].accepted Some claim
+    :kind    claim
+    :author  "Alice"
+    :version 1
+    Claim body.
+
+  |checked :by "Bob" :about @[p1] :version 1 :metod "review" :outcome confirmed :at "2026-11-24"

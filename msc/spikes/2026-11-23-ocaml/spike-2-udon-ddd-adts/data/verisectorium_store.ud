@@ -1,0 +1,92 @@
+; Concrete Verisectorium Store in UDON — Clean Resting State
+; Models real pieces backing UDON v2 Part 1 + an active working/deliverable outline pair.
+
+|document[verisectorium-store]
+  :context verisectorium
+
+  ; --- Pieces (keyed with [id], trait-axis .draft | .accepted, additive traits) ---
+
+  |piece[p-steward-ast-quote].accepted.steward-words Joseph's 2026-11-20 ruling on AST and $root
+    :kind    quote
+    :author  "Joseph"
+    :version 1
+    AST means AST: a partial gets parsed into any number of root nodes, while a document has a single $root element.
+
+  |piece[p-ast-decision].accepted Decision: AST keeps its ordinary meaning (no anonymous holder)
+    :kind    decision
+    :author  "Joseph"
+    :version 1
+    |relies-on :kind from-source :target @[p-steward-ast-quote]
+    Grounded in @{p-steward-ast-quote}; rejects both position-only root and pair-of-attrs-and-nodes AST.
+
+  |piece[p-ast-def].accepted.derived Definition of «AST» for UDON v2 Part 1
+    :kind    definition
+    :author  "Claude-Fable-5.2"
+    :version 2
+    |relies-on :kind for-truth :target @[p-ast-decision] :note "derived from ast-means-ast"
+    |relies-on :kind for-truth :target @[p-element-def]  :note "forward reference to element!"
+    The tree a compliant parser builds from a partial; branches are self-similar.
+
+  |piece[p-element-def].accepted Definition of «element» (name?, unordered attrs, ordered children)
+    :kind    definition
+    :author  "Claude-Fable-5.2"
+    :version 1
+    |relies-on :kind from-source :target @[p-steward-ast-quote]
+    An element has at most one element-name, unordered attributes ($key, $traits, $main), and ordered child nodes.
+
+  |piece[p-root-def].draft Definition of «root» ($root implicit document element)
+    :kind    definition
+    :author  "Claude-Fable-5.2"
+    :version 1
+    |relies-on :kind for-truth :target @[p-ast-def]
+    |relies-on :kind for-truth :target @[p-element-def]
+    Implicit $root element at column -1 holding file metadata and the partial's AST; awaits metadata attribute list.
+
+  |piece[p-ast-gloss].accepted Reader-friendly restatement of «AST» for document authors
+    :kind    restatement
+    :author  "Claude-Pedagogy"
+    :version 1
+    |relies-on :kind restates :target @[p-ast-def]
+    Simplifies @{p-ast-def} for cold readers without adding claims on top of it.
+
+  |piece[p-attr-order-check].accepted.repeatable Repeatable check: attribute order invariance on AST equality
+    :kind    check
+    :author  "Verifier-Agent"
+    :version 1
+    |relies-on :kind for-truth :target @[p-element-def]
+    Verifies two elements differing only in distinct-attribute order compare equal.
+
+  ; --- Canonical Outlines (ordered variant children; Settled requires @piece.accepted!) ---
+
+  |outline[working-spec].working For minds actively authoring the UDON v2 specification
+    :reader "Spec Authors"
+    |settled     :piece @[p-ast-decision]
+    |settled     :piece @[p-ast-def]
+    |settled     :piece @[p-element-def]
+    |on-approval :piece @[p-root-def] :note "working notes on $root metadata attributes still open"
+
+  |outline[implementer-spec].deliverable For someone implementing a compliant UDON v2 parser
+    :reader "Parser Implementers"
+    |settled     :piece @[p-ast-def]
+    |settled     :piece @[p-element-def]
+    |settled     :piece @[p-attr-order-check]
+
+  ; --- Acts (what was done — recorded as typed inline-record variants!) ---
+
+  |made :by "Claude-Fable-5.2" :piece @[p-ast-def] :at "2026-11-20"
+
+  |decided :by "Joseph" :about @[p-ast-decision] :how ruling :at "2026-11-20"
+    :grounds [@[p-steward-ast-quote]]
+    :words
+      |located :source @[p-steward-ast-quote] :span "L1" :verbatim "AST means AST, a partial gets parsed into any number of udon root nodes..."
+
+  |checked :by "Verifier-Agent" :about @[p-ast-def] :version 2 :method "independent-derivation-check" :outcome confirmed :at "2026-11-21"
+    :relies-on [@[p-ast-decision] @[p-element-def]]
+    :main "Verified AST definition matches ast-means-ast decision."
+
+  |checked :by "Verifier-Agent" :about @[p-element-def] :version 1 :method "invariant-review" :outcome confirmed :at "2026-11-21"
+    :relies-on [@[p-steward-ast-quote]]
+
+  |reflected-in :by "Steward-Integrator" :piece @[p-ast-def] :at "2026-11-21"
+
+  |knowingly-left :by "Claude-Fable-5.2" :about @[p-root-def] :reopen-when "once «attribute» and «value» are drafted" :at "2026-11-20" \ $root metadata attribute list (must/should/may) intentionally deferred.

@@ -1,0 +1,16 @@
+; Breakage 03: Phantom-type trait violation — placing a `.draft` piece into a `|settled` slot!
+; Schema declares: `|settled :piece @piece.accepted` -> `[ `Accepted ] piece_id`.
+; Expected: `ocamlc` rejects `[ `Draft ]` where `[ `Accepted ]` is required at exact .ud line!
+
+|document[broken-03]
+  :context verisectorium
+
+  |piece[p-root-def].draft Draft definition of «root»
+    :kind    definition
+    :author  "Claude-Fable-5.2"
+    :version 1
+    Still awaiting metadata attribute list.
+
+  |outline[implementer-spec].deliverable For parser implementers
+    :reader "Parser Implementers"
+    |settled :piece @[p-root-def]

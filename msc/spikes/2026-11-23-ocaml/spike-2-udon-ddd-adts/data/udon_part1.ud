@@ -1,0 +1,115 @@
+; Concrete UDON v2 Part 1 Lexicon & AST Instances — written in UDON!
+; Crosses the Bounded Context boundary into `verisectorium_store` via `:backing`.
+
+|document[udon-part1]
+  :context udon-spec
+  :imports [v=verisectorium_store]
+
+  ; --- Core Part 1 Terms (with forward refs, repeated :pos, duals, inline @{refs}, and cross-context :backing) ---
+
+  |term[partial].draft.foundation Udon source text considered complete, given to a parser with an eof signal.
+    :kind    inline-term
+    :pos     noun
+    :pl      -s
+    A @{partial} parses into any number of root @{node} values in an @{ast}.
+
+  |term[document].draft.foundation A partial contained in a file whose eof indicates the end of the file.
+    :kind    inline-term
+    :pos     noun
+    :pl      -s
+    Every @{document} produces an @{ast} with exactly one @{root} element as the sole parent of its @{partial}.
+
+  |term[ast].accepted.foundation.has-file The Abstract Syntax Tree resulting from a partial being parsed by a compliant parser.
+    :kind     full-term
+    :pos      noun
+    :pl       -s
+    :synonyms ["abstract syntax tree"]
+    :backing  @v:p-ast-def
+    |avoid :word "tree" \ as a term of its own; the AST is the tree
+    |rel :verb "made-of" :to @[node] :card {0,N}
+    |rel :verb "root-of-a-document" :to @[root] :card {0,1} :note "exactly one when the partial is a document's"
+    |invariant Every compliant parser yields the same AST for the same partial modulo declared latitude.
+    |example An empty partial gives no nodes; a document gives one root node.
+    Any branch of an @{ast} is an @{ast} on its own.
+
+  |term[node].draft.foundation A vertex or point in an AST, connected by directed edges.
+    :kind    inline-term
+    :pos     noun
+    :pl      -s
+    An @{element} is one kind of @{node} inside an @{ast}.
+
+  |term[element].accepted.foundation.has-file A node with at most one element-name, unordered attributes, and ordered child nodes.
+    :kind    full-term
+    :pos     noun
+    :pl      -s
+    :backing @v:p-element-def
+    |avoid :word "tag" \ in HTML and XML a tag is the delimiter in source, not the thing it makes
+    |rel :verb "has"       :to @[attribute] :card {0,N} :note "unordered across distinct names"
+    |rel :verb "has-child" :to @[node]      :card {0,N} :note "strictly ordered"
+    |invariant A parser never reorders an element's child nodes.
+    |invariant Two elements differing only in distinct-attribute order are the same element.
+    |example A user element with $key, $traits, role, and one text child.
+    Everything else written on an @{element} ($key, $traits, $main) is an @{attribute}, not a separate AST part.
+
+  |term[attribute].draft.foundation A value held under an element's own word for it; unordered across distinct names.
+    :kind    inline-term
+    :pos     noun
+    :pl      -s
+    Belongs to an @{element}; repeated values for the same name preserve written order.
+
+  |term[root].draft.foundation.has-file Implicit $root element that is the sole parentless node of a document's AST.
+    :kind    full-term
+    :pos     noun
+    :pl      -s
+    :backing @v:p-root-def
+    |avoid :word "root node" \ a root node in the plain tree sense is any parentless node, and a partial may have many
+    |rel :verb "is-a" :to @[element]  :card {1,1}
+    |rel :verb "of"   :to @[document] :card {1,1}
+    |invariant Nothing in source writes $root; a partial parsed on its own has no root.
+    |example An empty file yields a $root element holding only file metadata attributes.
+    Holds file metadata as @{attribute} entries and the @{partial}'s root @{node} list as children.
+
+  ; --- Address-Theory Terms (testing repeated :pos and symmetric :dual!) ---
+
+  |term[reference].draft Recorded material used as a proxy for an intended-cardinality of referents.
+    :kind    full-term
+    :pos     noun
+    :pl      -s
+    :dual    @[referent]
+    |avoid :word "address" \ an address is a narrower species of reference
+    |rel :verb "referents" :to @[referent] :card {0,N}
+    |invariant A reference may be written before its referents exist; resolution is always deferred.
+    |example Wikilinks, URLs, and citation keys.
+    Only well-defined in relation to its dual @{referent}.
+
+  |term[referent].draft A thing that a reference is proxy for.
+    :kind    full-term
+    :pos     noun
+    :pl      -s
+    :dual    @[reference]
+    |invariant Dereferencing yields referent-state as of the resolution moment.
+    |example The recipient of a mailing address.
+    Dual of @{reference}.
+
+  |term[mint].draft The creation of a binding, at a moment, by its first maintainer.
+    :kind    inline-term
+    :pos     noun
+    :pos     verb
+    :pl      -s
+    Tests repeated UDON attribute lines (:pos noun and :pos verb) folding into OCaml `pos nonempty`!
+
+  ; --- Concrete Recursive UDON AST Examples (for testing unordered-attribute equality invariant!) ---
+
+  |ast-root :file "sample-a.ud"
+    |ast-attr :name "$encoding" :value "utf-8"
+    |ast-element :name "user"
+      |ast-attr :name "$key" :value "jw"
+      |ast-attr :name "role" :value "steward"
+      |ast-text Hello from UDON.
+
+  |ast-root :file "sample-a.ud"
+    |ast-attr :name "$encoding" :value "utf-8"
+    |ast-element :name "user"
+      |ast-attr :name "role" :value "steward"
+      |ast-attr :name "$key" :value "jw"
+      |ast-text Hello from UDON.

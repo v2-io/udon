@@ -1,0 +1,18 @@
+; Breakage 02: Wrong entity kind passed as reference (@[working-spec] is an Outline, not a Piece!)
+; Expected: `ocamlc` type error (`Outline.id` vs `piece_any_id`) at exact .ud line!
+
+|document[broken-02]
+  :context verisectorium
+
+  |piece[p1].accepted First piece
+    :kind    claim
+    :author  "Alice"
+    :version 1
+    A claim about nesting.
+
+  |outline[working-spec].working Working outline
+    :reader "Authors"
+    |settled :piece @[p1]
+
+  ; Bug: passing an Outline ID where a Piece ID is required!
+  |checked :by "Bob" :about @[working-spec] :version 1 :method "review" :outcome confirmed :at "2026-11-24"

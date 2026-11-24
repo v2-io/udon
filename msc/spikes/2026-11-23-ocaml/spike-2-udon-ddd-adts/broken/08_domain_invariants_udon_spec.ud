@@ -1,0 +1,28 @@
+; Breakage 08: Well-typed OCaml that violates UDON Spec Ubiquitous Language invariants!
+; - Asymmetric :dual (`reference` -> `referent`, but `referent` omits `:dual`)
+; - `|avoid :word "node"` collides with defined term `node`!
+; - Full-term `element` missing both invariants and examples!
+; Expected: COMPILES cleanly with `ocamlc`, then caught by compiled `Checks.check_udon_spec`!
+
+|document[broken-08]
+  :context udon-spec
+
+  |term[node].draft.foundation A vertex in an AST.
+    :kind inline-term
+    :pos  noun
+
+  |term[element].draft.foundation An AST element (missing invariants and examples!).
+    :kind full-term
+    :pos  noun
+    |avoid :word "node" \ collides with our own defined term «node»!
+
+  |term[reference].draft Proxy for referents.
+    :kind full-term
+    :pos  noun
+    :dual @[referent]
+    |invariant Determination is deferred.
+
+  |term[referent].draft Target of a reference (forgot back-link :dual @[reference]!).
+    :kind full-term
+    :pos  noun
+    |invariant Exists independently of any reference.

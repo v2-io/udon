@@ -1,0 +1,19 @@
+; Negative diagnostics probe: tests how ocamlc reports errors back to .ud lines
+; AND how udon2ml catches broken ubiquitous-language @{ref} prose links.
+
+This file mentions @{status} (exists) and @{phantom-concept} (does NOT exist!).
+
+|type[status].variant
+  |Draft
+  |Accepted
+  |Gap
+
+; 1. Non-exhaustive match (missing |Gap) — ocamlc -w +8 should warn at this .ud line!
+|fn[describe] :args [s] :ret string
+  |match s
+    |Draft    :is "draft"
+    |Accepted :is "accepted"
+
+; 2. Type error (returning string from int function) — ocamlc should error at this .ud line!
+|fn[broken-count] :args [x] :ret int
+  |cat "not an int: " x

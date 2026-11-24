@@ -1,0 +1,120 @@
+; Verisectorium Bounded Context — Ubiquitous Language Schema in UDON
+; Drawn from ~/src/verisectorium/msc/notes/30-2026-11-19-model-in-a-nutshell-after-four-stores.md
+
+|context[verisectorium] Core epistemic tracking domain for a Verisectorium store.
+
+  ; --- Value Object Enums ---
+
+  |enum[piece-kind] What a piece exists to carry; each kind says what can be asked of it.
+    |claim        An assertion that follows from grounds or evidence.
+    |rule         What a made thing or specification is meant to do.
+    |definition   A term and its binding sense in the Ubiquitous Language.
+    |decision     A choice made by someone with standing, on named grounds.
+    |quote        Someone's verbatim words, located in a source.
+    |restatement  Says what another piece says without adding a new claim.
+    |question     An open inquiry; evidence against a piece puts a question to it.
+    |check        A repeatable program or procedure that can be re-run.
+
+  |enum[decision-how] What was actually done in deciding (never bare "decided").
+    |ruling      The party with standing ruled after thought.
+    |assented    Put to the steward by another mind, and they agreed.
+    |lean        Current inclination, cheap to reconsider.
+    |unobjected  Seen by someone with standing without objection.
+    |inferred    A mind chose on what it took to be the steward's intent.
+    |hole-close  A mind chose weakly to close an unspecified hole.
+    |habit       Nobody chose; in force by habit.
+
+  |enum[reliance-kind] Why one piece points at another.
+    |for-truth    Relies on the target holding true.
+    |restates     Restates the target without adding claims on top.
+    |from-source  Derived or quoted from this source piece.
+    |related      Marked as related and distinct; nothing relies along it.
+
+  |enum[check-outcome] What a check found about a piece at an exact version.
+    |confirmed  Evidence held against the piece's premises.
+    |refuted    Evidence stood against the piece; puts an open question to it.
+
+  ; --- Algebraic Sum Types (inline-record variants) ---
+
+  |variant[attribution] In whose words a decision stands.
+    |located
+      :source   @piece
+      :span     string
+      :verbatim string
+    |attributed-not-located
+      :who      string
+      :note     string?
+
+  |variant[slot] An ordered entry in a canonical outline.
+    |settled
+      :piece    @piece.accepted
+      :note     string?
+    |on-approval
+      :piece    @piece
+      :note     string?
+
+  |variant[act] What was done — recorded as fact, never detached status prose.
+    |made
+      :by       string
+      :piece    @piece
+      :at       string
+    |checked
+      :by       string
+      :about    @piece
+      :version  int
+      :method   string
+      :outcome  check-outcome
+      :relies-on @piece*
+      :at       string
+      :main     string?
+    |decided
+      :by       string
+      :about    @piece
+      :how      decision-how
+      :words    attribution
+      :grounds  @piece*
+      :at       string
+    |reflected-in
+      :by       string
+      :piece    @piece
+      :supersedes @piece?
+      :at       string
+    |knowingly-left
+      :by       string
+      :about    @piece
+      :reopen-when string
+      :at       string
+      :main     string
+
+  ; --- Value Object Records ---
+
+  |record[reliance] A directional reliance edge from one piece to another.
+    :kind   reliance-kind
+    :target @piece
+    :note   string?
+
+  ; --- Entities (keyed with [id] -> typed abstract OCaml ID witnesses!) ---
+
+  |entity[piece] A unit small enough to be right or wrong on its own.
+    |trait-axis[standing]
+      |draft     Suggested or in progress; not yet canonical for downstream readers.
+      |accepted  Settled and answered-for in canonical outlines.
+    |traits
+      |repeatable     A check that can be re-run mechanically.
+      |steward-words  Holds verbatim words of the steward.
+      |derived        Derived from upstream decisions rather than chosen directly.
+    :kind    piece-kind
+    :author  string
+    :version int
+    :main    string
+    |children
+      |relies-on reliance
+      |prose     @piece
+
+  |entity[outline] An ordered gathering of pieces answered-for on behalf of a named reader.
+    |trait-axis[scope]
+      |working      For minds actively authoring; may reach on-approval slots.
+      |deliverable  For downstream implementers/readers; requires accepted standing.
+    :reader  string
+    :main    string
+    |children-ordered slot

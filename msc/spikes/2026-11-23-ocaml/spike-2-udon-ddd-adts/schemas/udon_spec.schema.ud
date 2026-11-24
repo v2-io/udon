@@ -1,0 +1,76 @@
+; UDON v2 Specification Bounded Context — Ubiquitous Language Schema in UDON
+; Drawn from udon/spec/canonical.outline.md, spec/def/{AST,element,root}.md,
+; spec/.kinds/term.kdl, and spec/.influx/at-defs/def-{binding,reference}.ud
+
+|context[udon-spec] UDON v2 specification lexicon and AST value model.
+  :uses [verisectorium]
+
+  ; --- Lexicon Enums ---
+
+  |enum[term-kind] Whether a term has its own file or is defined inline in the outline.
+    |full-term    Defined in its own spec/def/<term>.md file with invariants and examples.
+    |inline-term  Defined solely by its one-sentence row in canonical.outline.md.
+
+  |enum[pos] Grammatical part of speech declared for guillemet form resolution.
+    |noun
+    |verb
+    |adjective
+
+  ; --- Value Objects ---
+
+  |record[avoid-entry] A word deliberately avoided in favor of this term.
+    :word   string
+    :main   string
+
+  |record[rel-entry] A directed semantic relation from one defined term to another.
+    :verb     string
+    :to       @term
+    :card     card
+    :note     string?
+
+  |record[invariant-entry] A stated invariant whose failure breaks this term.
+    :main   string
+
+  |record[example-entry] A concrete example illustrating the term.
+    :main   string
+
+  ; --- Recursive UDON v2 AST Value Model (from spec/def/{AST,element,root}.md) ---
+
+  |record[ast-attr] A named attribute on an element (unordered across distinct names).
+    :name   string
+    :value  string
+
+  |variant[ast-node] A vertex in a parsed UDON AST (recursive, self-similar).
+    |ast-element
+      :name       string?
+      :attrs      ast-attr*
+      :children   ast-node*
+    |ast-root
+      :file       string
+      :attrs      ast-attr*
+      :children   ast-node*
+    |ast-text
+      :main       string
+
+  ; --- Entity: Ubiquitous Language Term ---
+
+  |entity[term] A spec-defined «term» in UDON v2's Ubiquitous Language.
+    |trait-axis[mark]
+      |draft      Suggested; not yet canonical or active.
+      |accepted   Current decided and canonical for this spec version.
+    |traits
+      |foundation  Part 1 foundational term.
+      |has-file    Backed by a standalone spec/def/<term>.md file.
+    :kind       term-kind
+    :pos        pos+
+    :pl         string?
+    :dual       @term?
+    :synonyms   string*
+    :backing    @verisectorium:piece?
+    :main       string
+    |children
+      |avoid      avoid-entry
+      |rel        rel-entry
+      |invariant  invariant-entry
+      |example    example-entry
+      |prose      @term

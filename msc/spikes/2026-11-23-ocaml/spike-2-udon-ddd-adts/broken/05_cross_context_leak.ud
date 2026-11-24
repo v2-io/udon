@@ -1,0 +1,14 @@
+; Breakage 05: Bounded Context boundary leak!
+; Tries to pass a local Udon_spec.Term.id (`@[element]`) into `:backing` which
+; requires an opaque `Verisectorium.Piece.any_id` across the `.mli` boundary.
+; Expected: `ocamlc` type error rejecting `Udon_spec.Term.id` for `Verisectorium.Piece.any_id`!
+
+|document[broken-05]
+  :context udon-spec
+  :imports [v=verisectorium_store]
+
+  |term[element].accepted.foundation An element node.
+    :kind    full-term
+    :pos     noun
+    :backing @[element]
+    |invariant Children stay ordered.

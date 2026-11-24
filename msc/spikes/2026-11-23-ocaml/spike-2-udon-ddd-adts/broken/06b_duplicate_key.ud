@@ -1,0 +1,17 @@
+; Breakage 06b: Duplicate [id] key!
+; Crucial friction: OCaml `let` silently shadows duplicate names, so the translator MUST guard uniqueness!
+
+|document[broken-06b]
+  :context verisectorium
+
+  |piece[p1].accepted First piece with id p1
+    :kind    claim
+    :author  "Alice"
+    :version 1
+    First.
+
+  |piece[p1].draft Second piece colliding on id p1
+    :kind    claim
+    :author  "Bob"
+    :version 1
+    Second.
