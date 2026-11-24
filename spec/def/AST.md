@@ -21,7 +21,7 @@ The "Abstract Syntax Tree" resulting from a «partial» being parsed by a compli
 
 It is the result for a «partial» that has been parsed in full. What a parser reports along the way while reading a «fragment» is not an «AST» and is not specified here.
 
-### The shape, as types *(draft — pure ML/OCaml notation)*
+### Types
 ```ocaml
 type 'a nonempty = 'a * 'a list          (* one or more: a first one, then the rest *)
 type 'a by_name                          (* a map from names: at most one entry per name, in no order *)
@@ -77,4 +77,5 @@ The opening paragraph is Joseph's row in the canonical outline, 2026-11-20, and 
 - Open: "directed acyclical graph" or "tree". If no «node» ever has two parents it is a tree, and "graph" may lead an implementer to expect shared «nodes». Lean: say tree. Joseph's wording is kept until he says.
 - Open: whether every compliant parser must give the same «AST» for the same «partial» with no exceptions. The earlier quality factors called this a weight, not a veto, because "some rare contexts may unavoidably need different trees" (`.archive/v2/spec-lite-0.1.0/CTQ-FACTORS.md`, note b3). The Definition's first point is written as if there were none.
 - The types above replaced this file's block of function signatures on 2026-11-24, after Joseph asked what the OCaml was for and said of these types: "it commits to something because it had to commit to something to be well-defined, which is [exactly] as it should be." The signature blocks in «element», «root» and «attribute», and the `E.g.` blocks everywhere, still use the earlier functions and are to be brought over to these types.
+- Joseph, 2026-11-24, on that last line and on its name: "An AST type for partials is different than redefining the term AST. I'm not convinced this is a good final form, but it's getting closer and closer." And: "I'm still not convinced that "AST" is a wise name of a type--  I'd prefer "partial" with its "children" and "attributes" and the understanding that partial gets replaced by an implicit root if needed or something like that..."
 - Open: `type ast = node list` is the one line that still leaves something unsaid. A list can hold two «attributes» of one name, and gives each a position, which «attribute» says they do not have.
