@@ -182,3 +182,19 @@ decision "element-kind-not-element-name" how="lean" by="Joseph" at="2026-11-24" 
   holds "What an element is called is its «element-kind», not its «element-name»: the word says what sort of thing the element is, and should not sound like an identifier for one particular element. Applied the same day to the outline, the definitions and the OCaml blocks, always in the long form. The short form, kind, is his alternative and is not used yet: the outline's ‹Segment Kind› column and his earlier talk of a value's kind already use the word."
   words "I think I'd like to rename `element-name` to `element-kind` (or just `kind` for short). I feel like this is a better semantic space -- whereas \"name\" can sound like synonymous with a unique identifier for an instance..."
 }
+
+decision "attribute-shape" how="assented" by="Joseph" at="2026-11-24" {
+  holds "An attribute: one attribute-name, at most one attribute of each name on a parent, ordered values. Agreed in concept from the session's explanation, while he was still reading the definition file itself."
+  put-by "Claude Fable 5.2 session, in spec/def/attribute.md"
+  words "I think conceptually you are spot on:  attributes ->  attribute-names, one of each at most, with ordered values."
+}
+
+decision "foundation-defs-state-structure-spelling-comes-later" how="lean" by="Joseph" at="2026-11-24" {
+  holds "The foundation definitions lay down the invariants of the structure. How spellings give rise to that structure (for instance several writings of one attribute name accumulating into one attribute) is discussed in later segments that depend on those definitions. Put as a probable reading, with a question mark."
+  words "it is probably the case that here in foundation defs we basically lay down the semantic structure invariants, and make that a discussion within a later section where the segments depend on definitions like these in order to justify spelling decisions etc...?"
+}
+
+decision "attribute-values-always-a-list" how="lean" by="Joseph" at="2026-11-24" {
+  holds "An attribute's values are always a list. A parser's API is recommended to offer one fetcher that expects exactly one value and raises otherwise, and a general one that always gives the list."
+  words #"that one we basically got to punt on a little bit by me saying "let's recommend that the parser API expose a fetcher that assumes a single value, with exception if it's not one, and the "general" fetcher which just always has a list. Nevertheless, from a functional programming perspective, it's definitely nicer to think in terms of "it's just a linked list, always"."#
+}

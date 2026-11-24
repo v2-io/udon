@@ -9,7 +9,7 @@ status draft
 ```
 
 # «root»
-An implicit «element» with the name `$root` that is the only «node» with no parent in an «AST» generated from a full «document» containing metadata about the «document's» file (actual or asserted) as attributes, as the sole parent of the content «partial's» «AST».
+An implicit «element» with the `$root` «element-kind» (i.e., a `|$root ...` «element») that is the only «node» with no parent in an «AST» generated from a full «document» containing metadata about the «document's» file (actual or asserted) as attributes, as the sole parent of the content «partial's» «AST».
 
 ## Definition
 The «root» is an «element» like any other. Three things set it apart:

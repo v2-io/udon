@@ -20,7 +20,7 @@ An «attribute» has two parts and no others:
 
 Three things follow from the «attribute-name» being the parent's word:
 
-- **One per name.** A parent has at most one «attribute» of a given «attribute-name». Writing the same name again on the same parent does not make a second «attribute»: the new «values» join the «attribute» already there, after the «values» it has.
+- **One per name.** A parent has at most one «attribute» of a given «attribute-name».
 - **No position.** An «attribute» is not among its parent's ordered child «nodes», and it is neither before nor after anything else its parent holds. The only order an «attribute» has is the order of its own «values».
 - **No «attributes» of its own.** An «attribute» holds «values» and nothing else. One of its «values» may be an «element», which has «attributes» of its own; a «value» is never an «attribute».
 
@@ -64,14 +64,14 @@ val make_element : name:element_kind option -> attrs:(string * value) list -> ch
 ```
 
 ## Discussion
-- **Why one per name.** Two decisions already made force it. An «element's» «attributes» have no order among themselves, and the order of the «values» written under one name is kept. If each time a name was written made its own «attribute», two `role` «attributes» on one «element» would have no order between them and the second requirement would be lost. With one «attribute» holding both «values», the order lives inside it.
+- **Why one per name.** An «element's» «attributes» have no order among themselves, and the «values» under one «attribute-name» do have an order. Two «attributes» of the same name on one parent would have no order between them, so the order of their «values» would have nowhere to live. With one «attribute» per name, it lives inside the «attribute».
 - **Why always a sequence, even for one «value».** The «AST» then has one shape whether a name was written once or five times, and a consumer that expects exactly one «value» can ask for exactly one and be told when there are none or several.
 - **Why no position.** An «attribute» says what something is to its parent. A child «node» says what comes next inside it. Giving «attributes» a place among the children would make every reader of an «element's» contents step over them, and would make two «elements» differ because a writer put `:id` before or after `:class`.
 - **What is given up.** Where each «attribute» was written, and how the writings of two different names were interleaved, is not in the «AST». A tool that must reproduce a source exactly needs that from somewhere else.
 - **Why it is a «node».** It is a point in the tree with something above it and things below it, and at the top of a «partial» it stands with nothing above it. Nothing more is meant.
 
 ## Examples
-- A `term` «element» on which `pos` was written twice and `status` once has two «attributes». `pos` has two «values» in the order written, and the same «element» results wherever `status` was written.
+- A `term` «element» with two «attributes»: `pos`, with two «values» in order, and `status`, with one. The two «attributes» have no order between them; the two «values» of `pos` do.
   ```ocaml
   (* E.g. — one «attribute» per «attribute-name»; only the order of its own «values» counts *)
   let term_a : element =
@@ -112,7 +112,7 @@ val make_element : name:element_kind option -> attrs:(string * value) list -> ch
   (* equal_ast [ title; p; lang; q ] [ lang; p; q; title ] = true
      && equal_ast [ title; p; q ] [ title; q; p ] = false *)
   ```
-- The same name written twice at the top of a «partial» is one «attribute» with two «values».
+- Among a «partial's» root «nodes», too, there is one «attribute» of a name, however its «values» were gathered.
   ```ocaml
   (* E.g. *)
   let tag_twice : ast =
@@ -136,9 +136,10 @@ Always a sequence, with a consumer asking for exactly one, is from his 2026-10-2
 Spec-lite's cards kept each writing of a name as its own attribute and called the result «stacking». This definition has one «attribute» per name and no such term. The wording of the definition, the three consequences and the reasons in the Discussion are a Claude Fable 5.2 session's, 2026-11-24, drawn from the above; Joseph has not read them.
 
 ## Working Notes
-- To confirm with Joseph: one «attribute» per name, holding every «value» written under it, in place of spec-lite's one attribute per writing. It follows from two things he has said (unordered; value order kept), and the conclusion is the session's.
-- To confirm with Joseph: always a sequence. On 2026-08-09 he described the opposite shape: "Stacking behavior has always been *turns what was just a simple scalar into a list of scalars*. :$key was "the-key", not :$key = ["the-key"] unless there was a second key declared." The 2026-10-21 message is later and is the one followed here.
-- To confirm with Joseph: that an «attribute's» «values» are «nodes». It follows from an «attribute» being a «node» with things under it; «value» may want to say it differently.
+- Joseph, 2026-11-24, on the shape: "I think conceptually you are spot on: attributes -> attribute-names, one of each at most, with ordered values."
+- How several writings of one name come to be one «attribute» (what spec-lite called stacking) is not said here. Joseph, 2026-11-24: "it is probably the case that here in foundation defs we basically lay down the semantic structure invariants, and make that a discussion within a later section where the segments depend on definitions like these in order to justify spelling decisions etc...?" He also named the dissonance that later segment has to face: "attribute names are not ordered relative to each other or interleaved within children, but spelling-wise, two attribute nodes of the same name *do* end up ordering the children of that attribute-name -- accumulate into one node".
+- Always a sequence. Joseph, 2026-11-24: "that one we basically got to punt on a little bit by me saying "let's recommend that the parser API expose a fetcher that assumes a single value, with exception if it's not one, and the "general" fetcher which just always has a list. Nevertheless, from a functional programming perspective, it's definitely nicer to think in terms of "it's just a linked list, always"." On 2026-08-09 he had described the other shape ("turns what was just a simple scalar into a list of scalars").
+- Open, and Joseph is thinking about it: «values» being «nodes» raises whether a «value» may be any «node» or only some. His words, 2026-11-24: "if we want to use 'nodes' more places and talk about *typed* values / scalars / constants / references all being legitimate children and legitimate values, we have a syntax obstacle because udon assumes prose instead of trying to type values". For «value» to take up.
 - Open: when two «attribute-names» are the same name. He has said a quoted name and the same name unquoted are the same (2026-07-16, as quoted in spec-lite's `def-attribute-name.md`); case and Unicode normalization are not settled. Belongs to «attribute-name» or to a rule.
 - Open: what else may be attached to an «attribute» without being one of its «values», such as a comment. His 2026-10-20 words set the constraint: "I should be able to attach a comment or metadata about what line I'm on and whether it had blanks before it and the time of day right now without it changing the cardinality or arity of anything structural."
 - Open: whether an «attribute» may hold no «values» at all. Written here as never; in spec-lite an attribute written with no value was an error.

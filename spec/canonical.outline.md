@@ -36,7 +36,7 @@
 | ‹draft› | ‹inline·def› | «element-kind» | What an «element» is: the word for the sort of thing it is, when it has one. It does not say which one it is. |
 | ‹draft› | ‹definition› | [[def/attribute\|«attribute»]] (node) | A «node» with exactly one «attribute-name» and one or more ordered «values». Its «attribute-name» is its parent's word for those «values», and a parent has at most one «attribute» of each «attribute-name». |
 | ‹draft› | ‹inline·def› | «attribute-name» | The name an «attribute» has. It is the parent's word for the «attribute's» «values»: what they are to the parent, and not what any of them is in itself. |
-| ‹draft› | ‹definition› | [[def/root\|«root»]] (element) | An implicit «element» with the name `$root` that is the only «node» with no parent in an «AST» generated from a full «document» containing metadata about the «document's» file (actual or asserted) as attributes, as the sole parent of the content «partial's» «AST». |
+| ‹draft› | ‹definition› | [[def/root\|«root»]] (element) | An implicit «element» with the `$root` «element-kind» (i.e., a `|$root ...` «element») that is the only «node» with no parent in an «AST» generated from a full «document» containing metadata about the «document's» file (actual or asserted) as attributes, as the sole parent of the content «partial's» «AST». |
 | ‹gap› | - | - | **All the rest**. For "Part 1", probably at least "value", "children", and "text"... |
 
 ## Working Notes
