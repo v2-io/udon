@@ -21,13 +21,53 @@ The "Abstract Syntax Tree" resulting from a «partial» being parsed by a compli
 
 It is the result for a «partial» that has been parsed in full. What a parser reports along the way while reading a «fragment» is not an «AST» and is not specified here.
 
+### Auxiliary Model *(draft — pure ML/OCaml notation)*
+```ocaml
+(* Provisional stubs until «attribute» and «text» have their own definitions. *)
+type attribute
+type text
+
+type node =
+  | Element of element
+  | Attribute of attribute
+  | Text of text
+
+(* An «AST» is an ordered sequence of zero or more root «nodes». *)
+type ast = node list
+
+(* Any single «node» together with everything under it is itself an «AST». *)
+val branch : node -> ast
+(* I.e. branch n = [ n ] *)
+
+(* Content-level equality of two «ASTs» (order-sensitive over root «nodes»;
+   attribute-order equivalence inside «elements» is defined in «element»). *)
+val equal_ast : ast -> ast -> bool
+```
+
 ## Discussion
 - Most «ASTs» shown in this specification are those of «partials», given as their root «nodes» with no parent drawn. That is enough, because of the fourth point above.
 
 ## Examples
 - A «partial» of three lines, an attribute line and two «element» lines at the same column, gives three root «nodes».
+  ```ocaml
+  (* E.g. — marked restatement of the example above *)
+  let partial_ast : ast =
+    [ Attribute (make_attr "title" (text_val "Notes"));
+      Element (make_element ~name:(Some "p") ~attrs:[] ~children:[ Text "Hello" ]);
+      Element (make_element ~name:(Some "p") ~attrs:[] ~children:[ Text "World" ]) ]
+  (* List.length partial_ast = 3 *)
+  ```
 - The same three lines as a «document» give one root «node», the «root», with those three inside it.
+  ```ocaml
+  (* E.g. — same «partial» wrapped as a «document» *)
+  let doc_ast : ast = document_ast ~meta:[ ("$file", text_val "notes.ud") ] ~partial:partial_ast
+  (* List.length doc_ast = 1 *)
+  ```
 - An empty «partial» gives no «nodes».
+  ```ocaml
+  (* E.g. *)
+  let empty_partial : ast = []
+  ```
 
 ## Historical Context
 The opening paragraph is Joseph's row in the canonical outline, 2026-11-20, and the model is his, the same day: "AST means AST, a partial gets parsed into any number of udon root nodes (in the tree sense), but a document's AST has a single root node, which is an element with the name $root, whose (non-meta-data) node children are the AST of the content partial." The Definition, Discussion and Examples were drafted from those by a Claude Fable 5.2 session and he has not read them.
@@ -37,4 +77,4 @@ The opening paragraph is Joseph's row in the canonical outline, 2026-11-20, and 
 - Open: "directed acyclical graph" or "tree". If no «node» ever has two parents it is a tree, and "graph" may lead an implementer to expect shared «nodes». Lean: say tree. Joseph's wording is kept until he says.
 - Open: whether the order of a «partial's» root «nodes» is kept. Lean: yes for those that are not attributes, as for an «element's» child «nodes».
 - Open: whether every compliant parser must give the same «AST» for the same «partial» with no exceptions. The earlier quality factors called this a weight, not a veto, because "some rare contexts may unavoidably need different trees" (`.archive/v2/spec-lite-0.1.0/CTQ-FACTORS.md`, note b3). The Definition's first point is written as if there were none.
-- The Examples are in words because there is no notation yet.
+- Draft auxiliary notation (2026-11-23, unratified): provisional pure ML/OCaml signatures and `E.g.` blocks added above as a Thread 2 trial (keeping the prose examples beside them); whether this becomes the spec's standing AST notation is still open.

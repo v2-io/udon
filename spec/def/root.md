@@ -25,9 +25,40 @@ What it holds:
 
 A «partial» parsed on its own has no «root».
 
+### Auxiliary Model *(draft — pure ML/OCaml notation)*
+```ocaml
+(* «root» is not a separate type: it is an «element» whose «element-name» is "$root". *)
+val is_root : element -> bool
+(* I.e. is_root e = (name e = Some "$root") *)
+
+(* Builds the «root» «element» from file metadata (actual or asserted) and a «partial's» «AST».
+   Provisional merge lean: top-level «attribute» root «nodes» of the «partial» become «attributes»
+   of `$root`, and non-attribute root «nodes» become its ordered child «nodes». *)
+val make_root    : meta:(string * value) list -> partial:ast -> element
+val document_ast : meta:(string * value) list -> partial:ast -> ast
+(* I.e. document_ast ~meta ~partial = [ Element (make_root ~meta ~partial) ] *)
+```
+
 ## Examples
 - A file holding one «element» line: the «AST» is the «root», with that «element» inside it and the file's metadata as «attributes».
+  ```ocaml
+  (* E.g. *)
+  let one_el_doc : ast =
+    document_ast
+      ~meta:[ ("$file", text_val "greeting.ud") ]
+      ~partial:[ Element (make_element ~name:(Some "p") ~attrs:[ ("$main", text_val "Hi") ] ~children:[]) ]
+  (* match one_el_doc with
+     | [ Element r ] -> is_root r && List.length (children r) = 1
+     | _ -> false *)
+  ```
 - An empty file: the «AST» is the «root» with only the file's metadata.
+  ```ocaml
+  (* E.g. *)
+  let empty_doc : ast = document_ast ~meta:[ ("$file", text_val "empty.ud") ] ~partial:[]
+  (* match empty_doc with
+     | [ Element r ] -> is_root r && children r = [] && attr_values r "$file" = [ text_val "empty.ud" ]
+     | _ -> false *)
+  ```
 
 ## Historical Context
 The opening sentence is Joseph's row in the canonical outline, 2026-11-20. His note on that row, moved here from the outline when this file was made: "def file needs to specify what metadata attributes it has (must,should,may), the behavior of how the partial's attribute nodes get merged with the root's, and children. also probably the other perspective of a pseudo-element at column position -1, and any AST notation convention we use in particular if not already described in «AST»..." Each item is in the Working Notes below.
@@ -41,5 +72,5 @@ The Definition and Examples were drafted by a Claude Fable 5.2 session and Josep
 - Gap: how the «partial's» top-level attributes join the «root's». Lean: they become «attributes» of the «root» unchanged, and the metadata «attributes» have `$` names so that the two cannot collide.
 - Gap: the «root's» child «nodes». Lean: the «partial's» root «nodes» that are not attributes, in written order.
 - Gap: the other view of the «root», as an «element» written at column −1, so that everything at column 0 or deeper is inside it. Waits on how columns and nesting are defined.
-- Gap: how the «root» is drawn in the «AST» notation. Waits on the notation.
+- Gap: how the «root» is drawn in the «AST» notation. A provisional pure ML/OCaml auxiliary sketch and `E.g.` blocks were added above (2026-11-23, unratified) as a Thread 2 trial; waits on deciding the standing notation.
 - Open: the opening sentence says "as attributes" in plain words; whether that should read «attributes».

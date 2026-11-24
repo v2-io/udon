@@ -68,6 +68,8 @@ Seven concrete disciplines for drafting and reviewing segments here:
 - `spec/def/root.md`: resolve the plain "as attributes" vs. `«attributes»` nit (`L45`) when Joseph reviews the file.
 - `spec/.influx/defining-udon.md`: when drawing from it, replace its L42 claim ("passing the canonical fixture suite is the *only* definition of compliance") with specificand-set compliance + fixture/property-driver validation.
 - Still unplaced from `.archive/` / `.influx/`: UDON's primary objectives/purposes (needed to make the **Fitness** determinant concrete and checkable).
+- OCaml auxiliary-tier candidate (`DECISIONS.kdl`, `ocaml-auxiliary-and-staged-toolchain`): lean toward using a tiny, pure ML/OCaml subset (`type`, variants, records, lists, `option`, `partitioned by` equality) as the executable auxiliary model behind `spec/def/` and compiled `E.g.` fixtures (keeping any operational reference parser strictly separate from definitional compliance).
+- Future toolchain spike (before committing to OCaml for Stage 2/3 reference parsing or Rust parser-generation): test how cleanly OCaml handles UDON's specialized indent/dedent and column-positioning mechanics (block nesting, sameline nesting, deeper-marker text, fence dedenting, bounded-lookahead streaming), both with and without a minimal lexing pass.
 
 ---
 
