@@ -149,3 +149,14 @@ decision "ast-means-ast" how="stated" by="Joseph" at="2026-11-20" {
   words "AST means AST, a partial gets parsed into any number of udon root nodes (in the tree sense), but a document's AST has a single root node, which is an element with the name $root, whose (non-meta-data) node children are the AST of the content partial."
   rejected "The session's two proposals before this: that the root is a position and not a named element, and that an AST is a pair of attributes and nodes distinct from a node. His words on the second: \"still too much hoop-jumping in my opinion-- the tail wagging the dog so-to-speak\"."
 }
+
+decision "consumer-vs-implementer-projections-and-failure-modes" how="lean" by="Joseph" at="2026-11-23" {
+  holds "Consumer vs. Implementer are distinct projections of the specification (clarifying the shared boundary role of the AST and examples), and fitness joins locality, modifiability, and accountability across three failure modes: the spec fails, an implementation fails to comply with the spec, or a compliant parser fails at UDON's primary purposes."
+  words #"I felt that the CONSUMER vs IMPLEMENTER as two distinct projections of the spec is clarifying-- especially when it comes to some things that were ambiguous to me still like the importance of the AST and examples etc."#
+  words-2 "Then, yeah, he mentions the Locality, modifiability, accountability, and I would add fitness.... which got me thinking-- we really have three potential failure modes here:\n- The spec can fail (especially consistency etc.)\n- The implementation may fail to comply w/ the spec\n- The resulting successfully implemented udon parser against the spec may fail at Udon's primary purposes (which we haven't yet moved in from .influx / .archive )"
+}
+
+decision "non-segment-footnote-citations" how="lean" by="Joseph" at="2026-11-23" {
+  holds "Non-segment working documents (PRAXIS, CHARTER, etc.) use footnote citations liberally, accompanied by one blanket disclaimer above the footnotes noting that cited file locations will likely move and readers should use git and search to locate them."
+  words #"I'm going to recommend that in the non-segment files at the very least (like PRAXES/PRAXIS, CHARTER, etc.) we go ahead and use footnote citations somewhat liberally -- with one blanket disclaimer near the bottom footnote bodies that says "the locations of these files will almost certainly change but they should still be in the repo; please use git and search to find their current location as necessary so we don't have to maintain the relative or absolute locations here." etc. or something like that..."#
+}
