@@ -32,10 +32,12 @@
 | ‹draft› | ‹inline·def› | (Udon) «document» | A «partial» contained in a file (either implicitly or explicitly asserted) whose `eof` indicates the end of the file, which therefore has a «root» element defined as the sole parent for the content's «partial» . *(see «root» for details)* |
 | ‹draft› | ‹definition› | [[def/AST\|«AST»]] | The "Abstract Syntax Tree" resulting from a «partial» being parsed by a compliant parser, shown in this spec in an implementation-language agnostic notation. It is a directed acyclical graph generally with recursive and self-similar features. As a recursive structure, a branch of the AST can be considered an AST on its own. A «partial» is parsed into any number of root «nodes» (root in the tree sense); a «document's» «AST» has a single root «node», the «root». |
 | ‹draft› | ‹inline·def› | (AST) «node» | A vertex or point in an «AST». That is, a node in the mathematical sense, where an «AST» is a graph object/topology. Edges connect nodes. |
-| ‹draft› | ‹definition› | [[def/element\|«element»]] (node) | A «node» with at most one «element-name», any number of unordered «attributes», and zero or more ordered 'child' «nodes». [jaw: how does xml or kdl define it? I haven't looked at or commented on the def file yet]|
-| ‹draft› | ‹inline·def› | «element-name» | The name an «element» has, when it has one. It says what the «element» is, where an «attribute's» name says what something is to the «element» that has it. |
+| ‹draft› | ‹definition› | [[def/element\|«element»]] (node) | A «node» with at most one «element-kind», any number of unordered «attributes», and zero or more ordered 'child' «nodes». [jaw: how does xml or kdl define it? I haven't looked at or commented on the def file yet]|
+| ‹draft› | ‹inline·def› | «element-kind» | What an «element» is: the word for the sort of thing it is, when it has one. It does not say which one it is. |
+| ‹draft› | ‹definition› | [[def/attribute\|«attribute»]] (node) | A «node» with exactly one «attribute-name» and one or more ordered «values». Its «attribute-name» is its parent's word for those «values», and a parent has at most one «attribute» of each «attribute-name». |
+| ‹draft› | ‹inline·def› | «attribute-name» | The name an «attribute» has. It is the parent's word for the «attribute's» «values»: what they are to the parent, and not what any of them is in itself. |
 | ‹draft› | ‹definition› | [[def/root\|«root»]] (element) | An implicit «element» with the name `$root` that is the only «node» with no parent in an «AST» generated from a full «document» containing metadata about the «document's» file (actual or asserted) as attributes, as the sole parent of the content «partial's» «AST». |
-| ‹gap› | - | - | **All the rest**. For "Part 1", probably at least "attributes", "value", "children", and "text"... |
+| ‹gap› | - | - | **All the rest**. For "Part 1", probably at least "value", "children", and "text"... |
 
 ## Working Notes
 *(And footnotes)*

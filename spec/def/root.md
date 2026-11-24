@@ -15,7 +15,7 @@ An implicit «element» with the name `$root` that is the only «node» with no 
 The «root» is an «element» like any other. Three things set it apart:
 
 - **Nothing in the source writes it.** A «document» gets its «root» by being a «document»; no spelling opens it, closes it or names it.
-- **Its «element-name» is `$root`.**
+- **Its «element-kind» is `$root`.**
 - **It has no parent**, and in a «document's» «AST» it is the only «node» that has none.
 
 What it holds:
@@ -27,9 +27,9 @@ A «partial» parsed on its own has no «root».
 
 ### Auxiliary Model *(draft — pure ML/OCaml notation)*
 ```ocaml
-(* «root» is not a separate type: it is an «element» whose «element-name» is "$root". *)
+(* «root» is not a separate type: it is an «element» whose «element-kind» is "$root". *)
 val is_root : element -> bool
-(* I.e. is_root e = (name e = Some "$root") *)
+(* I.e. is_root e = (kind e = Some "$root") *)
 
 (* Builds the «root» «element» from file metadata (actual or asserted) and a «partial's» «AST».
    Provisional merge lean: top-level «attribute» root «nodes» of the «partial» become «attributes»
@@ -46,7 +46,7 @@ val document_ast : meta:(string * value) list -> partial:ast -> ast
   let one_el_doc : ast =
     document_ast
       ~meta:[ ("$file", text_val "greeting.ud") ]
-      ~partial:[ Element (make_element ~name:(Some "p") ~attrs:[ ("$main", text_val "Hi") ] ~children:[]) ]
+      ~partial:[ Element (make_element ~kind:(Some "p") ~attrs:[ ("$main", text_val "Hi") ] ~children:[]) ]
   (* match one_el_doc with
      | [ Element r ] -> is_root r && List.length (children r) = 1
      | _ -> false *)

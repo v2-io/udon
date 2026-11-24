@@ -9,12 +9,12 @@ status draft
 ```
 
 # «element»
-A «node» with at most one «element-name», any number of unordered «attributes», and zero or more ordered 'child' «nodes».
+A «node» with at most one «element-kind», any number of unordered «attributes», and zero or more ordered 'child' «nodes».
 
 ## Definition
 An «element» has three parts and no others:
 
-- **An «element-name»**, which it may lack. An «element» with none is still an «element».
+- **An «element-kind»**, which it may lack. An «element» with none is still an «element».
 - **Its «attributes»**: everything the «element» is said to have, each under the «element's» own word for it. They have no order among themselves.
 - **Its child «nodes»**: the «nodes» written inside it, kept in written order.
 
@@ -29,15 +29,15 @@ Everything else a writer can put on an «element» is one of its «attributes».
 (* Provisional stub until «value» has its own definition. *)
 type value
 
-type element_name = string
+type element_kind = string
 
 (* Abstract: consumers cannot observe internal attribute storage order.
-   Equality is partitioned by the three observations below (`name`, `attr_values`, `children`). *)
+   Equality is partitioned by the three observations below (`kind`, `attr_values`, `children`). *)
 type element
 
-val name        : element -> element_name option
+val kind        : element -> element_kind option
 val attr_names  : element -> string list          (* set of names; iteration order unspecified *)
-val attr_values : element -> string -> value list (* values under one name; order provisional *)
+val attr_values : element -> string -> value list (* the «values» of the «attribute» of that name, in written order *)
 val children    : element -> node list            (* written order preserved *)
 
 (* Shorthand «attributes» are ordinary observations, not extra structural parts:
@@ -47,7 +47,7 @@ val children    : element -> node list            (* written order preserved *)
 
 (* Partitioned-by equality (I.e. the two Invariants above):
    equal_element a b holds iff:
-   - name a = name b
+   - kind a = kind b
    - children a and children b are pairwise equal in order
    - attr_names a and attr_names b have the same set of names, and for every name k,
      attr_values a k and attr_values b k are equal (written order of distinct names ignored). *)
@@ -64,46 +64,46 @@ val equal_element : element -> element -> bool
   ```ocaml
   (* E.g. — written order of distinct «attributes» does not distinguish two «elements» *)
   let user_a : element =
-    make_element ~name:(Some "user")
+    make_element ~kind:(Some "user")
       ~attrs:[ ("$key", text_val "jw"); ("$traits", text_val "admin"); ("role", text_val "editor") ]
       ~children:[ Text "Active steward" ]
 
   let user_b : element =
-    make_element ~name:(Some "user")
+    make_element ~kind:(Some "user")
       ~attrs:[ ("role", text_val "editor"); ("$key", text_val "jw"); ("$traits", text_val "admin") ]
       ~children:[ Text "Active steward" ]
   (* equal_element user_a user_b = true *)
   ```
-- An «element» with no «element-name», no «attributes» and two child «nodes», both «elements».
+- An «element» with no «element-kind», no «attributes» and two child «nodes», both «elements».
   ```ocaml
   (* E.g. — child «node» order IS observable *)
   let anon_ab : element =
-    make_element ~name:None ~attrs:[]
+    make_element ~kind:None ~attrs:[]
       ~children:[
-        Element (make_element ~name:(Some "first")  ~attrs:[] ~children:[]);
-        Element (make_element ~name:(Some "second") ~attrs:[] ~children:[]);
+        Element (make_element ~kind:(Some "first")  ~attrs:[] ~children:[]);
+        Element (make_element ~kind:(Some "second") ~attrs:[] ~children:[]);
       ]
 
   let anon_ba : element =
-    make_element ~name:None ~attrs:[]
+    make_element ~kind:None ~attrs:[]
       ~children:[
-        Element (make_element ~name:(Some "second") ~attrs:[] ~children:[]);
-        Element (make_element ~name:(Some "first")  ~attrs:[] ~children:[]);
+        Element (make_element ~kind:(Some "second") ~attrs:[] ~children:[]);
+        Element (make_element ~kind:(Some "first")  ~attrs:[] ~children:[]);
       ]
-  (* name anon_ab = None  &&  equal_element anon_ab anon_ba = false *)
+  (* kind anon_ab = None  &&  equal_element anon_ab anon_ba = false *)
   ```
-- An «element» with an «element-name» and one «attribute», `$main`, and no child «nodes».
+- An «element» with an «element-kind» and one «attribute», `$main`, and no child «nodes».
   ```ocaml
   (* E.g. — own-line text lives in `$main`, leaving `children` empty *)
   let title_el : element =
-    make_element ~name:(Some "title") ~attrs:[ ("$main", text_val "Hello") ] ~children:[]
+    make_element ~kind:(Some "title") ~attrs:[ ("$main", text_val "Hello") ] ~children:[]
   (* attr_values title_el "$main" = [ text_val "Hello" ]  &&  children title_el = [] *)
   ```
 - A «document's» «root»: an «element» named `$root`.
   ```ocaml
   (* E.g. *)
   let doc_root : element = make_root ~meta:[ ("$file", text_val "hello.ud") ] ~partial:[]
-  (* name doc_root = Some "$root" *)
+  (* kind doc_root = Some "$root" *)
   ```
 
 ## Historical Context
@@ -114,8 +114,6 @@ The opening sentence is Joseph's row in the canonical outline, 2026-11-20. The t
 The XML Information Set describes an element the same way, as recalled and not re-read: a name, an ordered list of children, and an unordered set of attributes.
 
 ## Working Notes
-- For «attribute»: when one name is written more than once on an «element», whether the order of those «values» is kept. Lean: yes; "unordered" is across names.
-- For «attribute»: a «partial's» top-level attributes are among its root «nodes» (Joseph, 2026-11-20: "a partial gets parsed into any number of udon root nodes"), so an «attribute» is a «node». How that sits with an «element's» «attributes» being a separate part from its ordered child «nodes» is «attribute's» to say.
 - Open: may a «document» write the `$` «attributes» directly (`:$key jw` for `[jw]`)? Belongs to a rule. Lean: refused, so each has one spelling.
 - Open: which other kinds of «node» may be child «nodes».
 - Open: whether an «element» written inline inside a «text» is an «element» by this definition. Waits on how embedded forms are designed.
