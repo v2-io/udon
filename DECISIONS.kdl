@@ -172,3 +172,8 @@ decision "primal-bootstrap-in-minimal-udon" how="lean" by="Joseph" at="2026-11-2
   words #"Udon is *just so close* to a usable "lite" version-- just soooo intuitive for human and agent alike-- just easy enough to write a quick parser for it... that it's hard not to use it."#
   words-2 #"if we *will* use some minimal udon right now, the less specialized syntax the better so there's less circular churn...  we'll just treat it as text to separate by whitespace in the actual tool....  so it wasn't design of udon so much as it was trying to get away with fewer constructs during the primal bootstrapping..."#
 }
+
+decision "spec-files-stay-markdown-and-kdl" how="stated" by="Joseph" at="2026-11-23" {
+  holds "The spec's own files stay markdown and KDL, to be translated into UDON when UDON is ready. This withdraws primal-bootstrap-in-minimal-udon, recorded an hour earlier, and leaves bootstrap-from-markdown-and-kdl and segment-formats standing. His reason: shown one simple definition written in UDON, the session at once began re-deriving settled UDON, and he takes that as a sign every other mind would too."
+  words #"My earlier lean was that kdl + markdown will easily translate into udon when we're ready. You immediately trying to relitigate and rederive basic udon for the nth time the moment there was any ambiguity in even just the simplest definition file has changed what my earlier lean implied ("sure, how could we not just try!?") to "no-- we'll do it the hard settled way-- if you get pulled into creating balls of noise with one simple example-- it is a sign that everyone else will keep doing it too."#
+}
