@@ -198,3 +198,9 @@ decision "attribute-values-always-a-list" how="lean" by="Joseph" at="2026-11-24"
   holds "An attribute's values are always a list. A parser's API is recommended to offer one fetcher that expects exactly one value and raises otherwise, and a general one that always gives the list."
   words #"that one we basically got to punt on a little bit by me saying "let's recommend that the parser API expose a fetcher that assumes a single value, with exception if it's not one, and the "general" fetcher which just always has a list. Nevertheless, from a functional programming perspective, it's definitely nicer to think in terms of "it's just a linked list, always"."#
 }
+
+decision "ast-shape-given-as-types" how="lean" by="Joseph" at="2026-11-24" {
+  holds "The shape of the AST is given as a small set of algebraic types that cannot represent an invalid tree, in place of abstract types with accessor functions. That such types commit to a choice is wanted. They introduce «item», any node except an attribute; an attribute's values and an element's children are both items. Not yet said by him: the word item itself, or that the per-definition function blocks should go."
+  words #"I do not find this new set of type definitions harder to read. And it commits to something because it had to commit to something to be well-defined, which is [exactly] as it should be. It basically bubbles to the surface the very issue I had with the attributes defined as you had them-- the conflation of values and node-- the introduction of "item" etc. Exactly what I would hope."#
+  words-2 "I'm also wondering what the primary purpose of the ocaml is-- because it looks pretty implementation-specific / heavy-- instead of a nice concise set of [algebraic] types etc..."
+}

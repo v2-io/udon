@@ -16,13 +16,13 @@ A «node» with exactly one «attribute-name» and one or more ordered «values�
 An «attribute» has two parts and no others:
 
 - **An «attribute-name»**, always. It is the parent's word for what the «attribute» holds: its `author`, its `timeout`. It says what the «values» are to the parent, and nothing about what any of them is in itself.
-- **Its «values»**: one or more, kept in the order they were written. They are the «nodes» directly under the «attribute».
+- **Its «values»**: one or more, kept in the order they were written. Each is an «item», which is to say any «node» except an «attribute».
 
 Three things follow from the «attribute-name» being the parent's word:
 
 - **One per name.** A parent has at most one «attribute» of a given «attribute-name».
 - **No position.** An «attribute» is not among its parent's ordered child «nodes», and it is neither before nor after anything else its parent holds. The only order an «attribute» has is the order of its own «values».
-- **No «attributes» of its own.** An «attribute» holds «values» and nothing else. One of its «values» may be an «element», which has «attributes» of its own; a «value» is never an «attribute».
+- **No «attributes» of its own.** An «attribute» holds «values» and nothing else, and a «value» is an «item», so it is never an «attribute». A «value» may be an «element», which has «attributes» of its own.
 
 An «attribute's» parent is an «element», the «root» included. At the top of a «partial» an «attribute» has no parent and is one of the «partial's» root «nodes»; the same three things hold among those root «nodes». In a «document» they are «attributes» of the «root».
 
@@ -139,7 +139,7 @@ Spec-lite's cards kept each writing of a name as its own attribute and called th
 - Joseph, 2026-11-24, on the shape: "I think conceptually you are spot on: attributes -> attribute-names, one of each at most, with ordered values."
 - How several writings of one name come to be one «attribute» (what spec-lite called stacking) is not said here. Joseph, 2026-11-24: "it is probably the case that here in foundation defs we basically lay down the semantic structure invariants, and make that a discussion within a later section where the segments depend on definitions like these in order to justify spelling decisions etc...?" He also named the dissonance that later segment has to face: "attribute names are not ordered relative to each other or interleaved within children, but spelling-wise, two attribute nodes of the same name *do* end up ordering the children of that attribute-name -- accumulate into one node".
 - Always a sequence. Joseph, 2026-11-24: "that one we basically got to punt on a little bit by me saying "let's recommend that the parser API expose a fetcher that assumes a single value, with exception if it's not one, and the "general" fetcher which just always has a list. Nevertheless, from a functional programming perspective, it's definitely nicer to think in terms of "it's just a linked list, always"." On 2026-08-09 he had described the other shape ("turns what was just a simple scalar into a list of scalars").
-- Open, and Joseph is thinking about it: «values» being «nodes» raises whether a «value» may be any «node» or only some. His words, 2026-11-24: "if we want to use 'nodes' more places and talk about *typed* values / scalars / constants / references all being legitimate children and legitimate values, we have a syntax obstacle because udon assumes prose instead of trying to type values". For «value» to take up.
+- A «value» is an «item», not any «node»: the draft first said «values» were «nodes», and Joseph named that as conflating the two (2026-11-24: "the very issue I had with the attributes defined as you had them-- the conflation of values and node"). What he was weighing just before, 2026-11-24: "if we want to use 'nodes' more places and talk about *typed* values / scalars / constants / references all being legitimate children and legitimate values, we have a syntax obstacle because udon assumes prose instead of trying to type values". In the types, a «value» and a child are both «items».
 - Open: when two «attribute-names» are the same name. He has said a quoted name and the same name unquoted are the same (2026-07-16, as quoted in spec-lite's `def-attribute-name.md`); case and Unicode normalization are not settled. Belongs to «attribute-name» or to a rule.
 - Open: what else may be attached to an «attribute» without being one of its «values», such as a comment. His 2026-10-20 words set the constraint: "I should be able to attach a comment or metadata about what line I'm on and whether it had blanks before it and the time of day right now without it changing the cardinality or arity of anything structural."
 - Open: whether an «attribute» may hold no «values» at all. Written here as never; in spec-lite an attribute written with no value was an error.

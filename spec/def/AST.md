@@ -21,28 +21,27 @@ The "Abstract Syntax Tree" resulting from a «partial» being parsed by a compli
 
 It is the result for a «partial» that has been parsed in full. What a parser reports along the way while reading a «fragment» is not an «AST» and is not specified here.
 
-### Auxiliary Model *(draft — pure ML/OCaml notation)*
+### The shape, as types *(draft — pure ML/OCaml notation)*
 ```ocaml
-(* «attribute» is given in its own definition. *)
-type attribute
-(* Provisional stub until «text» has its own definition. *)
-type text
+type 'a nonempty = 'a * 'a list          (* one or more: a first one, then the rest *)
+type 'a by_name                          (* a map from names: at most one entry per name, in no order *)
+type text                                (* provisional, until «text» has its own definition *)
+
+type item =                              (* any «node» except an «attribute» *)
+  | Element of element
+  | Text    of text
+
+and element = {
+  kind       : string option;
+  attributes : item nonempty by_name;
+  children   : item list;
+}
 
 type node =
-  | Element of element
-  | Attribute of attribute
-  | Text of text
+  | Item      of item
+  | Attribute of string * item nonempty
 
-(* An «AST» is an ordered sequence of zero or more root «nodes». *)
 type ast = node list
-
-(* Any single «node» together with everything under it is itself an «AST». *)
-val branch : node -> ast
-(* I.e. branch n = [ n ] *)
-
-(* Content-level equality of two «ASTs»: order-sensitive over the root «nodes» that are not
-   «attributes»; an «attribute» has no position (see «attribute»). *)
-val equal_ast : ast -> ast -> bool
 ```
 
 ## Discussion
@@ -77,4 +76,5 @@ The opening paragraph is Joseph's row in the canonical outline, 2026-11-20, and 
 - Gap: the notation. The opening says the «AST» is "shown in this spec in an implementation-language agnostic notation"; none has been chosen. Lean: it gets its own row and segment, after «attribute» and «value» exist, because it has to show what kind of «value» something is and how it was written.
 - Open: "directed acyclical graph" or "tree". If no «node» ever has two parents it is a tree, and "graph" may lead an implementer to expect shared «nodes». Lean: say tree. Joseph's wording is kept until he says.
 - Open: whether every compliant parser must give the same «AST» for the same «partial» with no exceptions. The earlier quality factors called this a weight, not a veto, because "some rare contexts may unavoidably need different trees" (`.archive/v2/spec-lite-0.1.0/CTQ-FACTORS.md`, note b3). The Definition's first point is written as if there were none.
-- Draft auxiliary notation (2026-11-23, unratified): provisional pure ML/OCaml signatures and `E.g.` blocks added above as a Thread 2 trial (keeping the prose examples beside them); whether this becomes the spec's standing AST notation is still open.
+- The types above replaced this file's block of function signatures on 2026-11-24, after Joseph asked what the OCaml was for and said of these types: "it commits to something because it had to commit to something to be well-defined, which is [exactly] as it should be." The signature blocks in «element», «root» and «attribute», and the `E.g.` blocks everywhere, still use the earlier functions and are to be brought over to these types.
+- Open: `type ast = node list` is the one line that still leaves something unsaid. A list can hold two «attributes» of one name, and gives each a position, which «attribute» says they do not have.
