@@ -295,3 +295,67 @@ December 2025 had `None` / `Some [Nil]` / `Some [True]` (bare key). July–Octob
 **`history.jsonl`:** filtered all udon-project prompts since 2026-10-09 for empty/nil/null/option/`<>` and read the hits; checked sixteen earlier prompts directly against the earlier agent's quotes (L5422–L18885).
 
 **Not reached:** memorata-search; grok, Gemini and Codex transcripts (the earlier agent reached grok only through memorata); `v2/theory/`, `v2/udon-needs/`; the 0.10.1 draft beyond a grep; `spike-values-2026-10-22/` and `trial-values-2026-10-28/` beyond a grep for option/missing (nothing found); `types-ideation-2026-10-22.md` beyond the same grep. The earlier agent's file lists more sources for the pre-October period.
+
+---
+
+## Addendum: where the v2 spec session stands on it (2026-11-24)
+
+*By the Claude Fable 5.2 session that drafted `spec/def/attribute.md`, at Joseph's request, "just in case we don't end up with room to get back to it". Everything above this line is the history agent's and is history only. This part is an opinion. Joseph has not adjudicated the question. I read the chronology whole and none of its sources.*
+
+### The position
+
+An «attribute» always has at least one «value». A parent either has an «attribute» of a name, with one or more «values» under it, or has none of that name. There is no third state.
+
+### Why, in the order I would defend it
+
+1. **It is what "one of each name, with ordered values" already is.** An «element's» «attributes» taken together are a multimap: names, each with an ordered list of values. In a multimap a name is present exactly when it has at least one value. So "never zero" is not an extra invariant added to the definition. Allowing zero is what would add something: a second fact per name (present or not) beside its list.
+
+2. **Every meaning that has been proposed for "present, with nothing" already has a home.** Going through the chronology's five rows:
+
+   | What someone wanted to say | Where it lives without a zero-value attribute |
+   |---|---|
+   | explicitly nothing, as against not stated | the value `nil`: `:deadline nil` |
+   | present, and empty | an empty text, an empty string, or an empty list, each of which is one value |
+   | the name alone is the statement (a flag) | a trait on the element (`\|task.urgent`), or an explicit `:urgent true` |
+   | nothing was written where a value belongs | an error, with the spelling kept reserved |
+
+   A zero-value attribute would be a further way of saying nothing, with no meaning the others lack.
+
+3. **A consumer's simplest question stays total.** "What are this element's values for `k`?" has one answer, a list, and the list is empty exactly when there is no such «attribute». With zero-value attributes allowed, that question needs an option around the list, or a second question (is it there?), everywhere.
+
+4. **A schema's cardinalities then need nothing more.** `?`, `*`, `+` and exactly-one are all statements about the length of that one list. If "absent" and "present but empty" differed, every `*` slot would have to say whether both are allowed and whether they mean the same.
+
+### Where the option type does belong
+
+Joseph's `option` instinct fits, one level up from the list. The fetcher that expects a single value is the option-shaped one:
+
+```ocaml
+values : element -> string -> node list      (* [] exactly when there is no such attribute *)
+value  : element -> string -> node option    (* None when there is none; raises when there are several *)
+```
+
+`None` is "not stated" and `Some Nil` is "stated to be nothing". That is the December 2025 distinction between absent and nil, and it is the one option-like distinction the history never gave up.
+
+### What the August ruling rested on, and what replaces it
+
+K6's tree-level argument was "an edge with no terminus is malformed". The draft calls an «attribute» a «node», and a «node» with nothing under it is not malformed in general: an «element» may have no children. So that argument does not carry over. The multimap argument does the same work without it: an «element» with no children is still something (its kind, its «attributes»), while an «attribute» with no «values» would be only a name.
+
+### A tempting alternative that does not work
+
+Make `nil` the spelling of the zero-value attribute, so that `nil` stops being a kind of value: absent is `None`, `:k nil` is `Some []`. It removes a value kind and gives the empty state the one meaning it could have. It fails on lists: `[1 nil 2]` needs `nil` to be a value, and so does anything converted from JSON with a null inside an array.
+
+### What would change my mind
+
+- A meaning for "present, with nothing" that none of nil, an empty value, a trait or an explicit `true` can carry. The nearest candidate I can think of is "a place known to need a value that nobody has given yet", and I think a schema says that better than a document does.
+- A decision that a bare `:a` should be accepted and should be reproducible as written. Then the tree needs somewhere to keep it, and a zero-value attribute is the obvious place. Joseph's 2026-10-09 wording, "not supported / reserved", leaves that door open on purpose.
+
+One caution about that door. Loosening "at least one" to "zero or more" later is easy for anything that writes an «AST» and breaking for anything that reads one, because readers will have relied on an empty list meaning absent. So if the door is to stay open, the reading side should be told now.
+
+### What this means for the draft as it stands
+
+- `spec/def/attribute.md` already says "at least one". Its OCaml note, that asking for the values of a name that is not there gives the empty list, is then a consequence and not an accident, and should say so.
+- The distinction in the chronology's point 4 should be kept in the wording wherever "it's just a list, always" is said: `:x []` is one value, an empty list; it is not an attribute with no values.
+
+### What I have not done
+
+Read K12's own text, or the 2011 files, or the flag discussions beyond what is quoted above. The suggestion that traits now carry what flags carried is my own connection and has not been checked against why flags were retired.
