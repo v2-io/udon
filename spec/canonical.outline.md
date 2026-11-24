@@ -45,6 +45,16 @@
 *(And footnotes)*
 - Note that in all of Part 1 there is no mention yet of objectives and goals and affordances it strives for etc. etc.  That stuff may or may not end up being part of this spec or a separate but related pedagogy (or even historical / narrative) outline...  In any case, this spec for now is primarily focused on a strict almost-executable spec.
 
+- **Proposed by Joseph, 2026-11-24: a five-part outline of the spec.** Not applied; the rows above are still one part. His words, whole (the third item breaks off as he wrote it):
+
+  > I wonder if we can at this point rethink the general outline of the spec?-- names are just a first pass and suggestions welcome:
+  >
+  > 1. udon-core ---- completely desugared core structure / AST types and their low-level semantic definitions -- basically defines the AST.
+  > 2. udon-ir-syntax (possibly) ---- desugared simplified syntactical representation with annotation (for meta + ornament). Discusses $key, $root, etc.
+  > 3. udon-syntax ---- primary parsing (includes concepts like stacking, traits, key, etc.) -- this (or #2 if it exists) is where we end up
+  > 4. udon-usage ---- *higher level semantics*: purposes, idioms, usecases, pitfalls, fixtures/stochastic-generators, ... (**consumer** facing assumptions & contract)
+  > 5. udon-dev ---- parser-implementation concerns (this would be the more detailed description of API concerns of the AST...?) (**implementer** facing assumptions & contract)
+
 ---
 
 [^1]: ... currently. The spec will likely evolve to determine aspects of the online/streaming/wire protocol nuance and partial «ASTs» / variations applicable for continuous parsing.
