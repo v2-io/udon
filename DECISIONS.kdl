@@ -210,3 +210,14 @@ decision "spec-outline-in-six-parts" how="lean" by="Joseph" at="2026-11-24" {
   words #"I wonder if we can at this point rethink the general outline of the spec?-- names are just a first pass and suggestions welcome: 1. udon-core ---- completely desugared core structure / AST types and their low-level semantic definitions -- basically defines the AST. 2. udon-ir-syntax (possibly) ---- desugared simplified syntactical representation with annotation (for meta + ornament). Discusses $key, $root, etc. 3. udon-syntax ---- primary parsing (includes concepts like stacking, traits, key, etc.) -- this (or #2 if it exists) is where we end up 4. udon-usage ---- *higher level semantics*: purposes, idioms, usecases, pitfalls, fixtures/stochastic-generators, ... (**consumer** facing assumptions & contract) 5. udon-dev ---- parser-implementation concerns (this would be the more detailed description of API concerns of the AST...?) (**implementer** facing assumptions & contract)"#
   words-2 #"ah, perfect, right-- kernel (as a strict subset that the expanded can transform into), not IR. My third item was going to say something along the lines of "... where we end up starting to have lots of udon examples in the segments." (i.e., *not* really in udon-core). Oh, right, schemas--- let's provisionally put them as #4 instead. We might pull it up if it ends up being a helpful dependency for #2 and/or #3. I'm fine provisionally introducing parts 4 and 5 (now probably 5 and 6) as you see fit if you want to draft a quick line/paragraph/list for those parts in the outline as well."#
 }
+
+decision "complex-node" how="lean" by="Joseph" at="2026-11-24" {
+  holds "A node that can have both children and attributes is a complex node. Elements and attributes are complex nodes. The session added, and he has not addressed: a node that holds only a value is a simple node, on the model of XML Schema's complex and simple types."
+  words "Would it make sense to call Holder, potentially, ComplexNode? (meaning any node that has both children and attributes?)"
+  words-2 "Excellent, yes, *can have*."
+}
+
+decision "ast-and-partial-are-terms-not-types" how="lean" by="Joseph" at="2026-11-24" {
+  holds "Neither AST nor partial is one of the spec's types. AST is an ordinary defined term used in the spec. A partial is the term for a piece of an eventual AST: a complex node with no parent, which stops being a partial when it is given a parent complex node. Both put as 'I think we might' and 'I think we can'."
+  words "I think we might jetison the AST as part of the type for the spec-- it's just a normal definition of a term that is used in the spec. Furthermore, I think we can jettison `partial` from the types for the spec--- it's just our term for a piece of an eventual AST-- with many partials essentially starting as parent-less complex nodes (that will need a parent complex node to no longer be a partial...)"
+}
