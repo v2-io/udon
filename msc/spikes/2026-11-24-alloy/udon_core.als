@@ -14,28 +14,28 @@ sig Name {}        -- an attribute-name
 sig Kind {}        -- an element-kind
 sig Text {}        -- its content is left out here
 
--- Anything that holds attributes and children: a partial, an element, an attribute.
-abstract sig Holder {
+-- Any node that can have attributes and children: a partial, an element, an attribute.
+abstract sig ComplexNode {
   attributes : Name -> lone Attribute,    -- by name: at most one of each, in no order
   children   : seq (Element + Text)       -- in order
 }
 
-sig Partial   extends Holder {}
-sig Element   extends Holder { kind : lone Kind }
-sig Attribute extends Holder {}           -- its name is the name its holder has it under
+sig Partial   extends ComplexNode {}
+sig Element   extends ComplexNode { kind : lone Kind }
+sig Attribute extends ComplexNode {}           -- its name is the name its parent has it under
 
--- What a holder has directly inside it.
-fun inside : Holder -> (Holder + Text) {
-  { h : Holder, x : Holder + Text | x in h.attributes[Name] or x in h.children.elems }
+-- What a complex node has directly inside it.
+fun inside : ComplexNode -> (ComplexNode + Text) {
+  { h : ComplexNode, x : ComplexNode + Text | x in h.attributes[Name] or x in h.children.elems }
 }
 
 fact OnePlaceEach {
-  -- an attribute is held by exactly one holder, under exactly one name
+  -- an attribute is held by exactly one complex node, under exactly one name
   all a : Attribute | one attributes.a
-  -- an element or a text sits at exactly one position in exactly one holder's children
+  -- an element or a text sits at exactly one position in exactly one complex node's children
   all i : Element + Text | one children.i
   -- nothing is inside itself, at any depth
-  no h : Holder | h in h.^inside
+  no h : ComplexNode | h in h.^inside
 }
 
 -- It follows that everything is under exactly one partial.
