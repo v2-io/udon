@@ -1,109 +1,88 @@
 ```kdl
 term "root" pos=noun pl="-s" {
-  avoid "root node" "for this «element»; a root «node» in the plain tree sense is any «node» with no parent, and a «partial» may give many"
-  avoid "document" "the «document» is the source; the «root» is the «element» its «AST» has at the top"
+  avoid "root node" "in the plain tree sense any «node» with no parent is a root; this word is for the one a document has"
   rel is-a term="element" card="{1,1}"
-  rel of term="document" card="{1,1}"
 }
 status draft
 ```
 
 # «root»
-An implicit «element» with the `$root` «element-kind» that has no parent and is the sole top-level «node» of a «document's» «AST», holding file metadata «attributes» (`MetaName`) merged with the content «partial's» «attributes» and child «items».
+The «element» of «element-kind» `$root` that a document's text is read into. It has no parent and needs none, so it is not a «partial».
 
 ## Definition
-The «root» is an «element» like any other, with three distinguishing properties:
+The «root» is an «element» like any other. Three things set it apart:
 
-- **Its «element-kind» is `$root`** (`RootKind`), and no other «element» has that «element-kind».
-- **It has no parent**, and therefore can never appear as a child of another «element» or as a «value» of an «attribute».
-- **It wraps a «document's» content «partial» and file metadata**: its `attributes` are the union of the «document's» file-metadata «attributes» (`MetaName`) and the content «partial's» top-level «attributes» (`UserName`); its `children` are the content «partial's» top-level child «items» in order.
+- **Its «element-kind» is `$root`**, and no other «element» has that «element-kind».
+- **It has no parent**, and it is never a child.
+- **Nothing in the text writes it.** A document's top-level «attributes» are the «root's» «attributes», and its top-level children are the «root's» children, in the order written.
 
-A standalone «partial» has no «root».
+A document's «AST» is its «root» and everything under it. In that «AST» the «root» is the only «node» with no parent.
 
-### Invariants
-- An «element» is a «root» if and only if its «element-kind» is `$root`.
-- A «root» never has a parent «node».
-- Because file metadata uses `MetaName` and a «partial's» top-level «attributes» use `UserName` (disjoint subtypes of `Name`), merging the two onto `Root` can never collide on an «attribute-name».
-- Every «node» in a «document's» «AST» (`branch[d.root]`) except `d.root` itself has a parent «node».
+A «partial» is then a «complex·node» with no parent that is not a «root».
 
 ## Formal Model (Alloy 6)
 
 ```alloy
-one sig RootKind extends Kind {}         -- the reserved `$root` «element-kind»
-
+one sig RootKind extends Kind {}         -- the «element-kind» `$root`
 sig Root extends Element {}
 
-sig Document {
-  root : one Root,                       -- the sole top-level «node» of the document's AST
-  meta : set Attribute,                  -- file metadata «attributes» (`$file`, etc.)
-  body : one Partial                     -- the content «partial» wrapped by this document
-}
-
-fact rootAndDocumentInvariants {
-  -- Exact correspondence between Root and RootKind
+fact RootIsTheTop {
   all e : Element | e in Root iff e.kind = RootKind
-
-  -- A Root never has a parent Node (cannot be nested as child or attribute value)
-  no contains.Root
-
-  -- Every Root belongs to a unique Document; every Partial belongs to at most one Document
-  all r : Root    | one root.r
-  all p : Partial | lone body.p
-
-  -- Document metadata uses MetaName (disjoint from Partial's UserName)
-  all d : Document | d.meta.name in MetaName
-
-  -- Root's attributes merge file metadata and the content partial's top-level attributes;
-  -- Root's children are the content partial's top-level children in order
-  all d : Document | d.root.attributes = d.meta + d.body.attributes
-  all d : Document | d.root.children   = d.body.children
+  no inside.Root
 }
+
+-- A «partial»: a «complex·node» with no parent that is not a «root».
+fun partials : set ComplexNode { parentless - Root }
+
+-- A document's «AST».
+fun ast[r : Root] : set Node { branch[r] }
 ```
 
-### Invariant Checks
+### Check
 
 ```alloy check
--- A Root can never appear inside another Element's children or an Attribute's children
-check rootNeverNested {
-  no e : Element   | some (e.children.elems & Root)
-  no a : Attribute | some (a.children.elems & Root)
-} for 5 but 4 Int, 3 seq
-
--- Merging Document file metadata with a Partial's top-level attributes never collides on a Name
-check metaAndBodyNeverCollide {
-  all d : Document | no (d.meta.name & d.body.attributes.name)
-} for 5 but 4 Int, 3 seq
-
--- Within any Document's AST, d.root is the ONLY node with no parent
-check documentHasUniqueRoot {
-  all d : Document, n : branch[d.root] | no contains.n iff n = d.root
-} for 5 but 4 Int, 3 seq
+-- In a document's «AST», the «root» is the only «node» with no parent.
+check OnlyTheRootIsParentless {
+  all r : Root, n : ast[r] | no inside.n iff n = r
+} for 6 but 3 seq
 ```
 
 ## Examples
 
-- **A one-element «document»**: one `Root` holding one metadata «attribute» (`$file`) and one child «element» (plus a user top-level «attribute» from the wrapped «partial»).
-- **An empty «document»**: one `Root` holding only file metadata and no children.
+- A «root» with one «attribute» and two children.
+- A «root» with nothing in it, as for an empty file.
+- A «root» and, beside it, a «partial» not yet placed.
 
 ```alloy eg
--- E.g.: document wrapping a partial with one top-level user attribute and one child element
-run egOneElementDocument {
-  some d : Document, m, u : Attribute, e : Element |
-    d.meta = m
-    and d.body.attributes = u
-    and d.body.children = 0 -> e
-    and some e.kind
-} for 6 but 4 Int, 3 seq
+run egRootWithContents {
+  some r : Root, a : Attribute, disj e1, e2 : Element |
+    r.attributes = a and r.children = 0 -> e1 + 1 -> e2
+} for 6 but 3 seq
 
--- E.g.: empty file -> Root with file metadata and no children
-run egEmptyDocument {
-  some d : Document, m : Attribute |
-    d.meta = m
-    and no d.body.attributes
-    and no d.body.children
-} for 5 but 4 Int, 3 seq
+run egEmptyRoot {
+  some r : Root | no r.attributes and no r.children
+} for 4 but 3 seq
+
+run egRootAndAPartial {
+  some r : Root, e : Element | e in partials and e not in ast[r]
+} for 5 but 3 seq
 ```
 
+## One way file metadata could be kept
+
+Facts about the file (its path, say) could be «attributes» of the «root» under names that ordinary text cannot use. The other agent's version of this shadow built that in, by dividing names into two sorts. It is shown here as an alternative and is not part of the model, because whether metadata lives in «attributes» at all has not been decided.
+
+```alloy alt
+abstract sig Name {}
+sig UserName extends Name {}
+sig MetaName extends Name {}             -- `$`-names a parser supplies
+fact { all a : Attribute - Root.attributes | a.name in UserName }
+```
+
+## Historical Context
+The opening follows Joseph's row in the canonical outline (2026-11-20, reworded 2026-11-24): an implicit «element» with the `$root` «element-kind». Another agent's version of this file also modelled a document, its metadata and the merging of a «partial» into the «root»; this version keeps only what the «root» is, and depends on the core without the core depending on it. The revision is a Claude Fable 5.2 session's. Joseph has not read it.
+
 ## Working Notes
-- Gap: which specific `MetaName` atoms (`$file`, encoding, etc.) a compliant parser ‹must› / ‹should› / ‹may› supply on `Document.meta` is not yet enumerated.
-- Modeling note: stating `all p : Partial, x : p.attributes + p.children.elems | contains.x = (body.p).root` in `partial.md` together with `d.root.attributes = d.meta + d.body.attributes` here resolved a subtle tension Alloy surfaced immediately—a standalone «partial's» top-level nodes have no parent, while a wrapped «partial's» top-level nodes have `d.root` as their sole parent.
+- Gap: what metadata a «root» carries, and how.
+- Gap: how a «partial» comes to be placed under a parent. In the core that is only "it is given a parent"; the order its top-level things arrive in is for Part 3.
+- Gap: the kernel form itself, and `$key`, `$traits` and `$main`.
