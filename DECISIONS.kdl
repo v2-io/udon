@@ -221,3 +221,9 @@ decision "ast-and-partial-are-terms-not-types" how="lean" by="Joseph" at="2026-1
   holds "Neither AST nor partial is one of the spec's types. AST is an ordinary defined term used in the spec. A partial is the term for a piece of an eventual AST: a complex node with no parent, which stops being a partial when it is given a parent complex node. Both put as 'I think we might' and 'I think we can'."
   words "I think we might jetison the AST as part of the type for the spec-- it's just a normal definition of a term that is used in the spec. Furthermore, I think we can jettison `partial` from the types for the spec--- it's just our term for a piece of an eventual AST-- with many partials essentially starting as parent-less complex nodes (that will need a parent complex node to no longer be a partial...)"
 }
+
+decision "partial-is-a-type-after-all" how="lean" by="Joseph" at="2026-11-24" {
+  holds "A partial is one of the structure's types: what a text read on its own gives, with its own ordered children and its own attributes. This takes back the partial half of ast-and-partial-are-terms-not-types, made earlier the same day; AST stays a term. How the result is written down is expressly undiscussed."
+  words "Oh... hmmm.... I think we might need to add partial back into the type then, depending on how pedantic we want to be. Basically we need the ability to say: [a four-line UDON example: an element `a` with own-line text and an attribute, then a line of text, then a top-level attribute `b`] results in the following partial: [a tree sketch: (partial) with children (the element, then text \"hello!\") and attributes (\"b\" => 909)] (etc.-- our AST notation for the spec docs still being completely undiscussed and open)"
+  note "His example and sketch are whole in spec/alloy-def/core.md (Examples and Working Notes); the UDON source of the example is in the session transcript."
+}

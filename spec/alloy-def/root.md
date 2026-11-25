@@ -7,7 +7,7 @@ status draft
 ```
 
 # «root»
-The «element» of «element-kind» `$root` that a document's text is read into. It has no parent and needs none, so it is not a «partial».
+The «element» of «element-kind» `$root` that a document's text is read into, in place of a «partial». It has no parent.
 
 ## Definition
 The «root» is an «element» like any other. Three things set it apart:
@@ -17,8 +17,6 @@ The «root» is an «element» like any other. Three things set it apart:
 - **Nothing in the text writes it.** A document's top-level «attributes» are the «root's» «attributes», and its top-level children are the «root's» children, in the order written.
 
 A document's «AST» is its «root» and everything under it. In that «AST» the «root» is the only «node» with no parent.
-
-A «partial» is then a «complex·node» with no parent that is not a «root».
 
 ## Formal Model (Alloy 6)
 
@@ -30,9 +28,6 @@ fact RootIsTheTop {
   all e : Element | e in Root iff e.kind = RootKind
   no inside.Root
 }
-
--- A «partial»: a «complex·node» with no parent that is not a «root».
-fun partials : set ComplexNode { parentless - Root }
 
 -- A document's «AST».
 fun ast[r : Root] : set Node { branch[r] }
@@ -51,12 +46,12 @@ check OnlyTheRootIsParentless {
 
 - A «root» with one «attribute» and two children.
 - A «root» with nothing in it, as for an empty file.
-- A «root» and, beside it, a «partial» not yet placed.
+- A «root» and, beside it, a «partial» from some other text.
 
 ```alloy eg
 run egRootWithContents {
   some r : Root, a : Attribute, disj e1, e2 : Element |
-    r.attributes = a and r.children = 0 -> e1 + 1 -> e2
+    r.attributes[Name] = a and r.children = 0 -> e1 + 1 -> e2
 } for 6 but 3 seq
 
 run egEmptyRoot {
@@ -64,7 +59,7 @@ run egEmptyRoot {
 } for 4 but 3 seq
 
 run egRootAndAPartial {
-  some r : Root, e : Element | e in partials and e not in ast[r]
+  some r : Root, p : Partial | some p.children and no (branch[p] & ast[r])
 } for 5 but 3 seq
 ```
 
@@ -76,7 +71,7 @@ Facts about the file (its path, say) could be «attributes» of the «root» und
 abstract sig Name {}
 sig UserName extends Name {}
 sig MetaName extends Name {}             -- `$`-names a parser supplies
-fact { all a : Attribute - Root.attributes | a.name in UserName }
+fact { all c : ComplexNode - Root | c.attributes.Attribute in UserName }
 ```
 
 ## Historical Context
@@ -84,5 +79,5 @@ The opening follows Joseph's row in the canonical outline (2026-11-20, reworded 
 
 ## Working Notes
 - Gap: what metadata a «root» carries, and how.
-- Gap: how a «partial» comes to be placed under a parent. In the core that is only "it is given a parent"; the order its top-level things arrive in is for Part 3.
+- Gap: how a document's text comes to be in a «root» where on its own it would give a «partial». In words: what would have been the «partial's» «attributes» and children are the «root's».
 - Gap: the kernel form itself, and `$key`, `$traits` and `$main`.
