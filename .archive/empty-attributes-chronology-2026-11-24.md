@@ -359,3 +359,7 @@ One caution about that door. Loosening "at least one" to "zero or more" later is
 ### What I have not done
 
 Read K12's own text, or the 2011 files, or the flag discussions beyond what is quoted above. The suggestion that traits now carry what flags carried is my own connection and has not been checked against why flags were retired.
+
+### Postscript, the same day
+
+The first reason above did not survive the afternoon, and I withdrew it. Joseph took up letting an «attribute» have «attributes» of its own. An «attribute» that only groups others then has no values, so "at least one" cannot hold, and the multimap picture no longer describes the structure. He also said he had never accepted "at least one value", and that the multimap idea "didn't take into account the schema and it complicated cardinality significantly, IMO". Reasons 2 to 4 are untouched by that, and the question itself is still his to adjudicate. The structure as it now stands, in `spec/alloy-def/core.md`, admits an «attribute» with nothing in it.

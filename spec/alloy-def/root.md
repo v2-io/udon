@@ -78,6 +78,7 @@ fact { all c : ComplexNode - Root | c.attributes.Attribute in UserName }
 The opening follows Joseph's row in the canonical outline (2026-11-20, reworded 2026-11-24): an implicit «element» with the `$root` «element-kind». Another agent's version of this file also modelled a document, its metadata and the merging of a «partial» into the «root»; this version keeps only what the «root» is, and depends on the core without the core depending on it. The revision is a Claude Fable 5.2 session's. Joseph has not read it.
 
 ## Working Notes
+- Joseph, 2026-11-27, thinking aloud, not yet taken up in the model: "Initially I was thinking that a `partial` was just a convenience for parts of the AST-- but I think it is genuinely useful as *the* root node (for example, an element of |$partial kind) for udon that is being parsed from text input generally... I wonder if logical partials or search results would end up having a different kind of root element... or would it make more sense to have it always be `|$root` with `.file` or `.partial` or `.logical` or `.result`... etc..."
 - Gap: what metadata a «root» carries, and how.
 - Gap: how a document's text comes to be in a «root» where on its own it would give a «partial». In words: what would have been the «partial's» «attributes» and children are the «root's».
 - Gap: the kernel form itself, and `$key`, `$traits` and `$main`.
